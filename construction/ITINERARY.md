@@ -212,7 +212,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3d4520a61f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `66b48ae7c3` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -224,18 +224,27 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- THE CARD READ PERFECTLY AND RENDERED AS ONE CODE BLOCK.** Both elder accounts
-[shelved whole](archive/20260916-231943_itinerary-landed-accounts.md), the QA-card ask carried
-forward. Row `20260916.231943`. **FIRE SEES** (row 2).
-**THE SIBLING OF `%795`, FOUND BY ITS OWN PROBE FAILING.** A list reading written for that class
-answered **zero** here and should not have: `99d4948e6a` wrapped a sentence so a bare triple-backtick
-opener landed at column 0, and the unclosed fence swallowed every list below it. CommonMark runs it
-to end of document, so **30,791 of this card's 38,970 bytes, 79 percent**, rendered as one code block
-for every markdown reader. Repaired, with a second an hour later. **A hand wrapping prose to a column
-creates markup it never typed** -- a fence opener and a list marker are both decided by what starts a
-line. **GATED:** `living_pin_fence` walls living pages at **zero**, **41 legs, three mutations
-bitten**.
-**YOURS:** an unterminated table, a heading eaten by a list -- a lap each, or do two walls do?
+**PATCHOULI -- A DOCUMENT'S LAST BYTE FINALLY HAS A HOME IN THE STORE.** Elder account
+[shelved whole](archive/20260917-011500_itinerary-landed-accounts.md), its two asks with it.
+**AIR FEELS** (row 1, N=5206): press a boundary; feel whether the hand goes through.
+**`%689` CLOSED.** `split_lines` in `mantra/src/diff.rye` broke its loop at the empty token a
+trailing newline leaves, so `x\ny` and `x\ny\n` earned one address in a content-addressed store
+and `mantra status` read the changed file clean BOTH ways. Keaton ruled door 2: a weave
+records the terminator as HISTORY. That build was withdrawn once, because keeping the token turns
+every APPEND into a MIDDLE INSERT -- which was `%680`, and `%680` closed with `Diff.after`. The
+withdrawn work landed unchanged on that footing. **All 29 mantra witnesses green from a green
+baseline**; the seven readings REPORTED while this wanted a ruling are **WALLS**, and the control
+restores the elder break through `plant_apply` and watches every wall fall at once. **THE PRICE,
+MEASURED:** a three-line terminated file reports **4** lines against **3**, and every weave on disk
+drifts by one on its next add -- the cost door 2 named before it was chosen.
+**AND THE PROBE FOUND A SECOND** (`20260917.010830`, OPEN). A line inserted at the HEAD of a document leaves
+it -- `%680`'s symptom one position over, proven pre-existing from the stashed module. `Weave.apply`
+named the case in a comment and no row and no guard carried it -- **a limit stated only in the code
+it limits is a limit no lap is asked to close.**
+**MINE:** five legs of `mantra_diff_control.sh` were quoted by nobody, so its split plant matched
+nothing the hour the module moved. All five are heard now.
+**YOURS:** that row's three doors -- a `before` anchor with nowhere to put its key, renumbering every
+`ord` and breaking merge, or reserving a floor that buys one head insert per weave.
 
 ## Simple, Lovable, Complete order
 

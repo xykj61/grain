@@ -7,7 +7,7 @@
 # module stopped compiling and all five stayed green. Three sites carried the elder form.
 # That is REDS %449's fault one file over, found by the census %449 booked.
 #
-# This guard builds the module for real and then breaks it ten ways in a pen, because a
+# This guard builds the module for real and then breaks it eleven ways in a pen, because a
 # guard that cannot red guards nothing.
 #
 # THE SECOND FAULT, found 20260907 by pressing the boundary with a hand. The module allocates
@@ -73,7 +73,7 @@ assert selftest.out contains "the same inputs give the same diff twice" else "ma
 assert selftest.out contains "moves one line, not five" else "mantra-diff: the LCS claim is missing"
 assert selftest.out contains "an append round-trips exactly" else "mantra-diff: the exact round-trip claim is missing"
 assert selftest.out contains "a middle insert lands in the middle" else "mantra-diff: the reorder claim is missing -- the seam this witness pins"
-assert selftest.out contains "split_lines drops the trailing token" else "mantra-diff: the split_lines claim is missing"
+assert selftest.out contains "split_lines keeps the terminator" else "mantra-diff: the terminator claim is missing -- the split is injective or two documents one byte apart earn one address (REDS %689)"
 assert selftest.out contains "the bounds refuse by name at one cell past the ceiling" else "mantra-diff: the bound claim is missing -- the module allocated a quadratic table with no ceiling until 20260907"
 assert selftest.out contains "the per-side ceiling is the weave's own" else "mantra-diff: the derivation claim is missing -- a ceiling spelled twice drifts"
 assert selftest.out contains "diff refuses an oversized side at its own edge" else "mantra-diff: the call-site claim is missing -- a bound nobody calls is a bound"
@@ -87,7 +87,7 @@ say "mantra-diff: the module still names the ceiling it allocates against..."
 let fence = run ["sh" "-c" "grep -q 'pub const max_diff_lines' mantra/src/diff.rye && grep -q 'DiffError' mantra/src/diff.rye && grep -q 'try check_bounds(' mantra/src/diff.rye && echo FENCE_PRESENT || echo FENCE_ABSENT"]
 assert fence.out contains "FENCE_PRESENT" else "mantra-diff: the named ceiling, the named error, or the edge call left diff.rye"
 
-say "mantra-diff: breaking the module ten ways in a pen, so the witness is proven able to red..."
+say "mantra-diff: breaking the module eleven ways in a pen, so the witness is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_diff_control.sh"]
 assert control.ok else "mantra-diff: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-diff: the control must reach its own verdict"
@@ -97,5 +97,14 @@ assert control.out contains "elder_arraylist_exit=1" else "mantra-diff: the elde
 assert control.out contains "bound_widened_exit=134" else "mantra-diff: a doubled per-side ceiling must red -- a bound proven only in the failing direction cannot be told from a wall"
 assert control.out contains "ceiling_restated_exit=134" else "mantra-diff: a hand-typed per-side ceiling must red -- the bound is the weave's own or it drifts"
 assert control.out contains "edge_check_removed_exit=134" else "mantra-diff: deleting the edge call must red -- a bound nobody calls is a bound"
+# FIVE PHASES THE CONTROL RAN AND THIS WITNESS NEVER QUOTED, heard from `20260917`.
+# A plant nobody names may read `plant_matched_nothing` or `0` on any lap while the
+# witness stays green on the six legs beside it -- which is how `trailing_token`'s
+# own sed came to match nothing the moment the module it aimed at was repaired.
+assert control.out contains "walker_teeth_exit=1" else "mantra-diff: the toothless walker must red -- a comptime block that reads no declaration is what the walker is proven against"
+assert control.out contains "lcs_equality_exit=134" else "mantra-diff: a line comparison that never matches must red -- the LCS is what tells a kept line from a new one"
+assert control.out contains "inverted_inserts_exit=134" else "mantra-diff: an inverted insert test must red -- it carries the common lines as inserts and drops the new ones"
+assert control.out contains "terminator_dropped_exit=134" else "mantra-diff: restoring the elder drop must red -- the split is injective or two documents one byte apart earn one address (REDS %689)"
+assert control.out contains "empty_terminator_exit=134" else "mantra-diff: deleting the empty-text guard must red -- an empty file has no terminator, and the splitter's own empty token would stand in for one"
 
-say "GREEN: the diff compiles under the walker, keeps the common subsequence, appends a middle insert by name, and refuses past its own named ceiling."
+say "GREEN: the diff compiles under the walker, keeps the common subsequence, places a middle insert where its anchor says, keeps a document's terminator as a line, and refuses past its own named ceiling."

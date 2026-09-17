@@ -46,7 +46,7 @@
 #
 # EXPECTED: clean_ok=1, ignores_path_first_clean=no,
 # drops_prior_first_clean=no, no_elder_read_elder_opens=no,
-# no_elder_read_first_clean=yes, no_elder_fall_elder_opens=no,
+# no_elder_read_first_clean=yes, no_elder_fall_only_terminator=no,
 # space_rows_first_clean=no.
 #
 # Driven by tools/m/mantra_multifile_witness.rish. Run from the repository root.
@@ -124,6 +124,11 @@ echo "no_elder_read_first_clean=$(reading "$ne" first_clean)"
 
 nf=$(run_pen no_elder_fall 's|if (fw.path.len == 0) return fw.weave_name;|if (fw.path.len == 999) return fw.weave_name;|')
 echo "no_elder_fall_elder_opens=$(reading "$nf" elder_opens)"
+# READ BY THE SECOND ELDER READING from `20260917`. `elder_opens` used to mean
+# *lifts AND reports no change*; those two parted when the terminator became a
+# line (REDS %689), so the scan asks them apart and this plant is answered by the
+# half that names the document rather than the half that names the exit code.
+echo "no_elder_fall_only_terminator=$(reading "$nf" elder_only_terminator)"
 
 sr=$(run_pen space_rows 's|"file\\t{s}\\t{s}\\n", .{ fw.path, fw.weave_name }|"file\\t{s} {s}\\n", .{ fw.path, fw.weave_name }|')
 echo "space_rows_first_clean=$(reading "$sr" first_clean)"

@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim patchouli-terminator-as-history
-seat patchouli
-stamp 20260917.002055
-epoch 1789618856
-paths mantra/src/diff.rye mantra/src/weave.rye mantra/src/main.rye tools/fixtures/m/mantra_document_roundtrip_scan.sh tools/fixtures/m/mantra_document_roundtrip_control.sh tools/m/mantra_document_roundtrip_witness.rish
-what REDS %689, whose blocker just closed: split_lines in mantra/src/diff.rye drops the empty token a text ending in a newline produces, so x\ny and x\ny\n split to two identical lines and earn one address in a content-addressed store -- mantra status calls the changed file clean in both directions. Keaton ruled door 2 on 20260916.000449, a weave records the terminator as HISTORY, and the code was built, proven, then WITHDRAWN because keeping the terminator turns every append into a middle insert, which is what %680 broke. %680 is CLOSED as of 20260916.061223: Diff now carries after, and apply anchors an ordinary insert to the line it comes after, citing %689 by number in its own comment. So the withdrawn work is re-landable. Keep the trailing token in split_lines, pair each insert with its anchor so an append lands after the last real line rather than before the terminator, and read the roundtrip scan's gated and reported legs from both sides.
 claim grass-backticked-path-promise
 seat grass
 stamp 20260917.015238

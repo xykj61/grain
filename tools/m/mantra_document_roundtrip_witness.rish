@@ -1,44 +1,49 @@
 # tools/m/mantra_document_roundtrip_witness.rish -- does the store return the bytes it was handed?
 #
 # WHAT THIS PROVES. Mantra is a version store, so the first thing it owes a
-# caller is the document it was given. `mantra/src/diff.rye` `split_lines` drops
-# the empty token a text ending in `\n` produces, and a text that ends without
-# one produces no such token at all -- so `x\ny` and `x\ny\n` split to the same
-# two lines. `cmd_add` in `mantra/src/main.rye` stores that split and nothing
-# else: a weave and a commit, never the file's own bytes. One byte of the
-# document has no home in the store.
+# caller is the document it was given. `cmd_add` in `mantra/src/main.rye` stores
+# what `split_lines` in `mantra/src/diff.rye` hands it and nothing beside it: a
+# weave and a commit, never the file's own bytes. So whatever the split cannot
+# tell apart, the store cannot tell apart either.
 #
-# THE COST, on metal `20260910.043900`. Two pens, two files differing by exactly
-# the final newline, one `mantra add` each: both answered `HEAD -> 441c3c6fa8b8`
-# and both weaves carried the digest `7695a361c00e...`. A content-addressed store
-# gave one address to two contents. It is not only a display fault -- `mantra
-# status` calls the changed file **clean** and `mantra add` answers `unchanged --
-# nothing to weave`, in both directions, so the store declines to record the
-# change even when asked for it directly.
+# THE DEFECT, and the repair that closed it. Until `20260917` the split broke its
+# loop at the empty token a text ending in `\n` produces, so `x\ny` and `x\ny\n`
+# split to one list of two lines. Measured on metal `20260910.043900`: two pens,
+# two files differing by exactly the final newline, one `mantra add` each -- both
+# answered `HEAD -> 441c3c6fa8b8` and both weaves carried the digest
+# `7695a361c00e...`. A content-addressed store gave one address to two contents,
+# and it was never only a display fault: `mantra status` called the changed file
+# **clean** and `mantra add` answered `unchanged -- nothing to weave`, in both
+# directions, so the store declined the change even when asked for it directly.
 #
-# WHY THIS GATES FOUR READINGS AND REPORTS SEVEN. The loss is a seam with three
-# doors, each costing something a lap may not spend on its own:
-#   1. Keep the trailing empty token. `split_lines` becomes injective with a `\n`
-#      join at no format cost, and every terminated file carries one more line --
-#      so every weave already on disk drifts by one on its next add.
-#   2. Carry a terminator flag beside the lines -- a field on the v2 counter row
-#      or on the commit's `file` row, which is a record-format change.
-#   3. Write the file's own bytes as a blob and name it in the commit. The store
-#      is content-addressed already, and this widens the `file` row too.
-# So the readings a repair must not break are GATED, and the loss itself is
-# REPORTED by name under the row of `20260910.043900`. A gate that reds on what
-# no lap may repair is a gate somebody turns off -- the same placement
-# `.claude/rules/derived-spine.md` takes for a published double.
+# WHY IT TOOK THREE ROUNDS TO CLOSE. REDS %689 booked the loss and named three
+# doors, each costing something a lap may not spend alone. Keaton ruled door 2 on
+# `20260916.000449` -- a weave records the terminator as HISTORY, so the trailing
+# token becomes a LINE the weave keeps, inserted when a newline is appended and
+# deleted when one is removed. That build was proven and then WITHDRAWN, because
+# keeping the token turns every APPEND into a MIDDLE INSERT and a middle insert
+# was %680's own defect. %680 closed on `20260916.061223`: `Diff` carries `after`
+# and `Weave.apply` inherits the anchor's run and order key. The repair landed on
+# `20260917` on that footing.
 #
-# DOOR 1 IS PRICED RATHER THAN ARGUED. The control applies that mutation in a pen
-# and measures it: the two documents part, `add` sees the appended newline, and a
-# three-line terminated file reports **4** lines where the tree reports **3**.
-# That is the whole cost of door 1, read off a built binary rather than guessed.
+# WHAT IS GATED, AND THE ONE READING STILL REPORTED. Seven readings naming the
+# loss were REPORTED while the repair wanted a ruling, since a gate that reds on
+# what no lap may repair is a gate somebody turns off -- the same placement
+# `.claude/rules/derived-spine.md` takes for a published double. The ruling came
+# and the repair landed, so all seven are walls now. `raw_bytes_in_store` stays
+# REPORTED: door 3 -- write the file's own bytes as a blob and name it in the
+# commit -- was never taken, and it widens the `file` row when it is.
 #
-# BOTH DIRECTIONS. Two control legs break the CLI -- one that never weaves, one
-# whose status never reads clean -- and each must move the gate it is aimed at. A
-# guard that only ever says `no` cannot be told from a broken binary, which is
-# why `lawful_change_seen` presses from the passing side in the scan itself.
+# THE PRICE, NAMED RATHER THAN HIDDEN. A three-line terminated file reports FOUR
+# lines now, and every weave already on disk drifts by one on its next add. That
+# cost was written into door 2 before it was chosen, and the control measures it
+# on two built binaries rather than asserting it.
+#
+# BOTH DIRECTIONS. Three control legs break the CLI -- one that never weaves, one
+# whose status never reads clean, and one that restores the elder split rule and
+# watches all four walls fall at once. A guard that only ever says `no` cannot be
+# told from a broken binary, which is why `lawful_change_seen` presses from the
+# passing side in the scan itself.
 #
 # Siblings: the record the CLI writes at tools/m/mantra_cli_record_witness.rish,
 # the reader's ceiling at tools/m/mantra_record_ceiling_witness.rish, the
@@ -52,8 +57,8 @@ say "mantra-document-roundtrip: Style Gauge, Meter -- every claim is an answer a
 say "mantra-document-roundtrip: Lens TAME -- safety first, and a store that loses a byte is a safety fault."
 
 say "mantra-document-roundtrip: the split rule this guard reads is still the one on disk..."
-let seat = run ["sh" "-c" "grep -q 'if (line.len == 0 and it.rest().len == 0) break;' mantra/src/diff.rye"]
-assert seat.ok else "mantra-document-roundtrip: split_lines no longer drops the trailing empty token -- read the scan's readings, since door 1 may have landed and this header is then stale"
+let seat = run ["sh" "-c" "grep -q 'if (text.len == 0) return &.{};' mantra/src/diff.rye && ! grep -q 'if (line.len == 0 and it.rest().len == 0) break;' mantra/src/diff.rye"]
+assert seat.ok else "mantra-document-roundtrip: split_lines stopped keeping the terminator, or stopped answering zero for empty text -- either way this header and every gate below are reading a module that has moved (REDS %689)"
 
 say "mantra-document-roundtrip: cmd_add still stores a weave and a commit rather than the file's bytes..."
 let stored = run ["sh" "-c" "grep -q 'const weave_blob  = try serialize_weave' mantra/src/main.rye"]
@@ -68,6 +73,17 @@ assert scan.out contains "lawful_change_seen=yes" else "mantra-document-roundtri
 assert scan.out contains "lawful_status_seen=yes" else "mantra-document-roundtrip: status stopped reporting an ordinary edit, and the same objection applies"
 assert scan.out contains "terminated_roundtrip=yes" else "mantra-document-roundtrip: a file ending in a newline no longer reads back clean against its own weave"
 assert scan.out contains "bare_roundtrip=yes" else "mantra-document-roundtrip: a file ending without a newline no longer reads back clean against its own weave"
+# THE SEVEN READINGS THAT WERE REPORTED UNTIL `20260917`, walled now that the
+# repair has landed. Each names one face of REDS %689: two documents one byte
+# apart earning one address, and a store that declined the change even when
+# asked for it directly.
+assert scan.out contains "weave_digest_shared=no" else "mantra-document-roundtrip: two documents one byte apart earn one weave name again -- the defect REDS %689 booked, returned"
+assert scan.out contains "commit_digest_shared=no" else "mantra-document-roundtrip: and one commit name, so the whole store cannot tell the two apart"
+assert scan.out contains "status_sees_newline_added=yes" else "mantra-document-roundtrip: status calls a file clean after a newline was appended to it"
+assert scan.out contains "add_sees_newline_added=yes" else "mantra-document-roundtrip: add declines to weave an appended newline, so the store refuses the change when asked for it directly"
+assert scan.out contains "status_sees_newline_removed=yes" else "mantra-document-roundtrip: status calls a file clean after its final newline was taken away"
+assert scan.out contains "add_sees_newline_removed=yes" else "mantra-document-roundtrip: add declines to weave a removed newline -- the same loss from the other side"
+assert scan.out contains "terminator_invisible=no" else "mantra-document-roundtrip: the terminator is invisible to the store again, which is REDS %689 in one word"
 assert scan.out contains "verdict=ok" else "mantra-document-roundtrip: the scan reached its own red"
 
 say "mantra-document-roundtrip: breaking the CLI twice, and pricing door 1 once, in a pen..."
@@ -81,10 +97,15 @@ assert control.out contains "pen_baseline_ok=yes" else "mantra-document-roundtri
 assert control.out contains "frozen_add_bites=yes" else "mantra-document-roundtrip: a CLI that never weaves must red the scan, or the gate is not reading the add path"
 assert control.out contains "frozen_named=yes" else "mantra-document-roundtrip: that break must be named by lawful_change_seen rather than by some other reading"
 assert control.out contains "dirty_status_bites=yes" else "mantra-document-roundtrip: a CLI whose status never reads clean must red the scan, or the roundtrip readings are constants"
-assert control.out contains "door1_builds=yes" else "mantra-document-roundtrip: the door-1 mutation did not compile, so its price below was never measured"
-assert control.out contains "door1_parts_digests=yes" else "mantra-document-roundtrip: keeping the trailing token must give the two documents two weave names -- otherwise the reported loss has a second cause this guard has not found"
-assert control.out contains "door1_sees_newline_added=yes" else "mantra-document-roundtrip: under door 1 an appended newline must be woven, which is the whole property the doors are for"
-assert control.out contains "door1_line_count=4" else "mantra-document-roundtrip: door 1's price is that a three-line terminated file reports four lines; a different number means the mutation did something else"
-assert control.out contains "tree_line_count=3" else "mantra-document-roundtrip: the tree must still report three lines for that file, or the comparison prices nothing"
+assert control.out contains "elder_drop_planted=yes" else "mantra-document-roundtrip: the elder-drop plant named a line the module no longer has, so the pen ran the UNMUTATED module and every reading below is a reading of a healthy tree"
+assert control.out contains "elder_drop_builds=yes" else "mantra-document-roundtrip: the elder-drop mutation did not compile, so nothing below it was measured"
+assert control.out contains "elder_drop_shares_weave=yes" else "mantra-document-roundtrip: restoring the elder drop must put the two documents back on one weave name, or that wall is holding for a reason this guard has not found"
+assert control.out contains "elder_drop_shares_commit=yes" else "mantra-document-roundtrip: and back on one commit name"
+assert control.out contains "elder_drop_blind_to_add=yes" else "mantra-document-roundtrip: and add must go blind to an appended newline again"
+assert control.out contains "elder_drop_hides_seam=yes" else "mantra-document-roundtrip: and the seam reading must go invisible again"
+assert control.out contains "elder_drop_reds_scan=yes" else "mantra-document-roundtrip: the scan must reach red under the elder drop -- a wall proven only by a healthy tree cannot be told from a constant"
+assert control.out contains "elder_drop_keeps_lawful=yes" else "mantra-document-roundtrip: an ordinary edit must still be woven under the elder drop, or the pen broke something wider than the split rule"
+assert control.out contains "elder_drop_line_count=3" else "mantra-document-roundtrip: the elder drop reports three lines for a three-line terminated file; a different number means the plant did something else"
+assert control.out contains "tree_line_count=4" else "mantra-document-roundtrip: the tree reports four -- three lines a hand wrote and the terminator -- and that one line is the whole price of the repair"
 
-say "GREEN: four roundtrip readings gated, seven naming the seam of `20260910.043900`, door 1 priced at one line per terminated file -- eight control legs, two breaks caught."
+say "GREEN: eleven roundtrip readings gated, the terminator a line of the history, one reading still naming door 3 -- thirteen control legs, three breaks caught, the closed defect shown reappearing whole."

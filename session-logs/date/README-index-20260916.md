@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.115437` | [A guard reads lists](20260916/20260916-115437_a-guard-reads-lists.kyri) | mantra: Place's head claim rewritten as a list; landed as testimony 20260917 |
 | `20260916.234757` | [A wrapped line that read as a list](20260916/20260916-234757_the-wrapped-line-that-read-as-a-list.kyri) | %798: the list guard owed CommonMark its own rule |
 | `20260916.232744` | [A leg a sibling answers for](20260916/20260916-232744_the-leg-a-sibling-answers-for.kyri) | contains is a substring: 14 masked legs, 3 pairs |
 | `20260916.231355` | [A noun phrase about prose read as a claim about a row](20260916/20260916-231355_closing-line-noun-phrase.kyri) | REDS %796 closed: 55 claims, one false, 47 pen legs |

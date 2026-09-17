@@ -28,6 +28,8 @@
 #   row_fields=<n>              fields on a record row
 #   elder_opens=yes|no          the frozen v1 store reads back without error
 #   elder_status=<words>        what `status` says about its untouched file
+#   elder_only_terminator=yes|no  GATED -- the one change it reports is the
+#                               terminator: exactly one added line, carrying no text
 #   mixed_header=<line 0>       the header a commit onto that elder store writes
 #   mixed_opens=yes|no          the mixed chain reads back through both records
 #   tampered_blob_refused=yes|no  a blob edited under someone else's name refuses
@@ -109,6 +111,30 @@ else
   note_red
 fi
 echo "elder_status=$(sed -n '1p' "$work/old.out" | sed 's/^mantra status: //')"
+
+# WHAT AN ELDER STORE REPORTS, and why it is no longer `clean`. From `20260917`
+# `split_lines` keeps the empty token a trailing newline produces, so a
+# terminated document reaches the weave one line longer than it used to (REDS
+# %689, door 2 on Keaton's word `20260916.000449` -- a weave records the
+# terminator as HISTORY). This frozen v1 store was written before that, and its
+# bytes cannot say whether the file was terminated, because nothing recorded it.
+# So the first read after the repair reports exactly one added line and that line
+# is EMPTY: the terminator arriving as history, which is what the ruling asked
+# for. The cost was named in door 2 before it was chosen -- every weave already
+# on disk drifts by one on its next add.
+#
+# THE READING IS THE PAIR rather than the count. `1 added` alone would also be
+# printed by a lift that lost a line somewhere else, so this asks that the one
+# added line carry no text.
+elder_added="$(sed -n 's/^+ \{0,1\}//p' "$work/old.out" | wc -l | tr -d ' ')"
+elder_added_text="$(sed -n 's/^+ \{0,1\}//p' "$work/old.out" | tr -d '\n')"
+if [ "$elder_added" = 1 ] && [ -z "$elder_added_text" ] \
+   && grep -q -- '-- 1 added, 0 removed' "$work/old.out"; then
+  echo "elder_only_terminator=yes"
+else
+  echo "elder_only_terminator=no"
+  note_red
+fi
 
 # --- a commit onto that elder store: the chain crosses records ---
 printf 'the first line\nthe second line\nthe third line\nthe fourth line\n' > "$old/doc.txt"

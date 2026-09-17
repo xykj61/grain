@@ -3,17 +3,19 @@
 # scan from the failing side, and price the first door on metal.
 #
 # WHY A CONTROL EXISTS. A refusal proven only in the passing direction cannot be
-# told from a bypass. `mantra_document_roundtrip_scan.sh` reads a healthy tree
-# and answers `verdict=ok`, so on its own it proves nothing about whether it can
-# say anything else. This control copies `mantra/src/` into a pen, mutates one
-# named line, and asserts the scan changes its answer.
+# told from a bypass. The scan beside it reads a healthy tree and answers
+# `verdict=ok`. On its own that proves nothing about whether it can say anything
+# else. So this control copies `mantra/src/` into a pen, mutates one named line,
+# and asserts the scan changes its answer.
 #
-# THE THIRD LEG IS THE ONE WORTH READING. Two legs break the CLI and watch the
-# gate bite. The third applies **door 1** of the seam the scan reports -- keep
-# the empty token a trailing `\n` produces, so `split_lines` becomes injective
-# with a `\n` join -- and measures what that door actually costs: whether the two
-# documents part, and how a line count moves. That turns a design choice named in
-# prose into a reading somebody can weigh.
+# THE FOURTH LEG IS THE ONE WORTH READING. Two legs break the CLI and watch the
+# gate bite. The fourth restores the ELDER split rule -- the break that dropped
+# the empty token a trailing `\n` leaves. Then it watches the closed defect
+# reappear whole: one weave name for two documents, one commit name, `add` blind
+# to an appended newline, and the seam reading invisible again. REDS %689 was
+# repaired on `20260917`, so this pen is the one place its shape can still be
+# seen. It prices the repair too. The same three-line terminated file reports
+# four lines here and three there.
 #
 # READINGS PRINTED:
 #   pen_built=yes|no                 the unmutated pen copy still builds
@@ -21,10 +23,15 @@
 #   frozen_add_bites=yes|no          a CLI that never weaves reds the gate
 #   frozen_named=yes|no              and it is `lawful_change_seen` that says no
 #   dirty_status_bites=yes|no        a CLI whose status never reads clean reds it
-#   door1_builds=yes|no              the keep-the-token mutation compiles
-#   door1_parts_digests=yes|no       and the two documents earn two weave names
-#   door1_sees_newline_added=yes|no  and `add` weaves when a \n is appended
-#   door1_line_count=<n>             lines a three-line terminated file reports
+#   elder_drop_planted=yes|no        the plant named a line the module still has
+#   elder_drop_builds=yes|no         the restored elder drop compiles
+#   elder_drop_shares_weave=yes|no   and the two documents fall back to one weave name
+#   elder_drop_shares_commit=yes|no  and one commit name
+#   elder_drop_blind_to_add=yes|no   and `add` stops seeing an appended \n
+#   elder_drop_hides_seam=yes|no     and the seam reading goes invisible again
+#   elder_drop_reds_scan=yes|no      and the scan reaches its own red
+#   elder_drop_keeps_lawful=yes|no   while an ordinary edit is still woven
+#   elder_drop_line_count=<n>        lines a three-line terminated file reports there
 #   tree_line_count=<n>              what the tree reports for the same file
 #   pass=<n> fail=<n>
 #   control_verdict=ok|red
@@ -43,6 +50,10 @@ trap 'rm -rf "$work"' EXIT
 # `sed -i` is a GNU spelling BSD sed refuses, so the portable helper does the
 # in-place rewrite through the original inode -- the exec-bit law's own move.
 . "$root/tools/fixtures/s/shell_portable.sh"
+# The plant law, imported rather than restated: a sed naming a line of the real
+# source is a CLAIM that the line is spelled that way today, and `plant_apply`
+# refuses by name when it is not (REDS %519).
+. "$root/tools/fixtures/p/plant.sh"
 
 pass=0
 fail=0
@@ -73,8 +84,11 @@ if sh "$scan" "$base/main.rye" > "$work/base.out" 2>&1; then
 else
   bad pen_built
 fi
+# The baseline asserts the repaired reading rather than the elder one: the
+# terminator is VISIBLE in a healthy tree from `20260917`, so a pen answering
+# `yes` here is a pen that lost the repair rather than one that copied it.
 if [ "$(read_key "$work/base.out" verdict)" = ok ] \
-   && [ "$(read_key "$work/base.out" terminator_invisible)" = yes ]; then
+   && [ "$(read_key "$work/base.out" terminator_invisible)" = no ]; then
   ok pen_baseline_ok
 else
   bad pen_baseline_ok
@@ -98,19 +112,42 @@ else
   bad dirty_status_bites
 fi
 
-# --- leg 4: door 1 on metal -- keep the trailing empty token ---
-door1="$(new_pen door1)"
-sed_inplace 's|^        if (line.len == 0 and it.rest().len == 0) break;$|        // door 1, priced in a pen: the token is kept.|' \
-  "$door1/diff.rye"
-sh "$scan" "$door1/main.rye" > "$work/door1.out" 2>&1 || true
-case "$(read_key "$work/door1.out" built)" in
-  yes) ok door1_builds ;;
-  *)   bad door1_builds ;;
+# --- leg 4: the elder drop restored, so the closed defect is shown reappearing ---
+#
+# RE-AIMED `20260917`. This leg used to apply door 1 in a pen and price it, while
+# the tree still dropped the token. The repair landed, so the pen now runs the
+# other way: it restores the elder break and watches all four walls fall at once.
+# A wall proven only by a healthy tree cannot be told from a constant.
+#
+# The plant is applied through `plant_apply` rather than a bare `sed`, so a line
+# that moves is refused by name instead of leaving the pen byte-identical and
+# reading the UNMUTATED module's answer as a law that holds -- which is exactly
+# what this leg's own elder sed did the hour the repair landed (REDS %519).
+elder="$(new_pen elder_drop)"
+if plant_apply "$elder/diff.rye" \
+  '/    while (it.next()) |line| {/a\        if (line.len == 0 and it.rest().len == 0) break;' \
+  elder_drop; then
+  ok elder_drop_planted
+else
+  bad elder_drop_planted
+fi
+sh "$scan" "$elder/main.rye" > "$work/elder.out" 2>&1 || true
+case "$(read_key "$work/elder.out" built)" in
+  yes) ok elder_drop_builds ;;
+  *)   bad elder_drop_builds ;;
 esac
-claim door1_parts_digests "$(read_key "$work/door1.out" weave_digest_shared)" no
-claim door1_sees_newline_added "$(read_key "$work/door1.out" add_sees_newline_added)" yes
+claim elder_drop_shares_weave  "$(read_key "$work/elder.out" weave_digest_shared)" yes
+claim elder_drop_shares_commit "$(read_key "$work/elder.out" commit_digest_shared)" yes
+claim elder_drop_blind_to_add  "$(read_key "$work/elder.out" add_sees_newline_added)" no
+claim elder_drop_hides_seam    "$(read_key "$work/elder.out" terminator_invisible)" yes
+claim elder_drop_reds_scan     "$(read_key "$work/elder.out" verdict)" red
+claim elder_drop_keeps_lawful  "$(read_key "$work/elder.out" lawful_change_seen)" yes
 
-# What a three-line terminated file costs under each reading.
+# What a three-line terminated file reports under each reading. The tree answers
+# FOUR -- three lines a hand wrote and the terminator -- where the elder drop
+# answers three. That one line is the price of the repair, read off two built
+# binaries rather than argued, and it is the cost Keaton's door-2 ruling accepted
+# by name: every weave already on disk drifts by one on its next add.
 count_lines() {
   b="$work/$2.bin"
   if env RYE_ZIG="$zig" "$rye" build "$1" -femit-bin="$b" >/dev/null 2>&1; then
@@ -123,7 +160,7 @@ count_lines() {
     echo unbuilt
   fi
 }
-echo "door1_line_count=$(count_lines "$door1/main.rye" d1count)"
+echo "elder_drop_line_count=$(count_lines "$elder/main.rye" edcount)"
 echo "tree_line_count=$(count_lines "$base/main.rye" tcount)"
 
 echo "pass=$pass fail=$fail"

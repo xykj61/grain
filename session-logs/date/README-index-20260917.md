@@ -14,6 +14,7 @@
 | `20260917.020446` | [Where the hash still pays](20260917/20260917-020446_where-the-hash-still-pays.kyri) | Two projections measured; the second failed. Every build re-hashes its output. |
 | `20260917.015624` | [the root a script cannot find](20260917/20260917-015624_the-root-a-script-cannot-find.kyri) | 189 of 214 root-finders name a build output; %788 measured, never swept. |
 | `20260917.014217` | [One binary, both paths](20260917/20260917-014217_one-binary-both-paths.kyri) | a baseline build carries SHA-NI and runs at native speed |
+| `20260917.012950` | [The byte a document ends with](20260917/20260917-012950_the-byte-a-document-ends-with.kyri) | mantra: %689 closed, the terminator a line; the head insert booked |
 | `20260917.012258` | [the memo room gets a ceiling](20260917/20260917-012258_the-memo-room-gets-a-ceiling.kyri) | REDS %790 closed: a per-family ceiling, oldest evicted. |
 | `20260917.011203` | [The extension carried the Debug build](20260917/20260917-011203_the-extension-was-carrying-the-debug-build.kyri) | Debug: 2.5x ReleaseSafe with SHA-NI, 10.2x without |
 | `20260917.010818` | [The minutes a seed publish spent starting grep](20260917/20260917-010818_the-minutes-spent-starting-grep.kyri) | %642 answered by batching: 103.10s to 0.74s, parity 0 |

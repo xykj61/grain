@@ -35,8 +35,18 @@
 #                       pairing. The plant inverts that test wherever it stands.)
 #                     are carried as inserts and the genuinely new ones are dropped. Claim 1
 #                     catches it at its first assert: an unchanged document stops being free.
-#   trailing_token -- the break that drops the empty token after a file's last newline is
-#                     deleted, so "one\ntwo\n" reads as three lines. Claim 7 catches it.
+#   terminator_dropped -- the elder break that DROPPED the empty token after a file's last
+#                     newline is restored, so "one\ntwo\n" reads as two lines again and the
+#                     split stops being injective: `x\ny` and `x\ny\n` earn one address.
+#                     RE-AIMED `20260917` with REDS %689's repair -- the plant used to delete
+#                     that break, and once the break left the module the sed matched nothing,
+#                     which `plant_matched_nothing` refused by name rather than reading the
+#                     unmutated pen's exit as a law that holds. Claim 7 catches it.
+#   empty_terminator -- the head guard that answers zero lines for empty text is deleted, so
+#                     `splitScalar` over no bytes yields its one empty token and an empty file
+#                     becomes the same document as a file holding a single newline -- the very
+#                     collision the terminator repair exists to close, reappearing at its
+#                     smallest case. Claim 7 catches it.
 #   bound_widened  -- the per-side ceiling inside check_bounds is doubled, so every pair the
 #                     module admitted is still admitted and the refusal one line past the
 #                     ceiling stops arriving. Claim 8 catches it, and only because that claim
@@ -146,8 +156,10 @@ lcs_exit="$(run_pen lcs_equality \
   's/            if (std.mem.eql(u8, old_lines\[i - 1\].text, new_text\[j - 1\])) {/            if (false) {/' '' '')"
 inverted_inserts_exit="$(run_pen inverted_inserts \
   's/        if (kept_new\[idx\]) {/        if (!kept_new[idx]) {/' '' '')"
-trailing_exit="$(run_pen trailing_token \
-  '/        if (line.len == 0 and it.rest().len == 0) break;/d' '' '')"
+terminator_dropped_exit="$(run_pen terminator_dropped \
+  '/    while (it.next()) |line| {/a\        if (line.len == 0 and it.rest().len == 0) break;' '' '')"
+empty_terminator_exit="$(run_pen empty_terminator \
+  '/    if (text.len == 0) return &.{};/d' '' '')"
 
 # The three bound plants, added 20260907 with the ceilings themselves. Until that
 # day the module allocated a quadratic LCS table with no named max, no named
@@ -183,8 +195,10 @@ echo "phase=lcs_equality"
 echo "lcs_equality_exit=$lcs_exit"
 echo "phase=inverted_inserts"
 echo "inverted_inserts_exit=$inverted_inserts_exit"
-echo "phase=trailing_token"
-echo "trailing_token_exit=$trailing_exit"
+echo "phase=terminator_dropped"
+echo "terminator_dropped_exit=$terminator_dropped_exit"
+echo "phase=empty_terminator"
+echo "empty_terminator_exit=$empty_terminator_exit"
 echo "phase=bound_widened"
 echo "bound_widened_exit=$bound_widened_exit"
 echo "phase=ceiling_restated"
@@ -197,14 +211,16 @@ verdict=ok
 # other reading below is a number and this one is a word -- and because a phase
 # that planted nothing would otherwise be judged on the clean module's exit code.
 for reading in "$clean_exit" "$elder_exit" "$walker_teeth_exit" "$walker_removed_exit" \
-               "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit" \
+               "$lcs_exit" "$inverted_inserts_exit" "$terminator_dropped_exit" \
+               "$empty_terminator_exit" \
                "$bound_widened_exit" "$ceiling_restated_exit" "$edge_removed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$walker_removed_exit" -eq 0 ] || verdict=walker_removed_not_innocent
-  for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit" \
+  for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" \
+                "$terminator_dropped_exit" "$empty_terminator_exit" \
                 "$bound_widened_exit" "$ceiling_restated_exit" "$edge_removed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
