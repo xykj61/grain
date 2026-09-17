@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260916.215124
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent, seat bakery
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260916; configuration rather than runtime telemetry
+evidence .claude/settings.json; tools/f/fleet-loop.sh execs --effort medium on this pier
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The walk stays and the read goes
+prompt Baton lap as bakery -- core infrastructure, Lindy first and crux first.
+rota lap 5166, row 1 -- Air, the row that feels; law and boundary. Read foundations/20260823-204456_single-stranded.md. Air presses a claimed boundary to feel whether the hand passes through, and the reading pointed straight at the memo directory: both record families are single-stranded on purpose, and the SET holding them is nobody's part, so it named no maximum and grew to 56 with 51 dead.
+think Round open clean at ca5f356a89. A whole lap stood parked at stash@{0} -- 288 lines of rye/src/main.rye, a control at +152, a witness at +22, and a 152-line design paper -- from a send that died. Absence scan read the paper absent here and upstream, commits_behind 0, so nothing had landed it.
+think A stash replay is a merge and the conflicts that bite leave no marker, so I compared the stash base fc5b1f9281 against HEAD per path first. The three code files were byte-identical across that span; only ITINERARY, REDS and the day shelf had moved. So the code came across whole and the pins were re-derived by hand.
+think Reached for them with git checkout stash@{0} -- <path>, which reads the TREE object and carries mode. A git show of the same blobs would have landed every file at 100644, which is the exec-bit law's shorter road to the same loss.
+think A stale roster pass from the dead lap still held the run lock at pid 1057589, its launch_head fixed at the stash base. Resolved its cwd through /proc before signalling, TERM rather than KILL so its EXIT trap released the lock.
+think Verified the rebuilt binary carries ryekey-v9 and no v8. My first check used strings, which is absent on this host, so it answered 0 for a binary that holds two copies -- a missing tool reads exactly like a clean result. grep -ac answered properly.
+obs The cold endurance run refused: four paths staged and never committed. That refusal is correct -- a cold reading is of the INHERITED tree, and this round's work arrived already staged out of a stash. So this lap has a hot reading and no cold one, and says so rather than claiming both.
+obs Three of the library identity's six readings cannot be isolated by any plant, because ctime moves on all of them and shadows the lot. The control states that rather than claiming six isolated plants, which is this family's own recent lesson about a paper's claim reading exactly like a proof.
+obs The content stream was rebuilt from outside the program in twelve lines of Python and agreed to the character over 552 files. An independent implementation of a stream is a stronger statement than any assertion inside the program that writes it.
+loom witness=ryekey legs=37 wall_s=110 verdict=green
+loom ryekey=hit output_bytes=13722744 wall_ms=184-223
+loom ryekey=key_only wall_ms=41-58
+loom ryekey=library files=552 bytes=16416628 walk_ms=16-21 read_ms=145-154
+loom memo_records=56 live=5 dead=51 bytes=11744
+file rye/src/main.rye library_identity_update composes the tree's identity from the walk; the key absorbs a remembered digest, so ryekey_marker moves v8 to v9
+file tools/fixtures/r/ryekey_control.sh seven library readings added beside the compiler's five, membership and ctime isolated, the other four proven by mutation rather than plant
+file tools/r/ryekey_witness.rish thirty-seven legs counted and named
+file active-designing/20260916-211947_one-stat-cannot-stand-for-a-walk.md the design paper, graded B+/89 at Field
+file construction/REDS.md a row booked (`20260916.214325`) -- 56 memo records beside the binary, 51 naming a path that no longer exists, in a room gitignored past every meter
+file construction/ITINERARY.md bakery account replaced, elder shelved whole, git nib carried
+file construction/archive/20260916-215019_itinerary-landed-accounts.md the full account, born on its shelf
+file construction/archive/20260916-214325_itinerary-landed-accounts.md the elder account with its ask, shelved whole
+scope one replayed lap landed whole, one red booked, rishi rebuilt under the v9 marker
+status GREEN -- ryekey 37 legs on metal, tame_style_check green, hot roster pass read after staging; no cold reading this round, refused on a staged tree and named rather than claimed
+recommend keep-going -- the row of `20260916.214325` is the next mechanical lap in this lane: a named ceiling on the memo directory and an eviction taking the oldest record past it

@@ -2,9 +2,21 @@
 #   rishi/bin/rishi run tools/r/ryekey_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/r/ryekey_control.sh, which proves rye's build receipt from both
-# sides in a throwaway pen. Thirty legs stand there: twelve flipped inputs that must each
+# sides in a throwaway pen. Thirty-seven legs stand there: twelve flipped inputs that must each
 # rebuild, five hits that must skip, the RYE_BUILD_FRESH bypass, the run and no-emit exemptions,
-# and two builds that must agree byte for byte. Three of the five hits reach one toolchain, one
+# and two builds that must agree byte for byte.
+#
+# SEVEN OF THE THIRTY-SEVEN ARE THE LIBRARY TREE'S OWN RECORD, seated 20260916.212119. Reading
+# rye/lib/std -- 552 files and 16,416,628 bytes -- was four fifths of a warm receipt reading, so
+# the tree's content digest is remembered under an identity composed FROM the walk: each sorted
+# relative path beside the same four stat readings the compiler's record carries. The walk stays
+# and the read goes, and a hit on a 10,239,778-byte output fell from 225-236 ms to 111-132. Two of
+# those legs are the reason the design needed no third instrument: a file ADDED and a file REMOVED
+# each refuse the remembered digest while no existing file's stat has moved, so membership is
+# isolated by construction. Size, inode, mtime and path each drag ctime along, so what a filesystem
+# will not let a control isolate is proven by mutation and the control says which is which.
+#
+# Three of the five hits reach one toolchain, one
 # library, and one OUTPUT by another path -- from ryekey-v7 on, a binary moved with its receipt
 # beside it keeps that receipt, which is the move every ship makes to replace a running tool.
 # The eleventh flip is the boundary of that exemption: a sibling emit flag names an artifact no
@@ -30,13 +42,13 @@
 # the control ANSWERED -- exit 0 and a named verdict -- rather than restating twenty assertions a
 # second time in a second language.
 say "ryekey: Language EN -- a receipt proven from both sides, on a clock that runs it."
-say "ryekey: Style Gauge Meter -- thirty legs counted, the stale binary named rather than reddened."
+say "ryekey: Style Gauge Meter -- thirty-seven legs counted, the stale binary named rather than reddened."
 say "ryekey: Lens TAME -- safety first; a control proven only in the hit direction cannot be told from a bypass."
 
 let control = run ["sh" "tools/fixtures/r/ryekey_control.sh"]
 say control.out
-assert control.ok else "ryekey: the control must exit 0 -- either thirty legs green or an honest machine-fact skip"
+assert control.ok else "ryekey: the control must exit 0 -- either thirty-seven legs green or an honest machine-fact skip"
 assert control.out contains "ryekey_verdict=" else "ryekey: a control that named no verdict has answered nothing"
 
 if (control.out contains "ryekey_verdict=machine_fact") then say "MACHINE FACT: ryekey -- this pier's rye binary stands behind its own source; run sh rye/bootstrap.sh to prove the receipt here."
-if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- thirty legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler and library bytes and root and dependency modes and a sibling emit flag's value missed separately, one toolchain and one library and one renamed output still skipped, the bypass forced a rebuild and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, and run stayed exempt twice over -- once with no output named and once naming one, the leg that proves the exclusion at all; and the compiler's remembered digest shown consulted, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record written where no receipt could be earned"
+if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- thirty-seven legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler and library bytes and root and dependency modes and a sibling emit flag's value missed separately, one toolchain and one library and one renamed output still skipped, the bypass forced a rebuild and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, and run stayed exempt twice over -- once with no output named and once naming one, the leg that proves the exclusion at all; and the compiler's remembered digest shown consulted, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record written where no receipt could be earned; and the same seven readings taken of the library tree's record, among them a file added and a file removed each refusing a remembered digest with no existing file's stat moved"
