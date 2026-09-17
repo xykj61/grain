@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.023306` | [the refusal that says why](20260917/20260917-023306_the-refusal-that-says-why.kyri) | %734's free half: 7,483 mute refusals counted, its own 80-site cohort cured. |
 | `20260917.020446` | [Where the hash still pays](20260917/20260917-020446_where-the-hash-still-pays.kyri) | Two projections measured; the second failed. Every build re-hashes its output. |
 | `20260917.015624` | [the root a script cannot find](20260917/20260917-015624_the-root-a-script-cannot-find.kyri) | 189 of 214 root-finders name a build output; %788 measured, never swept. |
 | `20260917.014217` | [One binary, both paths](20260917/20260917-014217_one-binary-both-paths.kyri) | a baseline build carries SHA-NI and runs at native speed |
