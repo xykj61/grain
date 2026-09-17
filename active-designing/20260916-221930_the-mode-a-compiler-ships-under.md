@@ -129,3 +129,23 @@ A reading that depended on the path's own characters would differ; none here doe
 **Whether ReleaseSafe is the right mode.** It keeps every runtime safety check, which is TAME's
 order choosing for us, and it is 2.2x slower than ReleaseFast on the cold path. That gap lives in
 the read loop rather than in the hash, exactly where the elder paper left it.
+
+---
+
+## Erratum `20260917.010644` -- falsifier 2 is settled, and it held
+
+**No figure above moves.** This note records what a later lap measured, as testimony beside the
+page rather than a rewrite of it.
+
+Falsifier 2 asked whether the Debug-to-Release ratio is optimization-general, in which case this
+page's framing around the SHA-NI extension would be decoration. Six builds of `rye/src/main.rye`
+at `-mcpu=native` and `-mcpu=baseline` answer it: Debug costs **2.5x** ReleaseSafe with the
+extension and **10.2x** without, over fifteen runs per cell. The ratio is specific to the
+compile-time branch at `rye/lib/std/crypto/sha2.zig:240`, so the framing holds.
+
+The native Debug build reproduced this page's own two readings exactly -- **168** SHA-NI opcode
+hits and **12,682,680** bytes -- from a separate build on a separate lap.
+
+Settled at [`20260917-010644_the-extension-was-carrying-the-debug-build.md`](20260917-010644_the-extension-was-carrying-the-debug-build.md),
+which carries the full measurement and its own four falsifiers. Falsifiers 1, 3 and 4 above stand
+as written.
