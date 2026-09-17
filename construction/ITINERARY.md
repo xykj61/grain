@@ -88,38 +88,46 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
-**PETRICHOR -- THE FRONT-DOOR GATE HELD ONE PAGE, AND THE WALK IT OPENS LEFT THE SEED AT STEP TWO.**
-Elder account [shelved whole](archive/20260916-210422_itinerary-landed-accounts.md), its ask about a
-reported grade with it.
-**AIR FEELS** (row 1, N=5141): press a claimed boundary and feel whether the hand passes through.
-**THE CLAIM PRESSED.** `tools/s/seed_link_witness.rish` promises that every relative link in a
-front-door document lands on a path the public seed also ships. Its `FRONT_DOOR` variable named the
-four root files GitHub itself recognises. `README.md` stood gated and reading zero while linking
-straight into `MAP.md`, `ORGANIZING.md`, `SOURCE.md` and `docs-geode/README.md` -- **15, 6, 3 and 3**
-links into rooms the seed leaves behind. One page deep, on the walk that page exists to open.
-**THE SHARPEST WAS `MAP.md`**, which names the private rooms, says outright that
-`template-manifest.bron` withholds them, and then hands the seed reader a door to each.
-**NO GUARD COULD HAVE HEARD IT:** the roster is deliberately named rather than discovered, so it
-goes stale in silence by construction.
-**A SECOND FINDING RODE IN ON THE MEASUREMENT.** The scan printed a ratchet site only while its
-counter was at or under five, so **847 sites showed five** -- while its own header prescribes a
-repair that *falls on touch*. A per-page repair asks a lane to find its own share, and no lane
-could; the ceiling had fallen 867 to 848 in three weeks.
-**LANDED.** All **27** repaired the way the rung prescribes -- a withheld room named in prose as a
-backticked path -- plus one sentence on `MAP.md` telling a reader that a room in plain backticks is
-a field room the seed leaves behind. `FRONT_DOOR` widens **4 to 8**, the ceiling falls **848 to
-820**, and `--list` names every remaining site.
-**AND THE CEILING STOPPED BEING SPELLED TWICE:** the control planted `849` against a literal `848`,
-so a lowering would have reddened it. It reads the scan's own `ceiling=` line now, proven by
-lowering the scan to 12 and watching the plant follow with no hand.
-**PROVEN:** `seed_link` GREEN at `front_door_guarded=8`, `front_door_links_outside_seed=0`,
-`other_living_links_outside_seed=820`; control **16 to 22 legs, 0 failing**, `control_legs` and
-`control_failed` asserted so a leg added tomorrow is heard; **four mutations bitten**.
-`tracked_link`, `link_text_promise`, `crushed_index`, `ascii_document`, `prose_register` GREEN.
-Four doors grade **A/93, A/91, A/96, A/96**, every one scored. Row `20260916.210332`.
-**YOURS:** `bibliography.md` carries 16 sites and every one names `gratitude/` -- a page whose whole
-subject is a withheld room. Rewrite it to name the shelf in prose, or let it ship as a field page?
-**MINE:** **820** remain, **527** in `external-research/` and **162** in `context/`.
+**PETRICHOR -- THE SHELF OFFERED FIVE CHECKS AND RAN NONE OF THEM.**
+Both elder accounts [shelved whole](archive/20260916-211732_itinerary-landed-accounts.md), their
+two asks with them -- `bibliography.md`'s 16 gratitude sites, and whether the Aurora three take
+three roster rows or one `aurora_suite`.
+**AETHER HEARS** (row 0, N=5150): listen for the silence where a claim used to be and a witness
+now stands.
+**THE SILENCE.** `docs-geode/demos/README.md` hands a newcomer five commands and prints what each
+one answered. Nothing in this tree had ever run one of them. `docs_command_path` proves a printed
+PATH resolves, and a path that resolves says nothing about what the command behind it prints today.
+Same class as last lap's own finding one room over -- a front-door claim bound to no witness went
+false inside a fortnight. **A lantern that fires twice becomes a loom.**
+**THE MECHANISM.** `tools/fixtures/d/demo_output_scan.sh` walks a rostered page's fences, pairs each
+```sh block with the plain block below it, RUNS the command from the repository root, and reads the
+answer back under whichever of three readings the page itself declared. **exact** -- no marker --
+binds every byte, which is what a fixed input earns: a SHA3-256 digest of five bytes and a
+resolver's three lines. **volatile** frees every digit run and binds every other character, so a
+climbing count passes free where a renamed key or a flipped verdict reds. **selected** wants each
+printed line to stand as a WHOLE line of a longer report.
+**THE PAGE WAS ALREADY CARRYING ITS OWN FIXTURE.** Both marker comments were written months ago by a
+hand telling a reader which figures to distrust; they are machine input now, which is the cheapest
+instrument there is.
+**A ROSTER OF PAGES, NAMED RATHER THAN DISCOVERED**, for capability rather than tidiness: this rung
+runs what a page prints, and discovery would run whatever any page happens to print inside a fence.
+**PROVEN ON METAL.** All five ran and all five matched -- `matched=5 drifted=0 errored=0`, with
+`unpaired=1` for the witness invocation the page shows rather than answers. Control **20 legs, 0
+failing**, nine refusals each planted and then lifted, **three mutations bitten**: the marker reset
+that keeps one block's `volatile` comment out of the next block, `selected` loosened from a whole
+line to a substring, and the gate over a nonzero exit. `tier cadence` at 40s, because the guard runs
+what the page prints and a demos page goes stale over weeks; `--cadence-slice 1` is what turns it.
+**GRADED:** page **A+/97** with the judged half of Truth closed by running it; scan **A/92**,
+witness **A/90**, control **C+/78 to B+/88** on the frame it pushed.
+**A RED SURFACED AND LEFT ALONE, because it is another lane's:** `tracked_link` reads
+`verdict=link_outside_tree` on `external-research/yonder/strengthening-compiler/9932_mem_tokenize_factory.md`,
+which links `../../../rye/lib/std/mem.zig` -- a fetched toolchain path no clone carries. Last touched
+at `008725232`, untouched by this lap.
+**YOURS:** the roster holds one page. `docs-geode/tutorials/the-first-hour.md` and the `manual/`
+room print commands to a reader the same way -- join them one at a time on a hand's reading, or draw
+an entry rule a page can meet by itself?
+**MINE:** `unpaired=1` is the shape this cannot reach -- a command a page shows without an answer
+beside it is a promise with nothing to check.
 
 **PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
 Account [shelved whole](archive/20260916-090645_itinerary-landed-accounts.md).
@@ -174,7 +182,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c28d13185d` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f97a7f5fde` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -303,25 +311,6 @@ already gone.
 **MINE:** three candidates hold no tracked family control and stand unread rather than clean; and the
 elder card line said twelve such scans where the root test says nine, which is the correction riding
 with the reading.
-
-**PETRICHOR -- A FRONT DOOR COUNTED A ROSTERED GATE AMONG THE SILENT.** Elder account
-[shelved whole](archive/20260916-110857_itinerary-landed-accounts.md), its one ask with it.
-**AETHER HEARS** (row 0, N=5100): `src/gate/README.md` has said since `20260906` that **four of the
-eight equality gates are heard and four await a runner**, on a grep for the four names together.
-The one line that answers is `tools/ca/caravan_suite_witness.rish`'s roster array -- **120 witness
-paths on a single line**, where a fifth name arrives inside a wall of its siblings. Asked a name at
-a time: **five rostered, three awaiting**, the Caravan gate seated `20260823` (`008725232`).
-**THE SECOND HALF IS SHARPER: `heard` did two jobs** -- the page meant *rostered and called*, a
-reader takes it for *run*. Both readings stand on the page now, and the run figure is FREE, so the
-page carries the command rather than a number: **71 of 80** cadence guards have never run here, and
-`caravan_suite` is the **oldest** of them (`20260825.092953`) -- the gate this lap just moved out of
-the silent column.
-**LANDED:** the census repaired, an erratum naming the elder reading, the witness header corrected
-beside the page, **29 percent to 10** and onto the `DOOR` roster. Row `20260916.110857` -- recovered from this ship's own stash box at
-`20260916.202456` and renumbered **twice** on the way in, the second time mid-rebase when a peer
-published the number it had just taken. The stamp held; the view moved.
-**YOURS:** the Aurora three await a roster -- three rows, or one `aurora_suite`?
-**MINE:** a front-door claim bound to no witness went false in a fortnight.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Elder account
 [shelved whole](archive/20260916-195045_itinerary-landed-accounts.md); its ask (2), the unread

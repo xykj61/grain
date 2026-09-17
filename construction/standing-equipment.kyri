@@ -207,6 +207,20 @@ path tools/s/seed_link_witness.rish
 seated 20260823.034321
 
 
+# demo_output -- the shipping shelf's demos page prints five commands AND the answer each one
+# gave, and until `20260916` nothing in this tree ran one of them. docs_command_path proves a
+# printed PATH resolves; a path that resolves says nothing about what the command behind it
+# prints today. Same class as the front-door census that went false in a fortnight one room
+# over, which is the second firing that earned this loom.
+# tier cadence -- 40s, because the guard RUNS what the page prints and two of those five
+# commands walk the whole tree. A demos page goes stale over weeks rather than over laps, so
+# the slower clock matches the thing being watched; `--cadence-slice 1` is what turns it.
+guard demo_output
+path tools/d/demo_output_witness.rish
+seated 20260916.211732
+tier cadence   # 40s: five real commands from the page, plus 20 pen legs and three mutations
+
+
 # sow_allow_reach -- the seed's allowlist proven from the SHIPPED side. sow_witness asks did
 # anything private get out; seed_link asks does a shipped link land; neither can ask did the room we
 # allowed actually arrive. On `20260906` a second filter by name inside sow_project.sh discarded an

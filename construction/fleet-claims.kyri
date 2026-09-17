@@ -64,12 +64,6 @@ stamp 20260916.210324
 epoch 1789607004
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
 what The build receipt's hit path now spends about 112 ms of a 140 ms reading walking rye/lib/std, reading all 552 files and 16,416,628 bytes and hashing them in software -- roughly 80 percent of the work of proving a skip is safe, spent on a tree nobody touched. Measured here with the current binary: a warm hit is 140-146 ms, a walk-and-stat-only pass over the same tree is 16-21 ms including process start, and hashing its bytes alone is 145-154 ms. One stat cannot stand for a tree, so compose the tree's identity from the walk: hash the sorted relative path, size, inode, mtime and ctime of every file into one identity digest, remember the content digest beside the rye binary under that identity in a Kyri record, and feed the remembered 32 bytes into the key while inode, size, mtime, ctime and tree membership all still agree. The walk stays and the read goes; ryekey_marker moves v8 to v9 because the key absorbs a digest where it absorbed a byte stream.
-claim petrichor-demo-output-replay
-seat petrichor
-stamp 20260916.211732
-epoch 1789607852
-paths tools/fixtures/d/demo_output_scan.sh tools/fixtures/d/demo_output_control.sh tools/d/demo_output_witness.rish docs-geode/demos/README.md
-what docs-geode/demos/README.md hands a newcomer five commands and prints what each answered, and nothing in this tree runs one of them. tools/d/docs_command_path_witness.rish proves a printed PATH resolves; no instrument proves a printed OUTPUT still holds. Two of the five blocks are fixed-input answers that must never move -- the resolver's three lines and a SHA3-256 digest of five bytes -- and two more declare themselves volatile in an HTML comment that nothing reads. Run the page against itself: parse each sh fence and the output fence below it, run the command from the repository root, compare, and report matched | drifted | skipped-volatile. Roster the page rather than the room, because running what a page prints is a capability that wants a named list.
 claim diffuser-plant-by-role
 seat diffuser
 stamp 20260916.213303

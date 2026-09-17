@@ -4,16 +4,25 @@
 **Style:** Gauge, Door setting
 **Voice:** Kyri
 **Written:** `20260821.190149`
-**Updated:** `20260911.140000` -- all five commands run again; the two blocks holding a free figure declare themselves volatile
-**Status:** Living -- checkable; commands run in the working field on 2026-09-11
+**Updated:** `20260916.211732` -- all five commands run again, and a witness now runs them every cadence lap rather than a hand doing it every few weeks
+**Status:** Living -- checkable; held by [`../../tools/d/demo_output_witness.rish`](../../tools/d/demo_output_witness.rish)
 **Kind:** crushed demonstrations
 **Where this sits:** home is [`../../README.md`](../../README.md) - start with
 [The First Hour](../tutorials/the-first-hour.md), then follow the full path in
 [`../../SOURCE.md`](../../SOURCE.md). The first hour builds the tools used here.
 
 Run these commands from the repository root. Each check answers one small question about the
-copy in your hands. The output below records this field on September 11, 2026; your counts may
+copy in your hands. The output below records this field on September 16, 2026; your counts may
 differ. Read each command's full output when you run it.
+
+**This page is run against itself.** [`../../tools/d/demo_output_witness.rish`](../../tools/d/demo_output_witness.rish)
+takes each command below, runs it from the repository root, and reads the answer back against
+the block printed beside it. A block with no comment above it promises every byte, which is what
+a fixed input earns. A block under `<!-- volatile: -->` frees its digits and binds every other
+character, so a climbing count passes and a renamed key or a flipped verdict does not. A block
+under `<!-- selected: -->` names some lines out of a longer report, and each of those lines must
+still stand. So a demo here goes stale on the lap it goes stale, rather than whenever a hand
+next thinks to look.
 
 ## 1. Find a file that moved
 
@@ -68,7 +77,7 @@ Selected lines from the full output:
 ```
 bound=256
 room=session-logs flat=0 verdict=under roster=enforce
-undated_room=construction/archive flat=910 verdict=over roster=advise
+undated_room=construction/archive flat=1078 verdict=over roster=advise
 enforced_over=0
 undated_over=1
 terminal_over=0
@@ -81,9 +90,9 @@ room reads zero. `enforce` marks a checked limit; `advise` marks a finding for r
 archive exceeds its advisory bound while every enforced room stays within its limit.
 
 That archive count climbs through the day as ledger rows fold onto shelves. It read 713 on
-September 9 and 910 when this line was refreshed on September 11, so read it as the day's
-reading rather than the tree's. Nothing here holds it still; the command is what tells you
-today's.
+September 9, 910 on September 11, and 1,078 on September 16, so read it as the day's reading
+rather than the tree's. Nothing holds the figure still; the command is what tells you today's,
+and the witness above binds the shape of the line rather than the number in it.
 
 The scan discovers rooms each time it runs. Its full output names the room beside every count,
 so you can see where a finding belongs.
@@ -98,8 +107,8 @@ Two adjacent lines from the full output:
 
 <!-- volatile: the maintenance score moves as the tree grows -->
 ```
-clutter=44
-fascia=56
+clutter=50
+fascia=50
 ```
 
 **Fascia** is this tree's name for its connective tissue. This meter turns four maintenance
@@ -136,6 +145,7 @@ with its steps counted afterward.
 
 Each command lets you check one claim for yourself. Fixed inputs keep their answers; room counts
 and maintenance scores follow the copy you run. Keep the command beside the reading so the next
-person can check it again.
+person can check it again -- and this page keeps its own advice, since the witness reads it back
+the same way you would.
 
 *May each small check help you find your footing.*
