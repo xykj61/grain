@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim incense-commit-parent-hash-claim
-seat incense
-stamp 20260917.144539
-epoch 1789670739
-paths tools/fixtures/c/commit_parent_claim_scan.sh tools/fixtures/c/commit_parent_claim_control.sh tools/c/commit_parent_claim_witness.rish
-what REDS %801 closed on a sentence that handed the question up rather than answering it -- whether a body's own hash claims earn a wall is a fleet question rather than this lane's -- and I am the fleet's captain with LAW as my lane, so it is mine. Measured before claiming rather than reasoned: over the last 4000 commit bodies, 573 name a hash-like hex run, 265 assert a parent relation in prose, and 96 do both. Binding the two at sentence scope reads 63 segments, of which 41 name this commit's true first parent and 22 name something else. That 22 is an UPPER BOUND and contaminated on inspection: two are the %801 erratum bodies quoting the faulty hash as testimony, one describes a past card fault in the past tense, and two say parent identity about an ed25519 hardened derivation, a different word sense entirely. So the lap's hard part is the same one the derived spine met with its pen plant -- telling a live claim from a sentence that must stay false -- and the honest instrument reports the genres apart rather than collapsing them. It also names what a wall CANNOT reach, which is the structural twin of %803 one rule over: at commit-msg time git rev-parse HEAD is the prospective parent for a fresh commit and the commit being REPLACED for an amend, and nothing the hook can read tells those two apart, so a hook-side wall would refuse every correct amend or welcome every wrong fresh commit. One scan, one control, one witness, one Field paper. Touches no module source, no ceiling any peer watches, no ledger row beyond %801's own status, no roster row conflict, and tools/hooks/commit-msg is READ and never edited.
 claim petrichor-door-home-promise
 seat petrichor
 stamp 20260917.153832

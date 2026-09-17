@@ -7709,3 +7709,13 @@ guard link_touch
 path tools/l/link_touch_witness.rish
 tier lap
 seated 20260917.095028
+
+# commit_parent_claim -- REDS %801 closed by measurement rather than by a sentence.
+# The row booked one firing and handed the fleet question up; the reading finds TEN in
+# the trailing 4,000 commits, one of them landed twelve hours AFTER the row was booked.
+# Forward-only by construction: the anchor is the HEAD it was seated on, so testimony
+# is counted and never graded, and the wall reds on the lap the eleventh arrives.
+guard commit_parent_claim
+path tools/c/commit_parent_claim_witness.rish
+tier lap
+seated 20260917.162810

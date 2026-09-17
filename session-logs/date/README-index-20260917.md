@@ -9,6 +9,7 @@
 | `20260917.172111` | [The word a reader chose](20260917/20260917-172111_the-word-a-reader-chose.kyri) | 14 of 370 boards called readable. |
 | `20260917.170032` | [The law read under one of its two names](20260917/20260917-170032_the-law-read-under-one-of-its-names.kyri) | 185 of 204 claim commits staled the card. |
 | `20260917.163650` | [The tolerance that was a ladder rung](20260917/20260917-163650_the-tolerance-that-was-a-ladder-rung.kyri) | Borrowed 60 was a rung; files cross 71.90. |
+| `20260917.163111` | [The parent a rebase moved](20260917/20260917-163111_the-parent-a-rebase-moved.kyri) | %801 closed: the ledger booked one, the reading finds ten. |
 | `20260917.153807` | [The last file at its own md5](20260917/20260917-153807_the-last-file-at-its-own-md5.kyri) | The ident arc's last md5 twin; 16 to 15 copies. |
 | `20260917.152855` | [the shelf's unread promise](20260917/20260917-152855_the-shelf-that-promised-at-its-door.kyri) | one page declared no ceiling, and the guard could not see it |
 | `20260917.151944` | [The word a lost answer wears](20260917/20260917-151944_the-word-for-a-guard-that-could-not-answer.kyri) | %747 booked: `unrun`, never a red. |
