@@ -10,6 +10,7 @@
 | `20260917.050420` | [The step no tool runs](20260917/20260917-050420_the-step-no-tool-runs.kyri) | rule 5 fired on the hand that had just read it. |
 | `20260917.045407` | [the word and the two bytes](20260917/20260917-045407_the-word-and-the-two-bytes.kyri) | A vocabulary sweep read by sense so a full pin could hold it. |
 | `20260917.043714` | [a distance standing in for a block](20260917/20260917-043714_a-distance-standing-in-for-a-block.kyri) | a refusal read by block, not by three lines; glow adopts. |
+| `20260917.040349` | [The library went cold](20260917/20260917-040349_the-library-went-cold-while-i-watched.kyri) | My own falsifier fired at sample 15; packing survives. |
 | `20260917.034857` | [One meter over every authored comment](20260917/20260917-034857_one-meter-over-every-authored-comment.kyri) | 113 comment spans: 61 promises, 52 pen rooms. |
 | `20260917.034639` | [The lap that was cut mid-send](20260917/20260917-034639_the-lap-that-was-cut-mid-send.kyri) | Parked work recovered whole; re-proven on the landed tree. |
 | `20260917.033648` | [a reading nobody can flip](20260917/20260917-033648_a-reading-nobody-can-flip.kyri) | %807 pressed from the CLI at last; no door taken. |
