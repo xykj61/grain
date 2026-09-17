@@ -7436,3 +7436,18 @@ guard record_version
 path tools/r/record_version_witness.rish
 tier lap
 seated 20260917.045550
+
+# loom_name -- does a loom key's NAME say which population it measures? loom_sitting names a key
+# MIXED from its spread, after the fact, and stops there; the two repairs that condition admits are
+# opposite. A key merging several families parts at a name -- `roster_cold_s` beside `roster_hot_s`.
+# A key varying inside one family reaches no name at all. This reads the half declared at the door:
+# the family each loom line names in its FIRST token, in either the pair form or the bare form, with
+# 427 of 6,574 lines declaring none. Over the 60 keys the journal writes, `name_shared` reads 60 and
+# the other two verdicts never -- which is why the pen carries the weight here, drawing all three on
+# planted journals. Gates nothing: which family words eight ships write is the pier's.
+# 3s, 45 control legs, five mutations bitten.
+# Reading: active-designing/20260917-081605_the-name-that-scopes-a-number.md
+guard loom_name
+path tools/l/loom_name_witness.rish
+tier lap
+seated 20260917.083040
