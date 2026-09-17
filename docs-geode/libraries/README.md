@@ -50,7 +50,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
 | [`mantra/`](../../mantra/README.md) | 40 | 58 |
-| [`manual/`](../../manual/README.md) | 1 | 13 |
+| [`manual/`](../../manual/README.md) | 1 | 14 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 7 |

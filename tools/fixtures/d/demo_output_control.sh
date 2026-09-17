@@ -244,6 +244,35 @@ PAGE
 run "$SCAN" "$pen/two_sh.md" && rc=0 || rc=$?
 leg "$([ "$rc" -eq 0 ] && reads 'pairs=1' && reads 'unpaired=1' && echo yes || echo no)" second_fence_takes_the_answer
 
+# ---- double read: whether another guard's corpus already holds a rostered page --------------
+#
+# `--overlap` runs no printed command, so these legs cost nothing and the live roster may be read
+# here directly. Every state the reading can take is proven, including the two that must refuse a
+# comfortable zero out loud.
+
+ov() {
+  set +e
+  env $1 sh "$2" --overlap ${3:+--page "$3"} > "$pen/out" 2>"$pen/err"
+  ovrc=$?
+  set -e
+}
+
+ov "" "$SCAN" ""
+leg "$([ "$ovrc" -eq 0 ] && reads 'verdict=overlap_read' && reads 'double_read=1' && reads 'double_read_state=read' && grep -q "^double_read: docs-geode/demos/README.md is on this roster" "$pen/out" && echo yes || echo no)" overlap_names_the_rostered_page
+
+ov "" "$SCAN" "$pen/exact_ok.md"
+leg "$([ "$ovrc" -eq 0 ] && reads 'double_read=0' && reads 'double_read_state=read' && echo yes || echo no)" overlap_page_outside_the_corpus_reads_zero
+
+printf '#!/bin/sh\necho nothing\n' > "$pen/no_corpus.sh"
+ov "DEMO_OUTPUT_SIBLING=$pen/no_corpus.sh" "$SCAN" ""
+leg "$([ "$ovrc" -eq 0 ] && reads 'double_read_state=unreadable' && reads 'double_read=0' && echo yes || echo no)" overlap_unreadable_corpus_says_so
+
+ov "DEMO_OUTPUT_SIBLING=$pen/absent_sibling.sh" "$SCAN" ""
+leg "$([ "$ovrc" -eq 0 ] && reads 'double_read_state=no_sibling' && echo yes || echo no)" overlap_absent_sibling_says_so
+
+# The default report carries the reading too, so a roster pass meets it without asking.
+leg "$(grep -q 'echo "double_read=\$double_read"' "$SCAN" && echo yes || echo no)" overlap_reported_by_default
+
 # ---- refusals the scan owes ----------------------------------------------------------------
 
 cat > "$pen/errored.md" <<'PAGE'
@@ -301,6 +330,13 @@ mut 's/grep -Fxq -- "\$want" "\$work\/pairs\/\$n.out"/grep -Fq -- "$want" "$work
 
 # Drop the errored gate: a command exiting 3 reads green.
 mut 's/^if \[ "\$errored" -gt 0 \]; then$/if false; then/' "$pen/errored.md" 0 mutation_errored_gate_bites
+
+# Drop the corpus membership test: a rostered page inside the sibling's corpus stops being
+# counted, and the reading answers the comfortable zero it exists to refuse.
+cp "$SCAN" "$pen/mut.sh"
+LC_ALL=C sed_inplace 's/if grep -qxF -- "\$rpage" "\$work\/sibling_pages"; then/if false; then/' "$pen/mut.sh"
+ov "" "$pen/mut.sh" ""
+leg "$([ "$ovrc" -eq 0 ] && reads 'double_read=0' && echo yes || echo no)" mutation_corpus_membership_bites
 
 echo "control_legs=$legs"
 echo "control_failed=$failed"

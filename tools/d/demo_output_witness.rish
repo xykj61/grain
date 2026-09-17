@@ -33,8 +33,29 @@
 # the tree happens to print inside a fence. A page joins the roster when a hand has read the
 # commands it prints and found them safe to run every lap.
 #
+# AND WHAT THIS RUNG LEARNED ABOUT ITSELF ON `20260916`, the lap after it was seated. A sibling
+# guard already reads the same page. `tools/fixtures/t/tutorial_output_scan.sh`, seated
+# `20260909`, reads command-and-output pairs across a CORPUS of git pathspecs --
+# `docs-geode/*.md manual/*.md SOURCE.md` -- and chooses what to run by a DERIVED rule on the
+# command line rather than by a named page list. Measured: it reads the same five fences of
+# `docs-geode/demos/README.md`, checks four of them, and holds the fifth as outside its run
+# roster. So four of this rung's five pairs are checked twice under two conventions, and the
+# fifth is its one piece of new coverage.
+#
+# This was found while weighing whether `docs-geode/tutorials/the-first-hour.md` should join the
+# roster. It should not: the sibling already checks two pairs on that page and names both of its
+# mis-attributed blocks by line. A page joins by a DERIVED rule there rather than a named row
+# here, and deriving is the stronger shape -- a page cannot forget to declare, and a page written
+# tomorrow is covered the day it lands.
+#
+# `double_read` is what says so on every run. Reported, never gated: two guards reading one page
+# is a cost rather than a fault, and which of the two yields is a hand's word, standing on the
+# card. What must not happen twice is a roster growing into that corpus with nobody seeing it.
+#
 # WHAT IS NOT PROVEN. That the command is worth running, or that its answer teaches anything.
-# This rung asks only whether the page still speaks truly about the tree it sits in.
+# This rung asks only whether the page still speaks truly about the tree it sits in. Nor whether
+# the sibling's reading of a shared page agrees with this one -- `double_read` counts the pages
+# two guards hold, and comparing two verdicts on one fence is its own rung.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/demo_output_witness.rish
@@ -54,6 +75,8 @@ assert scan.out contains "pairs=5" else "demo-output: the demos page carries fiv
 assert scan.out contains "pairs_exact=2" else "demo-output: two of the five are fixed-input answers that must never move"
 assert scan.out contains "pairs_volatile=2" else "demo-output: two of the five declare their numbers volatile"
 assert scan.out contains "pairs_selected=1" else "demo-output: one of the five names lines out of a longer report"
+assert scan.out contains "double_read=1" else "demo-output: the roster page a sibling guard also reads must be named on every run"
+assert scan.out contains "double_read_state=read" else "demo-output: a corpus this scan cannot read must say so rather than report a comfortable zero"
 say "field GREEN -- every command the shelf prints was run, and every answer read back"
 
 let control = run ["sh" "tools/fixtures/d/demo_output_control.sh"]
@@ -76,12 +99,18 @@ assert control.out contains "leg empty_page_refuses=yes" else "demo-output: a ro
 assert control.out contains "leg absent_page_refuses=yes" else "demo-output: a rostered page the tree lacks must refuse by name"
 assert control.out contains "leg unknown_flag_refuses=yes" else "demo-output: a flag the scan does not know must refuse rather than be read past"
 assert control.out contains "leg roster_names_the_demos_page=yes" else "demo-output: the roster must name the demos page it was drawn for"
+assert control.out contains "leg overlap_names_the_rostered_page=yes" else "demo-output: a rostered page inside another guard's corpus must be named"
+assert control.out contains "leg overlap_page_outside_the_corpus_reads_zero=yes" else "demo-output: a page no sibling reads must read zero rather than one"
+assert control.out contains "leg overlap_unreadable_corpus_says_so=yes" else "demo-output: a corpus that cannot be read must refuse out loud"
+assert control.out contains "leg overlap_absent_sibling_says_so=yes" else "demo-output: an absent sibling must be named rather than counted as agreement"
+assert control.out contains "leg overlap_reported_by_default=yes" else "demo-output: the double-read line must reach a roster pass without a flag"
 assert control.out contains "leg mutation_marker_reset_bites=yes" else "demo-output: dropping the marker reset must be caught"
 assert control.out contains "leg mutation_selected_substring_bites=yes" else "demo-output: loosening a selected line to a substring must be caught"
 assert control.out contains "leg mutation_errored_gate_bites=yes" else "demo-output: dropping the nonzero-exit gate must be caught"
+assert control.out contains "leg mutation_corpus_membership_bites=yes" else "demo-output: dropping the corpus membership test must be caught"
 assert control.out contains "control_failed=0" else "demo-output: every leg the control runs must read yes"
-assert control.out contains "control_legs=20" else "demo-output: a leg added to the control must be heard here on the lap it lands"
+assert control.out contains "control_legs=26" else "demo-output: a leg added to the control must be heard here on the lap it lands"
 assert control.out contains "control_verdict=ok" else "demo-output: the control must agree with itself"
-say "RED and GREEN paths proven -- nine refusals bitten, three mutations caught, eight honest readings left free"
+say "RED and GREEN paths proven -- nine refusals bitten, four mutations caught, thirteen honest readings left free"
 
 say "GREEN: demo-output -- every answer the shipping shelf prints was run and read back."
