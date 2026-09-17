@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.183937` | [The queue under its own ceiling](20260917/20260917-183937_the-queue-that-was-under-its-own-ceiling.kyri) | carry_scan names its cut; listing_census ceiling 13 to 12. |
 | `20260917.182020` | [Agent-doable queue read empty](20260917/20260917-182020_agent-doable-queue-empty.kyri) | Bakery's queue is empty pending Keaton's word. |
 | `20260917.180039` | [The lever that was per ship](20260917/20260917-180039_the-lever-that-was-per-ship.kyri) | The fleet model lever is per-ship and untracked; Claude Code pinned 2.1.274. |
 | `20260917.172111` | [The word a reader chose](20260917/20260917-172111_the-word-a-reader-chose.kyri) | 14 of 370 boards called readable. |

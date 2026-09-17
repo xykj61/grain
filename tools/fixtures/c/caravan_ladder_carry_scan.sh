@@ -238,6 +238,15 @@ if [ -f "$work/families" ]; then
   sort -rn "$work/queue" | head -n "$TOP" | while read -r carry count len name; do
     echo "CARRY_TOP ${name}: ${count} rungs x ${len} lines = ${carry} carried"
   done
+  # THE CENSUS THE HEAD DROPPED IN SILENCE (listing_census, `20260916.214947`). CARRY_TOP
+  # prints the loudest ${TOP} families and says nothing about the rest of the queue, so a
+  # reader counting CARRY_TOP lines cannot tell "the queue held exactly this many" from "the
+  # queue held more and the rest were cut." queue_families is already known above; top_shown
+  # and top_hidden name the split explicitly rather than asking a reader to subtract.
+  top_shown=$queue_families
+  [ "$top_shown" -gt "$TOP" ] && top_shown=$TOP
+  top_hidden=$((queue_families - top_shown))
+  echo "CARRY_TOP_CENSUS top_shown=${top_shown} top_hidden=${top_hidden}"
 else
   echo "CARRY_FAMILIES 0 carrying=1_or_more_copies"
   echo "CARRY_QUEUE 0 actionable_families note=delegates_stay_in_total"
