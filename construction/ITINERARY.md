@@ -220,7 +220,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ae27b4d817` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `09118626dc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -294,38 +294,39 @@ to `mask_bound_*` on the same touch.
 lane's lap renames legs in the guard the whole fleet leans on while eight ships sail against it.
 Rename now, or hold both readings until a quiet hour?
 
-**DIFFUSER -- THE INFERENCE IS A MEASUREMENT, AND IT NEEDED NO ROOM LOCK.**
-Elder [shelved whole](archive/20260916-221930_itinerary-landed-accounts.md), its two asks with it.
-**FIRE SEES** (row 2, N=5177): see the threshold where work should stop -- and my own elder paper
-had named one and left it uncrossed.
-**MY OWN MODERATE SENTENCE IS HIGH NOW.** Last lap priced this tree's library hash at Debug speed
-and then said plainly it had never rebuilt `rye` to confirm the bootstrap's absent `-O` reaches the
-shipped binary. `rye/src/main.rye` imports nothing but `std`, so the same bridge `bootstrap.sh`
-builds was built four ways to scratch paths under `.lap/` with `rye/bin/rye` left where it stands.
-**TWO READINGS, ONE EXACT.** The live binary and a fresh no-flag build carry **168** SHA-NI opcode
-hits each; ReleaseSafe 58, ReleaseFast 56, ReleaseSmall 56. Byte sizes agree to **1.4 percent**
-(12,512,760 against 12,682,680) and no release mode comes within a factor of three. Release **folds**
-rather than strips -- falsifier 2 never fired, and the extension compiles in at every mode.
-**FALSIFIER 1 PASSES WIDER THAN IT WAS WRITTEN.** Timed through bakery's `rye key` over the same
-552 files and 16,416,628 bytes, seven runs each: cold **Debug 172 ms**, ReleaseSafe 57,
-ReleaseFast 32. Warm floor 32 / 12 / 11. Subtracting it isolates walk-and-hash at **140 / 45 / 21**, against the
-elder probe's 110 / **45** / **20-21** through a different program -- two of three on the same
-millisecond. The predicted 2x is **3.1x**.
-**AND THE LEVER REACHES PAST HASHING:** the warm path hashes nothing and still costs 2.7x under
-Debug, so door one is a whole-program door.
-**YOUR OPEN QUESTION, MEASURED.** A ReleaseSafe `rye` is **3.26x smaller** (12.68 MB to 3.89) and
-takes **19.5x longer to compile** (1.47 s to 28.6). One cold build a day against every hash, walk
-and parse the 371 rostered guards run. I recommend neither -- what the fleet's time is worth is
-your word.
-**PROVEN:** paper **A/92** at Field, register 14 of 62 sentences; `prose_register`,
-`ascii_document`, `link_text_promise`, `tracked_link`, `unshared_citation`, `room_bound` GREEN on
-metal. Paper [`20260916-221930_the-mode-a-compiler-ships-under.md`](../active-designing/20260916-221930_the-mode-a-compiler-ships-under.md); the elder carries an erratum pointing forward and keeps every word.
-**MINE:** the live binary was never **timed** -- `rye key` landed after it was built -- so it is
-placed among the three by its bytes rather than by its clock, and falsifier 1 names the rebuild
-from its exact commit that would turn the fingerprint into a receipt.
-**YOURS:** the pen reached `lib/std` through a symlink and read the same 552 files at the same
-16,416,628 bytes. Is a symlinked root honest footing for a timing pen, or does a measurement owe
-the real path?
+**DIFFUSER -- THE EXTENSION WAS CARRYING THE DEBUG BUILD.**
+Elder [shelved whole](archive/20260917-010644_itinerary-landed-accounts.md), its ask with it.
+**AETHER HEARS** (row 0, N=5190): listen for the silence where a claim used to be and a witness
+now stands -- and my own elder had written a falsifier and left it standing a lap.
+**IT ASKED WHETHER MY FRAMING WAS DECORATION.** Falsifier 2: if Debug still costs 3x ReleaseSafe
+under `-mcpu=baseline`, where the extension is absent, the door is optimization alone. Six builds of
+`rye/src/main.rye` to scratch paths under `.lap/` answer it, `rye/bin/rye` left where it stands.
+**Debug costs 2.5x ReleaseSafe with the extension and 10.2x without**, at **fifteen runs per cell**
+through `rye key` over the same 552 files and 16,416,628 bytes. **The framing held.**
+**THE MECHANISM IS ONE LINE.** `rye/lib/std/crypto/sha2.zig:240` gates the inline-assembly SHA-NI
+block on `builtin.cpu.hasAll(.x86, &.{ .sha, .avx2 })`; at `baseline` that test is false, the block
+leaves the binary, and the generic Zig round function runs. Nothing else changes, which makes the
+pair a control rather than two programs. **`rye` passes no `-mcpu` at all**, so the extension
+arrives by default rather than by decision.
+**COLD MEDIANS, ms**, Debug / ReleaseSafe / ReleaseFast: native 173 / 70 / 47 against baseline
+**1,318** / 129 / 110. Isolated walk-and-hash **140 / 53 / 31** against **1,285 / 114 / 97**; floor
+throughput native ReleaseFast **530 MB/s** against baseline Debug **12.8**. The fresh native Debug
+build repeated the elder's own **168** hits and **12,682,680** bytes exactly.
+**THE READING I WAS NOT LOOKING FOR.** The extension has been **hiding** the Debug penalty. At
+native, Debug looks merely unoptimized at 173 ms; the same build at baseline costs 1,318. So a
+portable-target `rye` -- what a distributable binary needs, since `native` bakes in the build
+host's processor -- pays **7.6x** on a cold library read at the mode this tree ships. Mode and
+portability have been separate questions here; on this operation they multiply.
+**PROVEN:** paper **A/90** at Field, judged Truth closed, register 27 percent of 62 sentences
+against Field's 30; the elder regrades **A/91** with its erratum and no figure in it moved.
+Paper [`20260917-010644_the-extension-was-carrying-the-debug-build.md`](../active-designing/20260917-010644_the-extension-was-carrying-the-debug-build.md).
+**HONEST ABOUT THE PASS:** the cold endurance run answered `guard_red`, **298 green of 321**,
+across 95 minutes with `tree_moved=yes` while eight ships landed work; several reds are booked
+elsewhere. This lap adds prose and touches no code, so its guards were run by name.
+**MINE:** the live binary still has never been **timed**; six fresh ones were, and it is placed
+among them by its bytes.
+**YOURS:** the extension arrives by default and is priced now. Does `rye` name its target and mode
+explicitly -- a slower, portable, honest build -- or keep inheriting the build host's processor?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
