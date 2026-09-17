@@ -18,6 +18,11 @@
 #   No run-card line records a red or an absent guard -- EXCEPT this guard's own row, which is
 #     REPORTED at `runs_red_self` and never counted. The reasoning is written at the count itself;
 #     it is named here so this list and the code beneath it say the same thing.
+#   A run-card line recording `unrun` is REPORTED at `runs_unrun` and counted as a red by nobody
+#     (REDS %747). The runner already refused the pass that wrote it, and a guard whose answer was
+#     lost is a fact about that machine rather than about this roster. What it leaves open is named
+#     at the count itself: such a row still reads as recorded, so the staleness readings below see a
+#     guard that has answered.
 #   A PEER'S ROW DESCRIBES THIS PASS, not the last one (REDS %483, repaired `20260906`). This scan
 #     reads whatever `STANDING_CARD` names, and the runner hands it a PEN-LOCAL live view rather
 #     than the working-tree card -- rewritten after each guard answers -- so a red repaired earlier
@@ -132,12 +137,16 @@ known_gates=$(
 
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
+unruns=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
 undeclaredrows=$(mktemp); timedrows=$(mktemp); cadence_rows=$(mktemp); cadence_never_rows=$(mktemp)
 trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows" "$timedrows" "$cadence_rows" "$cadence_never_rows"' EXIT
 
 rostered=0
 red_self=0
+# The runner's third verdict, read here (REDS %747). A card row saying `unrun` records a guard
+# whose answer the runner could not keep, which is a fact about the machine that pass ran on.
+unrun=0
 # The one name this scan may not use as evidence about itself.
 self_guard=standing_equipment
 missing=0
@@ -315,7 +324,22 @@ if [ -f "$card" ]; then
         # nothing else -- reads `runs_red=0 verdict=ok`. So the row is REPORTED and never counted;
         # a hand still sees it, and every other guard's red keeps its full teeth. Same family as
         # `%458` one room over, where a scan read its own header as tree evidence.
-        if [ "$rverdict" != "green" ] && [ "$rverdict" != "gated" ]; then
+        # `unrun` JOINS `green` AND `gated` AS A VERDICT THIS SCAN DOES NOT COUNT AS RED, and it
+        # is the reason the runner's repair could not land in one file (REDS %747). The line below
+        # counts every verdict that is neither green nor gated, so a runner emitting a fifth word
+        # into a scan that had not been told would book the lost answer as a broken guard -- which
+        # is precisely the fault the verdict was drawn to end, re-made one file over. The row is
+        # REPORTED instead: a hand reads which guard went unrecorded, and a re-run clears it.
+        #
+        # WHAT THIS LEAVES OPEN, named rather than left to be met. The runner REFUSES the pass that
+        # produces one, so the loud signal fires at the moment it happens; a row that then sits on
+        # the card is testimony of that refusal. Yet an `unrun` row still counts as `recorded`, so
+        # the staleness readings below see a guard that has answered, and nothing here ages it out.
+        # A guard could stand unrun across many passes and only its own row would say so.
+        if [ "$rverdict" = "unrun" ]; then
+          unrun=$((unrun + 1))
+          echo "$rname" >> "$unruns"
+        elif [ "$rverdict" != "green" ] && [ "$rverdict" != "gated" ]; then
           if [ "$rname" = "$self_guard" ]; then
             red_self=$((red_self + 1))
             echo "$rname $rverdict" >> "$reds_self"
@@ -368,6 +392,9 @@ echo "runs_recorded=$recorded"
 echo "runs_unrostered=$stray"
 echo "runs_red=$red"
 echo "runs_red_self=$red_self"
+# Printed on every reading, empty or full, so a tree with none is told apart from a reading that
+# does not take this measurement at all.
+echo "runs_unrun=$unrun"
 echo "runs_seconds_total=$seconds_total"
 echo "runs_seconds_absent=$seconds_absent"
 echo "runs_slowest=$slowest_name:$slowest_sec"
@@ -450,6 +477,7 @@ echo "undeclared_tier_shown=$undeclared_show"
 [ "$stray" -eq 0 ] || sed 's/^/unrostered: /' "$unrostered"
 [ "$red" -eq 0 ] || sed 's/^/red: /' "$reds"
 [ "$red_self" -eq 0 ] || sed 's/^/red_self: /' "$reds_self"
+[ "$unrun" -eq 0 ] || sed 's/^/unrun: /' "$unruns"
 
 if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] && [ "$unknown_host" -eq 0 ] \
    && [ "$unknown_capability" -eq 0 ] && [ "$unknown_gate" -eq 0 ] \

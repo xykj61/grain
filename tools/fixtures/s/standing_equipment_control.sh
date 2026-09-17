@@ -24,6 +24,13 @@
 # of the guards it did not run. The pen is no git repository, which is its own case: the staged
 # reading answers 0 rather than refusing.
 #
+# THE THIRD VERDICT, over the same stub interpreter (REDS %747). A guard that RUNS AND REFUSES is a
+# red, announcing the evidence file a hand reads. The same guard, with a shimmed `tail` refusing
+# its evidence write exactly as a full disk did, is `unrun`: counted apart from red, named, the
+# pass refused, the receipt withheld, and no path announced for a file that was never written. Both
+# mutations are shown to bite -- a runner reporting the write as kept books the elder false red,
+# and a scan still blind to the fifth word books it too, which is why that repair spans two files.
+#
 # WHAT THE REAL REPOSITORY PROVES, which a pen outside git cannot. Two refusals live there, and
 # each is shown from the side that bites and the side that passes free. The tree digest: a stub
 # guard writing nothing leaves it still, one writing a file moves it (REDS %221). The unclosed lap:
@@ -406,6 +413,10 @@ cat > "$pen/rishi/bin/rishi" <<'EOF'
 # tier legs above want and what makes zero an honest reading for them.
 case "$*" in
   *busy*) i=0; while [ $i -lt 400000 ]; do i=$((i + 1)); done ;;
+  # A guard that RUNS AND REFUSES, so the third-verdict legs below have a real red to tell the
+  # lost answer apart from. It prints a diagnostic, because the whole question is what becomes of
+  # that diagnostic when the runner cannot keep it.
+  *refuser*) echo "refuser: this guard found something"; exit 1 ;;
 esac
 exit 0
 EOF
@@ -2674,5 +2685,131 @@ case "$out" in *"run_verdict=guard_red"*) echo "blind_runner_refuses=yes" ;; *) 
 # every reading above would then answer `no` for a reason that has nothing to do with the hand-off.
 case "$out" in *"alpha green"*) echo "blind_runner_ran=yes" ;; *) echo "blind_runner_ran=no" ;; esac
 rm -rf "$livepen"
+
+# --- the third verdict: a refusal the runner could not record (REDS %747) -----------------------
+# THE FAULT. A hot pass died at guard 27 of 376 on `20260915.215400` with `No space left on
+# device`, reported FOUR red on the way down, and named an evidence file beside two of them that
+# was never written -- both of those guards had run GREEN in that same tree minutes earlier. The
+# runner announced a path, the write was refused, and the red stood with a citation to nothing.
+#
+# WHY THE PLANT IS A SHIMMED `tail` RATHER THAN A FULL DISK. The deed is *the evidence write
+# refuses*, and a shim names the deed where filling a shared pier's disk would name a machine --
+# the same reading `%747`'s own neighbour took when a copy path turned out to have two spellings.
+# The faithfulness of the plant is proven on its own leg below against `/dev/full`, whose writes
+# fail with the exact errno the transcript recorded.
+mkdir -p "$pen/tools"
+cat > "$pen/tools/refuser_witness.rish" <<'EOF'
+# a stub the pen's stub interpreter recognises by name and refuses for
+EOF
+cat > "$pen/refuser.kyri" <<'EOF'
+format standing-equipment-v1
+guard refuser
+path tools/refuser_witness.rish
+tier lap
+seated 20260917.000000
+EOF
+
+run_refuser() {
+  ( cd "$pen" && PATH="$1:$PATH" STANDING_ROSTER=refuser.kyri STANDING_CARD=refuser-card.kyri \
+      sh "${2:-$runner}" 2>/dev/null ) || true
+}
+
+# THE GREEN SIDE FIRST, so the gate below is known to have one. A guard that runs and refuses, with
+# a pen the runner can write in, is a red exactly as it always was.
+rm -f "$pen/refuser-card.kyri"
+out=$(run_refuser "$pen/nosuchdir")
+case "$out" in *"guards_red=1"*) echo "refuser_is_red=yes" ;; *) echo "refuser_is_red=no" ;; esac
+case "$out" in *"guards_unrun=0"*) echo "writable_pen_unrun_zero=yes" ;; *) echo "writable_pen_unrun_zero=no" ;; esac
+case "$out" in *"  evidence construction/standing-equipment-reds/refuser.txt"*)
+  echo "red_announces_evidence=yes" ;; *) echo "red_announces_evidence=no" ;; esac
+case "$out" in *"run_verdict=guard_red"*) echo "red_refuses_pass=yes" ;; *) echo "red_refuses_pass=no" ;; esac
+if grep -qE "^ran refuser [0-9.]+ red lap " "$pen/refuser-card.kyri"; then
+  echo "red_card_row=yes"; else echo "red_card_row=no"; fi
+
+# THE SHIM. It writes nothing and exits 1, carrying the message the dead pass actually printed, so
+# the plant reproduces the event rather than merely a non-zero status.
+shimdir="$pen/shim"
+mkdir -p "$shimdir"
+cat > "$shimdir/tail" <<'EOF'
+#!/bin/sh
+echo "tail: write error: No space left on device" >&2
+exit 1
+EOF
+chmod +x "$shimdir/tail"
+
+rm -f "$pen/refuser-card.kyri"
+out=$(run_refuser "$shimdir")
+case "$out" in *"guards_unrun=1"*) echo "lost_answer_is_unrun=yes" ;; *) echo "lost_answer_is_unrun=no" ;; esac
+# THE HALF THAT MAKES IT WORTH A WORD. The same guard, refusing the same way, now reads as a lost
+# answer, and a machine fault reported as a finding is the whole of `%747`.
+case "$out" in *"guards_red=0"*) echo "lost_answer_not_red=yes" ;; *) echo "lost_answer_not_red=no" ;; esac
+case "$out" in *"unrun_at=refuser"*) echo "unrun_names_the_guard=yes" ;; *) echo "unrun_names_the_guard=no" ;; esac
+# THE CITATION TO NOTHING, closed: the path is announced exactly when the file stands.
+case "$out" in *"  evidence construction/standing-equipment-reds/refuser.txt"*)
+  echo "lost_answer_announces_path=yes" ;; *) echo "lost_answer_announces_path=no" ;; esac
+case "$out" in *"evidence could not be kept"*) echo "lost_answer_says_so=yes" ;; *) echo "lost_answer_says_so=no" ;; esac
+case "$out" in *"run_verdict=guard_unrun"*) echo "unrun_refuses_pass=yes" ;; *) echo "unrun_refuses_pass=no" ;; esac
+# THE RECEIPT, WITHHELD. A receipt speaks for coverage a pass actually took, so a pass that lost
+# an answer holds it back -- the reason the verdict sits beside `red` here.
+case "$out" in *"roster_receipt_write=withheld_guard_unrun"*)
+  echo "unrun_withholds_receipt=yes" ;; *) echo "unrun_withholds_receipt=no" ;; esac
+if grep -qE "^ran refuser [0-9.]+ unrun lap " "$pen/refuser-card.kyri"; then
+  echo "unrun_card_row=yes"; else echo "unrun_card_row=no"; fi
+
+# THE PLANT IS FAITHFUL, proven against the kernel rather than asserted. `/dev/full` accepts every
+# write and fails it with ENOSPC, which is the condition the dead pass met.
+if tail -n 200 "$pen/refuser.kyri" > /dev/full 2>/dev/null; then
+  echo "devfull_refuses_write=no"; else echo "devfull_refuses_write=yes"; fi
+
+# THE MUTATION THAT MUST BITE. The copy below reports the write as kept whatever it did -- the one
+# token the repair turns on -- leaving every other line standing, and the lost answer is a red
+# again. The ASSIGNMENT is struck rather than the test, because a test left intact above a constant
+# answer still reads like a working instrument.
+sed 's/^        evidence_kept=no$/        evidence_kept=yes/' "$runner" > "$pen/run-blindwrite.sh"
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh" 2>/dev/null || true
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh" 2>/dev/null || true
+if cmp -s "$runner" "$pen/run-blindwrite.sh"; then
+  echo "blindwrite_mutation_built=no"; else echo "blindwrite_mutation_built=yes"; fi
+rm -f "$pen/refuser-card.kyri"
+out=$(run_refuser "$shimdir" "$pen/run-blindwrite.sh")
+case "$out" in *"guards_red=1"*) echo "blindwrite_books_a_red=yes" ;; *) echo "blindwrite_books_a_red=no" ;; esac
+
+# --- the scan's half, which is why the repair could not land in one file ------------------------
+cat > "$pen/unrun-card.kyri" <<'EOF'
+format standing-equipment-run-v1
+ran refuser 20260917.000000 unrun lap 0 0
+EOF
+out=$(run_scan "$pen/refuser.kyri" "$pen/unrun-card.kyri")
+case "$out" in *"runs_unrun=1"*) echo "scan_counts_unrun=yes" ;; *) echo "scan_counts_unrun=no" ;; esac
+case "$out" in *"runs_red=0"*) echo "scan_unrun_not_red=yes" ;; *) echo "scan_unrun_not_red=no" ;; esac
+case "$out" in *"unrun: refuser"*) echo "scan_names_unrun=yes" ;; *) echo "scan_names_unrun=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "scan_unrun_passes=yes" ;; *) echo "scan_unrun_passes=no" ;; esac
+# THE GREEN SIDE OF THE SAME GATE: an ordinary red on the card still bites, so the clause above
+# widened nothing beyond the word it was given.
+cat > "$pen/red-card.kyri" <<'EOF'
+format standing-equipment-run-v1
+ran refuser 20260917.000000 red lap 0 0
+EOF
+out=$(run_scan "$pen/refuser.kyri" "$pen/red-card.kyri")
+case "$out" in *"runs_red=1"*) echo "scan_red_still_bites=yes" ;; *) echo "scan_red_still_bites=no" ;; esac
+case "$out" in *"runs_unrun=0"*) echo "scan_red_not_unrun=yes" ;; *) echo "scan_red_not_unrun=no" ;; esac
+
+# THE SCAN'S OWN MUTATION. Strike the `unrun` branch from a copy and the card row books a red --
+# which is the two-file half of this repair, shown rather than argued.
+sed 's#^        if \[ "$rverdict" = "unrun" \]; then$#        if [ "$rverdict" = "unrun_never" ]; then#' \
+  "$scan" > "$pen/scan-blindword.sh"
+if cmp -s "$scan" "$pen/scan-blindword.sh"; then
+  echo "blindword_mutation_built=no"; else echo "blindword_mutation_built=yes"; fi
+# The mutated copy stands in a pen, and the scan resolves its sibling runner BESIDE ITSELF -- so a
+# copy read from anywhere else answers `runner_missing` and every case below would die of that
+# rather than of the mutation. `STANDING_RUNNER` is the override the scan already carries for
+# exactly this, and pointing it at the real runner keeps the mutation the only difference.
+out=$( ( cd "$pen" && STANDING_RUNNER="$runner" \
+        STANDING_ROSTER="$pen/refuser.kyri" STANDING_CARD="$pen/unrun-card.kyri" \
+        sh "$pen/scan-blindword.sh" 2>/dev/null ) || true )
+# THE MUTATED COPY MUST ACTUALLY READ THE CARD. A silent copy reads exactly like the repair
+# holding, so this leg proves the copy reached the row before the struck word is judged.
+case "$out" in *"runs_recorded=1"*) echo "blindword_read_the_card=yes" ;; *) echo "blindword_read_the_card=no" ;; esac
+case "$out" in *"runs_red=1"*) echo "blindword_books_a_red=yes" ;; *) echo "blindword_books_a_red=no" ;; esac
 
 echo "control_verdict=ok"
