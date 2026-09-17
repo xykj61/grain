@@ -818,4 +818,6 @@ at a closed fold.*
 
 *Row %782 folded to [`REDS-the-pattern-that-never-asked-what-it-read-rows-782.md`](REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) on `20260916.211058`, **CLOSED** -- a pattern over a character class is a pattern over everything that class admits, and hexadecimal admits the decimals.*
 
+*Row %783 folded to [`REDS-the-half-that-was-read-and-not-gated-rows-783.md`](REDS-the-half-that-was-read-and-not-gated-rows-783.md) on `20260916.213205`, **CLOSED** -- a guard that reads two values and gates one publishes a fact it does not hold, and the drift lands in every page quoting the file.*
+
 *Row %787 folded to [`REDS-the-board-that-had-two-shapes-rows-787.md`](REDS-the-board-that-had-two-shapes-rows-787.md) on `20260916.213214`, **CLOSED** -- a file every ship writes and every ship reads has two shapes, and this tree checked only one -- so a hand-resolved conflict ate a record's header and the reader called the board clear.*
