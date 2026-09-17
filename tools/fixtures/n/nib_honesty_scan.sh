@@ -25,6 +25,7 @@
 #
 #   sh tools/fixtures/n/nib_honesty_scan.sh
 #   sh tools/fixtures/n/nib_honesty_scan.sh prove-red
+#   sh tools/fixtures/n/nib_honesty_scan.sh prove-double
 #
 # Read-only: no network, no key, no funds, no writes to the card.
 set -eu
@@ -32,6 +33,8 @@ set -eu
 MODE=${1:-}
 CARD=${CARD:-construction/ITINERARY.md}
 CONTROL=tools/fixtures/nib_honesty_control/floating_nib_control.md
+DOUBLE_CONTROL=tools/fixtures/nib_honesty_control/double_nib_control.md
+SINGLE_CONTROL=tools/fixtures/nib_honesty_control/single_nib_control.md
 
 # Ten hex digits is the tree's own short-nib width (git rev-parse --short=10),
 # and hexadecimal admits the decimals -- so the run alone cannot say whether a
@@ -156,6 +159,49 @@ sweep() {
   echo "numeral_read=$numeral_read"
 }
 
+# The nib field, enumerated. Named as a function rather than spelled twice, so the live
+# gate below and the prove-double path read one pattern -- a pen that spells its own copy
+# can pass while the gate it proves reads something else.
+nib_fields_of() {
+  grep -oE '^\*\*Git nib:\*\* .[0-9a-f]{10}' "$1" | grep -oE '[0-9a-f]{10}' || true
+}
+
+if test "$MODE" = "prove-double"; then
+  # The nib-count RED path, shown from both sides on two planted cards rather than in
+  # prose. DOUBLE carries two Git nib fields whose hashes BOTH resolve, so `gone` stays 0
+  # and the ONLY thing that can refuse it is the count -- a refusal proven through the old
+  # floating-hash law would prove nothing about this one. SINGLE carries one, and walks.
+  test -f "$DOUBLE_CONTROL" || { echo "control_verdict=missing_double"; exit 1; }
+  test -f "$SINGLE_CONTROL" || { echo "control_verdict=missing_single"; exit 1; }
+
+  dbl=$(printf '%s' "$(nib_fields_of "$DOUBLE_CONTROL")" | grep -c . || true)
+  sgl=$(printf '%s' "$(nib_fields_of "$SINGLE_CONTROL")" | grep -c . || true)
+  echo "control_double_lines=$dbl"
+  echo "control_single_lines=$sgl"
+
+  # Both controls must be clean under the ELDER law, or this pen is reading that refusal
+  # rather than its own. Proven rather than assumed, and printed so it stays inspectable.
+  dgone=$(sweep "$DOUBLE_CONTROL" | sed -n 's/^gone=//p')
+  sgone=$(sweep "$SINGLE_CONTROL" | sed -n 's/^gone=//p')
+  echo "control_double_gone=$dgone"
+  echo "control_single_gone=$sgone"
+
+  if test "$dgone" -ne 0 || test "$sgone" -ne 0; then
+    echo "control_verdict=CONFOUNDED"
+    exit 1
+  fi
+  if test "$sgl" -ne 1; then
+    echo "control_verdict=SINGLE_NOT_FREE"
+    exit 1
+  fi
+  if test "$dbl" -ge 2; then
+    echo "RED_nib_named_twice_caught=$dbl"
+    exit 1
+  fi
+  echo "control_verdict=MISSED"
+  exit 1
+fi
+
 if test "$MODE" = "prove-red"; then
   # The control card MUST advertise hashes that resolve nowhere, and the guard MUST
   # REFUSE when swept over it -- shown by exiting non-zero, not merely reported. A
@@ -181,10 +227,33 @@ sweep "$CARD"
 # The Git nib field is read BY NAME, never as "the first hash in the file" -- the
 # fault this guard was rewritten to fix. Condensing the card moved a checkpoint row above
 # the nib line, so a first-match read had been grading a checkpoint against the nib's law.
-nib=$(grep -oE '^\*\*Git nib:\*\* .[0-9a-f]{10}' "$CARD" | grep -oE '[0-9a-f]{10}' | head -1 || true)
-if test -z "$nib"; then
+#
+# AND THE FIELD IS COUNTED BEFORE IT IS READ. The extractor took `head -1` and never asked
+# whether a SECOND field stood, so a card naming the nib twice had its first line graded
+# and its second left unread -- and which of the two the law judged was decided by nothing
+# but position. REDS %793: two ships wrote that card in one day, an hour apart, each
+# replacing INNER LOOP item 7 with a nib line while updating the real one, leaving
+# `git_nib_lines=2` both times. Both duplicates happened to carry the same hash, so the
+# wrong reading was harmless by luck rather than by design. The card's own third mention
+# says the nib is "named once above ... one fact in one place"; until here, nothing held
+# that sentence.
+#
+# ONE ENUMERATION, READ TWICE. The count and the extraction come off the same list, so a
+# card can never be one thing to the gate and another to the reader -- the fault a sibling
+# meter booked when three readers each spelled their own roster.
+nib_fields=$(nib_fields_of "$CARD")
+nib_lines=$(printf '%s' "$nib_fields" | grep -c . || true)
+nib=$(printf '%s\n' "$nib_fields" | head -1)
+echo "git_nib_lines=$nib_lines"
+if test "$nib_lines" -eq 0; then
   echo "git_nib=absent"
   echo "verdict=NO_NIB_FIELD"
+  exit 1
+fi
+if test "$nib_lines" -gt 1; then
+  echo "git_nib=$nib"
+  echo "advice=a second Git nib field is a positional write that ate the line it landed on -- restore that line and remove the duplicate; the card names the nib once"
+  echo "verdict=NIB_NAMED_TWICE"
   exit 1
 fi
 echo "git_nib=$nib"
