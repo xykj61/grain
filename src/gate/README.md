@@ -1,13 +1,14 @@
 # gate -- Shared gates
 
 **Language:** EN  
-**Last updated:** `20260802.223739` (Equinox e259 -- equality arc closes 8/8 - Rye tend)
-**Status:** Living -- room open; a1 x9 - a2 whole - equality 8/8 seated, 4/8 heard - Comlink R1
+**Last updated:** `20260916.110857` (the equality census re-read against the roster and the run card)
+**Style:** New Gauge, Door setting (see [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md))
+**Status:** Living -- room open; a1 x9 - a2 whole - equality 8/8 seated, 5/8 rostered - Comlink R1
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-Shared gates and utility pedestals in Glow -- the sameness many desks call and none should re-carve.
+Shared gates and utility pedestals in Glow -- the sameness many desks call, carved once here and shared from here.
 
 ## The a2 Folding Gates (STOA332-335)
 
@@ -47,9 +48,19 @@ Witness: `rishi/bin/rishi run tools/r/rishi_a1_gate_walls_witness.rish` (also er
 
 Witnesses: `tools/au/aurora_a1_seed_length_eq_witness.rish` - `tools/au/aurora_a1_signature_length_eq_witness.rish` - `tools/au/aurora_a1_living_stages_eq_witness.rish` - `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` - `tools/rye/mantra_a1_line_fields_eq_witness.rye` - `tools/rye/mantra_a1_weave_fields_eq_witness.rye` - `tools/rye/mantra_a1_diff_fields_eq_witness.rye` - `tools/rye/mantra_a1_store_dirs_eq_witness.rye` -- eight gates, each proven at its seating.
 
-**Four of the eight are heard, and four await a runner** (measured `20260906`). The Mantra four run every cadence lap under [`tools/m/mantra_a1_equality_witness.rish`](../../tools/m/mantra_a1_equality_witness.rish), which builds each witness against the desk it reads and asserts both its claim and its just-over side. The Aurora three and the Caravan one stand on no roster, and a grep across `tools/` and `construction/` returns their names only here -- so a lane that rosters them turns four silent proofs into four heard ones, and each is a short lap in its own room. All eight stood that way until this line was written. The sentence this replaced read *the equality arc stands closed (8/8)*, true of the seating and by now a claim about the present that something measures (REDS %482).
+**Five of the eight are rostered, and three await a runner** (measured `20260916`). The Mantra four stand at `tier cadence` under [`tools/m/mantra_a1_equality_witness.rish`](../../tools/m/mantra_a1_equality_witness.rish). That guard builds each witness against the desk it reads, and asserts both its claim and its just-over side. The Caravan one has stood at the same tier since `20260823` (`008725232`). [`tools/ca/caravan_suite_witness.rish`](../../tools/ca/caravan_suite_witness.rish) names `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` among the rungs its `for-each` sings, and `caravan_suite` is a rostered guard in `construction/standing-equipment.kyri`. The Aurora three await a roster. Asked one name at a time with `git grep -l`, across `tools/` and `construction/`, each is found here alone. So a lane that rosters them turns three silent proofs into three heard ones, and each is a short lap in its own room. The sentence this paragraph replaced read *the equality arc stands closed (8/8)*, true of the seating and by then a claim about the present that something measures (REDS %482).
+
+**Rostered and run are two readings, so this page carries both.** `tier cadence` is the slower clock, and it turned on this pier for the first time on `20260916`, when `--cadence-slice 1` gave it a runner. The figure is FREE -- one guard leaves it every lap -- so RUN the reading rather than trusting a number on this page:
+
+```
+sh tools/fixtures/s/standing_equipment_scan.sh | grep cadence
+```
+
+It read **70 of 79** on `20260916.110857` and **71 of 80** at `20260916.201445`, the roster having grown by one while one guard ran. Both readings name `caravan_suite` as the **oldest guard that has never run here**, seated `20260825.092953` -- which is the gate this page just moved out of the silent column. So a seat on the roster and a turn in the rotation are two different things, and the Caravan gate holds the first and has waited longest for the second. The card is per-machine and untracked on purpose, so another pier answers this question for itself.
 
 **And a heard proof can still be wrong about its subject** (`20260907.094747`). Each of these four desks decides a field count in the Rye, and until this stamp every instrument compared a desk against a number spelled beside it -- the witness, its control, and this table all carried their own copy. Line grew `site` when identity became a pair and Diff grew `site` on `20260906.212206`, so two of the four spent a day answering 0 for the count their own struct carries, green throughout. [`tools/fixtures/m/mantra_gate_constant_scan.sh`](../../tools/fixtures/m/mantra_gate_constant_scan.sh) now reads the decided constant off the `eq` rune and the field count out of the module, and the guard asserts they agree; the control plants a disagreement in a pen and watches that same scan refuse.
+
+**Erratum** `20260916.110857` (the ledger row of that stamp): from `20260906` until this stamp the first paragraph read *four heard, four awaiting* and counted the Caravan gate among the silent. The `20260906` reading grepped `tools/` and `construction/` for the four names together. The one line that answers is that suite's roster array: 120 witness paths on a single line, where a fifth name arrives inside a wall of its siblings. **An absence is the reading a grep hands back hardest**, since its evidence is what a reader skimmed past.
 
 ## The a1 Deciding Gates (STOA331)
 
@@ -79,7 +90,7 @@ rishi/bin/rishi run tools/g/glow_tend_a1_suite.rish    # a1 alone
 | `gate-comlink-dual-stack-bind-u32` | dual-stack policy on | 1->1 - 0->0 |
 | `gate-comlink-addr-width-u32` | addr width <= 16 (tracks pedestal `ipv6_addr_len=16`) | 4->1 - 16->1 - 20->0 |
 
-Witness: `rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish` -- **leg A** pure - **leg B** metal (Framework GREEN; counsel RED without IPv6) - no wire-semantics change. Rival `families=2` pedestal withdrawn e222.
+Witness: `rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish` -- **leg A** pure - **leg B** metal (Framework GREEN; counsel RED on a host lacking IPv6) - wire semantics hold unchanged. Rival `families=2` pedestal withdrawn e222.
 
 Structure museum pieces for Tend live under [`../shape/`](../shape/README.md).
 

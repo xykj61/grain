@@ -807,3 +807,5 @@ at a closed fold.*
 *Row %775 folded to [`REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md`](REDS-a-plant-is-a-sentence-that-must-not-be-true-rows-775.md) on `20260916.194006`, **CLOSED** -- a pen plant and the fault it catches wear one shape, so a meter reading for truth hears both alike.*
 
 *Rows %777 and %779 folded to [`REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md`](REDS-a-reference-makes-two-promises-and-one-of-them-had-a-guard-rows-777-779.md) on `20260916.200508`, both **CLOSED** -- a reference carries two promises and only the mechanical half had an instrument, so the unguarded half read perfect forever.*
+
+*Row %781 folded to [`REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md`](REDS-an-absence-is-the-reading-a-grep-hands-back-hardest-rows-781.md) on `20260916.202456`, **CLOSED** -- an absence is the reading a grep hands back hardest, so a front-door census is asked one name at a time.*

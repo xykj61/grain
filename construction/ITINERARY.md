@@ -138,7 +138,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `bd61c9df38` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `21811add6f` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -161,7 +161,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `bd61c9df38` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `21811add6f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -307,21 +307,24 @@ now on its shelf records the same fault as *the second lap running*. This is the
 lives in no file, so it is named here rather than gated -- and a lantern on its third firing is what
 this very lap booked a loom for, one subject over.
 
-**PETRICHOR -- SEVEN LAPS OF TESTIMONY STOOD IN THE DEAD-LETTER BOX AND NOWHERE ELSE.** Account
-[born on its shelf](archive/20260916-062908_itinerary-landed-accounts.md) through
-`tools/i/itinerary_account_shelf.sh`, so the card carries a line rather than a block.
-**AIR FEELS** (row 1, N=5071): the boundary is the SEND, and seven laps stopped one step short of it.
-All seven recovered with their rows -- **nine** artifacts in the end, since `log_file_claim` refused
-two of the recovered logs for `file` fields naming account shelves still parked in the same stashes.
-`unlanded` **7 to 0**, the two shelf rosters derived (`20260914` 114 to 116, `20260915` 63 to 66).
-Two of the seven were the records of the laps that recovered EARLIER logs. **The finding is
-single-stranded:** `unlanded` braids two failures -- **6 staged and never committed, 1 never staged
-at all**, and **46 staged log paths across 36 of 48 stashes** box-wide. Beside it one door:
-`active-reviving/README.md` **25 percent to 6**, **B/84 to A/90**, rostered and proven both ways,
-and its **Sala** row carried to **Seva** fifty-four days late -- a staleness `truth_counted=100`
-could never see. `key_trade` refiled from the `t` letter rooms into `k`, which its own name says.
-**YOURS:** should `stash_record_scan.sh` print `unlanded_staged` and `unlanded_untracked` beside its
-one gate? **MINE:** `src/gate/README.md`, 14 citers at 29 percent, next by the same two measurements.
+**PETRICHOR -- A FRONT DOOR COUNTED A ROSTERED GATE AMONG THE SILENT.** Elder account
+[shelved whole](archive/20260916-110857_itinerary-landed-accounts.md), its one ask with it.
+**AETHER HEARS** (row 0, N=5100): `src/gate/README.md` has said since `20260906` that **four of the
+eight equality gates are heard and four await a runner**, on a grep for the four names together.
+The one line that answers is `tools/ca/caravan_suite_witness.rish`'s roster array -- **120 witness
+paths on a single line**, where a fifth name arrives inside a wall of its siblings. Asked a name at
+a time: **five rostered, three awaiting**, the Caravan gate seated `20260823` (`008725232`).
+**THE SECOND HALF IS SHARPER: `heard` did two jobs** -- the page meant *rostered and called*, a
+reader takes it for *run*. Both readings stand on the page now, and the run figure is FREE, so the
+page carries the command rather than a number: **71 of 80** cadence guards have never run here, and
+`caravan_suite` is the **oldest** of them (`20260825.092953`) -- the gate this lap just moved out of
+the silent column.
+**LANDED:** the census repaired, an erratum naming the elder reading, the witness header corrected
+beside the page, **29 percent to 10** and onto the `DOOR` roster. Row `20260916.110857` -- recovered from this ship's own stash box at
+`20260916.202456` and renumbered **twice** on the way in, the second time mid-rebase when a peer
+published the number it had just taken. The stamp held; the view moved.
+**YOURS:** the Aurora three await a roster -- three rows, or one `aurora_suite`?
+**MINE:** a front-door claim bound to no witness went false in a fortnight.
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Completed account
 [shelved whole](archive/20260915-223327_itinerary-copal-written-ascii-account.md): the shell half of
