@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.024511` | [The send that could not hold its pin](20260917/20260917-024511_the-send-that-could-not-hold-its-pin.kyri) | a contested send cannot hold the nib; both repairs refused |
 | `20260917.023605` | [The writer that knew one shape](20260917/20260917-023605_the-writer-that-knew-one-shape.kyri) | %803: the nib tool writes the amend shape, never the follow-up |
 | `20260917.023306` | [the refusal that says why](20260917/20260917-023306_the-refusal-that-says-why.kyri) | %734's free half: 7,483 mute refusals counted, its own 80-site cohort cured. |
 | `20260917.020446` | [Where the hash still pays](20260917/20260917-020446_where-the-hash-still-pays.kyri) | Two projections measured; the second failed. Every build re-hashes its output. |
