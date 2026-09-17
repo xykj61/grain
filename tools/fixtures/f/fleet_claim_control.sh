@@ -31,6 +31,11 @@ cp "$ROOT/tools/fixtures/f/fleet_claim_scan.sh"  "$tree/tools/fixtures/f/"
 cp "$ROOT/tools/fixtures/f/fleet_claim_form_scan.sh" "$tree/tools/fixtures/f/"
 cp "$ROOT/tools/fixtures/f/fleet_roster_scan.sh" "$tree/tools/fixtures/f/"
 cp "$ROOT/tools/f/fleet_claim.sh"                "$tree/tools/f/"
+# The nib writer travels too: the claim writer carries the operator card through it, and a pen
+# lacking it would prove only the degrade path (`card_carried=no`) rather than the carry.
+mkdir -p "$tree/tools/fixtures/r"
+cp "$ROOT/tools/fixtures/r/remember_git_nib_write.sh" "$tree/tools/fixtures/r/"
+nibwrite="$tree/tools/fixtures/r/remember_git_nib_write.sh"
 scan="$tree/tools/fixtures/f/fleet_claim_scan.sh"
 writer="$tree/tools/f/fleet_claim.sh"
 
@@ -229,6 +234,118 @@ out=$(cd "$tree" && sh "$writer" --open fresh-thing --paths "tools/n/new_scan.sh
 second_stamp=$(awk '/^claim fresh-thing$/{c=1;next} c&&$1=="stamp"{print $2;exit}' "$tree/construction/fleet-claims.kyri")
 case "$out" in *"verdict=claimed"*) say "an_edited_sentence_is_written=yes" ;; *) say "an_edited_sentence_is_written=no" ;; esac
 if [ "$first_stamp" = "$second_stamp" ] && [ -n "$first_stamp" ]; then say "an_edit_keeps_the_original_stamp=yes"; else say "an_edit_keeps_the_original_stamp=no"; fi
+
+# --- the writer carries the operator card, so the commit it rides in is not stale --------------
+# THE CENTREPIECE RUNS THE RED RATHER THAN ARGUING IT. A claiming lap makes two commits this writer
+# causes, and while it wrote the board alone both landed without `construction/ITINERARY.md`: the
+# card's nib then named HEAD~2 and `remember_git_nib` read `stale` for the whole build window. The
+# guard's own state predicate is copied verbatim below and asked what it sees, with the carry and
+# without it -- a repair proven only by the new number cannot be told from a number that was always
+# there.
+
+nib_state() {
+  # verbatim from tools/r/remember_git_nib_witness.rish step 3.
+  ( cd "$tree" || return
+    nib=$(awk '/Git nib:/{ if (match($0, /[0-9a-f]{7,40}/)) { print substr($0, RSTART, RLENGTH); exit } }' construction/ITINERARY.md)
+    F=$(git rev-parse "$nib" 2>/dev/null); H=$(git rev-parse HEAD); P=$(git rev-parse HEAD^ 2>/dev/null); FP=$(git rev-parse "${nib}^" 2>/dev/null)
+    if [ "$F" = "$H" ]; then echo head; elif [ "$FP" = "$P" ]; then echo sibling; elif [ "$F" = "$P" ]; then echo parent; else echo stale; fi )
+}
+
+# The board as the later legs expect to find it, kept by bytes rather than rebuilt from the
+# fixture -- `fresh-thing` was opened above and a fixture rebuild would take it away, which the
+# board-bound leg below reads as its own failure.
+cp "$tree/construction/fleet-claims.kyri" "$pen/before-card-legs.kyri"
+
+# a pen with NO card: the board is still written, and the absence is named rather than fatal. A
+# claim the fleet cannot read is a worse outcome than a card one commit behind.
+out=$(cd "$tree" && sh "$writer" --open cardless-thing --paths "tools/c/cardless.sh" --what "a claim opened where no card stands" 2>&1 || true)
+case "$out" in *"verdict=claimed"*) say "a_missing_card_still_writes_the_board=yes" ;; *) say "a_missing_card_still_writes_the_board=no" ;; esac
+case "$out" in *"card_carried=no"*) say "a_missing_card_is_named=yes" ;; *) say "a_missing_card_is_named=no" ;; esac
+
+# now give the pen a card, and a couple of commits so HEAD has a parent to be older than
+cat > "$tree/construction/ITINERARY.md" <<'CARD'
+# a pen operator card
+
+**Git nib:** `0000000000` -- the round this card describes.
+CARD
+git -C "$tree" add -A >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: a card" >/dev/null 2>&1
+git -C "$tree" commit -q --allow-empty -m "pen: the previous lap's work commit" >/dev/null 2>&1
+
+# WITHOUT the carry, the state the fleet lived with: pin the card at HEAD's parent, which is the
+# honest `parent` state, then land a board-only commit on top of it.
+( cd "$tree" && sh "$nibwrite" construction/ITINERARY.md "$(git rev-parse --short=10 HEAD^)" ) >/dev/null 2>&1
+case "$(nib_state)" in parent) say "a_card_pinned_at_the_parent_reads_honest=yes" ;; *) say "a_card_pinned_at_the_parent_reads_honest=no" ;; esac
+printf 'claim board-only\nseat incense\nstamp 20260917.000000\nepoch %s\npaths tools/b/b.sh\nwhat a board-only commit, the shape this repair retires\n' "$fresh" >> "$tree/construction/fleet-claims.kyri"
+git -C "$tree" add construction/fleet-claims.kyri >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: a board-only commit" >/dev/null 2>&1
+case "$(nib_state)" in stale) say "a_board_only_commit_stales_the_card=yes" ;; *) say "a_board_only_commit_stales_the_card=no" ;; esac
+
+# WITH the carry: the writer pins HEAD before the commit, so that HEAD becomes the commit's parent.
+( cd "$tree" && sh "$nibwrite" construction/ITINERARY.md "$(git rev-parse --short=10 HEAD^)" ) >/dev/null 2>&1
+head_before=$(git -C "$tree" rev-parse --short=10 HEAD)
+out=$(cd "$tree" && sh "$writer" --open carried-thing --paths "tools/c/carried.sh" --what "a claim whose writer carried the card" 2>&1 || true)
+case "$out" in *"card_carried=yes"*) say "an_open_carries_the_card=yes" ;; *) say "an_open_carries_the_card=no" ;; esac
+case "$out" in *"card_nib=$head_before"*) say "the_carried_nib_is_the_pre_commit_head=yes" ;; *) say "the_carried_nib_is_the_pre_commit_head=no" ;; esac
+git -C "$tree" add construction/fleet-claims.kyri construction/ITINERARY.md >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: a carried claim commit" >/dev/null 2>&1
+case "$(nib_state)" in parent) say "a_carried_claim_commit_reads_honest=yes" ;; *) say "a_carried_claim_commit_reads_honest=no" ;; esac
+
+# THE PAIR STAYS IDEMPOTENT. `infusion(world') -> world'` holds over BOTH files, not the board
+# alone: the no-op open exits above the write and never reaches the carry.
+cp "$tree/construction/fleet-claims.kyri" "$pen/pair-board.kyri"
+cp "$tree/construction/ITINERARY.md" "$pen/pair-card.md"
+out=$(cd "$tree" && sh "$writer" --open carried-thing --paths "tools/c/carried.sh" --what "a claim whose writer carried the card" 2>&1 || true)
+case "$out" in *"verdict=claim_unchanged"*) say "a_reopen_with_a_card_is_idempotent=yes" ;; *) say "a_reopen_with_a_card_is_idempotent=no" ;; esac
+case "$out" in *card_carried*) say "an_idempotent_open_never_reaches_the_carry=no" ;; *) say "an_idempotent_open_never_reaches_the_carry=yes" ;; esac
+if cmp -s "$pen/pair-card.md" "$tree/construction/ITINERARY.md"; then say "an_idempotent_open_moves_no_card_byte=yes"; else say "an_idempotent_open_moves_no_card_byte=no"; fi
+if cmp -s "$pen/pair-board.kyri" "$tree/construction/fleet-claims.kyri"; then say "an_idempotent_open_moves_no_board_byte=yes"; else say "an_idempotent_open_moves_no_board_byte=no"; fi
+
+# THE CLOSE IS THE OTHER HALF, and it is rule 5's own shape -- a commit landing after the work
+# commit. It was carrying the card no more than the open was.
+git -C "$tree" commit -q --allow-empty -m "pen: this lap's work commit" >/dev/null 2>&1
+( cd "$tree" && sh "$nibwrite" construction/ITINERARY.md "$(git rev-parse --short=10 HEAD^)" ) >/dev/null 2>&1
+head_before=$(git -C "$tree" rev-parse --short=10 HEAD)
+out=$(cd "$tree" && sh "$writer" --close carried-thing 2>&1 || true)
+case "$out" in *"verdict=closed"*) say "a_close_still_closes=yes" ;; *) say "a_close_still_closes=no" ;; esac
+case "$out" in *"card_nib=$head_before"*) say "a_close_carries_the_card=yes" ;; *) say "a_close_carries_the_card=no" ;; esac
+git -C "$tree" add construction/fleet-claims.kyri construction/ITINERARY.md >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: a carried close commit" >/dev/null 2>&1
+case "$(nib_state)" in parent) say "a_carried_close_commit_reads_honest=yes" ;; *) say "a_carried_close_commit_reads_honest=no" ;; esac
+
+# --- MUTATION: carry the card ABOVE the idempotence exit, and the pair stops being idempotent ---
+# The whole subtlety of this repair is WHERE the carry sits. Above the `cmp -s` early exit it runs
+# on a no-op open, and the card moves on a run that was promised to move nothing.
+# The mutant lives at the writer's own relative path, because the writer resolves its root from
+# `dirname $0` -- one placed in the pen's scratch would operate on a tree that is not the pen's.
+mutant="$tree/tools/f/mutant_claim.sh"
+sed 's|^if cmp -s "\$tmp" "\$BOARD"; then|carry_the_card\nif cmp -s "$tmp" "$BOARD"; then|' "$writer" > "$mutant"
+( cd "$tree" && sh "$nibwrite" construction/ITINERARY.md "$(git rev-parse --short=10 HEAD^)" ) >/dev/null 2>&1
+cp "$tree/construction/ITINERARY.md" "$pen/mutant-card.md"
+(cd "$tree" && sh tools/f/mutant_claim.sh --open carried-thing --paths "tools/c/carried.sh" --what "a claim whose writer carried the card" >/dev/null 2>&1) || true
+if cmp -s "$pen/mutant-card.md" "$tree/construction/ITINERARY.md"; then
+  say "mutation_carry_above_the_exit_is_bitten=no"
+else
+  say "mutation_carry_above_the_exit_is_bitten=yes"
+fi
+
+# --- MUTATION: carry HEAD's PARENT rather than HEAD, which is the amend shape in the wrong place -
+# Rule 2's `HEAD^` is right for an amend and one short for a commit landing afresh, which is REDS
+# %803 exactly. Here it must leave the card stale at the very commit it was meant to make honest.
+mutant2="$tree/tools/f/mutant2_claim.sh"
+sed 's|head=\$(git rev-parse --short=10 HEAD 2>/dev/null \|\| true)|head=$(git rev-parse --short=10 HEAD^ 2>/dev/null \|\| true)|' "$writer" > "$mutant2"
+( cd "$tree" && sh "$nibwrite" construction/ITINERARY.md "$(git rev-parse --short=10 HEAD^)" ) >/dev/null 2>&1
+(cd "$tree" && sh tools/f/mutant2_claim.sh --open amend-shaped --paths "tools/a/a.sh" --what "a claim carrying the amend shape" >/dev/null 2>&1) || true
+git -C "$tree" add construction/fleet-claims.kyri construction/ITINERARY.md >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: an amend-shaped carry" >/dev/null 2>&1
+case "$(nib_state)" in stale) say "mutation_the_amend_shape_is_bitten=yes" ;; *) say "mutation_the_amend_shape_is_bitten=no" ;; esac
+
+# and the tree is returned to the board every later leg reads
+cat "$pen/before-card-legs.kyri" > "$tree/construction/fleet-claims.kyri"
+rm -f "$tree/construction/ITINERARY.md" "$mutant" "$mutant2"
+git -C "$tree" add -A >/dev/null 2>&1
+git -C "$tree" commit -qm "pen: restore the board, drop the card" >/dev/null 2>&1
+git -C "$tree" push -q xy main >/dev/null 2>&1
 
 # --- the writer refuses what it must -----------------------------------------------------------
 if (cd "$tree" && sh "$writer" --open port-band --paths "tools/x/x.sh" --what "..." >/dev/null 2>&1); then

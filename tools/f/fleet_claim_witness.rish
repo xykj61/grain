@@ -39,4 +39,19 @@ assert control.out contains "reopening_is_idempotent=yes" else "fleet-claim: the
 assert control.out contains "idempotent_run_moves_no_byte=yes" else "fleet-claim: a second identical open rewrote the board"
 assert control.out contains "a_peers_claim_name_is_refused=yes" else "fleet-claim: one seat can now overwrite another's claim"
 
+# The card the writer carries. A claiming lap makes two commits this writer causes, and while it
+# wrote the board alone both left `construction/ITINERARY.md` naming HEAD~2, so `remember_git_nib`
+# read stale for the whole build window -- 185 of this tree's 204 claim-opening commits. The pen
+# runs that red rather than arguing it, with the guard's own state predicate copied verbatim.
+assert control.out contains "a_board_only_commit_stales_the_card=yes" else "fleet-claim: the pen no longer reproduces the red this carry exists to close, so the legs below prove nothing"
+assert control.out contains "an_open_carries_the_card=yes" else "fleet-claim: the lead-in claim commit stopped carrying the card"
+assert control.out contains "the_carried_nib_is_the_pre_commit_head=yes" else "fleet-claim: the carried nib is not HEAD read before the commit, so it will not name that commit's parent"
+assert control.out contains "a_carried_claim_commit_reads_honest=yes" else "fleet-claim: a carried claim commit still reads stale under the guard's own predicate"
+assert control.out contains "a_close_carries_the_card=yes" else "fleet-claim: the close commit stopped carrying the card"
+assert control.out contains "an_idempotent_open_never_reaches_the_carry=yes" else "fleet-claim: a no-op open now reaches the carry, so the pair is no longer idempotent"
+assert control.out contains "an_idempotent_open_moves_no_card_byte=yes" else "fleet-claim: a second identical open rewrote the operator card"
+assert control.out contains "a_missing_card_still_writes_the_board=yes" else "fleet-claim: an absent card now holds the board's write hostage -- a claim the fleet cannot read is the worse outcome"
+assert control.out contains "mutation_carry_above_the_exit_is_bitten=yes" else "fleet-claim: the idempotence leg passes a carry placed above the exit, so it proves nothing"
+assert control.out contains "mutation_the_amend_shape_is_bitten=yes" else "fleet-claim: the carry leg passes the amend's HEAD^ shape, so it proves nothing"
+
 say "GREEN: fleet-claim -- intent is declared before it exists, and the reader reads the fleet's copy."
