@@ -14,6 +14,24 @@ while it runs; a lap ends at the commit, never at git add; grade what you touch,
 stands; reds first; read scope. MAP.md is the walk -- never ls the root, never walk tools/ whole,
 resolve by name.
 
+ORDER. The claim goes first, and the cold run goes after HEAD has settled. Those two directives
+are printed in two stanzas that never order each other: CARD says roster cold then hot holding
+still, ABSENCE says check-claim-push-then-build, and a lap reading them top to bottom launches the
+cold run and then commits its claim into the middle of it. `tree_digest` reads `git rev-parse HEAD`
+beside the porcelain and the content, so ANY commit, pull or edit during the pass fixes its verdict
+at `tree_moved=yes` before the first guard returns -- and a verdict fixed that early is a
+forty-minute pass that can no longer answer the question it was run to answer. So: open and PUSH
+the claim, let the round-open's rebase finish, read HEAD once, THEN launch the cold run, and hold
+still -- no commit, no edit, no pull -- until its transcript carries `run_verdict=`. Proven on
+metal this lap (`20260917.114538`): the pass launched under that order closed `tree_moved=no`,
+where the same tree's previous pass had its verdict fixed before it began.
+AND A PASS THAT OUTLIVES ITS LAP CANNOT HOLD STILL AT ALL, which is the sharper half and the one
+this lap actually met. Last lap launched its cold run near its own close; this lap's round-open
+pulled peers' commits while that pass was still running, and the runner refused a second pass with
+`its launch_head ab516dbed9 is no longer HEAD` -- moved by the PULL rather than by anything the lap
+did. A cold run belongs at the FRONT of a lap, after the round-open, with the lap's remaining hours
+in front of it. One launched late is a pass whose verdict the next lap will spend for it.
+
 ABSENCE. Never conclude a file is gone from local bytes alone. Eight ships push to one remote and
 the round-open pulls at lap START, so a checkout is behind within minutes of opening -- read on this
 lap, mid-round, `commits_behind=1`. A whole-tree grep is the strongest evidence a seat can gather,
