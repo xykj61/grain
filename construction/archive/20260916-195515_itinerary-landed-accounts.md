@@ -89,7 +89,7 @@ refuse. It does. The plant is named by its exact call site rather than by a line
 line reads as found and a REMOVED kind word refuses loudly. The reading is **51 at its ceiling**.
 
 **AND I PINNED THE NIB BEFORE THE FINAL REBASE, WHICH IS THE ONE ORDER THE RULE FORBIDS.**
-[`remember-git-nib`](../.claude/rules/remember-git-nib.md) rule 2 asks for the nib to name HEAD's
+[`remember-git-nib`](../../.claude/rules/remember-git-nib.md) rule 2 asks for the nib to name HEAD's
 parent read AFTER the send's last rebase, and my send chained rebase and push in one command, so the
 amend the rule allows had nowhere to happen: a peer's commit landed between my read and my push, the
 nib named a grandparent, and `remember_git_nib` reddened on a commit already on both remotes. Rule 5
