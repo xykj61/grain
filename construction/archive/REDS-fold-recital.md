@@ -848,3 +848,5 @@ at a closed fold.*
 *Row %689 folded to [`REDS-a-document-whose-last-byte-had-no-home-rows-689.md`](REDS-a-document-whose-last-byte-had-no-home-rows-689.md) on `20260917.030925`, **CLOSED** -- a projection built for reading a diff spent as a test of identity, closed on its sibling's footing.*
 
 *Row %809 folded to [`REDS-a-distance-standing-in-for-a-block-rows-809.md`](REDS-a-distance-standing-in-for-a-block-rows-809.md) on `20260917.042104`, **BOOKED** -- a meter classifying a refusal by distance punished the repair that made the refusal diagnosable, and a block walk replaced the line count.*
+
+*Row %811 folded to [`REDS-whose-else-is-this-rows-811.md`](REDS-whose-else-is-this-rows-811.md) on `20260917.055209`, **BOOKED** -- a red priced in the branch that revealed it is scoped from one reading, and the branch that leaves no trace is the one no roster pass can find.*
