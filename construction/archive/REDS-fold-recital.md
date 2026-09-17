@@ -821,3 +821,9 @@ at a closed fold.*
 *Row %783 folded to [`REDS-the-half-that-was-read-and-not-gated-rows-783.md`](REDS-the-half-that-was-read-and-not-gated-rows-783.md) on `20260916.213205`, **CLOSED** -- a guard that reads two values and gates one publishes a fact it does not hold, and the drift lands in every page quoting the file.*
 
 *Row %787 folded to [`REDS-the-board-that-had-two-shapes-rows-787.md`](REDS-the-board-that-had-two-shapes-rows-787.md) on `20260916.213214`, **CLOSED** -- a file every ship writes and every ship reads has two shapes, and this tree checked only one -- so a hand-resolved conflict ate a record's header and the reader called the board clear.*
+
+*Row %786 folded to [`REDS-the-front-door-that-held-one-page-rows-786.md`](REDS-the-front-door-that-held-one-page-rows-786.md) on `20260916.215746`, **BOOKED** -- a roster drawn around filenames is a roster drawn around a convention, and a reader walks a graph.*
+
+*Row %769 folded to [`REDS-the-guard-that-named-a-loss-rows-769.md`](REDS-the-guard-that-named-a-loss-rows-769.md) on `20260916.220400`, **BOOKED** -- a guard named for a loss refused an addition in the same words, and named neither direction.*
+
+*Row %778 folded to [`REDS-the-comment-that-priced-a-hash-rows-778.md`](REDS-the-comment-that-priced-a-hash-rows-778.md) on `20260916.220400`, **BOOKED** -- a comment priced the build receipt's own key at nanoseconds beside a read, and the hash costs eleven times that.*

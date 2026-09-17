@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.215359` | [A booked red is a claimable thing](20260916/20260916-215359_a-booked-red-is-a-claimable-thing.kyri) | the clause excused the one repair the fleet advertises |
 | `20260916.215124` | [The walk stays and the read goes](20260916/20260916-215124_the-walk-stays-and-the-read-goes.kyri) | The library tree read once per library, not per build; a red booked|
 | `20260916.214125` | [A control by role, and the five doors](20260916/20260916-214125_a-control-by-role-and-the-five-doors.kyri) | the skip was one word over three states |
 | `20260916.213614` | [The shelf that ran none of them](20260916/20260916-213614_the-shelf-that-ran-none-of-them.kyri) | Five printed answers, bound to no instrument until now |
