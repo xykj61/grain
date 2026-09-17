@@ -70,29 +70,29 @@ two product rooms, reading the pair off the contract's OWN residence table so a 
 guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
 five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
 
-**BAKERY -- THREE GUARDS STOOD ON NO ROSTER, AND THE METER COUNTING THEM COULD NOT NAME THEM.**
-Elder account [shelved whole](archive/20260917-095028_itinerary-landed-accounts.md), its ledger ask
-with it. **AETHER HEARS** (row 0, N=5310): listen for the silence where a claim used to be. The
-silence was `witness_reach` answering `unreached=638 ceiling=636` -- RED on bytes I inherited --
-over `tools/c/control_in_population_witness.rish`, `tools/c/control_perturbation_witness.rish` and
-`tools/l/link_touch_witness.rish`, every one `unheard`, named by no runner at all. That is `%810`'s
-class, and this guard never heard it here because it is `tier cadence` and last ran on this pier
-`20260911.085347`. All three GREEN alone on metal -- 54s, 166s, 4.8s -- all three rostered, ceiling
-**636 to 635**, guard green.
-**THE MECHANISM.** `tools/fixtures/w/witness_reach_scan.sh` walks `git log --diff-filter=A` whole,
-carries the `NEW_DAYS` cutoff in one `awk`, intersects the adds with the gated set, prints
-`unreached_new=` in its verdict line and names each path under `--new`. The ceiling said a number
-rose and stopped; naming the files took a `git log` a hand had to think to write. Gates nothing:
-2.7s against the scan's 12s.
-**PROVEN:** control **60 legs from 52, 0 failing**, two mutations bitten -- and a third that fired
-for real, since the first cut used `--since`, which PRUNES the walk at the first old commit, so the
-pen's 2020-dated plant dropped every plant behind it and `unreached_new` FELL where it should have
-risen. Three legs caught a scan that read correctly on this tree.
-**MINE:** I checked the absence of my own NAMES rather than of the SUBJECT, and claimed a census
-this tree has run since `20260825`. Forty minutes and one grep later the claim was rewritten to the
-red that census reports. `%457`, one layer in: a path check answers about spellings.
-**YOURS:** `unreached_new` reports where it could gate. A wall at zero would red the lap a witness
-lands unrostered, priced at one roster row per lane -- take it, or keep the reading advisory?
+**BAKERY -- A SILENCE OVER A COMPILATION IS THE ONE THAT COST A FORTNIGHT, AND NOTHING TOLD IT
+APART.** Elder account [shelved whole](archive/20260917-125737_itinerary-landed-accounts.md), its
+roster ask with it. **EARTH BREATHES IN** (row 4, N=5349): the concrete fact at the door.
+`assert_evidence` read **7,448** mute refusals tree-wide and walls one swept room; that total can
+never be gated -- it grows with ordinary work.
+**THE MECHANISM.** Each asserted record already carries a traced binding, so the same trace answers
+a second question: does this command COMPILE RYE -- `tools/fixtures/r/rye_build.sh`, or the `rye`
+binary asked for `build`, `build-lib` or `run`. A function whose body reaches one passes the reading
+to its callers; `rishi run` carries no `rye` token and is never claimed.
+`build_mute` is that class crossed with silence: **1,123 of 7,448** against **2,070** compilations
+-- **54 percent of this tree's compilations refused without a diagnostic** -- and **1,059 of 7,384**
+once `tools/ca/` was swept: **64 sites across 63 files**, one `err_brief` interpolation each,
+`build_cohort_mute` walling that room at zero. A SECOND cohort over a second reading rather than a
+widening, so a mute refusal over a `mkdir` in Caravan walks free and is still counted.
+**PROVEN:** pen **85 legs from 62, six mutations bitten**, and every one of the 64 cured lines was
+RUN against a true record -- **64 of 64 before the sweep and after**. Floor: **127** mute refusals
+bind to a wrapper script named `build`, which the one-file reading cannot follow.
+**MINE:** I first named the reading `build_enforced_mute`, and `enforced_mute` is its SUFFIX -- so
+the elder wall's own `assert scan.out contains "enforced_mute=0"` would have been satisfied by my
+new line and stopped biting while reading green.
+**YOURS:** that class, unread -- **6,388** such asserts across **636** witnesses, FREE.
+The hot pass reads **20 red of 351** to the cold's 19, and the difference, `rune_assert_arrival`, is
+**GREEN alone at 24 legs** -- flaky, unbookable at the pin's bound.
 
 **COPAL -- THE COPY STEP THE CARD CALLED THE LARGER DOOR, AND THE GUARD NOBODY COULD SEE.** Elder
 account [shelved whole](archive/20260917-091616_itinerary-landed-accounts.md), its ask answered.
@@ -218,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d4a5c28faa` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `cc63850fab` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account

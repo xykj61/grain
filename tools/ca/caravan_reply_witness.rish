@@ -67,7 +67,7 @@ assert mk.ok else "caravan-reply: could not make the build directories"
 # 1. THE MODULE BUILDS AND PROVES ITSELF. Its asserts are the specification -- the order, the reach, the echo, the
 #    promise that a refused ask spends nothing, and the sweep that holds all of it together.
 let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/reply.rye -femit-bin=${bin}"]
-assert build.ok else "caravan-reply: the module did not build"
+assert build.ok else "caravan-reply: the module did not build -- ${build.err_brief}"
 
 let test = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert test.ok else "caravan-reply: the self-test exited non-zero"
@@ -132,7 +132,7 @@ assert printed.out contains "echoes seL4_IllegalOperation, which the table owns"
 #    that closed the agenda by editing the count would have closed nothing.
 let agenda_bin = "caravan/bin/refusals"
 let agenda_build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/refusals.rye -femit-bin=${agenda_bin}"]
-assert agenda_build.ok else "caravan-reply: the refusal agenda did not build"
+assert agenda_build.ok else "caravan-reply: the refusal agenda did not build -- ${agenda_build.err_brief}"
 
 let agenda = run ["sh" "-c" "${agenda_bin} selftest 2>&1"]
 assert agenda.ok else "caravan-reply: the refusal agenda's self-test exited non-zero"

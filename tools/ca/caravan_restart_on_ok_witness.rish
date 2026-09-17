@@ -7,7 +7,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/restart-on-ok"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/restart_on_ok.rye -femit-bin=${bin}"]
-assert build.ok else "restart_on_ok build failed"
+assert build.ok else "restart_on_ok build failed -- ${build.err_brief}"
 
 let run = run ["sh" "-c" "${bin} 2>&1"]
 assert run.ok else "restart_on_ok supervisor exited non-zero"

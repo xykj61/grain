@@ -373,6 +373,104 @@ leg empty_pen_zero    "$(echo "$out" | read_key asserts)"      0
 leg empty_pen_verdict "$(echo "$out" | read_key verdict)"      within
 
 # ---------------------------------------------------------------------------
+# THE BUILD READING -- which refusals stand over a Rye COMPILATION.
+#
+# A refusal over a compilation discards a compiler diagnostic produced under a load that may never
+# reproduce, which is the silence REDS %734 paid a fortnight for. Four spellings reach a Rye
+# compiler and two look like they might and do not, so each is planted and named.
+# ---------------------------------------------------------------------------
+
+d=$(build build_classes)
+plant "$d" tools/p/pen_build_witness.rish <<'RISH'
+let script = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert script.ok else "the module did not build"
+let sub = run ["rye" "build" "caravan/seed.rye"]
+assert sub.ok else "the module did not build"
+let lib = run ["rye" "build-lib" "caravan/seed.rye"]
+assert lib.ok else "the library did not build"
+let ryerun = run ["sh" "-c" "rye/bin/rye run tools/rye/pen.rye"]
+assert ryerun.ok else "the program did not run"
+let dir = run ["mkdir" "-p" "caravan/bin"]
+assert dir.ok else "could not make the directory"
+let rishirun = run ["rishi/bin/rishi" "run" "tools/p/pen_other.rish"]
+assert rishirun.ok else "the witness refused"
+RISH
+out=$(commit_and_read "$d")
+blist=$( cd "$d" && sh tools/fixtures/a/assert_evidence_scan.sh --build 2>/dev/null )
+leg build_counts_four        "$(echo "$out" | read_key build_mute)"    4
+leg build_mute_under_mute    "$(echo "$out" | read_key mute_asserts)"  6
+leg build_names_script       "$(echo "$blist" | grep -cE '[[:space:]]script$')"   1
+leg build_names_subcommand   "$(echo "$blist" | grep -cE '[[:space:]]sub$')"      1
+leg build_names_buildlib     "$(echo "$blist" | grep -cE '[[:space:]]lib$')"      1
+leg build_names_rye_run      "$(echo "$blist" | grep -cE '[[:space:]]ryerun$')"   1
+leg build_omits_mkdir        "$(echo "$blist" | grep -cE '[[:space:]]dir$')"      0
+leg build_omits_rishi_run    "$(echo "$blist" | grep -cE '[[:space:]]rishirun$')" 0
+
+# A build refusal that already names the reason is the cure, and must leave the silent reading
+# alone. The clear direction is asserted as hard as the refusal.
+d=$(build build_cured)
+plant "$d" tools/p/pen_build_cured.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "the module did not build -- ${build.err_brief}"
+RISH
+out=$(commit_and_read "$d")
+leg build_cured_counted      "$(echo "$out" | read_key build_asserts)" 1
+leg build_cured_not_silent   "$(echo "$out" | read_key build_mute)"    0
+leg build_cured_is_the_cure  "$(echo "$out" | read_key names_err)"     1
+
+# A function whose body reaches a compiler passes that reading to its callers, exactly as the
+# binding trace already passes the record SHAPE. Without it a witness that builds through one
+# helper reads as though it compiled nothing.
+d=$(build build_fn)
+plant "$d" tools/p/pen_build_fn.rish <<'RISH'
+fn build-module src: run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh ${src} -femit-bin=pen"]
+let mod = build-module "caravan/seed.rye"
+assert mod.ok else "the module did not build"
+RISH
+out=$(commit_and_read "$d")
+leg build_fn_trace           "$(echo "$out" | read_key build_mute)"    1
+
+# ---------------------------------------------------------------------------
+# THE BUILD COHORT -- `tools/ca/` held at zero silent BUILD refusals, which is a second wall over
+# a second reading rather than a widening of the first. A plain mute in that room walks free.
+# ---------------------------------------------------------------------------
+
+d=$(build build_cohort)
+plant "$d" tools/ca/caravan_pen_witness.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "caravan seed build failed -- ${build.err_brief}"
+let dir = run ["mkdir" "-p" "caravan/bin"]
+assert dir.ok else "could not make the directory"
+RISH
+plant "$d" tools/p/pen_build_elsewhere.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh mantra/seed.rye -femit-bin=pen"]
+assert build.ok else "the module did not build"
+RISH
+out=$(commit_and_read "$d")
+leg build_cohort_counts_files  "$(echo "$out" | read_key build_cohort_files)" 1
+leg build_cohort_clear_zero    "$(echo "$out" | read_key build_cohort_mute)"  0
+leg build_cohort_clear_verdict "$(echo "$out" | read_key verdict)"              within
+leg build_cohort_ignores_others "$(echo "$out" | read_key build_mute)"          1
+leg build_cohort_admits_plain_mute "$(echo "$out" | read_key mute_asserts)"     2
+
+plant "$d" tools/ca/caravan_pen_witness.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "caravan seed build failed"
+RISH
+out=$(commit_and_read "$d")
+leg build_cohort_regress_counted "$(echo "$out" | read_key build_cohort_mute)" 1
+leg build_cohort_regress_verdict "$(echo "$out" | read_key verdict)"             build_cohort_regressed
+( cd "$d" && sh tools/fixtures/a/assert_evidence_scan.sh >/dev/null 2>&1 )
+leg build_cohort_regress_exit "$?" 1
+
+plant "$d" tools/ca/caravan_pen_witness.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "caravan seed build failed -- ${build.err_brief}"
+RISH
+out=$(commit_and_read "$d")
+leg build_cohort_lifts_again "$(echo "$out" | read_key verdict)" within
+
+# ---------------------------------------------------------------------------
 # MUTATIONS -- each removes one clause of the scan and must change a reading.
 # ---------------------------------------------------------------------------
 
@@ -449,6 +547,38 @@ RISH
   leg mutation_sayshape_bites "$(echo "$out" | read_key mute_asserts)" 0
 else
   leg mutation_sayshape_bites unpatched patched
+fi
+
+# Mutation 5 -- drop the build-script arm of the compiler test. A witness that builds through this
+# tree own script then reads as though it compiled nothing.
+mut=$pen/mut_isbuild.sh
+sed 's|if (b ~ /rye_build\\.sh/) return 1|if (0) return 1|' "$scan" > "$mut"
+if ! cmp -s "$mut" "$scan"; then
+  m=$(build mutant_isbuild "$mut")
+  plant "$m" tools/p/pen_build_only.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "the module did not build"
+RISH
+  out=$(commit_and_read "$m")
+  leg mutation_isbuild_bites "$(echo "$out" | read_key build_mute)" 0
+else
+  leg mutation_isbuild_bites unpatched patched
+fi
+
+# Mutation 6 -- disarm the build cohort gate. The regression then walks free, which is what a wall
+# nobody proved from both sides looks like from the inside.
+mut=$pen/mut_buildgate.sh
+sed 's|if \[ "$build_cohort_mute" -gt 0 \]; then|if [ 0 -gt 0 ]; then|' "$scan" > "$mut"
+if ! cmp -s "$mut" "$scan"; then
+  m=$(build mutant_buildgate "$mut")
+  plant "$m" tools/ca/caravan_pen_witness.rish <<'RISH'
+let build = run ["sh" "-c" "sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=pen"]
+assert build.ok else "caravan seed build failed"
+RISH
+  out=$(commit_and_read "$m")
+  leg mutation_buildgate_bites "$(echo "$out" | read_key verdict)" within
+else
+  leg mutation_buildgate_bites unpatched patched
 fi
 
 # ---------------------------------------------------------------------------

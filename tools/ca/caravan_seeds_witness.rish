@@ -8,7 +8,7 @@ let bin_dir = "caravan/bin"
 
 let build = run ["sh" "-c" "mkdir -p ${bin_dir} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/seed.rye -femit-bin=${bin_dir}/seed && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/bounded.rye -femit-bin=${bin_dir}/bounded && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/twin.rye -femit-bin=${bin_dir}/twin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/chain.rye -femit-bin=${bin_dir}/chain && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/service.rye -femit-bin=${bin_dir}/service"]
 
-assert build.ok else "caravan seeds build failed"
+assert build.ok else "caravan seeds build failed -- ${build.err_brief}"
 
 let seed = run ["sh" "-c" "${bin_dir}/seed 2>&1"]
 assert seed.ok else "caravan seed supervisor exited non-zero"

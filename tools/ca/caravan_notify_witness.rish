@@ -18,7 +18,7 @@ let bin = "caravan/bin/notify"
 
 let build = run ["sh" "-c" "mkdir -p caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/notify.rye -femit-bin=${bin}"]
 
-assert build.ok else "caravan notify build failed"
+assert build.ok else "caravan notify build failed -- ${build.err_brief}"
 
 # A fresh provisioning each run, so a bell found ringing was rung by this
 # run's producer rather than left standing by the last one.

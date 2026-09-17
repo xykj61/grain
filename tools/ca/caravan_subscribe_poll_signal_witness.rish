@@ -25,7 +25,7 @@ let out = "${pen}/svc.out"
 let probe_sh = "tools/fixtures/c/caravan_subscribe_poll_signal.sh"
 
 let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
-assert build.ok else "subscribe poll signal build failed"
+assert build.ok else "subscribe poll signal build failed -- ${build.err_brief}"
 
 let probe = run ["sh" probe_sh service delivery sentinel out]
 assert probe.ok else "subscribe poll signal witness shell failed"

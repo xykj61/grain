@@ -82,6 +82,24 @@
 # `fn build_guest src elf: run [...]` return run records through a call, and without the trace 183
 # sites read as unbound where 101 of them carry `err` and can take the cure today.
 #
+# THE THIRD READING, AND THE ONE THIS SCAN GATES TWICE. Not every silence costs the same. A mute
+# refusal over a `git` or a `mkdir` sits above a command a reader re-runs in a second; a mute
+# refusal over a RYE COMPILATION discards a compiler diagnostic produced under a load that may
+# never reproduce, and that is the exact silence REDS %734 paid a fortnight for. So each assertion
+# also carries whether its bound command compiles Rye:
+#
+#   build   -- the binding names `tools/fixtures/r/rye_build.sh`, or asks the `rye` binary for
+#              `build`, `build-lib`, or `run`, which compiles before it runs. A locally defined
+#              function whose body reaches one of those passes the reading to its callers, exactly
+#              as the record shape is already passed.
+#   plain   -- everything else. `rishi run` carries no `rye` token and is never claimed here.
+#
+# `build_mute` is that class crossed with silence, and it is where a sweep buys the most. It read
+# 1,123 of 7,448 when the class was first named on `20260917`, against 2,070 compilations in
+# all -- so 54 percent of this tree's compilations refused without a diagnostic. The seating lap
+# swept `tools/ca/` and it reads 1,059 of 7,384; both figures are FREE and rise with new witnesses,
+# which is why the tree-wide reading prints and only the cohort gates.
+#
 # THIS SCAN IS NOT IN ITS OWN GATED POPULATION, on purpose and provably. The population is tracked
 # `*.rish` alone, because the shape is Rishi's: twenty tracked `*.sh` files carry the characters,
 # and every one is a control either QUOTING an assertion as a string it requires a launcher to hold
@@ -96,6 +114,12 @@
 # a person wrote cannot carry what the command said on the day it failed. The `say` lookback is six
 # lines, chosen because a reason printed further above a refusal is separated from it by other
 # output; a wider window would count a `say` belonging to an earlier step. A binding whose
+# A command reaching a Rye compiler through a WRAPPER SHELL SCRIPT -- `run ["sh"
+# "tools/fixtures/p/pond_build_drawn_terminal.sh"]` -- reads `plain`, because the reading stays
+# inside the one Rishi file and a script name is not a promise about what the script runs. Measured
+# `20260917`: 127 mute refusals bind to a shell script whose own name carries `build`, so the
+# `build_mute` figure is a floor by that much at least. Following a wrapper is a second trace, and
+# the reading says less rather than claiming more until somebody writes it. A binding whose
 # right-hand side opens on a conditional rather than on a verb or a call reads `unseen` rather than
 # being followed into its branches -- two sites in `tools/c/chatgpt-mind.rish` stand there, both
 # path-shaped in truth, so the miss is toward saying less rather than toward claiming more.
@@ -118,7 +142,13 @@ cd "$_fd_root" || exit 2
 # THE ENFORCED COHORT, held at zero. `tools/l/lattice_*_witness.rish` is the forty-file set REDS
 # %734 names, swept on the lap this scan was seated. Zero carries no slack by construction, and a
 # glob rather than a name list means a witness added to that room arrives already held.
-ENFORCE_GLOB='tools/l/lattice_*_witness.rish' 
+ENFORCE_GLOB='tools/l/lattice_*_witness.rish'
+
+# THE BUILD COHORT, held at zero on its own reading. `tools/ca/` is Caravan, this seat's own lane,
+# swept on the lap `build_mute` was seated. It is a SECOND cohort rather than a widening of the
+# first, because the two readings differ: the lattice glob is held at zero MUTE, and this room at
+# zero BUILD_MUTE, which leaves a mute refusal over a `git` or a `mkdir` in that room alone.
+BUILD_ENFORCE_GLOB='tools/ca/*.rish'
 
 # BOUNDS. A tree this size holds a few thousand Rishi sources and some tens of thousands of
 # assertions; both limits sit an order above the live reading, so a wildly wrong enumeration meets
@@ -131,9 +161,10 @@ TARGET=
 case "${1:-}" in
   '')        ;;
   --list)    MODE=list ;;
+  --build)   MODE=build ;;
   --classes) MODE=classes ;;
   --explain) MODE=explain; TARGET=${2:-} ;;
-  *) echo "$0: unknown argument '$1' (want --list, --classes, or --explain <path>)" >&2; exit 2 ;;
+  *) echo "$0: unknown argument '$1' (want --list, --build, --classes, or --explain <path>)" >&2; exit 2 ;;
 esac
 if [ "$MODE" = explain ] && [ -z "$TARGET" ]; then
   echo "$0: --explain wants a path" >&2
@@ -184,7 +215,17 @@ if [ -s "$work/candidates.txt" ]; then
       if (b ~ /(^|[^A-Za-z0-9_-])wait-for[ \t]/) return "run"
       return ""
     }
-    function flush(  n, j, s, piece, rhs, k, nm, L, v, m, cls, bind) {
+    # DOES THIS COMMAND COMPILE RYE? A refusal over a compilation discards a COMPILER DIAGNOSTIC
+    # produced under a load that may never reproduce, which is the silence REDS %734 paid a
+    # fortnight for. Two spellings reach it: the build script this tree owns, and the `rye` binary
+    # asked for `build`, `build-lib`, or `run` -- `run` compiles before it runs. `rishi` carries no
+    # `rye` token, so a Rishi invocation cannot be claimed here.
+    function is_build(b) {
+      if (b ~ /rye_build\.sh/) return 1
+      if (b ~ /rye["[:space:]]+"?(build|build-lib|run)["[:space:]]/) return 1
+      return 0
+    }
+    function flush(  n, j, s, piece, rhs, k, nm, L, v, m, cls, bind, bld) {
       if (path == "") return
 
       # Locally defined functions first. `fn git-run tail: run (git_argv + tail)` returns a run
@@ -198,6 +239,7 @@ if [ -s "$work/candidates.txt" ]; then
         sub(/[^A-Za-z0-9_-].*$/, "", nm)
         k = body_kind(line[n])
         if (k != "") fnkind[nm] = k
+        if (is_build(line[n])) fnbuild[nm] = 1
       }
 
       # Then every binding. The right-hand side decides, and a call to a known function inherits
@@ -211,12 +253,13 @@ if [ -s "$work/candidates.txt" ]; then
           nm = piece
           sub(/[ \t]*=.*$/, "", nm)
           k = body_kind(rhs)
+          head = rhs
+          sub(/[^A-Za-z0-9_-].*$/, "", head)
           if (k == "") {
-            head = rhs
-            sub(/[^A-Za-z0-9_-].*$/, "", head)
             if (head in fnkind) k = fnkind[head]
           }
           if (k != "") bound[nm] = k
+          if (is_build(rhs) || (head in fnbuild)) bbuild[nm] = 1
           s = substr(s, RSTART + RLENGTH)
         }
       }
@@ -242,11 +285,14 @@ if [ -s "$work/candidates.txt" ]; then
           }
         }
         bind = (v in bound) ? bound[v] : "unseen"
-        printf "%s\t%d\t%s\t%s\t%s\n", path, n, cls, v, bind
+        bld = (v in bbuild) ? "build" : "plain"
+        printf "%s\t%d\t%s\t%s\t%s\t%s\n", path, n, cls, v, bind, bld
       }
 
       for (j in bound)  delete bound[j]
       for (j in fnkind) delete fnkind[j]
+      for (j in bbuild) delete bbuild[j]
+      for (j in fnbuild) delete fnbuild[j]
       for (j = 1; j <= held; j++) delete line[j]
       held = 0
     }
@@ -272,6 +318,8 @@ mute=$(count_class mute)
 cure_unwritable=$(awk -F'\t' '$5 != "run" { n++ } END { print n + 0 }' "$work/asserts.txt")
 bind_path=$(awk -F'\t' '$5 == "path" { n++ } END { print n + 0 }' "$work/asserts.txt")
 bind_unseen=$(awk -F'\t' '$5 == "unseen" { n++ } END { print n + 0 }' "$work/asserts.txt")
+build_asserts=$(awk -F'\t' '$6 == "build" { n++ } END { print n + 0 }' "$work/asserts.txt")
+build_mute=$(awk -F'\t' '$3 == "mute" && $6 == "build" { n++ } END { print n + 0 }' "$work/asserts.txt")
 files=$(wc -l < "$work/candidates.txt" | tr -d ' ')
 
 # The share, printed so a reader can tell a tree that GREW from a tree that got worse. Integer
@@ -290,16 +338,24 @@ enforced_files=$(wc -l < "$work/enforced.txt" | tr -d ' ')
 enforced_mute=$(awk -F'\t' 'NR == FNR { keep[$0] = 1; next } $3 == "mute" && ($1 in keep) { n++ } END { print n + 0 }' \
   "$work/enforced.txt" "$work/asserts.txt")
 
+git ls-files -- $BUILD_ENFORCE_GLOB > "$work/build_enforced.txt" 2>/dev/null || : > "$work/build_enforced.txt"
+build_cohort_files=$(wc -l < "$work/build_enforced.txt" | tr -d ' ')
+build_cohort_mute=$(awk -F'\t' 'NR == FNR { keep[$0] = 1; next } $3 == "mute" && $6 == "build" && ($1 in keep) { n++ } END { print n + 0 }' \
+  "$work/build_enforced.txt" "$work/asserts.txt")
+
 case "$MODE" in
   list)
     awk -F'\t' '$3 == "mute" { printf "%s:%s\t%s\n", $1, $2, $4 }' "$work/asserts.txt"
     ;;
+  build)
+    awk -F'\t' '$3 == "mute" && $6 == "build" { printf "%s:%s\t%s\n", $1, $2, $4 }' "$work/asserts.txt"
+    ;;
   classes)
-    awk -F'\t' '{ printf "%s:%s\t%s\t%s\t%s\n", $1, $2, $3, $4, $5 }' "$work/asserts.txt"
+    awk -F'\t' '{ printf "%s:%s\t%s\t%s\t%s\t%s\n", $1, $2, $3, $4, $5, $6 }' "$work/asserts.txt"
     ;;
   explain)
     echo "explain=$TARGET"
-    awk -F'\t' '{ printf "line=%s class=%s record=%s binding=%s\n", $2, $3, $4, $5 }' "$work/asserts.txt"
+    awk -F'\t' '{ printf "line=%s class=%s record=%s binding=%s command=%s\n", $2, $3, $4, $5, $6 }' "$work/asserts.txt"
     echo "asserts_here=$asserts"
     ;;
 esac
@@ -316,8 +372,12 @@ echo "mute_per_ten_thousand=$share"
 echo "cure_unwritable=$cure_unwritable"
 echo "bind_path=$bind_path"
 echo "bind_unseen=$bind_unseen"
+echo "build_asserts=$build_asserts"
+echo "build_mute=$build_mute"
 echo "enforced_files=$enforced_files"
 echo "enforced_mute=$enforced_mute"
+echo "build_cohort_files=$build_cohort_files"
+echo "build_cohort_mute=$build_cohort_mute"
 
 if [ "$MODE" = explain ]; then
   echo "verdict=explained"
@@ -326,6 +386,10 @@ fi
 
 if [ "$enforced_mute" -gt 0 ]; then
   echo "verdict=enforced_regressed"
+  exit 1
+fi
+if [ "$build_cohort_mute" -gt 0 ]; then
+  echo "verdict=build_cohort_regressed"
   exit 1
 fi
 echo "verdict=within"

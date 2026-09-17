@@ -19,7 +19,7 @@ let pen = trim mk.out
 let sentinel = "${pen}/poll-stop"
 
 let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
-assert build.ok else "witness stop footgun build failed"
+assert build.ok else "witness stop footgun build failed -- ${build.err_brief}"
 
 let refuse = run ["sh" "-c" "rm -f ${sentinel} && ${service} ${delivery} ${sentinel} 2 2>&1; echo exit:$?"]
 assert refuse.out contains "witness-stop-after-N is test-only" else "missing refusal message"
