@@ -58,12 +58,6 @@ stamp 20260916.225642
 epoch 1789613802
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish
 what REDS %790: rye/src/main.rye writes one memo record beside the rye binary per distinct subject it has ever keyed -- rye-key-cache.<digest>.kyri for a file, rye-key-library.<digest>.kyri for a library tree -- and nothing ever removes one. Measured 56 records, 5 live, 51 naming a deleted path. rye/bin/ is gitignored, so no meter in this tree can see the room and the only bound is the one the writer states. Build it: a named per-family ceiling on the record count, and an eviction after a write that deletes the oldest-written records past it, skipping the record just written and refusing any name that is not exactly prefix + 16 hex + .kyri so a peer's .writing temporary is never touched. Per family rather than across both, keeping the landing paper's single-strandedness -- a library build can never evict a file record. Deleting a record costs a rehash and never a wrong answer, which is the whole safety argument.
-claim diffuser-baseline-mcpu-hash
-seat diffuser
-stamp 20260916.232857
-epoch 1789615737
-paths external-research active-designing
-what Falsifier 2 of active-designing/20260916-221930_the-mode-a-compiler-ships-under.md, which that paper named and left unrun: rebuild rye/src/main.rye to a scratch path under .lap/ with -mcpu=baseline at Debug, ReleaseSafe and ReleaseFast, count SHA-NI opcode hits in each binary, and time rye key over the same 552-file 16,416,628-byte rye/lib/std tree. The question is whether the measured 3.1x Debug-to-ReleaseFast gap on library hashing survives when the SHA-NI extension is absent from the target -- that is, whether the gap is about optimization alone or about the hardware instruction the compiler emits. Writes one paper in active-designing/ and no tool; touches no shared instrument.
 claim incense-card-names-its-nib-once
 seat incense
 stamp 20260917.000218
