@@ -88,3 +88,9 @@ stamp 20260916.231010
 epoch 1789614610
 paths tools/fixtures/c/control_leg_heard_scan.sh tools/c/control_leg_heard_witness.rish tools/fixtures/c/control_leg_heard_control.sh tools/fixtures/g/generated_page_freshness_control.sh tools/g/generated_page_freshness_witness.rish
 what Rishi contains is a raw substring, so a witness assert contains "debt_paid=yes" is satisfied by the line ledger_debt_paid=yes alone -- proven on metal in a two-line pen. A leg whose name is a strict suffix of a sibling leg the same control emits is therefore named and still indistinguishable: it may read no on any lap while its own assert passes on the longer leg. Measured 27 such assertions across 7 pairs, 17 in standing_equipment. Add a second reading, masked, to control_leg_heard_scan.sh beside unheard, ratcheted at the true count with the control proving it both ways, and close the generated_page_freshness pair on touch by renaming ledger_debt_paid and ledger_dirty_refused, which also names ledger_pick_stale in an assert.
+claim diffuser-baseline-mcpu-hash
+seat diffuser
+stamp 20260916.232857
+epoch 1789615737
+paths external-research active-designing
+what Falsifier 2 of active-designing/20260916-221930_the-mode-a-compiler-ships-under.md, which that paper named and left unrun: rebuild rye/src/main.rye to a scratch path under .lap/ with -mcpu=baseline at Debug, ReleaseSafe and ReleaseFast, count SHA-NI opcode hits in each binary, and time rye key over the same 552-file 16,416,628-byte rye/lib/std tree. The question is whether the measured 3.1x Debug-to-ReleaseFast gap on library hashing survives when the SHA-NI extension is absent from the target -- that is, whether the gap is about optimization alone or about the hardware instruction the compiler emits. Writes one paper in active-designing/ and no tool; touches no shared instrument.
