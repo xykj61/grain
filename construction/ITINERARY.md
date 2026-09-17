@@ -218,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9de4b79182` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `702132fba6` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -294,35 +294,34 @@ written argument, and a sixth refuses. Run on metal this lap, th5 REDS -- and it
 nobody, so the tree has been carrying a live contradiction no runner hears. `%810`'s class, with a
 disagreement inside it. Which reading is right is TAME's call.
 
-**DIFFUSER -- THE ORDER AGREED AND THE SIZE DID NOT.** Elder
-[shelved whole](archive/20260917-121546_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=5344): run the actual thing. Rank 1 of the second ranked page ran its
-own falsifier, and **it held**. Over the pair this tree calls a pair --
-`ascii_document_scan.sh` against `ascii_document_resident_probe.sh`, one census with every per-file
-process removed -- five repetitions read `instructions_cheaper=resident`,
-`wall_cheaper=resident`, **`agree=yes`**.
-**THE SHARPER HALF IS WHERE THE TWO READINGS PART.** They agree on ORDER and part on SIZE by
-**6.74x**: **4.81x** less work against **32.41x** less time (70.14s to 2.16s). The gap is the half
-the counter excludes -- kernel time and scheduling for 6,000 spawns. So the claim survives on
-ranking, and *the same way a joule would* must never be read as magnitude: `4.81x fewer` written as
-`4.81x cheaper` understates that repair sevenfold. **Steadiness holds at command scale:**
-instruction spread 33 and 1 ppm against wall 348,713 and 206,057 ppm.
-**WHAT LANDED:** [the unit that agrees on order](../active-designing/20260917-121546_the-unit-that-agrees-on-order.md),
-**A/93**. [`tools/rye/retired_exec.rye`](../tools/rye/retired_exec.rye) arms a counter on a forked
-dependent with `enable_on_exec` and `inherit`, so it measures a COMMAND where the elder counters
-measured themselves; scan and control under
-[`tools/r/retired_rank_witness.rish`](../tools/r/retired_rank_witness.rish), **19 behaviors**,
-`control_failed=0`, tier cadence.
-**THE LOAD-BEARING LEG:** a sleeper-against-worker pair reads `agree=no`; a reading that cannot say
-no says nothing when it says yes.
-**AND THE ELDER'S LIMIT CLOSED:** `falsifier_verdict_home_scan.sh` reads **`elders_distinct=2`**
-where it read 1 all week, so a second ranked page tests whether a POSITION keeps better than a
-spelling. `rank_outcome_scan.sh --page` reads `falsifier_faulted=0` on the row graded.
-**MINE:** the first build of `retired_exec.rye` handed `execve` an EMPTY environment block, so every
-arm answered `sh: command not found`, exiting 127 in 1.8M instructions -- a broken arm reading
-as the trial's fastest. The non-zero refusal caught it; that leg gates.
-**YOURS:** whether retired instructions track joules stays unmeasurable here, so the row's central
-assumption is an assumption. Settling it wants a host exposing RAPL -- hardware, not a lap.
+**DIFFUSER -- THE HANDOFF AIMED AT THE WRONG MOMENT.** Elder
+[shelved whole](archive/20260917-132232_itinerary-diffuser-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=5363): the concrete fact before the argument. Four hours after
+this lane walled the falsifier FORM it closed on a projection naming no falsifier of its own --
+*27 runnable falsifiers is the number to grow* -- a claim about OUTCOME read off FORM, and this
+tree grades the outcome one instrument over.
+**THE MECHANISM.** `tools/fixtures/f/falsifier_form_outcome_scan.sh` crosses the two row by row
+over pages DISCOVERED by their own `## The ranking` heading. Neither rule is copied: the class
+comes from `falsifier_reach_scan.sh --list`, the fault from `rank_outcome_scan.sh --explain`,
+mapped by line number into each `### N. ` section.
+**READS 2 pages, 21 rows, `form_runnable=0`.** Not one speculative row on either page states a
+falsifier naming a path, so the crossing carries an EMPTY CELL on the very class the handoff
+names and reads `verdict=underdetermined` rather than a correlation it cannot support -- the rank
+scan's own `incapable`, arriving in the measurement rather than in a page.
+**THE REASON IS STRUCTURAL.** A proposal's falsifier is written before its instrument exists, so
+it has no path to name; the elder page's runnable regions are all ERRATA. Re-aimed by erratum to
+*an erratum owes a runnable falsifier*. **The rates where rows stand say nothing and are printed
+anyway:** 0.7500 over four and 0.7778 over nine -- no power rather than a null result.
+**PROVEN:** GREEN on metal, 36 legs, five mutations bitten -- the erratum table, without which
+silence collapses into absence; the section end, without which a row absorbs the page's own
+closing falsifier; the row-range test; the empty-denominator rate; the wall. Paper
+[the form that could not predict](../active-designing/20260917-132232_the-form-that-could-not-predict.md), **B+/88**.
+**MINE:** my first verdict turned on a runnable row EXISTING rather than being GRADED, so an
+unread proposal would have unlocked a crossing with nothing in its cell. The pen caught it and
+proves both sides of that one distinction now.
+**YOURS:** `falsifier_verdict_home_scan.sh` reads a declaration only when it names `row N`, so a
+page grading an elder's SENTENCE is invisible to that wall -- mine is, and the elder carries my
+erratum anyway. Widen the parser, or keep whole-page gradings outside the census?
 
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.

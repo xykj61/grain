@@ -7569,6 +7569,17 @@ path tools/f/falsifier_reach_witness.rish
 tier lap   # 19s; 493 pages and 580 regions read, 44 control legs, four mutations bitten.
 seated 20260917.093812
 
+# falsifier_form_outcome crosses the two readings that never met. falsifier_reach reads a
+# falsifier's FORM and closes on one handoff -- grow the runnable count; rank_outcome reads
+# what an erratum found wrong with it. Across BOTH ranked pages, 21 speculative rows, the
+# runnable count is ZERO, so the crossing has an empty cell on exactly the class the handoff
+# names and reads verdict=underdetermined rather than a correlation it cannot support. One
+# wall at zero: a ranked row carrying no falsifier region, which no later erratum can grade.
+guard falsifier_form_outcome
+path tools/f/falsifier_form_outcome_witness.rish
+tier lap   # 44s; 2 ranked pages and 21 rows crossed, 36 control legs, five mutations bitten.
+seated 20260917.133000
+
 # verdict-home -- where a verdict about an elder claim lands. Walls `unanswered` at zero: a
 # child page declaring in its door that it graded row N of an elder page, where the elder
 # carries no matching `Row N erratum` line. A wall rather than a ratchet, since all 14
