@@ -16,6 +16,7 @@
 | `20260917.072125` | [The unit that survives the pier](20260917/20260917-072125_the-unit-that-survives-the-pier.kyri) | A falsifier that fired half the time; CPU medians move 44x less. |
 | `20260917.071855` | [A rebase is not a hand](20260917/20260917-071855_a-rebase-is-not-a-hand.kyri) | The class fired seven times, not once; the pin unblocked. |
 | `20260917.071711` | [A step that starts no process](20260917/20260917-071711_a-step-that-starts-no-process.kyri) | 8.9s to 0.11 in the projection; two reds a full ledger could not hold. |
+| `20260917.071220` | [The lock a round-open released](20260917/20260917-071220_the-lock-a-round-open-released.kyri) | Four in-tree locks, three named; the build lock swept mid-hold. |
 | `20260917.070803` | [A ratchet over a growing population is a wall](20260917/20260917-070803_the-wall-with-a-delay.kyri) | growth gated at zero on a 189-path roster |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
