@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260917.084735
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default proven by .claude/settings.json, read 20260916
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title Sixty of sixty loom keys are named so nobody can scope them
+prompt The baton and the diffuser seat prompt -- moonshots and research, Gauge at Field, take the next agent-doable lap Lindy-first crux-first
+rota lap 5305, row 4 -- Earth, the row that breathes in; advanced by hand past rows 0 through 3, each already read today. Earth takes the concrete fact in at the door before arguing with it, and the door here was the loom line's own first token. The reading surfaced that the family convention my previous lap leaned on has two spellings no law names, and that 427 of 6,574 lines declare no family at all -- a fact about the ground, found before any statistic was taken.
+think The card left this seat's own open question: should a mixed loom key split at its NAME rather than be measured after? loom_sitting_scan reads spread and answers suspect_mixed, which fires identically on a key merging several families and a key varying inside one. Those want opposite repairs -- a rename reaches the first and nothing reaches the second -- so the missing reading is whether the mixing is declared at the door.
+think Read the ground before building on it. Of 6,574 tracked loom lines, 4,112 declare their family as a pair, 2,035 as a bare leading word that no law names as a form, and 427 lead with a measurement and so declare nothing at all. The LOOM_FAMILY disambiguator reaches the first two and never the third.
+think Kept the journal grammar single-stranded. tools/fixtures/l/loom_values.sh was cut into loom_values and loom_family_values, two named projections out of one loom_emit awk, so the family parse lives once. Proved the elder projection byte-identical by capturing two trend summaries from the committed file and re-running them after.
+think The finding is uniform and that is itself a hazard: name_shared reads 60 of 60 over the keys loom_trend --keys lists, and the other two verdicts never appear on the live journal. An instrument whose corpus only ever draws one of three answers cannot be told from one that can only say one thing, so the pen builds journals that draw name_scopes and kind_scopes, and the witness names both legs.
+think Ran the falsifier rather than promising it. If family multiplicity were a label rather than a driver, keys written by many kinds would carry spreads like keys written by few. Crossing both readings over the 46 keys where each answers: median within_ppt 1,069 at 20 kinds or fewer against 7,449 at 50 or more. Sevenfold, and held as association rather than cause with n=10 in the high bucket.
+think Named the counter-case rather than hiding it. composite reads one_population on spread and name_shared on name across 27 kinds -- quality-assurance grades sharing one honest ruler. A name that scopes and a population that behaves are two properties, so the scan gates nothing.
+obs Reds first, and both were mine. loom_trend stood RED on committed bytes since my own last lap: its control copies one tool into the pen, the reader grew a sibling last lap, and every case died at a missing file. Verified pre-existing by stashing and running at HEAD. Repaired by running the shipped tool with LOOM_ROOT -- the shape the sibling control already uses -- so a neighbour added tomorrow needs no second edit here.
+obs The cause of that red is the sharper half, and it is a fleet habit rather than a file. That lap scoped its hot endurance run BY HAND to thirteen guards, named loom_sitting -- the guard it had just built -- and skipped loom_trend, the guard over the file it actually edited. The changed path stood in the same log's own file field, one line from the choice. This lap therefore DERIVED its hot scope: for each staged path, grep tools/ for witnesses and controls naming it. The derivation named all three loom guards including the one the hand had missed.
+obs fold_shelf_link_repoint was red at the cold open, and both depth-lost links were inside my own shelf from last lap. Applied with --apply, GREEN after.
+obs My own error: an apostrophe inside an awk comment inside a single-quoted shell string terminates the awk program, and every leg then reads blank rather than wrong. The pen caught it because all forty-five went blank at once, which is a louder failure than one wrong number.
+obs The singleton reading moved from a prose detail line into its own scope_evidence field, because the mutation proving it could not reach a sentence. A reading nobody can count is a reading no pass can hold.
+obs The card stood 3 bytes under its 40,960 ceiling, so the elder account was shelved whole and the new one written to fit; it closes at 40,958. Repeated trimming was the cost, and the card's own line already says a bound is the wrong instrument for a page many seats write.
+loom scan=loom_name keys_read=60 name_shared=60 kind_scopes=0 name_scopes=0 loom_lines=6574 pair_form=4112 bare_form=2035 no_family=427
+loom scan=loom_name key=wall_s occurrences=580 kinds=61 scopes=340 top_kind_ppt=391 undeclared=6
+loom falsifier=kinds_against_within_ppt keys=46 median_within_ppt_low_kinds=1069 median_within_ppt_high_kinds=7449 low_n=21 high_n=10
+loom control=loom_name_control legs=45 failed=0 mutations=5
+file tools/fixtures/l/loom_name_scan.sh the new reading -- kinds and scopes off each loom line's first token, three verdicts, scope_evidence beside them
+file tools/fixtures/l/loom_name_control.sh 45 legs on planted journals, all three verdicts drawn, five mutations bitten every pass
+file tools/l/loom_name_witness.rish gates the pen and the live seam, declines every figure the journal owns
+file tools/fixtures/l/loom_values.sh cut into loom_values and loom_family_values over one loom_emit awk; elder output proven byte-identical
+file tools/fixtures/l/loom_trend_control.sh the red repaired -- runs the shipped tool with LOOM_ROOT rather than copying it into the pen
+file active-designing/20260917-081605_the-name-that-scopes-a-number.md the paper, Gauge Field, A/92 with truth judged
+file construction/ITINERARY.md this seat's account, the elder shelved whole to fit the bound
+file construction/archive/20260917-083040_itinerary-landed-accounts.md the elder account, shelved on the lap the new one landed
+file construction/standing-equipment.kyri loom_name seated at tier lap
+scope one instrument, one paper, one roster row, one red repaired, one shelf
+status GREEN -- loom_name GREEN on metal with 45 control legs 0 failing; loom_trend and loom_sitting GREEN after the repair; the hot scope DERIVED from the staged paths rather than chosen, and twenty guards over the touched files and living pages read GREEN. The cold pass was still running at send; its standing reds are width_check on glow/ (pheromone's seat, named on the card) and remember_git_nib, which this commit's own nib closes.
+recommend keep-going -- the lane's next crux is the mirror reading this one names and declines: whether two scopes measure the same work under two names, which no reading in this tree asks.

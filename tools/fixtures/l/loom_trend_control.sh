@@ -18,8 +18,7 @@ pass=0; fail=0
 check() { if [ "$3" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); printf 'FAIL %s -- wanted %s, got %s\n' "$1" "$2" "$3" >&2; fi; }
 has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
-mkdir -p "$pen/session-logs/date/20260101" "$pen/session-logs/date/20260102" "$pen/tools/l"
-cp "$tool" "$pen/tools/l/"
+mkdir -p "$pen/session-logs/date/20260101" "$pen/session-logs/date/20260102"
 cd "$pen"; git init -q .; git config user.email pen@example.invalid; git config user.name pen
 
 printf 'stamp 20260101.010000\nloom roster=a guards=10 seconds=100\n' > session-logs/date/20260101/20260101-010000_one.kyri
@@ -28,7 +27,14 @@ printf 'stamp 20260102.020000\nloom roster=a guards=30 seconds=80\n'  > session-
 printf 'stamp 20260102.030000\nloom probe=b seconds=2\n'              > session-logs/date/20260102/20260102-030000_three.kyri
 git add -A >/dev/null; git commit -qm plant
 
-run() { LOOM_ROOT="$pen" sh tools/l/loom_trend.sh "$@" 2>&1; }
+# THE SHIPPED TOOL IS RUN WHERE IT STANDS, with LOOM_ROOT pointed at the pen, rather than copied
+# into the pen first. The elder shape copied one file, and on `20260916` the reader grew a sibling
+# -- `tools/fixtures/l/loom_values.sh`, which carries the journal grammar for both loom readers --
+# so every case here failed at a `No such file or directory` and the witness went red on committed
+# bytes. A pen that copies its subject has to be edited again each time the subject grows a
+# neighbour; LOOM_ROOT exists exactly so it need not be, and the sibling control already reads this
+# way. Run 2>&1 so a refusal is a compared string rather than a silent one.
+run() { LOOM_ROOT="$pen" sh "$tool" "$@" 2>&1; }
 
 out=$(run guards --summary)
 check "a numeric key is summarised"      yes "$(has "$out" 'numeric=2')"

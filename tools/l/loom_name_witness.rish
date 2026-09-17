@@ -1,0 +1,78 @@
+# loom_name_witness.rish -- does a loom key's NAME say which population it measures?
+#
+#   rishi/bin/rishi run tools/l/loom_name_witness.rish
+#
+# tools/fixtures/l/loom_name_scan.sh reads each occurrence of a loom key together with the family
+# its own journal line declares in its first token, and answers how many distinct kinds and scopes
+# write that key. Its sibling tools/fixtures/l/loom_sitting_scan.sh names a key MIXED after the
+# fact, from spread; this one asks whether the mixing is declared at the door, which is what decides
+# whether a rename would repair it.
+#
+# WHAT THIS GATES AND WHAT IT DECLINES. The scan's CLASSIFICATION and its REFUSALS are gated: the
+# control plants corpora whose right answers were worked out by hand before the scan ran, so every
+# count, share and verdict is asserted against a number nobody read off the tool. The scan's reading
+# of THIS TREE'S OWN JOURNAL is declined -- which family words eight ships write is the pier's habit
+# rather than any lane's fault, and a ceiling over it would red on the day somebody measured
+# something new.
+#
+# THE REASON THE PEN CARRIES THE WEIGHT HERE, stated so it is not mistaken for ceremony. Over the 60
+# keys tools/l/loom_trend.sh --keys lists, the live journal returns name_shared sixty times and the
+# other two verdicts never, read 20260917. An instrument whose corpus only ever draws one of its
+# three answers cannot be told, from that corpus alone, from an instrument that can only say one
+# thing. So the control builds corpora that draw name_scopes and kind_scopes, and both are named
+# below.
+let control = run ["sh" "tools/fixtures/l/loom_name_control.sh"]
+assert control.ok else "loom name control did not run: ${control.err_brief}"
+assert control.out contains "control_verdict=ok" else "loom name control refused: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "a loom name control leg failed: ${control.out_brief}"
+
+# THE LEG TALLY BESIDE THE VERDICT, for the reason its sibling gives: a control reaching its last
+# line says only that it reached it, so a leg written tomorrow would ride under a green witness.
+assert control.out contains "control_legs=45" else "the loom name leg count moved: ${control.out_brief}"
+assert control.out contains "control_expected=45" else "the loom name expected leg count moved: ${control.out_brief}"
+
+# ALL THREE VERDICTS ARE DRAWN IN THE PEN, each from a corpus built to draw it.
+assert control.out contains "leg verdict_shared ok" else "the shared verdict no longer fires: ${control.out_brief}"
+assert control.out contains "leg verdict_kind ok" else "the kind-scoped verdict no longer fires: ${control.out_brief}"
+assert control.out contains "leg verdict_scoped ok" else "the name-scoped verdict no longer fires: ${control.out_brief}"
+assert control.out contains "leg undeclared_only_verdict ok" else "a corpus declaring no family no longer refuses by name: ${control.out_brief}"
+
+# THE SINGLETON TRAP, asserted from both sides. One occurrence has one scope by arithmetic rather
+# than by naming, so the reading is named unmeasured in its own field; over the live journal the
+# only keys reading name_scopes are near-singletons, which is why the word alone must not be read
+# as a compliment.
+assert control.out contains "leg singleton_evidence ok" else "a one-occurrence reading no longer names itself unmeasured: ${control.out_brief}"
+assert control.out contains "leg scoped_evidence ok" else "a measured reading no longer says so: ${control.out_brief}"
+
+# THE FIVE MUTATIONS RUN EVERY PASS, and each is named here so a mutation quietly dropped from the
+# control is visible from the witness rather than only from its own tally.
+assert control.out contains "leg mutation_numeric_is_not_a_label ok" else "a leading measurement could be read as a population: ${control.out_brief}"
+assert control.out contains "leg mutation_bare_form_read ok" else "the bare family form is no longer read: ${control.out_brief}"
+assert control.out contains "leg mutation_kind_is_the_leading_key ok" else "the kind no longer separates from the scope: ${control.out_brief}"
+assert control.out contains "leg mutation_singleton_named ok" else "the singleton reading no longer names itself: ${control.out_brief}"
+assert control.out contains "leg mutation_sibling_family ok" else "the sibling's family filter no longer bites: ${control.out_brief}"
+
+# THE TWO PROJECTIONS READ ONE GRAMMAR. loom_values and loom_family_values are cut from one awk in
+# tools/fixtures/l/loom_values.sh this lap, so they must agree on how many values a key has and on
+# what those values are; a drift between them is the braid the sibling file was split to prevent.
+assert control.out contains "leg projections_same_count ok" else "the two loom projections disagree on how many values a key has: ${control.out_brief}"
+assert control.out contains "leg projections_same_values ok" else "the two loom projections disagree on a key's values: ${control.out_brief}"
+
+# THE LIVE SEAM, driven the way a reader drives it. This asserts the scan ANSWERS on the tree's own
+# journal and names its fields -- never what any figure reads, which is the pier's to decide.
+let live = run ["sh" "tools/fixtures/l/loom_name_scan.sh" "wall_s"]
+assert live.ok else "the loom name scan did not run on this tree: ${live.err_brief}"
+assert live.out contains "key=wall_s" else "the live reading named no key: ${live.out_brief}"
+assert live.out contains "kinds=" else "the live reading counted no kinds: ${live.out_brief}"
+assert live.out contains "scopes=" else "the live reading counted no scopes: ${live.out_brief}"
+assert live.out contains "undeclared=" else "the live reading counted no undeclared occurrences: ${live.out_brief}"
+assert live.out contains "scope_evidence=" else "the live reading named no evidence class: ${live.out_brief}"
+
+# A KEY NOBODY WROTE ANSWERS BY NAME rather than printing an empty reading that looks like a clean
+# one -- the same refusal both siblings seat, held on the live tree too.
+let absent = run ["sh" "tools/fixtures/l/loom_name_scan.sh" "no_such_loom_key_here"]
+assert absent.ok else "the scan failed rather than refusing on an unwritten key: ${absent.err_brief}"
+assert absent.out contains "verdict=absent" else "an unwritten key did not refuse by name: ${absent.out_brief}"
+assert absent.out contains "occurrences=0" else "an unwritten key printed occurrences it never had: ${absent.out_brief}"
+
+say "GREEN loom_name -- 45 control legs, five mutations bitten, all three verdicts drawn in the pen"

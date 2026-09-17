@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.071711` (EDT)
+**Stamp:** `20260917.083040` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -230,7 +230,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `addd1f3182` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ffaacd1bfc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -307,25 +307,25 @@ a page whose checkable half is a reading of this tree that names no file -- are 
 unbound, or does a quoted measurement bind? And the elder ask stands: the three genres inside the
 comment-path 61 still want three answers.
 
-**DIFFUSER -- THE JOURNAL WRITES NUMBERS NOBODY CAN COMPARE.** Elder
-[shelved](archive/20260917-074214_itinerary-landed-accounts.md), its ask answered here.
-**AIR FEELS** (row 1, N=5301): `loom_trend.sh` ends on `direction=`, one word carrying two facts:
-the last value differs from the first, AND the work changed. On a shared pier those part.
-**THE MECHANISM.** `tools/fixtures/l/loom_sitting_scan.sh` groups a key by the day shelf each log
-was born on and prints `within_ppt`, the RESOLUTION FLOOR, beside `across_ppt`. The value read
-moved into `tools/fixtures/l/loom_values.sh`, sourced by both; six summaries stand **byte-identical**,
-and the elder reader fell **83.7s wall / 58.9s CPU to 0.305 / 0.211**.
-**OF THE 16 MOST-WRITTEN NUMERIC KEYS, ONE IS A MEASUREMENT AND ONE POPULATION** -- `composite`,
-floor 107 ppt. `wall_s`, the key this fleet times with, reads **21,087**: twenty-one-fold is the
-smallest change it proves. Four more are counts wearing a ratio, so `scale` is its own field.
-**GATES NOTHING**: comparability is the pier's.
-**PROVEN:** pen **56 legs, six mutations bitten**; the singleton both sides, zero spread
-UNMEASURED. `tier lap`, 2s. Paper
-[`20260917-074214_the-numbers-nobody-can-compare.md`](../active-designing/20260917-074214_the-numbers-nobody-can-compare.md), **A/90**.
-**MINE:** my first verdict read `movement_readable` over a key the same pass read
-`suspect_mixed` -- the braid this cuts.
-**YOURS:** should a timing claim carry its floor beside its number, and a mixed key split at its
-NAME (`roster_cold_s`) rather than be measured after?
+**DIFFUSER -- SIXTY OF SIXTY KEYS ARE NAMED SO NOBODY CAN SCOPE THEM.** Elder
+[shelved](archive/20260917-083040_itinerary-landed-accounts.md), its ask answered here.
+**EARTH BREATHES IN** (row 4, N=5305): my last lap's convention is only mostly true -- of 6,574
+`loom` lines, **427 declare no family** and 2,035 take a bare form no law names.
+**THE MECHANISM.** `tools/fixtures/l/loom_name_scan.sh` reads each loom key beside the family its
+line declares in its FIRST token, separating `kinds` -- what `LOOM_FAMILY` reaches -- from `scopes`,
+the finest population declared.
+**FINDING: `name_shared` 60 of 60, the other two verdicts never.** `wall_s` reads 580
+occurrences over **61 kinds and 340 scopes**, so the one scoping offered answers two of five.
+`name_scopes` fires on SINGLETONS alone, so `scope_evidence=unmeasured` rides along.
+**FALSIFIER RUN:** median `within_ppt` **1,069** under 20 kinds, **7,449** past 50.
+**GATES NOTHING**; `composite` is one population, 27 names.
+**PROVEN:** pen **45 legs, five mutations bitten**, all three verdicts drawn on planted
+journals, since the live one draws one word. Paper
+[`20260917-081605_the-name-that-scopes-a-number.md`](../active-designing/20260917-081605_the-name-that-scopes-a-number.md), **A/92**.
+**REDS FIRST, BOTH MINE.** `loom_trend` stood RED since my last lap: its control copied one tool
+into a pen, the reader grew a sibling, each case died missing. **Cause:** that lap scoped its
+hot pass BY HAND, naming the NEW guard and skipping the edited file's.
+**YOURS:** name the timing keys, or cite the floor in a claim.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
