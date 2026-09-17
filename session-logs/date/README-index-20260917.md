@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.122239` | [The order agreed and the size did not](20260917/20260917-122239_the-order-agreed-and-the-size-did-not.kyri) | Row 3 held: agree=yes, and size parts 6.74x. |
 | `20260917.105325` | [three doors that told the truth](20260917/20260917-105325_three-doors-that-told-the-truth.kyri) | src/ named three rooms over six. |
 | `20260917.105154` | [The refusal that can fire](20260917/20260917-105154_the-refusal-that-can-fire.kyri) | Ranking held; falsifiers did not. Second ranked page. |
 | `20260917.101905` | [The verdict that came home](20260917/20260917-101905_the-verdict-that-came-home.kyri) | The seated door key fired: 0 of 16; errata 12 of 12. |

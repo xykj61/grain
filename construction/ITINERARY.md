@@ -214,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9d0791a73a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `13f43476bc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -290,32 +290,35 @@ written argument, and a sixth refuses. Run on metal this lap, th5 REDS -- and it
 nobody, so the tree has been carrying a live contradiction no runner hears. `%810`'s class, with a
 disagreement inside it. Which reading is right is TAME's call.
 
-**DIFFUSER -- THE RANKING WAS RIGHT AND THE FALSIFIERS WERE NOT.** Elder
-[shelved whole](archive/20260917-105154_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=5343): run the actual thing. The elder ranked page carries an erratum on
-all twelve rows, so `tools/fixtures/r/rank_outcome_scan.sh` grades the forecast for the first time,
-and **it splits in two.** Rank against read order reads Kendall tau **0.9556**, 44 concordant pairs
-against 1 -- the lane started the rows in the order it wrote down. **And `falsifier_faulted` reads
-10 of 12**, **0.8333**: six structurally incapable of firing, three already settled, one misaimed.
-Three claims stood, eight were altered. **THE CLAIM HALF IS THE EASY HALF**, measured.
-**WHAT LANDED:** [the refusal that can fire](../active-designing/20260917-105154_the-refusal-that-can-fire.md),
-the lane's **second ranked page**, **A/91**, nine rows, ASCII zero, register 26 under Field's 30.
-Every row names **the reading that would fire its falsifier** as a command or an instrument this
-tree owns, and a row without one was declined rather than written. Its subject follows the elder's
-own measurements -- the torus rows fell, the **bound** and **refusal** rows stood -- so the nine
-draw from that half: instructions retired as the energy unit this pier can carry, a declared
-minimum detectable effect, the cadence slice's cost, the wrap under a second writer.
-**GRADEABLE ON ARRIVAL:** `rank_outcome_scan.sh --page <it>` reads `ranked_rows=9`,
-`rows_without_erratum=9`, and the page states its own kill condition -- `falsifier_faulted` above
-6 of 9 means the discipline was decoration.
-**MINE:** I copied the bearing-quorum scan's path out of the elder's erratum under an `m` letter
-room, and no such file has ever existed -- it lives under `b`. A broken citation in a design page
-**propagates**, because the next page quotes it rather than running it. **AND THE ROOM STANDS OUTSIDE THE GUARD:**
-`backtick_path` classes a dated basename as testimony and every `active-designing/` page carries
-one, so the room has never been counted. Measured over 234 living pages: **46 broken tool citations
-across 30**, of which **37** resolve by basename and **9** are absent everywhere, each lawfully.
-**No red** -- the resolvers and accrete-never-break cover every case. Both figures are FREE.
-**YOURS:** whether a design room's instrument citations earn a reading of their own.
+**DIFFUSER -- THE ORDER AGREED AND THE SIZE DID NOT.** Elder
+[shelved whole](archive/20260917-121546_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=5344): run the actual thing. Rank 1 of the second ranked page ran its
+own falsifier, and **it held.** Over the pair this tree calls a pair --
+`ascii_document_scan.sh` against `ascii_document_resident_probe.sh`, one census with every per-file
+process removed -- five interleaved repetitions read `instructions_cheaper=resident`,
+`wall_cheaper=resident`, **`agree=yes`**.
+**THE SHARPER HALF IS WHERE THE TWO READINGS PART.** They agree on ORDER and part on SIZE by
+**6.74x**: **4.81x** less work against **32.41x** less time (70.14s to 2.16s). The gap is the half
+the counter excludes -- kernel time and scheduling for 6,000 spawns. So the claim survives on
+ranking, and *the same way a joule would* must never be read as magnitude: `4.81x fewer` written as
+`4.81x cheaper` understates that repair sevenfold. **Steadiness holds at command scale** --
+instruction spread 33 and 1 ppm against wall 348,713 and 206,057 ppm.
+**WHAT LANDED:** [the unit that agrees on order](../active-designing/20260917-121546_the-unit-that-agrees-on-order.md),
+**A/93**. [`tools/rye/retired_exec.rye`](../tools/rye/retired_exec.rye) arms a counter on a forked
+dependent with `enable_on_exec` and `inherit`, so it measures a COMMAND where the elder counters
+measured themselves; scan and control under
+[`tools/r/retired_rank_witness.rish`](../tools/r/retired_rank_witness.rish), **19 behaviors**,
+`control_failed=0`, `tier cadence`.
+**THE LOAD-BEARING LEG:** a sleeper-against-worker pair reads `agree=no`; a reading that cannot say
+no says nothing when it says yes.
+**AND THE ELDER'S LIMIT CLOSED:** `falsifier_verdict_home_scan.sh` reads **`elders_distinct=2`**
+where it read 1 all week, so a second ranked page tests whether a POSITION keeps better than a
+spelling. `rank_outcome_scan.sh --page` reads `falsifier_faulted=0` on the row graded.
+**MINE:** the first build of `retired_exec.rye` handed `execve` an EMPTY environment block, so every
+arm answered `sh: command not found`, exiting 127 in 1.8M instructions -- a broken arm reading as
+the trial's fastest. The non-zero refusal caught it; that leg gates.
+**YOURS:** whether retired instructions track joules stays unmeasurable here, so the row's central
+assumption is an assumption. Settling it wants a host exposing RAPL -- hardware, not a lap.
 
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.

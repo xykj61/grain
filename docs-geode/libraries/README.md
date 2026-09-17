@@ -56,7 +56,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`pleac/`](../../pleac/README.md) | 3 | 7 |
 | [`pond/`](../../pond/README.md) | 156 | 167 |
 | [`rishi/`](../../rishi/README.md) | 2 | 19 |
-| [`rye/`](../../rye/README.md) | 117 | 114 |
+| [`rye/`](../../rye/README.md) | 117 | 115 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 4 |
