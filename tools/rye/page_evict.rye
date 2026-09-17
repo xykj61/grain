@@ -1,0 +1,387 @@
+//! tools/rye/page_evict.rye -- read and drop THIS tree's page cache, and no one else's.
+//!
+//! WHY IT EXISTS. `active-designing/20260917-020034_where-the-hash-still-pays.md` measured a
+//! library read at 26 ms where a peer measured the same read at 145 to 154 ms, argued the page
+//! cache was the whole of the six times, named the falsifier -- one cold read against one warm
+//! read -- and then declined to run it, because the only eviction it knew was
+//! `echo 3 > /proc/sys/vm/drop_caches`, which empties the cache for every process on the host. On
+//! a pier carrying eight ships that charges seven peers for one ship's measurement.
+//!
+//! THE PREMISE THAT REFUSAL RESTED ON IS FALSE. Each ship carries its own
+//! `vendor/zig-toolchain`, and `stat` reads different inode numbers on one device for the two
+//! copies, so the 16,416,628 bytes in question are this tree's own files. Linux exposes per-file
+//! eviction as `posix_fadvise(2)` with `POSIX_FADV_DONTNEED`, which needs no privilege, touches no
+//! other inode, and leaves every peer's pages where they were.
+//!
+//! WHAT IT REFUSES, AND WHY THAT IS THE WHOLE POINT. A path is opened first, and the kernel is
+//! then asked where that open descriptor actually landed, by reading `/proc/self/fd/<n>`. The
+//! answer is compared against this program's own tree root before a single page is dropped. That
+//! ordering matters: a lexical check reads the path a caller typed, while this reads the file the
+//! kernel opened, with every symbolic link already followed. `rye/lib/std` in this tree is itself
+//! a link into `vendor/`, so a checker that trusted spelling would be checking a name rather than
+//! a file -- and a typo reaching `/nix/store` or a peer's `grain-bakery` would charge exactly the
+//! people this tool exists to spare.
+//!
+//! WHAT IT PROVES RATHER THAN ASSUMES. `posix_fadvise` answers success whether or not a page
+//! left, since the kernel stays free to keep a page it wants. So residency is read back through
+//! `mmap` plus `mincore(2)`, which answers per page, and the census prints resident pages before
+//! and after. An eviction nobody measured is a hope.
+//!
+//! Build: RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/page_evict.rye \
+//!          -femit-bin=tools/bin/page-evict
+//! Run:   tools/bin/page-evict census <path>   -- read residency, change nothing
+//!        tools/bin/page-evict evict <path>    -- read, drop, read again
+//!        tools/bin/page-evict selftest        -- prove both on a file of its own making
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Bound on files visited in one walk. The tree this was built for holds a few thousand files
+/// under `vendor/zig-toolchain/lib/std`; 262,144 leaves two orders of headroom and still names a
+/// maximum, which TAME asks of every loop.
+const max_files: u32 = 262_144;
+
+/// Bound on one path, matching the kernel's own `PATH_MAX`. A path past it refuses rather than
+/// truncating, since a truncated path names a different file.
+const max_path: u32 = 4096;
+
+/// Bound on one file's size, in bytes. `mincore` wants one vector byte per page, so a file at this
+/// ceiling costs 1 MiB of vector -- the bound is really on the vector rather than on the mapping.
+const max_file_bytes: u64 = 4 * 1024 * 1024 * 1024;
+
+/// Page size the vector arithmetic below assumes, asserted against the running kernel's own answer
+/// before any vector is sized.
+const page_bytes: u32 = 4096;
+
+const EvictError = error{
+    PathOutsideTree,
+    RootUnreadable,
+    FileTooLarge,
+    TooManyFiles,
+    AdviseRefused,
+};
+
+/// One walk's readings. Counts are `u32` because they are in-memory tallies bounded by
+/// `max_files`; byte and page totals are `u64` because a tree's size crosses 4 GiB without trying.
+const Census = struct {
+    files: u32 = 0,
+    skipped_empty: u32 = 0,
+    total_bytes: u64 = 0,
+    total_pages: u64 = 0,
+    resident_pages: u64 = 0,
+
+    fn resident_bytes(self: Census) u64 {
+        // invariant: a resident page is one of the pages counted, so it never exceeds the total
+        assert(self.resident_pages <= self.total_pages);
+        // invariant: the page size is the one asserted against the kernel at startup
+        assert(page_bytes > 0);
+        return self.resident_pages * page_bytes;
+    }
+};
+
+/// Pages one file of `size` bytes occupies, rounded up, since a partial tail still holds a page.
+fn pages_of(size: u64) u64 {
+    // invariant: an empty file is filtered before here, so the rounding has something to round
+    assert(size > 0);
+    // invariant: the size sits under the ceiling its caller checked
+    assert(size <= max_file_bytes);
+    return (size + page_bytes - 1) / page_bytes;
+}
+
+/// Count the pages of one open file the kernel currently holds in its page cache.
+///
+/// `mincore` answers per page in a caller-supplied vector, one byte each, low bit set when the
+/// page is resident. Mapping a file does not itself bring its pages in, so the reading describes
+/// the cache as it stood rather than as the reading left it.
+fn resident_pages_of(garden: std.mem.Allocator, handle: std.posix.fd_t, size: u64) !u64 {
+    // invariant: an empty file has no page to ask about
+    assert(size > 0);
+    // invariant: the file sits under the ceiling, so the vector below stays bounded
+    assert(size <= max_file_bytes);
+
+    const pages = pages_of(size);
+    const mapping = try std.posix.mmap(
+        null,
+        @intCast(size),
+        .{ .READ = true },
+        .{ .TYPE = .PRIVATE },
+        handle,
+        0,
+    );
+    defer std.posix.munmap(mapping);
+
+    const vec = try garden.alloc(u8, @intCast(pages));
+    try std.posix.mincore(mapping.ptr, @intCast(size), vec.ptr);
+
+    var resident: u64 = 0;
+    for (vec) |b| {
+        if ((b & 1) == 1) resident += 1;
+    }
+    // invariant: residency counts a subset of the file's own pages
+    assert(resident <= pages);
+    return resident;
+}
+
+/// Ask the kernel to drop one open file's cached pages.
+///
+/// `POSIX_FADV_DONTNEED` over the whole file is offset 0, length 0. The kernel may decline for a
+/// dirty or otherwise busy page, which is why every caller reads residency back rather than
+/// trusting this answer alone.
+fn advise_dontneed(handle: std.posix.fd_t) !void {
+    // invariant: a descriptor is a non-negative integer on this platform
+    assert(handle >= 0);
+    const rc = std.os.linux.fadvise(handle, 0, 0, std.os.linux.POSIX_FADV.DONTNEED);
+    // invariant: the syscall answers zero on success
+    if (rc != 0) return EvictError.AdviseRefused;
+    assert(rc == 0);
+}
+
+/// Where the kernel says an open descriptor actually landed.
+///
+/// `/proc/self/fd/<n>` is a symbolic link the kernel maintains, so reading it answers with every
+/// link already followed. This is the containment check's whole strength: it reads the file rather
+/// than the spelling.
+fn path_of_handle(garden: std.mem.Allocator, io: std.Io, handle: std.posix.fd_t) ![]const u8 {
+    // invariant: a descriptor is a non-negative integer on this platform
+    assert(handle >= 0);
+    var link_buf: [max_path]u8 = undefined;
+    var name_buf: [64]u8 = undefined;
+    const name = try std.fmt.bufPrint(&name_buf, "/proc/self/fd/{d}", .{handle});
+    const n = try std.Io.Dir.readLinkAbsolute(io, name, &link_buf);
+    // invariant: the kernel answers with a path, never with nothing
+    assert(n > 0);
+    return try garden.dupe(u8, link_buf[0..n]);
+}
+
+/// Refuse a resolved path that lands outside this program's own tree.
+fn require_inside(real: []const u8, root: []const u8) !void {
+    // invariant: a root is an absolute path, or the comparison below means nothing
+    assert(root.len > 0 and root[0] == '/');
+    // invariant: the resolved path is absolute too, since the kernel answers absolutely
+    assert(real.len > 0 and real[0] == '/');
+
+    if (real.len < root.len) return EvictError.PathOutsideTree;
+    if (!std.mem.eql(u8, real[0..root.len], root)) return EvictError.PathOutsideTree;
+    // A prefix match alone would welcome `/home/keeper/grain-diffuser-peer`, so the character
+    // after the root must be the separator that makes it a containment rather than a spelling.
+    if (real.len > root.len and real[root.len] != '/') return EvictError.PathOutsideTree;
+}
+
+/// Read one file's residency into the census, dropping its pages first when asked.
+fn visit(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    dir: std.Io.Dir,
+    name: []const u8,
+    root: []const u8,
+    drop: bool,
+    census: *Census,
+) !void {
+    // invariant: a file is visited under a name
+    assert(name.len > 0);
+    // invariant: the census stays inside the bound its caller checks
+    assert(census.files <= max_files);
+
+    var file = dir.openFile(io, name, .{}) catch return;
+    defer file.close(io);
+
+    // Every file is re-checked, rather than only the walk's root. A directory tree may hold a link
+    // out of the tree at any depth, and the cost of asking is one readlink per file.
+    const real = try path_of_handle(garden, io, file.handle);
+    try require_inside(real, root);
+
+    const size = (try file.stat(io)).size;
+    if (size == 0) {
+        census.skipped_empty += 1;
+        return;
+    }
+    if (size > max_file_bytes) return EvictError.FileTooLarge;
+
+    if (drop) try advise_dontneed(file.handle);
+
+    const resident = try resident_pages_of(garden, file.handle, size);
+    census.files += 1;
+    census.total_bytes += size;
+    census.total_pages += pages_of(size);
+    census.resident_pages += resident;
+}
+
+/// Walk one path -- a file or a directory tree -- reading residency, and dropping it when asked.
+///
+/// The two modes share one walk on purpose: a census and an eviction that disagreed about which
+/// files they visited would make the before and after readings incomparable.
+fn walk_path(garden: std.mem.Allocator, io: std.Io, target: []const u8, root: []const u8, drop: bool) !Census {
+    // invariant: a walk needs somewhere to start
+    assert(target.len > 0);
+    // invariant: the path fits the kernel's own ceiling
+    assert(target.len < max_path);
+
+    var census = Census{};
+    const cwd = std.Io.Dir.cwd();
+
+    const st = try cwd.statFile(io, target, .{});
+    if (st.kind == .file) {
+        try visit(garden, io, cwd, target, root, drop, &census);
+        return census;
+    }
+
+    var dir = try cwd.openDir(io, target, .{ .iterate = true });
+    defer dir.close(io);
+    var walker = try dir.walk(garden);
+    defer walker.deinit();
+
+    while (try walker.next(io)) |entry| {
+        if (entry.kind != .file) continue;
+        if (census.files + census.skipped_empty >= max_files) return EvictError.TooManyFiles;
+        try visit(garden, io, entry.dir, entry.basename, root, drop, &census);
+    }
+    return census;
+}
+
+fn print_census(label: []const u8, c: Census) void {
+    print("{s} files={d} empty_skipped={d} bytes={d} pages={d} resident_pages={d} resident_bytes={d}\n", .{
+        label,
+        c.files,
+        c.skipped_empty,
+        c.total_bytes,
+        c.total_pages,
+        c.resident_pages,
+        c.resident_bytes(),
+    });
+}
+
+/// This program's own tree root: the executable's grandparent.
+///
+/// The binary lands in `tools/bin`, so two steps up is the root every path is measured against.
+/// It is derived from the executable rather than from the working directory, since a program
+/// launched from a peer's shell would otherwise read that peer's root as its own. This std
+/// publishes no `selfExePath`, and Linux answers the same question through `/proc/self/exe`.
+fn tree_root(garden: std.mem.Allocator, io: std.Io) ![]const u8 {
+    var buf: [max_path]u8 = undefined;
+    const n = try std.Io.Dir.readLinkAbsolute(io, "/proc/self/exe", &buf);
+    // invariant: the kernel answers with an absolute path to the running binary
+    assert(n > 0 and buf[0] == '/');
+    const exe = buf[0..n];
+    const bin_dir = std.fs.path.dirname(exe) orelse return EvictError.RootUnreadable;
+    const tools_dir = std.fs.path.dirname(bin_dir) orelse return EvictError.RootUnreadable;
+    const root = std.fs.path.dirname(tools_dir) orelse return EvictError.RootUnreadable;
+    // invariant: a root shallower than the filesystem root would make containment meaningless
+    assert(root.len > 1);
+    return try garden.dupe(u8, root);
+}
+
+/// Prove both readings on a file this program makes, so the proof needs no fixture on disk.
+///
+/// The shape is the one the paper needs: write bytes, read them so the cache holds them, assert
+/// residency is full, drop, assert residency has fallen. A kernel that declined to drop reds here
+/// rather than in a measurement nobody could explain.
+fn selftest(garden: std.mem.Allocator, io: std.Io, root: []const u8) !u8 {
+    const kernel_page = std.heap.pageSize();
+    if (kernel_page != page_bytes) {
+        print("RED: page-evict -- kernel page size {d} is not the assumed {d}\n", .{ kernel_page, page_bytes });
+        return 1;
+    }
+    print("kernel page size is {d}, matching the vector arithmetic\n", .{kernel_page});
+
+    const cwd = std.Io.Dir.cwd();
+    cwd.createDirPath(io, ".lap/page_evict_pen") catch {};
+    const name = ".lap/page_evict_pen/warm.bin";
+    const span: u32 = 4 * 1024 * 1024;
+
+    const block = try garden.alloc(u8, span);
+    for (block, 0..) |*b, i| b.* = @intCast(i & 0xff);
+    try cwd.writeFile(io, .{ .sub_path = name, .data = block });
+
+    // The written pages are DIRTY until the kernel has them on disk, and `POSIX_FADV_DONTNEED`
+    // declines a dirty page -- correctly, since dropping one would lose the write. The first run
+    // of this selftest reddened on exactly that, which is the reading working rather than failing.
+    // Every caller writing a file it then means to evict owes it this `fsync` first.
+    {
+        var f = try cwd.openFile(io, name, .{});
+        defer f.close(io);
+        try f.sync(io);
+    }
+
+    const warm = try walk_path(garden, io, name, root, false);
+    print_census("warm", warm);
+    if (warm.resident_pages * 2 < warm.total_pages) {
+        print("RED: page-evict -- a file just written is not resident, so the census is wrong\n", .{});
+        return 1;
+    }
+
+    const cold = try walk_path(garden, io, name, root, true);
+    print_census("cold", cold);
+    if (cold.resident_pages >= warm.resident_pages) {
+        print("RED: page-evict -- the advice dropped no page, so eviction is unproven here\n", .{});
+        return 1;
+    }
+    print("residency fell {d} pages to {d}, so the advice reached the cache\n", .{ warm.resident_pages, cold.resident_pages });
+
+    // The refusal proven from the other side: a real path outside the tree refuses by name.
+    if (require_inside("/nix/store/zzz", root)) |_| {
+        print("RED: page-evict -- a path outside the tree was welcomed\n", .{});
+        return 1;
+    } else |err| {
+        if (err != EvictError.PathOutsideTree) {
+            print("RED: page-evict -- an outside path refused with the wrong error\n", .{});
+            return 1;
+        }
+    }
+    // And the neighbour whose name merely begins the same way, which a prefix test would welcome.
+    const sibling = try std.fmt.allocPrint(garden, "{s}-peer/vendor", .{root});
+    if (require_inside(sibling, root)) |_| {
+        print("RED: page-evict -- a sibling tree sharing the root's spelling was welcomed\n", .{});
+        return 1;
+    } else |err| {
+        if (err != EvictError.PathOutsideTree) {
+            print("RED: page-evict -- a sibling tree refused with the wrong error\n", .{});
+            return 1;
+        }
+    }
+    print("an outside path and a same-prefix sibling both refuse, so no peer's pages are reachable\n", .{});
+
+    cwd.deleteFile(io, name) catch {};
+    print("GREEN: page-evict -- residency reads true and this tree's pages drop on request\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    const root = try tree_root(garden, io);
+
+    if (args.len < 2) {
+        print("page-evict: usage -- page-evict census|evict <path> | page-evict selftest\n", .{});
+        return 2;
+    }
+    if (std.mem.eql(u8, args[1], "selftest")) return try selftest(garden, io, root);
+    if (args.len < 3) {
+        print("page-evict: usage -- page-evict census|evict <path>\n", .{});
+        return 2;
+    }
+
+    const drop = std.mem.eql(u8, args[1], "evict");
+    if (!drop and !std.mem.eql(u8, args[1], "census")) {
+        print("page-evict: usage -- page-evict census|evict <path>\n", .{});
+        return 2;
+    }
+
+    if (drop) {
+        const before = walk_path(garden, io, args[2], root, false) catch |err| {
+            print("REFUSED: {s} -- {s} (root {s})\n", .{ args[2], @errorName(err), root });
+            return 3;
+        };
+        print_census("before", before);
+        const after = try walk_path(garden, io, args[2], root, true);
+        print_census("after", after);
+        return 0;
+    }
+    const c = walk_path(garden, io, args[2], root, false) catch |err| {
+        print("REFUSED: {s} -- {s} (root {s})\n", .{ args[2], @errorName(err), root });
+        return 3;
+    };
+    print_census("census", c);
+    return 0;
+}
