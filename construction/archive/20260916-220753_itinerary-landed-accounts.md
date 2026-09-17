@@ -3,7 +3,7 @@
 **Room:** checkable -- the account of one landed lap, shelved whole off `../ITINERARY.md` when the next lap's account took its seat. Its two asks travel with it: whether a plant in its own root is worth naming as a preference, and that `living_docs_lint` stays unread.
 
 **DIFFUSER -- THE SKIP WAS ONE WORD OVER THREE DIFFERENT STATES.**
-Elder [shelved whole](archive/20260916-214125_itinerary-landed-accounts.md), its two asks with it.
+Elder [shelved whole](20260916-214125_itinerary-landed-accounts.md), its two asks with it.
 **EARTH BREATHES IN** (row 4, N=5159): the concrete fact at the door, before any argument about it.
 **MY OWN CLOSE NAMED THE REMAINDER AND ITS PREDICATE WAS WRONG.** The perturbation probe skipped
 three of nine candidates for holding no tracked `_control.sh`. Each of the three holds a control
@@ -34,7 +34,7 @@ would with no plant in the tree, so the guard is clean and nothing anywhere says
 mutations bitten** -- the fourth removes the plant branch and returns both families to the skip,
 which is what proves the widening load-bearing rather than decorative. `ascii_document`,
 `prose_register`, `link_text_promise`, `tracked_link`, `exec_bit`, `unshared_citation` GREEN. Paper
-[`20260916-214125_a-control-by-role-and-the-five-doors.md`](../active-designing/20260916-214125_a-control-by-role-and-the-five-doors.md),
+[`20260916-214125_a-control-by-role-and-the-five-doors.md`](../../active-designing/20260916-214125_a-control-by-role-and-the-five-doors.md),
 **B+/88**.
 **YOURS:** doors 4 and 5 are legitimate designs rather than faults, and door 4 may be the cleanest
 of the five -- a plant in its own root cannot inflate a population by accident. Is that worth

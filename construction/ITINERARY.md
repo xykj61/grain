@@ -208,7 +208,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c7db2b8fc9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `8dc11c14de` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -297,38 +297,38 @@ ask?
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
 whether the tree digest may read past `construction/fleet-claims.kyri` as it does its own card.
-**DIFFUSER -- THE HASH RUNS IN DEBUG RATHER THAN IN SOFTWARE.**
-Elder [shelved whole](archive/20260916-220753_itinerary-landed-accounts.md), its two asks with it.
-**AETHER HEARS** (row 0, N=5170): listen for the claim a page keeps repeating, and ask what holds it.
-**THREE LIVE PAGES PRICE ONE OPERATION AND NAME THE WRONG CAUSE.** `rye/src/main.rye:495` and the
-`file_digest_remembered` doc block both read *this standard library's SHA-256 runs in software at
-roughly 120 MB/s*, and bakery's live claim prices hashing `vendor/zig-toolchain/lib/std` -- 552
-files, 16,416,628 bytes -- at **145 to 154 ms**. The readings are real; the cause is not.
-**MEASURED ON THIS PIER, both levers separated.** Zig 0.16 carries an x86_64 SHA-NI path in
-`crypto/sha2.zig` gated at comptime on `sha` and `avx2`; a default build targets native, this EPYC
-reports both, and the gate prints **`accel=true`**. The hash core over 16 MiB: **ReleaseFast 13.4 ms
-(1,056 MB/s)**, ReleaseSafe 14.0, `-mcpu=baseline` 88 (**0** SHA-NI opcode bytes), **Debug 105**.
-The whole 552-file operation through rye's own `hash_file_into` shape: **Debug 110 ms**, ReleaseSafe
-45, ReleaseFast 20-21. Bakery's 145-154 lands beside the **Debug** figure alone, and the bootstrap
-passes no `-O`, so Zig's default Debug is what the fleet compiles under. Every fleet `rye` binary
-carries **168** SHA-NI opcode hits against **0** in a no-hash control. `stat` over the same paths
-costs 6-7 ms and reading without hashing 10.
-**THE DOORS COMPOSE.** `-O ReleaseSafe` on rye's own build takes 110 ms to 45 and keeps every
-runtime safety check, which is TAME's order choosing for us; bakery's memo removes the work
-entirely. One covers a file whose identity holds still, the other covers every hash, parse and walk
-371 rostered guards run.
-**THE ENERGY SENTENCE STAYS A PROXY, bounded rather than implied.** This pier reads no joule:
-`/sys/class/powercap` empty, no `cpufreq`, no battery, `systemd-detect-virt` answers `microsoft`.
-So CPU-seconds stand in, and the paper names the metal reading that would kill the proxy.
-**PROVEN:** paper **A/90** at Field, register 26 percent of 68 sentences; `prose_register`,
+**DIFFUSER -- THE INFERENCE IS A MEASUREMENT, AND IT NEEDED NO ROOM LOCK.**
+Elder [shelved whole](archive/20260916-221930_itinerary-landed-accounts.md), its two asks with it.
+**FIRE SEES** (row 2, N=5177): see the threshold where work should stop -- and my own elder paper
+had named one and left it uncrossed.
+**MY OWN MODERATE SENTENCE IS HIGH NOW.** Last lap priced this tree's library hash at Debug speed
+and then said plainly it had never rebuilt `rye` to confirm the bootstrap's absent `-O` reaches the
+shipped binary. `rye/src/main.rye` imports nothing but `std`, so the same bridge `bootstrap.sh`
+builds was built four ways to scratch paths under `.lap/` with `rye/bin/rye` left where it stands.
+**TWO READINGS, ONE EXACT.** The live binary and a fresh no-flag build carry **168** SHA-NI opcode
+hits each; ReleaseSafe 58, ReleaseFast 56, ReleaseSmall 56. Byte sizes agree to **1.4 percent**
+(12,512,760 against 12,682,680) and no release mode comes within a factor of three. Release **folds**
+rather than strips -- falsifier 2 never fired, and the extension compiles in at every mode.
+**FALSIFIER 1 PASSES WIDER THAN IT WAS WRITTEN.** Timed through bakery's `rye key` over the same
+552 files and 16,416,628 bytes, seven runs each: cold **Debug 172 ms**, ReleaseSafe 57, ReleaseFast
+32. Warm floor 32 / 12 / 11. Subtracting it isolates walk-and-hash at **140 / 45 / 21**, against the
+elder probe's 110 / **45** / **20-21** through a different program -- two of three on the same
+millisecond. The predicted 2x is **3.1x**.
+**AND THE LEVER REACHES PAST HASHING:** the warm path hashes nothing and still costs 2.7x under
+Debug, so door one is a whole-program door.
+**YOUR OPEN QUESTION, MEASURED.** A ReleaseSafe `rye` is **3.26x smaller** (12.68 MB to 3.89) and
+takes **19.5x longer to compile** (1.47 s to 28.6). One cold build a day against every hash, walk
+and parse the 371 rostered guards run. I recommend neither -- what the fleet's time is worth is
+your word.
+**PROVEN:** paper **A/92** at Field, register 14 of 62 sentences; `prose_register`,
 `ascii_document`, `link_text_promise`, `tracked_link`, `unshared_citation`, `room_bound` GREEN on
-metal. Paper [`20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md`](../active-designing/20260916-220753_the-hash-runs-in-debug-rather-than-in-software.md).
-**YOURS:** a rye rebuilt at ReleaseSafe costs compile time and binary size nobody here has
-measured, and the 2.2x still standing between ReleaseSafe and ReleaseFast lives in the read loop
-rather than in the hash. Whose word sets the mode a compiler ships under?
-**MINE:** I never rebuilt rye to confirm it is Debug -- a rye build takes tree-wide room locks with
-eight ships sailing -- so that one link is inference from an absent flag, and falsifier 1 settles it
-in one command.
+metal. Paper [`20260916-221930_the-mode-a-compiler-ships-under.md`](../active-designing/20260916-221930_the-mode-a-compiler-ships-under.md); the elder carries an erratum pointing forward and keeps every word.
+**MINE:** the live binary was never **timed** -- `rye key` landed after it was built -- so it is
+placed among the three by its bytes rather than by its clock, and falsifier 1 names the rebuild
+from its exact commit that would turn the fingerprint into a receipt.
+**YOURS:** the pen reached `lib/std` through a symlink and read the same 552 files at the same
+16,416,628 bytes. Is a symlinked root honest footing for a timing pen, or does a measurement owe
+the real path?
 
 **COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Elder account
 [shelved whole](archive/20260916-195045_itinerary-landed-accounts.md); its ask (2), the unread
