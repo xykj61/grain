@@ -71,7 +71,25 @@ mode="${1:-count}"
 #                          ceilings can be told from the others, which is the gated reading.
 #                          The next fall a lap could name is `error.Overflow`, whose sites sit
 #                          across the lowering room rather than in one module.
-CEILING=40
+#   34  `20260917.003000`  six of the 35 `error.BadIdent` sites left the reading when the one
+#                          Zig-identifier rule moved into `glow/zig_ident.rye` and six
+#                          `glow/lower_*.rye` modules became stubs reaching it.
+#
+#                          AND THE FALL EXPOSED THIS METER'S OWN BLIND SPOT, which is worth
+#                          more than the six. `recorded` held at 8 across that fall: a ceiling
+#                          site here is a comparison against a named `max_` CONSTANT, and the
+#                          rule now takes its ceiling as a PARAMETER, so the six sites left the
+#                          denominator rather than joining the covered set. The record does
+#                          exist -- five legs of `glow/refusal_witness.rye` prove it -- yet
+#                          this meter cannot see it, and nothing here can tell that state from
+#                          a lap that parameterized a ceiling and wrote no record at all.
+#
+#                          So `uncovered` is lowerable by a change that covers nothing, and the
+#                          other half is held elsewhere: `glow_ident` counts whether the rule
+#                          is in one place, under its own falling ceiling. A number this meter
+#                          can be walked around is a number that wants a sibling rather than a
+#                          sharper reading.
+CEILING=34
 
 list=$(git ls-files 'glow/*.rye' 2>/dev/null | grep -v '_witness\.rye$')
 

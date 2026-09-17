@@ -1,0 +1,79 @@
+# glow_ident_witness.rish -- the Zig-identifier rule the Glow lowering room lowers a face by
+# lives in one place, and the three refusals it answers with are told apart by record.
+#
+# THE DEFECT IT CLOSES. fn zig_safe_ident implemented one rule in 29 separate glow/lower_*.rye
+# modules. The character test -- first byte a letter or an underscore, every later byte a letter,
+# a digit or an underscore, with the hyphen mapped to an underscore -- was byte-for-byte identical
+# in all 29. What differed is what a rule written 29 times comes to disagree about, measured
+# 20260917 before the first conversion: 23 returned usize where TAME asks u32, five carried the
+# invariant assert the other 24 omitted, glow/lower_shop_nest.rye answered a LENGTH ceiling with
+# error.MissingFace where 28 peers answered error.BadIdent, and glow/lower_alias.rye mapped the
+# dot as well as the hyphen.
+#
+# WHY A GUARD RATHER THAN ONE CONVERSION PASS. Converting all 29 in one lap is 29 modules and 29
+# witnesses moving together, which is a blast radius rather than a lap. So the rule is published
+# once, a named cohort is converted with its own guards GREEN, and the remainder stands under a
+# ceiling that only falls -- a copy re-entering the room reds on the lap it arrives.
+#
+# THE SIBLING'S BLIND SPOT, NAMED HERE BECAUSE THIS GUARD IS THE OTHER HALF.
+# glow_ceiling_refusal_scan.sh reads a ceiling site as a comparison against a named max_ constant.
+# Moving a ceiling into a PARAMETER takes the site off that meter whether or not a record was ever
+# written: uncovered fell 40 to 34 on the six conversions of 20260917 while recorded held at 8,
+# because the record moved into glow/zig_ident.rye where the sibling cannot see it. That number
+# can therefore be lowered by parameterizing a ceiling and writing nothing at all. This guard
+# holds the other side -- the rule is in one place -- and glow/refusal_witness.rye's five ident
+# legs are what prove the record behind it.
+#
+# THE LEG TALLY IS DERIVED, NEVER RECITED. The control emits control_failed, and the named
+# readings are asserted by name. A recited total reds on the lap somebody adds a leg, which
+# teaches a lane to stop adding them.
+#
+#   rishi/bin/rishi run tools/g/glow_ident_witness.rish
+
+let scan = run ["sh" "tools/fixtures/g/glow_ident_duplication_scan.sh"]
+assert scan.ok else "the ident-duplication scan refused to run"
+assert scan.out contains "instrument=ok" else "the scan could not read the glow room and said so"
+assert scan.out contains "GLOW_IDENT_DUPLICATION" else "the scan printed no summary line"
+assert scan.out contains "under_ceiling=yes" else "a copy of the Zig-identifier rule re-entered the lowering room -- run the scan with --list to name it"
+assert scan.out contains "published=yes" else "glow/zig_ident.rye does not publish safe_ident, so every stub in the room reaches nothing"
+
+# The rule must still take the ceiling and the field from its caller. Fold either back into a
+# constant and one rule would again be five, with the record going vague about which refused.
+let shape = run ["sh" "-c" "grep -c 'ceiling: u32' glow/zig_ident.rye"]
+assert shape.ok else "glow/zig_ident.rye does not take a ceiling parameter"
+let field = run ["sh" "-c" "grep -cF 'field: []const u8' glow/zig_ident.rye"]
+assert field.ok else "glow/zig_ident.rye does not take the caller's field word"
+
+# The three reasons this rule fills are declared in the record, or a refusal it builds cannot
+# render. ident_empty and ident_char_not_allowed were earned on 20260917; name_too_long was
+# already there, which is why the length refusal reads the same word the lexer's does.
+let empty_reason = run ["sh" "-c" "grep -cF ident_empty glow/refusal.rye"]
+assert empty_reason.ok else "glow/refusal.rye does not declare the ident-empty reason"
+assert empty_reason.out contains "2" else "ident_empty is declared other than once in the enum and once in its name switch"
+let char_reason = run ["sh" "-c" "grep -cF ident_char_not_allowed glow/refusal.rye"]
+assert char_reason.ok else "glow/refusal.rye does not declare the ident-char-not-allowed reason"
+assert char_reason.out contains "2" else "ident_char_not_allowed is declared other than once in the enum and once in its name switch"
+
+# The record behind the rule, proven by running it rather than by reading it.
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/refusal_witness"
+let build = run ["sh" "-c" "mkdir -p glow/bin glow/.cache && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh glow/refusal_witness.rye -femit-bin=${bin}"]
+assert build.ok else "refusal_witness build failed"
+let legs = run ["sh" "-c" "${bin} 2>&1"]
+assert legs.ok else "refusal_witness refused"
+assert legs.out contains "one ident rule lowers the hyphen and leaves the slot empty -- GREEN" else "the rule does not lower a hyphenated face"
+assert legs.out contains "three ident faults under one error name, three records -- GREEN" else "the three refusals are not told apart by record"
+assert legs.out contains "each ident refusal renders its own line -- GREEN" else "an ident refusal does not render"
+assert legs.out contains "the dot refuses as a face and lowers as a wing -- GREEN" else "the dot policy does not keep both readings"
+assert legs.out contains "the caller's field and ceiling travel into the record -- GREEN" else "the caller's field and ceiling do not reach the record"
+
+# The pen, where every refusal is planted and then lifted.
+let control = run ["sh" "tools/fixtures/g/glow_ident_duplication_control.sh"]
+assert control.ok else "the ident-duplication control refused to run"
+assert control.out contains "control_failed=0" else "a control leg failed -- read its output for the named leg"
+assert control.out contains "control_verdict=ok" else "the control did not reach its verdict"
+assert control.out contains "dropping the column-one anchor bites" else "the doc-comment mutation is no longer proven"
+assert control.out contains "dropping the delegation grep bites" else "the stub-versus-copy mutation is no longer proven"
+assert control.out contains "lifting one plant returns it to green" else "the ceiling refusal is proven in one direction only"
+
+say "GREEN: the Zig-identifier rule is published once; copies under their ceiling, three refusals told apart by record."

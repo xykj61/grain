@@ -1,0 +1,118 @@
+//! glow/zig_ident.rye -- the one Zig-identifier rule the lowering room lowers a Glow face by.
+//!
+//! A Glow face becomes a Zig identifier on the way down: the hyphen Glow spells names with
+//! becomes an underscore, and what comes out has to satisfy Zig's own rule -- first byte a
+//! letter or an underscore, every later byte a letter, a digit or an underscore.
+//!
+//! THAT RULE STOOD IN 29 FILES. `fn zig_safe_ident` was copied into 29 `glow/lower_*.rye`
+//! modules. Strip the `max_` constant each names and five distinct bodies remain, 17 of them
+//! byte-identical; the character rule itself was byte-for-byte the same in all 29. What
+//! varied is what a rule written 29 times comes to disagree about -- 23 returned `usize`
+//! where TAME asks `u32`, five carried the invariant assert the other 24 omitted, and one
+//! answered a length ceiling with `error.MissingFace` where 28 peers answered
+//! `error.BadIdent`.
+//!
+//! THREE REFUSALS, ONE ERROR NAME. An empty face, a face past its ceiling, and a byte Zig
+//! will not take are three different faults arriving as the one word `error.BadIdent`, so
+//! each fills its own `glow/refusal.rye` record and a caller tells them apart by reading the
+//! slot rather than by guessing from the name. The published error name is unmoved, because
+//! a published error set is a contract (`accrete-never-break`).
+//!
+//!   field=gate value=65 ceiling=64 unit=byte reason=name-too-long
+//!   field=gate reason=ident-empty
+//!   field=gate reason=ident-char-not-allowed
+//!
+//! THE CEILING TRAVELS AS A PARAMETER. Each caller declares its own budget -- `max_name_len`,
+//! `max_arm_len`, `max_ident_len`, `max_stem_len`, `max_subject_len` -- and those are five
+//! different numbers naming one rule. So the number arrives from the caller and the rule
+//! lives here.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusal = @import("refusal.rye");
+
+/// The refusal a lowering face rejection answers with. One member, because the 28 agreeing
+/// callers already publish this name and renaming it would break every caller that switches
+/// on it. What the record adds is which of the three faults decided it.
+pub const IdentError = error{BadIdent};
+
+/// What a `.` in a Glow face lowers to. Most of the room refuses it, since a dot is not a
+/// Zig identifier byte and a face carrying one is a face the caller mis-parsed. Two callers
+/// lower a WING rather than a face -- `records.cur` -- where the dot is the path separator
+/// and an underscore is the honest lowering. Named rather than passed as a bare bool, so a
+/// call site says which it means.
+pub const Dot = enum {
+    refuse,
+    to_underscore,
+};
+
+/// Lower `face` into `out` as a Zig identifier, answering `error.BadIdent` on any of three
+/// faults and filling `slot` with the record naming which. Returns the number of bytes
+/// written, which is always `face.len`.
+///
+/// `ceiling` is the caller's own budget in bytes; `field` names the thing being lowered, so
+/// the record reads `field=gate` rather than `field=face`.
+pub fn safe_ident(
+    face: []const u8,
+    out: []u8,
+    ceiling: u32,
+    field: []const u8,
+    dot: Dot,
+    slot: *refusal.Slot,
+) IdentError!u32 {
+    // invariant: the caller's buffer holds its own declared ceiling, so a face that passes
+    // the length check below always has room -- a shorter buffer would truncate a lawful
+    // name into a different one rather than refuse it
+    assert(out.len >= ceiling);
+    // invariant: the field name fits the record, so a refusal built below always renders
+    assert(field.len <= refusal.max_field_name_bytes);
+
+    if (face.len == 0) {
+        // invariant: an empty face carries no measurement -- there is no number that was too
+        // large -- so the record leaves `measure` null and says so by its reason alone
+        slot.* = .{ .field = field, .reason = .ident_empty };
+        return error.BadIdent;
+    }
+    if (face.len > ceiling) {
+        // invariant: the record names the FIELD rather than the offending text, because the
+        // text is exactly what did not fit -- a 64-byte record cannot hold a 65-byte name
+        slot.* = .{
+            .field = field,
+            .reason = .name_too_long,
+            .measure = .{ .value = face.len, .ceiling = ceiling, .unit = .byte },
+        };
+        return error.BadIdent;
+    }
+
+    const n: u32 = @intCast(face.len);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const c = face[@as(usize, @intCast(i))];
+        const mapped: u8 = if (c == '-') '_' else if (c == '.' and dot == .to_underscore) '_' else c;
+        const ok = if (i == 0) is_start(mapped) else is_char(mapped);
+        if (!ok) {
+            // invariant: this refusal carries no ceiling either -- a byte Zig will not take is
+            // a kind fault rather than a size one, and inventing a measurement would make the
+            // record read as a ceiling refusal it is not
+            slot.* = .{ .field = field, .reason = .ident_char_not_allowed };
+            return error.BadIdent;
+        }
+        out[@as(usize, @intCast(i))] = mapped;
+    }
+
+    // invariant: every byte of the face was written, so the caller's span is exactly as long
+    // as what it handed in and no stale byte of `out` sits inside the returned slice
+    assert(i == n);
+    return n;
+}
+
+/// Zig's own rule for the first byte of an identifier.
+fn is_start(c: u8) bool {
+    return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or c == '_';
+}
+
+/// Zig's own rule for every later byte.
+fn is_char(c: u8) bool {
+    return is_start(c) or (c >= '0' and c <= '9');
+}

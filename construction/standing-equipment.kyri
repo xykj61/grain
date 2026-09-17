@@ -6969,6 +6969,43 @@ path tools/g/glow_ceiling_refusal_witness.rish
 tier lap
 seated 20260916.090645
 
+# glow_ident -- the Zig-identifier rule the lowering room lowers a face by, in one place.
+#
+# `glow_ceiling_refusal` above reads 35 of its 40 uncovered sites under the one name
+# `error.BadIdent`, and the reason is structural rather than a missing repair: `fn zig_safe_ident`
+# implemented that rule in 29 separate `glow/lower_*.rye` modules, so a refusal record could not
+# land once while its function was copied 29 times. The character test itself -- first byte a
+# letter or an underscore, every later byte a letter, a digit or an underscore, hyphen mapped to
+# underscore -- was byte-for-byte identical in all 29.
+#
+# WHAT A RULE WRITTEN 29 TIMES COMES TO DISAGREE ABOUT, measured `20260917` before the first
+# conversion: 23 returned `usize` where TAME asks `u32`; five carried the `// invariant:` assert
+# the other 24 omitted; `glow/lower_shop_nest.rye` answered a LENGTH ceiling with
+# `error.MissingFace` where 28 peers answered `error.BadIdent`; and `glow/lower_alias.rye` mapped
+# the dot as well as the hyphen.
+#
+# WHAT IT COUNTS: files declaring `fn zig_safe_ident` at column one whose body does NOT reach
+# `zig_ident.safe_ident`. That number is the gate, under a ceiling that only falls -- 23 at
+# seating, from 29 copies of which six became stubs with their own six guards GREEN. A doc comment
+# naming the function is prose rather than a declaration, and the column-one anchor that tells them
+# apart is proven to bite.
+#
+# THE SIBLING'S BLIND SPOT, WHICH IS WHY BOTH GUARDS STAND. `glow_ceiling_refusal` reads a ceiling
+# site as a comparison against a named `max_` constant, so moving a ceiling into a PARAMETER takes
+# the site off that meter whether or not a record was ever written -- `uncovered` fell 40 to 34 on
+# the six conversions while `recorded` held at 8, because the record moved into `glow/zig_ident.rye`
+# where the sibling cannot see it. That number can therefore be lowered by parameterizing a ceiling
+# and writing nothing. This guard holds the other half, and five ident legs inside
+# `glow/refusal_witness.rye` prove the record behind it: three faults -- an empty face, a face past
+# its ceiling, a byte Zig will not take -- arriving as the one word `error.BadIdent` and told apart
+# by record. The published error name is unmoved.
+#
+# `tier lap`: two shell readings and one Zig build, ~6s.
+guard glow_ident
+path tools/g/glow_ident_witness.rish
+tier lap
+seated 20260917.003000
+
 # control_leg_heard -- a control emits a named leg and the witness beside it hears that leg only
 # by quoting its name in an assert. So a leg nobody quotes may flip from `yes` to `no` on any lap
 # while every named assert passes and every gate stays green; the count merely stops rising. The

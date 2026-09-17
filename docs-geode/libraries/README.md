@@ -38,7 +38,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 4 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 135 | 131 |
+| [`glow/`](../../glow/README.md) | 136 | 132 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 253 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |

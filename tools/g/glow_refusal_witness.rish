@@ -45,7 +45,24 @@ assert selftest.out contains "the hex literal ceiling reports digits -- GREEN" e
 assert selftest.out contains "the source ceiling refuses ahead of the name ceiling -- GREEN" else "refusal_witness missing the source ceiling"
 assert selftest.out contains "an unnamed BadToken leaves the slot empty -- GREEN" else "refusal_witness missing the empty-slot leg for the lexer"
 assert selftest.out contains "tokenize unchanged, a name at the ceiling admitted -- GREEN" else "refusal_witness missing the published lexer leg"
-assert selftest.out contains "16 legs, 0 failures -- GREEN" else "refusal_witness leg tally absent or short"
+# FIVE IDENT LEGS JOINED ON `20260917.004014`, when the Zig-identifier rule the lowering room
+# lowers a face by moved out of 29 copies into glow/zig_ident.rye. Three faults arrive as the one
+# word error.BadIdent -- an empty face, a face past its ceiling, a byte Zig will not take -- so each
+# fills its own record; the dot policy keeps both honest readings, a face refusing it and a wing
+# lowering it; and the caller's own field word and ceiling travel into the record, which is what
+# lets one rule serve the room's five different budgets without the record going vague.
+assert selftest.out contains "one ident rule lowers the hyphen and leaves the slot empty -- GREEN" else "refusal_witness missing the ident lowering leg"
+assert selftest.out contains "three ident faults under one error name, three records -- GREEN" else "refusal_witness missing the three-ident-faults leg"
+assert selftest.out contains "each ident refusal renders its own line -- GREEN" else "refusal_witness missing the ident rendering leg"
+assert selftest.out contains "the dot refuses as a face and lowers as a wing -- GREEN" else "refusal_witness missing the dot-policy leg"
+assert selftest.out contains "the caller's field and ceiling travel into the record -- GREEN" else "refusal_witness missing the caller-field leg"
+
+# THE TALLY IS DERIVED, NEVER RECITED -- the discipline this guard's own sibling
+# glow_ceiling_refusal_witness.rish already states, and which this line did not follow. It read
+# "16 legs" and reddened on `20260917` the moment five legs were added, which is precisely the
+# shape that teaches a lane to stop adding them. Every leg above is asserted by name, so a leg that
+# BREAKS is still heard; what stops being gated is a leg that ARRIVES.
+assert selftest.out contains "0 failures -- GREEN" else "refusal_witness reported a failing leg"
 
 # THE REFUSAL THIS GUARD DEMONSTRATES, added `20260916.205141`. Every leg above proves the record
 # is BUILT; none showed the witness refusing, so `standing_equipment_redleg` counted this guard
@@ -68,4 +85,4 @@ assert two.ok else "the two-part format string is absent from one of the two rec
 assert two.out contains "glow/refusal.rye:1" else "glow/refusal.rye does not spell the two-part line once"
 assert two.out contains "tally/receipt_refusal.rye:1" else "tally/receipt_refusal.rye does not spell the two-part line once"
 
-say "GREEN: Glow refusal record -- field, value, ceiling, unit, reason; one error name and six ceilings told apart across rune_shape and the lexer, the lexer's name ceiling reached through two scanners and naming each kind; a BadToken no record names leaving the slot empty; both format strings agreeing with tally/receipt_refusal.rye byte for byte; 16 legs plus 4 agreement asserts, and its own refusal shown by a planted mutation of the kind word."
+say "GREEN: Glow refusal record -- field, value, ceiling, unit, reason; one error name and six ceilings told apart across rune_shape and the lexer, the lexer's name ceiling reached through two scanners and naming each kind; a BadToken no record names leaving the slot empty; both format strings agreeing with tally/receipt_refusal.rye byte for byte; 21 legs plus 4 agreement asserts -- the five newest proving the one Zig-identifier rule the lowering room shares, and its own refusal shown by a planted mutation of the kind word."

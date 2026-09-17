@@ -27,6 +27,9 @@ const print = std.debug.print;
 /// 179, and 192 leaves a reason room to grow without a re-derivation. Re-derived
 /// `20260916` when the lexer's four ceilings joined the set and the widest reason grew
 /// five bytes; the ceiling itself held, which is what a derivation with room in it buys.
+/// Re-read `20260917` when `glow/zig_ident.rye`'s two joined -- `ident-char-not-allowed`
+/// at 22 bytes and `ident-empty` at 11, both under the 27 the widest still holds, so the
+/// derivation is unmoved.
 pub const max_refusal_line_bytes: u32 = 192;
 
 /// The longest field name a refusal may carry -- Glow's own ident ceiling, so a refusal can
@@ -64,6 +67,8 @@ pub const Reason = enum {
     cord_literal_too_long,
     hex_literal_too_many_digits,
     source_too_long,
+    ident_empty,
+    ident_char_not_allowed,
 
     pub fn name(self: Reason) []const u8 {
         return switch (self) {
@@ -73,6 +78,8 @@ pub const Reason = enum {
             .cord_literal_too_long => "cord-literal-too-long",
             .hex_literal_too_many_digits => "hex-literal-too-many-digits",
             .source_too_long => "source-too-long",
+            .ident_empty => "ident-empty",
+            .ident_char_not_allowed => "ident-char-not-allowed",
         };
     }
 };
