@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2385112964` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `008c429ab7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -258,7 +258,18 @@ lacked are measured: the price is **correctness** rather than hygiene, and the r
 **zero** -- `git ls-files` matches no `.rye-build.lock` path. One reversible line; reverse it in one.
 **MINE:** my three swept lock pids sit in the dead-letter box still, and `orphans_work` reads **3,
 all three false** -- the repair stops the next sweep and cannot unread the last one. Gates nothing.
-**YOURS:** the elder six-site ask, and whether `stash_record_scan.sh` owes a third orphan class.
+**AND I WROTE `%801`'s OWN FAULT INTO A BODY WHILE HOLDING ITS REPAIR** (`20260917.094332`, cited by
+stamp -- `rows_that_fit=0`, the pin still deadlocked). My claim-close body states that
+`construction/ITINERARY.md` *carries its Git nib constant forward in this same commit*; the commit
+touched one file, `construction/fleet-claims.kyri`. Every hash in it resolves, so the
+commit-message wall welcomed it -- only the RELATION is false, which is `%801` exactly. **The cause
+is narrower than haste:** I wrote the body from the rule's text rather than from the diff, so the
+sentence described the move I intended rather than the one I staged. `%801`'s own cure -- let the
+card carry the hash -- does not reach a body that CLAIMS to have moved the card. **What would
+catch it:** the wall reads paths and objects and never reads the staged set against the sentence.
+Pushed testimony, never forced; the nib is carried forward in THIS work commit.
+**YOURS:** the elder six-site ask, `stash_record_scan.sh`'s third orphan class, and whether a body
+asserting it changed a file earns a check against its own index.
 
 ## Simple, Lovable, Complete order
 
