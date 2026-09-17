@@ -1,0 +1,55 @@
+# tools/r/retired_rank_witness.rish -- does the counter rank two implementations the way the clock
+# does?
+#
+# WHY THIS RUNG. This pier exposes no joule. tools/fixtures/e/energy_instrument_scan.sh reads
+# joule_source=none, powercap_domains=0, msr_device=no, and tier=counters -- so every energy figure
+# a lane writes here is a proxy, and the proxy this tree proposes is RETIRED INSTRUCTIONS. Row 3 of
+# active-designing/20260917-105154_the-refusal-that-can-fire.md makes that proposal and states its
+# own falsifier in one sentence: the counter ranks two implementations in the opposite order from
+# wall time. This rung is the reading that fires it.
+#
+# WHAT WAS ALREADY STANDING, AND WHAT WAS MISSING. tools/rye/perf_self_count.rye and
+# tools/rye/retired_count.rye open a counter scoped to THIS process and count a loop compiled into
+# it. They proved the counter tier is reachable and measured the two spreads. Neither can measure a
+# COMMAND, and ranking two implementations is exactly that. tools/rye/retired_exec.rye forks, arms a
+# counter on the dependent with enable_on_exec and inherit, releases it through a pipe to exec, and
+# reports instructions beside wall nanoseconds for that dependent and everything it starts.
+#
+# WHAT IS PROVEN, on metal. Nineteen behaviors over planted arm pairs whose right answer is arranged
+# before the run: five refusals bitten, the agreeing case named from both positions so a scan that
+# always names its first arm reds, the DISAGREEING case shown firing on a sleeper-against-worker
+# pair, two arms that are one arm declining to be ranked, and one mutation -- an order function that
+# always names the first arm -- shown to bite.
+#
+# WHY THE DISAGREEMENT LEG IS THE ONE THAT MATTERS. A reading that could never say `agree=no` says
+# nothing when it says `agree=yes`. The sleeper pair is the proxy's true boundary, named in the
+# scan's own header: user-space retired instructions exclude kernel and hypervisor, so a workload
+# that waits rather than computes reports a small count beside a large clock. That is a property of
+# the unit rather than a defect, and the instrument states it out loud.
+#
+# WHAT IS NOT PROVEN. That retired instructions track joules -- no joule is readable here, so that
+# stays a stated assumption of the row rather than a measurement, and the row's confidence says so.
+# Nor that a counter read on a shared virtual host could be attributed to one tenant.
+#
+# A HOST IS NOT A FAULT (REDS %646). Where the kernel refuses the counter the scan reports
+# tier=cpu_seconds and verdict=counter_unavailable rather than inventing an order, and this witness
+# reads the control's own legs rather than the pier's luck.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/retired_rank_witness.rish
+
+say "retired-rank: Language EN -- a unit that ranks two implementations backwards is the wrong unit."
+say "retired-rank: Style Gauge, Meter -- the reading names its tier and its separation before any order is claimed."
+say "retired-rank: Lens TAME -- safety first: an order manufactured out of noise is worse than no order."
+
+let control = run ["sh" "tools/fixtures/r/retired_rank_control.sh"]
+say control.out
+assert control.ok else "retired-rank: the control must run -- see its own lines"
+assert control.out contains "control_verdict=ok" else "retired-rank: every planted arm pair must read the way it was built to read"
+assert control.out contains "control_failed=0" else "retired-rank: a leg that failed is a behavior nobody proved"
+assert control.out contains "leg=disagree_word reading=agree=no ok" else "retired-rank: a reading that cannot say no says nothing when it says yes"
+assert control.out contains "leg=order_not_position" else "retired-rank: the cheaper arm is found by its number, never by its position"
+assert control.out contains "leg=mutation_bites" else "retired-rank: a mutation that passes is a leg that was never load-bearing"
+assert control.out contains "leg=too_close_verdict" else "retired-rank: two arms that are one arm earn no order"
+
+say "retired-rank: GREEN -- the ranking reading refuses, agrees, and disagrees, each proven by doing."

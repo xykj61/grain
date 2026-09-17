@@ -2623,6 +2623,30 @@ path tools/r/retired_count_witness.rish
 tier cadence
 seated 20260911.081019
 
+# retired_rank -- the counter's own falsifier, run. `retired_count` above proved retired
+# instructions is STEADY where wall time is not; steadiness says nothing about whether the unit
+# ORDERS two implementations the way a lane cares about, and row 3 of
+# `active-designing/20260917-105154_the-refusal-that-can-fire.md` states that question as its own
+# falsifier: the counter ranks two implementations in the opposite order from the clock.
+#
+# Neither elder program can measure a COMMAND -- both count a loop compiled into themselves -- so
+# `tools/rye/retired_exec.rye` forks, arms a hardware counter on the dependent with
+# `enable_on_exec` and `inherit`, releases it through a pipe to exec, and reports instructions
+# beside wall nanoseconds for that dependent and everything it starts.
+#
+# What it holds: nineteen behaviors over planted arm pairs whose right answer is arranged before the
+# run -- five refusals bitten, the agreeing case named from BOTH positions so a scan that always
+# names its first arm reds, the DISAGREEING case shown firing on a sleeper-against-worker pair, two
+# arms that are one arm declining to be ranked, and an order-function mutation shown to bite. The
+# disagreement leg is the load-bearing one: a reading that cannot say `agree=no` says nothing when
+# it says `agree=yes`.
+#
+# `tier cadence`: nineteen legs each run two shell arms several times, which is choir money.
+guard retired_rank
+path tools/r/retired_rank_witness.rish
+tier cadence
+seated 20260917.121546
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer

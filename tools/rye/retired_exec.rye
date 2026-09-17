@@ -1,0 +1,202 @@
+//! tools/rye/retired_exec.rye -- count the retired instructions of a COMMAND, so two
+//! implementations of one workload can be ranked by work rather than by the clock.
+//!
+//! WHY THIS EXISTS BESIDE THE SELF-COUNTER. `tools/rye/perf_self_count.rye` and
+//! `tools/rye/retired_count.rye` open a counter scoped to THIS process and count a loop written
+//! inside it. That proved the counter tier is reachable on a pier whose joule is not
+//! (`tools/fixtures/e/energy_instrument_scan.sh` answers `joule_source=none`, `tier=counters`,
+//! `hw_instructions=yes`), and it measured the two spreads: instructions held far tighter than
+//! wall time on the same runs. What neither can do is measure a program it did not compile into
+//! itself, and ranking two implementations is exactly that question.
+//!
+//! THE ROW THIS SERVES, NAMED. Row 3 of
+//! `active-designing/20260917-105154_the-refusal-that-can-fire.md` claims that instructions
+//! retired ranks two implementations the same way a joule would, and states its own falsifier:
+//! the counter ranks two implementations in the OPPOSITE order from wall time on this pier. That
+//! falsifier needs a counter around a COMMAND, and this program is it.
+//!
+//! HOW THE CHILD IS COUNTED FROM ITS FIRST INSTRUCTION. A counter opened after a fork would miss
+//! whatever the child ran before the parent got scheduled, and a counter opened before the fork
+//! would count the parent. So: the parent forks; the child blocks reading one byte from a pipe;
+//! the parent opens a counter on the child's pid with `disabled` and `enable_on_exec` set, then
+//! writes the byte; the child execs and the KERNEL enables the counter at the exec boundary. The
+//! parent waits, then reads the count. Nothing of the parent's own work is in the number.
+//!
+//! WHY `inherit` IS SET. The workloads this tree compares are shell scripts, and a shell's own
+//! instructions are a rounding error beside the processes it starts. `inherit` counts the child's
+//! descendants too, which is the quantity a reader means by "what did this command cost".
+//!
+//! WHAT THE NUMBER IS NOT. It is user-space retired instructions, with kernel and hypervisor
+//! excluded, so a workload dominated by I/O wait or by kernel time reports a small count beside a
+//! large wall time. That is a property rather than a fault -- a proxy for ENERGY OF COMPUTATION,
+//! and the row's own claim is about implementations of one workload rather than about wall clocks
+//! in general. A pair whose difference is all I/O is a pair this instrument declines to rank, and
+//! the scan beside it reports both numbers so a reader sees that case rather than being told a
+//! verdict about it.
+//!
+//! A HOST IS NOT A FAULT (REDS %646). Where the kernel refuses the counter, this program prints
+//! `instructions=unavailable` with the errno named, still prints `wall_ns`, and exits 0. A guard
+//! nobody can keep green on an ordinary machine is a guard somebody turns off.
+//!
+//!   rye build tools/rye/retired_exec.rye -femit-bin=tools/bin/retired-exec
+//!   tools/bin/retired-exec "sh -c 'echo hi'"
+//!
+//! Gratitude: gratitude/TIGER_STYLE.md -- bounds named at construction, and say why.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const linux = std.os.linux;
+const copy = @import("tally_copy.rye");
+
+// The command arrives as one string and is handed to `/bin/sh -c`, so a caller writes the pipeline
+// it would type. The bound is generous for a command line and far under any argument limit.
+const max_command_bytes: u32 = 4096;
+
+const any_cpu: i32 = -1;
+const no_group: linux.fd_t = -1;
+
+const ExecCountError = error{
+    command_missing,
+    command_too_long,
+    fork_refused,
+    pipe_refused,
+    wait_refused,
+};
+
+/// Open a counter scoped to one pid, armed to start at that pid's next exec.
+fn open_child_counter(pid: linux.pid_t) ?linux.fd_t {
+    // invariant: a counter is opened on a real dependent, never on the whole machine.
+    assert(pid > 0);
+
+    var attr = std.mem.zeroes(linux.perf_event_attr);
+    attr.type = .HARDWARE;
+    attr.size = @sizeOf(linux.perf_event_attr);
+    attr.config = @intFromEnum(linux.PERF.COUNT.HW.INSTRUCTIONS);
+    attr.flags.disabled = true;
+    // The kernel arms it at the exec boundary, so the count starts at the new program's first
+    // instruction rather than at whatever the forked copy of this process was doing.
+    attr.flags.enable_on_exec = true;
+    // A shell's own work is a rounding error beside the processes it starts; count them too.
+    attr.flags.inherit = true;
+    attr.flags.exclude_kernel = true;
+    attr.flags.exclude_hv = true;
+
+    // invariant: the attribute block declares its own size, which is how the kernel versions it.
+    assert(attr.size == @sizeOf(linux.perf_event_attr));
+
+    const rc = linux.perf_event_open(&attr, pid, any_cpu, no_group, 0);
+    if (linux.errno(rc) != .SUCCESS) {
+        print("retired_exec: counter_refused errno={s}\n", .{@tagName(linux.errno(rc))});
+        return null;
+    }
+
+    // invariant: a successful open returns a descriptor inside the i32 range a fd_t holds.
+    assert(rc <= @as(usize, @intCast(std.math.maxInt(i32))));
+    return @intCast(rc);
+}
+
+/// Read the accumulated count off a live counter descriptor, or say it could not be read.
+fn read_counter(fd: linux.fd_t) ?u64 {
+    // invariant: a descriptor handed here is a real one, never the -1 that means no group.
+    assert(fd >= 0);
+
+    var count: u64 = 0;
+    const bytes = std.mem.asBytes(&count);
+    const read_bytes = linux.read(fd, bytes.ptr, bytes.len);
+    if (read_bytes != bytes.len) return null;
+    return count;
+}
+
+/// Read the monotonic clock in nanoseconds -- the pair the counter is reported beside.
+fn now_ns() u64 {
+    var ts: linux.timespec = undefined;
+    const rc = linux.clock_gettime(.MONOTONIC, &ts);
+    // invariant: the monotonic clock answered; a trial that cannot read a clock measures nothing.
+    assert(rc == 0);
+    const secs: u64 = @intCast(ts.sec);
+    const nanos: u64 = @intCast(ts.nsec);
+    // invariant: the nanosecond field stays inside one second, as POSIX declares it.
+    assert(nanos < 1_000_000_000);
+    return secs * 1_000_000_000 + nanos;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    var buf: [max_command_bytes]u8 = undefined;
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len < 2) return ExecCountError.command_missing;
+    const command = args[1];
+    const environ = init.minimal.environ.block.slice.ptr;
+    if (command.len + 1 > max_command_bytes) return ExecCountError.command_too_long;
+
+    // invariant: the command is copied into a bounded buffer and terminated for the exec seam.
+    assert(command.len < max_command_bytes);
+    copy.copy_disjoint(u8, buf[0..command.len], command);
+    buf[command.len] = 0;
+    const command_z: [*:0]const u8 = @ptrCast(buf[0..command.len :0].ptr);
+
+    // The gate: the child blocks on this pipe until the parent's counter is armed.
+    var gate: [2]linux.fd_t = undefined;
+    if (linux.errno(linux.pipe(&gate)) != .SUCCESS) return ExecCountError.pipe_refused;
+
+    const start_ns = now_ns();
+
+    const rc_fork = linux.fork();
+    if (linux.errno(rc_fork) != .SUCCESS) return ExecCountError.fork_refused;
+    const pid: linux.pid_t = @intCast(@as(isize, @bitCast(rc_fork)));
+
+    if (pid == 0) {
+        _ = linux.close(gate[1]);
+        var go: [1]u8 = undefined;
+        _ = linux.read(gate[0], &go, 1);
+        _ = linux.close(gate[0]);
+
+        const shell: [*:0]const u8 = "/bin/sh";
+        const dash_c: [*:0]const u8 = "-c";
+        var argv = [_:null]?[*:0]const u8{ shell, dash_c, command_z };
+        // The parent's own environment crosses the exec, so the command reads the PATH, the TZ,
+        // and every variable a caller set -- a trial run in a stripped environment is a trial of a
+        // different program (the first run of this file exec'd with an empty block and every arm
+        // answered `sh: command not found`, exit 127, counted as a fast arm until the scan's
+        // non-zero refusal caught it).
+        _ = linux.execve(shell, &argv, environ);
+        // execve returns only on failure, and a dependent that could not exec must not run on as
+        // a second copy of this program.
+        linux.exit(127);
+    }
+
+    _ = linux.close(gate[0]);
+
+    // invariant: a counter is armed before the dependent is released, or the count starts late.
+    assert(pid > 0);
+    const fd = open_child_counter(pid);
+
+    var go: [1]u8 = .{'g'};
+    _ = linux.write(gate[1], &go, 1);
+    _ = linux.close(gate[1]);
+
+    var status: u32 = 0;
+    const rc_wait = linux.waitpid(pid, &status, 0);
+    if (linux.errno(rc_wait) != .SUCCESS) return ExecCountError.wait_refused;
+
+    const end_ns = now_ns();
+    // invariant: the clock read after the wait is at or past the one read before the fork.
+    assert(end_ns >= start_ns);
+    const wall_ns: u64 = end_ns - start_ns;
+
+    const exit_code: u32 = (status >> 8) & 0xff;
+
+    if (fd) |counter| {
+        defer _ = linux.close(counter);
+        if (read_counter(counter)) |count| {
+            print("retired_exec instructions={d} wall_ns={d} exit={d} tier=counters\n", .{ count, wall_ns, exit_code });
+            return 0;
+        }
+        print("retired_exec instructions=unavailable reason=short_read wall_ns={d} exit={d} tier=cpu_seconds\n", .{ wall_ns, exit_code });
+        return 0;
+    }
+    print("retired_exec instructions=unavailable reason=counter_refused wall_ns={d} exit={d} tier=cpu_seconds\n", .{ wall_ns, exit_code });
+    return 0;
+}
