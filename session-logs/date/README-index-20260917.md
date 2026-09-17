@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.163650` | [The tolerance that was a ladder rung](20260917/20260917-163650_the-tolerance-that-was-a-ladder-rung.kyri) | Borrowed 60 was a rung; files cross 71.90. |
 | `20260917.152855` | [the shelf's unread promise](20260917/20260917-152855_the-shelf-that-promised-at-its-door.kyri) | one page declared no ceiling, and the guard could not see it |
 | `20260917.151944` | [The word a lost answer wears](20260917/20260917-151944_the-word-for-a-guard-that-could-not-answer.kyri) | %747 booked: `unrun`, never a red. |
 | `20260917.150724` | [The opt-in beside a second filter](20260917/20260917-150724_the-opt-in-beside-a-second-filter.kyri) | front_door_claim read 2 of 8 pages that opt in; now 1,529. |

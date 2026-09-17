@@ -33,10 +33,25 @@
 #   same capacity rule, so the only thing separating them is whether the graph was consulted. A
 #   layout that cannot beat that baseline has learned nothing from the graph.
 #
+#   READING 4 -- THE BORROWED TOLERANCE, RE-MEASURED. The layout above is computed on the static
+#   import graph, which is STRUCTURE read as a lower bound on coupling. The sibling reading
+#   (`20260916.095958`) measured how far a run-time weight may depart from that structure before
+#   the layout stops beating chance, and answered `60` percent over 67 ROOM pairs. The paper that
+#   took the file unit BORROWED that number and named the borrowing as its own weakest joint. A
+#   tolerance is a property of a graph rather than of an idea, so it is read again here on this
+#   tree's file edges, by the sibling's own method and at the sibling's own threshold: with
+#   probability p a real import edge carries no run-time traffic at all, and the same COUNT of file
+#   pairs carrying no import edge carry traffic the static graph cannot see. The computed layout is
+#   held FIXED and costed under the distorted edges, against a count-matched floor costed under the
+#   same distorted edges. Every figure here is FREE: the tree grows.
+#
 # THE FALSIFIERS, each one command away: `unit_fits_sixteen=no` would refute the erratum's own
 # claim that the file unit fits where the module unit does not; `intra_room_edge_share` near zero
 # would say the finer unit reveals nothing a room graph lacked; and `gain_share` at or below zero
-# at any fitting grid would say a file placement reads no better than chance.
+# at any fitting grid would say a file placement reads no better than chance. For reading 4,
+# `file_structure_drift_bites=no` would say the sweep distorts nothing a layout can feel, and
+# `drift pct=0` reading a gain share far from `sixteen_matched_gain_share` would say the sweep is
+# measuring a different placement than the one the scan computed.
 #
 # THE LAYOUT IS A PROPERTY OF THE TREE RATHER THAN OF A LISTING ORDER. Files are placed in order
 # of degree descending with the file name breaking every tie, so a shuffled input gives the same
@@ -57,6 +72,25 @@ CAP_SLACK=125               # per-node capacity as a percentage of the equal sha
                             # has somewhere to put a file that will not fit an exact sixteenth
 LCG_SEED=20260917           # fixed: a reading must not move between hosts
 
+# READING 4's own bounds. The ladder, the keep threshold and the distorted grid are the SIBLING's
+# numbers unchanged, because the whole point of this reading is that two numbers compare.
+DRIFT_LADDER="0 20 40 60 70 80 90 100"   # percent of real edges silenced, each replaced by an
+                            # unseen pair. The sibling's five rungs are kept exactly and TWO are
+                            # added at 70 and 90, because a 20-point rung is a coarser readout than
+                            # the effect it is being asked to resolve: both graphs answer 60 on the
+                            # sibling's ladder while their interpolated crossings differ by several
+                            # points, which a reader of the survival point alone cannot see.
+MAX_DRIFT_RUNGS=8           # rungs graded per run
+DRIFT_DRAWS=6               # distortion draws averaged per rung. The sibling averaged twenty over
+                            # 67 room pairs; this graph carries ~7,500 edges, so a single draw is
+                            # already an average over a hundredfold larger sample and six steadies
+                            # it at a sixth of the wall time.
+DRIFT_SAMPLES=10            # matched-floor draws per distortion draw, costed under the SAME
+                            # distorted edges the layout is costed under
+DRIFT_NODES=16              # the grid the row names, and the grid the sibling distorted
+KEEP_SHARE=0.10             # a placement earns its keep at a tenth of the floor's average cost --
+                            # the sibling's own threshold, kept so the two survival points compare
+
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || ROOT=$PWD
 cd "$ROOT" || exit 0
 
@@ -69,6 +103,10 @@ echo "max_edges=$MAX_EDGES"
 echo "max_grids=$MAX_GRIDS"
 echo "max_samples=$MAX_SAMPLES"
 echo "cap_slack_pct=$CAP_SLACK"
+echo "max_drift_rungs=$MAX_DRIFT_RUNGS"
+echo "drift_draws=$DRIFT_DRAWS"
+echo "drift_samples=$DRIFT_SAMPLES"
+echo "keep_share=$KEEP_SHARE"
 
 work=$(mktemp -d) || { echo "verdict=unreadable"; exit 0; }
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -259,12 +297,54 @@ function place_matched(n, k, occ, node,    i, v, q, idx, order, j, t) {
   return cost_of(node, k)
 }
 
+# ---- READING 4 -- STRUCTURE DRIFT, THE SIBLING'S METHOD ON THIS UNIT --------------------------
+# With probability P a real import edge carries no run-time traffic at all -- a file read once at
+# startup -- and the SAME COUNT of file pairs carrying no import edge carry traffic the static
+# graph cannot see. The result is a hypothetical run-time graph of about the same size, sharing
+# less and less structure with the one the layout was computed from.
+function drift_build(P,   e, i, phantoms, a, b, t) {
+  nde = 0
+  for (e = 1; e <= ne; e++) {
+    if (rnd(100) < P) continue
+    nde++; dA[nde] = eA[e]; dB[nde] = eB[e]
+  }
+  phantoms = int(ne * P / 100 + 0.5)
+  for (i = 1; i <= phantoms; i++) {
+    a = fn[1 + rnd(nf)]; b = fn[1 + rnd(nf)]
+    if (a == b) continue
+    if (a > b) { t = a; a = b; b = t }
+    if ((a SUBSEP b) in SEEN) continue
+    nde++; dA[nde] = a; dB[nde] = b
+  }
+  return nde
+}
+
+function drift_cost(node, k,    e, c) {
+  c = 0
+  for (e = 1; e <= nde; e++) c += hop(node[dA[e]], node[dB[e]], k)
+  return c
+}
+
+# the count-matched floor again, split so the seating and the costing are separate acts: the floor
+# must be costed under the SAME distorted edges as the layout, or the comparison is between two
+# different graphs rather than between two placements.
+function seat_matched(n, occ, node,    i, v, q, idx, order, j, t) {
+  for (i = 1; i <= nf; i++) order[i] = ORD[i]
+  for (i = nf; i > 1; i--) { j = 1 + rnd(i); t = order[i]; order[i] = order[j]; order[j] = t }
+  for (i in node) delete node[i]
+  idx = 0
+  for (v = 0; v < n; v++) for (q = 1; q <= occ[v]; q++) { idx++; node[order[idx]] = v }
+}
+
 NR == FNR { SZ[$2] = $1 + 0; fn[++nf] = $2; total += $1 + 0
             r = $2; if (sub(/\/.*$/, "", r) == 0) r = "."
             ROOMB[r] += $1 + 0; next }
 { a = $1; b = $2
   if (!(a in SZ) || !(b in SZ)) next
   ne++; eA[ne] = a; eB[ne] = b
+  # the pair key is sorted, since the edge list prints each pair in the order it was found and a
+  # phantom must not duplicate a real edge whichever way round it was written
+  if (a < b) SEEN[a SUBSEP b] = 1; else SEEN[b SUBSEP a] = 1
   deg[a]++; ADJ[a, deg[a]] = b
   deg[b]++; ADJ[b, deg[b]] = a
   wdeg[a]++; wdeg[b]++ }
@@ -369,6 +449,68 @@ END {
     if (n == 16) { sixteen_gain = gain; sixteen_beats = (c < lo) ? "yes" : "no"; sixteen_inf = inf
                    sixteen_mgain = mgain; sixteen_mbeats = (c < mlo) ? "yes" : "no"
                    sixteen_same = (ne > 0) ? same / ne : 0 }
+
+    # --- READING 4 -- the borrowed tolerance, re-read on this graph --------------------------
+    if (n == dnodes && ne > 0) {
+      nrungs = split(dladder, dl, " ")
+      if (nrungs > maxrungs) { print "drift_rungs_over_bound=yes"; nrungs = maxrungs }
+      surv = -1
+      for (di = 1; di <= nrungs; di++) {
+        P = dl[di] + 0
+        tot = 0
+        for (d = 1; d <= ddraws; d++) {
+          state = seed + k + P * 104729 + d
+          drift_build(P)
+          dc = drift_cost(NODE, k)
+          mt = 0
+          for (ds = 1; ds <= dsamples; ds++) { seat_matched(n, occf, DNODE); mt += drift_cost(DNODE, k) }
+          dm = mt / dsamples
+          tot += (dm > 0) ? (dm - dc) / dm : 0
+        }
+        g = tot / ddraws
+        ok = (g >= keep) ? "yes" : "no"
+        printf "drift k=%d pct=%d draws=%d live_edges=%d mean_gain_share=%.6f still_worth=%s\n",
+          k, P, ddraws, nde, g, ok
+        if (ok == "yes" && P > surv) surv = P
+        GV[di] = g; PV[di] = P
+        if (di == 1) dfirst = g
+        dlast = g
+      }
+      printf "drift_grid_nodes=%d drift_keep_share=%.2f\n", n, keep
+      printf "file_proxy_survives_structure_drift_upto_pct=%d\n", surv
+      # THE SURVIVAL POINT IS A LADDER RUNG, so it can only ever be as fine as the ladder. Where
+      # the gain crosses the keep threshold BETWEEN two rungs, say so by interpolation -- and print
+      # beside it how far the measured ladder departs from a straight line, since interpolating a
+      # curve that is not straight is a guess wearing a decimal point.
+      cross = -1
+      for (di = 2; di <= nrungs; di++) {
+        if (GV[di - 1] >= keep && GV[di] < keep) {
+          span = GV[di - 1] - GV[di]
+          cross = (span > 0) ? PV[di - 1] + (PV[di] - PV[di - 1]) * (GV[di - 1] - keep) / span : PV[di - 1]
+          break
+        }
+      }
+      printf "file_drift_crossing_pct=%.2f\n", cross
+      dev = 0
+      for (di = 1; di <= nrungs; di++) {
+        lin = GV[1] * (1 - PV[di] / 100)
+        d2 = GV[di] - lin; if (d2 < 0) d2 = -d2
+        if (d2 > dev) dev = d2
+      }
+      printf "drift_linear_max_abs_dev=%.6f drift_decay_linear=%s\n", dev, (dev <= 0.05) ? "yes" : "no"
+      # AND IF THE DECAY IS STRAIGHT, THE TOLERANCE HAS A CLOSED FORM. Gain falls as g0(1 - p), so
+      # it reaches the keep threshold at p = 1 - keep/g0 -- the tolerance is set by the undistorted
+      # gain and the threshold alone, and granularity enters only through g0. Printed beside the
+      # measured crossing so the two can disagree out loud.
+      closed = (GV[1] > 0) ? 100 * (1 - keep / GV[1]) : 0
+      gap = closed - cross; if (gap < 0) gap = -gap
+      printf "drift_crossing_closed_form_pct=%.2f drift_crossing_gap_pts=%.2f\n", closed, gap
+      # the two verdicts a guard can hold, read from the same sweep: whether moving the edges costs
+      # the layout anything at all, and how far they may move before it stops earning its keep.
+      printf "file_structure_drift_bites=%s\n", ((dfirst - dlast) >= keep) ? "yes" : "no"
+      printf "drift_undistorted_gain_share=%.6f\n", dfirst + 0
+      print "reading4=read"
+    }
   }
   printf "sixteen_gain_share=%.6f sixteen_beats_floor=%s sixteen_infeasible_files=%d\n",
     sixteen_gain + 0, (sixteen_beats == "") ? "ungraded" : sixteen_beats, sixteen_inf + 0
@@ -383,6 +525,9 @@ END {
 AWKBODY
 
 awk -v grids="$GRIDS" -v maxg="$MAX_GRIDS" -v samples="$SAMPLES" -v slack="$CAP_SLACK" \
-    -v seed="$LCG_SEED" -F'\t' -f "$work/place.awk" "$work/sizes.txt" "$work/edges.txt"
+    -v seed="$LCG_SEED" -v dladder="$DRIFT_LADDER" -v ddraws="$DRIFT_DRAWS" \
+    -v dsamples="$DRIFT_SAMPLES" -v dnodes="$DRIFT_NODES" -v maxrungs="$MAX_DRIFT_RUNGS" \
+    -v keep="$KEEP_SHARE" \
+    -F'\t' -f "$work/place.awk" "$work/sizes.txt" "$work/edges.txt"
 
 echo "verdict=read"

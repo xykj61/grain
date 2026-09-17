@@ -6968,8 +6968,26 @@ seated 20260916.042700
 # matters: a free-spreading floor loses to any layout at all, so the matched one is what says the
 # graph was consulted rather than the occupancy.
 #
-# Every figure here is FREE -- the tree grows -- so run the scan rather than reading them. 64 legs,
-# 5 mutations bitten, three real git repositories in a throwaway pen, 20s. tier lap.
+# WHAT THE BORROWED TOLERANCE IS WORTH, added 20260917.145116. The layout rests on the static
+# import graph read as a lower bound on coupling, and the paper naming the file unit BORROWED its
+# tolerance from the room-granularity sibling, calling the borrowing its own weakest joint. Reading
+# 4 re-measures it by the sibling's own method at the sibling's own threshold: with probability p a
+# real edge goes silent and the same count of unseen pairs carry traffic, the FIXED layout costed
+# under the distorted edges against a count-matched floor costed under the same. The borrowing was
+# sound. The file graph's gain crosses the keep threshold at 71.90 percent against the room graph's
+# 77.37 interpolated from its own live ladder -- lower, as a thinner layout should be, and by five
+# points rather than by the collapse its 0.2184-against-0.8463 locality would suggest. The sibling's
+# 20-point ladder reported 60 for both, which is a readout coarser than the effect.
+#
+# AND THE DECAY IS STRAIGHT, so the tolerance has a closed form. Gain falls as g0(1 - p) to within
+# 0.0046 over eight rungs, giving 1 - keep/g0 = 72.70 against a measured 71.90. The tolerance is
+# set by the layout's own undistorted gain and the threshold, and granularity enters only through
+# g0. That law holds on ~7,500 edges and fails on 67 room pairs and on the pen's 32, where the same
+# key reads drift_decay_linear=no -- which is what proves the reading a measurement rather than a
+# constant, and it is asserted from both sides.
+#
+# Every figure here is FREE -- the tree grows -- so run the scan rather than reading them. 78 legs,
+# 8 mutations bitten, three real git repositories in a throwaway pen, 38s. tier lap.
 guard aurora_file_placement
 path tools/a/aurora_file_placement_witness.rish
 tier lap

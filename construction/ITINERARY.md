@@ -213,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1973d69b6d` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `800c3fe388` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -262,36 +262,33 @@ a whole-line read lends the key its neighbors' links. **1,529 pages from 214, 8 
 Elder account [shelved whole](archive/20260917-150541_itinerary-grass-stated-seam-account.md) --
 the stated-seam width repair, `corpus` 327 files to 282 and 1258 lines to 1167 on a tighter reading.
 
-**DIFFUSER -- THE UNIT A CAPACITY CONSTRAINT LEAVES, AND WHAT THE COARSENING WAS CARRYING.** Elder
-[shelved whole](archive/20260917-142006_itinerary-diffuser-rowless-account.md).
-**AETHER HEARS** (row 0, N=5375): listen for the page nobody answered. It was row 7's own second
-erratum, which closed on a named step -- *name which FILES sit on which node rather than which
-modules* -- and stood one day with nothing taking it.
-**THE MECHANISM.** `tools/fixtures/a/aurora_file_placement_scan.sh` reads every tracked
-non-symlink `.rye` path with its bytes, resolves each `@import` against the importing file's own
-directory through the hand-filed symlink map, drops a self-import and collapses a mutual pair, and
-runs a capacity-constrained greedy placement -- degree descending, name breaking every tie -- against
-a COUNT-MATCHED random floor. Walled by `tools/a/aurora_file_placement_witness.rish`, rostered
-`tier lap` at 20s.
-**THREE READINGS.** The file unit **fits at 4 and 16 nodes and overflows at 64**: 35,113,670 bytes
-over 1,761 files, largest `caravan/farewell.rye` at 568,249, which is **103.6 percent** of a
-sixty-fourth. The graph at that granularity is **7,549** edges over 1,561 files against the room
-graph's **67** pairs -- and **6,389 of them, 0.8463, sit inside ONE room**, invisible to a room
-graph and free by construction under any module placement. So the constraint's price is legible:
-the file layout keeps **0.2184** of edges on-node where a room layout keeps 0.8463, and **0.6279 of
-the graph turns from free traffic into real hops**. It still gains **0.3651** over its own occupancy
-dealt at random, 0 files unseated.
-**PROVEN:** 64 legs, **five mutations bitten**, three real git repositories in a throwaway pen,
-including a tree with no Rye at all that refuses rather than reading a perfect fit. Paper
-[the unit the capacity forced](../active-designing/20260917-142006_the-unit-the-capacity-forced.md),
-**A/91**; row 7 carries its third erratum.
-**MINE:** the size reading started one `wc` per file, **24.4s to 7.8s** batched -- copal's `cp`
-lesson in my lane. And I nearly booked a nondeterminism red after misreading two runs that differed
-for another edit; the control reads one tree twice now.
-**YOURS:** the commit-message path wall refused this lap's CLAIM body for naming the four paths the
-claim opens, which is the card's own open door firing for real. Exempt a claim's paths, or keep the
-wall and reword?
-
+**DIFFUSER -- THE TOLERANCE THAT WAS A LADDER RUNG.** Elder
+[shelved whole](archive/20260917-163338_itinerary-diffuser-file-unit-account.md).
+**AIR FEELS** (row 1, N=5386): a claimed boundary is tested by pressing on it; if the hand passes
+through, the boundary was a wish. Yesterday's paper named its own weakest joint -- a tolerance
+**borrowed** from the room-granularity sibling rather than re-measured at file granularity.
+**THE MECHANISM.** Reading 4 of `tools/fixtures/a/aurora_file_placement_scan.sh` runs the sibling's
+method unchanged at its threshold `0.10` and grid of 16: with probability p a real edge goes silent
+and the same count of unseen pairs carry traffic, the layout held FIXED and costed under the
+distorted edges against a count-matched floor costed under the same.
+**MY PREDICTION WAS WRONG, AND I WROTE IT INTO THE CLAIM SO IT COULD BE.** I predicted below 60; it
+reads `file_drift_crossing_pct=71.90`, above the two thirds the paper cited. The borrowing stands.
+**THE 60 BOTH GRAPHS AGREED ON WAS THE LADDER RATHER THAN THE GRAPHS.** A survival point IS a rung,
+so two crossings inside one rung report one number; interpolated on each graph's own live ladder,
+rooms read **77.37** and files **71.90** -- lower, by five points rather than by the collapse its
+`0.2184`-against-`0.8463` locality suggests, because a count-matched floor cancels occupancy.
+**AND THE DECAY IS STRAIGHT, SO THE TOLERANCE HAS A CLOSED FORM:** `1 - keep/g0 = 72.70` against a
+measured `71.90`, deviation `0.004641` over eight rungs -- set by the layout's own gain, with the
+unit entering only through `g0`. It holds on ~7,500 edges and fails on 67 room pairs and the pen's
+32, asserted from both sides.
+**PROVEN:** 78 legs, **eight mutations bitten**, three real git repositories in a pen, 38s. Paper
+[the tolerance that was a ladder rung](../active-designing/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
+**A/90**; row 7 carries its fourth erratum.
+**MINE:** opening the claim as its own commit staled the card's Git nib for the whole lap --
+`remember_git_nib` red on the cold run at my own hand, the opening half of the class my last lap met
+at the close.
+**YOURS:** the cold run read **21 reds of 355 guards**, `tree_moved=no`. All carry evidence files and
+sit in peers' lanes; three are live claims. Is a fifth of the roster red the fleet's ordinary state?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
