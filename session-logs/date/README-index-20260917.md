@@ -12,8 +12,10 @@
 | `20260917.071855` | [A rebase is not a hand](20260917/20260917-071855_a-rebase-is-not-a-hand.kyri) | The class fired seven times, not once; the pin unblocked. |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
+| `20260917.054452` | [the lap that outlived its send](20260917/20260917-054452_the-lap-that-outlived-its-send.kyri) | a parked build recovered from the stash, re-proven, landed. |
 | `20260917.053050` | [The family the convention could not see](20260917/20260917-053050_the-family-the-convention-could-not-see.kyri) | Six fund guards seated; the gated reading saw none. |
 | `20260917.051641` | [The seat renamed, the guard left behind](20260917/20260917-051641_the-guard-left-behind.kyri) | 135 emit characters swept as one kind; a fifty-day red found. |
+| `20260917.050525` | [the record-version census](20260917/20260917-050525_record-version-census.kyri) | 32 record families still count up; two arrived the day after %765 was repaired. |
 | `20260917.050420` | [The step no tool runs](20260917/20260917-050420_the-step-no-tool-runs.kyri) | rule 5 fired on the hand that had just read it. |
 | `20260917.045407` | [the word and the two bytes](20260917/20260917-045407_the-word-and-the-two-bytes.kyri) | A vocabulary sweep read by sense so a full pin could hold it. |
 | `20260917.043714` | [a distance standing in for a block](20260917/20260917-043714_a-distance-standing-in-for-a-block.kyri) | a refusal read by block, not by three lines; glow adopts. |

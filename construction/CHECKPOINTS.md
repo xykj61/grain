@@ -2,6 +2,14 @@
 
 **Checkpoint `20260917.071327` -- walk-back nib `3caaa0dc3e`.** Restoring the paragraph a peer's rebase ate out of `%803` put `construction/REDS.md` 973 bytes over its 65,536-byte bound, with twenty rows standing **OPEN** and nothing foldable. The page is 92 percent rows -- 61,507 bytes against 5,002 of prose -- so the two finished ACCOUNTS it carries move to shelves and the rows stay: the 904-byte argument for the `20260915` bound raise, which reads as a completed decision rather than a declaration, goes to `construction/archive/20260917-071327_reds-pin-bound-raise-account.md`, and the **CLOSED** closure of `%626` joins the shelf already holding that row. The pin keeps its bound, its key, its three-field law and every open row. What waits at the walk-back: the raise account's own measurement -- 39,596 bytes, 16 open rows at a mean of 2,355, and 1,364 bytes of headroom against a row needing 2,355 -- which is the argument that this page's real condition is rows that do not close rather than a number that is too small.
 
+**Checkpoint `20260917.053021` -- walk-back nib `9d0868ef6d`.** Recovering this lane's parked
+record-version lap -- five files that stood in the round-open stash and on no ref -- put
+`construction/ITINERARY.md` 436 bytes past its 40,960-byte ceiling. *Swept:* the three-line BAKERY
+**THE THIRD PATH IN THE KEY** pointer, whose account already stands whole on
+`construction/archive/20260916-093400_itinerary-landed-accounts.md` and whose one standing ask the
+card itself records as answered. The shelf keeps every word, the `ryekey_marker` v6-to-v7 move
+included. No open gate, no peer account body, and no dated testimony moves.
+
 **Checkpoint `20260916.185437` -- walk-back nib `c8a895b0ff`.** Recovering two Bakery session logs
 from the dead-letter box and writing this lap's account needed room on `construction/ITINERARY.md`.
 The completed Bakery `%642` publish-cache account folds whole through `itinerary_account_shelf.sh`
