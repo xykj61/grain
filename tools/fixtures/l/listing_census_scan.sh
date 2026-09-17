@@ -66,7 +66,10 @@ mode="${1:-count}"
 # files outside the family. The claim that opened this lap said FOUR, counted by a grep
 # wanting `sort ... | head -<digits>` on one line; the meter reads `head -n "$var"` too, and
 # the correction rides with the reading rather than waiting for a later lap.
-CEILING=13
+# Fell to TWELVE `20260917`: `caravan_ladder_carry_scan.sh`'s CARRY_TOP queue now names
+# top_shown and top_hidden beside the twelve families it prints, so a reader can tell "the
+# queue held exactly twelve" from "the queue held 576 and the rest were cut."
+CEILING=12
 
 # The wall. Named rather than discovered, because membership in the ASCII-first meter family is a
 # fact about the law those nine serve rather than about their spelling -- and a discovered roster
