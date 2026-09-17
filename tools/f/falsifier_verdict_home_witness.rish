@@ -1,0 +1,94 @@
+# tools/f/falsifier_verdict_home_witness.rish -- does a graded row carry its verdict?
+#
+#   rishi/bin/rishi run tools/f/falsifier_verdict_home_witness.rish
+#
+# WHY. A paper of this lane runs an elder paper's falsifier and reaches a verdict, and the
+# verdict is worth something to one reader above all others: whoever opens the ELDER page
+# and reads the row that has since been refuted. So the question is one of POSITION rather
+# than of wording -- when a child declares `row N of <elder>`, does the elder carry a
+# `Row N erratum` line?
+#
+# WHAT THIS REPLACES, and the measurement that replaced it. On 20260909.203002 this lane
+# withdrew its own proposed construction/falsifier-ledger.kyri and seated one door key --
+# `**Runs the falsifier of:** <elder> -- survived | fired | unrunnable` -- with a kill
+# condition: if fewer than half the papers running an elder falsifier use the seated
+# spelling, withdraw it. Eight days and 127 pages later the key stands in 3 files, every one
+# written within the hour of its own seating, against 16 opportunities. The falsifier fired.
+# In the same window the ERRATUM reached twelve of twelve rows on the elder ranking, with
+# nothing proposing it. A spelling must be remembered; a position is found by looking.
+#
+# WHAT IS GATED, at zero: unanswered -- a child page declaring in its door that it graded
+# row N of an elder page, where the elder carries no matching erratum. The child already did
+# the work and the reader who needs it is standing on the elder. It is a WALL rather than a
+# ratchet because all 14 standing declarations are answered, so it refuses nothing anyone
+# has written.
+#
+# WHAT IS REPORTED AND GATED NOWHERE: the key census. Gating a spelling this instrument's
+# own paper refuted would be a meter arguing with its measurement. Also elder_missing, since
+# an elder that folded to a shelf is lawful and tools/d/dated_path_resolve.rish is how a
+# reference to one is recovered; and erratum_no_paper, since a lap may run a witness and
+# record the result without writing a paper, which two errata here did.
+#
+# NOT tools/f/falsifier_reach_witness.rish, which asks whether a stated falsifier could ever
+# fire. This asks what happens to the elder page after one does.
+#
+# Scan: tools/fixtures/f/falsifier_verdict_home_scan.sh. Pen: tools/fixtures/f/falsifier_verdict_home_control.sh.
+# Paper: active-designing/20260917-101905_the-verdict-that-came-home.md.
+
+let scan = run ["sh" "tools/fixtures/f/falsifier_verdict_home_scan.sh"]
+say scan.out
+assert scan.ok else "verdict-home: a graded elder row stands with no erratum on the page that carries it -- read the scan's own unanswered line"
+assert scan.out contains "verdict=answered" else "verdict-home: the scan must reach its clean verdict"
+assert scan.out contains "unanswered=0" else "verdict-home: a child graded an elder row and left the elder silent, so the reader standing on that row meets an unrefuted claim"
+
+# A meter reading an empty collection reports clean while proving nothing, so each population is
+# asserted non-empty rather than merely unrefused.
+assert (scan.out contains "living_pages=0" == false) else "verdict-home: an empty collection would report clean while reading nothing at all"
+assert (scan.out contains "declarations=0" == false) else "verdict-home: a tree declaring no graded row would prove nothing about where a verdict lands"
+assert (scan.out contains "errata_total=0" == false) else "verdict-home: the answers side must be non-empty or the gate is comparing two silences"
+
+# The readings that decide what the gate MEANS are asserted to be printed, since a number
+# nobody prints cannot be told from one that is zero.
+assert scan.out contains "declarations_form_b=" else "verdict-home: the looser declaration form must name its own size"
+assert scan.out contains "elder_missing=" else "verdict-home: a basename resolving to no living page is lawful and must still be visible"
+assert scan.out contains "erratum_no_paper=" else "verdict-home: an erratum whose stamp names no page must be counted rather than hidden"
+assert scan.out contains "elders_distinct=" else "verdict-home: the census describes one page's habit until this reading passes one"
+assert scan.out contains "keys_count=" else "verdict-home: the spellings a lane actually reaches for are the reading that fired the seated key"
+assert scan.out contains "key_seated=" else "verdict-home: the withdrawn spelling is counted rather than argued about"
+
+let control = run ["sh" "tools/fixtures/f/falsifier_verdict_home_control.sh"]
+say control.out
+assert control.ok else "verdict-home: the control must complete"
+assert control.out contains "control_verdict=ok" else "verdict-home: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line
+# proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "verdict-home: a leg that failed must be heard even when the control completes"
+assert control.out contains "legs=40" else "verdict-home: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+
+assert control.out contains "leg answered_counted ok" else "verdict-home: a graded row whose elder carries the erratum must read answered"
+assert control.out contains "leg unanswered_planted ok" else "verdict-home: the wall must refuse from the failing side"
+assert control.out contains "leg unanswered_verdict ok" else "verdict-home: the refusal must name itself in the verdict line"
+assert control.out contains "leg plant_lifted_returns ok" else "verdict-home: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "leg elder_missing_counted ok" else "verdict-home: a basename resolving to no living page must be counted apart"
+assert control.out contains "leg elder_missing_never_gated ok" else "verdict-home: a folded elder is lawful and must not reach the wall"
+assert control.out contains "leg shelved_child_read_past ok" else "verdict-home: a declaration on a closed stack is testimony that can never be repaired"
+assert control.out contains "leg keys_listed ok" else "verdict-home: the keys a lane reaches for must be named rather than counted only"
+assert control.out contains "leg seated_key_counted ok" else "verdict-home: the withdrawn spelling must be countable from the output"
+assert control.out contains "leg two_elders_two_answers ok" else "verdict-home: two elders answering two children must read as two answers"
+assert control.out contains "leg erratum_without_paper_counted ok" else "verdict-home: an erratum whose stamp names no page must be visible"
+assert control.out contains "leg erratum_with_paper_clears ok" else "verdict-home: that reading must fall to zero when the page exists"
+assert control.out contains "leg empty_corpus_refuses ok" else "verdict-home: an instrument that cannot answer must refuse rather than read zero"
+assert control.out contains "leg outside_repo_refuses ok" else "verdict-home: a scan outside a repository must refuse by name"
+assert control.out contains "leg bound_refuses ok" else "verdict-home: a collection past the declared bound must refuse rather than truncate in silence"
+assert control.out contains "leg bound_restored ok" else "verdict-home: the bound refusal must lift when the bound does"
+assert control.out contains "leg m1_unmutated_reads_unanswered ok" else "verdict-home: the mutation must be preceded by the unmutated reading it displaces"
+assert control.out contains "leg m1_mutation_bites ok" else "verdict-home: an erratum for another row must never answer this one"
+assert control.out contains "leg m2_unmutated_reads_door_only ok" else "verdict-home: a declaration is read at the door rather than anywhere on the page"
+assert control.out contains "leg m2_mutation_bites ok" else "verdict-home: lifting the door bound must change the answer"
+assert control.out contains "leg m3_unmutated_reads_past_shelf ok" else "verdict-home: a shelved declaration must stay outside the reading"
+assert control.out contains "leg m3_mutation_reaches_the_gate ok" else "verdict-home: dropping the shelf exclusion must reach the wall"
+assert control.out contains "leg m4_unmutated_reads_unanswered ok" else "verdict-home: an elder mentioning an erratum mid-sentence carries none"
+assert control.out contains "leg m4_mutation_bites ok" else "verdict-home: lifting the line anchor must change the answer"
+
+say "GREEN: verdict home -- every graded elder row carries its erratum where the row is read; the seated door key is counted and gated nowhere."

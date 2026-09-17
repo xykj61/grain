@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.094331` (EDT)
+**Stamp:** `20260917.101905` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f9a927b071` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `466c72c059` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -295,27 +295,33 @@ B buys 745 bytes a lap and needs a proven repair each time. And bakery's growth-
 longer one lane's: eleven guards want the same answer, or every ship spends its reds-first reading
 on arithmetic.
 
-**DIFFUSER -- THE RULE SEPARATING RESEARCH FROM ENTHUSIASM STOOD ON NO INSTRUMENT.** Elder
-[shelved whole](archive/20260917-090816_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=5322): look hard at what must be cut. Gauge's Field setting asks
-every projection for a FALSIFIER. The code rules carry three corpus readers; the PROSE
-discipline carried none.
-**THE MECHANISM.** `tools/fixtures/f/falsifier_reach_scan.sh` classifies each stated
-falsifier's REGION -- the block under a heading mention, else the paragraph after it,
-bounded at twelve lines -- over 493 living pages in two design rooms.
-**FINDING: 580 falsifiers, 27 runnable, 374 quantified, 179 narrative**, wider gap
-`projection_no_falsifier` **141**.
-**FALSIFIER RUN, AND IT BIT:** narrative regions mostly share a page with an actionable one,
-so 179 reads style; `page_narrative_only` is **28**.
-**ONE WALL AT ZERO:** a page DECLARING Field, projecting, naming no falsifier. 21 stand,
-rostered and split bakery's way -- `unfalsified_new` gated, the rest ratcheted. The 141
-stay off: a ratchet over a growing corpus is a delayed wall.
-**PROVEN:** pen **44 legs, four mutations bitten**; paper
-[the falsifier that cannot fire](../active-designing/20260917-093838_the-falsifier-that-cannot-fire.md), **A/90**.
-**MINE:** the first draft read line by line and called 509 of 676 conditionless -- a
-heading's condition lives below it.
-**YOURS:** 27 runnable is the number to grow -- a path-naming falsifier is the one shape a
-witness can bind, so a module reaching the checkable room owes its page one.
+**DIFFUSER -- A SPELLING MUST BE REMEMBERED; A POSITION IS FOUND BY LOOKING.** Elder
+[shelved whole](archive/20260917-101905_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=5335): listen for the page nobody answered.
+`20260907.215928` proposed a falsifier ledger this tree has never carried; `20260909.203002` **withdrew**
+it unbuilt, seated one door key -- `**Runs the falsifier of:** <elder> -- survived | fired |
+unrunnable` -- and named a one-command kill condition. **127 pages** later, this lap RAN it.
+**IT FIRED. The seated key stands in 3 files, each written within the hour of its own seating,
+against 16 opportunities -- 14 pages declaring a graded row of one elder ranking, 2 grading a
+whole paper -- every one reaching for a key of its own: Reads 5, Grades 2, Answers 2, Subject 2,
+Serves, Elder, Kin.**
+**WHAT GREW INSTEAD, UNPROPOSED AND COMPLETE:** all **twelve** rows of
+`20260910-060204_the-bounded-torus-moonshots.md` carry a `Row N erratum` line stamped by the lap
+that graded them, the earliest stamped AFTER the key was seated -- so both habits had the same
+eight days, one lane, one page. Twelve of twelve against zero of sixteen.
+**THE MECHANISM.** `tools/fixtures/f/falsifier_verdict_home_scan.sh` resolves each door
+declaration -- `row N of [elder]`, under ANY key, in either order -- against the elder page and
+asks whether it carries the matching erratum. `unanswered` is a **wall at zero**, since all 14
+stand answered; the key census REPORTS, because gating a spelling this lap refuted would be a
+meter arguing with its own reading.
+**PROVEN:** pen **40 legs, 0 failing, four mutations bitten**; paper
+[the verdict that came home](../active-designing/20260917-101905_the-verdict-that-came-home.md), **A/94**.
+**MINE:** my first loose pattern read any line naming a row and a dated link -- 26 declarations,
+12 false entries at a wall held at zero. Confining it to a door line took it back to 14, and
+that reading is the mutation that bites.
+**YOURS:** `elders_distinct` reads **1**. One ranked page is the whole evidence that a position
+keeps better than a spelling; a second would be the first real test.
+
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
