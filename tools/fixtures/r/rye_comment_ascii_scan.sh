@@ -157,7 +157,9 @@ count_file() {
 #   1307  `20260910.114040`  amphora's four trailing em dashes converted while `src/main.rye` was
 #                            open for the ferry repair -- the module's own-line comments fell zero,
 #                            so only this reading moved
-TRAIL_CEILING=1307
+#   1306  `20260917.095429`  the one em dash in `rye/tests/mantra_weave_test.rye`, converted on
+#                            touch while its header was repaired to say what the file tests
+TRAIL_CEILING=1306
 
 count_trailing() {
   LC_ALL=C awk '

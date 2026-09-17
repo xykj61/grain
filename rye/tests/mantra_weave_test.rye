@@ -1,9 +1,48 @@
-//! Rye test: Mantra weave -- pass 9990.
+//! Rye test: a parity unit carrying a 20260619 SNAPSHOT of Mantra's weave.
 //!
-//! Exercises the pure core of Mantra: the Weave data model and the LCS-based
-//! diff computation. No file I/O -- pure inputs, deterministic outputs.
+//! WHAT THIS FILE ACTUALLY TESTS, said first because its name says otherwise.
+//! Every type and every function below is declared HERE. The file imports
+//! `std` and nothing else, so it exercises `std.ArrayListUnmanaged`, `std.mem.sort`,
+//! `std.mem.eql` and a hand-written LCS -- which is what earns it a seat in the
+//! parity corpus, where each unit must compile against baseline std and Rye's
+//! strengthened std alike. It proves nothing about `mantra/src/weave.rye`.
 //!
-//! Scenarios covered:
+//! THE SNAPSHOT HAS DRIFTED, and a guard counts it. `mantra/src/weave.rye`
+//! declares `Line` with `text gen pos site run ord`, `Diff` with
+//! `site inserts deletes replaces after`, and `Weave` with
+//! `lines next_pos next_run`. The three declarations below carry the first
+//! three, the first two, and the first two fields of those. So this is the
+//! last copy `tools/fixtures/m/mantra_weave_model_scan.sh` reads as
+//! disagreeing, standing under `DISAGREE_CEILING=1`, and REDS %589 named
+//! porting it as its own lap.
+//!
+//! WHY THE PORT HAS NOT HAPPENED, measured on metal `20260917` rather than
+//! asserted. The elder record said only that this file "cannot import" the
+//! module. Four readings say what closes it, each with its own door:
+//!
+//!   1. Zig refuses `@import("../../mantra/src/weave.rye")` outright --
+//!      `error: import of file outside module path`. Run from this directory.
+//!   2. A RENAMED symlink beside the test DOES work for a module importing
+//!      only `std`: `mantra_weave.rye -> ../../mantra/src/weave.rye` compiles,
+//!      and `Weave.apply` and `Weave.current` run through it.
+//!   3. It does NOT reach `mantra/src/diff.rye`, which holds the LCS half.
+//!      That module imports `weave.rye` by bare name, and the rye bridge
+//!      resolves a symlinked module's own imports relative to the SYMLINK's
+//!      directory -- so it asks for `weave.rye` beside the symlink and reads
+//!      `FileNotFound`. The LCS half needs that bare name in this room.
+//!   4. `tools/fixtures/r/rye_harness_roster_scan.sh` enumerates this room
+//!      with `-type f -o -type l`, and gates `files_unlisted` at zero. So a
+//!      symlink here reds that guard until `tools/p/parity_ch01.rish` names
+//!      its stem -- and a named stem is one the harness tries to run, over a
+//!      module carrying no `main`.
+//!
+//! So the block is the parity corpus admitting no module beside its tests,
+//! which is a ruling about `rye/` rather than about `mantra/`. The module's
+//! own witnesses live where imports resolve with no symlink at all:
+//! `mantra/src/weave_apply_witness.rye`, `weave_merge_witness.rye`,
+//! `weave_annotate_witness.rye`, `weave_v2_witness.rye`.
+//!
+//! Scenarios covered, against the declarations below:
 //!   1. Empty weave: current() returns zero lines.
 //!   2. apply({inserts: ["a","b","c"], deletes:[]}): 3 lines present.
 //!   3. apply({inserts: ["d"], deletes:[1]}): "b" gone, "d" added.
@@ -13,7 +52,7 @@
 
 const std = @import("std");
 
-// ---- Weave (inlined from mantra/src/main.rye) ---------------------------
+// ---- Weave: a 20260619 snapshot, three fields behind mantra/src/weave.rye --
 
 const Line = struct {
     text: []const u8,
@@ -75,7 +114,7 @@ const Weave = struct {
     }
 };
 
-// ---- LCS diff (inlined from mantra/src/main.rye) ------------------------
+// ---- LCS diff: a snapshot too; the module holds this in mantra/src/diff.rye
 
 fn computeDiff(
     allocator: std.mem.Allocator,
@@ -167,7 +206,7 @@ pub fn main() void {
     std.debug.assert(std.mem.eql(u8, view_acd[1].text, "c")); // pos 2
     std.debug.assert(std.mem.eql(u8, view_acd[2].text, "d")); // pos 3
     // "b" is gone (even gen) but still in the weave history.
-    std.debug.assert(w.lines.items.len == 4); // a, b, c, d — history preserved
+    std.debug.assert(w.lines.items.len == 4); // a, b, c, d -- history preserved
     std.debug.assert(w.lines.items[1].gen % 2 == 0); // "b" is gone
     std.debug.assert(w.next_pos == 4);
 

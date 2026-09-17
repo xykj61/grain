@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.100019` | [The cannot that was never measured](20260917/20260917-100019_the-cannot-that-was-never-measured.kyri) | Four walls measured under %589's bare "cannot import". |
 | `20260917.094356` | [the falsifier that cannot fire](20260917/20260917-094356_the-falsifier-that-cannot-fire.kyri) | 580 stated falsifiers classified; 21 Field pages naming none walled. |
 | `20260917.093724` | [One fold, and a ceiling class](20260917/20260917-093724_one-fold-and-a-ceiling-class.kyri) | %810 folded: 745 bytes freed against a 2,636-byte row. |
 | `20260917.093137` | [The post that gave](20260917/20260917-093137_the-post-that-gave.kyri) | context/README.md named 0 of 3 rooms, 49 days. |
