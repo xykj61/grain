@@ -208,7 +208,7 @@ trap 'rm -rf "$work"' EXIT INT TERM
 # With it they read 0% and 18%. Of 892 living documents 676 carry such a block, and the six
 # largest a prose-shaped audit flagged are all metadata with long values.
 measure() {
-  awk -v explain="${2:-0}" -v detail_max="${3:-80}" '
+  awk -v explain="${2:-0}" -v detail_max="${3:-80}" -v hold_ordered="${4:-0}" '
     BEGIN {
       # POSIX boundary classes, since \< is gawk-only and BSD awk matched nothing
       # (the control leg caught the zero-read on the first macOS run, 20260825)
@@ -254,6 +254,13 @@ measure() {
     /^[ \t]*\|/ { next }                       # tables
     /^[ \t]*[-*_][-*_ \t]*$/ { next }          # a rule line, or a marker with nothing after it
     /^[ \t]*[-*+][ \t]/ { next }               # a bullet: the marker THEN whitespace
+    # AN ORDERED LIST IS A LIST, AND THIS READING COUNTS IT AS PROSE. The bullet rule above reads a
+    # marker THEN whitespace and enumerates only `-`, `*` and `+`, so `1. ` and `2) ` fall through
+    # to the body and each station of a numbered rose is read as a sentence. The count is taken on
+    # every run and the hold-out runs only when a caller asks for it, so one function answers both
+    # readings and neither can drift from the other. Bounded at nine digits, which is the limit
+    # CommonMark itself sets for an ordered-list marker.
+    /^[ \t]*[0-9][0-9]*[.)][ \t]/ { ordlines++; if (hold_ordered) next }
     /^[ \t]*[>#]/ { next }                     # quotes, headings
     /^[ \t]*$/ { next }
     {
@@ -292,8 +299,8 @@ measure() {
         printf "explain_listed=%d\n", shown
         if (negsent > shown) printf "explain_truncated_at=%d\n", detail_max
       }
-      if (sent == 0) { print "0 0 0"; exit }
-      printf "%d %d %d\n", sent, negsent, int(negsent * 100 / sent)
+      if (sent == 0) { printf "0 0 0 %d\n", ordlines + 0; exit }
+      printf "%d %d %d %d\n", sent, negsent, int(negsent * 100 / sent), ordlines + 0
     }
   ' "$1"
 }
@@ -514,6 +521,58 @@ while IFS= read -r f; do
   printf 'candidate: %s %s%% (%s of %s sentences)\n' "$f" "$3" "$2" "$1" >> "$work/candidates.txt"
 done < "$work/front.txt"
 
+# --- THE ORDERED LIST, REPORTED AND NEVER SCORED -------------------------------------------------
+# The bullet rule in measure() reads a marker THEN whitespace and enumerates `-`, `*` and `+`. An
+# ORDERED list marker is enumerated nowhere, so every `1. ` and `2) ` line falls through to the
+# body and is read as a prose sentence -- by this gate, and by the Reach grade in
+# tools/fixtures/q/qa_report_card.sh, which copies the same four line rules.
+#
+# WHY IT MATTERS IN THE UNSAFE DIRECTION. This reading counts NEGATIVE sentences as a share. The
+# bold-key residue one rule above errs toward COUNTING and says so, because counting a label
+# dilutes the ratio toward positive by a little and hiding a claim hides real negation. A numbered
+# list is the same dilution at a larger size: a rose of seven stations is seven positive sentences
+# added to a denominator, and the share falls for a page whose prose never changed.
+#
+# MEASURED 20260916 over the three tiers this scan gates. The two tallies below are the same
+# readings recomputed with the ordered lines held out, and the difference is what the gate cannot
+# currently hear. The floor is re-applied, since holding lines out can take a page under it.
+#
+# REPORTED, NEVER SCORED, on the seated reasoning of the sibling this scan shares its rules with:
+# qa_report_card.sh refuses twice, in its own words, to re-grade the tree in one unmeasured step,
+# and names construction/ITINERARY.md as where the standard question goes. Publishing the number
+# is what lets that question be asked with a figure rather than a guess. The gate above is
+# untouched by this block, and every scored reading is byte-identical to the run before it.
+ordered_lines=0
+ordered_files=0
+ordered_door_delta=0
+ordered_teaching_delta=0
+ordered_law_delta=0
+: > "$work/ordered_detail.txt"
+{ for f in $DOOR; do printf 'door %s %s\n' "$DOOR_MAX" "$f"; done
+  while IFS= read -r f; do printf 'teaching %s %s\n' "$FIELD_MAX" "$f"; done < "$work/teaching.txt"
+  while IFS= read -r f; do printf 'law %s %s\n' "$FIELD_MAX" "$f"; done < "$work/law.txt"
+} > "$work/ordered.txt"
+while read -r tier ceil f; do
+  [ -f "$f" ] || continue
+  set -- $(measure "$f")
+  [ "${4:-0}" -gt 0 ] || continue
+  ordered_lines=$(( ordered_lines + $4 ))
+  ordered_files=$(( ordered_files + 1 ))
+  if [ "$1" -ge "$REGISTER_MIN_SENTENCES" ] && [ "$3" -gt "$ceil" ]; then was=1; else was=0; fi
+  pct_all=$3
+  # ONE held reading per file, read into its own names before the next `set --` overwrites them.
+  set -- $(measure "$f" 0 80 1)
+  if [ "$1" -ge "$REGISTER_MIN_SENTENCES" ] && [ "$3" -gt "$ceil" ]; then now=1; else now=0; fi
+  d=$(( now - was ))
+  [ "$d" -eq 0 ] || printf 'ordered: %s %s reads %s%% and %s%% with its numbered lines held out\n' \
+    "$tier" "$f" "$pct_all" "$3" >> "$work/ordered_detail.txt"
+  case "$tier" in
+    door)     ordered_door_delta=$(( ordered_door_delta + d )) ;;
+    teaching) ordered_teaching_delta=$(( ordered_teaching_delta + d )) ;;
+    law)      ordered_law_delta=$(( ordered_law_delta + d )) ;;
+  esac
+done < "$work/ordered.txt"
+
 cat "$work/door.txt"
 echo "door_documents=$(echo $DOOR | wc -w | tr -d ' ')"
 echo "door_over_ceiling=$door_over"
@@ -533,6 +592,13 @@ echo "law_ceiling=$law_ceiling"
 # FRONT_DETAIL_MAX bounds every listing this scan prints, rather than the front doors alone: a
 # printout is an allocation whichever tier fills it (TAME).
 [ "$law_over" -eq 0 ] || sort -t% -k1 -rn "$work/law_over.txt" | head -"$FRONT_DETAIL_MAX"
+echo "ordered_list_lines=$ordered_lines"
+echo "ordered_list_files=$ordered_files"
+echo "ordered_held_door_delta=$ordered_door_delta"
+echo "ordered_held_teaching_delta=$ordered_teaching_delta"
+echo "ordered_held_law_delta=$ordered_law_delta"
+echo "ordered_list_note=reported, never scored -- a numbered list line is read as a prose sentence by this gate and by the Reach grade; the deltas name what the gate cannot hear"
+[ "$ordered_door_delta$ordered_teaching_delta$ordered_law_delta" = "000" ] || sort "$work/ordered_detail.txt" | head -"$FRONT_DETAIL_MAX"
 echo "front_doors=$front_doors"
 echo "front_doors_readable=$front_readable"
 echo "front_doors_unrostered_over=$front_unrostered_over"

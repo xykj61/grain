@@ -1210,4 +1210,52 @@ es=$(elderstyle declares_door.md --setting field --service 75)
   && [ "$(val "$es" composite)" = "$(val "$apart" composite)" ] \
   && echo "elder_card_was_blind_to_the_declaration=yes" || echo "elder_card_was_blind_to_the_declaration=no"
 
+# 4d -- THE ORDERED LIST, the same shape as 4c one line rule over. Both scored readings hold out a
+# bullet -- `-`, `*` or `+` then whitespace -- and hold out no ordered marker, so a `1. ` line is
+# graded as a sentence and its links counted against the cross-reference budget. The plant is a
+# routing page: eight plain sentences to clear the floor, then five short station lines each
+# carrying a link, which is how this tree writes a rose. Holding them out must lift Reach, since
+# the links leave with the lines.
+cat > "$pen/rose.md" <<'EOF'
+# A numbered rose
+
+This opening line is plain and short. Here is a second plain line. A third plain line follows. A fourth plain line stands here. A fifth plain line stands here too. A sixth plain line joins them. A seventh plain line is here. An eighth plain line closes the run.
+
+1. [Where you are](a.md) -- the rooms of the root.
+2. [Foundations](b.md) -- the why beneath the work.
+3. [Grain index](c.md) -- the strands and the crossing.
+4. [Two rooms](d.md) -- checkable beside proposed.
+5. [The card](e.md) -- what is open and what waits.
+EOF
+# The five targets are planted, so Truth resolves and the composite below is the ordinary
+# arithmetic rather than the truth gate's flat 59.
+for t in a b c d e; do echo "# $t" > "$pen/$t.md"; done
+ro=$(run rose.md --setting door --service 100)
+[ "$(val "$ro" ordered_list)" = 5 ] \
+  && echo "card_counts_ordered_lines=yes" \
+  || echo "card_counts_ordered_lines=no ($(val "$ro" ordered_list))"
+[ "$(val "$ro" ordered_list_reach)" -gt "$(val "$ro" reach)" ] \
+  && echo "ordered_hold_lifts_a_rose=yes" \
+  || echo "ordered_hold_lifts_a_rose=no ($(val "$ro" reach) then $(val "$ro" ordered_list_reach))"
+
+# AND IT IS STILL WHERE THE PAGE HAS NO LIST, which is what tells a reading from a decoration --
+# the same discipline 4c keeps. The same words with their markers gone are one document to both
+# readings, so the reported pair meets the scored one.
+sed 's/^[0-9]\. //' "$pen/rose.md" > "$pen/rose_plain.md"
+rp=$(run rose_plain.md --setting door --service 100)
+[ "$(val "$rp" ordered_list)" = 0 ] \
+  && [ "$(val "$rp" ordered_list_reach)" = "$(val "$rp" reach)" ] \
+  && [ "$(val "$rp" ordered_list_register)" = "$(val "$rp" register)" ] \
+  && echo "ordered_still_where_no_list_stands=yes" \
+  || echo "ordered_still_where_no_list_stands=no ($(val "$rp" ordered_list))"
+
+# THE SCORED READING IS UNTOUCHED BY THE REPORT, which is the ruling this file already carries
+# twice: publishing the number never re-grades the tree. The rose and its marker-stripped twin are
+# two different documents, so the proof is that the rose's own composite matches what the elder
+# card read -- recomputed here from the four scored quarters rather than trusted.
+scored=$(( ( $(val "$ro" register) + $(val "$ro" reach) + $(val "$ro" truth) + 100 + 2 ) / 4 ))
+[ "$(val "$ro" composite)" = "$scored" ] \
+  && echo "ordered_report_moves_no_composite=yes" \
+  || echo "ordered_report_moves_no_composite=no ($(val "$ro" composite) vs $scored)"
+
 echo "control_verdict=ok"

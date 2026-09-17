@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.201904` | [A numbered list read as prose](20260916/20260916-201904_a-numbered-list-read-as-prose.kyri) | Both grading readings count a `1.` line as a sentence |
 | `20260916.200950` | [The replay that was a merge](20260916/20260916-200950_the-replay-that-was-a-merge.kyri) | A dead lap recovered at a moved HEAD; row rebased, pin folded. |
 | `20260916.195048` | [The fourth seam of one blindness](20260916/20260916-195048_the-fourth-seam-of-one-blindness.kyri) | A gate at zero could not read the spelling the fleet swept to |
 | `20260916.194837` | [The condition nobody exercised alone](20260916/20260916-194837_the-condition-nobody-exercised-alone.kyri) | Cheap conditions ahead of the read. |

@@ -525,13 +525,18 @@ fi
 # numerator would re-grade the tree in one unmeasured step, and this file already refuses that shape
 # once -- a separate open question is not settled quietly inside a different repair. What a reader
 # can no longer do is quote `links` as the page's link count, which is what it had been read as.
-reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" '
+reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" -v hold_ordered="${3:-0}" '
   BEGIN { infence = 0 }
   /^```/ { infence = 1 - infence; next }
   infence { next }
   /^[ \t]*\|/ { next }
   /^[ \t]*[-*_][-*_ \t]*$/ { next }
   /^[ \t]*[-*+][ \t]/ { next }
+  # AN ORDERED LIST IS A LIST HERE TOO, and it is enumerated in neither reading. The rule above
+  # names `-`, `*` and `+`; a `1. ` or `2) ` line falls through and is graded as a sentence, its
+  # links counted against the cross-reference budget. Held out only when a caller asks, so the
+  # scored reading is untouched and the size of the blindness is reported below.
+  hold_ordered && /^[ \t]*[0-9][0-9]*[.)][ \t]/ { next }
   /^[ \t]*[>#]/ { next }
   # THE RESIDUE IS RULED ON RATHER THAN LEFT OPEN (20260908.104232). This hold-out wants the colon
   # INSIDE the bold run, so a bold label followed by a parenthetical and then a colon is still
@@ -602,6 +607,7 @@ reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" '
 # it. Nothing in the default path reads the shadow.
 reach_raw=$(reach_read card "$prose_path")
 reach_raw_shadow=$(reach_read register "$prose_path")
+reach_raw_ordered=$(reach_read card "$prose_path" 1)
 # The whole-page count, extracted the way Truth extracts its citations, so the two readings of one
 # file can never disagree about how many links it holds.
 # Read from the file on disk rather than from `$prose_path`, which by here is the reference-block
@@ -730,6 +736,33 @@ shadow_words=$5
 [ "$declares_index" = yes ] && [ "$shadow_words" -lt "$index_floor" ] && shadow_xref_over=0
 reach_shadow=$(( 100 - 10 * shadow_grade_over - 10 * shadow_xref_over ))
 [ "$reach_shadow" -lt 0 ] && reach_shadow=0
+
+# THE SAME SHAPE FOR THE ORDERED LIST, and the same ruling (20260916). Both scored readings above
+# read a numbered list line as a prose sentence, because the bullet rule they share enumerates
+# `-`, `*` and `+` alone. What that costs runs BOTH ways, which is why it is a reading rather than
+# a repair: holding the lines out raised MAP.md from Reach 70 to 80, and lowered
+# foundations/20260826-024943_follow-our-compass.md from 50 to 40, whose seven short station lines
+# were pulling its grade down. Across the three tiers prose_register_scan.sh gates, 207 such lines
+# stand in 38 files and two teaching pages read over their declared target with them held out.
+#
+# REPORTED, NEVER SCORED, for the reason this file gives twice already: admitting these lines
+# would re-grade the tree in one unmeasured step. The number is published so the standard question
+# can be asked on construction/ITINERARY.md with a cost attached.
+set -- $reach_raw_ordered
+ordered_grade_over=$1
+ordered_xref_over=$2
+ordered_words=$5
+[ "$sentences" -lt "$register_floor" ] && ordered_grade_over=0
+[ "$declares_index" = yes ] && [ "$ordered_words" -lt "$index_floor" ] && ordered_xref_over=0
+reach_ordered=$(( 100 - 10 * ordered_grade_over - 10 * ordered_xref_over ))
+[ "$reach_ordered" -lt 0 ] && reach_ordered=0
+set -- $(measure "$prose_path" 0 80 1)
+register_ordered=$(( 100 - $3 ))
+# The count comes from measure() own fourth field rather than from a difference between two
+# sentence totals, so one function answers how many such lines there are and the card cannot
+# disagree with the scan about it.
+set -- $(measure "$prose_path")
+ordered_lines=${4:-0}
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
 # A whole program is never Meter: its head remains Door and its bound lines are reported below.
@@ -1046,6 +1079,9 @@ fi
 echo "truth_gate=$gated"
 echo "composite=$composite"
 echo "letter=$(letter_for "$composite")"
+echo "ordered_list=$ordered_lines (numbered-list lines on this page, read as prose sentences by both scored readings; reported, never scored)"
+echo "ordered_list_register=$register_ordered (reported, never scored -- Register with those lines held out)"
+echo "ordered_list_reach=$reach_ordered (reported, never scored -- Reach with those lines held out)"
 echo "reach_shadow=$reach_shadow (reported, never scored -- Reach under the register reading's line rules)"
 echo "composite_shadow=$composite_shadow"
 echo "letter_shadow=$(letter_for "$composite_shadow")"
