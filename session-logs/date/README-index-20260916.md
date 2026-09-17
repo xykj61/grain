@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.212726` | [The board with two shapes](20260916/20260916-212726_the-board-with-two-shapes.kyri) | The claim board had two shapes; only one was ever read |
 | `20260916.212457` | [The send that answered an open door](20260916/20260916-212457_the-send-that-answered-an-open-door.kyri) | a count in prose beside a roster |
 | `20260916.212234` | [The guard that cannot run in a bare tree](20260916/20260916-212234_the-guard-that-cannot-run-in-a-bare-tree.kyri) | 164 scripts root on a directory nothing tracks |
 | `20260916.211218` | [The flag its own usage never named](20260916/20260916-211218_the-flag-its-own-usage-never-named.kyri) | A reader added, then left unannounced |

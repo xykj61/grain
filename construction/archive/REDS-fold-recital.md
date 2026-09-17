@@ -817,3 +817,5 @@ at a closed fold.*
 *Row %782 folded to [`REDS-the-pattern-that-never-asked-what-it-read-rows-782.md`](REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) on `20260916.210404`, **CLOSED** -- a pattern over a character class is a pattern over everything that class admits, and hexadecimal admits the decimals.*
 
 *Row %782 folded to [`REDS-the-pattern-that-never-asked-what-it-read-rows-782.md`](REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) on `20260916.211058`, **CLOSED** -- a pattern over a character class is a pattern over everything that class admits, and hexadecimal admits the decimals.*
+
+*Row %787 folded to [`REDS-the-board-that-had-two-shapes-rows-787.md`](REDS-the-board-that-had-two-shapes-rows-787.md) on `20260916.213214`, **CLOSED** -- a file every ship writes and every ship reads has two shapes, and this tree checked only one -- so a hand-resolved conflict ate a record's header and the reader called the board clear.*

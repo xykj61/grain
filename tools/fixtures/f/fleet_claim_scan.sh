@@ -97,6 +97,40 @@ else
   exit 0
 fi
 
+# THE BOARD'S FORM IS READ BEFORE ITS CONTENT, AND A MALFORMED BOARD REFUSES (REDS %787). Every
+# field rule in the awk program below guards on `if (name != "")`, which is right for reading and
+# exactly wrong for noticing: a field above the first header is dropped in silence, and a record
+# whose header is eaten donates its five fields to the record before it. On `20260916` a
+# hand-resolved rebase conflict did that, and this reader answered `verdict=clear` with
+# `claims_live=8` over a board holding one corrupted record and one invisible one.
+#
+# REFUSING IS THE OPPOSITE OF THE OVERLAP RULE ABOVE, AND DELIBERATELY SO. Overlap reports because
+# two ships may lawfully build one thing -- that is a judgment about work. A malformed board is the
+# INSTRUMENT being broken, and an instrument that cannot answer says so rather than calling
+# everything clear, exactly as the derived spine refuses a spine it cannot read and `pre-push`
+# refuses a scan that will not run.
+FORM=tools/fixtures/f/fleet_claim_form_scan.sh
+if [ -f "$FORM" ]; then
+  form_out=$(printf '%s\n' "$board_text" | sh "$FORM" --list - 2>&1) || true
+  # The CORRUPTING count, never the total. A record missing its `epoch` is untidy and confined to
+  # itself -- this reader models it, printing `status=undated` -- while an eaten header sends five
+  # fields into a neighbour and makes that neighbour's whole line a lie. Refusing on the total
+  # would red on untidiness; refusing on nothing is the founding fault.
+  form_bad=$(printf '%s\n' "$form_out" | sed -n 's/^corrupting=//p')
+  if [ -n "${form_bad:-}" ] && [ "$form_bad" -gt 0 ]; then
+    printf '%s\n' "$form_out" | sed -n 's/^/  form /p'
+    echo "detail: the board is malformed -- its records cannot be trusted, so no overlap reading is offered"
+    echo "verdict=malformed"
+    exit 1
+  fi
+  echo "form=readable corrupting=0 confined=$(printf '%s\n' "$form_out" | sed -n 's/^confined=//p')"
+else
+  # A missing instrument is named rather than passed over: a silent skip here is the same silence
+  # that let the damaged board read clear.
+  echo "form=unread"
+  echo "detail: $FORM is absent -- the board's shape went unchecked"
+fi
+
 now=$(date -u +%s)
 me=$(seat_here)
 

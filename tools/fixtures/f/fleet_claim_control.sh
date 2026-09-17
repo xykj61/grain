@@ -25,6 +25,10 @@ trap 'rm -rf "$pen"' EXIT
 tree="$pen/grain-incense"
 mkdir -p "$tree/construction" "$tree/tools/fixtures/f" "$tree/tools/f"
 cp "$ROOT/tools/fixtures/f/fleet_claim_scan.sh"  "$tree/tools/fixtures/f/"
+# The form reader travels with the content reader, so this pen exercises the composed reading the
+# fleet actually runs rather than the content half alone (REDS %787). Without it every board here
+# would read `form=unread` and the pen would prove a reader nobody uses.
+cp "$ROOT/tools/fixtures/f/fleet_claim_form_scan.sh" "$tree/tools/fixtures/f/"
 cp "$ROOT/tools/fixtures/f/fleet_roster_scan.sh" "$tree/tools/fixtures/f/"
 cp "$ROOT/tools/f/fleet_claim.sh"                "$tree/tools/f/"
 scan="$tree/tools/fixtures/f/fleet_claim_scan.sh"
