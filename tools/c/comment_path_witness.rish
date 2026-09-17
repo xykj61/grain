@@ -1,0 +1,62 @@
+# tools/c/comment_path_witness.rish -- prove the comment-path reading, and ratchet it on this tree.
+#
+# tools/fixtures/b/backtick_path_scan.sh holds the bare-backtick promise for Markdown and named its
+# own remainder on its face: the same promise stands in a .rish witness header, a .kyri roster
+# comment and a .rye module head, read by nothing. This witness holds that second population with
+# one meter rather than one per language, since the recognition rule is one rule.
+#
+# The sibling tools/fixtures/c/comment_citation_scan.sh reads Markdown LINK targets on these same
+# comment lines and reads a backticked span PAST by name, so the two guards are the target half and
+# the anchor half of one promise -- the division tools/fixtures/t/tracked_link_scan.sh and
+# tools/fixtures/l/link_text_promise_scan.sh already make for pages.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/comment_path_witness.rish
+say "comment-path: Language EN -- a path a program cites in its own comment is a promise a reader copies."
+say "comment-path: Style Gauge Meter -- one derivation - one ratcheted class - three reported apart."
+say "comment-path: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/c/comment_path_control.sh"]
+say pen.out
+assert pen.ok else "comment-path: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "comment-path: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "comment-path: every planted leg must pass"
+assert pen.out contains "control_legs=28" else "comment-path: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: twelve welcome shapes, a program line and a room cell stay uncounted, and one plant is read" else "comment-path: an honest span must never be counted"
+assert pen.out contains "leg_ok: the plant stands in one file" else "comment-path: the file count must follow the hits"
+assert pen.out contains "leg_ok: two pen paths are counted apart from the promise" else "comment-path: a room this tree never carried is a pen's own, not a broken promise"
+assert pen.out contains "leg_ok: two placeholder shapes are counted apart" else "comment-path: an illustration is not a citation"
+assert pen.out contains "leg_ok: two testimony shapes are counted apart" else "comment-path: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: the symlinked door is read past and said out loud" else "comment-path: a symlink's citations belong to its body, never to the door"
+assert pen.out contains "leg_ok: --list names the file and the path it cites" else "comment-path: a refusal a reader cannot locate is no refusal"
+assert pen.out contains "leg_ok: --list stays silent about testimony" else "comment-path: the listing must hold exactly the gated class"
+assert pen.out contains "leg_ok: --list stays silent about a pen's own room" else "comment-path: the listing must not send a lane after a pen"
+assert pen.out contains "leg_ok: standing exactly at the ceiling walks free" else "comment-path: the ceiling must be proven from the passing side"
+assert pen.out contains "leg_ok: one over the ceiling refuses" else "comment-path: and from the refusing side, with no slack"
+assert pen.out contains "leg_ok: and it leaves a non-zero exit" else "comment-path: a refusal a caller cannot read is no refusal"
+assert pen.out contains "leg_ok: with the plant lifted the living reading is zero" else "comment-path: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: and the clean tree reaches ok at a ceiling of zero" else "comment-path: a clean tree must pass the tightest ceiling"
+assert pen.out contains "leg_ok: an untracked file on disk keeps the promise broken" else "comment-path: a fresh clone answers this, never one pier's disk"
+assert pen.out contains "leg_ok: tracking that same file keeps the promise" else "comment-path: and tracking it must close the reading"
+assert pen.out contains "leg_ok: outside a repository the scan refuses rather than answering" else "comment-path: an instrument that cannot answer must refuse"
+assert pen.out contains "leg_ok: an unknown flag refuses by name" else "comment-path: a mistyped flag must never read as a default run"
+assert pen.out contains "leg_ok: the scan sees a root source whose name holds an equals sign" else "comment-path: awk reads a bare name with an equals sign as an assignment"
+
+assert pen.out contains "leg_ok: dropping the comment-mark test reads a program line as a comment" else "comment-path: a comment line and a program line must stay apart"
+assert pen.out contains "leg_ok: dropping the room-relative try makes an honest room cell read broken" else "comment-path: all three honest spellings must be tried"
+assert pen.out contains "leg_ok: dropping the pen split prices two pen rooms as broken promises" else "comment-path: the fourth genre must be told apart by a checkable question"
+assert pen.out contains "leg_ok: dropping the testimony split pulls two shelved files into the gate" else "comment-path: the gated class must hold living files alone"
+assert pen.out contains "leg_ok: dropping the placeholder test prices two illustrations as citations" else "comment-path: the mark law asks for placeholders by name"
+assert pen.out contains "leg_ok: dropping the field test counts two printed output lines as rooms" else "comment-path: a field a program prints is not a path a reader copies"
+assert pen.out contains "leg_ok: and the gate stays where it was, which is what makes it a report" else "comment-path: a test that sharpens a report must be named as one"
+assert pen.out contains "leg_ok: dropping the symlink roster stops saying how many doors were read past" else "comment-path: the symlink reading must be proven load-bearing"
+assert pen.out contains "leg_ok: dropping the ./ prefix hides the equals-sign source from the reading" else "comment-path: that prefix must be proven load-bearing"
+
+let tree = run ["sh" "tools/fixtures/c/comment_path_scan.sh"]
+say tree.out
+assert tree.ok else "comment-path: living citations stand above the ceiling -- repair, then lower it in the same commit"
+assert tree.out contains "ceiling_ok=yes" else "comment-path: the ceiling only ever falls"
+assert tree.out contains "verdict=ok" else "comment-path: the tree reading must reach ok"
+
+say "comment-path: GREEN -- the pen holds 28 legs with eight mutations bitten, and this tree stands under its ceiling."

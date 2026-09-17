@@ -7,7 +7,7 @@
 # them would have silently changed every content address in every manifest this tree has written,
 # and every one would still have looked exactly like a digest.
 #
-# So the digest now comes from `crypto/sha3_file.rye` -- authored Rye over Keccak-f[1600], studied
+# So the digest now comes from `crypto/sha3_digest.rye` -- authored Rye over Keccak-f[1600], studied
 # clean-room from FIPS 202. Same algorithm the hash-tier spec already names for the Working tier,
 # same digests, no external dependency.
 #
