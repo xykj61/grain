@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.025900` | [a ceiling that reds on growth](20260917/20260917-025900_a-ceiling-that-reds-on-growth.kyri) | an absolute over a growing population; gate moved to the swept room. |
 | `20260917.024511` | [The send that could not hold its pin](20260917/20260917-024511_the-send-that-could-not-hold-its-pin.kyri) | a contested send cannot hold the nib; both repairs refused |
 | `20260917.023605` | [The writer that knew one shape](20260917/20260917-023605_the-writer-that-knew-one-shape.kyri) | %803: the nib tool writes the amend shape, never the follow-up |
 | `20260917.023306` | [the refusal that says why](20260917/20260917-023306_the-refusal-that-says-why.kyri) | %734's free half: 7,483 mute refusals counted, its own 80-site cohort cured. |

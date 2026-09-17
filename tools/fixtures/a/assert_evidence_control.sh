@@ -280,34 +280,61 @@ out=$(commit_and_read "$d")
 leg other_field_unread "$(echo "$out" | read_key asserts)" 0
 
 # ---------------------------------------------------------------------------
-# THE CEILING, from both sides, on a pen copy carrying a small one.
+# THE ENFORCED COHORT, from both sides -- planted, refused, then lifted.
+#
+# The gate is zero silent refusals in the room REDS %734 named and this lap swept. A pen file at
+# `tools/l/lattice_pen_witness.rish` matches the shipped glob, so the wall is proven against the
+# real pattern rather than against a pen-only one.
 # ---------------------------------------------------------------------------
 
-small=$pen/small_ceiling_scan.sh
-sed 's/^CEILING=[0-9]*$/CEILING=1/' "$scan" > "$small"
-chmod +x "$small"
-
-d=$(build ceiling_at "$small")
-plant "$d" tools/p/pen_at.rish <<'RISH'
-let a = run ["true"]
-assert a.ok else "refused"
+d=$(build enforced_clear)
+plant "$d" tools/l/lattice_pen_witness.rish <<'RISH'
+let build = run ["true"]
+assert build.ok else "Lattice build failed -- ${build.err_brief}"
 RISH
-out=$(commit_and_read "$d")
-leg ceiling_at_holds   "$(echo "$out" | read_key mute_asserts)" 1
-leg ceiling_at_verdict "$(echo "$out" | read_key verdict)"      within
-
-d=$(build ceiling_over "$small")
-plant "$d" tools/p/pen_over.rish <<'RISH'
-let a = run ["true"]
-assert a.ok else "refused"
+plant "$d" tools/p/pen_elsewhere.rish <<'RISH'
 let b = run ["true"]
 assert b.ok else "refused"
 RISH
 out=$(commit_and_read "$d")
-leg ceiling_over_holds   "$(echo "$out" | read_key mute_asserts)" 2
-leg ceiling_over_verdict "$(echo "$out" | read_key verdict)"      over
+leg enforced_counts_files   "$(echo "$out" | read_key enforced_files)" 1
+leg enforced_clear_zero     "$(echo "$out" | read_key enforced_mute)"  0
+leg enforced_clear_verdict  "$(echo "$out" | read_key verdict)"        within
+leg enforced_ignores_others "$(echo "$out" | read_key mute_asserts)"   1
+
+plant "$d" tools/l/lattice_pen_witness.rish <<'RISH'
+let build = run ["true"]
+assert build.ok else "Lattice build failed"
+RISH
+out=$(commit_and_read "$d")
+leg enforced_regress_counted "$(echo "$out" | read_key enforced_mute)" 1
+leg enforced_regress_verdict "$(echo "$out" | read_key verdict)"       enforced_regressed
 ( cd "$d" && sh tools/fixtures/a/assert_evidence_scan.sh >/dev/null 2>&1 )
-leg ceiling_over_exit "$?" 1
+leg enforced_regress_exit "$?" 1
+
+plant "$d" tools/l/lattice_pen_witness.rish <<'RISH'
+let build = run ["true"]
+assert build.ok else "Lattice build failed -- ${build.err_brief}"
+RISH
+out=$(commit_and_read "$d")
+leg enforced_lifts_again "$(echo "$out" | read_key verdict)" within
+
+# The share is printed rather than gated, and it must be arithmetic rather than decoration: three
+# mute of four assertions reads 7500 per ten thousand.
+d=$(build share_reading)
+plant "$d" tools/p/pen_share.rish <<'RISH'
+let a = run ["true"]
+assert a.ok else "refused"
+let b = run ["true"]
+assert b.ok else "refused"
+let c = run ["true"]
+assert c.ok else "refused"
+let e = run ["true"]
+assert e.ok else "refused -- ${e.err_brief}"
+RISH
+out=$(commit_and_read "$d")
+leg share_is_arithmetic "$(echo "$out" | read_key mute_per_ten_thousand)" 7500
+leg share_never_gates   "$(echo "$out" | read_key verdict)"               within
 
 # ---------------------------------------------------------------------------
 # THE MODES AND THE REFUSALS.
