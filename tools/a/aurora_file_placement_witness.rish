@@ -25,9 +25,16 @@
 # real hops. The scan prints both shares beside each other, and the gap between them is the price
 # of the coarsening the row cannot have.
 #
+# WHAT THE BORROWED TOLERANCE IS WORTH. The layout rests on the static import graph read as a lower
+# bound on coupling, and the paper that took the file unit cited a tolerance measured at ROOM
+# granularity -- naming the borrowing as its own weakest joint. This witness re-reads it here. The
+# file graph tolerates about seventy percent of its edges wandering and still earns its keep, so the
+# borrowing was sound; and the gain decays in a straight line, so the tolerance has a closed form,
+# `1 - keep/g0`, set by the layout's own undistorted gain rather than by the unit.
+#
 # WHAT THIS WITNESS DOES NOT REACH. Whether a torus board arrives, and whether these files are the
-# unit a real Aurora would place. The import graph is STRUCTURE read as a lower bound on coupling,
-# with the tolerance its sibling measured; a run-time weight would differ, and this tree holds none.
+# unit a real Aurora would place. A run-time weight would differ from the structure read here, and
+# this tree holds none -- the drift sweep imagines that departure rather than measuring it.
 
 say "aurora-file-placement: Style Gauge, Meter -- the unit a capacity constraint leaves available."
 say "aurora-file-placement: Lens TAME -- a baseline free to spread loses to any layout at all."
@@ -101,6 +108,46 @@ assert scan.out contains "room_layout_same_node_share=" else "aurora-file-placem
 assert scan.out contains "file_layout_same_node_share=" else "aurora-file-placement: the file layout's kept traffic went unread"
 assert scan.out contains "free_traffic_lost=" else "aurora-file-placement: the price of the forced unit went unread"
 
+# --- READING 4 -- the borrowed tolerance, re-read on this graph --------------
+assert scan.out contains "reading4=read" else "aurora-file-placement: the drift reading reached no verdict"
+
+# invariant: the sweep's own bounds are named, so a ladder or a draw count that grows is refused at
+# the edge rather than read short in silence.
+assert scan.out contains "max_drift_rungs=" else "aurora-file-placement: the drift rung bound is unnamed"
+assert scan.out contains "drift_draws=" else "aurora-file-placement: the drift draw count is unnamed"
+assert scan.out contains "drift_samples=" else "aurora-file-placement: the drift floor sample count is unnamed"
+assert scan.out contains "keep_share=0.10" else "aurora-file-placement: the keep threshold moved off the sibling's -- the two survival points stop comparing"
+
+# invariant: the sweep distorted the grid the row names and the sibling distorted, so the two
+# readings are about one geometry.
+assert scan.out contains "drift_grid_nodes=16" else "aurora-file-placement: the drift sweep ran at a grid the sibling never read"
+
+# invariant: the undistorted rung reproduces the placement the scan already computed. A sweep whose
+# zero rung disagrees with the matched gain beside it is costing a different layout than the one
+# under test, and every later rung would be measuring the wrong thing.
+assert scan.out contains "drift k=4 pct=0 " else "aurora-file-placement: the sweep took no undistorted reading"
+assert scan.out contains "drift_undistorted_gain_share=" else "aurora-file-placement: the sweep's own zero rung went unprinted"
+
+# invariant: moving the edges costs the layout something. A sweep that distorts nothing a layout can
+# feel would report a tolerance of a hundred percent and prove only that the distortion was inert.
+assert scan.out contains "file_structure_drift_bites=yes" else "aurora-file-placement: the drift sweep stopped biting -- the distortion is inert or the floor moved with it"
+
+# invariant: the sweep reaches the far side. At a hundred percent the layout is computed on a graph
+# sharing nothing with the one it is costed against, so it must finish at or behind chance -- which
+# is how the instrument proves itself from the direction that cannot be faked.
+assert scan.out contains "drift k=4 pct=100 " else "aurora-file-placement: the sweep never reached total drift"
+
+# invariant: the tolerance is reported at a finer resolution than the ladder. A survival point IS a
+# rung, so two graphs whose crossings differ by less than one rung report the same tolerance --
+# which is exactly how a borrowed number came to look confirmed.
+assert scan.out contains "file_proxy_survives_structure_drift_upto_pct=" else "aurora-file-placement: the tolerance went unread"
+assert scan.out contains "file_drift_crossing_pct=" else "aurora-file-placement: the crossing was left at ladder resolution"
+
+# invariant: the straight-line reading is stated, since the closed form below is only meaningful
+# where the decay is straight. On 67 room pairs it is not; on this graph's edges it is.
+assert scan.out contains "drift_decay_linear=yes" else "aurora-file-placement: the gain stopped falling in a straight line -- the closed form no longer describes this graph"
+assert scan.out contains "drift_crossing_closed_form_pct=" else "aurora-file-placement: the closed-form tolerance went uncomputed"
+
 # --- The control: real repositories in a throwaway pen -----------------------
 say "aurora-file-placement: the control -- three real repositories in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/a/aurora_file_placement_control.sh"]
@@ -112,15 +159,24 @@ assert ctl.out contains "control_verdict=ok" else "aurora-file-placement: the co
 # failure count, so a leg written tomorrow is heard the day it lands rather than passing unread
 # under a green verdict.
 assert ctl.out contains "control_failures=0" else "aurora-file-placement: a planted behavior differed from what was stated"
-assert ctl.out contains "control_checks=64" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
+assert ctl.out contains "control_checks=78" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
 
-# invariant: each of the five mutations was planted AND bit. A refusal proven only in the passing
+# invariant: each of the eight mutations was planted AND bit. A refusal proven only in the passing
 # direction cannot be told from a bypass.
 assert ctl.out contains "leg m1_bites ok" else "aurora-file-placement: leaving import symlinks unresolved went unfelt"
 assert ctl.out contains "leg m2_bites ok" else "aurora-file-placement: dropping the self-import guard went unfelt"
 assert ctl.out contains "leg m3_bites ok" else "aurora-file-placement: pricing a mutual import twice went unfelt"
 assert ctl.out contains "leg m4_bites ok" else "aurora-file-placement: the room comparison stopped separating intra from cross"
 assert ctl.out contains "leg m5_bites ok" else "aurora-file-placement: removing the capacity test let a node fill past its bound"
+assert ctl.out contains "leg m6_bites ok" else "aurora-file-placement: drift with no phantom edges read as real drift -- thinning a graph is not moving it"
+assert ctl.out contains "leg m7_bites ok" else "aurora-file-placement: the floor costed under the true edges while the layout was costed under the drifted ones went unfelt"
+assert ctl.out contains "leg m8_bites ok" else "aurora-file-placement: a sweep that silences no real edge read as real drift"
+
+# invariant: the pen's small graph reads NOT straight where this tree reads straight. A verdict that
+# never says no is a constant wearing a measurement's clothes, and the pen is where that is proven.
+assert ctl.out contains "leg p2_drift_not_linear ok" else "aurora-file-placement: the straight-line verdict stopped discriminating between a 32-edge graph and a 7,500-edge one"
+assert ctl.out contains "leg p2_drift_zero_matches_placement ok" else "aurora-file-placement: the sweep's undistorted rung disagreed with the placement the scan computed"
+assert ctl.out contains "leg p2_crossing_bracketed ok" else "aurora-file-placement: no rung pair bracketed the keep threshold, so the crossing was never computed"
 
 # invariant: the refusing side of the capacity reading is proven on a pen holding one file too big
 # for any node's share, so `file_fits=yes` on this tree is a reading rather than a constant.
@@ -137,4 +193,4 @@ assert ctl.out contains "leg p1_intra_share ok" else "aurora-file-placement: the
 # fits every node trivially and would score a perfect capacity reading.
 assert ctl.out contains "leg p3_empty_verdict ok" else "aurora-file-placement: an empty tree was read as a real population"
 
-say "GREEN: aurora-file-placement -- the file unit fits at sixteen nodes and overflows at sixty-four, its graph is mostly edges a room graph cannot see, and the layout beats its own occupancy dealt at random."
+say "GREEN: aurora-file-placement -- the file unit fits at sixteen nodes and overflows at sixty-four, its graph is mostly edges a room graph cannot see, the layout beats its own occupancy dealt at random, and the borrowed tolerance survives the finer unit."

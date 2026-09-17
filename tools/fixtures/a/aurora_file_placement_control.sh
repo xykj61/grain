@@ -11,9 +11,13 @@
 # PEN TWO holds thirty-two even files in four tight rooms, so the unit fits at every grid and a
 # placement that consults the graph has something to find.
 #
-# Five mutations are planted and each is asserted to bite, because a refusal proven only in the
+# Eight mutations are planted and each is asserted to bite, because a refusal proven only in the
 # passing direction cannot be told from a bypass. Each is preceded by `cmp` proving the edit
 # changed a byte, since a sed that matched nothing leaves a mutation that passes for free.
+#
+# THE DRIFT SWEEP IS PROVEN BY DISAGREEMENT AS WELL AS BY MUTATION. Its straight-line verdict reads
+# `yes` on this tree's ~7,500 edges and `no` on pen two's 32, so the reading is a property of the
+# graph handed to it rather than a constant it prints. That pair is worth more than either alone.
 set -u
 
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || ROOT=$PWD
@@ -72,6 +76,10 @@ edges=$(key "$OUT" import_edges)
 leg tree_files_within_bound "" "$(key "$OUT" files_over_bound)"
 leg tree_edges_within_bound "" "$(key "$OUT" edges_over_bound)"
 leg tree_reading3_read read "$(key "$OUT" reading3)"
+leg tree_reading4_read read "$(key "$OUT" reading4)"
+# the straight-line reading on THIS tree, where ~7,500 edges average. The same key reads `no` on
+# the 32-edge pen below, which is what proves it a measurement of the graph rather than a constant.
+leg tree_drift_linear yes "$(key "$OUT" drift_decay_linear)"
 
 # ---- PEN ONE: every way an edge list goes wrong, and a file too big for a node ------------------
 mkdir -p "$PEN/one/alpha" "$PEN/one/beta" "$PEN/one/gamma"
@@ -158,6 +166,24 @@ case "$p2mgain" in -*) leg p2_matched_gain_positive yes no ;; *) leg p2_matched_
 # `git ls-files` happened to hand back -- a thing easy to assume and cheap to check.
 P2B=$(sh "$SCAN" 2>&1)
 if [ "$P2" = "$P2B" ]; then leg p2_reading_repeats yes yes; else leg p2_reading_repeats yes no; fi
+# ---- PEN TWO, READING 4: the sweep on a graph small enough to be noisy -------------------------
+leg p2_reading4_read read "$(key "$P2" reading4)"
+leg p2_drift_bites yes "$(key "$P2" file_structure_drift_bites)"
+leg p2_drift_grid 16 "$(key "$P2" drift_grid_nodes)"
+# the same key that reads `yes` on this tree reads `no` here, on 32 edges rather than ~7,500. A
+# straight-line verdict that never says no would be a constant wearing a measurement's clothes.
+leg p2_drift_not_linear no "$(key "$P2" drift_decay_linear)"
+# the undistorted rung must reproduce the placement the scan already computed, or every rung after
+# it is costing a layout nobody asked about. Compared with a tolerance rather than for equality,
+# since the two draw their floors from different points of the same generator.
+p2z=$(key "$P2" drift_undistorted_gain_share)
+p2m=$(key "$P2" sixteen_matched_gain_share)
+p2agree=$(awk -v a="$p2z" -v b="$p2m" 'BEGIN { d = a - b; if (d < 0) d = -d; print (d <= 0.02) ? "yes" : "no" }')
+leg p2_drift_zero_matches_placement yes "$p2agree"
+# the crossing is reported at finer resolution than the ladder, so it must be a real number rather
+# than the -1 the scan prints when no rung pair brackets the threshold
+p2c=$(key "$P2" file_drift_crossing_pct)
+case "$p2c" in ''|-*) leg p2_crossing_bracketed yes no ;; *) leg p2_crossing_bracketed yes yes ;; esac
 leg p2_free_traffic_named yes "$(printf '%s\n' "$P2" | grep -q '^room_layout_same_node_share=' && echo yes || echo no)"
 
 # ---- the empty tree refuses rather than reading zero --------------------------------------------
@@ -217,6 +243,32 @@ m5line=$(gridline "$M5OUT" place 4 cap_bytes)
 m5cap=$(inline "$m5line" cap_bytes)
 m5full=$(inline "$(printf '%s\n' "$M5OUT" | grep -m1 '^place k=4 fullest_node_bytes=')" fullest_node_bytes)
 if [ "$m5full" -gt "$m5cap" ] 2>/dev/null; then leg m5_bites yes yes; else leg m5_bites yes no; fi
+
+# m6: the phantom edges never added -- drift becomes pure thinning, which leaves a subgraph of the
+# true graph that the layout is still good on, so the tolerance reads far too generous
+cd "$PEN/two" || exit 1
+M6="$PEN/m6.sh"
+sed 's/  phantoms = int(ne \* P \/ 100 + 0.5)/  phantoms = 0/' "$SCAN" > "$M6"
+if cmp -s "$SCAN" "$M6"; then leg m6_planted yes no; else leg m6_planted yes yes; fi
+M6OUT=$(sh "$M6" 2>&1)
+m6c=$(key "$M6OUT" file_drift_crossing_pct)
+if awk -v c="$m6c" 'BEGIN { exit !(c > 90) }'; then leg m6_bites yes yes; else leg m6_bites yes no; fi
+
+# m7: the matched floor costed under the TRUE edges while the layout is costed under the distorted
+# ones -- two different graphs compared as if they were two placements
+M7="$PEN/m7.sh"
+sed 's/mt += drift_cost(DNODE, k)/mt += cost_of(DNODE, k)/' "$SCAN" > "$M7"
+if cmp -s "$SCAN" "$M7"; then leg m7_planted yes no; else leg m7_planted yes yes; fi
+M7OUT=$(sh "$M7" 2>&1)
+leg m7_bites 100 "$(key "$M7OUT" file_proxy_survives_structure_drift_upto_pct)"
+
+# m8: no real edge ever silenced -- the sweep only ADDS unseen pairs, so the layout keeps every
+# edge it was built on and the tolerance reads a hundred percent
+M8="$PEN/m8.sh"
+sed 's/    if (rnd(100) < P) continue/    if (0) continue/' "$SCAN" > "$M8"
+if cmp -s "$SCAN" "$M8"; then leg m8_planted yes no; else leg m8_planted yes yes; fi
+M8OUT=$(sh "$M8" 2>&1)
+leg m8_bites 100 "$(key "$M8OUT" file_proxy_survives_structure_drift_upto_pct)"
 
 # ---- the control's own tally, derived rather than spelled ----------------------------------------
 cd "$ROOT" || exit 1
