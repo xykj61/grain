@@ -1,0 +1,225 @@
+#!/bin/sh
+# tools/fixtures/a/aurora_file_placement_control.sh -- the pen for aurora_file_placement_scan.sh.
+#
+# Every reading in that scan is taken on a tree, so every leg here runs it inside a real git
+# repository built in a throwaway pen where the counts are known before the scan is asked.
+#
+# TWO PENS, because the two halves of the unit question want opposite trees. PEN ONE holds one
+# file too large for any node's equal share, so the capacity reading answers `no` and is proven
+# from the refusing side; it also holds a cross-room import SYMLINK, a self-import, an import
+# naming a file that is not there, and a MUTUAL pair -- each a way an edge list goes wrong.
+# PEN TWO holds thirty-two even files in four tight rooms, so the unit fits at every grid and a
+# placement that consults the graph has something to find.
+#
+# Five mutations are planted and each is asserted to bite, because a refusal proven only in the
+# passing direction cannot be told from a bypass. Each is preceded by `cmp` proving the edit
+# changed a byte, since a sed that matched nothing leaves a mutation that passes for free.
+set -u
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || ROOT=$PWD
+SCAN="$ROOT/tools/fixtures/a/aurora_file_placement_scan.sh"
+legs=0
+fails=0
+
+PEN=$(mktemp -d "${TMPDIR:-/tmp}/aurora-file-placement-control.XXXXXX") || exit 1
+cleanup() { [ -n "${PEN:-}" ] && [ -d "$PEN" ] && rm -rf "$PEN"; }
+trap cleanup EXIT INT TERM HUP
+
+leg() {
+  name=$1; want=$2; got=$3
+  legs=$((legs + 1))
+  if [ "$want" = "$got" ]; then
+    echo "leg $name ok"
+  else
+    fails=$((fails + 1))
+    echo "leg $name FAILED want=$want got=$got"
+  fi
+}
+
+# a key may share a line with its siblings, so the reading is tokenized on whitespace first and
+# the whole key is matched, never a prefix of one
+key() { printf '%s\n' "$1" | tr ' ' '\n' | grep -m1 "^$2=" | cut -d= -f2-; }
+inline() { printf '%s\n' "$1" | tr ' ' '\n' | grep -m1 "^$2=" | cut -d= -f2-; }
+# a grid prints several lines under one prefix, so the wanted key picks the line as well
+gridline() { printf '%s\n' "$1" | grep "^$2 k=$3 " | grep -m1 " $4="; }
+
+# ---- the scan stands ---------------------------------------------------------------------------
+[ -f "$SCAN" ] && leg scan_present yes yes || leg scan_present yes no
+[ -x "$SCAN" ] && leg scan_executable yes yes || leg scan_executable yes no
+
+OUT=$(sh "$SCAN" 2>&1)
+status=$?
+leg scan_exits_zero 0 "$status"
+leg verdict_read read "$(key "$OUT" verdict)"
+leg names_its_row 7 "$(key "$OUT" row)"
+leg names_the_page_it_answers \
+  active-designing/20260916-095958_the-two-ways-a-proxy-drifts.md "$(key "$OUT" answers)"
+
+# ---- the bounds are named ----------------------------------------------------------------------
+for b in max_files max_edges max_grids max_samples cap_slack_pct; do
+  v=$(key "$OUT" "$b")
+  case "$v" in
+    ''|*[!0-9]*) leg "bound_named_$b" number "$v" ;;
+    *) leg "bound_named_$b" number number ;;
+  esac
+done
+
+# ---- this tree, read as a live reading ---------------------------------------------------------
+files=$(key "$OUT" rye_files)
+edges=$(key "$OUT" import_edges)
+[ "$files" -ge 2 ] 2>/dev/null && leg tree_files_read yes yes || leg tree_files_read yes no
+[ "$edges" -ge 1 ] 2>/dev/null && leg tree_edges_read yes yes || leg tree_edges_read yes no
+leg tree_files_within_bound "" "$(key "$OUT" files_over_bound)"
+leg tree_edges_within_bound "" "$(key "$OUT" edges_over_bound)"
+leg tree_reading3_read read "$(key "$OUT" reading3)"
+
+# ---- PEN ONE: every way an edge list goes wrong, and a file too big for a node ------------------
+mkdir -p "$PEN/one/alpha" "$PEN/one/beta" "$PEN/one/gamma"
+cd "$PEN/one" || exit 1
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+# a1 imports: a2 (intra), shared through a symlink (cross), a1 itself (dropped), and a name that
+# is not there (dropped). a2 imports a1, which is the SAME adjacency as a1 -> a2.
+printf 'const a2 = @import("a2.rye");\nconst sh = @import("shared.rye");\nconst me = @import("a1.rye");\nconst no = @import("missing.rye");\n' > alpha/a1.rye
+printf 'const a1 = @import("a1.rye");\n' > alpha/a2.rye
+printf 'const std = @import("std");\n' > beta/shared.rye
+ln -s ../beta/shared.rye alpha/shared.rye
+# one file larger than a quarter of the tree, so no grid's equal share can hold it
+awk 'BEGIN { printf "// "; for (i = 0; i < 4000; i++) printf "x"; printf "\n" }' > gamma/big.rye
+git add -A >/dev/null 2>&1
+git commit -q -m "pen one: a big file and four broken edges" >/dev/null 2>&1
+
+P1=$(sh "$SCAN" 2>&1)
+leg p1_verdict read "$(key "$P1" verdict)"
+leg p1_files 4 "$(key "$P1" rye_files)"
+leg p1_symlinks 1 "$(key "$P1" rye_symlinks)"
+leg p1_edges 2 "$(key "$P1" import_edges)"
+leg p1_importing_files 1 "$(key "$P1" importing_files)"
+leg p1_endpoint_files 3 "$(key "$P1" endpoint_files)"
+leg p1_intra_edges 1 "$(key "$P1" intra_room_edges)"
+leg p1_cross_edges 1 "$(key "$P1" cross_room_edges)"
+leg p1_intra_share 0.500000 "$(key "$P1" intra_room_edge_share)"
+leg p1_room_pairs 1 "$(key "$P1" room_pairs_with_an_edge)"
+leg p1_graph_rooms 2 "$(key "$P1" graph_rooms)"
+leg p1_rooms 3 "$(key "$P1" rooms)"
+leg p1_largest_file gamma/big.rye "$(key "$P1" largest_file)"
+# the capacity reading, from the refusing side
+leg p1_fit_k2_no no "$(inline "$(gridline "$P1" fit 2 file_fits)" file_fits)"
+leg p1_fits_sixteen_no no "$(key "$P1" unit_fits_sixteen)"
+leg p1_ceiling_zero 0 "$(key "$P1" unit_ceiling_nodes)"
+leg p1_first_overflow_four 4 "$(key "$P1" first_overflowing_nodes)"
+# a node must still be able to hold the largest file, or the packer cannot place it at all
+leg p1_no_infeasible 0 "$(inline "$(gridline "$P1" place 2 infeasible_files)" infeasible_files)"
+
+# ---- PEN TWO: the unit fits, and the graph has something to find --------------------------------
+mkdir -p "$PEN/two"
+cd "$PEN/two" || exit 1
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+for r in alpha beta gamma delta; do
+  mkdir -p "$r"
+  i=0
+  while [ "$i" -lt 8 ]; do
+    j=$(( (i + 1) % 8 ))
+    printf 'const nxt = @import("f%s.rye");\n// %s\n' "$j" "$r" > "$r/f$i.rye"
+    i=$((i + 1))
+  done
+done
+git add -A >/dev/null 2>&1
+git commit -q -m "pen two: four tight rings" >/dev/null 2>&1
+
+P2=$(sh "$SCAN" 2>&1)
+leg p2_verdict read "$(key "$P2" verdict)"
+leg p2_files 32 "$(key "$P2" rye_files)"
+leg p2_symlinks 0 "$(key "$P2" rye_symlinks)"
+leg p2_edges 32 "$(key "$P2" import_edges)"
+leg p2_all_intra 32 "$(key "$P2" intra_room_edges)"
+leg p2_no_cross 0 "$(key "$P2" cross_room_edges)"
+leg p2_intra_share 1.000000 "$(key "$P2" intra_room_edge_share)"
+leg p2_no_room_pairs 0 "$(key "$P2" room_pairs_with_an_edge)"
+leg p2_fits_sixteen yes "$(key "$P2" unit_fits_sixteen)"
+# four rooms of eight even files: a room is a quarter of the tree and a node's share a
+# sixteenth, so the MODULE unit overflows here exactly as it does on the real tree
+leg p2_modules_overflow_sixteen yes "$(key "$P2" module_unit_overflows_sixteen)"
+leg p2_rooms_over_share 4 "$(key "$P2" rooms_over_share_sixteen)"
+leg p2_k4_infeasible 0 "$(inline "$(gridline "$P2" place 4 infeasible_files)" infeasible_files)"
+# four rings of eight on four nodes: the graph is findable, so the layout must beat both floors
+leg p2_beats_floor yes "$(inline "$(gridline "$P2" place 2 beats_floor)" beats_floor)"
+p2gain=$(key "$P2" sixteen_gain_share)
+p2mgain=$(key "$P2" sixteen_matched_gain_share)
+case "$p2gain" in -*) leg p2_gain_positive yes no ;; *) leg p2_gain_positive yes yes ;; esac
+case "$p2mgain" in -*) leg p2_matched_gain_positive yes no ;; *) leg p2_matched_gain_positive yes yes ;; esac
+# the same tree read twice gives the same layout. The ordering rule is degree descending with the
+# file name breaking every tie, so the reading is a property of the tree rather than of the order
+# `git ls-files` happened to hand back -- a thing easy to assume and cheap to check.
+P2B=$(sh "$SCAN" 2>&1)
+if [ "$P2" = "$P2B" ]; then leg p2_reading_repeats yes yes; else leg p2_reading_repeats yes no; fi
+leg p2_free_traffic_named yes "$(printf '%s\n' "$P2" | grep -q '^room_layout_same_node_share=' && echo yes || echo no)"
+
+# ---- the empty tree refuses rather than reading zero --------------------------------------------
+mkdir -p "$PEN/three"
+cd "$PEN/three" || exit 1
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+printf 'nothing\n' > README.md
+git add -A >/dev/null 2>&1
+git commit -q -m "pen three: no Rye at all" >/dev/null 2>&1
+P3=$(sh "$SCAN" 2>&1)
+leg p3_empty_verdict empty "$(key "$P3" verdict)"
+leg p3_files_zero 0 "$(key "$P3" rye_files)"
+leg p3_reading1_unreadable unreadable "$(key "$P3" reading1)"
+
+# ---- the mutations, each planted in pen one or two and asserted to bite --------------------------
+cd "$PEN/one" || exit 1
+
+# m1: the symlink map never consulted -- a cross-room import stops resolving
+M1="$PEN/m1.sh"
+sed 's/    if (tgt in link) tgt = link\[tgt\]/    if (0) tgt = link[tgt]/' "$SCAN" > "$M1"
+if cmp -s "$SCAN" "$M1"; then leg m1_planted yes no; else leg m1_planted yes yes; fi
+M1OUT=$(sh "$M1" 2>&1)
+leg m1_bites 0 "$(key "$M1OUT" cross_room_edges)"
+
+# m2: the self-import guard removed -- a file importing itself becomes an edge
+M2="$PEN/m2.sh"
+sed 's/    if (tgt == src) next/    if (0) next/' "$SCAN" > "$M2"
+if cmp -s "$SCAN" "$M2"; then leg m2_planted yes no; else leg m2_planted yes yes; fi
+M2OUT=$(sh "$M2" 2>&1)
+m2e=$(key "$M2OUT" import_edges)
+if [ "$m2e" -gt 2 ] 2>/dev/null; then leg m2_bites yes yes; else leg m2_bites yes no; fi
+
+# m3: the unordered key sorted no longer -- a mutual import is priced twice
+M3="$PEN/m3.sh"
+sed 's/    if (src < tgt) key = src SUBSEP tgt; else key = tgt SUBSEP src/    key = src SUBSEP tgt/' "$SCAN" > "$M3"
+if cmp -s "$SCAN" "$M3"; then leg m3_planted yes no; else leg m3_planted yes yes; fi
+M3OUT=$(sh "$M3" 2>&1)
+leg m3_bites 3 "$(key "$M3OUT" import_edges)"
+
+# m4: the room comparison forced false -- every edge reads as crossing a room
+M4="$PEN/m4.sh"
+sed 's/{ a = room($1); b = room($2); if (a == b) intra++; else cross++/{ a = room($1); b = room($2); if (0) intra++; else cross++/' "$SCAN" > "$M4"
+if cmp -s "$SCAN" "$M4"; then leg m4_planted yes no; else leg m4_planted yes yes; fi
+M4OUT=$(sh "$M4" 2>&1)
+leg m4_bites 0 "$(key "$M4OUT" intra_room_edges)"
+
+# m5: the capacity test removed from the packer -- a node fills past its own bound
+cd "$PEN/two" || exit 1
+M5="$PEN/m5.sh"
+sed 's/      if (rem\[v\] < SZ\[f\]) continue/      if (0) continue/' "$SCAN" > "$M5"
+if cmp -s "$SCAN" "$M5"; then leg m5_planted yes no; else leg m5_planted yes yes; fi
+M5OUT=$(sh "$M5" 2>&1)
+m5line=$(gridline "$M5OUT" place 4 cap_bytes)
+m5cap=$(inline "$m5line" cap_bytes)
+m5full=$(inline "$(printf '%s\n' "$M5OUT" | grep -m1 '^place k=4 fullest_node_bytes=')" fullest_node_bytes)
+if [ "$m5full" -gt "$m5cap" ] 2>/dev/null; then leg m5_bites yes yes; else leg m5_bites yes no; fi
+
+# ---- the control's own tally, derived rather than spelled ----------------------------------------
+cd "$ROOT" || exit 1
+echo "control_checks=$legs"
+echo "control_failures=$fails"
+if [ "$fails" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=failed"; fi
