@@ -370,10 +370,10 @@ pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
 /// Same published signature as before: `parse_source(src) ParseError!ShapeSpec`. A caller
 /// wanting the five-part refusal record reaches for `parse_source_reporting` beside it.
 pub fn parse_source(src: []const u8) ParseError!ShapeSpec {
+    var scratch: refusal.Slot = null;
     // invariant: the scratch record is written only on a ceiling refusal and dropped here,
     // so this entry keeps the bytes it always had while the detail stays reachable one
     // function over
-    var scratch: refusal.Slot = null;
     assert(scratch == null);
     return parse_source_reporting(src, &scratch);
 }

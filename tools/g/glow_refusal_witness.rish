@@ -11,6 +11,14 @@
 # the format strings are compared here rather than trusted. Change either spelling alone and this
 # reds on the lap it lands.
 #
+# SIX LEGS JOINED ON `20260916.194500`, when the lexer every Glow parse passes through filled its
+# own four. glow/tokens.rye answers a name past max_name_len, a cord literal interior past
+# max_cord_lit_bytes, a hex literal past max_hex_lit_digits and a source past max_src_len with the
+# one word error.BadToken; tokenize_reporting hands back the record that tells them apart, while
+# tokenize keeps the signature and the bytes it always had. The fifth of the six is the one that
+# keeps the slot honest: a BadToken no record names leaves the slot null, so a caller asks the slot
+# rather than the error name. The sixth proves the published entry unmoved.
+#
 #   rishi/bin/rishi run tools/g/glow_refusal_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
@@ -30,7 +38,25 @@ assert selftest.out contains "tuple ceiling names the face that would not fit --
 assert selftest.out contains "one error name, two ceilings, told apart -- GREEN" else "refusal_witness missing shared-error-name leg"
 assert selftest.out contains "an unnamed refusal leaves the slot empty -- GREEN" else "refusal_witness missing empty-slot leg"
 assert selftest.out contains "parse_source unchanged, nine admitted -- GREEN" else "refusal_witness missing published-entry leg"
-assert selftest.out contains "9 legs, 0 failures -- GREEN" else "refusal_witness leg tally absent or short"
+assert selftest.out contains "the lexer name ceiling carries its own record -- GREEN" else "refusal_witness missing the lexer name ceiling"
+assert selftest.out contains "one scanner, two kinds, each named -- GREEN" else "refusal_witness missing the tag-versus-ident leg"
+assert selftest.out contains "the cord literal ceiling counts its interior -- GREEN" else "refusal_witness missing the cord literal ceiling"
+assert selftest.out contains "the hex literal ceiling reports digits -- GREEN" else "refusal_witness missing the hex literal ceiling"
+assert selftest.out contains "the source ceiling refuses ahead of the name ceiling -- GREEN" else "refusal_witness missing the source ceiling"
+assert selftest.out contains "an unnamed BadToken leaves the slot empty -- GREEN" else "refusal_witness missing the empty-slot leg for the lexer"
+assert selftest.out contains "tokenize unchanged, a name at the ceiling admitted -- GREEN" else "refusal_witness missing the published lexer leg"
+assert selftest.out contains "16 legs, 0 failures -- GREEN" else "refusal_witness leg tally absent or short"
+
+# THE REFUSAL THIS GUARD DEMONSTRATES, added `20260916.205141`. Every leg above proves the record
+# is BUILT; none showed the witness refusing, so `standing_equipment_redleg` counted this guard
+# among those rostered with no refusal of their own -- and it was right to, since a guard proven
+# only in the passing direction cannot be told from a guard that has stopped reading. The pen and
+# its plant live in tools/fixtures/g/glow_refusal_mutation_control.sh, which swaps the `%tag` path's
+# kind word for "ident" and asks the rebuilt witness to refuse.
+let mutation = run ["sh" "tools/fixtures/g/glow_refusal_mutation_control.sh"]
+assert mutation.ok else "the mutation control refused to run -- read its own verdict line"
+assert mutation.out contains "plant_found=1" else "the tag-kind call site has moved; the plant names a line that is no longer there"
+assert mutation.out contains "mutant_refuses=yes" else "the kind word is not load-bearing: a lexer naming every long name 'ident' still passed every leg"
 
 let five = run ["sh" "-c" "grep -c 'field={s} value={d} ceiling={d} unit={s} reason={s}' glow/refusal.rye tally/receipt_refusal.rye | tr '\n' ' '"]
 assert five.ok else "the five-part format string is absent from one of the two records"
@@ -42,4 +68,4 @@ assert two.ok else "the two-part format string is absent from one of the two rec
 assert two.out contains "glow/refusal.rye:1" else "glow/refusal.rye does not spell the two-part line once"
 assert two.out contains "tally/receipt_refusal.rye:1" else "tally/receipt_refusal.rye does not spell the two-part line once"
 
-say "GREEN: Glow refusal record -- field, value, ceiling, unit, reason; one error name and two ceilings told apart; both format strings agreeing with tally/receipt_refusal.rye byte for byte; 9 legs plus 4 agreement asserts."
+say "GREEN: Glow refusal record -- field, value, ceiling, unit, reason; one error name and six ceilings told apart across rune_shape and the lexer, the lexer's name ceiling reached through two scanners and naming each kind; a BadToken no record names leaving the slot empty; both format strings agreeing with tally/receipt_refusal.rye byte for byte; 16 legs plus 4 agreement asserts, and its own refusal shown by a planted mutation of the kind word."

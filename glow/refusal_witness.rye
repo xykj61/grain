@@ -8,6 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const refusal = @import("refusal.rye");
 const rune_shape = @import("rune_shape.rye");
+const tokens = @import("tokens.rye");
 
 // invariant: every declaration of the module goes through semantic analysis, so a type
 // error in a body this witness never calls reds the build (REDS %463, %470).
@@ -17,7 +18,7 @@ comptime {
     }
 }
 
-const witness_version = "20260916.074000";
+const witness_version = "20260916.190000";
 
 /// A `$:` tuple carrying ten faces -- one past the nine `rune_shape.max_fields` admits.
 const ten_face_src =
@@ -58,6 +59,28 @@ const four_payload_src =
     \\      [%send ~]
     \\  ==
 ;
+
+/// A name one byte past `tokens.max_name_len` -- the first of the four ceilings the lexer
+/// answers with the one word `error.BadToken`.
+const long_name_src = ("a" ** (tokens.max_name_len + 1)) ++ "\n";
+
+/// A `%tag` whose name runs one byte past the same ceiling. One scanner serves both kinds, so
+/// this is what proves the kind word travels rather than being spelled once at the refusal.
+const long_tag_src = ("%" ++ ("a" ** (tokens.max_name_len + 1))) ++ "\n";
+
+/// The same name AT the ceiling, which the lexer admits -- the other side of leg 16.
+const at_name_src = ("a" ** tokens.max_name_len) ++ "\n";
+
+/// A cord literal whose interior runs one byte past `tokens.max_cord_lit_bytes`.
+const long_cord_src = "'" ++ ("c" ** (tokens.max_cord_lit_bytes + 1)) ++ "'\n";
+
+/// A hex literal two digits past `tokens.max_hex_lit_digits` -- an EVEN count on purpose, so
+/// the odd-digit refusal standing one line above the ceiling stays out of the way.
+const long_hex_src = "@ux" ++ ("f" ** (tokens.max_hex_lit_digits + 2)) ++ "\n";
+
+/// A source one byte past `tokens.max_src_len`. Every byte is an ident byte, so this source
+/// would ALSO break the name ceiling -- and the record proves which of the two refused.
+const long_src_src = "a" ** (tokens.max_src_len + 1);
 
 pub fn main() !void {
     print("refusal_witness {s}\n", .{witness_version});
@@ -183,7 +206,109 @@ pub fn main() !void {
     assert(nine.field_count == 9);
     print("refusal: parse_source unchanged, nine admitted -- GREEN\n", .{});
 
-    print("refusal_witness: 9 legs, 0 failures -- GREEN\n", .{});
+    // 10 -- the lexer's name ceiling carries its kind, its count and its unit.
+    var toks: [tokens.max_tokens]tokens.Token = undefined;
+    var name_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting(long_name_src, toks[0..], &name_slot)) |_| {
+        return error.LongNameAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    const name_hit = name_slot orelse return error.NameSlotEmpty;
+    assert(name_hit.reason == .name_too_long);
+    assert(std.mem.eql(
+        u8,
+        try name_hit.render(buf[0..]),
+        "field=ident value=65 ceiling=64 unit=byte reason=name-too-long",
+    ));
+    print("refusal: the lexer name ceiling carries its own record -- GREEN\n", .{});
+
+    // 11 -- the same ceiling, reached through the `%tag` path, names the kind it was reading.
+    var tag_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting(long_tag_src, toks[0..], &tag_slot)) |_| {
+        return error.LongTagAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    const tag_hit = tag_slot orelse return error.TagSlotEmpty;
+    assert(std.mem.eql(
+        u8,
+        try tag_hit.render(buf[0..]),
+        "field=tag value=65 ceiling=64 unit=byte reason=name-too-long",
+    ));
+    print("refusal: one scanner, two kinds, each named -- GREEN\n", .{});
+
+    // 12 -- the cord literal ceiling counts the INTERIOR, which is what the ceiling states.
+    var cord_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting(long_cord_src, toks[0..], &cord_slot)) |_| {
+        return error.LongCordAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    const cord_hit = cord_slot orelse return error.CordSlotEmpty;
+    assert(std.mem.eql(
+        u8,
+        try cord_hit.render(buf[0..]),
+        "field=cord-literal value=1025 ceiling=1024 unit=byte reason=cord-literal-too-long",
+    ));
+    print("refusal: the cord literal ceiling counts its interior -- GREEN\n", .{});
+
+    // 13 -- the hex literal ceiling reports digits rather than bytes.
+    var hex_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting(long_hex_src, toks[0..], &hex_slot)) |_| {
+        return error.LongHexAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    const hex_hit = hex_slot orelse return error.HexSlotEmpty;
+    assert(hex_hit.measure.?.unit == .hex_digit);
+    assert(std.mem.eql(
+        u8,
+        try hex_hit.render(buf[0..]),
+        "field=hex-literal value=66 ceiling=64 unit=hex-digit reason=hex-literal-too-many-digits",
+    ));
+    print("refusal: the hex literal ceiling reports digits -- GREEN\n", .{});
+
+    // 14 -- the source ceiling refuses first, so the record names the source rather than the
+    // name ceiling this same source would also break.
+    var src_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting(long_src_src, toks[0..], &src_slot)) |_| {
+        return error.LongSourceAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    const src_hit = src_slot orelse return error.SourceSlotEmpty;
+    assert(std.mem.eql(
+        u8,
+        try src_hit.render(buf[0..]),
+        "field=source value=65537 ceiling=65536 unit=byte reason=source-too-long",
+    ));
+    print("refusal: the source ceiling refuses ahead of the name ceiling -- GREEN\n", .{});
+
+    // 15 -- one error name, five ceilings, and a fifth refusal wearing it that no record
+    // names. The slot stays empty there, so the slot is the question rather than the name.
+    var junk_slot: refusal.Slot = null;
+    if (tokens.tokenize_reporting("#\n", toks[0..], &junk_slot)) |_| {
+        return error.JunkByteAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    assert(junk_slot == null);
+    print("refusal: an unnamed BadToken leaves the slot empty -- GREEN\n", .{});
+
+    // 16 -- the published lexer keeps its bytes: same acceptance, same refusal.
+    const at_ceiling_count = try tokens.tokenize(at_name_src, toks[0..]);
+    assert(at_ceiling_count == 2);
+    assert(toks[0].kind == .ident);
+    assert(toks[0].len == tokens.max_name_len);
+    if (tokens.tokenize(long_name_src, toks[0..])) |_| {
+        return error.LongNameAccepted;
+    } else |err| {
+        assert(err == tokens.TokenError.BadToken);
+    }
+    print("refusal: tokenize unchanged, a name at the ceiling admitted -- GREEN\n", .{});
+
+    print("refusal_witness: 16 legs, 0 failures -- GREEN\n", .{});
 }
 
 /// Every rendered word stays printable ASCII with no space, so the line splits on spaces.
