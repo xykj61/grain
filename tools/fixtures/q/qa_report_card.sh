@@ -237,6 +237,11 @@ case "$path" in
   *)                         artifact_kind=program ;;
 esac
 
+# Declared here rather than inside the program branch, because the shadow at the foot of this file
+# reads them on every path and `set -u` makes an unset name a refusal rather than a blank.
+program_genre=none
+program_genre_meter=no
+
 if [ "$artifact_kind" = prose ]; then
   prose_path="$root/$path"
 elif [ "$artifact_kind" = notation ]; then
@@ -306,6 +311,37 @@ else
   # the same bytes must read the same whichever legacy word a hand supplies.
   grade_ceiling=9
   xref_ceiling=1
+
+  # WHICH GENRE OF PROGRAM, because Gauge answers this and the card had never asked. The setting
+  # table in context/GAUGE_STYLE.md reads "Meter -- ledger rows, witness headers, scan comments,
+  # commit bodies", uncapped on register, grade and cross-references, "because refusal is the
+  # subject". The card reads EVERY program head at Door, above: grade 9, one cross-reference per
+  # hundred words, and a register measured against 20 percent. A witness header is refusal prose
+  # that names its own scan, its own control and its own ledger rows, so it is scored for doing
+  # exactly what the law asks of it.
+  #
+  # Measured 20260916 over the tracked `tools/*_witness.rish` population at --service 75, the
+  # figure stands on this card's own header: the below-B readings carry a Reach of 0 to 50 and a
+  # register near 63 on heads of eight sentences or more, where a short head frees both readings
+  # by the floor arithmetic and grades A. So the grade tracks HEAD LENGTH, and a witness whose
+  # header teaches more is scored harder for it.
+  #
+  # THREE ANSWERS, NOT TWO, because the law names two of these genres and not the third. A
+  # `_witness` and a `_scan` are Gauge's own words. A `_control` is a scan's proof harness written
+  # in the same refusal prose, and the table names no such word, so its Meter standing is THIS
+  # CARD'S READING rather than the law's, and it says so. A module head stays Door by Gauge's own
+  # code-comment rule -- "Door at the head of a module, where a reader arrives with no context".
+  #
+  # THE GENRE IS READ FROM THE BASENAME, which is where this tree already spells a program's role:
+  # the roster, the ratchets and the scans all resolve a family by `_witness`, `_scan`, `_control`.
+  # Reading the head's own words instead would guess, and a guess inside a meter is the fault this
+  # file spends its length refusing.
+  case "${path##*/}" in
+    *_witness.rish|*_witness.rye|*_witness.sh) program_genre=witness; program_genre_meter=named ;;
+    *_scan.sh|*_scan.rish|*_scan.awk)          program_genre=scan;    program_genre_meter=named ;;
+    *_control.sh|*_control.rish)               program_genre=control; program_genre_meter=read ;;
+    *)                                         program_genre=module;  program_genre_meter=no ;;
+  esac
 fi
 
 # WHICH SETTING A ROSTER TAKES, ANSWERED BY MEASUREMENT RATHER THAN ASSERTED. The free pass belongs
@@ -444,6 +480,22 @@ case "$setting" in
   field) register_ceiling=$register_field_max ;;
   *)     register_ceiling=$neg_pct ;;
 esac
+
+# AND A PROGRAM TAKES DOOR'S CEILING WHATEVER WORD A HAND TYPED, because the branch above had a
+# side door onto the Meter free pass that the explicit Meter branch below refuses by name.
+#
+# THE FAULT, found by the leg written to prove the refusal rather than by reading. Meter sets the
+# ceiling to the page's own share, so `register_gap` is zero, so `gap * sentences` is zero, so any
+# head under the sentence floor is FREED and votes 100 -- while the Meter branch further down, whose
+# stated law is "a whole program is never Meter", never fires for a program at all. Measured on a
+# six-sentence program head reading 100 percent negative: `--setting door` and `--setting field`
+# read D+ 69, `--setting meter` read A 94. Twenty-five points, on a flag the card's own comment says
+# it ignores.
+#
+# The invariant is written four hundred lines up in this file's own words -- "a program's two
+# settings come from Gauge itself, so the same bytes must read the same whichever legacy word a hand
+# supplies" -- and nothing had ever asked the card whether it held. It did not.
+[ "$artifact_kind" = program ] && register_ceiling=$register_door_max
 
 # Whether there was enough prose to measure is ONE question, answered once, and both scored
 # readings must answer it the same way -- that agreement is what an earlier round already had to
@@ -944,6 +996,20 @@ if [ "$artifact_kind" = program ]; then
   meter_neg_pct=$3
   meter_words=$(awk '{ for (i = 1; i <= NF; i++) n++ } END { print n + 0 }' "$work/program-meter.txt")
   echo "program_dial=split (module head Door; invariant bounds Meter; declaration docs reported)"
+  case "$program_genre_meter" in
+    named) genre_note="Gauge's setting table names this genre Meter" ;;
+    read)  genre_note="this card reads it as Meter prose; the law's table names no such word" ;;
+    *)     genre_note="Gauge puts a module head at Door" ;;
+  esac
+  echo "program_genre=$program_genre ($genre_note)"
+  echo "program_genre_meter=$program_genre_meter"
+  # A FLAG DROPPED IN SILENCE IS A FLAG A READER BELIEVES. The branch further down ignores
+  # `--setting meter` on a program on purpose -- a whole program is never Meter, its head is Door
+  # and its bound lines are reported -- and it had never said so, so a hand typing the flag read a
+  # Door grade believing it had asked for a Meter one.
+  if [ "$setting" = meter ]; then
+    echo "program_setting_request=meter (dropped -- a whole program is never Meter; the head is read at Door and the bound lines are reported)"
+  fi
   echo "program_head_lines=$program_head_lines"
   echo "program_meter_lines=$program_meter_lines"
   echo "program_decl_lines=$program_decl_lines"
@@ -1058,6 +1124,8 @@ echo "service_scale=0-100 -- four questions worth 25 each: named, reached, curre
 if [ "$service" -lt 0 ]; then
   echo "service=judged"
   echo "composite=judged -- hand in --service to close the card"
+  [ "$artifact_kind" = program ] \
+    && echo "meter_shadow=judged -- hand in --service to close it too"
   exit 0
 fi
 
@@ -1083,5 +1151,25 @@ echo "ordered_list=$ordered_lines (numbered-list lines on this page, read as pro
 echo "ordered_list_register=$register_ordered (reported, never scored -- Register with those lines held out)"
 echo "ordered_list_reach=$reach_ordered (reported, never scored -- Reach with those lines held out)"
 echo "reach_shadow=$reach_shadow (reported, never scored -- Reach under the register reading's line rules)"
+
+# THE METER SHADOW -- what this head would read if the law's own table decided its setting, printed
+# beside the Door grade the card actually hands out. Meter is uncapped on register, grade and
+# cross-references, so both counted readings would vote their ceiling and the composite would rest
+# on Truth and Service alone.
+#
+# REPORTED, NEVER SCORED, for the reason this file gives three times already: admitting it would
+# re-grade a population of thousands in one unmeasured step, and the standing question -- whether a
+# witness header is Meter -- is Keaton's word rather than this card's. The number is published so
+# that question can be asked on construction/ITINERARY.md with its cost attached.
+#
+# The truth gate rides here too: a page whose claims have gone false reads F at either setting.
+if [ "$artifact_kind" = program ]; then
+  meter_shadow=$(( (100 + 100 + truth + service + 2) / 4 ))
+  [ "$meter_shadow" -gt 100 ] && meter_shadow=100
+  [ "$gated" = yes ] && meter_shadow=59
+  echo "meter_shadow=$meter_shadow (reported, never scored -- the composite if this head were read at Meter)"
+  echo "letter_meter_shadow=$(letter_for "$meter_shadow")"
+  echo "meter_shadow_moves=$(( meter_shadow - composite )) (points the genre question is worth on this file)"
+fi
 echo "composite_shadow=$composite_shadow"
 echo "letter_shadow=$(letter_for "$composite_shadow")"

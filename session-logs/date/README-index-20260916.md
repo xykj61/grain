@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260916.220753` | [The hash runs in Debug rather than in software](20260916/20260916-220753_the-hash-runs-in-debug.kyri) | SHA-NI compiles in; Debug mode costs the 5.4x |
+| `20260916.220554` | [A witness header is Meter](20260916/20260916-220554_the-law-names-a-witness-header-meter.kyri) | 882 of 2,017 witnesses read below B at the door |
 | `20260916.215359` | [A booked red is a claimable thing](20260916/20260916-215359_a-booked-red-is-a-claimable-thing.kyri) | the clause excused the one repair the fleet advertises |
 | `20260916.215124` | [The walk stays and the read goes](20260916/20260916-215124_the-walk-stays-and-the-read-goes.kyri) | The library tree read once per library, not per build; a red booked|
 | `20260916.214125` | [A control by role, and the five doors](20260916/20260916-214125_a-control-by-role-and-the-five-doors.kyri) | the skip was one word over three states |

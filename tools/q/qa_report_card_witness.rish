@@ -74,7 +74,7 @@
 # moves 130 of them -- 57 across the B door, one below it, mean +7.2. Exactly one living non-dated
 # prose file of 1,503 carries a block at all, so the reading is surgical rather than sweeping.
 #
-# WHAT IS PROVEN, on metal. One hundred and thirty-nine behaviors in a throwaway pen -- the control's own
+# WHAT IS PROVEN, on metal. One hundred and eighty-four behaviors in a throwaway pen -- the control's own
 # yes/no readings, counted rather than recited, after this file carried 72 in one place and 79 in
 # another. The prose said 117 while the counter printed 139, which is the same drift the counter
 # was added to end; the number here is read off a run rather than remembered.
@@ -385,8 +385,42 @@ assert control.out contains "below_rule_declaration_read=yes" else "qa-report-ca
 assert control.out contains "deep_declaration_read_past=yes" else "qa-report-card: a Style key past the head bound is body prose rather than a declaration"
 assert control.out contains "elder_card_was_blind_to_the_declaration=yes" else "qa-report-card: force the declaration read to answer absent and the door-declaring page must lose the reading -- the repair shown from the failing side"
 
+# THE GENRE, and the setting Gauge names for it. The law's own table reads "Meter -- ledger rows,
+# witness headers, scan comments, commit bodies", uncapped on register, grade and cross-references.
+# The card reads every program head at Door, so a witness header is scored against grade 9 and one
+# cross-reference per hundred words for writing refusal prose that names its own scan. Measured
+# 20260916 over the 2,017 tracked `tools/*_witness.rish`: 880 read below B, every one of them on a
+# register under 100 and 816 on a reach under 100, with truth at 100 in all 880. The genre reading
+# names the disagreement and the shadow prices it; neither scores a thing.
+assert control.out contains "genre_reads_the_basename=yes" else "qa-report-card: the genre comes from the basename this tree already spells a role in, never from a guess at the head's words"
+assert control.out contains "genre_names_witness_and_scan=yes" else "qa-report-card: Gauge's table names witness headers and scan comments Meter, and the card must say the law named them"
+assert control.out contains "genre_reads_a_control=yes" else "qa-report-card: a control's Meter standing is this card's reading rather than the law's, and a reading that borrows the law's authority is the fault"
+assert control.out contains "genre_leaves_a_module_at_the_door=yes" else "qa-report-card: Gauge puts a module head at Door by its own code-comment rule"
+assert control.out contains "genre_moves_no_grade=yes" else "qa-report-card: the same bytes under four names must hand back one composite -- a reported reading that moved a grade is a scored one wearing another name"
+assert control.out contains "meter_shadow_frees_both_counted_readings=yes" else "qa-report-card: Meter is uncapped on both counted readings, so the shadow rests on Truth and Service alone"
+assert control.out contains "meter_shadow_over_a_scored_head=yes" else "qa-report-card: a head scored under its ceiling must read higher at Meter, or the shadow prices nothing"
+assert control.out contains "meter_shadow_meets_a_clean_door=yes" else "qa-report-card: a head already at both ceilings must read the same number either way -- a shadow is never a bonus"
+assert control.out contains "meter_shadow_gated_by_truth=yes" else "qa-report-card: a head whose citations have gone false reads F at either setting"
+assert control.out contains "dropped_meter_flag_named=yes" else "qa-report-card: the card ignores --setting meter on a program on purpose and must say so -- a flag dropped in silence is a flag a reader believes"
+assert control.out contains "dropped_meter_flag_moves_no_grade=yes" else "qa-report-card: and it must still be a drop"
+assert control.out contains "program_settings_agree=yes" else "qa-report-card: a program's settings come from Gauge rather than the caller, so door, field and meter must read one composite on one file"
+assert control.out contains "prose_carries_no_genre=yes" else "qa-report-card: a document carries neither reading, since a genre is a property of a program"
+assert control.out contains "mutation_witness_arm_bites=yes" else "qa-report-card: drop the witness arm and a witness must read as a module"
+assert control.out contains "mutation_control_standing_bites=yes" else "qa-report-card: grant a control the law's own standing and the leg that tells a reading from a citation must red"
+assert control.out contains "mutation_shadow_source_bites=yes" else "qa-report-card: compute the shadow from the scored readings and it becomes a second copy of the composite"
+assert control.out contains "mutation_meter_side_door_bites=yes" else "qa-report-card: restore the Meter side door onto the register ceiling and a program's three settings must part again"
+assert control.out contains "mutation_dropped_flag_bites=yes" else "qa-report-card: remove the named drop and the flag goes silent again"
+
 let proven = where (lines control.out) as l: l contains "=yes"
 say "${length proven} behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+
+# AND THE OTHER HALF OF THE SAME COUNT, which this file had never taken. The line above counts the
+# legs that PASSED; a leg that fails prints `=no` and is heard only by whichever named assert above
+# happens to quote it. So a leg added to the control and never asserted here reddens nothing, and
+# the count merely stops rising. Read 20260916 on a green run: zero `=no` lines stand, so the
+# reading is a wall from its first day rather than a ratchet.
+let failing = where (lines control.out) as l: l contains "=no"
+assert (length failing) == 0 else "qa-report-card: a control leg refused -- ${failing}"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's

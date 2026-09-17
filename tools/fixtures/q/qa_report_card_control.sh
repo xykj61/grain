@@ -1258,4 +1258,149 @@ scored=$(( ( $(val "$ro" register) + $(val "$ro" reach) + $(val "$ro" truth) + 1
   && echo "ordered_report_moves_no_composite=yes" \
   || echo "ordered_report_moves_no_composite=no ($(val "$ro" composite) vs $scored)"
 
+# 5 -- THE GENRE, and the setting the law names for it. Gauge's own table reads "Meter -- ledger
+# rows, witness headers, scan comments, commit bodies", uncapped on all three columns. The card
+# reads every program head at Door. So a witness header is scored against grade 9 and one
+# cross-reference per hundred words for writing refusal prose that names its own scan -- which is
+# what the law asks of it.
+#
+# THE PLANT IS ONE HEAD UNDER FOUR NAMES. The same bytes are copied to a `_witness.rish`, a
+# `_scan.sh`, a `_control.sh` and a plain `.sh`, so the genre is proven to come from the basename
+# and from nothing in the prose -- and the Door grade is proven not to move with it.
+cat > "$pen/genre_head.txt" <<'HEAD'
+# A guard that cannot refuse guards nothing, and this one refuses a tree whose roster has drifted
+# past the ceiling its own header declares, rather than reporting the drift and passing.
+# The scan it drives is tools/fixtures/p/prose_register_scan.sh, whose floor it cites rather than
+# copying, so no number here can disagree with the number the wall enforces.
+# Nothing in this file scores a claim it has not read, and no reading here is scored twice.
+# A refusal names the file, the counter, the ceiling it crossed and the repair, never only a verdict.
+# The control plants each refusal and then lifts it, because a refusal proven in one direction
+# cannot be told from a bypass that never fired at all.
+# What this does not reach is whether the pages it counts are worth reading, which no counter says.
+HEAD
+for n in genre_probe_witness.rish genre_probe_scan.sh genre_probe_control.sh genre_probe.sh; do
+  cp "$pen/genre_head.txt" "$pen/$n"
+done
+gw=$(run genre_probe_witness.rish --service 75)
+gs=$(run genre_probe_scan.sh --service 75)
+gc=$(run genre_probe_control.sh --service 75)
+gm=$(run genre_probe.sh --service 75)
+[ "$(val "$gw" program_genre)" = witness ] && [ "$(val "$gs" program_genre)" = scan ] \
+  && [ "$(val "$gc" program_genre)" = control ] && [ "$(val "$gm" program_genre)" = module ] \
+  && echo "genre_reads_the_basename=yes" \
+  || echo "genre_reads_the_basename=no ($(val "$gw" program_genre)/$(val "$gs" program_genre)/$(val "$gc" program_genre)/$(val "$gm" program_genre))"
+[ "$(val "$gw" program_genre_meter)" = named ] && [ "$(val "$gs" program_genre_meter)" = named ] \
+  && echo "genre_names_witness_and_scan=yes" \
+  || echo "genre_names_witness_and_scan=no ($(val "$gw" program_genre_meter)/$(val "$gs" program_genre_meter))"
+# A control is a scan's proof harness written in the same refusal prose, and the law's table names
+# no such word -- so its Meter standing is the card's reading rather than the law's, and the card
+# must say which it is. A reading that borrows the law's authority is the fault this leg refuses.
+[ "$(val "$gc" program_genre_meter)" = read ] \
+  && echo "genre_reads_a_control=yes" \
+  || echo "genre_reads_a_control=no ($(val "$gc" program_genre_meter))"
+[ "$(val "$gm" program_genre_meter)" = no ] \
+  && echo "genre_leaves_a_module_at_the_door=yes" \
+  || echo "genre_leaves_a_module_at_the_door=no ($(val "$gm" program_genre_meter))"
+# THE GENRE MOVES NO GRADE, which is this file's standing ruling on every reported reading: the
+# same bytes under four names hand back one composite.
+[ "$(val "$gw" composite)" = "$(val "$gm" composite)" ] \
+  && [ "$(val "$gs" composite)" = "$(val "$gm" composite)" ] \
+  && [ "$(val "$gc" composite)" = "$(val "$gm" composite)" ] \
+  && echo "genre_moves_no_grade=yes" \
+  || echo "genre_moves_no_grade=no ($(val "$gw" composite)/$(val "$gs" composite)/$(val "$gc" composite)/$(val "$gm" composite))"
+
+# 5b -- THE METER SHADOW, the number that puts a cost on the question 5 can only name. Meter is
+# uncapped on register, grade and cross-references, so both counted readings vote their ceiling and
+# the composite rests on Truth and Service alone. Recomputed here from the card's own two judged
+# quarters rather than trusted.
+shadow_want=$(( ( 100 + 100 + $(val "$gw" truth) + 75 + 2 ) / 4 ))
+[ "$(val "$gw" meter_shadow)" = "$shadow_want" ] \
+  && echo "meter_shadow_frees_both_counted_readings=yes" \
+  || echo "meter_shadow_frees_both_counted_readings=no ($(val "$gw" meter_shadow) vs $shadow_want)"
+# AND IT MEANS SOMETHING ON THE POPULATION THAT ASKED THE QUESTION: a head scored under 100 on
+# either counted reading reads higher at Meter, so the points are real rather than a decoration.
+[ "$(val "$gw" meter_shadow)" -gt "$(val "$gw" composite)" ] \
+  && echo "meter_shadow_over_a_scored_head=yes" \
+  || echo "meter_shadow_over_a_scored_head=no ($(val "$gw" meter_shadow) vs $(val "$gw" composite))"
+# AND IT IS NEVER A BONUS. A head whose two counted readings already read their ceiling reads the
+# same number at either setting -- which is what tells a shadow from a thumb on the scale.
+printf '# A guard proves its own refusal.\n# The ceiling falls on touch.\n# The pen is thrown away.\n' \
+  > "$pen/genre_clean_witness.rish"
+gcl=$(run genre_clean_witness.rish --service 75)
+[ "$(val "$gcl" register)" = 100 ] && [ "$(val "$gcl" reach)" = 100 ] \
+  && [ "$(val "$gcl" meter_shadow)" = "$(val "$gcl" composite)" ] \
+  && echo "meter_shadow_meets_a_clean_door=yes" \
+  || echo "meter_shadow_meets_a_clean_door=no ($(val "$gcl" register)/$(val "$gcl" reach)/$(val "$gcl" meter_shadow)/$(val "$gcl" composite))"
+# AND TRUTH GATES IT, exactly as it gates the composite: a head whose citations have gone false
+# reads F at either setting, since honesty-first is arithmetic here rather than habit.
+printf '# This head cites three paths that are not there.\n# See [one](nowhere_one.md) and [two](nowhere_two.md).\n# And [three](nowhere_three.md), which is also absent.\n# A reader following any of them lands nowhere at all.\n' \
+  > "$pen/genre_false_witness.rish"
+gf=$(run genre_false_witness.rish --service 75)
+[ "$(val "$gf" truth_gate)" = yes ] && [ "$(val "$gf" meter_shadow)" = 59 ] \
+  && echo "meter_shadow_gated_by_truth=yes" \
+  || echo "meter_shadow_gated_by_truth=no ($(val "$gf" truth_gate)/$(val "$gf" meter_shadow))"
+
+# 5c -- THE FLAG THAT WAS DROPPED IN SILENCE. The card ignores `--setting meter` on a program on
+# purpose, and had never said so, so a hand typing it read a Door grade believing it had asked for a
+# Meter one. Both halves are proven: the drop is named, and it is still a drop.
+gwm=$(run genre_probe_witness.rish --setting meter --service 75)
+echo "$gwm" | grep -q '^program_setting_request=meter (dropped' \
+  && echo "dropped_meter_flag_named=yes" \
+  || echo "dropped_meter_flag_named=no"
+[ "$(val "$gwm" composite)" = "$(val "$gw" composite)" ] \
+  && echo "dropped_meter_flag_moves_no_grade=yes" \
+  || echo "dropped_meter_flag_moves_no_grade=no ($(val "$gwm" composite) vs $(val "$gw" composite))"
+# AND ALL THREE WORDS AGREE ON ONE PROGRAM, which is the invariant the card states in its own
+# comment and had never been asked. The leg above found it broken: Meter set the register ceiling to
+# the head's own share, which freed any head under the sentence floor through a side door the
+# explicit Meter branch refuses by name.
+gwf=$(run genre_probe_witness.rish --setting field --service 75)
+[ "$(val "$gw" composite)" = "$(val "$gwf" composite)" ] \
+  && [ "$(val "$gw" composite)" = "$(val "$gwm" composite)" ] \
+  && echo "program_settings_agree=yes" \
+  || echo "program_settings_agree=no (door $(val "$gw" composite), field $(val "$gwf" composite), meter $(val "$gwm" composite))"
+# AND A DOCUMENT CARRIES NEITHER READING, because a genre is a property of a program and a page that
+# printed one would be answering a question nobody asked of it.
+printf '# A page\n\nThis page is prose and carries no genre at all. It reads plainly, and it says so.\n' \
+  > "$pen/genre_page.md"
+gp=$(run genre_page.md --setting door --service 75)
+echo "$gp" | grep -qv '^program_genre=' && ! echo "$gp" | grep -q '^meter_shadow=' \
+  && ! echo "$gp" | grep -q '^program_genre=' \
+  && echo "prose_carries_no_genre=yes" \
+  || echo "prose_carries_no_genre=no"
+
+# 5d -- FOUR MUTATIONS, each planted one at a time in its own copy of the card and then thrown away,
+# so every leg above is shown biting rather than merely passing.
+mutate() {
+  m=$1; shift
+  mkdir -p "$pen/$m/tools/fixtures/q"
+  for d in $deps; do mkdir -p "$pen/$m/$(dirname "$d")" && cp "$d" "$pen/$m/$d"; done
+  sed "$@" "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/$m/tools/fixtures/q/qa_report_card.sh"
+  cmp -s "$pen/$m/tools/fixtures/q/qa_report_card.sh" "$pen/tools/fixtures/q/qa_report_card.sh" \
+    && { echo "no -- the sed matched nothing and the copy is unmutated"; return; }
+  cp "$pen/genre_probe_witness.rish" "$pen/$m/"
+  ( cd "$pen/$m" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh genre_probe_witness.rish --setting meter --service 75 ) 2>&1
+}
+mw=$(mutate m_witness_arm -e '/^    \*_witness.rish|\*_witness.rye|\*_witness.sh) program_genre=witness/d')
+[ "$(val "$mw" program_genre)" = module ] \
+  && echo "mutation_witness_arm_bites=yes" \
+  || echo "mutation_witness_arm_bites=no ($(val "$mw" program_genre))"
+mc=$(mutate m_control_standing -e 's/program_genre=control; program_genre_meter=read/program_genre=control; program_genre_meter=named/')
+mcv=$( ( cd "$pen/m_control_standing" && cp "$pen/genre_probe_control.sh" . && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh genre_probe_control.sh --service 75 ) 2>&1 )
+[ "$(val "$mcv" program_genre_meter)" = named ] \
+  && echo "mutation_control_standing_bites=yes" \
+  || echo "mutation_control_standing_bites=no ($(val "$mcv" program_genre_meter))"
+ms=$(mutate m_shadow_source -e 's/^  meter_shadow=$(( (100 + 100 + truth + service + 2) \/ 4 ))$/  meter_shadow=$(( (register + reach + truth + service + 2) \/ 4 ))/')
+[ "$(val "$ms" meter_shadow)" = "$(val "$ms" composite)" ] \
+  && echo "mutation_shadow_source_bites=yes" \
+  || echo "mutation_shadow_source_bites=no ($(val "$ms" meter_shadow) vs $(val "$ms" composite))"
+msd=$(mutate m_meter_side_door -e '/^\[ "\$artifact_kind" = program \] && register_ceiling=\$register_door_max$/d')
+[ "$(val "$msd" composite)" != "$(val "$gw" composite)" ] \
+  && echo "mutation_meter_side_door_bites=yes" \
+  || echo "mutation_meter_side_door_bites=no ($(val "$msd" composite))"
+mf=$(mutate m_dropped_flag -e '/^    echo "program_setting_request=meter (dropped/d')
+echo "$mf" | grep -q '^program_setting_request=' \
+  && echo "mutation_dropped_flag_bites=no" \
+  || echo "mutation_dropped_flag_bites=yes"
+
 echo "control_verdict=ok"
