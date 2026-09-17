@@ -18,9 +18,10 @@ reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own 
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
-The ledger reads **twelve OPEN**, one BOOKED (`20260917.020437`). Four stand claimed on the fleet
-board; three want Keaton's word -- `%756` `%745` `%456` -- and a lap opens none of them. `%734`'s
-cause is captured; its evidence half is free, and this lap took it.
+The ledger reads **seventeen OPEN** (`20260917.024700`), and the count wants its own sentence:
+the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reader matching one
+undercounts by six of the seventeen. This paragraph said twelve an hour ago for that reason.
+`%756` `%745` `%456` want Keaton's word; a lap opens none of them.
 
 **The agent-doable queue, Lindy first:**
 
