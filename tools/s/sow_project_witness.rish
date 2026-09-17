@@ -1,0 +1,65 @@
+# tools/s/sow_project_witness.rish -- the seed projection, proven branch by branch on a pen field.
+#
+#   rishi/bin/rishi run tools/s/sow_project_witness.rish
+#
+# WHY. tools/fixtures/s/sow_project.sh decides what the public seed contains. It copies a plain
+# file verbatim, scrubs a file naming the maintainer, WITHHOLDS a scrubbed file that still names
+# them, withholds an armor block, withholds anything named like a key, honors the manifest's
+# sub_exclude, and swaps a public ssh blob for a placeholder. Until this witness there was no
+# guard over any of those branches: `sow` proves the projected tree carries no identity string,
+# which is the right question about the OUTPUT and says nothing about whether a branch still runs.
+#
+# WHAT CHANGED, AND WHY IT NEEDED PROVING (REDS %642). The classification used to run one grep
+# per candidate -- armor, identity, and an ssh read on each copy -- which the timing paper priced
+# at 56.69, 103.10 and 55.79 seconds over some nine thousand files. Measured on a 500-path sample
+# of that same set, a per-file grep loop runs 6,624 ms where ONE grep over the same files runs
+# 186 ms: the cost was starting grep rather than reading bytes. The three greps now run once each
+# over a whole list. A batched reading is only safe while each file's answer still depends on its
+# own bytes alone, so every branch is planted here and lifted again.
+#
+# WHAT IT DOES NOT REACH. Parity against the elder per-file loop over the REAL field is a
+# whole-tree reading rather than a pen one -- project at the elder commit, keep that tree, project
+# again, and `diff -r`. And the seed's editorial privacy review stays a human read at custody
+# gate 1; this proves the mechanism, never the judgment.
+
+say "sow-project: Language EN -- the projection that decides what the public seed contains, proven one branch at a time."
+say "sow-project: Style Gauge, Meter -- every reading below is the control's own output, run on a throwaway git field rather than recited here."
+say "sow-project: Lens TAME -- safety first: each refusal is planted and then lifted, and four mutations are asserted to bite."
+
+let control = run ["sh" "tools/fixtures/s/sow_project_control.sh"]
+say control.out
+assert control.ok else "sow-project: the control must complete"
+assert control.out contains "control_failed=0" else "sow-project: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "sow-project: the control must agree with itself"
+assert control.out contains "control_legs=28" else "sow-project: a leg written today must be heard today -- raise this count with the control"
+assert control.out contains "leg projection_exits_zero verdict=yes" else "sow-project: the projection must finish green on a whole field"
+assert control.out contains "leg plain_page_copied_verbatim verdict=yes" else "sow-project: a file naming nobody must reach the seed byte for byte"
+assert control.out contains "leg named_page_scrubbed_to_role verdict=yes" else "sow-project: a file naming the maintainer must reach the seed with the role in its place"
+assert control.out contains "leg nested_directory_made verdict=yes" else "sow-project: a nested destination must be made before its file is written"
+assert control.out contains "leg scrubbed_runner_keeps_exec_bit verdict=yes" else "sow-project: a scrubbed runner must keep its mode -- the seed's own commit hook is one of these"
+assert control.out contains "leg ssh_blob_swapped_for_stub verdict=yes" else "sow-project: a public ssh blob must leave as a placeholder"
+assert control.out contains "leg unscrubbable_handle_withheld verdict=yes" else "sow-project: a scrubbed file still naming the maintainer must be withheld rather than shipped"
+assert control.out contains "leg armor_block_withheld verdict=yes" else "sow-project: an armor block must never reach the seed"
+assert control.out contains "leg fingerprint_roster_withheld verdict=yes" else "sow-project: a fingerprint roster must never reach the seed"
+assert control.out contains "leg key_named_file_withheld verdict=yes" else "sow-project: a file named like key material must never reach the seed"
+assert control.out contains "leg sub_excluded_file_absent verdict=yes" else "sow-project: the manifest's own sub_exclude must hold"
+assert control.out contains "leg unallowed_room_never_reached verdict=yes" else "sow-project: a room the allowlist omits must never be walked"
+assert control.out contains "leg excluded_log_names_the_exclusion verdict=yes" else "sow-project: an excluded file must be named in the excluded log"
+assert control.out contains "leg exclusion_stays_out_of_withheld_log verdict=yes" else "sow-project: an exclusion is not a withhold, and the two logs must stay apart"
+assert control.out contains "leg withheld_log_names_all_four verdict=yes" else "sow-project: every withheld file must be named in the withheld log"
+assert control.out contains "leg scrubbed_log_names_both_scrubs verdict=yes" else "sow-project: every scrubbed file must be named in the scrubbed log"
+assert control.out contains "leg withheld_scrub_stays_out_of_scrubbed_log verdict=yes" else "sow-project: a scrub that was withheld must never read as a scrub that shipped"
+assert control.out contains "leg withheld_log_reads_in_candidate_order verdict=yes" else "sow-project: the logs must read in candidate order, as the elder's own appends produced"
+assert control.out contains "leg receipt_counts_every_class verdict=yes" else "sow-project: the receipt line must count what actually landed"
+assert control.out contains "leg stale_projection_file_cleared verdict=yes" else "sow-project: a file from an elder projection must not survive the next one"
+assert control.out contains "leg second_run_projects_identical_bytes verdict=yes" else "sow-project: two runs over one field must agree byte for byte"
+assert control.out contains "leg candidate_ceiling_refuses verdict=yes" else "sow-project: a candidate set past the ceiling must refuse out loud"
+assert control.out contains "leg candidate_ceiling_lifts verdict=yes" else "sow-project: the ceiling must welcome a set under it, or the refusal proves nothing"
+assert control.out contains "leg broken_batch_refuses_loudly verdict=yes" else "sow-project: a batched match that cannot run must refuse, never read as nothing matched"
+assert control.out contains "leg mutation_armor_pass_dropped_bites verdict=yes" else "sow-project: dropping the armor pass must ship the armored blob"
+assert control.out contains "leg mutation_scrub_recheck_dropped_bites verdict=yes" else "sow-project: dropping the post-scrub identity read must ship the handle"
+assert control.out contains "leg mutation_ssh_pass_dropped_bites verdict=yes" else "sow-project: dropping the ssh pass must ship the raw key"
+assert control.out contains "leg mutation_silent_batch_failure_bites verdict=yes" else "sow-project: silencing the batch refusal must finish green over a field nobody classified"
+
+say ""
+say "GREEN: sow-project -- every branch of the seed projection stands proven on a pen field, the batched classification answers exactly as the per-file loop did, and four mutations bite."

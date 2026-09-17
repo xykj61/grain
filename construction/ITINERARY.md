@@ -76,29 +76,36 @@ ASSIGNMENT.
 tracking one file under `rishi/bin` would fix all 189 at once with two files touched rather than
 189, at the cost of making a build-output room hold tracked content.
 
-**COPAL -- A RESIN'S BYTES ARE THE BYTES THAT LANDED.** Account
-[born on its shelf](archive/20260916-234020_itinerary-landed-accounts.md).
-**FIRE SEES** (row 2, N=5192): see the threshold where work should stop -- and a one-sided wall
-stood in the room whose whole job is to stay as it landed. `bron-resins/manifest.bron` states in
-prose that every resin has one commit and unmoved bytes; a hand read that on `20260910` and nothing
-read it again. **The seal cannot see this:** `bron_resins_catalog` compares
-a recomputed digest to the `seal` line, and BOTH halves live in the working tree, so a resin edited
-together with its seal is self-consistent and every gate stays green. `bron_resins_landed` resolves each resin's
-ADDING commit and compares that blob to the blob the file would land as -- `moved` walled at zero,
-with `uncommitted`, `commits_multi` and `readded` reported, each a thing a lawful lap does. Reads
-**17 of 17 landed, moved=0**; the catalog is excluded by name.
-**PROVEN** on REAL git repositories: **42 behaviors, 0 failing**, the resealed rewrite and a lawful
-fold both planted, 70 resins against a listing cap of 64, three mutations bitten. Priced 4.5s to
-**1.3s**, the control 21s to **6s**, by reading the history twice rather than twice per file.
-**YOURS:** whether `session-logs/`, `counsel/` and the shelves want the same wall -- the scan takes
-a room argument, so each answer costs one roster row. Last lap's stands: forty is spoken aloud and
-nobody chose it -- a declared bound, or each lane's convenience?
+**COPAL -- THE SEED SPENT ITS MINUTES STARTING GREP, NEVER READING BYTES.** Account
+[born on its shelf](archive/20260917-010818_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=5209): the fact at the door was a stopwatch pointing away from the
+cure `%642` booked. The timing paper prices the projection's three greps at 215 of its 365 seconds;
+are those minutes READING or STARTING? Over 500 paths of the same
+set, a loop calling `grep` once per file runs **6,624 ms** where one `grep` handed the same files
+runs **186 ms**. **THE MECHANISM.** `tools/fixtures/s/sow_project.sh` classifies in three batched
+passes: armor and identity each run as one `grep` chunked by `xargs`, the path-only refusals are
+decided by the shell's `case` and `${f##*/}` rather than a `basename`, the post-scrub identity
+re-read and the ssh-key read run once over the destinations, and one `awk` writes the three logs in
+candidate order. The `sed` scrub stays per file. **SAME CORPUS:** identity over 9,096 candidates
+**103.10s to 0.74s**, armor **56.69s to 0.24s**; FREE, so run them. **PARITY THREE WAYS** against the kept elder tree: 8,569 file digests,
+9,239 typed and moded tree entries, 239 symlink targets, **0 differences**, same receipt.
+**PROVEN:** pen **28 legs, 0 failing**, four mutations bitten, the sharpest being that silencing
+`batch_match`'s refusal finishes GREEN over an unclassified field. The projection had **no guard over
+any branch** before this. **A RED (`20260917.004532`):** the one `sub_exclude`
+entry carrying a space is truncated by `awk '{print $2}'` while the candidate walk splits it into
+fragments failing `[ -f ]` -- two faults cancelling, so repairing either alone ships a copyrighted
+article. **MINE:** `plant_liveness` caught a DEAD PLANT in my own control -- a lift mutation rewriting the
+ceiling to the value it already carried, so that phase tested the unmutated file. **YOURS:** the copy loop is the next and larger fall -- about 131 seconds of `mkdir` and `cp` per
+file. One `cpio -pdm` or `tar` pipe takes it, and a copy mechanism decides exactly the readings the
+parity proof reads. One lap, or leave it per file?
 
-**COPAL -- THREE ELDER ACCOUNTS, SHELVED WHOLE:** the `echo` population
+**COPAL -- FOUR ELDER ACCOUNTS, SHELVED WHOLE:** the resin bytes that landed
+([here](archive/20260916-234020_itinerary-landed-accounts.md), its ask below), the `echo` population
 ([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap from
 what it saw ([here](archive/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
 ([here](archive/20260916-084104_itinerary-landed-accounts.md)).
-**THEIR ASKS, STILL STANDING:** the 45 **written** characters -- ratchet, or the meter that owns
+**THEIR ASKS, STILL STANDING:** whether other rooms want the resin room's landed wall, one roster
+row per answer. The 45 **written** characters -- ratchet, or the meter that owns
 assembled text? The 1,417 almanac characters. Whether a claim's paths are exempt from the
 commit-message path wall, which bit again this lap on the claim commit naming the files it opened
 to build. And the nine rostable, unrostered `tools/gen/chapter/` witnesses.
@@ -204,7 +211,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `30edd93036` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6553e8ca71` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
