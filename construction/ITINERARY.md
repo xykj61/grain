@@ -200,7 +200,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `419ea56618` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3468e3fe6d` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -212,27 +212,30 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- A DOCUMENT'S LAST BYTE FINALLY HAS A HOME IN THE STORE.** Elder account
-[shelved whole](archive/20260917-011500_itinerary-landed-accounts.md), its two asks with it.
-**AIR FEELS** (row 1, N=5206): press a boundary; feel whether the hand goes through.
-**`%689` CLOSED.** `split_lines` in `mantra/src/diff.rye` broke its loop at the empty token a
-trailing newline leaves, so `x\ny` and `x\ny\n` earned one address in a content-addressed store
-and `mantra status` read the changed file clean BOTH ways. Keaton ruled door 2: a weave
-records the terminator as HISTORY. That build was withdrawn once, because keeping the token turns
-every APPEND into a MIDDLE INSERT -- which was `%680`, and `%680` closed with `Diff.after`. The
-withdrawn work landed unchanged on that footing. **All 29 mantra witnesses green from a green
-baseline**; the seven readings REPORTED while this wanted a ruling are **WALLS**, and the control
-restores the elder break through `plant_apply` and watches every wall fall at once. **THE PRICE,
-MEASURED:** a three-line terminated file reports **4** lines against **3**, and every weave on disk
-drifts by one on its next add -- the cost door 2 named before it was chosen.
-**AND THE PROBE FOUND A SECOND** (`20260917.010830`, OPEN). A line inserted at the HEAD of a document leaves
-it -- `%680`'s symptom one position over, proven pre-existing from the stashed module. `Weave.apply`
-named the case in a comment and no row and no guard carried it -- **a limit stated only in the code
-it limits is a limit no lap is asked to close.**
-**MINE:** five legs of `mantra_diff_control.sh` were quoted by nobody, so its split plant matched
-nothing the hour the module moved. All five are heard now.
-**YOURS:** that row's three doors -- a `before` anchor with nowhere to put its key, renumbering every
-`ord` and breaking merge, or reserving a floor that buys one head insert per weave.
+**PATCHOULI -- A DEFECT THE CODE NAMED AND NO READING PRESSED.** Elder account
+[shelved whole](archive/20260917-033338_itinerary-landed-accounts.md), its three-door ask with it.
+**FIRE SEES** (row 2, N=5257): cut and stop. The row prices removal at three depths; this lap asked
+the inverse -- what does a READING cost that can never say anything else? One nobody can flip is
+dead tissue in an instrument's clothes, and no depth reaches it, since nothing notices it going.
+**REDS %807 stays OPEN, and this lap closed its GUARD half rather than its repair.** A line inserted
+at the HEAD of a stored document leaves it: `mantra status` answers `1 added, 1 removed` with the
+same text on both sides, on a file nothing has touched. `prove_head_insert_lands_last` in
+`mantra/src/weave_apply_witness.rye` has held the unit level since `20260916`, and no reading pressed
+the CLI -- so the user-visible half stood under no guard at all, which is the row's own teaching.
+**THE MECHANISM.** Three readings enter `tools/fixtures/m/mantra_document_roundtrip_scan.sh`:
+`head_insert_woven` GATED from the passing side, `head_insert_roundtrip` and
+`head_insert_reports_move` REPORTED, since the repair is a ruling among three doors. The second reads
+the SIGNATURE rather than the symptom -- it intersects the `+` and `-` texts, because any broken
+status reports something and only this one reports a MOVE.
+**PROVEN:** pen **19 legs, 0 failing**, four breaks caught. The new leg plants a status calling every
+file clean; both reported readings flip while the gate bites by name and the insert stays woven.
+**MEASURED:** `head_insert_position=4` off the built binary -- the insert lands last in a three-line
+document. No door taken, no order key moved.
+**MINE:** my own leg read `annotate` with `2>/dev/null` and printed a blank. The CLI reports through
+`std.debug.print`, which writes to STDERR, and every capture in the scan beside mine already merged
+the two streams.
+**YOURS:** the three doors, unchanged and now pressed from the CLI. The control grades **72 at Door
+against 98 at Meter** -- left standing rather than bent, the class grass holds.
 
 ## Simple, Lovable, Complete order
 

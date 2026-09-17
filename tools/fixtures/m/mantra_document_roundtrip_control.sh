@@ -31,6 +31,13 @@
 #   elder_drop_hides_seam=yes|no     and the seam reading goes invisible again
 #   elder_drop_reds_scan=yes|no      and the scan reaches its own red
 #   elder_drop_keeps_lawful=yes|no   while an ordinary edit is still woven
+#   clean_status_planted=yes|no      the always-clean plant named a line the CLI still has
+#   clean_status_builds=yes|no       and it compiles
+#   clean_status_flips_roundtrip=yes|no  head_insert_roundtrip can answer yes
+#   clean_status_flips_move=yes|no   and head_insert_reports_move can answer no
+#   clean_status_bites=yes|no        while the gate names the pen broken
+#   clean_status_keeps_woven=yes|no  and the head insert is still woven
+#   head_insert_position=<n>         where a head insert lands in the tree's own annotate
 #   elder_drop_line_count=<n>        lines a three-line terminated file reports there
 #   tree_line_count=<n>              what the tree reports for the same file
 #   pass=<n> fail=<n>
@@ -142,6 +149,60 @@ claim elder_drop_blind_to_add  "$(read_key "$work/elder.out" add_sees_newline_ad
 claim elder_drop_hides_seam    "$(read_key "$work/elder.out" terminator_invisible)" yes
 claim elder_drop_reds_scan     "$(read_key "$work/elder.out" verdict)" red
 claim elder_drop_keeps_lawful  "$(read_key "$work/elder.out" lawful_change_seen)" yes
+
+# --- leg 5: the head-insert readings are not constants (REDS %807) ---
+#
+# The two head-insert readings in the scan are REPORTED rather than gated. A
+# reported reading is the easiest kind to go quiet: it reds nothing when it
+# freezes, so a reading stuck at `no` reads exactly like a defect still
+# standing. So this leg plants a status calling every file clean. Both readings
+# flip -- `head_insert_roundtrip` to `yes`, `head_insert_reports_move` to `no`,
+# since a clean report prints no lines to intersect. The gate bites in the same
+# breath, which names the pen broken.
+#
+# This takes none of the three doors %807 names. Which door the weave takes is
+# a ruling about how places are assigned. The pen proves one thing: the
+# instrument can answer other than it does today.
+clean="$(new_pen clean_status)"
+if plant_apply "$clean/main.rye" \
+  's/^    if (d.inserts.len == 0 and d.deletes.len == 0) {$/    if (true) {/' \
+  clean_status; then
+  ok clean_status_planted
+else
+  bad clean_status_planted
+fi
+sh "$scan" "$clean/main.rye" > "$work/clean.out" 2>&1 || true
+case "$(read_key "$work/clean.out" built)" in
+  yes) ok clean_status_builds ;;
+  *)   bad clean_status_builds ;;
+esac
+claim clean_status_flips_roundtrip "$(read_key "$work/clean.out" head_insert_roundtrip)" yes
+claim clean_status_flips_move      "$(read_key "$work/clean.out" head_insert_reports_move)" no
+claim clean_status_bites           "$(read_key "$work/clean.out" lawful_status_seen)" no
+# The head insert is still WOVEN under this plant -- only the reporting was
+# broken. That is what keeps the gate above meaning what it says: a pen where add
+# had also stopped weaving would flip the two readings for a different reason.
+claim clean_status_keeps_woven     "$(read_key "$work/clean.out" head_insert_woven)" yes
+
+# What the tree answers today, read off the built binary rather than asserted.
+# The insert is woven. The untouched file then reports a move.
+head_pen="$work/headprice"
+mkdir -p "$head_pen"
+if env RYE_ZIG="$zig" "$rye" build "$base/main.rye" -femit-bin="$work/headprice.bin" >/dev/null 2>&1; then
+  printf 'a\nb\n' > "$head_pen/f.txt"
+  ( cd "$head_pen" && "$work/headprice.bin" init >/dev/null 2>&1 \
+      && "$work/headprice.bin" add f.txt >/dev/null 2>&1 )
+  printf 'zero\na\nb\n' > "$head_pen/f.txt"
+  ( cd "$head_pen" && "$work/headprice.bin" add f.txt >/dev/null 2>&1 )
+  # `2>&1` rather than `2>/dev/null`. The CLI reports through `std.debug.print`,
+  # which writes to STDERR. A reading keeping only stdout reads an empty
+  # document and prints a blank. Every other capture here merges the two
+  # streams for that reason.
+  ( cd "$head_pen" && "$work/headprice.bin" annotate f.txt ) > "$work/headann.out" 2>&1 || true
+  echo "head_insert_position=$(grep -n '^[-+ ] *zero' "$work/headann.out" | head -1 | cut -d: -f1)"
+else
+  echo "head_insert_position=unbuilt"
+fi
 
 # What a three-line terminated file reports under each reading. The tree answers
 # FOUR -- three lines a hand wrote and the terminator -- where the elder drop

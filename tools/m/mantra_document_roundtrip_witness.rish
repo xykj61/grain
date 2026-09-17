@@ -34,6 +34,22 @@
 # REPORTED: door 3 -- write the file's own bytes as a blob and name it in the
 # commit -- was never taken, and it widens the `file` row when it is.
 #
+# AND A SECOND DEFECT IS REPORTED HERE NOW, for the same reason the seven were.
+# REDS %807: a line inserted at the HEAD of a stored document leaves it. `diff`
+# computes each insert's anchor as the last kept line BEFORE the gap, and the gap
+# opening a document has no line before it, so `apply` falls back to the weave's
+# own counter and the new line sorts past every line the weave holds. `mantra
+# status` then answers `1 added, 1 removed` with the SAME text on both sides -- a
+# move -- on a file nothing has touched. The unit level has held this since
+# `20260916` as `prove_head_insert_lands_last` in
+# `mantra/src/weave_apply_witness.rye`, and no reading pressed the CLI, so the
+# user-visible half stood under no guard at all. That is the row's own teaching:
+# a limit stated only in the code it limits is a limit no lap is asked to close.
+# The three doors -- a `before` anchor with nowhere to put its key, renumbering
+# every `ord` and breaking merge, or reserving a floor that buys one head insert
+# per weave -- are a ruling about how places are ASSIGNED, so these readings name
+# the loss and gate nothing.
+#
 # THE PRICE, NAMED RATHER THAN HIDDEN. A three-line terminated file reports FOUR
 # lines now, and every weave already on disk drifts by one on its next add. That
 # cost was written into door 2 before it was chosen, and the control measures it
@@ -83,6 +99,18 @@ assert scan.out contains "status_sees_newline_added=yes" else "mantra-document-r
 assert scan.out contains "add_sees_newline_added=yes" else "mantra-document-roundtrip: add declines to weave an appended newline, so the store refuses the change when asked for it directly"
 assert scan.out contains "status_sees_newline_removed=yes" else "mantra-document-roundtrip: status calls a file clean after its final newline was taken away"
 assert scan.out contains "add_sees_newline_removed=yes" else "mantra-document-roundtrip: add declines to weave a removed newline -- the same loss from the other side"
+# THE HEAD INSERT (REDS %807, OPEN). `head_insert_woven` is GATED from the
+# passing side: `add` does weave a line inserted at the head, so a `no` here
+# means the store stopped seeing the edit and the two readings after it say
+# nothing. The two themselves are REPORTED, because the repair is a choice among
+# three doors and none is a lap's to take alone -- the same placement the seven
+# readings above held while %689 waited on Keaton's word. They are asserted
+# PRESENT rather than valued, so a reading that stops being printed is heard the
+# lap it goes quiet; a reported reading nobody quotes is the one that can vanish
+# without reddening anything.
+assert scan.out contains "head_insert_woven=yes" else "mantra-document-roundtrip: add stopped weaving a line inserted at the head of a document, so the two readings below are readings of nothing"
+assert scan.out contains "head_insert_roundtrip=" else "mantra-document-roundtrip: the head-insert roundtrip reading stopped being printed, and a reported reading nobody quotes can go quiet without reddening anything"
+assert scan.out contains "head_insert_reports_move=" else "mantra-document-roundtrip: the head-insert move signature stopped being printed -- the same objection"
 assert scan.out contains "terminator_invisible=no" else "mantra-document-roundtrip: the terminator is invisible to the store again, which is REDS %689 in one word"
 assert scan.out contains "verdict=ok" else "mantra-document-roundtrip: the scan reached its own red"
 
@@ -105,7 +133,14 @@ assert control.out contains "elder_drop_blind_to_add=yes" else "mantra-document-
 assert control.out contains "elder_drop_hides_seam=yes" else "mantra-document-roundtrip: and the seam reading must go invisible again"
 assert control.out contains "elder_drop_reds_scan=yes" else "mantra-document-roundtrip: the scan must reach red under the elder drop -- a wall proven only by a healthy tree cannot be told from a constant"
 assert control.out contains "elder_drop_keeps_lawful=yes" else "mantra-document-roundtrip: an ordinary edit must still be woven under the elder drop, or the pen broke something wider than the split rule"
+assert control.out contains "clean_status_planted=yes" else "mantra-document-roundtrip: the always-clean plant named a line the CLI no longer has, so that pen ran the UNMUTATED module and the two flips below are readings of a healthy tree"
+assert control.out contains "clean_status_builds=yes" else "mantra-document-roundtrip: the always-clean mutation did not compile, so nothing under it was measured"
+assert control.out contains "clean_status_flips_roundtrip=yes" else "mantra-document-roundtrip: head_insert_roundtrip could not be made to answer yes, so it is a constant rather than a reading"
+assert control.out contains "clean_status_flips_move=yes" else "mantra-document-roundtrip: head_insert_reports_move could not be made to answer no -- the same objection from the other side"
+assert control.out contains "clean_status_bites=yes" else "mantra-document-roundtrip: a status calling every file clean must red the gate by name, or that pen is broken in a way no reading names"
+assert control.out contains "clean_status_keeps_woven=yes" else "mantra-document-roundtrip: the head insert stopped being woven under a plant that only touched reporting, so the two flips above moved for a reason this leg has not found"
+assert control.out contains "head_insert_position=4" else "mantra-document-roundtrip: a line inserted at the head of a three-line document lands somewhere other than last -- which is either REDS %807 repaired or the pen measuring something else, and both want a reading rather than a silent pass"
 assert control.out contains "elder_drop_line_count=3" else "mantra-document-roundtrip: the elder drop reports three lines for a three-line terminated file; a different number means the plant did something else"
 assert control.out contains "tree_line_count=4" else "mantra-document-roundtrip: the tree reports four -- three lines a hand wrote and the terminator -- and that one line is the whole price of the repair"
 
-say "GREEN: eleven roundtrip readings gated, the terminator a line of the history, one reading still naming door 3 -- thirteen control legs, three breaks caught, the closed defect shown reappearing whole."
+say "GREEN: twelve roundtrip readings gated, the terminator a line of the history, three still reported -- door 3 and the two naming REDS %807 -- nineteen control legs, four breaks caught, the closed defect shown reappearing whole and the open one measured landing last."
