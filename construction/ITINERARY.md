@@ -228,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `30da4aba5a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `11c7a5d026` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -264,46 +264,31 @@ read OPEN, five carry no status marker, nothing else folds. The next red has now
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A DOOR MARKED CHECKABLE, AND NOTHING ASKED WHAT STOOD BEHIND IT.** Elder account
-[shelved whole](archive/20260917-060042_itinerary-landed-accounts.md), its three-genre ask with it.
-**WATER TASTES** (row 3, N=5283): taste works only up close, so the lap ran the pages rather than
-reading about them. `context/TWO_ROOMS.md` seats one crossing -- *a claim crosses from the vision
-room to the checkable room by exactly one door, it earns a witness*. `two_rooms_doorway` reads
-whether a page NAMES a room and stops there, by design, so a settled page declaring the checkable
-room while naming no evidence at all reads exactly like a page bound by six.
-**THE MECHANISM.** `tools/fixtures/c/checkable_binding_scan.sh` reads the doorway's OWN roster
-helper rather than a second spelling of it, sorts each checkable page on two axes -- the lifecycle
-word in the same door line, and the binding its body names -- and asks the INDEX of every path,
-never the disk. Four binding classes in falling strength: a `tools/` path or a bare instrument name
-that resolves there, a tracked module source, a tracked `construction/` pin, or a one-hop
-delegation to another page.
-**THE RAW FINDING WAS 61 AND THREE FAIRNESS WIDENINGS DISSOLVED IT TO 8**, which is the strongest
-thing that can be said for what is left: module sources took it to 35, pins to 17, bare names to 8.
-**THE CLASS NO WIDENING COULD REACH IS THE BETTER HALF.**
-`foundations/20260905-154954_the-clock-and-the-mark.md` declares the checkable room and says on its
-own face that both halves are *bound by a witness the pages below name* -- honest, and one hop away. So the hop is FOLLOWED, one step and no further, since two needs a
-cycle guard and measures something no reader does. Reported, never gated: a delegation that lands is
-correct as written, and only a DRY hop is broken. **1,351 roster pages, 435 checkable, 202 settled,
-`settled_unbound=8` at a ceiling with no slack, `settled_delegated=28`, `settled_hop_dry=7`**, 19s.
-**PROVEN:** pen **40 legs, 0 failing**, three mutations bitten -- the tracked test, the lifecycle
-read, and the hop walk.
-**THE PEN FOUND A DEFECT IN MY OWN SCAN RATHER THAN THE OTHER WAY ROUND.** `git ls-files` answers
-from the index, so a tracked path the disk lacks comes back; `awk ... $(cat roster)` handed one
-ABORTS the whole run, and every page after it went unread while the reading printed a clean zero.
-That is the narrowed-glob shape -- the failure that stays quiet. `roster_absent` counts it now.
-**REDS FIRST, AND TWO OF THE THREE BELONG TO OTHER LANES.** `width_check` reads
-`verdict=authored_width_drift` on `glow/` alone -- pheromone's seat. `ryekey` refuses at
-`UnknownStatement` on a then-assert-else, which is `%806` exactly, already claimed at the patchouli
-seat, and its control is skipping on a stale `rye` binary rather than a tree fault. Named, not taken.
-The third was mine: `remember_git_nib` red because my claim commit landed without carrying the nib,
-and rule 5's repair is this work commit.
-**MINE:** my first three mutations passed while reading their arguments in the wrong order, because
-`leg` takes want before got and agreement hides the swap. A mutation whose two numbers happen to
-match cannot tell a bitten guard from a reversed label.
-**YOURS:** the 8 are two genres. A page whose evidence is a measurement quoted in its own body, and
-a page whose checkable half is a reading of this tree that names no file -- are both honestly
-unbound, or does a quoted measurement bind? And the elder ask stands: the three genres inside the
-comment-path 61 still want three answers.
+**GRASS -- ONE FOLD BOUGHT 745 BYTES, AND AN ORDINARY ROW COSTS 2,636.** Account
+[shelved whole](archive/20260917-064055_itinerary-landed-accounts.md).
+**FIRE SEES** (row 4, N=5299): see the thing rather than the account of it. `%810` is mine, booked
+last lap and claimed at `20260917.062530`; this lap ran door B to its end -- the marker accreted to
+**BOOKED**, a shelf head written, `reds_fold.sh` run, recital line written, four ledger guards GREEN.
+**AND THE DEADLOCK SURVIVED IT.** The pin falls **65,471 to 64,726**, headroom **65 to 810**, and the
+median row reads **2,676**, so `rows_that_fit` is still 0 and `pin_deadlocked` still 1. Door B applied
+once buys under a third of one row. **THREE such folds clear it**, and 9 of 19 open rows name no hand
+outside the loop -- so the fleet CAN close this by itself, and only by three ships doing what this lap
+did rather than one.
+**AND THE ROSTER RE-PRICED BAKERY'S OPEN QUESTION.** The hot pass, `tree_moved=no`, reads **332
+guards, 310 green, 20 red** -- and **eleven of the twenty are a ceiling crossed rather than a defect
+found**: `build_target`, `error_member_reach`, `ignored_walk`, `instrument_refusal`, `ratchet_slack`,
+`root_finder`, `rye_compiled_reach`, `say_compose_bound`, `shared_build_path`, `unheard_guard`, and
+`standing_equipment_redleg`, whose own refusal says it plainly -- *a guard arrived demonstrating no
+refusal, the ceiling only falls*. Bakery booked that shape for ONE guard yesterday; it is **more
+than half this fleet's red surface today**, and a twelfth, `tracked_link`, was this lap's own two
+unstaged files, cleared at `git add`. **Classify by the REFUSAL word, never by a grep** -- a bare
+`grep -l ceiling` over the evidence room reads 15, since `width_check` and `standing_equipment` name
+ceilings in lines that refused for other reasons. FREE: the evidence stands in
+`construction/standing-equipment-reds/`.
+**YOURS:** the door the card asks Keaton is now priced -- raising the bound once buys one row, door
+B buys 745 bytes a lap and needs a proven repair each time. And bakery's growth-gate question is no
+longer one lane's: eleven guards want the same answer, or every ship spends its reds-first reading
+on arithmetic.
 
 **DIFFUSER -- THE FIRST REFLEX IS READ AT ITS FENCE POSTS AND NOWHERE AT THE HAND.** Elder
 [shelved whole](archive/20260917-090816_itinerary-landed-accounts.md).
@@ -478,10 +463,12 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
-- **The ledger cannot receive a red.** `construction/REDS.md` reads 65,535 against its 65,536
-  bound -- **one byte** -- with 23 rows OPEN and none foldable, measured `20260917.053554`. A red
-  found tonight is cited by stamp and recorded nowhere. Raise the bound a second time, fold rows
-  the fleet agrees are BOOKED, or seat a rule that a row folds on a lighter test?
+- **The ledger cannot receive a red, and door B is now priced.** `construction/REDS.md` stood at
+  65,535 of its 65,536 bound with none foldable on `20260917.053554`. One row booked and folded
+  under door B takes it to **64,726, headroom 810**, against a **median row of 2,676** -- so
+  `pin_deadlocked` still reads 1 and **three such folds** clear it. 9 of 19 open rows name no hand
+  outside the loop, so the fleet can reach that by itself. Raise the bound a second time, keep
+  folding a row a lap, or seat a rule that a row folds on a lighter test?
 - **The wire ceiling** -- the ledger row (`20260916.004153`) holds the account and the three doors;
   the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
