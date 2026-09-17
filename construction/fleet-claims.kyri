@@ -76,12 +76,6 @@ stamp 20260916.200459
 epoch 1789603499
 paths tools/fixtures/p/prose_register_scan.sh tools/fixtures/q/qa_report_card.sh tools/fixtures/p/prose_register_control.sh tools/fixtures/q/qa_report_card_control.sh
 what Both prose readings hold out a bullet -- the marker THEN whitespace, -*+ -- and neither holds out an ORDERED list marker, so 1,727 numbered list lines across 332 of 1,380 living Markdown pages are read as prose sentences by the register gate and the Reach grade alike. The harm is a false green: removing them takes teaching_over_field_target from 1 to 3 against a ceiling of 1, with docs/CRYPTO.md at 31 percent and manual/guides/self-hosted-vpn-setup.md at 33 percent standing over their declared field target today, hidden by dilution. qa_report_card.sh twice refuses to re-grade the tree in one unmeasured step and names ITINERARY as where the standard question goes, so this lap PUBLISHES the reading in both scans -- reported, never scored, never gated, beside reach_prose and reach_links -- and names the re-grade door on the card with its measured cost.
-claim bakery-toolchain-digest-memo
-seat bakery
-stamp 20260916.202057
-epoch 1789604457
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish
-what The build receipt's hit path still reads and hashes the pinned 172MB toolchain on every keyed build, at about 1,420 ms of a 1,492 ms hit -- 95 percent of the work of proving a skip is safe, spent on one file nobody touched. Only the first half of REDS %780 landed (decide whether a key is wanted before paying for it); the second half was written by a lap that died on 20260915 and sits unlanded in the round-open stash box. Recover file_digest_remembered -- a per-file Kyri record beside the rye binary carrying inode, size, mtime and ctime beside the digest, so the compiler's bytes are read once per compiler rather than once per build -- and re-derive it against a HEAD seven days and many commits past its base, since a stash replay is a merge and this one's key_wanted half already landed in a different spelling.
 claim grass-nib-decimal-position
 seat grass
 stamp 20260916.205028
@@ -105,3 +99,9 @@ stamp 20260916.210235
 epoch 1789606955
 paths tools/fixtures/c/control_perturbation_scan.sh tools/fixtures/c/control_perturbation_control.sh tools/c/control_perturbation_witness.rish
 what The control-in-population census reports MEMBERSHIP -- a guard's population holds a tracked file of its own family -- and names the exact question as out of reach: whether the guard's ANSWER moves when that control leaves the index. Last lap ran that perturbation ad hoc in a pen over the 37 scans the census could enumerate and threw the script away, so 13 moved verdicts stand on an instrument this tree does not carry. Seat the probe as tracked equipment: for a named scan with a tracked family control, run it in a detached worktree with the control tracked, again with the control removed from the index, and report unmoved | moved | verdict_flipped from the two outputs. Then run it over the nine no-git-population scans the census reads as structurally unmeasured -- each roots a find at the repository root or under tools/, so each CAN reach a control and none is enumerable statically, because every find root in that class is a loop or per-scan variable rather than a resolvable path. The card's own line says twelve; the root test says nine, and the correction rides with the reading.
+claim bakery-library-tree-digest-memo
+seat bakery
+stamp 20260916.210324
+epoch 1789607004
+paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
+what The build receipt's hit path now spends about 112 ms of a 140 ms reading walking rye/lib/std, reading all 552 files and 16,416,628 bytes and hashing them in software -- roughly 80 percent of the work of proving a skip is safe, spent on a tree nobody touched. Measured here with the current binary: a warm hit is 140-146 ms, a walk-and-stat-only pass over the same tree is 16-21 ms including process start, and hashing its bytes alone is 145-154 ms. One stat cannot stand for a tree, so compose the tree's identity from the walk: hash the sorted relative path, size, inode, mtime and ctime of every file into one identity digest, remember the content digest beside the rye binary under that identity in a Kyri record, and feed the remembered 32 bytes into the key while inode, size, mtime, ctime and tree membership all still agree. The walk stays and the read goes; ryekey_marker moves v8 to v9 because the key absorbs a digest where it absorbed a byte stream.
