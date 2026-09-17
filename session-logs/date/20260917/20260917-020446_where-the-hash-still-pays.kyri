@@ -1,0 +1,50 @@
+format session-log-v1
+stamp 20260917.020446
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260917; this pier launches tools/f/fleet-loop.sh, which execs --effort medium
+voice Kyri
+host AMD EPYC-Rome, 8 cores, NixOS, America/New_York
+title Where the hash still pays -- the dispatch transfer, measured
+prompt autonomous lap; take the next agent-doable work Lindy-first crux-first
+rota lap 5224, row 4 -- Earth, the row that breathes in; the row's own instruction named this lap's work. Its cardinal seat, The Clock and the Mark, asks whether a number could turn out to be wrong, and my elder lap had left exactly such a number standing: a projected 50 to 60 ms with a falsifier and no reading. Earth takes the concrete fact in before the argument, so the lap went and measured it.
+think My elder paper projected a baseline-plus-dispatch rye reading rye/lib/std in 50 to 60 ms against 110, falsifier above 70, and handed the reading to Bakery. I took it under the claim board rather than leaving it, because the board read clear and the premise had moved.
+think The premise check came first and changed the shape of the lap. hash_library_into at rye/src/main.rye:1355 composes an identity from the stat pass and asks library_record_read for a remembered content digest; on a hit it feeds 32 bytes where 16,416,628 went. That landed 20260916.210324, hours before the projection was written. So the operation the projection describes exists on a cold record and nowhere else, and a warm reading cannot tell the binaries apart.
+think Three binaries from rye/src/main.rye by the bootstrap.sh recipe at -OReleaseFast: native, -mcpu=baseline, and -mcpu=baseline against a scratch copy whose crypto/sha2.zig:240 comptime builtin.cpu.hasAll gate becomes a call to a cpu_flags.zig probe reading CPUID leaf 7 subleaf 0, EBX bits 29 and 5.
+think rye/lib/std is a symlink into vendor/zig-toolchain, so the patched copy had to be materialized rather than edited. Every artifact lives under gitignored .lap/keybench and the vendored tree was never touched. All three binaries resolve their library through exe_dir/../lib, symlinked to the one real tree, so the bytes they hash are identical across variants.
+think Measuring three cache states rather than one was the lap's other decision. Warm is the steady state, cold-library is the projection's own subject, and cold-everything is what a fresh clone's first keyed build meets -- and that third state turned out to carry the larger arm.
+obs The projection held in direction and missed its interval. Dispatch reads 36 ms against the projected 50 to 60; the falsifier at 70 stayed quiet and the band was pessimistic, asking partial recovery of native speed and getting all of it.
+obs Warm, the three binaries are indistinguishable: 16 / 18 / 15 ms, inside each other's spread. The work that tells them apart has been remembered, which is the cache doing exactly what it was built for and rather more.
+obs The arm nobody had measured is ten and a half times larger than the one that was. vendor/zig-toolchain/zig is 172,641,672 bytes against the library's 16,416,628, and cold-everything reads 216 / 959 / 214 -- so a baseline rye without dispatch pays about three quarters of a second that dispatch recovers.
+obs Two workloads ten times apart in size agree on the generic-over-dispatch ratio to within a tenth, 4.6x and 4.7x. They share no input and one mechanism, so that agreement is the reading I trust most in the whole lap.
+obs Correctness was checked on the real operation rather than a bench: all three binaries wrote the same library content digest ab1ec2bd7d07c5be41b86351b580334d3948ceabb223a07c5c1a7ed0e07e773e.
+think With the cold roster pass still running and HEAD held still, I measured the projection I had just written rather than leaving it projected -- and it failed. A warm rye build within 2 percent was the claim; a receipt hit reads 34 / 79 / 30 ms, a gap of 163 percent.
+obs My second projection was falsified inside the same lap, and the reason is the finding. A receipt hit emits nothing, so no compile remains to dominate, and rye re-hashes its emitted output on every hit by design so that a key two paths share serves neither's bytes for the other. The output hash is therefore never cached and never can be, because it IS the verification.
+obs That overturns my own earlier line that the steady state is dispatch-neutral. It is not: a cold start costs about three quarters of a second once, and every build after pays roughly 45 ms per 10 MB of output, forever. The paper and the card both carry the correction rather than the elder claim.
+obs A third arm now agrees with the other two -- 18 / 61 / 15 ms on 10,239,778 bytes, a ratio of 4.1x beside 4.6x and 4.7x -- across byte counts spanning seventeen times.
+obs The full compiling build read 1614 / 1601 / 1518 ms with individual runs spanning 928 to 1808, which cannot resolve a 2 percent effect. Reported as unresolvable rather than read as agreement, since a 5 percent median gap inside a 50 percent spread says nothing either way.
+obs A red of my own making, recorded because it nearly cost the card: a python one-liner wrote open(p,"w").write(s.replace(a,b)) where b was undefined, and the open truncated construction/ITINERARY.md to zero bytes before the NameError fired. The staged copy in the index restored it whole. The habit is to build the new text first and open for writing only after the replacement has succeeded.
+obs Honest limits named in the paper rather than hidden: load stood 15 to 19 on 8 cores, the readings include filesystem reads so the ratios sit below an in-memory bench's 5.5x, and the scratch probe branches per call where a production patch would set the flag once in main.
+obs The card ran 509 bytes over its 40,960 bound when my account first landed. The account was cut rather than the bound raised, and it sits at 40,958 with itinerary_list GREEN.
+loom rye_key=warm variant=native ms=16 variant_baseline_ms=18 variant_dispatch_ms=15 rounds=11
+loom rye_key=cold_library variant=native ms=42 variant_baseline_ms=114 variant_dispatch_ms=36 rounds=21 bytes=16416628
+loom rye_key=cold_all variant=native ms=216 variant_baseline_ms=959 variant_dispatch_ms=214 rounds=11 bytes=172641672
+loom sha256_isolated library_native_mbps=602 library_baseline_mbps=163 library_dispatch_mbps=746 toolchain_native_mbps=946 toolchain_baseline_mbps=195 toolchain_dispatch_mbps=925
+loom rye_build=receipt_hit variant=native ms=34 variant_baseline_ms=79 variant_dispatch_ms=30 rounds=15 output_bytes=10239778
+loom rye_build=compiling variant=native ms=1614 variant_baseline_ms=1601 variant_dispatch_ms=1518 rounds=7 spread_ms=928-1808 verdict=unresolvable
+loom sha256_output_arm native_ms=18 baseline_ms=61 dispatch_ms=15 native_mbps=543 baseline_mbps=160 dispatch_mbps=651 ratio=4.1
+loom binary sha_ni_opcodes_native=56 sha_ni_opcodes_baseline=0 sha_ni_opcodes_dispatch=56 carry_bytes=4352
+file active-designing/20260917-020034_where-the-hash-still-pays.md the paper, B+/88 at Field with judged truth 95 and service 75; register 18 percent of 69 sentences
+file construction/ITINERARY.md the DIFFUSER account, elder shelved whole and the account cut to fit under the bound rather than raising it
+file construction/archive/20260917-020034_itinerary-landed-accounts.md the elder account moved whole by tools/i/itinerary_account_shelf.sh, links re-anchored one directory deeper
+file construction/fleet-claims.kyri the claim opened and pushed before the build, resolved against a peer's row in stamp order on the rebase
+scope one measurement closing my own projection, its paper, the card account, and the claim; no tracked source modified and no new instrument built
+status GREEN on what was run, and the roster reading is PARTIAL and named as such. Every guard whose watched files intersect this round is GREEN on metal: itinerary_list, index_row_bound, ascii_document, link_text_promise, unshared_citation, two_rooms_doorway, tracked_link. The cold roster pass was launched with --cadence-slice 1 and stood at 80 guards, zero red, STILL IN FLIGHT at the commit; its run_verdict was not read. I held HEAD still for it through the whole round and it did not reach its verdict inside the lap, so the send names the partial reading rather than claiming a full one. A peer's next cold pass reads this tree whole.
+recommend check-in (Keaton) -- the third door is unanswered and far stronger than when it was asked. The steady state is not dispatch-neutral after all: every build re-hashes its own output, so a baseline rye pays 79 ms against 30 on a 10 MB output, forever, beside the three quarters of a second a cold start costs once. Whether rye patches a vendored rye/lib/std is a fork decision only he opens.
