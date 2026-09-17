@@ -227,6 +227,44 @@ if [ "$rc" -ne 0 ] && grep -q 'batched match failed' "$PEN/pen-err.txt" 2>/dev/n
 then r=0; else r=1; fi
 leg broken_batch_refuses_loudly "$(say $r)"
 
+# --- the step timing, and the reading it must not disturb -------------------
+# `SOW_TIME` makes the projection report where its own seconds went (REDS %642).
+# A measurement instrument earns its place by changing nothing it measures, so
+# the parity leg below compares the two projected trees byte for byte.
+mk_pen
+rc=0; run_projection "$SCRIPT" || rc=$?
+cp -a "$S" "$PEN/tree-silent"
+if [ "$rc" -eq 0 ] && ! grep -q '^step_' "$PEN/pen-run.txt"; then r=0; else r=1; fi
+leg timing_silent_by_default "$(say $r)"
+
+export SOW_TIME=1
+rc=0; run_projection "$SCRIPT" || rc=$?
+cp -a "$S" "$PEN/tree-timed"
+unset SOW_TIME
+
+if grep -q '^step_scrub_s=' "$PEN/pen-run.txt" &&
+   grep -q '^step_copy_s=' "$PEN/pen-run.txt" &&
+   grep -q '^step_candidates_s=' "$PEN/pen-run.txt"
+then r=0; else r=1; fi
+leg timing_named_reports_each_step "$(say $r)"
+
+if grep -q '^step_total_s=' "$PEN/pen-run.txt"; then r=0; else r=1; fi
+leg timing_reports_a_total "$(say $r)"
+
+# Eleven numbered steps and one total. A step added without a mark would read
+# eleven here while the projection had twelve, so the count is the roster.
+if [ "$(grep -c '^step_' "$PEN/pen-run.txt")" = 12 ]; then r=0; else r=1; fi
+leg timing_step_roster_is_whole "$(say $r)"
+
+# The witness asserts SOW_OK, so a timed run that lost it would turn the whole
+# publish gate red while measuring it.
+if grep -q '^SOW_OK ' "$PEN/pen-run.txt"; then r=0; else r=1; fi
+leg timing_keeps_the_sow_ok_line "$(say $r)"
+
+if diff -r "$PEN/tree-silent" "$PEN/tree-timed" >/dev/null 2>&1
+then r=0; else r=1; fi
+leg timing_moves_no_projected_byte "$(say $r)"
+
 # --- mutations: each must bite a named leg above ---------------------------
 # 1. Drop the armor pass. The armored blob must then ship.
 mk_pen
@@ -261,6 +299,19 @@ sed 's|^    \*) echo "sow: batched match failed.*|    *) return 0;;|' "$SCRIPT" 
 rc=0; run_projection "$mut" "$PEN/badbin" || rc=$?
 if [ "$rc" -eq 0 ] && [ -e "$S/room/armor.txt" ]; then r=0; else r=1; fi
 leg mutation_silent_batch_failure_bites "$(say $r)"
+
+
+# 5. Lower the mark ceiling below the roster. The timed run must refuse out loud
+#    rather than print a report quietly missing its own tail.
+mk_pen
+mut="$PEN/mut_marks.sh"
+sed 's|^SOW_MAX_MARKS=16$|SOW_MAX_MARKS=2|' "$SCRIPT" > "$mut"
+export SOW_TIME=1
+rc=0; run_projection "$mut" || rc=$?
+unset SOW_TIME
+if [ "$rc" -ne 0 ] && grep -q 'past 2 step marks' "$PEN/pen-err.txt" 2>/dev/null
+then r=0; else r=1; fi
+leg mutation_mark_ceiling_refuses "$(say $r)"
 
 echo "control_legs=$LEGS"
 echo "control_failed=$FAILED"

@@ -154,6 +154,24 @@ trap 'rm -rf "$LOCK" "$W"' EXIT INT TERM
 # that streams rather than one that lists.
 SOW_MAX_CANDIDATES=131072
 
+# STEP TIMING, off unless asked. REDS %642's design names the reading to take before
+# any cache is built -- how much of a publish is the per-file scrub -- and the answer
+# stood as a table one hand timed once, which no reader could re-run. `mark` stamps the
+# boundary between the numbered steps below into $W/time.txt when SOW_TIME is set, and
+# the report at the close prints one `step_<name>_s=` line per step. Off, it costs one
+# shell test per step and spawns nothing, so the default run is the run it always was.
+SOW_TIME="${SOW_TIME:-}"
+# invariant: the mark roster is bounded, so a step added past the ceiling refuses out
+# loud rather than printing a report quietly missing its own tail.
+SOW_MAX_MARKS=16
+MARKS=0
+mark() {
+  [ -n "$SOW_TIME" ] || return 0
+  MARKS=$((MARKS + 1))
+  [ "$MARKS" -le "$SOW_MAX_MARKS" ] || { echo "sow: past $SOW_MAX_MARKS step marks" >&2; exit 2; }
+  printf '%s\t%s\n' "$1" "$(date +%s%N)" >> "$W/time.txt"
+}
+
 # batch_match LIST OUT FLAGS PATTERN -- names every file in LIST whose own bytes
 # match PATTERN, one grep process per argument-list chunk rather than one per file.
 batch_match() {
@@ -174,6 +192,7 @@ batch_match() {
   esac
 }
 
+mark candidates
 # 1. The candidate list, in the elder's own order and by the elder's own reading.
 : > "$W/cand.txt"
 for p in $PATHS; do
@@ -190,6 +209,7 @@ CAND_N=$(wc -l < "$W/cand.txt" | tr -d ' ')
   echo "sow: $CAND_N candidates past the ceiling of $SOW_MAX_CANDIDATES" >&2; exit 2;
 }
 
+mark pathrefuse
 # 2. The two path-only refusals, decided by the shell alone -- no basename process.
 #    File-granular exclusion is a deliberate personal withhold inside a shared dir
 #    (a foundations biography essay); the doctrine beside it still ships.
@@ -208,11 +228,14 @@ while IFS= read -r f; do
   printf '%s\n' "$f" >> "$W/keep.txt"
 done < "$W/cand.txt"
 
+mark armor
 # 3. Armor blocks stay withheld -- a private or PGP blob is not a stub.
 batch_match "$W/keep.txt" "$W/armor.txt" "-IE" 'BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY'
+mark identity
 # 4. A file naming the maintainer is scrubbed; a plain one is copied verbatim.
 batch_match "$W/keep.txt" "$W/ident.txt" "-IiE" "$IDENT"
 
+mark verdict
 # 5. One verdict per kept candidate, armor winning over identity exactly as the
 #    elder's early `continue` did.
 awk -v armor="$W/armor.txt" -v ident="$W/ident.txt" '
@@ -225,6 +248,7 @@ awk -v armor="$W/armor.txt" -v ident="$W/ident.txt" '
 awk -F'\t' '$1=="copy"  {print $2}' "$W/class.txt" > "$W/copy.txt"
 awk -F'\t' '$1=="scrub" {print $2}' "$W/class.txt" > "$W/scrub.txt"
 
+mark makedirs
 # 6. Every destination directory in one pass rather than one mkdir per file.
 #    awk writes the seed prefix itself rather than piping through `sed`: the only
 #    `sed` this script runs is the scrub, so a broken one fails where the scrub is
@@ -232,11 +256,13 @@ awk -F'\t' '$1=="scrub" {print $2}' "$W/class.txt" > "$W/scrub.txt"
 awk -F'\t' -v seed="$SEED" '$1!="armor" { p=$2; sub(/\/[^\/]*$/, "", p); if (p != $2) print seed "/" p }' \
   "$W/class.txt" | sort -u | tr '\n' '\0' | xargs -0 -r mkdir -p
 
+mark copy
 # 7. The plain copies.
 while IFS= read -r f; do
   cp -a "$f" "$SEED/$f"
 done < "$W/copy.txt"
 
+mark scrub
 # 8. The scrub itself -- the one per-file process this projection genuinely owes,
 #    and four percent of its cost.
 : > "$W/scrubbed_dest.txt"
@@ -248,6 +274,7 @@ while IFS= read -r f; do
   printf '%s\n' "$SEED/$f" >> "$W/scrubbed_dest.txt"
 done < "$W/scrub.txt"
 
+mark rescan
 # 9. A scrubbed copy still naming the maintainer is WITHHELD for human judgment,
 #    so the seed is clean by construction rather than by trust.
 batch_match "$W/scrubbed_dest.txt" "$W/still_dirty.txt" "-IiE" "$IDENT"
@@ -257,6 +284,7 @@ while IFS= read -r d; do
   printf '%s\n' "${d#"$SEED"/}" >> "$W/scrub_withheld.txt"
 done < "$W/still_dirty.txt"
 
+mark sshkey
 # 10. Public SSH blobs: keep the file, swap the key for a placeholder so a
 #     NixOS config can ship in grain-os / grain-ww without authorizedKeys.
 awk -F'\t' -v seed="$SEED" '$1!="armor" {print seed "/" $2}' "$W/class.txt" > "$W/dest_all.txt"
@@ -274,6 +302,7 @@ while IFS= read -r d; do
   [ -x "$f" ] && chmod +x "$d"
 done < "$W/sshkeyed.txt"
 
+mark logs
 # 11. The three logs, written in CANDIDATE order -- the order the elder's own
 #     appends produced, rebuilt here from the verdicts rather than as it went,
 #     since a post-scrub withhold is only known after its file is written.
@@ -295,6 +324,19 @@ awk -v exc="$W/excluded.txt" -v nw="$W/namewithheld.txt" -v arm="$W/armor.txt" \
     else if ($0 in S)            print $0 > fsc
   }
 ' "$W/cand.txt"
+
+mark close
+
+# The step report, printed before the work room is swept on EXIT. Each line is the
+# wall time between one mark and the next, so the steps sum to the whole projection
+# and a reader can see which one owns the minutes.
+if [ -n "$SOW_TIME" ]; then
+  awk -F'\t' '
+    NR == 1 { prev = $2; first = $2; name = $1; next }
+    { printf "step_%s_s=%.2f\n", name, ($2 - prev) / 1e9; prev = $2; name = $1; last = $2 }
+    END { if (NR > 1) printf "step_total_s=%.2f\n", (last - first) / 1e9 }
+  ' "$W/time.txt"
+fi
 
 COPIED=$(find "$SEED" -type f ! -name '.sow-withheld.log' ! -name '.sow-scrubbed.log' | wc -l | tr -d ' ')
 SCRUBBED=$(grep -c '' "$SEED/.sow-scrubbed.log" 2>/dev/null || echo 0)
