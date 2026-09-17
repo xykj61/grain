@@ -10,6 +10,7 @@
 | `20260917.074342` | [The tier the roster wanted](20260917/20260917-074342_the-tier-the-roster-wanted.kyri) | A new guard on no clock is a guard nobody runs. |
 | `20260917.072125` | [The unit that survives the pier](20260917/20260917-072125_the-unit-that-survives-the-pier.kyri) | A falsifier that fired half the time; CPU medians move 44x less. |
 | `20260917.071855` | [A rebase is not a hand](20260917/20260917-071855_a-rebase-is-not-a-hand.kyri) | The class fired seven times, not once; the pin unblocked. |
+| `20260917.070803` | [A ratchet over a growing population is a wall](20260917/20260917-070803_the-wall-with-a-delay.kyri) | growth gated at zero on a 189-path roster |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
 | `20260917.054452` | [the lap that outlived its send](20260917/20260917-054452_the-lap-that-outlived-its-send.kyri) | a parked build recovered from the stash, re-proven, landed. |

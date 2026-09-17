@@ -28,6 +28,22 @@
 # The ceiling only falls, so each lane sweeps its own files at its own pace and the fleet-wide
 # property is provable the lap the last one lands.
 #
+# AND THE RATCHET ALONE WAS A WALL WITH A DELAY. Seated at 189 with no slack, the reading stood at
+# 191 within a day and refused on every checkout in the fleet, for two finder sites BORN upstream
+# that no ship chose and no lane could sweep from where it stood. The no-slack reasoning is right
+# for a FIXED population and it inverts for a growing one, and this population grows at roughly
+# two an hour of fleet time -- each a hand copying one of the 189 examples the tree ships.
+#
+# SO THE GATE MOVED TO THE GROWTH. `tools/fixtures/r/root_finder_baseline.txt` pins the 189 paths
+# carrying a bare finder the lap the split was seated. `finders_bare_new` counts a bare finder in
+# a file ABSENT from that roster and is gated at ZERO, since a file born today was born in
+# somebody's current lane and is repairable on the lap it lands. `finders_bare_legacy` counts the
+# roster's own, under a ceiling that only falls over a population that can never grow -- which is
+# the number no-slack was always right for. The roster is keyed by PATH and the legacy ceiling
+# counts SITES, so a new file reds the gate and a new finder inside a roster file reds the
+# ceiling. One false red is possible and is proven in the pen rather than claimed: a lawful rename
+# leaves the roster behind, and its repair is one roster row.
+#
 # THE SECOND CLASS, which nothing held and which is not the first one. Nine finders name `.git`.
 # That directory stands in an ordinary clone, so those nine run where the 189 refuse -- and in a
 # LINKED WORKTREE `git worktree add` writes `.git` as a FILE carrying a `gitdir:` pointer, so `-d`
@@ -75,7 +91,10 @@ say scan.out
 assert scan.ok else "root-finder: the census must complete before it is believed"
 assert scan.out contains "verdict=ok" else "root-finder: the bare-checkout population must stand at or under its ceiling"
 assert scan.out contains "ceiling=" else "root-finder: a ratchet that spells no ceiling cannot be lowered"
-assert scan.out contains "finders_bare_unrunnable=" else "root-finder: the gated population must be counted rather than described"
+assert scan.out contains "finders_bare_unrunnable=" else "root-finder: the whole bare population must be counted rather than described"
+assert scan.out contains "finders_bare_new=0" else "root-finder: a bare finder in a file the baseline roster does not carry is growth, and growth is gated at zero"
+assert scan.out contains "finders_bare_legacy=" else "root-finder: the roster's own population must be counted apart, since only it may ratchet"
+assert scan.out contains "baseline_paths=" else "root-finder: a roster gating a wall must say how many paths it carries"
 assert scan.out contains "finders_worktree_fragile=" else "root-finder: the linked-worktree class must be counted apart from the bare one"
 assert scan.out contains "finders_ambiguous=" else "root-finder: a walk that could stop early must be counted rather than assumed safe"
 assert scan.out contains "sentinels_build_output=" else "root-finder: the directories only a build creates must be named as their own class"
@@ -107,6 +126,7 @@ assert control.out contains "ambiguous_seen=yes" else "root-finder: a directory 
 assert control.out contains "ambiguous_row=yes" else "root-finder: the row must name which finder could stop early"
 assert control.out contains "unambiguous_clear=yes" else "root-finder: one shared sentinel below the root is no ambiguity, and must read zero"
 assert control.out contains "ceiling_at_bound_ok=yes" else "root-finder: a reading standing exactly at the bound must walk free"
+assert control.out contains "ceiling_at_bound_legacy=yes" else "root-finder: the number the ceiling weighs must be the legacy one rather than the total"
 assert control.out contains "ceiling_at_bound_verdict=yes" else "root-finder: the verdict at the bound must say ok"
 assert control.out contains "ceiling_one_past_counted=yes" else "root-finder: one past the bound must be counted before it is refused"
 assert control.out contains "ceiling_one_past_refuses=yes" else "root-finder: the ceiling must bite one past, or it is a suggestion"
@@ -142,6 +162,29 @@ assert control.out contains "mutation_inverting_repo_filter_bites=yes" else "roo
 assert control.out contains "mutation_dropping_class_filter_bites=yes" else "root-finder: a door must be named only for a sentinel that actually fails, or it invites an empty sweep"
 assert control.out contains "mutation_narrowing_below_root_bites=yes" else "root-finder: the below-root guard must be load-bearing, shown against a layout that has one"
 
+assert control.out contains "growth_new_counted=yes" else "root-finder: a bare finder in a file the roster does not carry must be counted as growth"
+assert control.out contains "growth_not_legacy=yes" else "root-finder: growth must never be counted into the population that is allowed to ratchet"
+assert control.out contains "growth_refuses=yes" else "root-finder: the growth gate must bite at zero, or it is a suggestion"
+assert control.out contains "growth_row_named=yes" else "root-finder: the refusing file must be named in a row, so the repair is one command away"
+assert control.out contains "growth_total_unmoved=yes" else "root-finder: the split must move no total, or the two readings are not one population"
+assert control.out contains "rostered_is_legacy=yes" else "root-finder: the same bytes rostered must read legacy, which is the roster doing its one job"
+assert control.out contains "rostered_not_new=yes" else "root-finder: a rostered file must leave the gated number entirely"
+assert control.out contains "rostered_walks_free=yes" else "root-finder: the clear direction must be asserted as hard as the refusal, or a gate that refuses everything passes"
+assert control.out contains "rostered_row_named=yes" else "root-finder: a row must say which side of the split its finder fell on"
+assert control.out contains "baseline_paths_counted=yes" else "root-finder: the roster's own size must be read from the roster rather than assumed"
+assert control.out contains "second_site_base_ok=yes" else "root-finder: a legacy population at its bound must walk free before the second site is written"
+assert control.out contains "second_site_counted=yes" else "root-finder: a second finder inside a roster file must be counted, since the ceiling weighs sites"
+assert control.out contains "second_site_still_not_new=yes" else "root-finder: a roster file stays legacy however many finders it grows, which is what the ceiling is for"
+assert control.out contains "second_site_refuses=yes" else "root-finder: the hole a path-keyed roster would leave must be closed by the site ceiling, and shown closing"
+assert control.out contains "rename_before_is_legacy=yes" else "root-finder: the rename leg must start from a tree that walks free, or it proves nothing"
+assert control.out contains "rename_reads_as_new=yes" else "root-finder: the one false red this shape can make must be measured rather than claimed"
+assert control.out contains "rename_refuses=yes" else "root-finder: the false red must be shown refusing, so its cost is on the record"
+assert control.out contains "rename_one_roster_row_repairs=yes" else "root-finder: the repair for a lawful rename must be one roster row, run rather than promised"
+assert control.out contains "absent_roster_refuses=yes" else "root-finder: a growth gate whose roster can vanish is a gate with a door beside it"
+assert control.out contains "mutation_control_reads_one=yes" else "root-finder: a mutation is evidence only where the truth it replaces differs from it, so the unmutated reading stands in the same pen"
+assert control.out contains "mutation_dropping_roster_test_bites=yes" else "root-finder: the roster lookup must be load-bearing, shown going silent when it is removed"
+assert control.out contains "mutation_dropping_roster_test_moves_verdict=yes" else "root-finder: a mutation that moves no verdict has proven nothing about the gate"
+
 let doors = run ["sh" "tools/fixtures/r/root_finder_scan.sh" "--doors"]
 say doors.out
 assert doors.ok else "root-finder: the door reading must complete before a door is chosen"
@@ -151,5 +194,6 @@ assert doors.out contains "replacement_tracked=yes" else "root-finder: the propo
 assert doors.out contains "replacement_below_root=0" else "root-finder: the proposed replacement must stand at the root and nowhere below it"
 say "doors GREEN -- both repairs priced from the index, and both run in a real checkout of tracked bytes"
 
-say "root-finder GREEN -- 53 legs on real git repositories in a throwaway pen, five mutations RUN on every pass rather than recorded once"
+say "root-finder GREEN -- 76 legs on real git repositories in a throwaway pen, six mutations RUN on every pass rather than recorded once"
+say "root-finder: growth gated at zero against a roster of 189 paths; the legacy 191 sites ratchet under a ceiling that only falls"
 say "root-finder: the sweep costs 216 files and the track door 2; the timing stays the fleet's, and now so does the price"

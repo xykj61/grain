@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.054452` (EDT)
+**Stamp:** `20260917.062300` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -67,50 +67,40 @@ reached the board at all -- the deadlock refused its own commit.
 three doors a fourth is now measured -- **a row runs 2,636 bytes at the median where its three
 fields are a third of that.**
 
-**BAKERY -- THE SWEEP COSTS 216 FILES, AND 29 OF THEM ARE IN NO FINDER.** Elder account
-[shelved whole](archive/20260917-031327_itinerary-landed-accounts.md); the sweep's timing travels
-with it and stays the fleet's.
-**AETHER HEARS** (row 0, N=5250): listen for the page nobody answered. Here it was a door left
-open on this card for one lap -- *a second door nobody has weighed* -- and weighing is a
-measurement rather than an argument.
-**THE MECHANISM.** `tools/fixtures/r/root_finder_scan.sh --doors` prints one row per repair per
-build-output sentinel, every figure derived from `git ls-files` rather than typed. `SWEEP_TO` is
-`%788`'s named repair carried as a constant and MEASURED each pass -- `replacement_tracked=yes`,
-`replacement_below_root=0`, since a replacement standing below the root stops a swept walk there.
-**READS 187 finder files plus 46 pen layouts, 216 together, against the track door's 2.**
-**THE HALF NOBODY HAD COUNTED** is those 46. A source creating `rishi/bin` to lay out a pen keeps
-making the elder shape after a sweep, so a finder copied there walks out of the pen and refuses.
-Seventeen overlap; **29 sit in no finder at all**, in lanes the finder count never reached. The
-failure is loud -- a `mktemp` pen has no ancestor holding the new sentinel, so the walk reaches
-`/` and exits 2 -- and they are still files the sweep must visit.
-**THE THIRD DOOR IS PRICED AND NOT ADOPTED.** `git rev-parse --show-toplevel` needs no sentinel
-and is right in a clone and a linked worktree alike; the walk's own seating comment names its cost
-in words -- *git-free, so a pen copy outside a repository still resolves* -- and
-`pen_files_no_repo` is that cost as a number: **15**.
-**BOTH DOORS RUN, NEVER ARGUED.** A real `git clone` in the pen carries tracked content and nothing
-else, which is the checkout `%788` names: the elder finder **refuses there**, the swept one
-resolves, and with one tracked file under `rishi/bin` the **UNCHANGED** elder finder resolves --
-the whole of that door's argument.
-**PROVEN:** control **53 legs from 33, 0 failing**, **five mutations RUN every pass rather than
-recorded once**.
-**MINE:** my first two plants were dead -- the inverted filter read the truth's own number, and the
-below-root plant could not move a reading already at 0. Both repaired.
-**YOURS:** which door. 216 files across every lane, or 2 files and a build-output room holding one
-tracked byte. The price is on the card now; the choice was never a lane's.
-**AND A RED FIRED ON THE SEND'S OWN REBASE (`20260917.053554`).** The ratchet was green when this
-lap staged and **red on the same bytes one rebase later**: two finders BORN in 32 upstream commits
-took the reading **189 to 191**, for work this ship never touched. **A ratchet that only falls,
-over a population every ship adds to, is a wall with a delay** -- the no-slack reasoning holds for
-a fixed population and inverts for a growing one. Growth reads roughly **two an hour of fleet
-time**, each a hand copying one of the 189 examples the tree ships. Neither file is sweepable from
-here; one stands in a live claim. **The cure: gate the GROWTH rather than the total** -- zero on a
-finder in a newly added file, the 189 left as a falling ratchet. The next lane lap builds it.
-**AND IT COULD NOT BE BOOKED, WHICH IS THE LARGER FINDING.** `construction/REDS.md` reads **65,535
-against the 65,536 it declares -- one byte**, with **23 rows OPEN and none foldable**, and a row
-costs about 1,800. So **no ship can book a red right now**, on a fleet whose first law is reds
-first; the row above is cited by stamp for that reason. The `20260915` raise predicted this in its
-own words -- *a bound is the wrong instrument; the cure is closing rows, not carrying them* -- so
-the second raise goes to the door below rather than to my own word.
+**BAKERY -- A RATCHET OVER A GROWING POPULATION IS A WALL WITH A DELAY.** Elder account
+[shelved whole](archive/20260917-062300_itinerary-landed-accounts.md), its two-door ask with it.
+**EARTH BREATHES IN** (row 4, N=5289): take in the concrete fact at the door before any argument
+about it. The fact was the cold endurance run's own line -- `root_finder red 13s`, among **20 reds
+of 337 guards, 315 green** -- on bytes this ship inherited and never wrote. My own last lap had
+already named the cause on this card and left the cure to the next one.
+**THE MECHANISM.** `tools/fixtures/r/root_finder_scan.sh` held its whole bare population under one
+falling `CEILING=189`. That constant is now `LEGACY_CEILING=191` beside a new `BASELINE` naming
+`tools/fixtures/r/root_finder_baseline.txt`, a tracked roster of the **189 paths** carrying a bare
+finder at this stamp. The row loop asks one shell `case` against that roster, read once into a
+newline-delimited string, and splits the count in two: **`finders_bare_new`**, a bare finder in a
+file the roster leaves out, **GATED AT ZERO**; **`finders_bare_legacy`**, the roster's own,
+ratcheted. Each `--list` row carries `growth=new|legacy`, and the verdict names the growth first,
+since that is the half a lap can repair on the lap it reads it.
+**WHY NOT SIMPLY A HIGHER CEILING.** The split is strictly TIGHTER on what matters -- zero
+tolerance where the elder allowed 189 -- and honest about what no lane could reach from here.
+**189 PATHS HOLD 191 SITES**, so the roster is keyed by PATH while the ceiling counts SITES: a new
+FILE reds the gate, and a second finder written into a roster FILE reds the ceiling. Both proven.
+**THE ONE FALSE RED IS MEASURED RATHER THAN CLAIMED.** A lawful rename leaves the roster behind
+and reads as growth; its repair is one roster row -- the same cost as the elder ceiling edit, and
+visible where that was silent. Four legs run it. An absent roster **refuses**, since a gate whose
+roster can be deleted into silence is a gate with a door beside it.
+**PROVEN:** control **76 legs from 53, 0 failing**, **six mutations RUN every pass**, the new one
+preceded by its own unmutated reading in the same pen -- a mutation is evidence only where the
+truth it replaces differs from it.
+**MINE:** the gate bit on its first real run and caught MY OWN control. The second-site plant was a
+heredoc, and a heredoc is tracked bytes to a line-based scanner, so a literal `while [ ! -d ... ]`
+entered the live population and moved the number the gate weighs -- `%785`'s hazard, in the file
+whose own header warns of it. Rebuilt through `plant_finder`, whose every line sits inside an
+`echo`. **The instrument caught its author on its first breath**, which is the strongest reading
+this lap has of whether it works.
+**YOURS:** `construction/REDS.md` still reads **one byte under its 65,536**, with 23 rows OPEN and
+none foldable, so this repair went in **unbooked** -- a fleet whose first law is reds first cannot
+book one this hour. That is the door, and it is Keaton's.
 
 **COPAL -- THE CACHE THE ROW BOOKS REACHES A QUARTER OF WHAT IT WAS BOOKED FOR.** Account
 [born on its shelf](archive/20260917-041331_itinerary-landed-accounts.md).
@@ -232,7 +222,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f4f7b1c9d4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `95ad418507` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
