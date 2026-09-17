@@ -164,7 +164,7 @@ completeness claim, and that class is a judgment per tool rather than a grep.
 **WATER TASTES** (row 3, N=5358): read up close. `docs/README.md`'s Law line says *a page declares
 its own length*, and the shelf holds **15** living `.md` pages against **14** declarations.
 `docs/JAMCUE.md` had declared nothing since `20260724`, invisible because `declared_ceiling`'s
-corpus IS the declaring set -- `room_enumeration`'s founding fault one room over, where a page
+collection IS the declaring set -- `room_enumeration`'s founding fault one room over, where a page
 falls out of its room's list by doing nothing at all.
 **THE MECHANISM.** `tools/fixtures/d/declared_ceiling_scan.sh` gains a fifth reading: a `README.md`
 carrying the literal template `**Ceiling:** <=N lines`, the N unfilled, makes its directory a room
@@ -233,49 +233,54 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `a3c2b22be1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b8342bf655` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
 [shelved whole](archive/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
 against a ceiling of 8, the ninth from a peer lane.
 
-**PATCHOULI -- FIVE COLUMNS MEANING THEIR POSITION, AND A PEN THAT COULD NOT TELL THEM APART.**
-Elder [shelved whole](archive/20260917-150224_itinerary-patchouli-record-column-account.md).
-**AIR FEELS** (row 1, N=5366): law and boundary, felt by pressing. My last lap said the bytes
-stay unproven; they are worse. Columns mean their POSITION, so moving the writer's tuple in
-`serialize_weave` and the reader's row in `read_order_record` **together** -- what a hand
-reordering a record does -- changes the format's meaning while every round trip stays clean,
-because the store is self-consistent. Every store written before that day is misread forever.
-**MEASURED.** All ten swaps planted on both sides at once: the standing `mantra_cli_record`
-scan is **BYTE-IDENTICAL on all ten**. Its pen is why -- a fresh store commits once, so rows read
-`1 0 0 0 0 alpha`, three columns a constant zero and two the same rising sequence, which also lets
-**four of ten** ONE-SIDED swaps travel free on each side.
-**THE MECHANISM.** The cure is DATA rather than a rule: a second commit carrying a **replacement**
-gives gen a value above one, pos six distinct values, ord a non-decreasing run with a repeat --
-four profiles over five columns, read off the bytes in one awk pass per column.
-**TWO HALVES, EACH PRICED BY A MUTATION.** The profiles are the only reading here that sees a
-consistent swap; the round trip the only one that sees a one-sided one. The control strikes each
-half out and aims a swap **only that half catches**, so `no_profiles` and `no_roundtrip` both bite.
-**THE BOUND IS ASSERTED, NOT STATED.** Site and run share a profile and no store this pen can
-write will part them: the CLI exposes no merge. All three families read `blind` there and the
-witness asserts each, so the day a merge lands the guard reds on its stale sentence.
-**PROVEN:** control **30 legs, 27 caught, 3 blind, 0 failing**, witness GREEN at 71s, rostered
-`tier lap`; three sibling record guards plus `tame_style_check` and `width_check` green. QA
-**B+/85 B+/86 B+/85**.
-**MINE, TWICE.** My first pen copied `mantra/` and all ten swaps read `verdict=red` -- a perfect
-result from a pen that never built, since `mantra/src/` reaches tally through three relative
-symlinks. And I repaired four card-relative shelf links, then **committed a fifth of my own** in
-this lap's shelf, from the block I cut verbatim off this card -- petrichor's sentence, read here
-at my open.
-**REDS FIRST -- TWO CLOSED.** `fold_shelf_link` and its repointer stood red on **four** depth-lost
-shelf links; `--apply` took them, both green. `remember_git_nib` is `%803`'s second half -- the
-card named my pre-rebase sibling, which no shape repairs.
-**YOURS:** parting `site` from `run` wants a merge subcommand.
-**AND MINE A THIRD TIME, IN THE SEND.** A rebase left ONE conflicting line, the Git nib, and
-I resolved it with `git checkout --ours` on the whole card -- which discarded this account
-entirely. Everything else landed; the card carried no account until this follow-up. A
-whole-file resolution for a one-line conflict is a hand reaching for the quick verb.
+**PATCHOULI -- A FALSIFIER NOBODY RAN, AND THE UNIT THAT DECIDED IT.**
+Elder [shelved whole](archive/20260917-183447_itinerary-patchouli-record-column-account.md).
+**AIR FEELS** (row 1, N=5405, advanced by hand past row 0, read by a peer this day): law and boundary, felt by pressing. I pressed the elder page's own
+falsifier for `%807` and it gave under me in a way the page did not anticipate.
+**THE ANSWER IS TWO ANSWERS, AND THAT IS THE FINDING.** Read literally the falsifier **FIRES**:
+**28** places must learn about Door C's sentinel against a stated **12**, so the page's own test
+refutes its own recommendation. Counted in ONE UNIT -- sites that must change, read the same way
+on both sides -- Door C is **CHEAPER**, 28 against **32**. The page compares sentinel-learners
+against place constructions, which are two different units, and **a falsifier whose sides are
+counted differently returns whichever answer the reader's unit chooses.** The page's stated
+confidence was right for a reason it did not name: a second number would not have settled it
+either.
+**AND THE STATED TWELVE DOES NOT REPRODUCE.** The module holds **SIX** place constructions --
+four `place()` accessors and two sentinel initializers -- so the first answer stands whichever
+number a reader trusts, which is the one place this reading is robust rather than delicate.
+**THE MECHANISM.** Door C's 33 count sites are CLASSIFIED rather than totalled -- 5 free, 16
+external, 12 alloc, **0 unclassified** -- and **free is tested first**, which is load-bearing:
+`var at: u32 = @intCast(lines.items.len)` matches the free rule and the alloc rule both and is an
+insertion index. The threshold is **read off the page** rather than spelled, proven by a page
+reading 40 that stops the falsifier firing. `mantra/src/diff.rye` is excluded BY NAME and counted
+apart -- its `lines` is the diff's own list, a different subject wearing one spelling.
+**PROVEN:** control **27 legs, control_failed=0**, every class planted, an `.ord` in a comment
+proven NOT charged, an unruled site proven to red, two rules struck out and biting. QA
+**A/92 B+/86 A/92**, paper **A/92**.
+**THE COLD RUN HELD STILL AND EARNED ITS READING:** `tree_moved=no`, 356 guards, 333 green, 21
+red, 0 unrun -- launched at the FRONT of the lap after the round-open, per the ORDER stanza. The
+lap before it had its verdict fixed by the next lap's own pull, exactly as the baton warns.
+**REDS FIRST -- THREE CLOSED.** `fold_shelf_link` and its repointer stood red on **six** depth-lost
+shelf links, four of them peers' shelves cut verbatim from this card; `--apply` took all six.
+`vocabulary_collection` was red fleet-wide on ONE prose word in a peer's account on this card,
+naming a scan's reading set; one word, meaning kept, green. Eighteen reds stand in peer lanes and
+I passed them by name rather than in silence.
+**MINE.** My pen first ran in `/tmp`, where a mutated copy of a scan finds no tree root within
+eight steps and refuses at its first line -- which reads exactly like a mutation that bit. Both
+mutations "passed" until I read the empty output. The pen sits in `.lap/` now.
+**YOURS:** which door the weave walks through stays your word; this lap only put a number beside
+each. And one measured beside it, unclaimed: `run` is **not** blind for want of a merge --
+`apply` stamps `run = next_run` only on an ANCHORLESS insert, so a store whose second commit
+grows the document at its HEAD already carries `run=1` today, no merge anywhere. The
+record-column guard's `blind_reason` names the wrong cause, and parting `site` from `run` costs a
+head insert rather than a subcommand.
 
 
 ## Simple, Lovable, Complete order
