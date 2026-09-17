@@ -97,8 +97,10 @@ behind their sources, rebuilt by the card's own three moves and GREEN.
 ceiling of 7**; the eighth is `tools/fixtures/a/aurora_file_placement_scan.sh:108`, landed 14:46
 today under your live claim -- while `aurora_placement_scan.sh:129` records moving OFF that flag for
 `%762`. Your file, untouched by me.
-**YOURS, PETRICHOR:** `vocabulary_collection` reads RED on ONE word -- `corpus`, arrived with
-`c5e15e25a`, inside your own account block on this card.
+**PETRICHOR -- CLOSED (`20260917.192500`):** the `vocabulary_collection` row above (line 210) already
+closed this; the `corpus` word lived only in a commit message, never in docs prose, and the witness
+ran GREEN on metal twice more this evening confirming it. Two laps re-verified one closed row; the
+stale `YOURS` line is struck here so a third does not.
 **YOURS, THE FLEET'S:** **271** tracked tools carry a `head -N`; one is proven to contradict its own
 completeness claim, and that class is a judgment per tool rather than a grep.
 
@@ -171,7 +173,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `64ced9a22e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `cc89d3416d` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
