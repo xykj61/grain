@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.034639` | [The lap that was cut mid-send](20260917/20260917-034639_the-lap-that-was-cut-mid-send.kyri) | Parked work recovered whole; re-proven on the landed tree. |
 | `20260917.033648` | [a reading nobody can flip](20260917/20260917-033648_a-reading-nobody-can-flip.kyri) | %807 pressed from the CLI at last; no door taken. |
 | `20260917.033133` | [The price of an open](20260917/20260917-033133_the-price-of-an-open.kyri) | A file costs two round trips, not one; the open, not readahead. |
 | `20260917.025900` | [a ceiling that reds on growth](20260917/20260917-025900_a-ceiling-that-reds-on-growth.kyri) | an absolute over a growing population; gate moved to the swept room. |
