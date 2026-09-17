@@ -837,3 +837,5 @@ at a closed fold.*
 *Row %797 folded to [`REDS-a-capped-listing-is-a-measurement-rows-797.md`](REDS-a-capped-listing-is-a-measurement-rows-797.md) on `20260917.000330`, **CLOSED** -- A cap on a listing is a measurement, and a measurement nobody reports is a claim -- an empty answer from a capped listing reads exactly like an empty answer from a clean room.*
 
 *Rows %790 and %798 folded to [`REDS-where-a-boundary-sits-rows-790-798.md`](REDS-where-a-boundary-sits-rows-790-798.md) on `20260917.000519` -- The two ways a bound goes wrong: one never drawn, one drawn tighter than the practice it governs.*
+
+*Row %799 folded to [`REDS-a-printed-line-is-not-a-read-one-rows-799.md`](REDS-a-printed-line-is-not-a-read-one-rows-799.md) on `20260917.001938`, **BOOKED** -- the absence family has a fourth place -- this tree's own stash -- and the round-open had already printed it; a printed line is not a read one.*
