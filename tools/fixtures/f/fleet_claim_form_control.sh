@@ -244,7 +244,7 @@ clean
 cp "$board" "$pen/c/construction/fleet-claims.kyri"
 c_ok=$(cd "$pen/c" && ANOINTED_REMOTE=nowhere sh tools/fixtures/f/fleet_claim_scan.sh --check tools/x.sh 2>&1 || true)
 say "a_well_formed_board_still_reads_clear=$(printf '%s' "$c_ok" | grep -q 'verdict=clear' && echo yes || echo no)"
-say "the_content_reader_names_the_form_it_read=$(printf '%s' "$c_ok" | grep -q 'form=readable' && echo yes || echo no)"
+say "the_content_reader_names_the_form_it_read=$(printf '%s' "$c_ok" | grep -q 'form=well_formed' && echo yes || echo no)"
 
 # 22b -- THE SPLIT, PROVEN FROM THE SIDE THAT COSTS SOMETHING. A CONFINED finding must NOT make the
 # content reader refuse. `fleet_claim_control.sh`'s own pen board carries a record with no `epoch`
@@ -268,6 +268,34 @@ sed "s|sed -n 's/\^corrupting=//p'|sed -n 's/^malformed=//p'|" "$pen/c/tools/fix
 c_mut=$(cd "$pen/c" && ANOINTED_REMOTE=nowhere sh tools/fixtures/f/mutant_scan.sh --check tools/x.sh 2>&1 || true)
 say "mutation_refusing_on_the_total_bites=$(printf '%s' "$c_mut" | grep -q 'verdict=malformed' && echo yes || echo no)"
 rm -f "$pen/c/tools/fixtures/f/mutant_scan.sh"
+
+# 22d -- THE WORD THE CONTENT READER PRINTS IS THE FORM READER'S OWN. That line said `readable`
+# whatever the form scan answered, so on a board carrying confined findings alone the reader every
+# ship runs before every build contradicted the rostered guard and nobody heard it. Measured over
+# all 370 revisions of the living board: 14 stood in exactly that state, in two windows of one
+# class -- a `what` sentence holding the literal word `claim` mid-sentence, cut there by a hand.
+clean
+grep -v '^epoch 1789100000$' "$board" > "$pen/c/construction/fleet-claims.kyri"
+c_word=$(cd "$pen/c" && ANOINTED_REMOTE=nowhere sh tools/fixtures/f/fleet_claim_scan.sh --check tools/x.sh 2>&1 || true)
+say "a_confined_board_carries_the_form_readers_own_verdict=$(printf '%s' "$c_word" | grep -q 'form=malformed' && echo yes || echo no)"
+say "a_confined_board_is_never_called_readable=$(printf '%s' "$c_word" | grep -q 'form=readable' && echo no || echo yes)"
+say "and_the_reader_says_why_it_carried_on=$(printf '%s' "$c_word" | grep -q 'confined findings alone' && echo yes || echo no)"
+
+# 22e -- MUTATION. Substituting a word of this reader's own must red the two legs above. A leg that
+# passes with its own repair undone is a leg proving nothing.
+sed 's|echo "form=$form_verdict corrupting=0|echo "form=readable corrupting=0|' \
+  "$pen/c/tools/fixtures/f/fleet_claim_scan.sh" > "$pen/c/tools/fixtures/f/mutant_word.sh"
+c_mw=$(cd "$pen/c" && ANOINTED_REMOTE=nowhere sh tools/fixtures/f/mutant_word.sh --check tools/x.sh 2>&1 || true)
+say "mutation_substituting_a_fixed_word_bites=$(printf '%s' "$c_mw" | grep -q 'form=malformed' && echo no || echo yes)"
+rm -f "$pen/c/tools/fixtures/f/mutant_word.sh"
+
+# 22f -- and a well-formed board carries the well-formed word with no detail line excusing it, so
+# the new sentence is spent only where it is earned.
+clean
+cp "$board" "$pen/c/construction/fleet-claims.kyri"
+c_wf=$(cd "$pen/c" && ANOINTED_REMOTE=nowhere sh tools/fixtures/f/fleet_claim_scan.sh --check tools/x.sh 2>&1 || true)
+say "a_well_formed_board_is_named_well_formed=$(printf '%s' "$c_wf" | grep -q 'form=well_formed' && echo yes || echo no)"
+say "a_well_formed_board_carries_no_confined_excuse=$(printf '%s' "$c_wf" | grep -q 'confined findings alone' && echo no || echo yes)"
 
 # 23 -- a missing form reader is NAMED rather than passed over, since a silent skip is the same
 # silence that let the damaged board read clear.

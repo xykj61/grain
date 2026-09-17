@@ -859,3 +859,5 @@ at a closed fold.*
 *Row %814 folded to [`REDS-the-room-the-projection-makes-rows-814.md`](REDS-the-room-the-projection-makes-rows-814.md) on `20260917.140717`, **CLOSED** -- a walk upward asks the right question about a file and the wrong one about a room.*
 
 *Row %815 folded to [`REDS-a-law-read-under-one-of-its-names-rows-815.md`](REDS-a-law-read-under-one-of-its-names-rows-815.md) on `20260917.164713`, **CLOSED** -- the claim writer made two commits a lap and carried the operator card on neither, so a rostered guard read stale through 185 of 204 claim-opening commits; rule 5's arithmetic already fitted the lead-in and its name pointed at the other end of the lap.*
+
+*Row %816 folded to [`REDS-the-word-a-reader-chose-rows-816.md`](REDS-the-word-a-reader-chose-rows-816.md) on `20260917.172111`, **CLOSED** -- a summary line that substitutes its own word for an instrument's has stopped reporting, and it said `readable` over 14 revisions the guard beside it refused.*

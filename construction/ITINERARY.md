@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.164721` (EDT)
+**Stamp:** `20260917.172111` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -73,38 +73,43 @@ five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_i
 **COPAL -- THE COPY STEP THAT BECAME A PASS-THROUGH:** account
 [shelved whole](archive/20260917-140717_itinerary-landed-accounts.md), its scrub ask standing with it.
 
-**COPAL -- A GUARD READ A ROOM THE SEED MAKES AS A ROOM THE SEED LACKS.**
-**FIRE SEES** (row 2, N=5359, advanced by hand past row 4, which four laps read today): look hard
-at what must be cut. The cold endurance run read `seed_link` **RED on every ship** --
-`other_living_links_outside_seed=821` against a ceiling of **820** -- and the cut was one clause
-rather than a page.
-**THE MECHANISM.** `inseed()` in `tools/fixtures/s/seed_link_scan.sh` walked a link target UPWARD
-looking for an `allow` row, which is the right question about a FILE and the wrong one about a
-ROOM. `template-manifest.bron` allows `context/` twenty-one named pages and never the directory,
-so step 6 of `sow_project.sh` creates `context/` to hold them while the walk answered that the
-room was not there. `context/README.md` began naming its own rooms with a `[./](./)` link and the
-ratchet crossed its ceiling on a link that opens in both repositories. The clause below the walk
-reads the allow rows' own ancestors: **821 to 820**, exactly one site cleared, no page edited and
-**no ceiling moved**.
-**PROVEN, and the first proof is the projection itself.** `SOW_SEED=.lap/seedproof sh
-tools/fixtures/s/sow_project.sh` copied 8,665 files and `context/` arrives holding its shipped
-pages -- so the welcome names a room that is genuinely there rather than one the code infers. A
-second pen allows one FILE under `deep/inner/` rather than the room, so one tree holds a room the
-projection makes beside a room no allow row reaches; the own-room links are planted one past the
-ceiling, so a reading that counted them would refuse. Control **25 legs to 31**,
-`control_failed=0`, and the clause struck out of a copy of the scan to watch the room counted
-again. Ledger row `20260917.140643`, born CLOSED and folded the same lap, since the pin stood at
-64,726 of 65,536 with twenty OPEN rows and nothing foldable.
-**MINE:** my claim was opened on the lap before this one and that lap was cut mid-send, so the
-board carried a `status=building` claim for work standing in no commit. A claim expires in six
-hours and this one had two left; the lap that inherits a live claim of its own should say so
-rather than open a second.
-**YOURS:** `context/README.md` names five rooms and the projection carries **one** of them,
-`specs/`. The link lands, which is all this guard asks. Whether a front door may name rooms the
-seed withholds is the manifest's question rather than the link guard's -- and it is the same
-ruling `%804` is already waiting on.
+**COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED.**
+**AETHER HEARS** (row 0, N=5394, advanced by hand past row 4, which thirteen laps read today):
+listen for the page nobody answered. `tools/fixtures/f/fleet_claim_scan.sh` -- the reader every
+ship runs before every build -- printed the fixed word `form=readable` beside its two counts,
+whatever `fleet_claim_form_scan.sh` had just answered one line above.
+**THE MECHANISM.** That line now reads `form=$form_verdict`, lifted off the form scan's own
+`verdict=` output, with `form=unread` when the scan answers no verdict at all and one detail
+naming why a confined reading is reported rather than refused. The refusal above it still reads
+`corrupting` alone, untouched: a finding confined to one record must never red a peer's board.
+**MEASURED OVER ALL 370 REVISIONS OF THE BOARD, rather than reasoned from the one in front of me:**
+**5** carried corrupting findings, which this reader already refuses, and **14 carried confined
+findings with corrupting at zero** -- every one a revision where the word was false. The 14 are two
+windows of ONE class, a `what` sentence holding the literal word `claim` mid-sentence and cut there
+by a hand: `claim nobody` over five revisions on `20260916`, and `claim against` over nine spanning
+**83 minutes** on `20260917`, during which every ship that opened a lap read `readable` before it
+built. A lantern that fires twice becomes a loom.
+**THE DATA WAS NEVER MISSING.** `confined=6` stood printed beside the word through both windows.
+What was wrong is that a summary substituted its own word for an instrument's, and a reading nobody
+hears is the fault this rota row exists to listen for.
+**PROVEN:** control **47 legs to 54**, `control_failures=0`, six new -- a confined board carries the
+form reader's own verdict, is never called readable, and says why the reader carried on; a
+well-formed board keeps its own word and earns no excuse line; and the mutation restoring the fixed
+word bites both. `fleet_claim_form_witness.rish` reads all six by name, GREEN on metal beside
+`fleet_claim_witness.rish`. Cards **B+/88 B+/85 A+/100**. Ledger row `20260917.172111`, born CLOSED
+and folded the same lap: the pin stood at 65,341 of 65,536 with twenty-one rows open.
+**MINE:** I inherited my own live claim from a lap cut mid-send, and said so rather than opening a
+second -- the card's own ask from last lap, taken. **And one fleet-wide red closed beside it**:
+`card_pin_claim` read the card asserting *none foldable* where the instrument answered
+`pin_deadlocked=0`, a sentence dated `20260917.053554` that this lap's own fold disproved. The
+capacity bullet carries today's reading and cites the scan; the guard is GREEN.
+**YOURS:** the phantom class has now fired twice and no guard reaches its cause, since the cut is a
+hand's `grep -v` against an unanchored literal `claim `. Whether the writer should offer a `--cut`
+that takes a record whole is a lap; whether the board should refuse a hand editing it at all is
+Keaton's word.
 
-**COPAL -- FIVE ELDER ACCOUNTS, SHELVED WHOLE:** the minutes spent starting grep
+**COPAL -- SIX ELDER ACCOUNTS, SHELVED WHOLE:** the room the projection makes
+([here](archive/20260917-172111_itinerary-landed-accounts.md)), the minutes spent starting grep
 ([here](archive/20260917-010818_itinerary-landed-accounts.md)), the resin bytes that landed
 ([here](archive/20260916-234020_itinerary-landed-accounts.md)), the `echo` population
 ([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap
@@ -213,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `877272a89a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `96bbc33d4e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -455,12 +460,13 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   `tools/fixtures/f/fleet_claim_form_control.sh`, two in `tools/fixtures/p/page_residency_sample.sh`,
   each an `|| echo <n>` answering for an instrument that failed. Unclaimed; the pin below is why
   none is booked.
-- **The ledger cannot receive a red, and door B is now priced.** `construction/REDS.md` stood at
-  65,535 of its 65,536 bound with none foldable on `20260917.053554`. One row booked and folded
-  under door B takes it to **64,726, headroom 810**, against a **median row of 2,676** -- so
-  `pin_deadlocked` still reads 1 and **three such folds** clear it. 9 of 19 open rows name no hand
-  outside the loop, so the fleet can reach that by itself. Raise the bound a second time, keep
-  folding a row a lap, or seat a rule that a row folds on a lighter test?
+- **The ledger receives a row through door B, and the door has now been walked twice.**
+  `construction/REDS.md` reads 65,341 of its 65,536 bound on `20260917.172111` with **195 bytes of
+  headroom** and twenty-one rows open; `tools/fixtures/r/reds_pin_capacity_scan.sh` answers
+  `pin_deadlocked=0` on one foldable row. A row born CLOSED and folded the same lap lands without
+  touching the pin's body, which `%814` and `%816` each did today against a **median row of 2,676**.
+  The standing question is unchanged: raise the bound a second time, keep folding a row a lap, or
+  seat a rule that a row folds on a lighter test?
 - **The wire ceiling** -- the ledger row (`20260916.004153`) holds the account and the three doors;
   the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account

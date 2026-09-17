@@ -123,7 +123,37 @@ if [ -f "$FORM" ]; then
     echo "verdict=malformed"
     exit 1
   fi
-  echo "form=readable corrupting=0 confined=$(printf '%s\n' "$form_out" | sed -n 's/^confined=//p')"
+  # THE WORD BELOW IS THE FORM READER'S OWN, NEVER ONE THIS READER CHOOSES (`20260917.154634`).
+  # This line printed the fixed word `readable` beside the two counts, whatever the form scan
+  # answered -- and `readable` is false on a board whose form verdict reads `malformed` for confined
+  # findings alone. Measured over all 370 revisions of this board: 5 carried corrupting findings,
+  # which the refusal above already catches, and **14 carried confined findings with corrupting at
+  # zero** -- every one a revision where this line said `readable` while
+  # `tools/f/fleet_claim_form_witness.rish` stood RED on every ship. Those 14 are two windows of one
+  # class: a `what` sentence carrying the literal word `claim` mid-sentence, cut there by a hand,
+  # leaving a phantom header. It fired on `20260916` as `claim nobody` and on `20260917` as
+  # `claim against`, and in both firings this line answered `readable` to every ship that opened a
+  # lap. A lantern that fires twice becomes a loom.
+  #
+  # CARRYING THE VERDICT COSTS NOTHING THE SPLIT DEPENDS ON. The refusal above still reads
+  # `corrupting` alone, so a confined finding still leaves this reader answering `clear` -- the leg
+  # `a_confined_finding_does_not_make_the_reader_refuse` holds that from the side that costs
+  # something. What changes is that a ship reading the board before it builds learns what the
+  # rostered guard already knows, in the guard's own word, with a detail line saying why this reader
+  # carried on.
+  form_verdict=$(printf '%s\n' "$form_out" | sed -n 's/^verdict=//p')
+  form_conf=$(printf '%s\n' "$form_out" | sed -n 's/^confined=//p')
+  if [ -z "${form_verdict:-}" ]; then
+    # A form reader answering no verdict is an unheard reading, which is the fault this section
+    # exists to end. Named rather than summarised into a word of our own.
+    echo "form=unread"
+    echo "detail: $FORM answered no verdict line -- its reading went unheard"
+  else
+    echo "form=$form_verdict corrupting=0 confined=${form_conf:-0}"
+    if [ "$form_verdict" != "well_formed" ]; then
+      echo "detail: the form reading is $form_verdict on confined findings alone -- each stays inside its own record, so this reader reports rather than refusing, and tools/f/fleet_claim_form_witness.rish is where they are held at zero"
+    fi
+  fi
 else
   # A missing instrument is named rather than passed over: a silent skip here is the same silence
   # that let the damaged board read clear.
