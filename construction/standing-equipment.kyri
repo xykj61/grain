@@ -6997,3 +6997,28 @@ guard control_leg_heard
 path tools/c/control_leg_heard_witness.rish
 tier cadence
 seated 20260916.223000
+
+# THE ROOT-FINDER CENSUS -- can this tree's own scripts find their root in a checkout of tracked
+# bytes alone? 189 of them cannot: they walk up until a directory holds `rishi/bin`, which holds
+# the built `rishi` binary and nothing tracked, so a fresh clone before its first build and every
+# detached worktree refuse before reading a file (REDS %788).
+#
+# WHY IT IS ROSTERED AT ALL. No standing guard could have caught this, because every standing
+# guard runs in a tree somebody has already built in -- the one condition that hides it. The probe
+# that found it reaches the class only by running a candidate twice in a detached worktree at two
+# to three minutes each, and met it on 2 of 9 candidates. This reading is static: it extracts each
+# root-finder's sentinel directory names and asks `git ls-files` whether each holds tracked
+# content, so the whole population is counted in seconds with no build and no worktree.
+#
+# `tier lap`: 24s, a 9s scan over 3,723 tracked shell sources and a 15s control over real git
+# repositories in a pen. It rides the lap clock because the number moves when a NEW script is
+# written carrying the copied block, and new instrument files land in this fleet at tens a day --
+# so the 190th copy should red on the lap it arrives rather than a fortnight later.
+#
+# IT RATCHETS RATHER THAN WALLING. The repair is one directory name per file and the files are
+# spread across every lane, so the sweep's timing belongs to the fleet rather than to one ship,
+# which is `%788`'s own closing sentence. Lower the ceiling in the same commit that sweeps a file.
+guard root_finder
+path tools/r/root_finder_witness.rish
+tier lap
+seated 20260917.013000
