@@ -16,6 +16,16 @@
 # Nothing caught either, because this witness is on no roster and in no suite: it
 # went red the lap the card was condensed and no run ever asked it.
 #
+# Repaired at 20260916.205028 after REDS %782: the sweep gathered advertised hashes
+# with grep -oE for [0-9a-f]{10}, and hexadecimal admits the decimals -- so an
+# account naming an awk generator's multiplier and modulus floated two commit claims
+# no tree has held, and the guard stood RED on a healthy pier for every ship. What a
+# ten-character token IS is now read three ways in order, spelled in the scan's head:
+# POSITION (a key immediately before it), then SHAPE (a letter makes it a hash claim),
+# then RESOLUTION (an all-decimal run in bare prose is a number unless the object
+# store says otherwise). Position leads because shape alone would drop a real hash --
+# 52 of this history's 5,138 commits carry a short hash of ten decimal digits.
+#
 # The law it now owns, over every advertised hash alike:
 #   HARD -- every advertised hash RESOLVES. A hash resolving nowhere is a promise
 #           already broken, in any voice, and the RED path is shown on a planted
@@ -41,6 +51,7 @@
 
 say "nib-honesty: Language EN -- every hash the operator card advertises resolves to a real commit, and how far each one reaches is named rather than assumed."
 say "nib-honesty: Style Radiant -- two voices, two laws. The nib is the landed edge and answers to the loom; a checkpoint is a walk-back and is off main by construction, so this guard asks of both only what both can honestly promise."
+say "nib-honesty: Reading three readings -- POSITION where the card names a key, SHAPE where it does not, and RESOLUTION for the one case shape cannot take. The residue is named rather than hidden: an all-decimal prose hash a rewrite has floated reads as a number, which is one prose hash in 99 by measurement on this history."
 say "nib-honesty: Lens TAME -- measurement beats memory; reachability is computed against the object store and the remotes, the Git nib is read BY NAME rather than by first match, and a planted floating-nib control proves the refusal on metal."
 
 let green = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh"]
@@ -50,10 +61,20 @@ assert green.out contains "gone=0" else "nib-honesty: an advertised hash resolve
 assert green.out contains "git_nib=" else "nib-honesty: want the Git nib read by name from its own field"
 assert green.out contains "git_nib_state_law=tools/r/remember_git_nib_witness.rish" else "nib-honesty: want the nib-state law cited, not re-implemented"
 assert green.out contains "local_only_checkpoints=" else "nib-honesty: want local-only walk-backs counted and named"
+assert green.out contains "keyed=" else "nib-honesty: want the POSITION reading counted -- a hash standing after its own key is gated whatever its shape"
+assert green.out contains "numeral_read=" else "nib-honesty: want the numerals read rather than refused -- ten decimal digits in bare prose is a number, and counting them is what proves REDS %782 stays closed"
 assert green.out contains "verdict=ok" else "nib-honesty: want verdict ok"
 
 let red = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh" "prove-red"]
 assert (red.ok == false) else "nib-honesty: prove-red must refuse, not merely report"
-assert red.out contains "RED_floating_nib_caught=2" else "nib-honesty: prove-red want both planted floating hashes caught"
+# Four exact counts rather than one, because the three readings fail in pairs. Dropping
+# POSITION and dropping SHAPE both take the control from 3 caught to 2 and from 2 numerals
+# read to 3, so the caught count alone cannot tell them apart; the per-class counts can,
+# reading keyed=0 prose_hex=2 for the first and keyed=2 prose_hex=0 for the second. All
+# three mutations were run against this control on metal before these lines were written.
+assert red.out contains "RED_floating_nib_caught=3" else "nib-honesty: prove-red want three planted floating hashes caught -- a keyed one carrying letters, a keyed one of ten decimal digits, and a bare-prose one a letter marks"
+assert red.out contains "RED_numeral_read_free=2" else "nib-honesty: prove-red want the two planted numerals READ rather than refused -- catching more than three means a number has been taken for a promise"
+assert red.out contains "control_keyed=2" else "nib-honesty: prove-red want POSITION outranking shape -- the all-decimal hash standing after its key is one of these two"
+assert red.out contains "control_prose_hex=1" else "nib-honesty: prove-red want SHAPE gating where no key stands -- the bare-prose hash a single letter marks"
 
-say "GREEN: nib-honesty -- every hash the living card advertises resolves, the Git nib is read from its own field, checkpoint reach is named rather than graded against a law checkpoints cannot keep, and a planted floating nib is refused on metal."
+say "GREEN: nib-honesty -- every hash the living card advertises resolves, the Git nib is read from its own field, a ten-character token is recognised by position then shape then resolution so a decimal in prose stays a number, checkpoint reach is named rather than graded against a law checkpoints cannot keep, and three planted floating nibs are refused on metal while two planted numerals walk free."

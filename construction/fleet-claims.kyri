@@ -70,18 +70,6 @@ stamp 20260916.194110
 epoch 1789602070
 paths glow/tokens.rye glow/refusal.rye glow/rune_shape.rye glow/refusal_witness.rye tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_ceiling_refusal_scan.sh
 what glow/tokens.rye answers four ceilings with the one word error.BadToken -- a name past max_name_len, a cord literal interior past max_cord_lit_bytes, a hex literal past max_hex_lit_digits, and a source past max_src_len. Thread a refusal.Slot through the private lexers and seat tokenize_reporting beside tokenize, keeping the published signature, so each of the four fills a glow/refusal.rye record naming field, value, ceiling, unit and reason. The field names a token KIND rather than the offending text, because the text is exactly what did not fit. Four Reason members and two Unit members join the closed sets; the published error name stays, since an error set is a contract. Name the two unnamed asserts standing in glow/refusal.rye and glow/rune_shape.rye on the same touch, which is the whole of rune_assert_sweep's two-over-ceiling red.
-claim grass-ordered-list-blindness
-seat grass
-stamp 20260916.200459
-epoch 1789603499
-paths tools/fixtures/p/prose_register_scan.sh tools/fixtures/q/qa_report_card.sh tools/fixtures/p/prose_register_control.sh tools/fixtures/q/qa_report_card_control.sh
-what Both prose readings hold out a bullet -- the marker THEN whitespace, -*+ -- and neither holds out an ORDERED list marker, so 1,727 numbered list lines across 332 of 1,380 living Markdown pages are read as prose sentences by the register gate and the Reach grade alike. The harm is a false green: removing them takes teaching_over_field_target from 1 to 3 against a ceiling of 1, with docs/CRYPTO.md at 31 percent and manual/guides/self-hosted-vpn-setup.md at 33 percent standing over their declared field target today, hidden by dilution. qa_report_card.sh twice refuses to re-grade the tree in one unmeasured step and names ITINERARY as where the standard question goes, so this lap PUBLISHES the reading in both scans -- reported, never scored, never gated, beside reach_prose and reach_links -- and names the re-grade door on the card with its measured cost.
-claim grass-nib-decimal-position
-seat grass
-stamp 20260916.205028
-epoch 1789606228
-paths tools/fixtures/n/nib_honesty_scan.sh tools/n/nib_honesty_witness.rish tools/fixtures/nib_honesty_control/floating_nib_control.md
-what REDS %782: nib_honesty gathers advertised hashes with grep -oE '[0-9a-f]{10}' and hex admits the decimals, so Diffuser's LCG account (1103515245, 2147483648) reads as two floating commit claims and the guard stands RED on a healthy tree for every ship. Rule the recognition question the row leaves open: POSITION decides the gate where the card names a key (Git nib, checkpoint, walk-back nib immediately preceding), SHAPE decides where it does not (a hex run carrying a letter is a hash claim), and RESOLUTION classifies what shape cannot -- an all-decimal run in bare prose is read as a numeral unless the object store resolves it. Measured on this history: 52 of 5138 commits carry an all-decimal short hash, one in 99, so a letter-only rule would drop real hashes silently and that residue is named rather than hidden.
 claim diffuser-control-perturbation-probe
 seat diffuser
 stamp 20260916.210235
