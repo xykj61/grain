@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-build-mute-refusal
-seat bakery
-stamp 20260917.112557
-epoch 1789658757
-paths tools/fixtures/a/assert_evidence_scan.sh tools/fixtures/a/assert_evidence_control.sh tools/a/assert_evidence_witness.rish tools/ca
-what REDS %734 closed on ten failures that named their own reason and three that said only 'Lattice build failed'; my own last lap seated assert_evidence, which counts 7,446 mute refusals tree-wide and gates one hand-picked room. That tree-wide number is ungateable -- it grows with ordinary work -- and it answers a question nobody asked, since most of the 7,446 sit over a scan a reader re-runs in a second. The class whose silence actually cost a fortnight is narrower and the scan never names it: a refusal over a RYE COMPILATION, where the discarded text is a compiler diagnostic produced under a load that may never reproduce. Measured before claiming by tracing each mute site's binding: 1,056 of the 7,446 sit over a binding naming rye_build.sh, a build or build-lib subcommand, or rye run, which compiles before it runs -- 621 files. This lap adds build_mute as its own counted reading beside the five distances already there, reusing the scan's existing one-level binding trace rather than writing a second one, and sweeps ONE room to zero as first residency: tools/ca/, Caravan, this seat's own lane, 64 sites across 63 files, each taking the tree's own idiom of one err_brief interpolation. The enforced cohort widens from tools/l/lattice_*_witness.rish to hold zero build_mute in tools/ca/ too, so a silence returning to a swept room is a regression while the tree-wide count stays reported. No module source, no ceiling any peer watches, no ledger row and no peer file moves; the caravan witnesses change only their refusal messages and each is proven to still refuse.
 claim incense-claim-before-cold-order
 seat incense
 stamp 20260917.113839
