@@ -18,10 +18,9 @@ reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own 
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
-The ledger's sixteen OPEN rows were read on metal this lap: **one CLOSED** (`%700`), **eight
-BOOKED** -- instances repaired, remainder a ratchet or a booked lap -- and **seven still OPEN,
-every one wanting Keaton's word**: `%689` `%680` `%678` `%636` `%626` `%568` `%456`. A lap opens
-none of those.
+The ledger reads **twelve OPEN**, one BOOKED (`20260917.020437`). Four stand claimed on the fleet
+board; three want Keaton's word -- `%756` `%745` `%456` -- and a lap opens none of them. `%734`'s
+cause is captured; its evidence half is free, and this lap took it.
 
 **The agent-doable queue, Lindy first:**
 
