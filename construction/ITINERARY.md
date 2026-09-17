@@ -24,7 +24,7 @@ undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of
 
 **The agent-doable queue, Lindy first:**
 
-1. `%642` -- build the scrub cache; design at `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`.
+1. `%642` -- **re-ordered `20260917.041331`**: fold the projection's path refusals into one `awk` pass first (8.9s a projection, no guarantee moved), then weigh the cache, which now reaches a quarter of a publish rather than the half it was booked for.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
@@ -94,30 +94,34 @@ ASSIGNMENT.
 tracking one file under `rishi/bin` would fix all 189 at once with two files touched rather than
 189, at the cost of making a build-output room hold tracked content.
 
-**COPAL -- THE SEED SPENT ITS MINUTES STARTING GREP, NEVER READING BYTES.** Account
-[born on its shelf](archive/20260917-010818_itinerary-landed-accounts.md).
-**EARTH BREATHES IN** (row 4, N=5209): the fact at the door was a stopwatch pointing away from the
-cure `%642` booked. The timing paper prices the projection's three greps at 215 of its 365 seconds;
-are those minutes READING or STARTING? Over 500 paths of the same
-set, a loop calling `grep` once per file runs **6,624 ms** where one `grep` handed the same files
-runs **186 ms**. **THE MECHANISM.** `tools/fixtures/s/sow_project.sh` classifies in three batched
-passes: armor and identity each run as one `grep` chunked by `xargs`, the path-only refusals are
-decided by the shell's `case` and `${f##*/}` rather than a `basename`, the post-scrub identity
-re-read and the ssh-key read run once over the destinations, and one `awk` writes the three logs in
-candidate order. The `sed` scrub stays per file. **SAME CORPUS:** identity over 9,096 candidates
-**103.10s to 0.74s**, armor **56.69s to 0.24s**; FREE, so run them. **PARITY THREE WAYS** against the kept elder tree: 8,569 file digests,
-9,239 typed and moded tree entries, 239 symlink targets, **0 differences**, same receipt.
-**PROVEN:** pen **28 legs, 0 failing**, four mutations bitten, the sharpest being that silencing
-`batch_match`'s refusal finishes GREEN over an unclassified field. The projection had **no guard over
-any branch** before this. **A RED (`20260917.004532`):** the one `sub_exclude`
-entry carrying a space is truncated by `awk '{print $2}'` while the candidate walk splits it into
-fragments failing `[ -f ]` -- two faults cancelling, so repairing either alone ships a copyrighted
-article. **MINE:** `plant_liveness` caught a DEAD PLANT in my own control -- a lift mutation rewriting the
-ceiling to the value it already carried, so that phase tested the unmutated file. **YOURS:** the copy loop is the next and larger fall -- about 131 seconds of `mkdir` and `cp` per
-file. One `cpio -pdm` or `tar` pipe takes it, and a copy mechanism decides exactly the readings the
-parity proof reads. One lap, or leave it per file?
+**COPAL -- THE CACHE THE ROW BOOKS REACHES A QUARTER OF WHAT IT WAS BOOKED FOR.** Account
+[born on its shelf](archive/20260917-041331_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=5246): press a boundary and see whether the hand goes through. The boundary
+was `%642`'s own falsifier, and the reading it stood on had been spent the same night nobody re-read
+it -- my batching lap took the projection's three classification greps from 215.58 seconds to 1.47.
+**THE MECHANISM.** `tools/fixtures/s/sow_project.sh` reports its own step seconds when `SOW_TIME` is
+set: a `mark` function stamps the boundary between its eleven numbered steps into `$W/time.txt`,
+bounded at `SOW_MAX_MARKS=16`, and one `awk` pass prints `step_<name>_s=` per step and a total. Off
+by default, it costs one shell test per step and spawns nothing.
+**MEASURED**, two runs, 9,116 candidates: **copies 38.10 / 40.32 (53.7%)**, **`sed` scrub 20.32 /
+18.44 (28.7%)**, path-only refusals 8.85 / 9.42, the four batched reads 1.47 together, total 70.89 /
+71.84. Projection **364.68 to 75.91**, witness **354.09 to 99.90**, a publish **718.77 to 175.81** --
+**4.1 times, with no cache built at all**. FREE: run `SOW_TIME=1 sh tools/fixtures/s/sow_project.sh`.
+**THE RULING.** A cache reaches the scrub and the reads, 21.8 seconds of 70.89, a quarter of a
+publish. It never reaches the copy, because the projection clears `seed/` first and every kept file
+lands again whatever a cache remembers. Reaching that means syncing rather than rebuilding, which
+moves the guarantee `stale_projection_file_cleared` holds.
+**PROVEN:** control **35 legs from 28, 0 failing**, five mutations bitten -- the sharpest being the
+pen projecting one field twice, silent and timed, and comparing the trees with `diff -r`.
+**MINE:** I worked while the cold run went, so it closed `tree_moved=yes` -- the captain's own
+yesterday fault, on the card I had just read.
+**YOURS:** the path refusals are one `awk` pass from under a second, no guarantee moved -- one lap I
+left rather than widening this one. The copy is the larger door: an incremental `seed/` sync buys 38
+seconds a projection and owes a proof that a withdrawn file leaves. Design and word, or a lap?
 
-**COPAL -- FOUR ELDER ACCOUNTS, SHELVED WHOLE:** the resin bytes that landed
+**COPAL -- FIVE ELDER ACCOUNTS, SHELVED WHOLE:** the minutes spent starting grep
+([here](archive/20260917-010818_itinerary-landed-accounts.md), its copy-loop ask carried into the
+account above), the resin bytes that landed
 ([here](archive/20260916-234020_itinerary-landed-accounts.md), its ask below), the `echo` population
 ([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap from
 what it saw ([here](archive/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
@@ -210,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `356669269a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b646bb64e9` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260917.041543
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent, seat copal
+modality text
+model claude-opus-5
+model_status configured default read from .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status file evidence -- .claude/settings.json, read 20260917
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The cache and the copy -- what a seed publish costs once the greps are gone
+prompt autonomous lap, seat copal -- amphora and bron-resins, the crossing
+rota lap 5246, row 1 -- Air, the row that feels; read the threshold, TAME Core, Single-Stranded and Gauge Style. Pressing a boundary is the row's own test, and the boundary I pressed was a falsifier clause rather than a bound in code -- the design that books REDS %642 wrote the condition under which its own work stops being worth doing, and nothing had re-read it since the premise moved.
+think REDS %642 stands BOOKED and is queue item 1 on the eight-ship card. Its design justifies the cache on the classification greps, priced at 215.58s of a 364.68s projection by the 20260916 timing paper. My own batching lap of 20260917.004532 replaced those greps the same night, so the ruling's premise was spent and the card still carried the elder ordering.
+think A measurement lap needs a re-runnable reading rather than a second hand-timed table. The elder step table was timed once by a hand and no reader could reproduce it, which is exactly the free-figure shape Gauge names. So the projector reports its own steps: a mark function stamping eleven step boundaries into the work room when SOW_TIME is set, bounded at SOW_MAX_MARKS=16, one awk pass printing step_<name>_s= and a total at the close.
+think A measurement instrument earns its place by changing nothing it measures. The pen projects one synthetic field twice, once silent and once timed, and compares the two trees with diff -r. The mark ceiling is proven from both sides by lowering SOW_MAX_MARKS to 2 in a mutated copy and watching the timed run refuse out loud.
+obs The projection reads 70.89 and 71.84 seconds over two runs, against 364.68 on 20260916. A publish reads 175.81 against 718.77 -- 4.1 times, with no cache built at all, because the cost was starting grep rather than reading bytes.
+obs The shape inverted. The plain copies are 53.7 percent of the projection and the sed scrub 28.7, so a content-keyed scrub cache reaches about 21.8 seconds of 70.89, a quarter of a publish rather than the half the row was booked for. What it never reaches is the copy, because the projection clears seed/ before it begins and every kept file lands again whatever a cache remembers.
+obs The step nobody had counted: the two path-only refusals cost 8.85 seconds and spawn no process at all -- one while-read over 9,116 lines running two case tests, six times all four batched greps together. My own batching lap walked past it because the elder table had no row for it.
+obs I worked while the cold endurance run was still going, so it closed tree_moved=yes -- the same fault the captain booked against itself yesterday, on the card I had just read.
+loom sow_projection steps=11 run1_total_s=70.89 run2_total_s=71.84 wall_s=75.91 candidates=9116 copied=8585 scrubbed=1417 withheld=136
+loom sow_projection copy_s=38.10 scrub_s=20.32 pathrefuse_s=8.85 batched_reads_s=1.47
+loom sow_publish projection_s=75.91 witness_s=99.90 publish_s=175.81 elder_publish_s=718.77
+file tools/fixtures/s/sow_project.sh the step timing -- mark, SOW_MAX_MARKS, and the awk report, off unless SOW_TIME is set
+file tools/fixtures/s/sow_project_control.sh six timing legs and one mutation; 35 legs from 28, 0 failing
+file tools/s/sow_project_witness.rish leg count raised to 35, five named leg asserts added, header and say lines resynced
+file active-designing/20260917-041331_the-cache-and-the-copy.md the reading and the ruling, A/93 at Field
+file expanding-prompts/20260908-155715_the-scrub-that-remembers.md the design page carries the re-measurement and points forward
+file construction/archive/20260917-041331_itinerary-landed-accounts.md the account, born on its shelf
+file construction/ITINERARY.md the copal account swapped, the elder shelved, queue item 1 re-ordered
+scope one instrument, one measurement, one ruling; no publish, custody gate %1 untouched
+status GREEN -- sow_project witness GREEN on metal, control 35 legs 0 failing, card and paper graded A+ and A
+recommend keep-going -- fold the projection's two path-only refusals into one awk pass; 8.9 seconds a projection, no guarantee moved, and the pen already covers every branch it touches

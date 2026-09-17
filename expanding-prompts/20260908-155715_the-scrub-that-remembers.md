@@ -8,6 +8,13 @@ re-runnable as `sh tools/fixtures/s/sow_phase_scan.sh --time`. A publish costs 7
 which 363 of the projection's 365 are per-file work and the four proofs the witness performs cost
 2.39 together -- so the cache is worth building. Two figures below moved: the 8,187 files read
 **9,046** candidates, and the witness turns out to run a **second full projection** of its own.
+**Re-measured `20260917.041331`, and the ordering moved:** the batching lap took the projection's
+three classification greps from 215.58 seconds to 1.47, so a publish costs **175.81** seconds rather
+than 718.77 with no cache built at all. What a cache still reaches is the `sed` scrub and the four
+batched reads -- about 21.8 seconds of a 70.89-second projection -- while **the plain copies own
+53.7 percent**, and no content cache removes them while the projection clears `seed/` first. The
+reading stands at [`active-designing/20260917-041331_the-cache-and-the-copy.md`](../active-designing/20260917-041331_the-cache-and-the-copy.md),
+re-runnable as `SOW_TIME=1 sh tools/fixtures/s/sow_project.sh`.
 **Lane:** bakery (core infrastructure and the fleet's own friction), with the seed's own custody gate intact
 
 ## What happened, and why it is worth a lap
