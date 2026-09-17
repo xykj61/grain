@@ -43,8 +43,33 @@
 # to run rather than an answer to check, which is what the demos page does with a witness
 # invocation. Those are counted as `unpaired` and reported.
 #
+# AND A READING THIS SCAN OWES ABOUT ITSELF: DOUBLE READ.
+#
+# tools/fixtures/t/tutorial_output_scan.sh, seated `20260909`, reads command-and-output pairs
+# across a CORPUS of git pathspecs -- `docs-geode/*.md manual/*.md SOURCE.md` -- choosing what to
+# run by a DERIVED rule on the command line rather than by a named page list. This scan's only
+# rostered page sits inside that corpus. Measured `20260916`: of the five pairs run here, the
+# sibling reads the same five fences and checks four of them, holding the fifth as outside its
+# run roster. So four are checked twice, under two conventions, and the fifth is this scan's one
+# piece of new coverage.
+#
+# That was not known when this scan was seated, and nothing in the tree could have said so. The
+# reading below is what says so now: for each rostered page, whether another guard's corpus
+# already holds it.
+#
+# REPORTED, NEVER GATED. Two guards reading one page is a cost rather than a fault, and which of
+# the two should yield is a hand's word. What must not happen twice is a roster growing into that
+# corpus with nobody seeing it.
+#
+# The sibling names its corpus in one constant and offers no verb printing it without running
+# every command it reads, so the constant is read out of the file. A read that finds nothing says
+# `double_read_state=unreadable` out loud rather than reporting a comfortable zero.
+#
 # USAGE
-#   sh tools/fixtures/d/demo_output_scan.sh [--page PATH ...] [--list]
+#   sh tools/fixtures/d/demo_output_scan.sh [--page PATH ...] [--list] [--overlap]
+#
+# `--overlap` prints the double-read reading and exits before the run loop, so a hand weighing a
+# candidate page for this roster learns whether another guard already reads it, at no cost.
 #
 # Driven by tools/d/demo_output_witness.rish. Run from the repository root.
 
@@ -57,11 +82,13 @@ max_pairs=64          # a bound on how much of a page this will run in one pass
 pair_timeout=180      # seconds one printed command may take before it is called errored
 
 list=no
+overlap_only=no
 pages=''
 while [ $# -gt 0 ]; do
   case "$1" in
     --page) shift; [ $# -gt 0 ] || { echo "verdict=bad_flag"; exit 1; }; pages="$pages $1" ;;
     --list) list=yes ;;
+    --overlap) overlap_only=yes ;;
     *) echo "verdict=bad_flag"; echo "refused: unknown flag $1" >&2; exit 1 ;;
   esac
   shift
@@ -91,6 +118,43 @@ if [ "$missing_pages" -gt 0 ]; then
   echo "roster_pages=$roster_pages"
   echo "verdict=roster_page_absent"
   exit 1
+fi
+
+# ---- double read: is a rostered page already inside another guard's corpus? -----------------
+
+SIBLING=${DEMO_OUTPUT_SIBLING:-tools/fixtures/t/tutorial_output_scan.sh}
+double_read=0
+double_read_state=read
+if [ ! -f "$SIBLING" ]; then
+  double_read_state=no_sibling
+else
+  sib_corpus=$(sed -n 's/^CORPUS=${TUTORIAL_OUTPUT_CORPUS:-\(.*\)}$/\1/p' "$SIBLING")
+  if [ -z "$sib_corpus" ]; then
+    double_read_state=unreadable
+  else
+    # The corpus is git pathspecs, so the shell's own globbing stays off and git does the
+    # expanding -- git's `*` crosses a slash and the shell's does not, which is the difference
+    # between a whole subtree and one top-level page.
+    set -f
+    # shellcheck disable=SC2086
+    set -- $sib_corpus
+    set +f
+    git ls-files -- "$@" 2>/dev/null > "$work/sibling_pages" || : > "$work/sibling_pages"
+    while IFS= read -r rpage; do
+      if grep -qxF -- "$rpage" "$work/sibling_pages"; then
+        double_read=$((double_read + 1))
+        echo "double_read: $rpage is on this roster and inside $SIBLING's corpus"
+      fi
+    done < "$work/pages"
+  fi
+fi
+
+if [ "$overlap_only" = yes ]; then
+  echo "roster_pages=$roster_pages"
+  echo "double_read=$double_read"
+  echo "double_read_state=$double_read_state"
+  echo "verdict=overlap_read"
+  exit 0
 fi
 
 # ONE AWK OVER THE ROSTER. It walks each page's fences and writes one .cmd and one .exp file
@@ -194,6 +258,8 @@ while IFS="$(printf '\t')" read -r n page mode first; do
 done < "$work/index"
 
 echo "roster_pages=$roster_pages"
+echo "double_read=$double_read"
+echo "double_read_state=$double_read_state"
 echo "pairs=$pairs"
 echo "pairs_exact=$exact"
 echo "pairs_selected=$selected"
