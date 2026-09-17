@@ -42,13 +42,17 @@
 # the control ANSWERED -- exit 0 and a named verdict -- rather than restating twenty assertions a
 # second time in a second language.
 say "ryekey: Language EN -- a receipt proven from both sides, on a clock that runs it."
-say "ryekey: Style Gauge Meter -- thirty-seven legs counted, the stale binary named rather than reddened."
+say "ryekey: Style Gauge Meter -- forty-four legs counted, the stale binary named rather than reddened."
 say "ryekey: Lens TAME -- safety first; a control proven only in the hit direction cannot be told from a bypass."
 
 let control = run ["sh" "tools/fixtures/r/ryekey_control.sh"]
 say control.out
 assert control.ok else "ryekey: the control must exit 0 -- either thirty-seven legs green or an honest machine-fact skip"
 assert control.out contains "ryekey_verdict=" else "ryekey: a control that named no verdict has answered nothing"
+# A CONTROL'S LEG COUNT IS HEARD RATHER THAN TRUSTED. `ryekey_verdict=green` says only that the
+# control reached its last line, so a leg added today could stand unread under a GREEN witness
+# tomorrow. The count is asserted beside the verdict, and it moves in the same commit as the legs.
+if (control.out contains "ryekey_verdict=green") then assert control.out contains "legs=44" else "ryekey: the control answered green while counting a different number of legs than this witness hears"
 
 if (control.out contains "ryekey_verdict=machine_fact") then say "MACHINE FACT: ryekey -- this pier's rye binary stands behind its own source; run sh rye/bootstrap.sh to prove the receipt here."
-if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- thirty-seven legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler and library bytes and root and dependency modes and a sibling emit flag's value missed separately, one toolchain and one library and one renamed output still skipped, the bypass forced a rebuild and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, and run stayed exempt twice over -- once with no output named and once naming one, the leg that proves the exclusion at all; and the compiler's remembered digest shown consulted, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record written where no receipt could be earned; and the same seven readings taken of the library tree's record, among them a file added and a file removed each refusing a remembered digest with no existing file's stat moved"
+if (control.out contains "ryekey_verdict=green") then say "GREEN: ryekey -- forty-four legs proven in a throwaway pen; every flipped input rebuilt, same-size compiler and library bytes and root and dependency modes and a sibling emit flag's value missed separately, one toolchain and one library and one renamed output still skipped, the bypass forced a rebuild and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, and run stayed exempt twice over -- once with no output named and once naming one, the leg that proves the exclusion at all; and the compiler's remembered digest shown consulted, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record written where no receipt could be earned; and the same seven readings taken of the library tree's record, among them a file added and a file removed each refusing a remembered digest with no existing file's stat moved; and each memo family held to its own ceiling of thirty-two records, the oldest evicted first with no survivor older than a victim, a peer's half-written temporary and a same-prefix name of the wrong width both passed over, neither family reaching the other, and the build after an eviction still skipping"
