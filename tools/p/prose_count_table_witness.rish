@@ -1,0 +1,90 @@
+# tools/p/prose_count_table_witness.rish -- a count written above a table is a claim about that
+# table's length, and this holds the sentence and the table to one another.
+#
+#   rishi/bin/rishi run tools/p/prose_count_table_witness.rish
+#
+# WHY. A teaching page introduces a table by saying how long it is -- Four tutorials ship from this
+# room, The Seven Rooms -- and that number is a copy of something standing three lines below it.
+# The table grows when a hand adds a row; the sentence does not. The shipping shelf has paid for
+# this twice and written both receipts on its own face: docs-geode/README.md said ten rooms while
+# its table listed twelve, from the very commit that added the twelfth, and stood sixteen days;
+# docs-geode/etc/README.md named eleven neighbors while twelve stood, and the room whose whole job
+# is noticing a new genre was the room that missed one. Both repairs moved that page's count into
+# its table, which is right for those two pages and reaches no third.
+#
+# WHY NOTHING ELSE SEES IT. qa_report_card scores Truth by whether cited PATHS resolve, so a page
+# with a stale count reads Truth 100 -- the blindness recorded 20260910.073603, when this shelf's
+# own front door told a reader the doorway guard reads 1,004 pages against a scan answering 1,261
+# and scored A+/98. tutorial_output_witness runs a command and compares what it PRINTS, and a
+# prose count is inside no fence. crushed_index_witness reads this shelf's room table against the
+# rooms on disk, which is one page's one table rather than the shape. Three guards, three jobs,
+# and the sentence above the table falls between all of them.
+#
+# WHAT IS GATED, at zero: drift -- a count standing over a table of a different length. Fourteen
+# sites stand and fourteen agree, so this is a wall from birth rather than a ratchet. A room
+# brought under a guard while it is clean stays clean; the same room brought under it later is a
+# repair somebody has to schedule, which is this shelf's own sentence about the doorway guard.
+#
+# WHAT IS REPORTED, never gated. near_block is a count directly above a table whose header does not
+# name its noun -- five stand, four of them counts of something the table does not tabulate, and
+# the fifth the honest cost: running-the-fleet.md writes Four places name it above four rows headed
+# Site, a real claim declined because the page and its own table choose different words for one
+# thing. listform is the same shape above a LIST, nineteen of them with sixteen agreeing; a list
+# carries no header, so the noun test has nothing to read and the three that differ are a duration,
+# a TAME rate, and a section reference. Gating that today would red on all three. Both populations
+# are printed so each decline is visible rather than silent.
+#
+# NOT tools/t/tutorial_output_witness.rish, which runs what a page quotes, and not
+# tools/cr/crushed_index_witness.rish, which reads one shelf's room table against disk. This reads
+# a sentence against the table beneath it, on every teaching page. Three jobs, three names.
+#
+# Scan: tools/fixtures/p/prose_count_table_scan.sh. Pen: tools/fixtures/p/prose_count_table_control.sh.
+
+let scan = run ["sh" "tools/fixtures/p/prose_count_table_scan.sh"]
+say scan.out
+assert scan.ok else "prose-count-table: a count above a table disagrees with it -- read the scan's own named lines"
+assert scan.out contains "verdict=ok" else "prose-count-table: the scan must reach the clean verdict"
+assert scan.out contains "drift=0" else "prose-count-table: a sentence and the table beneath it must agree"
+
+# A meter reading an empty corpus reports clean while proving nothing, so the corpus is measured.
+assert (scan.out contains "pages=0" == false) else "prose-count-table: a corpus with no pages would report clean while reading nothing at all"
+assert (scan.out contains "sites=0" == false) else "prose-count-table: a corpus holding no claim would prove nothing about the reading"
+
+# The two declined populations are asserted PRESENT, since a classifier that never fires reads
+# exactly like a corpus with nothing to classify.
+assert scan.out contains "near_block=" else "prose-count-table: the header test's decline must be counted where a reader can see it"
+assert scan.out contains "listform=" else "prose-count-table: the list shape must be counted where a reader can see it"
+
+let control = run ["sh" "tools/fixtures/p/prose_count_table_control.sh"]
+say control.out
+assert control.ok else "prose-count-table: the control must complete"
+assert control.out contains "control_verdict=ok" else "prose-count-table: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line proves
+# only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "prose-count-table: a failing leg must red this witness rather than ride a clean verdict"
+assert control.out contains "legs=37" else "prose-count-table: the pen's leg count moved -- raise it here in the commit that adds the leg"
+
+assert control.out contains "leg 1b_site_seen ok" else "prose-count-table: a count agreeing with the table beneath it must be seen as a claim"
+assert control.out contains "leg 1e_wall_lifts ok" else "prose-count-table: a tree whose counts agree must walk free"
+assert control.out contains "leg 2a_row_added_drifts ok" else "prose-count-table: a row added under an unchanged sentence must drift"
+assert control.out contains "leg 2c_wall_bites ok" else "prose-count-table: the wall must refuse one drifted count"
+assert control.out contains "leg 3a_sentence_repaired ok" else "prose-count-table: repairing the sentence must clear the drift"
+assert control.out contains "leg 3c_wall_lifts_again ok" else "prose-count-table: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "leg 4a_heading_is_a_claim ok" else "prose-count-table: a heading carries the same claim a paragraph does -- it is the shape MAP.md writes"
+assert control.out contains "leg 4d_heading_wall_bites ok" else "prose-count-table: a drifted heading must refuse exactly as a drifted paragraph does"
+assert control.out contains "leg 5a_distant_prose_is_not_a_claim ok" else "prose-count-table: prose three paragraphs above a table says nothing about it"
+assert control.out contains "leg 6a_synonym_declined ok" else "prose-count-table: a count whose noun the header does not name is past what this reading can prove"
+assert control.out contains "leg 6b_decline_is_visible ok" else "prose-count-table: a decline nobody can count is a decline nobody can check"
+assert control.out contains "leg 7a_section_number_declined ok" else "prose-count-table: a section number is not a count"
+assert control.out contains "leg 8a_compound_adjective_declined ok" else "prose-count-table: a compound adjective is not a count, whatever the table beneath happens to hold"
+assert control.out contains "leg 9a_fenced_count_declined ok" else "prose-count-table: a count inside a code sample is a sample rather than a claim"
+assert control.out contains "leg 10b_list_is_not_a_site ok" else "prose-count-table: a count above a list must be counted apart, since a list carries no header to read"
+assert control.out contains "leg 10d_list_disagreement_walks_free ok" else "prose-count-table: the list shape must never gate while its three honest refusals stand"
+assert control.out contains "leg 11a_vacuum_refuses ok" else "prose-count-table: an instrument handed no page must refuse rather than read zero"
+assert control.out contains "leg 12b_m1_next_block_bites ok" else "prose-count-table: dropping the next-block rule must change the answer"
+assert control.out contains "leg 12d_m2_header_test_bites ok" else "prose-count-table: dropping the noun-in-header test must change the answer"
+assert control.out contains "leg 12f_m3_plural_bites ok" else "prose-count-table: dropping the plural rule must change the answer"
+assert control.out contains "leg 12g_m4_fence_bites ok" else "prose-count-table: reading a fenced block as prose must change the answer"
+
+say "GREEN: prose count over table -- every count introducing a table agrees with it; drift walled at zero, both declines named."

@@ -5648,6 +5648,25 @@ path tools/t/tutorial_bare_fence_witness.rish
 tier lap   # 7s; 79 untagged fences read, 23 control legs, three mutations bitten.
 seated 20260917.034323
 
+# prose_count_table reads the sentence ABOVE a table against the table itself. A teaching page
+# introduces a table by saying how long it is -- `Four tutorials ship from this room`,
+# `## The Seven Rooms` -- and that number is a copy of something three lines below it: the table
+# grows when a hand adds a row, and the sentence does not. This shelf has paid twice and written
+# both receipts on its own face -- `docs-geode/README.md` said ten rooms while its table listed
+# twelve, from the very commit that added the twelfth, and stood sixteen days; `etc/README.md`
+# named eleven neighbors while twelve stood. Nothing else reads the class: `qa_report_card` scores
+# Truth by whether cited PATHS resolve, so a stale count reads Truth 100; `tutorial_output` reads
+# what a command PRINTS and a prose count is inside no fence; `crushed_index` reads one page's one
+# table. GATED at zero: `drift`. REPORTED: `near_block`, a count whose noun the table header does
+# not name, five standing, four of them counts of something the table does not tabulate and the
+# fifth an honest synonym past what a header test can reach; and `listform`, the same shape above a
+# LIST, nineteen with sixteen agreeing, ungated because a list carries no header and the three that
+# differ are a duration, a TAME rate, and a section reference.
+guard prose_count_table
+path tools/p/prose_count_table_witness.rish
+tier lap   # 1s; 84 pages, 14 sites all agreeing, 37 control legs, four mutations bitten.
+seated 20260917.072438
+
 # self_matching_assert reads the command FORM and the output channel before gating an operand
 # match. A simple default-stdout run carrying one literal path is gated; options, stderr,
 # compounds, other utilities, and unresolved bindings stay REPORTED, since a label is not a
