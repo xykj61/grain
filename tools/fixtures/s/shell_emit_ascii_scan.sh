@@ -32,7 +32,7 @@
 # begins after an unquoted `;`, `|`, `&`, `(` or `)`, so an emit after a pipe and an emit inside
 # `$( )` are both read. A leading assignment, an `exec`, and the keywords `then`, `else`, `elif`,
 # `do`, `time`, `!` and `{` are stepped past, bounded at six steps: `then echo ...` runs echo, and
-# leaving that step out loses 21 of the 509 characters below.
+# leaving that step out lost 21 of the 509 characters read at seating (`20260916.183114`).
 #
 # THE TWO READINGS, and the line's own redirect decides which. `spoken` is an emit with no
 # redirect: it reaches a person on their terminal and in `session-output/`, so converting it
@@ -255,7 +255,10 @@ fi
 
 # THE CEILING only falls. Lower it whenever a lap converts an emitted character; never raise it.
 #   509  `20260916.183114`  across 77 files, the reading on the lap this meter was seated
-ceiling=${SHELL_EMIT_ASCII_CEILING:-509}
+#   374  `20260917.051352`  across 70 files, after the seven `gen_*_fund_prep.sh` generators
+#                           were swept as one KIND -- 135 characters, 26 percent of the whole
+#                           reading, all of them forms the ASCII-first table spells
+ceiling=${SHELL_EMIT_ASCII_CEILING:-374}
 
 emit=$((spoken + written))
 

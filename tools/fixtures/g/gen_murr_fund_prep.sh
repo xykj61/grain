@@ -8,7 +8,7 @@ PAGE=docs-geode/edu/yonder/funds/murr-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
-    echo "gen-murr REFUSE: ${verb} is Keaton's hand alone — never this generator" >&2
+    echo "gen-murr REFUSE: ${verb} is Keaton's hand alone -- never this generator" >&2
     exit 1
     ;;
 esac
@@ -43,13 +43,13 @@ len=$(printf '%s' "$name" | wc -c)
 test "$len" -eq 4
 
 echo "seat: fund=Murr order=1 sign_index=0 (Aries) vane=%murr dns_prep=murr.fund"
-echo "module: MUR (was MALA) · L1 currency lean"
-echo "dedication: Kyler Murray (honor) · Minnesota Vikings QB as of 2026 public reporting"
-echo "executive: Keaton Sealy Livermore (from DJINN · POLE 20260730.150702)"
-echo "season: MUR Chapter innermost u0-u127 · massive rename approved as waves"
-echo "wov: unify into MUR · retire WOV roadmap last"
+echo "module: MUR (was MALA) - L1 currency lean"
+echo "dedication: Kyler Murray (honor) - Minnesota Vikings QB as of 2026 public reporting"
+echo "executive: Keaton Sealy Livermore (from DJINN - POLE 20260730.150702)"
+echo "season: MUR Chapter innermost u0-u127 - massive rename approved as waves"
+echo "wov: unify into MUR - retire WOV roadmap last"
 echo "page: docs-geode/edu/yonder/funds/murr-opening.md"
-echo "witness:murr-open GREEN — seat · dedication · hard lines · rename spine"
-echo "refuse: deploy · wallet · gas · shred · breach"
+echo "witness:murr-open GREEN -- seat - dedication - hard lines - rename spine"
+echo "refuse: deploy - wallet - gas - shred - breach"
 echo "murr_fund=prep"
-echo "GREEN: gen-murr — Aries seat 1 prep · MUR rename spine · deploy RED"
+echo "GREEN: gen-murr -- Aries seat 1 prep - MUR rename spine - deploy RED"
