@@ -234,7 +234,134 @@ leg empty_pen_one_finder "$(echo "$out" | read_key finders)" 1
 # number in four digits here and the leg would say so.
 leg empty_pen_reads_the_pen "$(echo "$out" | read_key sources_tracked)" 2
 
-# -- 10. THIS FAMILY'S OWN MEMBERSHIP, read out of the live scan rather than asserted ------------
+# -- 10. THE DOORS READING, over a pen whose every population is known by construction ---------
+# Four files decide the sweep's cost here: one finder naming the build-output sentinel, one pen
+# layout creating that directory inside a repository, and two creating it outside any repository.
+# So `finder_files` reads 1, `pen_files` 3, the union 4, and `pen_files_no_repo` 2 -- four
+# different counts over the same four files, which is what makes a merged number unable to stand
+# in for any of them.
+# doors_pen <name> [<scan source>] -- the one layout every doors leg reads, built once and reused
+# by each mutation so a mutated reading is compared against the SAME three files.
+doors_pen() {
+  d=$(build "$1" ${2:+"$2"})
+  mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
+  printf 'rishi/bin/\n' > "$d/.gitignore"
+  plant_finder "$d" tools/fixtures/r/planted_door.sh ROOT rishi/bin tools/fixtures
+  mkdir -p "$d/tools/fixtures/p"
+  printf '#!/bin/sh\npen=$(mktemp -d)\nmkdir -p "$pen/rishi/bin"\n( cd "$pen" && git init -q . )\n' \
+    > "$d/tools/fixtures/p/pen_with_repo.sh"
+  printf '#!/bin/sh\npen=$(mktemp -d)\nmkdir -p "$pen/rishi/bin"\n' \
+    > "$d/tools/fixtures/p/pen_without_repo.sh"
+  # A SECOND repo-less layout, so the git door's count differs from the count a mutation
+  # inverting its filter would produce. One of each would make those two numbers agree.
+  printf '#!/bin/sh\npen=$(mktemp -d)\nmkdir -p "$pen/rishi/bin/x"\n' \
+    > "$d/tools/fixtures/p/pen_without_repo_b.sh"
+  echo "$d"
+}
+door_key() { awk -v r="$1" '$2 == r' | tr ' ' '\n' | read_key "$2"; }
+
+d=$(doors_pen doors)
+doors=$(commit_and_read "$d" --doors)
+leg doors_three_rows "$(echo "$doors" | grep -c '^door ')" 3
+leg doors_sweep_finder_files \
+  "$(echo "$doors" | door_key sweep finder_files)" 1
+leg doors_sweep_counts_pens \
+  "$(echo "$doors" | door_key sweep pen_files)" 3
+leg doors_sweep_union \
+  "$(echo "$doors" | door_key sweep files)" 4
+leg doors_git_door_prices_no_repo \
+  "$(echo "$doors" | door_key git_root pen_files_no_repo)" 2
+leg doors_track_reads_nothing_tracked \
+  "$(echo "$doors" | door_key track tracked_today)" 0
+leg doors_track_names_the_rule \
+  "$(echo "$doors" | door_key track ignore_rule | grep -c gitignore)" 1
+# The replacement's two properties, measured in a pen where `rishi/src` is tracked and stands at
+# the root alone -- the same two readings the live tree answers.
+leg doors_replacement_tracked \
+  "$(echo "$doors" | door_key sweep replacement_tracked)" yes
+leg doors_replacement_not_below_root \
+  "$(echo "$doors" | door_key sweep replacement_below_root)" 0
+
+# A REPLACEMENT OCCURRING BELOW THE ROOT IS CAUGHT. One tracked file under `sub/rishi/src/` makes
+# the proposed sentinel answer somewhere below the root, where a swept walk would stop early.
+mkdir -p "$d/sub/rishi/src" && printf 'x\n' > "$d/sub/rishi/src/f.rye"
+leg doors_replacement_below_root_seen \
+  "$(commit_and_read "$d" --doors | door_key sweep replacement_below_root)" 1
+
+# -- 11. A TREE WITH NO BUILD-OUTPUT SENTINEL PRINTS NO DOOR AT ALL -----------------------------
+# The comfortable failure here is a reading that always emits its three rows; a door named for a
+# sentinel that does not exist is an invitation to sweep nothing.
+d=$(build doors_clean)
+plant_finder "$d" tools/fixtures/r/planted_clean.sh ROOT rishi/src tools/fixtures
+leg doors_clean_tree_no_rows "$(commit_and_read "$d" --doors | grep -c '^door ')" 0
+
+# -- 12. BOTH REPAIRS PROVEN ON METAL, in a real checkout of tracked bytes ----------------------
+# `git clone` carries tracked content and nothing else, which is exactly the checkout %788 names.
+# The elder finder must refuse there, and each door must resolve -- run rather than argued.
+d=$(build doors_metal)
+mkdir -p "$d/rishi/bin" && printf 'binary\n' > "$d/rishi/bin/rishi"
+printf 'rishi/bin/\n' > "$d/.gitignore"
+plant_finder "$d" tools/fixtures/r/elder.sh ROOT rishi/bin tools/fixtures
+plant_finder "$d" tools/fixtures/r/swept.sh ROOT rishi/src tools/fixtures
+( cd "$d" && git add -A >/dev/null 2>&1 && git commit -qm 'pen: two finders' >/dev/null 2>&1 )
+git clone -q "$d" "$pen/bare_checkout" 2>/dev/null
+( cd "$pen/bare_checkout" && sh tools/fixtures/r/elder.sh >/dev/null 2>&1 )
+leg metal_elder_refuses_in_tracked_bytes "$?" 2
+leg metal_swept_resolves_in_tracked_bytes \
+  "$( cd "$pen/bare_checkout" && sh tools/fixtures/r/swept.sh 2>/dev/null )" planted
+
+# THE TRACK DOOR, with one tracked file under the build-output name and NO finder changed.
+printf '/rishi/bin/\n!/rishi/bin/.keep\n' > "$d/.gitignore"
+printf 'This directory holds the built rishi binary.\n' > "$d/rishi/bin/.keep"
+( cd "$d" && git add -A -f >/dev/null 2>&1 && git commit -qm 'pen: track the sentinel' >/dev/null 2>&1 )
+git clone -q "$d" "$pen/tracked_checkout" 2>/dev/null
+leg metal_track_door_carries_sentinel \
+  "$( [ -d "$pen/tracked_checkout/rishi/bin" ] && echo yes || echo no )" yes
+leg metal_elder_resolves_after_track_door \
+  "$( cd "$pen/tracked_checkout" && sh tools/fixtures/r/elder.sh 2>/dev/null )" planted
+
+# -- 13. THE DOORS READING'S OWN MUTATIONS, RUN rather than recorded ----------------------------
+# A paper's account of its own mutations is a claim. Each mutation below rewrites a pen copy of
+# the scan by LINE NUMBER, reads the same three-file layout through it, and asserts the number
+# moves. Each planted value is checked to differ from the truth, since a plant landing on the
+# value already standing tests the unmutated file.
+mutate() {
+  sed "$2" "$scan" > "$pen/scan_$1.sh"
+  cmp -s "$scan" "$pen/scan_$1.sh" && { echo "control_verdict=mutation_$1_changed_nothing" >&2; exit 1; }
+  d=$(doors_pen "mut_$1" "$pen/scan_$1.sh")
+  commit_and_read "$d" --doors
+}
+pen_line() { grep -n "$1" "$scan" | head -1 | cut -d: -f1; }
+
+# 1. The pen-layout population is the half nobody had counted. Emptied, the sweep's cost falls
+#    back to the finder count the row already knew -- 2 pen files become 0 and the union 3 become 1.
+out=$(mutate nopens "$(pen_line 'grep -lE "mkdir')s|mkdir|zzznomatch|")
+leg mutation_dropping_pen_count_bites "$(echo "$out" | door_key sweep pen_files)" 0
+leg mutation_dropping_pen_count_moves_union "$(echo "$out" | door_key sweep files)" 1
+
+# 2. The git door is priced by the pens building NO repository. Inverting that one flag counts the
+#    pens that DO build one -- 1 against the truth's 2, which is why the layout carries two.
+out=$(mutate norepofilter "$(pen_line "grep -LE 'git")s|grep -LE|grep -lE|")
+leg mutation_inverting_repo_filter_bites "$(echo "$out" | door_key git_root pen_files_no_repo)" 1
+
+# 3. A door named for a sentinel standing in every checkout invites a sweep repairing nothing.
+#    Removing the class filter emits a row per sentinel rather than per build output.
+out=$(mutate allclasses "$(pen_line '\[ "\$cls" = build_output \]')s|.*|    :|")
+leg mutation_dropping_class_filter_bites \
+  "$( [ "$(echo "$out" | grep -c '^door ')" -gt 3 ] && echo more || echo three )" more
+
+# 4. THE BELOW-ROOT GUARD, mutated against a pen that HAS a below-root occurrence -- the only
+#    layout where the guard can be seen working. Narrowing the pattern to the root's own path
+#    reads 0 where the truth is 1, which is a false all-clear about where a swept walk stops.
+sed "$(pen_line 'git ls-files -- "\*/\$SWEEP_TO/\*"')s|\*/\$SWEEP_TO/\*|\$SWEEP_TO/*|" \
+  "$scan" > "$pen/scan_belowroot.sh"
+cmp -s "$scan" "$pen/scan_belowroot.sh" && { echo "control_verdict=mutation_belowroot_changed_nothing" >&2; exit 1; }
+d=$(doors_pen mut_belowroot "$pen/scan_belowroot.sh")
+mkdir -p "$d/sub/rishi/src" && printf 'x\n' > "$d/sub/rishi/src/f.rye"
+leg mutation_narrowing_below_root_bites \
+  "$(commit_and_read "$d" --doors | door_key sweep replacement_below_root)" 0
+
+# -- 13. THIS FAMILY'S OWN MEMBERSHIP, read out of the live scan rather than asserted ------------
 live=$(sh tools/fixtures/r/root_finder_scan.sh --explain tools/fixtures/r/root_finder_control.sh 2>/dev/null)
 case "$live" in
   *"root_finder_control.sh sentinels=rishi/src,tools/fixtures verdict=runnable"*) self=runnable ;;
