@@ -78,7 +78,15 @@ assert scan.ok else "mantra-cli-record: the scan must complete"
 assert scan.out contains "built=yes" else "mantra-cli-record: the CLI did not compile, so every reading below is a reading of nothing"
 assert scan.out contains "fresh_header=mantra-weave-20260916.101910" else "mantra-cli-record: a new store's weave blob is not the wide record -- a merged history still has nowhere to land"
 assert scan.out contains "counter_fields=2" else "mantra-cli-record: the counters line does not carry both counters, so from_v2 cannot check a row against either"
-assert scan.out contains "row_fields=6" else "mantra-cli-record: a record row does not carry five fields -- the site and the run are what a merge creates"
+assert scan.out contains "row_fields=6" else "mantra-cli-record: a record row does not carry six fields -- the site and the run are what a merge creates, and the order key is what a replacement inherits"
+
+# THE COUNT THIS WITNESS SPELLS IS WALLED BY THE MODULE'S OWN CONSTANT, added `20260917`. The
+# assertion above stood at `row_fields=6` with a message reading "five fields" for the lap after
+# the order key landed, which is what a hand-spelled number does: it goes stale in the half
+# nobody greps. `mantra/src/weave.rye` publishes `order_row_fields` under a comptime assert bound
+# to `OrderRow`'s own field list, so this leg makes the two numbers one reading.
+let published = run ["sh" "-c" "w=$(grep -oE 'row_fields=[0-9]+' tools/m/mantra_cli_record_witness.rish | head -1 | grep -oE '[0-9]+'); m=$(grep -oE 'order_row_fields = [0-9]+' mantra/src/weave.rye | head -1 | grep -oE '[0-9]+'); [ -n \"$w\" ] && [ -n \"$m\" ] && [ \"$w\" = \"$m\" ]"]
+assert published.ok else "mantra-cli-record: the field count this witness asserts and the count mantra/src/weave.rye publishes disagree -- a row grew or shrank and only one of the two readings heard it"
 assert scan.out contains "elder_opens=yes" else "mantra-cli-record: a store written before 20260909 no longer opens, which is a lost history rather than a failed test"
 # THE ELDER STORE'S ONE REPORTED CHANGE IS THE TERMINATOR, from `20260917`.
 # `split_lines` keeps the empty token a trailing newline produces now (REDS %689,

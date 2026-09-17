@@ -2845,6 +2845,24 @@ path tools/m/mantra_cli_record_witness.rish
 tier lap
 seated 20260910.001500
 
+# mantra_weave_order_record -- the record every store written since `20260916` holds, read whole.
+# Its sibling `mantra_weave_v2` proves the ELDER record's lift and lower from both sides, and the
+# order-key record that replaced it stood unproven at the record level: `to_order_record` and
+# `from_order_record` were read by mantra/src/weave.rye and mantra/src/main.rye and by no guard.
+# Three readings did stand over the newer record and each is blind to one thing -- `cli_record`
+# asserts the header and the row's field COUNT, `document_roundtrip` compares rendered text -- so
+# a writer and a reader agreeing on arity and disagreeing on ASSIGNMENT passes all three. The
+# mapping is hand-spelled four times over six fields. `row_eql` walks the row type's own field
+# list, `order_record_eql` compares both counters and every field of every row, and a comptime
+# assert binds each published count to its struct's own field list. THE MEASUREMENT IS A CONTROL
+# LEG: with the reader parsing `site` where `run` was written, `mantra_weave_merge` and
+# `mantra_weave_apply` both still reach GREEN, asserted as `blindness_held=yes`. `tier lap` at 30s
+# beside its sibling's 14.4s guard and 20.9s control -- the same order rather than a new one.
+guard mantra_weave_order_record
+path tools/m/mantra_weave_order_record_witness.rish
+tier lap
+seated 20260917.130215
+
 # mantra_multifile -- a second tracked file keeps the first one's history. A commit blob named ONE
 # weave for a whole directory, so `cmd_add` diffed the next file against the file before it and
 # applied the difference, deleting every line of the earlier one -- while the CLI printed
