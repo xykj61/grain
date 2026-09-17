@@ -164,17 +164,17 @@ moved into `tools/fixtures/t/tutorial_run_roster.sh`, sourced as a SIBLING by bo
 spelled twice, and **the extraction moved no count**: the elder report reads byte-identical before
 and after. **79 untagged fences**, `bare_runnable_lone` **walled at zero**, `bare_runnable_paired`
 ratcheted at **2**.
-**A LABEL IS NOT FREE TO ADD, WHICH IS THE FINDING.** Tagging tells the elder scan to RUN the fence,
-so a tag is a promise about the block beneath. Six untagged fences held runnable commands; I tagged
-all six and **reverted two**, both on `running-the-fleet.md`: at line 30 the block beneath is the
-NEXT COMMAND BLOCK, and at line 107 `sh tools/f/fleet_watch.sh` with no flag watches until a hand
-stops it, so a checked pair would hang the full timeout and read as drift. So lone is a **wall**,
-paired a **ratchet** -- only a reader of the page can say what stands beneath.
+**A LABEL IS NOT FREE TO ADD, WHICH IS THE FINDING.** Tagging tells the elder scan to RUN the fence.
+Six untagged fences held runnable commands; I tagged all six and **reverted two**, both on
+`running-the-fleet.md`: at line 30 the block beneath is the NEXT COMMAND BLOCK, and at line 107
+`sh tools/f/fleet_watch.sh` with no flag watches until a hand stops it, so a checked pair would hang
+the full timeout and read as drift. So lone is a **wall**, paired a **ratchet**.
 **PROVEN:** pen **23 legs, 0 failing**, three mutations bitten.
 **MINE:** `run_roster_why` answered `no_command_line` both when a block held no command AND when
 every line PASSED, so my first reading counted six runnable fences as zero -- one value doing two
-jobs, in the instrument built to read a boundary. A pen mutation holds it now, and two mutations
-that matched nothing read the unmutated answer, so each is checked against the file's bytes first.
+jobs, in the instrument built to read a boundary. A pen mutation holds it now.
+**AND `%803` FIRED ON ME AT THE SEND**, a lap after it was booked: my claim-close follow-up carried
+no nib, so the guard read the card two commits back. Pass the hash; do not let the writer derive it.
 **REDS FIRST CLOSED FOUR**, every one of them mine: `shell_dialect` and `shell_dialect_touch`,
 one fault wearing two names, since my new control spelled GNU-only `sed -i` twice and now calls
 `sed_inplace` out of `tools/fixtures/s/shell_portable.sh`; `fold_shelf_link_repoint` on my own new
@@ -227,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `80e2784957` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `75c5df31d3` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
