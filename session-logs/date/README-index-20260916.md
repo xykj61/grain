@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.214125` | [A control by role, and the five doors](20260916/20260916-214125_a-control-by-role-and-the-five-doors.kyri) | the skip was one word over three states |
 | `20260916.213614` | [The shelf that ran none of them](20260916/20260916-213614_the-shelf-that-ran-none-of-them.kyri) | Five printed answers, bound to no instrument until now |
 | `20260916.213335` | [A pin rewrite ate a directive](20260916/20260916-213335_a-pin-rewrite-ate-a-directive.kyri) | INNER LOOP item 7 gone ten hours; the list read 6, nib, 8 |
 | `20260916.212726` | [The board with two shapes](20260916/20260916-212726_the-board-with-two-shapes.kyri) | The claim board had two shapes; only one was ever read |

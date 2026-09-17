@@ -64,12 +64,6 @@ stamp 20260916.210324
 epoch 1789607004
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh
 what The build receipt's hit path now spends about 112 ms of a 140 ms reading walking rye/lib/std, reading all 552 files and 16,416,628 bytes and hashing them in software -- roughly 80 percent of the work of proving a skip is safe, spent on a tree nobody touched. Measured here with the current binary: a warm hit is 140-146 ms, a walk-and-stat-only pass over the same tree is 16-21 ms including process start, and hashing its bytes alone is 145-154 ms. One stat cannot stand for a tree, so compose the tree's identity from the walk: hash the sorted relative path, size, inode, mtime and ctime of every file into one identity digest, remember the content digest beside the rye binary under that identity in a Kyri record, and feed the remembered 32 bytes into the key while inode, size, mtime, ctime and tree membership all still agree. The walk stays and the read goes; ryekey_marker moves v8 to v9 because the key absorbs a digest where it absorbed a byte stream.
-claim diffuser-plant-by-role
-seat diffuser
-stamp 20260916.213303
-epoch 1789608783
-paths tools/fixtures/c/control_perturbation_scan.sh tools/fixtures/c/control_perturbation_control.sh active-designing/
-what The perturbation probe skipped three of nine candidates for no tracked family control, and that one word covered three different states. Each of the three holds a family instrument by ROLE rather than by NAME: tools_py_ban plants context/fixtures/tools_py_ban_tree/tools/planted.py and hands its selftest a TOOLS_PY_SCAN_ROOT override, so the plant sits in a root the living find never walks; copy_sameness plants context/fixtures/copy_sameness_drift/tally_copy_drifted.rye under a basename the scan's own find -name tally_copy.rye excludes; living_docs_lint holds no plant at all, only a roster and a keeps allowlist, which are INPUTS rather than plants. Replace family_control with family_instrument resolving control then plant, print which kind resolved, and split the skip into no_family_instrument distinct from the control case. Then name the doors a family uses to keep its own plant out of its own field.
 claim grass-witness-header-genre
 seat grass
 stamp 20260916.214026
