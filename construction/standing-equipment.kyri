@@ -2863,6 +2863,28 @@ path tools/m/mantra_weave_order_record_witness.rish
 tier lap
 seated 20260917.130215
 
+# mantra_record_column -- which column is which, in the record on disk. A record's columns carry
+# meaning by POSITION alone, so moving the writer's tuple and the reader's row TOGETHER changes
+# the format's meaning while every round trip stays clean, and every store written before that
+# day is misread forever in silence. Measured before the guard was built: planting all ten
+# pairwise column swaps on both sides at once, the standing `mantra_cli_record` scan is
+# BYTE-IDENTICAL on all ten. Its pen is why -- a fresh store commits once, so its rows read
+# `1 0 0 0 0 alpha`, three columns a constant zero and two the same rising sequence, which also
+# lets four of the ten ONE-SIDED swaps travel free on each side. The cure is data rather than a
+# rule: a second commit carrying a REPLACEMENT gives gen a value above one, pos six distinct
+# values and ord a non-decreasing run with a repeat -- four profiles over five columns, read off
+# the record's own bytes. TWO HALVES, EACH PRICED BY ITS OWN MUTATION: the column profiles are
+# the only reading that sees a consistent swap, the round trip the only one that sees a one-sided
+# one, and the control strikes each out and aims a swap only that half catches. THE BOUND IS
+# ASSERTED RATHER THAN STATED: site and run share a profile and no store this pen can write will
+# part them, since the CLI exposes no merge, so all three families read `blind` on that pair and
+# the witness asserts each. `tier lap` beside its siblings' 30s, thirty swap legs at roughly
+# four seconds a build.
+guard mantra_record_column
+path tools/m/mantra_record_column_witness.rish
+tier lap
+seated 20260917.150224
+
 # mantra_multifile -- a second tracked file keeps the first one's history. A commit blob named ONE
 # weave for a whole directory, so `cmd_add` diffed the next file against the file before it and
 # applied the difference, deleting every line of the earlier one -- while the CLI printed
