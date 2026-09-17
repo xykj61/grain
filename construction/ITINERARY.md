@@ -136,9 +136,9 @@ one answered. Nothing in this tree had ever run one of them. `docs_command_path`
 PATH resolves, and a path that resolves says nothing about what the command behind it prints today.
 Same class as last lap's own finding one room over -- a front-door claim bound to no witness went
 false inside a fortnight. **A lantern that fires twice becomes a loom.**
-**THE MECHANISM.** `tools/fixtures/d/demo_output_scan.sh` walks a rostered page's fences, pairs each
-```sh block with the plain block below it, RUNS the command from the repository root, and reads the
-answer back under whichever of three readings the page itself declared. **exact** -- no marker --
+**THE MECHANISM.** `tools/fixtures/d/demo_output_scan.sh` walks a rostered page's fences, pairs
+each `sh` fence with the plain block below it, RUNS the command from the repository root, and reads
+the answer back under whichever of three readings the page itself declared. **exact** -- no marker --
 binds every byte, which is what a fixed input earns: a SHA3-256 digest of five bytes and a
 resolver's three lines. **volatile** frees every digit run and binds every other character, so a
 climbing count passes free where a renamed key or a flipped verdict reds. **selected** wants each
@@ -218,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `397037a129` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4cd6b3ea1f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -230,18 +230,18 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- A DEAD LAP LEFT A PAPER AND A PROMISE THE CONTROL NEVER KEPT.** Account
-[born on its shelf](archive/20260916-200108_itinerary-landed-accounts.md), which is this card's
-own open question answered by doing. Two laps died mid-send; `stash@{9}`'s whole set landed --
-the three-door paper (**A/93**), `prove_head_insert_lands_last`, and the head passages -- after
-the control learned the two plants that head had already promised, **9 legs to 13**, with two
-`_lifted` phases naming claim 9 as the leg that reads them. Cold **316 read, 301 green, 13 red**;
-hot scoped **311, 294, 15**; `tree_moved=no` both. Four reds were mine and all four are closed.
-**YOURS:** the QA card takes its Meter lines from an `invariant:` comment, so a Rishi witness
-stating its bounds in `assert ... else` alone is graded at the door -- **19 of 40 sampled
-`tools/*_witness.rish` read below B**. A red, a ratchet, or a card that says so?
-**MINE:** `stash@{8}` still holds a whole Place head-enumeration lap, so `stash_record` reads
-`unlanded=1` and the number is honest. The next lap takes that stash whole.
+**PATCHOULI -- THE CARD READ PERFECTLY AND RENDERED AS ONE CODE BLOCK.** Both elder accounts
+[shelved whole](archive/20260916-231943_itinerary-landed-accounts.md), the QA-card ask carried
+forward. Row `20260916.231943`. **FIRE SEES** (row 2).
+**THE SIBLING OF `%795`, FOUND BY ITS OWN PROBE FAILING.** A list reading written for that class
+answered **zero** here and should not have: `99d4948e6a` wrapped a sentence so a bare triple-backtick
+opener landed at column 0, and the unclosed fence swallowed every list below it. CommonMark runs it
+to end of document, so **30,791 of this card's 38,970 bytes, 79 percent**, rendered as one code block
+for every markdown reader. Repaired, with a second an hour later. **A hand wrapping prose to a column
+creates markup it never typed** -- a fence opener and a list marker are both decided by what starts a
+line. **GATED:** `living_pin_fence` walls living pages at **zero**, **41 legs, three mutations
+bitten**.
+**YOURS:** an unterminated table, a heading eaten by a list -- a lap each, or do two walls do?
 
 ## Simple, Lovable, Complete order
 
@@ -305,8 +305,8 @@ hits each; ReleaseSafe 58, ReleaseFast 56, ReleaseSmall 56. Byte sizes agree to 
 (12,512,760 against 12,682,680) and no release mode comes within a factor of three. Release **folds**
 rather than strips -- falsifier 2 never fired, and the extension compiles in at every mode.
 **FALSIFIER 1 PASSES WIDER THAN IT WAS WRITTEN.** Timed through bakery's `rye key` over the same
-552 files and 16,416,628 bytes, seven runs each: cold **Debug 172 ms**, ReleaseSafe 57, ReleaseFast
-32. Warm floor 32 / 12 / 11. Subtracting it isolates walk-and-hash at **140 / 45 / 21**, against the
+552 files and 16,416,628 bytes, seven runs each: cold **Debug 172 ms**, ReleaseSafe 57,
+ReleaseFast 32. Warm floor 32 / 12 / 11. Subtracting it isolates walk-and-hash at **140 / 45 / 21**, against the
 elder probe's 110 / **45** / **20-21** through a different program -- two of three on the same
 millisecond. The predicted 2x is **3.1x**.
 **AND THE LEVER REACHES PAST HASHING:** the warm path hashes nothing and still costs 2.7x under
