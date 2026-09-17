@@ -7470,3 +7470,14 @@ guard loom_name
 path tools/l/loom_name_witness.rish
 tier lap
 seated 20260917.083040
+
+# alloc_bound_reach reads TAME root rule 1 where a hand meets it. bound_kind_census reads the 670
+# bound DECLARATIONS and sorts them by dimension; nothing read the 1,370 allocation CALL SITES, in
+# the reflex the core states first. One wall at zero -- a count naming a max_ that is declared
+# nowhere. Every other class is REPORTED, since boundedness is dataflow and a text scan cannot
+# follow it; fn_neither rides no ceiling because a ratchet over a growing population is a wall
+# with a delay.
+guard alloc_bound_reach
+path tools/a/alloc_bound_reach_witness.rish
+tier lap   # 21s; 1,370 sites and 1,046 allocating functions read, 44 control legs, four mutations bitten.
+seated 20260917.090000
