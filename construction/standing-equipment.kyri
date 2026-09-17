@@ -166,6 +166,7 @@ seated 20260827.181605
 guard reds_row_shrink
 path tools/r/reds_row_shrink_witness.rish
 seated 20260917.071327
+tier lap       # 9s on this pier: one git log -p over the spine, plus its pen
 # A ledger row is written once and never edited, and that law was held by hands alone. A rebase is
 # not a hand: it resolves one row's text in favour of the side that booked a DIFFERENT number, and
 # reds_ledger_monotone reads only the spine's ORDER, so a row losing a paragraph keeps its gaps,

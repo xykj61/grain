@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.074342` | [The tier the roster wanted](20260917/20260917-074342_the-tier-the-roster-wanted.kyri) | A new guard on no clock is a guard nobody runs. |
 | `20260917.072125` | [The unit that survives the pier](20260917/20260917-072125_the-unit-that-survives-the-pier.kyri) | A falsifier that fired half the time; CPU medians move 44x less. |
 | `20260917.071855` | [A rebase is not a hand](20260917/20260917-071855_a-rebase-is-not-a-hand.kyri) | The class fired seven times, not once; the pin unblocked. |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
