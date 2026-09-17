@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.072125` | [The unit that survives the pier](20260917/20260917-072125_the-unit-that-survives-the-pier.kyri) | A falsifier that fired half the time; CPU medians move 44x less. |
+| `20260917.071855` | [A rebase is not a hand](20260917/20260917-071855_a-rebase-is-not-a-hand.kyri) | The class fired seven times, not once; the pin unblocked. |
 | `20260917.060349` | [A door marked checkable](20260917/20260917-060349_the-door-marked-checkable.kyri) | 435 pages claim the room; 8 settled ones name no evidence. |
 | `20260917.054906` | [A killed lap is not a lost lap](20260917/20260917-054906_a-killed-lap-is-not-a-lost-lap.kyri) | Parked lap recovered whole from the dead-letter box; five reds closed. |
 | `20260917.053050` | [The family the convention could not see](20260917/20260917-053050_the-family-the-convention-could-not-see.kyri) | Six fund guards seated; the gated reading saw none. |
@@ -23,6 +24,7 @@
 | `20260917.034639` | [The lap that was cut mid-send](20260917/20260917-034639_the-lap-that-was-cut-mid-send.kyri) | Parked work recovered whole; re-proven on the landed tree. |
 | `20260917.033648` | [a reading nobody can flip](20260917/20260917-033648_a-reading-nobody-can-flip.kyri) | %807 pressed from the CLI at last; no door taken. |
 | `20260917.033133` | [The price of an open](20260917/20260917-033133_the-price-of-an-open.kyri) | A file costs two round trips, not one; the open, not readahead. |
+| `20260917.030059` | [The nib writer names its shape](20260917/20260917-030059_the-writer-that-names-its-shape.kyri) | %803 half-closed on 34 pen legs; `20260917.025658` booked |
 | `20260917.025900` | [a ceiling that reds on growth](20260917/20260917-025900_a-ceiling-that-reds-on-growth.kyri) | an absolute over a growing population; gate moved to the swept room. |
 | `20260917.025354` | [the question a ledger row asked](20260917/20260917-025354_the-question-a-ledger-row-asked.kyri) | %767 wanted a guard; one now reads it |
 | `20260917.024511` | [The send that could not hold its pin](20260917/20260917-024511_the-send-that-could-not-hold-its-pin.kyri) | a contested send cannot hold the nib; both repairs refused |

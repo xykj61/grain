@@ -1,17 +1,29 @@
 # tools/r/remember_git_nib_write_witness.rish -- prove the nib writer, without letting it near this tree.
 #
 # WHAT IT PROVES. `tools/r/remember_git_nib.rish` derives the operator card's Git nib from git and
-# writes it. Two claims carry the program: it writes the value the GUARD will read back, and it
-# refuses rather than mutating whenever those two would disagree. Both are proven on planted cards
-# in a throwaway pen by `tools/fixtures/r/remember_git_nib_write_control.sh`, 34 cases, every refusal
+# writes it. Three claims carry the program: it writes the value the GUARD will read back, it
+# refuses rather than mutating whenever those two would disagree, and it writes the shape the CALLER
+# named rather than a shape it chose. The first two are proven on planted cards in a throwaway pen
+# by `tools/fixtures/r/remember_git_nib_write_control.sh`, 34 cases. The third is proven on real git
+# repositories by `tools/fixtures/r/remember_git_nib_shape_control.sh`, 34 legs -- every refusal
 # shown from both sides and every welcome asserted as hard as every refusal.
+#
+# WHY A THIRD CLAIM ARRIVED LATE. `.claude/rules/remember-git-nib.md` describes two moves that pin
+# the card, and they name commits one apart: rule 2 amends after the final rebase, so the nib is
+# `HEAD^`; rule 5 lands a follow-up commit on top of the work commit, so the nib is `HEAD`, which
+# becomes that commit's parent. The driver derived `HEAD^` for both until REDS %803, and a lap
+# running it exactly as rule 5 asks pinned the grandparent -- a hash that resolves, is an ancestor
+# of HEAD, and is none of the three states this tree's guard accepts. The shape control carries each
+# shape through the follow-up commit the rule describes and asks the guard's own predicate what it
+# sees: `parent` for one and `stale` for the other. That is the row's red, run rather than argued.
 #
 # WHY THE WRITE IS NEVER RUN AGAINST THIS TREE. A roster pass reads the tree cold at the open and hot
 # after `git add`, and refuses `tree_moved` when the two digests differ. A witness that wrote the
 # real card would move the tree from inside the pass that is measuring it. So the write is proven in
-# the pen, and against the live tree this witness asserts only the two things it can assert without
-# touching anything: that render mode names exactly what `git rev-parse --short=10 HEAD^` names, and
-# that render mode leaves the card byte-identical. The live WRITE has its own judge already --
+# the pen, and against the live tree this witness asserts only what it can assert without touching
+# anything: that each render shape names exactly what `git rev-parse` names for it, that the two
+# differ here so this tree can tell them apart, that render leaves the card byte-identical, and that
+# a write naming no shape refuses before the card is ever opened. The live WRITE has its own judge already --
 # `tools/r/remember_git_nib_witness.rish`, which reads the card after the send and says whether the
 # nib is one of the three honest states.
 #
@@ -53,6 +65,29 @@ assert again.ok else "remember-git-nib-write: render mode must succeed a second 
 assert (trim again.out) == (trim before.out) else "remember-git-nib-write: render mode CHANGED the card -- it must touch nothing"
 say "render leaves the card byte-identical, proven by digest"
 
+# 2b. Each shape names what git names for it, and neither is recited. The follow-up shape is the
+# one REDS %803 was booked for, so it is compared to git here rather than taken from the control.
+let rendered_follow = run ["sh" "-c" "rishi/bin/rishi run tools/r/remember_git_nib.rish follow-up"]
+assert rendered_follow.ok else "remember-git-nib-write: the follow-up shape must render on a tree with a HEAD"
+let truth_head = run ["sh" "-c" "git rev-parse --short=10 HEAD"]
+assert truth_head.ok else "remember-git-nib-write: HEAD must resolve for this witness to have a subject"
+let want_head = trim truth_head.out
+assert rendered_follow.out contains "HEAD is ${want_head}" else "remember-git-nib-write: the follow-up shape must name HEAD exactly as git spells it -- wanted ${want_head}"
+assert want_head != want else "remember-git-nib-write: the two shapes must name DIFFERENT commits here, or this tree cannot tell them apart and the legs below prove nothing"
+say "the follow-up shape names ${want_head} and the amend shape names ${want} -- one commit apart, which is the whole of REDS %803"
+
+# 2c. A write naming no shape refuses, and refuses BEFORE the card is opened. Run against the live
+# tree on purpose: this is the one write path safe to drive here, since its refusal precedes every
+# byte. Proven by digest rather than by the program's own word.
+let card_before = run ["sh" "-c" "git hash-object construction/ITINERARY.md"]
+assert card_before.ok else "remember-git-nib-write: the card must be hashable before the refusal"
+let guessless = run ["sh" "-c" "rishi/bin/rishi run tools/r/remember_git_nib.rish write 2>&1"]
+assert guessless.ok == false else "remember-git-nib-write: a write naming no shape must REFUSE -- picking for the caller is the fault %803 booked"
+assert guessless.out contains "REFUSES to guess" else "remember-git-nib-write: the refusal must say what it declines to do"
+let card_after = run ["sh" "-c" "git hash-object construction/ITINERARY.md"]
+assert (trim card_after.out) == (trim card_before.out) else "remember-git-nib-write: the shapeless write TOUCHED the card -- refusal must precede mutation"
+say "a write naming no shape refuses with the card byte-identical, proven by digest"
+
 # 3. The whole program, on planted cards in a pen: welcomes and refusals both.
 let control = run ["sh" "tools/fixtures/r/remember_git_nib_write_control.sh"]
 say control.out
@@ -92,4 +127,32 @@ assert control.out contains "PASS: no arguments at all refuses" else "remember-g
 assert control.out contains "cases_red=0" else "remember-git-nib-write: every planted case must behave"
 assert control.out contains "control_verdict=ok" else "remember-git-nib-write: the control must agree with itself"
 
-say "GREEN: remember-git-nib-write -- the writer names HEAD's parent, writes what the guard reads back, and refuses rather than mutating when the two would disagree. Thirty-four cases on planted cards in a pen, every refusal shown from both sides and every welcome asserted as hard: the substitution keeps the line's prose, its backticks and its line count; a second nib line is left where it stands; the tracked mode survives the rewrite; a hexadecimal English word on the nib line refuses with the card byte-identical, and a clean card one line later proves the pen innocent; the width bound bites one past each end and is free at its own number. Against this tree it asserts only what it can assert without touching anything -- render names exactly what git rev-parse answers, and leaves the card byte-identical by digest -- because a witness that wrote the real card would move the tree from inside the roster pass measuring it. The live card has its own judge in tools/r/remember_git_nib_witness.rish, which never edits and never pushes."
+# 4. The two shapes, on real git repositories in a pen: which commit each names, and what the
+# guard sees after the follow-up commit rule 5 describes.
+let shapes = run ["sh" "tools/fixtures/r/remember_git_nib_shape_control.sh"]
+say shapes.out
+assert shapes.ok else "remember-git-nib-write: the shape control must complete"
+
+assert shapes.out contains "PASS: the card reads back as HEAD through the guard's extractor" else "remember-git-nib-write: the follow-up shape must write HEAD"
+assert shapes.out contains "PASS: the card reads back as HEAD's parent" else "remember-git-nib-write: the amend shape must write HEAD's parent"
+assert shapes.out contains "PASS: the two shapes are exactly one commit apart" else "remember-git-nib-write: the shapes must differ by one commit, which is the size of the fault"
+assert shapes.out contains "PASS: the follow-up shape reads 'parent' after the follow-up commit" else "remember-git-nib-write: the repaired shape must land an honest state"
+assert shapes.out contains "PASS: the amend shape reads 'stale' after the follow-up commit" else "remember-git-nib-write: the RED must be shown from its own side, or the repair proves nothing"
+assert shapes.out contains "PASS: the write is REFUSED" else "remember-git-nib-write: a write naming no shape must refuse in the pen too"
+assert shapes.out contains "PASS: the card is byte-identical -- refusal before mutation" else "remember-git-nib-write: a refused shapeless write must leave the card alone"
+assert shapes.out contains "PASS: the same pen writes when a shape is named" else "remember-git-nib-write: the pen must be proven innocent, or the refusal is about the pen"
+assert shapes.out contains "PASS: it names the amend candidate beside its rule" else "remember-git-nib-write: bare render must name the rule 2 candidate"
+assert shapes.out contains "PASS: it names the follow-up candidate beside its rule" else "remember-git-nib-write: bare render must name the rule 5 candidate"
+assert shapes.out contains "PASS: 'amend' alone withholds the rule 5 candidate" else "remember-git-nib-write: a named shape must render that shape alone"
+assert shapes.out contains "PASS: 'follow-up' alone withholds the rule 2 candidate" else "remember-git-nib-write: a named shape must render that shape alone"
+assert shapes.out contains "PASS: an unknown verb is REFUSED" else "remember-git-nib-write: an unknown word must refuse rather than fall through to a default"
+assert shapes.out contains "PASS: an unknown SHAPE is REFUSED" else "remember-git-nib-write: an unknown shape must refuse"
+assert shapes.out contains "PASS: a third word is REFUSED" else "remember-git-nib-write: the argument count is bounded"
+assert shapes.out contains "PASS: the card survived every refusal byte-identical" else "remember-git-nib-write: no refusal may move a byte"
+assert shapes.out contains "PASS: a second follow-up write reports the card unchanged" else "remember-git-nib-write: each shape must stay idempotent"
+assert shapes.out contains "PASS: switching shape reports the card changed" else "remember-git-nib-write: switching shape must actually move the nib"
+assert shapes.out contains "PASS: an executable card is still executable" else "remember-git-nib-write: the tracked mode must survive a shaped write (.claude/rules/exec-bit.md)"
+assert shapes.out contains "legs_fail=0" else "remember-git-nib-write: every leg of the shape control must behave"
+assert shapes.out contains "control_verdict=ok" else "remember-git-nib-write: the shape control must agree with itself"
+
+say "GREEN: remember-git-nib-write -- the writer names the shape its caller asked for, writes what the guard reads back, and refuses rather than mutating when the two would disagree. Thirty-four cases on planted cards in a pen, every refusal shown from both sides and every welcome asserted as hard: the substitution keeps the line's prose, its backticks and its line count; a second nib line is left where it stands; the tracked mode survives the rewrite; a hexadecimal English word on the nib line refuses with the card byte-identical, and a clean card one line later proves the pen innocent; the width bound bites one past each end and is free at its own number. A second control carries the two shapes over real git repositories, 34 legs: the follow-up shape writes HEAD and the amend shape writes HEAD's parent, exactly one commit apart; each is then carried through the follow-up commit rule 5 describes and put to the guard's own state predicate, which answers parent for one and stale for the other -- REDS %803's red run rather than argued; a write naming no shape refuses with the card byte-identical, and the same pen writes a line later; a shape word standing alone renders that shape and withholds the other; an unknown word, an unknown shape and a third argument each refuse. Against this tree it asserts only what it can assert without touching anything -- each render shape names exactly what git rev-parse answers for it, the two differ here so the tree can tell them apart, render leaves the card byte-identical by digest, and a shapeless write refuses before the card is ever opened -- because a witness that wrote the real card would move the tree from inside the roster pass measuring it. The live card has its own judge in tools/r/remember_git_nib_witness.rish, which never edits and never pushes."

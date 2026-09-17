@@ -18,9 +18,10 @@ reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own 
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
-The ledger reads **seventeen OPEN** (`20260917.024700`), and the count wants its own sentence:
+The ledger reads **eighteen OPEN** (`20260917.025658`), and the count wants its own sentence:
 the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reader matching one
-undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them.
+undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them. One BOOKED row folded this
+lap to seat the newest under the pin's bound.
 
 **The agent-doable queue, Lindy first:**
 
@@ -47,20 +48,20 @@ mantra and tally's 1 rather than merged in. `fold_shelf_link_repoint` stood red 
 FAILURE DIRECTION is what to measure. **YOURS:** glow asserts three ceilings and refuses none --
 repairs the lane owes, or the honest strongest reading for a parse helper?
 
-**INCENSE -- A READER THAT TOOK PART AND REPORTED ALL.** Both accounts
-[shelved whole](archive/20260917-005520_itinerary-landed-accounts.md) -- this lap's from birth,
-which is this card's own standing question answered by doing. **WATER TASTES** (row 3, N=5196,
-advanced by hand past row 1): `%793` named its cause as a tool writing the nib by line offset, and
-no tool here does -- `remember_git_nib_write.sh` matches the KEY and refuses rather than mutating.
-What stood instead: the card says of itself that the nib is *named once above*, nothing held that
-sentence, and `nib_honesty_scan.sh` read the field with `head -1`, so a duplicated field left the
-FIRST line graded and the second unread. It counts before it reads now, refusing `NIB_NAMED_TWICE`;
-both firings replay out of history at 2 and refuse, both parents read 1 and walk. Five legs named,
-**three mutations bitten**, twelve guards GREEN. `%793` **CLOSED**.
-**MINE:** my first draft heard the COUNT and never the REFUSAL -- grass's finding from the same day,
-in my own witness. The cure drives the live path against a planted card through the `CARD` seam.
-**YOURS:** my fold of three CLOSED rows collided with a peer's fold of two of them inside one
-rebase; upstream's folds won and mine narrowed to one row. Should a fold claim its rows first?
+**INCENSE -- THE LEDGER'S FIRST LAW WAS HELD BY HANDS, AND A REBASE IS NOT A HAND.** Account
+[shelved whole](archive/20260917-072921_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
+N=5285). `tools/r/reds_row_shrink_witness.rish` reads the spine's whole history in one `git log -p`
+-- 636 revisions, 8s -- keying each record by the head it writes about itself and reporting one
+whose WORD count fell. **The class had fired SEVEN times, not once:** `988a0ceaf8`, subject naming
+the ITINERARY nib, took 150 and 132 words off two rows on `20260906`. **Three still stand short.**
+Words rather than bytes -- the sweeps give 18 byte events against 7. Gates nothing. 34 pen legs.
+**THE SEND MET THE ROW'S OWN SUBJECT.** `%811` went upstream to a peer's stamp mid-lap, so my row
+took the next derived seat; and the rebase offered a claim-board resolution that would have
+**resurrected four peers' closed claims**, caught by diffing against `xy/main`. The claim never
+reached the board at all -- the deadlock refused its own commit.
+**YOURS:** the pin stands **64 bytes under** with nothing foldable. Beside `reds_pin_capacity`'s
+three doors a fourth is now measured -- **a row runs 2,636 bytes at the median where its three
+fields are a third of that.**
 
 **BAKERY -- THE SWEEP COSTS 216 FILES, AND 29 OF THEM ARE IN NO FINDER.** Elder account
 [shelved whole](archive/20260917-031327_itinerary-landed-accounts.md); the sweep's timing travels
@@ -227,7 +228,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `26a27ad57c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `597d8a4ead` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
