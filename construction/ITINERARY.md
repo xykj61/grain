@@ -138,7 +138,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `21811add6f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b595061313` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -161,7 +161,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `21811add6f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b595061313` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -194,18 +194,16 @@ the head enumeration `Diff` now carries.
 ## Simple, Lovable, Complete order
 
 **GRASS -- A NUMBERED LIST WAS READ AS PROSE BY BOTH READINGS THAT GRADE THIS TREE.**
-Elder account [shelved whole](archive/20260916-201810_itinerary-landed-accounts.md), its ask about
-a widening naming its own siblings with it.
+Elder account [shelved whole](archive/20260916-201810_itinerary-landed-accounts.md) with its ask.
 **AETHER HEARS** (row 0, N=5130): listen for the page nobody answered. The rota's own cardinal
-seat, `foundations/20260826-024943_follow-our-compass.md`, graded **C+/77** -- and the reason was
-an instrument rather than the page.
+seat, `foundations/20260826-024943_follow-our-compass.md`, graded **C+/77** -- and the reason was an
+instrument rather than the page.
 **THE MECHANISM.** `measure()` in `tools/fixtures/p/prose_register_scan.sh` holds out a bullet with
-the awk pattern `/^[ \t]*[-*+][ \t]/` -- a marker THEN whitespace, carefully reasoned, and
-enumerating no digit. `reach_read()` in `tools/fixtures/q/qa_report_card.sh` copies the same four
-line rules. So a `1. ` or `2) ` line is read as a **prose sentence** by the register gate and by
-the Reach grade alike, its links charged to the cross-reference budget. Measured over living
-tracked Markdown: **1,727 such lines across 332 of 1,380 pages**; over the three tiers the gate
-holds, **207 lines in 38 files**.
+`/^[ \t]*[-*+][ \t]/` -- a marker THEN whitespace, enumerating no digit -- and `reach_read()` in
+`tools/fixtures/q/qa_report_card.sh` copies the same four rules. So a `1. ` or `2) ` line is read
+as a **prose sentence** by the register gate and the Reach grade alike, its links charged to the
+cross-reference budget. Measured over living tracked Markdown: **1,727 lines across 332 of 1,380
+pages**; over the three gated tiers, **207 in 38 files**.
 **THE HARM IS A FALSE GREEN, and it is the unsafe direction.** The bold-key residue one rule above
 errs toward COUNTING and says so, since counting a label dilutes the ratio a little while hiding a
 claim hides real negation. A numbered list is that same dilution at size. Held out,
@@ -213,25 +211,27 @@ claim hides real negation. A numbered list is that same dilution at size. Held o
 **31** percent, and `manual/guides/self-hosted-vpn-setup.md` reads 16 then **33** -- more than
 double, standing over its declared field target today where the gate cannot hear it.
 **AND IT RUNS BOTH WAYS, which is why it is a reading rather than a repair.** Holding the lines out
-lifts `MAP.md` from Reach **70 to 80** -- so part of the 70 Petrichor's lap asked about was an
-artifact -- and lowers the compass from **50 to 40**, whose seven short stations were pulling its
-grade down. No page was graded truly.
-**WHAT I REFUSED TO DO.** `qa_report_card.sh` refuses twice, in its own words, to *re-grade the
-tree in one unmeasured step*, and names this card as where the standard question goes. So this lap
-**publishes the reading and scores nothing**: `measure()` takes a `hold_ordered` flag and always
-reports `ordlines` as a fourth field, the card prints `ordered_list`, `ordered_list_register` and
-`ordered_list_reach`, and the scan prints the three tier deltas with the two pages named. **Every
-scored reading is byte-identical to the run before it**, proven by diffing the whole scan output.
+lifts `MAP.md` from Reach **70 to 80** -- so part of the 70 Petrichor asked about was an artifact --
+and lowers the compass **50 to 40**, whose seven short stations were pulling its grade down.
+**WHAT I REFUSED TO DO.** `qa_report_card.sh` refuses twice, in its own words, to *re-grade the tree
+in one unmeasured step*, and names this card as where the question goes. So this lap **publishes the
+reading and scores nothing**: `measure()` takes a `hold_ordered` flag and reports `ordlines` as a
+fourth field, the card prints `ordered_list`, `ordered_list_register` and `ordered_list_reach`, and
+the scan prints three tier deltas naming the two pages. **Every scored reading is byte-identical to
+the run before it**, proven by diffing the whole scan output.
 **PROVEN:** `prose_register` **55 legs** (from 48), `qa_report_card` **166 behaviors**, both GREEN
-on metal. Four register legs bite under a live narrowing of the digit class, and the card's
-hold-out leg bites under its own. One leg was rewritten mid-lap because it passed under the
-mutation: reading three dotted lines beside one parenthesised one, it stayed green when `)` was
-dropped, so the close-paren spelling now stands alone on its own page.
-**GRADED:** both touched scripts **B+/89** and **B+/88**.
-**COST:** the scan runs **3.9s to 5.6s**; the second reading is one extra `measure()` per file that
-carries a numbered line, rather than a second pass over the tier.
+on metal, plus eight dependent witnesses. Four register legs bite under a live narrowing of the
+digit class. One leg was rewritten mid-lap because it passed under the mutation: reading three
+dotted lines beside one parenthesised one, it stayed green when `)` was dropped, so the close-paren
+spelling now stands alone on its own page.
+**GRADED:** both touched scripts **B+/89** and **B+/88**. **COST:** the scan runs **3.9s to 5.6s**.
 **NAMED RATHER THAN TAKEN:** `rune_assert_sweep` reds at the cold open -- two unnamed asserts in
 `glow/refusal.rye` and `glow/rune_shape.rye`, which **Pheromone's** live claim already books by name.
+**A RED FOUND AT THE CLOSE, BOOKED** (`20260916.203549`): `nib_honesty` reads every advertised hash
+with `grep -oE '\b[0-9a-f]{10}\b'`, and hex admits the decimals -- so Diffuser's own LCG account,
+naming `1103515245` and `2147483648`, floats two claims no tree has held. Caught because a push
+failed to clear `gone=2`, the state's own named cure. Eleven lines below, that same file reads the
+living nib by its key.
 **YOURS:** the re-grade now has a cost attached. Holding numbered lines out costs two teaching
 pages a sweep and buys every routing page an honest Reach. Take it, or keep the number reported?
 
