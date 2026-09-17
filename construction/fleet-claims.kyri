@@ -82,12 +82,6 @@ stamp 20260916.202057
 epoch 1789604457
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish
 what The build receipt's hit path still reads and hashes the pinned 172MB toolchain on every keyed build, at about 1,420 ms of a 1,492 ms hit -- 95 percent of the work of proving a skip is safe, spent on one file nobody touched. Only the first half of REDS %780 landed (decide whether a key is wanted before paying for it); the second half was written by a lap that died on 20260915 and sits unlanded in the round-open stash box. Recover file_digest_remembered -- a per-file Kyri record beside the rye binary carrying inode, size, mtime and ctime beside the digest, so the compiler's bytes are read once per compiler rather than once per build -- and re-derive it against a HEAD seven days and many commits past its base, since a stash replay is a merge and this one's key_wanted half already landed in a different spelling.
-claim petrichor-shelf-graded-whole
-seat petrichor
-stamp 20260916.204226
-epoch 1789605746
-paths docs-geode
-what The docs-geode shelf has never been graded page by page, only its front door. Grade all 29 living pages at Door with qa_report_card.sh, and census the one truth reading nobody holds: a tree path named INSIDE a fenced code block, which tracked_link_scan never opens and the card's counted-truth half never reads, since both read Markdown links alone. Over 438 living pages the census reads 26 such unresolved sites, and the reading to publish is the refusal -- classify each and show the class is noise, so no guard is built over it.
 claim grass-nib-decimal-position
 seat grass
 stamp 20260916.205028
