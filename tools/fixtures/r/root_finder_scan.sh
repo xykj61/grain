@@ -2,7 +2,7 @@
 # tools/fixtures/r/root_finder_scan.sh -- can this tree's own scripts find their root in a
 # checkout of tracked bytes alone?
 #
-#   sh tools/fixtures/r/root_finder_scan.sh [--list] [--explain <path>] [--sentinels]
+#   sh tools/fixtures/r/root_finder_scan.sh [--list] [--sentinels] [--doors] [--explain <path>]
 #
 # WHAT A ROOT-FINDER IS. Two hundred and some tracked shell sources open by walking up from their
 # own directory until they reach a directory holding certain named children, then source a shared
@@ -55,6 +55,31 @@
 # output rather than by trusting the sentence (`control_in_population_scan.sh`, REDS %785). Its
 # plants live in a `mktemp` pen outside the tree, so no planted finder ever reaches tracked bytes.
 #
+# THE DOORS, AND WHY A READING RATHER THAN AN ARGUMENT (`--doors`). REDS %788 names two repairs
+# and weighs neither. SWEEP replaces the build-output sentinel with a tracked one in every finder
+# that names it; TRACK puts one tracked file under the build-output name, so the directory stands
+# in a checkout of tracked bytes and no finder changes at all. A door is chosen by its cost and by
+# what it makes true, so `--doors` derives both from the index rather than from a typed number.
+#
+# WHAT `--doors` COUNTS, and what each count decides. `finder_files` is the sweep's own population.
+# `pen_files` is the population NOBODY had counted: a tracked source that creates the sentinel
+# directory to lay out a pen keeps making the elder shape after a sweep, so a finder copied there
+# walks out of the pen and refuses. Those sites are loud rather than silent -- a pen under `mktemp`
+# has no ancestor holding the new sentinel, so the walk reaches `/` and exits 2 -- yet they are
+# files the sweep must visit, and they sit in lanes the finder count never named.
+#
+# THE REPLACEMENT IS A PROPOSAL AND ITS PROPERTIES ARE MEASURED. `SWEEP_TO` is this row's own named
+# repair, a judgment about which directory means "this repository"; whether it can carry the job is
+# a fact, so the reading answers both halves -- `replacement_tracked`, and `replacement_below_root`,
+# which must read 0 or the swept walk stops somewhere below the root.
+#
+# THE THIRD DOOR IS PRICED AND NOT COUNTED. `git -C "$(dirname "$0")" rev-parse --show-toplevel`
+# needs no sentinel and is right in a clone and in a linked worktree alike. The walk's own seating
+# comment names what it costs -- "git-free, so a pen copy outside a repository still resolves" --
+# and `pen_files_no_repo` is that cost as a number: pen layouts creating the sentinel without
+# running `git init`, where a git-rooted finder has no repository to answer from. It is reported
+# beside the doors rather than gated, since adopting it is a fleet ruling rather than a lane's.
+#
 # WHAT IT DOES NOT REACH. A script computing its root some other way -- `git rev-parse --show-toplevel`,
 # an environment variable, a literal path -- carries no `while [ ! -d` line and is invisible here.
 # A finder whose stopping test spans more than one physical line is likewise unread; measured
@@ -87,14 +112,20 @@ CEILING=189
 MAX_SOURCES=20000
 MAX_FINDERS=4000
 
+# THE SWEEP'S PROPOSED REPLACEMENT, named by REDS %788 rather than derived: `rishi/src` holds four
+# tracked files, so it stands in every checkout. The `--doors` reading MEASURES both properties the
+# proposal rests on rather than restating them, and a replacement failing either reads `no` there.
+SWEEP_TO=rishi/src
+
 MODE=count
 TARGET=
 case "${1:-}" in
   '')          ;;
   --list)      MODE=list ;;
   --sentinels) MODE=sentinels ;;
+  --doors)     MODE=doors ;;
   --explain)   MODE=explain; TARGET=${2:-} ;;
-  *) echo "$0: unknown argument '$1' (want --list, --sentinels, or --explain <path>)" >&2; exit 2 ;;
+  *) echo "$0: unknown argument '$1' (want --list, --sentinels, --doors, or --explain <path>)" >&2; exit 2 ;;
 esac
 if [ "$MODE" = explain ] && [ -z "$TARGET" ]; then
   echo "$0: --explain wants a path" >&2
@@ -255,6 +286,60 @@ if [ "$MODE" = sentinels ]; then
   while IFS="$(printf '\t')" read -r s cls below _p; do
     n=$(cut -f2 "$work/finders.txt" | tr ' ' '\n' | grep -cxF "$s")
     echo "sentinel $s class=$cls finders=$n below_root_dirs=$below"
+  done < "$work/classified.txt"
+fi
+
+if [ "$MODE" = doors ]; then
+  # One door pair per build-output sentinel. The tree carries exactly one today; the loop is what
+  # keeps the reading true if a second arrives, rather than a sentence promising it would.
+  while IFS="$(printf '\t')" read -r s cls _below _p; do
+    [ "$cls" = build_output ] || continue
+
+    # The sweep's own population, split into SITES (one finder) and FILES (one path), because a
+    # file may carry two finders and a sweep visits the file once.
+    awk -F'\t' -v s="$s" '{ n = split($2, a, " "); for (i = 1; i <= n; i++) if (a[i] == s) print $1 }' \
+      "$work/finders.txt" > "$work/door.sites.txt"
+    finder_sites=$(wc -l < "$work/door.sites.txt" | tr -d ' ')
+    sort -u "$work/door.sites.txt" > "$work/door.files.txt"
+    finder_files=$(wc -l < "$work/door.files.txt" | tr -d ' ')
+
+    # The population nobody had counted: tracked sources that CREATE the sentinel directory to lay
+    # out a pen. A sweep that leaves them behind leaves a pen whose copied finder walks out of it.
+    # The `[^|;&]*` bound keeps the match inside one command rather than reaching across a pipe.
+    s_re=$(printf '%s' "$s" | sed 's/[.[\*^$]/\\&/g')
+    xargs_lines "$work/sources.txt" grep -lE "mkdir[^|;&]*$s_re" 2>/dev/null \
+      | sort -u > "$work/door.pens.txt" || : > "$work/door.pens.txt"
+    pen_files=$(wc -l < "$work/door.pens.txt" | tr -d ' ')
+
+    # Of those, the ones building NO repository. That is the price of the git-rooted third door,
+    # which the walk's own seating comment names in words and nothing had named in a number.
+    if [ -s "$work/door.pens.txt" ]; then
+      xargs_lines "$work/door.pens.txt" grep -LE 'git[[:space:]]+init' 2>/dev/null \
+        | sort -u > "$work/door.norepo.txt" || : > "$work/door.norepo.txt"
+    else
+      : > "$work/door.norepo.txt"
+    fi
+    pen_files_no_repo=$(wc -l < "$work/door.norepo.txt" | tr -d ' ')
+
+    sort -u "$work/door.files.txt" "$work/door.pens.txt" > "$work/door.union.txt"
+    sweep_files=$(wc -l < "$work/door.union.txt" | tr -d ' ')
+
+    # The proposal's two properties, measured. A replacement holding no tracked content repairs
+    # nothing, and one occurring below the root stops the walk somewhere below the root.
+    if [ -n "$(git ls-files -- "$SWEEP_TO" | head -1)" ]; then rep_tracked=yes; else rep_tracked=no; fi
+    rep_below=$(git ls-files -- "*/$SWEEP_TO/*" \
+      | awk -v t="$SWEEP_TO" '{ i = index($0, "/" t "/"); if (i > 1) print substr($0, 1, i - 1) }' \
+      | sort -u | wc -l | tr -d ' ')
+
+    # The track door: whether the name holds tracked content today, and which ignore rule denies
+    # it. Two files -- the rule's allow-back and the one tracked file -- and no finder moves.
+    tracked_today=$(git ls-files -- "$s" | wc -l | tr -d ' ')
+    ignore_rule=$(git check-ignore -v -- "$s/.keep" 2>/dev/null | awk '{ print $1 }')
+    [ -n "$ignore_rule" ] || ignore_rule=none
+
+    echo "door sweep sentinel=$s to=$SWEEP_TO finder_sites=$finder_sites finder_files=$finder_files pen_files=$pen_files files=$sweep_files replacement_tracked=$rep_tracked replacement_below_root=$rep_below"
+    echo "door track sentinel=$s tracked_today=$tracked_today ignore_rule=$ignore_rule finder_files=0 files=2"
+    echo "door git_root sentinel=$s pen_files_no_repo=$pen_files_no_repo finder_files=$finder_files files=$sweep_files"
   done < "$work/classified.txt"
 fi
 
