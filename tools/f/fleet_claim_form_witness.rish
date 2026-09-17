@@ -58,6 +58,17 @@ assert control.out contains "a_confined_finding_is_still_counted_to_the_reader=y
 assert control.out contains "and_a_corrupting_finding_still_refuses=yes" else "claim-form: the split loosened the refusal it was meant to keep"
 assert control.out contains "mutation_refusing_on_the_total_bites=yes" else "claim-form: the split leg passes a reader refusing on the total"
 
+# The word the content reader prints is the form reader's own. It said `readable` whatever this
+# scan answered, so a board carrying confined findings alone was called readable by the reader every
+# ship runs while this guard stood RED -- 14 of the board's 370 revisions, in two windows of one
+# class. A reading nobody hears is the fault the aether row listens for.
+assert control.out contains "a_confined_board_carries_the_form_readers_own_verdict=yes" else "claim-form: the content reader is substituting a word of its own for this scan's verdict"
+assert control.out contains "a_confined_board_is_never_called_readable=yes" else "claim-form: a board this scan calls malformed is being called readable one reader over"
+assert control.out contains "and_the_reader_says_why_it_carried_on=yes" else "claim-form: the content reader names a malformed form and never says why it continued"
+assert control.out contains "mutation_substituting_a_fixed_word_bites=yes" else "claim-form: the verdict-carrying legs pass with the fixed word restored"
+assert control.out contains "a_well_formed_board_is_named_well_formed=yes" else "claim-form: an honest board lost the word that says so"
+assert control.out contains "a_well_formed_board_carries_no_confined_excuse=yes" else "claim-form: the confined detail line is spent where nothing earned it"
+
 # The living board itself, gated at zero. The control proves the reading; this proves the tree.
 let live = run ["sh" "tools/fixtures/f/fleet_claim_form_scan.sh"]
 say live.out
