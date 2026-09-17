@@ -42,11 +42,11 @@
 # telling those moments apart is the whole job of the four ledger cases.
 #
 # EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, ledger_free=yes,
-#           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes, pick_owed=yes,
+#           ledger_staged=yes, ledger_unstaged_refused=yes, no_rishi_free=yes, pick_owed=yes,
 #           debt_paid=yes, quiet_no_debt=yes, rebase_owed=yes, debt_kept_on_refusal=yes,
 #           no_rishi_no_debt=yes, link_wall_bitten=yes, link_wall_free=yes,
 #           empty_wall_bitten=yes, empty_wall_free=yes, empty_wall_peer_free=yes,
-#           ledger_pick_stale=yes, ledger_debt_paid=yes.
+#           ledger_pick_stale=yes, ledger_debt_settled=yes.
 #
 # THE SEQUENCER CASES, six added 20260829 (REDS %337) and two more on 20260908, whose row is cited
 # by stamp (`20260908.012959`) until the anointed spine binds its number. Git runs pre-commit for
@@ -199,7 +199,7 @@ git add construction/REDS.md
 book_row 24
 ledger_code=0
 git commit -qm "book a row over unstaged edits" >/dev/null 2>&1 || ledger_code=$?
-ledger_dirty_refused=$([ "$ledger_code" -ne 0 ] && echo yes || echo no)
+ledger_unstaged_refused=$([ "$ledger_code" -ne 0 ] && echo yes || echo no)
 git add construction/REDS.md
 git commit -qm "book two rows, staged as asked" >/dev/null
 
@@ -285,7 +285,7 @@ ledger_pick_stale=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 24 
 printf 'a page, edited for the ledger debt\n' > NOTES.md
 git add NOTES.md
 git commit -qm "an ordinary commit that owes the headline" >/dev/null
-ledger_debt_paid=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 25 ' \
+ledger_debt_settled=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 25 ' \
   && [ ! -f "$owed" ] && git diff --quiet && echo yes || echo no)
 rm -f .generator-ran
 
@@ -378,14 +378,14 @@ echo "dirty_refused=$dirty_refused"
 echo "fresh_quiet=$fresh_quiet"
 echo "ledger_free=$ledger_free"
 echo "ledger_staged=$ledger_staged"
-echo "ledger_dirty_refused=$ledger_dirty_refused"
+echo "ledger_unstaged_refused=$ledger_unstaged_refused"
 echo "no_rishi_free=$no_rishi_free"
 echo "pick_owed=$pick_owed"
 echo "debt_paid=$debt_paid"
 echo "quiet_no_debt=$quiet_no_debt"
 echo "rebase_owed=$rebase_owed"
 echo "ledger_pick_stale=$ledger_pick_stale"
-echo "ledger_debt_paid=$ledger_debt_paid"
+echo "ledger_debt_settled=$ledger_debt_settled"
 echo "debt_kept_on_refusal=$debt_kept_on_refusal"
 echo "no_rishi_no_debt=$no_rishi_no_debt"
 echo "link_wall_bitten=$link_wall_bitten"
@@ -396,10 +396,10 @@ echo "empty_wall_peer_free=$empty_wall_peer_free"
 
 if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = yes ] \
   && [ "$fresh_quiet" = yes ] && [ "$ledger_free" = yes ] && [ "$ledger_staged" = yes ] \
-  && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ] \
+  && [ "$ledger_unstaged_refused" = yes ] && [ "$no_rishi_free" = yes ] \
   && [ "$pick_owed" = yes ] && [ "$debt_paid" = yes ] && [ "$quiet_no_debt" = yes ] \
   && [ "$rebase_owed" = yes ] && [ "$debt_kept_on_refusal" = yes ] \
-  && [ "$ledger_pick_stale" = yes ] && [ "$ledger_debt_paid" = yes ] \
+  && [ "$ledger_pick_stale" = yes ] && [ "$ledger_debt_settled" = yes ] \
   && [ "$no_rishi_no_debt" = yes ] \
   && [ "$link_wall_bitten" = yes ] && [ "$link_wall_free" = yes ] \
   && [ "$empty_wall_bitten" = yes ] && [ "$empty_wall_free" = yes ] \

@@ -6,7 +6,7 @@
 Shelved whole from `construction/ITINERARY.md` so the card carries the round in flight.
 
 **GRASS -- THE LAW NAMES A WITNESS HEADER METER AND THE CARD READ EVERY ONE AT THE DOOR.**
-Elder account [shelved whole](archive/20260916-220113_itinerary-landed-accounts.md).
+Elder account [shelved whole](20260916-220113_itinerary-landed-accounts.md).
 **FIRE SEES** (row 2, N=5164 -- advanced by hand past row 4, read here last lap): look hard at the
 bright uncomfortable point, and cut once.
 **THE ASK CAME FROM PATCHOULI AND ITS MECHANISM WAS THE WRONG HALF.** That row named the

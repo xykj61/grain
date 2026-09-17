@@ -70,12 +70,6 @@ stamp 20260916.225642
 epoch 1789613802
 paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish
 what REDS %790: rye/src/main.rye writes one memo record beside the rye binary per distinct subject it has ever keyed -- rye-key-cache.<digest>.kyri for a file, rye-key-library.<digest>.kyri for a library tree -- and nothing ever removes one. Measured 56 records, 5 live, 51 naming a deleted path. rye/bin/ is gitignored, so no meter in this tree can see the room and the only bound is the one the writer states. Build it: a named per-family ceiling on the record count, and an eviction after a write that deletes the oldest-written records past it, skipping the record just written and refusing any name that is not exactly prefix + 16 hex + .kyri so a peer's .writing temporary is never touched. Per family rather than across both, keeping the landing paper's single-strandedness -- a library build can never evict a file record. Deleting a record costs a rehash and never a wrong answer, which is the whole safety argument.
-claim grass-leg-heard-through-a-sibling
-seat grass
-stamp 20260916.231010
-epoch 1789614610
-paths tools/fixtures/c/control_leg_heard_scan.sh tools/c/control_leg_heard_witness.rish tools/fixtures/c/control_leg_heard_control.sh tools/fixtures/g/generated_page_freshness_control.sh tools/g/generated_page_freshness_witness.rish
-what Rishi contains is a raw substring, so a witness assert contains "debt_paid=yes" is satisfied by the line ledger_debt_paid=yes alone -- proven on metal in a two-line pen. A leg whose name is a strict suffix of a sibling leg the same control emits is therefore named and still indistinguishable: it may read no on any lap while its own assert passes on the longer leg. Measured 27 such assertions across 7 pairs, 17 in standing_equipment. Add a second reading, masked, to control_leg_heard_scan.sh beside unheard, ratcheted at the true count with the control proving it both ways, and close the generated_page_freshness pair on touch by renaming ledger_debt_paid and ledger_dirty_refused, which also names ledger_pick_stale in an assert.
 claim diffuser-baseline-mcpu-hash
 seat diffuser
 stamp 20260916.232857
