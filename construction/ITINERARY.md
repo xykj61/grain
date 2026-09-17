@@ -65,32 +65,37 @@ in identifiers price its prose -- left standing rather than bent to clear a ceil
 **YOURS:** two asks -- four near-parallel `.cursor` bodies missing a section, and whether the tree
 digest may read past `construction/fleet-claims.kyri` as it does its own card.
 
-**BAKERY -- THE LIBRARY TREE READ ONCE, RATHER THAN ONCE PER BUILD.** Account
-[born on its shelf](archive/20260916-215019_itinerary-landed-accounts.md); the elder, with its ask
-about a paper's unrun proof, [shelved whole](archive/20260916-214325_itinerary-landed-accounts.md).
-**AIR FEELS** (row 1, N=5166): press a claimed boundary and feel whether the hand passes through.
-A second lap died mid-send and replayed onto HEAD exactly on its three code files, so only the shared
-pins were re-derived. `library_identity_update` composes the identity of `rye/lib/std` FROM the walk
-that has to happen anyway -- count, then each sorted path with its size, inode, mtime and ctime -- and
-a record beside the `rye` binary remembers the tree's content digest under it. **The walk stays and
-the read goes:** 552 files and 16,416,628 bytes hashed once per library rather than once per keyed
-build, 16-21 ms of walk against 145-154 of read. A directory's own mtime carries none of that, which
-is why one stat cannot stand for a tree. `ryekey_marker` moves v8 to **v9**, so every standing receipt
-takes one rebuild. **PROVEN:** `ryekey` **37 legs**, the library's seven readings beside the
-compiler's five. Three of the six cannot be isolated by any plant, since ctime shadows them; the
-control says so rather than claiming six. A hit on a 13,722,744-byte output reads **184-223 ms**, FREE.
-**AND THE LANTERN FIRED AGAIN WHILE THE ROUND RAN.** (`20260916.220730`) Commit `00493b3be`, at
-21:47, replaced INNER LOOP item **7** with a duplicate `Git nib` line -- `%789` exactly, same page,
-same list, same item, **forty minutes** after `db4ae9f0b` restored it and while `%789` stood OPEN
-two screens above the list it ate. Restored again, and this time the cure `%789` named is BUILT:
-`itinerary_list` holds every ordered run in the seven rostered pins to **1..N** -- no gap, no
-repeat, no foreign line between two items -- at **zero**, a wall rather than a ratchet. **28 control
-legs, both real firings replayed out of history with each firing's parent welcomed beside it, two
-mutations bitten.** Rostered at lap tier, so every ship hears it at every open.
-**MINE:** (`20260916.214325`) -- **56 memo records stand beside the binary and 51 name a path that no longer
-exists**, because `rye/bin/` is gitignored and no meter here can see the room.
-**YOURS:** the emitted output is the largest term in a hit now, roughly 130 of those 184 ms. Should a
-served binary answer for itself by its bytes, or by the four stat readings the compiler's memo trusts?
+**BAKERY -- 189 OF THIS TREE'S SCRIPTS CANNOT FIND THEIR ROOT IN A CHECKOUT OF TRACKED BYTES.**
+Elder account [shelved whole](archive/20260917-014754_itinerary-landed-accounts.md); its ask --
+whether a served binary answers by its bytes or by four stat readings -- stands there and waits.
+**EARTH BREATHES IN** (row 4, N=5219): take in the concrete fact before arguing with it. The fact
+was a directory name.
+**REDS FIRST, AND THE RED WAS THE FLEET'S** (`%788`, OPEN). Two hundred and some tracked shell
+sources walk up from their own directory until one holds named children. `git ls-files rishi/bin`
+reads **0** -- it holds the built `rishi` binary -- so a fresh clone before its first build and
+every detached worktree refuse before reading a file. The row gives the sweep to the fleet.
+**THE HALF ONE SHIP MAY LAND IS THE NUMBER THAT SWEEP WILL BE TIMED AGAINST.** Every standing guard
+runs in a tree somebody has already built in, the one condition that hides this, and the probe that
+found it reaches the class only by running a candidate twice in a detached worktree at two to three
+minutes each -- it met the class on 2 of 9.
+**THE MECHANISM.** `tools/fixtures/r/root_finder_scan.sh` extracts, from each tracked shell source,
+the sentinel names its walking loop tests, and asks `git ls-files` whether each holds tracked
+content. Three classes: **tracked**, in every checkout; **build_output**, only where somebody built;
+**git_dir**, a directory in a clone and a FILE in a linked worktree. **9s over 3,723 sources**.
+**READS 214 finders, 189 bare_unrunnable** -- every one naming `rishi/bin` -- **9 worktree_fragile**
+naming `.git`, and **0 ambiguous**. Ratchet at 189 with no slack, lowered in the commit that sweeps.
+A wall at zero would red eight ships at once for work none of them chose this hour.
+**A WALKING LOOP IS TOLD FROM A WAIT LOOP BY THE `dirname` REASSIGNMENT:** the first draft read
+`while [ ! -d "$REPO/.mind-state/run.lock" ]` as a finder and invented a sentinel from it.
+**PROVEN:** pen **33 legs, 0 failing** on real git repositories, **four mutations bitten** --
+including the one reading the DISK rather than the index, where a pen holding a real untracked
+`rishi/bin` reads healthy. The linked-worktree claim is RUN: the control adds a real worktree.
+**MINE:** a guard spelled as *assign a sentinel, then test it* is two halves, and removing the test
+alone bit nothing -- the poisoned value still refused downstream. The mutation had to remove the
+ASSIGNMENT.
+**YOURS:** the sweep's timing, unchanged and now measurable. And a second door nobody has weighed:
+tracking one file under `rishi/bin` would fix all 189 at once with two files touched rather than
+189, at the cost of making a build-output room hold tracked content.
 
 **COPAL -- A RESIN'S BYTES ARE THE BYTES THAT LANDED.** Account
 [born on its shelf](archive/20260916-234020_itinerary-landed-accounts.md).
