@@ -66,7 +66,23 @@ mode="${1:-count}"
 #                          `lower_triple` and `lower_quad` became stubs with their own six
 #                          guards GREEN, leaving 23. The named next fall is the four
 #                          `lower_compose_core*` siblings, which share one ceiling.
-CEILING=16
+#   15  `20260917.140000`  `glow/lower_face.rye` became a stub, and it was the LAST file at
+#                          its own body md5 `e4cec7a4` -- one local name apart from the seven
+#                          above, `c` against `ch`, measured rather than taken from the line
+#                          that named it. Its 29 call sites each take the hyphenated name of
+#                          the thing they lower, so a refusal record says which face refused.
+#                          The fifteen that remain fall into cohorts, measured this lap by
+#                          body md5 and declared ceiling: THREE `max_arm_len` siblings at
+#                          `97c14eb8` -- `lower_conditional`, `lower_null`, `lower_switch` --
+#                          carrying 31 call sites EACH, which is the largest cohort left and
+#                          the largest single lap; a `rm.max_name_len` PAIR at `4484b371`,
+#                          `lower_shape` at 14 sites and `lower_named_cast` at 15, which is
+#                          the cheaper next fall; and nine singletons, three of which name
+#                          their own ceiling (`rb.max_face_len`, `rbt.max_ident_len`,
+#                          `rk.max_name_len`) and one of which, `lower_alias`, takes a bare
+#                          `[]u8` and maps the dot -- the one copy whose body is genuinely a
+#                          different rule, and the one wanting `Dot.to_underscore`.
+CEILING=15
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

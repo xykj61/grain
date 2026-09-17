@@ -11,8 +11,11 @@
 //! Named molds still refuse.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rf = @import("rune_face.rye");
 const expr = @import("expr.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rf.ParseError || expr.ParseError || error{
     Overflow,
@@ -71,22 +74,22 @@ fn subject4_slice(b: *const BoundValue) []const u8 {
     return b.subject4[0..b.subject4_len];
 }
 
-fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rf.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rf.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes
+/// -- is the room's, and stood in 29 copies before it moved. This file was the last one at
+/// its own body md5, one local name apart from the seven that landed before it.
+fn zig_safe_ident(face: []const u8, out: *[rf.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rf.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
@@ -482,10 +485,10 @@ fn emit_mix(
     out: []u8,
 ) LowerError!u32 {
     var zig_left_buf: [rf.max_name_len]u8 = undefined;
-    const left_len = try zig_safe_ident(left, &zig_left_buf);
+    const left_len = try zig_safe_ident(left, &zig_left_buf, "left");
     const zig_left = zig_left_buf[0..left_len];
     var zig_right_buf: [rf.max_name_len]u8 = undefined;
-    const right_len = try zig_safe_ident(right, &zig_right_buf);
+    const right_len = try zig_safe_ident(right, &zig_right_buf, "right");
     const zig_right = zig_right_buf[0..right_len];
     const result = expr.mix_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -562,13 +565,13 @@ fn emit_jam_nest(
     out: []u8,
 ) LowerError!u32 {
     var zl: [rf.max_name_len]u8 = undefined;
-    const ln = try zig_safe_ident(mix_left, &zl);
+    const ln = try zig_safe_ident(mix_left, &zl, "mix-left");
     const zig_ml = zl[0..ln];
     var zr: [rf.max_name_len]u8 = undefined;
-    const rn = try zig_safe_ident(mix_right, &zr);
+    const rn = try zig_safe_ident(mix_right, &zr, "mix-right");
     const zig_mr = zr[0..rn];
     var zj: [rf.max_name_len]u8 = undefined;
-    const jn = try zig_safe_ident(jam_right, &zj);
+    const jn = try zig_safe_ident(jam_right, &zj, "jam-right");
     const zig_jr = zj[0..jn];
     const result = expr.jam_nest_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -724,16 +727,16 @@ fn emit_jam_both_nest(
     out: []u8,
 ) LowerError!u32 {
     var zll: [rf.max_name_len]u8 = undefined;
-    const nll = try zig_safe_ident(mix_ll, &zll);
+    const nll = try zig_safe_ident(mix_ll, &zll, "mix-ll");
     const zig_ll = zll[0..nll];
     var zlr: [rf.max_name_len]u8 = undefined;
-    const nlr = try zig_safe_ident(mix_lr, &zlr);
+    const nlr = try zig_safe_ident(mix_lr, &zlr, "mix-lr");
     const zig_lr = zlr[0..nlr];
     var zrl: [rf.max_name_len]u8 = undefined;
-    const nrl = try zig_safe_ident(mix_rl, &zrl);
+    const nrl = try zig_safe_ident(mix_rl, &zrl, "mix-rl");
     const zig_rl = zrl[0..nrl];
     var zrr: [rf.max_name_len]u8 = undefined;
-    const nrr = try zig_safe_ident(mix_rr, &zrr);
+    const nrr = try zig_safe_ident(mix_rr, &zrr, "mix-rr");
     const zig_rr = zrr[0..nrr];
     const result = expr.jam_nest_both_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -834,13 +837,13 @@ fn emit_jam_right_nest(
     out: []u8,
 ) LowerError!u32 {
     var zl: [rf.max_name_len]u8 = undefined;
-    const ln = try zig_safe_ident(jam_left, &zl);
+    const ln = try zig_safe_ident(jam_left, &zl, "jam-left");
     const zig_jl = zl[0..ln];
     var zm: [rf.max_name_len]u8 = undefined;
-    const mn = try zig_safe_ident(mix_left, &zm);
+    const mn = try zig_safe_ident(mix_left, &zm, "mix-left");
     const zig_ml = zm[0..mn];
     var zr: [rf.max_name_len]u8 = undefined;
-    const rn = try zig_safe_ident(mix_right, &zr);
+    const rn = try zig_safe_ident(mix_right, &zr, "mix-right");
     const zig_mr = zr[0..rn];
     const result = expr.jam_nest_right_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -994,10 +997,10 @@ fn emit_jam(
     out: []u8,
 ) LowerError!u32 {
     var zig_left_buf: [rf.max_name_len]u8 = undefined;
-    const left_len = try zig_safe_ident(left, &zig_left_buf);
+    const left_len = try zig_safe_ident(left, &zig_left_buf, "left");
     const zig_left = zig_left_buf[0..left_len];
     var zig_right_buf: [rf.max_name_len]u8 = undefined;
-    const right_len = try zig_safe_ident(right, &zig_right_buf);
+    const right_len = try zig_safe_ident(right, &zig_right_buf, "right");
     const zig_right = zig_right_buf[0..right_len];
     const result = expr.jam_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1072,7 +1075,7 @@ fn emit_lent(
     out: []u8,
 ) LowerError!u32 {
     var zig_sub_buf: [rf.max_name_len]u8 = undefined;
-    const sub_len = try zig_safe_ident(subject, &zig_sub_buf);
+    const sub_len = try zig_safe_ident(subject, &zig_sub_buf, "subject");
     const zig_sub = zig_sub_buf[0..sub_len];
     const len = expr.lent_demo_len;
     const expect: u32 = if (welcome) len else len +% 1;
@@ -1118,13 +1121,13 @@ fn emit_cue_jam_nest(
     out: []u8,
 ) LowerError!u32 {
     var zml: [rf.max_name_len]u8 = undefined;
-    const mln = try zig_safe_ident(mix_left, &zml);
+    const mln = try zig_safe_ident(mix_left, &zml, "mix-left");
     const zig_ml = zml[0..mln];
     var zmr: [rf.max_name_len]u8 = undefined;
-    const mrn = try zig_safe_ident(mix_right, &zmr);
+    const mrn = try zig_safe_ident(mix_right, &zmr, "mix-right");
     const zig_mr = zmr[0..mrn];
     var zjr: [rf.max_name_len]u8 = undefined;
-    const jrn = try zig_safe_ident(jam_right, &zjr);
+    const jrn = try zig_safe_ident(jam_right, &zjr, "jam-right");
     const zig_jr = zjr[0..jrn];
     const result = expr.cue_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1284,16 +1287,16 @@ fn emit_cue_jam_nest_both(
     out: []u8,
 ) LowerError!u32 {
     var zll: [rf.max_name_len]u8 = undefined;
-    const nll = try zig_safe_ident(mix_ll, &zll);
+    const nll = try zig_safe_ident(mix_ll, &zll, "mix-ll");
     const zig_ll = zll[0..nll];
     var zlr: [rf.max_name_len]u8 = undefined;
-    const nlr = try zig_safe_ident(mix_lr, &zlr);
+    const nlr = try zig_safe_ident(mix_lr, &zlr, "mix-lr");
     const zig_lr = zlr[0..nlr];
     var zrl: [rf.max_name_len]u8 = undefined;
-    const nrl = try zig_safe_ident(mix_rl, &zrl);
+    const nrl = try zig_safe_ident(mix_rl, &zrl, "mix-rl");
     const zig_rl = zrl[0..nrl];
     var zrr: [rf.max_name_len]u8 = undefined;
-    const nrr = try zig_safe_ident(mix_rr, &zrr);
+    const nrr = try zig_safe_ident(mix_rr, &zrr, "mix-rr");
     const zig_rr = zrr[0..nrr];
     const result = expr.mix_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1396,13 +1399,13 @@ fn emit_cue_jam_nest_right(
     out: []u8,
 ) LowerError!u32 {
     var zjl: [rf.max_name_len]u8 = undefined;
-    const jln = try zig_safe_ident(jam_left, &zjl);
+    const jln = try zig_safe_ident(jam_left, &zjl, "jam-left");
     const zig_jl = zjl[0..jln];
     var zml: [rf.max_name_len]u8 = undefined;
-    const mln = try zig_safe_ident(mix_left, &zml);
+    const mln = try zig_safe_ident(mix_left, &zml, "mix-left");
     const zig_ml = zml[0..mln];
     var zmr: [rf.max_name_len]u8 = undefined;
-    const mrn = try zig_safe_ident(mix_right, &zmr);
+    const mrn = try zig_safe_ident(mix_right, &zmr, "mix-right");
     const zig_mr = zmr[0..mrn];
     const result = expr.mix_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1560,10 +1563,10 @@ fn emit_cue_jam(
     out: []u8,
 ) LowerError!u32 {
     var zl: [rf.max_name_len]u8 = undefined;
-    const ln = try zig_safe_ident(jam_left, &zl);
+    const ln = try zig_safe_ident(jam_left, &zl, "jam-left");
     const zig_jl = zl[0..ln];
     var zr: [rf.max_name_len]u8 = undefined;
-    const rn = try zig_safe_ident(jam_right, &zr);
+    const rn = try zig_safe_ident(jam_right, &zr, "jam-right");
     const zig_jr = zr[0..rn];
     const result = expr.cue_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1640,7 +1643,7 @@ fn emit_cue(
     out: []u8,
 ) LowerError!u32 {
     var zig_sub_buf: [rf.max_name_len]u8 = undefined;
-    const sub_len = try zig_safe_ident(subject, &zig_sub_buf);
+    const sub_len = try zig_safe_ident(subject, &zig_sub_buf, "subject");
     const zig_sub = zig_sub_buf[0..sub_len];
     const result = expr.cue_demo_result();
     const expect: u32 = if (welcome) result else result +% 1;
@@ -1701,7 +1704,7 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const face = rf.face_slice(&spec);
     const mold = rf.mold_slice(&spec);
     var zig_face_buf: [rf.max_name_len]u8 = undefined;
-    const face_len = try zig_safe_ident(face, &zig_face_buf);
+    const face_len = try zig_safe_ident(face, &zig_face_buf, "face");
     const zig_face = zig_face_buf[0..face_len];
     const bound = try bound_value(trimmed, face, mold);
 

@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim pheromone-lower-face-ident-stub
-seat pheromone
-stamp 20260917.134626
-epoch 1789667186
-paths glow/lower_face.rye tools/fixtures/g/glow_ident_duplication_scan.sh
-what The card named glow/lower_face.rye as the ident arc's next fall and I measured it rather than taking the name: its copy body differs from the seven landed on 20260917 by exactly ONE local name, c against ch, md5 e4cec7a4 against 049cce28, and it carries 29 call sites against the seven's 22 together, which is why it waited for a lap of its own. It is the LAST file at its md5; the remaining fifteen copies fall into four cohorts I measured this lap -- three max_arm_len siblings at 31 sites each, a max_name_len pair at 14 and 15, and singletons. This lap makes it a stub in the room's landed idiom: same out type *[rf.max_name_len]u8, same LowerError name, a new field slice so the refusal record reads field=gate rather than field=face, a u32 return where the copy answered usize, delegating to zig_ident.safe_ident, with each of the 29 sites taking the hyphenated name of the thing it lowers. Ceiling falls 16 to 15. No ledger row, no peer file, no roster row, no module beyond glow/lower_face.rye and the scan's own ceiling comment.
 claim incense-commit-parent-hash-claim
 seat incense
 stamp 20260917.144539
