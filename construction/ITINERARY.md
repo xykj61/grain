@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260916.231355` (EDT)
+**Stamp:** `20260917.000102` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -92,33 +92,38 @@ exists**, because `rye/bin/` is gitignored and no meter here can see the room.
 **YOURS:** the emitted output is the largest term in a hit now, roughly 130 of those 184 ms. Should a
 served binary answer for itself by its bytes, or by the four stat readings the compiler's memo trusts?
 
-**COPAL -- NINE METERS PRINTED FORTY ROWS OF 3,321 AND SAID NOTHING ABOUT THE OTHER 2,972.**
-Account [born on its shelf](archive/20260916-221500_itinerary-landed-accounts.md) -- **and the card
-holds a line, which answers its own open door below by doing it.** AIR FEELS (row 1, N=5156): seven
-of nine ASCII meters promise `--list   # name each file and its count` and every one capped at forty
-in silence. `listing_census` walls the nine at zero and ratchets 13 peer-lane caps; the founding
-case was eighteen invisible characters in my own `tools/am/` GREEN lines. Row `20260916.214947`.
-**YOURS:** forty is spoken aloud now and nobody chose it -- a declared bound like every other
-ceiling here, or a reader's convenience each lane sets for itself?
+**COPAL -- A RESIN'S BYTES ARE THE BYTES THAT LANDED.** Account
+[born on its shelf](archive/20260916-234020_itinerary-landed-accounts.md).
+**FIRE SEES** (row 2, N=5192): see the threshold where work should stop -- and a one-sided wall
+stood in the room whose whole job is to stay as it landed. `bron-resins/manifest.bron` states in
+prose that every resin has one commit and unmoved bytes; a hand read that on `20260910` and nothing
+read it again. **The seal cannot see this:** `bron_resins_catalog` compares
+a recomputed digest to the `seal` line, and BOTH halves live in the working tree, so a resin edited
+together with its seal is self-consistent and every gate stays green. `bron_resins_landed` resolves each resin's
+ADDING commit and compares that blob to the blob the file would land as -- `moved` walled at zero,
+with `uncommitted`, `commits_multi` and `readded` reported, each a thing a lawful lap does. Reads
+**17 of 17 landed, moved=0**; the catalog is excluded by name.
+**PROVEN** on REAL git repositories: **42 behaviors, 0 failing**, the resealed rewrite and a lawful
+fold both planted, 70 resins against a listing cap of 64, three mutations bitten. Priced 4.5s to
+**1.3s**, the control 21s to **6s**, by reading the history twice rather than twice per file.
+**YOURS:** whether `session-logs/`, `counsel/` and the shelves want the same wall -- the scan takes
+a room argument, so each answer costs one roster row. Last lap's stands: forty is spoken aloud and
+nobody chose it -- a declared bound, or each lane's convenience?
 
-**COPAL -- THE FAMILY NAMED `printf` AND THE POPULATION WAS `echo`.** Account
-[shelved whole](archive/20260916-195248_itinerary-landed-accounts.md); `shell_emit_ascii` stands as
-the sixth ASCII subject at 509 characters across 77 files. Its standing ask travels with it: the 45
-**written** characters are an emit redirected into a file -- ratchet there, or move to the meter
-that owns assembled text?
+**COPAL -- THREE ELDER ACCOUNTS, SHELVED WHOLE:** the `echo` population
+([here](archive/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap from
+what it saw ([here](archive/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
+([here](archive/20260916-084104_itinerary-landed-accounts.md)).
+**THEIR ASKS, STILL STANDING:** the 45 **written** characters -- ratchet, or the meter that owns
+assembled text? The 1,417 almanac characters. Whether a claim's paths are exempt from the
+commit-message path wall, which bit again this lap on the claim commit naming the files it opened
+to build. And the nine rostable, unrostered `tools/gen/chapter/` witnesses.
 
 **BAKERY -- ASKING WHETHER A BINARY IS CURRENT NO LONGER COSTS A BUILD.** Account
 [born on its shelf](archive/20260916-114800_itinerary-landed-accounts.md). `rye key <f.rye>
 -femit-bin=<p>` prints `verdict=hit|miss|unkeyable` and writes nothing, running the SAME computation
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
-
-**A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES** -- `%646`'s sweep, landed and
-[shelved whole](archive/20260916-084104_itinerary-landed-accounts.md). Nine `tools/gen/chapter/`
-witnesses hard-asserted `test -x` on a gitignored build output and now take the honest skip; the
-scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guessing.
-**YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
-where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
 **PETRICHOR -- THE SHELF OFFERED FIVE CHECKS AND RAN NONE OF THEM.**
 Both elder accounts [shelved whole](archive/20260916-211732_itinerary-landed-accounts.md), their
@@ -213,7 +218,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `dc174256a3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e58900d73e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -319,12 +324,6 @@ from its exact commit that would turn the fingerprint into a receipt.
 **YOURS:** the pen reached `lib/std` through a symlink and read the same 552 files at the same
 16,416,628 bytes. Is a symlinked root honest footing for a timing pen, or does a measurement owe
 the real path?
-
-**COPAL -- A METER PRICED A GAP FROM THE FILES IT COULD ALREADY SEE.** Elder account
-[shelved whole](archive/20260916-195045_itinerary-landed-accounts.md); its ask (2), the unread
-`printf` argument, is answered above -- and it was `echo` by three to one. Its asks (1) and (3)
-travel with it and still stand: the 1,417 almanac characters, and whether a claim's paths are
-exempt from the commit-message path wall.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 

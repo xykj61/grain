@@ -4885,6 +4885,47 @@ guard bron_resins_catalog
 path tools/b/bron_resins_catalog_witness.rish
 tier lap
 seated 20260907.000030
+
+# bron_resins_landed -- a resin's bytes are the bytes that landed, read out of git rather than out
+# of the working tree. `bron-resins/manifest.bron` states the room's law in its own prose: *every
+# resin in this room has exactly one commit in the tree's whole history, and its blob at that
+# commit is byte-identical to its blob at HEAD -- checked one file at a time, all seventeen equal.*
+# A hand took that reading on `20260910` and nothing held it afterwards, which is Gauge's fifth
+# question about a figure -- what holds it still -- answered `free`.
+#
+# WHAT THE SEAL BESIDE IT CANNOT SEE. `bron_resins_catalog` recomputes each resin's SHA3-256 and
+# compares it to the `seal` line, so a resin edited in place reds. Both halves of that comparison
+# live in the WORKING TREE, so an edit landing together with an updated seal is self-consistent and
+# every gate in this room stays green. Git's history is the one copy an edit cannot reach, and this
+# guard is the reading that asks it. Two walls over one room, parting on which copy they trust.
+#
+# WHAT IT GATES at zero: `moved`, a resin whose bytes differ from its adding commit's blob. Three
+# readings REPORT instead, each for its own reason -- `uncommitted`, a resin written and not yet
+# committed, which is the ordinary state of the lap that adds one; `commits_multi`, a second commit
+# touching the path, which changes no byte on its own and is exactly what a lawful room fold does;
+# and `readded`, a delete and restore, which the bytes reading already answers for. The living
+# catalog is excluded by name, since it gains a line whenever a resin lands and its own bytes move
+# by design -- measured `20260916`, three commits and moved bytes against one and unmoved for all
+# seventeen resins.
+#
+# `tier lap`, 6s measured `20260916.234020` on a pier already running a cold roster pass, of which
+# the scan over the real room is 1s. It reads the whole history TWICE rather than twice per file --
+# one `git log --diff-filter=A` and one plain `git log`, both `--no-renames` so a fold lands as an
+# add at the new path -- then batches the object readings through one `git cat-file --batch-check`
+# and one `git hash-object --stdin-paths` and joins the five files in a single awk pass. Asked once
+# per resin instead, the same reading cost 4.5s over seventeen files and would have priced the
+# guard off the lap clock. The control proves 42 behaviors on REAL git repositories in a throwaway
+# pen, because a plant built without history would prove the scan can count files and nothing about
+# the claim it holds: every refusal shown from the failing side and then LIFTED, the detail
+# listing's bound proven by planting 70 resins against a ceiling of 64, and three mutations asserted
+# to bite -- reading the newest adding commit rather than the earliest, which lets an unfaithful
+# re-add read `same`; dropping the catalog exclusion, which reds a healthy cellar; and reporting the
+# move while exiting clean, which is how a guard fails most quietly.
+
+guard bron_resins_landed
+path tools/b/bron_resins_landed_witness.rish
+tier lap
+seated 20260916.234020
 # topology_churn -- what ONE DEPARTURE costs a table everybody shares, at 720 points.
 # Its sibling `topology_routing` binds the DECISION on a whole graph -- 719 entries, 3 bits each,
 # 270 bytes, the same 270 at every node. That claim rests on the graph being the whole GROUP, which
