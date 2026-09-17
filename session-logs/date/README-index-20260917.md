@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260917.105154` | [The refusal that can fire](20260917/20260917-105154_the-refusal-that-can-fire.kyri) | Ranking held; falsifiers did not. Second ranked page. |
 | `20260917.101905` | [The verdict that came home](20260917/20260917-101905_the-verdict-that-came-home.kyri) | The seated door key fired: 0 of 16; errata 12 of 12. |
+| `20260917.101656` | [The stated seam read as debt](20260917/20260917-101656_the-stated-seam-read-as-debt.kyri) | width_check red closed: 327 to 282 files on a tighter filter. |
 | `20260917.100216` | [The stub that widened for nobody](20260917/20260917-100216_the-stub-that-widened-for-nobody.kyri) | six ident stubs answer u32; 327 to 322. |
 | `20260917.100140` | [the guards nobody ran](20260917/20260917-100140_the-guards-nobody-ran.kyri) | three witnesses unrostered; the reach meter now names them |
 | `20260917.100019` | [The cannot that was never measured](20260917/20260917-100019_the-cannot-that-was-never-measured.kyri) | Four walls measured under %589's bare "cannot import". |

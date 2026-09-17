@@ -24,7 +24,10 @@ pen_root=$(mktemp -d)
 trap 'rm -rf "$pen_root"' EXIT INT TERM
 
 fails=0
-note() { echo "$1"; }
+checks=0
+# COUNT, NEVER NUMBER. This tally was hand-spelled as 19 and the control ran 20 -- a literal
+# written once and never re-read, exactly what the mark law warns of. It is derived now.
+note() { echo "$1"; checks=$((checks + 1)); }
 want() { # want <name> <expected ok|refuse> <actual exit>
   if [ "$2" = "ok" ] && [ "$3" -eq 0 ]; then note "$1=yes"; return; fi
   if [ "$2" = "refuse" ] && [ "$3" -ne 0 ]; then note "$1=yes"; return; fi
@@ -131,13 +134,78 @@ stage "$pen"; want identifier_substring_free ok "$(run_scan "$pen")"
 printf 'var n_usize: usize = 0;\n' >> "$pen/a.rye"
 stage "$pen"; want identifier_with_real_type_refused refuse "$(run_scan "$pen")"
 
+# ---- Reading nine: the STATED SEAM, welcomed by the ratchet and refused by the gate.
+# `var i: usize = 0; // seam: slice index over a std source buffer` does what TAME's say-why rule
+# asks. The ratchet welcomes it; the gate reads the same line strictly, because a sentence is a
+# claim where a cast is a mechanism, and no sentence a hand writes may open the wall that refuses.
+pen=$(new_pen statedseam '"a.rye"')
+printf 'const x: u32 = 0;\n' > "$pen/a.rye"
+printf 'var i: usize = 0; // seam: slice index over a std source buffer\n' > "$pen/stranger.rye"
+stage "$pen"; want ratchet_stated_seam_welcomed ok "$(run_scan "$pen")"
+c=$(sed -n 's/^corpus_flagged_files=//p' "$pen/.out")
+[ "$c" = "0" ] && note "ratchet_stated_seam_not_counted=yes" || { note "ratchet_stated_seam_not_counted=no ($c)"; fails=$((fails + 1)); }
+l=$(sed -n 's/^corpus_seam_stated_lines=//p' "$pen/.out")
+f=$(sed -n 's/^corpus_seam_cleared_files=//p' "$pen/.out")
+[ "$l" = "1" ] && [ "$f" = "1" ] && note "ratchet_hatch_measured=yes" || { note "ratchet_hatch_measured=no ($l/$f)"; fails=$((fails + 1)); }
+
+# The same line with a trailing comment that names no seam stays counted -- the welcome reads the
+# sentence rather than the punctuation.
+printf 'var j: usize = 0; // loop counter\n' > "$pen/stranger.rye"
+stage "$pen"; run_scan "$pen" >/dev/null
+c=$(sed -n 's/^corpus_flagged_files=//p' "$pen/.out")
+[ "$c" = "1" ] && note "ratchet_bare_comment_counted=yes" || { note "ratchet_bare_comment_counted=no ($c)"; fails=$((fails + 1)); }
+
+# The word standing in CODE rather than in a comment is not a stated seam.
+printf 'var seam_i: usize = 0;\n' > "$pen/stranger.rye"
+stage "$pen"; run_scan "$pen" >/dev/null
+c=$(sed -n 's/^corpus_flagged_files=//p' "$pen/.out")
+[ "$c" = "1" ] && note "ratchet_seam_in_code_counted=yes" || { note "ratchet_seam_in_code_counted=no ($c)"; fails=$((fails + 1)); }
+
+# THE LOAD-BEARING LEG. The same stated seam inside a ROSTERED module must still refuse.
+rm -f "$pen/stranger.rye"
+printf 'var i: usize = 0; // seam: slice index over a std source buffer\n' >> "$pen/a.rye"
+stage "$pen"; want gate_stated_seam_still_refused refuse "$(run_scan "$pen")"
+
+# ---- Reading ten: the two new filter lines are MUTATED and watched to bite. A leg that passes
+# under a broken scan proves nothing, so each mutation is preceded by the unmutated reading in the
+# same pen -- a mutation is evidence only where the truth it replaces differs from it.
+mutate() { # mutate <name> <sed expr> <pen> <key> <unmutated> <wanted-after>
+  before=$(sed -n "s/^$4=//p" "$3/.out")
+  if [ "$before" != "$5" ]; then
+    note "$1=no (unmutated $4 read $before, wanted $5)"; fails=$((fails + 1)); return
+  fi
+  sed "$2" "$SCAN" > "$pen_root/mutant.sh"
+  if cmp -s "$SCAN" "$pen_root/mutant.sh"; then
+    note "$1=no (the sed matched nothing -- the mutation edited no byte)"; fails=$((fails + 1)); return
+  fi
+  sh "$pen_root/mutant.sh" --root "$3" >"$3/.mut" 2>/dev/null
+  after=$(sed -n "s/^$4=//p" "$3/.mut")
+  if [ "$after" = "$6" ]; then note "$1=yes"; else
+    note "$1=no ($4 read $after under the mutant, wanted $6)"; fails=$((fails + 1))
+  fi
+}
+
+# The welcome reads the SENTENCE. Drop the `seam` test and a bare trailing comment walks free.
+pen=$(new_pen mutate_sentence '"a.rye"')
+printf 'const x: u32 = 0;\n' > "$pen/a.rye"
+printf 'var j: usize = 0; // loop counter\n' > "$pen/stranger.rye"
+stage "$pen"; run_scan "$pen" >/dev/null
+mutate mutation_seam_word_bites 's/substr($0, i + 2) ~ \/seam\//1/' "$pen" corpus_flagged_files 1 0
+
+# The welcome is confined to the RATCHET. Let the gate subtract it and a rostered module carrying
+# a sentence stops refusing -- the exact wall this lap was careful not to open.
+pen=$(new_pen mutate_gate '"a.rye"')
+printf 'const x: u32 = 0;\nvar i: usize = 0; // seam: slice index over a std source buffer\n' > "$pen/a.rye"
+stage "$pen"; run_scan "$pen" >/dev/null
+mutate mutation_gate_strictness_bites 's/^  r=$(count_authored "$p"); n=${r% \*}$/  r=$(count_authored "$p"); n=$(( ${r% *} - ${r#* } ))/' "$pen" declared_roster_flagged 1 0
+
 # ---- Reading seven: a tree with no roster file at all refuses rather than reading zero.
 pen=$pen_root/noroster
 mkdir -p "$pen"
 ( cd "$pen" && git init -q . )
 want no_roster_refused refuse "$(sh "$SCAN" --root "$pen" >/dev/null 2>&1; echo $?)"
 
-echo "control_checks=19"
+echo "control_checks=$checks"
 echo "control_failures=$fails"
 if [ "$fails" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
 echo "control_verdict=behavior_missing" >&2
