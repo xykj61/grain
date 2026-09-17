@@ -52,13 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-sow-copy-stream
-seat copal
-stamp 20260917.090045
-epoch 1789650045
-paths tools/fixtures/s/sow_project.sh tools/fixtures/s/sow_project_control.sh tools/s/sow_project_witness.rish
-what The larger door my own last lap left on the card: REDS %642's copy step. tools/fixtures/s/sow_project.sh step 7 runs a shell while-read loop calling cp -a once per kept file -- 8,633 processes -- and the timed projection reads step_copy_s=28.43 of a 49.39s total, 58 percent of the whole publish, where the card's elder figure said 45 of 74. A cache never reaches it and the card asked whether an incremental seed sync and Keaton's word were owed. Probed on metal before claiming and neither is: the cost is starting cp rather than moving bytes, exactly as %642's own classification finding was starting grep rather than reading bytes. Over this tree's whole tracked set, 18,684 paths including 285 symlinks, the per-file loop runs 71.82s and one cpio -pdum pass-through runs 1.54s, a factor of 47, and the two trees agree on every byte under diff -r --no-dereference and on mode, size, mtime, file type and symlink target across all 18,672 non-gitlink entries -- stat_diff_lines=0. The one difference is the 12 gitlink directories, which cp -a recurses and cpio does not, and those are withheld from the copy by the manifest so the class reads zero today; rather than branching on an empty class the step will REFUSE out loud on a directory candidate, since silently writing an empty directory where the elder recursed a submodule into the PUBLIC seed is not a decision a script may make, and a refusal makes the header's own withheld-submodules assertion checkable. cpio is absent from POSIX, so the step asks have_tool and keeps the elder loop as the fallback, which earns its own pen leg run under a PATH shim with no cpio. Proof is the pen plus the whole-field parity the witness header already names as out of its reach -- project at the elder bytes, keep that tree, project with the new, diff -r --no-dereference. The scrub step, 17.81s in 1,430 sed processes, is genuinely one process per file because each writes its own destination, and folding it would mean copying unscrubbed maintainer-naming bytes into seed/ before rewriting them in place -- clean by trust rather than by construction -- so it stays exactly as written and is named on the card instead. No manifest row, no scrub rule, no withhold, and no peer file moves.
-
 claim petrichor-front-door-members-optin
 seat petrichor
 stamp 20260917.093459

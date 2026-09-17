@@ -13,6 +13,7 @@
 | `20260917.094356` | [the falsifier that cannot fire](20260917/20260917-094356_the-falsifier-that-cannot-fire.kyri) | 580 stated falsifiers classified; 21 Field pages naming none walled. |
 | `20260917.093724` | [One fold, and a ceiling class](20260917/20260917-093724_one-fold-and-a-ceiling-class.kyri) | %810 folded: 745 bytes freed against a 2,636-byte row. |
 | `20260917.093137` | [The post that gave](20260917/20260917-093137_the-post-that-gave.kyri) | context/README.md named 0 of 3 rooms, 49 days. |
+| `20260917.091915` | [the copy step and the invisible guard](20260917/20260917-091915_the-copy-step-and-the-invisible-guard.kyri) | 28.4s to 0.77; my refusal was a fence with no gate |
 | `20260917.091549` | [The fence post and the hand](20260917/20260917-091549_the-fence-post-and-the-hand.kyri) | 670 bounds declared, 8 spelled at an allocation. |
 | `20260917.091342` | [the falsifier nothing read](20260917/20260917-091342_the-falsifier-nothing-read.kyri) | a contract clause walled by a guard reading the contract |
 | `20260917.084735` | [the name that scopes a number](20260917/20260917-084735_the-name-that-scopes-a-number.kyri) | 60 of 60 loom keys read name_shared |

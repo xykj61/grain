@@ -24,9 +24,24 @@
 # by changing nothing it measures, so the pen projects the same field twice, once silent and once
 # timed, and compares the two trees byte for byte.
 #
+# WHAT THE BATCHED COPY ADDS (REDS %642, `20260917`). Step 7 copied each kept file with its own
+# `cp -a` process inside a shell `while read` loop -- 8,633 of them -- and the timed projection
+# read `step_copy_s=28.43` of a 49.39-second total, 58 percent of a whole publish. One `cpio`
+# pass-through over the same list runs it in 0.77s, so the copy joins the classification in
+# finding that the cost was starting a process rather than moving bytes. `SOW_COPY_TOOL` names the
+# pass-through so a host without `cpio` -- which left POSIX in 2001 -- falls back to the elder
+# loop, and the fallback is proven to project the SAME tree rather than merely to run. Three
+# properties a content diff would miss earn their own legs: a plain runner's exec bit, a symlink
+# arriving as a symlink, and the one input the two paths disagree about. That input is a
+# directory, `git ls-files` answers with one for every gitlink, and step 1's `[ -f "$f" ]` filter
+# is what keeps it away -- so the pen plants a gitlink and then drops that one filter, which ships
+# an empty room. A guard nobody could see was doing the work now has a mutation naming it.
+#
 # WHAT IT DOES NOT REACH. Parity against the elder per-file loop over the REAL field is a
-# whole-tree reading rather than a pen one -- project at the elder commit, keep that tree, project
-# again, and `diff -r`. And the seed's editorial privacy review stays a human read at custody
+# whole-tree reading rather than a pen one -- project at the elder bytes, keep that tree, project
+# again, and `diff -r`. Taken by hand `20260917`: 0 differences over 8,637 copies, 1,431 scrubs
+# and 137 withholds, and 0 differences in mode, size, file type and symlink target across all
+# 9,310 projected entries. And the seed's editorial privacy review stays a human read at custody
 # gate 1; this proves the mechanism, never the judgment.
 
 say "sow-project: Language EN -- the projection that decides what the public seed contains, proven one branch at a time."
@@ -38,7 +53,7 @@ say control.out
 assert control.ok else "sow-project: the control must complete"
 assert control.out contains "control_failed=0" else "sow-project: every planted behavior must read as written"
 assert control.out contains "control_verdict=ok" else "sow-project: the control must agree with itself"
-assert control.out contains "control_legs=41" else "sow-project: a leg written today must be heard today -- raise this count with the control"
+assert control.out contains "control_legs=50" else "sow-project: a leg written today must be heard today -- raise this count with the control"
 assert control.out contains "leg projection_exits_zero verdict=yes" else "sow-project: the projection must finish green on a whole field"
 assert control.out contains "leg plain_page_copied_verbatim verdict=yes" else "sow-project: a file naming nobody must reach the seed byte for byte"
 assert control.out contains "leg named_page_scrubbed_to_role verdict=yes" else "sow-project: a file naming the maintainer must reach the seed with the role in its place"
@@ -78,6 +93,15 @@ assert control.out contains "leg shape_withheld_name_never_scrubbed verdict=yes"
 assert control.out contains "leg excluded_log_owns_the_deep_path verdict=yes" else "sow-project: an exclusion at depth must be logged as an exclusion rather than a withhold"
 assert control.out contains "leg mutation_ancestor_walk_dropped_bites verdict=yes" else "sow-project: dropping the ancestor walk must ship the file three rooms under a shut door"
 assert control.out contains "leg mutation_one_basename_glob_dropped_bites verdict=yes" else "sow-project: dropping one basename shape must ship that one file and hold the rest"
+assert control.out contains "leg plain_runner_keeps_exec_bit verdict=yes" else "sow-project: a plain runner must reach the seed executable -- the copy path's own exec bit, beside the scrub path's"
+assert control.out contains "leg symlink_arrives_as_symlink verdict=yes" else "sow-project: a symlink must arrive as a symlink with its own target, never dereferenced into a second file"
+assert control.out contains "leg copy_fallback_projects_identical_bytes verdict=yes" else "sow-project: the fallback loop must project the same tree the pass-through does"
+assert control.out contains "leg absent_copy_tool_falls_back verdict=yes" else "sow-project: a copy tool this host lacks must fall back rather than refuse"
+assert control.out contains "leg broken_copy_tool_refuses_loudly verdict=yes" else "sow-project: a pass-through that fails must refuse out loud, never read as a field with nothing to copy"
+assert control.out contains "leg gitlink_never_becomes_a_candidate verdict=yes" else "sow-project: a gitlink is the one directory git ls-files answers with, and it must reach neither the candidate list nor the seed"
+assert control.out contains "leg gitlink_plant_leaves_the_field_whole verdict=yes" else "sow-project: the gitlink plant must leave the rest of the field shipping, or the leg above reads a run that refused everything"
+assert control.out contains "leg mutation_regular_file_filter_dropped_bites verdict=yes" else "sow-project: dropping step 1's regular-file filter must ship the gitlink as an empty room"
+assert control.out contains "leg mutation_copy_failure_silenced_bites verdict=yes" else "sow-project: silencing the copy failure must finish green having copied nothing at all"
 
 say ""
-say "GREEN: sow-project -- every branch of the seed projection stands proven on a pen field, the batched classification answers exactly as the per-file loop did, the step timing moves no projected byte, a directory exclusion reaches every depth beneath it, every basename shape withholds its own file, and seven mutations bite."
+say "GREEN: sow-project -- every branch of the seed projection stands proven on a pen field, the batched classification and the streamed copy each answer exactly as their per-file loop did, the fallback projects the same tree, a failed pass-through refuses out loud, a gitlink reaches neither the candidate list nor the seed, the step timing moves no projected byte, and nine mutations bite."

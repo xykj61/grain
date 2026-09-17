@@ -281,6 +281,13 @@ printf 'a room that ships\n' > "$a/room/one.md"
 (cd "$a" && sh tools/fixtures/s/sow_project.sh > projector.out)
 check "producer_failure/lifted" "$(run_rc "$a")" "0"
 # A manifest changed during copying cannot earn a receipt for the old input.
+# THE PLANT SHIMS BOTH COPY PATHS. `sow_project.sh` step 7 streams its plain
+# copies through one `cpio` pass-through and keeps the `cp` loop as the fallback
+# for a host without it (REDS %642, `20260917`), so a plant on `cp` alone reaches
+# whichever path this host does not take -- and on this pier that is none of
+# them. It read `producer_moved/refuses got [0] want [2]` the lap the streaming
+# landed: a plant aimed at a command the code no longer runs proves nothing, and
+# says so in the shape of a broken guard rather than a quiet pass.
 real_cp=$(command -v cp)
 cat > "$work/bin/cp" <<EOF
 #!/bin/sh
@@ -288,12 +295,21 @@ printf '# moved during copy\\n' >> template-manifest.bron
 exec "$real_cp" "\$@"
 EOF
 chmod +x "$work/bin/cp"
+real_cpio=$(command -v cpio || true)
+if [ -n "$real_cpio" ]; then
+  cat > "$work/bin/cpio" <<EOF
+#!/bin/sh
+printf '# moved during copy\\n' >> template-manifest.bron
+exec "$real_cpio" "\$@"
+EOF
+  chmod +x "$work/bin/cpio"
+fi
 producer_rc=0
 (cd "$a" && PATH="$work/bin:$PATH" sh tools/fixtures/s/sow_project.sh > moved-producer.out 2>&1) || producer_rc=$?
 check "producer_moved/refuses" "$producer_rc" "2"
 check "producer_moved/no_receipt" "$(test -f "$a/seed/.sow-projection.log" && echo present || echo absent)" "absent"
 check "producer_moved/named" "$(grep -c 'coverage inputs changed during projection' "$a/moved-producer.out" || true)" "1"
-rm -f "$work/bin/cp"
+rm -f "$work/bin/cp" "$work/bin/cpio"
 (cd "$a" && sh tools/fixtures/s/sow_project.sh > projector.out)
 check "producer_moved/lifted" "$(run_rc "$a")" "0"
 
