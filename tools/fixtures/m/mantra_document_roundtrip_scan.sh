@@ -42,6 +42,9 @@
 #   add_sees_newline_removed=yes|no    GATED -- and when it is taken away
 #   status_sees_newline_removed=yes|no GATED
 #   terminator_invisible=yes|no     GATED -- the repaired seam, named in one word
+#   head_insert_woven=yes|no        GATED -- a head insert IS woven by add
+#   head_insert_roundtrip=yes|no    reported -- and the untouched file reads clean after (REDS %807)
+#   head_insert_reports_move=yes|no reported -- or status reports a MOVE, one text arriving and leaving
 #   raw_bytes_in_store=yes|no       reported -- door 3, never taken
 #   verdict=ok|red
 #
@@ -175,6 +178,42 @@ if ( cd "$rem" && "$bin" add f.txt 2>&1 | grep -q '^mantra: wove' ); then
 else
   echo "add_sees_newline_removed=no"
   note_red
+fi
+
+# --- REPORTED: a line inserted at the HEAD of the document (REDS %807) ---
+#
+# REPORTED rather than gated, for the reason the seven terminator readings were
+# reported before their own ruling came: the repair is a choice among three doors
+# and none of them is a lap's to take alone. `head_insert_woven` IS gated, from
+# the passing side -- `add` does weave the new line, so a `no` there means the
+# store stopped seeing the edit entirely and the two readings below say nothing.
+head="$work/head"
+pen_with "$head" 'a\nb\n' || note_red
+printf 'zero\na\nb\n' > "$head/f.txt"
+if ( cd "$head" && "$bin" add f.txt 2>&1 | grep -q '^mantra: wove' ); then
+  echo "head_insert_woven=yes"
+else
+  echo "head_insert_woven=no"
+  note_red
+fi
+hstat="$work/head.status"
+( cd "$head" && "$bin" status f.txt >"$hstat" 2>&1 ) || true
+if grep -q -- '-- clean' "$hstat"; then
+  echo "head_insert_roundtrip=yes"
+else
+  echo "head_insert_roundtrip=no"
+fi
+# THE SIGNATURE, rather than the symptom. Any broken status reports SOMETHING on
+# an untouched file; this defect reports a MOVE -- one text arriving and the same
+# text leaving -- because the new line took the counter's own answer and sorted
+# past every line the weave held. The intersection is what tells that apart from
+# an ordinary miscount.
+sed -n 's/^+ //p' "$hstat" | sort -u > "$work/head.ins"
+sed -n 's/^- //p' "$hstat" | sort -u > "$work/head.del"
+if [ -s "$work/head.ins" ] && [ -n "$(comm -12 "$work/head.ins" "$work/head.del")" ]; then
+  echo "head_insert_reports_move=yes"
+else
+  echo "head_insert_reports_move=no"
 fi
 
 # --- REPORTED: are the file's own bytes anywhere in the store? ---
