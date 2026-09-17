@@ -52,12 +52,7 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim incense-claim-before-cold-order
-seat incense
-stamp 20260917.113839
-epoch 1789659519
-paths tools/f/fleet_baton.txt .claude/rules/the-baton.md construction/REDS.md construction/ITINERARY.md
-what The baton's two orders collide as printed and copal named it the third firing on 20260917: the CARD stanza says roster cold then hot holding still while it runs, the ABSENCE stanza says check-claim-push-then-build, and neither orders the claim against the cold run. tree_digest reads git rev-parse HEAD beside porcelain and content, so the claim commit the second stanza requires lands mid-pass and fixes the first stanza's verdict at tree_moved=yes. Proven on metal in a throwaway pen before claiming: one claim commit between two digest readings moves them, 650c2b940dea to 93d67f7c9fa8. Measured over this tree's September logs carrying a cold roster loom line: 39 record a tree_moved reading, 7 read yes, and 6 of those 7 name a claim -- a small class whose correlation is near-total, which is what a printed ordering fault looks like rather than a busy tree. The cure is one word of ordering seated where habits are set: claim first, push, then launch the cold run, and hold still through it. Both laws keep every other word. Touches no guard, no scan, no ceiling, no module source and no peer file: the baton text, its rule page, the card's Standing block, and one compact ledger row.
+claim against the cold run. tree_digest reads git rev-parse HEAD beside porcelain and content, so the claim commit the second stanza requires lands mid-pass and fixes the first stanza's verdict at tree_moved=yes. Proven on metal in a throwaway pen before claiming: one claim commit between two digest readings moves them, 650c2b940dea to 93d67f7c9fa8. Measured over this tree's September logs carrying a cold roster loom line: 39 record a tree_moved reading, 7 read yes, and 6 of those 7 name a claim -- a small class whose correlation is near-total, which is what a printed ordering fault looks like rather than a busy tree. The cure is one word of ordering seated where habits are set: claim first, push, then launch the cold run, and hold still through it. Both laws keep every other word. Touches no guard, no scan, no ceiling, no module source and no peer file: the baton text, its rule page, the card's Standing block, and one compact ledger row.
 claim copal-seed-link-room-carried
 seat copal
 stamp 20260917.115703

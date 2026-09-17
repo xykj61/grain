@@ -1,5 +1,20 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260917.143958` -- walk-back nib `308d10be7f`.** Seating the claim-before-cold
+ordering as an INNER LOOP directive needed room on `construction/ITINERARY.md`, which arrived from
+upstream at **40,951 bytes against its 40,960 ceiling** -- nine bytes of headroom, so the whole
+overage was this lap's own to pay. *Swept:* the 671-byte **Landed accounts shelved** narrative,
+compacted to its pointer and the way in -- it records a fold finished on `20260915` and the shelf
+it names keeps every word, which is a finished section rather than a live handoff. *Also
+compacted:* the COPAL pointer, whose account and ask already stand whole on
+`archive/20260916-195200_itinerary-landed-accounts.md`; its one live reading, `never_removed` 9
+against a ceiling of 8, is kept on the card verbatim. *What waits there, worth recalling:* the
+swept narrative's own argument -- that the `## Product direction` section had reached 23,070
+bytes, 56 percent of the card, and that a byte bound is the wrong instrument for a section wanting
+a shelf. That sentence is the case for raising this pin, and it is worth a reader's eye whenever
+the card next arrives at its ceiling. No lane account body, no open gate, no ask, and no dated
+testimony moves.
+
 **Checkpoint `20260917.071327` -- walk-back nib `3caaa0dc3e`.** Restoring the paragraph a peer's rebase ate out of `%803` put `construction/REDS.md` 973 bytes over its 65,536-byte bound, with twenty rows standing **OPEN** and nothing foldable. The page is 92 percent rows -- 61,507 bytes against 5,002 of prose -- so the two finished ACCOUNTS it carries move to shelves and the rows stay: the 904-byte argument for the `20260915` bound raise, which reads as a completed decision rather than a declaration, goes to `construction/archive/20260917-071327_reds-pin-bound-raise-account.md`, and the **CLOSED** closure of `%626` joins the shelf already holding that row. The pin keeps its bound, its key, its three-field law and every open row. What waits at the walk-back: the raise account's own measurement -- 39,596 bytes, 16 open rows at a mean of 2,355, and 1,364 bytes of headroom against a row needing 2,355 -- which is the argument that this page's real condition is rows that do not close rather than a number that is too small.
 
 **Checkpoint `20260917.053021` -- walk-back nib `9d0868ef6d`.** Recovering this lane's parked

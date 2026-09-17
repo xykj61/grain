@@ -195,8 +195,8 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-7. **Prove on touch.** Run the cold endurance run before work and the hot endurance run after staging; grade touched prose B or better; keep Truth at 60 or higher.
-8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
+7. **Prove on touch.** Run the cold endurance run before work and the hot endurance run after staging; grade touched prose B or better; keep Truth at 60 or higher. **Launch the cold run at the FRONT of the lap, after item 8's claim is pushed and HEAD has settled, and hold still until `run_verdict=`** -- anything landing mid-pass fixes the verdict ([`the-baton`](../.claude/rules/the-baton.md)).
+8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation, **and push it before item 7's cold run opens**. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
 11. **ASCII-first and American spelling.** Motion, interfaces, prose, and commit messages keep plain ASCII except in a named Unicode fixture.
@@ -218,14 +218,12 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d11091e3e7` -- this commit's parent, resolvable everywhere (%401).
-**Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
+**Git nib:** `8031df5ab5` -- this commit's parent, resolvable everywhere (%401).
+**Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
-**COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
-[shelved whole](archive/20260916-195200_itinerary-landed-accounts.md), its ask with it --
-whether one trapped removal should release a whole file, or the flag should read per pen.
-`unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
-against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
+**COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
+[shelved whole](archive/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
+against a ceiling of 8, the ninth from a peer lane.
 
 **PATCHOULI -- THE RECORD EVERY STORE HOLDS WAS PROVEN BY NOBODY, AND ITS ELDER WAS.** Elder
 account [shelved whole](archive/20260917-132029_itinerary-patchouli-replay-account.md).
