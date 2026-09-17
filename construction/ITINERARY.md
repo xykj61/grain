@@ -129,7 +129,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `fc5b1f9281` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `96140b36f2` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -152,7 +152,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `fc5b1f9281` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `96140b36f2` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -184,47 +184,55 @@ the head enumeration `Diff` now carries.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A NUMBERED LIST WAS READ AS PROSE BY BOTH READINGS THAT GRADE THIS TREE.**
-Elder account [shelved whole](archive/20260916-201810_itinerary-landed-accounts.md) with its ask.
-**AETHER HEARS** (row 0, N=5130): listen for the page nobody answered. The rota's own cardinal
-seat, `foundations/20260826-024943_follow-our-compass.md`, graded **C+/77** -- and the reason was an
-instrument rather than the page.
-**THE MECHANISM.** `measure()` in `tools/fixtures/p/prose_register_scan.sh` holds out a bullet with
-`/^[ \t]*[-*+][ \t]/` -- a marker THEN whitespace, enumerating no digit -- and `reach_read()` in
-`tools/fixtures/q/qa_report_card.sh` copies the same four rules. So a `1. ` or `2) ` line is read
-as a **prose sentence** by the register gate and the Reach grade alike, its links charged to the
-cross-reference budget. Measured over living tracked Markdown: **1,727 lines across 332 of 1,380
-pages**; over the three gated tiers, **207 in 38 files**.
-**THE HARM IS A FALSE GREEN, and it is the unsafe direction.** The bold-key residue one rule above
-errs toward COUNTING and says so, since counting a label dilutes the ratio a little while hiding a
-claim hides real negation. A numbered list is that same dilution at size. Held out,
-`teaching_over_field_target` runs **1 to 3** against a ceiling of 1: `docs/CRYPTO.md` reads 30 then
-**31** percent, and `manual/guides/self-hosted-vpn-setup.md` reads 16 then **33** -- more than
-double, standing over its declared field target today where the gate cannot hear it.
-**AND IT RUNS BOTH WAYS, which is why it is a reading rather than a repair.** Holding the lines out
-lifts `MAP.md` from Reach **70 to 80** -- so part of the 70 Petrichor asked about was an artifact --
-and lowers the compass **50 to 40**, whose seven short stations were pulling its grade down.
-**WHAT I REFUSED TO DO.** `qa_report_card.sh` refuses twice, in its own words, to *re-grade the tree
-in one unmeasured step*, and names this card as where the question goes. So this lap **publishes the
-reading and scores nothing**: `measure()` takes a `hold_ordered` flag and reports `ordlines` as a
-fourth field, the card prints `ordered_list`, `ordered_list_register` and `ordered_list_reach`, and
-the scan prints three tier deltas naming the two pages. **Every scored reading is byte-identical to
-the run before it**, proven by diffing the whole scan output.
-**PROVEN:** `prose_register` **55 legs** (from 48), `qa_report_card` **166 behaviors**, both GREEN
-on metal, plus eight dependent witnesses. Four register legs bite under a live narrowing of the
-digit class. One leg was rewritten mid-lap because it passed under the mutation: reading three
-dotted lines beside one parenthesised one, it stayed green when `)` was dropped, so the close-paren
-spelling now stands alone on its own page.
-**GRADED:** both touched scripts **B+/89** and **B+/88**. **COST:** the scan runs **3.9s to 5.6s**.
-**NAMED RATHER THAN TAKEN:** `rune_assert_sweep` reds at the cold open -- two unnamed asserts in
-`glow/refusal.rye` and `glow/rune_shape.rye`, which **Pheromone's** live claim already books by name.
-**A RED FOUND AT THE CLOSE, BOOKED** (`20260916.203549`): `nib_honesty` reads every advertised hash
-with `grep -oE '\b[0-9a-f]{10}\b'`, and hex admits the decimals -- so Diffuser's own LCG account,
-naming `1103515245` and `2147483648`, floats two claims no tree has held. Caught because a push
-failed to clear `gone=2`, the state's own named cure. Eleven lines below, that same file reads the
-living nib by its key.
-**YOURS:** the re-grade now has a cost attached. Holding numbered lines out costs two teaching
-pages a sweep and buys every routing page an honest Reach. Take it, or keep the number reported?
+**GRASS -- HEXADECIMAL ADMITS THE DECIMALS, AND THE GUARD NEVER ASKED WHAT IT READ.**
+Elder account [shelved whole](archive/20260916-205458_itinerary-landed-accounts.md); its ask about
+the numbered-list re-grade moved to *Open doors* below, where a question for you belongs.
+**WATER TASTES** (row 3, N=5138): read up close and run the actual thing, and test an infusion by
+running it a second time.
+**REDS FIRST, AND THE RED WAS MINE.** Last lap's close booked `%782`: `nib_honesty_scan.sh` gathered
+every advertised hash with `grep -oE '\b[0-9a-f]{10}\b'`, and hexadecimal admits the decimals, so
+Diffuser's account of an awk generator -- `seed * 1103515245 % 2147483648` -- floated two commit
+claims no tree has held. The guard read `gone=2` and refused a healthy pier, **for every ship**.
+**THE RULING the row left to its lane: both readings, in order, since neither alone is sound.**
+POSITION decides where the card names a key -- `Git nib`, `checkpoint`, `walk-back nib` standing
+immediately before the token with only punctuation between. SHAPE decides where no key stands: a run
+carrying one of `a-f` is a hash claim. RESOLUTION takes the case shape cannot, reading an all-decimal
+run in bare prose as a NUMERAL unless the object store resolves it.
+**POSITION LEADS ON A MEASUREMENT RATHER THAN A PREFERENCE.** The obvious fix is to require a letter,
+and it drops real hashes: **52 of this history's 5,138 commits carry a short hash of ten decimal
+digits, one in 99**, against the 1 in 110 the arithmetic predicts. Recognition by RESOLUTION alone
+was refused on its face -- this guard exists to catch a hash that stopped resolving, so a rule
+admitting only what resolves empties the gate.
+**THE MECHANISM.** The grep is replaced by a `classify_tokens` awk function emitting `token<TAB>class`
+per token, deciding the class from the 40 characters before it and the run's own shape; `sweep`
+counts `keyed`, `prose_hex`, `numeral_resolved` and `numeral_read` apart. The card's vocabulary was
+**censused rather than guessed** over 400 revisions of the card: 537 `**Git nib:**` keys against 139
+bare-prose hashes following no fixed word, so a key roster alone would have dropped the prose half.
+**PROVEN, BY RUNNING RATHER THAN ASSERTING.** The control plants all four cases, so a working guard
+refuses **exactly three and reads two free**. All three readings were mutated in the live scan and
+each reddened the witness on metal -- and dropping RESOLUTION reproduced the founding red on the
+living card. Four exact counts are asserted rather than one: dropping POSITION and dropping SHAPE
+**both** read 3-caught-to-2, and only `control_keyed` and `control_prose_hex` tell them apart, which
+is Bakery's own lesson this week about a conjunction proven by one clause.
+**AND THE WATER ROW'S OWN TEST:** the repaired scan run twice is byte-identical, 19 lines both times.
+**LANDED:** `%782` **CLOSED** and folded whole to
+[its shelf](archive/REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) -- 4,317 bytes of
+row, taking the pin from 59,442 to **55,125**. The close was written on a base where the pin stood
+**284 over its bound**, and the send's rebase moved that base under it; the fold is right either way,
+since a CLOSED row belongs on a shelf. **The lap's own re-derivation is the honest part:** the merge
+kept both sides of an append conflict and so restored two rows both folds had removed, which
+`reds_ledger_monotone` caught by name -- so the close and the fold were re-applied to the rebased
+base rather than merged onto it.
+**GRADED:** scan **B/83**, witness **B/84**.
+**A RED FOUND IN THE SEND, BOOKED AND REPAIRED** (`20260916.210526`, by stamp until the spine binds it): the fleet claim board
+`construction/fleet-claims.kyri` carried one **1,548-byte line** where a hand-resolved conflict had
+glued petrichor's `what`, 827 duplicated bytes of mine, and the bare `claim petrichor-shelf-graded-whole`
+header after them -- so a live claim stood headerless and invisible. `fleet_claim_scan.sh --check`
+read that board and answered **`verdict=clear`**. The board is repaired here; the instrument -- a
+well-formedness reading beside the content one -- is a booked lap.
+**MINE:** the elder guard already knew better eleven lines down, where the living nib is read by its
+own key. The narrow reading and the loose one stood in one file and only the narrow one was ever
+asked what it was reading -- so the cure was already written, one function away, for a fortnight.
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks
@@ -457,6 +465,9 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
   breaches the bound. Should an account live on its shelf from birth, the card holding a line a ship?
+- **The numbered-list re-grade** -- holding `1. ` and `2) ` lines out of the prose readings costs two
+  teaching pages a register sweep and buys every routing page an honest Reach. The reading is
+  published and scores nothing today; take the cost, or keep the number reported?
 - **`==` and `::`** -- a pronunciation row and a Book entry, or lexical punctuation the rune reference
   teaches by use? One word empties `glow_rune_alphabet`'s exemption list.
 - **The Glow field capacity** -- `20260720` froze `$:` at nine faces, reserving a widening for your

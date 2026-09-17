@@ -33,9 +33,63 @@ MODE=${1:-}
 CARD=${CARD:-construction/ITINERARY.md}
 CONTROL=tools/fixtures/nib_honesty_control/floating_nib_control.md
 
-# Ten hex digits is the tree's own short-nib width (git rev-parse --short=10).
-advertised_hashes() {
-  grep -oE '\b[0-9a-f]{10}\b' "$1" 2>/dev/null | sort -u || true
+# Ten hex digits is the tree's own short-nib width (git rev-parse --short=10),
+# and hexadecimal admits the decimals -- so the run alone cannot say whether a
+# ten-character token is a commit or a number. A grep for the character class
+# read Diffuser's account of an awk generator, `seed * 1103515245 % 2147483648`,
+# as two advertised commits and refused a healthy tree (REDS %782).
+#
+# Three readings decide it, in order, and each covers what the one before cannot:
+#
+#   POSITION   -- a key standing immediately before the token, separated only by
+#                 punctuation and space: `Git nib`, `checkpoint`, `walk-back nib`.
+#                 Position outranks shape, so an all-decimal nib is still gated.
+#                 Measured on this history, 52 of 5,138 commits carry a short hash
+#                 of ten decimal digits -- one in 99 -- so shape alone would drop
+#                 a real hash silently, which is the direction an honesty guard
+#                 can least afford.
+#   SHAPE      -- where no key names it, a run carrying at least one of a-f is a
+#                 hash claim and answers to the hard law below.
+#   RESOLUTION -- an all-decimal run standing in bare prose is a NUMERAL unless
+#                 the object store resolves it, and a numeral is reported rather
+#                 than refused. Measurement decides the one case shape cannot.
+#
+# The residue, named rather than hidden: an all-decimal prose hash that a rewrite
+# has floated reads as a numeral and leaves the population -- one prose hash in 99
+# by the measurement above. The bytes carry no more than that, which is why the
+# reading stops here rather than guessing.
+classify_tokens() {
+  awk '
+    function keyed(p) { return tolower(p) ~ /(git nib|walk-back nib|checkpoint)[^a-z0-9]*$/ }
+    BEGIN {
+      # Spelled out rather than written [0-9a-f]{10}: an interval expression is
+      # the one piece of ERE an awk on a stranger machine may decline.
+      hex = "[0-9a-f]"
+      pat = hex hex hex hex hex hex hex hex hex hex
+      rank["numeral"] = 1; rank["prose_hex"] = 2; rank["keyed"] = 3
+    }
+    {
+      line = $0; rest = line; off = 0
+      while (match(rest, pat)) {
+        s = RSTART; l = RLENGTH; tok = substr(rest, s, l)
+        before = (off + s > 1) ? substr(line, off + s - 1, 1) : ""
+        after  = substr(line, off + s + l, 1)
+        # A longer run is no token at all: the neighbours decide the boundary.
+        if (before !~ /[0-9A-Za-z]/ && after !~ /[0-9A-Za-z]/) {
+          prefix = substr(line, 1, off + s - 1)
+          if (keyed(prefix))        c = "keyed"
+          else if (tok ~ /[a-f]/)   c = "prose_hex"
+          else                      c = "numeral"
+          # One token may stand in two voices; the strongest reading wins, so a
+          # hash named by a key once is never downgraded by a bare mention later.
+          if (!(tok in cls) || rank[c] > rank[cls[tok]]) cls[tok] = c
+        }
+        off += s + l - 1
+        rest = substr(rest, s + l)
+      }
+    }
+    END { for (t in cls) print t "\t" cls[t] }
+  ' "$1" 2>/dev/null | sort || true
 }
 
 # Three honest reaches, in narrowing order. on-main implies a remote carries it;
@@ -54,8 +108,13 @@ reach_of() {
 sweep() {
   card=$1
   gone=0; on_main=0; on_remote=0; local_only=0; total=0
-  for h in $(advertised_hashes "$card"); do
-    total=$((total + 1))
+  keyed=0; prose_hex=0; numeral_resolved=0; numeral_read=0
+  set -f
+  # shellcheck disable=SC2046
+  set -- $(classify_tokens "$card")
+  set +f
+  while test $# -ge 2; do
+    h=$1; c=$2; shift 2
     if git cat-file -e "$h" 2>/dev/null; then
       r=$(reach_of "$h")
       case $r in
@@ -63,10 +122,27 @@ sweep() {
         on-remote)  on_remote=$((on_remote + 1)) ;;
         local-only) local_only=$((local_only + 1)) ;;
       esac
-      echo "hash $h resolves=yes reach=$r"
+      total=$((total + 1))
+      case $c in
+        keyed)     keyed=$((keyed + 1)) ;;
+        prose_hex) prose_hex=$((prose_hex + 1)) ;;
+        numeral)   numeral_resolved=$((numeral_resolved + 1)) ;;
+      esac
+      echo "hash $h class=$c resolves=yes reach=$r"
+    elif test "$c" = "numeral"; then
+      # The one reading shape could not take: ten decimal digits in bare prose,
+      # answering to no key and resolving nowhere. It is a number, so it is read
+      # rather than refused, and it is printed so the refusal stays inspectable.
+      numeral_read=$((numeral_read + 1))
+      echo "numeral $h class=numeral resolves=NO read=number"
     else
       gone=$((gone + 1))
-      echo "hash $h resolves=NO reach=none"
+      total=$((total + 1))
+      case $c in
+        keyed)     keyed=$((keyed + 1)) ;;
+        prose_hex) prose_hex=$((prose_hex + 1)) ;;
+      esac
+      echo "hash $h class=$c resolves=NO reach=none"
     fi
   done
   echo "advertised=$total"
@@ -74,6 +150,10 @@ sweep() {
   echo "on_main=$on_main"
   echo "on_remote=$on_remote"
   echo "local_only=$local_only"
+  echo "keyed=$keyed"
+  echo "prose_hex=$prose_hex"
+  echo "numeral_resolved=$numeral_resolved"
+  echo "numeral_read=$numeral_read"
 }
 
 if test "$MODE" = "prove-red"; then
@@ -84,6 +164,8 @@ if test "$MODE" = "prove-red"; then
   out=$(sweep "$CONTROL")
   echo "$out" | sed 's/^/control_/'
   cg=$(echo "$out" | sed -n 's/^gone=//p')
+  cn=$(echo "$out" | sed -n 's/^numeral_read=//p')
+  echo "RED_numeral_read_free=$cn"
   if test "$cg" -ge 1; then
     echo "RED_floating_nib_caught=$cg"
     exit 1

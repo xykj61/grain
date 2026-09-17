@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260916.210506` | [The gate that held one page](20260916/20260916-210506_the-gate-that-held-one-page.kyri) | The front-door gate held one page; the walk it opens left the seed |
+| `20260916.205942` | [Hexadecimal admits the decimals](20260916/20260916-205942_hexadecimal-admits-the-decimals.kyri) | A guard exact about its subject, silent about its population |
 | `20260916.204827` | [The door that said empty](20260916/20260916-204827_the-door-that-said-empty.kyri) | The shelf graded whole; its highest grade sat on its one false status |
 | `20260916.204416` | [A proof written rather than run](20260916/20260916-204416_a-proof-written-rather-than-run.kyri) | A missing path refusal, and a blind staleness door. |
 | `20260916.203849` | [A decimal that read as a nib](20260916/20260916-203849_a-decimal-that-read-as-a-nib.kyri) | Hex admits the decimals; two LCG constants floated as commits |

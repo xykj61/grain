@@ -813,3 +813,7 @@ at a closed fold.*
 *Rows %780 and %784 folded to [`REDS-the-receipt-key-closed-by-running-rows-780-784.md`](REDS-the-receipt-key-closed-by-running-rows-780-784.md) on `20260916.205126`, both **CLOSED** -- Both halves of the build receipt's key, closed by running rather than reading: a leg over a conjunction proves the first clause that refuses, and a proof written rather than run reads exactly like a proof.*
 
 *Rows %774 and %776 folded to [`REDS-a-resolver-answers-the-path-and-nobody-asked-the-sentence-rows-774-776.md`](REDS-a-resolver-answers-the-path-and-nobody-asked-the-sentence-rows-774-776.md) on `20260916.205126`, both **BOOKED** -- an instrument that resolves a path cannot answer for the sentence beside it, and a reading silent about the half that matters reads exactly like a pass.*
+
+*Row %782 folded to [`REDS-the-pattern-that-never-asked-what-it-read-rows-782.md`](REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) on `20260916.210404`, **CLOSED** -- a pattern over a character class is a pattern over everything that class admits, and hexadecimal admits the decimals.*
+
+*Row %782 folded to [`REDS-the-pattern-that-never-asked-what-it-read-rows-782.md`](REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) on `20260916.211058`, **CLOSED** -- a pattern over a character class is a pattern over everything that class admits, and hexadecimal admits the decimals.*
