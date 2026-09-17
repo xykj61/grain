@@ -24,6 +24,31 @@ pub const ReceiptOfferFact = struct {
     expires_at: u64, signer_id: []const u8, signature: []const u8,
 };
 
+
+/// The count of fields `ReceiptOfferFact` publishes, stated once so a comparison
+/// and a reader are checked against the same number.
+pub const offer_fact_fields = 15;
+
+/// Compare two offer facts field by field. A replay proves nothing about the
+/// fourteen fields a one-field comparison never reads, which is why the whole
+/// fact is the reading: the comptime assert below stops compiling the day a
+/// field is published without a stated comparison.
+pub fn fact_eql(a: ReceiptOfferFact, b: ReceiptOfferFact) bool {
+    // invariant: the published field set stays the size this comparison covers.
+    comptime assert(@typeInfo(ReceiptOfferFact).@"struct".fields.len == offer_fact_fields);
+    // invariant: the schema name itself is a nonempty ASCII constant.
+    assert(schema_v1.len > 0);
+    inline for (@typeInfo(ReceiptOfferFact).@"struct".fields) |field| {
+        const lhs = @field(a, field.name);
+        const rhs = @field(b, field.name);
+        switch (@typeInfo(field.type)) {
+            .pointer => if (!std.mem.eql(u8, lhs, rhs)) return false,
+            .int => if (lhs != rhs) return false,
+            else => @compileError("receipt offer field '" ++ field.name ++ "' publishes no stated comparison"),
+        }
+    }
+    return true;
+}
 pub const Status = enum { offered, expired };
 pub const ReceiptState = struct { offer: ReceiptOfferFact, status: Status };
 pub const AdmissionError = bounds.BoundError || error{

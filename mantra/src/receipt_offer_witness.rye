@@ -1,4 +1,10 @@
 //! mantra/src/receipt_offer_witness.rye -- admission, deterministic replay, and refusal stillness.
+//!
+//! Replay determinism is read with `receipt.fact_eql`, which compares every field the offer fact
+//! publishes. Comparing `receipt_id` alone -- one field of fifteen -- passed against a replay that
+//! dropped `purpose`, mangled `value_amount`, or moved `expires_at`, and its passing was evidence
+//! about one string. The sibling `receipt_refusal_witness.rye` says the same thing about a refusal
+//! line in its own comment; this is that reading, arriving at the replay.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -43,11 +49,18 @@ pub fn main(_: std.process.Init) !u8 {
     const second = try log.replay(fact.issued_at);
     assert(first.status == .offered);
     assert(second.status == .offered);
-    assert(std.mem.eql(u8, first.offer.receipt_id, second.offer.receipt_id));
-    assert((try log.replay(fact.expires_at)).status == .expired);
+    // invariant: two replays of one log hand back the same fact in every published field.
+    assert(receipt.fact_eql(first.offer, second.offer));
+    // invariant: a replayed fact matches the one admitted, field for field.
+    assert(receipt.fact_eql(first.offer, fact));
+    const expired = try log.replay(fact.expires_at);
+    assert(expired.status == .expired);
+    // invariant: expiration moves the status and leaves every published field alone.
+    assert(receipt.fact_eql(expired.offer, fact));
 
     if (log.append(fact, 512, true)) |_| unreachable else |err| assert(err == error.TooManyFacts);
-    assert(std.mem.eql(u8, (try log.replay(fact.issued_at)).offer.receipt_id, fact.receipt_id));
+    // invariant: a refused second append leaves the elder fact whole, not merely identified.
+    assert(receipt.fact_eql((try log.replay(fact.issued_at)).offer, fact));
 
     var refused = receipt.Log{};
     var bad = fact;

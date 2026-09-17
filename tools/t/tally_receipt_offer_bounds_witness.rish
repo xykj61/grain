@@ -26,4 +26,26 @@ assert proof.ok else "receipt-offer: the Rye witness exited non-zero"
 assert proof.out contains "GREEN: receipt offer" else "receipt-offer: the witness did not print its complete GREEN claim"
 
 say proof.out
-say "GREEN: receipt-offer runner -- the tracked build compiles every declaration and proves bounded replay on metal."
+
+# THE COMPARISON IS PROVEN FROM BOTH SIDES, not merely run. The Rye witness above reads a replay
+# with `fact_eql`, which compares every field the offer fact publishes. A comparison that reads
+# one field of fifteen passes against a replay that mangled the other fourteen, so the pen below
+# mutates `replay` to drop one field and shows the elder one-field comparison walking free where
+# the whole-fact comparison refuses. It also moves the stated field count off the struct's own,
+# and publishes a field whose type the comparison states no reading for, so both halves of the
+# compile-time wall are shown biting. The control prints its own leg tally; this runner asserts it,
+# because a control that reached its last line has not thereby proven its legs.
+let control = run ["sh" "tools/fixtures/m/mantra_replay_whole_fact_control.sh"]
+say control.err
+assert control.ok else "receipt-offer: the whole-fact control did not run to its end"
+assert control.out contains "control_verdict=ok" else "receipt-offer: the whole-fact control refused its own pen"
+assert control.out contains "control_failed=0" else "receipt-offer: a leg of the whole-fact control read the wrong way"
+assert control.out contains "clean_exit=0" else "receipt-offer: the unmutated pen did not reach GREEN"
+assert control.out contains "clean_green=yes" else "receipt-offer: the unmutated pen printed no GREEN claim"
+assert control.out contains "elder_walks_free_exit=0" else "receipt-offer: the elder one-field comparison refused, so the repair's measurement says nothing"
+assert control.out contains "whole_fact_refuses_exit=" else "receipt-offer: the whole-fact refusal phase did not report at all"
+assert control.out contains "count_drifted_exit=" else "receipt-offer: the count-drift phase did not report at all"
+assert control.out contains "unstated_type_exit=" else "receipt-offer: the unstated-type phase did not report at all"
+assert control.out contains "unstated_type_named=yes" else "receipt-offer: the unstated-type refusal did not name its field"
+say control.out
+say "GREEN: receipt-offer runner -- the tracked build compiles every declaration, proves bounded replay field for field, and shows the one-field comparison walking free."

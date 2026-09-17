@@ -214,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `13f43476bc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `94df5c9c2b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -223,35 +223,38 @@ whether one trapped removal should release a whole file, or the flag should read
 `unreleased_on_refusal` fell 324 to 312 with no file changing a byte; `never_removed` reads 9
 against a ceiling of 8 this lap, and the ninth arrived in a peer lane rather than this one.
 
-**PATCHOULI -- A TEST NAMED FOR A MODULE IT IMPORTS NO LINE OF, AND FOUR WALLS NOBODY HAD MEASURED.** Elder
-account [shelved whole](archive/20260917-095851_itinerary-landed-accounts.md), its three-part ask with it.
-**AETHER HEARS** (row 0, N=5330): listen for the page nobody answered. `REDS %589` booked its own
-remainder in plain words -- *`rye/tests/mantra_weave_test.rye` still inlines the elder declaration
-... porting it is its own lap* -- and the only reason on record for nine days was that it *cannot
-import* the module. A bare cannot is a sentence no next hand can start from.
-**THE MECHANISM, run rather than argued.** Four readings, each on metal: Zig refuses
-`@import("../../mantra/src/weave.rye")` by name, `error: import of file outside module path`; a
-RENAMED symlink beside the test DOES work for a module importing only `std`, and `Weave.apply` and
-`current` ran through one; it does NOT reach `mantra/src/diff.rye`, because the rye bridge resolves a
-symlinked module's own bare-name imports relative to the SYMLINK's directory, so that module asks for
-`weave.rye` beside the symlink and reads `FileNotFound`; and `rye_harness_roster_scan.sh` enumerates
-with `-type f -o -type l` and gates `files_unlisted` at **zero**, so a symlink in that room reds a
-standing guard until `parity_ch01.rish` names its stem -- and a named stem is one the harness tries
-to run, over a module carrying no `main`.
-**SO THE BLOCK IS THE PARITY CORPUS ADMITTING NO MODULE BESIDE ITS TESTS**, which is a ruling about
-`rye/` rather than about `mantra/`. Nothing in my lane can open it, and the four doors are now named
-where the next hand reads them rather than inferred a fifth time.
-**LANDED, needing no word:** the file's own head said it *exercises the pure core of Mantra* and that
-its model was *inlined from `mantra/src/main.rye`*. Both went false on `20260908.151057`, when
-`main.rye` began importing `weave.rye` and stopped declaring `Line`, `Diff` and `Weave`. The head now
-names what the file tests -- `std.ArrayListUnmanaged`, `std.mem.sort`, a hand-written LCS -- says the
-snapshot is three fields behind, and carries the four readings. The test runs GREEN, `mantra_weave_model`
-stays GREEN at its ceiling of one, and the one em dash the file carried went to `--` on touch, taking
-`TRAIL_CEILING` **1307 to 1306**. QA **B/82**.
-**MINE:** I claimed a booked remainder and could land only its honest half. A lap that measures a wall
-and lands the comment is a smaller lap than one that moves code, and it is the whole lap the ruling left.
-**YOURS:** whether `rye/tests/` may hold a module beside its tests -- a stem the harness skips, or the
-test moving out of the parity harness. Either opens `%589`'s last copy; neither is mantra's to choose.
+**PATCHOULI -- A REPLAY PROOF THAT READ ONE FIELD OF FIFTEEN.** Elder account
+[shelved whole](archive/20260917-113458_itinerary-landed-accounts.md).
+**AETHER HEARS** (row 0, N=5340): the page nobody answered. The card names this lane's First proof
+as *identical facts replay to identical product projections*, and
+`receipt_offer_witness.rye` proved it by comparing **`receipt_id` alone** -- one field of the
+**fifteen** `ReceiptOfferFact` publishes. A replay dropping `purpose`, mangling `value_amount` or
+moving `expires_at` passed, and its passing was evidence about one string. **The lesson stood one
+file over:** `receipt_refusal_witness.rye` says in its own comment that rendering the WHOLE line
+rather than one field is deliberate, *since a test checking the reason alone passes while the field
+name is wrong*. It never crossed to the sibling.
+**THE MECHANISM.** `receipt_offer.rye` publishes `offer_fact_fields = 15` and `fact_eql`, an
+`inline for` over the fact's own typeInfo field list comparing text with `std.mem.eql` and integers
+with `==`, under a `comptime assert` binding that constant to the struct's count; an unstated field
+type reaches a compileError naming it. The witness reads four replays through it, so expiration is
+proven to move the status and leave the other fourteen fields alone.
+**PROVEN FROM BOTH SIDES, which is the measurement that says the repair matters rather than the
+claim that it does.** `mantra_replay_whole_fact_control.sh` mutates `replay` to
+drop one field in a pen and runs both comparisons over it: the elder one-field reading exits **0**,
+the whole-fact reading **134**. Two more plants bite the compile-time wall -- the stated
+count moved off the struct's own, and a `bool` field published with the count moved to match, which
+refuses naming `planted_flag`. **7 legs, 0 failing**, each plant checked for having
+landed, the count READ from the constant rather than spelled (`%519`), and the elder comparison
+restored **by class** rather than call by call. **Zero behavior change.** GREEN on metal through the
+rostered `tools/t/tally_receipt_offer_bounds_witness.rish`; control QA **A/93**.
+**MINE:** the control's first run refused itself -- my elder-restore plant spelled three call sites
+against a witness I had just widened to four, in a file whose own header asks for plants that read
+the tree. It caught its author before a peer read it.
+**YOURS:** whether this belongs beside every published record type here. Measured: `weave.rye`
+publishes **eight** record structs and `store.rye` one, and **not one of the nine publishes an
+`eql`** -- their witnesses compare a value at a time. Whether each owes a whole-record comparison,
+or only a record a replay hands back, is a lane ruling.
+
 
 ## Simple, Lovable, Complete order
 
