@@ -863,3 +863,4 @@ at a closed fold.*
 *Row %816 folded to [`REDS-the-word-a-reader-chose-rows-816.md`](REDS-the-word-a-reader-chose-rows-816.md) on `20260917.172111`, **CLOSED** -- a summary line that substitutes its own word for an instrument's has stopped reporting, and it said `readable` over 14 revisions the guard beside it refused.*
 
 *Row %801 folded to [`REDS-the-parent-a-rebase-moved-rows-801.md`](REDS-the-parent-a-rebase-moved-rows-801.md) on `20260917.174536`, **CLOSED** -- a body's own parent-hash claim earns a wall, and the wall is forward-only because testimony can never be repaired.*
+*Row %747 folded to [`REDS-a-guard-that-could-not-answer-rows-747.md`](REDS-a-guard-that-could-not-answer-rows-747.md) on `20260917.164918`, **CLOSED** -- a failed capture and a guard that ran and refused both left the branch at exit 1, so a runner could not tell a refusal it lost from one it found; the fifth verdict `unrun` names the first and withholds the receipt.*

@@ -12,7 +12,9 @@
 #
 #   sh tools/l/loom_trend.sh <key>              # every value of <key>, oldest first, with its day
 #   sh tools/l/loom_trend.sh <key> --summary    # first, last, min, max, and the direction of travel
-#   sh tools/l/loom_trend.sh --keys             # the keys actually written, by how often
+#   sh tools/l/loom_trend.sh --keys             # the 60 most frequent keys, by how often,
+#                                               with keys_distinct beside keys_shown
+#   sh tools/l/loom_trend.sh --keys --all       # every key the journal holds
 #   LOOM_FAMILY=roster sh tools/l/loom_trend.sh seconds --summary   # only lines naming that family
 #
 # A BARE KEY COLLIDES ACROSS FAMILIES, and the first reading proved it: `seconds` returned a minimum
@@ -30,7 +32,10 @@
 # is not a fact. And the reading is ordered by the log's own STAMP rather than by file order, because
 # a shelf holds its rows newest-first and a trend read backwards tells the opposite story.
 #
-# BOUNDS: at most 4000 logs read, at most 2000 values reported.
+# BOUNDS: at most 4000 logs read, at most 2000 values reported, and `--keys` lists the 60 most
+# frequent keys of however many the journal holds -- `keys_distinct` beside `keys_shown` says
+# which, and `--keys --all` lifts that third cap. All three are named here because an unnamed
+# cap reads as completeness.
 set -eu
 
 root=${LOOM_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)}
@@ -38,6 +43,8 @@ cd "$root"
 
 MAX_LOGS=4000
 MAX_VALUES=2000
+# How many keys `--keys` lists. `--keys --all` raises it to the whole vocabulary.
+KEYS_SHOWN=60
 
 KEY=${1:-}
 MODE=${2:-list}
@@ -61,12 +68,32 @@ git ls-files 'session-logs/date/*/*.kyri' 2>/dev/null | head -"$MAX_LOGS" > "$wo
 [ -s "$work/logs.txt" ] || { echo "refused: no tracked session logs -- every reading below would be empty" >&2; exit 2; }
 
 if [ "$KEY" = "--keys" ]; then
-  # Every key written, by how often. This is the map of what the journal actually holds.
+  # Every key written, by how often -- the most frequent KEYS_SHOWN of them, and then the size of
+  # the whole vocabulary beside the size of the listing, so the cap is never silent. `--keys --all`
+  # lifts it to every key counted.
+  #
+  # THE CAP USED TO BE THE LAST WORD OF THIS PIPELINE AND NOTHING SAID SO (`20260917`). This branch
+  # ended `| head -60`, the header called the mode *the map of what the journal actually holds*, and
+  # `.claude/rules/session-logs.md` told every ship the same. It showed 60 of 9,767. A cap is lawful
+  # -- this tree bounds everything -- and a cap contradicting its own tool's account of itself is
+  # not, because a reader cannot tell a small journal from a truncated reading of a large one.
+  # Two laps on one day took the sixty for the vocabulary: one built a premise wrong by two orders
+  # of magnitude, and one sampled `loom_name`'s verdicts over a population that frequency had
+  # already selected -- and *written by many families* is the definition of the verdict it drew 60
+  # times out of 60.
   while IFS= read -r f; do
     grep '^loom ' "$f" 2>/dev/null || true
   done < "$work/logs.txt" \
     | tr ' ' '\n' | grep -E '^[A-Za-z_][A-Za-z0-9_]*=' | cut -d= -f1 \
-    | sort | uniq -c | sort -rn | head -60
+    | sort | uniq -c | sort -rn > "$work/keys.txt"
+  distinct=$(grep -c . "$work/keys.txt" || true)
+  [ -n "$distinct" ] || distinct=0
+  if [ "$MODE" = "--all" ]; then shown=$distinct; else shown=$KEYS_SHOWN; fi
+  # A listing never claims more rows than it holds, so a journal under the cap reads the two equal.
+  [ "$shown" -le "$distinct" ] || shown=$distinct
+  head -"$shown" "$work/keys.txt"
+  echo "keys_distinct=$distinct"
+  echo "keys_shown=$shown"
   exit 0
 fi
 

@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260917.180039` | [The lever that was per ship](20260917/20260917-180039_the-lever-that-was-per-ship.kyri) | The fleet model lever is per-ship and untracked; Claude Code pinned 2.1.274. |
 | `20260917.172111` | [The word a reader chose](20260917/20260917-172111_the-word-a-reader-chose.kyri) | 14 of 370 boards called readable. |
+| `20260917.171621` | [The map that showed sixty of nine thousand](20260917/20260917-171621_the-map-that-showed-sixty-of-nine-thousand.kyri) | a top-N called itself the journal |
 | `20260917.170032` | [The law read under one of its two names](20260917/20260917-170032_the-law-read-under-one-of-its-names.kyri) | 185 of 204 claim commits staled the card. |
 | `20260917.163650` | [The tolerance that was a ladder rung](20260917/20260917-163650_the-tolerance-that-was-a-ladder-rung.kyri) | Borrowed 60 was a rung; files cross 71.90. |
 | `20260917.163111` | [The parent a rebase moved](20260917/20260917-163111_the-parent-a-rebase-moved.kyri) | %801 closed: the ledger booked one, the reading finds ten. |
