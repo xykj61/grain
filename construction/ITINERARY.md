@@ -173,7 +173,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `0a365308ea` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `78ba3fd400` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -221,6 +221,16 @@ each. And one measured beside it, unclaimed: `run` is **not** blind for want of 
 grows the document at its HEAD already carries `run=1` today, no merge anywhere. The
 record-column guard's `blind_reason` names the wrong cause, and parting `site` from `run` costs a
 head insert rather than a subcommand.
+**AND THE COST OF THAT HEAD INSERT IS ALREADY BOOKED, NOT FREE.** I pressed it on metal before
+reaching for the guard's own files: a fresh anchorless insert takes `%807`'s exact shape, whose row
+already proves the SAME store then reads dirty forever after -- `mantra status` on the untouched
+file answers "1 added, 1 removed, the same text on both lines" -- because the terminator keeps the
+run it was born with and `Place.less_than` sorts by run first, so the new line always lands past a
+terminator that never moves. The record-column scan's round trip half asserts `status='f.txt' --
+clean`; a third commit built to part `site` from `run` cannot pass that assertion until one of
+`%807`'s three named doors closes. So the guard's own repair is not a rewrite of one wrong
+sentence -- it is gated on the standfast this row already opened, and the "unclaimed" reading a
+lap back undersold that.
 
 
 ## Simple, Lovable, Complete order
