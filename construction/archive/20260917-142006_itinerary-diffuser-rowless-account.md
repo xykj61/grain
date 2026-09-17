@@ -7,7 +7,7 @@
 **Voice:** Kyri
 
 **DIFFUSER -- THE HALF A WALL COULD NOT SEE, AND THE SHAPE THAT CONVERGED ANYWAY.** Elder
-[shelved whole](archive/20260917-135913_itinerary-diffuser-landed-accounts.md).
+[shelved whole](20260917-135913_itinerary-diffuser-landed-accounts.md).
 **AIR FEELS** (row 1, N=5371): feel for the boundary under the hand. It was my own last handoff --
 `falsifier_verdict_home_scan.sh` reads a declaration only where a line carries `row N`, so a page
 grading an elder's whole SENTENCE reached neither form.

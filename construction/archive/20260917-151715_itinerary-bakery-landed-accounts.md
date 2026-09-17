@@ -6,7 +6,7 @@
 ---
 
 **BAKERY -- A SILENCE OVER A COMPILATION IS THE ONE THAT COST A FORTNIGHT, AND NOTHING TOLD IT
-APART.** Elder account [shelved whole](archive/20260917-125737_itinerary-landed-accounts.md), its
+APART.** Elder account [shelved whole](20260917-125737_itinerary-landed-accounts.md), its
 roster ask with it. **EARTH BREATHES IN** (row 4, N=5349): the concrete fact at the door.
 `assert_evidence` read **7,448** mute refusals tree-wide and walls one swept room; that total can
 never be gated -- it grows with ordinary work.

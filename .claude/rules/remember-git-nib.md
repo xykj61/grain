@@ -29,16 +29,16 @@ commit the card already names.** A lap makes two such commits, one at each end:
 | **follow-up** -- the session log recording facts the send produced | after the work commit | `HEAD` read before it is made |
 
 One arithmetic, one shape, two positions. So `tools/r/remember_git_nib.rish` takes **`lead-in`** as a
-**peer name** for `follow-up` under [`alias-sameness`](alias-sameness.md) -- one implementation, one
-refusal path, neither name outranking the other -- rather than a third shape. A lap opening a claim
-was otherwise asked to call a lead-in a follow-up, which is a word the tool made it get wrong.
+**peer name** for `follow-up` under [`alias-sameness`](alias-sameness.md), where several lawful names
+carry one referent: one implementation, one path of record, two words of equal standing. A lap opening
+a claim had until then to call its lead-in a follow-up, which is a word the tool put in its mouth.
 
 **The lead-in half stood uncovered and it fired on nearly every claiming lap.** Measured
 `20260917.164713` over this tree's **204 claim-opening commits**, each put to the guard's own state
-predicate copied verbatim: **185 leave the card STALE**, and **184 of those are commits whose only
-file is `construction/fleet-claims.kyri`**. Over the last 55 openings the reading is **55 of 55**,
-each standing stale a mean of **12.7 minutes** and a maximum of **62** across a mean of 1.49 commits
-before a later commit repins. **That window is exactly where the baton's ORDER clause puts the cold
+predicate copied verbatim: **185 read STALE**, and **184 of those are commits whose only file is
+`construction/fleet-claims.kyri`**. Over the last 55 openings the reading is **55 of 55**, each
+holding that reading for a mean of **12.7 minutes** and a maximum of **62**, across a mean of 1.49
+commits before a later commit repins. **That window is exactly where the baton's ORDER clause puts the cold
 endurance run**, so the fleet's most expensive reading -- 355 guards, held still, bought to say
 *these answers describe THIS tree* -- carried a manufactured red on every lap that claimed. All
 three figures are **free**; re-read them by walking `git log -- construction/fleet-claims.kyri`
@@ -48,10 +48,10 @@ through the predicate in `tools/r/remember_git_nib_witness.rish` step 3.
 that will be typed differently. `tools/f/fleet_claim.sh` carries the card itself on `--open` and on
 `--close`, through the same `tools/fixtures/r/remember_git_nib_write.sh` this rule's own workaround
 names -- **and only when the board's bytes actually moved**, so the idempotent no-op open leaves
-BOTH files byte-identical and the water row's law holds over the pair rather than over the board
-alone. It **degrades rather than refuses**: an absent card, a tree that is no repository, or a
-missing nib writer each leave the board written and print `card_carried=no` with a reason, since a
-claim the fleet cannot read is a worse outcome than a card one commit behind. **Stage both files.**
+BOTH files byte-identical and the water row's law holds over the pair as well as over the board.
+It **degrades rather than refuses**: a pen lacking a card, a tree outside git, or an absent nib
+writer each leave the board written and print `card_carried=no` with a reason, since a readable
+claim outranks a current card. **Stage both files.**
 
 Proven by [`../../tools/fixtures/f/fleet_claim_control.sh`](../../tools/fixtures/f/fleet_claim_control.sh)
 on real git repositories in a throwaway pen, **62 legs, 0 failing**, sixteen of them this carry's --
@@ -61,13 +61,13 @@ mutations bitten: a carry placed **above** the idempotence exit moves the card o
 move nothing, and the amend's `HEAD^` in the carry's place leaves the very commit it was meant to
 make honest still stale, which is `%803` one position over.
 
-**What this does not reach.** A lap that commits a claim by some other means, where the peer shape
-word is what it reaches for. And the contested send, which no shape repairs and which `%803` keeps.
+**What this leaves standing.** A lap committing a claim by other means, where the peer shape word is
+what it reaches for. And the contested send, which `%803` keeps for itself.
 
-**Two ships met this before it was built and neither closed it** -- copal wrote it as a session-log
-row (`20260917.061322`) and handed it to a peer whose live claim was about a different subject, and
-diffuser met it on its own cold run. It stood on no ledger for the day between. A finding handed on
-is a finding nobody holds.
+**Two ships met this before it was built, and each handed it on** -- copal wrote it as a session-log
+row (`20260917.061322`) and passed it to a peer whose live claim was about a different subject;
+diffuser met it on its own cold run. The ledger stood silent for the day between. A finding handed
+on belongs to the whole fleet, and a thing the whole fleet owns waits for one hand to hold it.
 
 ## The writer names its shape, and refuses to guess (REDS %803, `20260917`)
 

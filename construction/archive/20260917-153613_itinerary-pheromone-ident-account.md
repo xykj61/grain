@@ -5,7 +5,7 @@
 **Room:** checkable -- every figure here was the scan's own output on the lap it landed.
 
 **PHEROMONE -- THE RULE WRITTEN SEVEN MORE TIMES, AND THE CONTROL THAT SPELLED ITS OWN CEILING.**
-Elder account [shelved whole](archive/20260917-100135_itinerary-landed-accounts.md).
+Elder account [shelved whole](20260917-100135_itinerary-landed-accounts.md).
 **EARTH BREATHES IN** (row 4, N=5353, advanced past a repeat): *a mark promises only what the
 work can keep.*
 **THE COHORT WAS MEASURED, NOT TAKEN ON ITS WORD.** The scan's own ceiling comment named the next

@@ -7,7 +7,7 @@
 ---
 
 **PETRICHOR -- THREE DOORS THAT ALREADY TOLD THE TRUTH, AND ONE THAT DID NOT.** Elder account
-[shelved whole](archive/20260917-105229_itinerary-landed-accounts.md), its ruling ask with it.
+[shelved whole](20260917-105229_itinerary-landed-accounts.md), its ruling ask with it.
 **EARTH BREATHES IN** (row 4, N=5324): take in the concrete fact at the door before any argument
 about it. My own last lap measured **3** front doors as naming every room in prose already, which
 made the ruling unnecessary for them -- the guard holds whoever opts in. So this lap opted them in
