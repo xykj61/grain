@@ -7391,3 +7391,22 @@ guard cpu_unit
 path tools/c/cpu_unit_witness.rish
 tier lap
 seated 20260917.054941
+
+# LOOM SITTING -- can a key in the journal PROVE a movement, and how small a one? The trend reader
+# beside it ends on `direction=rising|falling|level`, which reports that the last value differs from
+# the first and is read as evidence the WORK changed -- two facts in one word, on a pier eight ships
+# share. This groups a key's values by the day shelf each log was born on and prints the
+# within-sitting spread (the resolution floor) beside the across-sitting one.
+#
+# THE GUARD GATES THE ARITHMETIC AND THE REFUSALS, AND DECLINES THE JOURNAL. Planted corpora have
+# one right answer each, so every median, spread, parts-per-thousand figure, scale and verdict is
+# asserted; what `wall_s` reads tomorrow is eight ships' habits, and a ceiling over it would red on
+# a day somebody measured something new. The singleton sitting is proven from both sides -- its zero
+# spread means UNMEASURED, so it is excluded from the floor, counted apart, and a key with no
+# multi-value sitting refuses rather than printing a confident number.
+# 2s, 56 control legs, six mutations bitten.
+# Reading: active-designing/20260917-074214_the-numbers-nobody-can-compare.md
+guard loom_sitting
+path tools/l/loom_sitting_witness.rish
+tier lap
+seated 20260917.074214
