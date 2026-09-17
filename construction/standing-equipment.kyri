@@ -7510,3 +7510,14 @@ guard falsifier_reach
 path tools/f/falsifier_reach_witness.rish
 tier lap   # 19s; 493 pages and 580 regions read, 44 control legs, four mutations bitten.
 seated 20260917.093812
+
+# verdict-home -- where a verdict about an elder claim lands. Walls `unanswered` at zero: a
+# child page declaring in its door that it graded row N of an elder page, where the elder
+# carries no matching `Row N erratum` line. A wall rather than a ratchet, since all 14
+# standing declarations are answered. The key census reports and gates nothing -- the seated
+# `Runs the falsifier of:` spelling reached 0 of 16 opportunities in eight days and is
+# withdrawn by the paper this guard ships with.
+guard verdict_home
+path tools/f/falsifier_verdict_home_witness.rish
+tier lap   # 8s; 494 pages, 14 declarations and 12 errata read, 40 control legs, four mutations bitten.
+seated 20260917.101905
