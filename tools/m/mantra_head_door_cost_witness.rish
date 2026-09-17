@@ -1,0 +1,108 @@
+# tools/m/mantra_head_door_cost_witness.rish -- both sides of one falsifier, counted in one unit.
+#
+# WHAT THIS PROVES, and the page it proves it for. REDS %807 says a line inserted at the HEAD of a
+# stored document leaves the document. The design page at
+# active-designing/20260916-105110_no-anchor-names-the-head.md names three doors out of that and
+# recommends Door C, a document-start sentinel, with its own falsifier written in plain words: a
+# count of the places that would have to learn about the sentinel, against the 12 place
+# constructions Door B touches. Nobody ran it. This guard runs it every lap.
+#
+# THE ANSWER IS TWO ANSWERS, and that is the finding rather than a failure to decide. Read
+# literally, the falsifier FIRES: 28 places must learn about the sentinel against a stated 12, so
+# the page's own test refutes its own recommendation. Read in ONE UNIT -- sites that must change,
+# counted the same way on both sides -- Door C is CHEAPER: 28 against 32. The comparison the page
+# wrote is between a count of sentinel-learners and a count of place constructions, which are two
+# different units, and a falsifier whose two sides are counted differently returns whichever
+# answer the reader's unit chooses.
+#
+# THE PAGE'S OWN NUMBER DOES NOT REPRODUCE. It states 12 place constructions; the module holds
+# SIX -- four `place()` accessors returning a four-field literal, and two sentinel initializers in
+# `from_order_record` and `from_v2`. So the falsifier fires under the stated threshold and under
+# the measured one alike, which is why the first answer stands whichever number a reader trusts.
+#
+# THE THRESHOLD IS READ OFF THE PAGE rather than spelled in the scan, so the day the page moves
+# its own number this guard moves with it. The control proves that by handing the scan a page
+# whose threshold reads 40 and watching the falsifier stop firing.
+#
+# HOW DOOR C IS COUNTED, and why the classes are three rather than one. A sentinel is an extra
+# entry in `lines`, so every site reading `lines.items.len` is a candidate. A site comparing the
+# list against ITSELF -- an adjacency walk, an insertion index -- carries the sentinel on both
+# sides and travels free. A site comparing the length against a ceiling, a record's row count or a
+# diff's insert count must learn, and so must one casting the length into an allocation size. The
+# scan tests FREE FIRST, and the order is load-bearing: `var at: u32 = @intCast(lines.items.len)`
+# matches the free rule and the alloc rule both, and it is an insertion index. The control swaps
+# the two rules and watches exactly that one site cross the gate.
+#
+# WHAT THIS DOES NOT REACH. Which door the weave walks through. That is a ruling about how places
+# are ASSIGNED, and REDS %807 returns it to Keaton exactly as %680 did. This guard puts a number
+# beside each door and stops.
+#
+# Siblings: the record's own column identities at tools/m/mantra_record_column_witness.rish, and
+# the order record at tools/m/mantra_weave_order_record_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_head_door_cost_witness.rish
+
+say "mantra-head-door-cost: Language EN -- both sides of one falsifier, counted in one unit."
+say "mantra-head-door-cost: Style Gauge, Meter -- every number is read off the module and the page."
+say "mantra-head-door-cost: Lens TAME -- a falsifier nobody runs is a confidence nobody earned."
+
+say "mantra-head-door-cost: counting both doors against the page's own threshold..."
+let scan = run ["sh" "tools/fixtures/m/mantra_head_door_cost_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-head-door-cost: the scan must complete"
+assert scan.out contains "paper_readable=yes" else "mantra-head-door-cost: the design page this guard reads is gone, so every number below is a number about nothing"
+assert scan.out contains "paper_threshold=12" else "mantra-head-door-cost: the page no longer states the falsifier threshold this guard was seated against -- read the page and move the reading with it"
+assert scan.out contains "subjects=2" else "mantra-head-door-cost: the module room no longer holds the two sources this reading is taken over"
+
+# DOOR B, in the page's own unit and in the shared one. The first is asserted because the page's
+# 12 is the number its falsifier names; the second because it is the only count comparable to
+# Door C's.
+assert scan.out contains "doorb_place_constructions=6" else "mantra-head-door-cost: the module no longer holds six place constructions -- four place() accessors and two sentinel initializers"
+assert scan.out contains "paper_unit_reproduces=no" else "mantra-head-door-cost: the page's stated twelve place constructions now reproduces, so the sentence this guard corrects is no longer wrong"
+assert scan.out contains "doorb_place_field_decls=4" else "mantra-head-door-cost: the order key no longer stands as a field on four structs, so Door B's field would thread somewhere else"
+assert scan.out contains "doorb_ord_sites_code=28" else "mantra-head-door-cost: the count of code sites naming the order key moved, so Door B's cost in the shared unit moved with it"
+assert scan.out contains "doorb_same_unit=32" else "mantra-head-door-cost: Door B's cost in the shared unit moved"
+
+# DOOR C, class by class. The three are asserted apart rather than by their sum, because a site
+# moving from free to must-learn and another moving the other way would leave the sum unchanged.
+assert scan.out contains "doorc_sites=33" else "mantra-head-door-cost: the module holds a different number of count sites than this reading was taken over"
+assert scan.out contains "doorc_free=5" else "mantra-head-door-cost: the sites that carry the sentinel on both sides of their own comparison moved"
+assert scan.out contains "doorc_external=16" else "mantra-head-door-cost: the sites comparing a length against a ceiling, a record's rows or a diff's inserts moved"
+assert scan.out contains "doorc_alloc=12" else "mantra-head-door-cost: the sites casting a length into an allocation moved"
+assert scan.out contains "doorc_unclassified=0" else "mantra-head-door-cost: a count site fell into no class, so this reading is a reading of less than it names"
+assert scan.out contains "doorc_must_learn=28" else "mantra-head-door-cost: the count of places that must learn about the sentinel moved"
+
+# THE TWO ANSWERS, asserted separately, because collapsing them is the very fault this guard names.
+assert scan.out contains "falsifier_fires=yes" else "mantra-head-door-cost: the page's own falsifier has stopped firing -- if that is honest the recommendation stands and this guard's argument wants rewriting"
+assert scan.out contains "same_unit_cheaper=doorc" else "mantra-head-door-cost: counted in one unit Door C is no longer the cheaper door, which flips the second of the two answers"
+assert scan.out contains "excluded_subject=mantra/src/diff.rye" else "mantra-head-door-cost: the scan no longer names the subject it excludes, so its exclusion has gone silent"
+assert scan.out contains "verdict=ok" else "mantra-head-door-cost: the scan reached its own red"
+
+say "mantra-head-door-cost: planting one site of each class and striking two rules, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_head_door_cost_control.sh"]
+say control.out
+assert control.ok else "mantra-head-door-cost: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-head-door-cost: the control must reach its own verdict"
+assert control.out contains "control_failed=0" else "mantra-head-door-cost: a control leg failed, so a reading this guard asserts is unproven"
+assert control.out contains "legs_ran=27" else "mantra-head-door-cost: a control leg was dropped, so the count this guard reports is a count of less than it names"
+assert control.out contains "clean_exit=ok" else "mantra-head-door-cost: the unmutated pen did not read clean, so every planted leg fails for a reason the pen invented"
+
+# EACH CLASS PROVEN FROM BOTH SIDES -- the planted site counted, and the must-learn total moving
+# only where the class says it should.
+assert control.out contains "plant_external_must_learn=ok" else "mantra-head-door-cost: a planted ceiling comparison did not raise the must-learn count"
+assert control.out contains "plant_alloc_must_learn=ok" else "mantra-head-door-cost: a planted allocation cast did not raise the must-learn count"
+assert control.out contains "plant_free_travels=ok" else "mantra-head-door-cost: a planted adjacency walk raised the must-learn count, so a site that travels free is being charged to Door C"
+assert control.out contains "plant_unclassified_reds=ok" else "mantra-head-door-cost: a count site matching no rule was absorbed in silence rather than reddening"
+assert control.out contains "plant_comment_ord_code=ok" else "mantra-head-door-cost: an order key named inside a comment was charged to Door B, and a doc comment needs no edit to keep compiling"
+
+# THE PAGE READ RATHER THAN SPELLED, proven by moving the page's own number.
+assert control.out contains "page_threshold_lifts_falsifier=ok" else "mantra-head-door-cost: raising the page's stated threshold left the falsifier firing, so the threshold is spelled in the scan rather than read off the page"
+assert control.out contains "page_threshold_absent_reds=ok" else "mantra-head-door-cost: a page stating no threshold was read as a page stating zero"
+assert control.out contains "page_missing_refused=ok" else "mantra-head-door-cost: a page this tree does not carry was read rather than refused"
+
+# THE RULES PRICED. A rule never removed is a rule never priced.
+assert control.out contains "no_free_rule_reds=ok" else "mantra-head-door-cost: striking the free rule left the scan green, so the four adjacency walks are being classified by something else"
+assert control.out contains "alloc_first_biting=ok" else "mantra-head-door-cost: swapping the free and alloc rules moved nothing, so the order the scan's header calls load-bearing is decorative"
+
+say "GREEN: 28 places must learn about the sentinel against a stated 12 and a measured 32 -- the falsifier fires, and in one unit Door C still stands."
