@@ -7233,3 +7233,67 @@ guard read_latency
 path tools/r/read_latency_witness.rish
 tier cadence
 seated 20260917.033500
+
+# THE FUND FAMILY -- seven witnesses, six seated here, and the seventh held by name.
+#
+# WHY THIS BLOCK EXISTS. `tools/gen/fund/` holds seven `gen_*_fund_prep.rish` witnesses, each
+# asserting the seat, dedication, executive and refusal roster of one constellation fund seat
+# against `tools/fixtures/g/gen_*_fund_prep.sh` and the facts in `context/LEXICON.md`. Until
+# `20260917.052450` not one of them carried a guard record here: `grep -c fund_prep` read 0, so
+# every refusal any of them could make reached no roster pass. That is REDS %219's shape wearing a
+# family name, and the family paid for it -- `gen_trya_fund_prep` has refused on committed bytes
+# since the Lexicon renamed Trya (fund) to Acme (fund) on `20260729.225900`, fifty days before a
+# hand running the seven for an unrelated sweep happened to hear it (REDS %810).
+#
+# `tier lap`: measured on this pier `20260917.052400`, the six seated below run 113, 201, 156, 141,
+# 126 and 134 ms, about 870 ms together -- cheap enough that the family is heard every lap rather
+# than on the slower clock that let a rename stand for fifty days.
+#
+# `gen_linn_fund_prep` is seated as itself rather than skipped as a duplicate. Its own first line
+# names it a historical shim forward to Bozo (Linn retired `20260730.150702`), and a shim that has
+# stopped shimming is exactly the fault this block exists to hear.
+#
+# THE SEVENTH IS HELD OUT, AND HELD OUT BY NAME. `tools/gen/fund/gen_trya_fund_prep.rish` refuses
+# in 41 ms at `grep -q 'trya.fund' context/LEXICON.md`. Seating it would red every roster pass on
+# every ship for a fault no lap may repair, and a gate that reds on what nobody can fix is a gate
+# somebody turns off. Its two doors -- retire the generator, or rename it forward to
+# `gen_acme_fund_prep` checking Acme (fund), acme.fund and %acme -- are a POLE fund-seat naming
+# ruling and wait on Keaton's word (REDS %810). WHAT SEATS IT: whichever door lands, add
+#
+#   guard gen_trya_fund_prep      (or its renamed successor)
+#   path tools/gen/fund/gen_trya_fund_prep.rish
+#   tier lap
+#   seated <one-clock stamp of the ruling>
+#
+# and close %810 on the pass that hears it GREEN. Until then the held seat is written here rather
+# than remembered, so the ruling has one line to land on.
+
+guard gen_bozo_fund_prep
+path tools/gen/fund/gen_bozo_fund_prep.rish
+tier lap
+seated 20260917.052450
+
+guard gen_gren_fund_prep
+path tools/gen/fund/gen_gren_fund_prep.rish
+tier lap
+seated 20260917.052450
+
+guard gen_keeh_fund_prep
+path tools/gen/fund/gen_keeh_fund_prep.rish
+tier lap
+seated 20260917.052450
+
+guard gen_linn_fund_prep
+path tools/gen/fund/gen_linn_fund_prep.rish
+tier lap
+seated 20260917.052450
+
+guard gen_murr_fund_prep
+path tools/gen/fund/gen_murr_fund_prep.rish
+tier lap
+seated 20260917.052450
+
+guard gen_shyu_fund_prep
+path tools/gen/fund/gen_shyu_fund_prep.rish
+tier lap
+seated 20260917.052450
