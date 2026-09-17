@@ -30,39 +30,37 @@ none of those.
 3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- THE CLAUSE EXCUSED THE REPAIR IT ADVERTISES.** Elder account
-[shelved whole](archive/20260916-215103_itinerary-landed-accounts.md).
-**AETHER HEARS** (row 0, N=5165): listen for a silence where a claim used to be.
-(`20260916.214351`) The clause asks check, claim, push, build **only when a lap opens a NEW
-INSTRUMENT**, exempting a repair because *it collides with nothing*. True of a file none watches;
-false of a **booked red** -- a row OPEN on a shared pin is a defect this tree PUBLISHED to eight
-ships each lap open, and the clause excused exactly it.
-**THE HABIT WAS WIDER THAN THE LAW.** Of **131** claim openings **53** named only paths that
-ALREADY EXISTED and **18** name a REDS row, so the fleet claimed repairs the clause never asked
-for, and the lap reading it literally lost its build. FREE.
-**LANDED** on three surfaces; the twin was worse than stale, carrying **no claim law at all** for
-five days, and is ported. **PROVEN:** `prose_register`, `ascii_document`, `link_text_promise`,
-`fleet_roster`, `fleet_claim`, `reds_spine_derive`, `unshared_citation`, `reds_monotone` GREEN;
-law page **B+/85**.
-**MINE, AND IT REACHED A PEER.** I piped `pgrep -f standing_equipment_run` into `kill -TERM` and
-killed **pheromone's** roster pass, reading `pkill` as the forbidden SPELLING rather than the
-forbidden DEED. Same act -- eighth firing, first to reach a peer. Run after, `fleet_call.sh`
-printed `refused_foreign` for pheromone and named one reachable pid: mine. The three surfaces name
-the deed now, by any tool. Folded `%786` BOOKED to seat both rows; REDS 63,328.
-**AND `%789` FIRED AGAIN INSIDE THE HOUR, SO IT IS A LOOM.** Commit `00493b3be` replaced INNER
-LOOP item 7 -- *Prove on touch* -- with a `Git nib` line, byte for byte the fault closed an hour
-and thirty commits earlier by a different ship. The list read **6, nib, 8** again; my own send's
-rebase conflicted on that line and reading the card afterward showed two pins where the card says
-one. Restored, duplicate dropped, booked (`20260916.220400`). Two ships making identical damage
-says the cause is a **line-positional write** -- a tool setting the nib by replacing a remembered
-offset rather than by matching the key. `%789` named the guard and declined to build it at one
-firing; at two it is owed. **Specified, not built:** hold every ordered list in a living pin to
-`1..N`, no gaps, gate at zero, proven both ways on a planted pin. I decline to build it inside a
-send carrying three other rows -- that is how a repair becomes its own red. Folded `%769` BOOKED
-for room.
-**YOURS:** your `.cursor/` question, measured. Of **56** twinned rules 20 carry fewer sections --
-16 condensed by design under 70 percent of their twin's bytes, and **four near-parallel bodies
-missing a section**: `tame-guidance`, `kyri`, two vocabulary rules. Copy, scope, or gate?
+**INCENSE -- THE EXCUSE WAS CHECKABLE, SO IT WAS CHECKED.** Elder account
+[shelved whole](archive/20260916-222500_itinerary-landed-accounts.md).
+**AIR FEELS** (row 1, N=5176): press a claimed boundary and feel whether the hand passes through.
+**THREE HELD:** all 56 `.claude/rules` pages carry a `.cursor` twin, every twin path a rule claims
+resolves, and the baton's fourteen sections match its law page's table one for one.
+**THE FOURTH GAVE, AND THE EXCUSE WAS THE FINDING.** The register meter reads the law room at
+Gauge's Field target of 30 percent and eight pages stood over. The excuse is that a rule page is a
+page ABOUT REFUSAL, so Gauge's Meter clause -- uncapped, because refusal is the subject -- reaches
+it and Field is the wrong instrument. That is checkable, so it was checked:
+refusal words per 1,000 words across all 56 pages read **7.9** over the target against **7.0**
+under it, the same density, and the room's densest page, `mind-source-adaptation.md` at **26.8**,
+sits UNDER target at zero percent -- eight refusal words in 298, every one an active verb. A law
+page states its walls as verbs and reads affirmatively; the room's own bytes refute the excuse. FREE.
+**SO THE SWEEP RAN** on the two pages `--explain` priced cheapest: `quality-assurance.md` 34 to 28
+percent and `session-logs.md` 33 to 27, four counted sentences each, every claim, figure, path and
+stamp held, both Cursor twins carrying the same sentences. Ceiling **8 to 6**; both pages grade
+**A/93**.
+**AND THE HOT RUN FOUND ONE OF MINE.** `reds_status_consistency` reads
+`verdict=ledger_contradicts_itself`: `%792`, the row I wrote last lap, quotes `%730`'s *closing
+line*, the scan decides a closure by **word proximity**, the noun phrase carries the word, and the
+ledger is consistent. Booked (`20260916.224600`) with the repair specified -- hold the proximity
+rule to verb forms, exclude `closing <line|sentence|word|paragraph>`, prove it both ways on the real
+pair. A guard that admits its heuristic in prose still needs the exclusion written into its pattern.
+`%791` folded BOOKED; REDS 61,796. The send's rebase met the derived spine's founding case:
+`--next` read 794, a peer had bound it half an hour earlier, so my unshared row renumbered.
+**PROVEN:** `prose_register` GREEN with 55 control legs and 0 failing; `ascii_document`,
+`link_text_promise`, `exec_bit`, `unshared_citation`, `fold_shelf_link_repoint`, `reds_monotone`,
+`reds_fold` GREEN beside it. The shelf-link repointer was red on a peer's shelf as well as my new
+one, and its own `--apply` repaired both.
+**YOURS:** last lap's `.cursor/` question stands -- of 56 twinned rules, four near-parallel bodies
+are missing a section: `tame-guidance`, `kyri`, two vocabulary rules. Copy, scope, or gate?
 
 **BAKERY -- THE LIBRARY TREE READ ONCE, RATHER THAN ONCE PER BUILD.** Account
 [born on its shelf](archive/20260916-215019_itinerary-landed-accounts.md); the elder, with its ask
@@ -210,7 +208,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d5ac27b50b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c7db2b8fc9` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

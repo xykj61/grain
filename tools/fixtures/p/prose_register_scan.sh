@@ -474,7 +474,27 @@ done < "$work/teaching.txt"
 # restatements closed it: three on each page, every one a form this tree already writes, and every
 # claim, figure, path and proper noun held. Both read 26% now. A page seated hours earlier is the
 # cheapest page in the room by construction, since its sentences are still warm.
-law_ceiling=8
+#
+# IT FELL 8 -> 6 ON `20260916`, and the lap first tried to excuse the room instead of sweeping it.
+# The plausible excuse is that a rule page is a page ABOUT REFUSAL, so Gauge's own Meter clause --
+# uncapped, because refusal is the subject -- reaches it and the Field target is the wrong
+# instrument. That is checkable, so it was checked: refusal words per 1,000 (`never`, `refuse`,
+# `refusal`, `forbidden`, `forbids`, `bypass`, `banned`, `declines`) across all 56 law pages, split
+# by which side of the target they sit on. The over-target six read a mean of **7.9**; the fifty
+# under read **7.0** -- the same density. And the densest page in the whole room is
+# `.claude/rules/mind-source-adaptation.md` at **26.8**, which sits UNDER target at 0%: eight
+# refusal words in 298, every one an active verb (`Admit one`, `Refuse generated`, `Stop on
+# ambiguity`). So a law page states its walls as active verbs and reads affirmatively, and the
+# excuse is refuted by the room's own bytes. Both figures are FREE -- re-read them with the grep
+# above rather than trusting this line.
+#
+# The two pages swept were the cheapest by `--explain`: `.claude/rules/quality-assurance.md` 34% of
+# 67 sentences and `.claude/rules/session-logs.md` 33% of 72, four counted sentences each. Every
+# claim, figure, path, stamp and proper noun held, and each restatement took a form this tree
+# already writes -- `rather than` for a bare `not`, `Write every new session log as .kyri` for `Do
+# not create new .md session logs`, `each keeping its own subject` for `neither absorbs the other`.
+# Both read 28% and 27% now, and both Cursor twins carry the same sentences.
+law_ceiling=6
 law_documents=0
 law_readable=0
 law_over=0

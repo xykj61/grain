@@ -14,7 +14,8 @@ sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--ser
 
 For a program, the comment grammar carries the setting: its module head reads at Door, its
 `invariant:` bounds report at Meter, and declaration docs remain a named third count. The
-`--setting` flag remains accepted for command compatibility and does not choose a program's grade.
+`--setting` flag remains accepted for command compatibility, and a program's grade comes from its
+comment grammar instead.
 
 ## The habit, in one line
 
@@ -36,7 +37,7 @@ The rhythm has two parents and takes one thing from each. From **standfast**: di
 rather than being filed for later. From the **itinerary**: a frame that outlives the session becomes
 a line on the living card, so nothing found is lost when the session closes.
 
-**It is not a standfast.** Standfast stops the line for a **red** -- something that is *wrong*, which
+**It stands beside standfast rather than inside it.** Standfast stops the line for a **red** -- something that is *wrong*, which
 books the whole remaining allocation until a witness on metal closes it. A grade below B is
 something that could be **better**, which is a different weight and earns a lighter move. Calling a
 C+ document a red would spend the word that stops the line on prose, and then the word stops
@@ -86,7 +87,7 @@ target, measured at molt time rather than at queue time. Three cosmetic rewrites
 of which would have spent a checkpoint and a set of citations to move a figure that was already
 good.
 
-So: take the reading when you open the frame, not when you push it. **Grade, then decide**, and
+So: take the reading when you open the frame, rather than when you push it. **Grade, then decide**, and
 write the number down either way.
 
 ## What holds the grade honest
@@ -114,7 +115,7 @@ write the number down either way.
   only falls, rather than refusing the tree. A wall that reds on ordinary work is a wall somebody
   turns off.
 - **A low grade is not a red**, and a red found while grading still books the allocation under
-  [`reds-first`](reds-first.md). The two disciplines run beside each other; neither absorbs the other.
+  [`reds-first`](reds-first.md). The two disciplines run beside each other, each keeping its own subject.
 
 ## What this does not reach
 
