@@ -224,7 +224,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `945aaf91be` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `46e20ca7b0` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -303,39 +303,34 @@ which is why it reads as one number. Refusal prose has properties a meter could 
 every gate names its own repair, whether a bound cites what set it -- and naming which of them
 Gauge means is your word rather than a lane's.
 
-**DIFFUSER -- ONE BINARY CAN CARRY BOTH PATHS.**
-Elder [shelved whole](archive/20260917-013952_itinerary-landed-accounts.md); its ask is answered
-below by a third door it did not name.
-**AIR FEELS** (row 1, N=5216): press a claimed boundary and feel whether the hand passes through.
-**THE BOUNDARY.** My own elder closed on an either-or -- a portable `rye` pays for portability, or a
-fast `rye` inherits the build host's processor. Beneath it sits a claim: a binary holds one code path
-per feature, chosen when it compiles.
-**THE HAND PASSES THROUGH, IN ONE EXPRESSION.** `rye/lib/std/crypto/sha2.zig:240` gates the SHA-NI
-block inside `Sha2x32.round` on a comptime call to `builtin.cpu.hasAll`. Three scratch copies under
-`.lap/dispatch/`, gitignored and never committed, replace that test with `true`, with `false`, and
-with a `pub var` in a `cpu_flags.zig` module set once at startup from a `cpuid` leaf 7 inline-asm
-probe reading EBX bits 29 and 5.
-**THE ASSEMBLER GATES INLINE ASSEMBLY ON NOTHING.** At `-mcpu=baseline` the mnemonics compile,
-`vpalignr` included, and fifty-six SHA-NI opcodes stand in each accelerated binary against zero in
-the generic one, read with `xxd`. Four builds print one digest over 256 MiB.
-**MEASURED** with 1 MiB hashed sixty-four times so the fill is noise, five binaries interleaved,
-eleven rounds, medians in ms: dispatch at baseline **73**, forced at baseline 84, forced at
-**native 71**, generic at baseline 402, and that same dispatch binary with detection skipped 378.
-**The accelerated path runs the same speed whichever target built it**, the generic path costs
-**5.5x**, and the per-block branch over 1,048,576 blocks reads below the noise floor. Carrying both
-paths costs **3,992 bytes**.
-**HONEST ABOUT THE PASS:** load average 38 throughout, so minima sit far below medians and the
-argument leans on interleaving and ratios rather than absolute throughput. An earlier design hashing
-256 MiB once was dropped rather than reported -- its page-fault fill moved 142 ms between targets,
-larger than the effect under test.
-**SCOPE:** `builtin.cpu.has` stands 37 times across 15 files of `rye/lib/std`, nine of them crypto,
-each one a place where `-mcpu` decides which code exists. FREE; run the grep.
-Paper [`20260917-013952_one-binary-both-paths.md`](../active-designing/20260917-013952_one-binary-both-paths.md), **A/93** at Field, register 16 percent of 73 sentences.
-**MINE:** the transfer to `rye key` is projected rather than measured -- 50 to 60 ms at baseline with
-dispatch against the elder's 110 -- and the falsifier is a reading above 70.
-**YOURS:** the third door. Should `rye` build at `-mcpu=baseline` and dispatch at runtime, one binary
-that runs on a pre-2017 machine and keeps the extension on a new one -- and is patching a vendored
-`rye/lib/std` a fork decision you want opened?
+**DIFFUSER -- THE HASH THE CACHE TOOK, AND THE BIGGER ONE IT LEFT.** Elder
+[shelved whole](archive/20260917-020034_itinerary-landed-accounts.md); its ask is carried below.
+**EARTH BREATHES IN** (row 4, N=5224): the concrete fact at the door, ahead of the argument on it.
+**I MEASURED MY OWN PROJECTION AND IT MISSED TWICE.** The elder handed Bakery an unmeasured number --
+dispatch reads `rye/lib/std` in 50-60 ms against 110, falsifier above 70. I took it because the
+PREMISE had moved: `hash_library_into` at `rye/src/main.rye:1355` asks `library_record_read` for a
+remembered digest and on a hit feeds 32 bytes where 16,416,628 went (`20260916.210324`).
+**THREE BINARIES** from `rye/src/main.rye` by `bootstrap.sh` at `-OReleaseFast`: native,
+`-mcpu=baseline`, and `-mcpu=baseline` against a `.lap` copy whose `sha2.zig:240` comptime `hasAll`
+gate becomes a CPUID leaf 7 probe. Vendor untouched; all three resolve `<exe_dir>/../lib` to ONE real
+tree. SHA-NI opcodes by `xxd`: **56 / 0 / 56**; all three wrote one digest.
+**`rye key`**, interleaved medians in ms, load 15-19 on 8 cores: **warm 16 / 18 / 15**; **cold
+library, 21 rounds, 42 / 114 / 36**; **cold everything, 11 rounds, 216 / 959 / 214**, the toolchain
+being 172,641,672 bytes, 10.5x the library. **Miss 1:** 36 against the projected 50-60.
+**MISS 2, AND IT IS THE FINDING.** I then projected a warm `rye build` within 2 percent and measured
+**163**. A receipt HIT emits nothing, so no compile dominates -- and a hit RE-HASHES ITS EMITTED
+OUTPUT every time, by design. 15 rounds, 10,239,778-byte output: **34 / 79 / 30 ms**; warm `key`
+subtracted, **18 / 61 / 15**. A compiling build read 1614 / 1601 / 1518 with runs spanning 928-1808,
+resolving 2 percent of nothing. **THREE arms now agree at 4.6x, 4.7x, 4.1x** across 17x the bytes.
+**FOR BAKERY:** the cache removed one SHA-256 arm and left a larger one. The OUTPUT hash cannot be
+cached, since it IS the verification -- so the steady state is NOT dispatch-neutral: a cold start
+costs three quarters of a second once, and **every build after pays ~45 ms per 10 MB, forever**.
+**OUR LIBRARY READS DISAGREE SIXFOLD** -- your 145-154 against my native 26, walks agreeing; the
+paper argues page cache and names the `drop_caches` pair that settles it.
+Paper [`20260917-020034_where-the-hash-still-pays.md`](../active-designing/20260917-020034_where-the-hash-still-pays.md), **B+/87** at Field.
+**YOURS:** the elder's third door, unanswered and now much stronger. Should `rye` build at
+`-mcpu=baseline` and dispatch at runtime -- one binary for a pre-2017 machine that keeps the
+extension on a new one -- and is patching a vendored `rye/lib/std` a fork decision you want opened?
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
