@@ -6,7 +6,7 @@
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
 **Last updated:** `20260916.190457` (the five routing sections move from prose paragraphs into tables, so a door is a row rather than a phrase mid-sentence; every link and every claim kept, and the setting named on the line above)
 
-*The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at [`template-manifest.bron`](template-manifest.bron).*
+*The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at `template-manifest.bron`. **A room named here in plain backticks rather than as a link is a field room the public seed leaves behind** -- so this page reads whole in both repositories, and points at no door that is not there.*
 
 ---
 
@@ -30,7 +30,7 @@ Welcome, traveler. Something over a hundred doors face you at this root -- `ls -
 | **6 - The Workrooms** | Where the work is shaped and recorded | `active-designing/` - `active-reviving/` - `waymarks/` - `expanding-prompts/` - `construction/` - `counsel/` - `session-logs/` - `bron-resins/` - `tools/` |
 | **7 - The Reading Room** | The world, studied whole with thanks | `external-research/` - `gratitude/` - `vendor/` |
 
-Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by [`template-manifest.bron`](template-manifest.bron): `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.bron`).
+Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by `template-manifest.bron`: `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.bron`).
 
 ## The Two Floors -- Open Shelves and Closed Stacks
 
@@ -58,11 +58,11 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose, a
 | [`BREACH.md`](context/BREACH.md) | How the tree is allowed to move all at once |
 | [`LEXICON.md`](context/LEXICON.md) | Every word we ever seated, with receipts |
 | [`KYRI.md`](context/KYRI.md) | Who is writing to you -- the standing voice, molted from Riyo `20260810`; the living coauthor is **Keaton Dunsford** |
-| [`QUIN.md`](context/QUIN.md) | The fifth OS variant and the inference Q-vane |
+| `context/QUIN.md` | The fifth OS variant and the inference Q-vane |
 
 ### 3 - The Why
 
-[`foundations/`](foundations/README.md) is the room with the comfortable chairs -- the custody-first principle, the five pillars, the breach doctrine, output over activity, reds-first, and a shelf of visions that look ten years out. [`saga/`](saga/README.md) keeps the season-close narratives, the lasting end reports. Read these when you want to know what all the discipline is *for*.
+[`foundations/`](foundations/README.md) is the room with the comfortable chairs -- the custody-first principle, the five pillars, the breach doctrine, output over activity, reds-first, and a shelf of visions that look ten years out. `saga/` keeps the season-close narratives, the lasting end reports. Read these when you want to know what all the discipline is *for*.
 
 ### 4 - The Language & the Machines
 
@@ -82,7 +82,7 @@ The **module ring** is the machinery, each home with its own witnesses. Take the
 | [`mand/`](mand/) | authority |
 | [`brushstroke/`](brushstroke/) | drawing |
 | [`ember/`](ember/) | the forge |
-| [`linengrow/`](linengrow/) | the giving edge |
+| `linengrow/` | the giving edge |
 | [`granary/`](granary/) - [`mandi/`](mandi/) - [`amphora/`](amphora/) - [`mycelium/`](mycelium/) - [`lantern/`](lantern/) - [`lattice/`](lattice/) - [`scribble/`](scribble/) - [`cellar/`](cellar/) - [`dimeroll/`](dimeroll/) | Named here without a gloss; open the room's own README for what it proves |
 
 ### 5 - The Teaching
@@ -103,21 +103,21 @@ When a page here says GREEN, a machine said it first.
 | Room | What is shaped there |
 |---|---|
 | [`active-designing/`](active-designing/README.md) | The hot bench -- briefs being shaped now, the horizon in its `yonder/` |
-| [`active-reviving/`](active-reviving/README.md) | Its sibling, re-growing elders into Glow beside them |
+| `active-reviving/` | Its sibling, re-growing elders into Glow beside them |
 | [`waymarks/`](waymarks/) | The claim shelf |
-| [`expanding-prompts/`](expanding-prompts/) | The runnable plans |
-| [`construction/`](construction/ITINERARY.md) | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
-| [`counsel/`](counsel/README.md) | The advice ledger |
-| [`session-logs/`](session-logs/README.md) - [`bron-resins/`](bron-resins/) | The diary and its compressions |
+| `expanding-prompts/` | The runnable plans |
+| `construction/` | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
+| `counsel/` | The advice ledger |
+| `session-logs/` - `bron-resins/` | The diary and its compressions |
 | [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
 ### 7 - The Reading Room
 
-[`external-research/`](external-research/) is where we study the world with attribution. [`gratitude/`](gratitude/README.md) shelves the teachers whole and unaltered -- TigerBeetle, Urbit, Monocypher and more -- because we silo ideas, never scaffolding. [`vendor/`](vendor/) holds the third-party source the build leans on, local and unmodified.
+[`external-research/`](external-research/) is where we study the world with attribution. `gratitude/` shelves the teachers whole and unaltered -- TigerBeetle, Urbit, Monocypher and more -- because we silo ideas, never scaffolding. `vendor/` holds the third-party source the build leans on, local and unmodified.
 
 ## The Two Grains
 
-This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in [`template-manifest.bron`](template-manifest.bron), and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. See [`external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`](external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md).
+This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in `template-manifest.bron`, and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. The plan behind the two-grains split stands in the field at `external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`.
 
 ## Licenses (hold)
 

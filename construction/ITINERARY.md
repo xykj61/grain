@@ -66,38 +66,38 @@ scan reads 21 sites, 14 skip, 7 hard, and prints 18 unresolved rather than guess
 **YOURS:** the nine are rostable now and none is rostered -- a GNOME Wayland ship would hear them
 where this pier skips, and nine roster rows is a fleet-wide cost only you should name.
 
-**PETRICHOR -- A DOOR SAID ITS ROOM WAS EMPTY, AND SCORED A/95 FOR SAYING IT.** Elder account
-[shelved whole](archive/20260916-204226_itinerary-landed-accounts.md), its ask about a routing page's
-Reach with it -- GRASS answered half of it the same day.
-**EARTH BREATHES IN** (row 4, N=5134): the concrete fact at the door.
-**THE LAP.** Every living page of `docs-geode/` was graded at Door -- **29 pages, all at B+ or
-better**, the shelf's first page-by-page reading. It needed no repair; it needed a reader.
-**THE MECHANISM.** `docs-geode/api/README.md` read `**Status:** Room seated empty` while
-`docs-geode/api/rishi-language-reference.md` had stood in that room since `20260821`. Its card read
-`truth_counted=100`, `composite=95`, `letter=A` -- **the highest grade on the shelf**, on the page
-whose first fact was false. Two causes, neither of them the tool erring. Counted Truth resolves the
-links a page makes and a status line is no link, which `.claude/rules/quality-assurance.md` already
-names as the half that goes unread. And at 21 words the page sat under the 8-sentence register floor,
-so Register and Reach both **defaulted to 100** and the composite averaged them in; `grade_mode=reported`
-says so and the letter does not.
-**THE INDEX ABOVE IT WAS RIGHT THE WHOLE TIME.** `docs-geode/README.md` names that room **living** and
-links the reference, because `tools/cr/crushed_index_witness.rish` reads its table against the rooms on
-disk every lap. One walled index, thirteen free doors beneath it, one of the thirteen stale.
-**REPAIRED, AND THE GRADE FELL.** The api door is written from what is on disk -- a true Status, a row
-for its one page, the entry bar it shares with `tutorials/`, and sentences enough to clear the floor.
-It reads **A/93 scored** where it read **A/95 reported**: two points lower, and the first real one.
-Two more doors named no `**Style:**` and one no `**Status:**`; all four read `qa_setting_agrees=yes`.
-**THE CENSUS I PUBLISH AS A REFUSAL.** A tree path inside a fenced code block is read by neither
-`tracked_link_scan` nor counted Truth, both reading Markdown links alone. Over **438 living pages: 26
-unresolved in-fence sites, all 26 correctly absent** -- 9 build outputs, 11 a reader creates from a
-tracked `.example`, 4 written by the shown code, 1 a resolver demo's own input, 1 a glob prefix my
-pattern truncated. **A guard here gates at 26 false positives and zero findings**, so none is built.
-**PROVEN:** `crushed_index`, `link_text_promise`, `ascii_document`, `prose_register` and
-`tracked_link` GREEN on metal; `two_rooms_doorway` reads **zero** `docs-geode` refusals across 1,336
-pages -- that shelf door's own claim, checked rather than repeated.
-**YOURS:** a page under the register floor scores 100 on two readings it never earned. Should the card
-withhold a letter where `grade_mode=reported`, or is the printed mode enough?
-**MINE:** 29 pages graded; Truth's judged half read on four.
+**PETRICHOR -- THE FRONT-DOOR GATE HELD ONE PAGE, AND THE WALK IT OPENS LEFT THE SEED AT STEP TWO.**
+Elder account [shelved whole](archive/20260916-210422_itinerary-landed-accounts.md), its ask about a
+reported grade with it.
+**AIR FEELS** (row 1, N=5141): press a claimed boundary and feel whether the hand passes through.
+**THE CLAIM PRESSED.** `tools/s/seed_link_witness.rish` promises that every relative link in a
+front-door document lands on a path the public seed also ships. Its `FRONT_DOOR` variable named the
+four root files GitHub itself recognises. `README.md` stood gated and reading zero while linking
+straight into `MAP.md`, `ORGANIZING.md`, `SOURCE.md` and `docs-geode/README.md` -- **15, 6, 3 and 3**
+links into rooms the seed leaves behind. One page deep, on the walk that page exists to open.
+**THE SHARPEST WAS `MAP.md`**, which names the private rooms, says outright that
+`template-manifest.bron` withholds them, and then hands the seed reader a door to each.
+**NO GUARD COULD HAVE HEARD IT:** the roster is deliberately named rather than discovered, so it
+goes stale in silence by construction.
+**A SECOND FINDING RODE IN ON THE MEASUREMENT.** The scan printed a ratchet site only while its
+counter was at or under five, so **847 sites showed five** -- while its own header prescribes a
+repair that *falls on touch*. A per-page repair asks a lane to find its own share, and no lane
+could; the ceiling had fallen 867 to 848 in three weeks.
+**LANDED.** All **27** repaired the way the rung prescribes -- a withheld room named in prose as a
+backticked path -- plus one sentence on `MAP.md` telling a reader that a room in plain backticks is
+a field room the seed leaves behind. `FRONT_DOOR` widens **4 to 8**, the ceiling falls **848 to
+820**, and `--list` names every remaining site.
+**AND THE CEILING STOPPED BEING SPELLED TWICE:** the control planted `849` against a literal `848`,
+so a lowering would have reddened it. It reads the scan's own `ceiling=` line now, proven by
+lowering the scan to 12 and watching the plant follow with no hand.
+**PROVEN:** `seed_link` GREEN at `front_door_guarded=8`, `front_door_links_outside_seed=0`,
+`other_living_links_outside_seed=820`; control **16 to 22 legs, 0 failing**, `control_legs` and
+`control_failed` asserted so a leg added tomorrow is heard; **four mutations bitten**.
+`tracked_link`, `link_text_promise`, `crushed_index`, `ascii_document`, `prose_register` GREEN.
+Four doors grade **A/93, A/91, A/96, A/96**, every one scored. Row `20260916.210332`.
+**YOURS:** `bibliography.md` carries 16 sites and every one names `gratitude/` -- a page whose whole
+subject is a withheld room. Rewrite it to name the shelf in prose, or let it ship as a field page?
+**MINE:** **820** remain, **527** in `external-research/` and **162** in `context/`.
 
 **PHEROMONE -- THE LANTERN FIRED TWICE, SO THE CLASS GOT A LOOM.**
 Account [shelved whole](archive/20260916-090645_itinerary-landed-accounts.md).
@@ -129,7 +129,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `f0ac6f97a2` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fc5b1f9281` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -152,7 +152,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f0ac6f97a2` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fc5b1f9281` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

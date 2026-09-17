@@ -110,10 +110,10 @@ your own run rather than trusting that one.
 | [`../docs/`](../docs/README.md) | Compression shelf (distinct) |
 | [`../docs-geode/edu/yonder/`](../docs-geode/edu/yonder/README.md) | Living edu drafts |
 | Lexicon | **docs-geode**, **wave**, **year**, **crush**, **The Geode Chapter**, **baton** |
-| Baton museum | [`../context/baton-museum/`](../context/baton-museum/) -- thirteen halls, counsel close living baton, cell hall |
-| Design shapes | [`../context/design-shapes/`](../context/design-shapes/) -- sibling wing (bounds, tend, relay resin, fact fold) |
+| Baton museum | `context/baton-museum/` -- thirteen halls, counsel close living baton, cell hall; a maintainer-field room, named here rather than linked |
+| Design shapes | `context/design-shapes/` -- sibling wing (bounds, tend, relay resin, fact fold); a maintainer-field room, named here rather than linked |
 | Acme personalize (source) | [`../manual/guides/first-season-personalize.md`](../manual/guides/first-season-personalize.md), [`../tools/gen/chapter/personalize.template.brix`](../tools/gen/chapter/personalize.template.brix) |
-| Charter | [`../counsel/date/20260728/20260728-031722_the-geode-season-charter.md`](../counsel/date/20260728/20260728-031722_the-geode-season-charter.md) |
+| Charter | `counsel/date/20260728/20260728-031722_the-geode-season-charter.md` -- the closed counsel room, named here rather than linked |
 
 ## Still in their own rooms, awaiting a crush round
 
