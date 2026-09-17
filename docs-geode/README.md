@@ -1,6 +1,6 @@
 # docs-geode -- crystallized prod docs (shipping shelf)
 
-**Language:** EN
+**Language:** EN - **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Stamp:** `20260728.031722`
 **Last refreshed:** `20260910.073603` -- the doorway sentence's two typed numbers leave, the second such pair in as many days: `20260909.151033` freed the library row and the room-separation reading, and this pass freed a page count the shelf's own eight new lessons had already outgrown
 **Voice:** Kyri
