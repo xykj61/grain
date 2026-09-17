@@ -6,6 +6,9 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260917.090914` -- purely additive. One paragraph pair joined the acceptance cases,
+naming the guard that now holds the falsifier's code half; no elder row, number, sentence, or
+acceptance case was removed, and nothing this tree admits or refuses moved.
 **Revised:** `20260916.065731` -- purely additive. Four ceiling rows joined the bounds table and two
 paragraphs name them as borrowed; no elder row, number, or sentence was removed, and nothing this
 tree admits or refuses moved. The reasoning is booked in `construction/REDS.md` at that stamp.
@@ -160,6 +163,31 @@ One dual-product witness runs every case and proves prior durable bytes remain u
 6. **Refuse incomplete input.** Removing each required field refuses by that field's name before append.
 7. **Refuse false authority.** A changed digest or signature refuses before either product projects.
 8. **Refuse a braided implementation.** The build fails if Linengrow imports `DimerollReceiptIntake` or Dimeroll imports `LinengrowReceipt`.
+
+
+**A guard now holds the falsifier's code half** (`20260917.090914`). The falsifier above and acceptance
+case 8 say one thing about code -- either product importing the other's projection type makes this
+contract wrong -- and until this stamp that sentence stood on no instrument. Measured over 175
+tracked Rye sources, `linengrow/` and `dimeroll/` named each other zero times, so the boundary read
+clean and nothing was holding it clean. A boundary is cheap to hold before the code is written, and
+this contract is accepted for implementation, which is exactly when one saved afternoon buys a
+braid.
+[`../tools/r/receipt_product_braid_witness.rish`](../tools/r/receipt_product_braid_witness.rish)
+over [`../tools/fixtures/r/receipt_product_braid_scan.sh`](../tools/fixtures/r/receipt_product_braid_scan.sh)
+reads the product pair off this page's own residence table -- so renaming a type here moves the
+guard with it -- and holds two classes at **zero**: an `@import` reaching the peer room, and the
+peer's projection type standing in a product room's source outside a comment and outside a string
+literal.
+
+**Role decides, never room.** Two readings ride beside those, each reported: `cross_mention` counts
+the peer type named inside a comment or a string, since a module head explaining the boundary it
+keeps is doing the right thing; and `peer_word` counts the peer room's own word standing in code, a
+tell only a reader can judge. **What it reaches** is one direction of case 8 over the two product
+rooms, leaving every other room alone, because Mantra is shared on purpose. A braid routed through
+a third module that imports both and hands each a view of the other wants a call graph rather than
+a scan, and case 8's own build condition closes that half when the build lands. **Proven from both
+sides** on real git repositories in a throwaway pen: 47 behaviors, every refusal planted and then
+lifted, and five mutations asserted to bite.
 
 ## Completion and review edge
 

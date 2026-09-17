@@ -14,6 +14,7 @@
 | `20260917.093724` | [One fold, and a ceiling class](20260917/20260917-093724_one-fold-and-a-ceiling-class.kyri) | %810 folded: 745 bytes freed against a 2,636-byte row. |
 | `20260917.093137` | [The post that gave](20260917/20260917-093137_the-post-that-gave.kyri) | context/README.md named 0 of 3 rooms, 49 days. |
 | `20260917.091549` | [The fence post and the hand](20260917/20260917-091549_the-fence-post-and-the-hand.kyri) | 670 bounds declared, 8 spelled at an allocation. |
+| `20260917.091342` | [the falsifier nothing read](20260917/20260917-091342_the-falsifier-nothing-read.kyri) | a contract clause walled by a guard reading the contract |
 | `20260917.084735` | [the name that scopes a number](20260917/20260917-084735_the-name-that-scopes-a-number.kyri) | 60 of 60 loom keys read name_shared |
 | `20260917.074706` | [the numbers nobody can compare](20260917/20260917-074706_the-numbers-nobody-can-compare.kyri) | one of 16 loom keys is comparable; wall_s floor 21,087 ppt |
 | `20260917.074342` | [The tier the roster wanted](20260917/20260917-074342_the-tier-the-roster-wanted.kyri) | A new guard on no clock is a guard nobody runs. |

@@ -1,0 +1,64 @@
+# tools/r/receipt_product_braid_witness.rish -- prove the two products stay unbraided, and gate it here.
+#
+# The accepted receipt contract carries one falsifier, and half of it is a statement about code:
+# either product importing the other's projection type makes the contract wrong. Its acceptance
+# case 8 restates it as a build condition. Measured `20260917`, that sentence stood on nothing --
+# the two rooms were clean and no instrument was holding them clean, which is the same class
+# `.claude/rules/two-rooms` one room over calls a number narrated in prose.
+#
+# The contract is ACCEPTED for implementation, and that is exactly when a braid becomes tempting:
+# one import saves an afternoon and costs the separation the whole contract exists to state. A
+# boundary is cheap to hold before the code is written.
+#
+# It gates two classes at zero on this tree and reports two more, and it runs the pen first,
+# because a guard proven only in the passing direction cannot be told from a bypass.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/receipt_product_braid_witness.rish
+say "product-braid: Language EN -- the two products read one fact and never each other."
+say "product-braid: Style Gauge Meter -- two gated classes - two reported - each refusal named."
+say "product-braid: Lens TAME -- safety first: a boundary is structural rather than by convention."
+
+let pen = run ["sh" "tools/fixtures/r/receipt_product_braid_control.sh"]
+say pen.out
+assert pen.ok else "product-braid: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "product-braid: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "product-braid: every planted leg must pass"
+assert pen.out contains "control_legs=47" else "product-braid: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: clean_verdict" else "product-braid: an unbraided tree must walk free"
+assert pen.out contains "leg_ok: import_planted" else "product-braid: acceptance case 8 must refuse an import"
+assert pen.out contains "leg_ok: import_lifted" else "product-braid: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: type_planted" else "product-braid: the falsifier's own words must refuse"
+assert pen.out contains "leg_ok: type_lifted" else "product-braid: and the repair must clear it"
+assert pen.out contains "leg_ok: reverse_import" else "product-braid: the braid refuses in both directions"
+assert pen.out contains "leg_ok: reverse_type" else "product-braid: and in both directions for the type too"
+assert pen.out contains "leg_ok: comment_welcome" else "product-braid: a module head explaining the boundary must pass free"
+assert pen.out contains "leg_ok: string_welcome" else "product-braid: a fixture naming the peer type must pass free"
+assert pen.out contains "leg_ok: trailing_comment_bites" else "product-braid: a trailing comment must not hide real code"
+assert pen.out contains "leg_ok: multiline_welcome" else "product-braid: a multiline string tail is prose"
+assert pen.out contains "leg_ok: shared_room_welcome" else "product-braid: Mantra is shared on purpose"
+assert pen.out contains "leg_ok: untracked_ignored" else "product-braid: an untracked scratch copy is nobody's boundary"
+assert pen.out contains "leg_ok: spaced_path_read" else "product-braid: a path holding a space must still be read"
+assert pen.out contains "leg_ok: rename_follows" else "product-braid: renaming the type in the contract moves the guard"
+assert pen.out contains "leg_ok: one_row_unreadable" else "product-braid: a contract naming one product must refuse"
+assert pen.out contains "leg_ok: empty_room_unreadable" else "product-braid: an empty room must refuse, never report a clean zero"
+assert pen.out contains "leg_ok: import_blanked_misses" else "product-braid: blanking the import argument must bite"
+assert pen.out contains "leg_ok: strings_kept_false_bite" else "product-braid: keeping strings in the type reading must bite"
+assert pen.out contains "leg_ok: comments_kept_false_bite" else "product-braid: keeping comments in the type reading must bite"
+assert pen.out contains "leg_ok: pair_check_dropped" else "product-braid: losing the pair check must bite"
+assert pen.out contains "leg_ok: disk_not_index" else "product-braid: reading the disk rather than the index must bite"
+
+let live = run ["sh" "tools/fixtures/r/receipt_product_braid_scan.sh"]
+say live.out
+assert live.ok else "product-braid: the live reading must agree"
+assert live.out contains "verdict=unbraided" else "product-braid: neither product reaches the other"
+assert live.out contains "cross_import=0" else "product-braid: acceptance case 8 -- no import across the two rooms"
+assert live.out contains "cross_type=0" else "product-braid: the falsifier -- neither product names the other's projection type"
+assert live.out contains "product_a=Linengrow" else "product-braid: the pair comes off the contract's own residence table"
+assert live.out contains "product_b=Dimeroll" else "product-braid: and both halves of it"
+
+say "product-braid: reported, never gated -- cross_mention counts the peer type named in a comment or a string,"
+say "product-braid: which is a module explaining the boundary it keeps; peer_word counts the peer room's own word"
+say "product-braid: standing in code, a tell rather than a fault, since only a reader can say which."
+say "GREEN: product-braid -- Linengrow and Dimeroll read one fact and never each other."

@@ -52,20 +52,14 @@ none mine -- `ratchet_slack`'s one uncompared ceiling is `awk_lcg_exact`.
 **MINE:** a build survives its lap's death because the round-open **stashes** rather than discards.
 **YOURS:** the molt of 32 wants your word; the guard holds the door.
 
-**INCENSE -- THE LEDGER'S FIRST LAW WAS HELD BY HANDS, AND A REBASE IS NOT A HAND.** Account
-[shelved whole](archive/20260917-072921_itinerary-landed-accounts.md). **WATER TASTES** (row 3,
-N=5285). `tools/r/reds_row_shrink_witness.rish` reads the spine's whole history in one `git log -p`
--- 636 revisions, 8s -- keying each record by the head it writes about itself and reporting one
-whose WORD count fell. **The class had fired SEVEN times, not once:** `988a0ceaf8`, subject naming
-the ITINERARY nib, took 150 and 132 words off two rows on `20260906`. **Three still stand short.**
-Words rather than bytes -- the sweeps give 18 byte events against 7. Gates nothing. 34 pen legs.
-**THE SEND MET THE ROW'S OWN SUBJECT.** `%811` went upstream to a peer's stamp mid-lap, so my row
-took the next derived seat; and the rebase offered a claim-board resolution that would have
-**resurrected four peers' closed claims**, caught by diffing against `xy/main`. The claim never
-reached the board at all -- the deadlock refused its own commit.
-**YOURS:** the pin stands **64 bytes under** with nothing foldable. Beside `reds_pin_capacity`'s
-three doors a fourth is now measured -- **a row runs 2,636 bytes at the median where its three
-fields are a third of that.**
+**INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
+[born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
+**the card's own open door, taken by the lane that met it**: the card stood four bytes under its
+bound, so any account at full length breaches. **EARTH BREATHES IN** (row 4, N=5304).
+`tools/r/receipt_product_braid_witness.rish` walls `cross_import` and `cross_type` at zero over the
+two product rooms, reading the pair off the contract's OWN residence table so a rename moves the
+guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
+five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
 
 **BAKERY -- THREE GUARDS STOOD ON NO ROSTER, AND THE METER COUNTING THEM COULD NOT NAME THEM.**
 Elder account [shelved whole](archive/20260917-095028_itinerary-landed-accounts.md), its ledger ask
@@ -217,7 +211,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `725d2c184c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `2688bfa70b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -464,6 +458,11 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
+- **A wall at zero reads four, fleet-wide** (`20260917.090914`). `instrument_refusal` holds
+  `fallback_instrument_passes` at zero and the cold run read **4** -- two in
+  `tools/fixtures/f/fleet_claim_form_control.sh`, two in `tools/fixtures/p/page_residency_sample.sh`,
+  each an `|| echo <n>` answering for an instrument that failed. Unclaimed; the pin below is why
+  none is booked.
 - **The ledger cannot receive a red, and door B is now priced.** `construction/REDS.md` stood at
   65,535 of its 65,536 bound with none foldable on `20260917.053554`. One row booked and folded
   under door B takes it to **64,726, headroom 810**, against a **median row of 2,676** -- so

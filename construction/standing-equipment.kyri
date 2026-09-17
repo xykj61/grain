@@ -1365,6 +1365,22 @@ path tools/r/receipt_contract_ceiling_witness.rish
 tier lap
 seated 20260917.024441
 
+# Seated 20260917.090914. The accepted receipt contract carries one falsifier whose second clause
+# is a condition on code -- either product importing the other's projection type makes the contract
+# wrong -- and acceptance case 8 restates it as a build condition. Measured this lap, that sentence
+# stood on no instrument: `linengrow/` and `dimeroll/` named each other zero times across 175
+# tracked Rye sources, so the boundary read clean and nothing held it clean. The contract is
+# ACCEPTED for implementation, which is when a braid becomes tempting. The guard reads the product
+# pair off the contract's OWN residence table -- one room and one projection type per arrow row,
+# exactly two wanted -- so a rename on the page moves the guard, and walls `cross_import` and
+# `cross_type` at zero while reporting `cross_mention` and `peer_word`, since a module head
+# explaining the boundary it keeps is doing the right thing. `tier lap`: 11 seconds of pen and 1 of
+# live reading.
+guard receipt_product_braid
+path tools/r/receipt_product_braid_witness.rish
+tier lap
+seated 20260917.090914
+
 guard tally_caller_map
 path tools/t/tally_caller_map_witness.rish
 tier lap
