@@ -30,6 +30,10 @@ set -u
 scan=$(pwd)/tools/fixtures/s/seed_link_scan.sh
 [ -f "$scan" ] || { echo "control_verdict=scan_missing" >&2; exit 1; }
 
+# The plant law, imported rather than re-spelled: the mutation below breaks the scan on purpose,
+# and a break that matched nothing reads exactly like a clause that holds (REDS %519).
+. "$(pwd)/tools/fixtures/p/plant.sh"
+
 # Read the ceiling from the scan under test rather than retyping it here.
 ceiling=$(sed -n 's/^ceiling=\([0-9][0-9]*\).*/\1/p' "$scan" | head -1)
 case $ceiling in
@@ -66,6 +70,26 @@ build() {
     && printf '# front\n' > README.md \
     && printf '%s\n' "$body" > "$doc" \
     && git add -A && git commit -qm 'pen: one shipped room and one withheld' ) >/dev/null 2>&1
+  echo "$d"
+}
+
+# A SECOND PEN, whose manifest allows a FILE rather than the room holding it. The projection
+# makes `deep/inner/` to hold the page it ships, so a link to that room opens in the seed exactly
+# as it opens in the field -- while `withheld/`, which no allow row reaches, stays a room that is
+# not there. One tree proves both sides, which is what keeps the clause from reading as a hole.
+build_carried() {
+  name=$1; doc=$2; body=$3
+  d=$pen/$name
+  mkdir -p "$d/deep/inner" "$d/withheld" "$d/$(dirname "$doc")" 2>/dev/null
+  ( cd "$d" \
+    && git init -q . \
+    && git config user.email pen@example.invalid \
+    && git config user.name Pen \
+    && printf 'allow README.md\nallow deep/inner/page.md\n' > pen-manifest.bron \
+    && printf '# withheld\n' > withheld/there.md \
+    && printf '# front\n' > README.md \
+    && printf '%s\n' "$body" > "$doc" \
+    && git add -A && git commit -qm 'pen: one carried room and one withheld' ) >/dev/null 2>&1
   echo "$d"
 }
 
@@ -152,6 +176,40 @@ echo "$out" | grep -q '^advice:' && leg advice_quiet_under_cap no || leg advice_
 # 11. An argument the scan does not know refuses rather than being read past.
 out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --nonesuch 2>/dev/null ) )
 echo "$out" | grep -q 'verdict=bad_argument' && leg unknown_argument_refused yes || leg unknown_argument_refused no
+
+over_carried=$((ceiling + 1))
+
+# 12. A room the seed MAKES is a room the seed carries. The manifest names `deep/inner/page.md`
+#     and never a directory, so the projection creates both rooms to hold that one page.
+#     Planted one past the ceiling, so a reading that counted them would refuse: a leg that
+#     cannot say no says nothing when it says yes.
+d=$(build_carried carried_own deep/inner/page.md 'placeholder')
+( cd "$d" && i=1; : > deep/inner/page.md
+  while [ "$i" -le "$over_carried" ]; do printf 'see [x%s](./)\n' "$i" >> deep/inner/page.md; i=$((i + 1)); done
+  git add -A && git commit -qm 'pen: one past the ceiling, every link into the carried room' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'other_living_links_outside_seed=0' && leg carried_own_room_uncounted yes || leg carried_own_room_uncounted no
+echo "$out" | grep -q 'verdict=ok' && leg carried_own_room_free yes || leg carried_own_room_free no
+
+d=$(build_carried carried_up deep/inner/page.md 'see [the room above](../)')
+verdict_of "$d" | grep -q 'other_living_links_outside_seed=0' && leg carried_ancestor_free yes || leg carried_ancestor_free no
+
+# 13. A room no allow row reaches is still a room that is not there. The welcome above is exact.
+d=$(build_carried empty_room deep/inner/page.md 'see [nowhere](../../withheld/)')
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'other_living_links_outside_seed=1' && leg empty_room_still_counted yes || leg empty_room_still_counted no
+echo "$out" | grep -q 'ratchet: deep/inner/page.md -> ../../withheld/' && leg empty_room_named yes || leg empty_room_named no
+
+# 14. The clause proven by its absence: strike the carried-room reading out of a copy of the scan
+#     and the same pen counts the room again. The break itself is checked, so a plant that
+#     matched nothing cannot read as a clause that holds.
+d=$(build_carried mutation deep/inner/page.md 'see [this room](./)')
+if plant_write "$scan" "$pen/mutant.sh" 's/if (p in carried) return 1/if (0) return 1/' carried_clause; then
+  out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$pen/mutant.sh" 2>/dev/null ) )
+  echo "$out" | grep -q 'other_living_links_outside_seed=1' && leg mutation_carried_counted yes || leg mutation_carried_counted no
+else
+  leg mutation_carried_counted no
+fi
 
 echo "control_legs=$legs"
 echo "control_failed=$failed"

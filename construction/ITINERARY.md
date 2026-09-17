@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.152855` (EDT)
+**Stamp:** `20260917.154009` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -70,39 +70,39 @@ two product rooms, reading the pair off the contract's OWN residence table so a 
 guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
 five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
 
-**COPAL -- THE COPY STEP THE CARD CALLED THE LARGER DOOR, AND THE GUARD NOBODY COULD SEE.** Elder
-account [shelved whole](archive/20260917-091616_itinerary-landed-accounts.md), its ask answered.
-**EARTH BREATHES IN** (row 4, N=5314): take in the concrete fact at the door. The fact was my own
-timed projection -- `step_copy_s=28.43` of 49.39, 58 percent of a publish, in 8,633 `cp -a` starts.
-**THE MECHANISM.** Step 7 of `tools/fixtures/s/sow_project.sh` was a shell `while read` loop calling
-`cp -a` once per kept file; it is one `cpio -pdum` pass-through reading the same list, with the
-elder loop kept as the fallback and `SOW_COPY_TOOL` naming the tool so a host lacking `cpio` --
-gone from POSIX since 2001 -- answers rather than breaks. A pass-through that FAILS refuses out
-loud rather than retrying, since a copy that moved nothing reads exactly like a field with nothing
-in it. **MEASURED on metal:** `step_copy_s` **28.43 to 0.77**, total **49.39 to 24.12**.
-**PROVEN on the whole field**, the parity the witness header names as past its own reach: elder
-bytes and new each projected into their own tree, `diff -r --no-dereference` **0 differences** over
-8,637 copies, 1,431 scrubs, 137 withholds, and 0 differences in mode, size, file type and symlink
-target across all **9,310** entries, 239 of them symlinks. Pen **50 legs from 41, 0 failing, nine
-mutations bitten**.
-**MINE, AND IT IS THE LAP'S REAL FINDING.** My claim reasoned that `cp -a` recurses a gitlink where
-the pass-through writes an empty room, and priced a refusal for it. Both halves were wrong about
-this script: step 1 drops every directory with `[ -f "$f" ] || continue`, three hundred lines
-earlier, so the class was already empty and my new refusal was a fence in a field with no gate. I
-had read my own probe -- `git ls-files` into a `cp` loop -- rather than the script. The refusal came
-back out; what went in is the proof that ONE filter holds the property, planting a gitlink and then
-dropping that line to watch an empty room ship. A guard doing invisible work now has a mutation
-naming it.
-**REDS FIRST -- ONE, AND MY OWN CHANGE OPENED IT** (`20260917.091915`, cited by stamp; the ledger
-stands full). `sow_allow_reach_control.sh` shims `cp` to prove a manifest moved during copying
-earns no receipt, and a streamed copy calls no `cp` -- so the plant reached a command the code does
-not run and read `producer_moved/refuses got [0] want [2]`. Both paths are shimmed now, 52 passing
-to 55. **A plant names a DEED, and a copy path has two spellings** -- the same lesson the pkill
-clause learned one room over.
-**YOURS:** the scrub is the largest step now at 19.91s in 1,430 `sed` processes, and it is genuinely
-one per file since each writes its own destination -- folding it means unscrubbed bytes standing in
-`seed/` before being rewritten, clean by trust rather than by construction. Take that trade, or
-leave the publish at 24 seconds?
+**COPAL -- THE COPY STEP THAT BECAME A PASS-THROUGH:** account
+[shelved whole](archive/20260917-140717_itinerary-landed-accounts.md), its scrub ask standing with it.
+
+**COPAL -- A GUARD READ A ROOM THE SEED MAKES AS A ROOM THE SEED LACKS.**
+**FIRE SEES** (row 2, N=5359, advanced by hand past row 4, which four laps read today): look hard
+at what must be cut. The cold endurance run read `seed_link` **RED on every ship** --
+`other_living_links_outside_seed=821` against a ceiling of **820** -- and the cut was one clause
+rather than a page.
+**THE MECHANISM.** `inseed()` in `tools/fixtures/s/seed_link_scan.sh` walked a link target UPWARD
+looking for an `allow` row, which is the right question about a FILE and the wrong one about a
+ROOM. `template-manifest.bron` allows `context/` twenty-one named pages and never the directory,
+so step 6 of `sow_project.sh` creates `context/` to hold them while the walk answered that the
+room was not there. `context/README.md` began naming its own rooms with a `[./](./)` link and the
+ratchet crossed its ceiling on a link that opens in both repositories. The clause below the walk
+reads the allow rows' own ancestors: **821 to 820**, exactly one site cleared, no page edited and
+**no ceiling moved**.
+**PROVEN, and the first proof is the projection itself.** `SOW_SEED=.lap/seedproof sh
+tools/fixtures/s/sow_project.sh` copied 8,665 files and `context/` arrives holding its shipped
+pages -- so the welcome names a room that is genuinely there rather than one the code infers. A
+second pen allows one FILE under `deep/inner/` rather than the room, so one tree holds a room the
+projection makes beside a room no allow row reaches; the own-room links are planted one past the
+ceiling, so a reading that counted them would refuse. Control **25 legs to 31**,
+`control_failed=0`, and the clause struck out of a copy of the scan to watch the room counted
+again. Ledger row `20260917.140643`, born CLOSED and folded the same lap, since the pin stood at
+64,726 of 65,536 with twenty OPEN rows and nothing foldable.
+**MINE:** my claim was opened on the lap before this one and that lap was cut mid-send, so the
+board carried a `status=building` claim for work standing in no commit. A claim expires in six
+hours and this one had two left; the lap that inherits a live claim of its own should say so
+rather than open a second.
+**YOURS:** `context/README.md` names five rooms and the projection carries **one** of them,
+`specs/`. The link lands, which is all this guard asks. Whether a front door may name rooms the
+seed withholds is the manifest's question rather than the link guard's -- and it is the same
+ruling `%804` is already waiting on.
 
 **COPAL -- FIVE ELDER ACCOUNTS, SHELVED WHOLE:** the minutes spent starting grep
 ([here](archive/20260917-010818_itinerary-landed-accounts.md)), the resin bytes that landed
@@ -213,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c5e15e25ad` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `57e2c7cbd6` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

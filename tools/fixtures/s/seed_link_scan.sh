@@ -36,6 +36,10 @@
 #   it ever wrote (accrete-never-break). It is read past, never rewritten.
 #   Absolute links, anchors, `http`, and `mailto:`, none of which name a path in this tree.
 #   Any document the seed does not ship. It cannot break a link for a reader who never sees it.
+#   A link to a room the projection MAKES. The manifest allows files rather than directories in
+#   twenty-one `context/` rows, and the projection creates each destination room to hold the
+#   pages it ships, so `[the rooms under](./)` opens in the seed as surely as in the field. A
+#   room no allow row reaches is still a room that is not there, and is still counted.
 #
 # WHAT IS NOT PROVEN. That a link points at the RIGHT file -- tools/t/tracked_link_witness.rish and
 # tools/l/living_docs_lint.rish own resolution in the field. This scan asks only the narrower and
@@ -87,9 +91,15 @@ awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" -v list
     c = p
     while (c != "" && c != ".") {
       if (c in allow) return 1
-      if (c !~ /\//) return 0
+      if (c !~ /\//) break
       sub(/\/[^\/]*$/, "", c)
     }
+    # A room the seed MAKES is a room the seed carries. The manifest allows `context/` twenty-one
+    # named pages and never the directory, so the projection creates `context/` to hold them --
+    # step 6 of sow_project.sh derives every destination room from the kept list. A link to that
+    # room therefore opens in the seed exactly as it opens in the field. Walking upward alone
+    # asks the right question about a FILE and the wrong one about a ROOM.
+    if (p in carried) return 1
     return 0
   }
   # posix-style normalise: collapse "a/b/../c" and "./"
@@ -106,7 +116,12 @@ awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" -v list
     return p
   }
   BEGIN {
-    while ((getline l < allowf) > 0) allow[l] = 1
+    while ((getline l < allowf) > 0) {
+      allow[l] = 1
+      # Every room an allowed path passes through is a room the projection makes.
+      a = l
+      while (sub(/\/[^\/]*$/, "", a)) carried[a] = 1
+    }
     while ((getline l < denyf) > 0) deny[l] = 1
     split(front, fd, " "); for (i in fd) isfront[fd[i]] = 1
     shipped = 0; checked = 0; gated = 0; ratchet = 0

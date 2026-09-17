@@ -20,13 +20,27 @@
 #   Every relative link in a front-door document lands on a path the seed also ships. EIGHT
 #   documents stand in that set from 20260916, named rather than discovered, so a new root file
 #   cannot join it by accident and red on work it never agreed to cover.
-#   Twenty-five behaviors on throwaway repositories, each with its own small manifest: the
+#   Thirty-one behaviors on throwaway repositories, each with its own small manifest: the
 #   agreeing tree free and reading zero, the regression refused, counted, and named, an unshipped
 #   document free, a shipped non-front-door document counted as a ratchet rather than gated,
 #   dated testimony free and uncounted, external and anchor links free and uncounted, a
 #   second-step door refused and named, the roster's own size counted, the print cap holding at
 #   five and --list naming every site, an unknown argument refused, and the ceiling proven from
-#   both sides by planting exactly it and then one more -- no flag, no override.
+#   both sides by planting exactly it and then one more -- no flag, no override. A second pen
+#   carries the carried-room clause: its manifest allows one FILE under `deep/inner/` and never
+#   a room, so the same tree holds a room the projection makes and a room no allow row reaches.
+#   The own-room links are planted one past the ceiling, so a reading that counted them would
+#   refuse, and the clause is proven a fifth time by being struck out of a copy of the scan.
+#
+# THE ROOM THE PROJECTION MAKES. `inseed()` walked UPWARD from a link target looking for an
+# allowed ancestor, which is the right question about a FILE and the wrong one about a ROOM. The
+# manifest allows `context/` twenty-one named pages and never the directory, so the projection
+# creates `context/` to hold them -- step 6 of sow_project.sh derives every destination room
+# from the kept list -- while the walk answered that the room was not there. On `20260917` the
+# front door `context/README.md` began naming its own rooms with a `[./](./)` link and the
+# ratchet crossed its ceiling at 821 on a link that opens perfectly in both repositories. The
+# clause below the walk reads the allow rows' own ancestors: 821 to 820, exactly one site, no
+# page edited and no ceiling moved.
 #
 # THE ROSTER WIDENED, AND THE READING THAT ASKED FOR IT. Run with the scan's five-line print cap
 # lifted, the ratchet named 847 sites, and 27 of them stood on MAP.md, ORGANIZING.md, SOURCE.md
@@ -87,9 +101,15 @@ assert control.out contains "advice_points_at_list=yes" else "seed-link: a ratch
 assert control.out contains "advice_quiet_when_listing=yes" else "seed-link: the advice stays quiet when every site is already named"
 assert control.out contains "advice_quiet_under_cap=yes" else "seed-link: the advice stays quiet when the cap names every site anyway"
 assert control.out contains "unknown_argument_refused=yes" else "seed-link: an argument the scan does not know must refuse rather than be read past"
+assert control.out contains "carried_own_room_uncounted=yes" else "seed-link: a link to the room the projection makes must not be counted"
+assert control.out contains "carried_own_room_free=yes" else "seed-link: own-room links past the ceiling must still pass free"
+assert control.out contains "carried_ancestor_free=yes" else "seed-link: a link to any room the projection makes must pass free"
+assert control.out contains "empty_room_still_counted=yes" else "seed-link: a room no allow row reaches is still a room that is not there"
+assert control.out contains "empty_room_named=yes" else "seed-link: the ratchet must name the empty room it counted"
+assert control.out contains "mutation_carried_counted=yes" else "seed-link: striking the carried-room clause must count the room again"
 assert control.out contains "control_failed=0" else "seed-link: every leg the control runs must read yes"
-assert control.out contains "control_legs=25" else "seed-link: a leg added to the control must be heard here on the lap it lands"
+assert control.out contains "control_legs=31" else "seed-link: a leg added to the control must be heard here on the lap it lands"
 assert control.out contains "control_verdict=ok" else "seed-link: the control must agree with itself"
-say "RED and GREEN paths proven -- five refusals bitten, twenty honest readings left free"
+say "RED and GREEN paths proven -- five refusals bitten, one clause struck out of a copy, and every honest reading left free"
 
 say "GREEN: seed-link -- a link in a shipped document lands in the shipped tree."
