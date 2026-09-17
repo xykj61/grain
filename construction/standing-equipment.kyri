@@ -1030,6 +1030,32 @@ path tools/s/shell_emit_ascii_witness.rish
 seated 20260916.183114
 tier cadence   # non-ASCII in what a shell script speaks through echo or printf, a ratchet at 509
 
+# listing_census -- whether a scan that CAPS a listing says a row was dropped. The nine ASCII-first
+# meters above all answered `--list` by piping their report through `sort -rn | head -40`, and none
+# of the eleven listings said so: 2,972 of 3,321 rows went unprinted in silence, 89 percent, while
+# seven of the nine headers promised `--list   # name each file and its count`. An absent row and a
+# dropped row then read the same, and the reader hurt worst is the one asking the narrowest
+# question -- eighteen non-ASCII characters stood in five tools/am/amphora_* witnesses and this
+# lane, reading the listing and seeing no amphora row, took it for a clean room.
+# THE CLASS FIRED TWICE IN ONE DAY, which is what earns a meter: petrichor's seed_link_scan.sh
+# printed a ratchet site only while its counter stood at or under five, so 847 sites showed five
+# (20260916.210332). A lantern that fires twice becomes a loom.
+# A CAP is a sort piped into head, printed rather than redirected, taking more than one row. Each
+# exclusion is a boundary drawn where counting would be wrong: `head -1` is a scalar read, a
+# redirected cap bounds an INPUT set the way TAME asks every collection to, and a comment naming
+# the shape is not the shape -- without that last one the meter refuses its own header first. A
+# CENSUS is an EMIT carrying a key ending `hidden=` or `shown=`; counting the assignments beneath
+# it read one honest block as three, so a verbose file earned slack.
+# The nine ASCII scans are a WALL at zero, repaired on the seating lap; 13 caps across nine files in
+# nine other lanes RATCHET under a ceiling that only falls. The claim that opened the lap said four,
+# counted by a grep wanting digits after `head`; the meter reads `head -n "$var"` too, and the
+# correction rides with the reading. 38 legs, five mutations bitten, the wall shown red and green on
+# metal by planting a cap in glow_comment_ascii_scan.sh and lifting it.
+guard listing_census
+path tools/l/listing_census_witness.rish
+seated 20260916.214947
+tier lap   # 378 scan sources, one awk pass each, under a second
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000

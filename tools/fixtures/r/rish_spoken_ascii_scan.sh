@@ -68,7 +68,8 @@
 #
 # USAGE
 #   sh tools/fixtures/r/rish_spoken_ascii_scan.sh          # count
-#   sh tools/fixtures/r/rish_spoken_ascii_scan.sh --list   # name each file and its count, worst first
+#   sh tools/fixtures/r/rish_spoken_ascii_scan.sh --list       # the forty worst, then list_shown, list_hidden, list_total
+#   sh tools/fixtures/r/rish_spoken_ascii_scan.sh --list-all   # every file and its count, worst first -- no row dropped
 #
 # Run from the repository root.
 
@@ -135,7 +136,17 @@ mode="${1:-count}"
 #                             across the tree reaches no runner that matches that line. The reading
 #                             fell 10,453 -> 10,435; this falls with it, keeping the same 80 of
 #                             slack and taking none of the fall.
-CEILING=10515
+#   10497  `20260916.214947`  EIGHTEEN characters in five `tools/am/amphora_*` witnesses, swept ON
+#                             TOUCH by the lap that made them findable. Every one stood in a GREEN
+#                             line -- an em dash and a run of middots naming the stages each guard
+#                             had just proven -- and every one was invisible to `--list`, which
+#                             printed the forty worst of 1,480 files and said nothing about the
+#                             other 1,440. Checked first for a coupled saying: the converter held
+#                             none, and a grep for each sentence reaches only dated testimony. The
+#                             reading fell 10,331 -> 10,313; this falls with it, keeping the same
+#                             80 of slack and taking none of the 18. The listing that hid them is
+#                             held honest from here by `tools/fixtures/l/listing_census_scan.sh`.
+CEILING=10497
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).
@@ -215,8 +226,17 @@ for f in $list; do
   fi
 done
 
-if [ "$mode" = "--list" ]; then
-  printf '%s' "$report" | sort -rn | head -40
+if [ "$mode" = "--list" ] || [ "$mode" = "--list-all" ]; then
+  # A capped listing that does not name its cap reads as a complete one, so list_hidden is
+  # the count this run dropped and `--list-all` prints every row. Held across the family
+  # by `tools/fixtures/l/listing_census_scan.sh`.
+  list_total=$(printf '%s' "$report" | grep -c .)
+  list_cap=40
+  [ "$mode" = "--list-all" ] && list_cap=$list_total
+  [ "$list_total" -gt 0 ] && printf '%s' "$report" | sort -rn | head -n "$list_cap"
+  list_shown=$list_total
+  [ "$list_total" -gt "$list_cap" ] && list_shown=$list_cap
+  echo "list_shown=$list_shown list_hidden=$((list_total - list_shown)) list_total=$list_total"
 fi
 
 if [ "$total" -le "$CEILING" ]; then under=yes; else under=no; fi

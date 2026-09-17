@@ -1,0 +1,61 @@
+# tools/l/listing_census_witness.rish -- a listing that drops rows names how many.
+#
+# WHAT THIS PROVES. `tools/fixtures/l/listing_census_scan.sh` reads every tracked `*_scan.sh` under
+# `tools/` for a CAPPED LISTING -- a sort piped into head, printed rather than redirected, taking
+# more than one row -- and asks whether that file also emits a key naming what it showed or hid.
+# The nine ASCII-first meters are a WALL at zero; every other lane ratchets under a ceiling that
+# only falls.
+#
+# WHY IT EXISTS (`20260916.214947`). The nine ASCII-family scans answered `--list` by piping their
+# report through `sort -rn | head -40`, and none of the eleven listings said a row had been
+# dropped. Across the family 2,972 of 3,321 rows went unprinted in silence -- 89 percent -- while
+# seven of the nine headers promised `--list   # name each file and its count`. A reader could not
+# tell a row the file never had from a row it dropped, and the reader hurt worst is the one asking
+# the narrowest question: eighteen non-ASCII characters stood in five `tools/am/amphora_*`
+# witnesses, and this lane read the listing, saw no amphora row, and took it for a clean room.
+#
+# The class fired twice in one day, which is what turns a repair into a meter: petrichor's
+# `seed_link_scan.sh` printed a ratchet site only while its counter stood at or under five, so 847
+# sites showed five (`20260916.210332`). A lantern that fires twice becomes a loom.
+#
+# HOW IT IS PROVEN. `tools/fixtures/l/listing_census_control.sh` builds a real git repository in a
+# throwaway pen and plants every reading from both sides -- a silent cap and then its repair, a
+# scalar `head -1` and a redirected input bound and a comment naming the shape, each proven NOT to
+# count, the family wall and its lift, and the ceiling one over and then at. Four mutations break
+# one line of the scan each and assert the leg that must bite actually bites. The control's own leg
+# tally is asserted below, so a leg written tomorrow is heard the day it lands. Thirty-eight legs,
+# five mutations.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/listing_census_witness.rish
+
+say "listing census: the control, so a green reading below can be believed..."
+let control = run ["sh" "tools/fixtures/l/listing_census_control.sh"]
+if control.ok == false then say control.err
+assert control.ok else "listing_census: the control refused to run -- read the line above"
+
+assert control.out contains "control_verdict=ok" else "listing_census: the control found a planted case it could not read"
+
+# A control's own verdict says only that it reached its last line. The leg tally says how much of
+# it was heard, so a leg written tomorrow is asserted rather than silently added.
+assert control.out contains "control_legs=38" else "listing_census: the control's leg count moved -- read it and update this number"
+assert control.out contains "control_failed=0" else "listing_census: a control leg failed -- run the control and read its FAILED lines"
+
+say "listing census: the living tree..."
+let live = run ["sh" "tools/fixtures/l/listing_census_scan.sh"]
+if live.ok == false then say live.err
+assert live.ok else "listing_census: the scan refused the tree -- read the line above"
+
+assert live.out contains "instrument=ok" else "listing_census: the scan could not read its own population"
+
+# The wall. The nine ASCII meters were repaired on the lap this guard was seated, so the next
+# silent cap added to one of them reds on the lap it arrives.
+assert live.out contains "family_walled=yes" else "listing_census: an ASCII-family listing caps its rows and does not say so -- sh tools/fixtures/l/listing_census_scan.sh --list"
+
+# The ratchet. Thirteen caps across nine files stand in nine other lanes; each falls when its own
+# lane touches it, and the ceiling falls with it.
+assert live.out contains "under_ceiling=yes" else "listing_census: uncensused caps rose above the ceiling -- sh tools/fixtures/l/listing_census_scan.sh --list"
+
+assert live.out contains "verdict=ok" else "listing_census: the scan refused the tree -- read its --list"
+
+say "GREEN: listing census -- every ASCII-family listing names what it dropped, and the rest stand under a falling ceiling."

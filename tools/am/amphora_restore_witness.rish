@@ -68,4 +68,4 @@ assert fork.err contains "identity fork" else "amphora_restore: want identity fo
 
 say "round=restored files=4 same-parent=ok reres=welcome fork=refused"
 
-say "GREEN: amphora_restore — catalog · out-home guard · files proven · same parent · complete."
+say "GREEN: amphora_restore -- catalog - out-home guard - files proven - same parent - complete."
