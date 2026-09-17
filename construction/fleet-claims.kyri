@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-memo-directory-ceiling
-seat bakery
-stamp 20260916.225642
-epoch 1789613802
-paths rye/src/main.rye tools/fixtures/r/ryekey_control.sh tools/r/ryekey_witness.rish
-what REDS %790: rye/src/main.rye writes one memo record beside the rye binary per distinct subject it has ever keyed -- rye-key-cache.<digest>.kyri for a file, rye-key-library.<digest>.kyri for a library tree -- and nothing ever removes one. Measured 56 records, 5 live, 51 naming a deleted path. rye/bin/ is gitignored, so no meter in this tree can see the room and the only bound is the one the writer states. Build it: a named per-family ceiling on the record count, and an eviction after a write that deletes the oldest-written records past it, skipping the record just written and refusing any name that is not exactly prefix + 16 hex + .kyri so a peer's .writing temporary is never touched. Per family rather than across both, keeping the landing paper's single-strandedness -- a library build can never evict a file record. Deleting a record costs a rehash and never a wrong answer, which is the whole safety argument.
 claim incense-card-names-its-nib-once
 seat incense
 stamp 20260917.000218
