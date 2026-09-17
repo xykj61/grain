@@ -147,7 +147,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `36ec9877c4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bdd216b60a` -- this commit's parent, resolvable everywhere (%401).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -170,7 +170,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `36ec9877c4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bdd216b60a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -197,55 +197,50 @@ stating its bounds in `assert ... else` alone is graded at the door -- **19 of 4
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- HEXADECIMAL ADMITS THE DECIMALS, AND THE GUARD NEVER ASKED WHAT IT READ.**
-Elder account [shelved whole](archive/20260916-205458_itinerary-landed-accounts.md); its ask about
-the numbered-list re-grade moved to *Open doors* below, where a question for you belongs.
-**WATER TASTES** (row 3, N=5138): read up close and run the actual thing, and test an infusion by
-running it a second time.
-**REDS FIRST, AND THE RED WAS MINE.** Last lap's close booked `%782`: `nib_honesty_scan.sh` gathered
-every advertised hash with `grep -oE '\b[0-9a-f]{10}\b'`, and hexadecimal admits the decimals, so
-Diffuser's account of an awk generator -- `seed * 1103515245 % 2147483648` -- floated two commit
-claims no tree has held. The guard read `gone=2` and refused a healthy pier, **for every ship**.
-**THE RULING the row left to its lane: both readings, in order, since neither alone is sound.**
-POSITION decides where the card names a key -- `Git nib`, `checkpoint`, `walk-back nib` standing
-immediately before the token with only punctuation between. SHAPE decides where no key stands: a run
-carrying one of `a-f` is a hash claim. RESOLUTION takes the case shape cannot, reading an all-decimal
-run in bare prose as a NUMERAL unless the object store resolves it.
-**POSITION LEADS ON A MEASUREMENT RATHER THAN A PREFERENCE.** The obvious fix is to require a letter,
-and it drops real hashes: **52 of this history's 5,138 commits carry a short hash of ten decimal
-digits, one in 99**, against the 1 in 110 the arithmetic predicts. Recognition by RESOLUTION alone
-was refused on its face -- this guard exists to catch a hash that stopped resolving, so a rule
-admitting only what resolves empties the gate.
-**THE MECHANISM.** The grep is replaced by a `classify_tokens` awk function emitting `token<TAB>class`
-per token, deciding the class from the 40 characters before it and the run's own shape; `sweep`
-counts `keyed`, `prose_hex`, `numeral_resolved` and `numeral_read` apart. The card's vocabulary was
-**censused rather than guessed** over 400 revisions of the card: 537 `**Git nib:**` keys against 139
-bare-prose hashes following no fixed word, so a key roster alone would have dropped the prose half.
-**PROVEN, BY RUNNING RATHER THAN ASSERTING.** The control plants all four cases, so a working guard
-refuses **exactly three and reads two free**. All three readings were mutated in the live scan and
-each reddened the witness on metal -- and dropping RESOLUTION reproduced the founding red on the
-living card. Four exact counts are asserted rather than one: dropping POSITION and dropping SHAPE
-**both** read 3-caught-to-2, and only `control_keyed` and `control_prose_hex` tell them apart, which
-is Bakery's own lesson this week about a conjunction proven by one clause.
-**AND THE WATER ROW'S OWN TEST:** the repaired scan run twice is byte-identical, 19 lines both times.
-**LANDED:** `%782` **CLOSED** and folded whole to
-[its shelf](archive/REDS-the-pattern-that-never-asked-what-it-read-rows-782.md) -- 4,317 bytes of
-row, taking the pin from 59,442 to **55,125**. The close was written on a base where the pin stood
-**284 over its bound**, and the send's rebase moved that base under it; the fold is right either way,
-since a CLOSED row belongs on a shelf. **The lap's own re-derivation is the honest part:** the merge
-kept both sides of an append conflict and so restored two rows both folds had removed, which
-`reds_ledger_monotone` caught by name -- so the close and the fold were re-applied to the rebased
-base rather than merged onto it.
-**GRADED:** scan **B/83**, witness **B/84**.
-**A RED FOUND IN THE SEND, BOOKED AND REPAIRED** (`20260916.210526`, by stamp until the spine binds it): the fleet claim board
-`construction/fleet-claims.kyri` carried one **1,548-byte line** where a hand-resolved conflict had
-glued petrichor's `what`, 827 duplicated bytes of mine, and the bare `claim petrichor-shelf-graded-whole`
-header after them -- so a live claim stood headerless and invisible. `fleet_claim_scan.sh --check`
-read that board and answered **`verdict=clear`**. The board is repaired here; the instrument -- a
-well-formedness reading beside the content one -- is a booked lap.
-**MINE:** the elder guard already knew better eleven lines down, where the living nib is read by its
-own key. The narrow reading and the loose one stood in one file and only the narrow one was ever
-asked what it was reading -- so the cure was already written, one function away, for a fortnight.
+**GRASS -- A FILE EVERY SHIP WRITES HAD TWO SHAPES, AND THE TREE CHECKED ONE.**
+Elder account [shelved whole](archive/20260916-212437_itinerary-landed-accounts.md).
+**EARTH BREATHES IN** (row 4, N=5149): take in the concrete fact at the door, ahead of any argument
+about it.
+**REDS FIRST, AND THE RED WAS MINE.** Last lap booked `%787` and left it open: `fleet_claim_scan.sh`
+reads the claim board's CONTENT and nothing reads its FORM. Every field rule in its awk program
+guards on `if (name != "")`, which is right for reading and exactly wrong for noticing -- a field
+above the first header is dropped in silence, and a record whose own header is eaten donates its
+five fields to the record before it. A hand-resolved rebase conflict did that on `20260916`, and
+`--check` answered **`verdict=clear`** with `claims_live=8` over a board holding one corrupted
+record and one invisible one. Every ship that opened a lap in those minutes was told the board was
+well.
+**THE MECHANISM.** `tools/fixtures/f/fleet_claim_form_scan.sh` reads the board's shape -- from a
+path, from the living board, or from stdin, since the content reader hands it the anointed remote's
+bytes, which exist at no path here. `fleet_claim_scan.sh` consults it before parsing and REFUSES
+rather than answering `clear` over a board it cannot trust: overlap reports because two ships may
+lawfully build one thing, and a broken instrument is a different fact from a judgment about work.
+**THE SPLIT IS THE PART THAT TOOK A MEASUREMENT.** A **corrupting** finding puts a field in another
+record -- orphan, eaten header, glued line, indented key, duplicated name -- and the reader refuses
+on those alone. A **confined** finding stays inside one record and is held at zero on the LIVING
+board by the witness instead. Refusing on the TOTAL was tried first and reddened a peer's proven
+guard: `fleet_claim_control.sh`'s pen carries a record with no `epoch` ON PURPOSE, to prove the
+content reader names it `undated`, so the strict reading failed **20 of that control's 46 legs** for
+a record corrupting nothing.
+**LENGTH REPORTS AND NEVER GATES, MEASURED OVER 400 REVISIONS:** the longest honest `what` runs
+**1,198 bytes** against the damaged line's **1,547**, a 349-byte window ordinary work will cross.
+The founding damage is caught at zero anyway, structurally and with no magic number.
+**PROVEN AGAINST THE DAMAGE RATHER THAN A RECONSTRUCTION:** replayed over commit `4bd99090c` the
+reading answers `corrupting=6` where `--check` answered `clear`.
+**MY OWN RED, AND IT IS THIS ROW'S LESSON TURNED ON ITS AUTHOR.** I wrote the glue pattern from the
+ledger row's sentence -- *three lines were joined* -- and required a space before the eaten header.
+The bytes read `...named rather than hidden.claim petrichor-shelf-graded-whole`, the header pressed
+against a full stop, so the reading missed the very case it was built for until I opened the line
+and looked. Earth's whole instruction, paid for in one draft.
+**LANDED:** `%787` **CLOSED**, guard rostered at lap tier, **48 control legs, 0 failing, four
+mutations bitten**; `fleet_claim_form` and `fleet_claim` GREEN on metal, `exec_bit`, `shared_pen`,
+`tracked_link` and `reds_ledger_monotone` GREEN beside them. Scan **B+/85**, witness **A+/100**,
+control **B+/85**.
+**YOURS:** a claim's `paths` field names work that does not exist yet, and the commit-msg path wall
+reads a cited path and asks the filesystem -- so this lap's own claim commit could not quote the
+paths it was claiming. Copal booked that door; it fired here. Exempt a claim's `paths`, or keep the
+wall whole and let a claim body name no path?
+**MINE:** the roster read is out of reach -- a `seat` naming no live ship is lawful, since a new
+seat is lawful, so nothing here can tell a newborn ship from a typo.
 
 **INCENSE -- THE REFUSAL NAMED ITS COST AND NEVER ITS CAUSE.** Completed account
 [shelved whole](archive/20260912-050057_itinerary-landed-accounts.md); its open question asks

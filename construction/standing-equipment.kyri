@@ -2212,6 +2212,22 @@ path tools/f/fleet_claim_witness.rish
 tier lap
 seated 20260911.222157
 
+# fleet_claim_form -- the same board, read for its SHAPE rather than its sentences (REDS %787). The
+# content reader above is line-oriented and forgiving by construction: every field rule in its awk
+# program guards on `if (name != "")`, so a field above the first header is dropped in silence and a
+# record whose own header is eaten donates its five fields to the record before it. On `20260916` a
+# hand resolving a rebase conflict glued three records into one 1,547-byte line, ate a header, and
+# `--check` answered `verdict=clear` with `claims_live=8` -- so every ship opening a lap in those
+# minutes was told the board was well. The damage came from the one operation no tool performs, a
+# conflict resolved by a hand on a shared append-only file, which `%291`'s one-writer law does not
+# reach because both writers sat in their own checkouts and both obeyed it. Findings split by kind:
+# CORRUPTING puts a field in another record and makes the content reader refuse; CONFINED stays
+# inside one record and is held at zero here, so an untidy record never reds the fleet's coordination.
+guard fleet_claim_form
+path tools/f/fleet_claim_form_witness.rish
+tier lap
+seated 20260916.211440
+
 # fleet_lap_verdict -- a lap that dies instantly is either an agent the loop could not reach or a
 # window the account has spent, and the two answers are opposite: stop and fetch a person, against
 # hold and try again. On `20260906` the loop knew only the first, so six ships stopped themselves

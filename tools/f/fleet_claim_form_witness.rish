@@ -1,0 +1,67 @@
+# fleet_claim_form_witness.rish -- the claim board's own shape, held at zero (REDS %787).
+#
+# A file every ship writes and every ship reads has two shapes, and this tree checked only one.
+# `fleet_claim_scan.sh` reads the board's CONTENT -- overlap, staleness, expiry, the `what`
+# sentences a hand compares by eye -- and every field rule in its awk program guards on
+# `if (name != "")`. That is right for reading and exactly wrong for noticing: a field above the
+# first header is dropped in silence, and a record whose own header is eaten donates its five
+# fields to the record declared before it.
+#
+# On 20260916 a hand resolving a rebase conflict glued three records into one 1,547-byte line, ate
+# a header, and `--check` answered verdict=clear with claims_live=8. Every ship that opened a lap
+# in those minutes was told the board was well.
+#
+#   rishi/bin/rishi run tools/f/fleet_claim_form_witness.rish
+
+say "claim-form: Language EN -- the board's shape, read before its sentences."
+say "claim-form: Style Gauge, Meter -- every refusal is planted, bitten, and lifted again."
+say "claim-form: Lens TAME -- safety first: a reader that cannot trust its board says so."
+
+# invariant: the board, the form reader, the content reader and the control all stand before any
+# reading is judged. `ls` rather than `test`, because `test` reports nothing when it refuses, so an
+# asserting witness would hand the reader its own sentence and discard the reason.
+let present = run ["ls" "construction/fleet-claims.kyri" "tools/fixtures/f/fleet_claim_form_scan.sh" "tools/fixtures/f/fleet_claim_scan.sh" "tools/fixtures/f/fleet_claim_form_control.sh"]
+assert present.ok else "claim-form: the board, a reader or the control is missing -- ${present.err_brief}"
+
+let control = run ["sh" "tools/fixtures/f/fleet_claim_form_control.sh"]
+say control.out
+assert control.ok else "claim-form: a planted malformation went uncaught -- read the control's own lines"
+assert control.out contains "control_verdict=ok" else "claim-form: the control did not close ok"
+assert control.out contains "control_failures=0" else "claim-form: a leg failed -- the count above names how many"
+
+# The legs whose loss would be silent. Each names one shape a forgiving reader passes over.
+assert control.out contains "a_clean_board_is_well_formed=yes" else "claim-form: the reading reds on an honest board"
+assert control.out contains "an_orphan_field_above_the_first_header_is_caught=yes" else "claim-form: a field above the first header is being dropped again"
+assert control.out contains "an_eaten_header_is_caught_as_repeated_fields=yes" else "claim-form: the founding shape goes unseen"
+assert control.out contains "eaten_header_repeats_all_five=yes" else "claim-form: the eaten header is counted short"
+assert control.out contains "a_record_missing_a_field_is_caught=yes" else "claim-form: a half-written record reads whole"
+assert control.out contains "a_duplicate_claim_name_is_caught=yes" else "claim-form: two records may wear one name"
+assert control.out contains "a_header_glued_to_a_sentence_with_no_space_is_caught=yes" else "claim-form: the founding signature is read from prose rather than bytes"
+assert control.out contains "an_epoch_that_is_not_seconds_is_caught=yes" else "claim-form: every staleness reading on the board is now a guess"
+assert control.out contains "an_indented_field_is_caught=yes" else "claim-form: a key the content reader never sees passes free"
+assert control.out contains "a_sentence_that_merely_says_claim_walks_free=yes" else "claim-form: ordinary prose reads as glue"
+assert control.out contains "a_long_line_alone_does_not_refuse=yes" else "claim-form: length has become a gate, and it reds on honest work"
+assert control.out contains "an_absent_board_refuses=yes" else "claim-form: a missing board reads as empty and well"
+assert control.out contains "a_board_on_stdin_is_read=yes" else "claim-form: the remote's bytes cannot be read, since they exist at no path"
+assert control.out contains "mutation_dropping_repeated_fields_bites=yes" else "claim-form: the founding leg passes with its own reading deleted"
+assert control.out contains "mutation_requiring_a_space_before_the_header_bites=yes" else "claim-form: the glue leg passes the draft that missed the real bytes"
+assert control.out contains "mutation_restoring_the_forgiving_guard_bites=yes" else "claim-form: the orphan leg passes the guard it exists to replace"
+assert control.out contains "the_content_reader_refuses_a_malformed_board=yes" else "claim-form: the reader every ship runs still answers over a broken board"
+assert control.out contains "the_content_reader_offers_no_clear_on_a_broken_board=yes" else "claim-form: the founding fault stands -- clear over a board that ate a record"
+assert control.out contains "a_well_formed_board_still_reads_clear=yes" else "claim-form: the form reading is refusing honest boards"
+assert control.out contains "an_absent_form_reader_is_named_out_loud=yes" else "claim-form: a missing instrument passes in silence"
+
+# The split, from the side that costs something. A finding confined to one record must NOT refuse
+# the board, or this reading reds a peer's proven guard for a record that corrupts nothing.
+assert control.out contains "a_confined_finding_does_not_make_the_reader_refuse=yes" else "claim-form: an untidy record now refuses the whole board"
+assert control.out contains "a_confined_finding_is_still_counted_to_the_reader=yes" else "claim-form: a confined finding went unreported rather than unrefused"
+assert control.out contains "and_a_corrupting_finding_still_refuses=yes" else "claim-form: the split loosened the refusal it was meant to keep"
+assert control.out contains "mutation_refusing_on_the_total_bites=yes" else "claim-form: the split leg passes a reader refusing on the total"
+
+# The living board itself, gated at zero. The control proves the reading; this proves the tree.
+let live = run ["sh" "tools/fixtures/f/fleet_claim_form_scan.sh"]
+say live.out
+assert live.ok else "claim-form: the living board is malformed -- run with --list and repair the lines it names"
+assert live.out contains "verdict=well_formed" else "claim-form: the living board did not read well formed"
+
+say "GREEN: claim-form -- the board every ship reads is shaped the way every ship reads it."
