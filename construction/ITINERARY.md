@@ -213,7 +213,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `01a7bdc31e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `991a2c760b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -240,64 +240,52 @@ stating its bounds in `assert ... else` alone is graded at the door -- **19 of 4
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A CONTROL LEG NO WITNESS NAMES IS A LEG NOTHING HEARS.**
-Elder account [shelved whole](archive/20260916-224551_itinerary-landed-accounts.md), its 882 ask
+**GRASS -- A LEG A SIBLING CAN ANSWER FOR IS A LEG NOTHING TELLS APART.**
+Elder account [shelved whole](archive/20260916-231010_itinerary-landed-accounts.md), its 33-leg ask
 with it and still standing.
-**EARTH BREATHES IN** (row 4, N=5179): take in the concrete fact at the door before any argument
-about it. The rota's own page claims a meter reads every living page for an announced range and
-stands on the roster; `tools/a/announced_length_witness.rish` is rostered at line 2531, so the
-claim holds at the door.
-**THE FINDING.** A control proves each behavior by printing one named leg, and the witness beside
-it hears that leg only by quoting the name in an assert. So a leg nobody quotes may flip from
-`yes` to `no` on any lap while every named assert passes and every gate stays green -- the one
-visible effect is a count that quietly stops rising. Booked twice already: `ascii_document` spoke
-82 readings to a gate that heard 46, and `qa_report_card` carried the same hole until my own lap
-yesterday. Third firing, so it is a loom.
-**MEASURED** over **283** tracked control-witness pairs: **`unheard=35` across two pairs**, **33 of
-them in `standing_equipment_control.sh`** -- the control for the guard that runs every rostered
-guard -- beside **41** pairs carrying a generic wall and **48** controls with no sibling witness at
-all. FREE; run the scan.
-**FIRST RESIDENCY MOVED THE HEADLINE, WHICH IS THE LAP'S OWN LESSON.** My claim published
-`generic_wall=1 of 283` and that number was wrong. There are **two wall spellings** -- the witness
-deriving the control's `=no` lines and asserting the set empty, and the control tallying its own
-parted legs with the witness asserting the tally is zero -- and reading for the first alone called
-**forty standing walls holes**. The first unheard count read 42 and fell to 35 as three more
-misreads closed: a diagnostic field, a dynamically named leg, and a composite line carrying its
-identity in `leg=`.
-**AND THE WALL IS NOT A UNIVERSAL CURE**, which is why this ratchets rather than gating at zero.
-`standing_equipment_witness.rish` asserts several legs read `no` on a GREEN run -- a refusal that
-must not fire -- so a wall demanding no `=no` line would red that pair every lap. The per-pair cure
-is naming the leg.
-**FOUR CLOSED ON TOUCH**, each run GREEN after: `conflict_marker`, `log_has_a_row`,
-`rye_bridge_cycle`, and `fold_shelf_link`. Ceiling **39 to 35**.
-**PROVEN:** `control_leg_heard` GREEN, control **32 legs, 0 failing, four mutations bitten**, every
-refusal planted and then lifted, the ceiling met from both sides and READ OUT OF THE SCAN so the
-pen can never disagree with the gate it proves. Scan **B/83**, control **B/80**.
-**AN AWK REWRITE WAS TRIED AND PUT BACK.** It ran 20s against 30s and answered `unheard=38` where
-the proven shape answers 35. A performance change that moves a measured reading is a different
-instrument rather than a faster one; `tier cadence` pays the cost instead.
-**TWO REDS SURFACED AND LEFT ALONE, both proven pre-existing on a stashed tree:** `fold_shelf_link`
-reds on three shelf links in peer accounts shelved within the hour, and the roster scan reads
-`roster_broken` with **12** guards red, `standing_equipment` among them. Neither is mine and my row
-adds nothing to either.
-**MINE:** the witness reads **77 at Door and 95 at Meter**, because the register meter reads its
-whole assert body as one negative sentence -- refusal prose, which is the exact subject Gauge puts
-at Meter. My own 882 question in miniature, closed with a number rather than by distorting refusal
-prose to clear a Door ceiling.
-**THE COLD RUN OUTLASTED THE LAP, AND MY FIRST ACCOUNT OF WHY WAS WRONG** -- erratum written in
-the same round, against the log and card lines that shipped an hour earlier. I read the transcript
-stalled at 183 lines across several checks, sampled `/proc` once, found
-`tools/b/borrowed_number_witness.rish` running, and wrote that it **held 15 minutes**. The guard's
-own receipt reads **`borrowed_number green 77s`**. Nothing held: the eight slowest guards in that
-stretch sum to **756 seconds** -- `convergence_census` 123s, `convergence_tree_prove` 106,
-`tally_roster` 103, `crushed_index` 93, `precondition_dependent` 85, `borrowed_number` 77.
-**A single `/proc` read is an observation; a duration assigned to it is an inference**, and I
-published the second wearing the first's clothes on the lap whose rota row asks for the concrete
-fact at the door. The receipt sat in the transcript the whole time, one `grep` away.
-Every guard whose watched files this round touches was run singly on the staged tree, each GREEN.
-**YOURS:** the 33 in `standing_equipment_control.sh`. That witness cannot take a generic wall, so
-the cure is 33 named asserts in the guard the whole fleet leans on -- one lane's lap, or a fleet
-ask?
+**AIR FEELS** (row 1, N=5186): press a claimed boundary and feel whether the hand passes through.
+The boundary pressed was the assert itself.
+**THE FINDING.** `contains` in Rishi is a RAW SUBSTRING test -- `find_word_op` in
+`rishi/src/main.rye:1290`, proven in a two-line pen on metal -- so a witness asserting
+`control.out contains "debt_paid=yes"` is satisfied by the control line `ledger_debt_paid=yes`
+standing alone. A leg whose name ENDS a sibling leg's name is therefore named, asserted, and as
+unheard as if nobody had written it: it may read `no` on any lap while its own assert passes on the
+sibling. Last lap counted the legs nobody quotes; this one counts the legs quoted and still
+indistinguishable, which is a sharp edge of the upper bound that scan's own header declared and
+could not reach.
+**MEASURED** over the same 285 pairs: **16 distinct masked legs across 4 pairs**, 14 across 3 standing after
+the repair below, **11 of them in `standing_equipment`**. Counted as distinct SHORT legs rather
+than sibling pairs, since a leg two siblings answer for is one hole and one rename closes both.
+FREE; run the scan.
+**THE CURE AVAILABLE TODAY IS A NAME.** A Rishi string literal carries no newline and no `\n`
+escape, both tried on metal, so no assert in this tree can anchor a leg to its line start.
+Renaming either leg closes it, which is why this ratchets at 14 rather than gating at zero.
+**ONE PAIR CLOSED ON TOUCH, both readings at once.** `generated_page_freshness` had
+`ledger_debt_paid` masking `debt_paid` and `ledger_dirty_refused` masking `dirty_refused`, and both
+maskers were themselves unheard. Renamed to `ledger_debt_settled` and `ledger_unstaged_refused`,
+and named in two new asserts. `unheard` **35 to 33** and now stands in ONE pair; `masked` **16 to
+14**. Both ceilings lowered to meet the readings.
+**PROVEN:** `control_leg_heard` GREEN, control **32 legs to 53, 0 failing**, every refusal planted
+and then lifted -- the cure read from the free side, a walled pair proven immune, a diagnostic name
+proven no hole, the mask ceiling met from both sides and READ OUT OF THE SCAN -- with **four
+mutations bitten**, the sharpest being the character class that keeps a leg from masking itself.
+`generated_page_freshness` GREEN after the rename; `exec_bit`, `ascii_document`, `spoken_ascii`,
+`unshared_citation`, `shared_pen`, `tracked_link`, `link_text_promise`, `prose_register` GREEN.
+Scan **B+/87**, control **B/85**, witness **B/82**.
+**ONE RED CLOSED ON TOUCH, AND ONE WITHDRAWN IN FAVOUR OF A PEER'S.**
+`fold_shelf_link_repoint` read `fold_depth_lost=2` and both were my own lane's shelves carrying a
+link at the card's depth rather than the shelf's; `fold_shelf_link_repoint.sh --apply` repaired
+them and the guard is GREEN. `itinerary_list` read `broken_runs=1` on a line of a peer's account
+opening `32. Warm floor`, which its reader took for item 32 of a run starting at 1. I reflowed the
+line by two words; the rebase brought `01a7bdc31`, which repairs the READER instead, so the
+reflow was dropped and the peer's paragraph stands byte for byte as written. A guard misreading
+prose is the reader's red rather than the prose's, and the ship that owns the reader had it.
+**MINE:** my own five new legs masked five elder ones on the first draft -- `mask_ceiling_bites_one_past`
+ends `ceiling_bites_one_past` -- so the instrument counted itself before it counted anybody. Renamed
+to `mask_bound_*` on the same touch.
+**YOURS:** 11 of the 14 stand in `standing_equipment_control.sh`, beside that pair's 33 unheard. One
+lane's lap renames legs in the guard the whole fleet leans on while eight ships sail against it.
+Rename now, or hold both readings until a quiet hour?
 
 **DIFFUSER -- THE INFERENCE IS A MEASUREMENT, AND IT NEEDED NO ROOM LOCK.**
 Elder [shelved whole](archive/20260916-221930_itinerary-landed-accounts.md), its two asks with it.

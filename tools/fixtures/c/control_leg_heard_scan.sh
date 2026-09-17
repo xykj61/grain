@@ -25,7 +25,19 @@
 #     parted legs and the witness asserts that tally is zero. Such a pair contributes zero unheard
 #     and is counted apart rather than silently passing.
 #
-#   unheard -- a leg the control emits and the witness names nowhere. This is the gated reading.
+#   unheard -- a leg the control emits and the witness names nowhere. This is the first gated
+#     reading.
+#
+#   masked -- a leg the witness NAMES and still cannot tell apart, gated under its own ceiling.
+#     `contains` in Rishi is a raw substring test, proven in a two-line pen on `20260916`, so the
+#     assert `control.out contains "debt_paid=yes"` is satisfied by the line
+#     `ledger_debt_paid=yes` standing alone. A leg whose name ends a sibling leg's name may
+#     therefore read `no` on any lap while its own assert passes on the sibling -- named, asserted,
+#     and as unheard as if nobody had written it. Counted as DISTINCT short legs rather than
+#     sibling pairs, since a leg two siblings answer for is one hole and one rename closes it.
+#     The cure available today is a NAME: rename either leg so neither ends the other. A Rishi
+#     string literal carries no newline and no `\n` escape, both tried on metal, so no assert in
+#     this tree can anchor a leg to its line start.
 #
 #   unpaired -- a control with no sibling witness. A different fault with a different cure, so it
 #     is reported by name rather than folded into the number above.
@@ -52,14 +64,21 @@
 #   Upper, on hearing: a witness quoting a leg's name is credited with hearing it, whatever the
 #     assert around it actually says. A name quoted inside a `say` line rather than an `assert`
 #     counts as heard here and reddens nothing on metal. So the true unheard count is at or above
-#     this one, and this reading is a floor.
+#     this one, and this reading is a floor. `masked` is one sharp edge of that bound made
+#     countable -- a leg credited as heard whose assert another line answers -- and it is the only
+#     edge of it this scan reaches.
 #
 #   Lower, on pairing: control and witness are paired by basename stem, which is a NAMING
 #     CONVENTION rather than a fact. A control named for a family and a witness named for a tool
 #     never meet here, and such a pair is reported `unpaired` rather than measured. The true
 #     denominator is at or above this one.
 #
-# MEASURED `20260916`: 283 pairs, `generic_wall=41`, `unheard=39` across 6 pairs, **33 of them in
+# MEASURED `20260916` after the masked reading landed: 285 pairs, `generic_wall=43`, `unheard=33`
+# in ONE pair, `masked=14` across three. `generated_page_freshness` closed both its readings on
+# that touch -- two legs named in the witness, and `ledger_debt_paid` and `ledger_dirty_refused`
+# renamed to `ledger_debt_settled` and `ledger_unstaged_refused` so neither ends `debt_paid` or
+# `dirty_refused`. Elder reading, kept for the arc: 283 pairs, `generic_wall=41`, `unheard=39`
+# across 6 pairs, **33 of them in
 # `standing_equipment_control.sh`** -- the control for the guard that runs every rostered guard --
 # beside 48 controls carrying no sibling witness at all. The wall figure is the one first residency
 # moved most: reading for the derived spelling alone, this scan first answered `generic_wall=1` and
@@ -71,7 +90,9 @@ root=${CONTROL_LEG_ROOT:-.}
 cd "$root" || { echo "verdict=unreadable_root"; exit 2; }
 
 # invariant: the ceiling only falls, and it is spelled once so a lowering reaches one line.
-CEILING=35
+CEILING=33
+# invariant: the masked ceiling only falls, spelled once for the same reason as the one above.
+MASK_CEILING=14
 # invariant: a bound on the pairs read, well above the 283 standing, so a runaway enumeration
 # stops rather than running the tree out of time.
 MAX_PAIRS=4096
@@ -124,6 +145,24 @@ asrt_of() {
   grep -hoE 'contains "[a-z][a-z0-9_]*=' "$1" 2>/dev/null | sed 's/contains "//; s/=$//' | sort -u
 }
 
+# A MASKED leg: one the witness names in an assert and still cannot tell apart. `contains` in
+# Rishi is a RAW SUBSTRING test -- proven in a two-line pen on `20260916` -- so
+# `contains "debt_paid=yes"` is satisfied by the line `ledger_debt_paid=yes` standing alone. A leg
+# whose name ends another leg's name is therefore named and indistinguishable: it may read `no` on
+# any lap while its own assert passes on the sibling. Reads the emitted set and the heard set as
+# two sorted files and prints `<short> <long>` per masking sibling.
+#
+# A leg the witness quotes that the control never emits is left alone here: with no such leg there
+# is no hole, and a name quoted for a diagnostic field is a different question. A generic-wall pair
+# is skipped by the caller, because a wall derives whole `=no` LINES and no substring reaches it.
+masked_of() { # masked_of <emitted file> <heard file>
+  comm -12 "$1" "$2" | while IFS= read -r _h; do
+    grep -E "[a-z0-9_]${_h}\$" "$1" 2>/dev/null | while IFS= read -r _l; do
+      echo "$_h $_l"
+    done
+  done
+}
+
 # The generic wall: the witness derives the control lines carrying `=no` and asserts that set is
 # empty. Both halves are required -- deriving the set without asserting it is a report, and the
 # assert without the derivation is some other zero.
@@ -161,13 +200,18 @@ if [ -n "$explain" ]; then
   emit_of "$explain" > "$xt/e"; asrt_of "$w" > "$xt/a"
   comm -23 "$xt/e" "$xt/a" | sed 's/^/unheard_leg /'
   n=$(comm -23 "$xt/e" "$xt/a" | grep -c .)
+  masked_of "$xt/e" "$xt/a" | sed 's/^/masked_leg /'
+  mn=$(masked_of "$xt/e" "$xt/a" | awk '{print $1}' | sort -u | grep -c .)
   rm -rf "$xt"
   echo "unheard=$n"
-  [ "$n" -eq 0 ] && echo "verdict=heard" || echo "verdict=unheard"
+  echo "masked=$mn"
+  if [ "$n" -gt 0 ]; then echo "verdict=unheard"
+  elif [ "$mn" -gt 0 ]; then echo "verdict=masked"
+  else echo "verdict=heard"; fi
   exit 0
 fi
 
-pairs=0; wall=0; unpaired=0; unheard=0; with=0; read_pairs=0
+pairs=0; wall=0; unpaired=0; unheard=0; with=0; read_pairs=0; masked=0; masked_pairs=0
 tmp=$(mktemp); trap 'rm -f "$tmp" "$tmp.e" "$tmp.a"' EXIT
 
 for c in $(git ls-files 'tools/fixtures/*_control.sh' 2>/dev/null); do
@@ -185,6 +229,13 @@ for c in $(git ls-files 'tools/fixtures/*_control.sh' 2>/dev/null); do
     with=$((with + 1)); unheard=$((unheard + n))
     comm -23 "$tmp.e" "$tmp.a" | sed "s|^|unheard $stem |" >> "$tmp"
   fi
+  # The masked reading counts DISTINCT short legs rather than sibling pairs: a leg two siblings can
+  # answer for is one hole, and one name fixes it.
+  m=$(masked_of "$tmp.e" "$tmp.a" | awk '{print $1}' | sort -u | grep -c .)
+  if [ "$m" -gt 0 ]; then
+    masked_pairs=$((masked_pairs + 1)); masked=$((masked + m))
+    masked_of "$tmp.e" "$tmp.a" | sed "s|^|masked $stem |" >> "$tmp"
+  fi
 done
 
 if [ "$list" = yes ]; then
@@ -198,10 +249,15 @@ echo "unpaired=$unpaired"
 echo "pairs_with_unheard=$with"
 echo "unheard=$unheard"
 echo "ceiling=$CEILING"
-if [ "$unheard" -le "$CEILING" ]; then
-  echo "unheard_ok=yes"
-  echo "verdict=ok"
-else
-  echo "unheard_ok=no"
+echo "pairs_with_masked=$masked_pairs"
+echo "masked=$masked"
+echo "mask_ceiling=$MASK_CEILING"
+[ "$unheard" -le "$CEILING" ] && echo "unheard_ok=yes" || echo "unheard_ok=no"
+[ "$masked" -le "$MASK_CEILING" ] && echo "masked_ok=yes" || echo "masked_ok=no"
+if [ "$unheard" -gt "$CEILING" ]; then
   echo "verdict=over_ceiling"
+elif [ "$masked" -gt "$MASK_CEILING" ]; then
+  echo "verdict=over_mask_ceiling"
+else
+  echo "verdict=ok"
 fi

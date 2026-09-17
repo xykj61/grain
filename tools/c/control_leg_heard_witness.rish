@@ -29,6 +29,7 @@
 let scan = run ["sh" "tools/fixtures/c/control_leg_heard_scan.sh"]
 assert scan.ok else "control-leg-heard: the scan must run on this tree -- ${scan.out_brief}"
 
+assert scan.out contains "masked_ok=yes" else "control-leg-heard: a leg a sibling answers for is a leg nothing tells apart -- run sh tools/fixtures/c/control_leg_heard_scan.sh --list, read the masked rows, and rename either name so neither ends the other"
 assert scan.out contains "unheard_ok=yes" else "control-leg-heard: a control leg no witness names is a leg nothing hears -- run sh tools/fixtures/c/control_leg_heard_scan.sh --list and name it in the witness, or lower nothing and repair"
 assert scan.out contains "verdict=ok" else "control-leg-heard: the scan must reach its own verdict before it is believed"
 
@@ -54,6 +55,23 @@ assert control.out contains "ceiling_bites_one_past=yes" else "control-leg-heard
 assert control.out contains "ceiling_verdict_names_it=yes" else "control-leg-heard: and the verdict must say which reading refused"
 assert control.out contains "ceiling_frees_at_the_bound=yes" else "control-leg-heard: a pen standing exactly at the ceiling must walk free -- the boundary met from both sides"
 assert control.out contains "ceiling_bound_is_the_plant=yes" else "control-leg-heard: and the count at the bound must be the plant itself, or the boundary leg is reading some other number"
+assert control.out contains "masked_counted=yes" else "control-leg-heard: contains is a raw substring, so a leg whose name ends a sibling's name is named and still indistinguishable"
+assert control.out contains "masked_pair_counted=yes" else "control-leg-heard: the pair carrying it must be counted too, since a lane repairs a pair rather than a leg"
+assert control.out contains "masked_named=yes" else "control-leg-heard: --list must name the short leg and the sibling that answers for it, or the count locates nothing"
+assert control.out contains "masked_off_the_unheard_gate=yes" else "control-leg-heard: a named leg must stay off the unheard number -- two faults with two cures, and one repair may not pay both ceilings"
+assert control.out contains "unmasked_reads_zero=yes" else "control-leg-heard: rename either leg so neither ends the other and the reading must fall to zero -- the cure shown from the free side"
+assert control.out contains "unmasked_verdict_ok=yes" else "control-leg-heard: and that pen must reach verdict ok"
+assert control.out contains "masked_distinct_not_pairs=yes" else "control-leg-heard: two siblings over one short leg are one hole, because one rename closes both"
+assert control.out contains "masked_lists_both_siblings=yes" else "control-leg-heard: and --list must still name both siblings, or a lane cannot see what it is renaming"
+assert control.out contains "unnamed_is_unheard_not_masked=yes" else "control-leg-heard: a leg the witness never names is unheard rather than masked"
+assert control.out contains "unnamed_counts_unheard=yes" else "control-leg-heard: and both its legs must land on the unheard number"
+assert control.out contains "walled_pair_not_masked=yes" else "control-leg-heard: a generic wall derives whole =no lines, so no substring reaches it and no leg of a walled pair is masked"
+assert control.out contains "nonleg_name_not_masked=yes" else "control-leg-heard: a name the witness quotes that the control never emits is a diagnostic figure rather than a leg, and nothing there can read no"
+assert control.out contains "mask_bound_is_readable=yes" else "control-leg-heard: the pen reads the mask ceiling out of the scan, so losing that line must refuse rather than guess a boundary"
+assert control.out contains "mask_bound_bites_one_past=yes" else "control-leg-heard: one masked leg past the mask ceiling must refuse"
+assert control.out contains "mask_bound_verdict_names_it=yes" else "control-leg-heard: and the verdict must say which of the two readings refused"
+assert control.out contains "mask_bound_frees_at_it=yes" else "control-leg-heard: a pen standing exactly at the mask ceiling must walk free -- the boundary met from both sides"
+assert control.out contains "mask_bound_is_the_plant=yes" else "control-leg-heard: and the count at the bound must be the plant itself"
 assert control.out contains "wall_derived_credited=yes" else "control-leg-heard: a witness deriving the control's =no lines and asserting the set empty hears every leg"
 assert control.out contains "wall_derived_hears_all=yes" else "control-leg-heard: and must therefore contribute no unheard leg"
 assert control.out contains "wall_tally_credited=yes" else "control-leg-heard: a control tallying its own parted legs, asserted at zero, is the same wall in a second spelling -- reading for the first alone called forty walls holes"
@@ -74,13 +92,17 @@ assert control.out contains "unreadable_root_refused=yes" else "control-leg-hear
 assert control.out contains "mutation_tally_wall_bites=yes" else "control-leg-heard: drop the tally spelling and the wall it credits must vanish"
 assert control.out contains "mutation_ceiling_bites=yes" else "control-leg-heard: lower the ceiling to zero and an unheard pen must refuse"
 assert control.out contains "mutation_composite_filter_bites=yes" else "control-leg-heard: drop the composite filter and a composite field must read as a leg"
+assert control.out contains "mutation_self_match_bites=yes" else "control-leg-heard: drop the character class before the name and a leg must mask itself, since comm hands the search a name the control emits"
+assert control.out contains "mutation_distinct_count_bites=yes" else "control-leg-heard: drop the distinct reduction and two siblings over one leg must read as two holes"
+assert control.out contains "mutation_intersect_guard_bites=yes" else "control-leg-heard: drop the intersect with the emitted set and a diagnostic name must read as a masked leg"
+assert control.out contains "mutation_mask_bound_bites=yes" else "control-leg-heard: lower the mask ceiling to zero and a masked pen must refuse"
 assert control.out contains "mutation_dollar_guard_bites=yes" else "control-leg-heard: drop the dollar guard and a dynamically named leg must read as a leg"
 
 # THE WALL THIS FAMILY EXISTS TO COUNT, kept over this pen too, so the instrument is not the hole
 # it measures. The control tallies its own parted legs; asserting that tally at zero hears a leg
 # added tomorrow on the day it lands, rather than on the day somebody remembers to name it.
 assert control.out contains "legs_fail=0" else "control-leg-heard: a leg of the pen parted -- run sh tools/fixtures/c/control_leg_heard_control.sh and read the =no lines"
-assert control.out contains "legs_pass=32" else "control-leg-heard: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
+assert control.out contains "legs_pass=53" else "control-leg-heard: the pen's leg count moved -- raise it when a leg lands, and never lower it to make a deletion quiet"
 assert control.out contains "control_verdict=ok" else "control-leg-heard: the control must agree with itself before it is believed"
 
 say "GREEN: control-leg-heard -- a leg a witness never names is a leg nothing hears."
