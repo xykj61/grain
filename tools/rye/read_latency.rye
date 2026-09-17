@@ -1,0 +1,745 @@
+//! tools/rye/read_latency.rye -- what one read of one block actually costs this device.
+//!
+//! WHY IT EXISTS. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md` measured
+//! 16,416,628 bytes read as 527 separate files at 158 ms and the same bytes read as one tar file
+//! at 11 ms -- 14.4 times, same device, same cache state -- and inferred a mechanism from the
+//! difference: readahead cannot cross an `open`, so 527 files is 527 chains each paying one
+//! device round trip, at a marginal 279 microseconds per file. That page named its own falsifier
+//! on its face and declined to run it: *a queue-depth-1 4 KiB read latency far from 200-350
+//! microseconds kills the mechanism*. This program is that reading.
+//!
+//! WHAT A FALSIFIER COSTS TO REFUSE. The inference is the load-bearing half of a recommendation
+//! already handed to another ship -- that packing a library buys most of a cold start back while
+//! compressing it buys close to nothing. A number that survives one round of its own falsifier is
+//! worth more than three more numbers agreeing with it.
+//!
+//! THE FOUR ARMS, AND WHY EACH ONE IS HERE.
+//!
+//!   `cold`  -- pages dropped, `POSIX_FADV_RANDOM` set, then single 4 KiB `pread` calls at
+//!              pseudo-random block-aligned offsets, EACH timed alone. This is the device's own
+//!              queue-depth-1 latency, and the number the falsifier is stated against.
+//!   `warm`  -- the same calls with the pages resident. Subtracting it separates the syscall and
+//!              page-copy cost from the device, so the cold number is not quietly carrying the
+//!              cost of asking.
+//!   `seq`   -- pages dropped, then the whole file read forward in 4 KiB blocks. Readahead is
+//!              free to work INSIDE one open here, so this arm is what the per-open claim
+//!              predicts should be fast, and it is the control that tells a slow device from a
+//!              broken mechanism.
+//!   `opens` -- the file's bytes split across many small files, pages dropped, then each file
+//!              opened, read whole, and closed. This is the shape the paper measured on a real
+//!              library, reproduced on bytes this program made, so the per-file cost can be set
+//!              beside the per-operation cost on one page with nothing else differing.
+//!
+//! WHAT IT REFUSES. Every path is opened first and the kernel is then asked where that descriptor
+//! landed, through `/proc/self/fd/<n>`, so the containment check reads the file rather than the
+//! spelling -- the same discipline `tools/rye/page_evict.rye` carries and for the same reason: a
+//! typo reaching a peer's tree would charge exactly the ship this tool exists to spare. It writes
+//! only under `.lap/`, which is this tree's own gitignored per-lap scratch.
+//!
+//! WHAT IT CANNOT TELL YOU. It measures THIS device, which reports `ROTA=1` through a virtio
+//! driver. A rotational flag sets the kernel's readahead window and its I/O scheduler, so every
+//! number here is a reading of one virtualized disk rather than of storage in general. The second
+//! falsifier that page named -- the same gap surviving on real NVMe -- stays unreachable on this
+//! pier and is named rather than answered.
+//!
+//! Build: RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/read_latency.rye \
+//!          -femit-bin=tools/bin/read-latency
+//! Run:   tools/bin/read-latency measure [rounds]  -- all four arms, one pen, one table
+//!        tools/bin/read-latency sweep             -- one byte total, five file counts, cold
+//!        tools/bin/read-latency probe             -- the same pen with readahead on, then off
+//!        tools/bin/read-latency selftest          -- prove the readings and the refusals
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// One block, matching the page size the arithmetic below assumes and the kernel's own answer,
+/// asserted at startup. A 4 KiB block is the smallest unit the page cache traffics in, so it is
+/// the unit a per-operation latency is honestly stated in.
+const block_bytes: u32 = 4096;
+
+/// Bound on the pen file, in bytes. 64 MiB is four times the library the paper measured, which
+/// keeps random offsets from landing inside one readahead window, and small enough that the pen
+/// costs a second to make on a slow disk.
+const pen_bytes: u32 = 64 * 1024 * 1024;
+
+/// Bound on timed operations in one arm. A round is one timed read; 65,536 of them at even a
+/// millisecond apiece is a minute, which is the ceiling a lap can afford.
+const max_rounds: u32 = 65_536;
+
+/// Default rounds per arm. 512 cold reads at a few hundred microseconds is a fifth of a second,
+/// enough for a median to stop moving between runs and short enough to interleave four arms.
+const default_rounds: u32 = 512;
+
+/// Bound on files the `opens` arm makes. The paper's own corpus was 527 files, so 1,024 covers it
+/// with headroom and names a maximum.
+const max_pen_files: u32 = 1024;
+
+/// Files the `opens` arm makes, chosen to match the paper's 527-file corpus closely enough that
+/// the two per-file numbers are comparable.
+const pen_files: u32 = 512;
+
+/// Bound on one path, matching the kernel's own `PATH_MAX`.
+const max_path: u32 = 4096;
+
+const LatencyError = error{
+    PathOutsideTree,
+    RootUnreadable,
+    RoundsOutOfBounds,
+    ShortRead,
+    AdviseRefused,
+    ClockRefused,
+};
+
+/// One arm's timings, in nanoseconds, held sorted so the order statistics below are reads rather
+/// than searches. Counts are `u32` because they are bounded by `max_rounds`; durations are `u64`
+/// because a nanosecond count crosses 4 seconds at 32 bits.
+const Arm = struct {
+    label: []const u8,
+    samples: []u64,
+    total_ns: u64,
+    bytes: u64,
+
+    fn count(self: Arm) u32 {
+        // invariant: an arm holds at least one timed operation, or it reports nothing
+        assert(self.samples.len > 0);
+        // invariant: the sample count stays inside the bound its caller checked
+        assert(self.samples.len <= max_rounds);
+        return @intCast(self.samples.len);
+    }
+
+    /// The sample at a percentile, by nearest rank over the sorted samples.
+    fn at(self: Arm, percent: u32) u64 {
+        // invariant: a percentile is a percentage
+        assert(percent <= 100);
+        // invariant: there is a sample to answer with
+        assert(self.samples.len > 0);
+        const n: u64 = self.samples.len;
+        var idx: u64 = (n * percent) / 100;
+        if (idx >= n) idx = n - 1;
+        return self.samples[@intCast(idx)];
+    }
+
+    fn mean_ns(self: Arm) u64 {
+        // invariant: a mean divides by a count, so the count is positive
+        assert(self.samples.len > 0);
+        return self.total_ns / self.samples.len;
+    }
+};
+
+fn now_ns() !u64 {
+    var ts: std.os.linux.timespec = undefined;
+    const rc = std.os.linux.clock_gettime(.MONOTONIC, &ts);
+    // invariant: a probe that cannot read a clock measures nothing
+    if (rc != 0) return LatencyError.ClockRefused;
+    assert(rc == 0);
+    const secs: u64 = @intCast(ts.sec);
+    const nanos: u64 = @intCast(ts.nsec);
+    // invariant: the nanosecond field is a fraction of a second, as POSIX defines it
+    assert(nanos < 1_000_000_000);
+    return secs * 1_000_000_000 + nanos;
+}
+
+/// A deterministic block-offset sequence.
+///
+/// Deterministic on purpose: a control that plants a reading has to be able to replay the same
+/// offsets, and a random walk that differs per run cannot be asserted against. This is the 64-bit
+/// LCG constant Knuth tabulates (MMIX), used here for spread rather than for any statistical
+/// property a measurement depends on.
+const Offsets = struct {
+    state: u64,
+
+    fn init(seed: u64) Offsets {
+        // invariant: a zero seed would hold an LCG at a fixed point for its first step
+        assert(seed != 0);
+        return .{ .state = seed };
+    }
+
+    /// The next block index inside `blocks`, block-aligned by construction.
+    fn next(self: *Offsets, blocks: u32) u32 {
+        // invariant: there is at least one block to land on
+        assert(blocks > 0);
+        self.state = self.state *% 6_364_136_223_846_793_005 +% 1_442_695_040_888_963_407;
+        // The high bits of an LCG carry its good spread, so the shift comes before the modulo.
+        const drawn: u64 = (self.state >> 33) % blocks;
+        // invariant: the draw indexes a block this file actually holds
+        assert(drawn < blocks);
+        return @intCast(drawn);
+    }
+};
+
+/// One positioned read, through the raw syscall.
+///
+/// This std publishes no `std.posix.pread`, and a positioned read is what the whole instrument
+/// rests on: it carries its own offset, so no `lseek` sits between the clock readings and the
+/// device. The raw return encodes an error as the negation of an errno, which is checked here
+/// rather than cast away.
+fn pread_exact(handle: std.posix.fd_t, buf: []u8, at: u64) !usize {
+    // invariant: a descriptor is a non-negative integer on this platform
+    assert(handle >= 0);
+    // invariant: a read has somewhere to land
+    assert(buf.len > 0);
+    const rc = std.os.linux.pread(handle, buf.ptr, buf.len, @intCast(at));
+    // The kernel answers a byte count, or a small negative errno seen through unsigned eyes.
+    // 4,096 is far above any errno and far below any count this program asks for.
+    if (rc > @as(usize, @bitCast(@as(isize, -4096)))) return LatencyError.ShortRead;
+    return rc;
+}
+
+/// Ask the kernel to drop one open file's cached pages, and prove nothing else was asked.
+fn advise(handle: std.posix.fd_t, what: usize) !void {
+    // invariant: a descriptor is a non-negative integer on this platform
+    assert(handle >= 0);
+    const rc = std.os.linux.fadvise(handle, 0, 0, what);
+    // invariant: the syscall answers zero on success
+    if (rc != 0) return LatencyError.AdviseRefused;
+    assert(rc == 0);
+}
+
+/// Where the kernel says an open descriptor actually landed, every symbolic link already followed.
+fn path_of_handle(garden: std.mem.Allocator, io: std.Io, handle: std.posix.fd_t) ![]const u8 {
+    // invariant: a descriptor is a non-negative integer on this platform
+    assert(handle >= 0);
+    var link_buf: [max_path]u8 = undefined;
+    var name_buf: [64]u8 = undefined;
+    const name = try std.fmt.bufPrint(&name_buf, "/proc/self/fd/{d}", .{handle});
+    const n = try std.Io.Dir.readLinkAbsolute(io, name, &link_buf);
+    // invariant: the kernel answers with a path, never with nothing
+    assert(n > 0);
+    return try garden.dupe(u8, link_buf[0..n]);
+}
+
+/// Refuse a resolved path that lands outside this program's own tree.
+///
+/// A prefix match alone would welcome a sibling tree whose name merely begins the same way, so the
+/// character after the root must be the separator that makes it a containment rather than a
+/// spelling.
+fn require_inside(real: []const u8, root: []const u8) !void {
+    // invariant: a root is an absolute path, or the comparison below means nothing
+    assert(root.len > 0 and root[0] == '/');
+    // invariant: the resolved path is absolute too, since the kernel answers absolutely
+    assert(real.len > 0 and real[0] == '/');
+
+    if (real.len < root.len) return LatencyError.PathOutsideTree;
+    if (!std.mem.eql(u8, real[0..root.len], root)) return LatencyError.PathOutsideTree;
+    if (real.len > root.len and real[root.len] != '/') return LatencyError.PathOutsideTree;
+}
+
+/// This program's own tree root: the executable's grandparent, read from `/proc/self/exe` rather
+/// than from the working directory, since a program launched from a peer's shell would otherwise
+/// read that peer's root as its own.
+fn tree_root(garden: std.mem.Allocator, io: std.Io) ![]const u8 {
+    var buf: [max_path]u8 = undefined;
+    const n = try std.Io.Dir.readLinkAbsolute(io, "/proc/self/exe", &buf);
+    // invariant: the kernel answers with an absolute path to the running binary
+    assert(n > 0 and buf[0] == '/');
+    const exe = buf[0..n];
+    const bin_dir = std.fs.path.dirname(exe) orelse return LatencyError.RootUnreadable;
+    const tools_dir = std.fs.path.dirname(bin_dir) orelse return LatencyError.RootUnreadable;
+    const root = std.fs.path.dirname(tools_dir) orelse return LatencyError.RootUnreadable;
+    // invariant: a root shallower than the filesystem root would make containment meaningless
+    assert(root.len > 1);
+    return try garden.dupe(u8, root);
+}
+
+/// Insertion sort over one arm's samples.
+///
+/// Bounded by `max_rounds` and quadratic, which is the right trade at this size: 512 samples is
+/// 131,072 comparisons, microseconds against the tens of milliseconds the arm itself cost, and a
+/// sort a reader can check by eye is worth more here than one they must trust.
+fn sort_samples(samples: []u64) void {
+    // invariant: there is something to sort
+    assert(samples.len > 0);
+    // invariant: the slice stays inside the bound its caller checked
+    assert(samples.len <= max_rounds);
+    var i: usize = 1; // seam: Zig indexes by usize
+    while (i < samples.len) : (i += 1) {
+        const key = samples[i];
+        var j: usize = i;
+        while (j > 0 and samples[j - 1] > key) : (j -= 1) samples[j] = samples[j - 1];
+        samples[j] = key;
+    }
+}
+
+/// Make the pen: one file of `pen_bytes`, and `pen_files` small files holding the same bytes.
+///
+/// Both halves are written and synced here rather than per arm, because a file just written holds
+/// DIRTY pages and `POSIX_FADV_DONTNEED` declines a dirty page -- correctly, since dropping one
+/// would lose the write. The sibling instrument reddened on exactly that, and the cure belongs in
+/// every caller that writes a file it then means to evict.
+fn build_pen(garden: std.mem.Allocator, io: std.Io, dir: []const u8, files: u32) !void {
+    // invariant: the pen is named
+    assert(dir.len > 0);
+    // invariant: the part count stays inside the bound this program declares
+    assert(files > 0 and files <= max_pen_files);
+    const cwd = std.Io.Dir.cwd();
+    try cwd.createDirPath(io, dir);
+
+    const block = try garden.alloc(u8, pen_bytes);
+    // A varying byte rather than a constant one: a filesystem free to store a run of zeroes as a
+    // hole would give this program a file with no blocks to read, and every latency below would
+    // then be measuring nothing.
+    for (block, 0..) |*b, i| b.* = @intCast((i *% 31) & 0xff);
+
+    const one = try std.fmt.allocPrint(garden, "{s}/one.bin", .{dir});
+    try cwd.writeFile(io, .{ .sub_path = one, .data = block });
+    {
+        var f = try cwd.openFile(io, one, .{});
+        defer f.close(io);
+        try f.sync(io);
+    }
+
+    // invariant: the split divides evenly, so every part file holds the same count of blocks
+    assert(pen_bytes % files == 0);
+    const part_bytes: u32 = pen_bytes / files;
+    var i: u32 = 0;
+    while (i < files) : (i += 1) {
+        // invariant: the pen stays inside the file bound it declares
+        assert(i < max_pen_files);
+        const name = try std.fmt.allocPrint(garden, "{s}/part-{d:0>4}.bin", .{ dir, i });
+        const from: usize = @intCast(i * part_bytes); // seam: Zig slices by usize
+        try cwd.writeFile(io, .{ .sub_path = name, .data = block[from .. from + part_bytes] });
+        var f = try cwd.openFile(io, name, .{});
+        defer f.close(io);
+        try f.sync(io);
+    }
+}
+
+/// Open one pen file, prove the kernel put it inside this tree, and hand back the descriptor.
+fn open_checked(garden: std.mem.Allocator, io: std.Io, path: []const u8, root: []const u8) !std.Io.File {
+    // invariant: a file is opened under a name
+    assert(path.len > 0);
+    const cwd = std.Io.Dir.cwd();
+    var file = try cwd.openFile(io, path, .{});
+    errdefer file.close(io);
+    const real = try path_of_handle(garden, io, file.handle);
+    try require_inside(real, root);
+    return file;
+}
+
+/// Time single-block `pread` calls at pseudo-random offsets, one clock reading per call.
+///
+/// `cold` drops the pages first and sets `POSIX_FADV_RANDOM`, which turns the kernel's readahead
+/// off for this descriptor -- without it the kernel would fetch a window around the first read and
+/// the arm would be measuring readahead rather than a round trip, which is the exact confusion the
+/// paper's mechanism claim turns on.
+fn arm_random(
+    garden: std.mem.Allocator,
+    io: std.Io,
+    path: []const u8,
+    root: []const u8,
+    rounds: u32,
+    cold: bool,
+    label: []const u8,
+) !Arm {
+    // invariant: an arm runs a bounded, positive number of rounds
+    assert(rounds > 0 and rounds <= max_rounds);
+
+    var file = try open_checked(garden, io, path, root);
+    defer file.close(io);
+
+    const size = (try file.stat(io)).size;
+    // invariant: the pen file is the size this program wrote
+    assert(size == pen_bytes);
+    const blocks: u32 = pen_bytes / block_bytes;
+
+    if (cold) {
+        try advise(file.handle, std.os.linux.POSIX_FADV.DONTNEED);
+        try advise(file.handle, std.os.linux.POSIX_FADV.RANDOM);
+    } else {
+        // Warm means resident, so the whole file is read once before any clock starts.
+        try advise(file.handle, std.os.linux.POSIX_FADV.WILLNEED);
+        const whole = try garden.alloc(u8, pen_bytes);
+        _ = try pread_exact(file.handle, whole, 0);
+    }
+
+    const buf = try garden.alloc(u8, block_bytes);
+    const samples = try garden.alloc(u64, rounds);
+    var offsets = Offsets.init(0x9E37_79B9_7F4A_7C15);
+    var total: u64 = 0;
+
+    var r: u32 = 0;
+    while (r < rounds) : (r += 1) {
+        const at: u64 = @as(u64, offsets.next(blocks)) * block_bytes;
+        const began = try now_ns();
+        const n = try pread_exact(file.handle, buf, at);
+        const ended = try now_ns();
+        // invariant: a short read would make the timing describe less work than it claims
+        if (n != block_bytes) return LatencyError.ShortRead;
+        // invariant: the monotonic clock did not run backwards
+        assert(ended >= began);
+        samples[r] = ended - began;
+        total += samples[r];
+    }
+
+    sort_samples(samples);
+    return .{ .label = label, .samples = samples, .total_ns = total, .bytes = @as(u64, rounds) * block_bytes };
+}
+
+/// Read the whole pen file forward in blocks, pages dropped first, readahead left on.
+///
+/// One timed sample rather than many, because the arm's subject is the whole traversal: readahead
+/// is free to work inside this one open, which is precisely what the per-open claim predicts.
+fn arm_sequential(garden: std.mem.Allocator, io: std.Io, path: []const u8, root: []const u8) !Arm {
+    var file = try open_checked(garden, io, path, root);
+    defer file.close(io);
+    try advise(file.handle, std.os.linux.POSIX_FADV.DONTNEED);
+
+    const buf = try garden.alloc(u8, block_bytes);
+    const samples = try garden.alloc(u64, 1);
+
+    const began = try now_ns();
+    var at: u64 = 0;
+    while (at < pen_bytes) : (at += block_bytes) {
+        const n = try pread_exact(file.handle, buf, at);
+        // invariant: the file is a whole number of blocks, so every read is full
+        if (n != block_bytes) return LatencyError.ShortRead;
+    }
+    const ended = try now_ns();
+    // invariant: the monotonic clock did not run backwards
+    assert(ended >= began);
+    samples[0] = ended - began;
+    return .{ .label = "seq_cold", .samples = samples, .total_ns = samples[0], .bytes = pen_bytes };
+}
+
+/// Open, read whole, and close each of the pen's small files, pages dropped first.
+///
+/// One timed sample per FILE, so the arm's order statistics describe a per-file cost directly --
+/// which is the number the paper inferred at 279 microseconds from a corpus it did not make.
+fn arm_opens(garden: std.mem.Allocator, io: std.Io, dir: []const u8, root: []const u8, files: u32, label: []const u8, no_readahead: bool) !Arm {
+    // invariant: the part count stays inside the bound this program declares
+    assert(files > 0 and files <= max_pen_files);
+    const cwd = std.Io.Dir.cwd();
+    const part_bytes: u32 = pen_bytes / files;
+
+    // Every part's pages are dropped before any is timed, so the arm starts wholly cold rather
+    // than dropping one file while the next is still resident from the drop pass itself.
+    var i: u32 = 0;
+    while (i < files) : (i += 1) {
+        const name = try std.fmt.allocPrint(garden, "{s}/part-{d:0>4}.bin", .{ dir, i });
+        var f = try open_checked(garden, io, name, root);
+        defer f.close(io);
+        try advise(f.handle, std.os.linux.POSIX_FADV.DONTNEED);
+    }
+
+    const buf = try garden.alloc(u8, part_bytes);
+    const samples = try garden.alloc(u64, files);
+    var total: u64 = 0;
+
+    i = 0;
+    while (i < files) : (i += 1) {
+        const name = try std.fmt.allocPrint(garden, "{s}/part-{d:0>4}.bin", .{ dir, i });
+        const began = try now_ns();
+        var f = try cwd.openFile(io, name, .{});
+        // `POSIX_FADV_RANDOM` turns the kernel's readahead off for THIS descriptor alone, which is
+        // what lets the alternative reading be tested without touching a host setting eight ships
+        // share. Inside the timed region on purpose: a caller that wanted it would pay for it.
+        if (no_readahead) try advise(f.handle, std.os.linux.POSIX_FADV.RANDOM);
+        const n = try pread_exact(f.handle, buf, 0);
+        f.close(io);
+        const ended = try now_ns();
+        // invariant: a short read would make the timing describe less work than it claims
+        if (n != part_bytes) return LatencyError.ShortRead;
+        // invariant: the monotonic clock did not run backwards
+        assert(ended >= began);
+        samples[i] = ended - began;
+        total += samples[i];
+    }
+
+    sort_samples(samples);
+    return .{ .label = label, .samples = samples, .total_ns = total, .bytes = @as(u64, files) * part_bytes };
+}
+
+fn print_arm(a: Arm) void {
+    const mb_per_s: u64 = if (a.total_ns == 0) 0 else (a.bytes * 1_000) / a.total_ns;
+    // Nanoseconds ride beside the microseconds because a warm read costs a fraction of one
+    // microsecond, and a reading rounded to zero is a reading that has stopped measuring.
+    print("arm={s} ops={d} bytes={d} total_us={d} mean_ns={d} p50_ns={d} p90_ns={d} min_ns={d} max_ns={d} p50_us={d} mb_per_s={d}\n", .{
+        a.label,
+        a.count(),
+        a.bytes,
+        a.total_ns / 1_000,
+        a.mean_ns(),
+        a.at(50),
+        a.at(90),
+        a.at(0),
+        a.at(100),
+        a.at(50) / 1_000,
+        mb_per_s,
+    });
+}
+
+/// Run every arm once over one pen, and print the one comparison the falsifier turns on.
+fn measure(garden: std.mem.Allocator, io: std.Io, root: []const u8, rounds: u32) !u8 {
+    // invariant: a measurement runs a bounded, positive number of rounds
+    if (rounds == 0 or rounds > max_rounds) return LatencyError.RoundsOutOfBounds;
+    assert(rounds > 0 and rounds <= max_rounds);
+
+    const kernel_page = std.heap.pageSize();
+    if (kernel_page != block_bytes) {
+        print("RED: read-latency -- kernel page size {d} is not the assumed {d}\n", .{ kernel_page, block_bytes });
+        return 1;
+    }
+
+    const dir = ".lap/read_latency_pen";
+    try build_pen(garden, io, dir, pen_files);
+    const one = try std.fmt.allocPrint(garden, "{s}/one.bin", .{dir});
+
+    // The cold arm runs first, because every later arm leaves pages behind that would warm it.
+    const cold = try arm_random(garden, io, one, root, rounds, true, "rand_cold");
+    const seq = try arm_sequential(garden, io, one, root);
+    const opens = try arm_opens(garden, io, dir, root, pen_files, "open_read_close", false);
+    const warm = try arm_random(garden, io, one, root, rounds, false, "rand_warm");
+
+    print_arm(cold);
+    print_arm(warm);
+    print_arm(seq);
+    print_arm(opens);
+
+    // The falsifier, stated as arithmetic rather than as a sentence. The paper's mechanism needs
+    // one file to cost about one device round trip, so the ratio below is the whole reading: near
+    // one supports it, far from one refuses it.
+    const per_file_ns = opens.at(50);
+    const per_op_ns = cold.at(50);
+    const ratio_milli: u64 = if (per_op_ns == 0) 0 else (per_file_ns * 1_000) / per_op_ns;
+    print("per_file_ns={d} per_op_ns={d} file_over_op_milli={d}\n", .{ per_file_ns, per_op_ns, ratio_milli });
+
+    // Warm subtracted from cold is the device's share, separating the round trip from the cost of
+    // asking for it.
+    const device_ns: u64 = if (per_op_ns > warm.at(50)) per_op_ns - warm.at(50) else 0;
+    print("warm_p50_ns={d} device_share_ns={d}\n", .{ warm.at(50), device_ns });
+
+    const seq_mb: u64 = (seq.bytes * 1_000) / seq.total_ns;
+    const opens_mb: u64 = (opens.bytes * 1_000) / opens.total_ns;
+    print("seq_mb_per_s={d} opens_mb_per_s={d}\n", .{ seq_mb, opens_mb });
+    print("measure_verdict=ok rounds={d} pen_bytes={d} pen_files={d}\n", .{ rounds, pen_bytes, pen_files });
+    return 0;
+}
+
+
+
+/// Read one pen twice: once with the kernel's readahead free to work inside each file, and once
+/// with it turned off per descriptor.
+///
+/// THE ALTERNATIVE THIS KILLS OR KEEPS. The per-file cost could be two different things wearing
+/// one number. Either it is the START of a readahead chain -- the first request to the device
+/// before any window can be filled -- or it is the `open` itself, the path walk and inode lookup,
+/// with readahead irrelevant at these sizes. The two predict opposite things here: if readahead
+/// inside a file is doing real work, turning it off makes each file cost MORE; if the cost is the
+/// open and the first trip, turning it off changes almost nothing.
+///
+/// It is run per descriptor rather than by writing `read_ahead_kb`, which is a host setting eight
+/// ships share, so this reading costs no peer anything.
+fn probe(garden: std.mem.Allocator, io: std.Io, root: []const u8) !u8 {
+    const dir = ".lap/read_latency_probe";
+    const cwd = std.Io.Dir.cwd();
+    cwd.deleteTree(io, dir) catch {};
+    try build_pen(garden, io, dir, pen_files);
+
+    const with = try arm_opens(garden, io, dir, root, pen_files, "readahead_on", false);
+    const without = try arm_opens(garden, io, dir, root, pen_files, "readahead_off", true);
+    print_arm(with);
+    print_arm(without);
+
+    const on_ns = with.at(50);
+    const off_ns = without.at(50);
+    const ratio_milli: u64 = if (on_ns == 0) 0 else (off_ns * 1_000) / on_ns;
+    print("readahead_on_p50_ns={d} readahead_off_p50_ns={d} off_over_on_milli={d}\n", .{ on_ns, off_ns, ratio_milli });
+    print("probe_verdict=ok part_bytes={d} files={d}\n", .{ pen_bytes / pen_files, pen_files });
+    cwd.deleteTree(io, dir) catch {};
+    return 0;
+}
+
+/// Split one fixed byte total across several file counts and read each pen whole, cold.
+///
+/// THE QUESTION THIS ANSWERS, AND WHY IT IS THE SHARPEST ONE HERE. The paper inferred a per-FILE
+/// cost from a single corpus. A single corpus cannot tell a per-file cost from a per-byte one,
+/// because both explain one number. Holding the bytes fixed at `pen_bytes` and varying only how
+/// many files carry them separates the two outright: a per-byte cost keeps the total flat while
+/// the per-file cost falls with the count, and a per-file cost keeps the per-file number flat
+/// while the total rises with the count.
+///
+/// Every pen is rebuilt and dropped before it is timed, so no row inherits the row above it.
+fn sweep(garden: std.mem.Allocator, io: std.Io, root: []const u8) !u8 {
+    const counts = [_]u32{ 64, 128, 256, 512, 1024 };
+    const dir = ".lap/read_latency_sweep";
+    const cwd = std.Io.Dir.cwd();
+
+    for (counts) |files| {
+        // invariant: the split divides evenly, or the parts would differ in size across a row
+        assert(pen_bytes % files == 0);
+        // Each row gets a fresh pen, since a pen left from the row before holds files this row
+        // would never open and would leave stale bytes resident.
+        cwd.deleteTree(io, dir) catch {};
+        try build_pen(garden, io, dir, files);
+        const a = try arm_opens(garden, io, dir, root, files, "sweep", false);
+        const part_bytes: u32 = pen_bytes / files;
+        const mb_per_s: u64 = if (a.total_ns == 0) 0 else (a.bytes * 1_000) / a.total_ns;
+        print("sweep files={d} part_bytes={d} total_us={d} per_file_p50_ns={d} per_file_mean_ns={d} mb_per_s={d}\n", .{
+            files,
+            part_bytes,
+            a.total_ns / 1_000,
+            a.at(50),
+            a.mean_ns(),
+            mb_per_s,
+        });
+    }
+    cwd.deleteTree(io, dir) catch {};
+    print("sweep_verdict=ok bytes_held={d} counts=5\n", .{pen_bytes});
+    return 0;
+}
+
+/// Prove the readings and the refusals on bytes this program makes.
+///
+/// Each leg is asserted rather than printed and left to a reader, and each names what a failure
+/// would mean, since a probe whose own arithmetic is unchecked cannot be evidence about a disk.
+fn selftest(garden: std.mem.Allocator, io: std.Io, root: []const u8) !u8 {
+    var failed: u32 = 0;
+
+    // Leg: the order statistics answer over a known sequence rather than over a measurement.
+    {
+        const s = try garden.alloc(u64, 5);
+        s[0] = 50;
+        s[1] = 10;
+        s[2] = 40;
+        s[3] = 20;
+        s[4] = 30;
+        sort_samples(s);
+        const a = Arm{ .label = "pen", .samples = s, .total_ns = 150, .bytes = 5 };
+        if (a.at(0) != 10 or a.at(100) != 50 or a.at(50) != 30 or a.mean_ns() != 30) {
+            print("RED: read-latency -- order statistics disagree with a known sequence\n", .{});
+            failed += 1;
+        } else {
+            print("leg=order_statistics ok min=10 p50=30 max=50 mean=30\n", .{});
+        }
+    }
+
+    // Leg: the offset draw stays inside the file and moves. A generator stuck on one block would
+    // measure a cache hit forever and read as a fast disk.
+    {
+        var o = Offsets.init(0x9E37_79B9_7F4A_7C15);
+        const blocks: u32 = 16;
+        var seen_distinct: u32 = 0;
+        var last: u32 = o.next(blocks);
+        var inside = true;
+        var k: u32 = 0;
+        while (k < 64) : (k += 1) {
+            const d = o.next(blocks);
+            if (d >= blocks) inside = false;
+            if (d != last) seen_distinct += 1;
+            last = d;
+        }
+        if (!inside or seen_distinct < 16) {
+            print("RED: read-latency -- the offset draw left the file or stood still ({d} moves)\n", .{seen_distinct});
+            failed += 1;
+        } else {
+            print("leg=offsets ok inside=yes moves={d}\n", .{seen_distinct});
+        }
+    }
+
+    // Leg: the containment check refuses a real path outside the tree.
+    if (require_inside("/nix/store/zzz", root)) |_| {
+        print("RED: read-latency -- a path outside the tree was welcomed\n", .{});
+        failed += 1;
+    } else |err| {
+        if (err != LatencyError.PathOutsideTree) {
+            print("RED: read-latency -- an outside path refused with the wrong error\n", .{});
+            failed += 1;
+        } else {
+            print("leg=outside_refused ok\n", .{});
+        }
+    }
+
+    // Leg: and the neighbour whose name merely begins the same way, which a prefix test welcomes.
+    {
+        const sibling = try std.fmt.allocPrint(garden, "{s}-peer/vendor", .{root});
+        if (require_inside(sibling, root)) |_| {
+            print("RED: read-latency -- a sibling tree sharing the root's spelling was welcomed\n", .{});
+            failed += 1;
+        } else |err| {
+            if (err != LatencyError.PathOutsideTree) {
+                print("RED: read-latency -- a sibling tree refused with the wrong error\n", .{});
+                failed += 1;
+            } else {
+                print("leg=sibling_refused ok\n", .{});
+            }
+        }
+    }
+
+    // Leg: this tree's own path is welcomed as hard as the others are refused, since a check that
+    // refused everything would pass every refusal leg above and measure nothing.
+    {
+        const inside = try std.fmt.allocPrint(garden, "{s}/tools/rye/read_latency.rye", .{root});
+        require_inside(inside, root) catch {
+            print("RED: read-latency -- this tree's own path was refused\n", .{});
+            failed += 1;
+        };
+        print("leg=inside_welcomed ok\n", .{});
+    }
+
+    // Leg: a cold read of a file this program makes costs more than a warm one. This is the
+    // instrument's whole subject, asserted on the smallest corpus that can carry it.
+    {
+        const dir = ".lap/read_latency_pen";
+        try build_pen(garden, io, dir, pen_files);
+        const one = try std.fmt.allocPrint(garden, "{s}/one.bin", .{dir});
+        const cold = try arm_random(garden, io, one, root, 64, true, "rand_cold");
+        const warm = try arm_random(garden, io, one, root, 64, false, "rand_warm");
+        if (cold.at(50) <= warm.at(50)) {
+            print("RED: read-latency -- a cold read did not cost more than a warm one ({d} vs {d} ns)\n", .{ cold.at(50), warm.at(50) });
+            failed += 1;
+        } else {
+            print("leg=cold_exceeds_warm ok cold_p50_ns={d} warm_p50_ns={d}\n", .{ cold.at(50), warm.at(50) });
+        }
+    }
+
+    // Leg: the rounds bound refuses from both sides rather than clamping, since a clamped round
+    // count would report a number nobody asked for.
+    if (measure(garden, io, root, 0)) |_| {
+        print("RED: read-latency -- zero rounds was accepted\n", .{});
+        failed += 1;
+    } else |err| {
+        if (err != LatencyError.RoundsOutOfBounds) {
+            print("RED: read-latency -- zero rounds refused with the wrong error\n", .{});
+            failed += 1;
+        } else {
+            print("leg=rounds_bound ok\n", .{});
+        }
+    }
+
+    print("selftest_legs=7 selftest_failed={d}\n", .{failed});
+    if (failed > 0) {
+        print("RED: read-latency -- {d} leg(s) failed\n", .{failed});
+        return 1;
+    }
+    print("GREEN: read-latency -- the arithmetic, the draw, the containment, and the cold-warm gap all read true\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+    const root = try tree_root(garden, io);
+
+    if (args.len < 2) {
+        print("read-latency: usage -- read-latency measure [rounds] | read-latency sweep | read-latency probe | read-latency selftest\n", .{});
+        return 2;
+    }
+    if (std.mem.eql(u8, args[1], "selftest")) return try selftest(garden, io, root);
+    if (std.mem.eql(u8, args[1], "sweep")) return try sweep(garden, io, root);
+    if (std.mem.eql(u8, args[1], "probe")) return try probe(garden, io, root);
+    if (std.mem.eql(u8, args[1], "measure")) {
+        var rounds: u32 = default_rounds;
+        if (args.len >= 3) rounds = std.fmt.parseInt(u32, args[2], 10) catch {
+            print("read-latency: rounds must be a number under {d}\n", .{max_rounds});
+            return 2;
+        };
+        return measure(garden, io, root, rounds) catch |err| {
+            print("REFUSED: read-latency -- {s}\n", .{@errorName(err)});
+            return 3;
+        };
+    }
+    print("read-latency: usage -- read-latency measure [rounds] | read-latency sweep | read-latency probe | read-latency selftest\n", .{});
+    return 2;
+}

@@ -7129,3 +7129,39 @@ guard page_evict
 path tools/p/page_evict_witness.rish
 tier cadence
 seated 20260917.030908
+
+# WHAT WENT WRONG WITHOUT IT. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md`
+# inferred a mechanism from one corpus -- readahead cannot cross an `open`, so each file pays one
+# device round trip -- handed another ship a recommendation resting on it, and named its own
+# falsifier without running it. A single corpus cannot tell a per-FILE cost from a per-BYTE one,
+# because either explains one number, so the inference could have been wrong in a way no repeat of
+# that measurement would ever show.
+#
+# WHAT THE INSTRUMENT DOES. `tools/rye/read_latency.rye` times single 4 KiB `pread` calls one at a
+# time against the monotonic clock, with the pages dropped per inode and `POSIX_FADV_RANDOM` set
+# so no window is fetched around the first read -- the device's own queue-depth-1 latency. It then
+# holds 67,108,864 bytes still and splits them across 64, 128, 256, 512 and 1,024 files, which is
+# what separates the two costs: a per-byte world holds the total flat, a per-file world holds the
+# per-file number flat, and neither happens. A fourth reading runs one pen with the kernel's
+# readahead on and then off, per descriptor rather than by writing a host setting eight ships
+# share.
+#
+# WHY IT IS ROSTERED. The numbers are load-bearing in advice already handed to a peer lane, and a
+# number behind a recommendation that nobody re-runs is a number somebody will quote after it has
+# stopped being true. Nothing here is gated to a VALUE -- a latency gate would red on the first
+# pier with different storage. What is gated are RELATIONS one run produces: cold above warm by
+# ten times, one open above many opens, the per-file floor above a warm read, and the same bytes
+# costing more as more files carry them. Each holds wherever the mechanism holds and fails where
+# it does not.
+#
+# ITS OWN HONEST LIMIT, RECORDED RATHER THAN PATCHED. Planting `POSIX_FADV_NORMAL` where the probe
+# advises `RANDOM` -- a mutation making its second arm a copy of its first -- is caught by no case,
+# because the effect sits under this device's run-to-run noise. That escape is the probe's result:
+# it supports an upper bound rather than a measurement, and the control's header says so.
+#
+# `tier cadence`: ~90s, most of it the four cold arms and the five-row sweep, which read about 400
+# MB from the device with its cache dropped. The reading moves when the storage does.
+guard read_latency
+path tools/r/read_latency_witness.rish
+tier cadence
+seated 20260917.033500

@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260917.033133
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260917; this pier launches tools/f/fleet-loop.sh, which execs --effort medium
+voice Kyri
+host AMD EPYC-Rome, 8 cores, NixOS, America/New_York
+title The price of an open -- the falsifier my own page named and declined
+prompt autonomous lap; take the next agent-doable work Lindy-first crux-first
+rota lap 5253, row 3 -- Water, the row that tastes; the happy zone and the thin edge, what brix-infuse is, growing a language. Water asks whether the flow is sweet or off, and the fixed seat's own sentence chose this lap's shape: the seam to the world is the one place where only the world can tell the truth. My per-file inference was a claim about a device, held by nothing but one corpus. The reading also came back off in one place, and that place is the lap's best finding.
+think My last lap's recommend line named two falsifiers for its own central mechanism claim and ran neither. A falsifier written down and left unrun is the shape of enthusiasm rather than research, and my lane's discipline names exactly that.
+think The premise worth attacking was not the number but the inference. One corpus cannot tell a per-FILE cost from a per-BYTE one, because either explains one total, so no repeat of that measurement could ever have shown the error. Holding 67,108,864 bytes still and varying only the file count separates them outright.
+think Built tools/rye/read_latency.rye on the eviction instrument from the lap before: pages dropped per inode, POSIX_FADV_RANDOM so no window is fetched, then each 4 KiB pread timed alone against CLOCK_MONOTONIC. This std publishes no std.posix.pread, so the raw syscall is called and its negative-errno return checked rather than cast away.
+think The containment check is the sibling's, for the sibling's reason: open first, ask /proc/self/fd/<n> where the kernel put the descriptor, compare against this program's own root by a separator test rather than a prefix. Eight ships share this pier and a probe evicting a peer's inode charges seven of them.
+obs The falsifier is run and the mechanism survives. Cold QD1 4 KiB p50 reads 154,459 and 154,509 ns across two 512-round runs, agreeing to 50 nanoseconds; warm reads 1,653 ns, so the device share is 153 us and the eviction genuinely reached it. The band the page named was 200-350 us: the median sits below it, the mean and p90 inside it.
+obs The constant the page assumed was wrong and the direction is measurable. Fitting total = files x A + bytes / B over five sweep rows gives A = 304 us per file and B = 718 MB/s, predicting the three rows it was not fitted on within 5 percent. 304 us is 1.97 times one round trip, so a file costs about two, never one.
+obs Two independent corpora now agree. The elder page's marginal 279 us per file and this fit's 304 land within 9 percent on different file sizes and different bytes, which is the strongest support the mechanism has and something neither reading could have given alone.
+obs The competing explanation is dead, and it was killed per descriptor rather than by writing read_ahead_kb, which is a host setting eight ships share. Readahead off per file moves the per-file cost by 1.036, 1.059, 1.006 -- so the cost is the open and its first unanticipatable read, not a lost readahead window.
+obs MINE, and it is the lap's sharpest line. Planting POSIX_FADV_NORMAL where the probe advises RANDOM -- a mutation making the second arm a copy of the first -- reads 1.000, 1.030, 0.940, and no case in my control tells it from the real probe. The effect sits under this device's run-to-run noise. So the honest claim is an upper bound under 6 percent rather than a measured 3.6 percent effect, the control's header records the escape rather than patching over it, and its weak case says in its own words that it guards the plumbing rather than the physics.
+obs The fact at the door, taken in before arguing with it: /dev/vda reads rotational=1 while its scheduler reads [none], and read_ahead_kb is 8192. An 8 MiB window against a 31 KiB median library file is 1/264th, so a tree of that shape never fills one window however sequentially it is read.
+obs For bakery the recommendation stands and its reason sharpens. 527 x 304 us against 23 ms of bytes means 87 percent of a cold library read is the opens; compression adds CPU to the other 13. And because the cost is the open rather than a window, file COUNT is everything while file SIZE barely matters -- merging 527 files into 8 buys nearly what merging into 1 buys.
+obs The second falsifier is unreachable here and is named rather than answered. lsblk shows exactly two block devices on this host, a QEMU DVD-ROM and vda, so no NVMe exists to run the reading against. The paper says so on its face and hands the command to whoever reaches one.
+obs Nothing in the guard is gated to a VALUE. A latency gate would red on the first pier with other storage, so what is held are relations one run produces -- cold above warm by ten times, one open above many opens, the per-file floor above a warm read, and the same bytes costing more as more files carry them.
+loom arm=rand_cold_qd1_4k rounds=512 p50_ns=154459 mean_ns=186551 p90_ns=203691 bytes=2097152
+loom arm=rand_warm_4k rounds=512 p50_ns=1653 mean_ns=1721 cold_over_warm=93
+loom arm=seq_cold_one_file bytes=67108864 total_us=42957 mb_per_s=1562
+loom arm=open_read_close files=512 part_bytes=131072 p50_ns=335800 mb_per_s=323
+loom sweep files=64 total_us=112925 per_file_p50_ns=1511040
+loom sweep files=1024 total_us=404808 per_file_p50_ns=293731
+loom fit per_file_us=304 bandwidth_mb_per_s=718 worst_row_error_pct=5
+loom probe readahead_off_over_on=1.036,1.059,1.006 mutation_normal=1.000,1.030,0.940
+loom control cases=46 fail=0 mutations_planted=5 mutations_bitten=4
+file tools/rye/read_latency.rye the instrument -- four arms, a five-row sweep holding bytes still, and a per-descriptor readahead probe
+file tools/fixtures/r/read_latency_control.sh 46 cases; refusals planted on real paths, welcomes asserted as hard, and one escaped mutation recorded in its own header
+file tools/r/read_latency_witness.rish builds from source so the binary proven is the file a reader opens; gates relations rather than values
+file active-designing/20260917-031330_the-price-of-an-open.md the paper, B+/89 at Field, with the surviving half and the corrected half both named
+file construction/standing-equipment.kyri rosters read_latency at tier cadence, its own honest limit written into the row
+file construction/ITINERARY.md the DIFFUSER account; elder shelved whole at 20260917.033500
+scope one claim opened and pushed before the build; one instrument, one control, one witness, one paper; no peer's file touched
+status GREEN -- read_latency witness GREEN with control cases=46 fail=0, tame_style_check GREEN, width-check GREEN, paper B+/89, three code artifacts B or better
+recommend keep-going -- the NVMe falsifier wants a pier that has one, and a packed-library format is one design lap whenever Bakery or I take it
