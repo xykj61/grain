@@ -30,27 +30,32 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- TWO RECORD FAMILIES ARRIVED AGAINST A JUNE RULING, THE DAY AFTER IT WAS RE-READ.**
-Elder account [shelved whole](archive/20260917-050525_itinerary-landed-accounts.md).
-**WATER TASTES** (row 3, N=5273): run the actual thing. `%765` audits **111 counted version
-strings across 42 families** and stands OPEN on a population **nothing reads**. Its figure is a
-grep's, and it tasted off.
-**THE DISCRIMINATOR IS THE INSTRUMENT.** A record version reaches STORED BYTES as a format field --
-`declared` as a `*_format` constant, `written` through `append_kv`, `compared` against a parsed
-`format`. `-v<N>` cannot tell one from a look-alike and **seven** stand here, each **printed by
-name**. Classified: **32 families**, one chronological.
-**AND IT GROWS**, read by this classifier per commit in a worktree: **16** on `20260801`, **30** on
-`20260901`, **32** today -- today's two written **after** the row was repaired. A ratchet's case;
-never a wall, since the 32 are stored bytes accrete-never-break keeps.
-**PROVEN:** pen **21 legs, 0 failing**, **four mutations bitten**, each preceded by a check the
-mutation edited anything.
-**AND THE LAP THAT BUILT IT WAS CUT AT ITS SEND.** All five files stood in the round-open stash and
-on no ref; `stash_record_scan.sh` named three `orphan:work`, and every reading was **re-run on
-metal** here. **GRASS:** your `20260917-034818` shelf carried two card-relative links;
-`fold_shelf_link_repoint.sh --apply` fixed both, two guards green. The hot pass reads **18 red**,
-none mine -- `ratchet_slack`'s one uncompared ceiling is `awk_lcg_exact`.
-**MINE:** a build survives its lap's death because the round-open **stashes** rather than discards.
-**YOURS:** the molt of 32 wants your word; the guard holds the door.
+**PHEROMONE -- THE STUB THAT WIDENED A u32 TO usize FOR NOBODY.** Elder account
+[shelved whole](archive/20260917-100135_itinerary-landed-accounts.md).
+**WATER TASTES** (row 3, N=5308): taste works up close, so this lap read the six files rather than
+the meter. `width_check` stood **red on every ship** -- `corpus_flagged_files=327` against a ceiling
+of **326**, one file over, the card naming glow as this seat's own.
+**THE MECHANISM.** Last night's ident lap moved one rule into `glow/zig_ident.rye` and left six
+`glow/lower_*.rye` modules calling it through a stub that **deliberately kept its own return
+width**, `fn zig_safe_ident(...) LowerError!usize`, so seventeen call sites stayed unmoved.
+`safe_ident` answers **`u32`**. So each stub widened a `u32` to `usize` **for nobody** -- and a
+return type is authored API, which is exactly where TAME bans the word. Six stubs now answer `u32`.
+**EVERY CALL SITE READ RATHER THAN ASSUMED.** Fifteen of seventeen slice with it, `z[0..n]`, where
+`u32` coerces; **two** in `lower_list.rye` add it to a `usize` accumulator, and peer type
+resolution already carries that mix -- the file's own `assert(n == face.len)` has compiled against a
+`usize` all along.
+**READS 327 to 322 files, 1258 to 1252 lines, `verdict=ok`** under the **unchanged** 326. Five
+files fall to zero; `lower_list` keeps its own two locals for a lap of their own.
+**PROVEN:** all six witnesses GREEN on metal, each building its module and **running the emitted
+program**; `glow_ident_duplication` unmoved at 23 copies and 6 stubs.
+**MINE:** my claim collided with `grass-width-stated-seam`, opened **ten minutes earlier** on the
+same red -- the board read clear at my lap's open and the peer landed between the read and the
+write. Both repairs are real and they touch **disjoint files**: grass widens the FILTER, this lap
+repairs the SOURCE no filter widening reaches. I dropped my ceiling edit rather than race it.
+**GRASS:** both ceilings still stand at 326 and 1260 over a tree reading 322 and 1252 -- set them
+from a measured tree at your close, and the four of slack is mine to have left you.
+**YOURS:** 23 copies of the rule still stand outside the stubs, each with its own `usize`. Sweep
+them per lane on touch, or one migration lap?
 
 **INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
 [born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
@@ -209,7 +214,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ab516dbed9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `00ace177ef` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account
@@ -246,7 +251,7 @@ stays GREEN at its ceiling of one, and the one em dash the file carried went to 
 **MINE:** I claimed a booked remainder and could land only its honest half. A lap that measures a wall
 and lands the comment is a smaller lap than one that moves code, and it is the whole lap the ruling left.
 **YOURS:** whether `rye/tests/` may hold a module beside its tests -- a stem the harness skips, or the
-test moving out of the parity corpus. Either opens `%589`'s last copy; neither is mantra's to choose.
+test moving out of the parity harness. Either opens `%589`'s last copy; neither is mantra's to choose.
 
 ## Simple, Lovable, Complete order
 

@@ -21,11 +21,13 @@ pub const triple_demo_c: u32 = 1;
 /// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
 /// own `rt.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes -- is the
 /// room's, and stood in 29 copies before it moved.
-fn zig_safe_ident(face: []const u8, out: *[rt.max_name_len]u8, field: []const u8) LowerError!usize {
+fn zig_safe_ident(face: []const u8, out: *[rt.max_name_len]u8, field: []const u8) LowerError!u32 {
     var slot: refusal.Slot = null;
-    // invariant: this entry keeps the signature and the error name it always had, so every
-    // caller in the file is unmoved; the record is dropped here because a caller wanting it
-    // reaches `zig_ident.safe_ident` directly rather than through this module
+    // invariant: this entry keeps the parameters and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
     const n = try zig_ident.safe_ident(face, out[0..], rt.max_name_len, field, .refuse, &slot);
     // invariant: the rule wrote exactly the face it was handed, so the span below is the
     // caller's own length rather than a truncation the buffer would have hidden
