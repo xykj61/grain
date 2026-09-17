@@ -91,7 +91,7 @@ const Sha256 = std.crypto.hash.sha2.Sha256;
 /// unmoved walks through that door and then behaves differently, which is
 /// exactly what happened on the lap the memo landed. A behavior change in this
 /// file moves this stamp. The backend stays honestly 0.16.0 throughout.
-const rye_version = "20260916.210654";
+const rye_version = "20260916.231500";
 
 /// The Zig toolchain version this first Rye stands upon.
 const zig_backend_version = "0.16.0";
@@ -164,6 +164,36 @@ const ryekey_library_format = "rye-key-library-v1";
 /// bound refuses to read a record-shaped file that has grown into something
 /// else, with generous room over the ~200 bytes one measures.
 const ryekey_cache_max_bytes: u64 = 4096;
+
+/// HOW MANY RECORDS ONE MEMO FAMILY KEEPS, and why the set needed a number at
+/// all. A record is reached by the digest of its subject's path, so a new path
+/// means a new file rather than a replaced one, and nothing ever removed one --
+/// a control run building inside ten throwaway pens leaves ten records naming
+/// roots that were deleted the moment each pen closed. Measured `20260916`:
+/// 56 records beside this binary, 5 of them naming a path that still existed.
+/// `rye/bin/` is gitignored, so no meter in this tree can see the room and the
+/// only bound is the one this writer states (REDS %790).
+///
+/// THIRTY-TWO is generous over the live population by six times and small
+/// enough that a pen's leavings are gone within one ordinary working day. The
+/// ceiling is PER FAMILY rather than across both, which keeps the two families
+/// single-stranded exactly as the landing paper argued: a library build can
+/// never evict a file record, whatever the mix of subjects happens to be.
+///
+/// EVICTING A RECORD COSTS A REHASH AND NEVER A WRONG ANSWER. Every reader
+/// already treats an absent record as *read the bytes*, so the worst an
+/// over-eager ceiling buys is the slow path this memo exists to skip.
+const ryekey_record_family_max: u32 = 32;
+
+/// How many of one family's records a single eviction pass will hold in hand.
+/// The ceiling above is 32, so a room at this bound is already four orders of
+/// ordinary; past it the pass gives up rather than allocating without a limit.
+const ryekey_record_scan_max: u32 = 4096;
+
+/// A record's name carries the first sixteen characters of its subject's path
+/// digest, from `digest_record_path` above. The eviction pass spells the same
+/// width, so a name of any other shape is not this family's to delete.
+const ryekey_record_digest_chars = 16;
 
 /// A remembered digest is taken over a whole file, and the pinned toolchain
 /// measures 172,641,672 bytes today. This ceiling leaves deliberate growth room
@@ -1035,7 +1065,138 @@ fn digest_record_write(
     dir.writeFile(io, .{ .sub_path = temp_path, .data = body }) catch return;
     dir.rename(temp_path, dir, record_path, io) catch {
         dir.deleteFile(io, temp_path) catch {};
+        return;
     };
+    record_family_evict(io, dir, record_path, ryekey_cache_prefix, garden);
+}
+
+/// One record standing in the binary's directory: its bare name, and when it
+/// was last written. The name is duplicated out of the iterator, whose own
+/// `name` is invalidated by the very next read.
+const RecordEntry = struct {
+    name: []const u8,
+    mtime_ns: i96,
+};
+
+/// Oldest first, with the name breaking a tie. Two records written inside one
+/// filesystem tick would otherwise sort differently on two runs, and an
+/// eviction that picks a different victim each time is one nobody can prove.
+fn record_older_than(_: void, a: RecordEntry, b: RecordEntry) bool {
+    if (a.mtime_ns != b.mtime_ns) return a.mtime_ns < b.mtime_ns;
+    return std.mem.order(u8, a.name, b.name) == .lt;
+}
+
+/// Is this name exactly one record of this family, and therefore ours to
+/// delete? The shape is the whole safety argument: prefix, then exactly sixteen
+/// lowercase hex characters, then the suffix, and nothing else at any length.
+///
+/// WHAT THE EXACTNESS REFUSES. A peer's `<record>.writing` temporary carries
+/// the same prefix and an extra five characters, and deleting one mid-rename
+/// would lose a record a second build is in the middle of landing. The `rye`
+/// binary itself, a receipt, a stamp, and anything else a hand leaves beside
+/// them all fail the prefix or the width. The library family's names fail the
+/// file family's prefix and the other way about, which is what keeps one
+/// family from ever evicting the other.
+fn record_name_matches(prefix: []const u8, name: []const u8) bool {
+    // invariant: a family is identified by its prefix, so the prefix is named.
+    assert(prefix.len != 0);
+    // invariant: a directory entry always carries a name.
+    assert(name.len != 0);
+    const want = prefix.len + ryekey_record_digest_chars + ryekey_cache_suffix.len;
+    if (name.len != want) return false;
+    if (!std.mem.startsWith(u8, name, prefix)) return false;
+    if (!std.mem.endsWith(u8, name, ryekey_cache_suffix)) return false;
+    for (name[prefix.len..][0..ryekey_record_digest_chars]) |letter| {
+        if (letter >= '0') {
+            if (letter <= '9') continue;
+        }
+        if (letter >= 'a') {
+            if (letter <= 'f') continue;
+        }
+        return false;
+    }
+    return true;
+}
+
+/// Hold one memo family to its ceiling, deleting the oldest-written records
+/// past it. Called straight after a record lands, so the room is measured at
+/// the one moment it can only have grown.
+///
+/// A HIT WALKS NOTHING. The writers below are reached only when the memo
+/// missed, so a build that answers from memory pays no directory read at all --
+/// which matters, since sparing exactly that kind of read is what the memo is
+/// for. The room grows only when a record is written, so bounding it there is
+/// the whole of the bound rather than a convenient half of it.
+///
+/// THE RECORD JUST WRITTEN IS NEVER THE VICTIM. It is skipped by name during
+/// the walk and counted as one toward the ceiling afterward, so a build can
+/// never evict the very answer it just earned -- which at a ceiling of one
+/// would otherwise be the ordinary case rather than the edge.
+///
+/// A FAILURE HERE IS SILENT AND SAFE, exactly as the writers above are. An
+/// unreadable directory, a stat that refuses, a delete another hand wins --
+/// each leaves a record standing, and a record standing is only ever a hit the
+/// next build gets to keep.
+fn record_family_evict(
+    io: std.Io,
+    dir: std.Io.Dir,
+    record_path: []const u8,
+    prefix: []const u8,
+    garden: std.mem.Allocator,
+) void {
+    // invariant: a family is identified by its prefix, so the prefix is named.
+    assert(prefix.len != 0);
+    // invariant: the record just written names a real path, so it has a directory and a name.
+    assert(record_path.len != 0);
+    const bin_dir = std.fs.path.dirname(record_path) orelse return;
+    const keep_name = std.fs.path.basename(record_path);
+    var room = dir.openDir(io, bin_dir, .{ .iterate = true }) catch return;
+    defer room.close(io);
+
+    var records = std.ArrayListUnmanaged(RecordEntry).empty;
+    defer {
+        for (records.items) |record| garden.free(record.name);
+        records.deinit(garden);
+    }
+
+    // THE WALK COLLECTS AND THE DELETE FOLLOWS, never interleaved: removing an
+    // entry from a directory under its own open iterator is exactly the shape
+    // that skips a sibling on some filesystems and repeats one on others.
+    var it = room.iterate();
+    while (it.next(io) catch return) |entry| {
+        if (entry.kind != .file) continue;
+        if (!record_name_matches(prefix, entry.name)) continue;
+        if (std.mem.eql(u8, entry.name, keep_name)) continue;
+        // The count crosses back to an authored width at the std seam: `items.len`
+        // is the inherited type, the bound is `u32`, and the cast is safe because
+        // this test runs before every append and never lets the list reach it.
+        const held: u32 = @intCast(records.items.len);
+        if (held >= ryekey_record_scan_max) return;
+        const name = garden.dupe(u8, entry.name) catch return;
+        records.append(garden, .{ .name = name, .mtime_ns = 0 }) catch return;
+    }
+
+    // invariant: a room holding no peer record is already inside any ceiling of one or more.
+    assert(ryekey_record_family_max >= 1);
+    // The record just written counts toward the ceiling it is exempt from being.
+    const peers: u32 = @intCast(records.items.len);
+    const standing: u32 = peers + 1;
+    if (standing <= ryekey_record_family_max) return;
+
+    for (records.items) |*record| {
+        const full = std.fmt.allocPrint(garden, "{s}/{s}", .{ bin_dir, record.name }) catch return;
+        const stat = dir.statFile(io, full, .{}) catch continue;
+        record.mtime_ns = stat.mtime.nanoseconds;
+    }
+    std.mem.sortUnstable(RecordEntry, records.items, {}, record_older_than);
+
+    const over: u32 = standing - ryekey_record_family_max;
+    // invariant: an eviction never reaches past the peers the walk actually found.
+    assert(over <= peers);
+    var removed: u32 = 0;
+    while (removed < over) : (removed += 1) {
+        room.deleteFile(io, records.items[removed].name) catch {};
+    }
 }
 
 fn path_less_than(_: void, a: []const u8, b: []const u8) bool {
@@ -1156,7 +1317,9 @@ fn library_record_write(
     dir.writeFile(io, .{ .sub_path = temp_path, .data = body }) catch return;
     dir.rename(temp_path, dir, record_path, io) catch {
         dir.deleteFile(io, temp_path) catch {};
+        return;
     };
+    record_family_evict(io, dir, record_path, ryekey_library_cache_prefix, garden);
 }
 
 /// Feed the standard library tree into a build's key, read once per tree rather

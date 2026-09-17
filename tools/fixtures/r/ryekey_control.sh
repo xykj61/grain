@@ -629,6 +629,121 @@ rm -f "$PEN"/rye-key-library.*.kyri "$KEY"
 env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" run "$PEN/main.rye" >/dev/null 2>&1 \
     || fail "run library-record leg failed"
 [ -z "$(ls "$PEN"/rye-key-library.*.kyri 2>/dev/null)" ] || fail "a run wrote a library record"
-echo "legs=37 all proven -- twelve flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one; the compiler's remembered digest was shown consulted by planting one, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record was written where no receipt could be earned; and the same seven readings taken of the LIBRARY TREE's record -- it exists and names its root, it was shown consulted by planting a digest into it, each of its three compared fields refused its own plant, a file added and a file removed each refused the remembered digest with no existing file's stat moved, a mode change that moved only the status-change time refused it too, and a build earning no receipt walked no library and wrote no record"
+# --- legs 38 to 44: a memo family is held to a ceiling, oldest evicted first --------------------
+# WHY THESE LEGS. A record is reached by the digest of its subject's PATH, so a
+# new path means a new file rather than a replaced one, and until `20260916`
+# nothing ever removed one -- this control's own pens leave a record apiece, each
+# naming a root deleted the moment its pen closed (REDS %790). `rye/bin/` is
+# gitignored, so no meter in the tree can see the room; the only bound is the one
+# `rye/src/main.rye` states, and a stated bound proven by nobody is a comment.
+#
+# THE PLANT IS FORTY RECORDS WITH ASCENDING MODIFICATION TIMES, so the eviction
+# order is readable from the names alone rather than from a timestamp a reader
+# would have to trust. Beside them stand three things the pass must NOT touch: a
+# peer's half-written `.writing` temporary, a same-prefix name of the wrong
+# width, and the other family's records. Delete the `record_family_evict` call
+# from either writer in `rye/src/main.rye` and leg 38 reds on the count.
+EVICT_CEILING=32
+EVICT_PLANTED=40
+rm -f "$PEN"/rye-key-cache.*.kyri "$PEN"/rye-key-library.*.kyri "$KEY"
+# One ordinary build first, so the library family stands at its real population
+# before the file family is crowded -- leg 43 compares that count across the pass.
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "eviction baseline build failed"
+lib_before=$(ls "$PEN"/rye-key-library.*.kyri 2>/dev/null | wc -l | tr -d ' ')
+[ "$lib_before" -ge 1 ] || fail "the eviction baseline build wrote no library record"
+
+# THE ROOM IS MEASURED AT THE ONE MOMENT IT CAN ONLY HAVE GROWN -- a record
+# landing -- so the crowded build must MISS rather than hit. Clearing the file
+# family is what forces that miss; leaving the baseline's records in place would
+# let every subject answer from memory, write nothing, and evict nothing, which
+# is the behavior working rather than failing.
+rm -f "$PEN"/rye-key-cache.*.kyri
+
+evict_name() { printf '%s/rye-key-cache.%016x.kyri' "$PEN" "$1"; }
+i=1
+while [ "$i" -le "$EVICT_PLANTED" ]; do
+    f=$(evict_name "$i")
+    printf 'format rye-key-cache-v1\npath /nowhere/pen/%s\n' "$i" > "$f"
+    # 2026-01-01 00:00 plus one minute per record: distinct, ascending, and far
+    # enough back that every planted record is older than anything this pen wrote.
+    touch -t "$(printf '202601010%03d.00' "$i")" "$f" 2>/dev/null \
+        || fail "could not age planted record $i"
+    i=$((i + 1))
+done
+# The three bystanders, each a different reason the pass must pass it over.
+printf 'half\n' > "$PEN/rye-key-cache.00000000000000ff.kyri.writing"
+printf 'wrong width\n' > "$PEN/rye-key-cache.dead.kyri"
+touch -t 202601010001.00 "$PEN/rye-key-cache.00000000000000ff.kyri.writing" \
+    "$PEN/rye-key-cache.dead.kyri" 2>/dev/null \
+    || fail "could not age the eviction bystanders"
+
+rm -f "$KEY"
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "eviction build failed"
+
+# --- leg 38: the family stands at exactly its ceiling ------------------------------------------
+# THE COUNT SPELLS THE RECORD SHAPE, since `rye-key-cache.*.kyri` also matches
+# the wrong-width bystander leg 42 plants -- which is the point of that bystander
+# and would otherwise read as one record too many.
+after=$(ls "$PEN"/rye-key-cache.????????????????.kyri 2>/dev/null | wc -l | tr -d ' ')
+[ "$after" = "$EVICT_CEILING" ] \
+    || fail "the file record family stands at $after records, not its ceiling of $EVICT_CEILING"
+
+# --- leg 39: the oldest planted record is gone, the newest still stands ------------------------
+[ -e "$(evict_name 1)" ] && fail "the oldest planted record survived the eviction"
+[ -e "$(evict_name "$EVICT_PLANTED")" ] || fail "the newest planted record was evicted"
+
+# --- leg 40: eviction ran OLDEST FIRST, with no survivor older than a victim -------------------
+# Read from the names rather than from a count, so the leg holds whatever number
+# of records one build happens to write. Every missing plant must sort before
+# every surviving plant; one inversion is an eviction picking by something other
+# than age, which is exactly the fault a stable order exists to refuse.
+evict_missing_max=0
+evict_present_min=0
+i=1
+while [ "$i" -le "$EVICT_PLANTED" ]; do
+    if [ -e "$(evict_name "$i")" ]; then
+        [ "$evict_present_min" = 0 ] && evict_present_min=$i
+    else
+        evict_missing_max=$i
+    fi
+    i=$((i + 1))
+done
+[ "$evict_present_min" != 0 ] || fail "the eviction removed every planted record"
+[ "$evict_missing_max" -lt "$evict_present_min" ] \
+    || fail "a planted record older than a survivor stood after the eviction (missing up to $evict_missing_max, present from $evict_present_min)"
+
+# --- leg 41: a peer's half-written temporary is never the victim -------------------------------
+# It carries the family's own prefix and five characters more. Deleting one
+# mid-rename loses a record a second build is in the middle of landing, which is
+# why the name test is an exact width rather than a prefix match.
+[ -e "$PEN/rye-key-cache.00000000000000ff.kyri.writing" ] \
+    || fail "the eviction deleted a peer's half-written temporary"
+
+# --- leg 42: a same-prefix name of the wrong width is not this family's to delete --------------
+[ -e "$PEN/rye-key-cache.dead.kyri" ] \
+    || fail "the eviction deleted a same-prefix name that is not a record"
+
+# --- leg 43: one family can never evict the other ----------------------------------------------
+# The ceiling is per family on purpose, keeping both single-stranded: forty file
+# records crowding the room left the library family exactly where it stood.
+lib_after=$(ls "$PEN"/rye-key-library.*.kyri 2>/dev/null | wc -l | tr -d ' ')
+[ "$lib_after" = "$lib_before" ] \
+    || fail "crowding the file family moved the library family from $lib_before to $lib_after"
+
+# --- leg 44: the ceiling holds across a second build, and the memo still answers ---------------
+# A ceiling that only bites once is a one-time tidy. The build after it must sit
+# at the same number AND still skip, since eviction may never cost a hit that
+# was already earned.
+k44=$(stamp | head -1)
+env RYE_ZIG="$ZIG" RYE_LIB="$PEN/lib2" "$PEN/ryeflip" build "$PEN/main.rye" "-femit-bin=$BIN" \
+    || fail "post-eviction build failed"
+[ "$(stamp | head -1)" = "$k44" ] || fail "a build after an eviction stopped skipping"
+steady=$(ls "$PEN"/rye-key-cache.????????????????.kyri 2>/dev/null | wc -l | tr -d ' ')
+[ "$steady" -le "$EVICT_CEILING" ] \
+    || fail "the family rose to $steady records on the build after an eviction"
+
+echo "legs=44 all proven -- twelve flips missed, including same-size compiler and library bytes, root and dependency source modes, and a sibling emit flag's value; five hits held, among them one toolchain and one library reached by another path and one output renamed with its receipt; the bypass rebuilt and now names itself rather than this binary's path, an unkeyable flag is blamed on the flag rather than on a file the skip never opened, two fresh builds agreed, run stayed exempt twice over, once with no output named and once naming one; the compiler's remembered digest was shown consulted by planting one, each of its five identity readings refused by its own plant, a same-size rewrite with its mtime restored still missed, and no record was written where no receipt could be earned; and the same seven readings taken of the LIBRARY TREE's record -- it exists and names its root, it was shown consulted by planting a digest into it, each of its three compared fields refused its own plant, a file added and a file removed each refused the remembered digest with no existing file's stat moved, a mode change that moved only the status-change time refused it too, and a build earning no receipt walked no library and wrote no record; and each memo family held to a named ceiling of thirty-two records -- forty planted records crowded the file family and the room came back to exactly thirty-two, the oldest planted record gone and the newest standing, with no survivor older than a victim, while a peer's half-written .writing temporary and a same-prefix name of the wrong width were both passed over, the library family stood exactly where it had, and the build after the eviction still skipped"
 echo "CONTROL_GREEN: the receipt misses on every flipped input and skips only byte-identical builds"
 echo "ryekey_verdict=green"
