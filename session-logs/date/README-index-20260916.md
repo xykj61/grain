@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.211218` | [The flag its own usage never named](20260916/20260916-211218_the-flag-its-own-usage-never-named.kyri) | A reader added, then left unannounced |
 | `20260916.210506` | [The gate that held one page](20260916/20260916-210506_the-gate-that-held-one-page.kyri) | The front-door gate held one page; the walk it opens left the seed |
 | `20260916.205942` | [Hexadecimal admits the decimals](20260916/20260916-205942_hexadecimal-admits-the-decimals.kyri) | A guard exact about its subject, silent about its population |
 | `20260916.204827` | [The door that said empty](20260916/20260916-204827_the-door-that-said-empty.kyri) | The shelf graded whole; its highest grade sat on its one false status |

@@ -20,7 +20,7 @@
 #   Every relative link in a front-door document lands on a path the seed also ships. EIGHT
 #   documents stand in that set from 20260916, named rather than discovered, so a new root file
 #   cannot join it by accident and red on work it never agreed to cover.
-#   Twenty-two behaviors on throwaway repositories, each with its own small manifest: the
+#   Twenty-five behaviors on throwaway repositories, each with its own small manifest: the
 #   agreeing tree free and reading zero, the regression refused, counted, and named, an unshipped
 #   document free, a shipped non-front-door document counted as a ratchet rather than gated,
 #   dated testimony free and uncounted, external and anchor links free and uncounted, a
@@ -83,10 +83,13 @@ assert control.out contains "second_door_named=yes" else "seed-link: the refusal
 assert control.out contains "roster_counted=yes" else "seed-link: the gated roster must report its own size"
 assert control.out contains "default_caps_at_five=yes" else "seed-link: the ordinary reading stays short -- five named sites"
 assert control.out contains "list_names_every_site=yes" else "seed-link: --list must name every ratchet site, so a lane can find its own share"
+assert control.out contains "advice_points_at_list=yes" else "seed-link: a ratchet past the print cap must point a lane at --list"
+assert control.out contains "advice_quiet_when_listing=yes" else "seed-link: the advice stays quiet when every site is already named"
+assert control.out contains "advice_quiet_under_cap=yes" else "seed-link: the advice stays quiet when the cap names every site anyway"
 assert control.out contains "unknown_argument_refused=yes" else "seed-link: an argument the scan does not know must refuse rather than be read past"
 assert control.out contains "control_failed=0" else "seed-link: every leg the control runs must read yes"
-assert control.out contains "control_legs=22" else "seed-link: a leg added to the control must be heard here on the lap it lands"
+assert control.out contains "control_legs=25" else "seed-link: a leg added to the control must be heard here on the lap it lands"
 assert control.out contains "control_verdict=ok" else "seed-link: the control must agree with itself"
-say "RED and GREEN paths proven -- five refusals bitten, seventeen honest readings left free"
+say "RED and GREEN paths proven -- five refusals bitten, twenty honest readings left free"
 
 say "GREEN: seed-link -- a link in a shipped document lands in the shipped tree."

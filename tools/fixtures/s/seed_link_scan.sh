@@ -42,7 +42,8 @@
 # more surprising question: does it survive the projection.
 #
 # USAGE
-#   sh tools/fixtures/s/seed_link_scan.sh
+#   sh tools/fixtures/s/seed_link_scan.sh              # the reading, five sites named
+#   sh tools/fixtures/s/seed_link_scan.sh --list       # every ratchet site, one per line
 #
 # Driven by tools/s/seed_link_witness.rish. Run from the repository root.
 
@@ -151,6 +152,9 @@ grep -E '^(seed_shipped_docs|relative_links_checked|front_door_links_outside_see
 echo "front_door_guarded=$(echo "$FRONT_DOOR" | wc -w | tr -d ' ')"
 echo "other_living_ceiling=$ceiling"
 grep -E '^(gated|ratchet):' "$work/out" || true
+if [ "$list_all" = no ] && [ "${ratchet:-0}" -gt 5 ]; then
+  echo "advice: $ratchet sites stand and five are named -- sh tools/fixtures/s/seed_link_scan.sh --list names them all"
+fi
 [ "${ratchet:-0}" -le "$ceiling" ] || echo "detail: the ratchet rose above its ceiling -- it only ever falls"
 
 if [ "${gated:-1}" -eq 0 ] && [ "${ratchet:-0}" -le "$ceiling" ]; then
