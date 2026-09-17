@@ -25,7 +25,7 @@ lap to seat the newest under the pin's bound.
 
 **The agent-doable queue, Lindy first:**
 
-1. `%642` -- the path-refusal fold **landed `20260917.064837`** at 8.9s to 0.11. What remains is the **copy**, 45s of a 74s projection, which a cache never reaches; an incremental `seed/` sync does, and owes a proof that a withdrawn file leaves. Design and word, or a lap?
+1. `%642` -- the path refusal and the **copy** both landed, `20260917.064837` and `20260917.091616`, at 8.9s to 0.11 and 28.4s to 0.77. A projection reads **24.12s** where it read 74. What remains is the **scrub**, 19.91s of that 24 and now four fifths of it; the trade is named in the copal account and wants a word rather than a lap.
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
@@ -85,41 +85,39 @@ red that census reports. `%457`, one layer in: a path check answers about spelli
 **YOURS:** `unreached_new` reports where it could gate. A wall at zero would red the lap a witness
 lands unrostered, priced at one roster row per lane -- take it, or keep the reading advisory?
 
-**COPAL -- A STEP THAT STARTS NO PROCESS AND COST NINE SECONDS.** Account
-[shelved whole](archive/20260917-064837_itinerary-landed-accounts.md), its ask answered here.
-**FIRE SEES** (row 2, N=5286): cut, and stop where the cut ends.
-**THE MECHANISM.** `tools/fixtures/s/sow_project.sh` decided its two path-only refusals in a shell
-`while read` loop calling `is_subex` per candidate, and that function walks EVERY `sub_exclude`
-entry -- 146 against 9,114 candidates, 1.3 million `case` evaluations in the shell itself. Both are one
-`awk` call now, walking the same reading the other way: a path lives under an entry exactly when one
-of its slash-bounded ancestors IS that entry, so the awk strips a trailing component at a time
-against a hash -- DEPTH rather than roster LENGTH.
-**MEASURED on metal**, real field: `step_pathrefuse_s` **8.85 and 9.42 to 0.11**, a factor of 80,
-in a projection of 74.33. FREE: `SOW_TIME=1 sh tools/fixtures/s/sow_project.sh`.
-**PROVEN on the whole tree rather than the step.** Both scripts ran the real field into two seed
-directories, compared with `diff -r --no-dereference`: **0 differences** over 8,607 copies, 1,428
-scrubs, 136 withholds. Pen **41 legs from 35, seven mutations bitten**; the two new
-ones drop the ancestor walk, shipping a file three rooms under a shut door while the file-equal
-entry still refuses, and drop one glob, which must ship that one file alone.
-**THE STOP.** `%804`'s word-split read is preserved exactly, `printf` unquoted on purpose:
-repairing it changes what ships, from a lap whose claim said no withhold moves.
-**REDS FIRST -- THREE FOUND, AND THE LEDGER HAD ROOM FOR NONE**, at 65,535 bytes against a bound
-of 65,536. One byte, three foldable rows; all three are written whole in my log. **One:**
-`width_check` reds the whole fleet at `corpus_flagged_files` **327 against 326** while
-`corpus_flagged_lines` reads 1258 under 1260 -- two ceilings part, and the habit watches the one
-that stayed green. The file over is `tools/rye/read_latency.rye`, four authored `usize`:
-three genuine std seams, and the fourth carries a `// seam:` comment the scan cannot see -- its
-filter reads a comment LINE, never a seam comment beside a declaration. Its lane rules it. **Two:** a claim commit lands before the work commit exists, so `remember_git_nib` reds through
-every claiming lap's build window. Grass met the CLOSE half at `%803`; this is the OPEN half, and
-`incense-nib-writer-two-shapes` holds it. **Three, mine:** this account's own illustration
-was spelled as a real-looking path, and `backtick_path`, six hours old, read it as a promise --
-living **65 to 66 against 65**. Placeholders now; both meters GREEN, and the cold and hot red sets
-differ by that one name.
-**MINE:** the baton's two orders collide -- the cold endurance run wants the tree still, the claim
-law wants a pushed commit first, and the digest reads staged, unstaged and untracked alike, so every
-claiming lap closes `tree_moved=yes` by obeying both as printed. Third firing; a lantern that
-fires twice is a loom. The cure is one word: **claim first, then launch the cold run.**
-**YOURS:** that ordering, on the baton. The copy is the larger door still, at 45 seconds.
+**COPAL -- THE COPY STEP THE CARD CALLED THE LARGER DOOR, AND THE GUARD NOBODY COULD SEE.** Elder
+account [shelved whole](archive/20260917-091616_itinerary-landed-accounts.md), its ask answered.
+**EARTH BREATHES IN** (row 4, N=5314): take in the concrete fact at the door. The fact was my own
+timed projection -- `step_copy_s=28.43` of 49.39, 58 percent of a publish, in 8,633 `cp -a` starts.
+**THE MECHANISM.** Step 7 of `tools/fixtures/s/sow_project.sh` was a shell `while read` loop calling
+`cp -a` once per kept file; it is one `cpio -pdum` pass-through reading the same list, with the
+elder loop kept as the fallback and `SOW_COPY_TOOL` naming the tool so a host lacking `cpio` --
+gone from POSIX since 2001 -- answers rather than breaks. A pass-through that FAILS refuses out
+loud rather than retrying, since a copy that moved nothing reads exactly like a field with nothing
+in it. **MEASURED on metal:** `step_copy_s` **28.43 to 0.77**, total **49.39 to 24.12**.
+**PROVEN on the whole field**, the parity the witness header names as past its own reach: elder
+bytes and new each projected into their own tree, `diff -r --no-dereference` **0 differences** over
+8,637 copies, 1,431 scrubs, 137 withholds, and 0 differences in mode, size, file type and symlink
+target across all **9,310** entries, 239 of them symlinks. Pen **50 legs from 41, 0 failing, nine
+mutations bitten**.
+**MINE, AND IT IS THE LAP'S REAL FINDING.** My claim reasoned that `cp -a` recurses a gitlink where
+the pass-through writes an empty room, and priced a refusal for it. Both halves were wrong about
+this script: step 1 drops every directory with `[ -f "$f" ] || continue`, three hundred lines
+earlier, so the class was already empty and my new refusal was a fence in a field with no gate. I
+had read my own probe -- `git ls-files` into a `cp` loop -- rather than the script. The refusal came
+back out; what went in is the proof that ONE filter holds the property, planting a gitlink and then
+dropping that line to watch an empty room ship. A guard doing invisible work now has a mutation
+naming it.
+**REDS FIRST -- ONE, AND MY OWN CHANGE OPENED IT** (`20260917.091915`, cited by stamp; the ledger
+stands full). `sow_allow_reach_control.sh` shims `cp` to prove a manifest moved during copying
+earns no receipt, and a streamed copy calls no `cp` -- so the plant reached a command the code does
+not run and read `producer_moved/refuses got [0] want [2]`. Both paths are shimmed now, 52 passing
+to 55. **A plant names a DEED, and a copy path has two spellings** -- the same lesson the pkill
+clause learned one room over.
+**YOURS:** the scrub is the largest step now at 19.91s in 1,430 `sed` processes, and it is genuinely
+one per file since each writes its own destination -- folding it means unscrubbed bytes standing in
+`seed/` before being rewritten, clean by trust rather than by construction. Take that trade, or
+leave the publish at 24 seconds?
 
 **COPAL -- FIVE ELDER ACCOUNTS, SHELVED WHOLE:** the minutes spent starting grep
 ([here](archive/20260917-010818_itinerary-landed-accounts.md)), the resin bytes that landed
@@ -211,7 +209,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1d057ce1a1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ab516dbed9` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account

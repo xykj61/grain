@@ -25,6 +25,9 @@ ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 PEN="$ROOT/.lap/sow-project-control.$$"
 SCRIPT="$ROOT/tools/fixtures/s/sow_project.sh"
 S="$PEN/pen-seed"
+# The streamed tree is compared against a LATER mk_pen generation, and mk_pen
+# clears the whole pen -- so this one keeps its own room beside it.
+STREAM="$ROOT/.lap/sow-project-stream.$$"
 LEGS=0
 FAILED=0
 REAL_XARGS="$(command -v xargs)"
@@ -39,7 +42,7 @@ leg() {  # leg NAME yes|no
 # check is a reading to report rather than a reason to stop the control.
 say() { if [ "$1" -eq 0 ]; then echo yes; else echo no; fi; }
 
-cleanup() { rm -rf "$PEN"; }
+cleanup() { rm -rf "$PEN" "$STREAM"; }
 trap cleanup EXIT INT TERM
 
 # ---------------------------------------------------------------------------
@@ -73,6 +76,12 @@ mk_pen() {
   printf 'keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAANotAReal000 host" ];\n' \
                                                                > "$PEN/room/keys.nix"
   printf 'a nested plain page\n'                               > "$PEN/room/sub/deep.md"
+  # A PLAIN runner and a SYMLINK, both plain copies: the elder exec-bit leg reads
+  # the scrub path only, and a symlink is the one shape a copy can silently
+  # dereference into a second full file.
+  printf '#!/bin/sh\necho a runner nobody is named in\n'      > "$PEN/room/tool.sh"
+  chmod +x "$PEN/room/tool.sh"
+  ( cd "$PEN/room" && ln -sf plain.md link.md )
   # THREE LEVELS UNDER A DIRECTORY ENTRY. The elder tested `"$x"/*`, whose `*`
   # crosses slashes, so depth never mattered; the awk walks the path's own
   # ancestors instead, and a walk that stops at the first parent would ship this.
@@ -101,6 +110,15 @@ mk_pen() {
   } > "$PEN/badbin/xargs"
   chmod +x "$PEN/badbin/xargs"
 
+  # A pass-through that refuses. Named rather than reached through PATH, since
+  # `SOW_COPY_TOOL` is how an operator names their own copy tool anyway.
+  {
+    echo '#!/bin/sh'
+    echo 'echo "failcopy: refusing on purpose" >&2'
+    echo 'exit 5'
+  } > "$PEN/badbin/failcopy"
+  chmod +x "$PEN/badbin/failcopy"
+
   ( cd "$PEN"
     git init -q .
     git config user.email pen@example
@@ -120,6 +138,19 @@ run_projection() {  # run_projection SCRIPT-PATH [PATH-PREFIX]
     SEED_LOCK_DIR=pen.lock \
     SOW_WORK=.pen-work \
     sh "$1" > pen-run.txt 2>pen-err.txt
+  )
+}
+
+# A DIRECTORY candidate, planted the only way one can exist: `git ls-files`
+# answers with a directory path for a gitlink and for nothing else. The real
+# manifest withholds both submodules, so this class reads zero on the field --
+# which is exactly why it is planted here rather than assumed away.
+plant_gitlink() {
+  ( cd "$PEN"
+    mkdir -p room/mod
+    printf 'a page inside a submodule\n' > room/mod/inner.md
+    sha=$(git hash-object -w room/mod/inner.md)
+    git update-index --add --cacheinfo 160000,"$sha",room/mod
   )
 }
 
@@ -237,7 +268,9 @@ leg withheld_log_reads_in_candidate_order "$(say $r)"
 # preserved rather than tidied. The withheld count reads 12 rather than the elder
 # 4 because the pen now carries one file per basename glob: four refused by the
 # elder's own four fixtures, eight more by the shapes it spelled and never proved.
-if grep -q 'SOW_OK copied=6 scrubbed=2 withheld=12' "$PEN/pen-run.txt" 2>/dev/null
+# It reads copied=7 rather than 6 since the pen gained a plain runner for the copy
+# path's own exec bit; `find -type f` passes over the symlink beside it.
+if grep -q 'SOW_OK copied=7 scrubbed=2 withheld=12' "$PEN/pen-run.txt" 2>/dev/null
 then r=0; else r=1; fi
 leg receipt_counts_every_class "$(say $r)"
 
@@ -312,6 +345,64 @@ if diff -r "$PEN/tree-silent" "$PEN/tree-timed" >/dev/null 2>&1
 then r=0; else r=1; fi
 leg timing_moves_no_projected_byte "$(say $r)"
 
+# --- the copy step: what it carries, and what it refuses -------------------
+# Step 7 streams every plain copy through one `cpio` pass-through rather than one
+# `cp -a` process per file (REDS %642). Three properties `diff -r` alone would
+# miss get their own legs, and the fallback loop -- the elder step, unchanged --
+# is proven to project the same tree rather than merely to run.
+mk_pen
+rc=0; run_projection "$SCRIPT" || rc=$?
+rm -rf "$STREAM"; cp -a "$S" "$STREAM"
+
+if [ -x "$S/room/tool.sh" ]; then r=0; else r=1; fi
+leg plain_runner_keeps_exec_bit "$(say $r)"
+
+if [ -L "$S/room/link.md" ] && [ "$(readlink "$S/room/link.md")" = plain.md ]
+then r=0; else r=1; fi
+leg symlink_arrives_as_symlink "$(say $r)"
+
+mk_pen
+export SOW_COPY_TOOL=
+rc=0; run_projection "$SCRIPT" || rc=$?
+unset SOW_COPY_TOOL
+if [ "$rc" -eq 0 ] && diff -r --no-dereference "$STREAM" "$S" >/dev/null 2>&1
+then r=0; else r=1; fi
+leg copy_fallback_projects_identical_bytes "$(say $r)"
+
+# A named tool this host lacks is an answer rather than a fault: the loop runs.
+mk_pen
+export SOW_COPY_TOOL=sow-no-such-copy-tool
+rc=0; run_projection "$SCRIPT" || rc=$?
+unset SOW_COPY_TOOL
+if [ "$rc" -eq 0 ] && diff -r --no-dereference "$STREAM" "$S" >/dev/null 2>&1
+then r=0; else r=1; fi
+leg absent_copy_tool_falls_back "$(say $r)"
+
+# A pass-through that FAILS refuses out loud. Falling back here would hide a
+# broken copy tool behind a projection that merely took longer and looked fine.
+mk_pen
+export SOW_COPY_TOOL="$PEN/badbin/failcopy"
+rc=0; run_projection "$SCRIPT" || rc=$?
+unset SOW_COPY_TOOL
+if [ "$rc" -ne 0 ] && grep -q 'copy pass-through' "$PEN/pen-err.txt" 2>/dev/null
+then r=0; else r=1; fi
+leg broken_copy_tool_refuses_loudly "$(say $r)"
+
+# THE ONE INPUT THE TWO COPY PATHS DISAGREE ABOUT is a directory: `cp -a`
+# recurses it, the pass-through writes the node alone. Step 1's `[ -f "$f" ]`
+# filter is what keeps it away, and nothing proved that until now. A gitlink is
+# the only directory `git ls-files` answers with, so it is the whole class.
+mk_pen
+plant_gitlink
+rc=0; run_projection "$SCRIPT" || rc=$?
+if [ "$rc" -eq 0 ] && [ ! -e "$S/room/mod" ]; then r=0; else r=1; fi
+leg gitlink_never_becomes_a_candidate "$(say $r)"
+
+# ... and the projection still ships the rest of the field, or the leg above
+# reads a run that simply refused everything.
+if [ -f "$S/room/plain.md" ]; then r=0; else r=1; fi
+leg gitlink_plant_leaves_the_field_whole "$(say $r)"
+
 # --- mutations: each must bite a named leg above ---------------------------
 # 1. Drop the armor pass. The armored blob must then ship.
 mk_pen
@@ -383,6 +474,34 @@ rc=0; run_projection "$mut" || rc=$?
 if [ -e "$S/room/vault.secret" ] && [ ! -e "$S/room/token.sec" ]
 then r=0; else r=1; fi
 leg mutation_one_basename_glob_dropped_bites "$(say $r)"
+
+# 8. Drop step 1's regular-file filter. The gitlink must then reach the seed as
+#    an EMPTY room -- the node without its contents -- while the projection
+#    finishes green. This is the mutation that makes step 7's comment true: the
+#    pass-through is safe BECAUSE of that one test, and no content diff of a
+#    healthy projection would ever say so.
+mk_pen
+plant_gitlink
+mut="$PEN/mut_regfile.sh"
+sed 's@^    \[ -f "\$f" \] || continue$@    :@' "$SCRIPT" > "$mut"
+if grep -q '^    \[ -f "\$f" \]' "$mut"; then echo "control: mutation 8 changed nothing" >&2; exit 2; fi
+rc=0; run_projection "$mut" || rc=$?
+if [ "$rc" -eq 0 ] && [ -d "$S/room/mod" ] && [ ! -e "$S/room/mod/inner.md" ]
+then r=0; else r=1; fi
+leg mutation_regular_file_filter_dropped_bites "$(say $r)"
+
+# 9. Let a failed pass-through pass silently. The projection then finishes green
+#    having copied nothing at all, which is the `batch_match` fault one step
+#    over: a copy that moved nothing reads exactly like a field with nothing in it.
+mk_pen
+mut="$PEN/mut_copyfail.sh"
+sed 's|^  if \[ "\$_rc" -ne 0 \]; then$|  if false; then|' "$SCRIPT" > "$mut"
+if ! grep -q '^  if false; then$' "$mut"; then echo "control: mutation 9 changed nothing" >&2; exit 2; fi
+export SOW_COPY_TOOL="$PEN/badbin/failcopy"
+rc=0; run_projection "$mut" || rc=$?
+unset SOW_COPY_TOOL
+if [ "$rc" -eq 0 ] && [ ! -e "$S/room/plain.md" ]; then r=0; else r=1; fi
+leg mutation_copy_failure_silenced_bites "$(say $r)"
 
 echo "control_legs=$LEGS"
 echo "control_failed=$FAILED"

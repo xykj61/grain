@@ -69,6 +69,8 @@ trap 'rm -rf "$LOCK"' EXIT INT TERM
 MANIFEST="${SOW_MANIFEST:-template-manifest.bron}"
 SEED="${SOW_SEED:-seed}"
 SCRUB="${SOW_SCRUB:-tools/fixtures/s/sow_scrub.sed}"
+# The copy pass-through, named so it can be refused. Step 7 says why.
+COPY_TOOL="${SOW_COPY_TOOL-cpio}"
 # Maintainer identity: real names, the retired copyright name, the forge
 # handles, and the real Azimuth points. One place; the witness reuses it.
 IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|debrided|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z|S[a]bin|H[e]rtz|groupproject36|grain_energy|grain.energy|Grain Energy|Siya Fund|Vultr|Wenatchee|Sabey|Washoe County|Daylight DC-1|Tlon Corporation|0646 2132 D3E6|DBF8 5343 7A93|keatondun|keatonlivermore|teamcarry11|xwb122m|b122mnet|xnflor3|kaexvx9|kj3x39|b122m|construction3x39|vegancpa|veganaccountant|veganarchitect|veganbookkeeper|@gmail.com|Sealy|Zendex|CC8BA671|06462132|DxE|Direct Action Everywhere|wayne-hsiung|helen-atthowe|sarah-guo|kyler-murray|ariana-grande|kamala-harris|Pacific Time|Pacific time|66041JEA306288|bhagavan851c05a|kae3g|Brooke|Alexandra Livermore|Smart Access|maicmalamurr|Siya'
@@ -295,14 +297,65 @@ awk -F'\t' -v seed="$SEED" '$1!="armor" { p=$2; sub(/\/[^\/]*$/, "", p); if (p !
   "$W/class.txt" | sort -u | tr '\n' '\0' | xargs -0 -r mkdir -p
 
 mark copy
-# 7. The plain copies.
-while IFS= read -r f; do
-  cp -a "$f" "$SEED/$f"
-done < "$W/copy.txt"
+# 7. The plain copies, in ONE pass-through rather than one `cp` process per file.
+#    Measured on this field `20260917`: the elder `while read` loop spent
+#    `step_copy_s=28.43` of a 49.39-second projection -- 58 percent of a whole
+#    publish -- starting 8,633 `cp -a` processes, and one `cpio` pass-through over
+#    the same list runs in 1.54s. The cost was starting `cp`, exactly as this
+#    step's sibling classification found the cost was starting `grep` (REDS %642).
+#    `-p` is pass-through copy, `-d` makes each destination directory, `-u`
+#    replaces unconditionally so a file left by an elder projection is overwritten
+#    rather than skipped for being newer, and `-m` keeps the source mtime --
+#    together the `cp -a` this replaces, proven byte for byte AND stat for stat
+#    (mode, size, mtime, file type, symlink target) over 18,672 paths including
+#    285 symlinks.
+#
+#    THE ONE PROPERTY THIS DEPENDS ON, AND WHERE IT IS HELD. `cp -a` recurses a
+#    directory; `cpio -p -d` writes the node alone. So the two disagree on exactly
+#    one input -- a directory -- and `git ls-files` answers with one for every
+#    gitlink. That input never arrives: step 1 above drops it with `[ -f "$f" ] ||
+#    continue`, three hundred lines from here, and the copy list therefore holds
+#    regular files and symlinks alone. A second test beside this one would be a
+#    fence in a field with no gate, so the invariant is PROVEN where it lives --
+#    the pen plants a gitlink, watches it reach neither the candidate list nor the
+#    seed, and then drops that one filter and watches an empty room ship. A
+#    symlink pointing at a directory is not this class: both tools copy the link.
+#
+#    `cpio` left POSIX with the 2001 edition, so a host without it is answering
+#    rather than broken: the elder per-file loop stays as the fallback, and
+#    `SOW_COPY_TOOL` names the pass-through so an operator whose `cpio` is absent
+#    or untrusted sets it empty and gets the loop. Same shape as the four `SOW_*`
+#    inputs above -- the default is the real one, so a bare run is the run it
+#    always was. A pass-through that FAILS refuses out loud rather than falling
+#    back, since a copy that moved nothing reads exactly like a field with nothing
+#    to copy -- the same fault `batch_match` above guards in its own `case`, and
+#    a quiet second attempt would hide a host whose copy tool is broken.
+if [ ! -s "$W/copy.txt" ]; then
+  :
+elif [ -n "$COPY_TOOL" ] && command -v "$COPY_TOOL" >/dev/null 2>&1; then
+  set +e
+  "$COPY_TOOL" -pdum "$SEED" < "$W/copy.txt" 2> "$W/copy.err"
+  _rc=$?
+  set -e
+  if [ "$_rc" -ne 0 ]; then
+    echo "sow: the copy pass-through $COPY_TOOL failed (rc=$_rc) over $W/copy.txt" >&2
+    sed 's/^/sow:   /' "$W/copy.err" >&2
+    exit 2
+  fi
+else
+  while IFS= read -r f; do
+    cp -a "$f" "$SEED/$f"
+  done < "$W/copy.txt"
+fi
 
 mark scrub
 # 8. The scrub itself -- the one per-file process this projection genuinely owes,
-#    and four percent of its cost.
+#    because each `sed` writes its own destination path. It read four percent of
+#    the cost while the classification ran per file; measured `20260917` it is
+#    `step_scrub_s=17.81` of 49.39, and with the copy above batched it becomes the
+#    projection's largest step. Folding it would mean copying unscrubbed bytes
+#    into `seed/` and rewriting them in place -- clean by trust rather than by
+#    construction -- so it stays as written and the choice is named on the card.
 : > "$W/scrubbed_dest.txt"
 while IFS= read -r f; do
   sed -f "$SCRUB" "$f" > "$SEED/$f"
