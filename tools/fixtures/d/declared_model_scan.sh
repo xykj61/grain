@@ -28,8 +28,33 @@
 # this scan at odds with the resolver, the repointer, and the census over what a dated file is,
 # which is REDS %175 exactly; reading the directory leaves that seam untouched. Accrete-never-break.
 #
-# WHAT IS NOT PROVEN. That the model named is the model the API actually served. This reads what
-# the tree says about itself, and agreement is the whole of the claim.
+# THE EFFORT ROSTER, a second enforced tier seated 20260916. This scan has read the effort value
+# since it was written -- `declared_effort=` prints on every run -- and passed it to no comparison,
+# so the one field it measured and never gated is the one that drifted. Three living sites quoted
+# `.claude/settings.json` as carrying `max` while the file read `medium`: `.claude/rules/session-logs.md`,
+# the seed's section 0, and this family's own USAGE comment one file over. Its peer
+# `.claude/rules/session-log-provenance.md` read `medium` correctly the whole time, so two law pages
+# disagreed about one file and nothing in the tree could hear it. A reading nobody acts on is the
+# second half of a guard nobody runs.
+#
+# WHY THIS ROSTER IS NOT THE MODEL ROSTER. The model is ONE id across the tree. The effort is not,
+# and saying so is the whole care of this half: `tools/f/fleet_lap.sh` execs `--effort max` inside
+# the enclosure while `tools/f/fleet-loop.sh` execs `--effort medium` bare, which this pier runs.
+# So a page describing a LAUNCH PATH writes whatever that path passes and is right to. The roster
+# below names only pages that state what `.claude/settings.json` ITSELF carries, and the test is
+# presence of the value the file reads today -- the same presence-over-absence discipline the model
+# half keeps above, and for the same reason: a page teaching the launch-path split must stay free to
+# say `max` about `fleet_lap.sh` in the sentence beside it.
+#
+# WHAT IS DELIBERATELY OFF IT. `GLOW_PROFILE.template.kyri` reads `effort max` and names no
+# `medium`. It records how a clone's work is produced rather than what the settings file carries,
+# which is a different door, and `docs-geode/tutorials/running-the-fleet.md` already tabulates both
+# readings side by side as the two facts they are. Whether the template should follow the pier it
+# ships with is a question for a hand, so it sits on the model roster and off this one.
+#
+# WHAT IS NOT PROVEN. That the model named is the model the API actually served, and that the effort
+# a page names is the effort a lap ran at. This reads what the tree says about itself, and agreement
+# is the whole of the claim.
 #
 # USAGE
 #   sh tools/fixtures/d/declared_model_scan.sh
@@ -65,6 +90,28 @@ for f in $DECLARING; do
   else
     declaring_over=$((declaring_over + 1))
     echo "over: $f states a model and never names $model"
+  fi
+done
+
+# The effort declaring roster: living pages that state what `.claude/settings.json` itself carries.
+# NAMED rather than discovered, exactly as the model roster above is, so a file cannot join the
+# enforced tier by accident and red on work it never agreed to cover.
+DECLARING_EFFORT=".claude/rules/session-logs.md .cursor/rules/session-logs.mdc .claude/rules/session-log-provenance.md .cursor/rules/session-log-provenance.mdc recursion-prompts/seed/autonomous-loop.seed.md docs-geode/tutorials/running-the-fleet.md"
+
+effort_total=0
+effort_over=0
+for f in $DECLARING_EFFORT; do
+  effort_total=$((effort_total + 1))
+  if [ ! -f "$root/$f" ]; then
+    effort_over=$((effort_over + 1))
+    echo "over_effort: $f is named on the effort roster and absent"
+    continue
+  fi
+  if grep -q -- "$effort" "$root/$f"; then
+    echo "declares_effort: $f names $effort"
+  else
+    effort_over=$((effort_over + 1))
+    echo "over_effort: $f states the settings effort and never names $effort"
   fi
 done
 
@@ -121,10 +168,12 @@ ceiling=1
 
 echo "declaring_documents=$declaring_total"
 echo "declaring_over=$declaring_over"
+echo "declaring_effort_documents=$effort_total"
+echo "declaring_effort_over=$effort_over"
 echo "drift_candidates=$drift"
 echo "drift_ceiling=$ceiling"
 
-if [ "$declaring_over" -eq 0 ] && [ "$drift" -le "$ceiling" ]; then
+if [ "$declaring_over" -eq 0 ] && [ "$effort_over" -eq 0 ] && [ "$drift" -le "$ceiling" ]; then
   echo "verdict=ok"
 else
   echo "verdict=disagreement"
