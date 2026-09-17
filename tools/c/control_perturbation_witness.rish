@@ -1,0 +1,108 @@
+# tools/c/control_perturbation_witness.rish -- does a guard's ANSWER move when its own control
+# goes away?
+#
+# WHY THIS RUNG. Its sibling `tools/c/control_in_population_witness.rish` counts MEMBERSHIP: a
+# guard's enumerated population holds a tracked file of the guard's own family. That reading names
+# its own upper bound and says why -- a scan may enumerate broadly and filter narrowly, so
+# membership is no proof the scan READS the file. It also names a whole class it cannot reach at
+# all: `no_git_population`, a scan spelling no `git ls-files`, counted apart and reported as
+# GENUINELY UNMEASURED rather than clear, since a `find` rooted at the repository root or under
+# `tools/` reaches a control just as well.
+#
+# WHY THAT CLASS CANNOT BE WIDENED INTO, measured `20260916` over the 198 tracked scans naming no
+# `git ls-files`. Every `find` root in the reachable subset is a loop variable or a per-scan
+# directory variable -- `$room`, `$DIR`, `$DESK_DIR`, `$root_dir` -- and the sibling's admit rule
+# refuses a variable on purpose, because evaluating one is evaluating whatever a scan happens to
+# hold. Widening the rule would not resolve those roots; it would only run them blind. Only
+# RUNNING the scan reaches this class, which is what this rung does.
+#
+# WHAT IS MEASURED, on metal. Each candidate is run twice in a detached worktree at HEAD: once
+# whole, once with its family control absent from the index AND from the working tree. The two
+# outputs are compared. `unmoved` is byte-identical. `moved` differs in some reading with every
+# `verdict=` line still agreeing. `verdict_flipped` differs in a verdict, which is a guard whose
+# PASS is partly a statement about its own instrument rather than about the field.
+#
+# WHY BOTH HALVES OF THE PERTURBATION. A scan enumerating with `git ls-files` reads the index; a
+# scan enumerating with `find` reads the filesystem. One perturbation answers for both populations
+# or the reading is a statement about enumeration style rather than about the guard.
+#
+# THE READING, `20260916`, over the nine candidates the sibling calls unmeasured: 4 probed, 3
+# unmoved, 1 moved, 0 verdict flipped, 3 skipped for holding no tracked family control, and 2
+# refused for a cause this rung names. Set beside the sibling's 37 enumerable scans, which came
+# back 24 unmoved, 13 moved and 2 flipped, the class the census could not reach is the CLEANER of
+# the two -- so the blind spot was a blind spot rather than a hiding place. Every figure here is
+# FREE: run the scan.
+#
+# THE ONE MOVER IS THE HEALTHY SHAPE, which is worth more than a refusal would have been.
+# `tools/fixtures/i/instrument_absence_scan.sh` moves `scans_read` by one and
+# `blind_captures_in_fixture` from 9 to 0 -- and that second counter exists precisely to hold the
+# nine sites standing inside its own control, counted apart from the field. Its control already
+# proves the exemption in both directions by name. A guard that reads its own control and SAYS SO
+# in a field of its own is the answer to the class, rather than an instance of it.
+#
+# THE REFUSAL THIS RUNG NAMES, and the wider fact behind it. 164 tracked shell scripts -- 74 of
+# them `*_scan.sh` -- find the repository root by walking up to a directory `rishi/bin`. Nothing
+# under `rishi/bin` is tracked: it holds the built binary. So a checkout of tracked bytes alone
+# has no such directory, and every one of the 164 refuses with `no tree root within 8 steps`
+# before reading a file. The probe classifies that refusal by name rather than reporting it blind,
+# because a named cause can be repaired. The repair is one directory name -- `rishi/src` is
+# tracked and, measured `20260916`, both `rishi/src/` and `tools/fixtures/` occur at the
+# repository root and nowhere below it, so it is exactly as discriminating. The bootstrap is NOT
+# circular: `tools/fixtures/r/rye_build.sh` carries no root-finder, so a fresh clone still builds
+# `rishi` and every script then works. The cost is latent rather than live.
+#
+# WHAT IS REPORTED AND NEVER GATED. A moved reading may be entirely correct, as the one mover here
+# is. A gate would refuse the repaired shape beside the unrepaired one, and a gate that reds on a
+# correct tree is a gate somebody turns off.
+#
+# ONE WRITER PER CHECKOUT (REDS %291) is the rule this rung most easily breaks: the pen is a second
+# checkout of this repository. It is created under `mktemp -d`, outside the tree so no peer's
+# `find .` walks it, and removed on every exit path. The first ad-hoc run of this probe was
+# discarded on `20260916` for exactly that fault, when a hand entered the pen mid-probe.
+#
+# WHAT IS NOT PROVEN. Whether a moved reading is a fault; that is judgment, and the classification
+# is what tells a reader there is a judgment to make. And the three candidates holding no tracked
+# family control are unread rather than clean -- there is nothing to take away.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/control_perturbation_witness.rish
+
+say "control-perturbation: Language EN -- membership is not reading; running the guard twice is."
+say "control-perturbation: Style Gauge at Field -- every figure carries its denominator and its refusals."
+say "control-perturbation: Lens TAME -- safety first: a guard's green may be partly about its own instrument."
+
+let control = run ["sh" "tools/fixtures/c/control_perturbation_control.sh"]
+say control.out
+assert control.ok else "control-perturbation: the control must complete"
+assert control.out contains "control_verdict=ok" else "control-perturbation: the control must agree with itself"
+assert control.out contains "control_failed=0" else "control-perturbation: every leg must stand, and a leg written tomorrow must be heard today"
+assert control.out contains "leg candidates_hold_find_rooted ok" else "control-perturbation: a find-rooted scan is the class this instrument exists for"
+assert control.out contains "leg candidates_read_past_git_enumerating ok" else "control-perturbation: a scan the sibling already measures is not this instrument's candidate"
+assert control.out contains "leg candidates_read_past_the_probe_itself ok" else "control-perturbation: the probe must never probe itself"
+assert control.out contains "leg unmoved_named ok" else "control-perturbation: the clear direction is asserted as hard as the refusal"
+assert control.out contains "leg moved_named ok" else "control-perturbation: a guard counting its own control must be named"
+assert control.out contains "leg verdict_flip_named ok" else "control-perturbation: a flipped verdict is the sharpest reading and earns its own class"
+assert control.out contains "leg flip_is_not_counted_as_moved ok" else "control-perturbation: the two classes answer different questions and must move apart"
+assert control.out contains "leg lonely_skipped ok" else "control-perturbation: a scan with no tracked family control is unread, never clean"
+assert control.out contains "leg rootfinder_refusal_named ok" else "control-perturbation: a refusal whose cause is known must be named rather than reported blind"
+assert control.out contains "leg other_refusal_stays_plain ok" else "control-perturbation: a cause the probe cannot name must stay a plain refusal"
+assert control.out contains "leg restore_keeps_one_baseline ok" else "control-perturbation: every candidate must be measured against the same tree"
+assert control.out contains "leg index_half_moves ok" else "control-perturbation: the index half of the perturbation must reach a git-enumerating scan"
+assert control.out contains "leg live_control_survives ok" else "control-perturbation: the pen's own tree must be left as it was found"
+assert control.out contains "leg no_worktree_leaked ok" else "control-perturbation: a worktree left behind is a second writer in someone's checkout"
+assert control.out contains "leg mutation_worktree_half_bites ok" else "control-perturbation: dropping the worktree half must blind the find population"
+assert control.out contains "leg mutation_index_half_bites ok" else "control-perturbation: dropping the index half must blind the git-ls-files population"
+assert control.out contains "leg mutation_restore_bites ok" else "control-perturbation: dropping the restore must show as two candidates disagreeing about one tree"
+say "control GREEN -- 29 legs on real git repositories in a throwaway pen, three mutations bitten"
+
+let scan = run ["sh" "tools/fixtures/c/control_perturbation_scan.sh"]
+say scan.out
+assert scan.ok else "control-perturbation: the probe must complete before it is believed"
+assert scan.out contains "verdict=reported" else "control-perturbation: this reading reports and never gates"
+assert scan.out contains "perturbation=control_absent_from_index_and_worktree" else "control-perturbation: what was taken away must be said out loud"
+assert scan.out contains "skipped_no_control=" else "control-perturbation: a candidate with nothing to take away is counted apart, never proven clear"
+assert scan.out contains "refused=" else "control-perturbation: a candidate that would not run is counted rather than vanishing"
+assert scan.out contains "refused_root_finder_needs_built_tree=" else "control-perturbation: the named refusal must be told apart from the unnamed one"
+assert scan.out contains "verdict_flipped=" else "control-perturbation: the sharpest reading must be printed even when it reads zero"
+
+say "control-perturbation GREEN -- the class the membership census could not reach is measured and is the cleaner of the two"
