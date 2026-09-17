@@ -358,6 +358,10 @@ assert control.out contains "long_prose_still_graded=yes" else "qa-report-card: 
 assert control.out contains "link_penalty_survives_the_floor=yes" else "qa-report-card: the grade floor and the index door are separate terms -- a short undeclared page keeps its link penalty"
 assert control.out contains "elder_grade_scored_the_unmeasurable=yes" else "qa-report-card: the elder card must be shown scoring a grade it had no denominator for, and an empty file at zero"
 assert control.out contains "grade_floor_repair_bites=yes" else "qa-report-card: the repaired card must read the corpus and the empty file differently than the elder one, or it is a rewording"
+assert control.out contains "card_counts_ordered_lines=yes" else "qa-report-card: a numbered list line must be counted, or the blindness has no size"
+assert control.out contains "ordered_hold_lifts_a_rose=yes" else "qa-report-card: holding a rose's numbered stations out must lift Reach, since the links leave with the lines"
+assert control.out contains "ordered_still_where_no_list_stands=yes" else "qa-report-card: a page carrying no numbered list must read the same reported and scored, or the report is a decoration"
+assert control.out contains "ordered_report_moves_no_composite=yes" else "qa-report-card: publishing the ordered reading must re-grade nothing -- this file refuses that shape three times now"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
 # COUNTED FROM THE RUN, NEVER TYPED HERE. This line recited "one hundred and seventeen" while the
 # control printed a hundred and twenty, and it had been wrong by three before this round added

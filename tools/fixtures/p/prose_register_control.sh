@@ -546,6 +546,91 @@ lifted=$(cd "$dpen" && PROSE_CARD_READER="$card_abs" sh scan.sh 2>&1 || :)
   && say door_gate_lifts yes || say door_gate_lifts no
 rm -rf "$dpen"
 
+# --- THE ORDERED LIST: A LIST NEITHER READING HELD OUT --------------------------------------------
+# The bullet rule enumerates `-`, `*` and `+` and no digit, so a numbered line was read as a prose
+# sentence. These legs press both directions: the count is taken on every run, the hold-out runs
+# only when a caller asks, and a narrowing of the pattern is shown to take the count to zero --
+# since a pattern proven only in the direction that passes cannot be told from one matching nothing.
+cat > "$pen/ordered.md" <<'EOF'
+# A numbered rose
+
+This page opens with one plain sentence that the reading counts as prose.
+
+1. Where you are -- the seven rooms of the root, and the floors a lap walks.
+2. Foundations -- the why beneath the work, and the happy zone it names.
+3. Grain index -- the strands, and the crossing test that closes each one.
+4) Two rooms -- the checkable room beside the room that proposes a shape.
+
+A closing sentence stands here so the body carries prose on either side.
+EOF
+set -- $(measure "$pen/ordered.md")
+ord_sent=$1; ord_lines=${4:-0}
+[ "$ord_lines" -eq 4 ] && say ordered_lines_counted yes || say ordered_lines_counted no " ($ord_lines)"
+set -- $(measure "$pen/ordered.md" 0 80 1)
+ord_sent_held=$1
+[ "$ord_sent_held" -eq $(( ord_sent - 4 )) ] \
+  && say ordered_held_out yes || say ordered_held_out no " ($ord_sent_held of $ord_sent)"
+# BOTH SPELLINGS, because CommonMark accepts a dot and a close paren. The page above carries three
+# dots and one paren, and a leg reading the pair together stays green when the paren is dropped --
+# three lines still outnumber none. So the paren stands alone on its own page and is counted alone.
+cat > "$pen/paren.md" <<'EOF'
+# The close-paren spelling
+
+This page opens on one plain sentence, so the body carries prose beside the list.
+
+1) The only list line here wears the close paren rather than the dot.
+
+A closing sentence stands here so the reading has prose on either side.
+EOF
+set -- $(measure "$pen/paren.md")
+[ "${4:-0}" -eq 1 ] \
+  && say ordered_paren_form_counted yes || say ordered_paren_form_counted no " (${4:-0})"
+
+# A LINE THAT ONLY LOOKS LIKE A MARKER STAYS PROSE. The marker wants whitespace after it, the same
+# discipline the bullet rule carries, so a version string or a decimal opening a sentence is read.
+cat > "$pen/notordered.md" <<'EOF'
+# Not a list
+
+3.14 is the ratio a circle keeps, and it opens this sentence as prose.
+1.Ordered lists want a space after the marker, so this line stays prose.
+A third sentence stands here so the body clears the four-word floor.
+EOF
+set -- $(measure "$pen/notordered.md")
+[ "${4:-0}" -eq 0 ] && say ordered_wants_whitespace yes || say ordered_wants_whitespace no " (${4:-0})"
+
+# THE DILUTION, SHOWN AS THE SHARE IT MOVES. Four positive stations added to a denominator lower a
+# negative share, which is the direction that hides negation rather than the one that dilutes safe.
+cat > "$pen/dilute.md" <<'EOF'
+# A page whose list hides its refusals
+
+Nothing here is trusted, and no claim is believed without a witness.
+A guard that cannot red guards nothing, and this one never refused.
+The elder shape failed, and no repair was ever landed for it.
+
+1. The first station names a room and the order a reader walks it in.
+2. The second station names the strands and the crossing test beside them.
+3. The third station names the ladder, newest first, in our own words.
+4. The fourth station names the card, and the doors it holds open.
+EOF
+d_all=$(pct_of "$pen/dilute.md")
+set -- $(measure "$pen/dilute.md" 0 80 1)
+d_held=$3
+[ "$d_held" -gt "$d_all" ] \
+  && say ordered_dilutes_the_share yes || say ordered_dilutes_the_share no " ($d_all% then $d_held%)"
+
+# THE MUTATION: narrow the digit class out of the scan copy and the count reads zero. Proven on a
+# copy rather than on the tracked file, so the pen never edits the guard it measures.
+sed 's|/\^\[ \\t\]\*\[0-9\]\[0-9\]\*\[.)\]\[ \\t\]/ { ordlines++; if (hold_ordered) next }|/^[ \\t]*ZZZNEVER[ \\t]/ { ordlines++; if (hold_ordered) next }|' "$scan" > "$pen/narrow.sh"
+sed -n '/^measure() {/,/^}/p' "$pen/narrow.sh" > "$pen/narrow_measure.sh"
+narrow_count=$(sh -c '. "$1"; set -- $(measure "$2"); echo "${4:-0}"' _ "$pen/narrow_measure.sh" "$pen/ordered.md")
+[ "$narrow_count" = 0 ] \
+  && say ordered_pattern_load_bearing yes || say ordered_pattern_load_bearing no " ($narrow_count)"
+
+# THE SCORED READING IS UNTOUCHED, which is the whole of the ruling. The same page reads the same
+# share whether or not the count is taken, since the count never skips a line on its own.
+[ "$d_all" = "$(pct_of "$pen/dilute.md")" ] \
+  && say ordered_scored_reading_unmoved yes || say ordered_scored_reading_unmoved no
+
 # These two say what the legs read, beneath every named assertion in the witness.
 echo "control_legs=$legs"
 echo "control_failed=$failed"
