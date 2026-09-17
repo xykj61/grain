@@ -104,6 +104,15 @@ stale `YOURS` line is struck here so a third does not.
 **YOURS, THE FLEET'S:** **271** tracked tools carry a `head -N`; one is proven to contradict its own
 completeness claim, and that class is a judgment per tool rather than a grep.
 
+**PETRICHOR -- A LAW ROOM'S OWN GATE READ RED, AND NOBODY HAD CLAIMED IT.** REDS %819
+(`20260917.193838`). `tools/p/prose_register_witness.rish` held `.claude/rules/*.md` at a ceiling of
+six pages over the Field target; seven stood, `the-baton.md`'s same-day growth the newest of them.
+Priced by `--explain`, `derived-spine.md` was cheapest at two sentences, restated with every claim
+and stamp held, 31% to 29%. Witness GREEN. **YOURS:** the other six still ride the ceiling --
+`the-baton.md` at 47% of 187 sentences chief among them -- and whether the coordination law earns a
+Meter-style refusal exemption, the way a funds page's own REFUSE table already does, is Keaton's
+word.
+
 **PETRICHOR -- THE SENTENCE 117 DOORS REPEAT, AND NOTHING READ ONE OF THEM.** Elder account
 [shelved whole](archive/20260917-172626_itinerary-petrichor-declared-ceiling-account.md).
 **AETHER HEARS** (row 0, N=5394, advanced past row 4, read three times today): the Lindy seat says
@@ -173,7 +182,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b1970a9955` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9d6f61fe7f` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
