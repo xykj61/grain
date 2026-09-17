@@ -1316,6 +1316,20 @@ seated 20260915.180000
 # -- every tracked symlink resolving under tally/, 69 on this date -- with the named 19 kept beside
 # it, since a retargeted link leaves a derived population in silence. `tier lap`: the reading is one
 # `git ls-files` and 69 `readlink -f` calls, well under a second.
+# Seated 20260917.024441. REDS %767 recorded its own gap in its second field: nothing
+# in this tree asked whether every field a contract publishes carries a ceiling that
+# contract declares. Four receipt fields refused at max_identifier_bytes=96, the number
+# the contract named for a POPULATION and for none of them, so a reader met ceiling=96
+# on a refusal line and could not find it. This guard holds three documents to one
+# answer -- the contract's ceiling table, the bounds module's constants, and every
+# ceiling site in the admission module -- gating unnamed_ceiling and value_disagrees at
+# zero, and reporting population_undeclared, borrowed_rows and row_unenforced, each a
+# thing a lawful contract does today. Three awk passes over four files, no build.
+guard receipt_contract_ceiling
+path tools/r/receipt_contract_ceiling_witness.rish
+tier lap
+seated 20260917.024441
+
 guard tally_caller_map
 path tools/t/tally_caller_map_witness.rish
 tier lap

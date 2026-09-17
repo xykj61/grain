@@ -108,6 +108,29 @@ real detached signature arrives, which is why guessing it small now would cost m
 borrow does. Choosing those four numbers changes what the product admits, so it returns to Keaton
 under this page's own closing clause.
 
+**A guard now asks the question that found them** (`20260917.024441`). `%767` recorded in its own
+second field that nothing in this tree asked whether every field a contract publishes carries a
+ceiling that contract declares, so the borrow was visible only on a refusal line at runtime.
+[`../tools/r/receipt_contract_ceiling_witness.rish`](../tools/r/receipt_contract_ceiling_witness.rish)
+over [`../tools/fixtures/r/receipt_contract_ceiling_scan.sh`](../tools/fixtures/r/receipt_contract_ceiling_scan.sh)
+reads this table, the `max_*` constants of `mantra/src/tally_receipt_offer_bounds.rye`, and every
+ceiling site in `mantra/src/receipt_offer.rye`, and holds two classes at **zero**: a field refused at
+a ceiling no row names, and a row stating a number other than the one the code refuses at. It reads
+**14 sites, all named**.
+
+**What it reports rather than gates is the structural cause the repair left standing.** This table
+declares `each identifier` at 96 and never enumerates which fields are identifiers, and
+**five fields lean on that row alone** -- `receipt_id`, `holder_id`, `recipient_id`, `product_id`,
+`signer_id`. An undeclared membership is exactly the hole `product_digest` fell through, since it
+travels inside an array named `identifiers` and the borrow read as compliant from both sides.
+Enumerating the population changes what this page publishes, so it returns to Keaton with the four
+derivations rather than being taken by a lap. Two more readings ride beside it: `borrowed_rows`
+counts the four rows above, and `row_unenforced` reads **2** -- `receipt-card width` and
+`receipt-card height`, described here and drawn by nothing yet.
+
+**Proven from both sides** on a planted field in a throwaway pen: 39 behaviors, every refusal
+planted and then lifted, and three mutations asserted to bite.
+
 Admission refuses before durable state changes when a required field is empty, text is non-ASCII, a ceiling is exceeded, the schema is unknown, the signature fails, `expires_at` is not later than `issued_at`, or `value_unit` omits `-simulated`. A refusal names `field`, `value`, `ceiling`, `unit`, and `reason` where a ceiling applies; other refusals name the field and reason.
 
 ## Module residences

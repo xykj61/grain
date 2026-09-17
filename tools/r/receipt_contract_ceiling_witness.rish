@@ -1,0 +1,51 @@
+# tools/r/receipt_contract_ceiling_witness.rish -- prove the contract-ceiling reading, and gate it here.
+#
+# REDS %767 recorded its own gap in its second field: nothing in this tree asks
+# whether every field a contract publishes carries a ceiling that contract declares.
+# Four receipt fields refused at the identifier's 96, a number the contract named for
+# a population and for none of them, and the only place the borrow was visible was a
+# refusal line at runtime. This witness is that missing question, asked on every lap.
+#
+# It gates two classes at zero on this tree and reports three more, and it runs the
+# pen first, because a guard proven only in the passing direction cannot be told from
+# a bypass.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/receipt_contract_ceiling_witness.rish
+say "contract-ceiling: Language EN -- a refusal number a reader can find in the contract."
+say "contract-ceiling: Style Gauge Meter -- two gated classes - three reported - each refusal named."
+say "contract-ceiling: Lens TAME -- safety first: bound everything, and name the bound where the reader looks."
+
+let pen = run ["sh" "tools/fixtures/r/receipt_contract_ceiling_control.sh"]
+say pen.out
+assert pen.ok else "contract-ceiling: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "contract-ceiling: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "contract-ceiling: every planted leg must pass"
+assert pen.out contains "control_legs=39" else "contract-ceiling: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: healthy_verdict" else "contract-ceiling: an agreeing field must walk free"
+assert pen.out contains "leg_ok: borrowed_ceiling_refused" else "contract-ceiling: %767's own defect must refuse"
+assert pen.out contains "leg_ok: borrowed_lifted" else "contract-ceiling: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: drift_refused" else "contract-ceiling: a row stating a number the code refuses at another must refuse"
+assert pen.out contains "leg_ok: drift_lifted" else "contract-ceiling: and the repair must clear it"
+assert pen.out contains "leg_ok: noconst_refused" else "contract-ceiling: a ceiling naming no constant must refuse"
+assert pen.out contains "leg_ok: population_closed" else "contract-ceiling: a population every member also names must read zero"
+assert pen.out contains "leg_ok: missing_table_refuses" else "contract-ceiling: a scan that cannot read must refuse, never report zero"
+assert pen.out contains "leg_ok: second_table_unread" else "contract-ceiling: another table on the same page is not a ceiling table"
+assert pen.out contains "leg_ok: helper_name_read" else "contract-ceiling: a fixed-field helper's name is read rather than spelled twice"
+assert pen.out contains "leg_ok: mutation_first_paren" else "contract-ceiling: reading the wrong paren must bite"
+assert pen.out contains "leg_ok: mutation_pending_entries" else "contract-ceiling: losing the array entries must bite"
+assert pen.out contains "leg_ok: mutation_population_rescue" else "contract-ceiling: losing the population rescue must bite"
+
+let live = run ["sh" "tools/fixtures/r/receipt_contract_ceiling_scan.sh"]
+say live.out
+assert live.ok else "contract-ceiling: the live reading must agree"
+assert live.out contains "verdict=agree" else "contract-ceiling: every refused field must name a declared ceiling"
+assert live.out contains "unnamed_ceiling=0" else "contract-ceiling: a borrowed bound is a bound nobody chose"
+assert live.out contains "value_disagrees=0" else "contract-ceiling: the contract and the code state one number"
+assert live.out contains "sites=14" else "contract-ceiling: the admission module refuses fourteen fields at a ceiling"
+
+say "contract-ceiling: reported, never gated -- population_undeclared names the contract's undeclared identifier membership,"
+say "contract-ceiling: the hole product_digest fell through; borrowed_rows counts the four still owing a derivation;"
+say "contract-ceiling: row_unenforced counts a declared ceiling no admission site reads."
+say "GREEN: contract-ceiling -- every receipt field refused at a ceiling names one the contract declares."

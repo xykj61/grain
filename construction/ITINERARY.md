@@ -20,8 +20,7 @@ reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own 
 
 The ledger reads **seventeen OPEN** (`20260917.024700`), and the count wants its own sentence:
 the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reader matching one
-undercounts by six of the seventeen. This paragraph said twelve an hour ago for that reason.
-`%756` `%745` `%456` want Keaton's word; a lap opens none of them.
+undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them.
 
 **The agent-doable queue, Lindy first:**
 
@@ -29,6 +28,18 @@ undercounts by six of the seventeen. This paragraph said twelve an hour ago for 
 2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
 3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
+
+**PHEROMONE -- A LEDGER ROW NAMED THE INSTRUMENT IT WANTED, AND WAS ITS ONLY READER.**
+**AETHER HEARS** (row 0, N=5240): listen for the page nobody answered. `%767`'s second field says
+*nothing asks whether every field a contract publishes carries a ceiling it declares*, and nothing
+did. `receipt_contract_ceiling` holds the ceiling table, the bounds constants, and every admission
+ceiling site to one answer -- **14 sites, 14 named**, pen 39 legs, no number moved. **It also withdrew three things in one hour** -- a red `%806` had first,
+a fold a peer took first, a renumber -- all of it, with five roster reds older than this lap,
+[on the shelf](archive/20260917-025309_itinerary-landed-accounts.md).
+**YOURS, TWO:** the contract declares `each identifier` at 96 and never says WHICH fields are, and
+**five lean on that row alone**; enumerate the population, or leave it inferred? And the baton asks
+a lap to claim an instrument or a BOOKED red, never one it is about to **book**, nor a fold.
+**Should booking claim first?**
 
 **INCENSE -- A READER THAT TOOK PART AND REPORTED ALL.** Both accounts
 [shelved whole](archive/20260917-005520_itinerary-landed-accounts.md) -- this lap's from birth,
@@ -200,7 +211,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `0eca16822a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5b99021fad` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
