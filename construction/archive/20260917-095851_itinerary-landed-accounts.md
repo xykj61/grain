@@ -10,7 +10,7 @@
 ---
 
 **PATCHOULI -- A ROUND-OPEN RELEASED A LIVE BUILD'S LOCK, AND NOTHING NAMED THE PATTERN.** Elder
-account [shelved whole](archive/20260917-071137_itinerary-landed-accounts.md), its six-site ask with it.
+account [shelved whole](20260917-071137_itinerary-landed-accounts.md), its six-site ask with it.
 **WATER TASTES** (row 3, N=5290): taste works up close, so the lap RAN the loss rather than arguing
 it. `lock_acquire` holds a lock as the DIRECTORY and writes the pid inside; `git stash push -u`
 sweeps untracked and passes over ignored; `fleet_round_open.sh` stashes that way at every lap open.
