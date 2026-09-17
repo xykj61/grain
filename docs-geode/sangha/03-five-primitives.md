@@ -136,7 +136,7 @@ Metal (this door): `GREEN: myc refusal_storm -- five primitives refuse - cases=5
 
 Page-structure pin (paths and headings resolve):
 
-```
+```sh
 rishi/bin/rishi run tools/s/sangha_five_primitives_page_witness.rish
 ```
 

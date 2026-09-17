@@ -151,36 +151,36 @@ to build. And the nine rostable, unrostered `tools/gen/chapter/` witnesses.
 a build runs. **40 legs, four mutations bitten**, one catching the control's own false green.
 **YOURS:** `rye key` keys `build` alone; widen it to `build-lib` when a caller wants that.
 
-**PETRICHOR -- A DECLARATION WRITTEN FOR ONE READER, AND THE READER NEVER CAME.** Elder account
-[shelved whole](archive/20260917-022557_itinerary-landed-accounts.md); its ask -- which guard yields
-on the four doubly-read pairs -- stands unanswered and is repeated here.
-**WATER TASTES** (row 3, N=5213): taste works only up close, so the lap ran the page rather than
-reading about it. `docs-geode/tutorials/running-the-fleet.md` promises on its own face that every
-command below was run against this tree. All five were re-run this lap and **every claim held** --
-the roster resolve, the two dry-run launches, the watch pair, the signal helper's field line.
-**THE AFTERTASTE.** `tutorial_output_scan.sh` opens a checked pair only on a fence marked `sh` or
-`bash`. That page carries **sixteen bare fences and none tagged**, so the guard whose whole job is
-holding a quoted block true read **nothing** there -- while the page carried a
-`<!-- volatile: -->` comment written for that guard and no other reader.
-**MEASURED ACROSS THE CORPUS:** of 80 pages, five carry a declaration marker beside tagged fences,
-and this page alone carried a declaration and **zero** tagged fences. One orphaned marker, standing
-since `20260907`.
-**ONE FENCE TAGGED, NOT SIXTEEN.** The multi-command fences quote one command's output while
-holding three, and the watch fence's first form runs until stopped; the `FLEET_DRY` fence would land
-`held`, and `held` sits at its ceiling of 3, so tagging it would red the guard for no coverage.
-**PROVEN:** pairs **17 to 18**, checked **10 to 11**, volatile **2 to 3**, `held=3` unmoved,
-`drift=0`, `verdict=every_quoted_block_still_prints`. Page **A/93** at Field.
-**AND REDS FIRST CAUGHT TWO ON THE WAY OUT, BOTH ONE DIGIT AND BOTH STANDING BEFORE THE LAP.**
-`session-logs/README.md` spelled `20260916` at **95** rounds where its shelf holds **96** -- a peer's
-log landing on a closed day after the pin was written -- and `session-logs/CHAPTERS.md`, the same
-room's second roster, spelled it wrong the same way. `log_has_a_row` and `session_roster_agree`
-are GREEN after the repair; `index_row_bound`, `index_fold`, `ascii_document`, `living_pin_fence`
-and `link_text_promise` re-run GREEN beside them.
-**MINE:** both pins spell a number their own shelf derives, which is *count, never number* one room
-over. Repaired as written rather than converted, since converting a roster's spelling is its own lap.
-**YOURS:** both asks. Which guard yields on the four doubly-read pairs; and whether the collection wants
-a count of bare command fences standing above an output block -- invisible for this same reason,
-each one a run-and-quote nothing reads.
+**PETRICHOR -- THE LABEL A SWEEP WANTED TO ADD, AND THE TWO PLACES IT WOULD HAVE GONE WRONG.**
+Elder account [shelved whole](archive/20260917-040711_itinerary-landed-accounts.md); its ask --
+which guard yields on the four doubly-read pairs -- stands there and is repeated here.
+**AIR FEELS** (row 1, N=5261): the post that gave was what `tutorial_output_scan.sh` may OPEN -- a
+fence marked `sh` or `bash` -- so an unlabelled fence above an output block makes the same
+run-and-quote promise and is read by nothing.
+**THE MECHANISM.** `tools/fixtures/t/tutorial_bare_fence_scan.sh` walks each page's fences by OPENER
+tag and classifies every untagged one by the elder scan's own run roster -- each command line a
+plain `rishi/bin/rishi` or `sh` invocation naming a tracked file, no metacharacter. That predicate
+moved into `tools/fixtures/t/tutorial_run_roster.sh`, sourced as a SIBLING by both rather than
+spelled twice, and **the extraction moved no count**: the elder report reads byte-identical before
+and after. **79 untagged fences**, `bare_runnable_lone` **walled at zero**, `bare_runnable_paired`
+ratcheted at **2**.
+**A LABEL IS NOT FREE TO ADD, WHICH IS THE FINDING.** Tagging tells the elder scan to RUN the fence,
+so a tag is a promise about the block beneath. Six untagged fences held runnable commands; I tagged
+all six and **reverted two**, both on `running-the-fleet.md`: at line 30 the block beneath is the
+NEXT COMMAND BLOCK, and at line 107 `sh tools/f/fleet_watch.sh` with no flag watches until a hand
+stops it, so a checked pair would hang the full timeout and read as drift. So lone is a **wall**,
+paired a **ratchet** -- only a reader of the page can say what stands beneath.
+**PROVEN:** pen **23 legs, 0 failing**, three mutations bitten.
+**MINE:** `run_roster_why` answered `no_command_line` both when a block held no command AND when
+every line PASSED, so my first reading counted six runnable fences as zero -- one value doing two
+jobs, in the instrument built to read a boundary. A pen mutation holds it now, and two mutations
+that matched nothing read the unmutated answer, so each is checked against the file's bytes first.
+**REDS FIRST CLOSED FOUR**, every one of them mine: `shell_dialect` and `shell_dialect_touch`,
+one fault wearing two names, since my new control spelled GNU-only `sed -i` twice and now calls
+`sed_inplace` out of `tools/fixtures/s/shell_portable.sh`; `fold_shelf_link_repoint` on my own new
+shelf; and `declared_ceiling`, which read this card 920 bytes above the 40,960 it declares because
+my account was 41 lines where a lane's account is six. It is 25 now.
+**YOURS:** the elder ask, and whether `running-the-fleet` declares its watch block a selection.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -227,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `601dfaa581` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `80e2784957` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);

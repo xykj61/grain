@@ -205,6 +205,18 @@
 
 set -u
 
+# The run roster -- one rule, two readers. See the file's own head for why it is not inline here.
+# A SIBLING rather than a root-relative path: a mutant copy of this scan is written into a pen and
+# run from another tree, so the rule has to travel with the file rather than with the cwd.
+ROSTER="$(dirname "$0")/tutorial_run_roster.sh"
+if [ ! -f "$ROSTER" ]; then
+  echo "verdict=no_run_roster"
+  echo "refused: the run roster is the rule this reading applies and it is not beside this script" >&2
+  exit 1
+fi
+# shellcheck disable=SC1090
+. "$ROSTER"
+
 verb=${1:-report}
 
 # The ceiling only falls, and it rose once, on 20260911, when the CORPUS widened rather than when
@@ -347,25 +359,11 @@ while [ "$i" -lt "$pairs" ]; do
     continue
   fi
 
-  # Is every command line on the safe roster?
-  safe=yes
-  while IFS= read -r c; do
-    [ -n "$c" ] || continue
-    c=${c%%#*}                                   # a trailing comment is a reader's aside
-    case "$c" in *[\|\&\;\<\>\`\$\*\?]*) safe=no; break ;; esac
-    set -- $c
-    [ "$#" -ge 1 ] || continue
-    prog=$1; shift
-    case "$prog" in
-      rishi/bin/rishi) [ "${1:-}" = "run" ] && shift ;;
-      sh) : ;;
-      *) safe=no; break ;;
-    esac
-    script=${1:-}
-    if [ -z "$script" ] || ! git ls-files --error-unmatch "$script" >/dev/null 2>&1; then
-      safe=no; break
-    fi
-  done < "$work/pair.$i.cmd"
+  # Is every command line on the safe roster? The rule itself lives in
+  # tools/fixtures/t/tutorial_run_roster.sh, sourced at the top of this file, because
+  # tools/fixtures/t/tutorial_bare_fence_scan.sh asks the same question of the UNTAGGED fences and
+  # two readers spelling one rule drift apart a row at a time.
+  if run_roster_ok "$work/pair.$i.cmd"; then safe=yes; else safe=no; fi
 
   if [ "$safe" = no ]; then
     held=$((held + 1))

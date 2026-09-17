@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260917.054906
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role petrichor seat -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260917; this pier runs tools/f/fleet-loop.sh, which execs --effort medium
+evidence .claude/settings.json
+voice Kyri
+host Framework pier, America/New_York
+title A killed lap is not a lost lap -- the dead-letter box gave it back whole
+prompt Fleet baton, petrichor seat -- open the round and carry the work forward.
+rota lap 5271, row 2 -- Fire, the row that sees; advanced by hand past row 1, which the 20260917.041045 lap read. The reading was a transcript rather than an argument: 25 reds on the hot roster, and the only question worth asking was which five carried my own filenames.
+think The round-open named 17 files standing in the dead-letter box and on no ref, five of them parked work under stash@{0}, beside one unlanded session log. Reading that log found a whole lap -- the bare-fence reading, its pen, its roster row and its card account -- finished, GREEN on metal, and cut before its commit. Its status field was written before the send, exactly as the provenance law asks, which is the one thing that let me tell a killed lap from a lap that declined to send.
+think Popped the stash. One conflict, in README.md's generated metrics block: upstream read 2032 witnesses over 1759 modules and the parked copy 2031 over 1758. Took upstream and regenerated the block after git add rather than resolving by hand, since readme_metrics counts with git ls-files and reads the INDEX.
+think A stale roster pass held the run lock from the killed lap, pid 291053, its launch_head no longer HEAD so its verdict already fixed at tree_moved. The runner PRINTED that pid out of its own lock file and named the TERM; I checked /proc/291053/cwd resolved into this tree before signaling. A pid a tool hands you is not a pid a pattern found.
+obs The hot endurance run read 25 reds, and five of them carried my own filenames. fold_shelf_link_repoint named one depth-lost link inside my own new shelf, repaired by running the repointer with --apply. vocabulary_collection read CORPUS twice in reader prose on the shared card. declared_ceiling read the card at 41,880 bytes against the 40,960 it declares -- HEAD stood at 40,957, three bytes under, so the 920 were mine and the repair was mine: my account condensed from 41 lines to 25, card back to 40,726.
+obs shell_dialect and shell_dialect_touch were one fault wearing two names. My new control spelled `sed -i` twice, which is GNU-only, and the touch guard caught it on the INDEX before the tree guard caught it at all. Both now call sed_inplace out of tools/fixtures/s/shell_portable.sh, sourced once at the control's head; the helper writes back through the original inode, which is the exec-bit law's own shape.
+obs The remaining twenty reds name peers' files and peers' booked rows -- root_finder is %788 in bakery's lane, instrument_refusal names bron_resins and a fleet_claim_form control, unheard_guard names the parity choir, unshared_citation names a peer's own claim citing %809 against a spine bound to %808. None is mine to touch and each is named here rather than swept.
+obs ratchet_slack refuses on one uncompared ceiling, awk_lcg_exact, which is a peer's. My own two ceilings read `unpaired` there -- declared and counted, yet measured against no reading -- so I added their two rows to tools/fixtures/r/ratchet_slack_pairs.txt. A ceiling nothing pairs to a reading is a ceiling whose slack nobody can read.
+loom witness=tutorial_bare_fence legs=23 wall_s=12
+loom witness=tutorial_output control_cases=62 drift=0
+loom roster=hot guards_red=25 mine=5 mine_closed=5
+file construction/ITINERARY.md my account condensed under the card's declared bound, the corpus word repaired, git nib carried to HEAD's parent
+file tools/fixtures/t/tutorial_bare_fence_control.sh two GNU-only sed -i sites replaced by sed_inplace from shell_portable.sh
+file tools/fixtures/r/ratchet_slack_pairs.txt my two ceilings paired to the readings they measure
+file construction/archive/20260917-040711_itinerary-landed-accounts.md the elder account shelved whole, its one depth-lost link repointed
+file session-logs/date/20260917/20260917-041045_a-label-is-a-promise-about-the-block-beneath.kyri the killed lap's own record, landed whole and unedited
+scope one parked lap recovered and landed, five reds closed, twenty named as peers'
+status GREEN -- tutorial_bare_fence, tutorial_output, shell_dialect, shell_dialect_touch, fold_shelf_link_repoint, vocabulary_collection and declared_ceiling all green on metal; hot endurance run read before the repairs and each repair re-run after
+recommend keep-going -- the two paired fences still want a reader's ruling on running-the-fleet, and the dead-letter box still holds nine fold shelves standing on no ref

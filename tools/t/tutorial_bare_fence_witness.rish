@@ -1,0 +1,88 @@
+# tools/t/tutorial_bare_fence_witness.rish -- an unlabelled fence holding commands is a promise the
+# tutorial guard cannot see, and this counts every one of them.
+#
+#   rishi/bin/rishi run tools/t/tutorial_bare_fence_witness.rish
+#
+# WHY. tools/t/tutorial_output_witness.rish runs the command above a quoted output block to see
+# whether the page still tells the truth, and it opens a pair only on a fence marked sh or bash. A
+# fence with no label sits in the same room, above the same kind of block, promising the same thing
+# to the same reader -- and stands in no pair. The shelf met this on
+# docs-geode/tutorials/running-the-fleet.md, which declares on its own face that every command
+# below was run against this tree and carried sixteen bare fences and none tagged, so the guard
+# read nothing there while the page carried a volatile comment written for that guard alone.
+#
+# WHAT IS GATED, at zero: bare_runnable_lone -- an unlabelled fence holding commands the run roster
+# accepts, with no block standing beneath it. Tagging one creates no pair, runs nothing, and simply
+# tells the truth about the block, so the repair is one word and the wall is what keeps it taken.
+# Four stood at seating 20260917 and all four were taken in the commit that seated this.
+#
+# WHAT RATCHETS: bare_runnable_paired -- the same fence with an untagged block beneath it. Tagging
+# THAT is a claim that the block is this command's output, and only a reader of the page can make
+# it. Both of the two standing prove why. On running-the-fleet line 30 the block beneath is the
+# next COMMAND block rather than any output; on line 107 the fence's first line is
+# sh tools/f/fleet_watch.sh with no flag, which watches until a hand stops it, so a checked pair
+# would hang for the full timeout and then read as drift. Both were tagged on the seating lap and
+# both were reverted.
+#
+# THE CLASSES NAME THE ROSTER'S OWN REFUSAL rather than the block's genre -- off_roster,
+# metacharacter, untracked. Telling a Rishi listing from a shell recipe is a judgment the scan
+# declines to make: a Rye block refuses as off_roster:const, which is true, coarse, and enough for
+# a hand to see what stands between that fence and coverage.
+#
+# ONE RULE, TWO READERS. The roster predicate lives in tools/fixtures/t/tutorial_run_roster.sh and
+# is sourced by this scan and by tutorial_output_scan.sh, which held it inline. Two readers
+# spelling one rule drift apart a row at a time, which the ASCII document family already booked.
+# The extraction moved no count: the elder scan's whole report was captured before and after and
+# read byte-identical.
+#
+# NOT tools/t/tutorial_output_witness.rish, which runs what a page quotes. This counts the fences
+# that witness can never reach. Two jobs, two names.
+#
+# Scan: tools/fixtures/t/tutorial_bare_fence_scan.sh. Pen: tools/fixtures/t/tutorial_bare_fence_control.sh.
+
+let scan = run ["sh" "tools/fixtures/t/tutorial_bare_fence_scan.sh"]
+say scan.out
+assert scan.ok else "tutorial-bare-fence: an unlabelled fence holds runnable commands -- read the scan's own named lines"
+assert scan.out contains "verdict=every_runnable_untagged_fence_named" else "tutorial-bare-fence: the scan must reach the clean verdict"
+assert scan.out contains "bare_runnable_lone=0" else "tutorial-bare-fence: a lone unlabelled command fence costs one word to tag and must stay at zero"
+
+# A meter reading an empty corpus reports clean while proving nothing, so the corpus is measured.
+assert (scan.out contains "pages_considered=0" == false) else "tutorial-bare-fence: a corpus with no pages would report clean while reading nothing at all"
+assert (scan.out contains "untagged_fences=0" == false) else "tutorial-bare-fence: a corpus with no unlabelled fence would prove nothing about the reading"
+
+# The refusal classes are asserted PRESENT rather than only their absence, since a classifier that
+# never fires reads exactly like a corpus with nothing to classify.
+assert scan.out contains "off_roster_class:" else "tutorial-bare-fence: every refused fence must carry the roster's own word for why"
+assert scan.out contains "bare_runnable_paired=" else "tutorial-bare-fence: the paired population must be counted where a reader can see it"
+
+let control = run ["sh" "tools/fixtures/t/tutorial_bare_fence_control.sh"]
+say control.out
+assert control.ok else "tutorial-bare-fence: the control must complete"
+assert control.out contains "control_verdict=ok" else "tutorial-bare-fence: every leg of the pen must pass"
+
+# The pen's own tally, asserted beside the named legs. A control that reached its last line proves
+# only that it reached its last line, so a leg written tomorrow is heard the day it lands.
+assert control.out contains "control_failed=0" else "tutorial-bare-fence: a failing leg must red this witness rather than ride a clean verdict"
+assert control.out contains "legs=23" else "tutorial-bare-fence: the pen's leg count moved -- raise it here in the commit that adds the leg"
+
+assert control.out contains "leg 1a_lone_counted ok" else "tutorial-bare-fence: a lone unlabelled fence naming a tracked script must be counted"
+assert control.out contains "leg 1c_wall_bites ok" else "tutorial-bare-fence: the wall must refuse one lone fence"
+assert control.out contains "leg 2a_tag_clears ok" else "tutorial-bare-fence: tagging the fence must clear the count"
+assert control.out contains "leg 2b_wall_lifts ok" else "tutorial-bare-fence: a refusal that survives its own repair is one nobody can act on"
+assert control.out contains "leg 3a_paired_counted ok" else "tutorial-bare-fence: a fence with a block beneath must be counted paired"
+assert control.out contains "leg 3b_not_lone ok" else "tutorial-bare-fence: a paired fence must never be counted lone, since tagging it is a claim about the block"
+assert control.out contains "leg 3c_ratchet_holds ok" else "tutorial-bare-fence: the paired ratchet must pass under its ceiling"
+assert control.out contains "leg 3e_ratchet_bites_at_zero ok" else "tutorial-bare-fence: the paired ceiling must be shown from both sides"
+assert control.out contains "leg 4a_far_block_is_lone ok" else "tutorial-bare-fence: a block past the gap bound must not pair, since a reader has stopped holding the command"
+assert control.out contains "leg 5a_none_runnable ok" else "tutorial-bare-fence: a pipe, an off-roster program, and an absent script must each refuse"
+assert control.out contains "leg 5b_classes_named ok" else "tutorial-bare-fence: each refusal must carry the roster's own word for why"
+assert control.out contains "leg 6a_disk_is_not_tracked ok" else "tutorial-bare-fence: a script on disk and untracked must refuse -- the reading is of the index, never the disk"
+assert control.out contains "leg 7a_tagged_invisible ok" else "tutorial-bare-fence: a labelled fence belongs to the elder guard and must never be a candidate here"
+assert control.out contains "leg 8b_never_runnable ok" else "tutorial-bare-fence: an empty fence promises nothing and must never read runnable"
+assert control.out contains "leg 9a_comment_carried ok" else "tutorial-bare-fence: a trailing comment is a reader's aside rather than a refusal"
+assert control.out contains "leg 10a_refuses_without_a_tree ok" else "tutorial-bare-fence: an instrument that cannot answer must refuse rather than read zero"
+assert control.out contains "leg 11b_m1_label_from_close_bites ok" else "tutorial-bare-fence: reading a fence's label from its close must change the answer"
+assert control.out contains "leg 11c_m2_pass_reads_empty_bites ok" else "tutorial-bare-fence: the fall-through that hid this whole population must change the answer"
+assert control.out contains "leg 11d_m3_split_dropped_bites ok" else "tutorial-bare-fence: dropping the lone/paired split must change the answer"
+
+say "GREEN: tutorial bare fence -- every unlabelled fence holding runnable commands is named; lone at zero, paired under its ceiling."

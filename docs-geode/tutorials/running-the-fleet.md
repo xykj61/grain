@@ -228,6 +228,14 @@ unread.** `tools/fixtures/t/tutorial_output_scan.sh` opens a checked pair on a f
 `20260917`, the pair reads `volatile` and is run on every pass; the page's own promise is now held
 by a guard rather than by a memory of having run it.
 
+**The other bare fences on this page stay bare, and that is a decision rather than an oversight.**
+`tools/fixtures/t/tutorial_bare_fence_scan.sh` counts every unlabelled fence holding commands this
+tree could run, and it names two here -- the roster block near the top of this page and the watch
+block above. Tagging either would tell the elder guard to RUN it, and both would go wrong: the
+block under the roster commands is the *next command block* rather than their output, and the watch
+block's first line is `sh tools/f/fleet_watch.sh` with no flag, which watches until you stop it. A
+language tag is a promise about the block beneath, so it waits for a reader rather than a sweep.
+
 **A bare call reports and sends no signal.** Add `--signal TERM` to act on the selected processes.
 `--dry-run` forces a preview even when a signal is named, in either flag order. That separation
 was seated after an earlier default sent a signal when a hand meant only to ask what was running.
