@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.213335` | [A pin rewrite ate a directive](20260916/20260916-213335_a-pin-rewrite-ate-a-directive.kyri) | INNER LOOP item 7 gone ten hours; the list read 6, nib, 8 |
 | `20260916.212726` | [The board with two shapes](20260916/20260916-212726_the-board-with-two-shapes.kyri) | The claim board had two shapes; only one was ever read |
 | `20260916.212457` | [The send that answered an open door](20260916/20260916-212457_the-send-that-answered-an-open-door.kyri) | a count in prose beside a roster |
 | `20260916.212234` | [The guard that cannot run in a bare tree](20260916/20260916-212234_the-guard-that-cannot-run-in-a-bare-tree.kyri) | 164 scripts root on a directory nothing tracks |

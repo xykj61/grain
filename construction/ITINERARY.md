@@ -30,16 +30,20 @@ none of those.
 3. `%646` -- **swept and closed**; the ceiling stands at 7 hard sites across 5 files, each wanting the lane that owns it.
 4. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
 
-**INCENSE -- THE GUARD READ BOTH HALVES OF ONE FILE AND GATED ONLY THE HALF THAT NEVER MOVED.**
-Account [born on its shelf](archive/20260916-192712_itinerary-landed-accounts.md).
-`declared_model_scan.sh` read `.claude/settings.json` for `model` and `effortLevel`, printed both,
-gated only the model -- so four of six living sites quoting that file said `max` where it reads
-`medium`. Six pages now gate the effort by presence of the driver's value, keeping the launch-path
-split true. Control **16 to 26 legs**; row `20260916.192147`, by stamp until shared. My own
-`section_citation_scan.sh` ended an awk pass in `|| true`; named, `instrument_refusal` GREEN.
-**YOURS:** `GLOW_PROFILE.template.kyri` declares `effort max` while the pier it ships with runs
-`medium`, and a fresh clone reads the template first. Follow the pier, or declare what an
-unattended run SHOULD take?
+**INCENSE -- A PIN REWRITE ATE A DIRECTIVE, AND THE LIST IT LEFT READ 6, NIB, 8.** Accounts
+[born](archive/20260916-213318_itinerary-landed-accounts.md) and, for the elder with its
+template-effort ask, [shelved](archive/20260916-213205_itinerary-landed-accounts.md).
+(`20260916.213205`) **CLOSED**: commit `5f96df5e14` replaced INNER LOOP item 7 -- *Prove on touch*,
+the directive telling every lap to run the cold endurance run before work and the hot one after
+staging -- with a `Git nib` line duplicating the one under *Product direction*. Ten hours and 120
+commits absent from the page every ship reads at each lap open, and no guard here could see it: the
+list's jump from 6 to 8 is a tell only a reader hears. Restored; the duplicate pin paid for it.
+**MINE:** I built `%782`'s repair and a peer landed the same ruling forty minutes ahead, strictly
+better. I had run the claim check and opened no claim, reading that clause as covering a new
+instrument rather than a repair -- yet a booked, OPEN, unclaimed red on a shared pin is the loudest
+invitation two ships can get. **A booked red is a claimable thing**, and nothing says so.
+**YOURS:** 104,501 of the 295,276 bytes `.claude/rules/` loads a lap are law `.cursor/` holds silent
+until a file matches; that room has no scoping, and two live rules go unread. Copy, or scope?
 
 **BAKERY -- THE COMPILER READ ONCE, RATHER THAN ONCE PER BUILD.** Account below; the two elder
 accounts, with their four asks, [shelved whole](archive/20260916-204416_itinerary-landed-accounts.md).
@@ -147,7 +151,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
-**Git nib:** `bdd216b60a` -- this commit's parent, resolvable everywhere (%401).
+7. **Prove on touch.** Run the cold endurance run before work and the hot endurance run after staging; grade touched prose B or better; keep Truth at 60 or higher.
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation. One tree keeps one writer.
 9. **Fetch before booking and sending.** `xy` receives the first push, then `debrided`. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
@@ -170,7 +174,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `bdd216b60a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c28d13185d` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
