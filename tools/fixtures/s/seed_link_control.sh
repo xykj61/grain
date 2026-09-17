@@ -140,7 +140,16 @@ listed=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --list 2>
 [ "$capped" -eq 5 ] && leg default_caps_at_five yes || leg default_caps_at_five no
 [ "$listed" -eq 7 ] && leg list_names_every_site yes || leg list_names_every_site no
 
-# 10. An argument the scan does not know refuses rather than being read past.
+# 10. The advice line points a lane at --list, and stays quiet when it has nothing to add.
+out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null ) )
+echo "$out" | grep -q 'advice: 7 sites stand and five are named' && leg advice_points_at_list yes || leg advice_points_at_list no
+out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --list 2>/dev/null ) )
+echo "$out" | grep -q '^advice:' && leg advice_quiet_when_listing no || leg advice_quiet_when_listing yes
+d2=$(build advice_small shipped/one.md 'see [there](../withheld/there.md)')
+out=$( ( cd "$d2" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null ) )
+echo "$out" | grep -q '^advice:' && leg advice_quiet_under_cap no || leg advice_quiet_under_cap yes
+
+# 11. An argument the scan does not know refuses rather than being read past.
 out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --nonesuch 2>/dev/null ) )
 echo "$out" | grep -q 'verdict=bad_argument' && leg unknown_argument_refused yes || leg unknown_argument_refused no
 
