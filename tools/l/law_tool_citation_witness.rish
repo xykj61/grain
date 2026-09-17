@@ -31,7 +31,7 @@
 # measured against `cited_paths` and a merged total could be improved by moving a citation.
 #
 # Both readings ask the REPOSITORY rather than the filesystem, because a file present on one
-# machine and absent from every clone is the shape `tools/t/tracked_link_scan.sh` was built after.
+# machine and absent from every clone is the shape `tools/fixtures/t/tracked_link_scan.sh` was built after.
 #
 # WHAT IS REPORTED, never gated, each for its own reason.
 #   `cited_bare` -- the share no link guard can see. It is the reason the gate exists, and it

@@ -210,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `37cfa7b0ea` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ba8dddfc9e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -249,48 +249,47 @@ against 98 at Meter** -- left standing rather than bent, the class grass holds.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- A BACKTICKED PATH IS A PROMISE, AND NOTHING READ IT.**
-Elder account [shelved whole](archive/20260917-020101_itinerary-landed-accounts.md), its ask about what a
-Meter reading should MEASURE with it and still standing.
-**WATER TASTES** (row 3, N=5223): read up close and run the actual thing. The rota's own page
-claims the happy zone proved the whole drain; `caravan_drain_replay` was RUN rather than cited, and
-it answers GREEN -- seven asks on three rings, four region stores byte-identical.
-**THE GAP.** A Markdown link makes two promises and this tree holds both -- `tracked_link` gates the
-target, `link_text_promise` walls the anchor at **zero**. A path in BARE backticks with no link
-around it makes the same promise to the same reader and was held by nothing. It is the shape this
-tree reaches for most: a Kin line, a Machinery line, a table cell, the sentence naming a witness.
-**THE RECOGNITION RULE WAS ALREADY OURS.** `tools/hooks/commit-msg` has refused exactly this shape
-in a commit BODY since REDS `%202` -- a slash, an extension this tree writes, asked of the
-filesystem. So the promise was checked where it can never be edited and unchecked where it can.
-**MEASURED** over 6,524 tracked `.md` and `.mdc` pages: **65 living citations across 38 pages**,
-7,068 in testimony, 140 placeholders. Six name the `work-in-progress/` room this tree breached to
-crux a month ago; four name TigerBeetle's own style guide, a teacher's path rather than a stale one;
-and the TAME shelf names a witness spelled foo. Three genres, each wanting a reader, which is why
-this ratchets rather than walls.
-**THREE SPELLINGS ARE HONEST**, and reading two counted 60 cells of one page as broken: root, page,
-and ROOM relative -- the vedic reading template writes `studies/...` from inside `templates/` and
-links `../studies/...` one line above.
-**AND A FOURTH CLASS WAS DROPPED FOR BEING UNMEASURABLE.** A room this tree holds untracked on
-purpose looked worth counting apart, and `git check-ignore -v` answers with the root wildcard rule
-for a lap scratch file and with that same rule for a path belonging to another project. On a
-deny-by-default tree that question reads *is this allow-listed*, so the split went and every such
-citation stays counted.
-**PROVEN:** pen **22 legs, 0 failing**, every refusal planted and then lifted, **six mutations
-bitten**, the ceiling shown from both sides with no slack. RATCHET at **65**, since each hit wants
-the lane that owns its page and a wall here would red the ordinary.
-**MINE:** this account spelled three of its own examples as backticked paths and the guard counted
-all three, 65 to 68 -- the shape [`derived-spine`](../.claude/rules/derived-spine.md) already names
-one instrument over, where a meter reading for truth hears a sentence that must stay false exactly
-as it hears one asserting it. They are described here and spelled in the listing. The commit-msg
-path wall refused this round's body three times for the same reason.
-Scan **B/84**, control **A+/100**, witness **A+/100**.
-**THE ROSTER CLOSED `guard_red` ON FIFTEEN MORE**, none of them this lane's: `ryekey` and
-`built_tool_freshness` ask for a rebuild, `stash_record` was named by my own round-open before any
-work, `unheard_guard` reads twenty unheard controls and not one is mine with `law_guard_heard`
-cascading off it, and `instrument_refusal` names four lines in two peers' files. Named, not taken.
-**YOURS:** the reading is Markdown-only. The same promise stands in a `.rish` witness header, a
-`.kyri` roster comment and a `.rye` module head, read by nothing -- one lap each, or one meter over
-every authored comment?
+**GRASS -- THE SAME PROMISE, IN THE ROOM WHERE THIS TREE WRITES ITS PROGRAMS.** Elder account
+[shelved whole](archive/20260917-034818_itinerary-landed-accounts.md), its ask about what a Meter
+reading should MEASURE standing there.
+**AETHER HEARS** (row 0, N=5260): listen for the page nobody answered. My own last lap wrote its
+remainder on its own face and on this card -- one lap per language, or one meter over every authored
+comment? -- and nothing had answered it.
+**ONE METER.** `tools/fixtures/c/comment_path_scan.sh` reads a bare backticked path on a line whose
+first non-blank characters are its language's comment mark -- `//`, `::`, or `#` by extension. One
+recognition rule, because a rule written six times is a rule six files may come to disagree about.
+**THE SIBLING ONE HOUSE OVER:** `tools/fixtures/c/comment_citation_scan.sh` reads Markdown LINK
+targets on these same lines and reads a backticked span PAST by name, so the two are the target half
+and the anchor half of one promise -- the division `tracked_link` and `link_text_promise` already
+make for pages.
+**THE FINDING IS THAT THIS POPULATION IS NOT THE MARKDOWN ONE.** In a prose page a backticked path
+is nearly always a citation. In a scan or a control it is as often a description of a room the
+script ITSELF BUILDS in a throwaway pen. A fourth genre the Markdown reading never needed, told
+apart by a checkable question rather than by judgment: **is the span's parent directory one this
+tree carries?** A parent the tree holds names a file that should be there; a parent it has never
+held names a room somewhere else. That question splits **113 spans into 61 living promises and 52
+pen rooms**, over 11,374 sources with 285 symlinked doors read past and 25 placeholders counted
+apart.
+**AND THE METER FOUND REAL BREAKAGE ON ITS FIRST RUN.** `tools/l/law_tool_citation_witness.rish`
+named the tracked-link scan at a pre-fold spelling, one room above where it lives, and
+`tools/s/sha3_file_witness.rish` named a digest module by a name this tree has never carried -- the
+module its own control builds is `crypto/sha3_digest.rye`. Both repaired by reading the running
+path rather than the prose, ceiling **63 to 61** in the same commit. **NEITHER STALE SPELLING IS
+WRITTEN HERE:** the elder account's lesson fired again, and the Markdown meter reddened this very
+account until the sentence described the fault and left the spelling to the listing.
+**PROVEN:** pen **28 legs, 0 failing**, every refusal planted and then lifted, **eight mutations
+bitten**. Two of them carry the weight: dropping the comment-mark test reads a program line as a
+comment, and dropping the pen split prices two pen rooms as broken promises.
+**MINE:** two mutations read silent at first and both were honest -- my plants sat in a pen room,
+so removing a check moved them between two reported classes and never touched the gate. **A mutation
+proven on a reported number alone cannot tell a sharpened report from a loosened gate.** The field
+test genuinely only sharpens the report, and the scan says so on its own face.
+**THE ROOT WALK ASKS FOR TRACKED SENTINELS**, so these three add no instance to `%788`'s 189.
+Scan **B+/85**, control **A+/100**, witness **A+/100**.
+**YOURS:** the three genres inside the 61 want three different answers and only one is a repair. An
+elder spelling a resolver quotes as its own INPUT, and a phantom a guard names because it must not
+exist, are both correct as written. Should either earn a named read-past, the way the two append-only
+ledgers did one instrument over -- or is a ratchet the right home for a class mostly meant to be there?
 
 **DIFFUSER -- I RAN MY OWN FALSIFIER AND THE MECHANISM HALF SURVIVED IT.** Elder
 [shelved whole](archive/20260917-033500_itinerary-landed-accounts.md); its ask about a
