@@ -322,6 +322,23 @@ path tools/l/link_text_promise_witness.rish
 tier lap
 seated 20260915.183000
 
+# backtick_path -- the third promise, and the one nothing read. A link's two halves are both held:
+# `tracked_link` gates the target, `link_text_promise` walls the anchor at zero. A path written in
+# BARE backticks -- a Kin line, a Machinery line, a table cell, a sentence naming the witness that
+# binds a claim -- makes the same promise to the same reader and was held by nothing, while
+# tools/hooks/commit-msg has refused exactly that shape in a commit BODY since REDS %202. So the
+# promise was checked where it can never be edited and unchecked where it can. Three spellings are
+# honest and tried -- root, page, and room relative; placeholders, the two append-only ledgers, and
+# every anchor text are read past, each for a named reason. RATCHET under a ceiling that only falls:
+# 65 living citations across 38 pages on the seating lap. Three genres stand in that listing and
+# each wants a reader: a room this tree renamed (six name work-in-progress/), a path in a teacher's
+# own tree (four name TigerBeetle's docs/TIGER_STYLE.md), and a file a tutorial asks a reader to
+# write. Only the first is a repair, which is why no wall was seated.
+guard backtick_path
+path tools/b/backtick_path_witness.rish
+tier lap
+seated 20260917.020000
+
 # living_pin_fence -- every guard over a living pin reads its BYTES; none reads it as MARKDOWN.
 # `ascii_document` counts characters, `tracked_link` and `link_text_promise` read links, the pin
 # bound counts length, `nib_honesty` reads one key -- and on `20260916` commit 99d4948e6 wrapped a

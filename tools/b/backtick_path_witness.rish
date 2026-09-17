@@ -1,0 +1,53 @@
+# tools/b/backtick_path_witness.rish -- prove the backticked-path reading, and ratchet it on this tree.
+#
+# A Markdown link makes two promises and this tree holds both: the target is gated by
+# tools/fixtures/t/tracked_link_scan.sh, the anchor text walled at zero by
+# tools/fixtures/l/link_text_promise_scan.sh. A path written in BARE backticks with no link around
+# it makes the same promise to the same reader and was held by nothing -- while
+# tools/hooks/commit-msg has refused exactly that shape in a commit body since REDS %202. This
+# witness holds the file half.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/backtick_path_witness.rish
+say "backtick-path: Language EN -- a backticked path is a promise a reader copies before anyone clicks."
+say "backtick-path: Style Gauge Meter -- one derivation - one ratcheted class - three reported apart."
+say "backtick-path: Lens TAME -- safety first: read the tracked tree, bound the class, say why."
+
+let pen = run ["sh" "tools/fixtures/b/backtick_path_control.sh"]
+say pen.out
+assert pen.ok else "backtick-path: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "backtick-path: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "backtick-path: every planted leg must pass"
+assert pen.out contains "control_legs=22" else "backtick-path: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: thirteen welcome shapes and a room-relative cell stay uncounted, and one plant is read" else "backtick-path: an honest span must never be counted"
+assert pen.out contains "leg_ok: four testimony shapes are counted apart" else "backtick-path: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: three placeholder shapes are counted apart" else "backtick-path: an illustration is not a citation"
+assert pen.out contains "leg_ok: the plant stands on one page" else "backtick-path: the page count must follow the hits"
+assert pen.out contains "leg_ok: --list names the page and the path it cites" else "backtick-path: a refusal a reader cannot locate is no refusal"
+assert pen.out contains "leg_ok: --list stays silent about testimony" else "backtick-path: the listing must hold exactly the gated class"
+assert pen.out contains "leg_ok: standing exactly at the ceiling walks free" else "backtick-path: the ceiling must be proven from the passing side"
+assert pen.out contains "leg_ok: one over the ceiling refuses" else "backtick-path: and from the refusing side, with no slack"
+assert pen.out contains "leg_ok: and it leaves a non-zero exit" else "backtick-path: a refusal a caller cannot read is no refusal"
+assert pen.out contains "leg_ok: with the plant lifted the living reading is zero" else "backtick-path: lifting the plant must return the reading"
+assert pen.out contains "leg_ok: and the clean tree reaches ok at a ceiling of zero" else "backtick-path: a clean tree must pass the tightest ceiling"
+assert pen.out contains "leg_ok: an untracked file on disk keeps the promise broken" else "backtick-path: a fresh clone answers this, never one pier's disk"
+assert pen.out contains "leg_ok: tracking that same file keeps the promise" else "backtick-path: and tracking it must close the reading"
+assert pen.out contains "leg_ok: outside a repository the scan refuses rather than answering" else "backtick-path: an instrument that cannot answer must refuse"
+assert pen.out contains "leg_ok: an unknown flag refuses by name" else "backtick-path: a mistyped flag must never read as a default run"
+assert pen.out contains "leg_ok: the scan sees a root page whose name holds an equals sign" else "backtick-path: awk reads a bare name with an equals sign as an assignment"
+
+assert pen.out contains "leg_ok: dropping the room-relative try makes an honest room cell read broken" else "backtick-path: all three honest spellings must be tried"
+assert pen.out contains "leg_ok: dropping the anchor strip pulls in link_text_promise's own reading" else "backtick-path: two guards must not price one span twice"
+assert pen.out contains "leg_ok: dropping the ./ prefix hides the equals-sign page from the reading" else "backtick-path: that prefix must be proven load-bearing"
+assert pen.out contains "leg_ok: dropping the ledger exclusion counts the two append-only rows as living" else "backtick-path: a row records what was true when it was written"
+assert pen.out contains "leg_ok: dropping the placeholder test prices three illustrations as citations" else "backtick-path: the mark law asks for placeholders by name"
+assert pen.out contains "leg_ok: dropping the testimony split pulls four shelved pages into the gate" else "backtick-path: the gated class must hold living pages alone"
+
+let tree = run ["sh" "tools/fixtures/b/backtick_path_scan.sh"]
+say tree.out
+assert tree.ok else "backtick-path: living citations stand above the ceiling -- repair, then lower it in the same commit"
+assert tree.out contains "ceiling_ok=yes" else "backtick-path: the ceiling only ever falls"
+assert tree.out contains "verdict=ok" else "backtick-path: the tree reading must reach ok"
+
+say "backtick-path: GREEN -- the pen holds 22 legs with six mutations bitten, and this tree stands under its ceiling."

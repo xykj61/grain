@@ -212,7 +212,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9488637007` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6960a4bc24` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts that stood here moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md), which is where a finished account belongs. The `## Product direction` section had reached 23,070 bytes, 56 percent of the card, and a byte bound is the wrong instrument for a section that wants a shelf. The direction above stays; the receipts for work already landed are one click away, and [`archive/README.md`](archive/README.md) is the way in -- a reader's table of 12 rows over a room of 996 shelves, which that page now says on its own face.
 
 **BAKERY -- THE THIRD PATH IN THE KEY.** Account [born on its shelf](archive/20260916-093400_itinerary-landed-accounts.md);
@@ -248,57 +248,48 @@ nothing the hour the module moved. All five are heard now.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- ONE NUMBER, 2,914 TIMES, IS NOT A READING.**
-Elder account [shelved whole](archive/20260917-005523_itinerary-landed-accounts.md), its ask about
-the masked legs in `standing_equipment_control.sh` with it and still standing.
-**AETHER HEARS** (row 0, N=5200): listen for the silence where a claim used to be. Here it was the
-inverse and sharper -- a MEASUREMENT stood where an answer should have been, printed on every
-program the card ever read, and nobody had listened to it.
-**THE ASK.** Patchouli left a standing door on this card: `tools/fixtures/q/qa_report_card.sh`
-grades a Rishi witness head at Door, while Gauge's own setting table names a witness header, a scan
-comment and a ledger row **Meter** -- uncapped on register, grade and cross-references, because
-refusal is the subject. **19 of 40 sampled** `tools/*_witness.rish` read below B. A red, a ratchet,
-or a card that says so?
-**A SAMPLE SIZES A CLASS; ONLY A COUNT NAMES ITS SHAPES.** The card already computes the whole
-answer per file and scores none of it: `program_genre` from the basename, `program_genre_meter=named`
-for a witness and a scan, and `meter_shadow` beside every composite. What was missing was the count.
-**MEASURED** over all **2,914** tracked files the genre table reaches -- 2,181 witnesses, 395 scans,
-337 controls, one unnamed:
-
-| Reading | Distinct values | Span | Below B |
-|---|---|---|---|
-| **Door**, as the card grades today | **43** | 50 to 94 | **1,176** (40.4%) |
-| **Meter shadow**, the genre's own setting | **1** | 94 | **0** |
-
-**ONE NUMBER, 2,914 TIMES.** At Meter both of the card's COUNTED readings are freed to 100 --
-register and reach are the only two things it measures -- so the composite is fixed by Truth and
-Service alone, and the counted half of Truth reads 100 on every one of the 2,914.
-**THE CARD REFUSED THIS SHAPE ONCE ALREADY**, one family over and in its own words: a notation
-carrying a comment block is refused Meter and read at Field, *because freeing it makes the reading a
-CONSTANT*, every one reading **exactly 94** -- REDS `%402`'s disconnected reading. The program family
-carries the identical shape at **153 times** the population, and nothing had counted it.
-**SO THE ASK ANSWERS ITSELF, AND IT IS NEITHER A RED NOR A RELAXATION.** Door is not mis-grading
-these heads; Door is the only reading that tells them apart. A card that says so is the third door,
-and this is it.
-**THE MECHANISM.** `tools/fixtures/q/qa_genre_census_scan.sh` prefilters by the three words this
-tree spells in a basename, then **asks the card for every genre** rather than copying its `case`
-statement -- a roster spelled twice is a roster that can quietly disagree with itself. A candidate
-the card reads as `module` is counted `genre_unnamed` and gated under a ceiling that only falls, at
-**1** today: a fixture control set whose name ends `_control.txt`. Gated: every candidate answered, the
-rows balancing against the candidate list, and that ceiling. Reported: every below-B count, since a
-grade is not a gate and a head grows as it teaches more.
-**PROVEN:** control **27 legs, 0 failing**, every refusal planted and then lifted -- the unnamed
-ceiling from both sides, a card that refuses a candidate, an absent card, and a head planted long
-enough to open the Door span while leaving Meter a constant -- with **two mutations bitten** and a
-third **named neutral rather than claimed as a bite**. The listing prints every row uncapped, under
-the `listing_census` law landed hours earlier.
-**MINE:** the witness measuring the gap is an instance of it -- **B/82** at Door, **A/96** at Meter,
-14 points. Scan **B/84**, control **A/96**. `tier cadence`: 2,914 real card runs, **14m35s** of wall
-on a pier carrying eight ships, so `--cadence-slice 1` is what turns it.
-**YOURS:** what a Meter reading should MEASURE. Today it is the absence of two other measurements,
-which is why it reads as one number. Refusal prose has properties a meter could count -- whether
-every gate names its own repair, whether a bound cites what set it -- and naming which of them
-Gauge means is your word rather than a lane's.
+**GRASS -- A BACKTICKED PATH IS A PROMISE, AND NOTHING READ IT.**
+Elder account [shelved whole](archive/20260917-020101_itinerary-landed-accounts.md), its ask about what a
+Meter reading should MEASURE with it and still standing.
+**WATER TASTES** (row 3, N=5223): read up close and run the actual thing. The rota's own page
+claims the happy zone proved the whole drain; `caravan_drain_replay` was RUN rather than cited, and
+it answers GREEN -- seven asks on three rings, four region stores byte-identical.
+**THE GAP.** A Markdown link makes two promises and this tree holds both -- `tracked_link` gates the
+target, `link_text_promise` walls the anchor at **zero**. A path in BARE backticks with no link
+around it makes the same promise to the same reader and was held by nothing. It is the shape this
+tree reaches for most: a Kin line, a Machinery line, a table cell, the sentence naming a witness.
+**THE RECOGNITION RULE WAS ALREADY OURS.** `tools/hooks/commit-msg` has refused exactly this shape
+in a commit BODY since REDS `%202` -- a slash, an extension this tree writes, asked of the
+filesystem. So the promise was checked where it can never be edited and unchecked where it can.
+**MEASURED** over 6,524 tracked `.md` and `.mdc` pages: **65 living citations across 38 pages**,
+7,068 in testimony, 140 placeholders. Six name the `work-in-progress/` room this tree breached to
+crux a month ago; four name TigerBeetle's own style guide, a teacher's path rather than a stale one;
+and the TAME shelf names a witness spelled foo. Three genres, each wanting a reader, which is why
+this ratchets rather than walls.
+**THREE SPELLINGS ARE HONEST**, and reading two counted 60 cells of one page as broken: root, page,
+and ROOM relative -- the vedic reading template writes `studies/...` from inside `templates/` and
+links `../studies/...` one line above.
+**AND A FOURTH CLASS WAS DROPPED FOR BEING UNMEASURABLE.** A room this tree holds untracked on
+purpose looked worth counting apart, and `git check-ignore -v` answers with the root wildcard rule
+for a lap scratch file and with that same rule for a path belonging to another project. On a
+deny-by-default tree that question reads *is this allow-listed*, so the split went and every such
+citation stays counted.
+**PROVEN:** pen **22 legs, 0 failing**, every refusal planted and then lifted, **six mutations
+bitten**, the ceiling shown from both sides with no slack. RATCHET at **65**, since each hit wants
+the lane that owns its page and a wall here would red the ordinary.
+**MINE:** this account spelled three of its own examples as backticked paths and the guard counted
+all three, 65 to 68 -- the shape [`derived-spine`](../.claude/rules/derived-spine.md) already names
+one instrument over, where a meter reading for truth hears a sentence that must stay false exactly
+as it hears one asserting it. They are described here and spelled in the listing. The commit-msg
+path wall refused this round's body three times for the same reason.
+Scan **B/84**, control **A+/100**, witness **A+/100**.
+**THE ROSTER CLOSED `guard_red` ON FIFTEEN MORE**, none of them this lane's: `ryekey` and
+`built_tool_freshness` ask for a rebuild, `stash_record` was named by my own round-open before any
+work, `unheard_guard` reads twenty unheard controls and not one is mine with `law_guard_heard`
+cascading off it, and `instrument_refusal` names four lines in two peers' files. Named, not taken.
+**YOURS:** the reading is Markdown-only. The same promise stands in a `.rish` witness header, a
+`.kyri` roster comment and a `.rye` module head, read by nothing -- one lap each, or one meter over
+every authored comment?
 
 **DIFFUSER -- THE HASH THE CACHE TOOK, AND THE BIGGER ONE IT LEFT.** Elder
 [shelved whole](archive/20260917-020034_itinerary-landed-accounts.md); its ask is carried below.
