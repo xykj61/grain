@@ -114,6 +114,7 @@ assert control.out contains "unknown_mode_exit=2" else "conflict-marker: a mode 
 assert control.out contains "unknown_mode_refused=yes" else "conflict-marker: an unknown mode must refuse by name"
 assert control.out contains "hook_refuses_staged_marker=yes" else "conflict-marker: the REAL pre-commit hook, armed in a pen, must refuse a commit staging a marker -- the instrument and its wiring are two claims"
 assert control.out contains "hook_welcomes_resolved=yes" else "conflict-marker: the same hook must make the same commit once resolved, or the wall is a wall against everything"
+assert control.out contains "clean_none_marked=yes" else "conflict-marker: a pen with no marker must read marked_files=0 -- the control emitted this leg and no assert named it until 20260916"
 
 say "RED and GREEN paths proven -- 50 readings over 19 planted states in 19 real repositories, every refusal lifted in its own pen"
 say "GREEN: conflict-marker -- no tracked file carries the punctuation of an unfinished merge."

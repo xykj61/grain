@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.224654` | [A control leg no witness names is a leg nothing hears](20260916/20260916-224654_the-leg-nothing-heard.kyri) | 283 pairs, 35 legs unheard, 33 in the roster control |
 | `20260916.220753` | [The hash runs in Debug rather than in software](20260916/20260916-220753_the-hash-runs-in-debug.kyri) | SHA-NI compiles in; Debug mode costs the 5.4x |
 | `20260916.220554` | [A witness header is Meter](20260916/20260916-220554_the-law-names-a-witness-header-meter.kyri) | 882 of 2,017 witnesses read below B at the door |
 | `20260916.215359` | [A booked red is a claimable thing](20260916/20260916-215359_a-booked-red-is-a-claimable-thing.kyri) | the clause excused the one repair the fleet advertises |
