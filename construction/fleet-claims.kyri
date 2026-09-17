@@ -58,12 +58,6 @@ stamp 20260916.194110
 epoch 1789602070
 paths glow/tokens.rye glow/refusal.rye glow/rune_shape.rye glow/refusal_witness.rye tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_ceiling_refusal_scan.sh
 what glow/tokens.rye answers four ceilings with the one word error.BadToken -- a name past max_name_len, a cord literal interior past max_cord_lit_bytes, a hex literal past max_hex_lit_digits, and a source past max_src_len. Thread a refusal.Slot through the private lexers and seat tokenize_reporting beside tokenize, keeping the published signature, so each of the four fills a glow/refusal.rye record naming field, value, ceiling, unit and reason. The field names a token KIND rather than the offending text, because the text is exactly what did not fit. Four Reason members and two Unit members join the closed sets; the published error name stays, since an error set is a contract. Name the two unnamed asserts standing in glow/refusal.rye and glow/rune_shape.rye on the same touch, which is the whole of rune_assert_sweep's two-over-ceiling red.
-claim grass-witness-header-genre
-seat grass
-stamp 20260916.214026
-epoch 1789609226
-paths tools/fixtures/q/qa_report_card.sh tools/fixtures/q/qa_report_card_control.sh tools/q/qa_report_card_witness.rish
-what Gauge's own setting table names ledger rows, witness headers, scan comments and commit bodies as Meter, uncapped on register, grade and cross-references. The report card forces every program head to Door -- grade ceiling 9, one cross-reference per hundred words, register against 20 percent -- and drops a typed --setting meter on a program in silence. Refusal prose that names its own paths is exactly what a witness header is, so the population reads below B for writing the way the law tells it to. Add a genre reading that names witness, scan, control or module from the basename, publish a meter shadow composite beside the Door grade the way reach_shadow and ordered_list already do, and make the dropped flag say so out loud. Reported, never scored -- admitting it would re-grade the tree in one unmeasured step, and the cost belongs on the card as a question for Keaton.
 claim copal-listing-names-its-drop
 seat copal
 stamp 20260916.214947
