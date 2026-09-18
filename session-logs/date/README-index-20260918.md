@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.112548` | [Fleet shutdown prep -- clockout armed on all eight ships](20260918/20260918-112548_fleet-shutdown-prep.kyri) | .loop-clockout touched fleet-wide; four seats already ended, diffuser and petrichor still mid-lap. |
 | `20260918.112212` | [Round closes -- both remotes hold c4131393b](20260918/20260918-112212_round-closes-c4131393b.kyri) | A second contested rebase against another fresh peer commit landed clean; xy and debrided confirmed. |
 | `20260918.112135` | [Empty-open turn, fourth in a row -- state unchanged since the last check](20260918/20260918-112135_fourth-empty-open-still-gated.kyri) | Fetched, re-checked ITINERARY, claim board, REDS; nothing changed, nothing to build. |
 | `20260918.111926` | [Send confirmed -- both remotes hold ff6050ac0](20260918/20260918-111926_send-confirmed-ff6050ac0.kyri) | Clean rebase, two regenerated pages byte-identical, nib carried to c174f182df. |
