@@ -86,6 +86,16 @@ falsifier column was the weaker half. Reading:
 [`20260916-055111_built-in-an-hour-read-in-six-days.md`](20260916-055111_built-in-an-hour-read-in-six-days.md),
 instrument `tools/fixtures/r/rank_outcome_scan.sh`.
 
+**Round two opened:** `20260918.002526` -- the ladder now stands with all twelve rows carrying a
+landed witness or a re-aimed finding, and three of those findings point at real, unbuilt next
+steps: chosen offsets for a declustering ring (row 5's second erratum), a two-field key splitting
+locality from confidentiality (the open-door piece), and a standard cross-fleet shape for row 6's
+own "run it on the other seven piers" ask. All three are stated as claims with falsifiers at
+[`20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md`](../../20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md).
+The third carries its first concrete step: `tools/fixtures/e/energy_readout_scan.sh`'s own header
+now names the `loom` line shape a run on another pier should copy, so seven honest measurements
+compose into one trend rather than living as seven unread lines.
+
 ---
 
 ## What this page is

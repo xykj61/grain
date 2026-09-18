@@ -57,6 +57,16 @@
 # WHAT THIS CANNOT SAY. Whether some OTHER host in this fleet can answer where this one cannot --
 # eight ships, eight machines, and this scan reads only the one it runs on. Run it on each pier
 # and read eight lines rather than trusting one.
+#
+# THE CROSS-FLEET SHAPE (proposed 20260918, active-designing/20260918-002526). Eight ships cannot
+# read one another's session logs by eye, so a run on another pier composes into this pier's reading
+# only if it lands in `tools/l/loom_trend.sh`'s own shape. Copy this line into your own session log's
+# `loom` field, with the four values read off THIS run's own printed output:
+#
+#   loom family=energy_readout facility_count=<facility_count> any_available=<yes-if-verdict-facility_available-else-no> any_proxy_available=<proxy_verdict> virt_name=<virt_name>
+#
+# so `LOOM_FAMILY=energy_readout sh tools/l/loom_trend.sh any_available --summary` reads all eight
+# piers' answers as one trend the day the eighth lands, rather than as eight lines nobody cross-reads.
 
 set -u
 
