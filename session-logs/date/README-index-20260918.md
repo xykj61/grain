@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.013415` | [Pheromone eleventh check -- the repeated-check pattern named as the finding](20260918/20260918-013415_pheromone-eleventh-check-pattern-named.kyri) | HEAD unchanged since prior check; names eleven idle checks in one lane as worth a hand's attention rather than a twelfth re-verification. |
+| `20260918.013242` | [Roster fixed; first reverse-read packet](20260918/20260918-013242_reverse-reading-first-packet-and-lane-repair.kyri) | Reds-first season gate, STANDFASTED. |
 | `20260918.013100` | [Pheromone tenth check -- ident-duplication crux confirmed closed](20260918/20260918-013100_pheromone-tenth-check-still-clear.kyri) | Re-ran glow_ident_duplication on metal: ceiling=0, matches card; fast-forwarded one commit; queue idle. |
 | `20260918.013040` | [Send confirmed -- both remotes hold 0cd541688](20260918/20260918-013040_send-confirmed-0cd541688.kyri) | Five contested pushes; two peer shastra files, three day-shelf table conflicts, all resolved. |
 | `20260918.012745` | [Grass lane mismatch flagged, no build this lap](20260918/20260918-012745_grass-lane-mismatch-flagged.kyri) | Grass's ITINERARY entry and seat-prompt lane name two different jobs; flagged rather than picked. |
