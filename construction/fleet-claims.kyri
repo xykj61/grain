@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim grass-rune-list-asserts
-seat grass
-stamp 20260918.050844
-epoch 1789722524
-paths glow/rune_list.rye
-what add invariant asserts to rune_list.rye's slice/mold-reading functions and parse(), matching rune_conditional.rye's asserted shape

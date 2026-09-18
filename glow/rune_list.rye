@@ -8,6 +8,7 @@
 //! Nested values and longer lists stay later.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -31,7 +32,14 @@ pub const ListSpec = struct {
 };
 
 pub fn face_at(spec: *const ListSpec, i: usize) []const u8 {
-    return spec.faces[i][0..spec.lens[i]];
+    // invariant: a caller only ever asks for one of the faces parse() has
+    // actually filled in, never a slot past the spec's own count.
+    assert(i < spec.count);
+    const slice = spec.faces[i][0..spec.lens[i]];
+    // invariant: a returned face never claims more than the ident ceiling
+    // the lexer itself owns, whatever the caller's index chose.
+    assert(slice.len <= max_name_len);
+    return slice;
 }
 
 fn is_ident_char(ch: u8) bool {
@@ -62,6 +70,9 @@ pub fn parse(line: []const u8) ParseError!ListSpec {
 
     var rest = std.mem.trimStart(u8, line[2..], " \t");
     if (rest.len == 0) return error.MissingFace;
+    // invariant: a line accepted past the missing-face check names a real
+    // remainder, never an empty one, once execution reaches here.
+    assert(rest.len > 0);
 
     var spec: ListSpec = .{};
     while (true) {
@@ -75,5 +86,8 @@ pub fn parse(line: []const u8) ParseError!ListSpec {
         try need_ws(parsed.rest, after);
         rest = after;
     }
+    // invariant: a constructed spec never claims more faces than the fixed
+    // buffer holds, whatever the loop above parsed.
+    assert(spec.count <= max_faces);
     return spec;
 }

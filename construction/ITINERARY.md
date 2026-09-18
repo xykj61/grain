@@ -47,9 +47,9 @@ in-flight file has nothing to grep for, since a peer's work two minutes old is o
 when the check runs. **PROVEN:** grass's `glow_rune_cell_witness` stands; this seat re-ran it
 unchanged after the fold.
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, and `glow/rune_face.rye` landed since
-this was written (below);
-`glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`,
+`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, `glow/rune_face.rye`, and
+`glow/rune_list.rye` landed since this was written (below);
+`glow/rune_mutate.rye`, `glow/rune_null.rye`,
 `glow/rune_quad.rye`, `glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`,
 `glow/lower_cast.rye`, and `glow/nock/nock_jet_dec.rye` remain zero-assert, same shape,
 agent-doable, next lap.
@@ -132,14 +132,18 @@ its ten threads carry forward.
 
 **GRASS -- `glow/rune_conditional.rye` GAINED THREE ASSERTS, SAME SHAPE.** Account
 [shelved whole](archive/20260918-045718_itinerary-grass-rune-conditional-account.md) for the
-`rune_bounded_trap.rye` / `rune_cell.rye` lap's own shape. `test_slice`'s buffer-fit postcondition,
-`parse`'s post-trim non-emptiness precondition, and the constructed spec's own buffer-fit
-postcondition -- three bare `assert()` calls, `assert` newly imported. Witness GREEN unchanged
-(`rune_conditional_witness`, six claims); `tame_style_check` zero-assert ratchet fell; `width-check`
-clean. Claim `grass-rune-conditional-asserts` opened, pushed, and closed, per the ABSENCE clause.
-**YOURS:** nine zero-assert `glow/` files remain (`rune_face.rye`, `rune_list.rye`,
-`rune_mutate.rye`, `rune_null.rye`, `rune_quad.rye`, `rune_switch.rye`, `rune_triple.rye`,
-`lower_alias.rye`, `lower_cast.rye`), same shape, agent-doable next.
+`rune_bounded_trap.rye` / `rune_cell.rye` lap's own shape.
+
+**GRASS -- `glow/rune_list.rye` GAINED THREE ASSERTS, SAME SHAPE.** `face_at`'s index-bound
+precondition and returned-slice ceiling postcondition, `parse`'s post-trim non-emptiness
+precondition, and the constructed spec's own face-count-under-ceiling postcondition -- three bare
+`assert()` calls, `assert` newly imported. Witness GREEN unchanged (`glow_rune_list_witness`);
+`tame_style_check` and `width-check` both clean. Claim `grass-rune-list-asserts` opened, pushed,
+and closed, per the ABSENCE clause; `pheromone-rune-face-asserts` stood live on the board the whole
+time and was left alone. **YOURS:** eight zero-assert `glow/` files remain past `rune_face.rye`
+(pheromone's, in flight): `rune_mutate.rye`, `rune_null.rye`, `rune_quad.rye`, `rune_switch.rye`,
+`rune_triple.rye`, `lower_alias.rye`, `lower_cast.rye`, and `glow/nock/nock_jet_dec.rye`, same
+shape, agent-doable next.
 
 **GRASS -- `glow/rune_calln.rye` account.** [Shelved
 whole](archive/20260918-043634_itinerary-grass-rune-calln-account.md): rune_calln.rye took
@@ -227,7 +231,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5d4d09243c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f04c31bcfb` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
