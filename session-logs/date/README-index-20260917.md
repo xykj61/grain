@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.223637` | [A quiet round behind a reserved clause](20260917/20260917-223637_a-quiet-round-behind-a-reserved-clause.kyri) | Same one reading, unchanged; still awaiting Keaton's word. |
 | `20260917.223531` | [The writer sheds](20260917/20260917-223531_the-writer-sheds.kyri) | One live account per seat; five crossings priced. |
 | `20260917.222855` | [A torus index for Tally gardens](20260917/20260917-222855_a-torus-index-for-tally-gardens.kyri) | Moonshot: tier/slot addressing, falsifier named, power claim refused. |
 | `20260917.222753` | [The restatement the guard reserved](20260917/20260917-222753_the-restatement-the-guard-reserved.kyri) | GREEN fix reverted on the guard's own Keaton-word clause. |
