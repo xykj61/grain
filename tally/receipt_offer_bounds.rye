@@ -64,7 +64,7 @@ pub fn value_basis(value: []const u8) BoundError!void {
     try text(value, max_value_basis_bytes);
 }
 
-pub fn productDigest(value: []const u8) BoundError!void {
+pub fn product_digest(value: []const u8) BoundError!void {
     // invariant: the published digest length is positive.
     assert(product_digest_len > 0);
     // invariant: the inherited slice length fits the published count width.
