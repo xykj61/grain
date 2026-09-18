@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260918.092204
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role coding agent
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+title send confirmed -- both remotes hold 13c95257b
+prompt no user prompt this turn -- send of the fifth empty-open log met a busy pier
+think first push of the fifth empty-open log rejected non-fast-forward; fetched and rebased onto xy/main, hit a real merge conflict on the day shelf where a peer had written a different fifth-empty-open row at a nearby stamp
+think kept both rows newest-first rather than picking one, since neither log replaces the other
+think noticed the auto-merge had also produced a true duplicate at 20260918.091040 -- the SAME log linked twice, which session-logs.md names as a fault (one log, one row) rather than the lawful shared-stamp case; removed the extra copy and amended
+think second push also rejected; fetched again and rebased once more, hitting a second conflict against yet another peer's fifth-empty-open row at a still-different stamp; kept both again, confirmed no duplicate log links with an awk uniq -d check on column 3
+think checked pin_bound_touch_scan.sh index after both rebases -- over_bound_enforced=0, over_bound_advisory=0, so no pin needed weighing before push
+obs a pier this busy makes the day shelf's shared-stamp allowance load-bearing rather than theoretical -- three ships wrote a "fifth empty-open turn" row within roughly two minutes of each other, each a real distinct log
+obs the true-duplicate class is worth watching for specifically during a busy-pier rebase: an auto-merge can silently double a line that already existed on one side, which a stamp-uniqueness check alone would miss
+file session-logs/date/README-index-20260918.md why-resolved two real merge conflicts, keeping every distinct row and removing one genuine duplicate link
+file session-logs/date/20260918/20260918-091723_fifth-empty-open-turn.kyri why-the log this send carried
+recommend keep-going -- both remotes confirmed at 13c95257b via fresh fetch; next real content arrives with the next user prompt or claimable lane item
