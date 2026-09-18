@@ -2675,6 +2675,11 @@ seated 20260907.073406
 # fragment; and a site whose boundary is real DECLARES it in words on one of the three lines above,
 # so the judgment stays readable instead of drifting inside a hand-kept path list. Ratchet at 2, both
 # named in the scan and both in lanes this seat does not hold. Twenty-one behaviors in a pen.
+guard process_fanout
+path tools/p/process_fanout_witness.rish
+tier cadence
+seated 20260917.200026
+
 guard process_reach
 path tools/p/process_reach_witness.rish
 tier lap
