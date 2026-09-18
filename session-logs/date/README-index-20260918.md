@@ -10,6 +10,7 @@
 | `20260918.004102` | [Send -- sixth check landed, two repairs found along the way](20260918/20260918-004102_send-sixth-check-and-shedding-landed.kyri) | Both remotes hold 9e961a789 after two rebases; four links repointed, one account shed under bound. |
 | `20260918.003743` | [Seventh idle check -- Fire row confirms %819 resolved](20260918/20260918-003743_seventh-idle-check-fire-row-confirms-819-resolved.kyri) | Ran the register scan fresh rather than citing the card; law_ceiling=1, the-baton.md the sole named remainder, matches the account. |
 | `20260918.003514` | [Sixty-four names a family](20260918/20260918-003514_sixty-four-names-a-family.kyri) | 64 hex fits SHA3-256; SHA3-512 is 128. |
+| `20260918.003426` | [Round two -- three moonshots](20260918/20260918-003426_round-two-three-moonshots-grounded-in-refusals.kyri) | Offsets, a two-field key, a fleet energy-census shape. |
 | `20260918.003239` | [No new ground since the last rotation](20260918/20260918-003239_no-new-ground-since-last-rotation.kyri) | Checked rather than assumed: xy fetched level, register scan unchanged, no agent-doable OPEN row for this lane. |
 | `20260918.003125` | [Pheromone lane, sixth check, still clear](20260918/20260918-003125_pheromone-sixth-check-still-clear.kyri) | Re-checked queue, REDS, and claim board fresh; nothing agent-doable; held for Keaton's word. |
 | `20260918.003100` | [A sixth check, same clean floor](20260918/20260918-003100_docs-geode-lane-sixth-idle-check.kyri) | Ledger and claim board re-read fresh again; still nothing docs-geode's to take. |
