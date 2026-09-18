@@ -37,6 +37,7 @@
 set -eu
 
 root="$(pwd)"
+. "$root/tools/fixtures/p/plant.sh"
 scan="$root/tools/fixtures/t/tablecloth_glow_tend_scan.sh"
 desk_src="$root/src/shape/shape-tablecloth-catalog-capacity.glow"
 content_src="$root/src/shape/shape-tablecloth-content-budget.glow"
@@ -95,7 +96,7 @@ check() {
 # mode it was copied with (.claude/rules/exec-bit.md).
 edit() {
   f=$1
-  sed "$2" "$f" > "$f.t" && cat "$f.t" > "$f" && rm -f "$f.t"
+  plant_apply "$f" "$2"
 }
 
 deskf="$work/pen/src/shape/shape-tablecloth-catalog-capacity.glow"
