@@ -6,7 +6,7 @@ When Keaton says **"debride,"** deliberately **break accrete-never-break**: **re
 
 ## Accrete-sometimes-breach -- debride is *mutable on purpose*
 
-Accrete-never-break is the **default**, not an absolute. The tree's fuller law is **accrete-sometimes-breach**: accrete by default, and **breach or debride on Keaton's explicit word**. A **breach** renames or supersedes while keeping the elder in history; a **debride** goes further and removes the dead tissue outright. Both are sanctioned exceptions -- the default bends to them, it does not forbid them.
+Accrete-never-break is the **default**, not an absolute. The tree's fuller law is **accrete-sometimes-breach**: accrete by default, and **breach or debride on Keaton's explicit word**. A **breach** renames or supersedes while keeping the elder in history; a **debride** goes further and removes the dead tissue outright. Both are sanctioned exceptions -- the default bends to make room for them.
 
 **This means no artifact's immutability can make a debride "self-defeating."** A debride is licensed to remake *anything*, precisely because remaking dead tissue is its whole purpose:
 
@@ -16,7 +16,7 @@ Accrete-never-break is the **default**, not an absolute. The tree's fuller law i
 
 The correct reading is never "this is immutable, so we cannot debride it." It is always "this is the default-immutable, so it takes an **explicit circled debride** to remake it -- and then the debride **re-seals / re-makes** what it touched." Immutability is a lock, and debride is Keaton's key; the lock is not a reason the key won't turn.
 
-**Re-signing is part of the remake, not a lost cost.** A deep debride *can* re-sign every rewritten commit -- proven `20260817` when the urbit-lineage drop re-signed 2,901 commits via `filter-branch --commit-filter 'git commit-tree -S'` (1,774 previously unsigned came out signed). So a history rewrite need not leave the tree unsigned; the honest cost is only the re-clone every downstream must take.
+**Re-signing travels with the remake, kept rather than sacrificed.** A deep debride *can* re-sign every rewritten commit -- proven `20260817` when the urbit-lineage drop re-signed 2,901 commits via `filter-branch --commit-filter 'git commit-tree -S'` (1,774 previously unsigned came out signed). So a history rewrite can leave the tree fully signed; the honest cost is only the re-clone every downstream must take.
 
 ## What debride is, against its neighbors
 
@@ -27,7 +27,7 @@ The correct reading is never "this is immutable, so we cannot debride it." It is
 ## Two depths
 
 1. **Working-tree debride** -- remove or redact the named content from the tree and commit. Immediate; gone from the living tree going forward. It remains in git history and on the remotes until a deep debride.
-2. **Deep debride** -- rewrite the entire git history (`git filter-repo --replace-text` / path removal, or `filter-branch` for a reroot) so the content is stripped from every commit, then **force-push** both remotes. Truly gone. **Cost, named honestly:** a history rewrite changes every hash, so every downstream clone must re-clone or hard-reset -- the one unavoidable cost. Re-signing is **not** lost: the rewritten commits *can* be re-signed in the same pass (`filter-branch --commit-filter 'git commit-tree -S'`), proven `20260817` when the urbit-lineage drop re-signed 2,901 commits (see *Accrete-sometimes-breach* above).
+2. **Deep debride** -- rewrite the entire git history (`git filter-repo --replace-text` / path removal, or `filter-branch` for a reroot) so the content is stripped from every commit, then **force-push** both remotes. Truly gone. **Cost, named honestly:** a history rewrite changes every hash, so every downstream clone must re-clone or hard-reset -- the one unavoidable cost. Re-signing rides along: the rewritten commits *can* be re-signed in the same pass (`filter-branch --commit-filter 'git commit-tree -S'`), proven `20260817` when the urbit-lineage drop re-signed 2,901 commits (see *Accrete-sometimes-breach* above).
 
 ## Discipline
 

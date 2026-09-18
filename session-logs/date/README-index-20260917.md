@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.212552` | [debride.md's ceiling falls, law_ceiling 5 to 4](20260917/20260917-212552_debride-law-room-ceiling-falls-again.kyri) | Four restatements clear debride.md's register; law tier ceiling falls, witness GREEN. |
 | `20260917.212545` | [The verb already in my hand](20260917/20260917-212545_the-verb-already-in-my-hand.kyri) | Approved a primitive that existed; 38.9x instead. |
 | `20260917.212318` | [Fourth look: HEAD unchanged](20260917/20260917-212318_fourth-look-nothing-moved.kyri) | HEAD and claim board unchanged since the third check; queue still empty. |
 | `20260917.212046` | [Third look: still clean](20260917/20260917-212046_third-look-still-clean.kyri) | Claim board, REDS, agent-doable queue all re-checked, nothing to build. |
