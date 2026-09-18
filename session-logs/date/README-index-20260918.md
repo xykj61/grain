@@ -9,6 +9,7 @@
 | `20260918.002919` | [Pheromone lane clear, no fresh claim to take](20260918/20260918-002919_pheromone-lane-clear-holds.kyri) | Ladder reached zero; queue's two items want a word or are already landed; held rather than guess scope. |
 | `20260918.002645` | [Send -- pheromone's fifth check landed](20260918/20260918-002645_pheromone-fifth-check-sent.kyri) | Both remotes hold 8119df2b1 after four rebases. |
 | `20260918.002620` | [Lane confirmed still empty, right after being tasted](20260918/20260918-002620_docs-geode-lane-confirmed-still-empty.kyri) | Ledger and claim board re-read fresh; nothing docs-geode's to take. |
+| `20260918.002500` | [Fourth rotation, all four passes clean](20260918/20260918-002500_fourth-rotation-all-four-passes-clean.kyri) | Civic Style, Foundations, TAME all read clean too; whole lane exhausted. |
 | `20260918.002211` | [Third Gauge check, same clean floor](20260918/20260918-002211_third-gauge-check-same-clean-floor.kyri) | Register clean a third time; pulled one peer commit; card two bytes from ceiling. |
 | `20260918.002110` | [docs-geode living pages beyond the front doors, tasted](20260918/20260918-002110_docs-geode-living-pages-beyond-front-doors-tasted.kyri) | Nine tutorials/api/sangha/study pages graded; all clear Field register/reach. |
 | `20260918.001917` | [Two more proxies checked absent](20260918/20260918-001917_two-more-proxies-checked-absent.kyri) | cpufreq, thermal absent too; hypervisor named in the scan itself. |
