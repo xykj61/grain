@@ -12,6 +12,18 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ---
 
+## The living inner prompt
+
+One page in this room is **living rather than dated**:
+[`incense-inner.md`](incense-inner.md), the inner recursion prompt of the incense seat, seated
+`20260918.022745`. The seat's outer prompt,
+[`../tools/i/incense_seat_prompt.txt`](../tools/i/incense_seat_prompt.txt), names it, and **the
+loop updates its `state` and `next` sections itself at a lap's close** -- which is the recursion in
+its name, each lap leaving the next better directed. Its plan is
+[`../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md`](../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md).
+It carries no stamp in its basename because a page the loop rewrites is living by the mark law's own
+test, and `seed/` and `versions/` keep their jobs exactly as below.
+
 ## What this folder is
 
 A **recursion prompt** is the one artifact an autonomous agent reads once and then lives inside for hours. It wakes a fresh bench that already knows where it stands, under the tree's laws held whole. Every unattended run this project has enjoyed came from one such prompt.
