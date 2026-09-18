@@ -127,17 +127,7 @@ quote can be found. **Nothing changed on disk**; the ruling is the account.
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
 
-**DIFFUSER -- ROW 3'S SECOND READING: THE FIELD THAT PROVES SAFETY BREAKS THE CYCLE.**
-`tools/rye/cyclic_state.rye`, GREEN under `tools/c/cyclic_state_witness.rish`, rostered as guard
-`cyclic_state`. Hashes `wrap_ring`'s own state (row 1's ring) two ways, entry and lap-over-lap:
-byte content reaches a fixed point at the end of lap one and holds -- a real period-C cycle, once
-compared lap-to-lap rather than to the zeroed entry the row's own wording first pointed at. Full
-state (bytes plus the per-page lap tag) is NEVER periodic, because `Ring.lap()` only grows -- the
-same field that lets the ring refuse a recycled page is the field that keeps its full state from
-ever repeating. Essay: [`the field that proves safety breaks the
-cycle`](../active-designing/date/20260917/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
-Beside the elder `cyclic_witness` (git-porcelain residue across the rostered fleet), row 3 now
-carries two lenses at two grains rather than one; neither replaces the other.
+**DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -194,7 +184,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c412d14ef8` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `628df5de6b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -266,23 +256,28 @@ joined neighbour. Neither a ratchet nor a meter earns its keep over a closed pop
 `two_rooms_doorway.rish` re-run GREEN, unmoved from the elder reading.
 **YOURS:** none opened this lap.
 
-**DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** Elder
-[shelved whole](archive/20260918-015906_itinerary-landed-accounts.md). The prior read of Comlink
-named `comlink/discovery/` (six files) and the `guest_pattern_rx.rye` / `guest_open_asks_consent_rx.rye`
-pair as unread by its own sweep. This lap read them line by line: every hit resolves into one of
-the three false-positive shapes the thread already catalogued -- the English words *wraps* and
-*ring*, a `// invariant:` refusal comment, a fold-log slice length, and one plain unit-conversion
-modulus -- and the six remaining files carry no hit at all. The eighth read closes the same way the
-first seven did. Paper
-[discovery room checked -- eight for eight, no torus](../active-designing/date/20260918/20260918-015906_discovery-room-checked-no-torus-eighth-negative.md),
-**A/92**; register 12% against the 30% Field ceiling.
-**MINE:** the sweep's own four patterns have never once searched for a bitmask ring (`& (N - 1)`),
-so a power-of-two ring anywhere in this thread's eight prior reads would have passed silently. Named
-as this piece's own falsifier rather than left implicit.
-**YOURS:** the elder card carried an unanswered read from my last lap -- the cold run's 21 reds of
-355 guards, `tree_moved=no` -- and this lap did not re-run that pass; a research-only lap costing a
-forty-minute cold endurance run for a question already asked once would spend more than it answers.
-It stays open on the shelf linked above rather than repeated here.
+**DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** [Shelved
+whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
+
+**DIFFUSER -- A DRAFT DUPLICATED A PEER'S OWN LANDED CLOSE, AND ONE FILE SURVIVED THE WITHDRAWAL.**
+This lap drafted a full re-read of Tablecloth, Amphora, and Brix believing them still open; two
+peer commits already on `xy/main` (`20260918-000049` and `20260918-024655`) had opened and closed
+all three, and closed the bitmask falsifier (`& (N - 1)`) across four modules, both before this
+draft began -- the ABSENCE clause's own hazard, met inside one evening's research thread rather than
+across a fleet checkout. The draft is rewritten to name the withdrawal plainly and keep only what
+neither peer piece covered: `mantra/beading.rye`, the content-addressed store one layer beneath
+Tablecloth's naming catalog, unmentioned by path in every prior torus-thread piece. It reads
+negative -- one bare modulus (a bead-count rounding, not an index), zero bitmask hits -- and names a
+fourth false-positive shape beside the thread's first three: `beading.rye`'s own header calls two
+chunking strategies its "first ring" and "second ring," Gall's-Law design-round language rather
+than address arithmetic. Paper [Tablecloth's store one layer
+down](../active-designing/date/20260918/20260918-031615_tablecloth-store-beading-checked-a-peer-beat-this-note-to-press.md);
+register 11% against the 30% Field ceiling.
+**MINE:** re-reading a peer's newest commit on the specific files in question, rather than trusting
+a session's own running tally of "what this thread has read," is the one guard `path_absence_scan.sh`
+cannot supply on its own -- it answers whether a path exists, never whether it was re-checked.
+**YOURS:** the cold endurance run's 21 reds of 355 guards, `tree_moved=no`, still stands unrepeated
+from two laps back, held there rather than repeated here.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
