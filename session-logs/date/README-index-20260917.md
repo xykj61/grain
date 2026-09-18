@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.211118` | [door_home_scan drops its readlink -f site](20260917/20260917-211118_door-home-readlink.kyri) | shell_dialect falls 9 to 8, GREEN, sent. |
 | `20260917.210803` | [The field a shell could read itself](20260917/20260917-210803_the-field-a-shell-could-read-itself.kyri) | Roster scan 5.8x faster, output identical. |
 | `20260917.210006` | [The doorway census holds at its own ceiling](20260917/20260917-210006_the-doorway-census-holds-at-its-own-ceiling.kyri) | Grass audit: doorway census 3-of-3, register green, no unclaimed work. |
 | `20260917.205912` | [The earth row caught a closed row a peer had left open](20260917/20260917-205912_the-earth-row-caught-a-closed-row-a-peer-had-left-open.kyri) | Reconciled with a prior lap that left %806 OPEN; witnesses on metal settled it. Sent, both remotes. |
