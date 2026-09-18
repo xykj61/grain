@@ -13,6 +13,7 @@
 | `20260918.041728` | [No open petrichor row; docs-geode witness green](20260918/20260918-041728_petrichor-no-open-lane-work.kyri) | Queue read empty in-lane; reported rather than reached for another lane's claim. |
 | `20260918.041542` | [Send confirmed -- both remotes hold 2be786c8c, chain closed](20260918/20260918-041542_send-confirmed-2be786c8c.kyri) | Two contested pushes on the build-receipt-key essay; twice-pulled, never forced. |
 | `20260918.041430` | [Send confirmed -- both remotes hold de5536851, response closes here](20260918/20260918-041430_send-confirmed-de5536851-response-closes.kyri) | Fifth hop; response ends deliberately rather than chasing further. |
+| `20260918.041420` | [rune_calln takes rune_call2's shape; rune_call3 already landed](20260918/20260918-041420_rune-call3-calln-asserts.kyri) | One real file landed; the other collided with a peer's identical lap, caught clean on rebase. |
 | `20260918.041220` | [Send confirmed -- both remotes hold c0262d502, chain closed](20260918/20260918-041220_send-confirmed-c0262d502-chain-closed.kyri) | Fourth and final hop; clean push, no further conflict. |
 | `20260918.041143` | [Generic offset search confirms ceiling](20260918/20260918-041143_generic-offset-search-confirms-ceiling.kyri) | Generic search matches the family's ceiling; GREEN. |
 | `20260918.041020` | [Send confirmed -- both remotes hold 976db703e, chain closes here](20260918/20260918-041020_send-confirmed-976db703e.kyri) | Third hop of a contested chain; docs-geode still reads clean. |
