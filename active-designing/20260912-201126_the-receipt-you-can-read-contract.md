@@ -6,6 +6,9 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260917.234833` -- purely additive. One section reports what stands built, measured
+against the tree; no elder row, number, sentence, or acceptance case was removed, and nothing this
+tree admits or refuses moved. The review found no claim on this page in need of correction.
 **Revised:** `20260917.090914` -- purely additive. One paragraph pair joined the acceptance cases,
 naming the guard that now holds the falsifier's code half; no elder row, number, sentence, or
 acceptance case was removed, and nothing this tree admits or refuses moved.
@@ -188,6 +191,45 @@ a third module that imports both and hands each a view of the other wants a call
 a scan, and case 8's own build condition closes that half when the build lands. **Proven from both
 sides** on real git repositories in a throwaway pen: 47 behaviors, every refusal planted and then
 lifted, and five mutations asserted to bite.
+
+## What stands built, measured
+
+**Reviewed `20260917.234833` against the tree rather than against this page.** Every guard claim
+above held on the run: the ceiling guard reads `sites=14 named=14 unnamed_ceiling=0
+value_disagrees=0 borrowed_rows=4 row_unenforced=2` with 39 control legs, the braid guard reads
+`cross_import=0 cross_type=0` with 47, and `linengrow/` and `dimeroll/` hold exactly the **175**
+tracked Rye sources the braid paragraph names. Nothing on this page needed a correction.
+
+**What a reader could not take from it is how far the first whole stands from its own edge.** Of
+the four types this contract publishes:
+
+| Public type | Declared in tracked Rye |
+|---|---:|
+| `ReceiptOfferFact` | **3** sources |
+| `ReceiptState` | **1** source |
+| `LinengrowReceipt` | **0** |
+| `DimerollReceiptIntake` | **0** |
+
+**So `cross_type=0` is a true reading over a population where neither projection type has been
+written.** The braid guard is right and its own header says why -- a boundary is cheap to hold
+before the code exists, which is the whole reason it was built early. What a reader meeting its
+green deserves to know is which of those two facts it reports today.
+
+**Mantra's side has begun and Dimeroll's has not.** `mantra/src/` carries `receipt_offer.rye`, its
+two witnesses, and the two Tally bound modules. `dimeroll/` carries five files and not one is
+receipt-named, so the product owing half the falsifier stands at zero.
+
+**A NAMING COLLISION WAITS AT THE FIRST IMPLEMENTATION STEP, and it is the finding worth carrying
+off this page.** `linengrow/` already holds `receipt.rye`, `receipt_core.rye` and
+`receipt_verify_guest.rye`, and those are **SLC-L1's verifiable receipt** -- sign, append, fold,
+verify -- an elder and unrelated subject. A hand implementing `LinengrowReceipt` reaches for exactly
+those names and lands in another milestone's module. Which name this product's projection takes is a
+product-meaning decision, so it waits under the closing clause below with the other two.
+
+**Of the eight acceptance cases, none yet carries its own witness.** The two rostered guards hold
+the falsifier's code half and this page's ceiling declarations -- real work, and a different job
+from proving a case. This page already says a case becomes checkable only when its witness passes;
+the count is written here so a reader need not infer it.
 
 ## Completion and review edge
 
