@@ -1486,8 +1486,14 @@ while read -r name path tier gate; do
       # so the status of the guard cannot tell them apart and never could. The artifact can. When
       # this write refuses, the runner holds no evidence, and what it does not hold it may not
       # describe.
-      if tail -n 200 "$pen/out.$$" > "$pen/evidence.$name.txt" 2>/dev/null \
-        && [ -f "$pen/evidence.$name.txt" ]; then
+      #
+      # A BARE TAIL DROPS THE HEADER A LONG ANSWER OPENS WITH (`20260917.194613`).
+      # `rye_compiled_reach` reads over_ceiling against 791 bodies, and a plain `tail -n 200` kept the tail of that list
+      # plus the verdict line while silently dropping the three header lines naming paths, bodies,
+      # and ceiling -- the numbers that give the list its scale. `capture_evidence` keeps the same
+      # ~200-line bound and the guard's own opening lines both, at no cost to any guard whose full
+      # answer already fits inside it.
+      if capture_evidence "$pen/out.$$" "$pen/evidence.$name.txt" 200; then
         echo "  evidence $red_room/$name.txt"
         evidence_kept=yes
       else
