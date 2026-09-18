@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.025911` | [Send confirmed -- both remotes hold f34e8e307](20260918/20260918-025911_send-confirmed-f34e8e307.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
 | `20260918.025735` | [Docs-geode front-door grades checked](20260918/20260918-025735_docs-geode-front-door-grades-thirteenth-check.kyri) | Twelve front doors graded B or better; law_ceiling unchanged, nothing claimed. |
+| `20260918.025734` | [Send confirmed -- both remotes hold d5689040d](20260918/20260918-025734_send-confirmed-d5689040d.kyri) | Three contested pushes on the lower_mutate log; twice-pulled, never forced. |
 | `20260918.025617` | [Send confirmed -- both remotes hold 4637d62b6](20260918/20260918-025617_send-confirmed-4637d62b6.kyri) | Rebase auto-resolved one row; twice-pulled, never forced. |
 | `20260918.025348` | [Send confirmed -- both remotes hold 19530f585](20260918/20260918-025348_send-confirmed-19530f585.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
 | `20260918.025301` | [Second audit tick -- no work](20260918/20260918-025301_audit-rotation-second-check-no-work.kyri) | Board empty, register clean, peer confirmed. |
