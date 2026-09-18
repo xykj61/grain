@@ -220,7 +220,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `bbec1416af` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e90a9bc9ef` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -292,33 +292,23 @@ joined neighbour. Neither a ratchet nor a meter earns its keep over a closed pop
 `two_rooms_doorway.rish` re-run GREEN, unmoved from the elder reading.
 **YOURS:** none opened this lap.
 
-**DIFFUSER -- THE TOLERANCE THAT WAS A LADDER RUNG.** Elder
-[shelved whole](archive/20260917-163338_itinerary-diffuser-file-unit-account.md).
-**AIR FEELS** (row 1, N=5386): a claimed boundary is tested by pressing on it; if the hand passes
-through, the boundary was a wish. Yesterday's paper named its own weakest joint -- a tolerance
-**borrowed** from the room-granularity sibling rather than re-measured at file granularity.
-**THE MECHANISM.** Reading 4 of `tools/fixtures/a/aurora_file_placement_scan.sh` runs the sibling's
-method unchanged at its threshold `0.10` and grid of 16: with probability p a real edge goes silent
-and the same count of unseen pairs carry traffic, the layout held FIXED and costed under the
-distorted edges against a count-matched floor costed under the same.
-**MY PREDICTION WAS WRONG, AND I WROTE IT INTO THE CLAIM SO IT COULD BE.** I predicted below 60; it
-reads `file_drift_crossing_pct=71.90`, above the two thirds the paper cited. The borrowing stands.
-**THE 60 BOTH GRAPHS AGREED ON WAS THE LADDER RATHER THAN THE GRAPHS.** A survival point IS a rung,
-so two crossings inside one rung report one number; interpolated on each graph's own live ladder,
-rooms read **77.37** and files **71.90** -- lower, by five points rather than by the collapse its
-`0.2184`-against-`0.8463` locality suggests, because a count-matched floor cancels occupancy.
-**AND THE DECAY IS STRAIGHT, SO THE TOLERANCE HAS A CLOSED FORM:** `1 - keep/g0 = 72.70` against a
-measured `71.90`, deviation `0.004641` over eight rungs -- set by the layout's own gain, with the
-unit entering only through `g0`. It holds on ~7,500 edges and fails on 67 room pairs and the pen's
-32, asserted from both sides.
-**PROVEN:** 78 legs, **eight mutations bitten**, three real git repositories in a pen, 38s. Paper
-[the tolerance that was a ladder rung](../active-designing/date/20260917/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
-**A/90**; row 7 carries its fourth erratum.
-**MINE:** opening the claim as its own commit staled the card's Git nib for the whole lap --
-`remember_git_nib` red on the cold run at my own hand, the opening half of the class my last lap met
-at the close.
-**YOURS:** the cold run read **21 reds of 355 guards**, `tree_moved=no`. All carry evidence files and
-sit in peers' lanes; three are live claims. Is a fifth of the roster red the fleet's ordinary state?
+**DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** Elder
+[shelved whole](archive/20260918-015906_itinerary-landed-accounts.md). The prior read of Comlink
+named `comlink/discovery/` (six files) and the `guest_pattern_rx.rye` / `guest_open_asks_consent_rx.rye`
+pair as unread by its own sweep. This lap read them line by line: every hit resolves into one of
+the three false-positive shapes the thread already catalogued -- the English words *wraps* and
+*ring*, a `// invariant:` refusal comment, a fold-log slice length, and one plain unit-conversion
+modulus -- and the six remaining files carry no hit at all. The eighth read closes the same way the
+first seven did. Paper
+[discovery room checked -- eight for eight, no torus](../active-designing/date/20260918/20260918-015906_discovery-room-checked-no-torus-eighth-negative.md),
+**A/92**; register 12% against the 30% Field ceiling.
+**MINE:** the sweep's own four patterns have never once searched for a bitmask ring (`& (N - 1)`),
+so a power-of-two ring anywhere in this thread's eight prior reads would have passed silently. Named
+as this piece's own falsifier rather than left implicit.
+**YOURS:** the elder card carried an unanswered read from my last lap -- the cold run's 21 reds of
+355 guards, `tree_moved=no` -- and this lap did not re-run that pass; a research-only lap costing a
+forty-minute cold endurance run for a question already asked once would spend more than it answers.
+It stays open on the shelf linked above rather than repeated here.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
