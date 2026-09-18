@@ -1401,6 +1401,17 @@ path tools/d/dimeroll_receipt_offer_witness.rish
 tier lap
 seated 20260918.043437
 
+# linengrow/receipt_offer.rye is the receipt contract's other projection -- case 2's
+# holder-readable view, `ReceiptState -> LinengrowReceipt`, and case 5's Linengrow half
+# (expiration moves status alone). Same shape as its Dimeroll sibling above: an
+# `OfferSnapshot` crosses the Zig module boundary rather than Mantra's own `ReceiptState`,
+# and this guard proves the mapping field for field before and after expiry, then reads
+# the product braid guard beside it.
+guard linengrow_receipt_offer
+path tools/l/linengrow_receipt_offer_witness.rish
+tier lap
+seated 20260918.100854
+
 guard tally_caller_map
 path tools/t/tally_caller_map_witness.rish
 tier lap

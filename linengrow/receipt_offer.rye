@@ -1,0 +1,95 @@
+//! linengrow/receipt_offer.rye -- Linengrow's readable projection of one receipt offer.
+//!
+//! `from_snapshot` reads the offer's own settled fields -- exactly what Mantra's
+//! replayed `ReceiptState` carries -- and reports a `LinengrowReceipt`: the holder's
+//! own readable view, naming product, recipient, purpose, the simulated offered
+//! value, the value basis, the promised return, issue and expiration times, and
+//! whether the offer still stands or has expired. Case 2 of the receipt contract
+//! (`active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md`)
+//! is this projection, read whole: raw product bytes stay absent from every field.
+//!
+//! This module imports no other room. Zig's own module boundary refuses an `@import`
+//! that reaches outside its root file's directory (proven `20260917` in
+//! `rye/tests/mantra_weave_test.rye`, REDS %589), so a snapshot -- rather than Mantra's
+//! `ReceiptState` type itself -- is what a caller in Mantra or a future integration
+//! witness hands across that boundary. `OfferSnapshot`'s eleven fields are exactly
+//! `ReceiptState.offer`'s `receipt_id`, `product_id`, `purpose`, `recipient_id`,
+//! `value_amount`, `value_unit`, `value_basis`, `return_kind`, `issued_at`,
+//! `expires_at`, and whether `ReceiptState.status == .expired`. This module never
+//! names `dimeroll/` or its projection type (`DimerollReceiptIntake`) -- the receipt
+//! contract's falsifier depends on it staying that way.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// The status Linengrow shows while the offer stands.
+pub const status_offered = "offered";
+/// The status Linengrow shows once the offer has expired.
+pub const status_expired = "expired";
+
+/// The one admitted offer's settled fields, carried across the room boundary --
+/// see the module head for why a snapshot rather than Mantra's own type.
+pub const OfferSnapshot = struct {
+    receipt_id: []const u8,
+    product_id: []const u8,
+    purpose: []const u8,
+    recipient_id: []const u8,
+    value_amount: u64,
+    value_unit: []const u8,
+    value_basis: []const u8,
+    return_kind: []const u8,
+    issued_at: u64,
+    expires_at: u64,
+    expired: bool,
+};
+
+pub const LinengrowReceipt = struct {
+    receipt_id: []const u8,
+    product_id: []const u8,
+    purpose: []const u8,
+    recipient_id: []const u8,
+    offered_value: u64,
+    value_unit: []const u8,
+    value_basis: []const u8,
+    promised_return: []const u8,
+    issued_at: u64,
+    expires_at: u64,
+    status: []const u8,
+};
+
+/// The count of fields `LinengrowReceipt` publishes, stated once so a reader and a
+/// future comparison are checked against the same number.
+pub const receipt_fields = 11;
+
+/// Project one admitted offer's snapshot into the receipt a holder reads. Read-only:
+/// this function writes no field of `snap`, and every returned string is a slice of a
+/// string `snap` already holds.
+pub fn from_snapshot(snap: OfferSnapshot) LinengrowReceipt {
+    _ = print;
+    // invariant: the published field set stays the size a reader is told to expect.
+    comptime assert(@typeInfo(LinengrowReceipt).@"struct".fields.len == receipt_fields);
+    // invariant: the admitted fact carries a receipt identity to show this receipt as.
+    assert(snap.receipt_id.len > 0);
+    // invariant: expiration is genuinely later than issuance, as admission already checked.
+    assert(snap.expires_at > snap.issued_at);
+    const status: []const u8 = if (snap.expired) status_expired else status_offered;
+    const out = LinengrowReceipt{
+        .receipt_id = snap.receipt_id,
+        .product_id = snap.product_id,
+        .purpose = snap.purpose,
+        .recipient_id = snap.recipient_id,
+        .offered_value = snap.value_amount,
+        .value_unit = snap.value_unit,
+        .value_basis = snap.value_basis,
+        .promised_return = snap.return_kind,
+        .issued_at = snap.issued_at,
+        .expires_at = snap.expires_at,
+        .status = status,
+    };
+    // invariant: the receipt names the same offer the admitted fact carries.
+    assert(std.mem.eql(u8, out.receipt_id, snap.receipt_id));
+    // invariant: the receipt states one of exactly two published statuses.
+    assert(std.mem.eql(u8, out.status, status_offered) or std.mem.eql(u8, out.status, status_expired));
+    return out;
+}

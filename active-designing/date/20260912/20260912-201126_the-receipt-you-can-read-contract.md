@@ -6,6 +6,19 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260918.100854` -- tightens admission, on Keaton's `20260918` word. The four
+borrowed rows named `20260916.065731` are replaced by their own derived numbers:
+`product_digest` moves from a 96-byte ceiling to an exact 64-byte length (SHA3-256 written in
+hex), `value_unit` moves to 32, `return_kind` to 48, `signature` to 192. Every borrowed number
+was a ceiling wider than what a real value needs, so this narrows what the product accepts --
+the one row this page's own text flagged as the change to watch for
+(`active-designing/20260918-000154_three-numbers-and-a-name.md`). The five identifiers the
+`each identifier` row governs are enumerated by name. `mantra/src/tally_receipt_offer_bounds.rye`,
+`mantra/src/tally_receipt_refusal.rye` (a new `wrong_length` reason and `exact_length_refusal`
+helper), and `mantra/src/receipt_offer.rye` carry the change; `product_digest` left the
+`identifiers` array it travelled inside and reads its own exact-length check.
+[`../../../tools/r/receipt_contract_ceiling_witness.rish`](../../../tools/r/receipt_contract_ceiling_witness.rish)
+reads `verdict=agree` against this table.
 **Revised:** `20260918.043437` -- purely additive. Dimeroll's projection lands:
 `dimeroll/receipt_offer.rye` publishes `DimerollReceiptIntake` and `from_snapshot`, and
 `dimeroll/receipt_offer_witness.rye` proves acceptance case 3's own half -- unrecognized offer,
@@ -90,36 +103,41 @@ Tally declares these ceilings before Mantra appends anything:
 | Field or population | Ceiling | Unit |
 |---|---:|---|
 | encoded fact | 4096 | bytes |
-| each identifier | 96 | ASCII bytes |
+| each identifier (receipt_id, holder_id, recipient_id, product_id, signer_id) | 96 | ASCII bytes |
 | purpose | 80 | ASCII bytes |
 | value basis | 120 | ASCII bytes |
 | value amount | 9,000,000,000 | smallest declared units |
-| product digest | 96 | ASCII bytes -- borrowed |
-| value unit | 96 | ASCII bytes -- borrowed |
-| return kind | 96 | ASCII bytes -- borrowed |
-| signature | 96 | ASCII bytes -- borrowed |
+| product digest | 64 | ASCII bytes, exact length (SHA3-256, hex) |
+| value unit | 32 | ASCII bytes |
+| return kind | 48 | ASCII bytes |
+| signature | 192 | ASCII bytes |
 | receipt facts in this replay | 1 | fact |
 | receipt-card width | 72 | cells |
 | receipt-card height | 18 | rows |
 
-**Four of those rows are borrowed rather than derived, and they say so** (`20260916.065731`). The
-contract declared eight ceilings while `ReceiptOfferFact` publishes fifteen fields, so admission
-reached for the nearest declared number: `mantra/src/receipt_offer.rye` refuses `product_digest`,
-`value_unit`, `return_kind`, and `signature` at the 96 this table declares for *each identifier*,
-and `product_digest` travels inside an array named `identifiers`. The four rows above write the
-number already enforced, so every admission and every refusal stands exactly where it stood. What
-they buy is a reader meeting `ceiling=96` on a refusal line and finding that number in the contract rather than
-inferring it from a neighbour's row.
+**Four rows were borrowed rather than derived, and now carry their own numbers**
+(`20260916.065731`, tightened `20260918.100854`). The contract first declared eight ceilings while
+`ReceiptOfferFact` publishes fifteen fields, so admission reached for the nearest declared number:
+`product_digest`, `value_unit`, `return_kind`, and `signature` were each refused at the 96 this
+table declares for *each identifier*, and `product_digest` travelled inside an array literally
+named `identifiers`. Naming the borrow first, on `20260916`, let a reader find `ceiling=96` on a
+refusal line inside this table. Deriving each field's own number, on `20260918`, is what makes that
+number honest rather than merely findable.
 
-**Each of the four still owes its own derivation**, and the honest shapes differ. `product_digest`
-is a SHA-256 hex digest of exactly **64** bytes, so its bound is an exact length rather than a
-ceiling, and moving it to 64 would refuse the 65-to-96 range that passes today -- a tightening, and
-the one change here that alters what the product admits. `value_unit` carries a unit name plus the
-mandatory `-simulated` suffix and measures **18** in the fixture; `return_kind` measures **14**;
-`signature` measures **20** as a fixture signature and will measure something else entirely when a
-real detached signature arrives, which is why guessing it small now would cost more than the
-borrow does. Choosing those four numbers changes what the product admits, so it returns to Keaton
-under this page's own closing clause.
+**Each of the four now carries the shape its own field wants.** `product_digest` is a 256-bit
+digest written in hex -- SHA3-256 here, and any 256-bit scheme reads the same 64 characters -- so
+its bound is an **exact length** rather than a ceiling: `mantra/src/tally_receipt_offer_bounds.rye`
+checks `value.len != product_digest_len` rather than `value.len > ceiling`, and a too-short digest
+refuses exactly as a too-long one does. This is the one row that **tightens** admission: the
+65-to-96-byte range a malformed digest could pass through before `20260918` now refuses at the
+door. `value_unit` carries a unit name plus the mandatory `-simulated` suffix and measures **18**
+in the fixture against its new ceiling of **32**; `return_kind` measures **14** against **48**.
+`signature` measures **20** as a fixture signature against a ceiling of **192**, chosen to hold an
+Ed25519 signature in either base64 (88) or hex (128) encoding with room for a scheme prefix --
+**not** a real post-quantum signature, which a detached, digest-referenced shape must carry
+instead of a wider number
+([`../../20260918-000154_three-numbers-and-a-name.md`](../../20260918-000154_three-numbers-and-a-name.md)
+names the arithmetic and the shape question this leaves for a second milestone).
 
 **A guard now asks the question that found them** (`20260917.024441`). `%767` recorded in its own
 second field that nothing in this tree asked whether every field a contract publishes carries a
@@ -131,15 +149,16 @@ ceiling site in `mantra/src/receipt_offer.rye`, and holds two classes at **zero*
 a ceiling no row names, and a row stating a number other than the one the code refuses at. It reads
 **14 sites, all named**.
 
-**What it reports rather than gates is the structural cause the repair left standing.** This table
-declares `each identifier` at 96 and never enumerates which fields are identifiers, and
-**five fields lean on that row alone** -- `receipt_id`, `holder_id`, `recipient_id`, `product_id`,
-`signer_id`. An undeclared membership is exactly the hole `product_digest` fell through, since it
-travels inside an array named `identifiers` and the borrow read as compliant from both sides.
-Enumerating the population changes what this page publishes, so it returns to Keaton with the four
-derivations rather than being taken by a lap. Two more readings ride beside it: `borrowed_rows`
-counts the four rows above, and `row_unenforced` reads **2** -- `receipt-card width` and
-`receipt-card height`, described here and drawn by nothing yet.
+**The hole the earlier repair reported is closed for the field it named.** The `each identifier`
+row now names its five members by hand -- `receipt_id`, `holder_id`, `recipient_id`, `product_id`,
+`signer_id` -- and `product_digest` left the `identifiers` array in
+`mantra/src/receipt_offer.rye` it travelled inside, reading its own exact-length check instead.
+`borrowed_rows` now reads **0**. The scan's own `population_undeclared` reading stays **1**: it
+counts a population row structurally, by whether every field leaning on it names its own row, and
+does not parse the parenthetical this table now writes -- so a future population row would meet the
+same reported (never gated) reading even when its members are written in plain English right beside
+it. `row_unenforced` still reads **2** -- `receipt-card width` and `receipt-card height`, described
+here and drawn by nothing yet.
 
 **Proven from both sides** on a planted field in a throwaway pen: 39 behaviors, every refusal
 planted and then lifted, and three mutations asserted to bite.
@@ -207,6 +226,10 @@ value_disagrees=0 borrowed_rows=4 row_unenforced=2` with 39 control legs, the br
 `cross_import=0 cross_type=0` with 47, and `linengrow/` and `dimeroll/` hold exactly the **175**
 tracked Rye sources the braid paragraph names. Nothing on this page needed a correction.
 
+**Superseded by the `20260918.100854` revision above.** The `borrowed_rows=4` reading is testimony
+of that hour; the ceiling guard reads `borrowed_rows=0` from the tightening onward, and the table
+this section cites is the one above rather than the one this paragraph describes.
+
 **What a reader could not take from it is how far the first whole stands from its own edge.** Of
 the four types this contract publishes:
 
@@ -214,7 +237,7 @@ the four types this contract publishes:
 |---|---:|
 | `ReceiptOfferFact` | **3** sources |
 | `ReceiptState` | **1** source |
-| `LinengrowReceipt` | **0** |
+| `LinengrowReceipt` | **2** sources (`20260918.100854`) |
 | `DimerollReceiptIntake` | **1** source (`20260918.043437`) |
 
 **So `cross_type=0` was a true reading over a population where neither projection type had been
@@ -223,24 +246,32 @@ why -- a boundary is cheap to hold before the code exists, which is the whole re
 early, and the same boundary proved cheap to hold once one side arrived: `dimeroll/` grew from
 five files to eight and `cross_type` stayed zero.
 
-**Mantra's side had begun and Dimeroll's now has too, and neither has met the other yet.**
+**Mantra's side had begun, and now both projections have too -- and neither has met Mantra yet.**
 `mantra/src/` carries `receipt_offer.rye`, its two witnesses, and the two Tally bound modules.
-`dimeroll/` carries `receipt_offer.rye` and `receipt_offer_witness.rye`
-(`20260918.043437`), proving `DimerollReceiptIntake`'s own mapping -- unrecognized offer, zero
-journal entries, before and after expiry -- against an `OfferSnapshot` built from the contract's
-own fixture values. It has not yet been chained through Mantra's actual `Log.append` and
-`Log.replay`, because Zig's own module boundary refuses an `@import` that reaches outside its root
-file's directory (REDS %589, proven on metal `20260917` in `rye/tests/mantra_weave_test.rye`), and
-`dimeroll/receipt_offer.rye` says so in its own module head. The dual-product witness this
-milestone's acceptance still wants is what closes that last mile, once Linengrow's own side and a
-carrier for the room boundary both stand.
+`dimeroll/` carries `receipt_offer.rye` and `receipt_offer_witness.rye` (`20260918.043437`),
+proving `DimerollReceiptIntake`'s own mapping -- unrecognized offer, zero journal entries, before
+and after expiry -- against an `OfferSnapshot` built from the contract's own fixture values.
+`linengrow/receipt_offer.rye` and `receipt_offer_witness.rye` (`20260918.100854`) prove
+`LinengrowReceipt`'s own mapping the same way -- product, recipient, purpose, offered value, value
+basis, promised return, issue and expiration times, and status, before and after expiry -- and
+carry the naming decision below: the new module is `receipt_offer.rye`, the type stays
+`LinengrowReceipt`. Neither projection has yet been chained through Mantra's actual `Log.append`
+and `Log.replay`, because Zig's own module boundary refuses an `@import` that reaches outside its
+root file's directory (REDS %589, proven on metal `20260917` in `rye/tests/mantra_weave_test.rye`),
+and both projection modules say so in their own module heads. The dual-product witness this
+milestone's acceptance still wants is what closes that last mile, once a carrier for the room
+boundary stands.
 
-**A NAMING COLLISION WAITS AT THE FIRST IMPLEMENTATION STEP, and it is the finding worth carrying
-off this page.** `linengrow/` already holds `receipt.rye`, `receipt_core.rye` and
-`receipt_verify_guest.rye`, and those are **SLC-L1's verifiable receipt** -- sign, append, fold,
-verify -- an elder and unrelated subject. A hand implementing `LinengrowReceipt` reaches for exactly
-those names and lands in another milestone's module. Which name this product's projection takes is a
-product-meaning decision, so it waits under the closing clause below with the other two.
+**The naming collision named below is resolved, on Keaton's `20260918` word.** `linengrow/` already
+held `receipt.rye`, `receipt_core.rye` and `receipt_verify_guest.rye` -- **SLC-L1's verifiable
+receipt**, sign, append, fold, verify, an elder and unrelated subject -- and a hand implementing
+this milestone's projection could have reached for exactly those names. It instead reaches for
+`linengrow/receipt_offer.rye`, echoing `mantra/src/receipt_offer.rye` across the two rooms the
+same two words already name, and the elder three files stand untouched
+([`../../20260918-000154_three-numbers-and-a-name.md`](../../20260918-000154_three-numbers-and-a-name.md)
+Three). `LinengrowReceipt` keeps the contract's own word rather than moving to
+`LinengrowReceiptOffer`, since the braid guard reads the type off this page's residence table and
+nothing elsewhere hunts for the name.
 
 **Of the eight acceptance cases, none yet carries its own witness.** The two rostered guards hold
 the falsifier's code half and this page's ceiling declarations -- real work, and a different job

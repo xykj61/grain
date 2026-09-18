@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260918.101434` (EDT)
+**Stamp:** `20260918.063504` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -134,24 +134,18 @@ whole](archive/20260918-092900_itinerary-grass-pin-agreement-account.md).
 **GRASS -- `linengrow/setu_desk_hold0_check.rye` account.** [Shelved
 whole](archive/20260918-093822_itinerary-grass-hold0-account.md).
 
-**GRASS -- `linengrow/setu_desk_hold1_check.rye` account.** [Shelved
-whole](archive/20260918-095829_itinerary-grass-hold1-account.md).
-
-**GRASS -- the zero-assert ratchet account.** [Shelved
-whole](archive/20260918-101337_itinerary-grass-zero-assert-ratchet-account.md).
-
-**GRASS -- THE camelCase FN RATCHET REACHED ZERO.** `tally/receipt_offer_bounds.rye` carried the
-whole population: `encodedFact` and `factCount`, the two `pub fn` names the ratchet's own grep
-(`^( *)?(pub )?fn [a-z]+[A-Z]`) had matched. A tree-wide grep for both spellings, inside and outside
-the ratchet's own rostered rooms, found no caller -- `tally/receipt_refusal.rye` carries its own
-`encoded_fact_refusal` and `fact_count_refusal` under different names, and `mantra/src/receipt_offer.rye`
-calls those, never these. Renamed in place to `encoded_fact` and `fact_count`;
-`tools/t/tally_receipt_offer_bounds_witness.rish` GREEN unchanged (7 control legs, 0 failing);
-`tame_style_check`'s camelCase ratchet fell 2 to **0**. No claim opened: one ordinary repair to an
-existing tracked file, named by no ledger row. **YOURS:** `tame_style_check` still prints
-`@memcpy` migration (135), `parseInt(` migration (54), `Ed25519` migration (1), and the top of the
-`functions past 70 lines` list (`functions_over_70=694`, headed by `glow/lower_shop_gate_witness.rye`);
-the next agent-doable pick is any one, claim-board checked first.
+**GRASS -- `linengrow/setu_desk_hold1_check.rye` NAMES THE SAME READ-BOUND INVARIANTS.** Same shape
+as the hold0 repair one row above: `file_len` and `run_check` each read into a fixed buffer --
+`[1024]u8`, `[1024]u8`, `[hold1.chrome_line_max]u8` (x2) -- and nothing stated that the read or
+either formatted line actually stays inside the buffer it was drawn from. `file_len` now asserts its
+path is non-empty and its read length never exceeds the 1024-byte buffer; `run_check` asserts the
+station read stays inside `station_buf`, and the two formatted lines (`chrome`, `detail`) each stay
+inside their own buffers. `tools/s/setu_desk_hold1_witness.rish` GREEN unchanged (device-free
+fixture leg, no station cache); `width-check` clean; `tame_style_check`'s zero-assert ratchet falls
+3 to 2, dropping this file off the remaining list. No claim opened: an ordinary repair to one
+existing tracked file, named by no ledger row. **YOURS:** the ratchet now names 2 files, both under
+`linengrow/` -- `setu65_lab_tx_check.rye`, `setu_desk_hold_wayland_check.rye`; the next agent-doable
+pick is either one, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -177,11 +171,18 @@ whole](archive/20260918-072133_itinerary-diffuser-row-alignment-account.md). **Y
 `Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
 the falsifier itself waits on RAPL or `perf` access.
 
-**DIFFUSER -- THE FIXED-INTERVAL-POLLING PAPER'S QA ROUND TWO CLOSED IT, C+ TO A.** [Shelved
-whole](archive/20260918-095308_itinerary-diffuser-fixed-interval-qa-round-two.md): shorter
-sentences throughout, same facts, composite 77 to 94. **YOURS, BAKERY:** the backoff proposal at
-[`active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md`](../active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md)
-stays buildable now, no hardware dependency.
+**DIFFUSER -- A SECOND ENERGY FIRST-PRINCIPLES PROPOSAL, FIXED-INTERVAL POLLING.**
+[`active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md`](../active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md):
+four Caravan loops sleep a fixed interval (2ms, 2ms, 20ms, 50ms) and check a condition for as long
+as it takes, spending one wake per interval whether or not anything changed -- the same trade
+`caravan/harvest.rye`'s own comment already names in words, without noticing the trade could bend
+the other way. **YOURS, BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
+`wait_fetcher_or_source_lost` is buildable now, no hardware dependency; the falsifier itself waits
+on `perf` or a context-switch counter. QA `register=72(with-lists)/56(raw) reach=60 truth=100`,
+composite **C+ (77)** after one repair round (register 44% to 28% negative) -- under the Field
+door at B; a second round wants shorter sentences throughout rather than the register fix this lap
+made room for. **YOURS, ANY SHIP:** a depth-2 QA molt already ran once; a further pass is its own
+round's work per `quality-assurance.md`'s own bound.
 
 **DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
 whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
@@ -260,7 +261,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1507987de` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4a6e0528b7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
