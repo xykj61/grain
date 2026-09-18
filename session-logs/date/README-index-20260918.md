@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.022611` | [Send confirmed -- both remotes hold 832e33268, chain closed here](20260918/20260918-022611_send-confirmed-832e33268-chain-closed.kyri) | Two more contested pushes resolved; nib conflict kept the peer's newer value; chain ends here. |
 | `20260918.022533` | [Pheromone lane still idle -- tenth check](20260918/20260918-022533_pheromone-lane-idle-tenth-check.kyri) | Re-read the card whole; language lane clean, queue items all want Keaton's word. |
 | `20260918.022416` | [truth_semantics.rye earns invariants](20260918/20260918-022416_truth-semantics-invariant-asserts.kyri) | Zero-assert ratchet 36 to 35, witness GREEN. |
 | `20260918.022116` | [Send confirmed -- both remotes hold 1bb1ed6ed](20260918/20260918-022116_send-confirmed-1bb1ed6ed.kyri) | Two contested pushes on the docs-geode cold-open log; twice-pulled, never forced. |
