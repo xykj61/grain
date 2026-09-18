@@ -66,3 +66,9 @@ stamp 20260918.063707
 epoch 1789727827
 paths mantra/bolt_apply_step.rye
 what add bare asserts to bolt_apply_step.rye's write_leaf_pending, apply_pending, and recover_after_crash, same discipline as rune_null/nock_jet_dec
+claim grass-turn-route-asserts
+seat grass
+stamp 20260918.064328
+epoch 1789728208
+paths comlink/turn_route.rye
+what add bare asserts to turn_route.rye's turn_newer, freshest, and read_turn, same discipline as rune_null/nock_jet_dec
