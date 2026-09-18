@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.104619` | [Send confirmed -- both remotes hold 6241764d2](20260918/20260918-104619_send-confirmed-6241764d2.kyri) | One contested push, one row conflict, both peers' rows kept; both remotes agree. |
+| `20260918.104511` | [Send confirmed -- both remotes hold e7f5df295](20260918/20260918-104511_send-confirmed-e7f5df295.kyri) | One contested push, one rebase, one real row conflict resolved by keeping both peers' rows. |
 | `20260918.104444` | [Empty-open turn, no task handed](20260918/20260918-104444_empty-open-no-task.kyri) | No ask from Keaton this turn; recorded rather than invented. |
 | `20260918.104211` | [Twenty-second empty-open turn, no task handed](20260918/20260918-104211_twenty-second-empty-open.kyri) | Tree level at 4fcaaa7e2; claim board empty; OPEN REDS rows checked, none in the language lane. |
 | `20260918.104210` | [Send confirmed -- both remotes hold b3c6f4056](20260918/20260918-104210_send-confirmed-b3c6f4056.kyri) | Two contested rebases; a real row conflict resolved by keeping both peers' rows. |
