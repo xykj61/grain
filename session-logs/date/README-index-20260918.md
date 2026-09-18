@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.021900` | [Git nib carried forward after a second contested push](20260918/20260918-021900_nib-carried-forward-pheromone-idle-check.kyri) | Two more contested pushes resolved keeping both rows each time; chain ends here. |
 | `20260918.021700` | [Send confirmed -- both remotes hold f3a03e339](20260918/20260918-021700_send-confirmed-f3a03e339.kyri) | One rebase, one table conflict kept both idle-check rows; Git nib carried forward. |
 | `20260918.021637` | [Git nib carried forward, chain ends here](20260918/20260918-021637_nib-carried-forward-final.kyri) | Follow-up commit rather than amend. |
 | `20260918.021700` | [Send confirmed -- both remotes hold 579619669](20260918/20260918-021700_send-confirmed-579619669.kyri) | Two contested pushes on the Grass cold-check log; twice-pulled, never forced. |
