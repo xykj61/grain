@@ -98,7 +98,19 @@ mode="${1:-count}"
 #                          `lower_shop_nest` 2, `lower_trap` 1). `lower_alias` stays the one body
 #                          that is genuinely a different rule -- a bare `[]u8` that maps the dot
 #                          -- and the one wanting `Dot.to_underscore`.
-CEILING=8
+#    8  `20260917.213500`  the largest singleton fell: `glow/lower_shop_gate.rye`, 12 call sites,
+#                          became a stub. Its body was the one `zig_ident.rye`'s own header names
+#                          as genuinely different -- it answered a LENGTH ceiling with
+#                          `error.MissingFace` where 28 peers answered `error.BadIdent`, and it
+#                          mapped no dot at all. The wrapper keeps both: it calls
+#                          `zig_ident.safe_ident` with `.refuse` (the dot was already refused by
+#                          falling through the character check) and catches `error.BadIdent`,
+#                          answering `error.MissingFace` in its place -- so `rb.ParseError` and
+#                          the witness leg that switches on it (`lower_shop_gate_witness.rye:901`)
+#                          stay unmoved, and `LowerError` gains no new member. Seven singletons
+#                          remain (`lower_core` 4, `lower_call3` 4, `lower_call2` 3, `lower_alias`
+#                          2, `lower_face_lit` 2, `lower_shop_nest` 2, `lower_trap` 1).
+CEILING=7
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }
