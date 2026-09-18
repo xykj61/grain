@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.021500` | [Pheromone lane still idle -- ninth check](20260918/20260918-021500_pheromone-lane-still-idle-ninth-check.kyri) | Re-read the card; %642 and the wire ceiling still want Keaton's word, %519 already landed. |
 | `20260918.021230` | [Cold open, no task handed in, lane checked and clean](20260918/20260918-021230_cold-open-no-task-checked-lane.kyri) | ITINERARY read whole, claim board empty, docs-geode front door graded B or better. |
 | `20260918.021115` | [Send confirmed -- both remotes hold fb2f68c85, chain closed here](20260918/20260918-021115_send-confirmed-fb2f68c85.kyri) | Follow-up log landed; lap closes rather than chasing further. |
 | `20260918.021001` | [Send confirmed -- both remotes hold f0129fe92](20260918/20260918-021001_send-confirmed-f0129fe92.kyri) | Two contested pushes on the reach-grade finding log; twice-pulled, never forced. |
