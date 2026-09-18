@@ -34,18 +34,19 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE SAME SHAPE, TAKEN A THIRD TIME.** Elder account
-[shelved whole](archive/20260918-034135_itinerary-pheromone-rune-cast-account.md):
-the ident-duplication ladder close, `rune_call.rye`'s four asserts, and `rune_cast.rye`'s three,
-all kept there. This lap took `glow/rune_call2.rye` -- `gate_slice`, `a_slice`, and `b_slice`'s
-own postconditions on the lexer's name ceiling, `parse_ident`'s postcondition on its returned
-ident (non-empty, within `max_name_len`), and `parse`'s postcondition on the constructed spec's
-three fields, six bare `assert()` calls across five functions, `assert` newly imported. Witness
-GREEN unchanged before and after, ratchet 31 to 30. **PROVEN:** `glow_rune_call2_witness`,
-`glow_run_contract`, `tame_style_check`, `width-check`, GREEN on metal.
+**PHEROMONE -- THE SAME SHAPE, TAKEN A FOURTH TIME.** Elder account
+[shelved whole](archive/20260918-035749_itinerary-pheromone-rune-call3-account.md):
+the ident-duplication ladder close, `rune_call.rye`'s four asserts, `rune_cast.rye`'s three, and
+`rune_call2.rye`'s six, all kept there. This lap took `glow/rune_call3.rye` -- `gate_slice`,
+`a_slice`, `b_slice`, and `c_slice`'s own postconditions on the lexer's name ceiling,
+`parse_ident`'s postcondition on its returned ident (non-empty, within `max_name_len`), and
+`parse`'s postcondition on the constructed spec's four fields, eight bare `assert()` calls across
+six functions, `assert` newly imported. Witness GREEN unchanged before and after, ratchet 30 to
+29. **PROVEN:** `glow_rune_call3_witness`, `glow_run_contract`, `tame_style_check`, `width-check`,
+GREEN on metal.
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_call3.rye`, `glow/rune_calln.rye`, and twelve more zero-assert `glow/` files remain,
-same shape, agent-doable, next lap.
+`glow/rune_calln.rye` and twelve more zero-assert `glow/` files remain, same shape, agent-doable,
+next lap.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -204,7 +205,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2be786c8c5` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6b21b43031` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
