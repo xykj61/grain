@@ -59,3 +59,9 @@ epoch 1789695657
 paths tools/rye/cyclic_state.rye tools/c/cyclic_state_witness.rish active-designing/
 what Row 3 of the-bounded-torus-moonshots (Cyclic topos): building a self-owned witness on wrap_ring's own Row-1 state -- hashing the ring's byte-content and its full state (bytes plus lap tags) before and after one full lap of identical writes, to test whether the ring returns to itself or only its content does. Diffuser-authored tool, touches no other lane's file.
 
+claim grass-gauge-git-signing-sweep
+seat grass
+stamp 20260917.215651
+epoch 1789696611
+paths .claude/rules/git-signing.md
+what Gauge Field-target sweep of git-signing.md (55%, 32/58 negative sentences): restate negations affirmatively where safe, holding every claim, figure, stamp, and quote exactly. Grass's own assigned page from the ceiling list. Touches one law page.
