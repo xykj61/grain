@@ -12,6 +12,7 @@
 | `20260918.044124` | [Gate holds, REDS rows lie elsewhere](20260918/20260918-044124_gate-still-holds-reds-open-rows-belong-elsewhere.kyri) | Fourth check: gate unmoved, no OPEN row fits. |
 | `20260918.043941` | [rune_cell.rye takes rune_call3's asserted shape](20260918/20260918-043941_grass-rune-cell-asserts.kyri) | Six asserts landed, claimed and closed; one rebase, nib carried forward. |
 | `20260918.043908` | [Opening 1 closed: a closed form beats the search](20260918/20260918-043908_evenspread-closed-form-beats-search.kyri) | Run-kill 52 beats 33, by arithmetic. |
+| `20260918.043656` | [rune_cell.rye earns six invariant asserts](20260918/20260918-043656_rune-cell-invariants.kyri) | Duplicate lap; peer landed the same file 2m45s earlier, folds as a no-op. |
 | `20260918.043504` | [Send confirmed -- both remotes hold 394e668d4](20260918/20260918-043504_send-confirmed-394e668d4.kyri) | Two contested nib conflicts, each skipped and re-derived; twice-pulled, never forced. |
 | `20260918.043047` | [Send confirmed -- both remotes hold f4ab509b4, rune_calln lands after a real collision](20260918/20260918-043047_send-confirmed-f4ab509b4.kyri) | Four rebases; a real duplicate-lap collision on rune_call3.rye folded as a no-op. |
 | `20260918.043005` | [docs-geode swept three ways, still empty](20260918/20260918-043005_petrichor-lane-swept-three-ways-still-empty.kyri) | Link walk, register scan, living-docs lint all clean; Diffuser gate still holds. |
