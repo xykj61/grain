@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.235358` | [Send -- lower_core delegation landed on both remotes](20260917/20260917-235358_lower-core-sent.kyri) | Both remotes hold d7dfe84605 after three rebases. |
 | `20260917.235107` | [A near-miss on a custody refusal](20260917/20260917-235107_gren-custody-refusal-nearmiss.kyri) | Caught and reverted before commit; nothing landed. |
 | `20260917.235044` | [What stands built](20260917/20260917-235044_what-stands-built.kyri) | Contract true; two of four types unwritten. |
 | `20260917.234917` | [lower_core delegates, ident-duplication reaches zero](20260917/20260917-234917_lower-core-last-singleton.kyri) | Last singleton lands; room's 29 copies are all stubs now. |
