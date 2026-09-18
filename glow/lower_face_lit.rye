@@ -11,6 +11,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const face_lit = @import("face_lit.rye");
 const nest_type = @import("nest_type.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = face_lit.ParseError || error{
     Overflow,
@@ -33,22 +35,14 @@ fn append_print(out: []u8, used: *u32, comptime fmt: []const u8, args: anytype) 
     used.* += n;
 }
 
+/// The one ident rule, reached through `glow/zig_ident.rye`. This module's two call sites
+/// lower a face-lit face and never a wing, so the dot stays refused.
 fn zig_safe_ident(face: []const u8, out: *[face_lit.max_name_len]u8) LowerError!u32 {
-    if (face.len == 0 or face.len > face_lit.max_name_len) return error.BadIdent;
-    const n: u32 = @intCast(face.len);
-    var i: u32 = 0;
-    while (i < n) : (i += 1) {
-        const c = face[@as(usize, @intCast(i))];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[@as(usize, @intCast(i))] = mapped;
-    }
+    var slot: refusal.Slot = null;
+    const n = zig_ident.safe_ident(face, out[0..], face_lit.max_name_len, "face-lit-face", .refuse, &slot) catch return error.BadIdent;
+    // invariant: the rule wrote exactly the face it was handed, so the caller's own length is
+    // what returns rather than a truncation the buffer would have hidden
+    assert(n == face.len);
     return n;
 }
 
