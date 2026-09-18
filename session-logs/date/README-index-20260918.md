@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.033539` | [Torus thread closed, no new claim opened](20260918/20260918-033539_torus-thread-closed-no-new-claim-opened.kyri) | Live shell_dialect claim already landed (0f24869f3); no agent-doable DIFFUSER lap tonight. |
 | `20260918.033506` | [Send confirmed -- both remotes hold 8f078dda4](20260918/20260918-033506_send-confirmed-8f078dda4.kyri) | Three contested pushes; twice-pulled, never forced. |
 | `20260918.033301` | [Round closes at 606c0c954; a pin-only follow-up caught and reverted](20260918/20260918-033301_round-closes-606c0c954-nib-correction.kyri) | A refused commit shape typed and then reset before it reached a remote. |
 | `20260918.033057` | [Send confirmed -- both remotes hold 1f1009577](20260918/20260918-033057_send-confirmed-1f1009577.kyri) | Four contested pushes on the torus-withdrawal commit; twice-pulled, never forced. |
