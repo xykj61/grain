@@ -13,6 +13,7 @@
 //!   =/  tick                 -- bare face, mold left implicit for now
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -36,12 +37,18 @@ pub const FaceSpec = struct {
 pub fn face_slice(spec: *const FaceSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_name_len and spec.face[len] != 0) len += 1;
+    // invariant: the scan above stops at or before the buffer's own
+    // ceiling, so a returned slice never claims more than the buffer holds.
+    assert(len <= max_name_len);
     return spec.face[0..len];
 }
 
 pub fn mold_slice(spec: *const FaceSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_name_len and spec.mold[len] != 0) len += 1;
+    // invariant: the scan above stops at or before the buffer's own
+    // ceiling, so a returned slice never claims more than the buffer holds.
+    assert(len <= max_name_len);
     return spec.mold[0..len];
 }
 
@@ -103,5 +110,9 @@ pub fn parse(line: []const u8) ParseError!FaceSpec {
     if (mold_text.len > 0) {
         @memcpy(spec.mold[0..mold_text.len], mold_text);
     }
+    // invariant: a constructed spec never claims more of its fixed buffers
+    // than the length checks above already proved fit.
+    assert(face_text.len <= max_name_len);
+    assert(mold_text.len <= max_name_len);
     return spec;
 }
