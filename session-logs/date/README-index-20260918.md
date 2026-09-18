@@ -12,6 +12,7 @@
 | `20260918.094022` | [Ninth empty-open turn, still no task](20260918/20260918-094022_ninth-empty-open-still-no-task.kyri) | Board clean, six own Bakery proposals unclaimed, water-row rota surfaced nothing new. |
 | `20260918.094013` | [What the night did](20260918/20260918-094013_what-the-night-did.kyri) | All three items landed; my fold broke six guards. |
 | `20260918.094003` | [The receipt fact meets Glow's shape ceiling](20260918/20260918-094003_receipt-shape-line-ceiling.kyri) | 15 fields hit the 9-field cap; a ruling for Incense. |
+| `20260918.093822` | [grass-hold1-invariants](20260918/20260918-093822_grass-hold1-invariants.kyri) | hold1-check gets the same read-bound asserts as hold0; ratchet 3 to 2 |
 | `20260918.093543` | [Eighth empty-open turn, no task handed](20260918/20260918-093543_eighth-empty-open-turn-no-task-handed.kyri) | Claim board clean, three own Bakery proposals still unclaimed, research queue saturated for today. |
 | `20260918.093311` | [MAP.md's module-ring links start reaching README.md](20260918/20260918-093311_map-module-ring-orphan-links.kyri) | Six orphan module READMEs found and fixed by naming README.md directly in seven links. |
 | `20260918.093115` | [grass-hold0-invariants](20260918/20260918-093115_grass-hold0-invariants.kyri) | hold0-check gets two named read-bound asserts; ratchet 4 to 3 |
