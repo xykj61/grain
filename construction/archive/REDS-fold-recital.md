@@ -873,4 +873,6 @@ at a closed fold.*
 
 *Row %821 folded to [`REDS-the-key-next-door-rows-821.md`](REDS-the-key-next-door-rows-821.md) on `20260917.203048`, **BOOKED** -- a prediction is only as true as the population it was taken over, and a guard's population is its own roster.*
 
+*Row `%745` folded to [`REDS-the-pen-the-runtime-took-over-rows-745.md`](REDS-the-pen-the-runtime-took-over-rows-745.md) on `20260917.205112`, **BOOKED** -- the nineteen-file amphora repair the row asked for had already landed a day earlier; the pin caught up and folded in the same lap.*
+
 *Row %806 folded to [`REDS-one-assert-rather-than-an-if-rows-806.md`](REDS-one-assert-rather-than-an-if-rows-806.md) on `20260917.205315`, **CLOSED** -- a witness's own past-tense comment claiming a fix is not a closure; the ledger learns only when a hand runs the witness and says so.*

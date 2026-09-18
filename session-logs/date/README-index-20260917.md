@@ -9,6 +9,7 @@
 | `20260917.205432` | [the send folded a neighbor's account](20260917/20260917-205432_the-send-folded-a-neighbors-account.kyri) | Rebase pushed ITINERARY over bound; COPAL account shelved, index conflict resolved by union. |
 | `20260917.205400` | [The smaller paper gets written](20260917/20260917-205400_the-smaller-paper-gets-written.kyri) | Row 11's paper written; the moonshot ladder closes. |
 | `20260917.204819` | [REDS %806 was already fixed and stood open anyway](20260917/20260917-204819_reds-806-was-already-fixed-and-unclosed.kyri) | The ryekey dangling-else fix (e4c6f40b7) and its wider meter both landed and read GREEN; the ledger row never learned. Closed it. |
+| `20260917.204349` | [REDS %745: OPEN to BOOKED](20260917/20260917-204349_amphora-pen-leak-booked.kyri) | Amphora pen leak repair had already landed; ledger caught up, verified GREEN. |
 | `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row, rishi fresh; every open item wants Keaton's word. |
 | `20260917.204057` | [The pier that cannot hear its own joules](20260917/20260917-204057_the-pier-that-cannot-hear-its-own-joules.kyri) | Row 6's RAPL assumption fails five ways on this. |
 | `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit under CLAIM-AS-OVERRIDE; none touch docs-geode. |
