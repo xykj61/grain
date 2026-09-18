@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.073415` | [Send confirmed -- both remotes hold 774120b22](20260918/20260918-073415_send-confirmed-774120b22.kyri) | Two contested pushes on the second quiet cold-open log; nib and day-shelf rows resolved each rebase. |
 | `20260918.073157` | [Second quiet cold open, still no agent-doable work](20260918/20260918-073157_still-quiet.kyri) | Register, claim board, and docs-geode front doors re-checked; all unchanged and clean. |
+| `20260918.073132` | [backtick_path genres written](20260918/20260918-073132_backtick-path-genres-and-two-rooms-fix.kyri) | Three genres named; a stale citation fixed; ceiling 64 to 62. |
 | `20260918.072935` | [Quiet open -- no explicit task, board and gates checked](20260918/20260918-072935_quiet-open-no-task.kyri) | No new instruction this turn; claim board empty, no gate stop; reported state, recommended check-in. |
 | `20260918.072613` | [Send confirmed -- both remotes hold 08cd35576](20260918/20260918-072613_send-confirmed-08cd35576.kyri) | REDS %825 close and its log; a git-nib follow-up dropped empty on a rebase and was rewritten fresh. |
 | `20260918.072328` | [Duplicate-content census overstates its case](20260918/20260918-072328_duplicate-content-census-mantra.kyri) | Falsifier fired on the largest of 175 duplicate groups. |
