@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.041430` | [Send confirmed -- both remotes hold de5536851, response closes here](20260918/20260918-041430_send-confirmed-de5536851-response-closes.kyri) | Fifth hop; response ends deliberately rather than chasing further. |
 | `20260918.041220` | [Send confirmed -- both remotes hold c0262d502, chain closed](20260918/20260918-041220_send-confirmed-c0262d502-chain-closed.kyri) | Fourth and final hop; clean push, no further conflict. |
+| `20260918.041143` | [Generic offset search confirms ceiling](20260918/20260918-041143_generic-offset-search-confirms-ceiling.kyri) | Generic search matches the family's ceiling; GREEN. |
 | `20260918.041020` | [Send confirmed -- both remotes hold 976db703e, chain closes here](20260918/20260918-041020_send-confirmed-976db703e.kyri) | Third hop of a contested chain; docs-geode still reads clean. |
 | `20260918.040910` | [The cache eight trees could share -- research item 1, closed](20260918/20260918-040910_the-cache-eight-trees-could-share.kyri) | Cross-ship receipt-key measurement; the self-digest finding; B+ design essay. |
 | `20260918.040640` | [Send confirmed -- both remotes hold d338e483a, chain closes here](20260918/20260918-040640_send-confirmed-d338e483a.kyri) | Two-hop contested push; a self-referential nib caught and corrected by hand. |
