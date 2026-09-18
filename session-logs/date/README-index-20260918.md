@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.051200` | [Fifth confirmation -- gate still closed](20260918/20260918-051200_petrichor-fifth-confirmation-gate-still-closed.kyri) | Register wall and docs-geode witness both GREEN; no agent-doable pickup. |
+| `20260918.045608` | [Send confirmed -- both remotes hold bd8a60f05, a real merge](20260918/20260918-045608_send-confirmed-bd8a60f05-a-real-merge.kyri) | Two rebases forked into identical-tree, different-hash histories; a merge (not another rebase) converged them. |
 | `20260918.045345` | [Send confirmed -- both remotes hold 3c76f73fe](20260918/20260918-045345_send-confirmed-3c76f73fe.kyri) | Fourteen contested pushes; two duplicate laps folded honest. |
 | `20260918.045142` | [Sixth confirmation -- gate still holds](20260918/20260918-045142_sixth-confirmation-gate-still-holds.kyri) | Diffuser's Receipt Card/Consent Rail pair still unlanded; docs-geode witness GREEN. |
 | `20260918.044915` | [rune_bounded_trap.rye takes rune_cell's asserted shape](20260918/20260918-044915_grass-rune-bounded-trap-asserts.kyri) | Four asserts landed, claimed and closed; two rebases, nib carried forward. |
