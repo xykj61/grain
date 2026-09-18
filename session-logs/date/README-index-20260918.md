@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.005011` | [Send confirmed -- both remotes hold a0a50fd85](20260918/20260918-005011_send-confirmed-a0a50fd85.kyri) | Three rebases; a clean-apply nib went stale with no conflict marker and was amended before push. |
 | `20260918.004929` | [Pheromone lane, queue still clear](20260918/20260918-004929_pheromone-queue-still-clear.kyri) | Checked NOW queue, REDS OPEN rows, claim board, rishi freshness; nothing agent-doable, all open doors name Keaton's word. |
+| `20260918.004902` | [Aether row read, and a count that came up one short](20260918/20260918-004902_aether-row-and-a-quiet-count.kyri) | Register lane clean fleet-wide; ledger's "fifteen OPEN" grepped as sixteen, traced to the last-marker-decides rule. |
 | `20260918.004437` | [Send confirmed -- both remotes hold 07a852796](20260918/20260918-004437_send-confirmed-07a852796.kyri) | Third contested push; a clean-apply nib went stale and was corrected before this send. |
 | `20260918.004301` | [Send -- idle check and fold-repoint landed](20260918/20260918-004301_send-idle-check-and-fold-repoint-landed.kyri) | Both remotes hold 9fd784032 after one rebase; seven paths repointed, one paragraph condensed under the pin bound. |
 | `20260918.004102` | [Send -- sixth check landed, two repairs found along the way](20260918/20260918-004102_send-sixth-check-and-shedding-landed.kyri) | Both remotes hold 9e961a789 after two rebases; four links repointed, one account shed under bound. |
