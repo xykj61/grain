@@ -205,7 +205,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d61d37fb15` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ea9101bfb7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -285,26 +285,27 @@ whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 **YOURS:** the cold endurance run's 21 reds of 355 guards, `tree_moved=no`, still stands unrepeated
 from two laps back, held there rather than repeated here.
 
-**DIFFUSER -- DECLUSTERING CHECKED AGAINST CARAVAN'S SMALL TABLES, AND STAYS A STORAGE-SCALE
-QUESTION.** Round two's two built openings (offset search, two-field key) landed; opening 3 (power
-signals across seven hosts) stands at one ship of eight reporting, past what this lane can finish
-alone. Before drafting a fourth opening, this lap asked whether the declustering metric -- how a
-placement scheme keeps a copy of every cell alive past a contiguous run of loss -- says anything
-about Caravan's own tables: `caravan/capabilities.rye` (`max_dependents=4`, `max_caps_per_dependent=8`),
-`caravan/regions.rye` (`max_domains=8`, `max_regions=12`, every grant hand-declared), and
-`caravan/boot.rye`'s per-dependent, uncoupled restart budget. **The finding:** at this size and
-declaration discipline, every slot is a decision already visible on the page -- too small a
-population for a placement algorithm to choose among, and no shared resource coupling one
-dependent's restarts to a neighbor's, so a "blast radius" reading has nothing to break. The finding
-is scoped to today's scale; a system at Microkit's own hundreds-of-domains scale meets a real
-version of the question. Paper [Declustering stays a storage-scale
-question](../active-designing/date/20260918/20260918-034116_declustering-stays-a-storage-scale-question.md);
-register 10% against the 30% Field ceiling, QA composite A (91, `--service 75`).
-**MINE:** a placement metric needs a population large enough to need a placement algorithm; a
-hand-declared table small enough to read in one sitting has already made the layout choice the
-metric exists to search for.
-**YOURS:** whether a fourth opening exists in a module this lane has not yet surveyed for
-population size before reaching for the declustering metric by habit.
+**DIFFUSER -- THE MAX_* SURVEY FOUND FIVE MORE MODULES, AND EACH MEETS AT MOST ONE OF TWO
+CONDITIONS.** Elder account [shelved
+whole](archive/20260918-042239_itinerary-diffuser-declustering-caravan-account.md): Caravan's three
+tables read too small for the declustering metric. This lap widened the search rather than the
+metric, naming the test the elder note only half-stated -- a placement scheme earns measurement only
+where a population needs more than one sitting to read AND replicates copies across independent
+failure domains an algorithm chose among. Grepped every `max_*` bound over 10,000, read the five
+largest by hand: `tools/rye/page_evict.rye` (262,144 files, one host's own eviction walk),
+`image/region_stats.rye` (65,536 buckets, one image's histogram), `tools/fixtures/t/tlb_reach_probe.rye`
+(a derived probe-read cap), plus `mantra/beading.rye` (256 beads, Caravan-scale) and
+`settlement/constellation.rye` (66 slots, smaller still). **The finding:** every bounded structure
+surveyed across both notes is either small enough to read in a sitting, or large yet confined to
+one process holding the only copy -- no module in this tree yet combines both conditions. Paper [The
+fourth opening needs two things at
+once](../active-designing/date/20260918/20260918-041848_the-fourth-opening-needs-two-things-at-once.md);
+register 21% against the 30% Field ceiling, QA composite B+ (85, `--service 80`).
+**MINE:** a large bound alone answers only half the question; `page_evict`'s 262,144 files sit on
+one host the same way Caravan's four dependents sit on one page.
+**YOURS:** whether the day Comlink or the settlement ledger moves from one owning process to a real
+quorum is the moment to revisit this question, or whether it stays filed for that day rather than
+carried as an open thread now.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
