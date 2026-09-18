@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchanged; QA card on docs-geode/README.md clear. |
 | `20260917.202856` | [Still holding, no fresh ask](20260917/20260917-202856_still-holding-no-fresh-ask.kyri) | Same standing verdict as the prior lap; no re-poll, no new task named this turn. |
 | `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work; declines an eighth repeat-check of %819/%804. |
 | `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a further re-poll; %807/%767/%765 unchanged, no unclaimed booked lap elsewhere. |
