@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260918.063504` (EDT)
+**Stamp:** `20260918.101434` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -137,23 +137,21 @@ whole](archive/20260918-093822_itinerary-grass-hold0-account.md).
 **GRASS -- `linengrow/setu_desk_hold1_check.rye` account.** [Shelved
 whole](archive/20260918-095829_itinerary-grass-hold1-account.md).
 
-**GRASS -- THE ZERO-ASSERT RATCHET REACHED ZERO.** The two files it still named --
-`linengrow/setu65_lab_tx_check.rye` and `linengrow/setu_desk_hold_wayland_check.rye` -- took the
-same shape one more time each: `field_value` now refuses an empty key before it can index past a
-line's own bound; `parse_dotted_v4` asserts a returned address is fully consumed from the argument
-that produced it; `run_check` in both files asserts its stack-buffer read never exceeds the buffer
-it was read into, mirroring `file_len`'s own new invariant in the wayland file. `tools/s/setu65_lab_tx_witness.rish`
-GREEN unchanged (device-free); `tools/s/setu_desk_hold_wayland_witness.rish` GATED unchanged (wants
-a Wayland display this host lacks -- not a fault of the change); `width-check` clean;
-`tame_style_check`'s zero-assert ratchet fell 2 to **0** -- the class this lap opened on is closed.
-No claim opened: two ordinary repairs to existing tracked files, named by no ledger row. The
-`linengrow/setu_desk_hold_wayland_check.rye` line that stood under `functions past 70 lines`
-(zero-assert review on touch) is gone from that listing too -- the repair cleared it rather than
-merely reviewing it. **YOURS:** `tame_style_check` still prints its usual open ratchets --
-`@memcpy` migration (135), `camelCase fn` (2), `parseInt(` migration (54), `Ed25519` migration (1),
-and the top of the `functions past 70 lines` list (`functions_over_70=694`, headed by
-`glow/lower_shop_gate_witness.rye`); the next agent-doable pick is any one, claim-board checked
-first.
+**GRASS -- the zero-assert ratchet account.** [Shelved
+whole](archive/20260918-101337_itinerary-grass-zero-assert-ratchet-account.md).
+
+**GRASS -- THE camelCase FN RATCHET REACHED ZERO.** `tally/receipt_offer_bounds.rye` carried the
+whole population: `encodedFact` and `factCount`, the two `pub fn` names the ratchet's own grep
+(`^( *)?(pub )?fn [a-z]+[A-Z]`) had matched. A tree-wide grep for both spellings, inside and outside
+the ratchet's own rostered rooms, found no caller -- `tally/receipt_refusal.rye` carries its own
+`encoded_fact_refusal` and `fact_count_refusal` under different names, and `mantra/src/receipt_offer.rye`
+calls those, never these. Renamed in place to `encoded_fact` and `fact_count`;
+`tools/t/tally_receipt_offer_bounds_witness.rish` GREEN unchanged (7 control legs, 0 failing);
+`tame_style_check`'s camelCase ratchet fell 2 to **0**. No claim opened: one ordinary repair to an
+existing tracked file, named by no ledger row. **YOURS:** `tame_style_check` still prints
+`@memcpy` migration (135), `parseInt(` migration (54), `Ed25519` migration (1), and the top of the
+`functions past 70 lines` list (`functions_over_70=694`, headed by `glow/lower_shop_gate_witness.rye`);
+the next agent-doable pick is any one, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -262,7 +260,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2847cdd0ed` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `1507987de` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
