@@ -82,7 +82,20 @@ The **module ring** is the machinery, each home with its own witnesses. Take the
 | [`mand/`](mand/) | authority |
 | [`brushstroke/`](brushstroke/) | drawing |
 | [`ember/`](ember/) | the forge |
-| `linengrow/` | the giving edge |
+| [`linengrow/`](linengrow/README.md) | the giving edge |
+| [`kumara/`](kumara/README.md) | identity |
+| [`vault/`](vault/README.md) | secrets |
+| [`settlement/`](settlement/README.md) | a point becomes an address |
+| [`mandate/`](mandate/README.md) | the store |
+| [`image/`](image/README.md) | a picture you own |
+| [`lotus/`](lotus/README.md) | the creative suite |
+| [`mikrophone/`](mikrophone/README.md) | the firmware that forgets |
+| [`brix/`](brix/README.md) | composition |
+| [`encoding/`](encoding/README.md) | bytes, parity-checked |
+| [`constel/`](constel/README.md) | piers that can never be real |
+| [`scribe/`](scribe/README.md) | the voice's home |
+| [`sundial/`](sundial/README.md) | the health face |
+| [`pleac/`](pleac/README.md) | the cookbook stdlib |
 | [`granary/`](granary/) - [`mandi/`](mandi/) - [`amphora/`](amphora/) - [`mycelium/`](mycelium/) - [`lantern/`](lantern/) - [`lattice/`](lattice/) - [`scribble/`](scribble/) - [`cellar/`](cellar/) - [`dimeroll/`](dimeroll/) | Named here without a gloss; open the room's own README for what it proves |
 
 ### 5 - The Teaching
@@ -106,14 +119,14 @@ When a page here says GREEN, a machine said it first.
 | `active-reviving/` | Its sibling, re-growing elders into Glow beside them |
 | [`waymarks/`](waymarks/) | The claim shelf |
 | `expanding-prompts/` | The runnable plans |
-| `construction/` | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
+| [`construction/`](construction/README.md) | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
 | `counsel/` | The advice ledger |
-| `session-logs/` - `bron-resins/` | The diary and its compressions |
+| [`session-logs/`](session-logs/README.md) - `bron-resins/` | The diary and its compressions |
 | [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
 ### 7 - The Reading Room
 
-[`external-research/`](external-research/) is where we study the world with attribution. `gratitude/` shelves the teachers whole and unaltered -- TigerBeetle, Urbit, Monocypher and more -- because we silo ideas, never scaffolding. `vendor/` holds the third-party source the build leans on, local and unmodified.
+[`external-research/`](external-research/) is where we study the world with attribution. [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) is the reading craft, held whole on the closed floor. `gratitude/` shelves the teachers whole and unaltered -- TigerBeetle, Urbit, Monocypher and more -- because we silo ideas, never scaffolding. `vendor/` holds the third-party source the build leans on, local and unmodified.
 
 ## The Two Grains
 
