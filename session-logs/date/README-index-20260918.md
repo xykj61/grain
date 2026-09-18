@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.065510` | [Send confirmed -- both remotes hold 6d9859634](20260918/20260918-065510_send-confirmed-6d9859634.kyri) | Three contested pushes on lower_cast.rye's assert lap; nib carried forward each rebase. |
 | `20260918.064804` | [bolt_apply_step.rye gains five asserts](20260918/20260918-064804_bolt-apply-step-asserts.kyri) | Same assert shape moved from glow/ to Mantra; ratchet 16 to 15. |
 | `20260918.064726` | [lower_cast.rye earns bare asserts](20260918/20260918-064726_lower-cast-asserts-landed.kyri) | Six functions asserted, TAME-clean, claim closed. |
 | `20260918.064720` | [Send confirmed -- both remotes hold 6554a0b7b](20260918/20260918-064720_send-confirmed-6554a0b7b.kyri) | One rebase, one shared-stamp row kept both sides, nib carried forward via the follow-up shape. |
