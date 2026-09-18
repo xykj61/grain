@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.031816` | [Send confirmed -- both remotes hold b4b6182ca, nib-amend after push undone](20260918/20260918-031816_send-confirmed-b4b6182ca-nib-amend-avoided.kyri) | Amend-after-push reverted via reset rather than forced; both remotes verified. |
 | `20260918.031715` | [Send confirmed at b69d116ef, chain closed](20260918/20260918-031715_send-confirmed-b69d116ef-chain-closed.kyri) | Third contested push resolved; chain ends here. |
+| `20260918.031710` | [docs-geode Field pages checked against their own ceiling, all clean](20260918/20260918-031710_docs-geode-field-pages-cleared-all-lanes-idle.kyri) | Caught a false-alarm register reading from the wrong --setting flag; all four audit lanes idle. |
 | `20260918.031256` | [glow/rune_call.rye leaves the zero-assert ratchet](20260918/20260918-031256_rune-call-earns-asserts.kyri) | Four invariant asserts added; witness GREEN unchanged; ratchet 33 to 32. |
 | `20260918.031135` | [Civic Style pass on mand/README.md finds nothing to fix](20260918/20260918-031135_civic-style-audit-mand-clean.kyri) | Gauge queue re-confirmed empty; mand/README.md already names its own reward. |
 | `20260918.031135` | [Send confirmed -- both remotes hold fa10685d4](20260918/20260918-031135_send-confirmed-fa10685d4.kyri) | Two contested pushes; twice-pulled, never forced. |
