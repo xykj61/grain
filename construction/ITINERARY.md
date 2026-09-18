@@ -122,17 +122,20 @@ were not touched this lap and may carry further negative sentences past what thi
 `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
 state rather than this line.
 
-**GRASS -- `comlink/turn_route.rye` GAINS FIVE ASSERTS ACROSS ITS THREE FUNCTIONS.** Elder account
-[shelved whole](archive/20260918-064716_itinerary-grass-nock-jet-dec-shed.md). This lap:
-`turn_newer` gained an antisymmetry postcondition (strict newness never holds in both directions
-at once, split from a compound assert per `tame_style_check`'s ban); `freshest` gained a
-returned-pointer-is-one-of-the-two postcondition; `read_turn` gained a never-accepted-on-refusal
-postcondition and a key-never-rolls-back postcondition on its stale-kept branch. Five bare
-`assert()` calls total; `assert` already imported. Witness GREEN unchanged
-(`comlink_turn_route_witness`); `tame_style_check` confirms the file carries no zero-assert entry,
-ratchet fell 15 to 14 (pheromone's `bolt_apply_step.rye` lap took it 16 to 15 first this same
-round); `width-check` clean. Claim `grass-turn-route-asserts` opened, pushed, and closed per the
-ABSENCE clause.
+**GRASS -- backtick_path's first reverse-read closes one genuinely stale citation.** Elder account
+[shelved whole](archive/20260918-070909_itinerary-grass-turn-route-account.md). Read through the
+65 living hits the ratchet named as Grass's lane. Most sort into two genres already named in
+`comment_path`'s own header -- a teacher-tree citation naming TigerBeetle's own TIGER_STYLE guide
+five times over, and an untracked-by-design path such as a lap's own scratch pen, a ship's own
+keyring, or a clone's own local settings override -- and want that reasoning folded into the scan
+rather than a rewrite. One was a plain stale spelling: `rye/README.md`'s opening paragraph named its
+own elder
+reference room-relative to itself, missing the `rye-learning-process/` prefix its own line 133
+already carries for the identical file. Repointed to match; living count 65 to 64, ceiling held at
+64 (a prior commit had already spent the fall this repair earns).
+`tools/b/backtick_path_witness.rish` GREEN, 22 legs, `control_failed=0`. The remaining ~62 stay
+Grass's lane -- the teacher-tree and untracked-by-design genres want their reasoning written into
+the scan's own header next, the way `comment_path`'s four genres already are.
 **YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
 account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
 judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
@@ -233,7 +236,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `974bd2b643` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5450ac96a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

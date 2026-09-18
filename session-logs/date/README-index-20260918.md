@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.071554` | [round_trip_wire.rye closes a third zero-assert file](20260918/20260918-071554_round-trip-wire-asserts.kyri) | Three invariant asserts added; ratchet 12 to 11; elder account shelved; two contested pushes resolved. |
 | `20260918.071226` | [Send confirmed -- both remotes hold 1a1aaeae2d](20260918/20260918-071226_send-confirmed-1a1aaeae2d.kyri) | Two contested rebases on the baton-ceiling lap; nib and index row resolved each time. |
+| `20260918.070909` | [Grass opens its backtick_path reverse-reading lane](20260918/20260918-070909_grass-backtick-path-reverse-read.kyri) | One stale rye/README.md citation repointed; ceiling held at 64; ~62 hits remain the lane. |
 | `20260918.070711` | [Send confirmed -- both remotes hold ed5275cf9](20260918/20260918-070711_send-confirmed-ed5275cf9.kyri) | Three contested pushes on the row-alignment research lap; nib and index row resolved each rebase. |
 | `20260918.070637` | [the-baton.md's register ceiling fell 43% to 23%](20260918/20260918-070637_baton-ceiling-fell-43-to-23.kyri) | 27 sentences restated affirmatively, every number/path/stamp held. |
 | `20260918.070323` | [Send confirmed -- both remotes hold 14cd75ea3](20260918/20260918-070323_send-confirmed-14cd75ea3.kyri) | Three contested pushes on descriptor_test.rye's assert lap; nib carried forward each rebase. |
