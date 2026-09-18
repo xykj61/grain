@@ -18,7 +18,7 @@ Radiant pass `20260728.014737` — deepen steps 1–3 · gen witnesses
 
 ## What this page teaches
 
-How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund`** DNS anchor, a tropical seat, and honest prep that never pretends a wallet exists before Keaton's hand.
+How a new fund joins the constellation wheel: a **four-letter** name, a **`.fund`** DNS anchor, a tropical seat, and honest prep that waits truthfully for Keaton's hand before any wallet exists.
 
 ## Walk map
 
@@ -54,7 +54,7 @@ A fund name on this wheel carries **exactly four ASCII letters**, lowercase in v
 
 ## Step 2 — `.fund` DNS anchor
 
-Elder anchoring rule: a wheel entrant holds a **`.fund`** domain so the old world's name system vouches for the new seat. The domain stays **prep until claimed**; counsel never purchases it.
+Elder anchoring rule: a wheel entrant holds a **`.fund`** domain so the old world's name system vouches for the new seat. The domain stays **prep until claimed**; only Keaton's own hand purchases it.
 
 **Worked example — gren.fund:**
 
@@ -98,7 +98,7 @@ The constellation contract is a **phone book** rather than a mint. Version one h
 | Settlement lane | Sui package (devnet/testnet/mainnet = his hand) |
 | Sovereign lane | Same registry truth over **Comlink** on house metal |
 
-**What to verify when reading:** seats ≤ twelve · sign index &lt; twelve · a sign seats at most once · only admin seats · no token genesis in v1.
+**What to verify when reading:** seats at or under twelve · sign index under twelve · a sign seats at most once · admin-only seating · token genesis held for a later version.
 
 **witness:step4** phone book present · mints nothing — GREEN when gen-gren passes.
 
@@ -115,7 +115,7 @@ Every constellation prep generator knocks **Comlink** before any seating byte. T
 | Seating bytes | **not sent** from this tutorial or gen-gren |
 | Why first | Two lanes share one truth; sovereign lane travels Comlink |
 
-**witness:step5** Comlink knock · no seating byte — GREEN when gen-gren passes.
+**witness:step5** Comlink knock · seating byte withheld — GREEN when gen-gren passes.
 
 ---
 
@@ -138,7 +138,7 @@ A tutorial teaches, and a deploy stays with the hand that owns it. Step six hold
 rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish deploy   # must exit non-zero
 ```
 
-gen-gren's own GREEN path re-runs this refuse as a post-fold so the page cannot stay GREEN if the door softens.
+gen-gren's own GREEN path re-runs this refuse as a post-fold, so the page's GREEN answers for the door staying shut.
 
 **witness:step6** refuse-walk taught · deploy RED proven — GREEN when gen-gren passes.
 
@@ -160,4 +160,4 @@ rishi/bin/rishi run tools/g/gen_gren_fund_prep.rish deploy   # RED by name
 
 ---
 
-*May the earth seat close its prep by refusing what it cannot honestly carry, and may every four-letter fund wait for the hand that alone may claim, pay gas, and deploy.*
+*May the earth seat close its prep by carrying only what it can honestly hold, and may every four-letter fund wait for the hand that alone may claim, pay gas, and deploy.*
