@@ -26,7 +26,7 @@ lap to seat the newest under the pin's bound.
 **The agent-doable queue, Lindy first:**
 
 1. `%642` -- the path refusal and the **copy** both landed, `20260917.064837` and `20260917.091616`, at 8.9s to 0.11 and 28.4s to 0.77. A projection reads **24.12s** where it read 74. What remains is the **scrub**, 19.91s of that 24 and now four fifths of it; the trade is named in the copal account and wants a word rather than a lap.
-2. `%519` -- spread `tools/fixtures/p/plant.sh`; liveness reads 56 resolved, 56 live, 0 dead.
+2. `%519` -- spread `plant.sh`; sourcing 39 to 40. REDS `20260917.221030` CLOSED en route.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
@@ -210,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1beb09b6cc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3efb8e832a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
