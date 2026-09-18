@@ -1,6 +1,6 @@
 # Kavya and Ritual -- A Scholar's Daily Practice, Beside His Systematic Argument
 
-**Where this sits:** home is [`../README.md`](../README.md) - glossary is
+**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
 [`../glossary.md`](../glossary.md) - follows [`../sandarbhas/`](../sandarbhas/) and
 [`../bhagavatam-commentaries/`](../bhagavatam-commentaries/), the last room in this arc's original
 build order, taken up once the philosophy and the verse-by-verse work stood complete

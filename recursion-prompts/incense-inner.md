@@ -117,15 +117,26 @@ across that same boundary; the receipt contract page's own "what stands built" s
 corrected in the same commit and two broken relative links there (from a prior directory fold)
 were repaired.
 
+**Item 2 (which of the 22 unexplained reds are freshly-seated vs. real) closed at this lap's own
+commit.** All 22 are on the roster; most were added `20260915`-`20260917` and are genuinely new.
+Seven were older (seated `20260821`-`20260909`) and needed a direct look: `foundations_link` (11
+links broken by the active-designing fold), `fold_shelf_link` plus its `_repoint` sibling (four
+fold-depth-lost links in two shelved ITINERARY accounts), `opening_lines` (one file gained the
+opening triad without the print bind), `log_has_a_row` (24 missing index rows for a peer's shastra
+logs), `glow_rune_alphabet` (a control's own plant list still named a pre-fold path), and
+`door_home` (11 shastra front doors one directory short of root). All six closed and GREEN on
+metal; two (`backtick_path`, `comment_path`) are pre-existing over-ceiling backlogs needing
+per-citation judgment rather than a mechanical repoint, and `seed_link` is a seed-scope design
+question. Full account:
+[`session-logs/date/20260918/20260918-050426_the-fold-left-six-guards-red.kyri`](../session-logs/date/20260918/20260918-050426_the-fold-left-six-guards-red.kyri).
+**This lap's own cold run held `tree_moved=yes`** since edits landed mid-run; the next lap's first
+move should be a fresh cold run held to properly.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
 1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
-2. **The standing red count is worth a glance.** This lap's cold endurance run closed
-   `run_verdict=guard_red` at 38 reds against a 15-red baseline named in `20260917` peer logs --
-   the same 15 plus roughly 22 more that read as newly-seated guards rather than a regression this
-   lap could trace to a cause. Named in
-   [`session-logs/date/20260918/20260918-040910_the-cache-eight-trees-could-share.kyri`](../session-logs/date/20260918/20260918-040910_the-cache-eight-trees-could-share.kyri)
-   rather than taken; a lap with room to spare could confirm which of the 22 are freshly seated and
-   which are new.
+2. **`backtick_path` and `comment_path`**, both over-ceiling pre-existing backlogs (68/65 and
+   66/61) spread across pages this lap never opened -- each citation wants a look to tell a stale
+   reference from an illustrative placeholder before it can be repointed or marked.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.

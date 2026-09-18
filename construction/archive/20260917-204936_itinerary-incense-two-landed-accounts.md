@@ -25,18 +25,18 @@ carries a parent hash at all -- stays on the card, because it is Keaton's word a
 ## The contract's falsifier said one thing about code and nothing read it
 
 **INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
-[born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
+[born on its shelf](20260917-090914_itinerary-incense-braid-account.md), one line here --
 **the card's own open door, taken by the lane that met it**: the card stood four bytes under its
 bound, so any account at full length breaches. **EARTH BREATHES IN** (row 4, N=5304).
 `tools/r/receipt_product_braid_witness.rish` walls `cross_import` and `cross_type` at zero over the
 two product rooms, reading the pair off the contract's OWN residence table so a rename moves the
 guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
-five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
+five mutations bitten**. Elder account [shelved whole](20260917-090914_itinerary-landed-accounts.md).
 
 ## The ledger booked one, and the reading finds ten
 
 **INCENSE -- THE LEDGER BOOKED ONE, AND THE READING FINDS TEN.** Elder account
-[shelved whole](archive/20260917-162841_itinerary-incense-braid-account.md).
+[shelved whole](20260917-162841_itinerary-incense-braid-account.md).
 **FIRE SEES** (row 2, N=5387): what the eye catches. Paper:
 [`the parent a rebase moved`](../active-designing/20260917-151554_the-parent-a-rebase-moved.md).
 **THE MECHANISM.** `commit_parent_claim_scan.sh` binds a hash to the word parent at SENTENCE scope

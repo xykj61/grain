@@ -1,6 +1,6 @@
 # Bhakti Sandarbha -- What a Person Actually Does
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - answers what
 [`../04-krsna/README.md`](../04-krsna/README.md) opens next: Krsna is named; this file turns to
 practice

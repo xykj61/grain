@@ -12,6 +12,7 @@
 | 20260918.050803 | [rune_face.rye invariant asserts](20260918/20260918-050803_rune-face-invariant-asserts.kyri) | claimed, built, closed -- three invariant asserts landed |
 | `20260918.051200` | [Fifth confirmation -- gate still closed](20260918/20260918-051200_petrichor-fifth-confirmation-gate-still-closed.kyri) | Register wall and docs-geode witness both GREEN; no agent-doable pickup. |
 | `20260918.050733` | [docs-geode queue reads empty this lap](20260918/20260918-050733_petrichor-queue-empty.kyri) | Checked prose-register law ceiling and claims board; law_ceiling=1, already Grass-ruled held; nothing new. |
+| `20260918.050426` | [The fold left six guards red](20260918/20260918-050426_the-fold-left-six-guards-red.kyri) | Foundations, fold-shelf, door-home and three more closed on metal. |
 | `20260918.050255` | [rune_conditional.rye takes rune_bounded_trap's asserted shape](20260918/20260918-050255_grass-rune-conditional-asserts.kyri) | Three asserts landed, claimed and closed; three rebases, nib carried forward. |
 | `20260918.050146` | [Sixth confirmation -- same HEAD, stopping the repeat](20260918/20260918-050146_petrichor-sixth-confirmation-same-head.kyri) | Same gate, same HEAD; declined a sixth identical rerun (clock read behind the prior log's stamp). |
 | `20260918.045656` | [Send confirmed -- both remotes hold bb16f5a67](20260918/20260918-045656_send-confirmed-bb16f5a67.kyri) | Nib follow-up landed after six contested pushes. |
@@ -120,44 +121,68 @@
 | `20260918.022104` | [Comlink's topology.rye already carries a torus index](20260918/20260918-022104_comlink-topology-torus-index-found.kyri) | Torus thread continued: a witnessed mixed-radix address decomposition found, no ring falsifier tripped. |
 | `20260918.022100` | [Send confirmed -- both remotes hold f44ff5269, nib trails](20260918/20260918-022100_send-confirmed-f44ff5269-nib-trails.kyri) | Third contested push; Git nib field left one commit stale rather than chased further. |
 | `20260918.021900` | [Git nib carried forward after a second contested push](20260918/20260918-021900_nib-carried-forward-pheromone-idle-check.kyri) | Two more contested pushes resolved keeping both rows each time; chain ends here. |
+| `20260918.021700` | [Send confirmed -- both remotes hold 579619669](20260918/20260918-021700_send-confirmed-579619669.kyri) | Two contested pushes on the Grass cold-check log; twice-pulled, never forced. |
 | `20260918.021700` | [Send confirmed -- both remotes hold f3a03e339](20260918/20260918-021700_send-confirmed-f3a03e339.kyri) | One rebase, one table conflict kept both idle-check rows; Git nib carried forward. |
 | `20260918.021637` | [Git nib carried forward, chain ends here](20260918/20260918-021637_nib-carried-forward-final.kyri) | Follow-up commit rather than amend. |
-| `20260918.021700` | [Send confirmed -- both remotes hold 579619669](20260918/20260918-021700_send-confirmed-579619669.kyri) | Two contested pushes on the Grass cold-check log; twice-pulled, never forced. |
 | `20260918.021635` | [Cold open, docs-geode lane checked clean](20260918/20260918-021635_cold-open-empty-lane.kyri) | Register scan and REDS both read; docs-geode's agent-doable queue is empty this lap. |
 | `20260918.021500` | [Pheromone lane still idle -- ninth check](20260918/20260918-021500_pheromone-lane-still-idle-ninth-check.kyri) | Re-read the card; %642 and the wire ceiling still want Keaton's word, %519 already landed. |
 | `20260918.021347` | [Grass cold check -- register ratchet reads no open lane work](20260918/20260918-021347_grass-ratchet-clear-check.kyri) | Board empty, register scan's only overages already exempt or Keaton's-word-pending. |
+| `20260918.021316` | [Send confirmed -- 0d496f3f2](20260918/20260918-021316_shastra-kavya-and-ritual-send-confirmed.kyri) | shastra/'s founding plan complete. |
 | `20260918.021230` | [Cold open, no task handed in, lane checked and clean](20260918/20260918-021230_cold-open-no-task-checked-lane.kyri) | ITINERARY read whole, claim board empty, docs-geode front door graded B or better. |
+| `20260918.021200` | [Kavya and ritual built](20260918/20260918-021200_shastra-kavya-and-ritual.kyri) | Original shastra/ plan stands complete. |
 | `20260918.021115` | [Send confirmed -- both remotes hold fb2f68c85, chain closed here](20260918/20260918-021115_send-confirmed-fb2f68c85.kyri) | Follow-up log landed; lap closes rather than chasing further. |
 | `20260918.021001` | [Send confirmed -- both remotes hold f0129fe92](20260918/20260918-021001_send-confirmed-f0129fe92.kyri) | Two contested pushes on the reach-grade finding log; twice-pulled, never forced. |
+| `20260918.020922` | [Send confirmed -- 3b4ca1615](20260918/20260918-020922_shastra-bhagavatam-commentaries-send-confirmed.kyri) | Both remotes hold it. |
 | `20260918.020846` | [Send confirmed -- both remotes hold 20757ca6d](20260918/20260918-020846_send-confirmed-20757ca6d.kyri) | Three contested pushes resolved, never forced. |
+| `20260918.020832` | [Bhagavatam commentaries opened](20260918/20260918-020832_shastra-bhagavatam-commentaries.kyri) | One author-attribution gap named plainly. |
 | `20260918.020718` | [Round closes at e90a9bc9e -- Git nib left one gap short of fresh](20260918/20260918-020718_round-closes-e90a9bc9e-nib-left-stale.kyri) | Both remotes current; nib trails HEAD by a few commits, named per %803 rather than chased further. |
+| `20260918.020526` | [Send confirmed -- 31f79ab6a](20260918/20260918-020526_shastra-sarva-samvadini-send-confirmed.kyri) | Full Sandarbha set complete. |
 | `20260918.020512` | [Send confirmed -- both remotes hold fb291aefe, eleven contested pushes resolved](20260918/20260918-020512_send-confirmed-fb291aefe.kyri) | Broke the retry cycle by deferring nib/page regen one round; landed clean, then carried nib forward. |
+| `20260918.020427` | [Sarva-samvadini built](20260918/20260918-020427_shastra-sarva-samvadini.kyri) | Seven-work Sandarbha set closes. |
+| `20260918.020212` | [Send confirmed -- b902f1862](20260918/20260918-020212_shastra-priti-send-confirmed.kyri) | Six-work core complete. |
 | `20260918.020200` | [Discovery room closed, no torus](20260918/20260918-020200_discovery-room-eighth-negative-sent.kyri) | Eighth read closed; DIFFUSER account shelved. |
+| `20260918.020101` | [Priti Sandarbha built](20260918/20260918-020101_shastra-priti-sandarbha.kyri) | Six-work core closes the circle. |
 | `20260918.020000` | [All five sandarbha front doors read Reach-heavy](20260918/20260918-020000_sandarbha-reach-grade-finding.kyri) | Register clean on all five after the tattva sweep; reach grade 15-19 vs ceiling 9 on all five, untouched, new finding. |
+| `20260918.015734` | [Send confirmed -- f761af179](20260918/20260918-015734_shastra-bhakti-send-confirmed.kyri) | Both remotes hold it. |
+| `20260918.015627` | [Bhakti Sandarbha built](20260918/20260918-015627_shastra-bhakti-sandarbha.kyri) | Fifth of six; truth turns to practice. |
 | `20260918.015610` | [Send confirmed -- both remotes hold 87ab5acd7](20260918/20260918-015610_send-confirmed-87ab5acd7.kyri) | Nine contested pushes on the tattva sandarbha sweep; twice-pulled discipline held throughout, never forced. |
 | `20260918.015438` | [Send confirmed -- both remotes hold c25bdab7b, contested push resolved](20260918/20260918-015438_send-confirmed-c25bdab7b.kyri) | First push rejected by a peer landing in between; second pull clean, both remotes now agree. |
+| `20260918.015251` | [Send confirmed -- 3740886a2](20260918/20260918-015251_shastra-krsna-send-confirmed.kyri) | Both remotes hold it. |
+| `20260918.015203` | [Krsna Sandarbha built](20260918/20260918-015203_shastra-krsna-sandarbha.kyri) | Svayam bhagavan; best draft register yet. |
 | `20260918.015143` | [Send confirmed -- both remotes hold 4c1217d68](20260918/20260918-015143_send-confirmed-4c1217d68.kyri) | One rebase, one table conflict kept both rows; generated pages checked, unchanged. |
+| `20260918.014912` | [Send confirmed -- 472cc0f12](20260918/20260918-014912_shastra-paramatma-send-confirmed.kyri) | Both remotes hold it. |
 | `20260918.014910` | [Auditing lap: claims/reds survey turns up an untracked TAME_CORE.md register finding](20260918/20260918-014910_grass-audit-tame-core-register-finding.kyri) | No live claims, no actionable OPEN red; register=65 on TAME_CORE.md, flagged for a hand's review. |
 | `20260918.014858` | [Send confirmed -- both remotes hold 3e1396475](20260918/20260918-014858_send-confirmed-3e1396475.kyri) | Three rebases, all conflicts resolved. |
+| `20260918.014808` | [Paramatma Sandarbha built](20260918/20260918-014808_shastra-paramatma-sandarbha.kyri) | One citation drift caught before ship. |
 | `20260918.014608` | [Send confirmed -- both remotes hold 961effdac](20260918/20260918-014608_send-confirmed-961effdac.kyri) | Two contested pushes; nib rewritten twice across two rebases, ending at the amend shape. |
+| `20260918.014350` | [Send confirmed -- 891d5c5b9](20260918/20260918-014350_shastra-bhagavat-send-confirmed.kyri) | Both remotes hold it. |
+| `20260918.014259` | [Bhagavat Sandarbha built](20260918/20260918-014259_shastra-bhagavat-sandarbha.kyri) | Second Sandarbha, Jiva's own order. |
 | `20260918.014150` | [Send confirmed -- both remotes hold d2fe9949a](20260918/20260918-014150_send-confirmed-d2fe9949a.kyri) | Two rebases; one table conflict kept both rows. |
 | `20260918.014137` | [Second shastra front door swept](20260918/20260918-014137_tattva-sandarbha-door-sweep.kyri) | shastra/sandarbhas/01-tattva/README.md 37% to 0% negation; unrostered-over count fell 2 to 1. |
 | `20260918.014033` | [The two fields that composed](20260918/20260918-014033_the-two-fields-that-composed.kyri) | Round two's proposal 2 closed; composite key, GREEN, falsifier fired. |
 | `20260918.014004` | [Round-open pull lands shastra's Uttara Veda work -- pheromone lane still idle](20260918/20260918-014004_pheromone-round-open-pull-lane-idle.kyri) | Fetched xy, fast-forwarded 3 peer commits, mirrored debrided; lane confirmed idle without a twelfth repeat. |
+| `20260918.013910` | [Send confirmed -- fb13455ee](20260918/20260918-013910_shastra-uttara-veda-send-confirmed.kyri) | Both remotes hold it. |
+| `20260918.013725` | [Uttara Veda README reworded](20260918/20260918-013725_shastra-uttara-veda.kyri) | Self-graded and reworded before send. |
 | `20260918.013415` | [Pheromone eleventh check -- the repeated-check pattern named as the finding](20260918/20260918-013415_pheromone-eleventh-check-pattern-named.kyri) | HEAD unchanged since prior check; names eleven idle checks in one lane as worth a hand's attention rather than a twelfth re-verification. |
 | `20260918.013242` | [Roster fixed; first reverse-read packet](20260918/20260918-013242_reverse-reading-first-packet-and-lane-repair.kyri) | Reds-first season gate, STANDFASTED. |
 | `20260918.013100` | [Pheromone tenth check -- ident-duplication crux confirmed closed](20260918/20260918-013100_pheromone-tenth-check-still-clear.kyri) | Re-ran glow_ident_duplication on metal: ceiling=0, matches card; fast-forwarded one commit; queue idle. |
 | `20260918.013040` | [Send confirmed -- both remotes hold 0cd541688](20260918/20260918-013040_send-confirmed-0cd541688.kyri) | Five contested pushes; two peer shastra files, three day-shelf table conflicts, all resolved. |
+| `20260918.013011` | [Uttara Veda README built](20260918/20260918-013011_shastra-uttara-veda.kyri) | The ripened-fruit claim, named and bounded. |
 | `20260918.012745` | [Grass lane mismatch flagged, no build this lap](20260918/20260918-012745_grass-lane-mismatch-flagged.kyri) | Grass's ITINERARY entry and seat-prompt lane name two different jobs; flagged rather than picked. |
+| `20260918.012709` | [Send confirmed -- 4f735e25d](20260918/20260918-012709_shastra-glossary-crux-send-confirmed.kyri) | Both remotes hold it. |
+| `20260918.012606` | [Glossary and Tattva crux](20260918/20260918-012606_shastra-glossary-and-tattva-crux.kyri) | shastra/ grows; Tattva Sandarbha's pramana argument. |
 | `20260918.012411` | [Pheromone status check -- duplication arc verified closed](20260918/20260918-012411_status-check-no-open-lane-work.kyri) | Re-ran glow_ident_duplication and width_check on metal: ceiling=0 and 1123/1123, matching the card; no live claim, no lane task open. |
 | `20260918.012404` | [Shastra front door swept](20260918/20260918-012404_shastra-front-door-sweep.kyri) | 45% to 0% negation, nine sentences reworded, graded B (84) at its own Field setting. |
 | `20260918.012112` | [Send confirmed -- both remotes hold 32adb4d02](20260918/20260918-012112_send-confirmed-32adb4d02.kyri) | One rebase conflict resolved keeping both rows; generated pages checked, unchanged. |
+| `20260918.011829` | [Send confirmed -- 5f0aab48f](20260918/20260918-011829_shastra-send-confirmed.kyri) | Both remotes hold it. |
 | `20260918.011701` | [Air lap pulled the ceiling strand](20260918/20260918-011701_air-lap-pulled-the-ceiling-strand.kyri) | Pulled xy/main, ceiling re-verified zero on metal; rota row 1 (Air) read whole; queue still idle. |
 | `20260918.011612` | [Send confirmed -- both remotes hold e3ab9b953](20260918/20260918-011612_send-confirmed-e3ab9b953.kyri) | Two more rebases; one table conflict kept both rows; generated pages checked, unchanged. |
+| `20260918.011358` | [Second bibliography search pass](20260918/20260918-011358_shastra-second-search-pass.kyri) | WebSearch widens the Jiva Goswami list. |
 | `20260918.011351` | [Send confirmed -- both remotes hold b58e508d1](20260918/20260918-011351_send-confirmed-b58e508d1.kyri) | Five contested pushes; two conflicts resolved. |
 | `20260918.011232` | [Pheromone lane idle check](20260918/20260918-011232_pheromone-lane-idle-check.kyri) | glow_ident_duplication re-verified ceiling=0 on metal; tree level with xy/main; no lane claim to build. |
 | `20260918.011224` | [Send confirmed -- both remotes hold d53f5d4ac](20260918/20260918-011224_send-confirmed-d53f5d4ac.kyri) | Two rebases; one table conflict resolved keeping both rows; generated pages checked, unchanged. |
 | `20260918.010933` | [Send confirmed -- both remotes hold 14851de38](20260918/20260918-010933_send-confirmed-14851de38.kyri) | Two rebase conflicts resolved keeping both rows; Git nib re-derived after final rebase. |
+| `20260918.010931` | [Shastra corpus fetch verified](20260918/20260918-010931_shastra-corpus-verified.kyri) | Jiva Goswami bibliography confirmed, shastra/ opened. |
 | `20260918.010900` | [Send confirmed -- both remotes hold f2badba30](20260918/20260918-010900_send-confirmed-f2badba30.kyri) | One rebase conflict resolved keeping both rows; both generated pages refreshed and unchanged. |
 | `20260918.010836` | [Idle queue check, no live prompt this turn](20260918/20260918-010836_petrichor-idle-queue-check.kyri) | Ran the register scan fresh; law/door/teaching ceilings clean; own lane empty. |
 | `20260918.010835` | [Pheromone lane check -- no agent-doable work standing](20260918/20260918-010835_pheromone-lane-clear.kyri) | glow_ident_duplication ceiling verified 0 on metal; no live pheromone claim; queue items want Keaton's word. |
@@ -193,8 +218,8 @@
 | `20260918.002110` | [docs-geode living pages beyond the front doors, tasted](20260918/20260918-002110_docs-geode-living-pages-beyond-front-doors-tasted.kyri) | Nine tutorials/api/sangha/study pages graded; all clear Field register/reach. |
 | `20260918.001917` | [Two more proxies checked absent](20260918/20260918-001917_two-more-proxies-checked-absent.kyri) | cpufreq, thermal absent too; hypervisor named in the scan itself. |
 | `20260918.001813` | [The rose walked](20260918/20260918-001813_the-rose-walked.kyri) | Two compass stations reconciled; one fault reported. |
-| `20260918.001641` | [pheromone lane fifth check -- still clear](20260918/20260918-001641_pheromone-lane-fifth-check-still-clear.kyri) | Fresh round-open and claim scan re-confirm the language lane's queue is empty. |
 | `20260918.001641` | [Gauge lane swept clean -- nothing to molt](20260918/20260918-001641_gauge-lane-swept-clean-nothing-to-molt.kyri) | Register ceilings read clean or already parked on Keaton's word; board empty. |
+| `20260918.001641` | [pheromone lane fifth check -- still clear](20260918/20260918-001641_pheromone-lane-fifth-check-still-clear.kyri) | Fresh round-open and claim scan re-confirm the language lane's queue is empty. |
 | `20260918.001518` | [docs-geode front doors, tasted one by one](20260918/20260918-001518_docs-geode-front-door-taste-check.kyri) | Fourteen room README pages graded; all clear Door register/reach/truth; lane queue empty. |
 | `20260918.001201` | [Send -- two door candidates landed](20260918/20260918-001201_two-door-candidates-sent.kyri) | Both remotes hold 894856d6e after two rebases. |
 | `20260918.001054` | [pheromone lane fourth check -- two peer commits pulled](20260918/20260918-001054_pheromone-lane-fourth-check-pulled-two-peer-commits.kyri) | Fast-forwarded past two peer commits, neither in this lane; still no new work. |

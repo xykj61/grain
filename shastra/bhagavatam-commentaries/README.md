@@ -1,6 +1,6 @@
 # Bhagavatam Commentaries -- Verse by Verse, After the Architecture Was Built
 
-**Where this sits:** home is [`../README.md`](../README.md) - glossary is
+**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
 [`../glossary.md`](../glossary.md) - follows the seven-work Sandarbha set at
 [`../sandarbhas/`](../sandarbhas/), lower Lindy weight per the room's own build order, taken up
 once the philosophical architecture stood complete

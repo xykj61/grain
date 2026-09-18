@@ -1,6 +1,6 @@
 # Priti Sandarbha -- The Fruit the Whole Tree Was Growing Toward
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - completes what
 [`../05-bhakti/README.md`](../05-bhakti/README.md) practices, and answers the ripened-fruit claim
 first named in [`../../uttara-veda/README.md`](../../uttara-veda/README.md)

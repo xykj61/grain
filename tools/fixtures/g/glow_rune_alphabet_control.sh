@@ -65,7 +65,7 @@ for rel in \
   active-designing/date/20260719/20260719-220814_glow-rune-pronunciation-closed-table.md \
   active-designing/date/20260720/20260720-033852_glow-bartis-g1-row.md \
   active-designing/date/20260720/20260720-151119_glow-barket-g1-row.md \
-  active-designing/20260822-221639_glow-barlus-g1-row.md
+  active-designing/date/20260822/20260822-221639_glow-barlus-g1-row.md
 do
   [ -f "$root/$rel" ] || { echo "refused: the working tree holds no $rel" >&2; exit 2; }
   cat "$root/$rel" > "$pen/$rel"

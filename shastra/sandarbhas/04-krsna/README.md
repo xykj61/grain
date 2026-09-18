@@ -1,6 +1,6 @@
 # Krsna Sandarbha -- The Source, Named Directly
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - answers the question
 [`../03-paramatma/README.md`](../03-paramatma/README.md) leaves open at its warmest point: who is
 the Bhagavan whose reach that file traces?

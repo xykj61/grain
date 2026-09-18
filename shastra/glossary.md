@@ -1,6 +1,6 @@
 # Glossary -- One Term, One Plain Meaning
 
-**Where this sits:** home is [`README.md`](README.md)
+**Where this sits:** home is [`../README.md`](../README.md)
 **Style:** Bhakta (see `../context/BHAKTA_STYLE.md`) -- no term below assumes you already know
 another one on this page
 **Last updated:** 2026-09-18

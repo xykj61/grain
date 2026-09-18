@@ -8,6 +8,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 
 pub const exit_success: u8 = 0;
 pub const exit_failure: u8 = 1;
