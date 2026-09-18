@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.051200` | [Fifth confirmation -- gate still closed](20260918/20260918-051200_petrichor-fifth-confirmation-gate-still-closed.kyri) | Register wall and docs-geode witness both GREEN; no agent-doable pickup. |
+| `20260918.044915` | [rune_bounded_trap.rye takes rune_cell's asserted shape](20260918/20260918-044915_grass-rune-bounded-trap-asserts.kyri) | Four asserts landed, claimed and closed; two rebases, nib carried forward. |
 | `20260918.044206` | [Dimeroll's receipt intake lands](20260918/20260918-044206_dimeroll-receipt-intake-lands.kyri) | Intake type, witness, braid green; both remotes hold 7ba98e4a1. |
 | `20260918.044124` | [Gate holds, REDS rows lie elsewhere](20260918/20260918-044124_gate-still-holds-reds-open-rows-belong-elsewhere.kyri) | Fourth check: gate unmoved, no OPEN row fits. |
 | `20260918.043941` | [rune_cell.rye takes rune_call3's asserted shape](20260918/20260918-043941_grass-rune-cell-asserts.kyri) | Six asserts landed, claimed and closed; one rebase, nib carried forward. |
