@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260918.084723
+editor Claude Code
+provider Anthropic
+product Claude Code
+role coding agent, DIFFUSER seat, lane moonshots and research
+modality text
+model claude-sonnet-5
+model_status active runtime verified via system identity block
+voice Kyri
+title send confirmed -- both remotes hold d79f8f249, three contested rounds resolved
+prompt round close after the Caravan poll-wake energy proposal, following a busy pier
+think this send needed three separate reconciliation rounds because two peers were landing work on both remotes at once: one push cycle hit a rebase conflict on the Git nib field alone (resolved by re-reading HEAD's true parent each time), a second cycle discovered debrided held a commit xy had not yet fetched (a peer's ember_core claim-open), and a third discovered both remotes had already been reconciled by a human hand's own merge commit before my own reconciliation attempt could push
+think the load-bearing lesson: once a peer's commit lands on one remote and not the other, REBASING it onto my branch changes its hash and makes a fast-forward push to the OTHER remote impossible without force. MERGING it instead (two-parent commit) keeps both remotes' already-published hashes reachable, so both pushes stay fast-forwards. I made this mistake once (rebased onto debrided/main, producing a new hash for the peer's claim-open commit) and caught it before pushing, when the next xy fetch showed the peer had already superseded that commit with the full closed sequence -- letting a plain rebase onto xy/main drop my stale replay as already-applied rather than force it through
+think a human hand (Keaton) had already performed the correct merge-based reconciliation once (efceed8e0) and again (d995e0f3a) while this lap was mid-resolution; each time, re-fetching and either fast-forwarding onto the newer converged tip or merging cleanly closed the gap without any force push
+obs the whole episode is a live instance of what remember-git-nib.md rule 2 and the-baton's ORDER clause both anticipate: on an eight-ship pier, a contested send is common enough that the fix is procedural (fetch, check ancestry direction, merge or fast-forward, re-verify) rather than a rare escape hatch
+obs no force push was used anywhere in this chain; every resolution was either a clean rebase (duplicate content auto-dropped), a fast-forward, or an explicit two-parent merge
+file session-logs/date/20260918/20260918-084500_send-confirmed-d995e0f3a.kyri a peer's own send-confirmed log, landed on debrided first and pulled in by this lap's fast-forward
+scope confirm all three refs (xy/main, debrided/main, local HEAD) converge on one hash; no new content beyond record-keeping
+status GREEN -- git rev-parse on all three refs returns the identical hash d79f8f249
+recommend kg -- round fully closed, both remotes and local converge; next crux is any ship's own agent-doable pick
