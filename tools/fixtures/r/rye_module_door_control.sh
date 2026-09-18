@@ -13,6 +13,8 @@
 # what an empty pen prints too.
 set -eu
 
+. "$PWD/tools/fixtures/p/plant.sh"
+
 # The scan under test is the tree's own by default. `RYE_DOOR_SCAN` names another copy, which is how
 # a mutated copy is driven below and how this control can prove a scan before it is in place.
 SCAN=${RYE_DOOR_SCAN:-$PWD/tools/fixtures/r/rye_module_door_scan.sh}
@@ -183,22 +185,20 @@ fresh
 printf '%s\n%s\n' 'const std = @import("std");' '//! a late claim' > mod/late.rye
 commit_all
 leg mutation_position_applied "$(read_key silent)" 1
-sed 's@^    seen\[FILENAME\] { next }$@    0 { next }@' "$SCAN" > "$PEN/mut1.sh"
-if cmp -s "$SCAN" "$PEN/mut1.sh"; then
-  leg mutation_position_bites changed unchanged
-else
+if plant_write "$SCAN" "$PEN/mut1.sh" 's@^    seen\[FILENAME\] { next }$@    0 { next }@' mutation_position; then
   leg mutation_position_bites "$(RYE_DOOR_MIN_MODULES=1 sh "$PEN/mut1.sh" 2>/dev/null | grep '^silent=' | cut -d= -f2)" 0
+else
+  leg mutation_position_bites changed unchanged
 fi
 
 # --- mutation two: widen the fixture exemption to every path and the gated corpus collapses -----
 fresh
 commit_all
 leg mutation_exempt_applied "$(read_key gated_modules)" 1
-sed "s@^grep -E '(\^|/)fixtures/'@grep -E ''@" "$SCAN" > "$PEN/mut2.sh"
-if cmp -s "$SCAN" "$PEN/mut2.sh"; then
-  leg mutation_exempt_bites changed unchanged
-else
+if plant_write "$SCAN" "$PEN/mut2.sh" "s@^grep -E '(\^|/)fixtures/'@grep -E ''@" mutation_exempt; then
   leg mutation_exempt_bites "$(RYE_DOOR_MIN_MODULES=1 sh "$PEN/mut2.sh" 2>/dev/null | grep '^gated_modules=' | cut -d= -f2)" 0
+else
+  leg mutation_exempt_bites changed unchanged
 fi
 
 cd /
