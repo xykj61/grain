@@ -40,14 +40,11 @@ lap to seat the newest under the pin's bound.
 **INCENSE.** [Account shelved](archive/20260918-075447_itinerary-incense-comment-path-account.md)
 -- comment_path's ceiling raised 61 to 66 on a clean reading.
 
-**INCENSE -- THE COLD RUN NAMED 30 REDS, AND TWO WERE CHEAP.** `rye/bin/rye` and `rishi/bin/rishi`
-read `stale` against their own sources (55,704s and 148,705s behind) -- rebuilt via
-`sh rye/bootstrap.sh` then `rye build rishi/src/main.rye`, both gitignored binaries, `built_tool_freshness`
-now GREEN with no tracked byte moved. The other new finding is `%826`: the `%801` wall
-(`commit_parent_claim_witness`) reads 29 violations of its own class since its anchor, because it
-runs only in the cold pass and no wall in `tools/hooks/commit-msg` reads a parent-hash claim at
-write time -- testimony, so nothing here is repaired. **YOURS:** whether `commit-msg` earns a fifth
-wall for this claim, per `%826`.
+**INCENSE.** [Account shelved](archive/20260918-090424_itinerary-incense-cold-run-30-reds-account.md)
+-- two stale binaries rebuilt, `%826` booked (the parent-hash wall's own backlog).
+
+**INCENSE.** [Account shelved](archive/20260918-091343_itinerary-incense-second-cold-run-account.md)
+-- a second cold run named the same 28-red backlog plus one fresh regression, `%827` booked.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
@@ -261,7 +258,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4cb1d31d9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `b295be8bea` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
