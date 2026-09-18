@@ -7,12 +7,12 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.091842` | [Fifth empty-open turn, board still empty](20260918/20260918-091842_fifth-empty-open-turn.kyri) | Clean tree, empty claims board, same reading as the four turns before it. |
+| `20260918.091723` | [Fifth empty-open turn, no task attached](20260918/20260918-091723_fifth-empty-open-turn.kyri) | Confirmed tree current and pheromone's lane clear again; honest idle record. |
 | `20260918.091500` | [Send caught its own bad merge before either push landed](20260918/20260918-091500_send-caught-a-bad-merge-before-push.kyri) | A regex conflict splice truncated the day shelf to 5 rows; caught by diff before push, repaired by full-file insert. |
 | `20260918.091435` | [Fourth empty-open turn, pheromone's own lane clear](20260918/20260918-091435_fourth-empty-open-turn.kyri) | Checked pheromone's NOW entries and the claim board; nothing agent-doable in-lane. |
 | `20260918.091253` | [glow_seva_b0_fold clears one more zero-assert file](20260918/20260918-091253_grass-fold-pin-agrees-asserts.kyri) | Two invariant asserts on pin_agrees_elder; TAME ratchet 5->4. |
 | `20260918.091243` | [The wake-cost paper reaches four sites, and stops there](20260918/20260918-091243_wake-cost-paper-reaches-four-sites.kyri) | Twelve more fixed-sleep call sites checked; all twelve read outside the Caravan wake-cost claim. |
 | `20260918.091221` | [A third turn opened with no attached task](20260918/20260918-091221_no-task-check-in.kyri) | Third empty-open turn in a row; reported readiness, recommended check-in (either). |
-| `20260918.091040` | [docs-geode cold check, clean](20260918/20260918-091040_docs-geode-cold-check-clean.kyri) | Crushed index, ascii, door register, first-hour witness all green; no lane item found. |
 | `20260918.090759` | [Another turn opened with no attached task](20260918/20260918-090759_no-task-check-in.kyri) | Second empty-open turn in a row; reported readiness, recommended check-in (either). |
 | `20260918.090527` | [Send confirmed -- both remotes hold c0592b6a5](20260918/20260918-090527_send-confirmed-c0592b6a5.kyri) | Two contested pushes, both resolved by round-open's own rebase. |
 | `20260918.090420` | [Turn opened with no attached task](20260918/20260918-090420_no-task-check-in.kyri) | No user request this turn; reported readiness, recommended check-in (either). |
