@@ -94,9 +94,11 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # began welcoming a STATED seam, below: 282 files and 1,167 lines over 1,983 sources. Lowered
 # again 20260917 when the `max_arm_len` three -- `lower_conditional`, `lower_null`,
 # `lower_switch` -- delegated their `zig_safe_ident` to `glow/zig_ident.rye` and answered `u32`
-# rather than `usize`: 277 files and 1,133 lines over 1,985 sources.
+# rather than `usize`: 277 files and 1,133 lines over 1,985 sources. Lowered again 20260917
+# when `glow/lower_alias.rye` delegated the same way, its two call sites' return type moving
+# `usize` to `u32`: 277 files and 1,131 lines over 1,985 sources.
 corpus_files_ceiling=282
-corpus_lines_ceiling=1133
+corpus_lines_ceiling=1131
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye

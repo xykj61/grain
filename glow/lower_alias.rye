@@ -7,6 +7,8 @@
 
 const std = @import("std");
 const ra = @import("rune_alias.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = ra.ParseError || error{
     Overflow,
@@ -19,22 +21,16 @@ pub const LowerError = ra.ParseError || error{
 pub const alias_demo_value: u32 = 7;
 pub const max_source_len: u32 = 96;
 
-fn zig_safe_ident(face: []const u8, out: []u8) LowerError!usize {
-    if (face.len == 0 or face.len > out.len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
-        const mapped: u8 = if (c == '-' or c == '.') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. This module lowers a face
+/// AND a wing, and both already fold a `.` into `_` -- a wing's dot is its path separator,
+/// and the alias source and face must land as one honest Zig identifier apiece -- so both
+/// call sites pass `.to_underscore` rather than the room's more common `.refuse`.
+fn zig_safe_ident(face: []const u8, out: []u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: the caller's buffer is sized to exactly the ceiling it means to enforce,
+    // so the buffer length itself is the honest ceiling to hand the shared rule
+    const ceiling: u32 = @intCast(out.len);
+    return zig_ident.safe_ident(face, out, ceiling, "alias-face", .to_underscore, &slot) catch error.BadIdent;
 }
 
 fn is_wing_char(c: u8) bool {
@@ -91,8 +87,8 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     var source_buf: [max_source_len]u8 = undefined;
     const face_n = try zig_safe_ident(face, &face_buf);
     const source_n = try zig_safe_ident(source, &source_buf);
-    const zig_face = face_buf[0..face_n];
-    const zig_source = source_buf[0..source_n];
+    const zig_face = face_buf[0..@as(usize, face_n)];
+    const zig_source = source_buf[0..@as(usize, source_n)];
     if (std.mem.eql(u8, zig_face, zig_source)) return error.MalformedSource;
     const expect: u32 = if (welcome) alias_demo_value else alias_demo_value +% 1;
     return emit_alias_program(face, zig_face, source, zig_source, expect, out);

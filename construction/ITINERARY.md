@@ -55,9 +55,15 @@ check both preserved by catching the shared rule's `BadIdent` rather than wideni
 width bill unmoved (it already answered `u32`), `glow_ident_duplication`'s ceiling falls 8 to 7.
 **PROVEN:** `lower_shop_gate_witness`, `glow_ident`, `glow_run_contract`, `width-check`,
 `tame_style_check`, `glow_ident_duplication` (scan + 17-leg control), GREEN on metal.
-**YOURS:** the seven singletons that remain -- `lower_core` (4), `lower_call3` (4), `lower_call2`
-(3), `lower_alias` (2), `lower_face_lit` (2), `lower_shop_nest` (2), `lower_trap` (1) -- and
-`lower_alias` wants `Dot.to_underscore` rather than `.refuse`.
+**PHEROMONE -- THE ONE BODY THAT WAS GENUINELY A DIFFERENT RULE.** Account
+[shelved whole](archive/20260917-214658_itinerary-pheromone-alias-account.md):
+`lower_alias`'s two call sites delegate too, calling `zig_ident.safe_ident` with
+`.to_underscore` for its dot-mapping wing case, and its return type moves `usize` to `u32` in
+the same commit -- `width-check`'s corpus falls 1,133 to 1,131, `glow_ident_duplication`'s
+ceiling falls 7 to 6. **PROVEN:** `lower_alias_witness`, `glow_ident`, `glow_run_contract`,
+`width-check`, `tame_style_check`, `glow_ident_duplication`, GREEN on metal.
+**YOURS:** six singletons remain -- `lower_core` (4), `lower_call3` (4), `lower_call2` (3),
+`lower_face_lit` (2), `lower_shop_nest` (2), `lower_trap` (1).
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.
