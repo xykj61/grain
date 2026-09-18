@@ -14,8 +14,8 @@ subject (see `../context/BHAKTA_STYLE.md`)
 
 **Shastra** is the plain Sanskrit word for a treatise or scripture -- chosen under
 `.claude/rules/comlink-tendency.md`'s three tests (clear, fun, safe) over `veda/` (this corpus is
-Gaudiya Vaishnava exegesis, not Vedic shruti, and naming it Veda would overclaim) and `nyaya/`
-(one school of logic referenced inside a single work here, too narrow for the whole room).
+Gaudiya Vaishnava exegesis rather than Vedic shruti, so naming it Veda would overclaim) and
+`nyaya/` (one school of logic referenced inside a single work here, too narrow for the whole room).
 
 This room holds a siloed study library the same shape as `classical-vedic-astrology/` and
 `cubist-bhakti-astrology/`: source citations first, one file per work as study grows, and every
@@ -31,13 +31,13 @@ every deep link 404'd. Two things were true and worth recording rather than sile
   **`grantha.jiva.org`** ("Gaudiya Grantha Mandir") -- confirmed live from `jiva.org`'s own
   homepage, though it returns HTTP 403 to an automated fetch (a human browser can reach it).
 - **GRETIL** (`gretil.sub.uni-goettingen.de`) is real and live, and is genuinely a Sanskrit-text
-  repository organized by language and genre -- but the specific sub-path named in the handed
-  bibliography (`1_sanskr/6_sastra/3_phil/vaishn/...`) 404s, and this session could not re-derive
-  the current path from outside.
+  repository organized by language and genre -- yet the specific sub-path named in the handed
+  bibliography (`1_sanskr/6_sastra/3_phil/vaishn/...`) 404s, and re-deriving the current path
+  stayed out of this session's reach from outside.
 
-Per `.claude/rules/docs-implementation-sync.md` ("assert it, don't assume it"), a citation this
-session could not verify is not written here as a live link. What follows is the corpus, split
-plainly into what a direct fetch confirmed and what it did not.
+Per `.claude/rules/docs-implementation-sync.md` ("assert it, don't assume it"), only a citation
+this session verified by direct fetch appears here as a live link. What follows splits the corpus
+plainly into what a direct fetch confirmed and what a fetch left unconfirmed.
 
 ## Verified -- archive.org identifiers confirmed by direct fetch, 20260918
 
@@ -77,8 +77,8 @@ and by title. Each opens at `https://archive.org/details/<identifier>`.
 
 A second search pass (web search rather than archive.org's own index) confirmed these are real,
 correctly-titled works -- named in secondhand sources (Vaniquotes, commercial booksellers,
-Wikipedia's Sat Sandarbhas article) with enough detail to trust the title -- yet no free digital
-text turned up, only commercial print/ebook editions:
+Wikipedia's Sat Sandarbhas article) with enough detail to trust the title -- yet these surface
+only in commercial print/ebook editions, with a free digital text still to be found:
 
 | Work | What confirms it | Where it can be bought, not read free |
 |---|---|---|
@@ -90,13 +90,13 @@ text turned up, only commercial print/ebook editions:
 
 Bhagavat-sandarbha-suci-patra, Dhatu-sangraha, Sutra-malika, Laghu Hari-namamrta-vyakarana
 (abridged), Gopala-virudavali, Madhava-mahotsava. General listing pages (`isvara.org`'s "Writings
-of Jiva Gosvami") name these among his works, without pointing at a specific digital or print
-edition this session could verify directly. Worth a browse of `grantha.jiva.org` by hand.
+of Jiva Gosvami") name these among his works at a general level, short of a specific digital or
+print edition this session could verify directly. Worth a browse of `grantha.jiva.org` by hand.
 
 **One likely misattribution, worth flagging rather than silently keeping:** the handed bibliography
 named "Dana-keli-kaumudi-tika" as Jiva's own commentary on Rupa's one-act play. Every source found
 names the well-known tika on that play -- the *Mahati-tika* -- as **Visvanatha Cakravarti's** work,
-not Jiva's. This may be a real, less-known second commentary by Jiva, or a mix-up in the original
+rather than Jiva's. This may be a real, less-known second commentary by Jiva, or a mix-up in the original
 list; it stays out of the verified table until a source confirms Jiva as its author.
 
 ## Repositories, named plainly
@@ -118,12 +118,13 @@ shastra/
 
 Single-stranded, same as the astrology silos: one file answers one question. As a work earns its
 own study, it gets its own file here rather than folding into this index -- the index stays a
-bibliography, not a growing essay.
+bibliography rather than growing into an essay.
 
 ---
 
-*Attribution, not license.* These are public-domain and institutionally-published Sanskrit and
-Gaudiya Vaishnava texts and translations, not code under a license this tree's clean-room
-discipline governs -- `gratitude-licenses.md` protects against borrowing *code*, and its clean-room
-boundary does not apply to reading scripture. What is asked of a reader here is the same thing any
-of these institutions asks: cite the source, keep the translator's name beside their translation.
+*Attribution, rather than license.* These are public-domain and institutionally-published Sanskrit
+and Gaudiya Vaishnava texts and translations, standing apart from code under a license this tree's
+clean-room discipline governs -- `gratitude-licenses.md` protects against borrowing *code*, and its
+clean-room boundary reaches code alone, leaving scripture to its own reading practice. What is
+asked of a reader here is the same thing any of these institutions asks: cite the source, keep the
+translator's name beside their translation.
