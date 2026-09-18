@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.004237` | [The fold moved four files and ITINERARY kept the old address](20260918/20260918-004237_still-nothing-new-for-the-lane.kyri) | Pre-commit caught four stale active-designing links the room fold missed; repointed and proven clean. |
 | `20260918.003239` | [No new ground since the last rotation](20260918/20260918-003239_no-new-ground-since-last-rotation.kyri) | Checked rather than assumed: xy fetched level, register scan unchanged, no agent-doable OPEN row for this lane. |
 | `20260918.003100` | [A sixth check, same clean floor](20260918/20260918-003100_docs-geode-lane-sixth-idle-check.kyri) | Ledger and claim board re-read fresh again; still nothing docs-geode's to take. |
 | `20260918.002919` | [Pheromone lane clear, no fresh claim to take](20260918/20260918-002919_pheromone-lane-clear-holds.kyri) | Ladder reached zero; queue's two items want a word or are already landed; held rather than guess scope. |

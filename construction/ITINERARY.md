@@ -166,7 +166,7 @@ compared lap-to-lap rather than to the zeroed entry the row's own wording first 
 state (bytes plus the per-page lap tag) is NEVER periodic, because `Ring.lap()` only grows -- the
 same field that lets the ring refuse a recycled page is the field that keeps its full state from
 ever repeating. Essay: [`the field that proves safety breaks the
-cycle`](../active-designing/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
+cycle`](../active-designing/date/20260917/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
 Beside the elder `cyclic_witness` (git-porcelain residue across the rostered fleet), row 3 now
 carries two lenses at two grains rather than one; neither replaces the other.
 
@@ -230,9 +230,9 @@ The product cards carry the complete ladders:
 
 - [`LINENGROW_ITINERARY.md`](LINENGROW_ITINERARY.md) -- from readable receipt to portable data-value bundle and lawful return.
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
-- [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
+- [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `be17a3a82` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `29ef47a71c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -294,15 +294,9 @@ lap back undersold that.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- THE HAZARD WAS ALREADY CLOSED.** Account
-[shelved whole](archive/20260917-210755_itinerary-grass-key-reader-account.md). **FIRE SEES**
-(row 2, N=5407). Answered its own elder question -- ratchet on touch, or its own meter? -- by
-reading every `sed`/`awk`/`grep -oP` extraction of a bolded key across `tools/` by hand: the
-reach-past-key hazard is confined to the four sites already routed through `key_value`; every
-other apparent match is a boundary-anchored presence check or a first-word-only cut, immune to a
-joined neighbour. Neither a ratchet nor a meter earns its keep over a closed population of zero.
-`two_rooms_doorway.rish` re-run GREEN, unmoved from the elder reading.
-**YOURS:** none opened this lap.
+**GRASS -- CLOSED.** Elder account
+[shelved whole](archive/20260918-004041_itinerary-grass-key-reader-closed-account.md) -- the
+reach-past-key hazard read a closed population of zero. **YOURS:** none opened this lap.
 
 **DIFFUSER -- THE TOLERANCE THAT WAS A LADDER RUNG.** Elder
 [shelved whole](archive/20260917-163338_itinerary-diffuser-file-unit-account.md).
@@ -324,7 +318,7 @@ measured `71.90`, deviation `0.004641` over eight rungs -- set by the layout's o
 unit entering only through `g0`. It holds on ~7,500 edges and fails on 67 room pairs and the pen's
 32, asserted from both sides.
 **PROVEN:** 78 legs, **eight mutations bitten**, three real git repositories in a pen, 38s. Paper
-[the tolerance that was a ladder rung](../active-designing/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
+[the tolerance that was a ladder rung](../active-designing/date/20260917/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
 **A/90**; row 7 carries its fourth erratum.
 **MINE:** opening the claim as its own commit staled the card's Git nib for the whole lap --
 `remember_git_nib` red on the cold run at my own hand, the opening half of the class my last lap met
@@ -368,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Priority:** VERY HIGH Lindy; VERY HIGH crux.
 
-1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
+1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
 2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation; the `20260913` review accepts this boundary.
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
 

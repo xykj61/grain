@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260918.004237
+editor Claude Code
+provider Anthropic
+product Claude Code
+role primary repository agent
+modality text
+model claude-sonnet-5
+model_status configured fleet default per .claude/settings.json, read 20260917; runtime identity unverified beyond the system-reported model id
+voice Kyri
+host anonymized Linux enclosure, EDT one-clock zone
+title The fold moved four files and ITINERARY.md kept the old address
+prompt No new user task this turn; opened per the baton as Grass, auditing lane.
+think Fetched xy: HEAD (29ef47a71) equals xy/main exactly -- no peer commits landed since the prior check at 003239.
+think Read every OPEN REDS row (%820 now CLOSED, %819, %807, %804, %803, %788, %785, %767, %765, %756, %734) -- each sits in the fleet's Mantra/wire/root-finder/coordination-law territory, none of it Gauge, Civic Style, Foundations, or TAME work this lane can take without Keaton's word.
+think Read construction/fleet-claims.kyri's live section: empty, opens for the next ship that builds.
+think Went to commit the idle confirmation and the pre-commit hook refused: construction/ITINERARY.md carries four relative links -- the-field-that-proves-safety-breaks-the-cycle, the-linengrow-receipt-cloth-design-system, the-tolerance-that-was-a-ladder-rung, the-receipt-you-can-read-contract -- naming active-designing/ paths one level shallower than where those files actually live now.
+think Traced the cause: the prior commit in this same session, 9ec2e56c2 "active-designing: fold the room, and repoint what the fold moved," folded active-designing/ into date/YYYYMMDD/ shelves and repointed most inbound citers, but these four ITINERARY.md links were missed -- collaboration.md's own "references are promises" clause naming exactly this failure mode.
+think Repointed all four with sed, inserting date/YYYYMMDD/ ahead of each basename; confirmed each target file's real path with find first rather than guessing the day from the stamp alone.
+think Staging the fix reddened a second gate: pin_bound_touch_scan.sh index read construction/ITINERARY.md at 41,013 bytes against its 40,960 bound, 53 over -- the four repointed paths added the bytes that tipped an already-near-ceiling pin.
+think Per the-writer-sheds, the pin is bounded to one live account per seat; my own GRASS account (lines 296-305, fully resolved, "YOURS: none opened this lap") was the one account I hold and had nothing left open, so I shelved it whole to construction/archive/20260918-004041_itinerary-grass-key-reader-closed-account.md and left a three-line pointer, matching the filing shape every other seat's shelved account already uses on this same card.
+obs A near-idle audit lap still found two things worth doing: catching a fold's own repoint gap before it shipped as a broken living link, and shedding my own already-closed account rather than touching a peer's open one to clear the bound the repair pushed over. Both are small, mechanical, and proven rather than argued.
+file construction/REDS.md read for OPEN rows, none agent-doable for this lane
+file construction/fleet-claims.kyri read, board empty
+file construction/ITINERARY.md repointed four relative links the active-designing fold left stale, then shed my own closed GRASS account to clear the pin bound the repair pushed over
+file construction/archive/20260918-004041_itinerary-grass-key-reader-closed-account.md new shelf holding the shed account whole
+recommend check-in (either) -- lane otherwise idle; the two parked YOURS questions (the-baton.md's Meter exemption, %819's coordination-law exemption) remain Keaton's.
+scope one read-only confirmation pass that found and repaired one broken-link red and one pin-bound overage, both on touch
+status green -- readme_reach_scan.sh --store index reads verdict=ok broken_in_living=0; pin_bound_touch_scan.sh index reads verdict=ok
