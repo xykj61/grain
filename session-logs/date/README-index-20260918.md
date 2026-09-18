@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.041220` | [Send confirmed -- both remotes hold c0262d502, chain closed](20260918/20260918-041220_send-confirmed-c0262d502-chain-closed.kyri) | Fourth and final hop; clean push, no further conflict. |
 | `20260918.041020` | [Send confirmed -- both remotes hold 976db703e, chain closes here](20260918/20260918-041020_send-confirmed-976db703e.kyri) | Third hop of a contested chain; docs-geode still reads clean. |
 | `20260918.040640` | [Send confirmed -- both remotes hold d338e483a, chain closes here](20260918/20260918-040640_send-confirmed-d338e483a.kyri) | Two-hop contested push; a self-referential nib caught and corrected by hand. |
 | `20260918.040444` | [Send confirmed -- both remotes hold adef6a543, TAME pass log lands](20260918/20260918-040444_send-confirmed-adef6a543.kyri) | One contested push; twice-pulled, never forced. |
