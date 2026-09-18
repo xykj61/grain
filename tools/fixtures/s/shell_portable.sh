@@ -17,6 +17,7 @@
 #   file_mtime "$BIN"                                          # a file's mtime, fractional seconds
 #   lock_acquire glow/.cache/.build.lock 1800                  # one writer at a time, bounded wait
 #   search_text -q -i pattern file                             # grep; a pier without rg still measures
+#   key_value Status "$line"                                   # a bolded key's value, cut at the next key
 #   have_tool rg                                               # is the instrument here? silent, for branching
 #   require_tool rg 'the roots row read' || exit 127            # ... refuse and NAME it, where no fallback exists
 #
@@ -379,6 +380,34 @@ capture_evidence() {
 # tells "this bench is missing something" from "this tree measured badly" without parsing prose.
 # A misuse -- no name at all -- returns 2, the same way `search_text` above separates misuse from
 # absence, because a caller must never read its own empty argument as a missing tool.
+
+# A BOLDED KEY'S VALUE, CUT WHERE THE NEXT KEY BEGINS (20260917). This tree folds several keys onto
+# one header row joined by ` - `: `**Language:** EN - **Status:** Living - **Style:** Gauge`. A guard
+# matching `**Key:**.*` therefore reads its own key AND every neighbour after it, so a word it is
+# looking for can be lent by the key next door -- and the guard passes a page on a sentence that page
+# never wrote under that key. Measured over the two-rooms doorway's own 1,363-page roster the day this
+# landed: 130 joined key reads, 47 of them reaching past their own key, and ONE page whose whole
+# verdict rested on a token belonging to its neighbour.
+#
+# The cut takes the text after the key up to the next `**Word:**`. Requiring the colon is what lets
+# emphasis inside a value -- `**start here**`, `**Mixed room**` -- survive it. The key name is a
+# PREFIX, matching `**Status:**` and `**Status of play:**` alike, because that is the reach the
+# doorway's own `door_line` already had and this reader replaces it rather than narrowing it. The
+# FIRST occurrence wins, which is `grep -o ... | head -1`'s rule stated once instead of three times.
+# A line lacking the key prints nothing, so an absent key and an empty value read alike -- the same
+# answer the whole-line readers gave, and the callers here all test for emptiness.
+#
+#   key_value Status "$line"        # ` Living - `  from a folded header row
+key_value() {
+  printf '%s\n' "$2" | awk -v k="$1" '
+    {
+      if (!match($0, "\\*\\*" k "[^:]*:\\*\\*")) next
+      rest = substr($0, RSTART + RLENGTH)
+      if (match(rest, /\*\*[^*][^*]*:\*\*/)) rest = substr(rest, 1, RSTART - 1)
+      print rest
+      exit
+    }'
+}
 
 # have_tool <name> -- true when this bench carries it. Silent, so a caller may branch on it.
 have_tool() {

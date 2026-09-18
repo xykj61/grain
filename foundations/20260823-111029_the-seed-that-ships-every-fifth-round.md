@@ -6,6 +6,7 @@ behind the tree that made it.*
 
 **Stamp:** `20260823.111029`
 **Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the four gates are named witnesses that run; five is a chosen cadence, carrying its own falsifier.
+**Room:** mixed -- stated here in its own key beside what the Style line above already said, so the door answers under the key the two-rooms law reads rather than on a neighbour's word.
 **Kin:** [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md) - [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) - [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
 **Machinery:** `publish-seed.sh` - `tools/fixtures/sow_project.sh` - `tools/s/sow_witness.rish` - `tools/s/seed_link_witness.rish`
 

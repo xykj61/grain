@@ -65,6 +65,34 @@
 
 set -u
 
+# ONE READER FOR A KEY'S VALUE (20260917). `key_value` lives in the shared shell library so the
+# setting read below cuts a folded header row the same way the two-rooms doorway does. The local
+# twin is the same code, carried for a pen that copies this card alone.
+_qa_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_qa_steps=0
+while [ ! -d "$_qa_root/tools/fixtures/s" ]; do
+  _qa_steps=$((_qa_steps + 1))
+  if [ "$_qa_steps" -gt 8 ] || [ "$_qa_root" = "/" ] || [ -z "$_qa_root" ]; then
+    _qa_root=""
+    break
+  fi
+  _qa_root=$(dirname "$_qa_root")
+done
+if [ -n "$_qa_root" ] && [ -f "$_qa_root/tools/fixtures/s/shell_portable.sh" ]; then
+  . "$_qa_root/tools/fixtures/s/shell_portable.sh"
+else
+  key_value() {
+    printf '%s\n' "$2" | awk -v k="$1" '
+      {
+        if (!match($0, "\\*\\*" k "[^:]*:\\*\\*")) next
+        rest = substr($0, RSTART + RLENGTH)
+        if (match(rest, /\*\*[^*][^*]*:\*\*/)) rest = substr(rest, 1, RSTART - 1)
+        print rest
+        exit
+      }'
+  }
+fi
+
 root=${QA_CARD_ROOT:-.}
 
 # --- the scale ---------------------------------------------------------------------------------
@@ -182,8 +210,16 @@ declared_style_line_of() {
   awk -v n="$QA_HEAD_LINES" 'NR <= n && /\*\*Style:\*\*/ { print; exit }' "$1"
 }
 
+# THE SETTING IS READ FROM THE STYLE KEY'S OWN VALUE (20260917). `declared_style_line_of` returns
+# the whole LINE, which is right for a line picker and wrong for the classification below: this tree
+# folds several keys onto one header row joined by ` - `, so a bare `door`, `field` or `meter`
+# standing in a NEIGHBOUR key's value was read as this page's declared setting. Measured over 586
+# living tracked pages the day the cut landed, 272 of them carrying a Style line: the cut moves no
+# page's setting here, because the convention writes `**Style:**` last on a folded row. So this is
+# prevention with its own number rather than a repair -- the same reader, `key_value`, that closed
+# a LIVE one-page flip in the two-rooms doorway the same lap.
 declared_setting=absent
-declared_style_line=$(declared_style_line_of "$root/$path" 2>/dev/null || :)
+declared_style_line=$(key_value Style "$(declared_style_line_of "$root/$path" 2>/dev/null || :)")
 if [ -n "$declared_style_line" ]; then
   case "$declared_style_line" in
     *[Dd]oor*)  declared_setting=door ;;

@@ -5,7 +5,7 @@
 Shelved whole from `construction/ITINERARY.md` to keep the living card under its 40,960 bound.
 
 **BAKERY -- A GUARD THAT COULD NOT ANSWER WORE THE WORD FOR ONE THAT FOUND SOMETHING.** Elder
-accounts [shelved whole](archive/20260917-151715_itinerary-bakery-landed-accounts.md). **THEIR ASKS,
+accounts [shelved whole](20260917-151715_itinerary-bakery-landed-accounts.md). **THEIR ASKS,
 STILL STANDING:** `rye key` keys `build` alone, widen it to `build-lib`; and the 6,388 mute asserts
 across 636 witnesses, FREE and unread. **AETHER HEARS** (row 0, N=5385): `%747` named its own door -- a runner telling `could
 not run` from `ran and refused` -- and nobody had answered it.

@@ -865,6 +865,10 @@ at a closed fold.*
 *Row %801 folded to [`REDS-the-parent-a-rebase-moved-rows-801.md`](REDS-the-parent-a-rebase-moved-rows-801.md) on `20260917.174536`, **CLOSED** -- a body's own parent-hash claim earns a wall, and the wall is forward-only because testimony can never be repaired.*
 *Row %747 folded to [`REDS-a-guard-that-could-not-answer-rows-747.md`](REDS-a-guard-that-could-not-answer-rows-747.md) on `20260917.164918`, **CLOSED** -- a failed capture and a guard that ran and refused both left the branch at exit 1, so a runner could not tell a refusal it lost from one it found; the fifth verdict `unrun` names the first and withholds the receipt.*
 
+*Row %817 folded to [`REDS-the-map-that-was-the-journal-rows-817.md`](REDS-the-map-that-was-the-journal-rows-817.md) on `20260917.190500`, **CLOSED** -- a key reader capped its own map at sixty of nine thousand seven hundred, and a law page told every ship that map was the whole journal. Recital line written `20260917.204500` by a peer lap, the shelf having landed without one.*
+
 *Row %818 folded to [`REDS-the-reading-a-guard-could-not-take-rows-818.md`](REDS-the-reading-a-guard-could-not-take-rows-818.md) on `20260917.190533`, **CLOSED** -- a guard read the settings file the fleet tracks while a per-ship file the fleet ignores had already outranked it, so one reading was right about one ship in eight and green about all of them. Folded the hour it closed, with the pin at three bytes of headroom. The fold reached for `%817` in the same move and a peer had shelved it first; the pin's rebase conflict was resolved by hand so neither side's work was lost.*
 
 *Row %805 folded to [`REDS-the-build-lock-a-send-tracked-rows-805.md`](REDS-the-build-lock-a-send-tracked-rows-805.md) on `20260917.200732`, **CLOSED** -- a send tracked a build lock; the ignore line closed the class, and the wider index question waits.*
+
+*Row %821 folded to [`REDS-the-key-next-door-rows-821.md`](REDS-the-key-next-door-rows-821.md) on `20260917.203048`, **BOOKED** -- a prediction is only as true as the population it was taken over, and a guard's population is its own roster.*
