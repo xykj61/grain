@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.172626` (EDT)
+**Stamp:** `20260917.211803` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -41,8 +41,16 @@ a type, and the cold and hot passes both closed their own reds.
 `glow_ident_duplication`'s own ceiling falls 13 to 11 in the same commit. **PROVEN:**
 `glow_lower_multi`, `glow_lower_multi_typed`, `glow_ident`, `glow_run_contract`, `width-check`,
 `tame_style_check`, `glow_ident_duplication`, GREEN on metal.
-**YOURS:** the `max_arm_len` three -- `lower_conditional`, `lower_null`, `lower_switch` -- at 93
-call sites together, still the largest lap this room has offered, and still open.
+**PHEROMONE -- THE LARGEST LAP THIS ROOM OFFERED, TAKEN WHOLE.** Account
+[shelved whole](archive/20260917-211803_itinerary-pheromone-max-arm-len-account.md): the
+`max_arm_len` three -- `lower_conditional`, `lower_null`, `lower_switch` -- delegate to
+`zig_ident.safe_ident`, 93 call sites touched at the seam alone (no lowering logic moved), width
+bill falls 1139 to 1133, `glow_ident_duplication`'s own ceiling falls 11 to 8 in the same commit.
+**PROVEN:** `glow_lower_conditional`, `glow_lower_null`, `glow_lower_switch`, `glow_ident`,
+`glow_run_contract`, `width-check`, `tame_style_check`, `glow_ident_duplication`, GREEN on metal.
+**YOURS:** the eight singletons that remain -- `lower_shop_gate` (12), `lower_core` (4),
+`lower_call3` (4), `lower_call2` (3), `lower_alias` (2), `lower_face_lit` (2), `lower_shop_nest`
+(2), `lower_trap` (1) -- and `lower_alias` wants `Dot.to_underscore` rather than `.refuse`.
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.
@@ -174,7 +182,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `aa12dbfd60` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9362e4fe71` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

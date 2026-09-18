@@ -88,17 +88,17 @@ mode="${1:-count}"
 #                          the delegation alone with no width repair beside it. The thirteen that
 #                          remain, read this lap by body md5 (the declared ceiling normalized out,
 #                          so a cohort is a cohort whatever budget it names) and by call sites:
-#                          the `max_arm_len` THREE at `c370400f` -- `lower_conditional`,
-#                          `lower_null`, `lower_switch` -- carrying 31 sites EACH, still the
-#                          largest lap left; the `max_name_len` PAIR at `658a5b6f`,
-#                          `lower_multi` and `lower_multi_typed`, fell `20260917` -- one site
-#                          each, the cheapest fall this room has offered -- and eight singletons
-#                          remain (`lower_shop_gate` 12, `lower_core` 4, `lower_call3` 4,
-#                          `lower_call2` 3, `lower_alias` 2, `lower_face_lit` 2, `lower_shop_nest`
-#                          2, `lower_trap` 1). `lower_alias` stays the one body that is genuinely
-#                          a different rule -- a bare `[]u8` that maps the dot -- and the one
-#                          wanting `Dot.to_underscore`.
-CEILING=11
+#                          the `max_arm_len` THREE -- `lower_conditional`, `lower_null`,
+#                          `lower_switch`, 31 call sites EACH, 93 together -- fell `20260917`,
+#                          the largest lap this room has offered; the `max_name_len` PAIR at
+#                          `658a5b6f`, `lower_multi` and `lower_multi_typed`, fell the same day --
+#                          one site each, the cheapest fall this room offered before it -- and
+#                          eight singletons remain (`lower_shop_gate` 12, `lower_core` 4,
+#                          `lower_call3` 4, `lower_call2` 3, `lower_alias` 2, `lower_face_lit` 2,
+#                          `lower_shop_nest` 2, `lower_trap` 1). `lower_alias` stays the one body
+#                          that is genuinely a different rule -- a bare `[]u8` that maps the dot
+#                          -- and the one wanting `Dot.to_underscore`.
+CEILING=8
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

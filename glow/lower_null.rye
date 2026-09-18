@@ -10,8 +10,11 @@
 //! Other parenthesized arms refuse.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rn = @import("rune_null.rye");
 const expr = @import("expr.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rn.ParseError || expr.ParseError || error{
     Overflow,
@@ -40,22 +43,18 @@ fn classify_subject(subject: []const u8) LowerError!SubjectKind {
     return error.SubjectNotYetLowered;
 }
 
-fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > max_arm_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `max_arm_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes --
+/// is the room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[max_arm_len]u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type it always had, and answers the `u32` the
+    // rule itself answers rather than widening it to `usize`
+    const n = try zig_ident.safe_ident(face, out[0..], max_arm_len, "null-arm", .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the caller's own length
+    // is what returns rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn zig_safe_wing(wing: []const u8, out: *[rn.max_subject_len]u8) LowerError!usize {
@@ -164,13 +163,13 @@ const MixEmitted = struct {
 fn emit_face_bindings(then_arm: *const ArmExpr, else_arm: *const ArmExpr, out: []u8, at: *usize) LowerError!void {
     if (then_arm.kind == .face) {
         var zb: [max_arm_len]u8 = undefined;
-        const zn = try zig_safe_ident(face_slice(then_arm), &zb);
+        const zn: usize = @intCast(try zig_safe_ident(face_slice(then_arm), &zb));
         const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 1;\n", .{zb[0..zn]}) catch return error.Overflow;
         at.* += line.len;
     }
     if (else_arm.kind == .face) {
         var zb: [max_arm_len]u8 = undefined;
-        const zn = try zig_safe_ident(face_slice(else_arm), &zb);
+        const zn: usize = @intCast(try zig_safe_ident(face_slice(else_arm), &zb));
         const line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = 0;\n", .{zb[0..zn]}) catch return error.Overflow;
         at.* += line.len;
     }
@@ -213,7 +212,7 @@ fn emit_one_lent(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, p
     if (arm.kind != .lent_of) return prior_subject;
     const subject = face_slice(arm);
     var zb: [max_arm_len]u8 = undefined;
-    const zn = try zig_safe_ident(subject, &zb);
+    const zn: usize = @intCast(try zig_safe_ident(subject, &zb));
     const zig_sub = zb[0..zn];
     const need_subject = prior_subject == null or !std.mem.eql(u8, prior_subject.?, subject);
     if (need_subject) {
@@ -246,9 +245,9 @@ fn emit_mix_atom(zig_name: []const u8, value: u32, out: []u8, at: *usize, emitte
 fn emit_one_mix(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, emitted: *MixEmitted) LowerError!void {
     if (arm.kind != .mix_of) return;
     var zl: [max_arm_len]u8 = undefined;
-    const ln = try zig_safe_ident(face_slice(arm), &zl);
+    const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
     var zr: [max_arm_len]u8 = undefined;
-    const rlen = try zig_safe_ident(face2_slice(arm), &zr);
+    const rlen: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zr));
     try emit_mix_atom(zl[0..ln], expr.mix_demo_left, out, at, emitted);
     try emit_mix_atom(zr[0..rlen], expr.mix_demo_right, out, at, emitted);
     const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} ^ {s};\n", .{ role, zl[0..ln], zr[0..rlen] }) catch return error.Overflow;
@@ -265,13 +264,13 @@ fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     if (arm.kind != .jam_of) return;
     if (expr.jam_is_both_mix(arm)) {
         var zll: [max_arm_len]u8 = undefined;
-        const nll = try zig_safe_ident(face_slice(arm), &zll);
+        const nll: usize = @intCast(try zig_safe_ident(face_slice(arm), &zll));
         var zlr: [max_arm_len]u8 = undefined;
-        const nlr = try zig_safe_ident(face2_slice(arm), &zlr);
+        const nlr: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zlr));
         var zrl: [max_arm_len]u8 = undefined;
-        const nrl = try zig_safe_ident(face3_slice(arm), &zrl);
+        const nrl: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zrl));
         var zrr: [max_arm_len]u8 = undefined;
-        const nrr = try zig_safe_ident(face4_slice(arm), &zrr);
+        const nrr: usize = @intCast(try zig_safe_ident(face4_slice(arm), &zrr));
         try emit_mix_atom(zll[0..nll], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zlr[0..nlr], expr.mix_demo_right, out, at, emitted);
         try emit_mix_atom(zrl[0..nrl], expr.mix_demo_left, out, at, emitted);
@@ -290,11 +289,11 @@ fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     }
     if (arm.left_arg == .mix_of) {
         var zl: [max_arm_len]u8 = undefined;
-        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
         var zr: [max_arm_len]u8 = undefined;
-        const rlen = try zig_safe_ident(face2_slice(arm), &zr);
+        const rlen: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zr));
         var zj: [max_arm_len]u8 = undefined;
-        const jn = try zig_safe_ident(face3_slice(arm), &zj);
+        const jn: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zj));
         try emit_mix_atom(zl[0..ln], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zr[0..rlen], expr.mix_demo_right, out, at, emitted);
         try emit_mix_atom(zj[0..jn], expr.jam_demo_right, out, at, emitted);
@@ -308,11 +307,11 @@ fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     }
     if (arm.right_arg == .mix_of) {
         var zl: [max_arm_len]u8 = undefined;
-        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
         var zm: [max_arm_len]u8 = undefined;
-        const mn = try zig_safe_ident(face2_slice(arm), &zm);
+        const mn: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zm));
         var zr: [max_arm_len]u8 = undefined;
-        const rlen = try zig_safe_ident(face3_slice(arm), &zr);
+        const rlen: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zr));
         try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
         try emit_mix_atom(zm[0..mn], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zr[0..rlen], expr.mix_demo_right, out, at, emitted);
@@ -325,9 +324,9 @@ fn emit_one_jam(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
         return;
     }
     var zl: [max_arm_len]u8 = undefined;
-    const ln = try zig_safe_ident(face_slice(arm), &zl);
+    const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
     var zr: [max_arm_len]u8 = undefined;
-    const rlen = try zig_safe_ident(face2_slice(arm), &zr);
+    const rlen: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zr));
     try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
     try emit_mix_atom(zr[0..rlen], expr.jam_demo_right, out, at, emitted);
     const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = ({s} << 16) | {s};\n", .{ role, zl[0..ln], zr[0..rlen] }) catch return error.Overflow;
@@ -344,13 +343,13 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     if (arm.kind != .cue_of) return;
     if (expr.cue_jam_is_nest_both(arm)) {
         var zll: [max_arm_len]u8 = undefined;
-        const nll = try zig_safe_ident(face_slice(arm), &zll);
+        const nll: usize = @intCast(try zig_safe_ident(face_slice(arm), &zll));
         var zlr: [max_arm_len]u8 = undefined;
-        const nlr = try zig_safe_ident(face2_slice(arm), &zlr);
+        const nlr: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zlr));
         var zrl: [max_arm_len]u8 = undefined;
-        const nrl = try zig_safe_ident(face3_slice(arm), &zrl);
+        const nrl: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zrl));
         var zrr: [max_arm_len]u8 = undefined;
-        const nrr = try zig_safe_ident(face4_slice(arm), &zrr);
+        const nrr: usize = @intCast(try zig_safe_ident(face4_slice(arm), &zrr));
         try emit_mix_atom(zll[0..nll], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zlr[0..nlr], expr.mix_demo_right, out, at, emitted);
         try emit_mix_atom(zrl[0..nrl], expr.mix_demo_left, out, at, emitted);
@@ -373,11 +372,11 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     }
     if (expr.cue_jam_is_nest_left(arm)) {
         var zml: [max_arm_len]u8 = undefined;
-        const mln = try zig_safe_ident(face_slice(arm), &zml);
+        const mln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zml));
         var zmr: [max_arm_len]u8 = undefined;
-        const mrn = try zig_safe_ident(face2_slice(arm), &zmr);
+        const mrn: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zmr));
         var zjr: [max_arm_len]u8 = undefined;
-        const jrn = try zig_safe_ident(face3_slice(arm), &zjr);
+        const jrn: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zjr));
         try emit_mix_atom(zml[0..mln], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zmr[0..mrn], expr.mix_demo_right, out, at, emitted);
         try emit_mix_atom(zjr[0..jrn], expr.jam_demo_right, out, at, emitted);
@@ -395,11 +394,11 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     }
     if (expr.cue_jam_is_nest_right(arm)) {
         var zl: [max_arm_len]u8 = undefined;
-        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
         var zm: [max_arm_len]u8 = undefined;
-        const mn = try zig_safe_ident(face2_slice(arm), &zm);
+        const mn: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zm));
         var zr: [max_arm_len]u8 = undefined;
-        const mrn = try zig_safe_ident(face3_slice(arm), &zr);
+        const mrn: usize = @intCast(try zig_safe_ident(face3_slice(arm), &zr));
         try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
         try emit_mix_atom(zm[0..mn], expr.mix_demo_left, out, at, emitted);
         try emit_mix_atom(zr[0..mrn], expr.mix_demo_right, out, at, emitted);
@@ -417,9 +416,9 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
     }
     if (expr.cue_is_jam(arm)) {
         var zl: [max_arm_len]u8 = undefined;
-        const ln = try zig_safe_ident(face_slice(arm), &zl);
+        const ln: usize = @intCast(try zig_safe_ident(face_slice(arm), &zl));
         var zr: [max_arm_len]u8 = undefined;
-        const jrn = try zig_safe_ident(face2_slice(arm), &zr);
+        const jrn: usize = @intCast(try zig_safe_ident(face2_slice(arm), &zr));
         try emit_mix_atom(zl[0..ln], expr.jam_demo_left, out, at, emitted);
         try emit_mix_atom(zr[0..jrn], expr.jam_demo_right, out, at, emitted);
         var pack_buf: [max_arm_len + 16]u8 = undefined;
@@ -431,7 +430,7 @@ fn emit_one_cue(role: []const u8, arm: *const ArmExpr, out: []u8, at: *usize, em
         return;
     }
     var zb: [max_arm_len]u8 = undefined;
-    const zn = try zig_safe_ident(face_slice(arm), &zb);
+    const zn: usize = @intCast(try zig_safe_ident(face_slice(arm), &zb));
     try emit_mix_atom(zb[0..zn], expr.jam_demo_result(), out, at, emitted);
     const arm_line = std.fmt.bufPrint(out[at.*..], "    const {s}: u32 = {s} & 0xffff;\n", .{ role, zb[0..zn] }) catch return error.Overflow;
     at.* += arm_line.len;
@@ -447,7 +446,7 @@ fn write_arm_expr(arm: *const ArmExpr, role: enum { then_role, else_role }, out:
     switch (arm.kind) {
         .face => {
             var zb: [max_arm_len]u8 = undefined;
-            const zn = try zig_safe_ident(face_slice(arm), &zb);
+            const zn: usize = @intCast(try zig_safe_ident(face_slice(arm), &zb));
             if (zn > out.len) return error.Overflow;
             @memcpy(out[0..zn], zb[0..zn]);
             return out[0..zn];

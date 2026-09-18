@@ -91,9 +91,12 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # Lowered 20260828 to the sharper filter below, which drops comment prose, the inherited-C
 # `extern fn` seam, and identifiers merely containing the five letters: 329 files and 1,263 lines
 # over 1,899 sources, on a committed tree. Lowered again 20260917.100717 when the corpus reading
-# began welcoming a STATED seam, below: 282 files and 1,167 lines over 1,983 sources.
+# began welcoming a STATED seam, below: 282 files and 1,167 lines over 1,983 sources. Lowered
+# again 20260917 when the `max_arm_len` three -- `lower_conditional`, `lower_null`,
+# `lower_switch` -- delegated their `zig_safe_ident` to `glow/zig_ident.rye` and answered `u32`
+# rather than `usize`: 277 files and 1,133 lines over 1,985 sources.
 corpus_files_ceiling=282
-corpus_lines_ceiling=1167
+corpus_lines_ceiling=1133
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye
