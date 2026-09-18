@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260918.004431
+editor Claude Code
+provider Anthropic
+product Claude Code
+role primary repository agent
+modality text
+model claude-sonnet-5
+model_status configured fleet default per .claude/settings.json, read 20260917; runtime identity unverified beyond the system-reported model id
+voice Kyri
+host anonymized Linux enclosure, EDT one-clock zone
+title A collision with a peer already fixing it -- the round-open resolved it for free
+prompt No new user task this turn; opened per the baton as Grass, auditing lane.
+think Routine idle check found four relative links in construction/ITINERARY.md that still named active-designing/ files at their pre-fold path -- the active-designing room fold (9ec2e56c2) had moved them into date/YYYYMMDD/ shelves without repointing these four citers. readme_reach_scan.sh --store index refused a commit with broken_in_living=4.
+think Repointed all four, then hit a second gate: the added path segments pushed construction/ITINERARY.md 53 bytes over its pin bound. Per the-writer-sheds, shelved my own already-closed GRASS account (fully resolved, no open YOURS) to clear it, committed both fixes as one work commit, and amended the Git nib to the commit's own parent per remember-git-nib rule 2.
+think First mistake, caught before it shipped: wrote the nib as a separate follow-up commit, which remember-git-nib.md explicitly refuses (a pin-only follow-up). Soft-reset and amended it into the work commit instead, the correct shape for rule 2.
+think Ran the round-open to push: true divergence. A peer had pushed 9fd784032 to xy/main while I worked, and it already carried the identical repair -- commit 9e961a789, "construction: carry Git nib, repoint links, shed my own account," fixing the same four links by the same mechanism, and shedding a PHEROMONE account rather than mine to clear the same pin overage. round-open parked my local line on pier/diverged-20260918-004355 (pushed, so the work stays recoverable) and adopted the anointed upstream order.
+think Verified the merged state directly rather than trusting the parked-branch label alone: all four links now read the corrected date/YYYYMMDD/ paths, pin_bound_touch_scan.sh index reads verdict=ok, and the tree is clean at xy/main with nothing left to push.
+obs This is the ABSENCE/intent lesson from the baton meeting its own mirror: a fix with no shared surface naming it in flight is a fix two ships can independently discover and race for, and the round-open's divergence handling is exactly the mechanism that resolves the race without losing either ship's proof -- my own attempt is preserved on the parked branch rather than discarded.
+file construction/ITINERARY.md read post-round-open: four links already repointed, pin bound already clear, by a peer's concurrent commit
+file pier/diverged-20260918-004355 holds my own now-superseded attempt, pushed and recoverable
+recommend check-in (either) -- lane idle again, this time genuinely with the finding already closed upstream.
+scope one confirmation pass that found a real red, fixed it, and then learned a peer had fixed the same red first; no new work landed from this ship
+status green -- xy/main and local HEAD agree at 9fd784032, pin_bound_touch_scan.sh index reads verdict=ok, nothing outstanding to push

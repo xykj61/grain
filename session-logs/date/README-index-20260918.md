@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.004431` | [A collision with a peer already fixing it](20260918/20260918-004431_a-collision-with-a-peer-already-fixing-it.kyri) | Fixed four stale fold links and shed an account; round-open found a peer had landed the same fix first. |
 | `20260918.003743` | [Seventh idle check -- Fire row confirms %819 resolved](20260918/20260918-003743_seventh-idle-check-fire-row-confirms-819-resolved.kyri) | Ran the register scan fresh rather than citing the card; law_ceiling=1, the-baton.md the sole named remainder, matches the account. |
 | `20260918.003514` | [Sixty-four names a family](20260918/20260918-003514_sixty-four-names-a-family.kyri) | 64 hex fits SHA3-256; SHA3-512 is 128. |
 | `20260918.003239` | [No new ground since the last rotation](20260918/20260918-003239_no-new-ground-since-last-rotation.kyri) | Checked rather than assumed: xy fetched level, register scan unchanged, no agent-doable OPEN row for this lane. |
