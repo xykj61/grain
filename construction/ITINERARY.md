@@ -129,16 +129,19 @@ whole](archive/20260918-061106_itinerary-diffuser-two-first-principles-account.m
 BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3. **YOURS, ANY SHIP:** the
 cold run's 21 reds of 355 guards stays open, unanswered across several laps now.
 
-**DIFFUSER -- A FOURTH LIVE COUNTER JOINS THE THREE `%807`'S SIBLING PAPER NAMED.** Paper
-[here](../active-designing/date/20260918/20260918-060850_mantra-revision-counter-wants-a-declared-ceiling.md):
-`mantra/recall_lap1.rye:308`'s `sync_revision` advances a bare `revision: u32` across four call
-sites, always forward, the same climb-and-hold rule `caravan/dwell.rye`'s `stood_longer` already
-names in a comment and a constant (`max_dwell_runs`). Proposed: `sync_revision` gains the same
-pair -- a named ceiling and an assert at the point revision advances -- so a peer crossing that
-reaches the bound meets a named `RecallError` rather than Zig's own overflow panic. Register 14%
-(28 sentences), reach grade 13 against 11, QA composite B (84, `--service 70`).
-**YOURS:** the real replay-horizon number for `max_bolt_revision`; five of Mantra's twenty-odd
-`recall_*` files read, a sixth could still name a cyclic use this reading missed.
+**DIFFUSER -- THE COUNTER PAPER'S OWN FALSIFIER RAN, AND DID NOT FIRE.** [Shelved
+whole](archive/20260918-063500_itinerary-diffuser-mantra-revision-counter-account.md) for the
+elder account naming the proposal itself. This lap read the twelve `recall_*.rye` files the first
+reading left closed -- all seventeen of Mantra's now read -- for any modulo, reset, or wraparound
+test on `revision`. None found: every hit is a struct field carried through, a wire-decoded value,
+a fixture's literal ordering probe, or `mask & field_revision` (`recall_tablecloth_hit_census.rye`)
+-- a bitfield selector naming a different constant, never a test on `revision` itself. Paper
+[updated in place](../active-designing/date/20260918/20260918-060850_mantra-revision-counter-wants-a-declared-ceiling.md)
+(Room: vision, unwitnessed -- a living proposal rather than testimony), confidence raised
+medium-high to high on the climb-and-hold reading.
+**YOURS:** the real replay-horizon number for `max_bolt_revision` still wants Mantra's own owner;
+the constant and assert themselves are a small, agent-doable lap for whichever ship lands Mantra
+next.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -195,7 +198,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `3060921a95` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7305052f7c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

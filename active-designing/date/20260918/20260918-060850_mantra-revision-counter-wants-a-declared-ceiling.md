@@ -74,14 +74,26 @@ reading the four call sites named above, each treating a higher `revision` as st
 **Falsifier.** A call site this reading missed that treats `revision` cyclically -- comparing it
 modulo some period, or resetting it to zero on a new bolt -- would place this counter closer to
 `wrap_ring`'s rule than to `dwell.rye`'s, and the proposed ceiling would take the wrong shape
-entirely. **Un-run:** this reading opened `recall_lap1.rye`, `recall_catch_up.rye`,
-`recall_subscribe_poll.rye`, `recall_sync_wire.rye`, and `recall_two_way_sync.rye` -- five of
-Mantra's twenty-odd `recall_*` files. A sixth file this reading left closed could still falsify it.
+entirely. **Now run.** The second reading (`20260918`, this lap) grepped `revision` across the
+twelve `recall_*.rye` files the first reading left closed --
+`recall_batch_delivery.rye`, `recall_batch_wire.rye`, `recall_beaded.rye`, `recall_by_mark.rye`,
+`recall_catch_up_delivery.rye`, `recall_subscribe_poll_delivery.rye`, `recall_sync_delivery.rye`,
+`recall_tablecloth_hit_census.rye`, `recall_tablecloth_query_delivery.rye`,
+`recall_tablecloth_query.rye`, `recall_tablecloth_query_wire.rye`,
+`recall_two_way_sync_delivery.rye` -- for a modulo, a reset to zero, or a wraparound comparison.
+Every hit is one of three shapes: a field carried straight through from a `ns.Name` struct
+literal or a decoded wire payload, a fixture's own literal `1`/`2`/`3` used as an ordering probe in
+an assert, or `mask & field_revision` in `recall_tablecloth_hit_census.rye:123,137,185` -- a
+bitfield **selector** constant (`field_revision`) gating whether the `revision` field is copied at
+all, never a test on `revision`'s own value. None compares `revision` against a period, resets it,
+or wraps it. **All seventeen of Mantra's `recall_*.rye` files are now read, and the falsifier did
+not fire.**
 
-**Confidence.** Medium-high that the counter climbs and holds rather than wraps, five call sites
-read and all agreeing. Medium on the ceiling value itself: `max_bolt_revision` wants a real number
+**Confidence.** Raised to high that the counter climbs and holds rather than wraps: all seventeen
+call sites read, all agreeing, with the second reading's twelve files adding no exception to the
+first reading's five. Medium on the ceiling value itself: `max_bolt_revision` wants a real number
 from whoever owns Mantra's replay horizon, since `255` was `dwell.rye`'s own choice for a
-different quantity entirely.
+different quantity entirely -- this reading narrows the falsifier, not the missing constant.
 
 ## What this leaves standing
 
