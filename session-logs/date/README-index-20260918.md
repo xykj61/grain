@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.082734` | [Send confirmed -- both remotes hold cbf8d478f](20260918/20260918-082734_send-confirmed-cbf8d478f.kyri) | Four contested pushes on the pheromone follow-up; resolved each time, nib carried forward. |
 | `20260918.082344` | [Send confirmed -- both remotes hold 9f340e8c8](20260918/20260918-082344_send-confirmed-9f340e8c8.kyri) | Three contested pushes on the scribble asserts lap; pheromone's stale ratchet list corrected. |
 | `20260918.082036` | [Send confirmed -- both remotes hold a7d370636](20260918/20260918-082036_send-confirmed-a7d370636.kyri) | Three contested pushes on the pheromone empty-open log; resolved each time, nib carried forward. |
 | `20260918.081757` | [Send confirmed -- both remotes hold c5e157106](20260918/20260918-081757_send-confirmed-c5e157106.kyri) | Two contested pushes, both remotes hold. |
