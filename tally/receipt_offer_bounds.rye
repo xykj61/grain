@@ -13,7 +13,18 @@ pub const max_replay_facts: u32 = 1;
 pub const receipt_card_width: u32 = 72;
 pub const receipt_card_height: u32 = 18;
 
-pub const BoundError = error{ Empty, NonAscii, TooLong, AmountTooLarge, TooManyFacts };
+/// A product digest's exact hex length, decided rather than borrowed
+/// (active-designing/20260918-000154_three-numbers-and-a-name.md, on Keaton's
+/// word). Sixty-four hex characters is the width of any 256-bit digest -- this
+/// tree names SHA3-256 -- so admission checks this as a LENGTH the field must
+/// equal, never a ceiling it may fall under. A digest of the wrong length
+/// carries no information, so a shorter or a longer one refuses alike.
+pub const product_digest_len: u32 = 64;
+pub const max_value_unit_bytes: u32 = 32;
+pub const max_return_kind_bytes: u32 = 48;
+pub const max_signature_bytes: u32 = 192;
+
+pub const BoundError = error{ Empty, NonAscii, TooLong, WrongLength, AmountTooLarge, TooManyFacts };
 
 fn text(value: []const u8, ceiling: u32) BoundError!void {
     _ = print;
@@ -51,6 +62,16 @@ pub fn value_basis(value: []const u8) BoundError!void {
     assert(value.len <= std.math.maxInt(u32));
     if (value.len > max_value_basis_bytes) return BoundError.TooLong;
     try text(value, max_value_basis_bytes);
+}
+
+pub fn productDigest(value: []const u8) BoundError!void {
+    // invariant: the published digest length is positive.
+    assert(product_digest_len > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len == 0) return BoundError.Empty;
+    if (value.len != product_digest_len) return BoundError.WrongLength;
+    for (value) |byte| if (!std.ascii.isAscii(byte)) return BoundError.NonAscii;
 }
 
 pub fn amount(value: u64) BoundError!void {

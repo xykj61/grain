@@ -48,6 +48,7 @@ pub const Reason = enum {
     empty,
     non_ascii,
     too_long,
+    wrong_length,
     amount_too_large,
     too_many_facts,
     unknown_schema,
@@ -61,6 +62,7 @@ pub const Reason = enum {
             .empty => "empty",
             .non_ascii => "non-ascii",
             .too_long => "too-long",
+            .wrong_length => "wrong-length",
             .amount_too_large => "amount-too-large",
             .too_many_facts => "too-many-facts",
             .unknown_schema => "unknown-schema",
@@ -128,6 +130,26 @@ pub fn text_refusal(field: []const u8, value: []const u8, ceiling: u32) ?Refusal
         .measure = .{ .value = value.len, .ceiling = ceiling, .unit = .ascii_byte },
     };
     if (value.len == 0) return .{ .field = field, .reason = .empty };
+    for (value) |byte| if (!std.ascii.isAscii(byte)) return .{ .field = field, .reason = .non_ascii };
+    return null;
+}
+
+/// Read one field that must equal an exact length rather than stay under a
+/// ceiling -- `product_digest` is the one field this contract admits this way,
+/// since a digest of the wrong length carries no information in either
+/// direction. `measure.ceiling` carries the required length, so a reader sees
+/// the same shape a ceiling refusal shows even though this is an equality.
+pub fn exact_length_refusal(field: []const u8, value: []const u8, length: u32) ?Refusal {
+    // invariant: every caller names a positive required length.
+    assert(length > 0);
+    // invariant: the inherited slice length fits the published count width.
+    assert(value.len <= std.math.maxInt(u32));
+    if (value.len == 0) return .{ .field = field, .reason = .empty };
+    if (value.len != length) return .{
+        .field = field,
+        .reason = .wrong_length,
+        .measure = .{ .value = value.len, .ceiling = length, .unit = .ascii_byte },
+    };
     for (value) |byte| if (!std.ascii.isAscii(byte)) return .{ .field = field, .reason = .non_ascii };
     return null;
 }

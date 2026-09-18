@@ -1,0 +1,74 @@
+//! linengrow/receipt_offer_witness.rye -- the holder's readable receipt, exercised end to end.
+//!
+//! Proves the receipt contract's acceptance case 2: the projection shows product, recipient,
+//! purpose, simulated offered value, value basis, promised return, issue time, expiration, and
+//! `offered` status -- and case 5's Linengrow half, that replaying at the expiration boundary
+//! moves status to `expired` while every other published field stays exactly what was admitted.
+//! The fixture values match the contract's one fixture exactly, so this witness reads the same
+//! admitted fact Mantra's own `receipt_offer_witness.rye` admits and replays; only the two
+//! modules' shared Zig module boundary (REDS %589, named in `linengrow/receipt_offer.rye`) keeps
+//! them from one binary.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt_mod = @import("receipt_offer.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(receipt_mod).@"struct".decls) |decl| {
+        _ = &@field(receipt_mod, decl.name);
+    }
+}
+
+fn fixture(expired: bool) receipt_mod.OfferSnapshot {
+    return .{
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .product_id = "data:weekly-pollinator-counts",
+        .purpose = "habitat-planning",
+        .recipient_id = "org:sample-steward",
+        .value_amount = 1200,
+        .value_unit = "USD-cent-simulated",
+        .value_basis = "one-purpose license offer",
+        .return_kind = "service-credit",
+        .issued_at = 1_789_228_800,
+        .expires_at = 1_791_820_800,
+        .expired = expired,
+    };
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const snap = fixture(false);
+    const receipt = receipt_mod.from_snapshot(snap);
+    // invariant: the receipt names the same offer the admitted fact carries, field for field.
+    assert(std.mem.eql(u8, receipt.receipt_id, snap.receipt_id));
+    assert(std.mem.eql(u8, receipt.product_id, snap.product_id));
+    assert(std.mem.eql(u8, receipt.purpose, snap.purpose));
+    assert(std.mem.eql(u8, receipt.recipient_id, snap.recipient_id));
+    assert(receipt.offered_value == snap.value_amount);
+    assert(std.mem.eql(u8, receipt.value_unit, snap.value_unit));
+    assert(std.mem.eql(u8, receipt.value_basis, snap.value_basis));
+    assert(std.mem.eql(u8, receipt.promised_return, snap.return_kind));
+    assert(receipt.issued_at == snap.issued_at);
+    assert(receipt.expires_at == snap.expires_at);
+    assert(std.mem.eql(u8, receipt.status, receipt_mod.status_offered));
+
+    const expired_snap = fixture(true);
+    const expired = receipt_mod.from_snapshot(expired_snap);
+    assert(std.mem.eql(u8, expired.status, receipt_mod.status_expired));
+    // invariant: expiration moves status alone; every other published field stays put.
+    assert(std.mem.eql(u8, expired.receipt_id, snap.receipt_id));
+    assert(std.mem.eql(u8, expired.product_id, snap.product_id));
+    assert(std.mem.eql(u8, expired.purpose, snap.purpose));
+    assert(std.mem.eql(u8, expired.recipient_id, snap.recipient_id));
+    assert(expired.offered_value == snap.value_amount);
+    assert(std.mem.eql(u8, expired.value_unit, snap.value_unit));
+    assert(std.mem.eql(u8, expired.value_basis, snap.value_basis));
+    assert(std.mem.eql(u8, expired.promised_return, snap.return_kind));
+    assert(expired.issued_at == snap.issued_at);
+    assert(expired.expires_at == snap.expires_at);
+
+    print("GREEN: linengrow receipt -- readable projection, offered and expired status, admitted fact unchanged.\n", .{});
+    return 0;
+}

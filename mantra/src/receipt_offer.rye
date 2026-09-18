@@ -59,11 +59,12 @@ pub const AdmissionError = bounds.BoundError || error{
 /// A reason added without a name here fails to compile, which is the point.
 pub fn error_of(reason: tally_refusal.Reason) AdmissionError {
     // invariant: the published reason set stays the size this mapping covers.
-    assert(@typeInfo(tally_refusal.Reason).@"enum".fields.len == 10);
+    assert(@typeInfo(tally_refusal.Reason).@"enum".fields.len == 11);
     return switch (reason) {
         .empty => AdmissionError.Empty,
         .non_ascii => AdmissionError.NonAscii,
         .too_long => AdmissionError.TooLong,
+        .wrong_length => AdmissionError.WrongLength,
         .amount_too_large => AdmissionError.AmountTooLarge,
         .too_many_facts => AdmissionError.TooManyFacts,
         .unknown_schema => AdmissionError.UnknownSchema,
@@ -83,22 +84,26 @@ pub fn fact_refusal(f: ReceiptOfferFact, encoded_len: u32, signature_valid: bool
     assert(schema_v1.len > 0);
     if (tally_refusal.encoded_fact_refusal(encoded_len, bounds.max_encoded_fact_bytes)) |r| return r;
     if (!std.mem.eql(u8, f.schema, schema_v1)) return .{ .field = "schema", .reason = .unknown_schema };
+    // The five identifiers this contract's "each identifier" row governs
+    // (active-designing/20260918-000154_three-numbers-and-a-name.md, Two).
+    // product_digest is enumerated OUT of this set: it earns its own exact
+    // length below rather than leaning on the shared identifier ceiling.
     const identifiers = [_]struct { name: []const u8, value: []const u8 }{
         .{ .name = "receipt_id", .value = f.receipt_id },
         .{ .name = "holder_id", .value = f.holder_id },
         .{ .name = "recipient_id", .value = f.recipient_id },
         .{ .name = "product_id", .value = f.product_id },
-        .{ .name = "product_digest", .value = f.product_digest },
         .{ .name = "signer_id", .value = f.signer_id },
     };
     for (identifiers) |entry| {
         if (tally_refusal.text_refusal(entry.name, entry.value, bounds.max_identifier_bytes)) |r| return r;
     }
+    if (tally_refusal.exact_length_refusal("product_digest", f.product_digest, bounds.product_digest_len)) |r| return r;
     if (tally_refusal.text_refusal("purpose", f.purpose, bounds.max_purpose_bytes)) |r| return r;
-    if (tally_refusal.text_refusal("value_unit", f.value_unit, bounds.max_identifier_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("value_unit", f.value_unit, bounds.max_value_unit_bytes)) |r| return r;
     if (tally_refusal.text_refusal("value_basis", f.value_basis, bounds.max_value_basis_bytes)) |r| return r;
-    if (tally_refusal.text_refusal("return_kind", f.return_kind, bounds.max_identifier_bytes)) |r| return r;
-    if (tally_refusal.text_refusal("signature", f.signature, bounds.max_identifier_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("return_kind", f.return_kind, bounds.max_return_kind_bytes)) |r| return r;
+    if (tally_refusal.text_refusal("signature", f.signature, bounds.max_signature_bytes)) |r| return r;
     if (tally_refusal.amount_refusal("value_amount", f.value_amount, bounds.max_value_amount)) |r| return r;
     if (!std.mem.endsWith(u8, f.value_unit, "-simulated")) return .{ .field = "value_unit", .reason = .unsuitable_value_unit };
     if (f.expires_at <= f.issued_at) return .{ .field = "expires_at", .reason = .invalid_expiration };
