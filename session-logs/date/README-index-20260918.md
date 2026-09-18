@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.064042` | [Send confirmed -- both remotes hold b66bb3aed](20260918/20260918-064042_send-confirmed-b66bb3aed.kyri) | Three contested pushes, one real dayshelf conflict resolved, generated pages refreshed each rebase. |
 | `20260918.063857` | [Round closes -- 7d3df7ba0](20260918/20260918-063857_round-closes-7d3df7ba0.kyri) | Pheromone closed the %825 claim within two minutes. |
+| `20260918.063739` | [Three proposals named on the card](20260918/20260918-063739_three-proposals-named-on-the-card.kyri) | Buildable torus-search residue had no card pointer. |
 | `20260918.063609` | [Send confirmed -- 26b2fd6df](20260918/20260918-063609_send-confirmed-26b2fd6df.kyri) | REDS %825 lap landed after one rebase, one shared-stamp conflict. |
 | `20260918.063535` | [Second cold check confirms queue still empty](20260918/20260918-063535_docs-geode-cold-check-still-empty.kyri) | Claims board, ITINERARY, REDS OPEN rows re-walked; same empty verdict. |
 | `20260918.063114` | [Send confirmed -- both remotes hold e94667988](20260918/20260918-063114_send-confirmed-e94667988.kyri) | One rebase, one day-shelf row conflict resolved, nib re-pinned twice. |
