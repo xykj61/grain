@@ -101,6 +101,14 @@ place anything ran the instrument directly rather than reading the roster's sile
 it passes, `verdict=cycles`, on metal. The ladder's twelve rows now all carry either a landed
 witness or a re-aimed finding; row 11 was the last to close.
 
+**The open question row 11 left is answered:** `20260917.205920` --
+[`the-age-that-must-not-wrap.md`](20260917-205920_the-age-that-must-not-wrap.md) reads
+`caravan/dwell.rye` and `tally/region.rye` beside `wrap_ring` and finds three live counters
+answering row 11's leftover question -- should Caravan and Tally adopt "declare the period, get the
+bound for free" as a standing convention -- in three different ways, each stated in the module's own
+comment before this paper restated it: a cyclic position wraps, a cumulative history saturates, an
+exhaustible resource refuses. All three readings are live witnesses at that paper's own stamp.
+
 ---
 
 ## The twelve, single-stranded
