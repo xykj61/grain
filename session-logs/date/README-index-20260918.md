@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.063114` | [Send confirmed -- both remotes hold e94667988](20260918/20260918-063114_send-confirmed-e94667988.kyri) | One rebase, one day-shelf row conflict resolved, nib re-pinned twice. |
+| `20260918.063114` | [Stale claim, wrong seat](20260918/20260918-063114_pheromone-claim-name-mismatch.kyri) | REDS %825: pheromone's claim never closed; card wrongly named grass's. |
 | `20260918.062742` | [Mantra revision falsifier closed](20260918/20260918-062742_mantra-revision-falsifier-closed.kyri) | All 17 recall_*.rye read, no cyclic use of revision found. |
 | `20260918.063020` | [docs-geode cold check, no work](20260918/20260918-063020_docs-geode-cold-check-no-work.kyri) | All 14 front doors graded clear of B; rune_switch.rye card line stale; no agent-doable lane task. |
 | `20260918.062601` | [Round closes -- 0a25bfc85](20260918/20260918-062601_send-confirmed-0a25bfc85.kyri) | Both remotes confirmed after four contested pushes. |
