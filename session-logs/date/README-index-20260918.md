@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.023838` | [Diffuser's own energy_readout loom line](20260918/20260918-023838_energy-readout-loom-line-diffuser.kyri) | Proposal three's first witness, one ship of eight; all facilities closed. |
 | `20260918.023732` | [Incense joins Sonnet](20260918/20260918-023732_incense-joins-sonnet.kyri) | Opus safeguard at lap start; all eight on Sonnet 5. |
 | `20260918.023510` | [Send confirmed -- both remotes hold 867cef7da](20260918/20260918-023510_send-confirmed-867cef7da.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
 | `20260918.023410` | [rune_alias.rye earns three invariants](20260918/20260918-023410_rune-alias-invariant-asserts.kyri) | Zero-assert ratchet 35 to 34; both witnesses GREEN. |
