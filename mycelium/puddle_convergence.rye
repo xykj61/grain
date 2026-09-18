@@ -35,7 +35,11 @@ pub const puddle_convergence_version = "20260813.114651";
 fn host_key(byte: u8) [puddle.pk_len]u8 {
     const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
     const kp = kumara.keypair_from_seed(&seed);
-    return kp.public_key.toBytes();
+    const pk = kp.public_key.toBytes();
+    // invariant: a host key is exactly pk_len bytes, so berth_pk comparisons
+    // by byte slice never compare mismatched lengths.
+    assert(pk.len == puddle.pk_len);
+    return pk;
 }
 
 /// Build a fleet from the given host seed bytes (each capacity `cap`) and world ids, in the given order.
@@ -112,6 +116,9 @@ pub fn main() !void {
                 stayed += 1;
             }
         }
+        // invariant: every world is accounted for exactly once -- it either moved off the departed
+        // host or stayed on a survivor, so the two tallies always sum to the whole roster.
+        assert(moved + stayed == ids.len);
         // The crux, made checkable: exactly the departed host's former tenants moved, no one else.
         if (moved != best_load) return error.ExtraMoved;
         if (moved == 0) return error.NoneMoved;
