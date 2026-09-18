@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260917.230113
+editor Claude Code
+provider Anthropic
+product Claude Code
+role coding agent
+modality text
+model claude-sonnet-5
+model_status active runtime verified; system reminder names claude-sonnet-5 directly
+voice Kyri
+title mandi/README.md joins the DOOR roster
+prompt fleet-loop baton, no specific human ask this lap -- picked the next agent-doable, in-lane item
+think read construction/ITINERARY.md whole; petrichor's own lane is docs-geode, and the NOW queue named nothing docs-geode-specific this lap
+think ran tools/fixtures/p/prose_register_scan.sh and found teaching_over_field_target=1 on docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md, then read the scan's own comment at line 135 naming five of its ten negatives as custody refusals reserved for Keaton's word -- left it untouched, same reason grass and a peer commit (b6b288232) both hit and reverted forty minutes apart
+think checked .claude/rules/the-baton.md too (47% of 187 sentences, GRASS's own YOURS line) -- too large and too risky to restate safely at this effort level, and not clearly my lane; left it for its own round
+think turned to front_doors_unrostered_over candidates instead, since a front door joining the DOOR roster is exactly the pattern the prior commit (keys README) already proved safe and in-lane
+think picked mandi/README.md at 22% of 22 sentences -- one sentence over the 20% door ceiling -- read the file whole and grepped tools/ for verbatim citations of its wording before touching anything
+think rewrote one sentence in the Floor view section from a refusal frame to an affirmative one, preserving the exact custody fact (a tampered signature never verifies); grepped both the elder and new phrasing to confirm no witness quotes either string
+obs negative share fell 22% (5 of 22) to 18% (4 of 22); the four sentences that remain are the room's own honest refusals (a false price this floor cannot catch, an unauthorized-but-well-formed offer, the settle's own refusal list) and none of them were touched
+file mandi/README.md -- one sentence reworded from refusal to affirmative framing, plus a Style line naming Door setting explicitly (matching the qa reader's declared_style_line_of() convention)
+file tools/fixtures/p/prose_register_scan.sh -- DOOR constant extended with mandi/README.md, so the scan's own door_setting_verdict() and per-file loop read and gate it too
+loom witness=prose_register_witness control_legs=55 control_failed=0
+recommend kg -- door_over_ceiling stayed 0, door_setting_declared rose 28 to 29, front_doors_unrostered_over fell 7 to 6; witness GREEN on metal
