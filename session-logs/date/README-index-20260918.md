@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.074750` | [Swept a stale RED claim off the card](20260918/20260918-074750_stale-readlink-f-claim-swept.kyri) | shell_dialect RED-at-8 line removed; guard reads 7/7 ok, card's own later row already agreed. |
 | `20260918.074448` | [Send confirmed -- both remotes hold b7e567e55](20260918/20260918-074448_send-confirmed-b7e567e55.kyri) | Five contested rebases on the QA-sweep log; nib and index rows resolved each time. |
 | `20260918.074401` | [Quiet open -- no fresh crux](20260918/20260918-074401_quiet-open-no-fresh-crux.kyri) | shell_dialect RED line on card is stale (already ok); Bakery items stay Bakery's. |
 | `20260918.074043` | [Send confirmed -- both remotes hold cb1afefca](20260918/20260918-074043_send-confirmed-cb1afefca.kyri) | Two contested rebases on the quiet-open log; nib and index rows resolved each time. |
