@@ -32,7 +32,7 @@ that reaches the agent without the baton are each counted at zero.
 | **CLAIM-AS-OVERRIDE** | **this rule** -- it had none |
 | **SEND** | [`send-word`](send-word.md) - [`commit-messages`](commit-messages.md) - [`mechanism-sentence`](mechanism-sentence.md) - [`remember-git-nib`](remember-git-nib.md) - [`git-signing`](git-signing.md) |
 | **LOG** | [`session-logs`](session-logs.md) - [`session-log-provenance`](session-log-provenance.md) |
-| **PINS** | [`checkpoint`](checkpoint.md) - [`debride`](debride.md) - the bound law at `context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md` |
+| **PINS** | [`the-writer-sheds`](the-writer-sheds.md) - [`checkpoint`](checkpoint.md) - [`debride`](debride.md) - the bound law at `context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md` |
 | **CUSTODY** | the ITINERARY gate list - [`git-signing`](git-signing.md) *(the seed)* - **GATES-ONLY seated here** |
 | **CLOSE** | [`collaboration`](collaboration.md) |
 
