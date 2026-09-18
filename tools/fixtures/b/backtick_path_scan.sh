@@ -112,8 +112,11 @@ fi
 . "$_portable"
 
 # THE CEILING ONLY EVER FALLS. Seated at 65 on 20260917, the reading of the tree on the lap this
-# scan landed: 65 living citations across 38 pages. Lower it in the same commit as any sweep.
-ceiling="${BACKTICK_PATH_CEILING:-65}"
+# scan landed: 65 living citations across 38 pages. Lowered to 64 on 20260918: context/QUIN.md's
+# citation repointed to where the file actually folded, and three already-cut SHRED_PREP.md fossil
+# paths de-backticked, since a fossil row's whole point is to name a path that no longer resolves.
+# Lower it in the same commit as any sweep.
+ceiling="${BACKTICK_PATH_CEILING:-64}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
