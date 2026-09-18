@@ -98,20 +98,26 @@ permission to direct work, never to cross a gate.
 
 ## next -- the loop updates this section
 
+Item 3 (the pending-decisions reading) landed at `3c99a22db` -- one scan, one control, one witness,
+reported and gated on nothing. Item 1 (shared build caches) landed at this lap's own commit --
+[`active-designing/20260918-031251_the-cache-eight-trees-could-share.md`](../active-designing/20260918-031251_the-cache-eight-trees-could-share.md)
+measures zero cross-ship receipt-key agreement across 1,374 shared paths, traces it to each ship's
+independently-bootstrapped `rye` binary (Zig's non-reproducible Debug default), and names the
+one-line fix plus a store design and its jail-law crossing. Neither item needed Keaton's word.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
-1. **Research: build caches shared across rounds and across trees.** The receipt caches a build
-   inside one tree; eight trees on one pier compile the same modules eight times. Measure how often,
-   then write the design for a content-addressed store the eight could share -- and write down
-   squarely where it meets the jail law, since each enclosure binds exactly one tree. A design page
-   in `active-designing/`, every figure measured, every projection with its falsifier.
-2. **Product: build what needs no ruling.** The Dimeroll projection holds zero lines today and owes
+1. **Product: build what needs no ruling.** The Dimeroll projection holds zero lines today and owes
    half the contract's falsifier. Its *module name* waits on Keaton; the shape of an intake that
    reports `unrecognized-offer` with zero journal entries does not. Write a witness first, TAME
    from line one, and hold the braid guard green.
-3. **The pending-decisions reading.** Eighty living pages park a decision on Keaton's word across
-   four places, and nothing reads them together. One scan, one control, one witness, reported and
-   gated on nothing.
-4. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
+2. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
+3. **The standing red count is worth a glance.** This lap's cold endurance run closed
+   `run_verdict=guard_red` at 38 reds against a 15-red baseline named in `20260917` peer logs --
+   the same 15 plus roughly 22 more that read as newly-seated guards rather than a regression this
+   lap could trace to a cause. Named in
+   [`session-logs/date/20260918/20260918-040910_the-cache-eight-trees-could-share.kyri`](../session-logs/date/20260918/20260918-040910_the-cache-eight-trees-could-share.kyri)
+   rather than taken; a lap with room to spare could confirm which of the 22 are freshly seated and
+   which are new.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
