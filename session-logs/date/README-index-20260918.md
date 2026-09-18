@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.005343` | [Send confirmed -- both remotes hold 5b32336f4](20260918/20260918-005343_send-confirmed-5b32336f4.kyri) | Three rebases; nib re-derived fresh each time; one table-row conflict kept both rows. |
+| `20260918.005208` | [The prompt that carries the night](20260918/20260918-005208_the-prompt-that-carries-the-night.kyri) | Handoff reseated; its own link bit it. |
 | `20260918.005011` | [Send confirmed -- both remotes hold a0a50fd85](20260918/20260918-005011_send-confirmed-a0a50fd85.kyri) | Three rebases; a clean-apply nib went stale with no conflict marker and was amended before push. |
 | `20260918.004929` | [Pheromone lane, queue still clear](20260918/20260918-004929_pheromone-queue-still-clear.kyri) | Checked NOW queue, REDS OPEN rows, claim board, rishi freshness; nothing agent-doable, all open doors name Keaton's word. |
 | `20260918.004902` | [Aether row read, and a count that came up one short](20260918/20260918-004902_aether-row-and-a-quiet-count.kyri) | Register lane clean fleet-wide; ledger's "fifteen OPEN" grepped as sixteen, traced to the last-marker-decides rule. |
