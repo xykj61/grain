@@ -3,8 +3,8 @@
 **Stamp:** `20260918.072000` -- **Status:** Landed -- checkable, every reading below run on this
 tree's own tracked bytes on this pier.
 **Language:** EN -- **Style:** Gauge, Field setting -- **Voice:** Kyri
-**Kin:** [`../../foundations/20260825-211056_what-mantra-is.md`](../../foundations/20260825-211056_what-mantra-is.md)
-(name-to-bytes binding) -- [`../../.claude/rules/stamp-and-name.md`](../../.claude/rules/stamp-and-name.md)
+**Kin:** [`../../../foundations/20260825-211056_what-mantra-is.md`](../../../foundations/20260825-211056_what-mantra-is.md)
+(name-to-bytes binding) -- [`../../../.claude/rules/stamp-and-name.md`](../../../.claude/rules/stamp-and-name.md)
 (the 1,084 hand-filed-symlink import sites) -- [`20260918-064820_row-alignment-for-large-tally-gardens-an-energy-first-principles-check.md`](20260918-064820_row-alignment-for-large-tally-gardens-an-energy-first-principles-check.md)
 (this lap's own prior energy paper)
 **Aimed at:** Mantra (the name-to-bytes promise this proposal would spend), Bakery (who owns the
@@ -103,7 +103,7 @@ closes the way this pair already closed it, and Mantra's promise stays a storage
 If it comes back large, the buildable next step is a compilation cache keyed on content hash rather
 than path for the hand-filed-symlink family specifically -- a much narrower target than "cache all
 Rye compilation," and one Zig's own build cache (already seated at
-[`../../tools/p/parity_zig_cache_seat.sh`](../../tools/p/parity_zig_cache_seat.sh)) may or may not
+[`../../../tools/p/parity_zig_cache_seat.sh`](../../../tools/p/parity_zig_cache_seat.sh)) may or may not
 already provide, depending on whether its cache key is keyed by content across separate top-level
 compilation units or only within one. That is a second, separate empirical question this note
 also leaves open rather than guesses at.
