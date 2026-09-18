@@ -60,12 +60,6 @@ stamp 20260918.052932
 epoch 1789723772
 paths glow/rune_mutate.rye
 what add bare asserts to rune_mutate.rye, same shape as rune_list/rune_conditional
-claim petrichor-rune-triple-asserts
-seat petrichor
-stamp 20260918.055407
-epoch 1789725247
-paths glow/rune_triple.rye
-what add bare asserts to rune_triple.rye, same shape as rune_null/rune_switch (CLAIM-AS-OVERRIDE, docs-geode lane empty)
 claim pheromone-lower-alias-asserts
 seat pheromone
 stamp 20260918.055914
