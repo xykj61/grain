@@ -23,6 +23,8 @@ const rm = @import("rune_shape.rye");
 const tokens = @import("tokens.rye");
 const nest_type = @import("nest_type.rye");
 const tally_copy = @import("tally_copy.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 /// True when a multi-line desk is shape-only `+$` ... `==` (no trailing `^-`).
 pub fn looks_like_shape_only(src: []const u8) bool {
@@ -37,25 +39,21 @@ pub const LowerError = rm.ParseError || error{
 
 pub const shape_demo_vals: [rm.max_fields]u32 = .{ 5, 3, 7, 2, 7, 4, 6, 8, 9 };
 
-fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
-    // would arrive truncated into a different one rather than refused
-    assert(face.len <= rm.max_name_len);
-    if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
-    const n: u32 = @intCast(face.len);
-    var i: u32 = 0;
-    while (i < n) : (i += 1) {
-        const c = face[@as(usize, @intCast(i))];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[@as(usize, @intCast(i))] = mapped;
-    }
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rm.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes
+/// -- is the room's, and stood in 29 copies before it moved. This file and its pair stood at
+/// body md5 `4484b371`, and both already answered the `u32` TAME asks.
+fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rm.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
     return n;
 }
 
@@ -166,7 +164,7 @@ fn emit_tuple_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8, u
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf, "tuple-field");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
@@ -198,7 +196,7 @@ fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lower
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "tuple-init-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
@@ -215,7 +213,7 @@ fn lower_tuple(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8) Lower
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "tuple-check-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
@@ -258,7 +256,7 @@ fn emit_tagged_unit_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out: [
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zt: [rm.max_name_len]u8 = undefined;
-        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt);
+        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt, "tagged-unit-tag");
         try append_print(out, used, "    {s},\n", .{zt[0..@as(usize, @intCast(tl))]});
     }
     try append_print(out, used, "}};\n", .{});
@@ -272,9 +270,9 @@ fn lower_tagged_unit(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8)
     try emit_tagged_unit_type(spec, zig_type, out, &used, false);
     try append_print(out, &used, "\npub fn main(_: std.process.Init) !u8 {{\n", .{});
     var zt0: [rm.max_name_len]u8 = undefined;
-    const tl0 = try zig_safe_ident(rm.field_slice(spec, 0), &zt0);
+    const tl0 = try zig_safe_ident(rm.field_slice(spec, 0), &zt0, "tagged-unit-tag-a");
     var zt1: [rm.max_name_len]u8 = undefined;
-    const tl1 = try zig_safe_ident(rm.field_slice(spec, 1), &zt1);
+    const tl1 = try zig_safe_ident(rm.field_slice(spec, 1), &zt1, "tagged-unit-tag-b");
     try append_print(out, &used,
         "    const a: {s} = .{s};\n    const b: {s} = .{s};\n    return if (a != b",
         .{ zig_type, zt0[0..@as(usize, @intCast(tl0))], zig_type, zt1[0..@as(usize, @intCast(tl1))] },
@@ -283,7 +281,7 @@ fn lower_tagged_unit(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []u8)
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zt: [rm.max_name_len]u8 = undefined;
-        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt);
+        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt, "tagged-unit-tag-check");
         try append_print(out, &used, " and @intFromEnum({s}.{s}) == {d}", .{
             zig_type, zt[0..@as(usize, @intCast(tl))], i,
         });
@@ -329,14 +327,14 @@ fn emit_tagged_payload_type(spec: *const rm.ShapeSpec, zig_type: []const u8, out
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zt: [rm.max_name_len]u8 = undefined;
-        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt);
+        const tl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zt, "tagged-payload-arm");
         const pc: u32 = @intCast(rm.payload_count(spec, @as(usize, @intCast(i))));
         if (pc != 0) {
             try append_print(out, used, "    {s}: struct {{\n", .{zt[0..@as(usize, @intCast(tl))]});
             var fi: u32 = 0;
             while (fi < pc) : (fi += 1) {
                 var zf: [rm.max_name_len]u8 = undefined;
-                const fl = try zig_safe_ident(rm.payload_face_slice(spec, @as(usize, @intCast(i)), @as(usize, @intCast(fi))), &zf);
+                const fl = try zig_safe_ident(rm.payload_face_slice(spec, @as(usize, @intCast(i)), @as(usize, @intCast(fi))), &zf, "tagged-payload-face");
                 const face = zf[0..@as(usize, @intCast(fl))];
                 if (spec.payload_face_is_cord[@as(usize, @intCast(i))][@as(usize, @intCast(fi))]) {
                     try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
@@ -364,7 +362,7 @@ fn emit_payload_face_inits(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u3
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(arm_i)), @as(usize, @intCast(fi)));
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "payload-face-init");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (fi != 0) try append_print(out, used, ", ", .{});
         if (spec.payload_face_is_cord[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
@@ -387,7 +385,7 @@ fn emit_payload_face_checks(spec: *const rm.ShapeSpec, arm_i: u32, face_count: u
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(arm_i)), @as(usize, @intCast(fi)));
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "payload-face-check");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (fi != 0) try append_print(out, used, " and ", .{});
         if (spec.payload_face_is_cord[@as(usize, @intCast(arm_i))][@as(usize, @intCast(fi))]) {
@@ -412,7 +410,7 @@ fn emit_demo_tagged_payload_var(
     used: *u32,
 ) LowerError!void {
     var zarm: [rm.max_name_len]u8 = undefined;
-    const al = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(arm_i))), &zarm);
+    const al = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(arm_i))), &zarm, "demo-payload-arm");
     if (face_count != 0) {
         try append_print(out, used, "    const {s}: {s} = .{{ .{s} = .{{ ", .{
             var_name, zig_type, zarm[0..@as(usize, @intCast(al))],
@@ -451,9 +449,9 @@ fn lower_tagged_payload(spec: *const rm.ShapeSpec, zig_type: []const u8, out: []
     try emit_demo_tagged_payload_var(zig_type, spec, other, fc_other, "b", out, &used);
 
     var zdemo: [rm.max_name_len]u8 = undefined;
-    const dl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(demo_i))), &zdemo);
+    const dl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(demo_i))), &zdemo, "tagged-payload-demo-arm");
     var zoth: [rm.max_name_len]u8 = undefined;
-    const ol = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(other))), &zoth);
+    const ol = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(other))), &zoth, "tagged-payload-other-arm");
 
     try append_print(out, &used, "    return switch (a) {{\n", .{});
     if (fc_demo != 0) {

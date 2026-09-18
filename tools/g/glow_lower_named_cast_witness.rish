@@ -91,7 +91,7 @@ assert run_peer.ok else "hex named-cast welcome binary failed to launch"
 assert run_peer.out contains "EXIT:0" else "hex named-cast welcome binary did not exit 0"
 
 # TAME surface gates (STOA87).
-let width = run ["sh" "-c" "grep 'usize' glow/lower_named_cast.rye 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
+let width = run ["sh" "-c" "grep 'usize' glow/lower_named_cast.rye 2>/dev/null | grep -v '^[[:space:]]*//' | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '"]
 assert trim width.out == "0" else "glow/lower_named_cast.rye still carries authored usize"
 let assert_import = run ["sh" "-c" "grep -c 'const assert = std.debug.assert' glow/lower_named_cast.rye | tr -d ' '"]
 assert trim assert_import.out == "1" else "glow/lower_named_cast.rye must import assert once"
