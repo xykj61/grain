@@ -6,6 +6,15 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260918.111200` -- two more acceptance cases carry their own witness. Cases 6 and 7
+are proven as chain properties rather than as the admission module's own field-level refusal
+tests: `mantra/src/receipt_offer_refusal_chain_witness.rye`, run by
+`tools/m/mantra_receipt_offer_refusal_chain_witness.rish`, empties every required text field one
+at a time and refuses a wrong-length digest and an invalid signature, asserting after each that
+`Log.replay` itself refuses with `NoAdmittedFact` -- the structural proof that neither product's
+projection could ever run against a refused fact. Six of eight cases now carry a witness; only
+case 4 (Brushstroke and Skate, unbegun) remains unwitnessed beside case 8's own guard. No elder
+row, number, or acceptance case was removed.
 **Revised:** `20260918.105100` -- closes the last mile named `20260918.100854`. Two renamed
 symlinks beside `mantra/src/receipt_offer_snapshot.rye`, `mantra/src/dimeroll_receipt_offer.rye`
 and `mantra/src/linengrow_receipt_offer.rye`, cross Zig's module boundary into each product room --
@@ -301,16 +310,21 @@ Three). `LinengrowReceipt` keeps the contract's own word rather than moving to
 `LinengrowReceiptOffer`, since the braid guard reads the type off this page's residence table and
 nothing elsewhere hunts for the name.
 
-**Three of the eight acceptance cases now carry their own witness, `20260918.105100`.**
+**Six of the eight acceptance cases now carry their own witness, `20260918.111200`.**
 `tools/m/mantra_receipt_offer_snapshot_witness.rish` is case 1 (admit and replay), case 2
 (read as Linengrow), and case 3 (read as Dimeroll), each proven against the same one replay
-rather than separately. Case 5's expiration half rides along the same chain. Cases 4, 6, 7, and 8
-still want their own: 4 waits on Brushstroke and Skate, which this milestone has not begun; 6 and
-7 want a refusal-side witness reading the same chain rather than the admission module's own
-refusal tests, which prove the field but not yet the chain; 8 is the falsifier's code half, already
-held by the product braid guard. The two earlier rostered guards -- the ceiling guard and the braid
-guard -- hold ground no acceptance case names, and stay real work of a different kind from proving
-a case.
+rather than separately; case 5's expiration half rides along the same chain.
+`tools/m/mantra_receipt_offer_refusal_chain_witness.rish` is case 6 (every required text field,
+emptied one at a time, refuses before append) and case 7 (a wrong-length digest or an invalid
+signature refuse before either product projects), each proven as the CHAIN property the contract's
+own words ask for: a refused `Log.append` leaves `Log.offer` empty, so `Log.replay` -- the one
+door to a `ReceiptState`, and so the only door either product's projection could ever walk through
+-- itself refuses with `NoAdmittedFact`. The admission module's own `receipt_refusal_witness.rish`
+already proved the field-level half; this reads the consequence directly rather than trusting the
+argument. Only case 4 remains unwitnessed, and it waits on Brushstroke and Skate, which this
+milestone has not begun. Case 8 is the falsifier's code half, already held by the product braid
+guard. The two earlier rostered guards -- the ceiling guard and the braid guard -- hold ground no
+acceptance case names, and stay real work of a different kind from proving a case.
 
 ## Completion and review edge
 
