@@ -219,6 +219,12 @@ assert portable.out contains "fail=0" else "shell-dialect: no helper behavior ma
 # from both sides -- three hops, forty hops, forty-one refused, a cycle refused, and parity with the
 # elder tool at both depths. Without the bound the control does not fail; it HANGS, which is the
 # objection the helper's header raised when it declined a loop.
-assert portable.out contains "pass=53" else "shell-dialect: want fifty-three helper behaviors proven"
+# 53 -> 71 by `20260917.213001`, masked rather than caused: the control itself had grown eighteen
+# legs across three landed commits (a key's-value-ends fix, capture_evidence's header, the path
+# resolver's own bound) while `gated_readlink_f_sites` stood over its ceiling, so this assertion
+# never ran to see the drift -- every prior red on the scan above stopped the witness first. Fixing
+# the ceiling site (`aurora_file_placement_scan.sh`) unmasked it; the count is read back here rather
+# than assumed, the same discipline the ceiling itself already applies.
+assert portable.out contains "pass=71" else "shell-dialect: want seventy-one helper behaviors proven"
 
 say "GREEN: shell-dialect -- five gated families stand at zero and a sixth at a ratchet of seven, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every one of the six ceilings is proven from both sides on a planted tree"
