@@ -9,6 +9,7 @@
 | `20260918.104444` | [Empty-open turn, no task handed](20260918/20260918-104444_empty-open-no-task.kyri) | No ask from Keaton this turn; recorded rather than invented. |
 | `20260918.104211` | [Twenty-second empty-open turn, no task handed](20260918/20260918-104211_twenty-second-empty-open.kyri) | Tree level at 4fcaaa7e2; claim board empty; OPEN REDS rows checked, none in the language lane. |
 | `20260918.104210` | [Send confirmed -- both remotes hold b3c6f4056](20260918/20260918-104210_send-confirmed-b3c6f4056.kyri) | Two contested rebases; a real row conflict resolved by keeping both peers' rows. |
+| `20260918.104012` | [Send confirmed -- both remotes hold d174f6361](20260918/20260918-104012_send-confirmed-d174f6361.kyri) | Three contested rebases, nib re-pinned each time; xy and debrided confirmed by direct rev-parse. |
 | `20260918.103858` | [Empty-open turn, no task handed, again](20260918/20260918-103858_empty-open-again.kyri) | Clean tree, up to date with xy/main; no claimable work surfaced. |
 | `20260918.103825` | [Twenty-first empty-open turn, no task handed](20260918/20260918-103825_twenty-first-empty-open.kyri) | Clean tree; pheromone's lane stopped on the Glow shape-rune ceiling ruling, Keaton's word owed. |
 | `20260918.103557` | [Send confirmed -- both remotes hold 0fae7d1d8](20260918/20260918-103557_send-confirmed-0fae7d1d8.kyri) | Seven contested rebases, one dropped newline caught and restored, nib re-pinned each time. |
