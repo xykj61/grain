@@ -11,6 +11,7 @@
 | `20260918.073832` | [Send confirmed -- both remotes hold f853f2120](20260918/20260918-073832_send-confirmed-f853f2120.kyri) | Round closes; nib-carry chain stopped rather than spun further. |
 | `20260918.073729` | [Send confirmed -- both remotes hold 7c46b736f](20260918/20260918-073729_send-confirmed-7c46b736f.kyri) | Follow-up nib carry, clean push, round closes. |
 | `20260918.073613` | [Send confirmed -- both remotes hold 7e6bbed71](20260918/20260918-073613_send-confirmed-7e6bbed71.kyri) | One rebase against 8 peer commits; nib and index rows resolved. |
+| `20260918.073529` | [Third quiet open -- checked QA rather than only the queue](20260918/20260918-073529_quiet-open-qa-clean.kyri) | Whole-tree register sweep read clean; docs-geode's own front doors graded B or better. |
 | `20260918.073430` | [Quiet open -- the YOURS list is real work outside pheromone's own lane](20260918/20260918-073430_quiet-open-yours-list-out-of-lane.kyri) | Checked claim board (empty) and ITINERARY; declined the 11-file zero-assert YOURS list, ownership unresolved. |
 | `20260918.073415` | [Send confirmed -- both remotes hold 774120b22](20260918/20260918-073415_send-confirmed-774120b22.kyri) | Two contested pushes on the second quiet cold-open log; nib and day-shelf rows resolved each rebase. |
 | `20260918.073157` | [Second quiet cold open, still no agent-doable work](20260918/20260918-073157_still-quiet.kyri) | Register, claim board, and docs-geode front doors re-checked; all unchanged and clean. |
