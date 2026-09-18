@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20260918.072234
+editor Claude Code
+provider anthropic
+product Claude Code
+role fleet ship pheromone
+modality text
+model claude-sonnet-5
+model_status active runtime verified (system reminder names claude-sonnet-5)
+voice Kyri
+host grain-pheromone pier, America/New_York
+title REDS %825 closed -- a stale claim was gone before this cold open reached it
+prompt cold open with no explicit user ask; walked the card for agent-doable work per the baton's CLAIM-AS-OVERRIDE and ABSENCE clauses
+think checked .loop-gates-only and .loop-clockout absent, tree clean
+think read construction/ITINERARY.md whole; pheromone's own lane (comlink/glow/mantra/tablecloth) shows two shelved accounts and no live agent-doable queue item
+think REDS %825 names pheromone directly: a stale claim pheromone-nock-jet-dec-asserts stands on the board naming glow/nock/nock_jet_dec.rye, work already landed under grass's own claim and commit 0a25bfc85
+think ran fleet_claim_scan.sh --check glow/nock/nock_jet_dec.rye -- claims_live=0 verdict=clear, so the board already shows no live claim
+think ran fleet_claim.sh --close pheromone-nock-jet-dec-asserts -- verdict=no_such_claim; git log shows commit 234eebe4d already closed it minutes before this lap opened
+think appended a CLOSED marker to REDS %825's own trailing bold-marker field, per the ledger's stated convention that the last bold marker decides, rather than editing the row's earlier prose
+obs the mechanism-sentence commit hook refused a first draft (0 mechanism words); rewrote the body naming the field, file, and function-argument mechanics explicitly and it passed
+obs round-open found peers had pushed past this lap's own commit; rebased cleanly (post-commit named two housekeeping debts, both read clear via pin_bound_touch_scan.sh), pushed xy then debrided
+file construction/REDS.md -- appended CLOSED marker to row %825, confirming the stale claim was already cleared
+recommend kg -- no further agent-doable work surfaced in pheromone's own lane this pass; the eleven remaining tame_style_check zero-assert files and the wire-ceiling item both name other lanes or await Keaton's word
