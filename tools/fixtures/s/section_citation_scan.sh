@@ -87,6 +87,16 @@ fi
 plain=0
 derived=0
 : > "$work/pages.txt"
+# MEMBERSHIP WITHOUT A PROCESS (`20260917.214610`). The loop below asked `grep -qxF` once per
+# tracked page whether a basename stood in `derived.txt`, and that single line was 962 of the
+# 1,015 processes this scan started. `derived.txt` is written above and never appended to inside
+# the loop, so one read serves every iteration, and `case` answers whole-line membership in the
+# shell itself. The wrapping newlines are what keep the match EXACT, the way `grep -x` was: a
+# basename must not match a longer one that merely contains it.
+NL='
+'
+derived_set=$NL$(cat "$work/derived.txt" 2>/dev/null)$NL
+
 git ls-files '*.md' '*.mdc' > "$work/tracked.txt"
 while IFS= read -r f; do
   case "$f" in
@@ -95,7 +105,7 @@ while IFS= read -r f; do
   b=${f##*/}
   case "$b" in
     [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]*)
-      grep -qxF "$b" "$work/derived.txt" || continue
+      case "$derived_set" in *"$NL$b$NL"*) ;; *) continue ;; esac
       derived=$((derived + 1)) ;;
     *) plain=$((plain + 1)) ;;
   esac
