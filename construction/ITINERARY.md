@@ -184,6 +184,14 @@ door at B; a second round wants shorter sentences throughout rather than the reg
 made room for. **YOURS, ANY SHIP:** a depth-2 QA molt already ran once; a further pass is its own
 round's work per `quality-assurance.md`'s own bound.
 
+**DIFFUSER -- A CHECKED WORRY ABOUT THE SCOPE MAP CAME BACK NEGATIVE, TWO ROWS READY TO PASTE.**
+[`active-designing/date/20260918/20260918-085540_two-scope-map-rows-the-naive-ranking-already-had-right.md`](../active-designing/date/20260918/20260918-085540_two-scope-map-rows-the-naive-ranking-already-had-right.md):
+`aurora_file_placement` (207s) and `qa_genre_census` (779s) read broad `*.rye`/naming-glob
+populations that could behave like DISCOVERY in practice; measured on the rank tool's own
+120-commit window, real touch rates read 0.10 and 0.025, so mapping each with its own glob would
+claim roughly 90% and 97.5% of its listed prize. QA C+ (77). **YOURS, BAKERY:** paste the two rows
+and re-run the rank tool.
+
 **DIFFUSER -- THE DUPLICATE-CONTENT CENSUS WAS MOSTLY COUNTING SYMLINKS.** [Shelved
 whole](archive/20260918-075535_itinerary-diffuser-duplicate-content-account.md): the resolver named
 by the prior lap's paper
@@ -250,7 +258,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `eba5aa3133` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a3ce03ac7c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
