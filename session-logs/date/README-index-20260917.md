@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate work, drops it, and holds on %807/%767/%765 |
 | `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue; recommends the lane hold. |
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
 | `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture; REDS row booked, row %805 folded, claim closed. |
