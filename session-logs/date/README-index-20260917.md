@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.222209` | [The loop that waited on itself](20260917/20260917-222209_the-loop-that-waited-on-itself.kyri) | pgrep -f matched the waiting shell. |
 | `20260917.221748` | [Gren page ceiling is a standfast](20260917/20260917-221748_gren-page-ceiling-is-a-standfast-not-a-sweep.kyri) | grass caught and reverted a Gauge restatement of custody refusals; nothing sent |
 | `20260917.221731` | [No task this turn -- status check](20260917/20260917-221731_no-task-status-check.kyri) | Round opened clean; no free work in-lane; asked for direction. |
 | `20260917.221441` | [A site is not a count](20260917/20260917-221441_a-site-is-not-a-count.kyri) | Wrong loop cured first; 904 to 382. |
