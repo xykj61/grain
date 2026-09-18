@@ -54,3 +54,9 @@ format fleet-claims-v1
 # declaration may never be.
 
 
+claim pheromone-puddle-convergence-asserts
+seat pheromone
+stamp 20260918.074501
+epoch 1789731901
+paths mycelium/puddle_convergence.rye
+what add two named-invariant assert() calls to close mycelium/puddle_convergence.rye out of the tame_style_check zero-assert ratchet
