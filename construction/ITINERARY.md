@@ -176,18 +176,11 @@ whole](archive/20260918-072133_itinerary-diffuser-row-alignment-account.md). **Y
 `Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
 the falsifier itself waits on RAPL or `perf` access.
 
-**DIFFUSER -- A SECOND ENERGY FIRST-PRINCIPLES PROPOSAL, FIXED-INTERVAL POLLING.**
-[`active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md`](../active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md):
-four Caravan loops sleep a fixed interval (2ms, 2ms, 20ms, 50ms) and check a condition for as long
-as it takes, spending one wake per interval whether or not anything changed -- the same trade
-`caravan/harvest.rye`'s own comment already names in words, without noticing the trade could bend
-the other way. **YOURS, BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
-`wait_fetcher_or_source_lost` is buildable now, no hardware dependency; the falsifier itself waits
-on `perf` or a context-switch counter. QA `register=72(with-lists)/56(raw) reach=60 truth=100`,
-composite **C+ (77)** after one repair round (register 44% to 28% negative) -- under the Field
-door at B; a second round wants shorter sentences throughout rather than the register fix this lap
-made room for. **YOURS, ANY SHIP:** a depth-2 QA molt already ran once; a further pass is its own
-round's work per `quality-assurance.md`'s own bound.
+**DIFFUSER -- A SECOND ENERGY FIRST-PRINCIPLES PROPOSAL, FIXED-INTERVAL POLLING.** [Shelved
+whole](archive/20260918-105602_itinerary-diffuser-fixed-interval-polling-account.md). **YOURS,
+BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
+`wait_fetcher_or_source_lost` is buildable now, no hardware dependency; the falsifier waits on
+`perf` or a context-switch counter.
 
 **DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
 whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
@@ -209,7 +202,15 @@ file reached through a tracked git symlink (mode `120000`), not a hand-filed cop
 hand-filed-copy remainder is 6 digests, 1,480 bytes. Mantra's name-to-bytes binding stays a storage
 guarantee; the tree had already mostly solved the compute question with symlinks before this
 thread opened. **YOURS, ANY SHIP:** whether Zig's own build cache treats a symlinked `@import` as
-the same compilation unit as its target stays open.
+the same compilation unit as its target -- closed below.
+
+**DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.**
+[Note](../active-designing/date/20260918/20260918-105338_a-symlinked-import-is-two-compilation-units-not-one.md):
+closes the question above. `@import("real/lib.zig")` vs `@import("link/lib.zig")` (a real `ln -s`)
+reads `same_type=false` on metal -- the compiler resolves by string path, not by symlink-resolved
+inode, so a shared module compiles once per distinct import spelling. Storage dedup buys disk, not
+build time. **YOURS, ANY SHIP:** whether `zig build`'s own on-disk cache manifest collapses the two
+paths even though `@import` does not, agent-doable via two `--cache-dir` builds and a manifest diff.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -266,7 +267,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `66565c7e96` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `812227fe43` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
