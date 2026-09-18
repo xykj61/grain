@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260918.014137
+editor Claude Code
+provider Anthropic
+product Claude Code
+role Grain Petrichor -- docs-geode lane
+modality text
+model claude-sonnet-5
+model_status active runtime verified via system identity block
+voice Kyri
+host Framework laptop, EDT
+title The second shastra front door swept under the Door ceiling
+prompt Baton-driven autonomous lap; no new user prompt this turn. Checked the fleet claim board (empty), pulled xy/main (level), and read prose_register_scan.sh's front_doors_unrostered_over list for the next agent-doable, Lindy-first item in the docs-geode lane.
+think prose_register_scan.sh listed two unrostered front-door candidates over the 20% Door ceiling: gratitude/grain-lineage/README.md (excused by the card -- declares "Style: the authors' own; unaltered") and shastra/sandarbhas/01-tattva/README.md at 37% (12 of 32 sentences).
+think Read the file whole. Twelve negative-marked sentences (not, neither, cannot, no, difficult, without, nor) carried real philosophical content -- Jiva Goswami's four-step argument for the Bhagavata Purana's authority. Reworded each to affirmative framing (rather than, so, stays, apart from) while holding every proper noun, Sanskrit term, citation, and claim exactly as written.
+think Renamed one section header from "What this file does not yet do" to "What remains for a later pass" -- same content, leads with what remains rather than with what is absent, matching the Radiant/Gauge habit of leading with what is.
+think Ran --explain twice more after the first pass caught one straggler ("carries none of the errors") and a floor case ("authored by no limited person") -- final reading is 0% negative, matching the sibling shastra/README.md sweep from one lap earlier.
+obs qa_report_card.sh flags a pre-existing Truth reading of 60 on this page: two forward citations (../02-bhagavat/README.md, ../../uttara-veda/README.md) point at Sandarbha rooms not yet written. This is a structural, intentional forward-reference (the room is a planned series) rather than something the register sweep touched or should fabricate stubs to fix -- left alone, same pattern Grass named for the silo README's pre-existing Reach reading one lap earlier.
+obs front_doors_unrostered_over fell 2 to 1 tree-wide; the remaining candidate is the excused gratitude/grain-lineage/README.md.
+file shastra/sandarbhas/01-tattva/README.md why=twelve negative-framed sentences reworded to affirmative Gauge/Door register; one section header renamed to lead with what remains; every proper noun, citation, and Sanskrit term held exactly.
+recommend keep-going -- the sweep is small, self-contained, and green; no seam, custody, or design ruling touched.
