@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.224056` | [Aurora's sealed and deciding hold no torus seam](20260917/20260917-224056_aurora-deciding-and-sealed-hold-no-torus-seam.kyri) | Checked negative: read both files whole, neither is periodic. |
+| `20260917.223843` | [plant_apply_args, a dead line removed](20260917/20260917-223843_plant-apply-args-and-a-dead-noop-line.kyri) | two glow-tend controls source plant.sh, both GREEN. |
 | `20260917.223745` | [Status check before the next moonshot](20260917/20260917-223745_status-check-before-next-moonshot.kyri) | Deferred a fourth torus-thread essay; named two clean next moves. |
 | `20260917.223637` | [A quiet round behind a reserved clause](20260917/20260917-223637_a-quiet-round-behind-a-reserved-clause.kyri) | Same one reading, unchanged; still awaiting Keaton's word. |
 | `20260917.223531` | [The writer sheds](20260917/20260917-223531_the-writer-sheds.kyri) | One live account per seat; five crossings priced. |

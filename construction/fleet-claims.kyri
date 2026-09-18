@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim bakery-plant-variadic
-seat bakery
-stamp 20260917.223214
-epoch 1789698734
-paths tools/fixtures/p/plant.sh tools/fixtures/c/comlink_glow_tend_control.sh tools/fixtures/t/tablecloth_glow_tend_control.sh
-what The previous lap named a plant_apply_args sibling in plant.sh to unblock comlink_glow_tend_control.sh and tablecloth_glow_tend_control.sh converting their own edit() to plant.sh, since their edit() calls take multiple -e sed programs in one invocation and plant_apply only accepts one program string. Adding plant_apply_args (same refusal contract, variadic sed argv) and converting both controls' edit() to call it; one call site in comlink_glow_tend_control.sh (case 11's second edit, line 175) is a provably dead no-op sed substitution that never matches anything before or after the swap it follows, so it is removed rather than specially exempted, proven by an unchanged case-11 verdict before and after.

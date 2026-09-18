@@ -5,14 +5,15 @@
 # naming is a CLAIM -- "this line, spelled this way, is in that file today" -- and it is the one
 # part of a control nothing was checking. When the line moves, the sed matches nothing, the pen is
 # copied byte for byte, and the phase builds and runs the UNMUTATED module. It exits 0, which is
-# the same reading a law that holds gives. Source this file and call one of the three functions
+# the same reading a law that holds gives. Source this file and call one of the four functions
 # below, and a plant that plants nothing says so by name instead:
 #
 #   . "$_fd_root/tools/fixtures/p/plant.sh"
 #
-#   plant_write  "$src" "$pen/mod.rye" "$program" lcs_equality   # read one file, write another
-#   plant_apply  "$pen/mod.rye" "$program" lcs_equality          # rewrite in place, mode kept
-#   plant_landed "$before" "$after" lcs_equality                 # the reading alone
+#   plant_write      "$src" "$pen/mod.rye" "$program" lcs_equality   # read one file, write another
+#   plant_apply      "$pen/mod.rye" "$program" lcs_equality          # rewrite in place, mode kept
+#   plant_apply_args "$pen/mod.rye" -e "$prog1" -e "$prog2"          # rewrite, one program per -e
+#   plant_landed     "$before" "$after" lcs_equality                 # the reading alone
 #
 # Each answers 0 when the plant landed and 1 when it did not, printing the literal
 # `plant_matched_nothing:<label>` on standard error. A WORD rather than a number, so it can never
@@ -137,5 +138,38 @@ plant_apply() {
   fi
   cat "$_pa_tmp" > "$_pa_file"
   rm -f "$_pa_tmp"
+  return 0
+}
+
+# plant_apply_args FILE ARG... -- plant_apply's own contract, for a caller whose sed program is
+# several `-e` arguments rather than one string. A caller chaining `-e 'a' -e 'b' -e 'c'` in one
+# sed invocation to swap two lines' content needs each clause to see the OTHERS' output on that
+# same pass, which one program string can express and a loop of single-program plants cannot --
+# so this is a second entry point onto the same tmp-and-cmp body, not a second contract.
+plant_apply_args() {
+  _pav_file=$1
+  shift
+  _pav_label=${_pav_file:-plant}
+  if [ ! -f "$_pav_file" ]; then
+    echo "plant_source_absent:$_pav_label -- $_pav_file" >&2
+    return 1
+  fi
+  if [ "$#" -eq 0 ]; then
+    echo "plant_program_empty:$_pav_label -- a plant with no program mutates nothing" >&2
+    return 1
+  fi
+  _pav_tmp="$_pav_file.plant.$$"
+  if ! sed "$@" "$_pav_file" > "$_pav_tmp" 2>/dev/null; then
+    echo "plant_program_failed:$_pav_label -- sed refused the program" >&2
+    rm -f "$_pav_tmp"
+    return 1
+  fi
+  if cmp -s "$_pav_tmp" "$_pav_file"; then
+    echo "plant_matched_nothing:$_pav_label -- the pen is byte-identical, so the phase tests the unmutated file" >&2
+    rm -f "$_pav_tmp"
+    return 1
+  fi
+  cat "$_pav_tmp" > "$_pav_file"
+  rm -f "$_pav_tmp"
   return 0
 }

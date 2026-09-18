@@ -37,6 +37,7 @@
 set -eu
 
 root="$(pwd)"
+. "$root/tools/fixtures/p/plant.sh"
 scan="$root/tools/fixtures/c/comlink_glow_tend_scan.sh"
 desk_src="$root/src/shape/shape-comlink-wire-payload-bound.glow"
 wire_src="$root/comlink/wire_format.rye"
@@ -81,7 +82,7 @@ pen() {
 edit() {
   f=$1
   shift
-  sed "$@" "$f" > "$f.tmp" && cat "$f.tmp" > "$f" && rm -f "$f.tmp"
+  plant_apply_args "$f" "$@"
 }
 
 # check <label> <want-verdict> <refuse|welcome>
@@ -172,7 +173,6 @@ edit "$wire" \
   -e 's/^pub const off_nonce: u64 = off_sender + 32;$/@@NONCE@@/' \
   -e 's/^pub const off_name: u64 = off_nonce + ChaCha20Poly1305.nonce_length;$/pub const off_nonce: u64 = off_sender + 32;/' \
   -e 's/^@@NONCE@@$/pub const off_name: u64 = off_nonce + ChaCha20Poly1305.nonce_length;/'
-edit "$wire" -e 's/^pub const off_name: u64 = off_sender + 32;$/pub const off_name: u64 = off_sender + 32;/'
 check "11 offset chain reordered" header_names_disagree refuse
 
 # 12 -- the desk's composition region gone.
