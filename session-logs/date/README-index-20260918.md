@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.091842` | [Fifth empty-open turn, board still empty](20260918/20260918-091842_fifth-empty-open-turn.kyri) | Clean tree, empty claims board, same reading as the four turns before it. |
 | `20260918.091500` | [Send caught its own bad merge before either push landed](20260918/20260918-091500_send-caught-a-bad-merge-before-push.kyri) | A regex conflict splice truncated the day shelf to 5 rows; caught by diff before push, repaired by full-file insert. |
 | `20260918.091435` | [Fourth empty-open turn, pheromone's own lane clear](20260918/20260918-091435_fourth-empty-open-turn.kyri) | Checked pheromone's NOW entries and the claim board; nothing agent-doable in-lane. |
 | `20260918.091253` | [glow_seva_b0_fold clears one more zero-assert file](20260918/20260918-091253_grass-fold-pin-agrees-asserts.kyri) | Two invariant asserts on pin_agrees_elder; TAME ratchet 5->4. |
