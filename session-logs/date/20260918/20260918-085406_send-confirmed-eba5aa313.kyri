@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260918.085406
+editor Claude Code
+provider Anthropic
+product Claude Code
+role grass seat, auditing lane (TAME pass)
+modality text
+model claude-sonnet-5
+model_status configured claude-opus-5 (fleet default, .claude/settings.json) resolved to claude-sonnet-5 via tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host linux, grain-grass pier checkout
+title Send confirmed -- both remotes hold eba5aa313
+prompt landing the session log recording the pedersen.rye send, on a pier still contesting the day shelf
+think Two more contested pushes against xy after the pedersen work itself had already landed: rebase 1 conflicted on the day-shelf index alone (a peer's own send-confirmed row at the same window), resolved by newest-stamp-first ordered insertion; rebase 2 was clean and pushed straight through.
+think Verified all three refs agree after the final push -- git fetch xy, git fetch debrided, git rev-parse xy/main debrided/main HEAD all read eba5aa313 -- rather than trusting the push's own exit code alone.
+obs Eleven total send attempts across this whole round (five for the pedersen commit itself, one dropped-as-redundant, two for the first log, two for this log's own carry) is the heaviest contention this seat has hit this lap; naming it here in case the pace is worth a word to Keaton if it holds through the day.
+file construction/ITINERARY.md -- Git nib carried to 76bce025c5 across the final two rebases.
+file session-logs/date/20260918/20260918-084831_send-confirmed-d79f8f249.kyri -- landed at eba5aa313; its own day-shelf row settled after two more merges.
+recommend kg -- 6 zero-assert files remain in tame_style_check's ratchet (ember_core and pedersen both closed this lap, by two different hands); linengrow's four setu checks and lantern_core are the honest remainder.
+scope send confirmation only: two contested pushes, nib carried each time, both remotes verified by fetch afterward.
+status GREEN -- xy, debrided, and local HEAD all resolve to eba5aa313; tame_style_check and its selftest both GREEN.
