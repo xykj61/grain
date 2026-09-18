@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.085920` | [Link census found one apparent break; testimony held](20260918/20260918-085920_docs-geode-link-check-testimony-held.kyri) | 47-file docs-geode link walk, one stale-testimony citation confirmed correct. |
 | `20260918.085621` | [A claim survived its own closing commit across a merge](20260918/20260918-085621_stale-claim-merge-survivor.kyri) | Closed the stale board record; pushed to xy then debrided. |
 | `20260918.085406` | [Send confirmed -- both remotes hold eba5aa313](20260918/20260918-085406_send-confirmed-eba5aa313.kyri) | Two more pushes; verified via fetch on all three refs. |
 | `20260918.084831` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084831_send-confirmed-d79f8f249.kyri) | Six contested pushes; pedersen exempt landed, ratchet 8->6. |
