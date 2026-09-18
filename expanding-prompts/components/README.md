@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260713.235800` (Pacific)
-**Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Status:** Living -- starter library; grows a component each time a prompt shape proves itself
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -25,7 +25,7 @@ Each component is a `_<name>.prompt.md` file with:
 - **The expanded prompt body** -- written so that, once tokens are filled, it can be handed to an agent as-is and produce work in this fork's own discipline (research before code, name the fork honestly, log to bron, cite the silo not the original, address the generic employee).
 - **A "produces" line** -- what artifacts a good run leaves behind.
 
-Components are prefixed `_` (like a template partial) so they sort together and read as skeletons, not finished prompts.
+Components are prefixed `_` (like a template partial) so they sort together and read as skeletons rather than finished prompts.
 
 ## The Starter Set
 
