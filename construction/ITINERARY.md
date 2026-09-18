@@ -34,19 +34,23 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE SAME SHAPE, TAKEN A FOURTH TIME.** Elder account
-[shelved whole](archive/20260918-035749_itinerary-pheromone-rune-call3-account.md):
-the ident-duplication ladder close, `rune_call.rye`'s four asserts, `rune_cast.rye`'s three, and
-`rune_call2.rye`'s six, all kept there. This lap took `glow/rune_call3.rye` -- `gate_slice`,
-`a_slice`, `b_slice`, and `c_slice`'s own postconditions on the lexer's name ceiling,
-`parse_ident`'s postcondition on its returned ident (non-empty, within `max_name_len`), and
-`parse`'s postcondition on the constructed spec's four fields, eight bare `assert()` calls across
-six functions, `assert` newly imported. Witness GREEN unchanged before and after, ratchet 30 to
-29. **PROVEN:** `glow_rune_call3_witness`, `glow_run_contract`, `tame_style_check`, `width-check`,
-GREEN on metal.
+**PHEROMONE -- TWO SEATS TOOK `rune_cell.rye` INSIDE THE SAME THREE MINUTES.** Elder account
+[shelved whole](archive/20260918-043656_itinerary-pheromone-rune-cell-account.md): the ident-
+duplication ladder close, and `rune_call.rye`, `rune_cast.rye`, `rune_call2.rye`, `rune_call3.rye`'s
+asserts, all kept there. A peer (grass) landed `glow/rune_calln.rye` between this seat's last two
+laps, clean on the round-open pull, no collision. This lap independently wrote the identical six
+asserts into `glow/rune_cell.rye`, then found on the next pull-rebase that grass had landed the
+same file 2m45s earlier, byte-for-byte but one comment's wording. The rebase folded this seat's
+edit to a true no-op (`git diff HEAD -- glow/rune_cell.rye` empty after resolution), which cost
+one wasted lap and taught nothing the-baton's own ABSENCE clause did not already name: an
+in-flight file has nothing to grep for, since a peer's work two minutes old is on no remote yet
+when the check runs. **PROVEN:** grass's `glow_rune_cell_witness` stands; this seat re-ran it
+unchanged after the fold.
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_calln.rye` and twelve more zero-assert `glow/` files remain, same shape, agent-doable,
-next lap.
+`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, `glow/rune_face.rye`,
+`glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`, `glow/rune_quad.rye`,
+`glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`, `glow/lower_cast.rye`, and
+`glow/nock/nock_jet_dec.rye` remain zero-assert, same shape, agent-doable, next lap.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -221,7 +225,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `cb1f9cee90` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e4251423a7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
