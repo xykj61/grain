@@ -102,6 +102,10 @@ pub fn validate_request(req: Request) LanternError!void {
     if (req.n == 0 or req.n > max_n) return error.BadN;
     if (req.stop_sequence.len > max_stop_sequence_len) return error.BadStopSequence;
     if (req.user.len > max_user_len) return error.BadUser;
+    // invariant: every field that reached here already cleared its own named bound
+    assert(req.prompt.len <= max_prompt_len);
+    assert(req.max_tokens > 0);
+    assert(req.max_tokens <= max_budget_tokens);
 }
 
 fn field_value(text: []const u8, key: []const u8) ?[]const u8 {
@@ -276,9 +280,13 @@ pub fn complete_fixture(req: Request, fixture_text: []const u8) LanternError!Res
             in_word = false;
         }
     }
+    // invariant: truncation never emits more words than the request's own budget
+    assert(words <= req.max_tokens);
     resp.text = resp.text[0..cut];
     resp.tokens_out = words;
     resp.stopped_reason = .length;
+    // invariant: the response leaving this branch always respects the caller's budget
+    assert(resp.tokens_out <= req.max_tokens);
     if (field_value(fixture_text, "text_pin")) |pinned| {
         if (!std.mem.eql(u8, resp.text, pinned)) return error.TextMismatch;
     }
@@ -316,6 +324,8 @@ pub fn count_allowed_models(allow_text: []const u8) u32 {
 pub fn complete_allowed(req: Request, fixture_text: []const u8, allow_text: []const u8) LanternError!Response {
     const allow_n = count_allowed_models(allow_text);
     if (allow_n == 0) return error.EmptyAllowList;
+    // invariant: past the refusal above, the allow-list names at least one model
+    assert(allow_n > 0);
     if (field_value(fixture_text, "allow_count")) |pinned_text| {
         const pinned = std.fmt.parseInt(u32, pinned_text, 10) catch return error.BadFixture;
         if (allow_n != pinned) return error.AllowCountMismatch;

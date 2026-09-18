@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.090146` | [lantern_core clears the zero-assert roster](20260918/20260918-090146_lantern-core-clears-zero-assert-roster.kyri) | Five genuine invariant asserts; TAME ratchet 6->5, both witnesses green. |
 | `20260918.085406` | [Send confirmed -- both remotes hold eba5aa313](20260918/20260918-085406_send-confirmed-eba5aa313.kyri) | Two more pushes; verified via fetch on all three refs. |
 | `20260918.084831` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084831_send-confirmed-d79f8f249.kyri) | Six contested pushes; pedersen exempt landed, ratchet 8->6. |
 | `20260918.084723` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084723_send-confirmed-d79f8f249.kyri) | Three rounds; merge over rebase kept both forwards. |
