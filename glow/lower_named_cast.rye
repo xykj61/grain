@@ -27,6 +27,8 @@ const rm = @import("rune_shape.rye");
 const tokens = @import("tokens.rye");
 const tally_copy = @import("tally_copy.rye");
 const nest_type = @import("nest_type.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const max_stem_len: u32 = 64;
 
@@ -56,25 +58,21 @@ pub const CrossDeskSpec = struct {
     cast_mold_len: u32 = 0,
 };
 
-fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8) LowerError!u32 {
-    // invariant: the safe ident is built in a fixed buffer of that budget, so a longer name
-    // would arrive truncated into a different one rather than refused
-    assert(face.len <= rm.max_name_len);
-    if (face.len == 0 or face.len > rm.max_name_len) return error.BadIdent;
-    const n: u32 = @intCast(face.len);
-    var i: u32 = 0;
-    while (i < n) : (i += 1) {
-        const c = face[@as(usize, @intCast(i))];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[@as(usize, @intCast(i))] = mapped;
-    }
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `rm.max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes
+/// -- is the room's, and stood in 29 copies before it moved. This file and its pair stood at
+/// body md5 `4484b371`, and both already answered the `u32` TAME asks.
+fn zig_safe_ident(face: []const u8, out: *[rm.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller -- a return width is authored API, where TAME asks a fixed width and leaves
+    // `usize` at the seam; the record is dropped here because a caller wanting it reaches
+    // `zig_ident.safe_ident` directly rather than through this module
+    const n = try zig_ident.safe_ident(face, out[0..], rm.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
     return n;
 }
 
@@ -131,7 +129,7 @@ pub fn cast_mold_slice(spec: *const CrossDeskSpec) []const u8 {
 }
 
 pub fn zig_stem(spec: *const CrossDeskSpec, out: *[max_stem_len]u8) LowerError!u32 {
-    return zig_safe_ident(stem_slice(spec), out);
+    return zig_safe_ident(stem_slice(spec), out, "stem");
 }
 
 /// True when a multi-line desk is `+$` ... `==` followed by `^-  <name>`.
@@ -243,7 +241,7 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
     var i: u32 = 0;
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf, "tuple-field");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "    {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
@@ -267,7 +265,7 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "tuple-init-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
@@ -290,7 +288,7 @@ fn emit_tuple_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: []u8) 
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "tuple-check-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
         if (spec.field_is_cord[@as(usize, @intCast(i))]) {
@@ -318,7 +316,7 @@ fn emit_enum_arms(spec: *const rm.ShapeSpec, out: []u8, used: *u32) LowerError!v
     const n: u32 = @intCast(spec.field_count);
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf);
+        const fl = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(i))), &zf, "enum-arm");
         try append_print(out, used, "    {s},\n", .{zf[0..@as(usize, @intCast(fl))]});
     }
 }
@@ -329,7 +327,7 @@ fn emit_tagged_unit_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, out: 
     var ztag: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
     const tag0 = rm.field_slice(spec, 0);
-    const tlen = try zig_safe_ident(tag0, &ztag);
+    const tlen = try zig_safe_ident(tag0, &ztag, "tagged-unit-tag");
     var used: u32 = 0;
     try append_print(out, &used,
         \\const std = @import("std");
@@ -365,7 +363,7 @@ const payload_demo_vals: [rm.max_payload_faces]u32 = .{ 5, 3, 7 };
 
 fn emit_union_arm(spec: *const rm.ShapeSpec, arm: u32, out: []u8, used: *u32) LowerError!void {
     var zarm: [rm.max_name_len]u8 = undefined;
-    const al = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(arm))), &zarm);
+    const al = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(arm))), &zarm, "union-arm");
     if (rm.arm_has_payload(spec, @as(usize, @intCast(arm)))) {
         try append_print(out, used, "    {s}: struct {{\n", .{zarm[0..@as(usize, @intCast(al))]});
         var fi: u32 = 0;
@@ -374,7 +372,7 @@ fn emit_union_arm(spec: *const rm.ShapeSpec, arm: u32, out: []u8, used: *u32) Lo
         const hex_bound = nest_type.aura_ux_max_bytes;
         while (fi < fc) : (fi += 1) {
             var zf: [rm.max_name_len]u8 = undefined;
-            const fl = try zig_safe_ident(rm.payload_face_slice(spec, @as(usize, @intCast(arm)), @as(usize, @intCast(fi))), &zf);
+            const fl = try zig_safe_ident(rm.payload_face_slice(spec, @as(usize, @intCast(arm)), @as(usize, @intCast(fi))), &zf, "union-arm-face");
             const face = zf[0..@as(usize, @intCast(fl))];
             if (spec.payload_face_is_cord[@as(usize, @intCast(arm))][@as(usize, @intCast(fi))]) {
                 try append_print(out, used, "        {s}: [{d}]u8 = [_]u8{{0}} ** {d},\n", .{ face, cord_bound, cord_bound });
@@ -405,7 +403,7 @@ fn emit_payload_face_inits(spec: *const rm.ShapeSpec, demo_i: u32, face_count: u
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(demo_i)), @as(usize, @intCast(fi)));
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "payload-face-init");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (fi != 0) try append_print(out, used, ", ", .{});
         if (spec.payload_face_is_cord[@as(usize, @intCast(demo_i))][@as(usize, @intCast(fi))]) {
@@ -423,7 +421,7 @@ fn emit_payload_face_checks(spec: *const rm.ShapeSpec, demo_i: u32, face_count: 
     while (fi < face_count) : (fi += 1) {
         const face_src = rm.payload_face_slice(spec, @as(usize, @intCast(demo_i)), @as(usize, @intCast(fi)));
         var zf: [rm.max_name_len]u8 = undefined;
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "payload-face-check");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (fi != 0) try append_print(out, used, " and ", .{});
         if (spec.payload_face_is_cord[@as(usize, @intCast(demo_i))][@as(usize, @intCast(fi))]) {
@@ -442,7 +440,7 @@ fn emit_tagged_payload_cast(spec: *const rm.ShapeSpec, cast_mold: []const u8, ou
     var zt: [rm.max_name_len]u8 = undefined;
     var ztag: [rm.max_name_len]u8 = undefined;
     const tn = try zig_type_name(mold_name, &zt);
-    const tlen = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(demo_i))), &ztag);
+    const tlen = try zig_safe_ident(rm.field_slice(spec, @as(usize, @intCast(demo_i))), &ztag, "tagged-payload-demo-arm");
     const face_count: u32 = @intCast(rm.payload_count(spec, @as(usize, @intCast(demo_i))));
     // invariant: a payload arm carries at least one face, and the mold budget is what the
     // emitted struct is sized for
@@ -554,7 +552,7 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.ShapeSpec, 
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(mold_spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "cross-tuple-init-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (mold_spec.field_is_cord[@as(usize, @intCast(i))]) {
             try append_print(out, &used, "        .{s} = glow_demo_cord(\"{s}\"),\n", .{ face, face_src });
@@ -572,7 +570,7 @@ fn emit_cross_tuple(spec: *const CrossDeskSpec, mold_spec: *const rm.ShapeSpec, 
     while (i < n) : (i += 1) {
         var zf: [rm.max_name_len]u8 = undefined;
         const face_src = rm.field_slice(mold_spec, @as(usize, @intCast(i)));
-        const fl = try zig_safe_ident(face_src, &zf);
+        const fl = try zig_safe_ident(face_src, &zf, "cross-tuple-check-face");
         const face = zf[0..@as(usize, @intCast(fl))];
         if (i != 0) try append_print(out, &used, " and ", .{});
         if (mold_spec.field_is_cord[@as(usize, @intCast(i))]) {
@@ -597,7 +595,7 @@ fn emit_cross_tagged_unit(spec: *const CrossDeskSpec, mold_spec: *const rm.Shape
     var ztag: [rm.max_name_len]u8 = undefined;
     const sn = try zig_stem(spec, &zs);
     const tn = try zig_type_name(mold_name, &zt);
-    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, 0), &ztag);
+    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, 0), &ztag, "cross-tagged-unit-tag");
     const at = "@";
     var used: u32 = 0;
     try append_print(out, &used,
@@ -631,7 +629,7 @@ fn emit_cross_tagged_payload(spec: *const CrossDeskSpec, mold_spec: *const rm.Sh
     var ztag: [rm.max_name_len]u8 = undefined;
     const sn = try zig_stem(spec, &zs);
     const tn = try zig_type_name(mold_name, &zt);
-    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(demo_i))), &ztag);
+    const tlen = try zig_safe_ident(rm.field_slice(mold_spec, @as(usize, @intCast(demo_i))), &ztag, "cross-tagged-payload-arm");
     const face_count: u32 = @intCast(rm.payload_count(mold_spec, @as(usize, @intCast(demo_i))));
     // invariant: a payload arm carries at least one face, and the mold budget is what the
     // emitted struct is sized for
