@@ -1,5 +1,17 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260917.204619` -- walk-back nib `48a4d5cf77`.** A round-open rebase carried peer
+landings into `construction/ITINERARY.md`, arriving at 41,217 bytes, 257 over its 40,960 ceiling,
+right after this lap's own `glow: lower_multi...` commit landed clean. *Swept:* the full inline
+COPAL "the writer validated its name and wished at the other two fields" account (2,458 bytes),
+moved whole to
+`construction/archive/20260917-204619_itinerary-copal-writer-wish-account.md`, replaced by a
+four-line pointer carrying the one live ask. *What waits there, worth recalling:* the two-reading
+repair to `fleet_claim.sh` (`has_newline` and `form_gate`), the 383-revision measurement finding
+five corrupting board states and none authored by a writer run, and the rebase-authored
+double-name collapse the drop-awk repair closes. No lane account body beyond this one fold, no
+open gate, no ask changes, and no dated testimony moves.
+
 **Checkpoint `20260917.185254` -- walk-back nib `82e3149ea7`.** A peer landing (`ffccd62f3`, the
 mantra falsifier account) pushed `construction/ITINERARY.md` from 40,931 to 41,442 bytes, 482 over
 its 40,960 ceiling, arriving mid-rebase on this lap's own commit. *Swept:* the full inline
