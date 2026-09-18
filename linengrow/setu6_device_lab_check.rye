@@ -4,6 +4,7 @@
 //!   linengrow/bin/setu6_device_lab_check usb0      # armed
 
 const std = @import("std");
+const assert = std.debug.assert;
 const print = std.debug.print;
 const Dir = std.Io.Dir;
 const setu6 = @import("setu6_device_lab.rye");
@@ -22,11 +23,17 @@ fn run_check(init: std.process.Init) !u8 {
         print("setu6-check: RED — line overflow\n", .{});
         return 1;
     };
+    // invariant: format_lab_line already bounds its own return to status_line_max, restated
+    // here since the write below trusts line's length to stay inside line_buf
+    assert(line.len <= setu6.status_line_max);
     var bron_buf: [setu6.max_lab_bron_len]u8 = undefined;
     const n = setu6.format_lab_bron(s, &bron_buf) orelse {
         print("setu6-check: RED — bron overflow\n", .{});
         return 1;
     };
+    // invariant: n is the byte count format_lab_bron wrote into bron_buf, so the write below
+    // must never slice past what bron_buf actually holds
+    assert(n <= bron_buf.len);
     const cwd = Dir.cwd();
     try cwd.writeFile(io, .{ .sub_path = setu6.lab_bron_path, .data = bron_buf[0..n] });
     print("setu6-check: {s}\n", .{line});

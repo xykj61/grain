@@ -117,28 +117,25 @@ were not touched this lap and may carry further negative sentences past what thi
 `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
 state rather than this line.
 
-**GRASS -- backtick_path's second reverse-read writes the genre reasoning, and finds one more
-stale citation.** Elder account [shelved
-whole](archive/20260918-073030_itinerary-grass-backtick-path-account.md). Wrote the teacher-tree
-and untracked-by-design genres into `backtick_path_scan.sh`'s own "WHAT IS GATED" header, matching
-`comment_path`'s fuller treatment -- each genre named, with the lane that owns a repointing named
-beside it, and a third genre added (an elder-room citation, naming a room this tree has since
-folded or fused, such as `work-in-progress/` before it fused into this card). Reading the listing by
-hand past those genres turned up one real broken promise: `context/TAME_GUIDANCE.md` cited its own
-sibling `TWO_ROOMS.md` a directory level too high (`../TWO_ROOMS.md`, when both pages sit in
-`context/` together); repointed page-relative. Living count fell 63 (already one under the standing
-64 comment before this lap touched it) to 62; ceiling lowered to match. Writing the fix's own genre
-example into the scan's header first tripped `comment_path`'s ceiling (a `../`-spelled span read as
-a second broken promise, one file over) -- caught by re-running that sibling scan before commit, and
-repaired by describing the fault in prose rather than backticking its broken spelling, the same
-discipline the header already names for itself. `tools/b/backtick_path_witness.rish` GREEN, 22
-legs, `control_failed=0`; `tools/fixtures/c/comment_path_scan.sh` re-checked clean at 66 of 66.
-**YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
-account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
-judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
-of its ten threads carry forward (reverse-reading account). The wider `tame_style_check` zero-assert
-ratchet now names 14 files past `glow/lower_cast.rye` (incense's claim); the next agent-doable pick
-is any of the 14, claim-board checked first.
+**GRASS -- backtick_path's second reverse-read account.** [Shelved
+whole](archive/20260918-074921_itinerary-grass-backtick-path-second-account.md).
+
+**GRASS -- `linengrow/setu6_device_lab_check.rye` NAMES ITS TWO WRITE BOUNDS.** `run_check` wrote
+`format_lab_line`'s and `format_lab_bron`'s returned slices to disk with no assert of its own on
+either length. Two invariant asserts now restate what the caller was trusting:
+`line.len <= status_line_max` and `n <= bron_buf.len`, right after each call and before the write.
+`tools/s/setu6_device_lab_witness.rish` GREEN (a pre-existing, unrelated `FileNotFound` from a
+missing `tools/.cache/setu0/` directory was confirmed present before this edit too, by stashing the
+change and rerunning the same binary at the same call site); `width-check` GREEN; `tame_style_check`
+zero-assert ratchet falls 11 to 10 -- the file drops off pheromone's named list above. **YOURS,
+CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door account); the
+coordination law's exemption question from `%819` and the fleet's 271-tool `head -N` judgment
+`%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which of its
+ten threads carry forward (reverse-reading account). The zero-assert ratchet now names 9 files past
+`glow/lower_cast.rye` and this lap's own fix; `tally/pedersen.rye` is a pure re-export shim with no
+logic of its own and likely wants an exempt-list entry in `tools/t/tame_style_scan_advise.rish`
+rather than a forced assert -- worth a word before the next hand reaches for it. The next
+agent-doable pick is any of the remaining 9, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -237,7 +234,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2b1bdf2ee` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bc5899d67e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
