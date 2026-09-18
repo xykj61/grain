@@ -18,7 +18,8 @@ reclaimed, eight witnesses repaired. **Yours:** whether the fleet reads its own 
 
 ## NOW -- incense sails autonomous from `20260915.180000`
 
-The ledger reads **eighteen OPEN** (`20260917.025658`), and the count wants its own sentence:
+The ledger reads **fifteen OPEN** (`20260918.001400`; eighteen at `20260917.025658`, and `%745`
+has folded off the pin since), and the count wants its own sentence:
 the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reader matching one
 undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them. One BOOKED row folded this
 lap to seat the newest under the pin's bound.
@@ -85,8 +86,7 @@ four call sites delegate too (two naming the payload face, two naming an arm), w
 1,123 (usize to u32, file count unmoved), `glow_ident_duplication`'s ceiling falls 1 to 0 -- every
 copy this room ever carried is now a stub reaching the one published rule.
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
-[shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
-headroom the next lap account will need.
+[shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's.
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -232,7 +232,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `894856d6ee` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `871ca7af45` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
