@@ -167,7 +167,7 @@ at its ceiling; Diffuser landed the last site.
 account's named blind spot -- a power-of-two bitmask ring, `& (N - 1)` -- checked against every
 tracked `.rye` source; only two hits, both published crypto field-modulus reduction, not a ring or
 topology. Nine accounts in, no torus stands as a real module. Paper
-[here](../active-designing/date/20260918/20260918-054500_bitmask-ring-checked-no-torus-closes-the-falsifier.md).
+[here](../active-designing/date/20260918/20260918-050444_bitmask-ring-checked-no-torus-closes-the-falsifier.md).
 **MINE:** a branch-cursor ring (`if i==N-1 then 0 else i+1`) is not caught by any pattern run so far.
 **YOURS:** the cold run's 21 reds of 355 guards stays open, unanswered this lap for the same reason
 as last time.
@@ -227,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `c40fa8361a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0103689231` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
