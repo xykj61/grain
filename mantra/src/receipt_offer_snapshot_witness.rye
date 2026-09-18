@@ -1,0 +1,88 @@
+//! mantra/src/receipt_offer_snapshot_witness.rye -- the dual-product witness the contract wanted.
+//!
+//! Proves acceptance cases 1 through 3 chained together, once, from one admitted fact: admit and
+//! replay (case 1), read that one replay as Linengrow (case 2), and read the SAME replay as
+//! Dimeroll (case 3) -- both before and after expiry. Every earlier witness proved its own half
+//! against a hand-typed fixture matching the contract's; this one proves the CHAIN -- that a
+//! single `Log.append` and a single `Log.replay` are what both products actually read, through
+//! `receipt_offer_snapshot.rye`'s two conversions, rather than three separately-fed fixtures that
+//! merely happen to agree.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt = @import("receipt_offer.rye");
+const snapshot = @import("receipt_offer_snapshot.rye");
+const dimeroll_mod = @import("dimeroll_receipt_offer.rye");
+const linengrow_mod = @import("linengrow_receipt_offer.rye");
+
+// Force every declaration in the claimed carrier through semantic analysis.
+comptime {
+    for (@typeInfo(snapshot).@"struct".decls) |decl| {
+        _ = &@field(snapshot, decl.name);
+    }
+}
+
+fn fixture() receipt.ReceiptOfferFact {
+    return .{
+        .schema = receipt.schema_v1,
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder", .recipient_id = "org:sample-steward",
+        .product_id = "data:weekly-pollinator-counts",
+        .product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1",
+        .purpose = "habitat-planning", .value_amount = 1200,
+        .value_unit = "USD-cent-simulated", .value_basis = "one-purpose license offer",
+        .return_kind = "service-credit", .issued_at = 1_789_228_800,
+        .expires_at = 1_791_820_800, .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const fact = fixture();
+
+    // Case 1: admit and replay.
+    var log = receipt.Log{};
+    try log.append(fact, 512, true);
+    const offered = try log.replay(fact.issued_at);
+    assert(offered.status == .offered);
+
+    // Case 3: read the SAME replay as Dimeroll.
+    const intake = dimeroll_mod.from_snapshot(snapshot.dimeroll_snapshot_of(offered));
+    assert(std.mem.eql(u8, intake.receipt_id, fact.receipt_id));
+    assert(std.mem.eql(u8, intake.source_fact, fact.product_digest));
+    assert(std.mem.eql(u8, intake.evidence_status, dimeroll_mod.evidence_received));
+    assert(intake.offered_value == fact.value_amount);
+    assert(std.mem.eql(u8, intake.recognition_status, dimeroll_mod.unrecognized_offer));
+    assert(intake.journal_entry_count == 0);
+
+    // Case 2: read the SAME replay as Linengrow.
+    const shown = linengrow_mod.from_snapshot(snapshot.linengrow_snapshot_of(offered));
+    assert(std.mem.eql(u8, shown.receipt_id, fact.receipt_id));
+    assert(std.mem.eql(u8, shown.product_id, fact.product_id));
+    assert(std.mem.eql(u8, shown.purpose, fact.purpose));
+    assert(std.mem.eql(u8, shown.recipient_id, fact.recipient_id));
+    assert(shown.offered_value == fact.value_amount);
+    assert(std.mem.eql(u8, shown.value_basis, fact.value_basis));
+    assert(std.mem.eql(u8, shown.promised_return, fact.return_kind));
+    assert(std.mem.eql(u8, shown.status, linengrow_mod.status_offered));
+
+    // invariant: one replay produces both product readings from the one admitted fact.
+    assert(std.mem.eql(u8, intake.receipt_id, shown.receipt_id));
+
+    // Case 5's chained half: replay at the boundary, and both products move together.
+    const expired = try log.replay(fact.expires_at);
+    assert(expired.status == .expired);
+    const intake_x = dimeroll_mod.from_snapshot(snapshot.dimeroll_snapshot_of(expired));
+    const shown_x = linengrow_mod.from_snapshot(snapshot.linengrow_snapshot_of(expired));
+    assert(std.mem.eql(u8, intake_x.evidence_status, dimeroll_mod.evidence_expired));
+    assert(std.mem.eql(u8, shown_x.status, linengrow_mod.status_expired));
+    // invariant: expiration moves each product's own status field alone.
+    assert(std.mem.eql(u8, intake_x.receipt_id, fact.receipt_id));
+    assert(std.mem.eql(u8, shown_x.receipt_id, fact.receipt_id));
+    assert(intake_x.journal_entry_count == 0);
+    assert(std.mem.eql(u8, shown_x.promised_return, fact.return_kind));
+
+    print("GREEN: receipt offer snapshot -- one admission, one replay, both products read the same fact, before and after expiry.\n", .{});
+    return 0;
+}
