@@ -11,6 +11,7 @@
 | `20260917.213902` | [gratitude-licenses.md's cheapest sweep, law_ceiling 4 to 3](20260917/20260917-213902_gratitude-licenses-ceiling.kyri) | Six restatements clear gratitude-licenses.md's register; law tier ceiling falls, witness GREEN. |
 | `20260917.213652` | [lower_shop_gate delegates, MissingFace kept](20260917/20260917-213652_shop-gate-delegates.kyri) | Largest singleton falls; error.BadIdent caught and remapped, MissingFace unmoved. |
 | `20260917.213547` | [Round-open pulled Bakery's repair](20260917/20260917-213547_round-open-pulled-bakerys-repair.kyri) | HEAD moved by a peer's pull, not by work here; Copal's lane still unchanged. |
+| `20260917.213433` | [rishi/src replaces rishi/bin in ten root-finders](20260917/20260917-213433_rishi-src-replaces-rishi-bin.kyri) | Bakery took the in-lane tenth of %788's 77-file root-finder defect; count falls 77 to 67. |
 | `20260917.213142` | [The last readlink -f site](20260917/20260917-213142_the-last-readlink-site.kyri) | shell_dialect falls 8 to 7; a masked pin repinned 53 to 71. |
 | `20260917.213100` | [Fifth look, same answer](20260917/20260917-213100_fifth-look-same-answer.kyri) | No new ask; Copal's lane has nothing agent-doable; the prior check-in (Keaton) still stands. |
 | `20260917.212904` | [A field page graded by a door bar](20260917/20260917-212904_a-field-page-graded-by-a-door-bar.kyri) | New Gauge spot-check: low QA score was the card's Door-calibrated bar, not a drift. |
