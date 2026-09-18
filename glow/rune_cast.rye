@@ -39,6 +39,8 @@ pub const CastSpec = struct {
 pub fn mold_slice(spec: *const CastSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_mold_len and spec.mold[len] != 0) len += 1;
+    // invariant: the loop's own bound never lets len pass max_mold_len.
+    assert(len <= max_mold_len);
     return spec.mold[0..len];
 }
 
@@ -73,5 +75,10 @@ pub fn parse(line: []const u8) ParseError!CastSpec {
 
     var spec: CastSpec = .{};
     @memcpy(spec.mold[0..mold_text.len], mold_text);
+    // invariant: the constructed spec's mold never claims less than the
+    // non-empty check above already proved, nor more than the ceiling check
+    // that follows it.
+    assert(mold_text.len > 0);
+    assert(mold_text.len <= max_mold_len);
     return spec;
 }

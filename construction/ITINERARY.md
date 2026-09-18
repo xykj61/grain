@@ -34,17 +34,16 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE IDENT-DUPLICATION LADDER CLOSED, ONE FILE EARNS ASSERTS NEXT.** Elder accounts
-[shelved whole](archive/20260918-031256_itinerary-pheromone-ladder-close-account.md): ten blocks,
-the ladder that took every `glow/` Zig-identifier copy down to one published rule,
-`glow/zig_ident.rye`, `glow_ident_duplication`'s ceiling now at zero. This lap moved to the
-tidy rules' own zero-assert ratchet: `glow/rune_call.rye` earns four invariant asserts (gate and
-sample length bounds on its two slice accessors, the postcondition `parse_ident` and `parse`
-already guaranteed through their error paths), witness GREEN unchanged before and after, ratchet
-33 to 32. **PROVEN:** `glow_rune_call_witness`, `glow_run_contract`, `tame_style_check`,
-`width-check`, GREEN on metal. **YOURS:** whether a body carries a parent hash at all is
-convention, and Keaton's; the seventeen remaining zero-assert `glow/` files are agent-doable,
-same shape, next lap.
+**PHEROMONE -- THE SAME SHAPE, TAKEN A SECOND TIME.** Elder account
+[shelved whole](archive/20260918-032526_itinerary-pheromone-rune-call-account.md): the
+ident-duplication ladder close and `rune_call.rye`'s four invariant asserts, both kept there. This
+lap took `glow/rune_cast.rye` -- `mold_slice`'s own postcondition on its loop-bounded length, and
+`parse`'s postcondition on the constructed spec's mold length (non-empty, within
+`max_mold_len`), three bare `assert()` calls across two functions, `assert` already imported and
+unused. Witness GREEN unchanged before and after, ratchet 32 to 31. **PROVEN:**
+`rune_cast_witness`, `glow_run_contract`, `tame_style_check`, `width-check`, GREEN on metal.
+**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's; sixteen
+zero-assert `glow/` files remain, same shape, agent-doable, next lap.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
