@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.212817` (EDT)
+**Stamp:** `20260917.213207` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -48,9 +48,16 @@ a type, and the cold and hot passes both closed their own reds.
 bill falls 1139 to 1133, `glow_ident_duplication`'s own ceiling falls 11 to 8 in the same commit.
 **PROVEN:** `glow_lower_conditional`, `glow_lower_null`, `glow_lower_switch`, `glow_ident`,
 `glow_run_contract`, `width-check`, `tame_style_check`, `glow_ident_duplication`, GREEN on metal.
-**YOURS:** the eight singletons that remain -- `lower_shop_gate` (12), `lower_core` (4),
-`lower_call3` (4), `lower_call2` (3), `lower_alias` (2), `lower_face_lit` (2), `lower_shop_nest`
-(2), `lower_trap` (1) -- and `lower_alias` wants `Dot.to_underscore` rather than `.refuse`.
+**PHEROMONE -- THE LARGEST SINGLETON, AND THE ONE BODY THAT WAS GENUINELY DIFFERENT.** Account
+[shelved whole](archive/20260917-213500_itinerary-pheromone-shop-gate-account.md):
+`lower_shop_gate`'s 12 call sites delegate too, its `error.MissingFace` and dot-free character
+check both preserved by catching the shared rule's `BadIdent` rather than widening `LowerError`;
+width bill unmoved (it already answered `u32`), `glow_ident_duplication`'s ceiling falls 8 to 7.
+**PROVEN:** `lower_shop_gate_witness`, `glow_ident`, `glow_run_contract`, `width-check`,
+`tame_style_check`, `glow_ident_duplication` (scan + 17-leg control), GREEN on metal.
+**YOURS:** the seven singletons that remain -- `lower_core` (4), `lower_call3` (4), `lower_call2`
+(3), `lower_alias` (2), `lower_face_lit` (2), `lower_shop_nest` (2), `lower_trap` (1) -- and
+`lower_alias` wants `Dot.to_underscore` rather than `.refuse`.
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.
@@ -178,7 +185,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `26af95e8ec` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0f24869f39` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

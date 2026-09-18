@@ -53,6 +53,8 @@ const std = @import("std");
 const assert = std.debug.assert;
 const rb = @import("rune_shop_gate.rye");
 const nest_type = @import("nest_type.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rb.ParseError || error{Overflow};
 
@@ -110,25 +112,16 @@ pub const bartis_nona_demo_to: u32 = 6;
 pub const bartis_nona_demo_via: u32 = 8;
 pub const bartis_nona_demo_ref: u32 = 9;
 
+/// The one ident rule, reached through `glow/zig_ident.rye`. This module's own callers switch
+/// on `error.MissingFace` -- the parse-time face refusal this module already publishes through
+/// `rb.ParseError` -- so a `BadIdent` from the shared rule is caught and answered in that name
+/// rather than widening `LowerError` with a second refusal a caller would need to learn.
 fn zig_safe_ident(face: []const u8, out: *[rb.max_face_len]u8) LowerError!u32 {
-    // invariant: the safe ident is built in a buffer of max_face_len, so a longer face would
-    // arrive truncated into a different name rather than refused
-    assert(face.len <= rb.max_face_len);
-    if (face.len == 0 or face.len > rb.max_face_len) return error.MissingFace;
-    const n: u32 = @intCast(face.len);
-    var i: u32 = 0;
-    while (i < n) : (i += 1) {
-        const c = face[@as(usize, @intCast(i))];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.MissingFace;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.MissingFace;
-        }
-        out[@as(usize, @intCast(i))] = mapped;
-    }
+    var slot: refusal.Slot = null;
+    const n = zig_ident.safe_ident(face, out[0..], rb.max_face_len, "shop-gate-face", .refuse, &slot) catch return error.MissingFace;
+    // invariant: the rule wrote exactly the face it was handed, so the caller's own length is
+    // what returns rather than a truncation the buffer would have hidden
+    assert(n == face.len);
     return n;
 }
 
