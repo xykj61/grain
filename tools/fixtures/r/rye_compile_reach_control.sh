@@ -61,7 +61,7 @@ check_lacks() { # name needle haystack
 # helper it sources, and the scan itself at its own letter-room path.
 new_pen() { # name  -> echoes the pen root
   _p="$pen/$1"
-  mkdir -p "$_p/rishi/bin" "$_p/tools/fixtures/s" "$_p/tools/fixtures/r"
+  mkdir -p "$_p/rishi/src" "$_p/tools/fixtures/s" "$_p/tools/fixtures/r"
   cp "$PORTABLE" "$_p/tools/fixtures/s/shell_portable.sh"
   cp "$SCAN" "$_p/tools/fixtures/r/rye_compile_reach_scan.sh"
   # The resolver the scan asks for its assembled paths. Copied into every pen rather than into the
