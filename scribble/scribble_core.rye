@@ -82,6 +82,10 @@ fn push_block(
     try copy_into(&block.lang, &block.lang_len, lang);
     blocks[count.*] = block;
     count.* += 1;
+    // invariant: a pushed block's stored length never exceeds the buffer it borrows
+    assert(block.text_len <= max_block_text);
+    // invariant: the write count never exceeds the destination slice it wrote into
+    assert(count.* <= blocks.len);
 }
 
 fn fence_kind(lang: []const u8) BlockKind {
@@ -163,6 +167,8 @@ pub fn parse_markdown(text: []const u8, out: []Block) ParseError!u32 {
         para_len += @intCast(line.len);
     }
     try flush_paragraph(out, &count, &para_buf, &para_len);
+    // invariant: the returned block count never exceeds the caller's own destination slice
+    assert(count <= out.len);
     return count;
 }
 
@@ -195,6 +201,8 @@ fn extract_kind_snippets(blocks: []const Block, kind: BlockKind, out: []Snippet)
         out[count] = snippet;
         count += 1;
     }
+    // invariant: the returned snippet count never exceeds the caller's own destination slice
+    assert(count <= out.len);
     return count;
 }
 
