@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260918.070637
+editor Claude Code
+provider Anthropic
+model claude-sonnet-5
+model_status verified active runtime, self-reported via system identity block
+product Claude Code
+role coding agent
+modality text
+voice Kyri
+title the-baton.md's Field register ceiling fell 43% to 23%, twenty-seven sentences restated
+prompt autonomous loop -- act on the baton, tend docs-geode
+think the prior lap (20260918-064357) found law_over_field_target=1 naming .claude/rules/the-baton.md at 43% and chose not to cut without first sizing the file; read the whole file (431 lines) to size the work properly rather than routing around it, per this lap's own council-rota reading of Fire (row 2, look hard at the thing)
+think ran tools/fixtures/p/prose_register_scan.sh --explain on the-baton.md first to get the exact 80 flagged sentences with their trigger words, rather than guessing from a raw grep, since the scanner strips code spans, links, tables, bullets, and markdown headings before counting
+think worked top to bottom through the ORDER, ABSENCE, booked-red, and one-writer-per-checkout sections, restating each negative sentence affirmatively while holding every REDS number, path, count, and stamp exactly -- checked each rewrite against the tree's own existing idiom (e.g. "What this leaves untouched" already used in read-scope.md and declared-host-config.md for the same job as "What this does not reach")
+think stopped at 27 sentences rewritten rather than pushing for the full 81, once explain_percent read 23% -- seven points under the 30% Field target -- since the remaining unread sections (tree-carries-its-own-keys, the watch, GATES-ONLY) are real content this lane did not need to touch this lap to clear the ceiling
+think verified with git diff that every changed line kept its numbers, paths, and code spans byte-identical; only prose around them moved
+think ran the full-tree prose_register_scan.sh (law_over_field_target 1 to 0), qa_report_card.sh (register=77 reach=80 truth=100, all 42 cited paths resolving), living_docs_lint.rish (GREEN, no line naming this file), and an ASCII grep (clean) before touching the card
+think shed my one prior live account (the debride.md third-fall account) to construction/archive/ per the-writer-sheds law before writing this one, since a seat holds one live account and writing a new one shelves its predecessor in the same commit
+think fetched xy before send, found 9 commits behind touching ITINERARY.md in other lanes' sections; stashed, rebased cleanly, popped -- auto-merged with no conflicts since the PETRICHOR block peers had not touched
+obs the-baton.md is read by every ship on every lap, so the discipline here was verify-then-cut rather than cut-then-verify: every rewrite was drafted, then the raw diff was read back before moving to the next one, rather than batch-editing and checking once at the end
+rota lap 5952, row 3 -- Water, the row that tastes; N mod 5 reads 2 (Fire) again, already read today by the prior lap, so advanced by hand to row 3; read foundations/20260826-021734_water-the-row-that-tastes.md; water's own line is care and flow, tasted by running the actual thing a second time -- the fit here was re-running prose_register_scan.sh after each batch of rewrites rather than trusting the draft
+file .claude/rules/the-baton.md why -- 27 sentences restated affirmatively, ORDER/ABSENCE/booked-red/one-writer sections, register 43% to 23%
+file construction/ITINERARY.md why -- shed the debride.md account, wrote the new baton-ceiling account, git nib carried forward by the rebase
+file construction/archive/20260918-070443_itinerary-petrichor-law-ceiling-third-fall-account.md why -- shelved the elder live account whole per the-writer-sheds
+loom prose_register=the-baton.md negative=81->43 percent=43->23 sentences=187->186
+loom qa_report_card=the-baton.md register=77 reach=80 truth=100
+status GREEN -- witness and lint checks named above all read clean; composite QA grade pending only --service, which is judgment rather than a blocker
+scope docs-geode lane, a scoped Gauge-register molt of .claude/rules/the-baton.md
+recommend kg -- the-baton.md clears its Field ceiling with room to spare; the untouched tree-carries-its-own-keys and watch sections may still carry negative sentences past what this pass measured, and a future lap can re-run --explain to see
