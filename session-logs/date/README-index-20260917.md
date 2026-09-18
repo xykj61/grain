@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.231258` | [Mantra's weave, a checked negative](20260917/20260917-231258_mantra-weave-store-checked-negative.kyri) | Neither module holds a torus seam. |
 | `20260917.231215` | [A fourth check agrees with the third](20260917/20260917-231215_a-fourth-check-agrees.kyri) | Re-derived from live remote, empty claims board, no OPEN Bakery-lane REDS row; fresh rishi binary. |
 | `20260917.231204` | [The teaching-tier overage was a custody refusal](20260917/20260917-231204_gren-ceiling-guarded-by-custody.kyri) | Edited, then reverted, two sentences a header comment names as protected. |
 | `20260917.230919` | [the-baton.md's own ceiling falls in part](20260917/20260917-230919_the-baton-ceiling-partial-fall.kyri) | 47% to 43% negative, 8 restatements, law_ceiling stays 1. |
