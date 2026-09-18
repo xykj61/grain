@@ -247,6 +247,52 @@ fi
 printf '%s\n' "$e122_out" | grep -q '^verdict=instrument_absent$' \
   && ok "the absent instrument has its own verdict" \
   || bad "the absent instrument has its own verdict"
+# capture_evidence: a file that already fits under the bound is copied whole, byte for byte --
+# the fix must cost nothing on the guards that were never truncated.
+short_src="$pen/short.txt"
+: > "$short_src"
+i=1
+while [ "$i" -le 50 ]; do echo "line $i" >> "$short_src"; i=$((i + 1)); done
+capture_evidence "$short_src" "$pen/short.evidence.txt" 200
+if cmp -s "$short_src" "$pen/short.evidence.txt"; then
+  ok "a short answer is kept whole, byte for byte"
+else
+  bad "a short answer is kept whole, byte for byte"
+fi
+
+# capture_evidence: a long answer keeps its OWN header, not only its tail -- the real fault this
+# helper closes. Shaped after rye_compiled_reach's own 812-line answer: a header naming paths and
+# ceiling, a long body, a verdict line at the very end.
+long_src="$pen/long.txt"
+: > "$long_src"
+echo "paths=1994 bodies=1761 ceiling=18" >> "$long_src"
+echo "header line two" >> "$long_src"
+echo "header line three" >> "$long_src"
+i=1
+while [ "$i" -le 808 ]; do echo "uncompiled body $i" >> "$long_src"; i=$((i + 1)); done
+echo "verdict=over_ceiling" >> "$long_src"
+capture_evidence "$long_src" "$pen/long.evidence.txt" 200
+grep -q '^paths=1994 bodies=1761 ceiling=18$' "$pen/long.evidence.txt" \
+  && ok "a bounded capture keeps the guard's own header" \
+  || bad "a bounded capture keeps the guard's own header"
+grep -q '^verdict=over_ceiling$' "$pen/long.evidence.txt" \
+  && ok "a bounded capture keeps the guard's own verdict line" \
+  || bad "a bounded capture keeps the guard's own verdict line"
+grep -q 'lines omitted' "$pen/long.evidence.txt" \
+  && ok "a bounded capture SAYS what it skipped" \
+  || bad "a bounded capture SAYS what it skipped"
+ce_lines=$(wc -l < "$pen/long.evidence.txt")
+[ "$ce_lines" -le 200 ] && ok "the bounded capture stays at or under its own ceiling" \
+  || bad "the bounded capture stays at or under its own ceiling ($ce_lines)"
+
+# The fault this replaces: a plain `tail -n 200` on the same file drops the header entirely --
+# proving the OLD behavior actually loses the reading the new one keeps.
+if tail -n 200 "$long_src" | grep -q '^paths=1994'; then
+  bad "the elder bare tail was already keeping the header (nothing to fix)"
+else
+  ok "the elder bare tail drops the header this helper restores"
+fi
+
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"
 echo "skip=$skip"

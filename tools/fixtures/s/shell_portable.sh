@@ -317,6 +317,39 @@ search_text() {
   grep ${_st_q} ${_st_i} ${_st_F} ${_st_E} -- "$_st_pat" "$@"
 }
 
+# capture_evidence <source> <dest> [<max-lines>] -- a bounded copy that keeps the head.
+#
+# WHY. A plain `tail -n 200` keeps a guard's last lines and drops everything before them in
+# silence -- and a guard's own header (paths, ceiling, bodies) lives at the top. This was found
+# (`20260917.194613`) on `rye_compiled_reach`: its 812-line answer kept the 791-line uncompiled
+# list and the verdict line, and lost the three header lines that give the list its scale. This
+# keeps a bounded head, an explicit count of what it skips, and a bounded tail, so the kept file
+# names both ends of the run rather than one -- and a file that already fits inside the bound is
+# copied whole, byte for byte, so this changes nothing for the guards that were never truncated.
+capture_evidence() {
+  _ce_src=$1
+  _ce_dst=$2
+  _ce_max=${3:-200}
+  _ce_head=40
+  [ -n "$_ce_src" ] && [ -n "$_ce_dst" ] || return 2
+  [ -r "$_ce_src" ] || return 1
+  _ce_total=$(wc -l < "$_ce_src" 2>/dev/null) || return 1
+  _ce_total=${_ce_total:-0}
+  if [ "$_ce_total" -le "$_ce_max" ]; then
+    cat "$_ce_src" > "$_ce_dst" 2>/dev/null
+  else
+    _ce_tail=$((_ce_max - _ce_head - 1))
+    [ "$_ce_tail" -gt 0 ] || _ce_tail=1
+    _ce_omitted=$((_ce_total - _ce_head - _ce_tail))
+    {
+      head -n "$_ce_head" "$_ce_src"
+      printf '... %d lines omitted ...\n' "$_ce_omitted"
+      tail -n "$_ce_tail" "$_ce_src"
+    } > "$_ce_dst" 2>/dev/null
+  fi
+  [ -f "$_ce_dst" ]
+}
+
 
 # THE FOURTH DIALECT QUESTION, AND THE ONLY ONE WITH NO PORTABLE ANSWER: is the instrument here at
 # all. The three questions above each have a spelling that works on both piers. This one does not --
