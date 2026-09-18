@@ -38,7 +38,7 @@
 set -u
 
 GLOW_SHAPE="${SHAPE_CAPACITY_GLOW:-glow/rune_shape.rye}"
-CONTRACT="${SHAPE_CAPACITY_CONTRACT:-active-designing/20260912-201126_the-receipt-you-can-read-contract.md}"
+CONTRACT="${SHAPE_CAPACITY_CONTRACT:-active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md}"
 MODE="${1:-}"
 
 if [ ! -f "$GLOW_SHAPE" ]; then
