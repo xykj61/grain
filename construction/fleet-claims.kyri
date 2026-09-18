@@ -65,3 +65,9 @@ stamp 20260917.214721
 epoch 1789696041
 paths tools/fixtures/l/living_docs_lint_scan.sh
 what REDS %823 BOOKED: duty 3's orphan check reads inbound links from the docs roster, docs/README.md and ORGANIZING.md but never MAP.md, though read-scope.md names MAP.md as the walk that replaces the root ls and it links 73 paths. Widening duty 3's source set to include MAP.md so its 17 real-orphan pages (linengrow/, kumara/, session-logs/, etc.) stop reading orphan. Touches one scan file; no module source.
+claim grass-gauge-git-signing-sweep
+seat grass
+stamp 20260917.215358
+epoch 1789696438
+paths .claude/rules/git-signing.md
+what Gauge Field-target sweep of git-signing.md (55%, 32/58 negative sentences): restate negations affirmatively where safe, holding every claim, figure, stamp, and quote exactly. Grass's own assigned page from the ceiling list. Touches one law page.
