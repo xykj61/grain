@@ -16,9 +16,9 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 This is where a **round** does its scoping. The plan for the next lap, the surface an implementation has to meet, the ledger of what a sweep found, the evaluation of two approaches before one is chosen -- granular, near-daily, bound to the work in front of you rather than to the shape of the whole system.
 
-It exists because [`active-designing/`](../active-designing/README.md) was opened for **essays** and quietly filled with **round notes** instead. The evidence was in the room's own cadence: 78, 163, and 141 files on three consecutive days in August 2026, against a room whose purpose was long-form design reasoning. That is not essay tempo. Two different kinds of writing had been sharing one shelf, and the smaller, more numerous kind was crowding out the larger, more durable one.
+It exists because [`active-designing/`](../active-designing/README.md) was opened for **essays** and quietly filled with **round notes** instead. The evidence was in the room's own cadence: 78, 163, and 141 files on three consecutive days in August 2026, against a room whose purpose was long-form design reasoning. That cadence reads as round tempo, at odds with the room's own declared purpose. Two different kinds of writing had been sharing one shelf, and the smaller, more numerous kind was crowding out the larger, more durable one.
 
-So the two now have two rooms, and neither has to pretend to be the other.
+So the two now have two rooms, each free to be itself.
 
 ## The one test
 
@@ -41,7 +41,7 @@ The test is deliberately blunt. A filing rule that needs a paragraph of adjudica
 
 ## What does not move here
 
-Nothing already filed. The 629 dated notes that folded out of `active-designing/` on `20260821` stay exactly where they are -- the test governs what is **born** from here forward, and a retroactive re-sort would spend a week to make old files feel tidier without making one of them truer.
+Nothing already filed. The 629 dated notes that folded out of `active-designing/` on `20260821` stay exactly where they are -- the test governs what is **born** from here forward, and a retroactive re-sort would spend a week making old files feel tidier while leaving every one exactly as true as it already was.
 
 ## Kin
 
