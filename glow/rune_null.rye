@@ -11,6 +11,7 @@
 //!   ?~  records.cur
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_subject_len: u32 = 96;
 
@@ -28,6 +29,9 @@ pub const NullSpec = struct {
 pub fn subject_slice(spec: *const NullSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_subject_len and spec.subject[len] != 0) len += 1;
+    // invariant: the scan above stops at or before the buffer's own
+    // ceiling, so a returned slice never claims more than the buffer holds.
+    assert(len <= max_subject_len);
     return spec.subject[0..len];
 }
 
@@ -45,6 +49,9 @@ pub fn parse(line: []const u8) ParseError!NullSpec {
     var rest = line[2..];
     rest = std.mem.trimStart(u8, rest, " \t");
     if (rest.len == 0) return error.MissingSubject;
+    // invariant: a line accepted past the missing-subject check names a
+    // real remainder, never an empty one, once execution reaches here.
+    assert(rest.len > 0);
 
     var end: u32 = 0;
     var depth: i32 = 0;
@@ -79,5 +86,8 @@ pub fn parse(line: []const u8) ParseError!NullSpec {
 
     var spec: NullSpec = .{};
     @memcpy(spec.subject[0..subject_text.len], subject_text);
+    // invariant: a constructed spec never claims more of its fixed buffer
+    // than the length check above already proved fits.
+    assert(subject_text.len <= max_subject_len);
     return spec;
 }
