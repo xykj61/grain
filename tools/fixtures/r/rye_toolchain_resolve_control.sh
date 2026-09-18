@@ -31,6 +31,7 @@ while [ ! -d "$_fd_root/rishi/src" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_root=$(dirname "$_fd_root")
 done
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
+. "$_fd_root/tools/fixtures/p/plant.sh"
 
 REPO=$(pwd)
 RYE_BIN="${1:-$REPO/rye/bin/rye}"
@@ -191,8 +192,7 @@ MUT="$PEN/mut"
 mkdir -p "$MUT"
 build_mutant() { # build_mutant <name> <sed-expression>
     _name=$1; _expr=$2
-    sed "$_expr" "$SRC" > "$MUT/$_name.rye.zig"
-    cmp -s "$SRC" "$MUT/$_name.rye.zig" && fail "mutation '$_name' changed nothing"
+    plant_write "$SRC" "$MUT/$_name.rye.zig" "$_expr" "$_name" || fail "mutation '$_name' changed nothing"
     "$ZIG" build-exe "$MUT/$_name.rye.zig" -femit-bin="$MUT/$_name" --zig-lib-dir "$LIB" -lc >/dev/null 2>&1 \
         || fail "mutation '$_name' did not build"
     echo "rye-toolchain-resolve: mutation $_name rebuilt" >&2
