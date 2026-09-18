@@ -72,8 +72,10 @@ ceiling falls 7 to 6. **PROVEN:** `lower_alias_witness`, `glow_ident`, `glow_run
 two call sites delegate too, `LowerError` gaining `error.BadIdent` for the first time (its elder
 answered a length ceiling AND a bad character with one name), width bill unmoved (already `u32`),
 `glow_ident_duplication`'s ceiling falls 5 to 4.
-**YOURS:** four singletons remain -- `lower_core` (4), `lower_call3` (4), `lower_call2` (3),
-`lower_face_lit` (2).
+**PHEROMONE -- THE SECOND-CHEAPEST SINGLETON, TAKEN NEXT.** Account
+[shelved whole](archive/20260917-224809_itinerary-pheromone-face-lit-account.md): `lower_face_lit`
+delegates too, width bill unmoved, `glow_ident_duplication`'s ceiling falls 4 to 3.
+**YOURS:** three singletons remain -- `lower_core` (4), `lower_call3` (4), `lower_call2` (3).
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.
@@ -221,7 +223,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `83264a91f5` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `63884dc673` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
