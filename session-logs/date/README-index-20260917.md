@@ -9,6 +9,7 @@
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
 | `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture; REDS row booked, row %805 folded, claim closed. |
 | `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself; recommends the lane hold for Keaton rather than re-check again. |
+| `20260917.200731` | [Two open doors still await a ruling](20260917/20260917-200731_two-open-doors-still-await-a-ruling.kyri) | Patchouli/mantra lane: %807 and %767 both still OPEN, both return a choice to Keaton; nothing agent-doable in the lane. |
 | `20260917.200410` | [Second re-check, same two doors](20260917/20260917-200410_second-re-check-same-two-doors.kyri) | Third consecutive lap confirming %804 and %819 are unchanged and Keaton's word. |
 | `20260917.200158` | [The gate and the queue both stood unmoved](20260917/20260917-200158_gate-and-queue-both-unmoved.kyri) | Re-checked HEAD, claims board, and the card's queue; nothing moved since the prior lap. |
 | `20260917.195846` | [Docs-geode lane clear, no red](20260917/20260917-195846_docs-geode-lane-clear-no-red.kyri) | Card and claims read; fourteen docs-geode front doors graded, all B or better. |
