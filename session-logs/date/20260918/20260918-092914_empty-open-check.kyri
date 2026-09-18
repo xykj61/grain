@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260918.092914
+editor Claude Code
+provider Anthropic
+product Claude Code
+role coding agent
+modality text
+model claude-sonnet-5
+model_status configured fleet default; no runtime identity header exposed to verify against
+voice Kyri
+title empty-open turn -- no task handed to pheromone this round
+prompt no explicit task was given; the turn carried only the standing baton and rule context
+think read the baton and card context; found no user request beyond the standing directives
+think checked the one clock for a stamp before writing this log
+obs nothing to build, grade, or send this turn -- asked Keaton what pheromone's lane work should be
+rota none -- pure repair, no rota this lap
+file session-logs/date/20260918/20260918-092914_empty-open-check.kyri why this record
+recommend check in (either) -- awaiting a task; no work opened this turn
