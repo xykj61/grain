@@ -110,7 +110,17 @@ mode="${1:-count}"
 #                          stay unmoved, and `LowerError` gains no new member. Seven singletons
 #                          remain (`lower_core` 4, `lower_call3` 4, `lower_call2` 3, `lower_alias`
 #                          2, `lower_face_lit` 2, `lower_shop_nest` 2, `lower_trap` 1).
-CEILING=7
+#    7  `20260917.220500`  `glow/lower_alias.rye` became a stub -- the one body the ladder above
+#                          named as genuinely a different rule, since it maps `.` to `_` as well
+#                          as `-`, for a wing like `i.records.cur` rather than a bare face. It
+#                          calls `zig_ident.safe_ident` with `.to_underscore` rather than the
+#                          room's usual `.refuse`, and both call sites' return type moved
+#                          `usize` to `u32` in the same lap -- the last of the 23 counted at
+#                          seating still returning it. `LowerError` and its `error.BadIdent`
+#                          member are unmoved. Six singletons remain (`lower_core` 4,
+#                          `lower_call3` 4, `lower_call2` 3, `lower_face_lit` 2,
+#                          `lower_shop_nest` 2, `lower_trap` 1).
+CEILING=6
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }
