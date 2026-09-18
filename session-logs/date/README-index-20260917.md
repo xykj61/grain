@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.221748` | [Gren page ceiling is a standfast](20260917/20260917-221748_gren-page-ceiling-is-a-standfast-not-a-sweep.kyri) | grass caught and reverted a Gauge restatement of custody refusals; nothing sent |
 | `20260917.221441` | [A site is not a count](20260917/20260917-221441_a-site-is-not-a-count.kyri) | Wrong loop cured first; 904 to 382. |
 | `20260917.221417` | [lower_trap delegates, the cheapest singleton](20260917/20260917-221417_lower-trap-delegates.kyri) | usize to u32, copies 6 to 5; card shelved back under bound after a peer's rebase. |
 | `20260917.221332` | [Round-open pulled five new commits, lane still clean](20260917/20260917-221332_still-clean-after-round-open.kyri) | Petrichor Stop still gates the walkthrough; docs-geode doorway and register scans re-checked, no drift. |
