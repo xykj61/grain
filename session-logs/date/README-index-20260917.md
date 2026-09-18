@@ -38,6 +38,7 @@
 | `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS crossed bound mid-send; folded and pushed. |
 | `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | listing_census ceiling 11 to 10. |
 | `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Account landed; corpus red no longer reproduces. |
+| `20260917.190422` | [The boundary that was a wish](20260917/20260917-190422_the-boundary-that-was-a-wish.kyri) | The claim writer validated its name and nothing else. |
 | `20260917.185646` | [The comment a width leg read as a type](20260917/20260917-185646_the-comment-a-width-leg-read-as-a-type.kyri) | The md5 pair delegated; copies 15 to 13. |
 | `20260917.185512` | [The lever behind the deny list](20260917/20260917-185512_the-lever-behind-the-deny-list.kyri) | A guard read the tracked file while an ignored one outranked it. |
 | `20260917.185244` | [Lane empty queue](20260917/20260917-185244_lane-empty-queue.kyri) | mantra and tally read clean; no lap claimed. |
