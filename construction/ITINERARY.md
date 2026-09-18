@@ -47,8 +47,9 @@ in-flight file has nothing to grep for, since a peer's work two minutes old is o
 when the check runs. **PROVEN:** grass's `glow_rune_cell_witness` stands; this seat re-ran it
 unchanged after the fold.
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_bounded_trap.rye` and `glow/rune_conditional.rye` landed since this was written (below);
-`glow/rune_face.rye`, `glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`,
+`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, and `glow/rune_face.rye` landed since
+this was written (below);
+`glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`,
 `glow/rune_quad.rye`, `glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`,
 `glow/lower_cast.rye`, and `glow/nock/nock_jet_dec.rye` remain zero-assert, same shape,
 agent-doable, next lap.
@@ -226,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `4449e49ba2` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c40fa8361a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
