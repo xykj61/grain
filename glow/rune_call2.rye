@@ -8,6 +8,7 @@
 //! Three-arg `%^` is STOA8 (`rune_call3.rye`). `%*`, cores, nest later.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -34,14 +35,20 @@ pub const Call2Spec = struct {
 };
 
 pub fn gate_slice(spec: *const Call2Spec) []const u8 {
+    // invariant: a spec's gate never grows past the lexer's own name ceiling.
+    assert(spec.gate_len <= max_name_len);
     return spec.gate[0..spec.gate_len];
 }
 
 pub fn a_slice(spec: *const Call2Spec) []const u8 {
+    // invariant: a spec's first sample never grows past the lexer's own name ceiling.
+    assert(spec.a_len <= max_name_len);
     return spec.a[0..spec.a_len];
 }
 
 pub fn b_slice(spec: *const Call2Spec) []const u8 {
+    // invariant: a spec's second sample never grows past the lexer's own name ceiling.
+    assert(spec.b_len <= max_name_len);
     return spec.b[0..spec.b_len];
 }
 
@@ -59,6 +66,10 @@ fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []
     const ident = rest[0..end];
     if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedName;
     if (ident.len > max_name_len) return error.NameTooLong;
+    // invariant: every returned ident cleared the ceiling check above and holds at least
+    // one character, so a caller never receives an empty or over-long face.
+    assert(ident.len > 0);
+    assert(ident.len <= max_name_len);
     return .{ .ident = ident, .rest = rest[end..] };
 }
 
@@ -95,5 +106,10 @@ pub fn parse(line: []const u8) ParseError!Call2Spec {
     spec.a_len = a.ident.len;
     @memcpy(spec.b[0..b.ident.len], b.ident);
     spec.b_len = b.ident.len;
+    // invariant: a constructed spec never claims more of its fixed buffers than
+    // parse_ident already proved fit inside the lexer's name ceiling.
+    assert(spec.gate_len <= max_name_len);
+    assert(spec.a_len <= max_name_len);
+    assert(spec.b_len <= max_name_len);
     return spec;
 }
