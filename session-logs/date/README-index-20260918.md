@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.102707` | [A nineteenth empty-open turn, no task handed](20260918/20260918-102707_empty-open-nineteenth.kyri) | Register scan re-run on the-baton.md and whole-tree; every law/door/teaching ceiling reads clean. |
+| `20260918.102647` | [The evenspread rule lands in torus_place](20260918/20260918-102647_evenspread-rule-lands-in-torus-place.kyri) | Fourth run-kill rule and closed form added; witness GREEN at 31 legs. |
 | `20260918.102530` | [Send confirmed -- both remotes hold 84509f51d](20260918/20260918-102530_send-confirmed-84509f51d.kyri) | Six pushes and rebases; a Git-nib duplicate, a day-shelf row collision, and a generated-README conflict resolved. |
 | `20260918.102405` | [Round close -- both remotes settled at c2c5fc682](20260918/20260918-102405_camelcase-ratchet-round-close.kyri) | Confirmed xy/main and local HEAD agree; declined a fifth nib-only commit. |
 | `20260918.102117` | [The three-numbers proposals land: four ceilings, Linengrow's receipt](20260918/20260918-102117_receipt-three-numbers-landed.kyri) | All three proposals applied; product_digest exact-64, Linengrow's projection built, both GREEN. |

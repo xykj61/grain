@@ -31,7 +31,7 @@ trap 'rm -rf "$PEN"' EXIT INT TERM
 pass=0
 fail=0
 legs=0
-LEGS_EXPECTED=29
+LEGS_EXPECTED=31
 
 ok() { legs=$((legs + 1)); pass=$((pass + 1)); echo "ok   $legs $1"; }
 no() { legs=$((legs + 1)); fail=$((fail + 1)); echo "FAIL $legs $1"; }
@@ -101,6 +101,8 @@ check "empty: an empty population is unreadable"        "$(field verdict "$PEN/e
 check "g=8: the torus run-kill length is 2g+1"      "$(field runkill_torus4 "$PEN/even.out")" "17"
 check "g=8: the near ring holds five"               "$(field runkill_ring4adj "$PEN/even.out")" "5"
 check "g=8: the wide ring holds 4g+1"               "$(field runkill_ring4wide "$PEN/even.out")" "33"
+check "g=8: the even split beats every fixed offset" "$(field runkill_evenspread "$PEN/even.out")" "52"
+check "g=8: the even split matches C-ceil(C/5)+1"   "$(field runkill_evenspread_closed "$PEN/even.out")" "52"
 check "g=8: every closed form holds"                "$(field runkill_closed_forms_hold "$PEN/even.out")" "yes"
 check "g=8: the second axis buys no spread"         "$(field second_axis_buys_spread "$PEN/even.out")" "no"
 

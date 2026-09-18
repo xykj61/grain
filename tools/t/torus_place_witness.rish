@@ -29,9 +29,18 @@
 #   and 4g+1 exactly. The wide ring survives a run nearly twice as long as the torus, so the second
 #   axis is not merely matched on spread -- it is beaten by one axis choosing better offsets.
 #
+#   AND A FOURTH RULE BEATS THE FREE-CHOOSING RING ITSELF. `evenspread` places its five copies at
+#   round(i*C/5) for i=0..4 -- as close to evenly spaced around the ring as five integers allow --
+#   and survives 52, against the wide ring's 33: a 58% gain reached by arithmetic rather than
+#   search (active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md). The
+#   closed form C-ceil(C/5)+1 is the pigeonhole bound on the largest of five gaps summing to C, and
+#   an even split reaches it exactly; a brute force over every offset subset confirmed the bound at
+#   five (C,k) pairs including this one's 64.
+#
 #   THE CONCLUSION ROW 5 EARNS. What a torus supplies is a FIXED offset set, {1, g}, handed down by
-#   its shape. A ring supplies whatever offsets are chosen. The property worth keeping is that
-#   replicas sit far apart in the storage order, which is declustering, and it needs no torus.
+#   its shape. A ring supplies whatever offsets are chosen, and the best choice is not a search --
+#   it is the closed form above. The property worth keeping is that replicas sit far apart in the
+#   storage order, which is declustering, and it needs no torus and no search, only arithmetic.
 #
 # WHAT IS GATED HERE, and what is only reported. The control, and the live reading's ARITHMETIC:
 # the three run-kill lengths must match their closed forms, and the wide ring must out-survive the
@@ -40,7 +49,7 @@
 # refuses about one run in five hundred on a digest that is behaving correctly, and a gate that
 # reds at its own stated error rate is a gate somebody turns off.
 #
-# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_place_control.sh -- 29 behaviors on planted
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_place_control.sh -- 31 behaviors on planted
 # digest populations in a throwaway pen:
 #
 #   AN EVEN POPULATION reads even on both folds, falls in imbalance as names arrive, and passes,
@@ -97,6 +106,8 @@ assert control.out contains "empty: an empty population is unreadable" else "tor
 assert control.out contains "g=8: the torus run-kill length is 2g+1" else "torus-place: the torus closed form must be checked against the measurement"
 assert control.out contains "g=8: the near ring holds five" else "torus-place: the near ring closed form must be checked"
 assert control.out contains "g=8: the wide ring holds 4g+1" else "torus-place: the wide ring closed form must be checked"
+assert control.out contains "g=8: the even split beats every fixed offset" else "torus-place: the even split's own measurement must be checked"
+assert control.out contains "g=8: the even split matches C-ceil(C/5)+1" else "torus-place: the even split's closed form must be checked against the measurement"
 assert control.out contains "g=8: the second axis buys no spread" else "torus-place: the comparison this rung exists for must be reachable"
 assert control.out contains "g=4: the wide ring aliases, so its closed form is named absent" else "torus-place: a closed form outside its precondition is named absent"
 assert control.out contains "g=4: a precondition is not a refusal" else "torus-place: a precondition must not red the instrument"
@@ -109,7 +120,7 @@ assert control.out contains "m_compare: the spread verdict is read off the two n
 assert control.out contains "m_even: the mutation applied" else "torus-place: the evenness plant must land before its reading"
 assert control.out contains "m_even: a fold that always answers yes still refuses on the ring half" else "torus-place: both folds must reach the verdict independently"
 
-assert control.out contains "legs_expected=29" else "torus-place: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "legs_expected=31" else "torus-place: the control counts its own legs, so an empty pen cannot read as a full one"
 assert control.out contains "control_fail=0" else "torus-place: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "torus-place: the control must balance before it is believed"
 
@@ -123,9 +134,10 @@ assert live.out contains "chi_critical=" else "torus-place: the critical value i
 assert live.out contains "runkill_torus4=17" else "torus-place: the torus run-kill length at a 64-cell grid is 2g+1"
 assert live.out contains "runkill_ring4adj=5" else "torus-place: the near ring survives a run of five"
 assert live.out contains "runkill_ring4wide=33" else "torus-place: the wide ring survives 4g+1, which is the whole finding"
+assert live.out contains "runkill_evenspread=52" else "torus-place: spacing the offsets evenly survives longer than every fixed-offset rule above it"
 assert live.out contains "runkill_closed_forms_hold=yes" else "torus-place: every measured run-kill length must equal its closed form"
 assert live.out contains "second_axis_buys_spread=no" else "torus-place: a ring free to choose offsets out-survives the grid"
 assert live.out contains "folds_agree_expected=" else "torus-place: the agreement counter publishes the chance rate it is read against"
 assert live.out contains "growth_prefix_4" else "torus-place: imbalance under growth is published at four prefixes"
 
-say "GREEN: torus-place -- 29 behaviors, both verdicts reachable from planted populations, three closed forms matched by measurement, three mutations bitten, and the comparison that leaves row 5 holding a ring."
+say "GREEN: torus-place -- 31 behaviors, both verdicts reachable from planted populations, four closed forms matched by measurement, three mutations bitten, and the comparison that leaves row 5 holding a ring spaced by arithmetic rather than by search."
