@@ -7,6 +7,7 @@
 //! a later lap.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rm = @import("rune_mutate.rye");
 
 pub const LowerError = rm.ParseError || error{
@@ -20,7 +21,11 @@ pub const LowerError = rm.ParseError || error{
 pub const mutate_default_value: u32 = 7;
 
 fn classify_wing(wing: []const u8) LowerError!void {
-    if (std.mem.eql(u8, wing, "root")) return;
+    if (std.mem.eql(u8, wing, "root")) {
+        // invariant: the one wing this lowering accepts is always the literal "root".
+        assert(std.mem.eql(u8, wing, "root"));
+        return;
+    }
     return error.WingNotYetLowered;
 }
 
@@ -31,6 +36,8 @@ fn bound_value(line: []const u8, wing: []const u8) LowerError!u32 {
     if (rest[0] == '(') return error.ValueNotYetLowered;
     var end: usize = 0;
     while (end < rest.len and rest[end] >= '0' and rest[end] <= '9') end += 1;
+    // invariant: the scanned digit run never exceeds the trimmed text it was scanned from.
+    assert(end <= rest.len);
     if (end == 0) return error.MalformedValue;
     if (end < rest.len) {
         const after = std.mem.trimStart(u8, rest[end..], " \t");
@@ -51,11 +58,15 @@ fn emit_root_program(value: u32, expect: u32, out: []u8) LowerError!u32 {
         \\}}
         \\
     , .{ value, value, expect }) catch return error.Overflow;
+    // invariant: the byte count returned never exceeds the caller's own buffer.
+    assert(written.len <= out.len);
     return @intCast(written.len);
 }
 
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
+    // invariant: trimming whitespace never grows the line it was trimmed from.
+    assert(trimmed.len <= line.len);
     if (trimmed.len == 0) return error.EmptySource;
     const spec = try rm.parse(trimmed);
     const wing = rm.wing_slice(&spec);
