@@ -33,7 +33,6 @@ two product rooms, reading the pair off the contract's OWN residence table so a 
 guard; **175 tracked sources, every reading zero** -- clean, and held by nobody. Pen **47 legs,
 five mutations bitten**. Elder account [shelved whole](archive/20260917-090914_itinerary-landed-accounts.md).
 
-
 ## The ledger booked one, and the reading finds ten
 
 **INCENSE -- THE LEDGER BOOKED ONE, AND THE READING FINDS TEN.** Elder account
@@ -48,4 +47,3 @@ repaired, and a wall over the ten would red for a fault no lap may take.
 **MINE, TWICE.** My header claimed the one-letter clause kept `ed25519` out; the pen proved it a
 token at once. And my `say` read `*=no` where `want` emits `no (want ...)`: **five silent reds under
 a green verdict**. **PROVEN:** 43 legs, six mutations bitten, GREEN on metal.
-**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's.
