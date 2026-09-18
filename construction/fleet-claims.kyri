@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim incense-lower-cast-asserts
-seat incense
-stamp 20260918.060729
-epoch 1789726049
-paths glow/lower_cast.rye
-what add bare asserts to lower_cast.rye's zig_type_for_mold, unwelcome_raw_u64, emit_for, and the three lower_line_* entry points, same discipline as rune_quad/rune_null

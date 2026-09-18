@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.064804` | [bolt_apply_step.rye gains five asserts](20260918/20260918-064804_bolt-apply-step-asserts.kyri) | Same assert shape moved from glow/ to Mantra; ratchet 16 to 15. |
+| `20260918.064726` | [lower_cast.rye earns bare asserts](20260918/20260918-064726_lower-cast-asserts-landed.kyri) | Six functions asserted, TAME-clean, claim closed. |
 | `20260918.064720` | [Send confirmed -- both remotes hold 6554a0b7b](20260918/20260918-064720_send-confirmed-6554a0b7b.kyri) | One rebase, one shared-stamp row kept both sides, nib carried forward via the follow-up shape. |
 | `20260918.064448` | [Round closes -- 56898f9a0](20260918/20260918-064448_round-closes-56898f9a0.kyri) | Three-proposals card lap sent; three contested pushes on a busy pier. |
 | `20260918.064357` | [docs-geode cold check finds the-baton.md over its law ceiling](20260918/20260918-064357_docs-geode-cold-check-baton-ceiling-found.kyri) | 43% against a 30% field target; named plainly, no sweep taken this lap. |
