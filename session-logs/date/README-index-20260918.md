@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.073415` | [Send confirmed -- both remotes hold 774120b22](20260918/20260918-073415_send-confirmed-774120b22.kyri) | Two contested pushes on the second quiet cold-open log; nib and day-shelf rows resolved each rebase. |
 | `20260918.073157` | [Second quiet cold open, still no agent-doable work](20260918/20260918-073157_still-quiet.kyri) | Register, claim board, and docs-geode front doors re-checked; all unchanged and clean. |
 | `20260918.072613` | [Send confirmed -- both remotes hold 08cd35576](20260918/20260918-072613_send-confirmed-08cd35576.kyri) | REDS %825 close and its log; a git-nib follow-up dropped empty on a rebase and was rewritten fresh. |
 | `20260918.072234` | [REDS %825 closed -- claim already gone](20260918/20260918-072234_reds-825-claim-close.kyri) | Stale nock_jet_dec claim was cleared before this cold open; row marked CLOSED. |
