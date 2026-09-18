@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim pheromone-round-trip-wire-asserts
-seat pheromone
-stamp 20260918.070709
-epoch 1789729629
-paths comlink/discovery/round_trip_wire.rye
-what add bare postcondition asserts tying table_digest's sort output and write_intro/read_intro's buffer offsets to their invariants
