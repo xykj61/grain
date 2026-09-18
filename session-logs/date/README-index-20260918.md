@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.034335` | [Round closes at edeaf00c0, nib witness GREEN](20260918/20260918-034335_round-closes-edeaf00c0-threads-standfast-verified.kyri) | Clean fast-forward this time; reverse-reading chain closed. |
+| `20260918.034225` | [rune_call2.rye earns six invariant asserts, ratchet 31 to 30](20260918/20260918-034225_rune-call2-four-asserts.kyri) | Zero-assert glow/ ladder, same shape as rune_call.rye and rune_cast.rye. |
 | `20260918.034051` | [Send confirmed -- both remotes hold 7f486099b, THREADS.md standfast lands](20260918/20260918-034051_send-confirmed-7f486099b-threads-standfast.kyri) | Four rebases on one small commit; both remotes confirmed. |
 | `20260918.033756` | [Send confirmed -- both remotes hold e32cf938a, chain closed here](20260918/20260918-033756_send-confirmed-e32cf938a-chain-closed.kyri) | One more contested push resolved; nib re-derived after rebase; chain ends here. |
 | `20260918.033539` | [Torus thread closed, no new claim opened](20260918/20260918-033539_torus-thread-closed-no-new-claim-opened.kyri) | Live shell_dialect claim already landed (0f24869f3); no agent-doable DIFFUSER lap tonight. |
