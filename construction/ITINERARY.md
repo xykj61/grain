@@ -49,27 +49,23 @@ the scan's own header; witness and control GREEN, 28 legs, `control_failed=0`. `
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
 
-**PHEROMONE -- `comlink/discovery/round_trip_wire.rye` CLOSES A THIRD NAMED ZERO-ASSERT FILE.**
-Elder account [shelved
-whole](archive/20260918-071100_itinerary-pheromone-descriptor-test-account.md): the
-`descriptor_test.rye` lap. This lap stays in pheromone's own comlink lane: three bare postcondition
-asserts across `table_digest`, `write_intro`, and `read_intro` -- an ordering invariant tying the
-post-swap `ids` pair to ascending order (so the digest is order-independent), a buffer-bound
-invariant tying `write_intro`'s final `off` to `buf.len`, and a truncation invariant in `read_intro`
-tying the post-increment `off` to the earlier `IntroTrunc` check that already proves the signature
-fits -- each a new invariant statement rather than a duplicate of an existing if/return-error check.
-`env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build comlink/discovery/round_trip_wire.rye -lc
--femit-bin=comlink/.build/discovery_round_trip_wire` then
-`rishi/bin/rishi run tools/d/discovery_round_trip_wire.rish` GREEN unchanged (peers=2, both-sides,
-fold parity, refusals loud); `width-check` clean; `tame_style_check`'s zero-assert ratchet fell 12
-to 11. Claim `pheromone-round-trip-wire-asserts` opened, pushed, and closed per the ABSENCE clause
-across one rebase (a peer's `%401` follow-up landed the same window). **YOURS:** the remaining 11
-`tame_style_check` zero-assert files are `ember/ember_core.rye`, `lantern/lantern_core.rye`,
-`linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
+**PHEROMONE -- `mycelium/puddle_convergence.rye` CLOSES A FOURTH NAMED ZERO-ASSERT FILE.** Elder
+account [shelved
+whole](archive/20260918-074701_itinerary-pheromone-round-trip-wire-account.md): the
+`round_trip_wire.rye` lap. Two named-invariant asserts landed: `host_key` now asserts its returned
+byte slice is exactly `puddle.pk_len` long before any caller compares it (the invariant every
+`berth_pk` byte-comparison in this file already relies on), and Scene 1's crux tally now asserts
+`moved + stayed == ids.len` right before the crux checks read `moved` -- every world is accounted
+for exactly once, so a silently-dropped world could never hide inside a passing `moved != best_load`
+check. `rishi/bin/rishi run tools/m/mycelium_puddle_convergence_witness.rish` GREEN unchanged;
+`width-check` clean; `tame_style_check`'s zero-assert ratchet fell 11 to 10. Claim
+`pheromone-puddle-convergence-asserts` opened, pushed, and closed per the ABSENCE clause. **YOURS:**
+the remaining 10 `tame_style_check` zero-assert files are `ember/ember_core.rye`,
+`lantern/lantern_core.rye`, `linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
 `linengrow/setu6_device_lab_check.rye`, `linengrow/setu_desk_hold0_check.rye`,
 `linengrow/setu_desk_hold1_check.rye`, `linengrow/setu_desk_hold_wayland_check.rye`,
-`mycelium/puddle_convergence.rye`, `scribble/scribble_core.rye`, `tally/pedersen.rye` -- all outside
-pheromone's own lane now, each its own honest scope to check before claiming.
+`scribble/scribble_core.rye`, `tally/pedersen.rye` -- all outside pheromone's own lane now, each its
+own honest scope to check before claiming.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -241,7 +237,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `5a057a73fa` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e0105477f7` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
