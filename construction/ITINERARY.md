@@ -162,24 +162,28 @@ whole](archive/20260918-065527_itinerary-landed-accounts.md). **YOURS, BAKERY:**
 three proposals is agent-doable now, none dependent on the others. **YOURS, ANY SHIP:** the real
 replay-horizon number for `max_bolt_revision` still wants Mantra's own owner.
 
-**DIFFUSER -- A FOURTH FIRST-PRINCIPLES PROPOSAL, OFF THE TORUS THREAD ENTIRELY.** With the
-wraparound search closed negative, this lap opened a new axis: memory-access energy rather than
-network topology. Cited to Horowitz's ISSCC 2014 keynote, a DRAM access costs roughly three orders
-of magnitude more energy than the compute it feeds, and a DRAM row activation dominates that cost
--- reuse of an already-open row is nearly free, a jump to a new row pays the full price again.
-`tally/region.rye`'s bump allocator already earns this for free: sequential fill within one region
-touches each row once and reuses every row's buffer between boundaries, which a general-purpose
-heap with free lists does not guarantee. The one gap is a garden's own START address: an unaligned
-start wastes its first partial row, a fixed one-time cost that only matters for gardens whose size
-runs large relative to a DRAM row (roughly 1-8 KiB) -- `tally/seed.rye`'s 64-byte example is far
-too small to benefit. Proposal, sized to one round: an optional alignment parameter on `Region.init`
-naming a row-size hint, rounding the effective start up within the caller's own buffer, proxied
-portably by the OS page size (4096 bytes) since the true DRAM row size is not queryable from Rye.
-Paper, with the falsifier stated and its confidence bounded honestly (unmeasured here -- this
-sandbox carries neither `perf` nor `/sys/class/powercap/intel-rapl`):
-[here](../active-designing/date/20260918/20260918-064820_row-alignment-for-large-tally-gardens-an-energy-first-principles-check.md).
-**YOURS, BAKERY:** the `Region.init` alignment parameter and its witness are buildable now, with no
-hardware dependency; the falsifier itself waits on RAPL or `perf` access.
+**DIFFUSER -- ROW-ALIGNED TALLY GARDENS, AN ENERGY FIRST-PRINCIPLES PROPOSAL.** [Shelved
+whole](archive/20260918-072133_itinerary-diffuser-row-alignment-account.md). **YOURS, BAKERY:** the
+`Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
+the falsifier itself waits on RAPL or `perf` access.
+
+**DIFFUSER -- THE DUPLICATE-CONTENT CENSUS OVERSTATES ITS OWN COMPUTE-AVOIDANCE CASE.** A fifth
+first-principles check, aimed at Mantra's name-to-bytes promise read as a compilation guarantee
+rather than only a storage one. This tree's own tracked files were hashed (19,082 files, 175
+duplicate-content groups, 1,272,252 duplicate bytes beyond one copy per group) as a proxy for
+compute a content-addressed build could avoid recompiling. The falsifier ran on the largest single
+pair, `image/text_paint.rye` and `pond/apps/text_paint.rye` (69,971 bytes, byte-identical,
+confirmed by inspection as the "hand-filed symlink" pattern `.claude/rules/stamp-and-name.md`
+already names) -- and it fired: the `image/` copy is imported live by five sibling modules, the
+`pond/` copy by zero. The largest duplicate this census surfaced turned out to be inert, not
+doubly-compiled, so raw duplicate bytes overstate the opportunity; the number that would matter is
+duplicate bytes reached by a LIVE `@import` on both sides, which needs an exact-path import
+resolver rather than a basename grep and was not built this lap. Paper, with the gap named as the
+buildable next step and a second open question (whether Zig's own already-seated cache,
+`tools/p/parity_zig_cache_seat.sh`, already dedupes across separate top-level compilations) left
+unresolved: [here](../active-designing/date/20260918/20260918-072000_the-duplicate-content-census-overstates-its-own-case.md).
+**YOURS, ANY SHIP:** the exact-path `@import` resolver, scoped to the 175 duplicate-content groups
+this pass already has on hand, is agent-doable and needs no new measurement.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -236,7 +240,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `493ae32f51` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fffcefb821` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
