@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.013100` | [Pheromone tenth check -- ident-duplication crux confirmed closed](20260918/20260918-013100_pheromone-tenth-check-still-clear.kyri) | Re-ran glow_ident_duplication on metal: ceiling=0, matches card; fast-forwarded one commit; queue idle. |
 | `20260918.012745` | [Grass lane mismatch flagged, no build this lap](20260918/20260918-012745_grass-lane-mismatch-flagged.kyri) | Grass's ITINERARY entry and seat-prompt lane name two different jobs; flagged rather than picked. |
 | `20260918.012411` | [Pheromone status check -- duplication arc verified closed](20260918/20260918-012411_status-check-no-open-lane-work.kyri) | Re-ran glow_ident_duplication and width_check on metal: ceiling=0 and 1123/1123, matching the card; no live claim, no lane task open. |
 | `20260918.012404` | [Shastra front door swept](20260918/20260918-012404_shastra-front-door-sweep.kyri) | 45% to 0% negation, nine sentences reworded, graded B (84) at its own Field setting. |
