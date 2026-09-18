@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.083832` | [docs-geode queue still empty, register/doorway green](20260918/20260918-083832_docs-geode-queue-still-empty.kyri) | Re-ran crushed-index, doorway, register guards fresh; all green, no claim to open. |
 | `20260918.083708` | [Send confirmed -- both remotes hold 38dc3ac9a](20260918/20260918-083708_send-confirmed-38dc3ac9a.kyri) | Two rebases on a busy pier; nib re-read fresh each time. |
 | `20260918.083152` | [Send confirmed -- both remotes hold b083dd5a5](20260918/20260918-083152_send-confirmed-b083dd5a5.kyri) | Three contested pushes on the docs-geode empty-open log; nib carried forward each time. |
 | `20260918.083108` | [pedersen.rye joins the zero-assert exempt list](20260918/20260918-083108_pedersen-exempt-shim.kyri) | A re-export shim exempted; ratchet 8->7. |
