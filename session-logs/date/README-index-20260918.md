@@ -10,6 +10,7 @@
 | `20260918.002110` | [docs-geode living pages beyond the front doors, tasted](20260918/20260918-002110_docs-geode-living-pages-beyond-front-doors-tasted.kyri) | Nine tutorials/api/sangha/study pages graded; all clear Field register/reach. |
 | `20260918.001917` | [Two more proxies checked absent](20260918/20260918-001917_two-more-proxies-checked-absent.kyri) | cpufreq, thermal absent too; hypervisor named in the scan itself. |
 | `20260918.001813` | [The rose walked](20260918/20260918-001813_the-rose-walked.kyri) | Two compass stations reconciled; one fault reported. |
+| `20260918.001641` | [pheromone lane fifth check -- still clear](20260918/20260918-001641_pheromone-lane-fifth-check-still-clear.kyri) | Fresh round-open and claim scan re-confirm the language lane's queue is empty. |
 | `20260918.001641` | [Gauge lane swept clean -- nothing to molt](20260918/20260918-001641_gauge-lane-swept-clean-nothing-to-molt.kyri) | Register ceilings read clean or already parked on Keaton's word; board empty. |
 | `20260918.001518` | [docs-geode front doors, tasted one by one](20260918/20260918-001518_docs-geode-front-door-taste-check.kyri) | Fourteen room README pages graded; all clear Door register/reach/truth; lane queue empty. |
 | `20260918.001201` | [Send -- two door candidates landed](20260918/20260918-001201_two-door-candidates-sent.kyri) | Both remotes hold 894856d6e after two rebases. |
