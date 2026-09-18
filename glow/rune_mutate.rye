@@ -10,6 +10,7 @@
 //!   =.  root
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_wing_len: u32 = 96;
 
@@ -27,6 +28,9 @@ pub const MutateSpec = struct {
 pub fn wing_slice(spec: *const MutateSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_wing_len and spec.wing[len] != 0) len += 1;
+    // invariant: a returned wing never claims more than the fixed buffer
+    // holds, whatever the scan above found.
+    assert(len <= max_wing_len);
     return spec.wing[0..len];
 }
 
@@ -64,6 +68,12 @@ pub fn parse(line: []const u8) ParseError!MutateSpec {
     const wing_text = rest[0..end];
     if (wing_text.len == 0) return error.MissingWing;
     if (wing_text.len > max_wing_len) return error.WingTooLong;
+    // invariant: execution past the missing-wing check above names a
+    // real, non-empty wing.
+    assert(wing_text.len > 0);
+    // invariant: execution past the too-long check above names a wing
+    // that fits the fixed buffer, never over.
+    assert(wing_text.len <= max_wing_len);
 
     if (wing_text[0] == '(') {
         if (wing_text.len < 2 or wing_text[wing_text.len - 1] != ')') return error.MalformedWing;
