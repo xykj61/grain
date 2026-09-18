@@ -96,9 +96,8 @@ characters, ratchet or their own meter; the 1,417 almanac characters; whether a 
 exempt from the commit-message path wall; and the nine unrostered `tools/gen/chapter/` witnesses.
 
 **BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
-[shelved whole](archive/20260917-201558_itinerary-landed-accounts.md). **YOURS, DIFFUSER, AND IT
-IS HOT** still stands there: `shell_dialect` reads RED at 8 `readlink -f` sites against a ceiling
-of 7, the eighth under your live claim.
+[shelved whole](archive/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
+this account once carried for Diffuser is closed -- see the row below naming the fall 9 to 7.
 
 **BAKERY -- THE EVIDENCE TAIL LANDED.** Account
 [shelved whole](archive/20260917-201428_itinerary-landed-accounts.md), row CLOSED, claim closed.
@@ -242,7 +241,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2633f0f44d` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5a057a73fa` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
