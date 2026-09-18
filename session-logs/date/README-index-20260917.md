@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260917.235107` | [A near-miss on a custody refusal](20260917/20260917-235107_gren-custody-refusal-nearmiss.kyri) | Caught and reverted before commit; nothing landed. |
 | `20260917.235044` | [What stands built](20260917/20260917-235044_what-stands-built.kyri) | Contract true; two of four types unwritten. |
+| `20260917.234917` | [lower_core delegates, ident-duplication reaches zero](20260917/20260917-234917_lower-core-last-singleton.kyri) | Last singleton lands; room's 29 copies are all stubs now. |
 | `20260917.234436` | [Send -- convergence-census check-in landed](20260917/20260917-234436_convergence-census-sent.kyri) | Both remotes hold 097cb56a2 after five rebases. |
 | `20260917.234404` | [Docs-geode lane still holds, fourth check-in](20260917/20260917-234404_fourth-empty-turn-checkin.kyri) | Claim board clear; OPEN REDS %819/%808/%807/%804/%803 none touch docs-geode. |
 | `20260917.234119` | [the torus-thread closes: five reads, one buildable seam](20260917/20260917-234119_torus-thread-synthesis.kyri) | Synthesized five module checks; one Bakery-ready item named. |

@@ -156,7 +156,16 @@ mode="${1:-count}"
 #                          dot-mapping and no length-ceiling divergence; its return type moved
 #                          `usize` to `u32` in the same lap. `LowerError` and its `error.BadIdent`
 #                          member are unmoved. One singleton remains (`lower_core` 4).
-CEILING=1
+#    0  `20260917`         `glow/lower_core.rye` became a stub -- its four call sites (two
+#                          naming the payload face, two naming an arm, across
+#                          `emit_arm_methods`, `emit_checks`, and `emit_payload_field`) all
+#                          reached `zig_ident.safe_ident` with `.refuse`, each naming its own
+#                          field. Its body was the plain 28-body rule with no dot-mapping and
+#                          no length-ceiling divergence; its return type moved `usize` to
+#                          `u32` in the same lap. `LowerError` and its `error.BadIdent` member
+#                          are unmoved. None remain: every copy this room ever carried is now
+#                          a stub reaching the one published rule.
+CEILING=0
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }
