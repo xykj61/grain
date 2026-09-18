@@ -1,0 +1,30 @@
+# tools/m/mantra_receipt_offer_refusal_chain_witness.rish -- refusal blocks the whole chain.
+#
+# This runner builds the Rye witness in a unique pen, then requires its complete GREEN sentence.
+# Proves the receipt contract's acceptance cases 6 and 7 as CHAIN properties rather than as the
+# admission module's own field-level refusal tests already prove them: every required text field,
+# emptied one at a time, refuses AND blocks the replay neither product could otherwise project
+# from -- and a wrong-length digest or an invalid signature refuse "false authority" the same way.
+
+let zig = "vendor/zig-toolchain/zig"
+# The pen comes from the runtime rather than from `mktemp -d`, so it is released after a return,
+# a refusal, an `exit`, HUP, INT, or TERM. A failing assert below ends this run where it stands,
+# and the elder three-line shape left its build pen on a pier eight ships share (REDS %745).
+let pen = make-pen "mantra_receipt_offer_refusal_chain"
+let bin = "${pen}/receipt_offer_refusal_chain_witness"
+
+say "receipt-refusal-chain: Language EN -- a refused offer never reaches a product's projection."
+say "receipt-refusal-chain: Style Gauge, Meter -- every required field is refused and its replay checked."
+say "receipt-refusal-chain: Lens TAME -- the durable slot stays empty on every refusal, proven by reading it rather than trusting the argument."
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/receipt_offer_refusal_chain_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "receipt-refusal-chain: the Rye witness did not build"
+
+let proof = run ["sh" "-c" "${bin} 2>&1"]
+say proof.err
+assert proof.ok else "receipt-refusal-chain: the Rye witness exited non-zero"
+assert proof.out contains "GREEN: receipt offer refusal chain" else "receipt-refusal-chain: the witness did not print its complete GREEN claim"
+say proof.out
+
+say "GREEN: receipt-refusal-chain runner -- every refused fact stays refused at replay, so neither product can ever project it."

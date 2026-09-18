@@ -1,0 +1,120 @@
+//! mantra/src/receipt_offer_refusal_chain_witness.rye -- refusal blocks the chain, not just the field.
+//!
+//! Proves the receipt contract's acceptance cases 6 and 7 as CHAIN properties, rather than as the
+//! admission module's own field-level refusal tests already prove them. `receipt_refusal_witness.rye`
+//! proves a bad fact names its own field and reason; this witness proves the CONSEQUENCE the
+//! contract's own words ask for -- a refused fact refuses "before append" (case 6) and "before
+//! either product projects" (case 7). The proof is structural: a refused `Log.append` leaves
+//! `Log.offer` empty, so `Log.replay` -- the one call that ever produces a `ReceiptState` --
+//! itself refuses with `NoAdmittedFact`. Since `receipt_offer_snapshot.rye`'s two conversions take
+//! only a `ReceiptState`, a caller that cannot replay cannot build either product's `OfferSnapshot`,
+//! and cannot call either product's `from_snapshot`. This witness reads that chain directly rather
+//! than trusting the argument: it calls `replay` itself after every refusal and asserts the error.
+//!
+//! Case 6 -- every required text field this contract publishes, emptied one at a time, refuses by
+//! that field's own name and blocks the replay that would follow. Case 7 -- a wrong-length digest
+//! and an invalid signature each refuse "false authority" the same way, before any projection could
+//! read the fact at all.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt = @import("receipt_offer.rye");
+
+fn fixture() receipt.ReceiptOfferFact {
+    return .{
+        .schema = receipt.schema_v1,
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder", .recipient_id = "org:sample-steward",
+        .product_id = "data:weekly-pollinator-counts",
+        .product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1",
+        .purpose = "habitat-planning", .value_amount = 1200,
+        .value_unit = "USD-cent-simulated", .value_basis = "one-purpose license offer",
+        .return_kind = "service-credit", .issued_at = 1_789_228_800,
+        .expires_at = 1_791_820_800, .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+/// Attempt one append that should refuse, then prove the chain stops there: `append` itself
+/// returns `expected`, the log's sole slot stays empty, and `replay` -- the only door to a
+/// `ReceiptState`, and so the only door either product's projection could ever walk through --
+/// refuses with `NoAdmittedFact` rather than handing back anything to project.
+fn refuses_before_projection(fact: receipt.ReceiptOfferFact, expected: anyerror) void {
+    var log = receipt.Log{};
+    if (log.append(fact, 512, true)) |_| unreachable else |err| {
+        // invariant: the refusal names the error a reader would expect for this field.
+        assert(err == expected);
+    }
+    // invariant: a refused admission leaves the sole durable slot empty (case 6's "before append").
+    assert(log.offer == null);
+    // invariant: with no admitted fact, replay itself refuses -- neither product can ever
+    // build a ReceiptState to project from (case 7's "before either product projects").
+    if (log.replay(fact.issued_at)) |_| unreachable else |err| {
+        assert(err == error.NoAdmittedFact);
+    }
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const fact = fixture();
+
+    // Case 6: every required text field, emptied one at a time, refuses before projection.
+    var bad = fact;
+    bad.receipt_id = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.holder_id = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.recipient_id = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.product_id = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.purpose = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.value_unit = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.value_basis = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.return_kind = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.signer_id = "";
+    refuses_before_projection(bad, error.Empty);
+    bad = fact;
+    bad.signature = "";
+    refuses_before_projection(bad, error.Empty);
+
+    // Case 7: false authority -- a changed digest, of the wrong length, refuses before projection.
+    bad = fact;
+    bad.product_digest = "too-short";
+    refuses_before_projection(bad, error.WrongLength);
+    bad = fact;
+    bad.product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a100";
+    refuses_before_projection(bad, error.WrongLength);
+
+    // Case 7: false authority -- an invalid signature refuses before projection, digest untouched.
+    var log = receipt.Log{};
+    if (log.append(fact, 512, false)) |_| unreachable else |err| {
+        assert(err == error.InvalidSignature);
+    }
+    assert(log.offer == null);
+    if (log.replay(fact.issued_at)) |_| unreachable else |err| {
+        assert(err == error.NoAdmittedFact);
+    }
+
+    // The control: the SAME fact, admitted honestly, replays and projects without refusal --
+    // proving the eleven refusals above test the field rather than a fixture that never works.
+    var control = receipt.Log{};
+    try control.append(fact, 512, true);
+    const state = try control.replay(fact.issued_at);
+    assert(state.status == .offered);
+
+    print("GREEN: receipt offer refusal chain -- every refusal blocks replay, so neither product ever projects a refused fact.\n", .{});
+    return 0;
+}
