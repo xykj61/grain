@@ -146,6 +146,18 @@ Both witnesses GREEN on metal; `aurora_file_placement`'s own two pre-existing, u
 failures (`tree_size_scales_inverse_sqrt`, `tree_size_crossing_measured`) are unchanged before and
 after, confirmed by running the control against the unmodified file.
 
+**DIFFUSER -- ROW 3'S SECOND READING: THE FIELD THAT PROVES SAFETY BREAKS THE CYCLE.**
+`tools/rye/cyclic_state.rye`, GREEN under `tools/c/cyclic_state_witness.rish`, rostered as guard
+`cyclic_state`. Hashes `wrap_ring`'s own state (row 1's ring) two ways, entry and lap-over-lap:
+byte content reaches a fixed point at the end of lap one and holds -- a real period-C cycle, once
+compared lap-to-lap rather than to the zeroed entry the row's own wording first pointed at. Full
+state (bytes plus the per-page lap tag) is NEVER periodic, because `Ring.lap()` only grows -- the
+same field that lets the ring refuse a recycled page is the field that keeps its full state from
+ever repeating. Essay: [`the field that proves safety breaks the
+cycle`](../active-designing/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
+Beside the elder `cyclic_witness` (git-porcelain residue across the rostered fleet), row 3 now
+carries two lenses at two grains rather than one; neither replaces the other.
+
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** The row named the sweep
 as one word in 77 files spread across every lane, timing left to Keaton or the fleet. Ten of those
 77 sit in Bakery's own toolchain (`rye_*`, `caravan_*`, one Mantra/Tablecloth control) --
@@ -204,7 +216,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `7914197f8e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d219dbf466` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

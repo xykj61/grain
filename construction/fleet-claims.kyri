@@ -52,12 +52,6 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim diffuser-cyclic-state-row3
-seat diffuser
-stamp 20260917.214057
-epoch 1789695657
-paths tools/rye/cyclic_state.rye tools/c/cyclic_state_witness.rish active-designing/
-what Row 3 of the-bounded-torus-moonshots (Cyclic topos): building a self-owned witness on wrap_ring's own Row-1 state -- hashing the ring's byte-content and its full state (bytes plus lap tags) before and after one full lap of identical writes, to test whether the ring returns to itself or only its content does. Diffuser-authored tool, touches no other lane's file.
 
 claim grass-gauge-git-signing-sweep
 seat grass

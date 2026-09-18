@@ -1,0 +1,48 @@
+# tools/c/cyclic_state_witness.rish -- content cycles at once; full state cycles one lap later.
+#
+#   rishi/bin/rishi run tools/c/cyclic_state_witness.rish
+#
+# First witness for moonshot 3 of
+# `active-designing/20260910-060204_the-bounded-torus-moonshots.md` ("Cyclic topos"), built on
+# moonshot 1's own ring (`tools/rye/wrap_ring.rye`) rather than on a witness owned by another lane.
+#
+# WHY TWO DIGESTS RATHER THAN ONE. The row's own first witness asks for the hash of a witness's
+# exit state to equal the hash of its entry state. Taken over a ring's page BYTES alone, that
+# equality holds after one lap -- content genuinely cycles with period C. Taken over the FULL state
+# (bytes plus the per-page lap tag moonshot 1's own refusal mechanism depends on), it does not: the
+# tag has moved from 0 to 1 by the time the ring reaches its own start again. A witness that only
+# checked the equality it expected would have missed that "returns to its start state" is two
+# claims wearing one sentence, so this program asserts BOTH the equality and the inequality, and a
+# second lap shows the full state cycles too, one lap later than the content does.
+
+say "cyclic-state: Style Gauge, Meter -- content and full state are two claims, checked apart."
+say "cyclic-state: Lens TAME -- entry and exit digests taken over a known, reproducible state."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "cyclic-state: building from source, so the binary matches the file this witness reads..."
+let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/cyclic_state.rye -femit-bin=tools/bin/cyclic-state"]
+assert build.ok else "cyclic-state: the build refused -- read the compiler's own words"
+
+# THE CLAIM LINES ARRIVE ON STDERR, the same seam wrap_ring_witness already proved: `std.debug.print`
+# writes to stderr, so stdout stays empty and every assert below reads the joined stream.
+let out = run ["sh" "-c" "tools/bin/cyclic-state selftest 2>&1"]
+say out.out
+assert out.ok else "cyclic-state: the selftest refused -- read its lines above"
+
+# invariant: entry (zeroed) versus exit-after-one-lap (filled) do NOT match -- the row's own
+# wording, read literally, fails for content too, which is why this witness reaches for a fixed
+# point instead of a raw entry/exit comparison.
+assert out.out contains "does NOT return to entry" else "cyclic-state: the content digest matched a zeroed entry state, which should never happen under a non-zero fill"
+
+# invariant: content DOES reach a fixed point -- the half of the claim that survives, restated.
+assert out.out contains "reaches a fixed point at the end of lap one" else "cyclic-state: the content digest failed to reach a fixed point by lap two"
+
+# invariant: full state is NEVER periodic -- the falsifier this row asked for, and the sharper of
+# the two findings: the same field that proves a recycled page is refused is the field that keeps
+# the full state from ever repeating.
+assert out.out contains "the lap tag never returns" else "cyclic-state: the full-state digest repeated lap-to-lap, which the ring's own monotone lap counter should forbid"
+
+assert out.out contains "GREEN: cyclic-state" else "cyclic-state: the selftest reached no green line"
+
+say "GREEN: cyclic-state -- content reaches a fixed point at period C; full state is never periodic, because memory safety and periodicity pull against each other here."

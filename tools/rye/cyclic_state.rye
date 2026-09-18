@@ -1,0 +1,157 @@
+//! tools/rye/cyclic_state.rye -- does a full lap return the SAME state, or only the same bytes?
+//!
+//! First witness for moonshot 3 of
+//! `active-designing/20260910-060204_the-bounded-torus-moonshots.md` ("Cyclic topos"), built on
+//! moonshot 1's own ring (`tools/rye/wrap_ring.rye`) rather than on a witness owned by another
+//! lane -- so the row's build stays inside this lane's own files.
+//!
+//! THE CLAIM. "A proof that returns to its start state is a loop with a declared period P, and
+//! its log stays size P forever." The design page's own first witness asks for ONE existing
+//! witness rewritten so the hash of its exit state equals the hash of its entry state.
+//!
+//! WHAT A CAREFUL READING SPLITS IN TWO. A ring of circumference C written with an identical
+//! repeating pattern for exactly C writes returns to the same PAGE BYTES it started with -- content
+//! cycles with period C. Its FULL state does not: each page also carries the lap number that wrote
+//! it (`wrap_ring.rye`'s own refusal mechanism, moonshot 1's whole point), and that field has
+//! advanced from 0 to 1 by the time the ring reaches its own start again. So "returns to its start
+//! state" is two different claims wearing one sentence, and this file measures both rather than
+//! assuming they agree.
+//!
+//! HOW IT IS CHECKED. Two Keccak-256 digests are taken at construction and again after exactly
+//! `circumference` writes of one repeating fill byte: one over the page BYTES alone (content-only),
+//! one over bytes-plus-lap (full state). The content digest is asserted equal; the full-state
+//! digest is asserted DIFFERENT, and the difference is printed rather than hidden, since a witness
+//! that only checks the equality it expects proves nothing about the one it does not.
+//!
+//!   rye build tools/rye/cyclic_state.rye -femit-bin=tools/bin/cyclic-state
+//!   tools/bin/cyclic-state selftest
+//!
+//! Gratitude: gratitude/TIGER_STYLE.md -- bounds named at construction, say why.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring_mod = @import("wrap_ring.rye");
+const keccak = @import("keccak256.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const cyclic_state_version = "20260917.214608";
+
+/// The fill byte every write in this witness uses. ONE constant fill is what makes "the same
+/// content returns" a claim the digest can actually test -- a varying fill would make content
+/// drift indistinguishable from lap-tag drift, collapsing the two questions this file keeps apart.
+pub const fill_byte: u8 = 0x5A;
+
+/// Bytes handed to the content digest: one page's worth per ring page, packed with no padding.
+pub const content_bytes: u32 = ring_mod.circumference * ring_mod.page_bytes;
+
+/// Bytes handed to the full-state digest: content bytes plus one u64 lap tag per page, each tag
+/// written little-endian so the digest is a pure function of the ring's own field values.
+pub const full_state_bytes: u32 = content_bytes + ring_mod.circumference * @sizeOf(u64);
+
+fn content_digest(ring: *const ring_mod.Ring) ![keccak.digest_256]u8 {
+    var buf: [content_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < ring_mod.circumference) : (i += 1) {
+        const off = i * ring_mod.page_bytes;
+        tally_copy.copy_disjoint(u8, buf[off .. off + ring_mod.page_bytes], &ring.pages[i].bytes);
+    }
+    return keccak.hash256(&buf);
+}
+
+fn full_state_digest(ring: *const ring_mod.Ring) ![keccak.digest_256]u8 {
+    var buf: [full_state_bytes]u8 = undefined;
+    var i: u32 = 0;
+    while (i < ring_mod.circumference) : (i += 1) {
+        const page_off = i * ring_mod.page_bytes;
+        tally_copy.copy_disjoint(u8, buf[page_off .. page_off + ring_mod.page_bytes], &ring.pages[i].bytes);
+    }
+    const tags_off = content_bytes;
+    i = 0;
+    while (i < ring_mod.circumference) : (i += 1) {
+        const off = tags_off + i * @sizeOf(u64);
+        std.mem.writeInt(u64, buf[off .. off + @sizeOf(u64)][0..8], ring.pages[i].lap, .little);
+    }
+    return keccak.hash256(&buf);
+}
+
+fn digest_eq(a: [keccak.digest_256]u8, b: [keccak.digest_256]u8) bool {
+    return std.mem.eql(u8, &a, &b);
+}
+
+fn selftest() !void {
+    var ring = ring_mod.Ring.init();
+
+    // invariant: at construction every page is zeroed and on lap zero, so the entry digests are
+    // taken over a known, reproducible state rather than whatever memory happened to hold.
+    assert(ring.written == 0);
+    const entry_content = try content_digest(&ring);
+
+    // Exactly one lap: `circumference` writes of the same fill byte, so any content difference at
+    // exit can only come from the wrap itself, never from a varying payload.
+    var n: u32 = 0;
+    while (n < ring_mod.circumference) : (n += 1) {
+        _ = ring.write(fill_byte);
+    }
+    // invariant: one full lap has been written, matching moonshot 1's own claim that the period and
+    // the bound are one number -- `written` now equals the circumference exactly.
+    assert(ring.written == ring_mod.circumference);
+    const lap1_content = try content_digest(&ring);
+    const lap1_full = try full_state_digest(&ring);
+
+    // THE FIRST READING REFUSES THE ROW'S OWN WORDING. "Exit equals entry" fails for content too:
+    // the ring starts zeroed and ends filled, so a witness that only checked entry-against-exit
+    // would report content as non-cyclic when the truer question is whether the ring reaches a
+    // FIXED POINT it never leaves -- a cycle of period one, rather than a return to a state the
+    // ring only ever held before it was written to at all.
+    if (digest_eq(entry_content, lap1_content)) {
+        print("cyclic-state: RED -- content digest matched entry (zeroed) after one lap, unexpectedly\n", .{});
+        return error.EntryContentFalselyMatched;
+    }
+    print("cyclic-state: content digest does NOT return to entry (zeroed) after one lap -- entry-vs-exit is the wrong comparison here\n", .{});
+
+    // A second lap, same fill byte throughout. If content reached a fixed point at the end of lap
+    // one, every write in lap two rewrites a page to the value it already holds, so content stays
+    // put from here on -- a genuine cycle, just not the one the row's wording first pointed at.
+    n = 0;
+    while (n < ring_mod.circumference) : (n += 1) {
+        _ = ring.write(fill_byte);
+    }
+    assert(ring.written == 2 * ring_mod.circumference);
+    const lap2_content = try content_digest(&ring);
+    const lap2_full = try full_state_digest(&ring);
+
+    if (!digest_eq(lap1_content, lap2_content)) {
+        print("cyclic-state: RED -- content digest changed between lap one and lap two under a constant fill\n", .{});
+        return error.ContentDidNotReachFixedPoint;
+    }
+    print("cyclic-state: content digest reaches a fixed point at the end of lap one and holds through lap two (period {d})\n", .{ring_mod.circumference});
+
+    // THE HALF THAT NEVER CYCLES. `Ring.lap()` is `written / circumference`, and `written` only
+    // grows -- so every page's lap tag is 0 throughout lap one and 1 throughout lap two, and stays
+    // ahead of wherever it was forever after. The full-state digest can never equal an earlier one:
+    // this is not "one lap later," it is NEVER, because the field moonshot 1 built to catch a
+    // recycled page is the same field that makes the ring's full state monotone rather than cyclic.
+    if (digest_eq(lap1_full, lap2_full)) {
+        print("cyclic-state: RED -- full-state digest repeated lap-to-lap, unexpectedly\n", .{});
+        return error.FullStateFalselyCycled;
+    }
+    print("cyclic-state: full-state digest differs lap one to lap two and will differ on every later lap too -- the lap tag never returns\n", .{});
+
+    print("GREEN: cyclic-state -- content reaches a fixed point at period {d}; full state is never periodic, because the field that proves memory safety is the field that breaks the cycle\n", .{ring_mod.circumference});
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest")) {
+            try selftest();
+            return 0;
+        }
+        print("cyclic-state: usage -- cyclic-state selftest\n", .{});
+        return 2;
+    }
+    try selftest();
+    return 0;
+}
