@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit under CLAIM-AS-OVERRIDE; none touch docs-geode. |
 | `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed; root_finder_witness.rish back to finders_bare_new=0. |
 | `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the loop-gates-only sentinel: %807/%767/%765 unchanged, each wants Keaton's ruling. |
 | `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchanged; QA card on docs-geode/README.md clear. |
