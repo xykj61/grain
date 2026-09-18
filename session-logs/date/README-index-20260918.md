@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.021637` | [Git nib carried forward, chain ends here](20260918/20260918-021637_nib-carried-forward-final.kyri) | Follow-up commit rather than amend. |
 | `20260918.021500` | [Pheromone lane still idle -- ninth check](20260918/20260918-021500_pheromone-lane-still-idle-ninth-check.kyri) | Re-read the card; %642 and the wire ceiling still want Keaton's word, %519 already landed. |
 | `20260918.021347` | [Grass cold check -- register ratchet reads no open lane work](20260918/20260918-021347_grass-ratchet-clear-check.kyri) | Board empty, register scan's only overages already exempt or Keaton's-word-pending. |
 | `20260918.021230` | [Cold open, no task handed in, lane checked and clean](20260918/20260918-021230_cold-open-no-task-checked-lane.kyri) | ITINERARY read whole, claim board empty, docs-geode front door graded B or better. |
