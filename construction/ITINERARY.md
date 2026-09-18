@@ -138,16 +138,18 @@ Witness GREEN, 55 legs, `control_failed=0`.
 [shelved whole](archive/20260917-223314_itinerary-grass-law-ceiling-sixth-account.md):
 `ascii-first.md` to 29% (`law_ceiling` 2 to 1). Witness GREEN, 55 legs, `control_failed=0`.
 
-**GRASS -- THE BATON'S OWN CEILING, LOWERED IN PART.** `the-baton.md` fell 47% to 43% (187
-sentences, 89 to 81 negative) on eight restatements plus a three-line quoted refusal message
-folded onto one line so its own backtick span reads as `code` under the scan rather than as bare
-prose -- `sparing every seat its own edit` for `with no per-seat edit`, `stood unruled` for `had no
-rule at all`, `stays silent about which comes first` for `neither says which comes first`, among
-others; every claim, figure, and stamp held. `law_ceiling` stays 1: the page's remaining negatives
-are mostly its own refusal vocabulary -- stale, refuses, absent, nobody -- naming real guard
-behavior rather than a restatable habit, and Gauge asks the prose to stay honest ahead of asking
-the number to fall. Witness GREEN, 55 legs, `control_failed=0`; QA field B+/87 (register 57,
-reach 90, truth 100).
+**GRASS -- THE BATON'S OWN CEILING, LOWERED IN PART.** Account [shelved
+whole](archive/20260917-235826_itinerary-grass-baton-ceiling-account.md): `the-baton.md` fell 47%
+to 43%, `law_ceiling` held at 1 on Gauge's own honesty-first clause. Witness GREEN, 55 legs,
+`control_failed=0`; QA field B+/87.
+
+**GRASS -- THE FRONT-DOOR CANDIDATES, TWO OF THREE.** Account [shelved
+whole](archive/20260918-000500_itinerary-grass-front-door-candidates-account.md):
+`front_doors_unrostered_over` 3 to 1; `active-development/README.md` 28% to 7%,
+`external-research/grain-lineage-silo/README.md` 33% to 0%; `gratitude/grain-lineage/README.md`
+untouched (declares **Style: the authors' own; unaltered**). **YOURS:** the silo README's
+composite stays C on a pre-existing Reach/grade reading no Register sweep should touch -- its own
+round, or an honest fact about a technical glossary.
 **YOURS:** whether `the-baton.md`'s refusal-dense sections earn a Meter exemption rather than a
 further Field sweep; the coordination law's exemption question from %819; and the fleet's
 271-tool `head -N` judgment (`%804`).

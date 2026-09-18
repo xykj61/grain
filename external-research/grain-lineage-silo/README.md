@@ -14,11 +14,11 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 The six documents in [`gratitude/grain-lineage/`](../../gratitude/grain-lineage/README.md) carry real engineering ideas wrapped in a visionary, devotional, and aether-theoretic register. Siloing separates the two: it keeps the load-bearing, checkable engineering and restates it in secular, common English with this fork's own module names, in a form a general reader -- a colleague at Acme Corporation, a reviewer of an Urbit Galaxy PR proposal -- can weigh on its merits. The originals stay untouched in gratitude; these siloed versions are the ones any Acme-facing guide or proposal cites.
 
-This mirrors the silo technique this fork already uses for the astrology library (placeholder names, private originals) and for the IronBeetle episode notes (own-voice understanding, source never quoted). The discipline is the same: **carry the substance, leave the register at the door, name the source in gratitude.**
+This mirrors the silo technique this fork already uses for the astrology library (placeholder names, private originals) and for the IronBeetle episode notes (own-voice understanding, restated entirely in this fork's own words). The discipline is the same: **carry the substance, leave the register at the door, name the source in gratitude.**
 
 ## The Translation Table
 
-Where a source used another project's vocabulary, the silo uses this fork's own, so a reader is never asked to learn two naming systems at once:
+Where a source used another project's vocabulary, the silo uses this fork's own, so a reader carries exactly one naming system throughout:
 
 | Source term | Siloed term (this fork) |
 |---|---|
@@ -44,7 +44,7 @@ Where a source used another project's vocabulary, the silo uses this fork's own,
 
 ## How This Informs Designs, Foundations, and Context
 
-Each siloed doc ends with a short, honest "What this actually gives this fork" section pointing at the specific design surface it touches -- the Glow kernel variants, the Nock interpreter, Tally's allocator, Comlink's dual physical/governance descriptions, Bron's value model. None of it is adopted as a decision here; siloing produces citable understanding, and Kaeden's word seats any of it into `context/specs/` or a module home.
+Each siloed doc ends with a short, honest "What this actually gives this fork" section pointing at the specific design surface it touches -- the Glow kernel variants, the Nock interpreter, Tally's allocator, Comlink's dual physical/governance descriptions, Bron's value model. It stays citable understanding rather than an adopted decision here, and Kaeden's word alone seats any of it into `context/specs/` or a module home.
 
 ---
 
