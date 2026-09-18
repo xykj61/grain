@@ -81,6 +81,25 @@ leg tree_reading4_read read "$(key "$OUT" reading4)"
 # the 32-edge pen below, which is what proves it a measurement of the graph rather than a constant.
 leg tree_drift_linear yes "$(key "$OUT" drift_decay_linear)"
 
+# ---- READING 5 on this tree: the ladder graded, the shape fitted, the re-seat proven ------------
+leg tree_reading5_read read "$(key "$OUT" reading5)"
+# the full rung is every edge, so the layout it seats must cost exactly what reading 3 computed.
+# Without this the rungs below could be measuring a layout the scan never produced.
+leg tree_size_reseat_matches yes "$(key "$OUT" size_full_rung_matches_placement)"
+leg tree_size_scales_inverse_sqrt yes "$(key "$OUT" drift_scatter_scales_as_inverse_sqrt)"
+leg tree_size_slope_near_half yes "$(key "$OUT" drift_scatter_slope_near_half)"
+treerungs=$(key "$OUT" size_rungs_graded)
+if [ "$treerungs" -ge 4 ] 2>/dev/null; then leg tree_size_rungs_graded yes yes; else leg tree_size_rungs_graded yes no; fi
+# the fitted slope is the anchor-free reading, and it must be NEGATIVE: a departure that grew with
+# the graph would be the opposite of an average's scatter
+treeslope=$(key "$OUT" drift_scatter_loglog_slope)
+case "$treeslope" in -*) leg tree_size_slope_negative yes yes ;; *) leg tree_size_slope_negative yes no ;; esac
+# the crossing is measured from the bracketing rungs rather than extrapolated from the anchor, and
+# the two are printed apart so a reader can see how much the anchor carries
+treemc=$(key "$OUT" drift_linearity_measured_crossing_edges)
+if awk -v c="$treemc" 'BEGIN { exit !(c > 0) }' 2>/dev/null; then leg tree_size_crossing_measured yes yes; else leg tree_size_crossing_measured yes no; fi
+leg tree_size_anchor_pair_named yes "$(printf '%s\n' "$OUT" | grep -q '^drift_scatter_anchor_full=' && echo yes || echo no)"
+
 # ---- PEN ONE: every way an edge list goes wrong, and a file too big for a node ------------------
 mkdir -p "$PEN/one/alpha" "$PEN/one/beta" "$PEN/one/gamma"
 cd "$PEN/one" || exit 1
@@ -184,7 +203,57 @@ leg p2_drift_zero_matches_placement yes "$p2agree"
 # than the -1 the scan prints when no rung pair brackets the threshold
 p2c=$(key "$P2" file_drift_crossing_pct)
 case "$p2c" in ''|-*) leg p2_crossing_bracketed yes no ;; *) leg p2_crossing_bracketed yes yes ;; esac
+# ---- PEN TWO, READING 5: a graph under the ladder grades nothing, and SAYS so -------------------
+# Every rung of the size ladder stands at or above this pen's whole edge count, so there is nothing
+# to subsample. The verdict must read `ungraded` rather than `no`: a reading that says no when it
+# means it could not look is a finding nobody made.
+leg p2_size_ungraded ungraded "$(key "$P2" drift_scatter_scales_as_inverse_sqrt)"
+leg p2_size_slope_ungraded ungraded "$(key "$P2" drift_scatter_slope_near_half)"
+leg p2_size_rungs_zero 0 "$(key "$P2" size_rungs_graded)"
+# and the full rung still runs on a 32-edge graph, so the re-seat proof holds at both ends of the
+# size range this scan ever sees
+leg p2_size_reseat_matches yes "$(key "$P2" size_full_rung_matches_placement)"
+leg p2_reading5_read read "$(key "$P2" reading5)"
+
 leg p2_free_traffic_named yes "$(printf '%s\n' "$P2" | grep -q '^room_layout_same_node_share=' && echo yes || echo no)"
+
+# ---- PEN FOUR: a graph whose placement actually COSTS something ---------------------------------
+# Pen two's four rings each sit whole on one node, so its layout costs zero and any two orderings
+# of it cost zero alike -- which makes it useless for proving reading 5's re-seat check bites. This
+# pen is a single chain across files large enough that capacity spreads them, so the layout pays
+# real hops and a wrong re-seat reads a different number.
+mkdir -p "$PEN/four"
+cd "$PEN/four" || exit 1
+git init -q . 2>/dev/null
+git config user.email pen@example.invalid
+git config user.name pen
+git config commit.gpgsign false
+mkdir -p chain
+i=0
+while [ "$i" -lt 16 ]; do
+  j=$((i + 1))
+  if [ "$j" -lt 16 ]; then
+    printf 'const nxt = @import("f%s.rye");\n' "$j" > "chain/f$i.rye"
+  else
+    printf 'const std = @import("std");\n' > "chain/f$i.rye"
+  fi
+  # padding, so the equal share cannot hold many files and the packer must spread the chain
+  k=0
+  while [ "$k" -lt 40 ]; do printf '// pad %s\n' "$k" >> "chain/f$i.rye"; k=$((k + 1)); done
+  i=$((i + 1))
+done
+git add -A >/dev/null 2>&1
+git commit -q -m "pen four: one chain, spread by capacity" >/dev/null 2>&1
+
+P4=$(sh "$SCAN" 2>&1)
+leg p4_verdict read "$(key "$P4" verdict)"
+leg p4_edges 15 "$(key "$P4" import_edges)"
+leg p4_reading5_read read "$(key "$P4" reading5)"
+leg p4_size_reseat_matches yes "$(key "$P4" size_full_rung_matches_placement)"
+# the check can only bite where the layout costs something, so the pen's own cost is asserted
+# positive before the plant below is read as proof of anything
+p4cost=$(key "$P4" size_full_rung_cost)
+if [ "$p4cost" -gt 0 ] 2>/dev/null; then leg p4_cost_positive yes yes; else leg p4_cost_positive yes no; fi
 
 # ---- the empty tree refuses rather than reading zero --------------------------------------------
 mkdir -p "$PEN/three"
@@ -269,6 +338,32 @@ sed 's/    if (rnd(100) < P) continue/    if (0) continue/' "$SCAN" > "$M8"
 if cmp -s "$SCAN" "$M8"; then leg m8_planted yes no; else leg m8_planted yes yes; fi
 M8OUT=$(sh "$M8" 2>&1)
 leg m8_bites 100 "$(key "$M8OUT" file_proxy_survives_structure_drift_upto_pct)"
+
+# m9: the full rung silently short of one edge -- the graph reading 5 re-seats is then not the
+# graph reading 3 placed, and every rung below it would be measuring a layout this scan never
+# computed. The self-check exists exactly to catch that, and here it is made to fire.
+#
+# TWO EARLIER PLANTS DID NOT BITE, and the reason is worth keeping: this pen's graph is regular,
+# so disabling the placement order's sort left the order unchanged, and reversing the comparison
+# produced a different order at the same cost. A pen whose placement is order-insensitive cannot
+# exercise the ordering half of this check at all. That half is exercised on THIS TREE by
+# `tree_size_reseat_matches`, where 1,561 files make the order load-bearing; the plant below
+# reaches the half a small pen can prove -- a subsample that is not the graph it claims to be,
+# planted in pen four because pen two's layout costs zero and two wrong answers there agree.
+cd "$PEN/four" || exit 1
+M9="$PEN/m9.sh"
+sed 's/    if (deg\[b\] > deg\[a\] || (deg\[b\] == deg\[a\] \&\& b < a)) { EDGED\[i\] = b; EDGED\[j\] = a }/    if (deg[b] < deg[a] || (deg[b] == deg[a] \&\& b > a)) { EDGED[i] = b; EDGED[j] = a }/' "$SCAN" > "$M9"
+if cmp -s "$SCAN" "$M9"; then leg m9_planted yes no; else leg m9_planted yes yes; fi
+M9OUT=$(sh "$M9" 2>&1)
+leg m9_bites no "$(key "$M9OUT" size_full_rung_matches_placement)"
+
+# m10: the full edge list never kept beside the one reading 5 destroys -- the reading finds no
+# graph to subsample and silently does not happen, which is the failure mode a missing key hides
+M10="$PEN/m10.sh"
+sed 's/  fne = ne; FA\[fne\] = a; FB\[fne\] = b/  FA[ne] = a; FB[ne] = b/' "$SCAN" > "$M10"
+if cmp -s "$SCAN" "$M10"; then leg m10_planted yes no; else leg m10_planted yes yes; fi
+M10OUT=$(sh "$M10" 2>&1)
+leg m10_bites "" "$(key "$M10OUT" reading5)"
 
 # ---- the control's own tally, derived rather than spelled ----------------------------------------
 cd "$ROOT" || exit 1
