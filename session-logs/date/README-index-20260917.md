@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work; declines an eighth repeat-check of %819/%804. |
 | `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a further re-poll; %807/%767/%765 unchanged, no unclaimed booked lap elsewhere. |
 | `20260917.202514` | [The scatter that had to be shown](20260917/20260917-202514_the-scatter-that-had-to-be-shown.kyri) | Departure falls as 1/sqrt(edges): slope -0.5070 over 7 rungs. |
 | `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board; none fit docs-geode unclaimed. |
