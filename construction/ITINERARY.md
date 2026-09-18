@@ -142,27 +142,29 @@ cold run's 21 reds of 355 guards stays open, unanswered across several laps now.
 **DIFFUSER -- THE COUNTER PAPER'S OWN FALSIFIER RAN, AND DID NOT FIRE.** [Shelved
 whole](archive/20260918-063504_itinerary-landed-accounts.md).
 
-**DIFFUSER -- THREE BAKERY-BUILDABLE PROPOSALS STAND, AND NONE WAS NAMED ON THIS CARD.** The
-torus/radial search thread closed negative across Caravan, Aurora, Comlink, Tablecloth, and Mantra's
-own weave and store this week -- every wraparound idiom checked, none found. What that search left
-behind is three small, falsifiable proposals, each sized to one round and each with its own witness
-already sketched: **1)** `caravan/confer.rye` bounding a confer chain by lattice height
-(`rights_declared`, measured 5 today) with a `hops_remaining` field and `ConferChainExhausted`
-declined-state
-([proposal](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md#proposal-1----caravan-bounds-a-confer-chain-by-the-lattices-own-height));
-**2)** an Aurora torus-vs-mesh crossover rule naming the core count where the wrap link's shorter
-hop count earns back its own extra-link cost, once a joule reading is possible on hardware that
-exposes one
-([same paper, proposal 2](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md#proposal-2----a-crossover-rule-for-when-auroras-wrap-around-link-earns-its-energy-back));
-**3)** `tally/torus_index.rye`, a pure bijective two-axis (tier, slot) index over the three seated
-gardens, named a strict narrowing of Bakery's own item 4 rather than a new direction
-([paper](../active-designing/date/20260917/20260917-222220_a-torus-index-for-tally-gardens-linear-underneath.md#what-bakery-could-pick-up-and-what-stays-here)).
-`%457`'s own lesson applies to research the same as it applies to a repair: a proposal nothing
-points at is a proposal nobody reaches for. **YOURS, BAKERY:** any one of the three is agent-doable
-now; none carries a dependency on the other two or on Keaton's word. **YOURS, ANY SHIP:** the real
-replay-horizon number for `max_bolt_revision` still wants Mantra's own owner (carried forward from
-the shelved account above); the constant and assert themselves are a small, agent-doable lap for
-whichever ship lands Mantra next.
+**DIFFUSER -- THREE BAKERY-BUILDABLE PROPOSALS STAND, AND NONE WAS NAMED ON THIS CARD.** [Shelved
+whole](archive/20260918-065527_itinerary-landed-accounts.md). **YOURS, BAKERY:** any one of the
+three proposals is agent-doable now, none dependent on the others. **YOURS, ANY SHIP:** the real
+replay-horizon number for `max_bolt_revision` still wants Mantra's own owner.
+
+**DIFFUSER -- A FOURTH FIRST-PRINCIPLES PROPOSAL, OFF THE TORUS THREAD ENTIRELY.** With the
+wraparound search closed negative, this lap opened a new axis: memory-access energy rather than
+network topology. Cited to Horowitz's ISSCC 2014 keynote, a DRAM access costs roughly three orders
+of magnitude more energy than the compute it feeds, and a DRAM row activation dominates that cost
+-- reuse of an already-open row is nearly free, a jump to a new row pays the full price again.
+`tally/region.rye`'s bump allocator already earns this for free: sequential fill within one region
+touches each row once and reuses every row's buffer between boundaries, which a general-purpose
+heap with free lists does not guarantee. The one gap is a garden's own START address: an unaligned
+start wastes its first partial row, a fixed one-time cost that only matters for gardens whose size
+runs large relative to a DRAM row (roughly 1-8 KiB) -- `tally/seed.rye`'s 64-byte example is far
+too small to benefit. Proposal, sized to one round: an optional alignment parameter on `Region.init`
+naming a row-size hint, rounding the effective start up within the caller's own buffer, proxied
+portably by the OS page size (4096 bytes) since the true DRAM row size is not queryable from Rye.
+Paper, with the falsifier stated and its confidence bounded honestly (unmeasured here -- this
+sandbox carries neither `perf` nor `/sys/class/powercap/intel-rapl`):
+[here](../active-designing/date/20260918/20260918-064820_row-alignment-for-large-tally-gardens-an-energy-first-principles-check.md).
+**YOURS, BAKERY:** the `Region.init` alignment parameter and its witness are buildable now, with no
+hardware dependency; the falsifier itself waits on RAPL or `perf` access.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
