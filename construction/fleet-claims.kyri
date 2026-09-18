@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim grass-rune-bounded-trap-asserts
-seat grass
-stamp 20260918.044433
-epoch 1789721073
-paths glow/rune_bounded_trap.rye
-what grass adds contract asserts to glow/rune_bounded_trap.rye's four functions, same shape as rune_cell.rye
