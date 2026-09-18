@@ -4,7 +4,7 @@
 **Style:** Gauge at Door (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
-**Last updated:** `20260916.190457` (the five routing sections move from prose paragraphs into tables, so a door is a row rather than a phrase mid-sentence; every link and every claim kept, and the setting named on the line above)
+**Last updated:** `20260918.093311` (seven module-ring links now name `README.md` directly rather than the bare directory, so the doorway guard's inbound count actually reaches them; every link and every claim kept) - **Prior:** `20260916.190457`, the five routing sections moved from prose paragraphs into tables
 
 *The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at `template-manifest.bron`. **A room named here in plain backticks rather than as a link is a field room the public seed leaves behind** -- so this page reads whole in both repositories, and points at no door that is not there.*
 
@@ -79,7 +79,7 @@ The **module ring** is the machinery, each home with its own witnesses. Take the
 | [`caravan/`](caravan/) | supervision |
 | [`aurora/`](aurora/) | the boot |
 | [`pond/`](pond/) | the enclosure |
-| [`mand/`](mand/) | authority |
+| [`mand/`](mand/README.md) | authority |
 | [`brushstroke/`](brushstroke/) | drawing |
 | [`ember/`](ember/) | the forge |
 | [`linengrow/`](linengrow/README.md) | the giving edge |
@@ -96,7 +96,7 @@ The **module ring** is the machinery, each home with its own witnesses. Take the
 | [`scribe/`](scribe/README.md) | the voice's home |
 | [`sundial/`](sundial/README.md) | the health face |
 | [`pleac/`](pleac/README.md) | the cookbook stdlib |
-| [`granary/`](granary/) - [`mandi/`](mandi/) - [`amphora/`](amphora/) - [`mycelium/`](mycelium/) - [`lantern/`](lantern/) - [`lattice/`](lattice/) - [`scribble/`](scribble/) - [`cellar/`](cellar/) - [`dimeroll/`](dimeroll/) | Named here without a gloss; open the room's own README for what it proves |
+| [`granary/`](granary/README.md) - [`mandi/`](mandi/README.md) - [`amphora/`](amphora/README.md) - [`mycelium/`](mycelium/README.md) - [`lantern/`](lantern/README.md) - [`lattice/`](lattice/README.md) - [`scribble/`](scribble/README.md) - [`cellar/`](cellar/README.md) - [`dimeroll/`](dimeroll/README.md) | Named here without a gloss; open the room's own README for what it proves |
 
 ### 5 - The Teaching
 
