@@ -59,9 +59,3 @@ epoch 1789695657
 paths tools/rye/cyclic_state.rye tools/c/cyclic_state_witness.rish active-designing/
 what Row 3 of the-bounded-torus-moonshots (Cyclic topos): building a self-owned witness on wrap_ring's own Row-1 state -- hashing the ring's byte-content and its full state (bytes plus lap tags) before and after one full lap of identical writes, to test whether the ring returns to itself or only its content does. Diffuser-authored tool, touches no other lane's file.
 
-claim bakery-map-orphan-inbound
-seat bakery
-stamp 20260917.214721
-epoch 1789696041
-paths tools/fixtures/l/living_docs_lint_scan.sh
-what REDS %823 BOOKED: duty 3's orphan check reads inbound links from the docs roster, docs/README.md and ORGANIZING.md but never MAP.md, though read-scope.md names MAP.md as the walk that replaces the root ls and it links 73 paths. Widening duty 3's source set to include MAP.md so its 17 real-orphan pages (linengrow/, kumara/, session-logs/, etc.) stop reading orphan. Touches one scan file; no module source.
