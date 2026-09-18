@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.081757` | [Send confirmed -- both remotes hold c5e157106](20260918/20260918-081757_send-confirmed-c5e157106.kyri) | Two contested pushes, both remotes hold. |
 | `20260918.081703` | [Send confirmed -- both remotes hold 00b7e078e](20260918/20260918-081703_send-confirmed-00b7e078e.kyri) | Nib follow-up after a caught amend-after-push mistake; reset and re-carried cleanly. |
 | `20260918.081551` | [Pheromone lane checked, nothing new to claim](20260918/20260918-081551_pheromone-empty-open.kyri) | Board empty, Pheromone accounts already shelved, next crux wants its own round. |
 | `20260918.081427` | [grain-lineage README register fixed](20260918/20260918-081427_gratitude-grain-lineage-register-fixed.kyri) | 67 to 100, door ceiling cleared, 3 sentences reworded. |
