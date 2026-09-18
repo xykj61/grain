@@ -6,6 +6,7 @@
 //! Named molds and other auras refuse until a later lap.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rc = @import("rune_cast.rye");
 
 pub const LowerError = rc.ParseError || error{
@@ -21,6 +22,11 @@ pub const cast_welcome_raw: u64 = 42;
 fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
     if (mold.len == 0) return error.MissingMold;
     if (mold[0] != '@') return error.NamedShapeNotYetLowered;
+    // invariant: only an aura mold -- one whose first byte names `@` -- ever
+    // reaches the lookup below, since an empty or named-shape mold refuses
+    // above it.
+    assert(mold.len > 0);
+    assert(mold[0] == '@');
     if (std.mem.eql(u8, mold, "@u8")) return "u8";
     if (std.mem.eql(u8, mold, "@u16")) return "u16";
     if (std.mem.eql(u8, mold, "@u32")) return "u32";
@@ -30,6 +36,9 @@ fn zig_type_for_mold(mold: []const u8) LowerError![]const u8 {
 
 /// Overflow raw for unwelcome path. `@u64` needs a u128 source (2^64).
 fn unwelcome_raw_u64(zig_ty: []const u8) LowerError!u64 {
+    // invariant: only a type name zig_type_for_mold already returned reaches
+    // this lookup, so the name handed in is never empty.
+    assert(zig_ty.len > 0);
     if (std.mem.eql(u8, zig_ty, "u8")) return 256;
     if (std.mem.eql(u8, zig_ty, "u16")) return 65536;
     if (std.mem.eql(u8, zig_ty, "u32")) return 4294967296;
@@ -83,22 +92,35 @@ fn emit_u64_from_u128(mold: []const u8, raw_hi_literal: []const u8, expect_eq_ra
 }
 
 fn emit_for(mold: []const u8, zig_ty: []const u8, welcome: bool, out: []u8) LowerError!u32 {
+    // invariant: only a type name zig_type_for_mold already returned reaches
+    // this dispatch, so the name handed in is never empty.
+    assert(zig_ty.len > 0);
     if (std.mem.eql(u8, zig_ty, "u64")) {
         if (welcome) return emit_u64_from_u128(mold, "", true, out);
         return emit_u64_from_u128(mold, "18446744073709551616", false, out); // 2^64
     }
     if (welcome) return emit_from_u64(mold, zig_ty, cast_welcome_raw, out);
     const raw = try unwelcome_raw_u64(zig_ty);
-    return emit_from_u64(mold, zig_ty, raw, out);
+    const written = try emit_from_u64(mold, zig_ty, raw, out);
+    // invariant: an emitted length never claims more than the buffer the
+    // caller handed us.
+    assert(written <= out.len);
+    return written;
 }
 
 /// Parse one Glow cast line and emit a welcome-path program (value fits).
 pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
+    // invariant: a line accepted past the empty-source check always carries
+    // at least one non-whitespace byte, once execution reaches here.
+    assert(trimmed.len > 0);
     const spec = try rc.parse(trimmed);
     const mold = rc.mold_slice(&spec);
     const zig_ty = try zig_type_for_mold(mold);
+    // invariant: zig_type_for_mold only ever returns a real type name or an
+    // error, so the value reaching emit_for is always non-empty.
+    assert(zig_ty.len > 0);
     return emit_for(mold, zig_ty, true, out);
 }
 
@@ -106,9 +128,15 @@ pub fn lower_line_welcome(line: []const u8, out: []u8) LowerError!u32 {
 pub fn lower_line_unwelcome(line: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
+    // invariant: a line accepted past the empty-source check always carries
+    // at least one non-whitespace byte, once execution reaches here.
+    assert(trimmed.len > 0);
     const spec = try rc.parse(trimmed);
     const mold = rc.mold_slice(&spec);
     const zig_ty = try zig_type_for_mold(mold);
+    // invariant: zig_type_for_mold only ever returns a real type name or an
+    // error, so the value reaching emit_for is always non-empty.
+    assert(zig_ty.len > 0);
     return emit_for(mold, zig_ty, false, out);
 }
 
@@ -137,9 +165,15 @@ fn emit_from_argv_u32(mold: []const u8, out: []u8) LowerError!u32 {
 pub fn lower_line_argv_sample(line: []const u8, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
+    // invariant: a line accepted past the empty-source check always carries
+    // at least one non-whitespace byte, once execution reaches here.
+    assert(trimmed.len > 0);
     const spec = try rc.parse(trimmed);
     const mold = rc.mold_slice(&spec);
     if (!std.mem.eql(u8, mold, "@u32")) return error.ArgvSampleAuraNotYetLowered;
+    // invariant: only the `@u32` aura ever reaches the argv-sample emitter,
+    // since every other mold refuses just above.
+    assert(std.mem.eql(u8, mold, "@u32"));
     _ = try zig_type_for_mold(mold); // refuse unknown auras with the cast error first
     return emit_from_argv_u32(mold, out);
 }
