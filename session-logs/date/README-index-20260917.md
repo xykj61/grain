@@ -9,6 +9,7 @@
 | `20260917.232654` | [empty turn -- no request received, check-in only](20260917/20260917-232654_empty-turn-checkin.kyri) | Turn carried only the baton and reminders; no task to act on. |
 | `20260917.232456` | [Send -- components README's DOOR entry landed](20260917/20260917-232456_components-door-sent.kyri) | Both remotes hold b8c934810 after two rebases, a merged DOOR array. |
 | `20260917.232412` | [check-in -- claims board empty, law_ceiling at 1](20260917/20260917-232412_grass-audit-check-in.kyri) | No unclaimed audit lap found; queue items sit in peer accounts. |
+| `20260917.232140` | [The trio, checked negative](20260917/20260917-232140_the-supervised-process-trio-checked-negative.kyri) | unhand/confer/revoke carry no torus seam. |
 | `20260917.231911` | [components README joins the DOOR roster](20260917/20260917-231911_components-readme-joins-door.kyri) | One sentence restated, Style line names Door setting, prose_register_witness GREEN. |
 | `20260917.231743` | [Send -- checked-negative piece landed](20260917/20260917-231743_mantra-checked-negative-sent.kyri) | Both remotes hold 8fab85ef1 after two rebases. |
 | `20260917.231742` | [waymarks/README.md joins the DOOR roster](20260917/20260917-231742_waymarks-readme-joins-door-roster.kyri) | 27% to 18%, unrostered-over falls 6 to 5. |
