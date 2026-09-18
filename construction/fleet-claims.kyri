@@ -60,3 +60,9 @@ stamp 20260918.055914
 epoch 1789725554
 paths glow/lower_alias.rye
 what add bare asserts to lower_alias.rye's zig_safe_ident, emit_alias_program, and lower_line, same discipline as lower_quad/rune_quad
+claim incense-lower-cast-asserts
+seat incense
+stamp 20260918.060729
+epoch 1789726049
+paths glow/lower_cast.rye
+what add bare asserts to lower_cast.rye's zig_type_for_mold, unwelcome_raw_u64, emit_for, and the three lower_line_* entry points, same discipline as rune_quad/rune_null
