@@ -6,14 +6,14 @@
 **Every ship in the fleet opens the same way, and that opening is written once.**
 `tools/f/fleet_baton.txt` holds it; `tools/f/fleet-loop.sh` prepends it to whichever seat is
 launching; a seat prompt is its **lane stanza** alone. A directive seated on the baton reaches every
-ship on its next lap with no per-seat edit.
+ship on its next lap, sparing every seat its own edit.
 
 The shape is REDS `%409`'s lesson one room over. Six seat prompts each restated the whole opening --
 voice, card, rota, thread, send, log, custody, close -- which is one rule written six times and the
 same drift waiting to happen. It is written once now, and
 [`../../tools/fixtures/f/fleet_roster_control.sh`](../../tools/fixtures/f/fleet_roster_control.sh)
-holds it there: a stanza that restates the baton, a looping seat with no stanza, and an invocation
-that reaches the agent without the baton are each counted at zero.
+holds it there: a stanza that restates the baton, a looping seat carrying a bare lane prompt alone,
+and an invocation that reaches the agent apart from the baton are each counted at zero.
 
 ## What the baton says, and the rule behind each section
 
@@ -36,7 +36,7 @@ that reaches the agent without the baton are each counted at zero.
 | **CUSTODY** | the ITINERARY gate list - [`git-signing`](git-signing.md) *(the seed)* - **GATES-ONLY seated here** |
 | **CLOSE** | [`collaboration`](collaboration.md) |
 
-**Four of the eleven sections standing then had no rule at all**, measured `20260904.214754` by grepping `.claude/rules/` for each:
+**Four of the eleven sections standing then stood unruled**, measured `20260904.214754` by grepping `.claude/rules/` for each:
 `%291` appeared once, in passing, inside an unrelated rule; *claim-as-override*, the *council rota*,
 and *GATES-ONLY* appeared nowhere. All four were load-bearing behaviors every ship performed every
 lap, carried only in a seat prompt and a design essay. They are seated below.
@@ -45,9 +45,9 @@ lap, carried only in a seat prompt and a design essay. They are seated below.
 
 **Two seated directives order everything except each other.** CARD asks for the roster cold then
 hot, holding still while it runs. ABSENCE asks a lap opening a new instrument or taking a booked
-red to check, claim, push, then build. Both are right; neither says which comes first, and they
-are printed in that order, so a lap reading the baton top to bottom launches the cold run and then
-commits its claim into the middle of it.
+red to check, claim, push, then build. Both are right, and the baton stays silent about which comes
+first, so a lap reading it top to bottom launches the cold run and then commits its claim into the
+middle of it.
 
 **What that costs is the whole pass.** `tree_digest` in
 [`../../tools/fixtures/s/standing_equipment_run.sh`](../../tools/fixtures/s/standing_equipment_run.sh)
@@ -55,20 +55,19 @@ reads `git rev-parse HEAD` beside `git status --porcelain`, `git diff HEAD --bin
 of every untracked file. So a commit, a pull, or a plain edit during the pass moves the digest, and
 `tree_moved=yes` is fixed before the first guard returns. The guards still run and still report;
 what is spent is the reading that says *these 300 answers describe THIS tree* -- which is the one
-thing a forty-minute pass buys that a single witness cannot.
+thing only a forty-minute pass buys, past what any single witness reaches alone.
 
 **The order, in one line:** open and PUSH the claim, let the round-open's rebase finish, read HEAD
 once, launch the cold run, and hold still -- no commit, no edit, no pull -- until the transcript
 carries `run_verdict=`.
 
 **Proven on metal this lap rather than argued.** The pass launched under that order closed
-`tree_moved=no`. The pass before it, launched at the end of the previous lap, had its verdict
-already fixed when this lap opened, and the runner said so in its own refusal of a second pass:
-`its launch_head ab516dbed9 is no longer HEAD (54b1f8c278), so its verdict is already fixed at
-tree_moved and more of this machine spent on it buys nothing.`
+`tree_moved=no`. The pass before it, launched at the end of the previous lap, had already fixed
+its verdict by the time this lap opened, and the runner said so in its own refusal of a second pass:
+`its launch_head ab516dbed9 is no longer HEAD (54b1f8c278), so its verdict is already fixed at tree_moved and more of this machine spent on it buys nothing.`
 
-**The sharper half: a pass that outlives its lap cannot hold still at all.** This firing's mover
-was not a claim commit and not an edit -- it was the NEXT lap's round-open pull, which lands peers'
+**The sharper half: a pass that outlives its lap has already given up its stillness.** This firing's mover
+was the NEXT lap's round-open pull, rather than a claim commit or an edit -- it lands peers'
 commits by construction on a pier of eight ships. Holding still is a promise a lap can keep only
 inside its own hours, so a cold run belongs at the FRONT of a lap, after the round-open, with the
 lap's remaining time in front of it. One launched near a lap's close is a pass whose verdict the
@@ -79,16 +78,16 @@ repair priced the class over the 39 September logs carrying a cold-roster `loom`
 `tree_moved=yes` and 6 of those 7 named a claim, a near-total correlation. Read over every
 September log in this tree instead, **588 name `tree_moved`, 115 read `yes`, and 7 of those 115
 name `construction/fleet-claims.kyri` or `fleet_claim` by name** -- six percent rather than
-six-sevenths. Both readings are true of their own populations, and the narrow one must never be
-read as the tree's: **a claim prices its class from the files it can already see**, which is this
-fleet's own lesson from `20260915.223327` arriving in a second room. What the wider number does
-NOT do is weaken the cure -- the printed ordering fault is a documentary fact rather than a
-statistical one, and the cure costs one word. What it does is name the dominant mover as
-unmeasured, and this lap's own firing is the first evidence about it.
+six-sevenths. Both readings are true of their own populations, and the narrow one stays scoped to
+its own population rather than standing for the tree's: **a claim prices its class from the files
+it can already see**, which is this fleet's own lesson from `20260915.223327` arriving in a second
+room. The wider number leaves the cure exactly as strong -- the printed ordering fault is a
+documentary fact rather than a statistical one, and the cure costs one word. What it does is name
+the dominant mover as unmeasured, and this lap's own firing is the first evidence about it.
 
 **What this does not reach.** A gate. The order lives in what a lap types at its own prompt, which
 is in no file -- the same structural wall `%457`, `%512`, `%549` and `%569` each met. The runner
-already refuses a second pass and already names a fixed verdict out loud; what it cannot do is
+already refuses a second pass and already names a fixed verdict out loud; what it lacks is a way to
 choose the moment a lap launches the first one. So it is set where habits are set.
 
 ## Absence is the one reading a seat may not take from local bytes alone (REDS %457)
