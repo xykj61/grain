@@ -78,6 +78,15 @@ walk; the unreachable count reads zero.
   finished eleven said another; the earlier call was made out loud and was wrong.
 - **Write the prediction in the claim so it can fail out loud.** Five were written for `root_finder`
   and three held. The two misses named the class's boundary better than the hits did.
+- **Never wait on a command-line pattern** (`%824`, booked minutes before this prompt was written).
+  `until ! pgrep -f "<name>"` matches the waiting shell's own command line and waits forever, and
+  the silence is the danger: a loop waiting on itself reads exactly like a loop waiting on work.
+  Wait on a **content predicate** instead -- `standing_equipment_run.sh` is finished when its
+  transcript carries `run_verdict=` -- or ask the bounded reader, which refuses the caller by name:
+
+```sh
+sh tools/f/fleet_call.sh --pattern <substring>
+```
 
 ## What is open, and what each wants
 
