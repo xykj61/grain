@@ -54,3 +54,9 @@ format fleet-claims-v1
 # declaration may never be.
 
 
+claim pheromone-descriptor-test-asserts
+seat pheromone
+stamp 20260918.065430
+epoch 1789728870
+paths comlink/discovery/descriptor_test.rye
+what add bare asserts to descriptor_test.rye's main, same zero-assert-closing discipline as turn_route.rye/nock_jet_dec.rye
