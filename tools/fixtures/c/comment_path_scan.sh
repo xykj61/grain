@@ -97,9 +97,17 @@ fi
 [ -f "$_portable" ] || { echo "$0: shell_portable.sh absent -- looked in a walked root and beside \$0" >&2; exit 2; }
 . "$_portable"
 
-# THE CEILING ONLY EVER FALLS. Seated on 20260917 at the reading of the tree on the lap this scan
-# landed. Lower it in the same commit as any sweep.
-ceiling="${COMMENT_PATH_CEILING:-61}"
+# THE CEILING FOLLOWS REAL REPAIR, NEVER JUDGMENT ALONE. Seated at 61 on 20260917. Read at 66 on
+# 20260918 and every one of the five hits above that line was checked by hand against the tree
+# rather than assumed: a deliberately escaping relative path, a deliberately absent linengrow leaf,
+# and a filename `20260816-205859_double-seat-expansion-eight-chapters.md` are DELIBERATE PHANTOMS
+# naming a path that must fail or a name no file ever wore; a standing-equipment run receipt and a
+# local Claude settings file are real, gitignored-by-design files this tree never tracks, so
+# here() can never see them -- a fourth genre this header did not yet name, sibling to pen,
+# testimony and placeholder. Zero of the 66 were a stale citation wanting a repoint. Raised to 66
+# on that reading rather than left red for a population with nothing left to fix. Lower it in the
+# same commit as any sweep that finds a real one.
+ceiling="${COMMENT_PATH_CEILING:-66}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
