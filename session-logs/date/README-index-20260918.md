@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.014150` | [Send confirmed -- both remotes hold d2fe9949a](20260918/20260918-014150_send-confirmed-d2fe9949a.kyri) | Two rebases; one table conflict kept both rows. |
 | `20260918.014004` | [Round-open pull lands shastra's Uttara Veda work -- pheromone lane still idle](20260918/20260918-014004_pheromone-round-open-pull-lane-idle.kyri) | Fetched xy, fast-forwarded 3 peer commits, mirrored debrided; lane confirmed idle without a twelfth repeat. |
 | `20260918.013415` | [Pheromone eleventh check -- the repeated-check pattern named as the finding](20260918/20260918-013415_pheromone-eleventh-check-pattern-named.kyri) | HEAD unchanged since prior check; names eleven idle checks in one lane as worth a hand's attention rather than a twelfth re-verification. |
 | `20260918.013242` | [Roster fixed; first reverse-read packet](20260918/20260918-013242_reverse-reading-first-packet-and-lane-repair.kyri) | Reds-first season gate, STANDFASTED. |
