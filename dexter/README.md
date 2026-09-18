@@ -20,7 +20,7 @@ room stood. What a person types at dusk deserves the care a witness proves at no
 Every Dexter source is to be **reborn here from scratch**. The elders are the guidance. The
 new model is the ground. That model has five parts. The Caravan moves give it the toroidal
 aetheric horizon: wrap named, sets word-wide, drains replayable
-(`../active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md`).
+(`../active-designing/date/20260826/20260826-021136_caravan-rearchitected-the-optimization-spine.md`).
 Tally's garden is the only memory it asks for. Brix declares what composes. Kyri 6 receipts
 what happened (`../kyri/receipt.rye`, the two palettes at its heart). And the inference vanes
 -- Lattice, Lantern, Scribble, Ember -- stand as the quiet help beside the prompt. Prose in

@@ -163,8 +163,8 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 | Held | Why the cut was refused |
 | --- | --- |
 | `counsel/date/20260728/20260728-234419_the-oven-season-oct-charter.md` | Its named mutant is the LEXICON's Ember row, which carries the **naming** and not the chapter's seat table. `oven_season_o0` and `nona_season_n2` grep that table, and `prin_scope.rish` prints its path. Cutting it would break working guards to tidy one file. |
-| `active-designing/20260826-151528_the-three-stars-of-the-aether-row.md` | Measured at the cut: the naming derivation -- the twilight palette, the night twins, the aether row's own seats -- appears **six times** in the elder and **once** in the living charter, which references it rather than retelling it. An elder holding content its mutant only cites is not superseded. |
-| `active-designing/20260827-144712_the-three-stars-and-their-planets.md` | Ninety minutes old at the cut, and the middle link of a three-charter provenance chain a versioned recursion prompt still reads. The cut buys a directory entry and costs the record of how the constellation grew in three days. |
+| `active-designing/date/20260826/20260826-151528_the-three-stars-of-the-aether-row.md` | Measured at the cut: the naming derivation -- the twilight palette, the night twins, the aether row's own seats -- appears **six times** in the elder and **once** in the living charter, which references it rather than retelling it. An elder holding content its mutant only cites is not superseded. |
+| `active-designing/date/20260827/20260827-144712_the-three-stars-and-their-planets.md` | Ninety minutes old at the cut, and the middle link of a three-charter provenance chain a versioned recursion prompt still reads. The cut buys a directory entry and costs the record of how the constellation grew in three days. |
 
 ## Elder sections, folded
 

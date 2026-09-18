@@ -17,7 +17,7 @@ optional here -- the steps below work whether or not you read them.
 
 - [**The machine you can write down**](../../foundations/20260909-004934_the-machine-you-can-write-down.md)
   -- why a computer described in a file is a computer you can have again.
-- [**The pier a newcomer stands up**](../../active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md)
+- [**The pier a newcomer stands up**](../../active-designing/date/20260909/20260909-005121_the-pier-a-newcomer-stands-up.md)
   -- which host, in which order, and why this road rather than another, with the measurement behind
   the choice.
 

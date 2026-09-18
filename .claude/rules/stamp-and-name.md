@@ -286,7 +286,7 @@ in the Hoon it descends from, `%` marks a **constant term**, a value that is exa
 varies -- which is what an immutable ledger row number is.
 
 Full argument and the standfast declined:
-[`../../active-designing/20260823-173634_the-census-number-keeps-its-place.md`](../../active-designing/20260823-173634_the-census-number-keeps-its-place.md)
+[`../../active-designing/date/20260823/20260823-173634_the-census-number-keeps-its-place.md`](../../active-designing/date/20260823/20260823-173634_the-census-number-keeps-its-place.md)
 and [`../../external-research/20260823-173634_when-a-number-is-honest.md`](../../external-research/20260823-173634_when-a-number-is-honest.md).
 
 ## An index folds with the room it describes -- amended `20260824.052329`

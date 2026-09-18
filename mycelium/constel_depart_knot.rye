@@ -3,8 +3,8 @@
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Constel - the depart knot.
 //! Three real machines stand behind this composition: a cloud pier, a laptop, and a desk bench,
 //! wanting to run as one live constellation. The design that reads them
-//! (active-designing/20260825-173153_reprove-only-what-moved.md's sibling,
-//! active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md) leans on one table:
+//! (active-designing/date/20260825/20260825-173153_reprove-only-what-moved.md's sibling,
+//! active-designing/date/20260825/20260825-133156_three-real-mox-and-the-outer-loop.md) leans on one table:
 //! at n=3 the Byzantine threshold tolerates zero ships down, and at n=4 it tolerates one. That
 //! table was derived from muster.rye's formula and stated in prose; a stated number starts
 //! rotting the moment it is typed, so this knot pins both rows by running them.
@@ -14,7 +14,7 @@
 //! no new identity, the naming law honored by reuse. Demo seeds only: no key held, no funds, no
 //! network, no real value.
 //!
-//! Scope: active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md
+//! Scope: active-designing/date/20260825/20260825-133156_three-real-mox-and-the-outer-loop.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_depart_knot.rye
 

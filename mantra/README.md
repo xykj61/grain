@@ -90,7 +90,7 @@ the day a toolchain moves past it, and every `grep` reading it agrees (REDS %449
 Every Rye witness lives beside the module it proves, under `src/`, because Zig holds an import
 inside the root file's own directory -- a test one room away would have to copy the module, and a
 copy proves the copy. The charter is
-[`../active-designing/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/20260905-153729_mantra-was-named-for-the-weave.md).
+[`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md).
 
 ## Building
 

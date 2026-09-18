@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/k/key_trade_scan.sh -- is the locality-for-evenness trade a law of keys, or a
 # property of the keys measured so far? The named next step of
-# active-designing/20260915-181000_the-key-that-carries-locality.md.
+# active-designing/date/20260915/20260915-181000_the-key-that-carries-locality.md.
 #
 # WHAT IS OPEN. That page priced the crudest locality-bearing key there is -- a file's leading two
 # bytes -- against SHA3-512, and found locality, evenness and confidentiality moving as one
@@ -446,7 +446,7 @@ run_key() {
         kname, g, g, df, e, chi, crit, dcf, n, (chi > crit ? "no" : "yes")
 
       # READING 3 -- ROOM RECOVERY, carried over unchanged from the elder prefix-key reading at
-      # active-designing/20260915-181000_the-key-that-carries-locality.md so the two papers may be
+      # active-designing/date/20260915/20260915-181000_the-key-that-carries-locality.md so the two papers may be
       # set side by side. For each coarse cell take the largest single room among the files in it,
       # sum over cells, divide by the population: the share of files an observer holding KEYS
       # ALONE places in the right room by guessing the plurality of each cell. Its honest baseline is

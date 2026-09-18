@@ -276,7 +276,7 @@ fn scribble_frame() void {
 // reader can measure: four requests run one at a time leave four answers alive. This pool counts
 // both lifetimes -- `pool_active_max` requests may be in flight and `pool_answer_max` answers may
 // stand at once -- and a request is admitted only when a free answer slot is ready to receive its
-// reply. Design: active-designing/20260909-084736_a-kept-answer-has-its-own-budget.md
+// reply. Design: active-designing/date/20260909/20260909-084736_a-kept-answer-has-its-own-budget.md
 pub const pool_active_max: u32 = 2;
 pub const pool_answer_max: u32 = 3;
 

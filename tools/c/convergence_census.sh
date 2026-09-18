@@ -234,7 +234,7 @@
 # NAMED HERE RATHER THAN SPLIT INTO A COLUMN. `admitted_on_comment_only` retired above for reading a
 # permanent zero, and a column whose population is one tool would read the same way. What a reader
 # needs is the sentence, and the whole reading stands at
-# `active-designing/20260912-010055_the-fold-that-converges-by-refusing.md`:
+# `active-designing/date/20260912/20260912-010055_the-fold-that-converges-by-refusing.md`:
 # `candidates_unproven` is an upper bound on work owed, and its last member
 # owes none.
 #

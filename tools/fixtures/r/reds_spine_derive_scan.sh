@@ -11,7 +11,7 @@
 #
 # THE KEY. A row's immutable identity is its ONE-CLOCK STAMP. The %N is a derived view: rows
 # sort by stamp, the earlier stamp taking the lower number, ties broken by commit hash. The
-# design is Move 1 of active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md,
+# design is Move 1 of active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md,
 # seated 20260827 on Keaton's word.
 #
 # THE BOUNDARY, which is the whole of the safety. A row that has reached the ANOINTED REMOTE is

@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/w/workload_trial_scan.sh -- can ROW 12 run at all? Row 12 of
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md is the last row of the twelve
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md is the last row of the twelve
 # whose subject is the other eleven, and it proposes a method rather than a mechanism:
 #
 #   "Among the eleven above, the smallest trial that touches metal goes first, and its result
@@ -61,7 +61,7 @@
 
 set -eu
 
-PAGE="active-designing/20260910-060204_the-bounded-torus-moonshots.md"
+PAGE="active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md"
 BASELINE_RUNS=15        # bounded: 15 x ~0.5s keeps reading 3 under ten seconds on this pier
 TRIAL_RUNS=10           # bounded: enough to read a share to the nearest ten percent
 MAX_RUNS=60             # bounded: refuse a request past this, where the reading costs a minute

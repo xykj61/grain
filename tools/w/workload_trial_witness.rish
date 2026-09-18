@@ -1,7 +1,7 @@
 # tools/w/workload_trial_witness.rish -- row 12 proposes a comparison, and there is nothing to
 # compare.
 #
-# WHY THIS RUNG. Row 12 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
+# WHY THIS RUNG. Row 12 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md is the
 # last row of the twelve whose subject is the other eleven. It proposes a METHOD: "the smallest
 # trial that touches metal goes first, and its result funds the ordering of everything after it",
 # falsified when "the trial's number sits inside the run-to-run spread of the baseline". Ten rows
@@ -76,7 +76,7 @@
 # energy_instrument_scan.sh already answered joule_source=none for on this pier.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260915-221500_the-trial-with-nothing-to-compare.md
+# Paper: active-designing/date/20260915/20260915-221500_the-trial-with-nothing-to-compare.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/workload_trial_witness.rish

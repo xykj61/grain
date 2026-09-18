@@ -4,7 +4,7 @@
 #
 # WHAT IT GUARDS. `tools/rye/page_evict.rye` exists so a measurement of a COLD read costs no peer a
 # page. The elder reading it unblocks sits in
-# `active-designing/20260917-020034_where-the-hash-still-pays.md`, which named a falsifier --
+# `active-designing/date/20260917/20260917-020034_where-the-hash-still-pays.md`, which named a falsifier --
 # one cold library read against one warm one -- and declined to run it, because the only eviction
 # it knew was `echo 3 > /proc/sys/vm/drop_caches`, which empties the cache for every process on
 # the host.

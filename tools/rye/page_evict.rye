@@ -1,6 +1,6 @@
 //! tools/rye/page_evict.rye -- read and drop THIS tree's page cache, and no one else's.
 //!
-//! WHY IT EXISTS. `active-designing/20260917-020034_where-the-hash-still-pays.md` measured a
+//! WHY IT EXISTS. `active-designing/date/20260917/20260917-020034_where-the-hash-still-pays.md` measured a
 //! library read at 26 ms where a peer measured the same read at 145 to 154 ms, argued the page
 //! cache was the whole of the six times, named the falsifier -- one cold read against one warm
 //! read -- and then declined to run it, because the only eviction it knew was

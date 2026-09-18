@@ -10,7 +10,7 @@
 //! itself, and ranking two implementations is exactly that question.
 //!
 //! THE ROW THIS SERVES, NAMED. Row 3 of
-//! `active-designing/20260917-105154_the-refusal-that-can-fire.md` claims that instructions
+//! `active-designing/date/20260917/20260917-105154_the-refusal-that-can-fire.md` claims that instructions
 //! retired ranks two implementations the same way a joule would, and states its own falsifier:
 //! the counter ranks two implementations in the OPPOSITE order from wall time on this pier. That
 //! falsifier needs a counter around a COMMAND, and this program is it.

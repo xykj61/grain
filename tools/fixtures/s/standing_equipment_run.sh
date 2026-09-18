@@ -442,7 +442,7 @@ done
 [ -f "$roster" ] || { echo "refused: no roster at $roster" >&2; exit 1; }
 
 # THE SCOPED PASS (the fusion build's Move 2+3 synthesis, granted -- the skip word given
-# 20260828; design active-designing/20260825-173153_reprove-only-what-moved.md). A scoped run
+# 20260828; design active-designing/date/20260825/20260825-173153_reprove-only-what-moved.md). A scoped run
 # proves the DELTA since the last full green receipt: guards whose derived watch-set intersects
 # the changed files run, guards the map calls DISCOVERY always run, and everything else is
 # skipped BY NAME against a named basis. Three walls hold it honest: it composes with nothing
@@ -844,7 +844,7 @@ fi
 echo "head_behind_anointed=$anointed_behind anointed_ref_head=$anointed_ref_head anointed_ref_committed=$anointed_ref_committed"
 
 # THE HIT-RATE METER (the fusion build's Move 2 gate, measurement only -- design
-# active-designing/20260825-173153_reprove-only-what-moved.md; the FAST/COLD ruling stays
+# active-designing/date/20260825/20260825-173153_reprove-only-what-moved.md; the FAST/COLD ruling stays
 # Keaton's). At a fully green close the runner records the digest it proved; this compare says
 # whether that record would have answered the present open -- and every guard still runs,
 # because a skip that consults a cache is a ruling this tree has not made. The rolling ledger

@@ -1,6 +1,6 @@
 # tools/c/capability_lattice_witness.rish -- Caravan's privilege is a lattice, and that is measured.
 #
-# WHY THIS RUNG. Row 2 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# WHY THIS RUNG. Row 2 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md proposes
 # reading Caravan's process graph in polar coordinates, with radius standing for privilege and a
 # supervisor refusing any hop past a declared maximum. It rests on one written assumption --
 # "Privilege in Caravan is already ordered" -- and carries one falsifier: a real supervised process
@@ -56,7 +56,7 @@
 # replacement against it.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260912-021711_the-privilege-that-was-never-a-line.md
+# Paper: active-designing/date/20260912/20260912-021711_the-privilege-that-was-never-a-line.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/c/capability_lattice_witness.rish

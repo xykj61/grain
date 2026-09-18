@@ -4,7 +4,7 @@
 # Run from the repository root:
 #   sh tools/fixtures/e/energy_readout_scan.sh
 #
-# WHY THIS EXISTS. active-designing/20260910-060204_the-bounded-torus-moonshots.md row 6, "Joules as
+# WHY THIS EXISTS. active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md row 6, "Joules as
 # a Tally unit," rests on one assumption before any Rye witness is written: "this pier's CPU exposes
 # RAPL counters to a reader with the permissions we have." Ten of the ladder's twelve rows already
 # carry a measured erratum; row 6 does not, because nobody had checked the assumption against a

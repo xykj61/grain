@@ -1,7 +1,7 @@
 # tools/k/key_trade_witness.rish -- a key built to carry locality, read against the digest that
 # avalanches, on one population and with one set of readings.
 #
-# WHY THIS RUNG. active-designing/20260915-181000_the-key-that-carries-locality.md priced the
+# WHY THIS RUNG. active-designing/date/20260915/20260915-181000_the-key-that-carries-locality.md priced the
 # crudest locality-bearing key there is -- a file's leading two bytes -- against the SHA3-512
 # digest, and found locality, evenness and confidentiality moving as one quantity read three ways.
 # That page names its own next step in its own last section: "whether a similarity-preserving
@@ -68,7 +68,7 @@
 # which is a security reading and wants its own lap. And the real store, which this never opens.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260916-051607_the-trade-that-was-not-a-law.md
+# Paper: active-designing/date/20260916/20260916-051607_the-trade-that-was-not-a-law.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/k/key_trade_witness.rish

@@ -652,7 +652,7 @@ named tool into **rostered**, **driven** beside a rostered tool in the same row,
 Its wall holds cited tools that are absent from disk at zero, while its `rows_unheld` reading is a
 ratchet because an unreached row can still be correct and reasoned. The instrument prints every
 unreached name on each run. Reading:
-[`../active-designing/20260912-002402_the-census-that-stopped-counting.md`](../active-designing/20260912-002402_the-census-that-stopped-counting.md).
+[`../active-designing/date/20260912/20260912-002402_the-census-that-stopped-counting.md`](../active-designing/date/20260912/20260912-002402_the-census-that-stopped-counting.md).
 
 `tools/cl/claim_preserve_witness.rish` refuses a bare invocation by design, wanting
 `CLAIM_PRESERVE_FILES` named, so a style pass drives it rather than a roster.
@@ -662,7 +662,7 @@ rather than *enforced*. `tools/d/dated_guard.rish` is a doorway over the staged 
 the parity chapter. `tools/p/proven_seat_signed_kumara_parity.rish` wants a staged bench. The sixth,
 `tools/ce/cellar_first_ring.rish`, looks plainly rosterable and waits on a lap that can measure its
 cost. Reading:
-[`../active-designing/20260911-112513_the-table-that-said-enforced-now.md`](../active-designing/20260911-112513_the-table-that-said-enforced-now.md).
+[`../active-designing/date/20260911/20260911-112513_the-table-that-said-enforced-now.md`](../active-designing/date/20260911/20260911-112513_the-table-that-said-enforced-now.md).
 
 **Ratchet advisories -- print every parity run, never fail** (`tools/t/tame_style_check.rish` second half; hand-run `rishi/bin/rishi run tools/t/tame_style_scan_advise.rish` or `sh tools/fixtures/t/tame_style_scan.sh advise`):
 

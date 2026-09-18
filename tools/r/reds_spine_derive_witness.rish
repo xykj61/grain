@@ -11,7 +11,7 @@
 # anything. This proves the ledger's ORDER is one order across three writers, and stops there.
 #
 # Law: .claude/rules/derived-spine.md - design Move 1:
-# active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
+# active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/r/reds_spine_derive_witness.rish

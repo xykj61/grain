@@ -19,7 +19,7 @@
 # -- the architecture the Mind loop proved on macOS, carried to the pier at its loop-shell rung;
 # the full Rishi supervisor with outside signing is the next hardening once Mind's two clone
 # commits come home to xy. Charter:
-# active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md.
+# active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md.
 #
 #   rishi/bin/rishi run tools/l/launch-dream-dual-chapter.rish
 
@@ -32,7 +32,7 @@ let elder = run ["test" "-f" "tools/ag/agent-jail.sh"]
 assert elder.ok else "tools/ag/agent-jail.sh (the jail elder) is missing"
 
 # invariant: the living charter this star lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
+let charter = run ["test" "-f" "active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
 assert charter.ok else "the six-bodies charter is missing"
 
 say "DREAM -- the dual star of the aether row (night twin Hush), Codex on the pier"

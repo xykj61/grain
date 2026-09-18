@@ -3,7 +3,7 @@
 **Stamp:** `20260912.142909` (EDT)
 **Status:** Living product itinerary -- fleet paused
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
-**Design system:** [`../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md)
+**Design system:** [`../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md)
 
 Linengrow lets a person offer a small data product on terms they understand, see each permitted use, receive a signed statement of value, and carry the complete record away. The first wholes use fake identities and simulated value. Money, real personal data, and public deployment remain custody gates.
 

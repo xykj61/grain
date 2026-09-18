@@ -83,7 +83,7 @@
 #
 # Instrument: `awk` alone (POSIX-granted). No temporary files, no `mktemp`.
 #
-# Read against: active-designing/20260906-034951_the-revocation-and-the-fault-ride-one-edge.md
+# Read against: active-designing/date/20260906/20260906-034951_the-revocation-and-the-fault-ride-one-edge.md
 set -eu
 
 if [ -n "${TOPOLOGY_SRC:-}" ]; then

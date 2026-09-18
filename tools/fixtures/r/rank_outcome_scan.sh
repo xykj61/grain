@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/r/rank_outcome_scan.sh -- DID THE RANKING PREDICT ANYTHING? The page
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md carries twelve speculative rows
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md carries twelve speculative rows
 # and, at its close, a ranking of all twelve. That ranking states its own operand in one line:
 # "Ranked by what a lane can start on this pier, with no new hardware, this month." So it forecasts
 # STARTABILITY and never truth, and it was written before any row had been read.
@@ -39,7 +39,7 @@ MAX_ROWS=64                 # ranked rows admitted; the page holds 12 and a read
 MAX_ERRATA=256              # erratum lines read before the reading refuses to grow
 MAX_LINE_BYTES=65536        # one erratum stands on one line; longer is a page shape we do not know
 
-PAGE=active-designing/20260910-060204_the-bounded-torus-moonshots.md
+PAGE=active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 EXPLAIN=no
 
 while [ $# -gt 0 ]; do

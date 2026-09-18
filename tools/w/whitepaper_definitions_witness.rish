@@ -1,7 +1,7 @@
 # tools/w/whitepaper_definitions_witness.rish -- the whitepaper row's premise fails, and its own
 # falsifier cannot fire.
 #
-# WHY THIS RUNG. Row 11 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the
+# WHY THIS RUNG. Row 11 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md is the
 # last unopened row of the twelve, and unlike the other eleven it makes no claim about the world.
 # It claims something about the other rows: "One paper binds the three definitions the other eleven
 # rows lean on: what a BOUND is when space wraps, what a RADIUS is when privilege is distance, and
@@ -82,7 +82,7 @@
 # the three.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260915-212827_the-paper-that-checked-its-own-premise.md
+# Paper: active-designing/date/20260915/20260915-212827_the-paper-that-checked-its-own-premise.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/whitepaper_definitions_witness.rish

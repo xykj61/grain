@@ -127,7 +127,7 @@ is_subex() {
 # identity list, one `basename`, one `mkdir -p`, one `cp`, and one `grep` on each
 # copy for an ssh key -- so a 9,000-file projection paid tens of thousands of
 # process starts. The timing paper priced those three greps at 56.69, 103.10 and
-# 55.79 seconds (active-designing/20260916-121517_where-a-seed-publish-spends-its-minutes.md).
+# 55.79 seconds (active-designing/date/20260916/20260916-121517_where-a-seed-publish-spends-its-minutes.md).
 # Measured on a 500-path sample of the same set, a per-file grep loop runs 6,624 ms
 # where ONE grep over the same 500 files runs 186 ms -- a factor of 35. The cost
 # was starting grep, never reading the bytes.

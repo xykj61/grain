@@ -4,7 +4,7 @@
 #
 # WHAT IT GUARDS. `tools/fixtures/p/page_residency_sample.sh` answers whether a path STAYS in the
 # page cache, which is the premise under a recommendation this ship made and then tested:
-# `active-designing/20260917-031330_the-price-of-an-open.md` measured a cold library read at 304 us
+# `active-designing/date/20260917/20260917-031330_the-price-of-an-open.md` measured a cold library read at 304 us
 # per open and advised packing 527 files into fewer. That advice is worth its build only where the
 # cold path is one the fleet actually walks.
 #

@@ -3,7 +3,7 @@
 #
 # WHY THIS RUNG. Two readings in the Diffuser lane died on one property rather than on two.
 # tools/t/torus_fold_witness.rish killed the adjacency half of row 5 of
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md, and tools/t/torus_place_witness.rish
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md, and tools/t/torus_place_witness.rish
 # killed its placement remainder; both closes name the SAME remaining door in the same words -- a
 # key built to carry locality on purpose, which no row in that page proposed. This rung opens it,
 # and the answer is a price rather than a yes.
@@ -74,7 +74,7 @@
 # question and never a measurement. And the real store, which this reading never opens.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260915-181000_the-key-that-carries-locality.md
+# Paper: active-designing/date/20260915/20260915-181000_the-key-that-carries-locality.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/l/locality_key_witness.rish

@@ -56,7 +56,7 @@
 # advisory ratchet leaves the watch-set where it is -- and nothing here reads a witness to check it.
 # This rung proves the map agrees with the roster and prices what the map already does.
 #
-# Style: context/GAUGE_STYLE.md - Design: active-designing/20260825-173153_reprove-only-what-moved.md
+# Style: context/GAUGE_STYLE.md - Design: active-designing/date/20260825/20260825-173153_reprove-only-what-moved.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/standing_equipment_scope_rank_witness.rish

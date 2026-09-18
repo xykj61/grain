@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/a/aether_falloff_scan.sh -- does the standing roster have a gradient to fall off?
 #
-# WHAT THIS ANSWERS. Row 4 of active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# WHAT THIS ANSWERS. Row 4 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 # proposes an "aether as falloff field": wake only the roster rows within path-distance R of a
 # touched row, intensity falling with distance. Its own falsifier reads -- the woken set at any
 # useful R covers most of the roster, which would show the roster is dense and a radius buys the

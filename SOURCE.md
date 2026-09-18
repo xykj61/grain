@@ -49,7 +49,7 @@ A first day that ends with Cursor open inside the enclosure -- before any forge 
 ### C0 -- Stand a cloud pier first (the move that carries every later one)
 
 *The reasoning behind this ordering: [`foundations/20260909-004934_the-machine-you-can-write-down.md`](foundations/20260909-004934_the-machine-you-can-write-down.md)
-and [`active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md`](active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md).
+and [`active-designing/date/20260909/20260909-005121_the-pier-a-newcomer-stands-up.md`](active-designing/date/20260909/20260909-005121_the-pier-a-newcomer-stands-up.md).
 The working repository describes its host in `nixos/configuration.nix`. The public seed currently
 withholds the `nixos/` directory; admitting its portable template still needs verification.*
 

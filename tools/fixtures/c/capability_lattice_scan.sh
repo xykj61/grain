@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/c/capability_lattice_scan.sh -- is Caravan's privilege a line, or a lattice?
 #
-# WHAT THIS ANSWERS. Row 2 of active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# WHAT THIS ANSWERS. Row 2 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 # proposes reading the process graph in polar coordinates: radius is privilege -- 0 supervisor,
 # 1 Pond, 2 desk, 3 wire -- angle is capability class, and a supervisor refuses any hop past a
 # declared maximum. It rests on one assumption, written in its own words: "Privilege in Caravan is

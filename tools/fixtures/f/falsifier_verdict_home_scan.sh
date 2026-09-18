@@ -23,7 +23,7 @@
 # falsifier fired.
 #
 # What grew in the same eight days, unprompted, is COMPLETE: all twelve ranked
-# rows of active-designing/20260910-060204_the-bounded-torus-moonshots.md carry a
+# rows of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md carry a
 # `Row N erratum:` line stamped by the child paper that graded them. A spelling
 # must be remembered and a position is found by looking, which is why one
 # converged and the other never did.

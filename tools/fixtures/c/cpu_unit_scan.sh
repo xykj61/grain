@@ -4,7 +4,7 @@
 #   sh tools/fixtures/c/cpu_unit_scan.sh
 #
 # Every timing claim this fleet ships is stated in WALL milliseconds, read on a pier eight ships
-# share. Row 12's erratum on active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# share. Row 12's erratum on active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 # measured what that costs: a deterministic workload measuring a change of exactly ZERO read a
 # baseline spread of 16.7 to 54.8 percent of its median at load average 8 to 13, so any
 # improvement under roughly a fifth is invisible to a single trial here. The remedy named there

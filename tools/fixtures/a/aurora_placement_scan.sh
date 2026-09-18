@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/a/aurora_placement_scan.sh -- CAN ROW 7 BE PLACED? Row 7 of
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes Aurora on a 4-core or
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md proposes Aurora on a 4-core or
 # 16-core network-on-chip "whose topology Grain knows to be a torus", with a placement map naming
 # which module sits on which node as its first witness, and this falsifier: "the reachable boards
 # are mesh rather than torus, which would leave the wrap-around hops the map depends on
@@ -41,7 +41,7 @@ cd "$ROOT" || exit 0
 
 echo "scan=aurora_placement"
 echo "row=7"
-echo "page=active-designing/20260910-060204_the-bounded-torus-moonshots.md"
+echo "page=active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md"
 echo "max_grids=$MAX_GRIDS"
 echo "max_rooms=$MAX_ROOMS"
 echo "max_imports=$MAX_IMPORTS"

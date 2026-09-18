@@ -1,5 +1,5 @@
 //! Run the falsifier of row 9 (*Seasonal duty cycle*) of
-//! `active-designing/20260910-060204_the-bounded-torus-moonshots.md` BEFORE its one-to-two-week
+//! `active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md` BEFORE its one-to-two-week
 //! estimate is spent -- the discipline rows 6 and 10 of the same page each paid to learn.
 //!
 //! Row 9 proposes a first witness -- *a fake clock that parks 3 of 8 sectors, with the parked and
@@ -232,7 +232,7 @@ fn check_row(k: u32, rho_ppm: u64) void {
 
 pub fn main() void {
     print("== row 9's falsifier, run before its estimate ==\n", .{});
-    print("row=9 seasonal duty cycle  page=active-designing/20260910-060204_the-bounded-torus-moonshots.md\n", .{});
+    print("row=9 seasonal duty cycle  page=active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md\n", .{});
     print("unit=micro-units of one awake sector-span  sectors_per_cycle={d}  ticks_per_span={d}\n\n", .{
         sectors_per_cycle, ticks_per_span,
     });

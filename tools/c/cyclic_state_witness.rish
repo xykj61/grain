@@ -3,7 +3,7 @@
 #   rishi/bin/rishi run tools/c/cyclic_state_witness.rish
 #
 # First witness for moonshot 3 of
-# `active-designing/20260910-060204_the-bounded-torus-moonshots.md` ("Cyclic topos"), built on
+# `active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md` ("Cyclic topos"), built on
 # moonshot 1's own ring (`tools/rye/wrap_ring.rye`) rather than on a witness owned by another lane.
 #
 # WHY TWO DIGESTS RATHER THAN ONE. The row's own first witness asks for the hash of a witness's
