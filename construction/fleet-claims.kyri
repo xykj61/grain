@@ -66,3 +66,9 @@ stamp 20260918.053122
 epoch 1789723882
 paths glow/rune_null.rye
 what add invariant asserts to rune_null.rye's subject_slice and parse(), matching rune_conditional.rye's asserted shape
+claim petrichor-rune-switch-asserts
+seat petrichor
+stamp 20260918.053715
+epoch 1789724235
+paths glow/rune_switch.rye
+what add bare asserts to rune_switch.rye, same shape as rune_list/rune_conditional (CLAIM-AS-OVERRIDE, docs-geode lane empty)
