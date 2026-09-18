@@ -9,6 +9,7 @@
 | `20260918.033756` | [Send confirmed -- both remotes hold e32cf938a, chain closed here](20260918/20260918-033756_send-confirmed-e32cf938a-chain-closed.kyri) | One more contested push resolved; nib re-derived after rebase; chain ends here. |
 | `20260918.033539` | [Torus thread closed, no new claim opened](20260918/20260918-033539_torus-thread-closed-no-new-claim-opened.kyri) | Live shell_dialect claim already landed (0f24869f3); no agent-doable DIFFUSER lap tonight. |
 | `20260918.033506` | [Send confirmed -- both remotes hold 8f078dda4](20260918/20260918-033506_send-confirmed-8f078dda4.kyri) | Three contested pushes; twice-pulled, never forced. |
+| `20260918.033325` | [Reverse-read: THREADS.md names a chapter two seasons gone](20260918/20260918-033325_reverse-read-threads-md-two-seasons-stale.kyri) | Standfasted for Keaton's word; GRASS card account shed and replaced. |
 | `20260918.033301` | [Round closes at 606c0c954; a pin-only follow-up caught and reverted](20260918/20260918-033301_round-closes-606c0c954-nib-correction.kyri) | A refused commit shape typed and then reset before it reached a remote. |
 | `20260918.033057` | [Send confirmed -- both remotes hold 1f1009577](20260918/20260918-033057_send-confirmed-1f1009577.kyri) | Four contested pushes on the torus-withdrawal commit; twice-pulled, never forced. |
 | `20260918.032924` | [docs-geode lane read: still idle, front-door register check](20260918/20260918-032924_docs-geode-lane-idle-fourteenth-check.kyri) | Register/reach/truth spot-check clean; empty claim board; rota Air. |
