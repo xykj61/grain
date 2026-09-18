@@ -105,14 +105,22 @@ measures zero cross-ship receipt-key agreement across 1,374 shared paths, traces
 independently-bootstrapped `rye` binary (Zig's non-reproducible Debug default), and names the
 one-line fix plus a store design and its jail-law crossing. Neither item needed Keaton's word.
 
+**Item 1 of the order below landed at `7ba98e4a1`.** `dimeroll/receipt_offer.rye` publishes
+`DimerollReceiptIntake` and `from_snapshot`, `dimeroll/receipt_offer_witness.rye` proves the
+mapping field for field, and `tools/d/dimeroll_receipt_offer_witness.rish` holds the product braid
+guard green -- Dimeroll still names neither `linengrow/` nor `LinengrowReceipt`. It imports no
+other room: Zig's compiler refuses an `@import` reaching outside its root file's directory (REDS
+%589), so `OfferSnapshot` -- a small plain-field struct -- crosses that boundary rather than
+Mantra's own `ReceiptState` type. The full dual-product witness, chaining Mantra's real admission
+through both projections, still waits on Linengrow's own side and a way to carry `ReceiptState`
+across that same boundary; the receipt contract page's own "what stands built" section was
+corrected in the same commit and two broken relative links there (from a prior directory fold)
+were repaired.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
-1. **Product: build what needs no ruling.** The Dimeroll projection holds zero lines today and owes
-   half the contract's falsifier. Its *module name* waits on Keaton; the shape of an intake that
-   reports `unrecognized-offer` with zero journal entries does not. Write a witness first, TAME
-   from line one, and hold the braid guard green.
-2. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
-3. **The standing red count is worth a glance.** This lap's cold endurance run closed
+1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
+2. **The standing red count is worth a glance.** This lap's cold endurance run closed
    `run_verdict=guard_red` at 38 reds against a 15-red baseline named in `20260917` peer logs --
    the same 15 plus roughly 22 more that read as newly-seated guards rather than a regression this
    lap could trace to a cause. Named in
