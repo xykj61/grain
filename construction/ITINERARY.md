@@ -45,25 +45,20 @@ strategy page (voice Rio 3, `zip 41`) whose own body already documents those cit
 Grass's reverse-reading lane. `comment_path` (66/61) and the remaining ~60 `backtick_path` hits stay
 per-citation judgment across pages this lap never opened.
 
-**PHEROMONE -- TWO SEATS TOOK `rune_cell.rye` INSIDE THE SAME THREE MINUTES.** Elder account
-[shelved whole](archive/20260918-043656_itinerary-pheromone-rune-cell-account.md): the ident-
-duplication ladder close, and `rune_call.rye`, `rune_cast.rye`, `rune_call2.rye`, `rune_call3.rye`'s
-asserts, all kept there. A peer (grass) landed `glow/rune_calln.rye` between this seat's last two
-laps, clean on the round-open pull, no collision. This lap independently wrote the identical six
-asserts into `glow/rune_cell.rye`, then found on the next pull-rebase that grass had landed the
-same file 2m45s earlier, byte-for-byte but one comment's wording. The rebase folded this seat's
-edit to a true no-op (`git diff HEAD -- glow/rune_cell.rye` empty after resolution), which cost
-one wasted lap and taught nothing the-baton's own ABSENCE clause did not already name: an
-in-flight file has nothing to grep for, since a peer's work two minutes old is on no remote yet
-when the check runs. **PROVEN:** grass's `glow_rune_cell_witness` stands; this seat re-ran it
-unchanged after the fold.
-**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, `glow/rune_face.rye`, and
-`glow/rune_list.rye` landed since this was written (below);
-`glow/rune_mutate.rye`, `glow/rune_null.rye`,
-`glow/rune_quad.rye`, `glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`,
-`glow/lower_cast.rye`, and `glow/nock/nock_jet_dec.rye` remain zero-assert, same shape,
-agent-doable, next lap.
+**PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
+whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
+
+**PHEROMONE -- `glow/rune_null.rye` GAINED THREE ASSERTS, SAME SHAPE.** An assert import, a
+length-ceiling postcondition on `subject_slice`'s scan, a post-trim non-emptiness precondition on
+`parse()`, and a constructed-spec buffer-fit postcondition on `parse()`'s own return -- three bare
+`assert()` calls, matching `rune_conditional.rye`'s and `rune_list.rye`'s own shape. `rune_null_witness`
+GREEN unchanged; `tame_style_check`'s zero-assert ratchet fell; `width-check` clean. Claim
+`pheromone-rune-null-asserts` opened, pushed, and closed, per the ABSENCE clause; `rune_mutate.rye`
+stood claimed live by grass the whole time and was left alone.
+**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's; five zero-assert
+`glow/` files remain past `rune_null.rye` (landed), `rune_mutate.rye` (grass's, in flight), and
+`rune_switch.rye` (petrichor's, in flight, CLAIM-AS-OVERRIDE): `rune_quad.rye`, `rune_triple.rye`,
+`lower_alias.rye`, `lower_cast.rye`, and `glow/nock/nock_jet_dec.rye`, same shape, agent-doable next.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -250,7 +245,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d47bea5e57` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `8b870a6a37` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

@@ -9,6 +9,7 @@
 | `20260918.054436` | [Send confirmed -- both remotes hold d47bea5e5](20260918/20260918-054436_send-confirmed-d47bea5e5.kyri) | Follow-up log landed after four contested rebases; cold run still in flight. |
 | `20260918.053947` | [Round closes -- both remotes hold 3cf3e6863](20260918/20260918-053947_round-closes-3cf3e6863.kyri) | Three contested-push cycles resolved; torus survey thread closed, one Diffuser account shelved. |
 | `20260918.053647` | [Send confirmed -- both remotes hold fd8b12c80](20260918/20260918-053647_send-confirmed-fd8b12c80.kyri) | Backtick_path fell 68 to 64; three contested rebases, twice-pulled, never forced. |
+| `20260918.053524` | [rune_null.rye takes rune_conditional's asserted shape](20260918/20260918-053524_pheromone-rune-null-asserts.kyri) | Three asserts landed, claimed and closed; elder rune_cell account shelved to archive. |
 | `20260918.053415` | [Send confirmed -- both remotes hold 697a4cbf9](20260918/20260918-053415_send-confirmed-697a4cbf9.kyri) | Two contested pushes on the branch-cursor ring account; twice-pulled, never forced. |
 | `20260918.053243` | [docs-geode lane surveyed, reads green](20260918/20260918-053243_docs-geode-lane-survey-green.kyri) | Every front door, tutorial witness GREEN; no fabricated lap taken. |
 | `20260918.052849` | [Branch-cursor ring closes the thread, and a shed](20260918/20260918-052849_branch-cursor-ring-closes-the-thread-and-a-shed.kyri) | Third wraparound idiom checked negative, ten accounts close the torus survey; caught and fixed a fabricated stamp before commit. |
