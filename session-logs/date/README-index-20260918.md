@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.091049` | [Second cold run books %827](20260918/20260918-091049_second-cold-run-books-827.kyri) | 29 reds, 28 known; %827 booked, %825 folded to make room. |
+| `20260918.080934` | [Cold run held again](20260918/20260918-080934_cold-run-held-again.kyri) | Round-open clean, %826 still open, cold run launched and held. |
 | `20260918.080229` | [Send confirmed -- both remotes hold 8c1bf956c](20260918/20260918-080229_send-confirmed-8c1bf956c.kyri) | Rebased past a peer push, regenerated two pages (no change), pushed xy and gp405. |
 | `20260918.080119` | [Cold run books %826](20260918/20260918-080119_cold-run-books-826-and-two-cheap-fixes.kyri) | Books REDS %826, shelves comment_path, lands at 3be3470b3. |
 | `20260918.075952` | [Empty open, second check -- docs-geode lane still clean](20260918/20260918-075952_empty-open-second.kyri) | No fresh work found this turn; recommended check-in. |

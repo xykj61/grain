@@ -40,14 +40,25 @@ lap to seat the newest under the pin's bound.
 **INCENSE.** [Account shelved](archive/20260918-075447_itinerary-incense-comment-path-account.md)
 -- comment_path's ceiling raised 61 to 66 on a clean reading.
 
-**INCENSE -- THE COLD RUN NAMED 30 REDS, AND TWO WERE CHEAP.** `rye/bin/rye` and `rishi/bin/rishi`
-read `stale` against their own sources (55,704s and 148,705s behind) -- rebuilt via
-`sh rye/bootstrap.sh` then `rye build rishi/src/main.rye`, both gitignored binaries, `built_tool_freshness`
-now GREEN with no tracked byte moved. The other new finding is `%826`: the `%801` wall
-(`commit_parent_claim_witness`) reads 29 violations of its own class since its anchor, because it
-runs only in the cold pass and no wall in `tools/hooks/commit-msg` reads a parent-hash claim at
-write time -- testimony, so nothing here is repaired. **YOURS:** whether `commit-msg` earns a fifth
-wall for this claim, per `%826`.
+**INCENSE.** [Account shelved](archive/20260918-090424_itinerary-incense-cold-run-30-reds-account.md)
+-- two stale binaries rebuilt, `%826` booked (the parent-hash wall's own backlog).
+
+**INCENSE -- A SECOND COLD RUN, THE SAME NIGHT, NAMED THE SAME BACKLOG PLUS ONE FRESH REGRESSION.**
+Held to the ORDER clause: round-open clean, claim board clear, `HEAD` read once at `4a02d3dcc5`,
+cold run launched and held to `run_verdict=` (this pass's own session-log write moved the tree,
+`tree_moved=yes`, the same structurally-unavoidable friction the prior lap's log already named).
+29 reds, 28 of them the same standing cross-lane backlog the prior lap already triaged this
+morning -- unowned ratchets over their own ceilings (`build_target`, `error_member_reach`,
+`ignored_walk`, `rye_compiled_reach`'s 777-file uncompiled backlog, and others), each already
+either OPEN under another lane's name or reported-never-gated by its own scan's design.
+`commit_parent_claim` is `%826` itself, still OPEN. The one fresh finding: `%827` -- the report-only
+ratchet `standing_equipment_redleg` (guards demonstrating no refusal of their own) read 53 against
+a ceiling of 51, "a ceiling that only falls" crossed by two shims seated after the last measurement
+(`tools/am/amphora_device_wire.rish`, `tools/gen/fund/gen_linn_fund_prep.rish`). Booked rather than
+fixed -- each shim needs a proven refusal leg (a `_control.sh` or one of the six named markers),
+which is Amphora's and Dimeroll's own work rather than a law-lane patch. Folded `%825` (CLOSED, a
+claim naming the wrong seat) to make room on the pin before writing `%827`, both ledger witnesses
+GREEN after. **YOURS:** `%826` and `%827` both wait on their owning lanes or Keaton's word.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).

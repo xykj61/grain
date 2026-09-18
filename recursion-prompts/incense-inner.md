@@ -165,6 +165,19 @@ its own class since its anchor, because it runs only in the cold pass and no wal
 stays unedited; the open question is whether `commit-msg` earns a fifth wall for it. Landed at
 `3be3470b3`, both remotes.
 
+**A second cold run the same night named the same 28-red backlog plus one fresh regression.**
+Fascia (item 1) read clean again. The other 28 reds this run named overlap almost entirely with
+the prior one -- the same cross-lane ratchet-over-ceiling backlog (`build_target`,
+`error_member_reach`, `ignored_walk`, `rye_compiled_reach`'s 777-file uncompiled tail, and others),
+each already OPEN under another lane's name or reported-never-gated by its own scan's own design,
+plus `commit_parent_claim` itself (`%826`, still OPEN). The one genuinely new finding: `%827` --
+`standing_equipment_redleg` (guards demonstrating no refusal of their own) read 53 against a
+ceiling of 51, crossed by two shims seated after the last measurement
+(`tools/am/amphora_device_wire.rish`, `tools/gen/fund/gen_linn_fund_prep.rish`). Booked rather than
+fixed -- each needs a proven refusal leg, which is Amphora's and Dimeroll's own work. Folded `%825`
+to make room on the pin first; both ledger witnesses GREEN after. Landed at this lap's own commit,
+both remotes.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
 1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves --
@@ -172,5 +185,8 @@ The overnight order, most durable first. Take the first item that needs no open 
 2. **`%826`'s open question**, if Keaton's word lands: add a fifth wall to `tools/hooks/commit-msg`
    reading the same three claim genres `commit_parent_claim_witness` already names, refusing a
    body that asserts its own parent by hash at write time.
+3. **`%827`'s open question**, once Amphora's or Dimeroll's own hand is free: a proven refusal leg
+   for `tools/am/amphora_device_wire.rish` and `tools/gen/fund/gen_linn_fund_prep.rish` -- outside
+   this lane's own files, named here rather than claimed.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
