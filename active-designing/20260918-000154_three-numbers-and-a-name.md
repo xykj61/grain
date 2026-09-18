@@ -34,7 +34,7 @@ A SHA-256 digest written in hexadecimal runs to **exactly 64 characters**. It is
 
 | Option | Buys | Costs |
 |---|---|---|
-| **Exact 64** | A wrong-length digest refuses at the door | Refuses the 65-96 range passing today; commits to SHA-256 |
+| **Exact 64** | A wrong-length digest refuses at the door | Refuses the 65-96 range passing today; commits to a 256-bit digest |
 | Keep 96 | Leaves today's admissions exactly as they stand | Admits strings a digest could never be |
 | 64 now, a row per scheme later | Honest per scheme | Two rows where the product holds one digest |
 
@@ -42,6 +42,36 @@ A SHA-256 digest written in hexadecimal runs to **exactly 64 characters**. It is
 carries no information, so admitting one admits a fault and hands it downstream. This is the single
 change here that **tightens** what the product accepts, and the door is the cheapest place that will
 ever happen.
+
+**A correction, and it widens the option rather than narrowing it** (`20260918.003514`). An earlier
+reading of this row said 64 *commits to SHA-256*. It does not. **Sixty-four hex characters is the
+width of any 256-bit digest** -- SHA-256, **SHA3-256**, and BLAKE2b-256 alike, each 32 bytes. So the
+length names a family rather than an algorithm, and the scheme stays free to move inside it.
+
+**Which matters, because this tree already owns SHA3.** `crypto/sha3.rye`, `crypto/sha3_digest.rye`
+and `crypto/keccak256.rye` stand written, and SHA3-512 already seals
+`construction/waymark-registry.bron` and addresses content in Aurora.
+
+**And SHA3-512 is a real alternative with a real argument.** Its width is **128** hex characters
+rather than 64, so the row would read differently:
+
+| Scheme | Bits | Bytes | Hex |
+|---|---:|---:|---:|
+| SHA-256 / **SHA3-256** / BLAKE2b-256 | 256 | 32 | **64** |
+| SHA-512 / **SHA3-512** | 512 | 64 | **128** |
+
+*For* SHA3-512: it is what this tree already seals its registry with, and the DISC ladder signs with
+**SLH-DSA-SHAKE-256s** -- SHAKE being SHA3's own extendable-output function -- so choosing SHA3
+anywhere in this receipt puts the whole object in one cryptographic family rather than two.
+
+*Against*: 128 hex costs twice the bytes inside a 4,096-byte fact that a post-quantum signature is
+already crowding, and 256-bit collision resistance is ample for the content digest of a small data
+product.
+
+**Proposed, with the correction folded in: exact 64, and name the scheme SHA3-256 in the row.** It
+keeps the Keccak family the tree's own seal and its signature ladder already live in, it matches the
+fixture, it costs half of SHA3-512, and writing the row as *a 256-bit digest in hex* lets the width
+outlive the algorithm.
 
 ### `value_unit` -- the unit an offered value is counted in
 
