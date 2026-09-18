@@ -10,6 +10,7 @@
 //!   =*  records
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -31,6 +32,8 @@ pub const AliasSpec = struct {
 pub fn face_slice(spec: *const AliasSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_name_len and spec.face[len] != 0) len += 1;
+    // invariant: the scanned length never exceeds the ident ceiling the lexer owns.
+    assert(len <= max_name_len);
     return spec.face[0..len];
 }
 
@@ -38,7 +41,12 @@ fn is_ident_char(c: u8) bool {
     if (c >= 'a' and c <= 'z') return true;
     if (c >= 'A' and c <= 'Z') return true;
     if (c >= '0' and c <= '9') return true;
-    return c == '-' or c == '_';
+    const accepted = c == '-' or c == '_';
+    // invariant: an accepted character is never the space this parser uses to end a face.
+    if (accepted) assert(c != ' ');
+    // invariant: an accepted character is never the tab this parser uses to end a face.
+    if (accepted) assert(c != '\t');
+    return accepted;
 }
 
 /// Parses one line of Glow's `=*` rune. Face only -- not the source.
@@ -62,5 +70,7 @@ pub fn parse(line: []const u8) ParseError!AliasSpec {
 
     var spec: AliasSpec = .{};
     @memcpy(spec.face[0..face_text.len], face_text);
+    // invariant: a returned spec's face reads back exactly the bytes just written.
+    assert(face_slice(&spec).len == face_text.len);
     return spec;
 }
