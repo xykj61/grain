@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.032910` | [Send confirmed -- both remotes hold 628df5de6](20260918/20260918-032910_send-confirmed-628df5de6.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
 | `20260918.032618` | [glow/rune_cast.rye leaves the zero-assert ratchet](20260918/20260918-032618_rune-cast-earns-asserts.kyri) | Three invariant asserts added; witness GREEN unchanged; ratchet 32 to 31. |
 | `20260918.032501` | [docs-geode lane read: clean, closing to check-in](20260918/20260918-032501_docs-geode-lane-clean-check-in.kyri) | Empty agent-doable queue; crushed-index GREEN; recommends Keaton's pick. |
 | `20260918.032248` | [Nib follow-up landed at c412d14ef, chain closed here](20260918/20260918-032248_nib-follow-up-landed-round-closes.kyri) | Witness GREEN; card carried forward once more, then the chain stops per rule 2's one-amend lag. |
