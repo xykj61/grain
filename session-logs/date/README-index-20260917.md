@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.210006` | [The doorway census holds at its own ceiling](20260917/20260917-210006_the-doorway-census-holds-at-its-own-ceiling.kyri) | Grass audit: doorway census 3-of-3, register green, no unclaimed work. |
 | `20260917.205432` | [the send folded a neighbor's account](20260917/20260917-205432_the-send-folded-a-neighbors-account.kyri) | Rebase pushed ITINERARY over bound; COPAL account shelved, index conflict resolved by union. |
 | `20260917.205400` | [The smaller paper gets written](20260917/20260917-205400_the-smaller-paper-gets-written.kyri) | Row 11's paper written; the moonshot ladder closes. |
 | `20260917.204819` | [REDS %806 was already fixed and stood open anyway](20260917/20260917-204819_reds-806-was-already-fixed-and-unclosed.kyri) | The ryekey dangling-else fix (e4c6f40b7) and its wider meter both landed and read GREEN; the ledger row never learned. Closed it. |
