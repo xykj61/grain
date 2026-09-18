@@ -90,14 +90,15 @@ mode="${1:-count}"
 #                          so a cohort is a cohort whatever budget it names) and by call sites:
 #                          the `max_arm_len` THREE at `c370400f` -- `lower_conditional`,
 #                          `lower_null`, `lower_switch` -- carrying 31 sites EACH, still the
-#                          largest lap left; a NEW `max_name_len` PAIR at `658a5b6f`,
-#                          `lower_multi` and `lower_multi_typed` at ONE site each, which is the
-#                          cheapest fall this room has ever offered; and eight singletons
-#                          (`lower_shop_gate` 12, `lower_core` 4, `lower_call3` 4, `lower_call2` 3,
-#                          `lower_alias` 2, `lower_face_lit` 2, `lower_shop_nest` 2, `lower_trap` 1).
-#                          `lower_alias` stays the one body that is genuinely a different rule --
-#                          a bare `[]u8` that maps the dot -- and the one wanting `Dot.to_underscore`.
-CEILING=13
+#                          largest lap left; the `max_name_len` PAIR at `658a5b6f`,
+#                          `lower_multi` and `lower_multi_typed`, fell `20260917` -- one site
+#                          each, the cheapest fall this room has offered -- and eight singletons
+#                          remain (`lower_shop_gate` 12, `lower_core` 4, `lower_call3` 4,
+#                          `lower_call2` 3, `lower_alias` 2, `lower_face_lit` 2, `lower_shop_nest`
+#                          2, `lower_trap` 1). `lower_alias` stays the one body that is genuinely
+#                          a different rule -- a bare `[]u8` that maps the dot -- and the one
+#                          wanting `Dot.to_underscore`.
+CEILING=11
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

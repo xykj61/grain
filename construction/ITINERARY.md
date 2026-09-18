@@ -34,11 +34,15 @@ lap to seat the newest under the pin's bound.
 Elder account [shelved whole](archive/20260917-185254_itinerary-pheromone-lower-face-account.md).
 Elder account [shelved whole](archive/20260917-201424_itinerary-pheromone-ident-pair-account.md) --
 the ident pair delegates (`u32` already, width bill zero), a witness leg stops reading a comment as
-a type, and the cold and hot passes both closed their own reds. **PROVEN:** `glow_lower_shape`,
-`glow_lower_named_cast`, `glow_ident`, `glow_run_contract`, `glow_run_desk`, `fold_shelf_link`,
-`fold_shelf_link_repoint`, `width-check`, `tame_style_check`, GREEN on metal.
-**YOURS:** the `max_arm_len` three are one lap at 93 sites together; the `lower_multi` pair is two.
-Which door -- the largest, or the cheapest twice over?
+a type, and the cold and hot passes both closed their own reds.
+**PHEROMONE -- THE CHEAPEST FALL, TAKEN TWICE.** Elder account
+[shelved whole](archive/20260917-203604_itinerary-pheromone-multi-pair-account.md): the
+`lower_multi` pair delegates (body md5 `1738b935`), width bill falls 1143 to 1139,
+`glow_ident_duplication`'s own ceiling falls 13 to 11 in the same commit. **PROVEN:**
+`glow_lower_multi`, `glow_lower_multi_typed`, `glow_ident`, `glow_run_contract`, `width-check`,
+`tame_style_check`, `glow_ident_duplication`, GREEN on metal.
+**YOURS:** the `max_arm_len` three -- `lower_conditional`, `lower_null`, `lower_switch` -- at 93
+call sites together, still the largest lap this room has offered, and still open.
 **INCENSE -- THE CONTRACT'S FALSIFIER SAID ONE THING ABOUT CODE AND NOTHING READ IT.** Account
 [born on its shelf](archive/20260917-090914_itinerary-incense-braid-account.md), one line here --
 **the card's own open door, taken by the lane that met it**: the card stood four bytes under its

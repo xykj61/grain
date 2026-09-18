@@ -5,8 +5,11 @@
 //! Other auras and named molds refuse.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rf = @import("rune_face.rye");
 const lower_multi = @import("lower_multi.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const max_lines: u32 = lower_multi.max_lines;
 pub const max_name_len: u32 = rf.max_name_len;
@@ -42,22 +45,18 @@ fn is_digit(ch: u8) bool {
     return ch >= '0' and ch <= '9';
 }
 
-fn zig_safe_ident(face: []const u8, out: *[max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. The ceiling is this module's
+/// own `max_name_len`; the rule -- hyphen to underscore, then Zig's own identifier bytes --
+/// is the room's, and stood in 29 copies before it moved.
+fn zig_safe_ident(face: []const u8, out: *[max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the `out` type and the error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize`
+    const n = try zig_ident.safe_ident(face, out[0..], max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn parse_trailing_u32(rest: []const u8) LowerError!u32 {
@@ -127,16 +126,17 @@ fn emit_multi_typed(spec: *const MultiTypedSpec, welcome: bool, out: []u8) Lower
     while (i < spec.count) : (i += 1) {
         var zb: [max_name_len]u8 = undefined;
         const face = face_at(spec, i);
-        const zn = try zig_safe_ident(face, &zb);
+        const zn = try zig_safe_ident(face, &zb, "multi-typed-face");
+        const zs = zb[0..@as(usize, @intCast(zn))];
         const val = spec.binds[i].value;
         const expect: u32 = if (welcome) val else val +% 1;
-        const bline = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zb[0..zn], val }) catch return error.Overflow;
+        const bline = std.fmt.bufPrint(binds[bat..], "    const {s}: u32 = {d};\n", .{ zs, val }) catch return error.Overflow;
         bat += bline.len;
         if (i > 0) {
             const and_part = std.fmt.bufPrint(checks[cat..], " and ", .{}) catch return error.Overflow;
             cat += and_part.len;
         }
-        const cline = std.fmt.bufPrint(checks[cat..], "{s} == {d}", .{ zb[0..zn], expect }) catch return error.Overflow;
+        const cline = std.fmt.bufPrint(checks[cat..], "{s} == {d}", .{ zs, expect }) catch return error.Overflow;
         cat += cline.len;
     }
 
