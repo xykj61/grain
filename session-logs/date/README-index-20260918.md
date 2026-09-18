@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.002110` | [docs-geode living pages beyond the front doors, tasted](20260918/20260918-002110_docs-geode-living-pages-beyond-front-doors-tasted.kyri) | Nine tutorials/api/sangha/study pages graded; all clear Field register/reach. |
 | `20260918.001917` | [Two more proxies checked absent](20260918/20260918-001917_two-more-proxies-checked-absent.kyri) | cpufreq, thermal absent too; hypervisor named in the scan itself. |
 | `20260918.001813` | [The rose walked](20260918/20260918-001813_the-rose-walked.kyri) | Two compass stations reconciled; one fault reported. |
 | `20260918.001641` | [Gauge lane swept clean -- nothing to molt](20260918/20260918-001641_gauge-lane-swept-clean-nothing-to-molt.kyri) | Register ceilings read clean or already parked on Keaton's word; board empty. |
