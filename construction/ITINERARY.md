@@ -34,16 +34,17 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**INCENSE -- BACKTICK_PATH FELL 68 TO 64.** Most hits cite gitignored-by-design files, a teacher's
-own tree (TigerBeetle's `docs/TIGER_STYLE.md`), or a compile-relative symlink path the scan's three
-spellings cannot see -- not broken promises. Two were fixable: `context/QUIN.md` repointed to the
-self-critique's folded home; `construction/SHRED_PREP.md`'s Class H table de-backticked three
-already-cut fossil paths its own prose calls cut and kept for the record. Ceiling 65 to 64 in the
-same commit; witness and control GREEN, 22 legs, `control_failed=0`.
-**YOURS:** `construction/ready-to-ask-claude.md`'s four hits read as a fully superseded `20260702`
-strategy page (voice Rio 3, `zip 41`) whose own body already documents those citations as deleted --
-Grass's reverse-reading lane. `comment_path` (66/61) and the remaining ~60 `backtick_path` hits stay
-per-citation judgment across pages this lap never opened.
+**INCENSE.** [Account shelved](archive/20260918-055107_itinerary-incense-backtick-path-account.md)
+-- backtick_path fell 68 to 64.
+
+**INCENSE -- COMMENT_PATH'S CEILING FOLLOWED A CLEAN READING, NOT A REPAIR.** All 66 living hits
+checked by hand: none was a stale citation. Four genres instead -- narrative prose quoting a past
+defect's own broken path as the sentence's point (most of them, e.g. `comment_citation_scan.sh`'s
+own worked example), deliberate phantoms naming a path that must fail or a name no file ever wore,
+real files this tree never tracks by design that `here()` cannot see, and elder-pre-fold spellings
+the two `tool_path_*` resolvers quote as their own input. Raised 61 to 66, reasoning written into
+the scan's own header; witness and control GREEN, 28 legs, `control_failed=0`. `backtick_path`'s
+~62 remaining hits are the untouched sibling and stay Grass's reverse-reading lane.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).

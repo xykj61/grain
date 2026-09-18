@@ -145,12 +145,16 @@ reverse-reading lane rather than picked up here. `comment_path` (66/61) and the 
 for the reason above -- a session log write is structurally unavoidable every response, so a
 recovered-lock re-launch still met the same spoil.
 
+**`comment_path` closed at this lap's own commit.** All 66 living hits checked by hand, none a
+stale citation -- narrative prose quoting a past defect's own broken path, deliberate phantoms
+(escaping paths, an absent linengrow leaf, a name no file ever wore), real gitignored-by-design
+files `here()` structurally cannot see, and elder-pre-fold spellings the `tool_path_*` resolvers
+quote as their own worked input. Raised 61 to 66, reasoning written into the scan's own header;
+witness and control GREEN, 28 legs, `control_failed=0`. `backtick_path`'s own ~62 remaining hits are
+the untouched sibling population and stay named for Grass's reverse-reading lane.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
 1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
-2. **`comment_path`**, an over-ceiling pre-existing backlog (66/61) spread across pages this lap
-   never opened -- each citation wants a look to tell a stale reference from an illustrative
-   placeholder before it can be repointed or marked. The remaining `backtick_path` hits (~62) share
-   the same shape and mostly resolve to "not a broken promise" on inspection.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
