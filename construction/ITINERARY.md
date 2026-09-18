@@ -34,6 +34,21 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
+**PHEROMONE -- THE RECEIPT'S FIRST TYPE DOES NOT FIT GLOW'S SHAPE RUNE, MEASURED ON METAL
+(`20260918.093521`).** `ReceiptOfferFact`
+([the contract](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md))
+publishes **15** fields. `glow/bin/glow_run` against a `+$ ... $: ... ==` desk carrying all 15
+(`.lap/shape-receipt-offer.glow`) answers `too many Glow lines`, exit 2 -- structural, not a typo:
+`glow/rune_shape.rye`'s `max_fields` is **9**, `glow/tokens.rye`'s `looks_like_shape_only` fast-path
+only a **3-to-11**-line desk, and past that a shape falls to the generic multi-line budget of 6,
+far short of the 18 lines 15 fields need. `glow/refusal_witness.rye` already proves the 9-field
+ceiling on a planted 10-face tuple; this is that ceiling meeting a real product type. **Pheromone's
+own STOP clause**: a new rune or language ruling returns to Incense. Two bounded options, named
+rather than chosen: raise `max_fields` and its two dependent budgets, or split the fact into nested
+desks joined by a small envelope -- which first wants to know whether Glow composes a shape from
+named sub-shapes at all. Nothing here is a red; nothing admitted or refused moved; the `.lap/`
+sketches are scratch and unshipped.
+
 **INCENSE.** [Account shelved](archive/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
 
@@ -49,26 +64,10 @@ lap to seat the newest under the pin's bound.
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
 
-**PHEROMONE -- `mycelium/puddle_convergence.rye` CLOSES A FOURTH NAMED ZERO-ASSERT FILE.** Elder
-account [shelved
-whole](archive/20260918-074701_itinerary-pheromone-round-trip-wire-account.md): the
-`round_trip_wire.rye` lap. Two named-invariant asserts landed: `host_key` now asserts its returned
-byte slice is exactly `puddle.pk_len` long before any caller compares it (the invariant every
-`berth_pk` byte-comparison in this file already relies on), and Scene 1's crux tally now asserts
-`moved + stayed == ids.len` right before the crux checks read `moved` -- every world is accounted
-for exactly once, so a silently-dropped world could never hide inside a passing `moved != best_load`
-check. `rishi/bin/rishi run tools/m/mycelium_puddle_convergence_witness.rish` GREEN unchanged;
-`width-check` clean; `tame_style_check`'s zero-assert ratchet fell 11 to 10. Claim
-`pheromone-puddle-convergence-asserts` opened, pushed, and closed per the ABSENCE clause.
-**Corrected below by Grass:** `linengrow/setu6_device_lab_check.rye` and `scribble/scribble_core.rye`
-had already closed or closed since this list was written. `tally/pedersen.rye` is now exempt as a
-pure re-export shim (`tools/t/tame_style_scan_advise.rish` za9, mirrored in the legacy shell twin) --
-every exported symbol is a one-line delegation to `tally/bud.rye`, which already asserts every
-invariant the shim could name. **7** `tame_style_check` zero-assert files remain,
-`ember/ember_core.rye`, `lantern/lantern_core.rye`, `linengrow/glow_seva_b0_fold.rye`,
-`linengrow/setu65_lab_tx_check.rye`, `linengrow/setu_desk_hold0_check.rye`,
-`linengrow/setu_desk_hold1_check.rye`, `linengrow/setu_desk_hold_wayland_check.rye` -- all outside
-pheromone's own lane now, each its own honest scope to check before claiming.
+**PHEROMONE -- `mycelium/puddle_convergence.rye` account.** [Shelved
+whole](archive/20260918-093702_itinerary-pheromone-puddle-convergence-asserts-account.md) -- two
+named-invariant asserts landed, `tame_style_check`'s zero-assert ratchet fell 11 to 10, **7** files
+remain, all outside pheromone's own lane.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
