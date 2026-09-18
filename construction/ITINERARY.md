@@ -169,17 +169,10 @@ carries two lenses at two grains rather than one; neither replaces the other.
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
 `rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.
 
-**BAKERY -- A ROW READ OPEN AFTER ITS OWN FIX HAD ALREADY LANDED.** The agent-doable queue named no
-Bakery-lane work; the fleet's own OPEN rows did. `%742` asked `tools/fixtures/l/link_text_promise_scan.sh`
-to reach `shell_portable.sh` by a depth-proof root walk rather than a fixed `../s` hop, and its
-sibling control to build a pen carrying both `rishi/bin` and `tools/fixtures`. Both stood in the
-tree already -- landed beside an unrelated commit's own stated purpose, so nothing pointed a reader
-back to the row that asked for them. **PROVEN:** `tools/l/link_text_promise_witness.rish` and
-`tools/f/fixture_depth_witness.rish` both GREEN on metal, the second naming zero elder depth
-arithmetic and zero elder sibling sources across the room. `%742` folded
-[whole](archive/REDS-a-repair-already-standing-rows-742.md), **CLOSED**; `reds_fold_witness.rish`,
-`reds_pin_capacity_scan.sh` (`verdict=ok`), and the ledger monotone and status-consistency witnesses
-all GREEN after.
+**BAKERY -- A ROW READ OPEN AFTER ITS OWN FIX HAD ALREADY LANDED.** Account
+[shelved whole](archive/REDS-a-repair-already-standing-rows-742.md): `%742` found its own repair
+already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacity_scan.sh`
+(`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
