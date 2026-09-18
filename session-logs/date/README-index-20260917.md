@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.225238` | [Aether row rota read, erratum checked against a GREEN witness](20260917/20260917-225238_aether-row-rota-and-erratum-check.kyri) | Rota row 0, strand-count erratum confirmed, page graded above door. |
 | `20260917.225143` | [A front door for the two keys](20260917/20260917-225143_a-front-door-for-the-two-keys.kyri) | keys/README.md 25% to 0%, joined DOOR. |
 | `20260917.224829` | [Two rings in Caravan, a torus nobody composed](20260917/20260917-224829_two-rings-a-torus-nobody-composed.kyri) | queue.rye's slot, cycle.rye's lap: uncomposed axes. |
 | `20260917.224719` | [Cold open -- tree current, board empty, rota row read](20260917/20260917-224719_cold-open-check-in.kyri) | ABSENCE-checked, claim board empty, rota row 4 verified. |
