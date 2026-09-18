@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.043047` | [Send confirmed -- both remotes hold f4ab509b4, rune_calln lands after a real collision](20260918/20260918-043047_send-confirmed-f4ab509b4.kyri) | Four rebases; a real duplicate-lap collision on rune_call3.rye folded as a no-op. |
 | `20260918.042732` | [Send confirmed -- both remotes hold 1c079f841, chain closed here](20260918/20260918-042732_send-confirmed-1c079f841.kyri) | Two contested pushes on the declustering survey; twice-pulled, never forced. |
 | `20260918.042229` | [Send confirmed -- both remotes hold e02d4a0c6, chain closed here](20260918/20260918-042229_send-confirmed-e02d4a0c6-chain-closed.kyri) | Two more contested pushes; twice-pulled, never forced. |
 | `20260918.042111` | [Fourth-opening population survey](20260918/20260918-042111_fourth-opening-population-survey.kyri) | Five more modules read; none combine large population with cross-host replication. |
