@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself; recommends the lane hold for Keaton rather than re-check again. |
 | `20260917.200410` | [Second re-check, same two doors](20260917/20260917-200410_second-re-check-same-two-doors.kyri) | Third consecutive lap confirming %804 and %819 are unchanged and Keaton's word. |
 | `20260917.200158` | [The gate and the queue both stood unmoved](20260917/20260917-200158_gate-and-queue-both-unmoved.kyri) | Re-checked HEAD, claims board, and the card's queue; nothing moved since the prior lap. |
 | `20260917.195846` | [Docs-geode lane clear, no red](20260917/20260917-195846_docs-geode-lane-clear-no-red.kyri) | Card and claims read; fourteen docs-geode front doors graded, all B or better. |
