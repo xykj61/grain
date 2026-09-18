@@ -9,6 +9,7 @@
 | `20260917.233924` | [pleac/README.md joins the DOOR roster](20260917/20260917-233924_pleac-door-roster.kyri) | Negatives 27% to 0%; door_setting_declared 31 to 32. |
 | `20260917.233915` | [empty turn -- no request received, check-in only, third in a row](20260917/20260917-233915_empty-turn-checkin-3.kyri) | Three consecutive empty turns now; naming the pattern. |
 | `20260917.233653` | [empty turn -- no request received, check-in only](20260917/20260917-233653_empty-turn-checkin.kyri) | Second empty turn in a row; check-in, no work opened. |
+| `20260917.233354` | [check-in -- water-row taste on the convergence census](20260917/20260917-233354_convergence-census-tasted-one-unproven.kyri) | Census re-run: 14/15 proven; one find named (bootstrap_wasmtime.sh) for another lane. |
 | `20260917.233023` | [Send -- lower_call3 delegation landed on both remotes](20260917/20260917-233023_call3-sent.kyri) | Both remotes hold 8b68ab0bc after two rebases. |
 | `20260917.232917` | [Send -- the trio essay landed](20260917/20260917-232917_trio-checked-negative-sent.kyri) | Both remotes hold 6e3e46ea4 after one rebase. |
 | `20260917.232654` | [empty turn -- no request received, check-in only](20260917/20260917-232654_empty-turn-checkin.kyri) | Turn carried only the baton and reminders; no task to act on. |
