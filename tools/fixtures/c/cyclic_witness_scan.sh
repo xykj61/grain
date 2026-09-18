@@ -4,7 +4,7 @@
 #   sh tools/fixtures/c/cyclic_witness_scan.sh <witness-path> [--bound 300]
 #
 # First witness for moonshot 3 of
-# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`: a proof that returns to its
+# `active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md`: a proof that returns to its
 # start state is a loop with a declared period, and its log stays that size forever.
 #
 # WHAT IS ACTUALLY HASHED, and why this and not the whole tree. The tree holds tens of thousands of

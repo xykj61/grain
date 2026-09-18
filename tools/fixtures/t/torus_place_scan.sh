@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/t/torus_place_scan.sh -- does the SECOND AXIS of a torus fold buy anything for
-# PLACEMENT? The one question row 5 of active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# PLACEMENT? The one question row 5 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 # has left, and the one its elder names as the claim it does not touch.
 #
 # WHERE THIS PICKS UP. tools/fixtures/t/torus_fold_scan.sh read row 5's own falsifier and killed

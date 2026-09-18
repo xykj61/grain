@@ -58,7 +58,7 @@
 # close and a question about reach does not. It is opt-in all the same: starting an enclosure is a
 # real act, and an ordinary run of this scan starts none.
 #
-# THE READING BESIDE IT. active-designing/20260829-064107_the-door-the-record-cannot-name.md argues
+# THE READING BESIDE IT. active-designing/date/20260829/20260829-064107_the-door-the-record-cannot-name.md argues
 # what these counts mean and what each of the three undeclared duties would cost to seat.
 #
 #   sh tools/fixtures/p/pond_enclosure_door_scan.sh [--root DIR] [--policy FILE] [--launcher FILE]

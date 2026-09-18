@@ -3,7 +3,7 @@
 #
 # WHY THIS EXISTS. construction/standing-equipment.kyri opens with the sentence this meter measures:
 # "a guard that is never run guards nothing either." The roster names what stands; nothing counted
-# what stands OUTSIDE it. active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md
+# what stands OUTSIDE it. active-designing/date/20260824/20260824-080208_the-roster-that-decides-what-gets-measured.md
 # booked the question by name and left it open: "whether every witness on disk is reached by
 # something ... means tracing reachability rather than comparing counts, which is a round of its own."
 # This is that round. It traces reachability.

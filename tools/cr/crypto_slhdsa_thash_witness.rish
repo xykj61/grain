@@ -15,7 +15,7 @@
 # runs in the crypto suite with no dependency on a submodule being checked out.
 #
 # Chapter: the Six-Chapter double-seat, Chapter G thread. Ladder: DISC (waymark seated 20260821.023219).
-# Design read: active-designing/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md
+# Design read: active-designing/date/20260821/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md
 # Kin: crypto/shake.rye (our SHAKE-256, GREEN against Zig's std.crypto and FIPS 202 -- this rung authors no new sponge, only the addressing and
 # framing around one) - tools/cr/crypto_slhdsa_thash_parity_witness.rish (the PQClean diff).
 #

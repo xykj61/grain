@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/w/whitepaper_definitions_scan.sh -- does the whitepaper row's own PREMISE survive
 # the measurements the lane has already published? Row 11 of
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md is the last unopened row of the
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md is the last unopened row of the
 # twelve, and unlike the other eleven it makes no claim about the world. It makes a claim about the
 # other rows: "One paper binds the three definitions the other eleven rows lean on: what a BOUND is
 # when space wraps, what a RADIUS is when privilege is distance, and what a TOPOS is when every

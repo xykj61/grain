@@ -12,7 +12,7 @@
 # away would have to copy the module, and a copy proves the copy -- which is what
 # rye/tests/mantra_weave_test.rye does today, and why it could not see this.
 #
-# Charter: active-designing/20260905-153729_mantra-was-named-for-the-weave.md, the
+# Charter: active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md, the
 # movement "The weave, and its order". Module: mantra/src/weave.rye.
 #
 # Run from the repository root:

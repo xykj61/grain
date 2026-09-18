@@ -22,6 +22,6 @@ citer repointed first. The rows stay as the record; the word stays **shred RED**
 | `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md`, and four chapter witnesses |
 | `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | `foundations/README.md`; a dead manifest exclusion retired |
 | `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | the LEXICON **Ember** row | none -- zero living citers at the cut |
-| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
+| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/date/20260827/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
 | `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | the HUNK row, four front doors, two designs, four headers |
 

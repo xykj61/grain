@@ -28,7 +28,7 @@ fits on a disk and waits. What serves it is not light. What serves it is heat, k
 - **This module** -- `ember/`, the corpus forge, the hearth where the coal actually sits.
 - **A Linengrow surface** -- `#3A332C`, the warm dark a card rests on in dark mode, sitting in a
   palette of material words beside Oat, Stone, Hearth and Flax
-  ([the first-cloth pass](../active-designing/20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md)).
+  ([the first-cloth pass](../active-designing/date/20260825/20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md)).
 
 *It read four for part of `20260827`, and before that three, and that three missed twice over.*
 The first count missed the Linengrow surface entirely. The second count found it and still carried a

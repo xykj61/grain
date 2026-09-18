@@ -17,7 +17,7 @@
 # and brought to green-witnessed Rye. The two halves share one language and never one file, and
 # a planet defers to its star where lanes brush. Lane seated by the role swap of
 # 20260827.155213 on Keaton's word. Charter:
-# active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md.
+# active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md.
 #
 #   rishi/bin/rishi run tools/l/launch-silence-planet-chapter.rish
 
@@ -26,7 +26,7 @@ let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
 # invariant: the living charter this seat lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
+let charter = run ["test" "-f" "active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
 assert charter.ok else "the six-bodies charter is missing"
 
 say "SILENCE -- Sound's planet (the star's own night twin, made a hand)"

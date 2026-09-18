@@ -1,7 +1,7 @@
 # tools/l/ladder_order_witness.rish -- the errata cannot state an order, and they can state a
 # partition.
 #
-# WHY THIS RUNG. The twelve rows of active-designing/20260910-060204_the-bounded-torus-moonshots.md
+# WHY THIS RUNG. The twelve rows of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md
 # were ranked once, on the day they were written, by what a lane could start on this pier. Ten
 # errata have landed since, each reporting a measurement, and several recommend a re-rank or a
 # re-aim in their own words. The ranking table still reads as first written -- correctly, since
@@ -76,7 +76,7 @@
 # named here so a reader who disagrees has one place to say so.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260916-003332_the-order-the-errata-could-not-state.md
+# Paper: active-designing/date/20260916/20260916-003332_the-order-the-errata-could-not-state.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/l/ladder_order_witness.rish

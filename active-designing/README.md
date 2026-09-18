@@ -1,6 +1,6 @@
 # The Active-Designing Stack
 
-> **Start here:** [`20260823-201533_the-design-rooms-walking-index.md`](20260823-201533_the-design-rooms-walking-index.md)
+> **Start here:** [`20260823-201533_the-design-rooms-walking-index.md`](date/20260823/20260823-201533_the-design-rooms-walking-index.md)
 > groups thirty-nine of this room's documents by what they are about -- Open Asks, Steward, the SLC
 > ladder, Dimeroll, the language, the inference voices, and the singles that hold the rest up -- so a
 > reader has somewhere to begin other than a directory listing.
@@ -16,7 +16,7 @@
 > reference to any of them is **resolved** rather than hunted --
 > `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 
-**Current product contract:** [`20260912-201126_the-receipt-you-can-read-contract.md`](20260912-201126_the-receipt-you-can-read-contract.md) fixes one synthetic receipt, its four public types, module residences, eight acceptance cases, and the falsifier that keeps Linengrow and Dimeroll distinct.
+**Current product contract:** [`20260912-201126_the-receipt-you-can-read-contract.md`](date/20260912/20260912-201126_the-receipt-you-can-read-contract.md) fixes one synthetic receipt, its four public types, module residences, eight acceptance cases, and the falsifier that keeps Linengrow and Dimeroll distinct.
 
 
 **Language:** EN
@@ -90,38 +90,6 @@ this section: the rule stood in canon and on the roster, and this door had yet t
 
 | Stamp | Brief | Meaning |
 |-------|-------|---------|
-| `20260909.062114` | [A request ends before its budget is reused](20260909-062114_a-request-ends-before-its-budget-is-reused.md) | completion, deadline, and memory release before a storage trial |
-| `20260909.044642` | [A query budget reaches its caller](20260909-044642_a-query-budget-reaches-its-caller.md) | separate search, result, and recovery budgets before a store plan |
-| `20260912.144043` | [The two endurance runs](20260912-144043_the-two-endurance-runs.md) | cold and hot endurance-running metaphors; proof stays whole while builds grow lighter |
-| `20260912.142909` | [The Linengrow Receipt Cloth Design System](20260912-142909_the-linengrow-receipt-cloth-design-system.md) | receipt components; ASCII-first motion; Brushstroke and Skate layers |
-| `20260826.021136` | [Caravan rearchitected](20260826-021136_caravan-rearchitected-the-optimization-spine.md) | five bounded moves; wrap named, set word-wide, drain replayable |
-| `20260826.014903` | [Skate returns, the DAG platform](20260826-014903_skate-returns-the-dag-rendering-platform.md) | DVUI read MIT; hot reload with witnesses; sameness macro; gate %6 |
-| `20260826.014902` | [Eight modules through the spine](20260826-014902_eight-modules-through-the-optimization-spine.md) | one bounded move per module, stretches named plainly |
-| `20260826.001748` | [The languages an open model owes](20260826-001748_the-languages-an-open-model-owes.md) | corpus shares published; the tokenizer seam gets a witness |
-| `20260826.001747` | [The wafer rehearsed in software](20260826-001747_the-wafer-rehearsed-in-software.md) | the wafer abstraction provable now on ordinary metal |
-| `20260827.025118` | [The swarm that feeds the kiln](20260827-025118_the-swarm-that-feeds-the-kiln.md) | cohort training as a Mycelium cousin; the signed-fact repair (its `20260826.001746` elder shed `20260827.162143`) |
-| `20260826.001745` | [One lowering, two engines](20260826-001745_one-lowering-two-engines.md) | three op families and a fuser; the three-seam GPU ladder |
-| `20260826.001744` | [The bound in the shape](20260826-001744_the-bound-in-the-shape.md) | bounds by construction; wrap is a meaning, never a net |
-| `20260825.235725` | [The ASCII cloth front door](20260825-235725_the-ascii-cloth-front-door.md) | character-grid weave for the Grain site; the mark reborn in ASCII; DJINN's seat |
-| `20260825.234156` | [Linengrow First Cloth, Gauge pass](20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md) | Stone & Hearth measured; the codex law; the trio and sixteen names |
-| `20260825.233309` | [The Bit Design System chapter opens](20260825-233309_the-bit-design-system-season-opens.md) | DJINN is ready; Linengrow the inspiration; gate %6 stands |
-| `20260825.231201` | A letter to Hale County -- `20260825-231201_a-letter-to-hale-county.md`, withheld from the seed | drafted for Keaton's hand alone; withheld from the seed until sent |
-| `20260825.210819` | [The round that pulls twice](20260825-210819_the-round-that-pulls-twice.md) | the sync rota SEATED: fifteen sentences, three residuals |
-| `20260825.205011` | [The pen, the gossip, the derived spine](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) | seven moves; %230 answered: stamp-keyed, derived at merge |
-| `20260825.200049` | [The Works-Town Sleeve](20260825-200049_the-works-town-sleeve-siya.md) | the sleeve read against a works town; withheld from the seed |
-| `20260825.200048` | [The Works-Town Shape](20260825-200048_the-works-town-shape.md) | thirteen fill-in fields; one town per block; commons standing/seed/gap |
-| `20260825.173153` | [Reprove only what moved](20260825-173153_reprove-only-what-moved.md) | three ranked moves: build skip, restart skip behind a ruling, receipts + verify |
-| `20260825.171923` | [Gleaner's Second Watch](20260825-171923_gleaner-second-watch-the-doors.md) | the doors of a basin, sourced in and offered out; accretes to Gleaner |
-| `20260825.171922` | [The Headwater Sleeve](20260825-171922_the-headwater-sleeve-siya.md) | the sleeve read against a works campus; withheld from the seed |
-| `20260825.171920` | [Headwater Works Shapes](20260825-171920_headwater-works-shapes.md) | four forms for a basin whose river begins at a plant |
-| `20260825.171917` | [Gleaner, the Gauge Source Family](20260825-171917_gleaner-the-gauge-source-family.md) | public water readings alongside public spending |
-| `20260825.171916` | [The Water Sleeve](20260825-171916_the-water-sleeve-siya.md) | the sleeve read against a headwaters basin; withheld from the seed |
-| `20260825.171914` | [Headwaters Water Shapes](20260825-171914_headwaters-water-shapes.md) | six fill-in forms for any basin, any town at the top |
-| `20260825.171911` | [Gleaner](20260825-171911_gleaner-the-public-signal-fetcher.md) | a bounded fetcher of what the public field leaves in the open |
-| `20260825.171910` | [The Fiber Sleeve](20260825-171910_the-fiber-sleeve-siya.md) | the sleeve read against the corridor; withheld from the seed |
-| `20260825.171908` | [Fiber Corridor Shapes](20260825-171908_fiber-corridor-shapes.md) | seven fill-in forms for any region, with the receipts shape underneath |
-| `20260824.052950` | [`20260824-052950_two-surfaces-one-set-one-rule.md`](20260824-052950_two-surfaces-one-set-one-rule.md) | **Two surfaces describing one set want one rule.** The room bound and the index bound were separate numbers, so the room passed every lap while the index it indexes ran 117.8x over. The repair is not a second ceiling: a day's rows fold when its logs do, and the byte bound becomes a consequence. Why the ordering is files-first, why the gate is a row rule rather than a byte ceiling, and the day-room alternative given its best case. |
-| `20260824.041200` | [The remainder a sentence cannot hold](20260824-041200_the-remainder-a-sentence-cannot-hold.md) | a partly-closed fix records what is left, and a sentence holds a list where a script holds a class -- the tell is the word *more*; with the companion finding that two constraints can hide each other, so the rows a widened filter newly matches are read individually rather than only counted |
 | living | [Proven-seat guest -- hammock](proven-seat-guest-hammock.md) | Kaeden word - G0 GRUB milestone GREEN - G1-G3 ahead |
 | living | [Giving-lane T2 courtesy wire](yonder/giving-lane-t2-courtesy-wire.md) | Word seated - wire opened - composition witness ahead |
 | living | [Steep -- peer file sharing](steep.md) | Living twin - published-set / peer-offer precedent seated |
@@ -138,3 +106,4 @@ When a design brief **supersedes** research or an executed prompt, the old file 
 ---
 
 *May this room stay clean. May every idea that enters earn its place on its own merit, undivided from where it came. May our names -- and the ones still to come -- grow here on their own roots, safe and swift and a joy, woven into the open grain of the machine we build upon.*
+

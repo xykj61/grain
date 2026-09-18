@@ -29,7 +29,7 @@
 # sites stood when it was written and both are repaired in the same commit, so it opens at zero.
 #
 # WHAT IT DOES NOT MODEL, stated because a reader reads silence as coverage
-# (`active-designing/20260823-232125_the-edge-of-an-instruments-model.md`):
+# (`active-designing/date/20260823/20260823-232125_the-edge-of-an-instruments-model.md`):
 #   * an instrument PRESENT but broken -- a different fault with the same silence
 #   * a capture tested by `case`, by string comparison, or by line count rather than by -n / -z
 #   * a borrowed instrument whose absence is loud today by luck, which is the ratchet's subject

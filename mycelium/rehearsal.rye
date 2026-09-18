@@ -11,14 +11,14 @@
 //! facts it missed; and the round closes under a full-voice Testament a keeper can verify
 //! offline. The pen layer is crash-only on purpose (a proposal absent is a ship asleep, and
 //! two of three still read a pen) -- the Byzantine roll stays where value moves, exactly as
-//! active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md argues.
+//! active-designing/date/20260825/20260825-133156_three-real-mox-and-the-outer-loop.md argues.
 //!
 //! Composes constel + cord + testament public API only, editing none. Demo seeds and fixture
 //! stamps only: no key held, no funds, no network, no custody. The wire crossing of the same
 //! rule lives one room over, in comlink/rehearsal_wire.rye, on localhost by design.
 //!
-//! Scope: active-designing/20260825-210819_the-round-that-pulls-twice.md (the rota this runs)
-//!        active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
+//! Scope: active-designing/date/20260825/20260825-210819_the-round-that-pulls-twice.md (the rota this runs)
+//!        active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/rehearsal.rye
 

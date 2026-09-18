@@ -6,7 +6,7 @@
 # landing while the round packaged, and once by a hand typing `f1498bd7f5` where git answers
 # `f1498bd7fc`, one wrong character in the last position, inside the very note arguing for this
 # program. A hand copying hex under time pressure has a per-character failure rate. `git rev-parse`
-# has none. The spec is `active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md`.
+# has none. The spec is `active-designing/date/20260906/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md`.
 #
 # WHICH COMMIT, and why the caller names it. A commit cannot contain its own hash, so the nib is
 # always written in the same breath as the commit it names -- and the rule describes TWO such

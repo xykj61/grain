@@ -2,7 +2,7 @@
 # tools/fixtures/c/caravan_wrap_class_scan.sh -- every wrap site in the caravan room says which wrap it is.
 #
 # The room law (the optimization spine, move one, seated from
-# active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md): wrap where the
+# active-designing/date/20260826/20260826-021136_caravan-rearchitected-the-optimization-spine.md): wrap where the
 # quantity is genuinely periodic, assert where it is linear, and every wrap site carries an
 # `// invariant:` comment naming which of the two it is. This scan is the law's meter: it reads
 # every authored source in caravan/, finds each modulo or wrapping-arithmetic site, and holds the

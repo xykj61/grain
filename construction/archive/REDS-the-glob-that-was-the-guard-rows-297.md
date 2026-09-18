@@ -81,7 +81,7 @@ lines. The precedence itself was shown directly: `sh -c 'true && sleep 30 & pid=
 that `ps` resolves to `sh -c ...`, while `sh -c 'true; sleep 30 & pid=$!'` reports one that resolves
 to `sleep 30`.
 *Measured independently on the other pier, the same hour.*
-[`../../active-designing/20260827-034026_the-exemption-that-named-its-own-witnesses.md`](../../active-designing/20260827-034026_the-exemption-that-named-its-own-witnesses.md)
+[`../../active-designing/date/20260827/20260827-034026_the-exemption-that-named-its-own-witnesses.md`](../../active-designing/date/20260827/20260827-034026_the-exemption-that-named-its-own-witnesses.md)
 reaches the same reading from the other side and sizes the same repair -- eight renames, seven
 living repoints, eight roster registrations, and the header sentence cut back to `ladder_checks`,
 `parse_int` and `tally_copy`. It **deferred** the cut, because a rename stages sixteen index entries

@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/b/bearing_quorum_scan.sh -- what does a POLAR BEARING scheme actually buy on a
-# torus? Row 8 of active-designing/20260910-060204_the-bounded-torus-moonshots.md is the last
+# torus? Row 8 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md is the last
 # measurable row of the twelve nobody had opened, and it makes two claims in one sentence:
 # "Consensus routing travels on polar bearings. A node announces along a meridian and confirms
 # along a parallel, so message count grows with the perimeter rather than the area."

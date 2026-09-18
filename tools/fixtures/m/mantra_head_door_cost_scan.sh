@@ -3,7 +3,7 @@
 #
 # WHAT THIS READS, and the page it reads for. REDS %807 says a line inserted at the HEAD of a
 # stored document leaves the document. The design page at
-# active-designing/20260916-105110_no-anchor-names-the-head.md names three doors out of that, and
+# active-designing/date/20260916/20260916-105110_no-anchor-names-the-head.md names three doors out of that, and
 # recommends Door C -- a document-start sentinel -- with its own falsifier written in plain words:
 #
 #   "a count of the places that would have to learn about the sentinel. If that count exceeds the
@@ -78,7 +78,7 @@ done
 . "$_sp_root/tools/fixtures/s/shell_portable.sh"
 
 root="$(pwd)"
-paper="${1:-$root/active-designing/20260916-105110_no-anchor-names-the-head.md}"
+paper="${1:-$root/active-designing/date/20260916/20260916-105110_no-anchor-names-the-head.md}"
 # The module room, so a control may plant into a copy rather than into the tree it is measuring.
 src="${2:-$root/mantra/src}"
 weave="$src/weave.rye"

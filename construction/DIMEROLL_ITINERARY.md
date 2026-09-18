@@ -3,7 +3,7 @@
 **Stamp:** `20260912.142909` (EDT)
 **Status:** Living product itinerary -- fleet paused
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
-**Design system:** [`../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md)
+**Design system:** [`../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md)
 
 Dimeroll turns Linengrow's signed offer, consent, use, return, expiration, and correction facts into books a steward can understand. It records and reports value. It holds no money, generates no real keys, and opens no payment rail.
 

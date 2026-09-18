@@ -41,7 +41,7 @@
 # argued -- and it writes on the host, so it is asked for explicitly and never rides an ordinary run.
 # Every marker it plants is removed afterwards whether it survived or not.
 #
-# THE READING BESIDE IT. active-designing/20260829-054303_the-three-the-enclosure-keeps.md argues
+# THE READING BESIDE IT. active-designing/date/20260829/20260829-054303_the-three-the-enclosure-keeps.md argues
 # what these counts mean and what closing each survivor would cost.
 #
 #   sh tools/fixtures/p/pond_enclosure_ephemeral_scan.sh [--root DIR] [--plan FILE] [--probe]

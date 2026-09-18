@@ -1,7 +1,7 @@
 # The derived spine -- a row's key is its stamp, and its number is a view
 
 **Seated:** `20260827.181605` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`stamp-and-name`](stamp-and-name.md) - [`git-signing`](git-signing.md) (*the `%` sigil*) - [`collaboration`](collaboration.md)
-**Design:** Move 1 of [`../../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md`](../../active-designing/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md)
+**Design:** Move 1 of [`../../active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md`](../../active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md)
 **Witness:** [`../../tools/r/reds_spine_derive_witness.rish`](../../tools/r/reds_spine_derive_witness.rish)
 
 **A ledger row's immutable identity is its one-clock stamp. The `%N` beside it is a view, and the

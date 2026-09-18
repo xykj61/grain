@@ -1,6 +1,6 @@
 # tools/a/aether_falloff_witness.rish -- the roster has no gradient, and that is a measurement.
 #
-# WHY THIS RUNG. Row 4 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# WHY THIS RUNG. Row 4 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md proposes
 # an aether falloff field over the standing roster: wake the guards within path-distance R of a
 # touched file, intensity falling with distance. Its own falsifier reads -- the woken set at any
 # useful R covers most of the roster. tools/fixtures/a/aether_falloff_scan.sh takes that
@@ -38,7 +38,7 @@
 # whether the directory tree is the right coordinate; and the seconds each guard costs, which the
 # ranking beside it already reads.
 #
-# Style: context/GAUGE_STYLE.md - Paper: active-designing/20260911-195059_the-field-with-no-distance.md
+# Style: context/GAUGE_STYLE.md - Paper: active-designing/date/20260911/20260911-195059_the-field-with-no-distance.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/a/aether_falloff_witness.rish

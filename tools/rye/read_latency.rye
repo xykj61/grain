@@ -1,6 +1,6 @@
 //! tools/rye/read_latency.rye -- what one read of one block actually costs this device.
 //!
-//! WHY IT EXISTS. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md` measured
+//! WHY IT EXISTS. `active-designing/date/20260917/20260917-023717_the-cold-read-is-a-file-count.md` measured
 //! 16,416,628 bytes read as 527 separate files at 158 ms and the same bytes read as one tar file
 //! at 11 ms -- 14.4 times, same device, same cache state -- and inferred a mechanism from the
 //! difference: readahead cannot cross an `open`, so 527 files is 527 chains each paying one

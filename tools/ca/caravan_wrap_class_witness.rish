@@ -1,7 +1,7 @@
 # tools/ca/caravan_wrap_class_witness.rish -- every wrap site in the caravan room says which wrap it is.
 #
 # The optimization spine's move one, held as a room law (design:
-# active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md; reading:
+# active-designing/date/20260826/20260826-021136_caravan-rearchitected-the-optimization-spine.md; reading:
 # external-research/20260826-021135_caravan-read-against-the-optimization-spine.md). A ring
 # buffer's wrap is semantics and a linear count's wrap is aliasing, so a modulo whose result
 # becomes a value owes one `// invariant:` line naming `wrap-as-periodic` or `wrap-as-linear`.

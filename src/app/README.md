@@ -11,4 +11,4 @@ pedestals moved; **what this room taught about Pond agents is carried whole** in
 [`../shape/README.md`](../shape/README.md), under *The three rooms carried in here*.
 
 The door keeps its path so every reference that ever pointed here still lands. Charter:
-[`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
+[`../../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).

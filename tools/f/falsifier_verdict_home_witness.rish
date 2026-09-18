@@ -33,7 +33,7 @@
 # fire. This asks what happens to the elder page after one does.
 #
 # Scan: tools/fixtures/f/falsifier_verdict_home_scan.sh. Pen: tools/fixtures/f/falsifier_verdict_home_control.sh.
-# Paper: active-designing/20260917-101905_the-verdict-that-came-home.md.
+# Paper: active-designing/date/20260917/20260917-101905_the-verdict-that-came-home.md.
 
 let scan = run ["sh" "tools/fixtures/f/falsifier_verdict_home_scan.sh"]
 say scan.out

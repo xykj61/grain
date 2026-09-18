@@ -79,7 +79,7 @@ summary lines, its verdict, and its closing line -- so `tail -2` returned `verdi
 doorway scan complete`, and not one of the figures the paragraph had just promised. A position is a
 promise about how many lines follow; a prefix is a promise about what a line says, and only the
 second survives a `FAIL` line appearing above it. Read
-[`../active-designing/20260912-033302_the-command-that-returned-no-number.md`](../active-designing/20260912-033302_the-command-that-returned-no-number.md).
+[`../active-designing/date/20260912/20260912-033302_the-command-that-returned-no-number.md`](../active-designing/date/20260912/20260912-033302_the-command-that-returned-no-number.md).
 
 The claim that earned the sentence keeps its place, because it is the one a room can hold: this
 shelf names **none** of the pages the guard refuses. Empty output is the claim holding:

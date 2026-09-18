@@ -7,7 +7,7 @@
 # hexa, hepta, octa, nona, and another face name taught no new nest law. Nothing asked for a tenth.
 #
 # Something asks now. The receipt contract Keaton accepted on `20260913`
-# (active-designing/20260912-201126_the-receipt-you-can-read-contract.md) declares four public
+# (active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md) declares four public
 # types, and this seat's own ladder rung reads *express the receipt facts in the smallest Glow
 # form already owned*. A form that holds nine faces cannot hold a type that names fifteen.
 #

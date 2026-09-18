@@ -1,9 +1,9 @@
 #!/bin/sh
 # tools/fixtures/a/aurora_file_placement_scan.sh -- THE UNIT THE CAPACITY FORCED.
 #
-# Row 7 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes Aurora on a
+# Row 7 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md proposes Aurora on a
 # small torus of cores with a placement map as its first witness. Its SECOND erratum
-# (`20260916.095958`, active-designing/20260916-095958_the-two-ways-a-proxy-drifts.md) closed on a
+# (`20260916.095958`, active-designing/date/20260916/20260916-095958_the-two-ways-a-proxy-drifts.md) closed on a
 # named next step and nothing had taken it:
 #
 #   "name which FILES sit on which node rather than which modules, since the coarsening the first
@@ -154,8 +154,8 @@ resolve_path() {
 
 echo "scan=aurora_file_placement"
 echo "row=7"
-echo "page=active-designing/20260910-060204_the-bounded-torus-moonshots.md"
-echo "answers=active-designing/20260916-095958_the-two-ways-a-proxy-drifts.md"
+echo "page=active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md"
+echo "answers=active-designing/date/20260916/20260916-095958_the-two-ways-a-proxy-drifts.md"
 echo "max_files=$MAX_FILES"
 echo "max_edges=$MAX_EDGES"
 echo "max_grids=$MAX_GRIDS"

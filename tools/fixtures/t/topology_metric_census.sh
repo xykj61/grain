@@ -44,7 +44,7 @@
 #
 # Instrument: `awk` alone (POSIX-granted). No temporary files, no `mktemp`.
 #
-# Read against: active-designing/20260905-224714_the-angle-the-sky-computes-and-never-subtracts.md
+# Read against: active-designing/date/20260905/20260905-224714_the-angle-the-sky-computes-and-never-subtracts.md
 set -eu
 
 # TOPOLOGY_SRC lets a control point this census at a pen copy; without it the source is found

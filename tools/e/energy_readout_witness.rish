@@ -3,7 +3,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/e/energy_readout_witness.rish
 #
-# WHAT THIS GUARDS. active-designing/20260910-060204_the-bounded-torus-moonshots.md row 6 assumes
+# WHAT THIS GUARDS. active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md row 6 assumes
 # "this pier's CPU exposes RAPL counters to a reader with the permissions we have." No row-6
 # instrument existed before this one, so the assumption stood unchecked against any real host.
 # tools/fixtures/e/energy_readout_scan.sh checks it against five facility paths -- powercap RAPL,

@@ -1,6 +1,6 @@
 #!/bin/sh
 # tools/fixtures/t/torus_fold_scan.sh -- does folding Tablecloth's resins onto a 2-torus buy
-# adjacency? Row 5 of active-designing/20260910-060204_the-bounded-torus-moonshots.md.
+# adjacency? Row 5 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md.
 #
 # WHAT ROW 5 CLAIMS. "The hash space folds onto a 2-torus, so names that sit near each other in
 # the fold sit near each other in storage." Its stated falsifier: "the fold clusters real names

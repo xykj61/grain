@@ -4,7 +4,7 @@
 # WHY THIS RUNG. This pier exposes no joule. tools/fixtures/e/energy_instrument_scan.sh reads
 # joule_source=none, powercap_domains=0, msr_device=no, and tier=counters -- so every energy figure
 # a lane writes here is a proxy, and the proxy this tree proposes is RETIRED INSTRUCTIONS. Row 3 of
-# active-designing/20260917-105154_the-refusal-that-can-fire.md makes that proposal and states its
+# active-designing/date/20260917/20260917-105154_the-refusal-that-can-fire.md makes that proposal and states its
 # own falsifier in one sentence: the counter ranks two implementations in the opposite order from
 # wall time. This rung is the reading that fires it.
 #

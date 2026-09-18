@@ -20,7 +20,7 @@ witnesses already keep.
 
 **Where the last thirteen came from.** STOA334-346 stood green in `tools/g/` witnesses while this
 page's last row read STOA333 -- the sync law's own case, booked in
-[`../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
+[`../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
 Each dated claim below is read from the witness header, the desk's own first line, or the
 landing commit body, and each stamp is that commit's **author** date rendered on the one clock in
 America/New_York. That is the stamp-and-name reading, and it runs monotone across all thirteen -- so

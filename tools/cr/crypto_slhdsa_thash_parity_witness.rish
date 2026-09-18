@@ -16,7 +16,7 @@
 # so a single wrong offset moves every line.
 #
 # Chapter: the Six-Chapter double-seat, Chapter G thread. Design read:
-# active-designing/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md
+# active-designing/date/20260821/20260821-022912_slhdsa-vendored-oracle-and-both-legs-kept.md
 # Kin: tools/cr/crypto_slhdsa_thash_witness.rish (the structural proofs, suite-registered, no vendor dependency) -
 # tools/cr/crypto_slhdsa_oracle_witness.rish (the oracle itself, proven against PQClean's published NIST digest) -
 # tools/cr/crypto_vendored_parity_suite.rish (the roster this rung joins). PQClean stays the parity TARGET, vendored and unmodified, never a copied

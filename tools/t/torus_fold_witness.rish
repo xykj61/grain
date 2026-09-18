@@ -1,6 +1,6 @@
 # tools/t/torus_fold_witness.rish -- the fold onto a torus is even, and evenness is why it is empty.
 #
-# WHY THIS RUNG. Row 5 of active-designing/20260910-060204_the-bounded-torus-moonshots.md proposes
+# WHY THIS RUNG. Row 5 of active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md proposes
 # folding Tablecloth's hash space onto a 2-torus so that "names that sit near each other in the
 # fold sit near each other in storage". Its stated falsifier is clustering: a fold that crams real
 # names into a few cells would trade lookup evenness for adjacency. tools/fixtures/t/torus_fold_scan.sh
@@ -59,7 +59,7 @@
 # this reading never opens.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260912-042053_the-fold-that-had-nothing-to-hold.md
+# Paper: active-designing/date/20260912/20260912-042053_the-fold-that-had-nothing-to-hold.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/torus_fold_witness.rish

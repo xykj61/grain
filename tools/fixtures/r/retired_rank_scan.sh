@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/r/retired_rank_scan.sh -- DO INSTRUCTIONS RETIRED AND WALL TIME RANK TWO
 # IMPLEMENTATIONS THE SAME WAY? This is the reading row 3 of
-# active-designing/20260917-105154_the-refusal-that-can-fire.md names as its own falsifier.
+# active-designing/date/20260917/20260917-105154_the-refusal-that-can-fire.md names as its own falsifier.
 #
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 #

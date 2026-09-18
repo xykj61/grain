@@ -24,7 +24,7 @@
 # The Rye witness lives beside the module it proves, at mantra/src/weave_apply_witness.rye,
 # because Zig refuses an import that escapes the root file's directory.
 #
-# Charter: active-designing/20260905-153729_mantra-was-named-for-the-weave.md.
+# Charter: active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md.
 # Module: mantra/src/weave.rye.
 #
 # Run from the repository root:

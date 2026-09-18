@@ -2,7 +2,7 @@
 # tools/fixtures/c/caravan_drain_replay_compare.sh -- two region snapshots, compared byte for byte.
 #
 # The replayable-drain law's comparator (the optimization spine, move three, from
-# active-designing/20260826-021136_caravan-rearchitected-the-optimization-spine.md): the same
+# active-designing/date/20260826/20260826-021136_caravan-rearchitected-the-optimization-spine.md): the same
 # submissions in the same order leave the same dependents in the same state. State here is the
 # region store files a queue run leaves on disk -- head and tail indices plus every slot's
 # addressed, sequence-numbered bytes. This fixture holds the whole comparison in one body so the

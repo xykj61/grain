@@ -2,7 +2,7 @@
 # tools/fixtures/t/tally_roster_scan.sh -- every tally module answers to a witness, or is counted.
 #
 # The choir-and-bijection calling reaching the allocator room (the constellation charter,
-# active-designing/20260826-174418_the-constellation-and-the-callings.md): witness health is a
+# active-designing/date/20260826/20260826-174418_the-constellation-and-the-callings.md): witness health is a
 # thing this meter READS off disk, never a thing anyone remembers. For each tally/*.rye module it
 # asks whether a tools/t check owns it by name, holds the uncovered as a ratchet under a ceiling
 # that only falls, and refuses a newborn module arriving with no witness -- so coverage can shrink

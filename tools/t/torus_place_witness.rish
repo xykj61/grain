@@ -1,7 +1,7 @@
 # tools/t/torus_place_witness.rish -- the second axis of a torus buys nothing a ring cannot buy.
 #
 # WHY THIS RUNG. tools/t/torus_fold_witness.rish killed the adjacency half of row 5 of
-# active-designing/20260910-060204_the-bounded-torus-moonshots.md and left the row alive on a
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md and left the row alive on a
 # remainder: even shards at any grid, and a bounded four-neighbour replica set uniform at every
 # cell. That witness names the open question in its own last paragraph -- "whether a torus is a
 # good placement scheme, which is a different claim" -- and this rung answers it.
@@ -60,7 +60,7 @@
 # loss is the failure model a given medium has. And the real store, which this reading never opens.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260915-175000_the-axis-that-carried-nothing.md
+# Paper: active-designing/date/20260915/20260915-175000_the-axis-that-carried-nothing.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/torus_place_witness.rish

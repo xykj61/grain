@@ -8,7 +8,7 @@
 # WHY THIS EXISTS. `tools/l/loom_trend.sh` reads a loom key back across the journal and ends on
 # `direction=rising|falling|level`. That one word is doing two jobs: it reports that the last value
 # differs from the first, and a reader takes it as evidence the WORK changed. On a pier eight ships
-# share, those are different facts. `active-designing/20260917-054941_the-unit-that-survives-the-pier.md`
+# share, those are different facts. `active-designing/date/20260917/20260917-054941_the-unit-that-survives-the-pier.md`
 # measured the gap on this metal: a wall-clock median of identical work moved 306 parts per thousand
 # across six sittings while its CPU median moved 7, so a wall key's slope is mostly the pier.
 #

@@ -2,7 +2,7 @@
 
 **Folded:** `20260829.155341` -- **Status:** Archived; the rows keep their BOOKED markers live
 **Living pin:** [`../REDS.md`](../REDS.md) -- **Law:** [`.claude/rules/reds-first.md`](../../.claude/rules/reds-first.md)
-**Door:** B of [`../../active-designing/20260829-031804_the-ledger-that-could-not-book-a-red.md`](../../active-designing/20260829-031804_the-ledger-that-could-not-book-a-red.md), Keaton's word `20260829`
+**Door:** B of [`../../active-designing/date/20260829/20260829-031804_the-ledger-that-could-not-book-a-red.md`](../../active-designing/date/20260829/20260829-031804_the-ledger-that-could-not-book-a-red.md), Keaton's word `20260829`
 
 *Eight rows whose defects stand repaired and whose remainders are booked elsewhere -- four seats
 awaiting Keaton's word (%306, %326, %327, %328, and %291's one-tree-or-a-lock), one ratchet

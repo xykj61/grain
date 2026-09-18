@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # standing_equipment_scope_map.sh -- which files each STATIC guard actually watches.
 #
-# The fusion build's map (design active-designing/20260825-173153_reprove-only-what-moved.md;
+# The fusion build's map (design active-designing/date/20260825/20260825-173153_reprove-only-what-moved.md;
 # the skip word given 20260828). A `--scoped` roster pass reads this and runs, by name, the
 # guards a change can reach. One line per guard: the name, then watch words as shell patterns --
 # a word ending in / watches its whole room, and tools/fixtures/s/standing_equipment_run.sh

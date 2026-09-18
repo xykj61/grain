@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/r/read_latency_witness.rish
 #
-# WHAT IT GUARDS. `active-designing/20260917-023717_the-cold-read-is-a-file-count.md` measured the
+# WHAT IT GUARDS. `active-designing/date/20260917/20260917-023717_the-cold-read-is-a-file-count.md` measured the
 # same 16,416,628 bytes at 158 ms as 527 files and 11 ms as one tar, and inferred a mechanism from
 # the gap: readahead cannot cross an `open`, so each file pays its own device round trip. That page
 # named its own falsifier and declined to run it -- a queue-depth-1 4 KiB read latency far from 200

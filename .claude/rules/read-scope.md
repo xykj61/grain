@@ -3,7 +3,7 @@
 **Seated:** `20260827.155213` on Keaton's word - **Status:** Living
 **Kin:** [`collaboration`](collaboration.md) (*References are promises*) - [`stamp-and-name`](stamp-and-name.md) (the resolvers) - [`quality-assurance`](quality-assurance.md) (on-touch, never on-walk)
 **Map:** [`../../MAP.md`](../../MAP.md) is the walk that replaces the `ls`.
-**Charter:** [`../../active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md`](../../active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md)
+**Charter:** [`../../active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md`](../../active-designing/date/20260829/20260829-203718_the-six-bodies-and-the-always-fleet.md)
 
 **The tree is a library with two floors.** The **open shelves** are the rooms a lap walks by
 default. The **closed stacks** are rooms held whole and real -- nothing deleted, hidden, or
@@ -45,7 +45,7 @@ dotted directories at the tree root, six of the 97 doors a lap faces when it ope
 next launch rather than abandoning it, because these hold auth a hand typed once.
 **`.mind-state/` stays where it is**: the byte-pinned `tools/c/chatgpt-mind.sh` names it, and its
 SHA-256 is the MIND adaptation receipt. Charter:
-[`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
+[`../../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/date/20260827/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
 A lap reads **its own body's** files there by named path, and leaves every other body's alone. This
 holds for outer-loop information (the launcher's transcript, lap counters, the seat prompt it was
 handed) and inner-loop information (a sandbox's scratch, a session's cached auth) alike. The reason

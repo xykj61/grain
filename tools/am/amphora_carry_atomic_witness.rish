@@ -42,7 +42,7 @@
 #     clear, so a far reader reads a crossing still to come
 #
 # The law behind it is [`quality-assurance`](../../.claude/rules/quality-assurance.md) and the
-# reading is [the paper](../../active-designing/20260911-193818_the-dock-that-advertised-what-it-could-not-deliver.md).
+# reading is [the paper](../../active-designing/date/20260911/20260911-193818_the-dock-that-advertised-what-it-could-not-deliver.md).
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_carry_atomic_witness.rish

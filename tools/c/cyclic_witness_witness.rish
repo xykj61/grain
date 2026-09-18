@@ -3,7 +3,7 @@
 #   rishi/bin/rishi run tools/c/cyclic_witness_witness.rish
 #
 # First witness for moonshot 3 of
-# `active-designing/20260910-060204_the-bounded-torus-moonshots.md`: a proof that returns to its
+# `active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md`: a proof that returns to its
 # start state is a loop with a declared period, and its log stays that size forever.
 #
 # WHAT IT MEASURES. `tools/fixtures/c/cyclic_witness_scan.sh` digests `git status --porcelain`

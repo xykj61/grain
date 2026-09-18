@@ -3,7 +3,7 @@
 #
 #   sh tools/fixtures/p/page_residency_sample.sh <path> [--samples N] [--interval S]
 #
-# WHY IT EXISTS. `active-designing/20260917-031330_the-price-of-an-open.md` measured a cold library
+# WHY IT EXISTS. `active-designing/date/20260917/20260917-031330_the-price-of-an-open.md` measured a cold library
 # read at 304 us per open and 718 MB/s, found that 87 percent of it is the opens rather than the
 # bytes, and recommended packing 527 files into fewer. That advice rests on a premise the page left
 # unread: that the fleet walks the cold path more than once. Where the library sits resident

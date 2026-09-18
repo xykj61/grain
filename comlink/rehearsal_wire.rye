@@ -17,8 +17,8 @@
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/rehearsal_wire.rye
 //!
-//! Scope: active-designing/20260825-133156_three-real-mox-and-the-outer-loop.md
-//!        active-designing/20260825-210819_the-round-that-pulls-twice.md
+//! Scope: active-designing/date/20260825/20260825-133156_three-real-mox-and-the-outer-loop.md
+//!        active-designing/date/20260825/20260825-210819_the-round-that-pulls-twice.md
 
 const std = @import("std");
 const assert = std.debug.assert;

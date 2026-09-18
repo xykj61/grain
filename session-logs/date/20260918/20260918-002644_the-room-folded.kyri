@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260918.002644
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role captain seat, interactive
+modality text
+model claude-opus-5
+model_status active runtime unverified -- no runtime identity surface
+configured_model claude-opus-5
+configured_status evidence sh tools/fixtures/d/declared_model.sh resolved_model read 20260918
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The room folded
+prompt kg -- take the designing room's fold, which align named the nearest wall.
+think THE RATE IS WHAT MADE IT DUE RATHER THAN THE COUNT. The room stood at 215 flat against an ENFORCED 256, which is under, so the law did not yet require a fold. Nine complete days read 5, 6, 35, 20, 6, 5, 6, 17, 35 added -- a mean of fifteen a day, thirty-five yesterday -- so 41 files of headroom is under three days, and crossing reds a rostered guard for every ship rather than one.
+think I PROVED THE TOOL RUNS HERE BEFORE CLAIMING, which cost two wrong invocations and is worth writing down: rye/bin/rye runs a .rye tool on this host, and the tool's own arguments reach it only past a -- separator. My first two tries read preview as a second filename. zig is absent from the PATH and the rye binary carries its own backend, so a Rye tool runs here where rye build does not.
+obs THE FOLD MOVED 213 FILES AND THE ROOM READS flat=3, down from 215, with sixty day shelves standing where a flat room was. The index folded with it in the same lap, which the law requires and which the first half alone left RED: rows_folded=32, rows_kept=0, and the room's pin fell 16,679 bytes to 10,578.
+obs MY PREDICTION NAMED THE WRONG NUMBER AND I WILL NOT DRESS THAT UP. I wrote that the lost-reference census would not rise; refs_lost went 121 to 125. The witness's own header settles what that means: refs_lost is the ELDER count, kept visible as history and diagnosis, and the standing gate from Keaton's ruling 20260913 is the REPAIRABLE class -- the intersection of lost_promised and lost_living, reading 14 and 7. That gate held, the witness is GREEN, and the header says outright that recovered references RISE when a room folds and that is the fold working. So the prediction was wrong in its wording and right in its substance, which is a different thing from being right.
+obs THE LESSON IS THE SAME ONE THIS SESSION KEEPS PAYING FOR: I predicted against a number I had read off the output rather than against the number the guard gates. A reading and a gate are two things, and naming the first while meaning the second is how a true prediction and a false one come to look alike.
+obs AND THE FOLD BROKE FORTY LIVING LINKS, WHICH THE PRE-COMMIT WALL REFUSED BEFORE THEY COULD SHIP. readme_reach read 0 broken before the fold and 40 after, every one a reference from ANOTHER room into a page this room had moved -- the fold tool repoints its own index and nothing beyond it. So my prediction was aimed at the wrong instrument twice over: I watched dated_path's lost census, which is an elder diagnostic, while the guard that mattered was readme_reach, and it caught exactly the class I had promised would not appear.
+obs THE REPAIR IS THE FOLD'S OWN SECOND HALF RATHER THAN SCOPE CREEP, and I measured that rather than assuming it. tools/d/dated_path_repoint.rish takes no scope argument and its dry run named 175 files and 2,703 references, which reads like a tree-wide sweep riding on a room fold -- so I checked, and ALL 175 reference active-designing dated paths. The whole set is this fold's consequence. The mark law names the act in the same breath as the fold: living references are repointed in the same round, dated testimony is resolved. Applied: 175 files, 2,703 references, readme_reach back to zero.
+obs AND THE REPOINT GREW THE CARD OVER ITS BOUND, which is a consequence of a fold I did not think to predict: folding a room LENGTHENS every living reference into it by the fourteen characters of date/YYYYMMDD/, and the operator card carries such references. It went 54 bytes over. The writer sheds, so this seat shed its own block a second time in one hour -- 158 bytes to 105, keeping Keaton's YOURS line whole -- and the card closed at five bytes of headroom.
+obs A FOLD RELOCATES AND EDITS NOTHING, which is what made moving 213 pages of eight seats' work lawful for one hand. Every basename survives, the resolver stays a pure function of it, living references were repointed by the tool and dated testimony is resolved rather than rewritten -- the law's own split.
+loom room=active-designing flat_before=215 flat_after=3 ceiling=256 moved=213 shelves=60
+loom index_rows_folded=32 rows_kept=0 pin_bytes_before=16679 after=10578
+loom refs_lost_before=121 after=125 lost_promised=14 lost_living=7 gate=repairable_class verdict=green
+loom readme_reach_before=0 after_fold=40 after_repoint=0 repoint_files=175 repoint_refs=2703 all_from_this_fold=yes
+loom card_over_after_repoint=54 incense_block_before=158 after=105 card_headroom_final=5
+loom growth_mean_per_day=15 growth_yesterday=35 headroom_days_at_mean=2.7
+rota none -- the wall align named
+file active-designing/ 213 documents move to their own day shelves; three dated basenames stay flat
+file active-designing/README.md the index folds with the room, 32 rows to six shelves, and the pin falls by a third
+file 175 living files across the tree repoint 2,703 references at the room's new paths -- the fold's own second half, every one of them into the room this lap moved
+scope one room, one fold, both halves in one lap
+status sent -- both remotes
+recommend check-in (Keaton) -- the room reads 3 of 256 and buys weeks at the measured rate; %795 still wants a status word from its lane before the ledger's fold rule can see it.
