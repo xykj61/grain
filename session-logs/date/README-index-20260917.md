@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.212545` | [The verb already in my hand](20260917/20260917-212545_the-verb-already-in-my-hand.kyri) | Approved a primitive that existed; 38.9x instead. |
 | `20260917.212046` | [Third look: still clean](20260917/20260917-212046_third-look-still-clean.kyri) | Claim board, REDS, agent-doable queue all re-checked, nothing to build. |
 | `20260917.212030` | [TAME lane reads clean this rotation](20260917/20260917-212030_tame-lane-reads-clean-this-rotation.kyri) | Four TAME witnesses GREEN, rotation lane's turn confirmed, no red booked. |
 | `20260917.211803` | [the largest lap this room offered](20260917/20260917-211803_the-largest-lap-this-room-offered.kyri) | max_arm_len three delegate; 93 sites, two ceilings fall. |
