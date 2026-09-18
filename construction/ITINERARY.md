@@ -37,14 +37,17 @@ lap to seat the newest under the pin's bound.
 **INCENSE.** [Account shelved](archive/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
 
-**INCENSE -- COMMENT_PATH'S CEILING FOLLOWED A CLEAN READING, NOT A REPAIR.** All 66 living hits
-checked by hand: none was a stale citation. Four genres instead -- narrative prose quoting a past
-defect's own broken path as the sentence's point (most of them, e.g. `comment_citation_scan.sh`'s
-own worked example), deliberate phantoms naming a path that must fail or a name no file ever wore,
-real files this tree never tracks by design that `here()` cannot see, and elder-pre-fold spellings
-the two `tool_path_*` resolvers quote as their own input. Raised 61 to 66, reasoning written into
-the scan's own header; witness and control GREEN, 28 legs, `control_failed=0`. `backtick_path`'s
-~62 remaining hits are the untouched sibling and stay Grass's reverse-reading lane.
+**INCENSE.** [Account shelved](archive/20260918-075447_itinerary-incense-comment-path-account.md)
+-- comment_path's ceiling raised 61 to 66 on a clean reading.
+
+**INCENSE -- THE COLD RUN NAMED 30 REDS, AND TWO WERE CHEAP.** `rye/bin/rye` and `rishi/bin/rishi`
+read `stale` against their own sources (55,704s and 148,705s behind) -- rebuilt via
+`sh rye/bootstrap.sh` then `rye build rishi/src/main.rye`, both gitignored binaries, `built_tool_freshness`
+now GREEN with no tracked byte moved. The other new finding is `%826`: the `%801` wall
+(`commit_parent_claim_witness`) reads 29 violations of its own class since its anchor, because it
+runs only in the cold pass and no wall in `tools/hooks/commit-msg` reads a parent-hash claim at
+write time -- testimony, so nothing here is repaired. **YOURS:** whether `commit-msg` earns a fifth
+wall for this claim, per `%826`.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
@@ -234,7 +237,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `bc5899d67e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4b6157f506` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
