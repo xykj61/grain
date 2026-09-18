@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.031256` | [glow/rune_call.rye leaves the zero-assert ratchet](20260918/20260918-031256_rune-call-earns-asserts.kyri) | Four invariant asserts added; witness GREEN unchanged; ratchet 33 to 32. |
 | `20260918.031135` | [Civic Style pass on mand/README.md finds nothing to fix](20260918/20260918-031135_civic-style-audit-mand-clean.kyri) | Gauge queue re-confirmed empty; mand/README.md already names its own reward. |
 | `20260918.031135` | [Send confirmed -- both remotes hold fa10685d4](20260918/20260918-031135_send-confirmed-fa10685d4.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.030812` | [Gauge law-ceiling queue read: empty, one page already ruled](20260918/20260918-030812_gauge-law-ceiling-queue-read-empty.kyri) | law_ceiling=1, the-baton.md re-read via --explain, remaining negatives are quotes/named walls; nothing changed. |
