@@ -66,10 +66,10 @@ set -eu
 
 _fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _fd_steps=0
-while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+while [ ! -d "$_fd_root/rishi/src" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_steps=$((_fd_steps + 1))
   if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
-    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    echo "$0: no tree root within 8 steps (needs rishi/src and tools/fixtures)" >&2
     exit 2
   fi
   _fd_root=$(dirname "$_fd_root")
@@ -180,7 +180,7 @@ echo "sibling_blind=$sibling_blind"
 # Each strikes one half out of a COPY of the scan and asserts a swap that half was catching now
 # travels. A guard whose halves are never removed is a guard whose halves are never priced.
 # THE MUTATED COPY NEEDS A ROOT ABOVE IT. Every scan in this tree finds the repository by walking
-# up from its own `$0` until it sees `rishi/bin` and `tools/fixtures`, so a copy dropped straight
+# up from its own `$0` until it sees `rishi/src` and `tools/fixtures`, so a copy dropped straight
 # into a temporary directory exits 2 before it reads a byte -- and a phase reading that as a
 # difference would call a broken pen a catch. The pen gets both markers as symlinks to the real
 # rooms, so the copy's walk lands on the pen and sources the real shell_portable.sh.
