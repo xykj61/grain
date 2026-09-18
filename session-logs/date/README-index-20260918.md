@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.063857` | [Round closes -- 7d3df7ba0](20260918/20260918-063857_round-closes-7d3df7ba0.kyri) | Pheromone closed the %825 claim within two minutes. |
 | `20260918.063609` | [Send confirmed -- 26b2fd6df](20260918/20260918-063609_send-confirmed-26b2fd6df.kyri) | REDS %825 lap landed after one rebase, one shared-stamp conflict. |
 | `20260918.063114` | [Send confirmed -- both remotes hold e94667988](20260918/20260918-063114_send-confirmed-e94667988.kyri) | One rebase, one day-shelf row conflict resolved, nib re-pinned twice. |
 | `20260918.063114` | [Stale claim, wrong seat](20260918/20260918-063114_pheromone-claim-name-mismatch.kyri) | REDS %825: pheromone's claim never closed; card wrongly named grass's. |
