@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.080119` | [Cold run books %826](20260918/20260918-080119_cold-run-books-826-and-two-cheap-fixes.kyri) | Books REDS %826, shelves comment_path, lands at 3be3470b3. |
 | `20260918.075952` | [Empty open, second check -- docs-geode lane still clean](20260918/20260918-075952_empty-open-second.kyri) | No fresh work found this turn; recommended check-in. |
 | `20260918.075702` | [Empty open -- no task landed this turn](20260918/20260918-075702_empty-open.kyri) | No user request this turn; reported readiness, recommended check-in. |
 | `20260918.075333` | [Send confirmed -- both remotes hold 2b1bdf2ee](20260918/20260918-075333_send-confirmed-2b1bdf2ee.kyri) | Two contested rebases on the puddle-convergence log; nib and index rows resolved each time. |
