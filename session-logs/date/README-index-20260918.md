@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.023057` | [The overnight cellar](20260918/20260918-023057_the-overnight-cellar.kyri) | Inner prompt wired; watcher armed for the night. |
+| `20260918.022951` | [Send confirmed -- both remotes hold 439ff25d8](20260918/20260918-022951_send-confirmed-439ff25d8.kyri) | Two contested pushes on the truth_semantics log; twice-pulled, never forced. |
 | `20260918.022611` | [Send confirmed -- both remotes hold 832e33268, chain closed here](20260918/20260918-022611_send-confirmed-832e33268-chain-closed.kyri) | Two more contested pushes resolved; nib conflict kept the peer's newer value; chain ends here. |
 | `20260918.022533` | [Pheromone lane still idle -- tenth check](20260918/20260918-022533_pheromone-lane-idle-tenth-check.kyri) | Re-read the card whole; language lane clean, queue items all want Keaton's word. |
 | `20260918.022416` | [truth_semantics.rye earns invariants](20260918/20260918-022416_truth-semantics-invariant-asserts.kyri) | Zero-assert ratchet 36 to 35, witness GREEN. |
