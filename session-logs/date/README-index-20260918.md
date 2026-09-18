@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.001518` | [docs-geode front doors, tasted one by one](20260918/20260918-001518_docs-geode-front-door-taste-check.kyri) | Fourteen room README pages graded; all clear Door register/reach/truth; lane queue empty. |
 | `20260918.001201` | [Send -- two door candidates landed](20260918/20260918-001201_two-door-candidates-sent.kyri) | Both remotes hold 894856d6e after two rebases. |
 | `20260918.001054` | [pheromone lane fourth check -- two peer commits pulled](20260918/20260918-001054_pheromone-lane-fourth-check-pulled-two-peer-commits.kyri) | Fast-forwarded past two peer commits, neither in this lane; still no new work. |
 | `20260918.000701` | [Gren teaching page swept, ceiling stays one](20260918/20260918-000701_gren-teaching-ceiling-cleared.kyri) | 35% to 21%, bound sentences kept verbatim, gen-gren witness GREEN. |
