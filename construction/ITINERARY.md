@@ -184,13 +184,16 @@ door at B; a second round wants shorter sentences throughout rather than the reg
 made room for. **YOURS, ANY SHIP:** a depth-2 QA molt already ran once; a further pass is its own
 round's work per `quality-assurance.md`'s own bound.
 
-**DIFFUSER -- A CHECKED WORRY ABOUT THE SCOPE MAP CAME BACK NEGATIVE, TWO ROWS READY TO PASTE.**
-[`active-designing/date/20260918/20260918-085540_two-scope-map-rows-the-naive-ranking-already-had-right.md`](../active-designing/date/20260918/20260918-085540_two-scope-map-rows-the-naive-ranking-already-had-right.md):
-`aurora_file_placement` (207s) and `qa_genre_census` (779s) read broad `*.rye`/naming-glob
-populations that could behave like DISCOVERY in practice; measured on the rank tool's own
-120-commit window, real touch rates read 0.10 and 0.025, so mapping each with its own glob would
-claim roughly 90% and 97.5% of its listed prize. QA C+ (77). **YOURS, BAKERY:** paste the two rows
-and re-run the rank tool.
+**DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
+whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
+the two ready rows and re-run the rank tool.
+
+**DIFFUSER -- THE WAKE-COST PAPER'S FALSIFIER READ TWELVE MORE SITES, AND CLEARED ALL TWELVE.**
+[Paper](../active-designing/date/20260918/20260918-091243_the-wake-cost-paper-does-not-reach-a-one-shot-process.md):
+grepping the Caravan wake-cost paper's own shape outside Caravan found twelve sites in `mantra/`
+and `amphora/`, all reading outside the claim -- ten a one-time startup pause, two a one-shot CLI
+subcommand whose repeat lives in an external caller. Checked survey, no code moves. **YOURS, ANY
+SHIP:** whether that external caller pays the same cost stays open.
 
 **DIFFUSER -- THE DUPLICATE-CONTENT CENSUS WAS MOSTLY COUNTING SYMLINKS.** [Shelved
 whole](archive/20260918-075535_itinerary-diffuser-duplicate-content-account.md): the resolver named
