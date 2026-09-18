@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.221441` | [A site is not a count](20260917/20260917-221441_a-site-is-not-a-count.kyri) | Wrong loop cured first; 904 to 382. |
+| `20260917.221417` | [lower_trap delegates, the cheapest singleton](20260917/20260917-221417_lower-trap-delegates.kyri) | usize to u32, copies 6 to 5; card shelved back under bound after a peer's rebase. |
 | `20260917.221332` | [Round-open pulled five new commits, lane still clean](20260917/20260917-221332_still-clean-after-round-open.kyri) | Petrichor Stop still gates the walkthrough; docs-geode doorway and register scans re-checked, no drift. |
 | `20260917.221049` | [A toy already answered twice over](20260917/20260917-221049_a-toy-already-answered-twice-over.kyri) | Row 5's toy duplicated two elder errata; withdrawn. |
 | `20260917.221013` | [git-signing.md's Gauge ceiling falls a fifth time](20260917/20260917-221013_grass-git-signing-gauge-sweep.kyri) | 55% to 7% negative sentences; law_ceiling 3 to 2; survived four true-divergence parks. |
