@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.200410` | [Second re-check, same two doors](20260917/20260917-200410_second-re-check-same-two-doors.kyri) | Third consecutive lap confirming %804 and %819 are unchanged and Keaton's word. |
 | `20260917.200158` | [The gate and the queue both stood unmoved](20260917/20260917-200158_gate-and-queue-both-unmoved.kyri) | Re-checked HEAD, claims board, and the card's queue; nothing moved since the prior lap. |
 | `20260917.195846` | [Docs-geode lane clear, no red](20260917/20260917-195846_docs-geode-lane-clear-no-red.kyri) | Card and claims read; fourteen docs-geode front doors graded, all B or better. |
 | `20260917.195720` | [Neither open door was a quick build](20260917/20260917-195720_neither-open-door-was-a-quick-build.kyri) | Checked %803 and %785, the two non-Keaton-gated OPEN rows; both are judgment calls, not builds. |
