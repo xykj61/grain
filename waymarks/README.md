@@ -4,6 +4,7 @@
 **Seated:** `20260724.143155`  
 **Voice:** Quin  
 **Status:** Living home for lap claims (forward-only)  
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)  
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -53,8 +54,8 @@ in its own name.
 
 ## Root claims (newest first)
 
-**The room is living, so a new claim lands here** and stays until its day closes and folds. Nothing
-sits flat today: every claim brief has folded, and the one dated file still at the root is a bundle
+**The room is living, so a new claim lands here** and stays until its day closes and folds. Every
+claim brief has folded, so the room stays flat down to one dated file at the root, a bundle
 manifest rather than a claim.
 
 | Stamp | Claim | Path |
