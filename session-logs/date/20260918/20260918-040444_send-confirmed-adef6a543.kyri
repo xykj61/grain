@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260918.040444
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role coding agent, send confirmation
+modality text
+model claude-sonnet-5
+model_status active runtime verified via system identity block
+voice Kyri
+host anonymized Linux pier, America/New_York
+title Send confirmed -- both remotes hold adef6a543, TAME pass log lands
+prompt Continuing the round after the TAME pass log; pushing it hit a contested main on xy.
+think Pushed the TAME-pass log commit to xy; a peer's day-shelf row had landed first, so the push rejected non-fast-forward.
+think Pulled --rebase xy main; the day-shelf index conflicted on one row -- both this lap's TAME row and a peer's petrichor row wanted the same slot. Kept both, newest stamp first.
+think Continued the rebase; it replayed clean onto the peer's commit and pushed to xy at adef6a543.
+think Pulled --rebase debrided main -- already current at the peer's tip, no new conflict -- then pushed debrided to the same hash.
+think Ran tools/r/remember_git_nib.rish write follow-up to carry construction/ITINERARY.md's Git nib to adef6a543c, since this follow-up commit lands on top of the work commit per remember-git-nib rule 5.
+obs Twice-pulled, never forced, on both remotes. No content lost from either side of the conflict.
+file session-logs/date/README-index-20260918.md why-resolved -- merge conflict on the day-shelf table kept both rows in stamp order
+file construction/ITINERARY.md why-carried -- Git nib rewritten to HEAD read before this follow-up commit, per rule 5
+recommend keep-going -- rotate to the Civic Style pass next lap
