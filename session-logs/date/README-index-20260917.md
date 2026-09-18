@@ -6,15 +6,16 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row. |
+| `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row, rishi fresh; every open item wants Keaton's word. |
 | `20260917.204057` | [The pier that cannot hear its own joules](20260917/20260917-204057_the-pier-that-cannot-hear-its-own-joules.kyri) | Row 6's RAPL assumption fails five ways on this. |
-| `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit. |
-| `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed. |
-| `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the. |
-| `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchange. |
-| `20260917.202856` | [Still holding, no fresh ask](20260917/20260917-202856_still-holding-no-fresh-ask.kyri) | Same standing verdict as the prior lap. |
-| `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work. |
-| `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a. |
+| `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit under CLAIM-AS-OVERRIDE; none touch docs-geode. |
+| `20260917.203604` | [the cheapest fall, taken twice](20260917/20260917-203604_the-cheapest-fall-taken-twice.kyri) | pheromone lowers lower_multi/lower_multi_typed's ident stub; duplication ceiling 13 to 11 |
+| `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed; root_finder_witness.rish back to finders_bare_new=0. |
+| `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the loop-gates-only sentinel: %807/%767/%765 unchanged, each wants Keaton's ruling. |
+| `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchanged; QA card on docs-geode/README.md clear. |
+| `20260917.202856` | [Still holding, no fresh ask](20260917/20260917-202856_still-holding-no-fresh-ask.kyri) | Same standing verdict as the prior lap; no re-poll, no new task named this turn. |
+| `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work; declines an eighth repeat-check of %819/%804. |
+| `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a further re-poll; %807/%767/%765 unchanged, no unclaimed booked lap elsewhere. |
 | `20260917.202514` | [The scatter that had to be shown](20260917/20260917-202514_the-scatter-that-had-to-be-shown.kyri) | Departure falls as 1/sqrt(edges): slope -0.5070 over 7 rungs. |
 | `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board. |
 | `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate. |

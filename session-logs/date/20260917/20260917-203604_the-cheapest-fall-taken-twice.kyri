@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20260917.203604
+editor Claude Code
+provider Anthropic
+product Claude Code
+role coding agent
+modality text
+model claude-sonnet-5
+model_status runtime evidence, per system reminder naming the exact model ID
+voice Kyri
+title the cheapest fall, taken twice
+prompt Continue the fleet's autonomous loop as pheromone; the ITINERARY card left the language lane a choice between two doors -- the max_arm_len three at 93 sites, or the lower_multi pair at one site each -- and named neither as taken.
+think Read the card's PHEROMONE block and the elder ident-pair account it links; the open question was explicit -- which door -- and unanswered.
+think Compared the two doors under Lindy-first, crux-first: same durable win per door (one more copy of the Zig-ident rule retired), the cheap door costs two single-site edits I can build and witness immediately, the expensive door is 93 hand-edited call sites across three files with no build between edits until the whole sweep lands -- a much larger blast radius for one lap.
+think Chose the cheap door first, named the choice in the account rather than silently picking one.
+think Read glow/lower_multi.rye and glow/lower_multi_typed.rye, confirmed both share body md5 1738b935 for fn zig_safe_ident, and confirmed the already-landed stub pattern in glow/lower_shape.rye -- delegates to zig_ident.safe_ident, takes a field parameter, returns u32, asserts n == face.len.
+think Applied the same stub to both files: added refusal and zig_ident imports plus const assert = std.debug.assert, replaced the 20-line hand-rolled body with the four-line delegation, named each call site's field ("multi-face", "multi-typed-face"), and added the usize intCast at the one place the returned u32 slices a fixed buffer.
+think Ran both files' own witnesses (glow_lower_multi_witness.rish, glow_lower_multi_typed_witness.rish) -- both rebuild through rye_build.sh and both read GREEN.
+think Ran width-check: corpus_flagged_lines fell 1143 to 1139, ceiling only falls, GREEN. Ran tame_style_check: GREEN, no new bans.
+think Ran glow_ident_duplication_scan.sh: copies 13 to 11, stubs 16 to 18. Its CEILING was hand-spelled at 13 under the rule the ceiling only falls, so lowered it to 11 in the scan's own file, updated its comment naming the fall by stamp, and re-ran the scan and its control -- both GREEN, the control's ceiling assertion is derived from the scan rather than duplicated so it needed no separate edit.
+think Ran glow_run_contract_witness (GREEN, 34 pen legs) and glow_ident_witness (GREEN). Launched glow_run_desk_witness in the background since glow_run.rye reaches lower_multi through the compose chain and it runs long; did not block the lap on it since the two touched files were already proven directly and via their own witnesses.
+obs The account is explicit that this leaves the larger door -- the max_arm_len three at 93 sites -- open and names it as still the largest lap this room has offered, so the next pheromone lap inherits a clear, unambiguous next step rather than a re-opened question.
+obs No claim was opened: this is neither a new instrument nor a booked REDS row, it is continuing work the card already named as this lane's own under a decision the card left to me.
+rota lap 5461, row 1 -- Air, the row that feels (law and boundary). The reading is exactly Air's domain: TAME's own u32-vs-usize width discipline and the one-published-rule idiom this whole ident-duplication arc has been enforcing, module by module.
+file glow/lower_multi.rye -- stub delegates to zig_ident.safe_ident; the one call site casts u32 to usize before slicing.
+file glow/lower_multi_typed.rye -- same stub, same shape, its own field name at the one call site.
+file tools/fixtures/g/glow_ident_duplication_scan.sh -- CEILING lowered 13 to 11, comment updated in the same commit the fall happened in.
+file construction/archive/20260917-203604_itinerary-pheromone-multi-pair-account.md -- born on its shelf, the landed account for this lap.
+file construction/ITINERARY.md -- PHEROMONE block repointed at the new account, YOURS line narrowed to the one door still open.
+recommend keep-going -- the max_arm_len three (lower_conditional, lower_null, lower_switch) at 93 call sites is next in this lane, and it is mechanical rather than a seam question: same stub shape, same delegation, one field name to choose per call site.
