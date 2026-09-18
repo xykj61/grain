@@ -128,9 +128,37 @@ block_of() {
 }
 
 # Resolve a relative target against the page's own directory, as a reader's click would.
+#
+# INLINED RATHER THAN SOURCED (REDS %762's spelling, one file over). `readlink -f` is GNU-only,
+# so the `shell_dialect` gate counts it and reds on every ship; the canonical portable spelling is
+# `resolve_path` in tools/fixtures/s/shell_portable.sh. This scan's own control plants its
+# mutations by COPYING this file out to a pen and running the copy (legs 7-8), so sourcing a
+# helper by a walk from `$0` would find no tree there -- the same constraint
+# `aurora_placement_scan.sh` names for the same reason. The walk is inlined instead, bounded at
+# the same 40 hops `resolve_path` itself uses -- the kernel's own SYMLOOP_MAX.
 resolve() {
   _d=$(dirname "$root/$1")
-  ( cd "$_d" 2>/dev/null && readlink -f "$2" 2>/dev/null )
+  (
+    cd "$_d" 2>/dev/null || exit 1
+    _rt=$2
+    _hops=0
+    while [ -L "$_rt" ]; do
+      _hops=$((_hops + 1))
+      [ "$_hops" -le 40 ] || exit 1
+      _hop=$(readlink "$_rt" 2>/dev/null) || exit 1
+      case "$_hop" in
+        /*) _rt=$_hop ;;
+        *)  _rt=$(dirname "$_rt")/$_hop ;;
+      esac
+    done
+    _rtd=$(dirname "$_rt")
+    _rtb=$(basename "$_rt")
+    _rtd=$(CDPATH= cd -P "$_rtd" 2>/dev/null && pwd -P) || exit 1
+    case "$_rtd" in
+      /) printf '%s\n' "/$_rtb" ;;
+      *) printf '%s\n' "$_rtd/$_rtb" ;;
+    esac
+  ) 2>/dev/null
 }
 
 for p in $pages; do

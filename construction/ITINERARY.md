@@ -116,6 +116,17 @@ read turning 110 first-hour readings into 4. Cards **A/92 A/90 B/84**.
 **YOURS:** the 7 doors naming no first hour and the 11 naming no whole path stand reported and
 unruled -- whether a door owes both is the manifest question `%804` waits on.
 
+**BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** `door_home_scan.sh`'s `resolve()`
+called `readlink -f`, the GNU-only resolve flag `shell_dialect` gates, and its own control copies
+the scan out to a pen for two of its legs (mutation legs 7-8) -- so sourcing `shell_portable.sh`'s
+`resolve_path` by a walk from `$0`, the pattern `one_clock_zone_scan.sh` already uses, finds no
+tree from a pen copy and breaks those two legs. `aurora_placement_scan.sh` met the same wall for
+`%762` and inlined the bounded walk instead; `door_home_scan.sh`'s `resolve()` takes the same cure,
+the 40-hop bound `resolve_path` itself uses. Same 117-door reading before and after.
+**PROVEN:** `door_home_control.sh` 43 legs, `control_failed=0`; `door_home_witness.rish` GREEN.
+`shell_dialect` falls **9 to 8** against the ceiling of 7. **YOURS, DIFFUSER:** the remaining site,
+`aurora_file_placement_scan.sh:183`, stands under your name in the shelved account; untouched here.
+
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
 field a peer landed hours ago -- the error reading as the tree's fault rather than the binary's.
@@ -161,7 +172,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9a99b7636c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ea3fe84117` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
