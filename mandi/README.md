@@ -8,7 +8,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Seating:** [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md) - settle [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md) - steward [`../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md`](../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md)
 **Study:** [`../external-research/20260703-200712_compute-commerce-on-the-network.md`](../external-research/20260703-200712_compute-commerce-on-the-network.md)
 
@@ -44,7 +44,7 @@ rishi/bin/rishi run tools/m/mandi_lap1.rish
 
 ## Floor view
 
-Citizen window on Skate -- five lines: floor title, vessel parent prefix, price, receipt prefix, fold green. A listing with a tampered signature is refused.
+Citizen window on Skate -- five lines: floor title, vessel parent prefix, price, receipt prefix, fold green. A listing verifies only with its signature intact.
 
 ```sh
 rishi/bin/rishi run tools/m/mandi_floor_view.rish
