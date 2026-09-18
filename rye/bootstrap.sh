@@ -23,7 +23,13 @@ mkdir -p bin
 # Zig 0.16 requires -lc for getpid (build_lock_acquire). Linux glibc hosts
 # refuse without it; Darwin accepts it. NixOS without FHS libc keeps the musl
 # recipe in docs-geode/tutorials/the-first-hour.md.
-"$zig" build-exe "$bridge" -femit-bin=bin/rye --zig-lib-dir lib -lc
+# ReleaseSafe: two builds at one path give identical bytes (measured 20260918:
+# sha256 a771f33cea173eca twice), where the default Debug mode differs build to
+# build. ReleaseSmall is also reproducible and 20x smaller, yet strips runtime
+# safety checks; TAME puts safety first, so ReleaseSafe is the mode.
+# The binary still embeds this tree's absolute path, so two ships at two paths
+# produce two hashes -- reproducible per tree, not yet shared across trees.
+"$zig" build-exe "$bridge" -O ReleaseSafe -femit-bin=bin/rye --zig-lib-dir lib -lc
 
 echo "bootstrapped: $here/bin/rye"
 ./bin/rye version
