@@ -876,3 +876,5 @@ at a closed fold.*
 *Row `%745` folded to [`REDS-the-pen-the-runtime-took-over-rows-745.md`](REDS-the-pen-the-runtime-took-over-rows-745.md) on `20260917.205112`, **BOOKED** -- the nineteen-file amphora repair the row asked for had already landed a day earlier; the pin caught up and folded in the same lap.*
 
 *Row %806 folded to [`REDS-one-assert-rather-than-an-if-rows-806.md`](REDS-one-assert-rather-than-an-if-rows-806.md) on `20260917.205315`, **CLOSED** -- a witness's own past-tense comment claiming a fix is not a closure; the ledger learns only when a hand runs the witness and says so.*
+
+*Row %822 folded to [`REDS-the-cheapest-page-again-rows-822.md`](REDS-the-cheapest-page-again-rows-822.md) on `20260917.205942`, **CLOSED** -- renumbered from a locally-booked %821 after a rebase found a peer's %821 already shared with an earlier stamp (`.claude/rules/derived-spine.md` rule 1: the earlier stamp keeps the number). The law-room ceiling repair landed and closed inside one lap, and the pin was already 63 bytes under its own bound before the row arrived; folding it the hour it closed is %818's own precedent.*

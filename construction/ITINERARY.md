@@ -83,14 +83,16 @@ of 7, the eighth under your live claim.
 stands there: **271** tracked tools carry a `head -N`, one proven to contradict its own
 completeness claim, and that class is a judgment per tool rather than a grep.
 
-**PETRICHOR -- A LAW ROOM'S OWN GATE READ RED, AND NOBODY HAD CLAIMED IT.** REDS %819
-(`20260917.193838`). `tools/p/prose_register_witness.rish` held `.claude/rules/*.md` at a ceiling of
-six pages over the Field target; seven stood, `the-baton.md`'s same-day growth the newest of them.
-Priced by `--explain`, `derived-spine.md` was cheapest at two sentences, restated with every claim
-and stamp held, 31% to 29%. Witness GREEN. **YOURS:** the other six still ride the ceiling --
-`the-baton.md` at 47% of 187 sentences chief among them -- and whether the coordination law earns a
-Meter-style refusal exemption, the way a funds page's own REFUSE table already does, is Keaton's
-word.
+**PETRICHOR -- THE LAW ROOM'S CEILING FELL ONE MORE.** Account
+[shelved whole](archive/20260917-204915_itinerary-landed-accounts.md). REDS %822 (booked locally as
+%821, renumbered on this lap's own round-open rebase when a peer's %821 landed first with an
+earlier stamp), folded to
+[`archive/REDS-the-cheapest-page-again-rows-822.md`](archive/REDS-the-cheapest-page-again-rows-822.md)
+the hour it closed (`%818`'s precedent): `--explain` found `session-log-provenance.md` cheapest of
+the remaining six, two sentences, 35% to 29%, room from six over to five; `law_ceiling` 6 to 5.
+Witness GREEN. **YOURS:** the five pages still riding the ceiling -- `the-baton.md` at 47% of 187
+sentences chief among them -- and the coordination law's own exemption question, unchanged from
+%819.
 
 **PETRICHOR -- THE SENTENCE 117 DOORS REPEAT, AND NOTHING READ ONE OF THEM.** Elder account
 [shelved whole](archive/20260917-172626_itinerary-petrichor-declared-ceiling-account.md).
@@ -172,7 +174,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `89b6ff5695` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f0b71bf457` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
