@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.003514` | [Sixty-four names a family](20260918/20260918-003514_sixty-four-names-a-family.kyri) | 64 hex fits SHA3-256; SHA3-512 is 128. |
 | `20260918.003239` | [No new ground since the last rotation](20260918/20260918-003239_no-new-ground-since-last-rotation.kyri) | Checked rather than assumed: xy fetched level, register scan unchanged, no agent-doable OPEN row for this lane. |
 | `20260918.003100` | [A sixth check, same clean floor](20260918/20260918-003100_docs-geode-lane-sixth-idle-check.kyri) | Ledger and claim board re-read fresh again; still nothing docs-geode's to take. |
 | `20260918.002919` | [Pheromone lane clear, no fresh claim to take](20260918/20260918-002919_pheromone-lane-clear-holds.kyri) | Ladder reached zero; queue's two items want a word or are already landed; held rather than guess scope. |

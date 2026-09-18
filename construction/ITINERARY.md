@@ -85,8 +85,7 @@ delegates too, width bill 1,129 to 1,127 (usize to u32), `glow_ident_duplication
 four call sites delegate too (two naming the payload face, two naming an arm), width bill 1,125 to
 1,123 (usize to u32, file count unmoved), `glow_ident_duplication`'s ceiling falls 1 to 0 -- every
 copy this room ever carried is now a stub reaching the one published rule.
-**INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
-[shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
+**INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's.
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -166,7 +165,7 @@ compared lap-to-lap rather than to the zeroed entry the row's own wording first 
 state (bytes plus the per-page lap tag) is NEVER periodic, because `Ring.lap()` only grows -- the
 same field that lets the ring refuse a recycled page is the field that keeps its full state from
 ever repeating. Essay: [`the field that proves safety breaks the
-cycle`](../active-designing/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
+cycle`](../active-designing/date/20260917/20260917-214608_the-field-that-proves-safety-breaks-the-cycle.md).
 Beside the elder `cyclic_witness` (git-porcelain residue across the rostered fleet), row 3 now
 carries two lenses at two grains rather than one; neither replaces the other.
 
@@ -230,9 +229,9 @@ The product cards carry the complete ladders:
 
 - [`LINENGROW_ITINERARY.md`](LINENGROW_ITINERARY.md) -- from readable receipt to portable data-value bundle and lawful return.
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
-- [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
+- [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `be17a3a82` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9ec2e56c2b` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -324,7 +323,7 @@ measured `71.90`, deviation `0.004641` over eight rungs -- set by the layout's o
 unit entering only through `g0`. It holds on ~7,500 edges and fails on 67 room pairs and the pen's
 32, asserted from both sides.
 **PROVEN:** 78 legs, **eight mutations bitten**, three real git repositories in a pen, 38s. Paper
-[the tolerance that was a ladder rung](../active-designing/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
+[the tolerance that was a ladder rung](../active-designing/date/20260917/20260917-163338_the-tolerance-that-was-a-ladder-rung.md),
 **A/90**; row 7 carries its fourth erratum.
 **MINE:** opening the claim as its own commit staled the card's Git nib for the whole lap --
 `remember_git_nib` red on the cold run at my own hand, the opening half of the class my last lap met
@@ -368,7 +367,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Priority:** VERY HIGH Lindy; VERY HIGH crux.
 
-1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
+1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
 2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation; the `20260913` review accepts this boundary.
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
 
