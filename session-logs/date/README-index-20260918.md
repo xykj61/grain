@@ -9,6 +9,7 @@
 | `20260918.070323` | [Send confirmed -- both remotes hold 14cd75ea3](20260918/20260918-070323_send-confirmed-14cd75ea3.kyri) | Three contested pushes on descriptor_test.rye's assert lap; nib carried forward each rebase. |
 | `20260918.070005` | [Send confirmed -- both remotes hold 3bb1bcc97](20260918/20260918-070005_send-confirmed-3bb1bcc97.kyri) | One real dayshelf conflict resolved, nib carried forward. |
 | `20260918.065835` | [descriptor_test.rye closes another zero-assert file](20260918/20260918-065835_descriptor-test-asserts.kyri) | Two invariant asserts added; ratchet 14 to 12; claim opened, pushed, and closing. |
+| `20260918.065747` | [Row-aligned Tally gardens proposal](20260918/20260918-065747_row-alignment-tally-gardens-proposal.kyri) | Fourth first-principles paper: DRAM-row-energy alignment, scoped to large gardens, falsifier unmeasured here. |
 | `20260918.065510` | [Send confirmed -- both remotes hold 6d9859634](20260918/20260918-065510_send-confirmed-6d9859634.kyri) | Three contested pushes on lower_cast.rye's assert lap; nib carried forward each rebase. |
 | `20260918.065300` | [turn_route.rye gains five asserts](20260918/20260918-065300_turn-route-five-asserts.kyri) | Comlink routing seam, five postconditions; ratchet 15 to 14. |
 | `20260918.064804` | [bolt_apply_step.rye gains five asserts](20260918/20260918-064804_bolt-apply-step-asserts.kyri) | Same assert shape moved from glow/ to Mantra; ratchet 16 to 15. |
