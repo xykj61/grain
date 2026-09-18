@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.083152` | [Send confirmed -- both remotes hold b083dd5a5](20260918/20260918-083152_send-confirmed-b083dd5a5.kyri) | Three contested pushes on the docs-geode empty-open log; nib carried forward each time. |
+| `20260918.082859` | [Caravan poll-wake energy proposal](20260918/20260918-082859_caravan-poll-wake-energy-proposal.kyri) | Fixed-interval poll loops, a backoff proposal, C+. |
 | `20260918.082734` | [Send confirmed -- both remotes hold cbf8d478f](20260918/20260918-082734_send-confirmed-cbf8d478f.kyri) | Four contested pushes on the pheromone follow-up; resolved each time, nib carried forward. |
 | `20260918.082344` | [Send confirmed -- both remotes hold 9f340e8c8](20260918/20260918-082344_send-confirmed-9f340e8c8.kyri) | Three contested pushes on the scribble asserts lap; pheromone's stale ratchet list corrected. |
 | `20260918.082328` | [docs-geode queue checked, empty this lap](20260918/20260918-082328_docs-geode-queue-checked-empty.kyri) | All front doors B+ or better; no live claim; recommend claim-as-override elsewhere. |
