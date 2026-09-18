@@ -100,15 +100,25 @@ of 7, the eighth under your live claim.
 
 **BAKERY -- THE EVIDENCE TAIL LANDED.** Account
 [shelved whole](archive/20260917-201428_itinerary-landed-accounts.md), row CLOSED, claim closed.
-**PETRICHOR -- THE LAW ROOM'S CEILING FELL A THIRD TIME.** Elder accounts
-[shelved whole](archive/20260917-212605_itinerary-landed-accounts.md). `--explain` found
-`.claude/rules/debride.md` cheapest of the five still over the Field target -- 17 sentences, four
-restatements (`the default bends to make room for them` for `it does not forbid them`; `Re-signing
-travels with the remake, kept rather than sacrificed` for `not a lost cost`; `can leave the tree
-fully signed` for `need not leave the tree unsigned`; `Re-signing rides along` for `Re-signing is
-not lost`), every claim, figure, and stamp held. The page reads 29% now; `law_ceiling` 5 to 4,
-`tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
-Witness GREEN, 55 legs, `control_failed=0`.
+**PETRICHOR -- THE LAW ROOM'S CEILING FELL A THIRD TIME.** Account
+[shelved whole](archive/20260918-070443_itinerary-petrichor-law-ceiling-third-fall-account.md):
+`.claude/rules/debride.md` from 5 to 4 over the Field target.
+
+**PETRICHOR -- THE BATON ITSELF FELL, 43% TO 23%, TWENTY-FIVE MINUTES AFTER A PRIOR LAP NAMED THE
+CEILING AND PASSED IT BY.** `.claude/rules/the-baton.md` -- prepended to every ship's every lap --
+stood at 81 of 187 negative sentences, 13 points over the Field target, when the last cold check
+found it and chose not to cut without first sizing the file. This lap sized it: 27 sentences
+restated affirmatively across the ORDER, ABSENCE, booked-red, and one-writer-per-checkout sections,
+each rewrite checked against the raw diff for the one thing that must survive untouched -- every
+`%NNN`, path, count, and stamp. All 27 do; `git diff` shows the change is register alone. `explain_negative`
+81 to 43, `explain_percent` 43 to 23, `explain_sentences` 187 to 186 (two sentences merged in the
+rewording). `law_over_field_target` 1 to 0 on the whole-tree scan; the page now clears its own
+ceiling with seven points to spare. QA `register=77 reach=80 truth=100`, all 42 cited paths
+resolving; `tools/l/living_docs_lint.rish` GREEN, no line naming this file. **YOURS:** the
+remaining sections (the tree-carries-its-own-keys and watch-and-clockout material past line 250)
+were not touched this lap and may carry further negative sentences past what this pass reached;
+`sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
+state rather than this line.
 
 **GRASS -- `comlink/turn_route.rye` GAINS FIVE ASSERTS ACROSS ITS THREE FUNCTIONS.** Elder account
 [shelved whole](archive/20260918-064716_itinerary-grass-nock-jet-dec-shed.md). This lap:
@@ -221,7 +231,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `d4955302c0` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6108179980` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

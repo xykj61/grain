@@ -58,12 +58,12 @@ what is spent is the reading that says *these 300 answers describe THIS tree* --
 thing only a forty-minute pass buys, past what any single witness reaches alone.
 
 **The order, in one line:** open and PUSH the claim, let the round-open's rebase finish, read HEAD
-once, launch the cold run, and hold still -- no commit, no edit, no pull -- until the transcript
-carries `run_verdict=`.
+once, launch the cold run, and hold the tree at that exact read until the transcript carries
+`run_verdict=`, with every commit, edit, and pull waiting for it.
 
 **Proven on metal this lap rather than argued.** The pass launched under that order closed
 `tree_moved=no`. The pass before it, launched at the end of the previous lap, had already fixed
-its verdict by the time this lap opened, and the runner said so in its own refusal of a second pass:
+its verdict by the time this lap opened, and the runner said so in its own answer declining a second pass:
 `its launch_head ab516dbed9 is no longer HEAD (54b1f8c278), so its verdict is already fixed at tree_moved and more of this machine spent on it buys nothing.`
 
 **The sharper half: a pass that outlives its lap has already given up its stillness.** This firing's mover
@@ -85,18 +85,19 @@ room. The wider number leaves the cure exactly as strong -- the printed ordering
 documentary fact rather than a statistical one, and the cure costs one word. What it does is name
 the dominant mover as unmeasured, and this lap's own firing is the first evidence about it.
 
-**What this does not reach.** A gate. The order lives in what a lap types at its own prompt, which
-is in no file -- the same structural wall `%457`, `%512`, `%549` and `%569` each met. The runner
-already refuses a second pass and already names a fixed verdict out loud; what it lacks is a way to
+**What this leaves untouched.** A gate. The order lives in what a lap types at its own prompt, which
+lives only there -- the same structural wall `%457`, `%512`, `%549` and `%569` each met. The runner
+already declines a second pass and already names a fixed verdict out loud; what it lacks is a way to
 choose the moment a lap launches the first one. So it is set where habits are set.
 
 ## Absence is the one reading a seat may not take from local bytes alone (REDS %457)
 
-**A whole-tree grep at a stale HEAD is the strongest evidence a lap can gather about a tree nobody
-else is standing in.** A seat was handed `tools/fixtures/f/fleet_login_scan.sh` to run, reported
-that no file and no reference to that name stood anywhere in the tree, tracked or untracked, and
-reasoned onward to a conclusion about which meters the fleet owns. Every word was true of the bytes
-it could see. The file had landed three commits earlier and that checkout had not fetched.
+**A whole-tree grep at a HEAD the tree has already moved past is the strongest evidence a lap can
+gather -- and it describes the tree as though this seat were the only one working in it.** A seat
+was handed `tools/fixtures/f/fleet_login_scan.sh` to run, reported that the file and every reference
+to that name stood outside the tree entirely, tracked or untracked, and reasoned onward to a
+conclusion about which meters the fleet owns. Every word was true of the bytes it could see. The
+file had landed three commits earlier, on a checkout still waiting on its own fetch.
 
 **On a fleet this is the ordinary case rather than the edge.** Eight ships push to one remote, the
 round-open pulls at lap START, and a grep happens mid-lap -- so a checkout is behind within minutes
@@ -104,59 +105,64 @@ of opening. Read on the lap that seated this clause, mid-round: `commits_behind=
 
 The instrument is [`../../tools/fixtures/p/path_absence_scan.sh`](../../tools/fixtures/p/path_absence_scan.sh),
 which fetches the anointed remote before it answers, prints `commits_behind`, and reports `here=`
-and `upstream=` per path. `verdict=absent` wants **both** to say no; a path upstream holds and this
-tree lacks reads `verdict=behind` and says so by name. Re-proven on metal `20260910` against live
+and `upstream=` per path. `verdict=absent` wants **both** to answer the same way; a path upstream
+holds while this tree still lacks it reads `verdict=behind` and says so by name. Re-proven on metal
+`20260910` against live
 divergence rather than a pen -- a path both sides hold, a fabricated name reading `absent`, and
-`tools/t/tilak_root_count_witness.rish`, a witness upstream carried and this checkout did not,
-reading `behind`.
+`tools/t/tilak_root_count_witness.rish`, a witness upstream carried while this checkout still
+waited on it, reading `behind`.
 
-**It is on the baton because the remainder is a habit, and a lap's own grep sits in no file.** That
-is the same structural wall `%512` met for a tracked-source scan, `%549` for a shell redirect and
-`%569` for a signal: no instrument this tree can own reaches a command typed at a session prompt.
-Measured four days after the repair landed, the scan stood on **zero** living directive surfaces --
+**It is on the baton because the remainder is a habit, and a lap's own grep lives only at the
+prompt.** That is the same structural wall `%512` met for a tracked-source scan, `%549` for a shell
+redirect and `%569` for a signal: every instrument this tree owns reaches only tracked bytes, and a
+command typed at a session prompt stays outside all of them. Measured four days after the repair
+landed, the scan stood on **zero** living directive surfaces --
 `tools/f/fleet_baton.txt`, `construction/ITINERARY.md`, every rule room, both prompt rooms, and the
 standing roster. So it is set where habits are set.
 
 ## Intent is the half of absence no scan can reach (`20260911.222157`)
 
-**A file that does not exist yet is on no remote, in no ref, in no tree.** The absence scan above
-answers about a remote as it stood when asked, and it answers honestly; what it cannot answer is a
-build living two hours in one agent's head. There is nothing to find, so a sharper reader is the
-wrong repair. The repair is **a thing to read.**
+**A file that has yet to exist lives only in a future commit -- no remote, ref, or tree carries it
+yet.** The absence scan above answers about a remote as it stood when asked, and it answers
+honestly; what it can answer stops short of a build still living two hours in one agent's head.
+The right repair here is a different kind entirely: **a thing to read.**
 
 **It cost two ships a whole build apiece inside one day.** On `20260911` incense built
 `port_registry` -- 35 port constants across 21 files, three claimed twice, 44 pen legs, GREEN on
 metal -- and withdrew the whole thing, because `%715` had landed `port_band` two hours earlier and
 strictly wider. Bakery built a port census with a 29-leg pen the same day, rebased it into that
 same peer's scan, and wrote the sentence that named the gap: *Nothing said the work was in flight.*
-Both had run the absence check. Both readings were true and hours stale.
+Both had run the absence check. Both readings were true when taken, and hours had already passed
+them by.
 
 **A claim is a declaration**, in the sense
 [`../../foundations/20260823-222019_what-brix-infuse-is.md`](../../foundations/20260823-222019_what-brix-infuse-is.md)
 already holds: it says how things should be and leaves the present moment alone, so it is readable
-and reviewable with nothing built yet. That page's other line sets the writer's law --
-`infusion(world') -> world'` -- so opening a claim that already stands unchanged moves no byte, and
-the pen proves it by comparing the board with itself.
+and reviewable while the work itself still waits to be built. That page's other line sets the
+writer's law -- `infusion(world') -> world'` -- so opening a claim that already stands unchanged
+moves zero bytes, and the pen proves it by comparing the board with itself.
 
 **When a lap opens a NEW INSTRUMENT, or takes a BOOKED RED off the ledger, it checks, claims,
-pushes, then builds.** Not every lap: an ordinary repair to an existing file collides with nothing,
-and a tax on every lap is a tax somebody stops paying. Measured at seating over `git log --diff-filter=A` on `tools/`, new instrument files landed
+pushes, then builds.** This falls only on that class: an ordinary repair to an existing file stays
+clear of collision on its own, and a tax on every lap is a tax somebody stops paying. Measured at
+seating over `git log --diff-filter=A` on `tools/`, new instrument files landed
 at **84, 46, 100 and 59** a day across `20260908`-`20260911` -- so the claim falls on tens of laps a
 day fleet-wide rather than all of them. **Those four figures are free**; run the command.
 
 ## A booked red is the loudest invitation the fleet emits (`20260916.214351`)
 
 **The exemption above was written about collision, and a booked red is the one repair that
-collides by design.** *It collides with nothing* is true of a file nobody else is looking at. A
-row standing **OPEN** on `construction/REDS.md` is the opposite of that: it is a defect this tree
+collides by design.** *It stays clear of collision* is true of a file only this seat is looking at.
+A row standing **OPEN** on `construction/REDS.md` is the opposite of that: it is a defect this tree
 has published, with its three fields already written, on a pin every one of eight ships reads at
-each lap open. Nothing else in this tree says *here is work, it is real, nobody has taken it* to
-the whole fleet at once -- and the clause excused exactly that case.
+each lap open. This is the loudest thing this tree says to the whole fleet at once -- *here is
+work, it is real, and it is still waiting for a hand* -- and the clause excused exactly that case.
 
 **It cost a whole build inside one day.** On `20260916` incense built `%782`'s repair -- the
 recognition ruling for `nib_honesty`, where a `grep -oE '[0-9a-f]{10}'` admits an all-decimal run
-and a peer's LCG constants read as floating commit claims. The claim check was run and no claim
-was opened, on the reading that the clause covers a new instrument rather than a repair. Grass had
+and a peer's LCG constants read as floating commit claims. The claim check was run and answered
+clear, so the repair proceeded unclaimed, on the reading that the clause covers a new instrument
+rather than a repair. Grass had
 booked `grass-nib-decimal-position` at `20260916.205040` and landed the same ruling forty minutes
 ahead, strictly better. The peer's claim was on the board the whole time; the reader printed it;
 the clause said the reading was unnecessary.
@@ -174,7 +180,7 @@ named files that existed in the parent commit:
 | Whose `what` sentence names a REDS row outright | **18** |
 
 So the clause as written asked for at most 77 of 131 openings, and the fleet claimed repairs 53
-times anyway. The one lap that read the clause literally is the one that lost its build.
+times anyway. The one lap that read the clause literally is the one whose build a peer overtook.
 
 **Every figure here is FREE** -- the board grows each lap, so run the readings rather than trusting
 the table:
@@ -189,30 +195,32 @@ grep -oE '\*\*(OPEN|BOOKED)\*\*' construction/REDS.md | sort | uniq -c
 published it; an ordinary repair stays exempt because no shared surface names the file. That is a
 test a lap can apply in one second -- *does a row name this?* -- rather than a judgment about how
 likely a peer is to be nearby. The count above is why the exemption survives at all: widening to
-every repair would put a claim on 53 more openings a cycle for collisions the ledger never
-advertised.
+every repair would put a claim on 53 more openings a cycle, for collisions the ledger stayed silent
+about the whole time.
 
-**What this does not reach.** A lap that takes a booked red and never claims is reached by no
-guard, for the same reason the clause below gives -- the decision sits in no file. And two ships
-may still deliberately take one row; the reader reports and never gates.
+**What this leaves untouched.** A lap that takes a booked red and skips the claim sits past every
+guard this tree owns, for the same reason the clause below gives -- the decision sits at the prompt
+rather than in any file. And two ships may still deliberately take one row; the reader reports and
+leaves the gate open either way.
 
 **The reader reads the ANOINTED REMOTE's copy**, which is `%457` one layer down -- a board read from
-local bytes is stale by exactly the minutes that matter, and `board=local` says so out loud. **Age
+local bytes is exactly as many minutes behind as matter, and `board=local` says so out loud. **Age
 comes from a UTC `epoch` field beside the one-clock `stamp`**, because this fleet's clocks are named
-per host and stamp arithmetic would read three hours wrong for a claim written at the other door.
-**A claim expires at six hours**, so a ship that dies mid-lap goes quiet without anyone clearing it.
-**It reports and never gates**, since two ships may deliberately build one thing.
+per host and stamp arithmetic would read three hours off for a claim written at the other door.
+**A claim expires at six hours**, so a ship that dies mid-lap goes quiet on its own, with the clock
+alone clearing it. **It reports and leaves the gate open either way**, since two ships may
+deliberately build one thing.
 
 **The sharper reading is the one a person does.** Path overlap is exact -- compared at a directory
-boundary, so a claim naming a directory stays clear of a sibling file whose name merely begins with
-the same characters -- and it would have MISSED the founding case, since `port_registry` and
-`port_band` share no path. So every
+boundary, so a claim naming a directory stays clear of a sibling file whose name only happens to
+start with the same characters -- and it would have MISSED the founding case, since `port_registry`
+and `port_band` share zero path. So every
 check prints the whole live board with each claim's `what` sentence, clear verdict or not. That is
 judgment rather than measurement, and the instrument says so in its own header.
 
-**And it closes only the case where a ship declares.** A lap that never claims is reached by no
-guard, for the reason the pkill clause above gives: a decision made at a session prompt sits in no
-file. Which is why it is here.
+**And it closes only the case where a ship declares.** A lap that skips every claim sits past every
+guard, for the reason the pkill clause above gives: a decision made at a session prompt lives at
+that prompt alone. Which is why it is here.
 
 Proven by [`../../tools/fixtures/f/fleet_claim_control.sh`](../../tools/fixtures/f/fleet_claim_control.sh)
 -- 46 behaviors on real git repositories with a real remote in a throwaway pen, every refusal
@@ -220,22 +228,24 @@ planted and then lifted -- under [`../../tools/f/fleet_claim_witness.rish`](../.
 Two mutations carry the weight: dropping the `/` from the path comparison, and a reader falling back
 to local bytes, which passes every other leg in a pen because there the two copies agree -- so the
 plant makes them disagree first. **The last two legs came from running the real thing rather than
-the pen**: the board ships empty, `claims_live=` printed blank out of an awk variable no record had
-touched, and a count that prints nothing reads as a broken instrument. The empty board is the first
-reading every ship takes, and only first residency reached it.
+the pen**: the board ships with its live-claims section still unopened, `claims_live=` printed blank
+out of an awk variable that had yet to touch a record, and a count that answers with silence reads
+as an instrument gone quiet. That still-unopened board is the first reading every ship takes, and
+only first residency reached it.
 
 ## One writer per checkout (REDS `%291`)
 
-**A checkout answers to one writer.** Two loops claiming one tree refuse; two loops on two trees is
-a token spend and welcome. **Name any peer before a file moves.** A commit stages exactly its own
-set and the index is proven to hold nothing else; a retry is path-limited the same way, and the
-commit's file count is read back. The wound bit four times in four spellings in one day, which is
-why it is a law rather than a habit.
+**A checkout answers to one writer.** Two loops claiming one tree decline each other; two loops on
+two trees is a token spend and welcome. **Name any peer before a file moves.** A commit stages
+exactly its own set and the index is proven to hold that set alone; a retry is path-limited the same
+way, and the commit's file count is read back. The wound bit four times in four spellings in one
+day, which is why it is a law rather than a habit.
 
-**Machines are doors.** A seat is a chair, not a computer: the same ship may sit at a Mac or at the
-pier, and what makes that safe is proving the other door is closed and opening with the twice-pull.
+**Machines are doors.** A seat is a chair rather than a computer: the same ship may sit at a Mac or
+at the pier, and what makes that safe is proving the other door is closed and opening with the
+twice-pull.
 
-**And never signal a process by name -- by any spelling.** `pkill -f standing_equipment_run` matches a command line
+**And signal a process only through what it does, whatever name or spelling it wears.** `pkill -f standing_equipment_run` matches a command line
 rather than a directory, so on a pier eight ships share it reaches the fleet, and the calling
 shell's own command line holds the pattern, so it kills the caller too (exit 144). The bounded form
 is `sh tools/f/fleet_call.sh --pattern <substring>`, which **reads**; `--signal TERM` is what acts.
