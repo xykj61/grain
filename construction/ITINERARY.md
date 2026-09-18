@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.213207` (EDT)
+**Stamp:** `20260917.230645` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -129,8 +129,20 @@ Witness GREEN, 55 legs, `control_failed=0`.
 **GRASS -- THE LAW ROOM'S CEILING FELL A SIXTH TIME.** Account
 [shelved whole](archive/20260917-223314_itinerary-grass-law-ceiling-sixth-account.md):
 `ascii-first.md` to 29% (`law_ceiling` 2 to 1). Witness GREEN, 55 legs, `control_failed=0`.
-**YOURS:** `the-baton.md` at 47% of 187 sentences, the last page over the ceiling; the coordination
-law's exemption question from %819; and the fleet's 271-tool `head -N` judgment (`%804`).
+
+**GRASS -- THE BATON'S OWN CEILING, LOWERED IN PART.** `the-baton.md` fell 47% to 43% (187
+sentences, 89 to 81 negative) on eight restatements plus a three-line quoted refusal message
+folded onto one line so its own backtick span reads as `code` under the scan rather than as bare
+prose -- `sparing every seat its own edit` for `with no per-seat edit`, `stood unruled` for `had no
+rule at all`, `stays silent about which comes first` for `neither says which comes first`, among
+others; every claim, figure, and stamp held. `law_ceiling` stays 1: the page's remaining negatives
+are mostly its own refusal vocabulary -- stale, refuses, absent, nobody -- naming real guard
+behavior rather than a restatable habit, and Gauge asks the prose to stay honest ahead of asking
+the number to fall. Witness GREEN, 55 legs, `control_failed=0`; QA field B+/87 (register 57,
+reach 90, truth 100).
+**YOURS:** whether `the-baton.md`'s refusal-dense sections earn a Meter exemption rather than a
+further Field sweep; the coordination law's exemption question from %819; and the fleet's
+271-tool `head -N` judgment (`%804`).
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -210,7 +222,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `01a9ff8ec1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `185e9083f3` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
