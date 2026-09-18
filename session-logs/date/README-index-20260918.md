@@ -8,8 +8,9 @@
 |---|---|---|
 | `20260918.091500` | [Send caught its own bad merge before either push landed](20260918/20260918-091500_send-caught-a-bad-merge-before-push.kyri) | A regex conflict splice truncated the day shelf to 5 rows; caught by diff before push, repaired by full-file insert. |
 | `20260918.091435` | [Fourth empty-open turn, pheromone's own lane clear](20260918/20260918-091435_fourth-empty-open-turn.kyri) | Checked pheromone's NOW entries and the claim board; nothing agent-doable in-lane. |
-| `20260918.091040` | [docs-geode cold check, clean](20260918/20260918-091040_docs-geode-cold-check-clean.kyri) | Crushed index, ascii, door register, first-hour witness all green; no lane item found. |
 | `20260918.091221` | [A third turn opened with no attached task](20260918/20260918-091221_no-task-check-in.kyri) | Third empty-open turn in a row; reported readiness, recommended check-in (either). |
+| `20260918.091049` | [Second cold run books %827](20260918/20260918-091049_second-cold-run-books-827.kyri) | 29 reds, 28 known; %827 booked, %825 folded to make room. |
+| `20260918.091040` | [docs-geode cold check, clean](20260918/20260918-091040_docs-geode-cold-check-clean.kyri) | Crushed index, ascii, door register, first-hour witness all green; no lane item found. |
 | `20260918.090759` | [Another turn opened with no attached task](20260918/20260918-090759_no-task-check-in.kyri) | Second empty-open turn in a row; reported readiness, recommended check-in (either). |
 | `20260918.090527` | [Send confirmed -- both remotes hold c0592b6a5](20260918/20260918-090527_send-confirmed-c0592b6a5.kyri) | Two contested pushes, both resolved by round-open's own rebase. |
 | `20260918.090420` | [Turn opened with no attached task](20260918/20260918-090420_no-task-check-in.kyri) | No user request this turn; reported readiness, recommended check-in (either). |
@@ -39,6 +40,7 @@
 | `20260918.081254` | [Send confirmed -- both remotes hold e9c5ce3d3](20260918/20260918-081254_send-confirmed-e9c5ce3d3.kyri) | Four contested pushes on the empty-open language log; nib and index rows resolved each time. |
 | `20260918.081028` | [Send confirmed -- both remotes hold 9ffac7ed3](20260918/20260918-081028_send-confirmed-9ffac7ed3.kyri) | Second contested push in one round, rebased past a peer, pushed xy and gp405. |
 | `20260918.080801` | [Send confirmed -- both remotes hold 3ad3086aa](20260918/20260918-080801_send-confirmed-3ad3086aa.kyri) | Contested push, rebased past a peer, regenerated two pages (no change), pushed xy and gp405. |
+| `20260918.080934` | [Cold run held again](20260918/20260918-080934_cold-run-held-again.kyri) | Round-open clean, %826 still open, cold run launched and held. |
 | `20260918.080553` | [Third empty open -- register account already closed](20260918/20260918-080553_empty-open-third.kyri) | the-baton.md reads 23% under its 30% target; agent-doable queue names no docs-geode pick. |
 | `20260918.080229` | [Send confirmed -- both remotes hold 8c1bf956c](20260918/20260918-080229_send-confirmed-8c1bf956c.kyri) | Rebased past a peer push, regenerated two pages (no change), pushed xy and gp405. |
 | `20260918.080222` | [An empty open -- no language-lane work stands agent-doable](20260918/20260918-080222_empty-open-no-language-work.kyri) | Card, REDS, and claim board all checked; no open row names agent-doable Glow-language work. |
