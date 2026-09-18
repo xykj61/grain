@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.034855` | [Declustering vs Caravan](20260918/20260918-034855_declustering-checked-against-caravan.kyri) | Finding: the metric needs a population Caravan's tables lack. |
 | `20260918.034838` | [Send confirmed -- both remotes hold 8edd79a20](20260918/20260918-034838_send-confirmed-8edd79a20.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.034817` | [Send confirmed -- both remotes hold bf779bcae](20260918/20260918-034817_send-confirmed-bf779bcae.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.034616` | [Grass cold check, empty queue](20260918/20260918-034616_grass-cold-check-empty-queue.kyri) | Claim board empty, Gauge and ASCII meters green. |
