@@ -1,0 +1,80 @@
+//! dimeroll/receipt_offer.rye -- Dimeroll's evidence-only projection of one receipt offer.
+//!
+//! An offer is evidence, not a journal entry. `from_snapshot` reads the offer's own
+//! settled fields -- exactly what Mantra's replayed `ReceiptState` carries -- and reports
+//! a `DimerollReceiptIntake` naming `recognition_status=unrecognized-offer` and
+//! `journal_entry_count=0`: this milestone recognizes no use, obligation, or settlement,
+//! so the books stay untouched by an offer alone.
+//!
+//! This module imports no other room. Zig's own module boundary refuses an `@import`
+//! that reaches outside its root file's directory (proven `20260917` in
+//! `rye/tests/mantra_weave_test.rye`, REDS %589), so a snapshot -- rather than Mantra's
+//! `ReceiptState` type itself -- is what a caller in Mantra or a future integration
+//! witness hands across that boundary. `OfferSnapshot`'s five fields are exactly
+//! `ReceiptState.offer`'s `receipt_id`, `product_digest`, `value_amount`, `value_unit`,
+//! and whether `ReceiptState.status == .expired`. This module never names
+//! `linengrow/` or its projection type (`LinengrowReceipt`) -- the receipt contract's
+//! falsifier depends on it staying that way.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// The evidence classification Dimeroll assigns while the offer stands.
+pub const evidence_received = "received";
+/// The evidence classification Dimeroll assigns once the offer has expired.
+pub const evidence_expired = "expired";
+/// This milestone's one recognition verdict: an offer is evidence, not a journal entry.
+pub const unrecognized_offer = "unrecognized-offer";
+
+/// The one admitted offer's settled fields, carried across the room boundary --
+/// see the module head for why a snapshot rather than Mantra's own type.
+pub const OfferSnapshot = struct {
+    receipt_id: []const u8,
+    product_digest: []const u8,
+    value_amount: u64,
+    value_unit: []const u8,
+    expired: bool,
+};
+
+pub const DimerollReceiptIntake = struct {
+    receipt_id: []const u8,
+    source_fact: []const u8,
+    evidence_status: []const u8,
+    offered_value: u64,
+    value_unit: []const u8,
+    recognition_status: []const u8,
+    journal_entry_count: u32,
+};
+
+/// The count of fields `DimerollReceiptIntake` publishes, stated once so a reader and
+/// a future comparison are checked against the same number.
+pub const intake_fields = 7;
+
+/// Project one admitted offer's snapshot into evidence Dimeroll can name. Read-only:
+/// this function writes no field of `snap`, and every returned string is a slice of a
+/// string `snap` already holds.
+pub fn from_snapshot(snap: OfferSnapshot) DimerollReceiptIntake {
+    _ = print;
+    // invariant: the published field set stays the size a reader is told to expect.
+    comptime assert(@typeInfo(DimerollReceiptIntake).@"struct".fields.len == intake_fields);
+    // invariant: the admitted fact carries a receipt identity to name this evidence by.
+    assert(snap.receipt_id.len > 0);
+    // invariant: the admitted fact carries a digest, this evidence's one source pointer.
+    assert(snap.product_digest.len > 0);
+    const evidence_status: []const u8 = if (snap.expired) evidence_expired else evidence_received;
+    const out = DimerollReceiptIntake{
+        .receipt_id = snap.receipt_id,
+        .source_fact = snap.product_digest,
+        .evidence_status = evidence_status,
+        .offered_value = snap.value_amount,
+        .value_unit = snap.value_unit,
+        .recognition_status = unrecognized_offer,
+        .journal_entry_count = 0,
+    };
+    // invariant: this milestone recognizes no use, obligation, or settlement.
+    assert(out.journal_entry_count == 0);
+    // invariant: the intake names the same receipt the admitted fact carries.
+    assert(std.mem.eql(u8, out.receipt_id, snap.receipt_id));
+    return out;
+}

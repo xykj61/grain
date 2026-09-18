@@ -1,0 +1,60 @@
+//! dimeroll/receipt_offer_witness.rye -- the evidence-only projection, exercised end to end.
+//!
+//! Proves the receipt contract's acceptance case 3: the intake names the same receipt and
+//! source fact, classifies it as an unrecognized offer, and produces zero journal entries --
+//! both while the offer stands and after it expires. The fixture values match the contract's
+//! one fixture exactly, so this witness reads the same admitted fact Mantra's own
+//! `receipt_offer_witness.rye` admits and replays; only the two modules' shared Zig module
+//! boundary (REDS %589, named in `dimeroll/receipt_offer.rye`) keeps them from one binary.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const intake_mod = @import("receipt_offer.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(intake_mod).@"struct".decls) |decl| {
+        _ = &@field(intake_mod, decl.name);
+    }
+}
+
+fn fixture(expired: bool) intake_mod.OfferSnapshot {
+    return .{
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .product_digest = "7f2d5e4b3b7f4d9ca1e8bfe4dcbddf40e67a4a880f961c27ee6a28c92f17e8a1",
+        .value_amount = 1200,
+        .value_unit = "USD-cent-simulated",
+        .expired = expired,
+    };
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    const snap = fixture(false);
+    const received = intake_mod.from_snapshot(snap);
+    // invariant: the intake names the same receipt the admitted fact carries.
+    assert(std.mem.eql(u8, received.receipt_id, snap.receipt_id));
+    // invariant: the intake traces to the same digest the admitted fact carries.
+    assert(std.mem.eql(u8, received.source_fact, snap.product_digest));
+    assert(std.mem.eql(u8, received.evidence_status, intake_mod.evidence_received));
+    assert(received.offered_value == snap.value_amount);
+    assert(std.mem.eql(u8, received.value_unit, snap.value_unit));
+    assert(std.mem.eql(u8, received.recognition_status, intake_mod.unrecognized_offer));
+    assert(received.journal_entry_count == 0);
+
+    const expired_snap = fixture(true);
+    const expired = intake_mod.from_snapshot(expired_snap);
+    assert(std.mem.eql(u8, expired.evidence_status, intake_mod.evidence_expired));
+    // invariant: expiration moves evidence status alone; recognition stays unrecognized.
+    assert(std.mem.eql(u8, expired.recognition_status, intake_mod.unrecognized_offer));
+    // invariant: an offer earns no journal entries whether it stands or has expired.
+    assert(expired.journal_entry_count == 0);
+
+    // invariant: the same snapshot fields survive the projection unmoved.
+    assert(std.mem.eql(u8, expired.receipt_id, snap.receipt_id));
+    assert(std.mem.eql(u8, expired.source_fact, snap.product_digest));
+
+    print("GREEN: dimeroll receipt intake -- evidence-only projection, unrecognized offer, zero journal entries, admitted fact unchanged.\n", .{});
+    return 0;
+}
