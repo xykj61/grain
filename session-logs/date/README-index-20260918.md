@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.025348` | [Send confirmed -- both remotes hold 19530f585](20260918/20260918-025348_send-confirmed-19530f585.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
 | `20260918.025129` | [Register wall checked clean, no overage in-lane](20260918/20260918-025129_register-wall-checked-clean.kyri) | Prose-register scan re-run fresh; door/teaching at ceiling, law_ceiling held by an already-ruled page; no fresh agent-doable work in docs-geode. |
+| `20260918.025118` | [lower_mutate earns invariant asserts](20260918/20260918-025118_lower-mutate-invariant-asserts.kyri) | Ratchet 34 to 33; glow/lower_mutate.rye off zero-assert list, 6 witnesses GREEN. |
 | `20260918.025101` | [Audit rotation check -- board empty, no bounded task](20260918/20260918-025101_audit-rotation-check-no-work.kyri) | Board and REDS scanned; nothing bounded to claim this tick. |
 | `20260918.024815` | [Round closes -- both remotes hold 8ea886f81](20260918/20260918-024815_baton-exemption-round-closes.kyri) | Baton exemption round closed; xy and debrided confirmed; nib left one gap short of fresh per %803. |
 | `20260918.024655` | [Torus thread absence fixed, bitmask closed](20260918/20260918-024655_torus-thread-absence-corrected-bitmask-falsifier-closed.kyri) | Stray line fixed; mask swept. |
