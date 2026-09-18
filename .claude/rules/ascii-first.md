@@ -2,7 +2,7 @@
 
 **Seated:** `20260816.214652` on Keaton's word - **Status:** Living - **Kin:** [`reds-first`](reds-first.md) - [`standfast`](../../foundations/20260816-214652_standfast-the-stopped-line.md) - REDS %83
 
-Write every new document, code comment, and commit message in **plain 7-bit ASCII**. A non-ASCII character no reader needs is a corruption waiting to compound -- the operator card (then named `REMEMBER.md`) silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS %83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is how that never happens again.
+Write every new document, code comment, and commit message in **plain 7-bit ASCII**. An unnecessary non-ASCII character is a corruption waiting to compound -- the operator card (then named `REMEMBER.md`) silently triple-encoded itself into 2,797 runs of unreadable mojibake bytes (the classic capital-A-tilde garble) before anyone caught it (REDS %83), because a tool read the UTF-8 file as Latin-1 and rewrote it. ASCII-first is what keeps that from happening again.
 
 ## The substitutions
 
@@ -19,7 +19,7 @@ Write every new document, code comment, and commit message in **plain 7-bit ASCI
 
 ## The exception
 
-A specific, **explicitly-named set of work rounds** may use non-ASCII when it is the point of the work -- a Unicode-handling module's own test fixtures, an internationalization surface, a font codec's glyph tables. Name the exception in the round; do not let it leak into the operator card, commit subjects, or general prose.
+A specific, **explicitly-named set of work rounds** may use non-ASCII when it is the point of the work -- a Unicode-handling module's own test fixtures, an internationalization surface, a font codec's glyph tables. Name the exception in the round, and keep it out of the operator card, commit subjects, and general prose.
 
 ## What this does not change
 
@@ -29,13 +29,13 @@ A specific, **explicitly-named set of work rounds** may use non-ASCII when it is
 
 ## Prevention, not just cure
 
-**Four guards stand over four subjects, and the fourth is one the opening sentence above never
-named.** All four are rostered in `construction/standing-equipment.kyri`. Each current reading
+**Four guards stand over four subjects, and the fourth is one the opening sentence above leaves
+unnamed.** All four are rostered in `construction/standing-equipment.kyri`. Each current reading
 below carries the guard that holds it still -- the fifth thing `context/GAUGE_STYLE.md` asks a
 figure to name -- and each dated figure is testimony from the lap that measured it, free to move
 since. Run the scan rather than trusting either; every one is named here so you know where.
 
-**The living card** (REDS %83): `tools/l/living_card_ascii_witness.rish` over `tools/fixtures/l/living_card_ascii_scan.sh` greps the operator card and the REDS ledger for bytes above 0x7F and fails hard if any appear (the ENFORCE roster), while the pins still holding legacy dated non-ASCII are reported as an advisory ratchet to sweep down on touch rather than force-rewritten. A planted mojibake control proves the RED path on metal.
+**The living card** (REDS %83): `tools/l/living_card_ascii_witness.rish` over `tools/fixtures/l/living_card_ascii_scan.sh` greps the operator card and the REDS ledger for bytes above 0x7F and halts hard on any appearing (the ENFORCE roster), while the pins still holding legacy dated non-ASCII are reported as an advisory ratchet to sweep down on touch rather than force-rewritten. A planted mojibake control proves the RED path on metal.
 
 **Documents** -- the subject this rule names FIRST, and the last to earn a meter over its whole
 subject (seated `20260906.133344`): `tools/a/ascii_document_witness.rish` over
@@ -45,9 +45,9 @@ lap it was seated, and holds every other living tracked `.md` and `.mdc`
 under a ceiling that only falls: **3,331 of 3,331** across 72 of 334 pages, read `20260908.052550`.
 Dated basenames, the `date/`, `archive/` and `yonder/` shelves, `gratitude/`, `vendor/`, `seed/`,
 and every `fixtures/` path are read past, each for its own named reason -- the planted mojibake
-control above MUST keep its high bytes, or its own `prove-red` leg proves nothing.
+control above MUST keep its high bytes, or its own `prove-red` leg stays unproven.
 `tools/fixtures/a/ascii_document_convert.sh` makes the substitutions the table above spells and
-proves a sweep moved nothing else by **re-deriving each page from its committed bytes**.
+proves a sweep moved only what it named, by **re-deriving each page from its committed bytes**.
 
 **The wall is drawn around the room that writes the law, and the law is a graph.** That ENFORCE
 roster is two directory globs, so a page an enforced rule names as its own canon stands outside it.
@@ -60,12 +60,12 @@ in `RADIANT_STYLE.md` read one at a time into the tree's own **Prefer** and **Ra
 **The roster was widened `20260909.220333`, and the wall now follows the citations rather than the
 directories.** `ascii_document_scan.sh` derives its enforced set from the rule rooms' own links and
 backticked paths, keeps every living tracked page it finds, and reads past what the ratchet reads
-past -- dated testimony, closed stacks, vendored sources, fixtures, and a citation this tree does
-not carry. It stood at **110 globbed plus 33 derived, 143 pages, zero characters**; with the compressor shelf below it reads **125 globbed plus 33 derived, 158 pages, zero characters**.
+past -- dated testimony, closed stacks, vendored sources, fixtures, and a citation this tree
+lacks. It stood at **110 globbed plus 33 derived, 143 pages, zero characters**; with the compressor shelf below it reads **125 globbed plus 33 derived, 158 pages, zero characters**.
 
 **Derived rather than typed, for the reason the globs are globs:** a page the law begins citing
 tomorrow is walled the day it lands, where a name list waits for somebody to remember it. The one
-thing derivation can do that a glob cannot is let a page fall out of the wall by an edit made
+thing derivation can do beyond a glob is let a page fall out of the wall by an edit made
 somewhere else, so the two memberships are **printed separately** -- `enforce_globbed` and
 `enforce_derived` -- and a drop is legible in the census rather than silent.
 
@@ -76,7 +76,7 @@ could not locate. The widening also refused two pins the elder reading called cl
 `session-logs/CHAPTERS.md` at 50 characters and `construction/SHRED_PREP.md` at 49, every one a form
 the table above spells -- both swept and proven by re-derivation from their committed bytes. The
 ratchet fell **3,324 to 3,225** as those characters left it, and the ceiling fell **3,331 to 3,232**,
-keeping the seven of slack it already stood on and taking none of the ninety-nine.
+keeping the seven of slack it already stood on and leaving the ninety-nine untouched.
 
 **Then the wall reached past the law, and the two rosters came apart** (`20260910.043000`). The
 compressor shelf of [`docs/`](../../docs/README.md) is the room `MAP.md` sends a newcomer to, and it
@@ -86,7 +86,7 @@ derivation therefore could never reach it. All 452 are gone: **450** were forms 
 spells, converted and proven by re-derivation from their committed bytes, and **two** were read by
 hand, a section sign becoming the word and a multiplication sign becoming `x` in a screen
 resolution. `docs/*.md` joined the wall, the ratchet fell **3,225 to 2,773** and the ceiling
-**3,232 to 2,780**, keeping the same seven of slack and taking none of the 452.
+**3,232 to 2,780**, keeping the same seven of slack and leaving the 452 untouched.
 
 **Then one page held more than the whole rest of the tree** (`20260910.042550`).
 `rye-learning-process/GLOW_ALMANAC.md` carried **1,437 characters, 52 percent of the remaining
@@ -128,7 +128,7 @@ explains the pair, which is the position a converter cannot guess at, since the 
 no marker. Both were read by hand and took the words the legend already used: `[deep]` and `[seed]`.
 The page was open for a different reason -- a rune it never taught -- and the sweep rode along on
 touch. The ratchet fell **763 to 743** and the ceiling **770 to 750**, keeping the same seven of
-slack every sweep before it kept and taking none of the 20. **The ceiling is spelled in two
+slack every sweep before it kept and leaving the 20 untouched. **The ceiling is spelled in two
 files, which the sweep learned by lowering one of them.** `tools/fixtures/a/ascii_document_resident_probe.sh` is the scan transcribed with every per-file
 process removed, so it carries its own `CEILING=` line, and a lowering that reaches one reader
 and not the other makes the two answer differently about one tree. `tools/a/ascii_resident_agree_witness.rish` is the guard that hears it, and it did -- eight legs
@@ -173,7 +173,7 @@ under a GREEN witness. The control tallies its own legs now and the witness asse
 
 **Code comments**, in every comment syntax this tree authors: `tools/as/ascii_comment_witness.rish` holds three meters under ceilings that only fall -- `tools/fixtures/r/rye_comment_ascii_scan.sh` for `//`, `///`, and `//!` in Rye, `tools/fixtures/s/shell_comment_ascii_scan.sh` for `#` in Rishi and shell, and `tools/fixtures/g/glow_comment_ascii_scan.sh` for `::` in Glow. Each refuses to count **program content**, which is the distinction that makes a sweep safe: a Rye `\\` multiline string and a shell heredoc body are what a program prints or feeds onward, so converting them would change behavior rather than register. Glow needs no such exclusion, and the reason is the language's own: `glow/tokens.rye:239` refuses a newline inside a cord literal, so no Glow literal reaches a second line to open one with `::`. All three are proven on planted repositories, and every ceiling is proven from both sides -- one character past it refuses, and removing the plant returns the reading to green -- since a refusal proven only in the passing direction cannot be told from a bypass.
 
-The reach was won by measuring, twice. The comment meter read `*.rye` alone for its first day, so 2,243 tracked Rishi sources and 580 shell sources stood outside a law that governs them, carrying **10,468** non-ASCII characters (measured `20260825.084500`). A sweep of the six forms this rule's own table names -- em dash, en dash, middle dot, two arrows, ellipsis -- converted 2,163 files and brought that to **505**, all of it notation the table leaves to a reader's judgment. Then two comment marks read as full coverage for a fortnight while **Glow**, an authored language of this tree's own, stood outside the law entirely: **942** non-ASCII characters across **342** of its 451 tracked sources, measured `20260907.141019`, and **all 942 inside a `::` comment with none in program content**. Of those, 921 are forms the table above names outright and 21 are the one form it leaves to judgment. **The sweep landed the same day** (`20260907.161048`): 342 files rewritten, **942 to zero**, every changed line a `::` comment and no program content moved -- so Glow's ceiling is a **wall**, and the next non-ASCII character to enter one of its comments reds on the lap it arrives. The 21 were read one at a time rather than guessed at, and both readings took an option this rule already names: thirteen sentences with a subject took the word **is**, eight parentheticals without one took **`==`**. **A finished sweep is also what taught the control its own fault** -- a pen planting three characters to give the counting readings a subject was the same pen asked whether it sat under the tree's ceiling, and at zero those two jobs part: three planted characters over a ceiling of nothing read as a failure for a tree that was clean. The ceiling legs run on a cleared pen now, and the two sibling meters will meet the same wall on the lap that finishes them. Measurement beats memory: a guard catches the next one on the lap it enters, rather than months later -- and a guard that names its languages by counting them catches the language nobody thought to name.
+The reach was won by measuring, twice. The comment meter read `*.rye` alone for its first day, so 2,243 tracked Rishi sources and 580 shell sources stood outside a law that governs them, carrying **10,468** non-ASCII characters (measured `20260825.084500`). A sweep of the six forms this rule's own table names -- em dash, en dash, middle dot, two arrows, ellipsis -- converted 2,163 files and brought that to **505**, all of it notation the table leaves to a reader's judgment. Then two comment marks read as full coverage for a fortnight while **Glow**, an authored language of this tree's own, stood outside the law entirely: **942** non-ASCII characters across **342** of its 451 tracked sources, measured `20260907.141019`, and **all 942 inside a `::` comment with none in program content**. Of those, 921 are forms the table above names outright and 21 are the one form it leaves to judgment. **The sweep landed the same day** (`20260907.161048`): 342 files rewritten, **942 to zero**, every changed line a `::` comment and no program content moved -- so Glow's ceiling is a **wall**, and the next non-ASCII character to enter one of its comments reds on the lap it arrives. The 21 were read one at a time rather than guessed at, and both readings took an option this rule already names: thirteen sentences with a subject took the word **is**, eight parentheticals without one took **`==`**. **A finished sweep is also what taught the control its own fault** -- a pen planting three characters to give the counting readings a subject was the same pen asked whether it sat under the tree's ceiling, and at zero those two jobs part: three planted characters over a ceiling of nothing read as a failure for a tree that was clean. The ceiling legs run on a cleared pen now, and the two sibling meters will meet the same wall on the lap that finishes them. Measurement beats memory: a guard catches the next one on the lap it enters, rather than months later -- and a guard that names its languages by counting them catches the language a hand had yet to name.
 
 **The Rye half then met the question a table answers, and answered it once** (`20260908.224742`). Its residue stood at **3,772 characters across 310 files**, and the largest single class was the **typographic minus**, U+2212, at **1,164** of them -- every one in arithmetic prose a reader writes plainly, `2^255 - 19` and `n - (n-1)/3`. The other classes need a reader: a section mark, a multiplication sign, and a superscript each have two or three honest ASCII forms, and a script choosing among them guesses. A minus has exactly one, so the table above names it and the sweep made it -- **3,772 to 2,608 across 129 files**, ceiling lowered to meet it, every rewritten file **re-derived from its committed bytes** to prove nothing but a `//` line moved. **The lesson the table teaches is which work a script may do:** a form belongs in it once the answer stops being a judgment, and a form that stays out is a lap a person owes.
 
@@ -211,7 +211,7 @@ string, which is parsing rather than scanning* -- and that capability arrived on
 the spoken meter, which walks parenthesis depth outside string literals over the same sources and
 already steps past this exact `//` as the sibling's room.
 
-**What made it worth a lap is the direction nobody had pressed.** Moving an own-line comment onto
+**What made it worth a lap is the direction still unpressed.** Moving an own-line comment onto
 the end of the preceding code line removes every character it carries from the numerator, converts
 nothing, and reads as a sweep. The comment meter's own ceiling arc records the reverse move
 happening by accident on `20260828.134500`, when three em dashes promoted from trailing comments to
@@ -239,7 +239,7 @@ tell an empty blind spot from a large one.* Glow's was genuinely **zero**; Rye's
 third sibling, `tools/fixtures/s/shell_comment_ascii_scan.sh`, still carries the hole unclosed, and
 its **upper bound is 90 characters across 40 of 3,353** tracked Rishi and shell sources, read the
 same stamp -- an upper bound rather than a count, since a `#` inside a shell string needs the same
-walk to tell from a comment. Small, and open; the shape of the risk differs by language.
+walk to tell from a comment. Small, and open; the shape of the exposure differs by language.
 
 **And a FIFTH surface stood behind all four, which every meter above reads past by construction**
 (seated `20260911.215028`): what a program **assembles into a buffer and hands onward** -- to a
@@ -294,7 +294,7 @@ lets the meter see its own largest population at all, since the almanac opens
 
 **Nothing is walled and `written` ratchets**, for a reason about testimony rather than about size.
 The almanac stubs are **dated generators** whose engine exits 0 on a seat already present, so the
-1,417 are **inert rather than pending** -- no run re-pours them. Whether a dated generator is
+1,417 are **inert rather than pending** -- each run leaves them exactly as they stand. Whether a dated generator is
 swept, re-poured, or retired governs a family and wants Keaton's word, which is the standfast
 `construction/ITINERARY.md` already carries for the dated equinox guards one room over.
 
@@ -325,8 +325,8 @@ rather than counting what it cannot name. This is the same lane's lesson from
 `20260915.223327` arriving a second time: **a meter prices a gap from the files it can already
 see.**
 
-**The structural reason, and it is why no sharper reading of the five would have found it.** A
-POSIX `.sh` file has no `say` verb, because `say` is Rishi's. The spoken meter therefore opens
+**The structural reason, and it is why every sharper reading of the five missed it alike.** A
+POSIX `.sh` file lacks a `say` verb, because `say` belongs to Rishi. The spoken meter therefore opens
 `.rish` alone, so the whole `.sh` emit surface stands outside the family **by construction** rather
 than by oversight -- and the surface in question is the one every launcher, scan, and control in
 this fleet is written on. Every file the new meter names is `.sh`; not one `.rish` file appears,

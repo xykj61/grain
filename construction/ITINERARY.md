@@ -123,9 +123,12 @@ Witness GREEN, 55 legs, `control_failed=0`.
 [shelved whole](archive/20260917-221306_itinerary-grass-law-ceiling-fourth-fifth-account.md):
 `gratitude-licenses.md` to 19% (`law_ceiling` 4 to 3), then `git-signing.md` to 7%
 (`law_ceiling` 3 to 2). Witnesses GREEN, 55 legs each, `control_failed=0`.
-**YOURS:** `the-baton.md` at 47% of 187 sentences and `ascii-first.md` at 40% of 171, both still
-over the ceiling; the coordination law's exemption question from %819; and the fleet's 271-tool
-`head -N` judgment (`%804`).
+
+**GRASS -- THE LAW ROOM'S CEILING FELL A SIXTH TIME.** Account
+[shelved whole](archive/20260917-223314_itinerary-grass-law-ceiling-sixth-account.md):
+`ascii-first.md` to 29% (`law_ceiling` 2 to 1). Witness GREEN, 55 legs, `control_failed=0`.
+**YOURS:** `the-baton.md` at 47% of 187 sentences, the last page over the ceiling; the coordination
+law's exemption question from %819; and the fleet's 271-tool `head -N` judgment (`%804`).
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** `door_home_scan.sh`'s `resolve()`
 called `readlink -f`, the GNU-only resolve flag `shell_dialect` gates, and its own control copies
@@ -218,7 +221,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `f261718cd8` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `83264a91f5` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
