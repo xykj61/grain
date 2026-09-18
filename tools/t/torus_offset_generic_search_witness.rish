@@ -1,0 +1,102 @@
+# tools/t/torus_offset_generic_search_witness.rish -- a fully generic four-offset search reaches
+# the SAME ceiling the constrained {d,-d,2d,-2d} family already found, settling the open question
+# the family's own essay named as a conjecture.
+#
+# WHY THIS RUNG. tools/t/torus_offset_search_witness.rish (round two, proposal 1) swept one free
+# parameter inside a shape borrowed from a torus/ring's own axis and found the family's own
+# maximum: run-kill 52 at grid g=8 (C=64), exactly C - ceil(C/5) + 1. Its own write-up
+# (active-designing/20260918-005400_the-search-found-the-ceiling.md) named the door this rung
+# walks through, in its own words: "the arithmetic bound above ... hints the generic search would
+# land at the same ceiling by a different route, which stays a conjecture until it is run."
+#
+# THE ANSWER. Enumerating every 4-subset of {1, ..., C-1} directly -- no +-pairing, no shape
+# inherited from a torus's own geometry -- at C=9 (hand-checkable, 70 candidates) and C=64 (round
+# one and two's own founding grid, 595,665 candidates) both find a best run-kill that EQUALS the
+# theoretical ceiling exactly, matching the constrained family's own result at C=64 bit for bit
+# (52 = 52). The conjecture holds at both grids tried: dropping the symmetric shape entirely finds
+# nothing the arithmetic argument (five points, five gaps, even spacing) did not already predict.
+#
+# WHAT THIS SETTLES, AND WHAT IT DOES NOT. It settles that the {d,-d,2d,-2d} family was never
+# leaving anything on the table at these two grids -- a fully free search, searching a population
+# that strictly CONTAINS the constrained family, finds no better answer. It does not settle the
+# claim for every grid (only two are checked here, as the elder rung also checked two), and it
+# does not read a fifth or sixth replica count -- five copies is inherited from round one's own
+# reading, carried forward unchanged. Any real store -- this reading opens none.
+#
+# WHY THE COST STAYS BOUNDED RATHER THAN GROWING. C(C-1,4) candidates are enumerated by four plain
+# nested loops, no library, bounded by a named MAX_SUBSETS the scan refuses past (proven at g=32,
+# 45 billion candidates, refused by name rather than left to hang). This is the TAME reflex --
+# bound everything, name the budget, fail with a named error -- applied to a search whose cost
+# grows as the fourth power of the grid rather than linearly, the way the constrained family's
+# one-parameter sweep did.
+#
+# WHAT IS GATED HERE, and what is only reported. Gated: the exhaustive best never exceeds the
+# theoretical ceiling -- a true arithmetic upper bound on any five-point circular split, so a
+# search reading above it would mean the ceiling's own derivation is wrong (proven load-bearing by
+# a planted mutation that lies about the ceiling and is caught). REPORTED: whether the generic
+# best reaches the ceiling exactly -- the conjecture this rung was built to check, not a
+# controllable pass/fail bit.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_offset_generic_search_control.sh -- 16
+# behaviors, no digest population needed since the scan is pure arithmetic over four integers:
+#
+#   A HAND-CHECKABLE GRID (g=3, C=9, 70 candidates) reaches ceiling 8, checkable by hand from the
+#     five points {0,1,3,5,7} and their gaps.
+#   THE FOUNDING GRID (g=8, C=64, 595,665 candidates) matches the constrained family's own 52
+#     exactly, settling the conjecture the elder essay named.
+#   TWO NAMED REFUSALS: a grid too small for five distinct points (g=2), and a grid whose
+#     candidate count (45 billion, g=32) exceeds the bounded budget -- both refuse by name rather
+#     than guess or hang.
+#   ONE MUTATION, proven landed by cmp before its reading: shrinking the printed ceiling below the
+#     real best turns an always-passing gate into one that must catch a genuine inconsistency, and
+#     it does.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260918-005400_the-search-found-the-ceiling.md (the open door this rung
+# closes) and active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
+# (proposal 1, this rung's grandparent question)
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/torus_offset_generic_search_witness.rish
+
+say "torus-offset-generic-search: Language EN -- a fully free four-offset search finds nothing the symmetric family's own ceiling did not already predict."
+say "torus-offset-generic-search: Style Gauge, Meter -- every figure names its grid, its candidate count, and the closed form it checks against."
+say "torus-offset-generic-search: Lens TAME -- bound the search by a named candidate budget, prove the ceiling gate against a planted lie."
+
+let control = run ["sh" "tools/fixtures/t/torus_offset_generic_search_control.sh"]
+say control.out
+assert control.ok else "torus-offset-generic-search: the control must complete -- its own lines are printed above"
+
+assert control.out contains "g=3: candidate_subsets is C(8,4)=70, named ahead of the sweep" else "torus-offset-generic-search: the candidate count must be named before the sweep runs"
+assert control.out contains "g=3: the exhaustive best matches the hand-checkable arithmetic, 8" else "torus-offset-generic-search: the smallest grid must be checkable by hand"
+assert control.out contains "g=3: the generic best reaches the ceiling exactly on the smallest checkable grid" else "torus-offset-generic-search: reaching the ceiling exactly is the strong form of the finding"
+assert control.out contains "g=3: the instrument passes its own gate on the smallest checkable grid" else "torus-offset-generic-search: the smallest grid must pass"
+
+assert control.out contains "g=8: the generic best equals the constrained family's own best, 52" else "torus-offset-generic-search: the founding grid must match the elder rung's own number exactly"
+assert control.out contains "g=8: the generic search reaches the founding grid's own ceiling, settling the conjecture the elder essay named" else "torus-offset-generic-search: this is the whole question the rung exists to answer"
+assert control.out contains "g=8: the instrument passes at the founding grid, 595,665 candidates wide" else "torus-offset-generic-search: the founding grid must pass"
+
+assert control.out contains "g=2: four cells cannot hold five distinct points and refuses by name" else "torus-offset-generic-search: a too-small grid must refuse rather than guess"
+assert control.out contains "g=32: 45 billion candidates exceeds the named budget and refuses rather than hangs" else "torus-offset-generic-search: an oversized grid must refuse by name rather than hang"
+assert control.out contains "g=32: the refusal names the exact count it would have had to search" else "torus-offset-generic-search: the refusal must name the budget it exceeded"
+
+assert control.out contains "m_gate: the mutation applied" else "torus-offset-generic-search: a plant that changed no byte tests the real scan twice"
+assert control.out contains "m_gate: the planted ceiling formula prints a value below the real best (8), the deliberate lie" else "torus-offset-generic-search: the plant must actually lie about the ceiling"
+assert control.out contains "m_gate: with the real best exceeding the lied-about ceiling, the unchanged comparison catches it -- the gate is load-bearing" else "torus-offset-generic-search: the mutation must be shown to change the verdict"
+assert control.out contains "m_gate: the mutant's own verdict reads refused, proving the gate is not a constant" else "torus-offset-generic-search: the mutant's own verdict must read refused"
+
+assert control.out contains "legs_expected=16" else "torus-offset-generic-search: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_fail=0" else "torus-offset-generic-search: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "torus-offset-generic-search: the control must balance before it is believed"
+
+# The live reading, on round one and two's own founding grid.
+let live = run ["sh" "tools/fixtures/t/torus_offset_generic_search_scan.sh"]
+say live.out
+assert live.ok else "torus-offset-generic-search: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=torus_offset_generic_search" else "torus-offset-generic-search: the reading names its own instrument"
+assert live.out contains "grid=8" else "torus-offset-generic-search: the default grid is round one's own founding grid"
+assert live.out contains "best_run_kill=52" else "torus-offset-generic-search: the live search must find the ceiling on this tree, not only in the control's pen"
+assert live.out contains "reaches_ceiling=yes" else "torus-offset-generic-search: the live reading must answer the question this rung exists for"
+assert live.out contains "verdict=ok" else "torus-offset-generic-search: the live reading must pass its own gate"
+
+say "GREEN: torus-offset-generic-search -- 16 behaviors, two grids, one mutation bitten, and the constrained family's ceiling confirmed rather than merely matched by a fully free search."

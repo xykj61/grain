@@ -6675,6 +6675,25 @@ path tools/t/torus_offset_search_witness.rish
 tier lap   # <1s; 13 behaviors, two grids, one mutation bitten, no digest population needed
 seated 20260918.005052
 
+# torus_offset_generic_search -- the open door torus_offset_search's own essay named: does a
+# FULLY GENERIC four-offset set (no +-pairing, no shape borrowed from a torus/ring's own axis)
+# beat the constrained {d,-d,2d,-2d} family's own ceiling? Enumerating every 4-subset of the
+# offset range directly, at C=9 (hand-checkable) and C=64 (round one and two's own founding grid),
+# both reach the theoretical ceiling exactly -- 52 at C=64, matching the constrained family's own
+# number bit for bit. The conjecture the elder essay left open now stands checked at two grids.
+#
+# WHAT IS GATED. The exhaustive best never exceeds the theoretical ceiling (a true arithmetic
+# upper bound on any five-point circular split), proven load-bearing by a planted mutation that
+# lies about the ceiling and is caught; a too-small grid and an oversized grid (45 billion
+# candidates) each refuse by name rather than guess or hang. REPORTED: whether the generic best
+# reaches the ceiling exactly -- the conjecture this rung exists to check.
+#
+# Paper: `active-designing/date/20260918/20260918-040155_the-generic-search-found-the-same-ceiling.md`
+guard torus_offset_generic_search
+path tools/t/torus_offset_generic_search_witness.rish
+tier lap   # ~3s at grid 8 (595,665 candidates); 16 behaviors, two grids, one mutation bitten
+seated 20260918.040155
+
 # locality_key -- the door BOTH torus readings left open, and it turns out to be a price rather than
 # a yes. Each of those closes names the same remaining idea in the same words: a key built to carry
 # locality on purpose. This guard opens it and prices the crudest member of that family -- the file's
