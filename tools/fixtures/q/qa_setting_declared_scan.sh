@@ -57,6 +57,33 @@
 # BOUNDS: at most 4000 tracked documents read, at most 200 lines reported, at most 250 pages priced.
 set -eu
 
+# ONE READER FOR A KEY'S VALUE (20260917). Sourced from the shared shell library, with the same
+# code carried locally for a pen that copies this scan alone.
+_qs_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_qs_steps=0
+while [ ! -d "$_qs_root/tools/fixtures/s" ]; do
+  _qs_steps=$((_qs_steps + 1))
+  if [ "$_qs_steps" -gt 8 ] || [ "$_qs_root" = "/" ] || [ -z "$_qs_root" ]; then
+    _qs_root=""
+    break
+  fi
+  _qs_root=$(dirname "$_qs_root")
+done
+if [ -n "$_qs_root" ] && [ -f "$_qs_root/tools/fixtures/s/shell_portable.sh" ]; then
+  . "$_qs_root/tools/fixtures/s/shell_portable.sh"
+else
+  key_value() {
+    printf '%s\n' "$2" | awk -v k="$1" '
+      {
+        if (!match($0, "\\*\\*" k "[^:]*:\\*\\*")) next
+        rest = substr($0, RSTART + RLENGTH)
+        if (match(rest, /\*\*[^*][^*]*:\*\*/)) rest = substr(rest, 1, RSTART - 1)
+        print rest
+        exit
+      }'
+  }
+fi
+
 root=${QA_SETTING_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)}
 cd "$root"
 
@@ -192,7 +219,13 @@ while IFS= read -r f; do
     *'**Style:**'*) style_declared=$((style_declared + 1)) ;;
     *) no_style_line=$((no_style_line + 1)); continue ;;
   esac
-  if printf '%s\n' "$h" | grep -qiE '\*\*Style:\*\*[^|]*(door|field|meter)'; then
+  # THE VALUE IS CUT AT THE NEXT KEY (20260917). The elder match ran from `**Style:**` to the end
+  # of the line, and this tree folds several keys onto one header row joined by ` - `, so a bare
+  # `door`, `field` or `meter` in a NEIGHBOUR key's value counted as this page's setting. Measured
+  # over 586 living tracked pages the day this landed: the cut moves no page, because the
+  # convention writes `**Style:**` last. `key_value` is the tree's one reader for this, and the
+  # LIVE flip it closed the same lap stood one guard over, in the two-rooms doorway.
+  if printf '%s\n' "$(key_value Style "$h")" | grep -qiE '(door|field|meter)'; then
     setting_named=$((setting_named + 1))
   else
     setting_unnamed=$((setting_unnamed + 1))

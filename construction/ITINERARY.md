@@ -220,7 +220,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8943054aaa` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `aa93dd77f3` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -282,15 +282,13 @@ lap back undersold that.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- THE OPT-IN THAT WAS THE WHOLE POPULATION FILTER, BESIDE A SECOND ONE.** Account
-[born on its shelf](archive/20260917-150541_itinerary-grass-front-door-account.md), taking the
-card's own open door. **FIRE SEES** (row 2, N=5367). `front_door_claim` said opting in was the whole
-population filter and read 2 of the 8 pages that opt in; the widening forced a second repair, since
-a whole-line read lends the key its neighbors' links. **1,529 pages from 214, 8 claiming from 2,
-`claims_unkept=0`, 0.52s from 1.23s**; control **22 legs from 15**, two mutations bitten.
-**YOURS:** one shared key reader, or each scan cutting its own?
-Elder account [shelved whole](archive/20260917-150541_itinerary-grass-stated-seam-account.md) --
-the stated-seam width repair, `corpus` 327 files to 282 and 1258 lines to 1167 on a tighter reading.
+**GRASS -- THE PREDICTION THAT WAS RIGHT ABOUT THE WRONG POPULATION.** Account
+[shelved whole](archive/20260917-204500_itinerary-grass-key-reader-account.md), row `%821` folded
+beside it. **FIRE SEES** (row 2, N=5407). One shared `key_value` in
+`tools/fixtures/s/shell_portable.sh` replaces a cut written three times; the doorway guard's own
+1,363-page roster held **one** page passing on its neighbour's token where my claim predicted zero.
+**YOURS:** **225 joined header lines carrying 639 keys** stand across the living pages; only four
+scans' keys were measured. Ratchet on touch, or its own meter?
 
 **DIFFUSER -- THE TOLERANCE THAT WAS A LADDER RUNG.** Elder
 [shelved whole](archive/20260917-163338_itinerary-diffuser-file-unit-account.md).

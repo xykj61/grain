@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260917.190033
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role grass -- reverse-reading steward, auditing lane
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no authoritative identity
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read 20260917; the launch path decides the effort a lap runs at
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The key next door
+prompt The baton, and my own card account's open question -- one shared key reader, or each scan cutting its own?
+think My last lap repaired a whole-line key read in front_door_claim_scan.sh and left the general question on the card. I answered it by measuring the population rather than reasoning about it.
+think This tree folds several bolded keys onto one header row joined by ` - `, so a scan matching `**Key:**.*` reads its own key AND every neighbour after it. 225 joined header lines carrying 639 keys stand across 586 living tracked pages.
+think I wrote a prediction into the claim before building: zero verdict flips on both whole-line readers. Over the 586 living pages it held.
+think Over the two-rooms doorway guard's OWN 1,363-page roster it read ONE flip. The prediction was right about the wrong population -- a guard's population is its own roster, not the tree's.
+think The page it exposed names its room honestly, `**Mixed room**`, inside its `**Style:**` value rather than under Status or Room. So the repair accreted a `**Room:** mixed` line: one insertion, zero deletions, no word of dated testimony rewritten.
+think The cure is one reader rather than four. key_value in tools/fixtures/s/shell_portable.sh, sourced with a carried twin for pens that copy a scan alone, and the pen proves the two branches answer the same bytes.
+obs My own doorway mutation bit me first -- `s|...|...|` over a pattern carrying a pipe made sed refuse and write an EMPTY mutant, and an empty script exits 0, which reads exactly like the mutation working. The mutant is size-checked now as well as compared.
+obs The front-door control's elder mutation aimed at a sed expression that had moved out of the file. `mutate` returning 1 on an unchanged copy caught it rather than a silent pass -- a mutation aimed at bytes that have moved edits nothing.
+obs The cut is verdict-neutral where it is latent and load-bearing where it is live, and both halves are asserted on metal rather than argued.
+loom witness=standing_equipment_cold guards=355 green=336 red=17 gated=2 seconds=4757 tree_moved=no
+loom scan=two_rooms_doorway pages=1363 fails=3 ceiling=3 living_silent=0 joined_key_reads=130 reach_past_sites=47 verdict_flips=1
+loom scan=qa_setting_declared pages=336 style_declared=171 setting_named=79 setting_unnamed=92 moved=0
+loom scan=front_door_claim claiming_pages=8 claims=8 claims_unkept=0 moved=0
+loom control=shell_portable legs=65 was=53 mutations_bitten=1
+loom control=two_rooms_doorway behaviors=78 was=70 mutations_bitten=1
+loom census=joined_header_lines lines=225 keys=639 living_pages=586
+rota lap 5407, row 2 -- Fire sees; look hard at what must be cut. What had to be cut was a reader written three times, and what fire showed was that my own prediction about it was measured over the wrong population.
+file tools/fixtures/s/shell_portable.sh key_value publishes the cut once, for the 141 tools that read this library
+file tools/fixtures/s/shell_portable_control.sh twelve legs both ways, with a mutation that returns the neighbour's token
+file tools/fixtures/t/two_rooms_doorway_scan_one.sh names_room cuts each door key at the next key, where the verdict is decided
+file tools/fixtures/t/two_rooms_doorway_control.sh four legs and a mutation; the pen has no library, so the carried twin is what runs
+file tools/t/two_rooms_doorway.rish eight assertions, so a leg written today is heard today
+file tools/fixtures/q/qa_report_card.sh the declared setting is read from the Style key's own value
+file tools/fixtures/q/qa_setting_declared_scan.sh the same cut at its own match site, verdict-identical on metal
+file tools/fixtures/f/front_door_claim_scan.sh gives up the reader it wrote first, and its mutation follows it
+file foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md gains a Room key beside what its Style line already said
+file construction/REDS.md the row, and the headline the fold moved
+file construction/archive/REDS-the-word-a-blind-runner-reached-for-rows-747.md one BOOKED row folded to make the headroom
+file construction/ITINERARY.md the account, the nib, and two dated foldability claims that now cite the live scan
+scope one shared key reader, three adoptions, one accreted page repair, one ledger row, two inherited reds closed
+status GREEN -- shell_portable_control 65/0, two_rooms_doorway 78 behaviors, front_door_claim 22/0, qa_report_card, qa_setting_declared, vocabulary_collection, card_pin_claim, reds_ledger_monotone, exec_bit, tracked_link, link_text_promise, prose_register and five ledger guards all GREEN on metal; hot endurance run launched on the staged set
+recommend check-in (Keaton) -- 225 joined header lines carrying 639 keys stand across the living pages and only four scans' keys were measured; whether the remainder is a ratchet on touch or earns its own meter is a ruling rather than a lap

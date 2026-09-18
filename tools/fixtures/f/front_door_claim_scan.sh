@@ -96,6 +96,16 @@ else
     [ -s "$_sp_list" ] || return 0
     tr '\n' '\0' < "$_sp_list" | xargs -0 "$@"
   }
+  key_value() {
+    printf '%s\n' "$2" | awk -v k="$1" '
+      {
+        if (!match($0, "\\*\\*" k "[^:]*:\\*\\*")) next
+        rest = substr($0, RSTART + RLENGTH)
+        if (match(rest, /\*\*[^*][^*]*:\*\*/)) rest = substr(rest, 1, RSTART - 1)
+        print rest
+        exit
+      }'
+  }
   helper=local
 fi
 
@@ -168,9 +178,11 @@ sort -u "$pen/claiming" -o "$pen/claiming"
 # ` - `, so a whole-line read lends the front-door key its neighbors' links and publishes promises
 # the page never made. The cut takes the text after `**Front door:**` up to the next `**Word:**`;
 # requiring the colon is what lets emphasis inside a value, `**start here**`, survive the cut.
-key_value() {
-  printf '%s\n' "$1" | sed 's/^\*\*Front door:\*\*//; s/\*\*[^*][^*]*:\*\*.*$//'
-}
+# ONE READER, RATHER THAN THIS SCAN'S OWN (20260917). This function was written here first, for
+# this key alone. `key_value` in `tools/fixtures/s/shell_portable.sh` is the same cut taking the key
+# as an argument, and the two guards that adopted it the same lap found a LIVE fault -- one page
+# passing the two-rooms doorway on a token belonging to its neighbour. A reader written three times
+# is a reader three scans may come to disagree about, which is why this one moved out.
 
 claims=0
 unkept=0
@@ -179,7 +191,7 @@ claiming_pages=0
 while IFS= read -r page; do
   line=$(grep -m1 '^\*\*Front door:\*\*' "$page" 2>/dev/null || :)
   [ -n "$line" ] || continue
-  line=$(key_value "$line")
+  line=$(key_value "Front door" "$line")
   claiming_pages=$((claiming_pages + 1))
   base=$(basename "$page")
   dir=$(dirname "$page")

@@ -504,4 +504,70 @@ mkdir -p "$d/docs"
 commit_all "$d"
 scan_at "$d" 0 0 | grep -q 'doorway fails=0 ' && echo "header_row_read=yes" || echo "header_row_read=no"
 
+# 29. THE KEY NEXT DOOR IS NOT THIS KEY'S ANSWER (20260917). `door_line` returns everything after
+#     the key on the line, and this tree folds several keys onto one header row joined by ` - `, so
+#     a room token in a NEIGHBOUR's value was read as this page's own. `names_room` cuts each value
+#     at the next key now. Measured over this guard's own 1,363-page roster the day the cut landed:
+#     130 joined key reads, 47 reaching past their own key, and ONE page -- a real one -- whose
+#     entire verdict rested on the token next door. Both sides: the page whose Status says only
+#     `Living` while its Style key spells `Mixed room` must FAIL, and the page whose own Status
+#     names its room on the same folded row must still pass.
+d=$(build neighbour_key); honest "$d"
+mkdir -p "$d/docs"
+{
+  printf '# pen page\n\n'
+  printf '**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the gates are witnesses\n\nbody\n'
+} > "$d/docs/20260902-090901_neighbour.md"
+commit_all "$d"
+out=$(scan_at "$d" 0 0)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "neighbour_token_counted=yes" || echo "neighbour_token_counted=no"
+echo "$out" | grep -q 'FAIL docs/20260902-090901_neighbour.md Status does not name a room' \
+  && echo "neighbour_token_named=yes" || echo "neighbour_token_named=no"
+
+# 30. AND THE CURE THE REAL PAGE TOOK: a `**Room:**` line accreted beside what the Style line
+#     already said. Same page, one line added, and the door answers under the key the law reads.
+{
+  printf '# pen page\n\n'
+  printf '**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the gates are witnesses\n'
+  printf '**Room:** mixed\n\nbody\n'
+} > "$d/docs/20260902-090901_neighbour.md"
+commit_all "$d"
+scan_at "$d" 0 0 | grep -q 'doorway fails=0 ' && echo "accreted_room_frees=yes" || echo "accreted_room_frees=no"
+
+# 31. THE READER IS CARRIED, AND THE CARRIED TWIN READS THE SAME. The pen copies `scan_one` alone,
+#     so `tools/fixtures/s/shell_portable.sh` is absent here by construction and every leg above ran
+#     on the local twin. This asserts that out loud, then runs the SAME page against the sourced
+#     branch in the real tree, so a twin that drifted from the library would part the two answers.
+( cd "$d" && [ ! -f tools/fixtures/s/shell_portable.sh ] ) \
+  && echo "pen_has_no_library=yes" || echo "pen_has_no_library=no"
+pen_page=$pen/20260902-090902_carried.md
+{
+  printf '# pen page\n\n'
+  printf '**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the gates\n\nbody\n'
+} > "$pen_page"
+carried_out=$( ( cd "$d" && sh tools/fixtures/t/two_rooms_doorway_scan_one.sh "$pen_page" 20260101-000000 ) 2>&1 || true )
+sourced_out=$( ( cd "$root" && sh tools/fixtures/t/two_rooms_doorway_scan_one.sh "$pen_page" 20260101-000000 ) 2>&1 || true )
+[ "$carried_out" = "$sourced_out" ] \
+  && echo "carried_and_sourced_agree=yes" || echo "carried_and_sourced_agree=no"
+printf '%s\n' "$sourced_out" | grep -q 'Status does not name a room' \
+  && echo "carried_leg_reads_the_cut=yes" || echo "carried_leg_reads_the_cut=no"
+
+# 32. A MUTATION, so this is a control rather than a hope: strike the cut out of a real copy of
+#     `scan_one` inside the pen and the neighbour's token passes the page again.
+mut=$pen/scan_one_mutant.sh
+# THE DELIMITER IS `#` BECAUSE THE PATTERN CARRIES A PIPE. Written with `s|...|...|` first, sed
+#     refused the expression, wrote an EMPTY mutant, and an empty script exits 0 -- which this leg
+#     would have read as "without the cut the neighbour passes". A mutation that fails to mutate can
+#     look exactly like the mutation working, so the mutant is size-checked as well as compared.
+sed 's#st=$(key_value Status "$(door_line Status "$door_head_local" | head -1)")#st=$(door_line Status "$door_head_local" | head -1)#' \
+  "$root/tools/fixtures/t/two_rooms_doorway_scan_one.sh" > "$mut"
+if cmp -s "$mut" "$root/tools/fixtures/t/two_rooms_doorway_scan_one.sh" || [ ! -s "$mut" ]; then
+  echo "cut_mutation_edited=no"
+else
+  echo "cut_mutation_edited=yes"
+  mut_rc=0
+  ( cd "$root" && sh "$mut" "$pen_page" 20260101-000000 ) >/dev/null 2>&1 || mut_rc=$?
+  [ "$mut_rc" = 0 ] && echo "without_cut_neighbour_passes=yes" || echo "without_cut_neighbour_passes=no"
+fi
+
 echo "control_verdict=ok"

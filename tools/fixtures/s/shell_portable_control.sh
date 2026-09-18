@@ -293,6 +293,64 @@ else
   ok "the elder bare tail drops the header this helper restores"
 fi
 
+# ---------------------------------------------------------------------------------------------
+# key_value -- a bolded key's value, cut where the next key begins.
+#
+# EVERY LEG IS SHOWN FROM BOTH SIDES. The whole point of the cut is that a folded header row reads
+# differently under it, so each case that must change is asserted beside a case that must not.
+echo "shell-portable-control: key_value, on the folded header rows this tree actually writes"
+
+kv_is() { # $1 label, $2 expected, $3 key, $4 line
+  _got=$(key_value "$3" "$4")
+  if [ "$_got" = "$2" ]; then ok "$1"; else bad "$1 (got [$_got] wanted [$2])"; fi
+}
+
+kv_is "a key standing alone gives its whole value" \
+  " Living" Status '**Status:** Living'
+kv_is "a key on a folded row stops at the next key" \
+  " Living - " Status '**Stamp:** x - **Status:** Living - **Room:** vision'
+kv_is "the neighbour's own value is reachable under its own name" \
+  " vision" Room '**Stamp:** x - **Status:** Living - **Room:** vision'
+kv_is "emphasis inside a value survives the cut, because a key wants the colon" \
+  " Living -- see **start here** now" Status '**Status:** Living -- see **start here** now'
+kv_is "a key name is a prefix, so **Status of play:** still answers to Status" \
+  " Landed - " Status '**Status of play:** Landed - **Voice:** Kyri'
+kv_is "an absent key prints nothing, which is what the whole-line readers also did" \
+  "" Room '**Status:** Living'
+kv_is "the FIRST occurrence wins, stating grep -o | head -1's rule once" \
+  " one - " Status '**Status:** one - **Room:** x - **Status:** two'
+kv_is "a trailing bold that carries no colon is value, never a key" \
+  " Gauge, Field setting -- **Mixed room**: four gates" Style \
+  '**Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: four gates'
+
+# THE CASE THAT MADE THIS A RED RATHER THAN A TIDY. This is the real line from
+# foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md, whose Status said only
+# `Living` while the token the two-rooms doorway looks for stood in the **Style:** key next door.
+kv_real='**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the four gates are named witnesses that run'
+room_re='(^|[^A-Za-z])(checkable|vision(ary)?|mixed|research for understanding)([^A-Za-z]|$)'
+printf '%s\n' "$kv_real" | grep -qiE "\*\*Status:\*\*.*$room_re" \
+  && ok "the elder whole-line read DID find a room token on that line" \
+  || bad "the elder whole-line read DID find a room token on that line"
+printf '%s\n' "$(key_value Status "$kv_real")" | grep -qiE "$room_re" \
+  && bad "the cut still finds it, so the cut changed nothing" \
+  || ok "the cut does NOT find it, which is the whole repair"
+
+# A MUTATION, so a control that could pass with the cut removed is not this one. Strike the inner
+# match out of a real copy of the library and the value runs to the end of the line again.
+kv_mut=$pen/shell_portable_mutant.sh
+sed 's|if (match(rest, /\\\*\\\*\[^\*\]\[^\*\]\*:\\\*\\\*/)) rest = substr(rest, 1, RSTART - 1)||' \
+  "$root/tools/fixtures/s/shell_portable.sh" > "$kv_mut"
+if cmp -s "$kv_mut" "$root/tools/fixtures/s/shell_portable.sh"; then
+  bad "the mutation edited a byte of the library copy"
+else
+  ok "the mutation edited a byte of the library copy"
+  kv_mut_out=$(sh -c '. "$1"; key_value Status "$2"' _ "$kv_mut" "$kv_real" 2>/dev/null || true)
+  printf '%s\n' "$kv_mut_out" | grep -qiE "$room_re" \
+    && ok "without the cut the neighbour's token returns, so the leg above is load-bearing" \
+    || bad "without the cut the neighbour's token returns, so the leg above is load-bearing"
+fi
+
+
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"
 echo "skip=$skip"

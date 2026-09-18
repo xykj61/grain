@@ -6,31 +6,31 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row, rishi fresh; every open item wants Keaton's word. |
-| `20260917.204057` | [The pier that cannot hear its own joules](20260917/20260917-204057_the-pier-that-cannot-hear-its-own-joules.kyri) | Row 6's RAPL assumption fails five ways on this pier; probe landed as a fleet-wide instrument. |
-| `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit under CLAIM-AS-OVERRIDE; none touch docs-geode. |
-| `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed; root_finder_witness.rish back to finders_bare_new=0. |
-| `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the loop-gates-only sentinel: %807/%767/%765 unchanged, each wants Keaton's ruling. |
-| `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchanged; QA card on docs-geode/README.md clear. |
-| `20260917.202856` | [Still holding, no fresh ask](20260917/20260917-202856_still-holding-no-fresh-ask.kyri) | Same standing verdict as the prior lap; no re-poll, no new task named this turn. |
-| `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work; declines an eighth repeat-check of %819/%804. |
-| `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a further re-poll; %807/%767/%765 unchanged, no unclaimed booked lap elsewhere. |
+| `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row. |
+| `20260917.204057` | [The pier that cannot hear its own joules](20260917/20260917-204057_the-pier-that-cannot-hear-its-own-joules.kyri) | Row 6's RAPL assumption fails five ways on this. |
+| `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit. |
+| `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed. |
+| `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the. |
+| `20260917.203325` | [Docs-geode still gated on the receipt seam](20260917/20260917-203325_docs-geode-still-gated.kyri) | Round-opened, spot-checked %819/%804 and the claim board unchange. |
+| `20260917.202856` | [Still holding, no fresh ask](20260917/20260917-202856_still-holding-no-fresh-ask.kyri) | Same standing verdict as the prior lap. |
+| `20260917.202833` | [Docs-geode lane still holds](20260917/20260917-202833_docs-geode-lane-still-holds.kyri) | Pulled one commit, found no new work. |
+| `20260917.202611` | [Holding the mantra gate rather than an eighth confirm](20260917/20260917-202611_holding-the-mantra-gate-rather-than-an-eighth-confirm.kyri) | Patchouli declines a. |
 | `20260917.202514` | [The scatter that had to be shown](20260917/20260917-202514_the-scatter-that-had-to-be-shown.kyri) | Departure falls as 1/sqrt(edges): slope -0.5070 over 7 rungs. |
-| `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board; none fit docs-geode unclaimed. |
-| `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate work, drops it, and holds on %807/%767/%765 |
-| `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue; recommends the lane hold. |
+| `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board. |
+| `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate. |
+| `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue. |
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
-| `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture; REDS row booked, row %805 folded, claim closed. |
-| `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself; recommends the lane hold for Keaton rather than re-check again. |
-| `20260917.200731` | [Two open doors still await a ruling](20260917/20260917-200731_two-open-doors-still-await-a-ruling.kyri) | Patchouli/mantra lane: %807 and %767 both still OPEN, both return a choice to Keaton; nothing agent-doable in the lane. |
-| `20260917.200410` | [Second re-check, same two doors](20260917/20260917-200410_second-re-check-same-two-doors.kyri) | Third consecutive lap confirming %804 and %819 are unchanged and Keaton's word. |
-| `20260917.200158` | [The gate and the queue both stood unmoved](20260917/20260917-200158_gate-and-queue-both-unmoved.kyri) | Re-checked HEAD, claims board, and the card's queue; nothing moved since the prior lap. |
-| `20260917.195846` | [Docs-geode lane clear, no red](20260917/20260917-195846_docs-geode-lane-clear-no-red.kyri) | Card and claims read; fourteen docs-geode front doors graded, all B or better. |
-| `20260917.195720` | [Neither open door was a quick build](20260917/20260917-195720_neither-open-door-was-a-quick-build.kyri) | Checked %803 and %785, the two non-Keaton-gated OPEN rows; both are judgment calls, not builds. |
-| `20260917.195219` | [Third confirmation of the same gate](20260917/20260917-195219_third-confirmation-of-the-same-gate.kyri) | Confirming lap: five live mantra guards re-run fresh, all ok; %807 unchanged. |
-| `20260917.194522` | [Still the same gate, six minutes on](20260917/20260917-194522_still-the-same-gate.kyri) | Confirming lap: HEAD, claims board, and card all unchanged since the prior confirming log. |
+| `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture. |
+| `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself. |
+| `20260917.200731` | [Two open doors still await a ruling](20260917/20260917-200731_two-open-doors-still-await-a-ruling.kyri) | Patchouli/mantra lane: %807 and %767 both still OPEN. |
+| `20260917.200410` | [Second re-check, same two doors](20260917/20260917-200410_second-re-check-same-two-doors.kyri) | Third consecutive lap confirming %804 and %819 are unchanged and. |
+| `20260917.200158` | [The gate and the queue both stood unmoved](20260917/20260917-200158_gate-and-queue-both-unmoved.kyri) | Re-checked HEAD, claims board, and the card's queue. |
+| `20260917.195846` | [Docs-geode lane clear, no red](20260917/20260917-195846_docs-geode-lane-clear-no-red.kyri) | Card and claims read. |
+| `20260917.195720` | [Neither open door was a quick build](20260917/20260917-195720_neither-open-door-was-a-quick-build.kyri) | Checked %803 and %785, the two non-Keaton-gated OPEN rows. |
+| `20260917.195219` | [Third confirmation of the same gate](20260917/20260917-195219_third-confirmation-of-the-same-gate.kyri) | Confirming lap: five live mantra guards re-run fresh, all o. |
+| `20260917.194522` | [Still the same gate, six minutes on](20260917/20260917-194522_still-the-same-gate.kyri) | Confirming lap: HEAD, claims board. |
 | `20260917.194236` | [A law room's own gate read RED](20260917/20260917-194236_law-room-register-drift.kyri) | REDS %819 -- register ceiling drift, cheapest page swept, six OPEN. |
-| `20260917.193909` | [The gate held where I left it](20260917/20260917-193909_the-gate-held-where-i-left-it.kyri) | Confirming lap: mantra/tally OPEN rows unchanged, all gated on Keaton's word. |
+| `20260917.193909` | [The gate held where I left it](20260917/20260917-193909_the-gate-held-where-i-left-it.kyri) | Confirming lap: mantra/tally OPEN rows unchanged. |
 | `20260917.193730` | [REDS %805's marker had not caught up](20260917/20260917-193730_reds-805-marker-caught-up.kyri) | A landed fix answered %805; the row still read OPEN. |
 | `20260917.193058` | [The head insert was already booked](20260917/20260917-193058_the-head-insert-was-already-booked.kyri) | blind_reason fix is gated on %807, not free. |
 | `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged; confirmed via claim board, no rescan. |
@@ -44,6 +44,7 @@
 | `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | listing_census ceiling 11 to 10. |
 | `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Account landed; corpus red no longer reproduces. |
 | `20260917.190422` | [The boundary that was a wish](20260917/20260917-190422_the-boundary-that-was-a-wish.kyri) | The claim writer validated its name and nothing else. |
+| `20260917.190033` | [The key next door](20260917/20260917-190033_the-key-next-door.kyri) | A guard passed a page on the key next door. |
 | `20260917.185646` | [The comment a width leg read as a type](20260917/20260917-185646_the-comment-a-width-leg-read-as-a-type.kyri) | The md5 pair delegated; copies 15 to 13. |
 | `20260917.185512` | [The lever behind the deny list](20260917/20260917-185512_the-lever-behind-the-deny-list.kyri) | A guard read the tracked file while an ignored one outranked it. |
 | `20260917.185244` | [Lane empty queue](20260917/20260917-185244_lane-empty-queue.kyri) | mantra and tally read clean; no lap claimed. |

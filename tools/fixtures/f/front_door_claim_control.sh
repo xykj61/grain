@@ -258,7 +258,13 @@ printf '# door\n\nsee [it](20260101-000014_a-page.md)\n' > "$r/why/README.md"
 printf '# law\n\nnames nobody.\n' > "$r/LAW.md"
 track "$r"
 k=no
-if mutate "$scan" "$pen/mut_key.sh" 's|s/\\\*\\\*\[^\*\]\[^\*\]\*:\\\*\\\*\.\*\$//||'; then
+# THE MUTATION FOLLOWS THE READER (20260917). This struck a `sed` expression out of a `key_value`
+# written in this file for this key alone. That reader moved to `tools/fixtures/s/shell_portable.sh`
+# so three scans cut a folded header row one way, and the pen copies this scan ALONE -- which is
+# why the leg below already asserts `helper=local`: the carried twin is what runs here, and its cut
+# is the line this now deletes. A mutation aimed at bytes that have moved edits nothing, and
+# `mutate` returning 1 on an unchanged copy is what caught it rather than a silent pass.
+if mutate "$scan" "$pen/mut_key.sh" '/if (match(rest,/d'; then
   before=$(runscan "$r" why)
   after=$( cd "$r" && sh "$pen/mut_key.sh" why 2>&1 || true )
   case "$before" in *"claims=1"*) case "$after" in *"claims=2"*) k=yes ;; esac ;; esac

@@ -1,6 +1,40 @@
 #!/usr/bin/env sh
 # two_rooms_doorway_scan_one.sh -- per-file doorway verdict for native orchestrator.
 set -eu
+
+# ONE READER FOR A KEY'S VALUE, SOURCED OR CARRIED (20260917). `key_value` lives in
+# `tools/fixtures/s/shell_portable.sh` so three scans cut a folded header row the same way rather
+# than three ways. This file is copied ALONE into its control's pen, so the library is absent there
+# by construction -- hence the local twin below, which the pen proves reads identically to the
+# sourced one. A fallback nobody can see is a fallback nobody can tell from the real thing, so
+# `key_reader=` says which branch ran.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/tools/fixtures/s" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    _fd_root=""
+    break
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+if [ -n "$_fd_root" ] && [ -f "$_fd_root/tools/fixtures/s/shell_portable.sh" ]; then
+  . "$_fd_root/tools/fixtures/s/shell_portable.sh"
+  key_reader=tree
+else
+  key_value() {
+    printf '%s\n' "$2" | awk -v k="$1" '
+      {
+        if (!match($0, "\\*\\*" k "[^:]*:\\*\\*")) next
+        rest = substr($0, RSTART + RLENGTH)
+        if (match(rest, /\*\*[^*][^*]*:\*\*/)) rest = substr(rest, 1, RSTART - 1)
+        print rest
+        exit
+      }'
+  }
+  key_reader=carried
+fi
+
 f="$1"
 seating="$2"
 base=$(basename "$f")
@@ -32,10 +66,24 @@ door_line() {
   printf '%s\n' "$_dl"
 }
 
+# A KEY'S VALUE ENDS WHERE THE NEXT KEY BEGINS (20260917). `door_line` above returns the key and
+# everything after it on the line, and this tree folds several keys onto one header row joined by
+# ` - ` -- `**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting`. So a room token
+# standing in the NEIGHBOUR's value was read as this key's own, and a page passed the doorway on a
+# sentence it never wrote under Status or Room. Measured over this guard's own roster the day the cut
+# landed: 130 joined key reads, 47 reaching past their own key, and ONE page whose whole verdict
+# rested on the token next door -- `foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`,
+# whose `**Style:**` value spells `**Mixed room**` and whose Status says only `Living`. That page
+# names its room honestly in the wrong key, which is why the repair was a `**Room:**` line accreted
+# beside it rather than a looser read here.
+#
+# THE CUT LIVES IN `names_room` RATHER THAN IN `door_line`, on that function's own stated reason:
+# it is where the verdict is decided, stated once so the gated branch and the counted one can never
+# come to disagree. `door_line`'s return is unchanged, so every FAIL message prints the same bytes.
 names_room() {
   door_head_local=$(head -25 "$1")
-  st=$(door_line Status "$door_head_local" | head -1)
-  rm=$(door_line Room "$door_head_local" | head -1)
+  st=$(key_value Status "$(door_line Status "$door_head_local" | head -1)")
+  rm=$(key_value Room "$(door_line Room "$door_head_local" | head -1)")
   printf '%s\n%s\n' "$st" "$rm" \
     | grep -qiE '(^|[^A-Za-z])(checkable|vision(ary)?|mixed|research for understanding)([^A-Za-z]|$)'
 }
