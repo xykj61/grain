@@ -65,3 +65,9 @@ stamp 20260917.220250
 epoch 1789696970
 paths tools/rye/tablecloth_fold_toy.rye tools/t/tablecloth_fold_toy_witness.rish active-designing/
 what Row 5 (Tablecloth on a torus) first witness: fold a real name corpus's Keccak-256 hashes onto a 256x256 torus via bit-split, report occupancy evenness against the falsifier (clustering into a few cells).
+claim bakery-plant-adoption-comlink-tablecloth
+seat bakery
+stamp 20260917.220700
+epoch 1789697220
+paths tools/fixtures/c/comlink_carriage_control.sh tools/fixtures/c/comlink_glow_tend_control.sh tools/fixtures/t/tablecloth_glow_tend_control.sh
+what Continue REDS %519's spread: three controls apply sed edits in place through an unguarded edit() helper with NO verification the pattern matched at all (worse than the elder cmp-s pattern already fixed) -- source plant.sh and call plant_apply so an unmatched plant refuses by name.
