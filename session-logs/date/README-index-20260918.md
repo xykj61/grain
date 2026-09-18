@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.115405` | [The morning tally molts; REDS %767 books closed](20260918/20260918-115405_morning-tally-molted.kyri) | Six gated ships' tmux logs read; three open rulings named with doors; a stale gate closed. |
 | `20260918.113200` | [Clockout armed -- this lap closes whole at 5c8764206f](20260918/20260918-113200_clockout-lap-closes-5c876420.kyri) | Finished the in-flight follow-up send through one more contested rebase, all three remotes confirmed, then stopped. |
 | `20260918.113131` | [Clockout honored -- lap finished whole, this ship stops](20260918/20260918-113131_clockout-honored-lap-finished-whole.kyri) | .loop-clockout found armed; in-flight send landed first, both remotes confirmed at b6cea0cd3, then stopped. |
 | `20260918.112705` | [Round closes -- both remotes hold 0d408275a, nib pin left one rebase behind](20260918/20260918-112705_round-closes-0d408275a-nib-gap.kyri) | Six contested pushes, the last of them clean; nib amend target turned out already public, reverted rather than forced. |
