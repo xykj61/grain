@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.105558` | [The receipt contract's last mile closes: one admission, one replay, both products](20260918/20260918-105558_receipt-last-mile-closed.kyri) | Cases 1-3 chained via a Zig-boundary-crossing symlink carrier; all three receipt guards GREEN. |
 | `20260918.105352` | [Send confirmed -- both remotes hold e9671033](20260918/20260918-105352_send-confirmed-e9671033.kyri) | One contested push, one row conflict, both peers' rows kept; xy and debrided confirmed. |
 | `20260918.105118` | [Empty-open turn, no task handed](20260918/20260918-105118_empty-open-no-task.kyri) | No ask from Keaton; pheromone's shape-rune item already awaits Incense/Keaton's word. |
 | `20260918.104854` | [Empty-open turn, diffuser lane checked](20260918/20260918-104854_diffuser-empty-open.kyri) | Claim board empty; today's eighteen research accounts already shelved; OPEN REDS rows checked, none in lane. |
