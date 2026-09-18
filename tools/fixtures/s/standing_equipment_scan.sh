@@ -231,12 +231,20 @@ while IFS= read -r line; do
   case "$line" in
     guard\ *)
       close_record
-      name=$(printf '%s' "$line" | awk '{print $2}')
+      # WORD SPLITTING RATHER THAN A SPAWNED FIELD READER (20260917.210326). `set -- $line`
+      # splits on the default IFS exactly as `awk '{print $2}'` does for a whitespace record,
+      # and starts no process. This file spawned one awk per field per row -- 3,259 of its 4,330
+      # execve -- and the roster's 449 guards at up to seven fields each are most of that.
+      # Safe here because nothing below line 230 reads `$@`, `$*` or `$1`, and the loop's own
+      # `IFS= read` prefix binds the builtin alone rather than the shell.
+      set -- $line
+      name=${2-}
       rostered=$((rostered + 1))
       echo "$name" >> "$names"
       ;;
     path\ *)
-      path=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      path=${2-}
       [ -n "$name" ] || continue
       sawpath=$((sawpath + 1))
       if [ ! -f "$path" ]; then
@@ -246,23 +254,28 @@ while IFS= read -r line; do
       ;;
     tier\ *)
       [ -n "$name" ] || continue
-      tier=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      tier=${2-}
       ;;
     seated\ *)
       [ -n "$name" ] || continue
-      seated=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      seated=${2-}
       ;;
     host\ *)
       [ -n "$name" ] || continue
-      host=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      host=${2-}
       ;;
     capability\ *)
       [ -n "$name" ] || continue
-      capability=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      capability=${2-}
       ;;
     gate\ *)
       [ -n "$name" ] || continue
-      gate=$(printf '%s' "$line" | awk '{print $2}')
+      set -- $line
+      gate=${2-}
       ;;
     *) ;;
   esac
@@ -288,10 +301,12 @@ if [ -f "$card" ]; then
   while IFS= read -r line; do
     case "$line" in
       ran\ *)
-        rname=$(printf '%s' "$line" | awk '{print $2}')
-        rstamp=$(printf '%s' "$line" | awk '{print $3}')
-        rverdict=$(printf '%s' "$line" | awk '{print $4}')
-        rseconds=$(printf '%s' "$line" | awk '{print $6}')
+        # One split for four fields, where four awk invocations stood (20260917.210326).
+        set -- $line
+        rname=${2-}
+        rstamp=${3-}
+        rverdict=${4-}
+        rseconds=${6-}
         case "$rseconds" in
           ''|*[!0-9]*) seconds_absent=$((seconds_absent + 1)) ;;
           *) seconds_total=$((seconds_total + rseconds))

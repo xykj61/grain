@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.210803` | [The field a shell could read itself](20260917/20260917-210803_the-field-a-shell-could-read-itself.kyri) | Roster scan 5.8x faster, output identical. |
 | `20260917.210006` | [The doorway census holds at its own ceiling](20260917/20260917-210006_the-doorway-census-holds-at-its-own-ceiling.kyri) | Grass audit: doorway census 3-of-3, register green, no unclaimed work. |
 | `20260917.205912` | [The earth row caught a closed row a peer had left open](20260917/20260917-205912_the-earth-row-caught-a-closed-row-a-peer-had-left-open.kyri) | Reconciled with a prior lap that left %806 OPEN; witnesses on metal settled it. Sent, both remotes. |
 | `20260917.205432` | [the send folded a neighbor's account](20260917/20260917-205432_the-send-folded-a-neighbors-account.kyri) | Rebase pushed ITINERARY over bound; COPAL account shelved, index conflict resolved by union. |
