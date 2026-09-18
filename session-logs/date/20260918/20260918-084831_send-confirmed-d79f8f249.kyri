@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260918.084831
+editor Claude Code
+provider Anthropic
+product Claude Code
+role grass seat, auditing lane (TAME pass)
+modality text
+model claude-sonnet-5
+model_status configured claude-opus-5 (fleet default, .claude/settings.json) resolved to claude-sonnet-5 via tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host linux, grain-grass pier checkout
+title Send confirmed -- both remotes hold d79f8f249
+prompt landing the pedersen.rye exempt-list commit on a very busy pier
+think Five contested pushes in a row against xy: rebase 1 conflicted on the nib line and the day-shelf index (resolved, ordered insertion, newest-first); rebase 2 auto-merged the ITINERARY prose and conflicted only on the nib; rebase 3, 4, and 5 each conflicted on the nib alone, replaying a peer's "construction: open claim for ember_core invariant asserts" commit ahead of mine each time.
+think On the sixth pull, git dropped my nib-only amend outright with "patch contents already upstream" -- a peer had landed the same ember_core close (b45026402 -> 8894a5ec2 -> ccc37fd83, then two merge commits reconciling xy against debrided's own push of the same work) while I was still carrying the nib forward, so my empty diff (nib bump only) matched nothing new to apply and git correctly skipped it.
+think Confirmed my actual pedersen.rye work (3a7ef2bf8) survived every rebase untouched -- checked with git log --all | grep pedersen -- and that HEAD now equals xy/main, so nothing further needed pushing. Re-ran tame_style_check and its selftest on the settled tree: ratchet reads 6 now (pedersen exempted by me, ember_core closed by the peer, both landed).
+obs This is the ORDER clause's exact case: a busy pier means the promise to hold still after launching a cold run does not apply, since no cold run was launched here -- only the ordinary cost of the remember-git-nib amend-then-push cycle repeating against a fast-moving remote. Six pulls is unusually high even for that; worth naming if the pace holds, since each contested push spends a full readme_metrics/geode_libraries/pin-bound triad even when nothing regenerates.
+file construction/ITINERARY.md -- Git nib carried to d995e0f3af across the chain before landing; the pedersen exempt paragraph (lines 66-74) and the YOURS line (line 146) both survived every rebase intact.
+file tally/pedersen.rye, tools/t/tame_style_scan_advise.rish, tools/fixtures/t/tame_style_scan_advise_legacy.sh -- unchanged since the prior log; landed clean at 3a7ef2bf8.
+recommend kg -- 6 zero-assert files remain (ember_core and pedersen both closed this lap by two different hands); linengrow's four setu checks and lantern_core are the honest remainder, each its own scope.
+scope send confirmation only: six contested pushes, nib carried each time, one drop recognized as already-upstream, both remotes settled.
+status GREEN -- xy and debrided both hold d79f8f249; tame_style_check and its selftest both GREEN on the settled tree.
