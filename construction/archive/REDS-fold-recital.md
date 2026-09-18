@@ -882,3 +882,5 @@ at a closed fold.*
 *Rows %823 and %824 folded together to [`REDS-what-a-meter-could-not-see-rows-823-824.md`](REDS-what-a-meter-could-not-see-rows-823-824.md) on `20260917.222209`, **BOOKED** and **BOOKED** -- two readings that could not see what they were asked about, one blind to the page this tree calls its walk and one blind to its own command line. Folded within the hour they were booked, after a peer's row took the pin 354 bytes over a bound whose breach refuses every commit on every ship.*
 
 *Row %742 folded to [`REDS-a-repair-already-standing-rows-742.md`](REDS-a-repair-already-standing-rows-742.md) on `20260917.224949`, **CLOSED** -- a fix can land beside a different commit's own purpose and outlive the row that asked for it, so read metal before booking a repair.*
+
+*Row %825 folded to [`REDS-a-claim-named-the-wrong-seat-rows-825.md`](REDS-a-claim-named-the-wrong-seat-rows-825.md) on `20260918.090802`, **CLOSED** -- a claim pulled in from a peer's push and a card line written later can each read true alone and together describe a fact that never happened.*
