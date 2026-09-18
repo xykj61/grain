@@ -14,6 +14,7 @@
 | `20260918.100747` | [Send confirmed -- both remotes hold 8152fab33](20260918/20260918-100747_send-confirmed-8152fab33.kyri) | Eight contested pushes; nib re-pinned each time. |
 | `20260918.100507` | [Send confirmed -- both remotes hold 5f9ebe49d](20260918/20260918-100507_send-confirmed-5f9ebe49d.kyri) | Zero-assert-ratchet lap's send closed after two contested rebases; nib re-pinned three times. |
 | `20260918.100502` | [Fifteenth empty-open turn, no task handed](20260918/20260918-100502_fifteenth-empty-open-turn.kyri) | Fetched xy, checked claims board and newest OPEN REDS rows; all await Keaton. |
+| `20260918.100320` | [rye bootstrap builds ReleaseSafe, proven byte-reproducible](20260918/20260918-100320_bootstrap-releasesafe.kyri) | Two builds at one path, one hash; ReleaseSafe chosen over ReleaseSmall for TAME safety. |
 | `20260918.100241` | [Fifteenth empty-open turn, no task handed](20260918/20260918-100241_fifteenth-empty-open-turn.kyri) | Stop line re-read, newest OPEN reds scanned; still gated on the public seam. |
 | `20260918.100100` | [A fourteenth empty-open turn, no task handed](20260918/20260918-100100_empty-open-fourteenth.kyri) | Pheromone's own STOP clause still waits on Keaton; queue items belong to other lanes. |
 | `20260918.100002` | [Fourteenth empty-open turn, no task handed](20260918/20260918-100002_fourteenth-empty-open-turn.kyri) | Re-checked baton's YOURS flag on unread sections; still 23%, under target. |
