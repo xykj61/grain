@@ -66,3 +66,9 @@ stamp 20260918.055407
 epoch 1789725247
 paths glow/rune_triple.rye
 what add bare asserts to rune_triple.rye, same shape as rune_null/rune_switch (CLAIM-AS-OVERRIDE, docs-geode lane empty)
+claim pheromone-lower-alias-asserts
+seat pheromone
+stamp 20260918.055914
+epoch 1789725554
+paths glow/lower_alias.rye
+what add bare asserts to lower_alias.rye's zig_safe_ident, emit_alias_program, and lower_line, same discipline as lower_quad/rune_quad
