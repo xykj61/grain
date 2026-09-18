@@ -11,8 +11,11 @@
 //! Library emit (no main) is STOA16 (`lower_source_library`).
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rk = @import("rune_core.rye");
 const expr = @import("expr.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rk.ParseError || error{
     Overflow,
@@ -23,22 +26,21 @@ pub const LowerError = rk.ParseError || error{
 
 pub const core_demo_sample: u32 = 5;
 
-fn zig_safe_ident(face: []const u8, out: *[rk.max_name_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rk.max_name_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const ch = face[i];
-        const mapped: u8 = if (ch == '-') '_' else ch;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. Two call sites name the
+/// payload face (`emit_arm_methods`, `emit_payload_field`) and two name an arm
+/// (`emit_arm_methods`, `emit_checks`); each names its own field, matching the room's
+/// per-site convention, so a refusal record reads `field=payload` or `field=arm` rather
+/// than a name that doesn't say what failed.
+fn zig_safe_ident(face: []const u8, out: *[rk.max_name_len]u8, field: []const u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    // invariant: this entry keeps the parameters and error name it always had, and it
+    // answers the `u32` the rule itself answers rather than widening it to `usize` for the
+    // caller
+    const n = try zig_ident.safe_ident(face, out[0..], rk.max_name_len, field, .refuse, &slot);
+    // invariant: the rule wrote exactly the face it was handed, so the span below is the
+    // caller's own length rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 fn arm_body_sample(arm: []const u8) LowerError![]const u8 {
@@ -164,13 +166,13 @@ fn emit_arm_methods(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
     var body_buf: [192]u8 = undefined;
     var zf: [rk.max_name_len]u8 = undefined;
     const payload = rk.has_payload(spec);
-    const fn_len = if (payload) try zig_safe_ident(rk.payload_face_at(spec), &zf) else 0;
+    const fn_len = if (payload) try zig_safe_ident(rk.payload_face_at(spec), &zf, "payload") else 0;
 
     var i: usize = 0;
     while (i < spec.count) : (i += 1) {
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
-        const an = try zig_safe_ident(arm, &za);
+        const an = try zig_safe_ident(arm, &za, "arm");
         const body: []const u8 = if (rk.arm_has_body(spec, i))
             try emit_open_body(rk.arm_body_at(spec, i), payload, zf[0..fn_len], &body_buf)
         else if (payload)
@@ -204,7 +206,7 @@ fn emit_checks(spec: *const rk.CoreSpec, welcome: bool, out: []u8) LowerError!us
     while (i < spec.count) : (i += 1) {
         const arm = rk.arm_at(spec, i);
         var za: [rk.max_name_len]u8 = undefined;
-        const an = try zig_safe_ident(arm, &za);
+        const an = try zig_safe_ident(arm, &za, "arm");
         const base: u32 = if (rk.arm_has_body(spec, i))
             try open_body_expect(rk.arm_body_at(spec, i), sample)
         else
@@ -226,7 +228,7 @@ fn emit_checks(spec: *const rk.CoreSpec, welcome: bool, out: []u8) LowerError!us
 fn emit_payload_field(spec: *const rk.CoreSpec, out: []u8) LowerError!usize {
     if (!rk.has_payload(spec)) return 0;
     var zf: [rk.max_name_len]u8 = undefined;
-    const fn_len = try zig_safe_ident(rk.payload_face_at(spec), &zf);
+    const fn_len = try zig_safe_ident(rk.payload_face_at(spec), &zf, "payload");
     // Bare and `@u32` payloads both lower to an ordinary u32 field (STOA17/21).
     if (spec.payload_typed) {
         const chunk = std.fmt.bufPrint(out,

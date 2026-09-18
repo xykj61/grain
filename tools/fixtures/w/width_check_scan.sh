@@ -105,9 +105,12 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # type and index variable moving to `u32`: 275 files and 1,127 lines over 1,986 sources.
 # Lowered again 20260917 when `glow/lower_call3.rye` delegated the same way, its own
 # hand-rolled loop's `usize` return type and index variable moving to `u32`: 274 files and
-# 1,125 lines over 1,986 sources.
+# 1,125 lines over 1,986 sources. Lowered again 20260917 when `glow/lower_core.rye`
+# delegated the same way, its own hand-rolled loop's `usize` return type and index variable
+# moving to `u32` -- the file itself stayed flagged for other seam locals, so only the line
+# count fell: 274 files and 1,123 lines over 1,986 sources.
 corpus_files_ceiling=282
-corpus_lines_ceiling=1125
+corpus_lines_ceiling=1123
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye
