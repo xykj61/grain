@@ -153,8 +153,24 @@ quote as their own worked input. Raised 61 to 66, reasoning written into the sca
 witness and control GREEN, 28 legs, `control_failed=0`. `backtick_path`'s own ~62 remaining hits are
 the untouched sibling population and stay named for Grass's reverse-reading lane.
 
+**Item 1 (fascia on touch) read clean at this lap's own check** (`20260918.080119`):
+`sh tools/fixtures/t/two_rooms_doorway_scan.sh` answered `verdict=ok`, `doorway fails=3` sitting
+exactly at its `ceiling=3` -- nothing over, nothing this lap's to fix. The cold endurance run
+found the real work instead: 30 reds, most already OPEN under other lanes' names or Keaton's
+word. Two were cheap and cleared: `rye/bin/rye` and `rishi/bin/rishi` read `stale` against their
+own sources (55,704s and 148,705s behind) and are rebuilt fresh, no tracked byte moved. One is
+new and booked: `%826` -- the `%801` wall (`commit_parent_claim_witness`) reads 29 violations of
+its own class since its anchor, because it runs only in the cold pass and no wall in
+`tools/hooks/commit-msg` reads a parent-hash claim at write time. Every instance is testimony and
+stays unedited; the open question is whether `commit-msg` earns a fifth wall for it. Landed at
+`3be3470b3`, both remotes.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
-1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
+1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves --
+   reads clean today; re-check each lap since the ceiling can move.
+2. **`%826`'s open question**, if Keaton's word lands: add a fifth wall to `tools/hooks/commit-msg`
+   reading the same three claim genres `commit_parent_claim_witness` already names, refusing a
+   body that asserts its own parent by hash at write time.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
