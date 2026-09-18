@@ -9,7 +9,7 @@ written prediction wrong on the one population that mattered.*
 ---
 
 **GRASS -- THE PREDICTION THAT WAS RIGHT ABOUT THE WRONG POPULATION.** Elder account
-[shelved whole](archive/20260917-190033_itinerary-grass-front-door-account.md); its closing question
+[shelved whole](20260917-190033_itinerary-grass-front-door-account.md); its closing question
 is answered: **one shared key reader.** **FIRE SEES** (row 2, N=5407).
 **THE MECHANISM.** `key_value` in `tools/fixtures/s/shell_portable.sh` returns a named key's value
 cut at the next `**Word:**`; requiring the colon lets emphasis inside a value survive. Four scans

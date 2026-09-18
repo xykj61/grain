@@ -8,7 +8,7 @@
 **Style:** Gauge, Door setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Registers:** Gauge - Civic - TAME
 **Status:** Vision -- generalized and place-neutral; nothing seated, no program proposed for any specific jurisdiction
-**Kin:** [`universal and regenerative`](20260824-003828_universal-and-regenerative.md) - [`money that stays close to home`](20260629-014512_money-that-stays-close-to-home.md) - [`Civic Style`](../context/CIVIC_STYLE.md) - [`the roots beneath the work`](20260628-140812_the-roots-beneath-the-work.md) - [`the heart in the work`](20260628-121512_the-heart-in-the-work.md) - [`the receipt, not the material`](../active-designing/20260821-035028_the-second-domain-and-the-order-of-dollars.md)
+**Kin:** [`universal and regenerative`](20260824-003828_universal-and-regenerative.md) - [`money that stays close to home`](20260629-014512_money-that-stays-close-to-home.md) - [`Civic Style`](../context/CIVIC_STYLE.md) - [`the roots beneath the work`](20260628-140812_the-roots-beneath-the-work.md) - [`the heart in the work`](20260628-121512_the-heart-in-the-work.md) - [`the receipt, not the material`](../active-designing/date/20260821/20260821-035028_the-second-domain-and-the-order-of-dollars.md)
 
 > **What changed, and what did not.** The elder read 40% negative sentences. This one carries the same
 > claims, the same table, and the same four limits, with the three water refusals restated as the three

@@ -1,6 +1,6 @@
 # Sarva-samvadini -- Jiva Goswami Answers His Own Critics
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - stands apart from the six-work chain
 [`../01-tattva/README.md`](../01-tattva/README.md) through
 [`../06-priti/README.md`](../06-priti/README.md) completes, defending its first four members

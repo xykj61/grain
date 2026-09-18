@@ -1,6 +1,6 @@
 # Bhagavat Sandarbha -- The Fullest Face of One Truth
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - builds on the crux at
 [`../01-tattva/README.md`](../01-tattva/README.md) and on
 [`../../uttara-veda/README.md`](../../uttara-veda/README.md)'s claim that the Bhagavatam completes

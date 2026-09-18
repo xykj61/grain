@@ -1,6 +1,6 @@
 # Tattva Sandarbha -- Which Pramana Reaches the Truth Beyond the Senses?
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - this is the crux, per
 `../../../.claude/rules/lila-and-the-long-return.md`: every later Sandarbha and every verse-commentary in
 this room stands on the argument made here.

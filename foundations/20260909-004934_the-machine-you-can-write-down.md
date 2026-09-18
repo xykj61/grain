@@ -3,7 +3,7 @@
 **Language:** EN - **Style:** [New Gauge Radiant](../context/RADIANT_STYLE.md) -- measured, and affirmative throughout - **Voice:** Kyri
 **Stamp:** `20260909.004934` - **Status:** Living - **Room:** vision
 **Rule:** [`.claude/rules/declared-host-config.md`](../.claude/rules/declared-host-config.md) - **Twin:** [`.cursor/rules/declared-host-config.mdc`](../.cursor/rules/declared-host-config.mdc)
-**Kin:** the ordering this implies is argued in [`active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md`](../active-designing/20260909-005121_the-pier-a-newcomer-stands-up.md);
+**Kin:** the ordering this implies is argued in [`active-designing/date/20260909/20260909-005121_the-pier-a-newcomer-stands-up.md`](../active-designing/date/20260909/20260909-005121_the-pier-a-newcomer-stands-up.md);
 the steps are walked in [`SOURCE.md`](../SOURCE.md) and [`docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md); home is [`README.md`](../README.md).
 
 ## The idea, in one line

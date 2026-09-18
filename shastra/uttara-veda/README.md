@@ -1,6 +1,6 @@
 # Uttara Veda -- In What Sense Is the Bhagavatam the Ripened Fruit?
 
-**Where this sits:** home is [`../README.md`](../README.md) - glossary is
+**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
 [`../glossary.md`](../glossary.md) - stands on the crux at
 [`../sandarbhas/01-tattva/README.md`](../sandarbhas/01-tattva/README.md), which this file assumes
 rather than re-argues

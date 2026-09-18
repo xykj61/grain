@@ -1,6 +1,6 @@
 # Paramatma Sandarbha -- The Witness Seated Within, and the Ground of the World
 
-**Where this sits:** home is [`../../README.md`](../../README.md) - glossary is
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - glossary is
 [`../../glossary.md`](../../glossary.md) - builds directly on the three-name verse in
 [`../02-bhagavat/README.md`](../02-bhagavat/README.md), where Paramatma is named as the second of
 the three disclosures
