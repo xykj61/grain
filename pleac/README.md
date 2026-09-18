@@ -2,6 +2,7 @@
 
 **Language:** EN
 **Status:** Living -- strings `20260811.190026` - lists `20260811.190458` - numbers `20260811.190916` (SOON)
+**Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -11,12 +12,12 @@ PLEAC ("programming-language examples alike cookbook") is the standard library g
 
 ## Strings (`strings.rye`, landed `20260811`)
 
-The canonical pair, inverse when no piece holds the separator:
+The canonical pair, inverse for separator-free pieces:
 
 - **`join(parts, sep, out)`** -- glue a list of pieces into one string, a separator between them (never trailing); refuses a too-small output.
 - **`split(src, sep, out)`** -- cut a string on a separator into pieces, **zero-copy** (each piece slices the source); refuses an empty separator.
 
-`split(join(xs, sep), sep) == xs`, proven by `prove_strings`, along with a no-separator source yielding one whole piece and both bound refusals. Bounded by `max_parts` and `max_out`.
+`split(join(xs, sep), sep) == xs`, proven by `prove_strings`, along with a separator-free source yielding one whole piece and both bound declines. Bounded by `max_parts` and `max_out`.
 
 ```
 rye build pleac/strings.rye -femit-bin=tools/.build/pleac_strings
@@ -32,7 +33,7 @@ The grouping trio over a bounded list of `u32`:
 - **`window(xs, size, out)`** -- every overlapping run of `size`, in order; count `len - size + 1`, or none when shorter than a window.
 - **`flatten(lists, out)`** -- concatenate a list of lists into one; refuses a too-small output.
 
-`flatten(chunk(xs, n)) == xs` (grouping is lossless), proven by `prove_lists`, with the window count, the short-list-yields-none case, and the zero-size / too-small refusals. Bounded by `max_groups` and `max_flat`.
+`flatten(chunk(xs, n)) == xs` (grouping is lossless), proven by `prove_lists`, with the window count, the short-list-yields-zero-windows case, and the zero-size / too-small refusals. Bounded by `max_groups` and `max_flat`.
 
 ```
 rye build pleac/lists.rye -femit-bin=tools/.build/pleac_lists
@@ -42,13 +43,13 @@ rishi/bin/rishi run tools/p/pleac_lists_witness.rish
 
 ## Numbers (`numbers.rye`, landed `20260811`)
 
-The number primitives over `u32`, total (every bad input a named refusal):
+The number primitives over `u32`, total (every bad input a named decline):
 
 - **`clamp(x, lo, hi)`** -- bound a value to `[lo, hi]` (the bound must be well-ordered).
 - **`parse(s)`** -- a decimal string to `u32`, refusing empty - non-digit - past the ceiling.
 - **`to_str(n, out)`** -- a `u32` to its decimal string, the inverse of `parse`; refuses a too-small buffer.
 
-`parse(to_str(n)) == n` across the range, proven by `prove_numbers`, with clamp's edges and every refusal. Bounded by `max_digits`.
+`parse(to_str(n)) == n` across the range, proven by `prove_numbers`, with clamp's edges and every decline. Bounded by `max_digits`.
 
 ```
 rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers
