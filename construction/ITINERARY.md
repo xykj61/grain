@@ -116,10 +116,10 @@ closed per the ABSENCE clause.
 **YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
 account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
 judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
-of its ten threads carry forward (reverse-reading account). Two zero-assert `glow/` files remain,
-same shape, agent-doable next: `lower_cast.rye`, `glow/nock/nock_jet_dec.rye` -- `rune_null.rye`,
-`rune_switch.rye`, `rune_quad.rye`, and `rune_triple.rye` all landed since this was written;
-`lower_alias.rye` stands live under pheromone's claim, left alone.
+of its ten threads carry forward (reverse-reading account). One zero-assert `glow/` file remains,
+same shape, agent-doable next: `glow/nock/nock_jet_dec.rye` -- `rune_null.rye`, `rune_switch.rye`,
+`rune_quad.rye`, `rune_triple.rye`, and `lower_alias.rye` all landed since this was written;
+`lower_cast.rye` stands live under incense's claim `incense-lower-cast-asserts`, left alone.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -198,7 +198,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b742320166` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e8cf8ade90` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
