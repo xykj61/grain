@@ -62,13 +62,14 @@ byte slice is exactly `puddle.pk_len` long before any caller compares it (the in
 for exactly once, so a silently-dropped world could never hide inside a passing `moved != best_load`
 check. `rishi/bin/rishi run tools/m/mycelium_puddle_convergence_witness.rish` GREEN unchanged;
 `width-check` clean; `tame_style_check`'s zero-assert ratchet fell 11 to 10. Claim
-`pheromone-puddle-convergence-asserts` opened, pushed, and closed per the ABSENCE clause. **YOURS:**
-the remaining 10 `tame_style_check` zero-assert files are `ember/ember_core.rye`,
-`lantern/lantern_core.rye`, `linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
-`linengrow/setu6_device_lab_check.rye`, `linengrow/setu_desk_hold0_check.rye`,
-`linengrow/setu_desk_hold1_check.rye`, `linengrow/setu_desk_hold_wayland_check.rye`,
-`scribble/scribble_core.rye`, `tally/pedersen.rye` -- all outside pheromone's own lane now, each its
-own honest scope to check before claiming.
+`pheromone-puddle-convergence-asserts` opened, pushed, and closed per the ABSENCE clause.
+**Corrected below by Grass:** `linengrow/setu6_device_lab_check.rye` and `scribble/scribble_core.rye`
+had already closed or closed since this list was written; **8** `tame_style_check` zero-assert
+files remain, `ember/ember_core.rye`, `lantern/lantern_core.rye`,
+`linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
+`linengrow/setu_desk_hold0_check.rye`, `linengrow/setu_desk_hold1_check.rye`,
+`linengrow/setu_desk_hold_wayland_check.rye`, `tally/pedersen.rye` -- all outside pheromone's own
+lane now, each its own honest scope to check before claiming.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -123,22 +124,26 @@ state rather than this line.
 **GRASS -- backtick_path's second reverse-read account.** [Shelved
 whole](archive/20260918-074921_itinerary-grass-backtick-path-second-account.md).
 
-**GRASS -- `linengrow/setu6_device_lab_check.rye` NAMES ITS TWO WRITE BOUNDS.** `run_check` wrote
-`format_lab_line`'s and `format_lab_bron`'s returned slices to disk with no assert of its own on
-either length. Two invariant asserts now restate what the caller was trusting:
-`line.len <= status_line_max` and `n <= bron_buf.len`, right after each call and before the write.
-`tools/s/setu6_device_lab_witness.rish` GREEN (a pre-existing, unrelated `FileNotFound` from a
-missing `tools/.cache/setu0/` directory was confirmed present before this edit too, by stashing the
-change and rerunning the same binary at the same call site); `width-check` GREEN; `tame_style_check`
-zero-assert ratchet falls 11 to 10 -- the file drops off pheromone's named list above. **YOURS,
-CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door account); the
-coordination law's exemption question from `%819` and the fleet's 271-tool `head -N` judgment
-`%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which of its
-ten threads carry forward (reverse-reading account). The zero-assert ratchet now names 9 files past
-`glow/lower_cast.rye` and this lap's own fix; `tally/pedersen.rye` is a pure re-export shim with no
-logic of its own and likely wants an exempt-list entry in `tools/t/tame_style_scan_advise.rish`
-rather than a forced assert -- worth a word before the next hand reaches for it. The next
-agent-doable pick is any of the remaining 9, claim-board checked first.
+**GRASS -- setu6 device-lab-check account.** [Shelved
+whole](archive/20260918-081500_itinerary-grass-setu6-device-lab-account.md).
+
+**GRASS -- `scribble/scribble_core.rye` NAMES THREE RETURN-VALUE BOUNDS.** Three functions
+returned a count the caller trusts against its own destination slice -- `push_block`'s write index,
+`parse_markdown`'s block count, `extract_kind_snippets`'s snippet count (shared by the rye/rish/
+plain extractors) -- with no assert restating the bound at the point the count is handed back.
+Four invariant asserts now do: `push_block` gets a post-copy `block.text_len <= max_block_text` and
+a post-increment `count.* <= blocks.len`; `parse_markdown` and `extract_kind_snippets` each get a
+postcondition `count <= out.len` right before their `return`. `scribble/bin/scribble selftest`
+GREEN on metal (rebuilt from source, all fifteen welcome/unwelcome cases pass); `tame_style_check`
+zero-assert ratchet falls 9 to 8 -- the file drops off the remaining list. `granary/` and
+`pond/apps/scribble/` hold symlinks to this one file, so both apps carry the same asserts with
+nothing further to touch. **YOURS, CARRIED FORWARD:** the silo README's C composite on a
+pre-existing reading (front-door account); the coordination law's exemption question from `%819`
+and the fleet's 271-tool `head -N` judgment `%804` (baton exemption account); THREADS.md's
+pointer-stub-vs-in-place question and which of its ten threads carry forward (reverse-reading
+account); `tally/pedersen.rye`'s exempt-list-vs-forced-assert question, still unanswered. The
+zero-assert ratchet now names 8 files; the next agent-doable pick is any of them, claim-board
+checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -230,7 +235,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `78ba7f85ff` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `bd22451477` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
