@@ -7809,3 +7809,34 @@ guard energy_readout
 path tools/e/energy_readout_witness.rish
 tier lap
 seated 20260917.213500
+
+# ROUND TWO'S SECOND PROPOSAL ASKED WHETHER A TWO-FIELD KEY BUYS TWO PROPERTIES FROM TWO FIELDS,
+# EACH KEPT WHOLE, RATHER THAN TRADING ONE AWAY TO KEEP THE OTHER TWO. locality_key priced one key
+# read two ways and found locality, evenness, and confidentiality were one quantity read three
+# directions. This guard prices a composite key -- a placement field (the prefix) alongside a
+# content field (the digest), concatenated rather than folded -- against both single-field keys.
+#
+# WHAT IT FOUND, read over the tree's own tracked bytes at a 64-cell grid. Storage placement put to
+# the content field reads chi-squared 41.91, IDENTICAL to the digest key's own -- the composite buys
+# evenness in full. Same-room distance put to the placement field reads 0.339 cells, IDENTICAL to
+# the prefix key's own -- the composite buys locality in full. Room recovery put to the placement
+# field reads 0.5451 over 34 rooms, IDENTICAL to the prefix key's own confidentiality loss -- NOT
+# closer to the digest's lower 0.4745. Proposal 2's own stated falsifier fired exactly as named.
+#
+# THE FINDING. Locality and evenness compose without interference: a real store could use the
+# content field for even storage placement while a separate declared field serves locality queries,
+# buying both where a single field before had to choose. Confidentiality does not compose this way,
+# because it was never a property of how a field's bytes are arranged -- it is a property of WHICH
+# fields an observer holds. A field concatenated beside a leaky one adds information for an observer
+# holding the whole key; it never conceals what the leaky field already gives away.
+#
+# WHAT IS GATED. The control, and the live reading's three equalities plus the recovery range
+# identity. The buy/sell verdicts and every chi-squared and mean are REPORTED rather than gated, for
+# the reason the sibling guard gives: the statistic refuses at its own stated error rate, and the
+# means move with the tree's contents.
+#
+# Paper: `active-designing/20260918-013435_the-two-fields-that-composed-and-the-one-that-did-not.md`
+guard composite_key
+path tools/c/composite_key_witness.rish
+tier lap   # ~1s; 16 behaviors in a pen, three exact equalities, two mutations bitten
+seated 20260918.013000

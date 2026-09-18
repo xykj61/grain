@@ -1,0 +1,119 @@
+# tools/c/composite_key_witness.rish -- a two-field key buys locality and evenness together,
+# and never buys back the confidentiality either field sells alone.
+#
+# WHY THIS RUNG. tools/l/locality_key_witness.rish closed round two's own parent question on one
+# sentence: locality, evenness, and confidentiality are one quantity read three ways, because
+# avalanche buys two of them and destroys the third. Round two's second proposal asked whether
+# DECLARING two fields -- a placement field that need not avalanche, a content field that must --
+# lets a composite key buy locality and evenness from the two fields at once, each kept whole,
+# rather than trading one property away to keep the other two. This rung answers it.
+#
+# THE THREE VERDICTS, and why each is an exact equality rather than a new argument. Storage
+# placement put to the content field reads the SAME chi-squared as the digest key's own, because
+# it is the same bytes under the same arithmetic -- the buy. Same-room distance put to the
+# placement field reads the SAME mean as the prefix key's own -- the other buy. Room recovery put
+# to the placement field reads the SAME figure as the prefix key's own, RATHER than falling toward
+# the digest's low figure -- the sell, and proposal 2's own stated falsifier: an observer handed a
+# composite key is handed BOTH fields, and computes room recovery from whichever field leaks most.
+# Concatenating an even, confidential field alongside a leaky one does not conceal the leaky one.
+#
+# READ ON THIS TREE'S OWN TRACKED BYTES, 20260918: digest evenness 41.91 against a critical value
+# of 103.51 (even); prefix evenness 6544.81 (uneven, 63 times its own critical value); composite
+# storage evenness reads 41.91 -- IDENTICAL to the digest's own, so the composite buys evenness in
+# full. Same-room distance: digest 17.131 cells (at the 16.000 uniform expectation, so it carries
+# no locality), prefix 0.339 (far below it); composite locality reads 0.339 -- IDENTICAL to the
+# prefix's own, so the composite buys locality in full. Room recovery over 34 rooms, no-key
+# baseline 0.3529: digest 0.4745, prefix 0.5451; composite reads 0.5451 -- IDENTICAL to the
+# prefix's own, NOT closer to the digest's lower figure. The sell holds exactly as the falsifier
+# named it.
+#
+# THE CONCLUSION THIS LANE EARNS. Proposal 2's hypothesis -- that splitting a key into two fields
+# buys two properties from two fields, each kept whole -- is HALF right, and the half matters.
+# Locality and evenness DO compose without interference: a real store could use the content field
+# for even storage placement while a separate placement field serves locality queries, buying both
+# at once where a single field before had to choose. Confidentiality does NOT compose this way,
+# because confidentiality was never a property of how a field's bytes are arranged; it is a
+# property of WHICH fields an observer is handed. A field concatenated alongside a leaky one adds
+# information for an observer holding the whole key, never conceals what the leaky field already
+# gives away. Whether a real system can hand the placement field to an authorized locality reader
+# while withholding it from everyone else is an access-control question this scan cannot measure,
+# and it is precisely the door proposal 2's own closing note named as the remaining one.
+#
+# WHAT IS GATED HERE, and what is only reported. The control, and the live reading's three exact
+# equalities and the range identity on recovery. The buy/sell VERDICTS and every chi-squared and
+# mean figure are reported rather than gated, for the reason the sibling witness gives: a p=0.001
+# test taken twice refuses about one run in five hundred on a key behaving correctly, and the means
+# move with the tree's own contents.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/c/composite_key_control.sh -- 16 behaviors on planted
+# populations in a throwaway pen:
+#
+#   TRADED -- rooms are real groups, each room's files sharing a prefix, digest an even sweep --
+#     buys evenness and locality, sells confidentiality, every equality holds.
+#   LOCKSTEP -- digest and prefix carry the identical sweep, the boundary case showing the
+#     equalities hold even when the two fields carry no independent information, naming why TRADED
+#     is the population that actually tests independence.
+#   TINY -- a population under the floor is refused by name rather than misread.
+#   TWO MUTATIONS, each proven landed by cmp before its reading is believed: reading composite
+#     storage placement from the wrong field breaks the evenness equality and reds the arithmetic
+#     verdict; reading composite confidentiality from the wrong field breaks the confidentiality
+#     equality and flips the sell verdict to no -- each mutation caught on the TRADED population,
+#     where the two fields genuinely disagree and a wrong-field read is actually observable.
+#
+# WHAT IT LEAVES TO OTHERS. Whether a real system ever exposes the placement field to an
+# authorized locality reader while withholding it from an untrusted one -- the access-control
+# question that decides whether the buy can be had without the sell. Whether a FOLD of the two
+# fields (rather than plain concatenation) changes the answer. The real store, untouched here.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260918-013435_the-two-fields-that-composed-and-the-one-that-did-not.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/composite_key_witness.rish
+
+say "composite-key: Language EN -- a two-field key is priced by what each field buys and what the whole key sells."
+say "composite-key: Style Gauge, Meter -- every equality names its own field, its own baseline."
+say "composite-key: Lens TAME -- bound the sample, gate the equalities, report the trade."
+
+let control = run ["sh" "tools/fixtures/c/composite_key_control.sh"]
+say control.out
+assert control.ok else "composite-key: the control must complete -- its own lines are printed above"
+
+assert control.out contains "traded: composite storage evenness matches the digest" else "composite-key: the storage equality must hold on a population where the fields disagree"
+assert control.out contains "traded: composite locality matches the prefix" else "composite-key: the locality equality must hold on a population where the fields disagree"
+assert control.out contains "traded: composite confidentiality matches the prefix" else "composite-key: the confidentiality equality must hold on a population where the fields disagree"
+assert control.out contains "traded: evenness is bought" else "composite-key: the buy verdict must be reachable"
+assert control.out contains "traded: confidentiality is sold" else "composite-key: the sell verdict must be reachable -- this is proposal 2's own falsifier, fired"
+
+assert control.out contains "lockstep: composite storage evenness matches the digest" else "composite-key: the equalities must hold even when both fields carry the same sweep"
+assert control.out contains "lockstep: composite confidentiality matches the prefix" else "composite-key: the confidentiality equality must hold in the boundary case too"
+
+assert control.out contains "tiny: a population under the floor is unreadable" else "composite-key: too small a population is unreadable rather than misread"
+
+assert control.out contains "m_storage: the mutation applied" else "composite-key: a plant that changed no byte tests the real scan twice"
+assert control.out contains "m_storage: on TRADED the evenness equality now fails" else "composite-key: reading storage placement from the wrong field must be caught"
+assert control.out contains "m_storage: the arithmetic verdict reds" else "composite-key: a broken equality must red the whole verdict"
+
+assert control.out contains "m_recovery: the mutation applied" else "composite-key: the recovery plant must land before its reading"
+assert control.out contains "m_recovery: on TRADED the confidentiality equality now fails" else "composite-key: reading confidentiality from the wrong field must be caught"
+assert control.out contains "m_recovery: the sell verdict flips" else "composite-key: a mislabeled confidentiality reading must flip the sell verdict"
+
+assert control.out contains "legs_expected=16" else "composite-key: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_fail=0" else "composite-key: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "composite-key: the control must balance before it is believed"
+
+let live = run ["sh" "tools/fixtures/c/composite_key_scan.sh" "--names" "256" "--grid" "8"]
+say live.out
+assert live.ok else "composite-key: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=composite_key" else "composite-key: the reading names its own instrument"
+assert live.out contains "source=git_ls_files" else "composite-key: the live population is the tree's own tracked bytes"
+assert live.out contains "chi_critical=" else "composite-key: the critical value is published beside the statistic it judges"
+assert live.out contains "roomdist_expected=" else "composite-key: the uniform expectation is published beside the means it judges"
+assert live.out contains "plurality_room_share=" else "composite-key: the no-key baseline is published beside the recovery it judges"
+assert live.out contains "composite_evenness_matches_digest=yes" else "composite-key: the storage equality must hold on this tree's own bytes"
+assert live.out contains "composite_locality_matches_prefix=yes" else "composite-key: the locality equality must hold on this tree's own bytes"
+assert live.out contains "composite_confidentiality_matches_prefix=yes" else "composite-key: the confidentiality equality must hold on this tree's own bytes"
+assert live.out contains "recovery_in_range=yes" else "composite-key: recovery must lie between its own baseline and one"
+assert live.out contains "verdict=ok" else "composite-key: the live arithmetic must hold on this tree"
+
+say "GREEN: composite-key -- 16 behaviors, the falsifier fired on real bytes and on a planted population, two mutations bitten, round two's second proposal closed: locality and evenness compose, confidentiality does not."
