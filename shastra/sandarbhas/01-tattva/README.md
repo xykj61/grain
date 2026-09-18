@@ -13,7 +13,7 @@ translation), `tattva_sandarbha` (Hindi translation ed.), `tattva-sandarbha.-acy
 **Honesty note, kept plain:** what follows is a summary drawn from established public scholarship
 about this work -- chiefly the shape of Elkman's academic study, which this session has confirmed
 exists and is correctly attributed, and the wider academic consensus on Gaudiya Vaishnava
-philosophy. It is not a line-by-line read of the primary Sanskrit text itself. Where this file
+philosophy. It stays a step short of a line-by-line read of the primary Sanskrit text itself. Where this file
 says *Jiva Goswami argues*, it means *scholarship describing this text reports the argument as*,
 until a future pass opens the verified text directly and checks each claim against it.
 
@@ -22,30 +22,30 @@ until a future pass opens the verified text directly and checks each claim again
 ## One question
 
 Before anyone can say what the Bhagavata Purana teaches, a harder question has to be answered
-first: **why should anyone trust it at all?** Tattva Sandarbha is Jiva Goswami's answer -- not a
-summary of the Bhagavatam's content, but an argument for its *authority*, built the way a careful
-thinker builds any hard claim: from first principles, addressing every reasonable objection along
-the way.
+first: **why should anyone trust it at all?** Tattva Sandarbha is Jiva Goswami's answer: an
+argument for its *authority* rather than a summary of the Bhagavatam's content, built the way a
+careful thinker builds any hard claim -- from first principles, addressing every reasonable
+objection along the way.
 
 ## The argument, in plain steps
 
 **First, which pramana reaches transcendental truth at all?** Direct perception and inference --
 the two pramanas everyone already trusts in ordinary life -- both depend on the senses and the
-mind, and neither can reach past its own limits to test a claim about what exists beyond both.
-Testimony (sabda) is different in kind: a reliable witness can report what perception and
-inference cannot verify on their own. So the question becomes: *whose* testimony is reliable
-enough to trust on the largest questions there are?
+mind, so each stays bound to its own limits the moment a claim reaches past both. Testimony
+(sabda) is different in kind: a reliable witness can report what stays beyond perception and
+inference's own reach. So the question becomes: *whose* testimony is reliable enough to trust on
+the largest questions there are?
 
 **Second, why the Veda, among all testimony?** The classical Indian answer -- one Jiva Goswami
-inherits rather than invents -- is that the Veda is **apauruseya**, not composed by any limited
-person, so it carries none of the errors a limited author would introduce. This is the traditional
-ground every Vedanta school stands on before it argues anything further.
+inherits rather than invents -- is that the Veda is **apauruseya**: authored beyond any limited person,
+and so carrying only what a source free of a limited author's errors can carry. This is the
+traditional ground every Vedanta school stands on before it argues anything further.
 
-**Third, why the Purana genre, and not the Veda's own hymns directly?** The Vedic hymns are
-famously compressed and difficult; the Puranas exist, in this tradition's own self-understanding,
+**Third, why the Purana genre, rather than the Veda's own hymns directly?** The Vedic hymns are
+famously compressed, dense reading; the Puranas exist, in this tradition's own self-understanding,
 to *explain* the Veda's teaching in accessible narrative form -- itihasa-purana is sometimes
-called the Veda's fifth division for exactly this reason. So a well-chosen Purana is not a lesser
-source than the Veda; it is the Veda's own explanation of itself.
+called the Veda's fifth division for exactly this reason. So a well-chosen Purana stands as the
+Veda's own explanation of itself, equal in source rather than lesser.
 
 **Fourth, why the Bhagavata Purana above the other Puranas?** This is where Tattva Sandarbha does
 its most original work. Jiva Goswami is reported to apply several tests at once: the Bhagavata
@@ -59,7 +59,7 @@ Purana (dasa-lakshana) more fully than its rivals.
 
 **Fifth, what does establishing all this actually buy?** Once the Bhagavata Purana is established
 as supreme pramana for questions beyond perception and inference, every later Sandarbha can build
-directly on its verses without re-arguing authority each time. Tattva Sandarbha's whole labor is
+directly on its verses, its authority already argued once. Tattva Sandarbha's whole labor is
 spent so that Bhagavat Sandarbha, Paramatma Sandarbha, and the rest can simply *read* the text
 rather than *defend* it.
 
@@ -69,18 +69,18 @@ Every claim in [`../02-bhagavat/README.md`](../02-bhagavat/README.md) about the 
 Absolute rests on the Bhagavatam being trustworthy testimony on that subject. Every claim in
 [`../../uttara-veda/README.md`](../../uttara-veda/README.md) about the Bhagavatam completing the
 Veda rests on this same argument being sound. A reader who doubts Tattva Sandarbha's opening move
-has no obligation to accept anything downstream of it -- which is exactly why Jiva Goswami spent
+stays free to set aside everything downstream of it -- which is exactly why Jiva Goswami spent
 his first treatise here, rather than rushing to the more inviting subject of Krishna's own nature.
 
-## What this file does not yet do
+## What remains for a later pass
 
-It does not quote the Sanskrit directly, verse by verse, nor does it check its own summary above
-against the primary text. That is the next honest step for this file, once the verified sources
-are opened and read rather than described secondhand.
+This file stays short of quoting the Sanskrit directly, verse by verse, and short of checking its
+own summary above against the primary text. That is the next honest step for this file, once the
+verified sources are opened and read rather than described secondhand.
 
 ---
 
-*A foundation asks for no praise while it is being laid -- only that the next stone rests
-squarely on it. Whatever prema this room comes to hold later, it stands because this one question
+*A foundation asks only that the next stone rests squarely on it while it is being laid. Whatever
+prema this room comes to hold later, it stands because this one question
 was answered first: can the Bhagavatam be trusted at all? Jiva Goswami said yes, and showed his
 reasoning. May the reasoning be read as carefully as it was written.*
