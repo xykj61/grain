@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260918.093311
+editor Claude Code
+provider anthropic
+product Claude Code
+role docs-geode maintainer
+modality text
+model claude-sonnet-5
+model_status verified active model id from the system prompt
+voice Kyri
+host Framework laptop, America/New_York
+title MAP.md's module-ring links start reaching README.md
+prompt no explicit ask this turn; the baton opened cold with no user task, so this lap read the queue and took the next agent-doable repair in its own lane
+think petrichor's product path (the Bhakta first-hour walkthrough) stays stopped -- it waits on the public seam landing, which is still a custody gate -- so this lap looked for the next docs-geode-shaped repair rather than sitting idle
+think ran the prose register scan tree-wide first: verdict=ok, zero pages over the Door or Field ceiling, so no register sweep was waiting
+think ran living_docs_lint.rish and found duty3 naming six orphan module READMEs -- amphora, dimeroll, granary, mand, mandi, mycelium -- with no inbound link from the roster, docs/README.md, ORGANIZING.md, or MAP.md
+think read the scan's resolve_cand function and confirmed the fault -- MAP.md's module-ring table links several rooms as `[name/](name/)`, a bare directory target, and duty3's inbound tally keys on the resolved candidate path, so a directory link never credits the README.md file sitting inside it
+think confirmed by contrast -- lantern, lattice, and scribble sit in the same roster and are NOT orphaned, because ember/README.md already links lantern/README.md directly; the six flagged rooms simply had no roster page pointing at their README by name
+think this is an ordinary repair to one already-tracked file (MAP.md), named by no REDS row and no open claim, so the ABSENCE clause's claim-before-build step does not apply; ran the claim-board check anyway as a courtesy read and it came back clear before the round-open pull
+think fixed by editing the seven module-ring links (mand, granary, mandi, amphora, mycelium, lantern, lattice, scribble, cellar, dimeroll) to name README.md explicitly, matching the pattern MAP.md already uses for linengrow, kumara, vault, and the rest of the table -- cellar included for consistency even though it carries no tracked .rye and so never entered the roster or the orphan check
+obs the register scan's own zero-overage reading is why this lap reached for the doorway census rather than a prose sweep -- Lindy-first, crux-first still orders the queue even on an empty explicit ask, and a live ADVISE finding beats inventing work
+obs the guard is a ratchet rather than a gate (living_docs_lint.rish never fails), so this repair earns no red closure and needed no checkpoint -- it is a plain improvement to an already-green witness
+file MAP.md -- seven module-ring links now name README.md directly, header updated with the stamp and a Prior line
+loom witness=living_docs_lint duty3_orphans_before=6 duty3_orphans_after=0
+recommend kg -- the doorway census reads clean; next agent-doable docs-geode work is another live ADVISE finding or the Bhakta first-hour path once the public seam custody gate opens
