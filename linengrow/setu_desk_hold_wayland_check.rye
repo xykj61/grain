@@ -3,6 +3,7 @@
 //! Reads tools/.cache/setu0/station.bron and reports Desk raster lit pixels.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const print = std.debug.print;
 const Dir = std.Io.Dir;
 const hold1 = @import("setu_desk_hold1.rye");
@@ -13,8 +14,12 @@ const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 
 fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    // invariant: every path named for this check is non-empty
+    assert(path.len > 0);
     var big: [1024]u8 = undefined;
     const read = cwd.readFile(io, path, &big) catch return 0;
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(read.len <= big.len);
     return @intCast(read.len);
 }
 
@@ -27,6 +32,8 @@ fn run_check(init: std.process.Init) !u8 {
         print("hold-wayland-check: RED — missing {s}\n", .{station_path});
         return 1;
     };
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(station.len <= station_buf.len);
     const ping_len = file_len(cwd, io, ping_path);
     const frame_len = file_len(cwd, io, frame_path);
     const lit = hold_wl.raster_hold_lit(allocator, station, ping_len > 0, frame_len) orelse {

@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260918.095829
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role coding companion, GRASS seat (auditing lane, TAME Guidance pass)
+modality text
+model claude-sonnet-5
+model_status verified active runtime, model ID confirmed by system context
+configured_model claude-opus-5
+configured_status fleet default per .claude/settings.json, read 20260917; this lap ran the resolved runtime model above rather than the configured default
+voice Kyri
+host grain-grass tree, America/New_York
+title the zero-assert ratchet reaches zero, two files at once
+prompt no user request this turn beyond the standing baton; continued the GRASS lane's TAME sweep named in the prior lap's commit (bfa955ddb, "hold1 read invariants, two files to go")
+think read git status (clean) and the prior grass hold1 log naming the next two files: linengrow/setu65_lab_tx_check.rye and linengrow/setu_desk_hold_wayland_check.rye
+think read setu65_lab_tx_check.rye: field_value walks lines by byte offset with no bound on an empty key; parse_dotted_v4 parses without a postcondition that the whole argument was consumed; run_check reads lab.bron into a fixed [1024]u8 buffer with no stated bound
+think added: field_value asserts key.len > 0 before indexing raw[key.len], and asserts the trimmed value never exceeds the line it came from; parse_dotted_v4 asserts i == s.len as a postcondition after the existing null-check (ordered after the check so an empty or malformed argv still returns null rather than crashing -- an assert on argv content would be a defect, not a repair); run_check asserts lab.len <= buf.len after the successful read, matching the hold0/hold1 shape
+think read setu_desk_hold_wayland_check.rye: identical shape to setu_desk_hold0_check.rye's file_len and station read, already repaired in an earlier lap -- copied the same two invariants rather than inventing a third form
+think ran tools/s/setu65_lab_tx_witness.rish (GREEN, device-free) and tools/s/setu_desk_hold_wayland_witness.rish (GATED -- wants a Wayland display this host lacks, unchanged by the edit) and tools/w/width-check.rish (clean) after each file
+obs tools/t/tame_style_check.rish's zero-assert ratchet fell 2 to 1 after the first file, then 1 to 0 after the second -- the class this lane opened three laps ago on this ledger row is now closed; the honest-exempt list (virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the assert mark itself, a re-export shim) is unchanged
+obs shed the card's prior GRASS account (the hold1 repair) whole into construction/archive/20260918-095829_itinerary-grass-hold1-account.md per the-writer-sheds, and opened this lap's account in its place naming the ratchet's other standing classes (memcpy, camelCase fn, parseInt, Ed25519, the 70-line function list) as the next agent-doable picks
+obs no claim opened: two ordinary repairs to existing tracked files, named by no ledger row, per the-baton ABSENCE clause's exemption
+rota none -- pure repair, no rota read this lap
+file linengrow/setu65_lab_tx_check.rye three invariant asserts: field_value's key bound, parse_dotted_v4's consumed-length postcondition, run_check's read bound
+file linengrow/setu_desk_hold_wayland_check.rye two invariant asserts in file_len, one in run_check's station read, mirroring the already-repaired hold0/hold1 siblings
+file construction/ITINERARY.md shed the hold1 account whole, opened this lap's account naming the ratchet's remaining classes, carried Git nib forward to this commit's parent
+file construction/archive/20260918-095829_itinerary-grass-hold1-account.md new shelf holding the prior GRASS live account
+recommend keep-going -- the zero-assert ratchet is closed; next agent-doable pick is any of the other printed ratchets (memcpy migration, camelCase fn, parseInt migration, Ed25519 migration, or the top of the 70-line function list), claim-board checked first since none of these are new instruments or booked reds
+scope this turn only; two authored .rye files, the card, one new shelf, this log
+status GREEN -- both witnesses run (one GREEN, one GATED unchanged by the host), width-check clean, tame_style_check's zero-assert ratchet at 0

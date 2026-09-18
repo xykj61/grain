@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.100100` | [A fourteenth empty-open turn, no task handed](20260918/20260918-100100_empty-open-fourteenth.kyri) | Pheromone's own STOP clause still waits on Keaton; queue items belong to other lanes. |
 | `20260918.100002` | [Fourteenth empty-open turn, no task handed](20260918/20260918-100002_fourteenth-empty-open-turn.kyri) | Re-checked baton's YOURS flag on unread sections; still 23%, under target. |
+| `20260918.095829` | [The zero-assert ratchet reaches zero, two files at once](20260918/20260918-095829_grass-zero-assert-ratchet-closes.kyri) | GRASS TAME sweep closes the class: setu65_lab_tx_check.rye and setu_desk_hold_wayland_check.rye both take read-bound invariants. |
 | `20260918.095736` | [Empty-open turn, thirteenth in the run](20260918/20260918-095736_empty-open-thirteenth.kyri) | No task handed; card's open questions each await a Claude/TAME ruling. |
 | `20260918.095553` | [Thirteenth empty-open turn, no task handed](20260918/20260918-095553_thirteenth-empty-open-turn.kyri) | Baton register re-checked at 23%, well under target; no docs-geode task found. |
 | `20260918.095544` | [Pheromone -- empty-open turn, no task handed](20260918/20260918-095544_pheromone-empty-open-turn.kyri) | Shape-rune STOP awaits Keaton; queue outside lane; claims board empty. |

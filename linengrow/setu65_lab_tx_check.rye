@@ -4,6 +4,7 @@
 //! Optional argv: dotted IPv4 peer (iface default gateway) for unicast lab TX.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const print = std.debug.print;
 const Dir = std.Io.Dir;
 const setu3 = @import("setu3_ncm_frame.rye");
@@ -14,6 +15,8 @@ const tally_parse_int = @import("parse_int.rye");
 const lab_path = "tools/.cache/setu0/lab.bron";
 
 fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
+    // invariant: an empty key would match every line's first byte as a boundary
+    assert(key.len > 0);
     var line_start: usize = 0;
     while (line_start <= src.len) {
         const rest = src[line_start..];
@@ -24,7 +27,10 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
         if (raw.len <= key.len) continue;
         if (!std.mem.startsWith(u8, raw, key)) continue;
         if (raw[key.len] != ' ') continue;
-        return std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+        const value = std.mem.trim(u8, raw[key.len + 1 ..], " \t\r");
+        // invariant: a value trimmed from a line never exceeds that line
+        assert(value.len <= raw.len);
+        return value;
     }
     return null;
 }
@@ -45,6 +51,8 @@ fn parse_dotted_v4(s: []const u8) ?[4]u8 {
         }
     }
     if (i != s.len) return null;
+    // invariant: a returned address is fully consumed from the argument it parsed
+    assert(i == s.len);
     return out;
 }
 
@@ -57,6 +65,8 @@ fn run_check(init: std.process.Init) !u8 {
         print("GREEN: SETU6.5 — TX gate held; no lab card yet.\n", .{});
         return 0;
     };
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(lab.len <= buf.len);
     const mode_name = field_value(lab, "mode") orelse {
         print("setu65-check: RED — missing mode\n", .{});
         return 1;
