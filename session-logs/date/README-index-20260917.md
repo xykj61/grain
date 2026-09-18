@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.235740` | [Send -- Comlink torus-check landed](20260917/20260917-235740_comlink-check-sent.kyri) | Both remotes hold c4431def5 after three rebases. |
 | `20260917.235358` | [Send -- lower_core delegation landed on both remotes](20260917/20260917-235358_lower-core-sent.kyri) | Both remotes hold d7dfe84605 after three rebases. |
 | `20260917.235247` | [Reverted a custody-refusal edit](20260917/20260917-235247_reverted-a-custody-refusal-edit.kyri) | Register fix touched two custody-named sentences the guard forbids; caught and undone. |
 | `20260917.235220` | [Comlink checked -- no torus](20260917/20260917-235220_comlink-checked-no-torus.kyri) | Sixth negative torus read; two candidates named and ruled out. |
