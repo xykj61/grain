@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.011232` | [Pheromone lane idle check](20260918/20260918-011232_pheromone-lane-idle-check.kyri) | glow_ident_duplication re-verified ceiling=0 on metal; tree level with xy/main; no lane claim to build. |
 | `20260918.010900` | [Send confirmed -- both remotes hold f2badba30](20260918/20260918-010900_send-confirmed-f2badba30.kyri) | One rebase conflict resolved keeping both rows; both generated pages refreshed and unchanged. |
 | `20260918.010836` | [Idle queue check, no live prompt this turn](20260918/20260918-010836_petrichor-idle-queue-check.kyri) | Ran the register scan fresh; law/door/teaching ceilings clean; own lane empty. |
 | `20260918.010835` | [Pheromone lane check -- no agent-doable work standing](20260918/20260918-010835_pheromone-lane-clear.kyri) | glow_ident_duplication ceiling verified 0 on metal; no live pheromone claim; queue items want Keaton's word. |
