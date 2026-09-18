@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.221441` | [A site is not a count](20260917/20260917-221441_a-site-is-not-a-count.kyri) | Wrong loop cured first; 904 to 382. |
 | `20260917.221049` | [A toy already answered twice over](20260917/20260917-221049_a-toy-already-answered-twice-over.kyri) | Row 5's toy duplicated two elder errata; withdrawn. |
 | `20260917.221013` | [git-signing.md's Gauge ceiling falls a fifth time](20260917/20260917-221013_grass-git-signing-gauge-sweep.kyri) | 55% to 7% negative sentences; law_ceiling 3 to 2; survived four true-divergence parks. |
 | `20260917.220231` | [Spread plant.sh into two more controls](20260917/20260917-220231_plant-spread-two-controls.kyri) | %519: rye_module_door and rye_toolchain_resolve controls now source plant_write, GREEN. |

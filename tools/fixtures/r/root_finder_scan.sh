@@ -235,11 +235,25 @@ while IFS= read -r s; do
     cls=build_output
   fi
   # A sentinel's tracked parent directories, root excluded. `a/b/<s>/...` gives parent `a/b`.
+  # THE SAFE NAME IS DERIVED ONCE, IN THE SHELL (`20260917.220924`). The three lines below spelled
+  # `$(echo "$s" | tr / _)` three times for one value, and a fourth `tr` stripped spaces from the
+  # `wc` reading -- four processes an iteration for one name and one number. Parameter expansion
+  # replaces the slashes with no tool at all, so the count goes to zero rather than to one.
+  safe=$s
+  while :; do
+    case "$safe" in
+      */*) safe="${safe%%/*}_${safe#*/}" ;;
+      *) break ;;
+    esac
+  done
+  parents_file="$work/parents.$cls.$safe.txt"
   git ls-files -- "*/$s/*" \
     | awk -v s="$s" '{ i = index($0, "/" s "/"); if (i > 1) print substr($0, 1, i - 1) }' \
-    | sort -u > "$work/parents.$cls.$(echo "$s" | tr / _).txt"
-  below=$(wc -l < "$work/parents.$cls.$(echo "$s" | tr / _).txt" | tr -d ' ')
-  printf '%s\t%s\t%s\t%s\n' "$s" "$cls" "$below" "$work/parents.$cls.$(echo "$s" | tr / _).txt" \
+    | sort -u > "$parents_file"
+  # Word splitting strips the whitespace `tr -d ' '` was spawned for, spawning nothing.
+  set -- $(wc -l < "$parents_file")
+  below=$1
+  printf '%s\t%s\t%s\t%s\n' "$s" "$cls" "$below" "$parents_file" \
     >> "$work/classified.txt"
 done < "$work/sentinels.txt"
 
@@ -249,8 +263,24 @@ done < "$work/sentinels.txt"
 BUILD_SENTINELS=$(awk -F'\t' '$2 == "build_output" { printf "%s ", $1 }' "$work/classified.txt")
 GITDIR_SENTINELS=$(awk -F'\t' '$2 == "git_dir" { printf "%s ", $1 }' "$work/classified.txt")
 awk -F'\t' '{ print $1, $4 }' "$work/classified.txt" > "$work/parentmap.txt"
+# THE MAP IS READ ONCE AND WALKED IN THE SHELL (`20260917.220924`). This function's single call
+# site sits in a NESTED loop -- per distinct sentinel set, per sentinel in it -- so an awk per call
+# was most of the 265 this scan spawned. The comment above records the same class repaired once
+# already here; the lookup survived that pass. The map is seven-odd rows, so a linear walk costs
+# nothing measurable and costs no process at all.
+PARENTMAP=$(cat "$work/parentmap.txt")
 parents_of() {
-  awk -v s="$1" '$1 == s { print $2; exit }' "$work/parentmap.txt"
+  _po_want=$1
+  _po_ifs=$IFS
+  IFS='
+'
+  for _po_row in $PARENTMAP; do
+    case "$_po_row" in
+      "$_po_want "*) IFS=$_po_ifs; printf '%s\n' "${_po_row#* }"; return 0 ;;
+    esac
+  done
+  IFS=$_po_ifs
+  return 0
 }
 
 # AMBIGUITY IS ANSWERED PER DISTINCT SENTINEL SET, once, rather than per finder. Two hundred and
@@ -271,7 +301,14 @@ while IFS= read -r set; do
     fi
   done
   if [ "$first" = no ] && [ -s "$work/inter.txt" ]; then
-    AMB_SETS="$AMB_SETS|$(echo "$set" | tr ' ' ',')|"
+    set_csv=$set
+    while :; do
+      case "$set_csv" in
+        *\ *) set_csv="${set_csv%% *},${set_csv#* }" ;;
+        *) break ;;
+      esac
+    done
+    AMB_SETS="$AMB_SETS|$set_csv|"
   fi
 done < "$work/sets.txt"
 
@@ -311,14 +348,28 @@ while IFS="$(printf '\t')" read -r path sentinels; do
   fi
   [ "$has_gitdir" = yes ] && { fragile=$((fragile + 1)); [ "$verdict" = runnable ] && verdict=worktree_fragile; }
 
+  # THE COMMA FORM IS DERIVED ONCE PER FINDER, IN THE SHELL (`20260917.220924`). The two lines
+  # below each spelled `$(echo "$sentinels" | tr ' ' ',')` for the same value, so one finder cost
+  # two processes for one string -- and THIS loop runs per finder, some two hundred of them, which
+  # is where the count actually lived. An earlier reading of this file repaired the per-sentinel
+  # loop instead, twelve iterations rather than two hundred, and removed 36 of 515: a site is not
+  # a count until its loop is measured.
+  csv=$sentinels
+  while :; do
+    case "$csv" in
+      *\ *) csv="${csv%% *},${csv#* }" ;;
+      *) break ;;
+    esac
+  done
+
   # Ambiguity: a non-root directory answering EVERY sentinel of this finder, looked up by set.
   amb=no
   case "$AMB_SETS" in
-    *"|$(echo "$sentinels" | tr ' ' ',')|"*) amb=yes; ambiguous=$((ambiguous + 1)) ;;
+    *"|$csv|"*) amb=yes; ambiguous=$((ambiguous + 1)) ;;
   esac
 
   printf '%s sentinels=%s verdict=%s ambiguous=%s growth=%s\n' \
-    "$path" "$(echo "$sentinels" | tr ' ' ',')" "$verdict" "$amb" "$growth" >> "$work/rows.txt"
+    "$path" "$csv" "$verdict" "$amb" "$growth" >> "$work/rows.txt"
 done < "$work/finders.txt"
 
 if [ "$MODE" = list ]; then
