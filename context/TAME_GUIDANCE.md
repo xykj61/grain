@@ -309,7 +309,7 @@ A doc that describes behavior the code no longer has is not documentation; it is
 - **Before citing a doc's claim as still true, check it -- read the file, run the witness, or grep the code path it names -- rather than trust the doc's own age as evidence.** A doc from three days ago is not automatically current; only a fresh check is.
 - **File paths, function names, and witness names a doc cites are load-bearing, not decorative.** A doc that names `tools/foo.rish` as proof of a claim is making that path part of the claim itself -- if the path moves or the witness changes shape, the doc's claim moves or changes shape with it, in the same commit.
 - **This is a ratchet, not a rewrite.** We do not sweep the whole tree for drift in one pass (per **4**, accretion beats a breaking sweep); we tighten it wherever a doc is already open for other reasons, and we let `living_docs_lint`'s roster (broken links, orphan pages, retired words, Status rooms, pin-string byte-match) keep catching the mechanical half of this while the discipline above catches the half no lint can see -- whether the doc's *claim* is still honestly true.
-- **Two Rooms applies here too:** a doc's claim belongs in the checkable room only once a witness actually binds it (`../TWO_ROOMS.md`). A claim that has not yet earned a witness stays named as intent or horizon, not stated as settled fact.
+- **Two Rooms applies here too:** a doc's claim belongs in the checkable room only once a witness actually binds it (`TWO_ROOMS.md`). A claim that has not yet earned a witness stays named as intent or horizon, not stated as settled fact.
 
 ---
 

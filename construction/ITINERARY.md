@@ -122,20 +122,22 @@ were not touched this lap and may carry further negative sentences past what thi
 `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
 state rather than this line.
 
-**GRASS -- backtick_path's first reverse-read closes one genuinely stale citation.** Elder account
-[shelved whole](archive/20260918-070909_itinerary-grass-turn-route-account.md). Read through the
-65 living hits the ratchet named as Grass's lane. Most sort into two genres already named in
-`comment_path`'s own header -- a teacher-tree citation naming TigerBeetle's own TIGER_STYLE guide
-five times over, and an untracked-by-design path such as a lap's own scratch pen, a ship's own
-keyring, or a clone's own local settings override -- and want that reasoning folded into the scan
-rather than a rewrite. One was a plain stale spelling: `rye/README.md`'s opening paragraph named its
-own elder
-reference room-relative to itself, missing the `rye-learning-process/` prefix its own line 133
-already carries for the identical file. Repointed to match; living count 65 to 64, ceiling held at
-64 (a prior commit had already spent the fall this repair earns).
-`tools/b/backtick_path_witness.rish` GREEN, 22 legs, `control_failed=0`. The remaining ~62 stay
-Grass's lane -- the teacher-tree and untracked-by-design genres want their reasoning written into
-the scan's own header next, the way `comment_path`'s four genres already are.
+**GRASS -- backtick_path's second reverse-read writes the genre reasoning, and finds one more
+stale citation.** Elder account [shelved
+whole](archive/20260918-073030_itinerary-grass-backtick-path-account.md). Wrote the teacher-tree
+and untracked-by-design genres into `backtick_path_scan.sh`'s own "WHAT IS GATED" header, matching
+`comment_path`'s fuller treatment -- each genre named, with the lane that owns a repointing named
+beside it, and a third genre added (an elder-room citation, naming a room this tree has since
+folded or fused, such as `work-in-progress/` before it fused into this card). Reading the listing by
+hand past those genres turned up one real broken promise: `context/TAME_GUIDANCE.md` cited its own
+sibling `TWO_ROOMS.md` a directory level too high (`../TWO_ROOMS.md`, when both pages sit in
+`context/` together); repointed page-relative. Living count fell 63 (already one under the standing
+64 comment before this lap touched it) to 62; ceiling lowered to match. Writing the fix's own genre
+example into the scan's header first tripped `comment_path`'s ceiling (a `../`-spelled span read as
+a second broken promise, one file over) -- caught by re-running that sibling scan before commit, and
+repaired by describing the fault in prose rather than backticking its broken spelling, the same
+discipline the header already names for itself. `tools/b/backtick_path_witness.rish` GREEN, 22
+legs, `control_failed=0`; `tools/fixtures/c/comment_path_scan.sh` re-checked clean at 66 of 66.
 **YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
 account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
 judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
@@ -240,7 +242,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `fffcefb821` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9ef1e16030` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

@@ -39,11 +39,27 @@
 # Resolution is against the TRACKED tree, never the filesystem, for the reason tracked_link_scan
 # gives: an untracked symlink on one pier answers a question a fresh clone answers differently.
 #
-# WHAT IS GATED. Living pages, as a ratchet under a ceiling that only ever falls. A ratchet rather
-# than a wall because the standing population is large and every hit wants the lane that owns its
-# page: a citation of context/TAME_STYLE.md wants the TAME room, one of work-in-progress/ wants the
-# room breached to crux. A wall here would red on ordinary work, and a wall somebody turns off is
-# worth less than a ceiling that falls.
+# WHAT IS GATED. Living pages, as a ratchet under a ceiling that only ever falls, never a wall. A
+# hand-read of the standing population (Grass's reverse-reading lane, `20260918`) sorts nearly all
+# of it into genres this tree already names elsewhere, each wanting the lane that owns its page
+# rather than a sweep here.
+#   A TEACHER-TREE CITATION is spelled the way a teacher's own repository spells it, not the way
+#   ours does -- TigerBeetle's own docs/ and src/ paths, or a gitlinked submodule (gratitude/ai-jail,
+#   for one) this checkout has never cloned. The span looks like one of our paths and answers for
+#   someone else's tree; repointing it to our own held copy, where one exists, is a question for
+#   the page that cites it (`.claude/rules/gratitude-licenses.md`).
+#   An UNTRACKED-BY-DESIGN PATH names a room this tree denies by its own root `.gitignore` wildcard
+#   and allows back nowhere -- one ship's own scratch, one ship's own keyring, a local settings
+#   override, MIND's byte-pinned state, a build cache, a file a host fills in from its own `.example`
+#   template. The file is real on the ship that wrote the citation and absent from every fresh
+#   clone alike, by the same design (`.claude/rules/read-scope.md`).
+#   An ELDER-ROOM CITATION names a room this tree has since folded or fused -- `work-in-progress/`'s
+#   TASKS and ROADMAP, fused into `construction/ITINERARY.md` on `20260823.103804`
+#   (`.claude/rules/align.md`) -- and wants the page's own next touch rather than a sweep of every
+#   citer at once.
+#   A wall here would red every one of those three genres forever, on citations naming exactly what
+#   they mean to name; a wall somebody turns off is worth less than a ceiling that falls on the
+#   remainder -- the genuinely stale citation, which this reading also finds and repairs on touch.
 #
 # WHAT IS REPORTED, never gated. The same reading across dated testimony -- a page whose own
 # basename carries a one-clock stamp, and every date/, archive/ or yonder/ shelf. Accrete-never-break:
@@ -119,10 +135,14 @@ fi
 # reverse-reading lane, `20260918`): `rye/README.md`'s own elder reference named
 # `archive/ALMANAC.md` room-relative to itself, when the file it means lives at
 # `rye-learning-process/archive/ALMANAC.md` -- the very spelling the SAME PAGE already uses two
-# lines below for the same file. Repointed to match, which returns the count to 64; the ceiling
-# holds there rather than falling further.
+# lines below for the same file. Repointed to match, which returns the count to 64.
+# Lowered to 62 the same lap (Grass's reverse-reading pass, `20260918`, second touch): one page
+# elsewhere in the tree closed on its own between passes, moving the reading 64 to 63 before this
+# scan was touched again; and this pass repointed context/TAME_GUIDANCE.md's own citation of
+# `context/TWO_ROOMS.md`, spelled a directory level too high (both pages sit in `context/`
+# together), to a page-relative spelling, moving 63 to 62.
 # Lower it in the same commit as any sweep.
-ceiling="${BACKTICK_PATH_CEILING:-64}"
+ceiling="${BACKTICK_PATH_CEILING:-62}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
