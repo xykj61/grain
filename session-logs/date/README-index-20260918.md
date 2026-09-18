@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.062400` | [Send confirmed -- both remotes hold ca59c39a6](20260918/20260918-062400_send-confirmed-ca59c39a6.kyri) | One row-ordering conflict resolved, all three new rows kept. |
 | `20260918.062130` | [docs-geode still gated](20260918/20260918-062130_docs-geode-still-gated.kyri) | Re-check: product path still waits on the public seam; no fresh lane work. |
 | `20260918.062102` | [Round closes -- 3e2f91946](20260918/20260918-062102_round-closes-3e2f91946.kyri) | Both remotes confirmed; rota row 1, Air. |
 | `20260918.062015` | [nock_jet_dec.rye asserts, glow/ list clear](20260918/20260918-062015_nock-jet-dec-asserts-list-clear.kyri) | Named zero-assert glow/ list clear but for lower_cast.rye. |
