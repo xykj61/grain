@@ -14,8 +14,12 @@ const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 
 fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    // invariant: every path named for this check is non-empty
+    assert(path.len > 0);
     var big: [1024]u8 = undefined;
     const read = cwd.readFile(io, path, &big) catch return 0;
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(read.len <= big.len);
     return @intCast(read.len);
 }
 
@@ -26,6 +30,8 @@ fn run_check(io: std.Io) !u8 {
         print("hold0-check: RED — missing {s}\n", .{station_path});
         return 1;
     };
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(station.len <= station_buf.len);
     const ping_len = file_len(cwd, io, ping_path);
     const frame_len = file_len(cwd, io, frame_path);
     const s = hold0.status_from_station(station, ping_len > 0, frame_len) orelse {
@@ -37,6 +43,8 @@ fn run_check(io: std.Io) !u8 {
         print("hold0-check: RED — status line overflow\n", .{});
         return 1;
     };
+    // invariant: a formatted line never exceeds the row buffer it was drawn into
+    assert(line.len <= line_buf.len);
     print("hold0-check: {s}\n", .{line});
     print("GREEN: HOLD0 — Desk named its hearth hold.\n", .{});
     return 0;
