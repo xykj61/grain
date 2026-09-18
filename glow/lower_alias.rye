@@ -6,6 +6,7 @@
 //! demo value. Parenthesized sources refuse until a later lap.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const ra = @import("rune_alias.rye");
 const refusal = @import("refusal.rye");
 const zig_ident = @import("zig_ident.rye");
@@ -30,7 +31,12 @@ fn zig_safe_ident(face: []const u8, out: []u8) LowerError!u32 {
     // invariant: the caller's buffer is sized to exactly the ceiling it means to enforce,
     // so the buffer length itself is the honest ceiling to hand the shared rule
     const ceiling: u32 = @intCast(out.len);
-    return zig_ident.safe_ident(face, out, ceiling, "alias-face", .to_underscore, &slot) catch error.BadIdent;
+    const n = zig_ident.safe_ident(face, out, ceiling, "alias-face", .to_underscore, &slot) catch return error.BadIdent;
+    // invariant: `safe_ident` always writes exactly the face it was handed
+    // (zig_ident.rye's own published contract), so the returned count never
+    // claims more of the caller's buffer than the source face occupied
+    assert(n == face.len);
+    return n;
 }
 
 fn is_wing_char(c: u8) bool {
@@ -74,12 +80,18 @@ fn emit_alias_program(
         \\}}
         \\
     , .{ glow_face, glow_source, zig_source, alias_demo_value, zig_face, zig_source, zig_face, expect }) catch return error.Overflow;
+    // invariant: `bufPrint` never returns a slice longer than the buffer it
+    // was handed, so the emitted program never claims more than `out` holds
+    assert(written.len <= out.len);
     return @intCast(written.len);
 }
 
 fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     const trimmed = std.mem.trim(u8, line, " \t\r\n");
     if (trimmed.len == 0) return error.EmptySource;
+    // invariant: a line accepted past the empty-source check names a real
+    // remainder, never an empty one, once execution reaches here
+    assert(trimmed.len > 0);
     const spec = try ra.parse(trimmed);
     const face = ra.face_slice(&spec);
     const source = try source_wing(trimmed, face);
@@ -87,6 +99,10 @@ fn lower_line(line: []const u8, welcome: bool, out: []u8) LowerError!u32 {
     var source_buf: [max_source_len]u8 = undefined;
     const face_n = try zig_safe_ident(face, &face_buf);
     const source_n = try zig_safe_ident(source, &source_buf);
+    // invariant: each lowered identifier never claims more of its fixed
+    // buffer than the length checks inside `zig_safe_ident` already proved fits
+    assert(face_n <= face_buf.len);
+    assert(source_n <= source_buf.len);
     const zig_face = face_buf[0..@as(usize, face_n)];
     const zig_source = source_buf[0..@as(usize, source_n)];
     if (std.mem.eql(u8, zig_face, zig_source)) return error.MalformedSource;
