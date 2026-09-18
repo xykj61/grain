@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.212046` | [Third look: still clean](20260917/20260917-212046_third-look-still-clean.kyri) | Claim board, REDS, agent-doable queue all re-checked, nothing to build. |
+| `20260917.212030` | [TAME lane reads clean this rotation](20260917/20260917-212030_tame-lane-reads-clean-this-rotation.kyri) | Four TAME witnesses GREEN, rotation lane's turn confirmed, no red booked. |
 | `20260917.211803` | [the largest lap this room offered](20260917/20260917-211803_the-largest-lap-this-room-offered.kyri) | max_arm_len three delegate; 93 sites, two ceilings fall. |
 | `20260917.211557` | [No explicit task, status check on the amphora lane](20260917/20260917-211557_no-task-status-check.kyri) | Second look: claim board and REDS OPEN/BOOKED rows checked fleet-wide, nothing agent-doable stands. |
 | `20260917.211302` | [Amphora lane reads clean, nothing unclaimed to build](20260917/20260917-211302_amphora-lane-reads-clean.kyri) | Copal audit: 21 amphora witnesses GREEN, REDS/claim board swept, no unclaimed work in lane. |
