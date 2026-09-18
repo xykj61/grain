@@ -58,6 +58,8 @@ pub const Catalog = struct {
         while (i < self.count) : (i += 1) {
             if (self.chunks[i].kind == kind) n += 1;
         }
+        // invariant: a per-kind count never exceeds the catalog it was drawn from.
+        assert(n <= self.count);
         return n;
     }
 };
@@ -87,6 +89,8 @@ pub fn query_corpus(
     query: CorpusQuery,
     out_indices: []u32,
 ) CorpusError!u32 {
+    // invariant: the catalog handed in never carries more chunks than its own bound.
+    assert(catalog.count <= max_chunks);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < catalog.count) : (i += 1) {
@@ -95,6 +99,8 @@ pub fn query_corpus(
         out_indices[count] = i;
         count += 1;
     }
+    // invariant: every emitted index respects the caller's own buffer bound.
+    assert(count <= out_indices.len);
     return count;
 }
 
@@ -125,6 +131,8 @@ fn field_value(text: []const u8, key: []const u8) ?[]const u8 {
 /// Parse a Bron-shaped corpus catalog (chunk blocks separated by blank lines after keys).
 pub fn parse_catalog(text: []const u8, out: *Catalog) CorpusError!void {
     out.count = 0;
+    // invariant: a freshly reset catalog starts holding no chunks at all.
+    assert(out.count == 0);
     var path: ?[]const u8 = null;
     var kind: ?[]const u8 = null;
     var lines: ?[]const u8 = null;
@@ -143,6 +151,8 @@ pub fn parse_catalog(text: []const u8, out: *Catalog) CorpusError!void {
             chunk.path_len = @intCast(path_v.len);
             cat.chunks[cat.count] = chunk;
             cat.count += 1;
+            // invariant: a flushed catalog never grows past its own bounded capacity.
+            assert(cat.count <= max_chunks);
             p.* = null;
             k.* = null;
             l.* = null;
@@ -176,4 +186,6 @@ pub fn parse_catalog(text: []const u8, out: *Catalog) CorpusError!void {
         return error.BadChunk;
     }
     try flush(out, &path, &kind, &lines);
+    // invariant: the finished catalog never exceeds its own bounded capacity.
+    assert(out.count <= max_chunks);
 }
