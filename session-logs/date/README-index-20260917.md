@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.202514` | [The scatter that had to be shown](20260917/20260917-202514_the-scatter-that-had-to-be-shown.kyri) | Departure falls as 1/sqrt(edges): slope -0.5070 over 7 rungs. |
+| `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board; none fit docs-geode unclaimed. |
 | `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate work, drops it, and holds on %807/%767/%765 |
 | `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue; recommends the lane hold. |
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
