@@ -16,6 +16,7 @@
 | `20260918.075952` | [Empty open, second check -- docs-geode lane still clean](20260918/20260918-075952_empty-open-second.kyri) | No fresh work found this turn; recommended check-in. |
 | `20260918.075938` | [Empty open -- claim board and REDS %825 checked clear](20260918/20260918-075938_empty-open-no-task.kyri) | No task this turn; verified pheromone-nock-jet-dec-asserts already landed and closed. |
 | `20260918.075758` | [Send confirmed -- both remotes hold 64ad7ef06](20260918/20260918-075758_send-confirmed-64ad7ef06.kyri) | Four contested pushes on the setu6-check-asserts log; nib and index rows resolved each time. |
+| `20260918.075752` | [Duplicate census was mostly symlinks](20260918/20260918-075752_import-resolver-closes-duplicate-case.kyri) | 121 of 127 groups (95%) are symlinks, not copies. |
 | `20260918.075702` | [Empty open -- no task landed this turn](20260918/20260918-075702_empty-open.kyri) | No user request this turn; reported readiness, recommended check-in. |
 | `20260918.075333` | [Send confirmed -- both remotes hold 2b1bdf2ee](20260918/20260918-075333_send-confirmed-2b1bdf2ee.kyri) | Two contested rebases on the puddle-convergence log; nib and index rows resolved each time. |
 | `20260918.074805` | [puddle_convergence closes a fourth zero-assert file](20260918/20260918-074805_puddle-convergence-asserts.kyri) | Two named-invariant asserts landed in mycelium/puddle_convergence.rye; ratchet 11 to 10. |

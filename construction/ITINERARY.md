@@ -164,23 +164,16 @@ whole](archive/20260918-072133_itinerary-diffuser-row-alignment-account.md). **Y
 `Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
 the falsifier itself waits on RAPL or `perf` access.
 
-**DIFFUSER -- THE DUPLICATE-CONTENT CENSUS OVERSTATES ITS OWN COMPUTE-AVOIDANCE CASE.** A fifth
-first-principles check, aimed at Mantra's name-to-bytes promise read as a compilation guarantee
-rather than only a storage one. This tree's own tracked files were hashed (19,082 files, 175
-duplicate-content groups, 1,272,252 duplicate bytes beyond one copy per group) as a proxy for
-compute a content-addressed build could avoid recompiling. The falsifier ran on the largest single
-pair, `image/text_paint.rye` and `pond/apps/text_paint.rye` (69,971 bytes, byte-identical,
-confirmed by inspection as the "hand-filed symlink" pattern `.claude/rules/stamp-and-name.md`
-already names) -- and it fired: the `image/` copy is imported live by five sibling modules, the
-`pond/` copy by zero. The largest duplicate this census surfaced turned out to be inert, not
-doubly-compiled, so raw duplicate bytes overstate the opportunity; the number that would matter is
-duplicate bytes reached by a LIVE `@import` on both sides, which needs an exact-path import
-resolver rather than a basename grep and was not built this lap. Paper, with the gap named as the
-buildable next step and a second open question (whether Zig's own already-seated cache,
-`tools/p/parity_zig_cache_seat.sh`, already dedupes across separate top-level compilations) left
-unresolved: [here](../active-designing/date/20260918/20260918-072000_the-duplicate-content-census-overstates-its-own-case.md).
-**YOURS, ANY SHIP:** the exact-path `@import` resolver, scoped to the 175 duplicate-content groups
-this pass already has on hand, is agent-doable and needs no new measurement.
+**DIFFUSER -- THE DUPLICATE-CONTENT CENSUS WAS MOSTLY COUNTING SYMLINKS.** [Shelved
+whole](archive/20260918-075535_itinerary-diffuser-duplicate-content-account.md): the resolver named
+by the prior lap's paper
+([`tools/fixtures/d/duplicate_import_liveness_scan.sh`](../tools/fixtures/d/duplicate_import_liveness_scan.sh))
+found `sha256sum` follows symlinks, so 121 of 127 duplicate-`.rye` digest groups (95%) are one real
+file reached through a tracked git symlink (mode `120000`), not a hand-filed copy -- the genuine
+hand-filed-copy remainder is 6 digests, 1,480 bytes. Mantra's name-to-bytes binding stays a storage
+guarantee; the tree had already mostly solved the compute question with symlinks before this
+thread opened. **YOURS, ANY SHIP:** whether Zig's own build cache treats a symlinked `@import` as
+the same compilation unit as its target stays open.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
