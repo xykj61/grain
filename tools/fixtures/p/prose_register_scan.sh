@@ -494,7 +494,17 @@ done < "$work/teaching.txt"
 # already writes -- `rather than` for a bare `not`, `Write every new session log as .kyri` for `Do
 # not create new .md session logs`, `each keeping its own subject` for `neither absorbs the other`.
 # Both read 28% and 27% now, and both Cursor twins carry the same sentences.
-law_ceiling=6
+#
+# IT ROSE 6 -> 7 ON `20260917` WHEN `.claude/rules/the-baton.md` GREW SAME-DAY (REDS %819), and the
+# cheapest repair by `--explain` -- `.claude/rules/derived-spine.md` at 31% of 26 sentences, two
+# restatements, every claim and stamp held -- brought it back to 6.
+#
+# IT FELL 6 -> 5 THE SAME DAY, on the cheapest page left in the room:
+# `.claude/rules/session-log-provenance.md` at 35% of 37 sentences, two restatements --
+# `Keep ... as configuration, apart from an active-runtime claim` for a bare `Never promote`, and
+# `Write status before the send begins, so it is already recorded by the time the send runs` for
+# `never after` -- and every claim, figure, and stamp held. The page reads 29% now.
+law_ceiling=5
 law_documents=0
 law_readable=0
 law_over=0

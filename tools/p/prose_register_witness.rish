@@ -146,7 +146,7 @@ assert scan.ok else "prose-register: a door document reads more negatively than 
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
 assert scan.out contains "door_setting_undeclared=0" else "prose-register: a rostered door must name its Door setting at its own door -- the roster is a promise the page itself makes"
-assert scan.out contains "law_ceiling=6" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
+assert scan.out contains "law_ceiling=5" else "prose-register: the law tier ceiling only ever falls -- lower it in the commit that sweeps a rule page"
 assert scan.out contains "teaching_ceiling=1" else "prose-register: the teaching tier ceiling only ever falls -- lower it in the commit that sweeps a teaching page, and read the scan's own comment for why one rather than zero"
 say "field GREEN -- the front door reads the way the style says it does, and the law room now reads its own number"
 
