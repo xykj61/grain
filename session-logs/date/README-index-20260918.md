@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.012411` | [Pheromone status check -- duplication arc verified closed](20260918/20260918-012411_status-check-no-open-lane-work.kyri) | Re-ran glow_ident_duplication and width_check on metal: ceiling=0 and 1123/1123, matching the card; no live claim, no lane task open. |
 | `20260918.012112` | [Send confirmed -- both remotes hold 32adb4d02](20260918/20260918-012112_send-confirmed-32adb4d02.kyri) | One rebase conflict resolved keeping both rows; generated pages checked, unchanged. |
 | `20260918.011701` | [Air lap pulled the ceiling strand](20260918/20260918-011701_air-lap-pulled-the-ceiling-strand.kyri) | Pulled xy/main, ceiling re-verified zero on metal; rota row 1 (Air) read whole; queue still idle. |
 | `20260918.011612` | [Send confirmed -- both remotes hold e3ab9b953](20260918/20260918-011612_send-confirmed-e3ab9b953.kyri) | Two more rebases; one table conflict kept both rows; generated pages checked, unchanged. |
