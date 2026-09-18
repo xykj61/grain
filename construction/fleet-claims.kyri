@@ -54,12 +54,6 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim grass-rune-mutate-asserts
-seat grass
-stamp 20260918.052932
-epoch 1789723772
-paths glow/rune_mutate.rye
-what add bare asserts to rune_mutate.rye, same shape as rune_list/rune_conditional
 claim pheromone-lower-alias-asserts
 seat pheromone
 stamp 20260918.055914
