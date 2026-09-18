@@ -134,18 +134,22 @@ whole](archive/20260918-092900_itinerary-grass-pin-agreement-account.md).
 **GRASS -- `linengrow/setu_desk_hold0_check.rye` account.** [Shelved
 whole](archive/20260918-093822_itinerary-grass-hold0-account.md).
 
-**GRASS -- `linengrow/setu_desk_hold1_check.rye` NAMES THE SAME READ-BOUND INVARIANTS.** Same shape
-as the hold0 repair one row above: `file_len` and `run_check` each read into a fixed buffer --
-`[1024]u8`, `[1024]u8`, `[hold1.chrome_line_max]u8` (x2) -- and nothing stated that the read or
-either formatted line actually stays inside the buffer it was drawn from. `file_len` now asserts its
-path is non-empty and its read length never exceeds the 1024-byte buffer; `run_check` asserts the
-station read stays inside `station_buf`, and the two formatted lines (`chrome`, `detail`) each stay
-inside their own buffers. `tools/s/setu_desk_hold1_witness.rish` GREEN unchanged (device-free
-fixture leg, no station cache); `width-check` clean; `tame_style_check`'s zero-assert ratchet falls
-3 to 2, dropping this file off the remaining list. No claim opened: an ordinary repair to one
-existing tracked file, named by no ledger row. **YOURS:** the ratchet now names 2 files, both under
-`linengrow/` -- `setu65_lab_tx_check.rye`, `setu_desk_hold_wayland_check.rye`; the next agent-doable
-pick is either one, claim-board checked first.
+**GRASS -- hold1 repair, and the zero-assert ratchet's close.** [Shelved
+whole](archive/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md).
+
+**GRASS -- THE CAMELCASE RATCHET'S OWN REPAIR MISSED A SIBLING, FOUND ON REVERSE-READ.** The
+`20260918.102405` camelCase repair renamed `encodedFact`/`factCount` in
+`tally/receipt_offer_bounds.rye` and closed the ratchet 2 to 0 -- yet `tame_style_check` read **1**
+again on this lap's own re-run, since the same file's `productDigest` was never named that round.
+`pub fn productDigest(value: []const u8) BoundError!void` is now `pub fn product_digest(...)`; a
+whole-tree grep found zero call sites for either spelling, so no caller needed a matching edit.
+`tools/t/tally_receipt_offer_bounds_witness.rish` GREEN unchanged (`clean_green=yes`, `control_legs=7`,
+`control_failed=0`); `width-check` clean (`corpus_files_ceiling=282` unmoved);
+`tame_style_check`'s camelCase ratchet reads **0** again. No claim opened: an ordinary repair to one
+existing tracked file (with its `mantra/src/` symlink), named by no ledger row. **YOURS:** the
+ratchet roster stands at `@memcpy` migration (135), `parseInt(` migration (54), `Ed25519` migration
+(1), and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the
+next agent-doable pick is any one, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -261,7 +265,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `0fae7d1d8b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a6261ae2fc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
