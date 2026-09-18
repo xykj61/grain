@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.084554` | [ember_core.rye closes the zero-assert ratchet, then a push divergence gets untangled](20260918/20260918-084554_ember-core-asserts-and-a-push-divergence.kyri) | Six named asserts land; a bad regex conflict-resolve is caught and repaired before commit. |
 | `20260918.084500` | [Send confirmed -- both remotes hold d995e0f3a](20260918/20260918-084500_send-confirmed-d995e0f3a.kyri) | A genuine two-remote fork found mid-send, resolved by merge rather than rebase. |
 | `20260918.083832` | [docs-geode queue still empty, register/doorway green](20260918/20260918-083832_docs-geode-queue-still-empty.kyri) | Re-ran crushed-index, doorway, register guards fresh; all green, no claim to open. |
 | `20260918.083708` | [Send confirmed -- both remotes hold 38dc3ac9a](20260918/20260918-083708_send-confirmed-38dc3ac9a.kyri) | Two rebases on a busy pier; nib re-read fresh each time. |
