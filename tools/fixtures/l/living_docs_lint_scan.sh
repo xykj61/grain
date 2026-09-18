@@ -146,11 +146,16 @@ else
 fi
 
 # --- duty 3 ---
+# MAP.md joined the source set 20260917 (REDS %823, BOOKED): read-scope.md names it the walk
+# that replaces the root ls, and it links 73 paths this duty never credited as inbound --
+# linengrow/, kumara/, session-logs/ and fourteen more read orphan though the tree's own front
+# door already reaches them.
 : >"$TMP/hits"
 {
   cat "$ROSTER"
   [ -f docs/README.md ] && echo docs/README.md
   [ -f ORGANIZING.md ] && echo ORGANIZING.md
+  [ -f MAP.md ] && echo MAP.md
 } | sort -u >"$TMP/sources"
 while IFS= read -r src; do
   [ -n "$src" ] && [ -f "$src" ] || continue
