@@ -1,0 +1,43 @@
+# tools/p/pending_decision_witness.rish -- "what is waiting on me" gets one reading, not four.
+#
+# WHY THIS RUNG. active-designing/20260918-000154_three-numbers-and-a-name.md measured a decision
+# parked in four places at once -- a forward-looking sentence naming Keaton's word, a sentence
+# already recording a word granted, a `YOURS:` line on a living pin, and an `Open doors for
+# Keaton` section -- and found nothing read them together. It proposed a scan rather than a new
+# filing room, "reported and gated on nothing, since a pending decision is a state rather than a
+# fault." This rung is that proposal, built.
+#
+# WHAT IS PROVEN, on a throwaway tree: a forward-looking sentence is told from an already-granted
+# one by its verb, a `YOURS:` line and an `Open doors for Keaton` section are each counted, a
+# dated shelf's own testimony is read past even when it carries the same words a living page would
+# park with, a page naming neither reads free, and the scan always reports rather than gates.
+#
+# WHAT THIS RUNG STOPS AT. Every open sentence, gathered and named; whether one still matters, and
+# whose lane it sits in, stays a question for the reader.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/p/pending_decision_witness.rish
+
+say "pending-decision: Language EN -- what is waiting on me, read once instead of guessed at four times."
+say "pending-decision: Style Radiant -- the sentence itself is the record; the scan only gathers it."
+say "pending-decision: Lens TAME -- report rather than gate, since an open decision is a state, not a fault."
+
+let scan = run ["sh" "tools/fixtures/p/pending_decision_scan.sh"]
+say scan.out
+assert scan.ok else "pending-decision: the scan must complete on the living tree"
+assert scan.out contains "verdict=reported" else "pending-decision: the scan always reports; it stays clear of gating"
+
+let control = run ["sh" "tools/fixtures/p/pending_decision_control.sh"]
+say control.out
+assert control.ok else "pending-decision: the control must complete"
+assert control.out contains "parked_bites=yes" else "pending-decision: a forward-looking sentence naming Keaton's word must be counted parked"
+assert control.out contains "granted_bites=yes" else "pending-decision: an already-seated sentence belongs in granted rather than parked"
+assert control.out contains "yours_bites=yes" else "pending-decision: a YOURS: line must be counted"
+assert control.out contains "doors_bites=yes" else "pending-decision: every bullet under Open doors for Keaton must be counted"
+assert control.out contains "dated_shelf_free=yes" else "pending-decision: a dated shelf's own testimony must read past, even carrying the same words"
+assert control.out contains "clean_case_free=yes" else "pending-decision: a plain page, carrying neither marker, still reads free"
+assert control.out contains "reports_never_gates=yes" else "pending-decision: the scan must report rather than gate"
+assert control.out contains "control_verdict=ok" else "pending-decision: the control must agree with itself"
+say "four places, one reading -- parked told from granted, YOURS: and Open doors each counted, testimony read past"
+
+say "GREEN: pending-decision -- what is waiting on me now has one answer instead of four partial ones."
