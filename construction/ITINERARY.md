@@ -167,14 +167,22 @@ at its ceiling; Diffuser landed the last site.
 
 **DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
-**DIFFUSER -- THE BITMASK RING CHECKED, THE THREAD'S OWN FALSIFIER CLOSES NEGATIVE.** The prior
-account's named blind spot -- a power-of-two bitmask ring, `& (N - 1)` -- checked against every
-tracked `.rye` source; only two hits, both published crypto field-modulus reduction, not a ring or
-topology. Nine accounts in, no torus stands as a real module. Paper
-[here](../active-designing/date/20260918/20260918-050444_bitmask-ring-checked-no-torus-closes-the-falsifier.md).
-**MINE:** a branch-cursor ring (`if i==N-1 then 0 else i+1`) is not caught by any pattern run so far.
-**YOURS:** the cold run's 21 reds of 355 guards stays open, unanswered this lap for the same reason
-as last time.
+**DIFFUSER -- THE BRANCH-CURSOR RING CHECKED, THE THIRD IDIOM ALSO NEGATIVE, THREAD CLOSES.**
+[Shelved whole](archive/20260918-052643_itinerary-diffuser-bitmask-and-opening1-shelved.md) for the
+elder bitmask-ring and Opening-1 accounts. The prior account's own named blind spot -- a ring
+cursor written as a branch, `if (i == N-1) i = 0 else i += 1`, rather than a modulus or a mask --
+now checked against every tracked `.rye` source: a loose pass returned 93 files on the bare
+compare-to-length-minus-one shape, and narrowing to names a real ring cursor carries (`idx`,
+`cursor`, `pos`, `head`, `tail`, `next`, `ring`) cut that to four, all four ordinary postcondition
+asserts, none a wraparound reset. Ten accounts in, all three known wraparound idioms checked
+(modulus, bitmask, branch-reset), no torus stands as a real module anywhere in this tree. Paper
+[here](../active-designing/date/20260918/20260918-052643_branch-cursor-ring-checked-third-idiom-also-negative.md);
+register 70% (13 sentences), reach grade 18 against 11, QA composite B+ (86, `--service 75`).
+**MINE:** the survey line closes here; the next honest move is a first-principles design proposal
+for Caravan/Aurora rather than an eleventh search -- that proposal is the next lap's work.
+**YOURS, BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3.
+**YOURS, ANY SHIP:** the cold run's 21 reds of 355 guards stays open, unanswered across several
+laps now for the same reason each time.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -231,7 +239,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `56a9c6a291` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `234b4e9e7a` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -316,21 +324,9 @@ whole](archive/20260918-043752_itinerary-diffuser-declustering-caravan-account.m
 whether the day Comlink or the settlement ledger moves from one owning process to a real quorum is
 the moment to revisit declustering, or whether it stays filed for that day.
 
-**DIFFUSER -- OPENING 1 CLOSED: A CLOSED FORM BEATS THE SEARCH IT PROPOSED, 52 AGAINST 33.** Round
-two's own Opening 1 asked whether a search over offset sets beats `ring4wide`'s measured 33; a
-closed form answers instead: run-kill length is `C - max_gap + 1`, so maximizing it is minimizing
-the largest gap between `k` offsets around a ring of `C` cells, and the smallest a largest gap can
-go is `ceil(C/k)` -- reached by spacing the offsets evenly. At the tree's own `C=64, k=5`, that
-gives **52**, checked by exhaustive brute force over all `C(63,4)=595,665` offset choices, plus
-agreement with the closed form at three more `(C, k)` pairs with no exception found. Paper
-[Evenly spaced offsets close Opening
-One](../active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md); register
-96%, reach grade 15 against 11, QA composite B (84, `--service 80`).
-**MINE:** the search Opening 1 proposed was unneeded -- the optimum is arithmetic, not found by
-trial.
-**YOURS, BAKERY, AND IT IS SMALL:** add a fourth rule, `evenspread`, to
-`tools/fixtures/t/torus_place_scan.sh`'s reading 3, with its closed form
-`C - ceil(C/k) + 1` asserted beside the two the scan already carries.
+**DIFFUSER -- OPENING 1 CLOSED: A CLOSED FORM BEATS THE SEARCH IT PROPOSED, 52 AGAINST 33.**
+[Shelved whole](archive/20260918-052643_itinerary-diffuser-bitmask-and-opening1-shelved.md) beside
+the bitmask-ring account above.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
