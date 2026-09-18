@@ -54,3 +54,9 @@ format fleet-claims-v1
 # declaration may never be.
 
 
+claim grass-rune-cell-asserts
+seat grass
+stamp 20260918.043357
+epoch 1789720437
+paths glow/rune_cell.rye
+what add contract asserts and invariant comments to glow/rune_cell.rye, TAME zero-assert cleanup
