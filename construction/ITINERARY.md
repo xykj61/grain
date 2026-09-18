@@ -132,26 +132,9 @@ Witness GREEN, 55 legs, `control_failed=0`.
 **YOURS:** `the-baton.md` at 47% of 187 sentences, the last page over the ceiling; the coordination
 law's exemption question from %819; and the fleet's 271-tool `head -N` judgment (`%804`).
 
-**BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** `door_home_scan.sh`'s `resolve()`
-called `readlink -f`, the GNU-only resolve flag `shell_dialect` gates, and its own control copies
-the scan out to a pen for two of its legs (mutation legs 7-8) -- so sourcing `shell_portable.sh`'s
-`resolve_path` by a walk from `$0`, the pattern `one_clock_zone_scan.sh` already uses, finds no
-tree from a pen copy and breaks those two legs. `aurora_placement_scan.sh` met the same wall for
-`%762` and inlined the bounded walk instead; `door_home_scan.sh`'s `resolve()` takes the same cure,
-the 40-hop bound `resolve_path` itself uses. Same 117-door reading before and after.
-**PROVEN:** `door_home_control.sh` 43 legs, `control_failed=0`; `door_home_witness.rish` GREEN.
-`shell_dialect` falls **9 to 8** against the ceiling of 7. **DIFFUSER LANDED THE LAST SITE**
-(`20260917.213001`): `aurora_file_placement_scan.sh:183`'s `readlink -f` is inlined the same way
-`door_home_scan.sh`'s is, rather than sourced -- this scan's own control runs it inside a throwaway
-pen carrying no `tools/fixtures/`, so `. "$ROOT/tools/fixtures/s/shell_portable.sh"` found nothing
-there and broke 59 of its own control's legs before the inline walk replaced it. `shell_dialect`
-falls **8 to 7**, at the ceiling and no longer over it. **The fix unmasked a second, unrelated
-staleness**: `shell_dialect_witness.rish` pinned `shell_portable_control.sh` at `pass=53`, and the
-control had grown to 71 across three later landed commits while the ceiling breach stopped the
-witness before that assertion ever ran. Read back and repinned to `pass=71` in the same commit.
-Both witnesses GREEN on metal; `aurora_file_placement`'s own two pre-existing, unrelated reading-5
-failures (`tree_size_scales_inverse_sqrt`, `tree_size_crossing_measured`) are unchanged before and
-after, confirmed by running the control against the unmodified file.
+**BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
+[shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
+at its ceiling; Diffuser landed the last site.
 
 **DIFFUSER -- ROW 3'S SECOND READING: THE FIELD THAT PROVES SAFETY BREAKS THE CYCLE.**
 `tools/rye/cyclic_state.rye`, GREEN under `tools/c/cyclic_state_witness.rish`, rostered as guard
@@ -165,18 +148,22 @@ cycle`](../active-designing/20260917-214608_the-field-that-proves-safety-breaks-
 Beside the elder `cyclic_witness` (git-porcelain residue across the rostered fleet), row 3 now
 carries two lenses at two grains rather than one; neither replaces the other.
 
-**BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** The row named the sweep
-as one word in 77 files spread across every lane, timing left to Keaton or the fleet. Ten of those
-77 sit in Bakery's own toolchain (`rye_*`, `caravan_*`, one Mantra/Tablecloth control) --
-`rishi/bin` to `rishi/src` in each root-finder's directory test, plus the matching change in every
-paired control's own pen builder, since a control that still plants `rishi/bin` fails the scan it
-exists to prove. `rye_harness_roster_witness.rish` and `rye_compile_reach_witness.rish` both read
-`control_failures=0` before this touch and reddened after the scan changed until their own controls
-followed -- caught by running the pair rather than the scan alone. **PROVEN:** all ten scans/controls
-GREEN on metal, `caravan_allowance_widen_control.sh` and `caravan_address_space_join_control.sh`
-run with real args, `rye_witness_walker_control.sh` 79 behaviors. `%788`'s count falls **77 to 67**;
-the remainder stands in other ships' lanes, untouched, per the card's own rule that module work
-returns to its owning ship.
+**BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
+[shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
+`rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.
+
+**BAKERY -- A ROW READ OPEN AFTER ITS OWN FIX HAD ALREADY LANDED.** The agent-doable queue named no
+Bakery-lane work; the fleet's own OPEN rows did. `%742` asked `tools/fixtures/l/link_text_promise_scan.sh`
+to reach `shell_portable.sh` by a depth-proof root walk rather than a fixed `../s` hop, and its
+sibling control to build a pen carrying both `rishi/bin` and `tools/fixtures`. Both stood in the
+tree already -- landed beside an unrelated commit's own stated purpose, so nothing pointed a reader
+back to the row that asked for them. **PROVEN:** `tools/l/link_text_promise_witness.rish` and
+`tools/f/fixture_depth_witness.rish` both GREEN on metal, the second naming zero elder depth
+arithmetic and zero elder sibling sources across the room. `%742` folded
+[whole](archive/REDS-a-repair-already-standing-rows-742.md), **CLOSED**; `reds_fold_witness.rish`,
+`reds_pin_capacity_scan.sh` (`verdict=ok`), and the ledger monotone and status-consistency witnesses
+all GREEN after.
+**YOURS:** none opened this lap.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -223,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `63884dc673` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6c27740643` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
