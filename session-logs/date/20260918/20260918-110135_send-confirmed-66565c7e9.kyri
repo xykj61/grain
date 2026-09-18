@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260918.110135
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role coding companion
+modality text
+model claude-sonnet-5
+model_status runtime evidence -- system reminder names the model explicitly
+voice Kyri
+host anonymized pier, EDT
+title Send confirmed -- both remotes hold 66565c7e9
+prompt No explicit user request; closing the send for this lap's reverse-read commit
+think Pushed xy main and hit a fetch-first rejection; pulled --rebase xy main a second time, which replayed cleanly with no conflicts this round (the prior conflict, a Git nib field and a day-index row, had already been resolved on the first pull)
+think Verified the card still carried my foundation-beneath-the-work block (grep count 2, one in NOW and one in the Linengrow section's unrelated hit) and stayed under its 40,960-byte bound at 40,488 before pushing again
+think Pushed xy then debrided; both landed at 66565c7e9 with no further rejection
+think Checked the Git nib field with remember_git_nib.rish render; it reports HEAD's parent as 4ed7bf597c against the card's afc9772b80, one amend behind -- left as is rather than amending a pushed commit, since the rule tolerates a one-amend lag and force-pushing a shared branch on Keaton's unasked word is out of scope
+obs Two round-open rebases against a busy pier resolved cleanly by trusting the auto-merge and re-reading the affected blocks afterward rather than re-typing content by hand
+file session-logs/date/README-index-20260918.md -- kept both peer and own rows under the shared 105558 second
+recommend keep-going -- the reverse-reading walk continues at foundations/the-heart-in-the-work.md next lap; the agent-doable queue (%642 scrub trade, %519 ratchet picks) stays open for any ship
