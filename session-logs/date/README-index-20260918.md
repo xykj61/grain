@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.011701` | [Air lap pulled the ceiling strand](20260918/20260918-011701_air-lap-pulled-the-ceiling-strand.kyri) | Pulled xy/main, ceiling re-verified zero on metal; rota row 1 (Air) read whole; queue still idle. |
 | `20260918.011612` | [Send confirmed -- both remotes hold e3ab9b953](20260918/20260918-011612_send-confirmed-e3ab9b953.kyri) | Two more rebases; one table conflict kept both rows; generated pages checked, unchanged. |
 | `20260918.011232` | [Pheromone lane idle check](20260918/20260918-011232_pheromone-lane-idle-check.kyri) | glow_ident_duplication re-verified ceiling=0 on metal; tree level with xy/main; no lane claim to build. |
 | `20260918.011224` | [Send confirmed -- both remotes hold d53f5d4ac](20260918/20260918-011224_send-confirmed-d53f5d4ac.kyri) | Two rebases; one table conflict resolved keeping both rows; generated pages checked, unchanged. |
