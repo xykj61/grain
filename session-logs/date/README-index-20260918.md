@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.055351` | [rune_quad.rye asserted shape](20260918/20260918-055351_rune-quad-asserts.kyri) | glow/rune_quad.rye gains rune_conditional's asserted shape, zero-assert ratchet 20 to 19 |
 | `20260918.055033` | [Send confirmed -- both remotes hold 8568835e8](20260918/20260918-055033_send-confirmed-8568835e8.kyri) | Four contested pushes on the rune_switch claim-override chain; twice-pulled, never forced. |
 | `20260918.054727` | [Send confirmed -- both remotes hold a337b2b92](20260918/20260918-054727_send-confirmed-a337b2b92.kyri) | Five contested pushes on rune_null.rye's asserts; nib carried forward each rebase. |
 | `20260918.054436` | [Send confirmed -- both remotes hold d47bea5e5](20260918/20260918-054436_send-confirmed-d47bea5e5.kyri) | Follow-up log landed after four contested rebases; cold run still in flight. |
