@@ -1,0 +1,66 @@
+# tools/p/process_fanout_witness.rish -- what the proving harness spends on starting programs.
+#
+#   rishi/bin/rishi run tools/p/process_fanout_witness.rish
+#
+# WHY THIS RUNG. The cold endurance run is this fleet's most repeated expensive reading: the baton
+# asks every lap for one, twice, and eight ships sail. Read from the run card at `20260917.163151`
+# it stood at 4,303 wall seconds over 355 lap-tier guards against 4,197 seconds of CPU -- a ratio of
+# 0.975, so it computes for essentially every second and waits on nothing.
+#
+# That ratio says the cost is arithmetic and stops there. Nothing in this tree said WHAT arithmetic.
+# The ASCII of a document is metered, the register of prose is metered, a commit body's mechanism
+# words are metered, an exec bit is metered -- and the harness running every one of those held no
+# reading of itself. This is that reading's first census.
+#
+# IT REPORTS AND GATES NOTHING, on purpose. A ceiling over a population nobody has measured is a
+# number invented rather than read, and this tree has already written down what such a gate becomes:
+# one somebody turns off. What is asserted here is that the INSTRUMENT is sound -- its control's
+# legs, its refusals, its calibration -- rather than any figure the population happens to carry.
+#
+# Tier cadence: a traced guard runs many times slower than an untraced one, so this belongs on the
+# slow clock beside the other expensive choirs.
+
+say "process-fanout: the control, on planted spawn counts in a throwaway pen..."
+let control = run ["sh" "tools/fixtures/p/process_fanout_control.sh"]
+assert control.ok else "process-fanout: the control could not run\n${control.err_brief}"
+say control.out
+
+assert control.out contains "control_verdict=ok" else "process-fanout: a control leg failed\n${control.out_brief}"
+assert control.out contains "control_failed=0" else "process-fanout: the control's own tally names a failing leg\n${control.out_brief}"
+assert control.out contains "control_legs=16" else "process-fanout: the control's leg count moved -- read it and assert the new number, so a leg written tomorrow is heard the day it lands\n${control.out_brief}"
+
+say "process-fanout: the count is the planted count, AND it moves with the plant..."
+# invariant: leg 2 alone is satisfied by any constant inside its band -- a mutation returning a
+# hardcoded 55 passes it -- so leg 3 is what makes the pair a measurement rather than a range check.
+# Both are named here because the weaker one would otherwise look sufficient.
+assert control.out contains "count_is_planted_count=yes" else "process-fanout: the execve count must equal the count the pen planted\n${control.out_brief}"
+assert control.out contains "count_tracks_the_plant=yes" else "process-fanout: doubling the plant must move the reading -- a constant passes the band check and fails here\n${control.out_brief}"
+
+say "process-fanout: the share divides by the card's own wall seconds..."
+assert control.out contains "share_divides_by_wall=yes" else "process-fanout: the same plant over twice the wall must read half the share\n${control.out_brief}"
+assert control.out contains "card_stamp_reported=yes" else "process-fanout: a row's stamp travels with it, so an elder reading is legible as one\n${control.out_brief}"
+
+say "process-fanout: and it refuses rather than defaulting..."
+# invariant: every refusal is planted and then LIFTED in the control, since a refusal proven only in
+# the failing direction cannot be told from an instrument that refuses everything.
+assert control.out contains "absent_card_refuses=yes" else "process-fanout: an absent run card must refuse -- wall seconds would otherwise have no source\n${control.out_brief}"
+assert control.out contains "restored_card_reads=yes" else "process-fanout: and the same pen must read once its card returns\n${control.out_brief}"
+assert control.out contains "absent_roster_refuses=yes" else "process-fanout: an absent roster must refuse\n${control.out_brief}"
+assert control.out contains "unknown_argument_refuses=yes" else "process-fanout: an unknown argument must be spoken rather than ignored\n${control.out_brief}"
+assert control.out contains "bad_sample_refuses=yes" else "process-fanout: a non-numeric sample must refuse\n${control.out_brief}"
+assert control.out contains "scanless_guard_excluded=yes" else "process-fanout: a guard with no scan sits OUTSIDE the population -- a zero would read as a guard that spawns nothing\n${control.out_brief}"
+assert control.out contains "oversized_sample_clamped=yes" else "process-fanout: a sample past the ceiling is clamped rather than obeyed\n${control.out_brief}"
+assert control.out contains "cadence_outside_lap_population=yes" else "process-fanout: the reading is about what an ORDINARY lap pays, so the cadence choir stands outside it\n${control.out_brief}"
+
+say "process-fanout: the calibration is measured on THIS host rather than carried..."
+# invariant: startup cost is a property of a machine -- its loader, libraries, locale and disk. A
+# figure measured on one pier and baked in silently describes the wrong host the first time a ship
+# sails elsewhere, so every run times the tools on the machine it is running on and prints them.
+let calib = run ["sh" "tools/fixtures/p/process_fanout_scan.sh" "--calibrate-only"]
+assert calib.ok else "process-fanout: the calibration could not run\n${calib.err_brief}"
+say calib.out
+assert calib.out contains "verdict=calibrated" else "process-fanout: the calibration must answer for itself\n${calib.out_brief}"
+assert calib.out contains "calib_fork_us=" else "process-fanout: the bare-fork floor must be named, since it is what separates arrival from work\n${calib.out_brief}"
+assert calib.out contains "calib_blend_us=" else "process-fanout: the blend a share is derived from must be printed, never implied\n${calib.out_brief}"
+
+say "GREEN: process-fanout -- the harness's own process fan-out is readable, calibrated on the host it runs on, proven on planted counts in a pen, and gated on nothing: sixteen legs, two mutations bitten, every refusal shown from both sides."
