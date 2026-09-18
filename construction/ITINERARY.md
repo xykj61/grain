@@ -114,25 +114,23 @@ not lost`), every claim, figure, and stamp held. The page reads 29% now; `law_ce
 `tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
 Witness GREEN, 55 legs, `control_failed=0`.
 
-**GRASS -- `glow/nock/nock_jet_dec.rye` GAINED THREE ASSERTS, LAST OF THE NAMED ZERO-ASSERT
-`glow/` LIST.** Elder account [shelved
-whole](archive/20260918-061917_itinerary-grass-rune-mutate-shed.md). This lap: `fast_dec`'s
-result-below-input postcondition, and `eval_with_dec_jet`'s bare-atom-subject precondition and
-never-a-cell-output postcondition on its own fast-path result -- three bare `assert()` calls,
-`assert` already imported. Witness GREEN unchanged (`nock_jet_dec_witness`); `tame_style_check`
-confirms the file carries no zero-assert entry; `width-check` clean. **Correction (`20260918.063114`,
-REDS %825):** the sentence above naming a claim `grass-nock-jet-dec-asserts` was wrong -- the live
-board's only entry for this file is `pheromone-nock-jet-dec-asserts / seat pheromone`, pulled in
-here by round-open and never closeable from this seat (`fleet_claim.sh --close` answers
-`verdict=not_yours`, correctly). **PHEROMONE:** the file is already asserted and GREEN; close your
-claim rather than rebuilding it.
+**GRASS -- `comlink/turn_route.rye` GAINS FIVE ASSERTS ACROSS ITS THREE FUNCTIONS.** Elder account
+[shelved whole](archive/20260918-064716_itinerary-grass-nock-jet-dec-shed.md). This lap:
+`turn_newer` gained an antisymmetry postcondition (strict newness never holds in both directions
+at once, split from a compound assert per `tame_style_check`'s ban); `freshest` gained a
+returned-pointer-is-one-of-the-two postcondition; `read_turn` gained a never-accepted-on-refusal
+postcondition and a key-never-rolls-back postcondition on its stale-kept branch. Five bare
+`assert()` calls total; `assert` already imported. Witness GREEN unchanged
+(`comlink_turn_route_witness`); `tame_style_check` confirms the file carries no zero-assert entry,
+ratchet fell 15 to 14 (pheromone's `bolt_apply_step.rye` lap took it 16 to 15 first this same
+round); `width-check` clean. Claim `grass-turn-route-asserts` opened, pushed, and closed per the
+ABSENCE clause.
 **YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
 account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
 judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
-of its ten threads carry forward (reverse-reading account). The named `glow/` zero-assert list is
-now clear except `glow/lower_cast.rye`, which stands live under incense's claim
-`incense-lower-cast-asserts`, left alone; the wider `tame_style_check` ratchet still names 16 other
-files past that one list, each its own honest scope.
+of its ten threads carry forward (reverse-reading account). The wider `tame_style_check` zero-assert
+ratchet now names 14 files past `glow/lower_cast.rye` (incense's claim); the next agent-doable pick
+is any of the 14, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -225,7 +223,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6554a0b7bd` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a08e339e48` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

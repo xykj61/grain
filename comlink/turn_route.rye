@@ -43,15 +43,23 @@ pub const RouteDecision = struct {
 /// True when `a` is strictly newer than `b` -- a later reset era, or the same era
 /// with a higher key counter. Counters never descend, so newer means larger.
 pub fn turn_newer(a: *const tilak.Turn, b: *const tilak.Turn) bool {
-    if (a.reset_counter != b.reset_counter) return a.reset_counter > b.reset_counter;
-    return a.key_counter > b.key_counter;
+    const result = if (a.reset_counter != b.reset_counter) a.reset_counter > b.reset_counter else a.key_counter > b.key_counter;
+    // invariant: strict newness never holds in both directions -- a cannot be
+    // newer than b while b is also newer than a.
+    const reversed = if (b.reset_counter != a.reset_counter) b.reset_counter > a.reset_counter else b.key_counter > a.key_counter;
+    const both_newer = result and reversed;
+    assert(!both_newer);
+    return result;
 }
 
 /// The freshest of two turns -- `a` on a tie, so a known turn is never displaced
 /// by an equal one. The freshness rule is total: (reset_counter, key_counter).
 pub fn freshest(a: *const tilak.Turn, b: *const tilak.Turn) *const tilak.Turn {
-    if (turn_newer(b, a)) return b;
-    return a;
+    const result = if (turn_newer(b, a)) b else a;
+    // invariant: the freshest of two turns is always one of the two turns
+    // handed in, never a third value.
+    assert(result == a or result == b);
+    return result;
 }
 
 /// Read a peer's incoming turn against the turn we already knew (if any), under
@@ -64,7 +72,11 @@ pub fn read_turn(known: ?*const tilak.Turn, incoming: *const tilak.Turn, identit
     if (!tilak.verify_turn(incoming, identity_pubkey)) {
         // Refused -- keep the last trusted key, or zeros when there is none yet.
         const kept: [pubkey_len]u8 = if (known) |k| k.net_pubkey else [_]u8{0} ** pubkey_len;
-        return .{ .accepted = false, .route_key = kept, .reason = .forged_refused };
+        const decision = RouteDecision{ .accepted = false, .route_key = kept, .reason = .forged_refused };
+        // invariant: a refused turn is never accepted -- forged input can
+        // never win the route key.
+        assert(!decision.accepted);
+        return decision;
     }
     if (known == null) {
         return .{ .accepted = true, .route_key = incoming.net_pubkey, .reason = .verified_first };
@@ -74,7 +86,11 @@ pub fn read_turn(known: ?*const tilak.Turn, incoming: *const tilak.Turn, identit
         return .{ .accepted = true, .route_key = incoming.net_pubkey, .reason = .verified_fresher };
     }
     // Authentic yet not newer -- a replayed or equal rotation. Keep the known key.
-    return .{ .accepted = false, .route_key = prior.net_pubkey, .reason = .stale_kept };
+    const decision = RouteDecision{ .accepted = false, .route_key = prior.net_pubkey, .reason = .stale_kept };
+    // invariant: a stale-kept decision always carries the prior key forward,
+    // never the incoming one -- a replay can never roll the route key back.
+    assert(std.mem.eql(u8, &decision.route_key, &prior.net_pubkey));
+    return decision;
 }
 
 // --- selftest -----------------------------------------------------------
