@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.072234` | [REDS %825 closed -- claim already gone](20260918/20260918-072234_reds-825-claim-close.kyri) | Stale nock_jet_dec claim was cleared before this cold open; row marked CLOSED. |
 | `20260918.072039` | [Send confirmed -- both remotes hold eb33a0841](20260918/20260918-072039_send-confirmed-eb33a0841.kyri) | Two contested pushes on the quiet cold-open log; nib and day-shelf rows resolved each rebase. |
 | `20260918.071905` | [Send confirmed -- both remotes hold 09f75452b](20260918/20260918-071905_send-confirmed-09f75452b.kyri) | Three contested rebases on Grass's backtick_path lap; a reflexive scan hit caught and fixed mid-lap. |
 | `20260918.071704` | [Quiet cold open, no agent-doable work](20260918/20260918-071704_quiet-check.kyri) | Baton ceiling repair already closed its own remainder; claim board empty; front door reads clean. |
