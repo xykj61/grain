@@ -227,6 +227,27 @@ close_record() {
   name=""; sawpath=0; tier=""; seated=""; host=""; capability=""; gate=""
 }
 
+# MEMBERSHIP WITHOUT A PROCESS (`20260917.211946`). Three sites below asked "is this name in
+# that list?" with `grep -qx`, once per row inside a loop, and that was 916 of the 974 processes
+# this file started after the field-split repair earlier the same lap. A list is built here as a
+# newline-delimited string beside the file it already writes, and `case` answers the same question
+# in the shell itself. The set costs nothing to build, since both loops already walk every row.
+#
+# The wrapping newlines are what make it EXACT rather than a substring test: `grep -qx` matches a
+# whole line, so `foo` must not match `foobar` or `xfoo`, and bracketing both the set and the
+# needle is what holds that. Proven by the byte-identity of this scan's whole output.
+NL='
+'
+in_set() {
+  case "$NL$2$NL" in
+    *"$NL$1$NL"*) return 0 ;;
+  esac
+  return 1
+}
+
+names_set=""
+ranlist_set=""
+
 while IFS= read -r line; do
   case "$line" in
     guard\ *)
@@ -241,6 +262,7 @@ while IFS= read -r line; do
       name=${2-}
       rostered=$((rostered + 1))
       echo "$name" >> "$names"
+      names_set="$names_set$name$NL"
       ;;
     path\ *)
       set -- $line
@@ -322,7 +344,8 @@ if [ -f "$card" ]; then
         esac
         recorded=$((recorded + 1))
         echo "$rname" >> "$ranlist"
-        if ! grep -qx "$rname" "$names"; then
+        ranlist_set="$ranlist_set$rname$NL"
+        if ! in_set "$rname" "$names_set"; then
           stray=$((stray + 1))
           echo "$rname" >> "$unrostered"
         fi
@@ -373,14 +396,14 @@ fi
 
 never=0
 while IFS= read -r n; do
-  if [ ! -s "$ranlist" ] || ! grep -qx "$n" "$ranlist" 2>/dev/null; then never=$((never + 1)); fi
+  if [ -z "$ranlist_set" ] || ! in_set "$n" "$ranlist_set"; then never=$((never + 1)); fi
 done < "$names"
 
 never_cadence=0
 if [ -s "$cadence_rows" ]; then
   while IFS= read -r row; do
     n=${row#* }
-    if [ ! -s "$ranlist" ] || ! grep -qx "$n" "$ranlist" 2>/dev/null; then
+    if [ -z "$ranlist_set" ] || ! in_set "$n" "$ranlist_set"; then
       never_cadence=$((never_cadence + 1))
       echo "$row" >> "$cadence_never_rows"
     fi
