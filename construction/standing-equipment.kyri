@@ -2604,6 +2604,29 @@ path tools/c/cyclic_witness_witness.rish
 tier cadence
 seated 20260910.063900
 
+# cyclic_state -- a second reading of the cyclic-topos moonshot, built on `wrap_ring`'s OWN state
+# rather than on git porcelain across the rostered fleet. `cyclic_witness` above asks whether
+# RUNNING a witness leaves residue in the tree; this asks whether the DATA STRUCTURE definition
+# one's own ring names as cyclic actually returns to a prior state, hashed two ways.
+#
+# TWO DIGESTS, TWO ANSWERS. Over page BYTES alone, the ring reaches a FIXED POINT at the end of the
+# first lap under a constant fill and holds it -- a genuine period-one cycle, though not the
+# entry-equals-exit shape the moonshot's own wording first suggested (entry is zeroed; exit is
+# filled; they never match). Over bytes PLUS the per-page lap tag -- the field `wrap_ring`'s own
+# refusal mechanism depends on -- the state is NEVER periodic: `Ring.lap()` is `written /
+# circumference`, `written` only grows, and no later full state can equal an earlier one.
+#
+# WHY THIS MATTERS BESIDE THE WHITEPAPER. `20260917-204915_bounded-cyclic-computing.md`'s
+# definition one reads `wrap_ring` as "a bound is a period" and its definition two reads
+# `cyclic_witness` as "a proof that returns is a cycle," treating the two as one shape measured
+# twice. This witness shows the SAME ring satisfies definition one's period claim on its content
+# while failing definition two's return claim on its full state -- the two definitions can diverge
+# on one structure, which the paper's own falsifier names as the case that would matter.
+guard cyclic_state
+path tools/c/cyclic_state_witness.rish
+tier cadence
+seated 20260917.214608
+
 # retired_count -- first witness for the joules-as-a-unit moonshot, reshaped by the host read that
 # row was ranked on and nobody had taken. `tools/fixtures/e/energy_instrument_scan.sh` answers
 # `joule_source=none`, `powercap_domains=0`, `msr_device=no`, `tier=counters` on this pier: no joule
