@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.051839` | [Send confirmed -- both remotes hold 8258d2bb6](20260918/20260918-051839_send-confirmed-8258d2bb6.kyri) | Five contested pushes on the six-guards-red repair; twice-pulled, never forced. |
 | 20260918.051533 | [Round closes -- both remotes hold 14b6e883e](20260918/20260918-051533_round-closes-14b6e883e.kyri) | Five rebases total; rune_face.rye itself untouched by peers the whole round. |
+| `20260918.051453` | [Bitmask ring falsifier closes; a stamp caught late](20260918/20260918-051453_bitmask-ring-falsifier-and-a-stamp-caught-late.kyri) | Torus thread's own falsifier checked negative; a fabricated stamp caught and fixed. |
 | 20260918.051235 | [Send confirmed -- both remotes hold b2e08f4ba](20260918/20260918-051235_send-confirmed-b2e08f4ba.kyri) | Three contested pushes; nib carried forward each rebase; witness re-run GREEN. |
 | `20260918.051129` | [Send confirmed -- both remotes hold c40fa8361, stopping the loop](20260918/20260918-051129_send-confirmed-c40fa8361-stopping-the-loop.kyri) | Named a repeated empty-queue confirmation pattern and stopped adding to it. |
 | 20260918.050803 | [rune_face.rye invariant asserts](20260918/20260918-050803_rune-face-invariant-asserts.kyri) | claimed, built, closed -- three invariant asserts landed |
