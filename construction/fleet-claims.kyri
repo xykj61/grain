@@ -54,3 +54,9 @@ format fleet-claims-v1
 # declaration may never be.
 
 
+claim pheromone-rune-face-asserts
+seat pheromone
+stamp 20260918.050507
+epoch 1789722307
+paths glow/rune_face.rye
+what add invariant asserts to rune_face.rye's face_slice/mold_slice and parse(), matching rune_conditional.rye's asserted shape
