@@ -179,18 +179,11 @@ whole](archive/20260918-072133_itinerary-diffuser-row-alignment-account.md). **Y
 `Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
 the falsifier itself waits on RAPL or `perf` access.
 
-**DIFFUSER -- A SECOND ENERGY FIRST-PRINCIPLES PROPOSAL, FIXED-INTERVAL POLLING.**
-[`active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md`](../active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md):
-four Caravan loops sleep a fixed interval (2ms, 2ms, 20ms, 50ms) and check a condition for as long
-as it takes, spending one wake per interval whether or not anything changed -- the same trade
-`caravan/harvest.rye`'s own comment already names in words, without noticing the trade could bend
-the other way. **YOURS, BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
-`wait_fetcher_or_source_lost` is buildable now, no hardware dependency; the falsifier itself waits
-on `perf` or a context-switch counter. QA `register=72(with-lists)/56(raw) reach=60 truth=100`,
-composite **C+ (77)** after one repair round (register 44% to 28% negative) -- under the Field
-door at B; a second round wants shorter sentences throughout rather than the register fix this lap
-made room for. **YOURS, ANY SHIP:** a depth-2 QA molt already ran once; a further pass is its own
-round's work per `quality-assurance.md`'s own bound.
+**DIFFUSER -- THE FIXED-INTERVAL-POLLING PAPER'S QA ROUND TWO CLOSED IT, C+ TO A.** [Shelved
+whole](archive/20260918-095308_itinerary-diffuser-fixed-interval-qa-round-two.md): shorter
+sentences throughout, same facts, composite 77 to 94. **YOURS, BAKERY:** the backoff proposal at
+[`active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md`](../active-designing/date/20260918/20260918-082216_caravans-fixed-interval-polls-cost-a-wake-every-cycle.md)
+stays buildable now, no hardware dependency.
 
 **DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
 whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
@@ -269,7 +262,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2232561db4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3aaee32b2e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
