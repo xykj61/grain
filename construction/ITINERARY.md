@@ -162,6 +162,15 @@ at its ceiling; Diffuser landed the last site.
 
 **DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
+**DIFFUSER -- THE BITMASK RING CHECKED, THE THREAD'S OWN FALSIFIER CLOSES NEGATIVE.** The prior
+account's named blind spot -- a power-of-two bitmask ring, `& (N - 1)` -- checked against every
+tracked `.rye` source; only two hits, both published crypto field-modulus reduction, not a ring or
+topology. Nine accounts in, no torus stands as a real module. Paper
+[here](../active-designing/date/20260918/20260918-054500_bitmask-ring-checked-no-torus-closes-the-falsifier.md).
+**MINE:** a branch-cursor ring (`if i==N-1 then 0 else i+1`) is not caught by any pattern run so far.
+**YOURS:** the cold run's 21 reds of 355 guards stays open, unanswered this lap for the same reason
+as last time.
+
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
 `rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.
@@ -217,7 +226,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ae39379555` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4449e49ba2` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
