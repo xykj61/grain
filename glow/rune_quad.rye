@@ -9,6 +9,7 @@
 //! (`rune_list.rye`).
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -39,15 +40,27 @@ pub const QuadSpec = struct {
 };
 
 pub fn a_slice(spec: *const QuadSpec) []const u8 {
+    // invariant: a returned face never claims more than the ident ceiling
+    // the lexer itself owns, whatever parse() stored.
+    assert(spec.a_len <= max_name_len);
     return spec.a[0..spec.a_len];
 }
 pub fn b_slice(spec: *const QuadSpec) []const u8 {
+    // invariant: a returned face never claims more than the ident ceiling
+    // the lexer itself owns, whatever parse() stored.
+    assert(spec.b_len <= max_name_len);
     return spec.b[0..spec.b_len];
 }
 pub fn c_slice(spec: *const QuadSpec) []const u8 {
+    // invariant: a returned face never claims more than the ident ceiling
+    // the lexer itself owns, whatever parse() stored.
+    assert(spec.c_len <= max_name_len);
     return spec.c[0..spec.c_len];
 }
 pub fn d_slice(spec: *const QuadSpec) []const u8 {
+    // invariant: a returned face never claims more than the ident ceiling
+    // the lexer itself owns, whatever parse() stored.
+    assert(spec.d_len <= max_name_len);
     return spec.d[0..spec.d_len];
 }
 
@@ -79,6 +92,9 @@ pub fn parse(line: []const u8) ParseError!QuadSpec {
 
     var rest = std.mem.trimStart(u8, line[2..], " \t");
     if (rest.len == 0) return error.MissingFirst;
+    // invariant: a line accepted past the missing-first check names a real
+    // remainder, never an empty one, once execution reaches here.
+    assert(rest.len > 0);
     const first = try parse_ident(rest);
     rest = std.mem.trimStart(u8, first.rest, " \t");
     if (rest.len == 0) return error.MissingSecond;
@@ -105,5 +121,11 @@ pub fn parse(line: []const u8) ParseError!QuadSpec {
     @memcpy(spec.b[0..second.ident.len], second.ident);
     @memcpy(spec.c[0..third.ident.len], third.ident);
     @memcpy(spec.d[0..fourth.ident.len], fourth.ident);
+    // invariant: a constructed spec never claims more of any fixed buffer
+    // than the ident ceiling the length checks above already proved fits.
+    assert(spec.a_len <= max_name_len);
+    assert(spec.b_len <= max_name_len);
+    assert(spec.c_len <= max_name_len);
+    assert(spec.d_len <= max_name_len);
     return spec;
 }

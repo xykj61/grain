@@ -66,9 +66,3 @@ stamp 20260918.053715
 epoch 1789724235
 paths glow/rune_switch.rye
 what add bare asserts to rune_switch.rye, same shape as rune_list/rune_conditional (CLAIM-AS-OVERRIDE, docs-geode lane empty)
-claim pheromone-rune-quad-asserts
-seat pheromone
-stamp 20260918.055313
-epoch 1789725193
-paths glow/rune_quad.rye
-what add bare asserts to rune_quad.rye, same shape as rune_list/rune_conditional
