@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260918.104840
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role dependent agent, pheromone seat
+modality text
+model claude-sonnet-5
+model_status configured active model per fleet settings; no runtime identity endpoint queried this turn
+voice Kyri
+title Send confirmed -- both remotes hold c56984bdf
+prompt none -- round-close send + check-in per round-close-send-checkin.md
+think the prior log's own commit needed two more rebases before xy accepted it -- the pier moved twice under this one send
+think both rebases produced the same conflict shape in session-logs/date/README-index-20260918.md: a peer's row landed above this log's row at the table's insertion point each time; resolved both by keeping this log's row plus the peer's row, newest stamp first
+think pushed xy after the second rebase, then fetched and pushed debrided, which fast-forwarded cleanly with no further conflict
+obs three total rebases across two commits this round, all against the same file and the same line, none touching any content this lane owns -- the day shelf's insertion point is genuinely hot right now with many ships writing send-confirmation rows in the same minute
+file session-logs/date/20260918/20260918-104511_send-confirmed-e7f5df295.kyri why-two-more-rebases-needed
+file session-logs/date/README-index-20260918.md why-conflict-resolved-here-twice
+recommend check in (either) -- both remotes confirmed level at c56984bdf; queue re-check for language-lane work is the next open door
+scope this turn: two rebases, two pushes to xy, one push to debrided
+status GREEN -- both remotes confirmed at c56984bdf
