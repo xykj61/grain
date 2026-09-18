@@ -148,6 +148,30 @@ assert scan.out contains "file_drift_crossing_pct=" else "aurora-file-placement:
 assert scan.out contains "drift_decay_linear=yes" else "aurora-file-placement: the gain stopped falling in a straight line -- the closed form no longer describes this graph"
 assert scan.out contains "drift_crossing_closed_form_pct=" else "aurora-file-placement: the closed-form tolerance went uncomputed"
 
+# --- READING 5: is the straightness a property of the SIZE? -------------------
+# invariant: the reading happened at all. A ladder that never ran leaves no key, and a missing key
+# reads exactly like a ladder that ran and found nothing.
+assert scan.out contains "reading5=read" else "aurora-file-placement: the size ladder never ran"
+
+# invariant: the full rung re-seats the WHOLE graph, so the layout it computes must cost exactly
+# what reading 3 computed at this grid. Without this every rung below it could be measuring a
+# layout this scan never produced, and the whole reading would be about a different placement.
+assert scan.out contains "size_full_rung_matches_placement=yes" else "aurora-file-placement: the re-seated full graph is not the graph the scan placed -- every size rung below it is void"
+
+# invariant: the departure falls as the graph grows, at the rate an average's scatter falls. This is
+# the elder paper's inference put where it can be wrong: a flat ladder refutes it outright.
+assert scan.out contains "drift_scatter_scales_as_inverse_sqrt=yes" else "aurora-file-placement: the departure stopped tracking the inverse square root of the edge count -- the straightness is not about sample size"
+
+# invariant: and the SHAPE is read without the anchor, since the full rung is one draw and carries
+# the whole calibration of the ratios. A least-squares slope in log size against log departure is a
+# number no anchor can move.
+assert scan.out contains "drift_scatter_slope_near_half=yes" else "aurora-file-placement: the fitted log-log slope left the neighbourhood of minus one half"
+assert scan.out contains "drift_scatter_anchor_reading4=" else "aurora-file-placement: the second anchor went unprinted, so a reader cannot see how much of a ratio is the anchor's"
+
+# invariant: the crossing where the decay stops reading straight is MEASURED from the bracketing
+# rungs rather than extrapolated from the anchor, and both are printed.
+assert scan.out contains "drift_linearity_measured_crossing_edges=" else "aurora-file-placement: the straightness crossing was left to extrapolation"
+
 # --- The control: real repositories in a throwaway pen -----------------------
 say "aurora-file-placement: the control -- three real repositories in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/a/aurora_file_placement_control.sh"]
@@ -159,7 +183,7 @@ assert ctl.out contains "control_verdict=ok" else "aurora-file-placement: the co
 # failure count, so a leg written tomorrow is heard the day it lands rather than passing unread
 # under a green verdict.
 assert ctl.out contains "control_failures=0" else "aurora-file-placement: a planted behavior differed from what was stated"
-assert ctl.out contains "control_checks=78" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
+assert ctl.out contains "control_checks=100" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
 
 # invariant: each of the eight mutations was planted AND bit. A refusal proven only in the passing
 # direction cannot be told from a bypass.
@@ -171,6 +195,8 @@ assert ctl.out contains "leg m5_bites ok" else "aurora-file-placement: removing 
 assert ctl.out contains "leg m6_bites ok" else "aurora-file-placement: drift with no phantom edges read as real drift -- thinning a graph is not moving it"
 assert ctl.out contains "leg m7_bites ok" else "aurora-file-placement: the floor costed under the true edges while the layout was costed under the drifted ones went unfelt"
 assert ctl.out contains "leg m8_bites ok" else "aurora-file-placement: a sweep that silences no real edge read as real drift"
+assert ctl.out contains "leg m9_bites ok" else "aurora-file-placement: a full rung short of one edge read as the whole graph"
+assert ctl.out contains "leg m10_bites ok" else "aurora-file-placement: losing the full edge list made the size ladder vanish in silence rather than refuse"
 
 # invariant: the pen's small graph reads NOT straight where this tree reads straight. A verdict that
 # never says no is a constant wearing a measurement's clothes, and the pen is where that is proven.
@@ -193,4 +219,13 @@ assert ctl.out contains "leg p1_intra_share ok" else "aurora-file-placement: the
 # fits every node trivially and would score a perfect capacity reading.
 assert ctl.out contains "leg p3_empty_verdict ok" else "aurora-file-placement: an empty tree was read as a real population"
 
-say "GREEN: aurora-file-placement -- the file unit fits at sixteen nodes and overflows at sixty-four, its graph is mostly edges a room graph cannot see, the layout beats its own occupancy dealt at random, and the borrowed tolerance survives the finer unit."
+# invariant: a graph smaller than the ladder's top rung grades nothing and SAYS `ungraded` rather
+# than `no`. A verdict reading no when it means it could not look is a finding nobody made.
+assert ctl.out contains "leg p2_size_ungraded ok" else "aurora-file-placement: a graph too small to subsample reported a refutation instead of a silence"
+assert ctl.out contains "leg p2_size_slope_ungraded ok" else "aurora-file-placement: the slope fit answered on a ladder it never graded"
+
+# invariant: the re-seat check is proven on a pen whose layout actually COSTS something, since two
+# wrong answers agree at zero. Pen four's cost is asserted positive before its plant is believed.
+assert ctl.out contains "leg p4_cost_positive ok" else "aurora-file-placement: the re-seat plant was read on a layout costing nothing, where every ordering agrees"
+
+say "GREEN: aurora-file-placement -- the file unit fits at sixteen nodes and overflows at sixty-four, its graph is mostly edges a room graph cannot see, the layout beats its own occupancy dealt at random, and the borrowed tolerance survives the finer unit -- whose straightness falls away as the graph shrinks, at the rate an average's scatter falls."
