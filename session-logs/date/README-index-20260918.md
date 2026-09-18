@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.083708` | [Send confirmed -- both remotes hold 38dc3ac9a](20260918/20260918-083708_send-confirmed-38dc3ac9a.kyri) | Two rebases on a busy pier; nib re-read fresh each time. |
 | `20260918.083152` | [Send confirmed -- both remotes hold b083dd5a5](20260918/20260918-083152_send-confirmed-b083dd5a5.kyri) | Three contested pushes on the docs-geode empty-open log; nib carried forward each time. |
 | `20260918.083108` | [pedersen.rye joins the zero-assert exempt list](20260918/20260918-083108_pedersen-exempt-shim.kyri) | A re-export shim exempted; ratchet 8->7. |
 | `20260918.082859` | [Caravan poll-wake energy proposal](20260918/20260918-082859_caravan-poll-wake-energy-proposal.kyri) | Fixed-interval poll loops, a backoff proposal, C+. |
