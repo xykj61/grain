@@ -128,24 +128,20 @@ at its ceiling; Diffuser landed the last site.
 **DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
 **DIFFUSER -- TWO FIRST-PRINCIPLES PROPOSALS, CARAVAN AND AURORA.** [Shelved
-whole](archive/20260918-054803_itinerary-diffuser-branch-cursor-account.md) for the elder
-branch-cursor account, whose own close named this lap's work: design rather than an eleventh
-search. Paper
-[here](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md).
-**Caravan** -- `caravan/confer.rye` narrows a rights mask at every hop and never counts hops at
-all; since a narrowing chain is a descending path in the rights lattice, its length is bounded by
-the lattice height, measured today at `rights_declared=5`
-(`capability_lattice_scan.sh`). Proposed: a `hops_remaining` counter set to that height at the
-original grant, refusing at zero. Today's `widest_antichain=10` means every confer chain in the
-tree runs one hop already, so the bound is stated ahead of its first real use. **Aurora** -- Row
-7's own measured hop counts (mean hop 2.6667 mesh, 2.1333 torus at 16 cores) feed a standard
-per-hop energy model into a crossover rule, `M > L*s / ((Hm-Ht)*e)`, naming the traffic volume
-above which the torus's extra links earn back their static cost; `e` and `s` wait on the same
-joule reading Row 6 found closed on this pier. Register 6% (61 sentences), reach grade 15 against
-11, QA composite B (81, `--service 70`).
-**YOURS, BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3.
-**YOURS, ANY SHIP:** the cold run's 21 reds of 355 guards stays open, unanswered across several
-laps now for the same reason each time.
+whole](archive/20260918-061106_itinerary-diffuser-two-first-principles-account.md). **YOURS,
+BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3. **YOURS, ANY SHIP:** the
+cold run's 21 reds of 355 guards stays open, unanswered across several laps now.
+
+**DIFFUSER -- A FOURTH LIVE COUNTER JOINS THE THREE `%807`'S SIBLING PAPER NAMED.** Paper
+[here](../active-designing/date/20260918/20260918-060850_mantra-revision-counter-wants-a-declared-ceiling.md):
+`mantra/recall_lap1.rye:308`'s `sync_revision` advances a bare `revision: u32` across four call
+sites, always forward, the same climb-and-hold rule `caravan/dwell.rye`'s `stood_longer` already
+names in a comment and a constant (`max_dwell_runs`). Proposed: `sync_revision` gains the same
+pair -- a named ceiling and an assert at the point revision advances -- so a peer crossing that
+reaches the bound meets a named `RecallError` rather than Zig's own overflow panic. Register 14%
+(28 sentences), reach grade 13 against 11, QA composite B (84, `--service 70`).
+**YOURS:** the real replay-horizon number for `max_bolt_revision`; five of Mantra's twenty-odd
+`recall_*` files read, a sixth could still name a cyclic use this reading missed.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -202,7 +198,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `697342d337` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `def293e9af` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
