@@ -49,25 +49,27 @@ the scan's own header; witness and control GREEN, 28 legs, `control_failed=0`. `
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
 
-**PHEROMONE -- `comlink/discovery/descriptor_test.rye` CLOSES ANOTHER NAMED ZERO-ASSERT FILE.**
+**PHEROMONE -- `comlink/discovery/round_trip_wire.rye` CLOSES A THIRD NAMED ZERO-ASSERT FILE.**
 Elder account [shelved
-whole](archive/20260918-070100_itinerary-pheromone-bolt-apply-account.md): the
-`bolt_apply_step.rye` lap. This lap moved into pheromone's own comlink lane: two bare postcondition
-asserts on `main`'s `empty` and `ok` descriptors, tying `remaining()` to `descriptor_max_bytes -
-len` and `as_slice().len` to `len` -- new invariant statements rather than duplicates of the
-existing if/return-error checks. `env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run
-comlink/discovery/descriptor_test.rye` GREEN unchanged; `width-check` clean;
-`tame_style_check`'s zero-assert ratchet fell 14 to 12 (this file plus incense's concurrent
-`lower_cast.rye` landing). Claim `pheromone-descriptor-test-asserts` opened, pushed, and closed
-per the ABSENCE clause across two rebases. **YOURS:** whether a body carries a parent hash at all
-is convention, and Keaton's; the 12 remaining `tame_style_check` zero-assert files are
-`comlink/discovery/round_trip_wire.rye` (pheromone's own lane, next), `ember/ember_core.rye`,
-`lantern/lantern_core.rye`, `linengrow/glow_seva_b0_fold.rye`,
-`linengrow/setu65_lab_tx_check.rye`, `linengrow/setu6_device_lab_check.rye`,
-`linengrow/setu_desk_hold0_check.rye`, `linengrow/setu_desk_hold1_check.rye`,
-`linengrow/setu_desk_hold_wayland_check.rye`, `mycelium/puddle_convergence.rye`,
-`scribble/scribble_core.rye`, `tally/pedersen.rye` -- most outside pheromone's own lane, each its
-own honest scope to check before claiming.
+whole](archive/20260918-071100_itinerary-pheromone-descriptor-test-account.md): the
+`descriptor_test.rye` lap. This lap stays in pheromone's own comlink lane: three bare postcondition
+asserts across `table_digest`, `write_intro`, and `read_intro` -- an ordering invariant tying the
+post-swap `ids` pair to ascending order (so the digest is order-independent), a buffer-bound
+invariant tying `write_intro`'s final `off` to `buf.len`, and a truncation invariant in `read_intro`
+tying the post-increment `off` to the earlier `IntroTrunc` check that already proves the signature
+fits -- each a new invariant statement rather than a duplicate of an existing if/return-error check.
+`env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build comlink/discovery/round_trip_wire.rye -lc
+-femit-bin=comlink/.build/discovery_round_trip_wire` then
+`rishi/bin/rishi run tools/d/discovery_round_trip_wire.rish` GREEN unchanged (peers=2, both-sides,
+fold parity, refusals loud); `width-check` clean; `tame_style_check`'s zero-assert ratchet fell 12
+to 11. Claim `pheromone-round-trip-wire-asserts` opened, pushed, and closed per the ABSENCE clause
+across one rebase (a peer's `%401` follow-up landed the same window). **YOURS:** the remaining 11
+`tame_style_check` zero-assert files are `ember/ember_core.rye`, `lantern/lantern_core.rye`,
+`linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
+`linengrow/setu6_device_lab_check.rye`, `linengrow/setu_desk_hold0_check.rye`,
+`linengrow/setu_desk_hold1_check.rye`, `linengrow/setu_desk_hold_wayland_check.rye`,
+`mycelium/puddle_convergence.rye`, `scribble/scribble_core.rye`, `tally/pedersen.rye` -- all outside
+pheromone's own lane now, each its own honest scope to check before claiming.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -231,7 +233,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1a1aaeae2d` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `31b68b3215` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

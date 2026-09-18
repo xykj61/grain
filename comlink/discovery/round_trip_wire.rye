@@ -129,6 +129,8 @@ fn table_digest(table: *const table_mod.PeerTable, out: []u8) ![]const u8 {
         ids[0] = ids[1];
         ids[1] = tmp;
     }
+    // invariant: the two ids always leave sorted ascending, so the digest is order-independent.
+    assert(!std.mem.lessThan(u8, ids[1], ids[0]));
     return std.fmt.bufPrint(out, "{s},{s}", .{ ids[0], ids[1] });
 }
 
@@ -154,6 +156,8 @@ fn write_intro(io: std.Io, path: []const u8, intro: introduce.Introduction) !voi
     off += 1;
     tally_copy.copy_disjoint(u8, buf[off..][0..64], intro.sig[0..]);
     off += 64;
+    // invariant: every field written stays inside the fixed buffer, no overrun.
+    assert(off <= buf.len);
     try write_bytes(io, path, buf[0..off]);
 }
 
@@ -183,6 +187,8 @@ fn read_intro(io: std.Io, path: []const u8) !introduce.Introduction {
     off += 4;
     intro.role = @enumFromInt(raw[off]);
     off += 1;
+    // invariant: the earlier truncation check already proves the signature fits.
+    assert(off + 64 <= n);
     tally_copy.copy_disjoint(u8, intro.sig[0..], raw[off..][0..64]);
     return intro;
 }
