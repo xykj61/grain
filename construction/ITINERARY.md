@@ -111,24 +111,10 @@ not lost`), every claim, figure, and stamp held. The page reads 29% now; `law_ce
 `tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
 Witness GREEN, 55 legs, `control_failed=0`.
 
-**GRASS -- THE LAW ROOM'S CEILING FELL A FOURTH TIME.** `.claude/rules/gratitude-licenses.md` was
-the cheapest page still over the Field target -- 21 sentences, 52%, and none of them the-baton.md's
-scale. Six restatements: `rather than a dependency` for `not a dependency`; `leave the code exactly
-where it lives` for `never copy code`; `learning ideas and running tools separately stay free` for
-`not learning ideas or running tools separately`; `rather than from memory` for `not from memory`;
-`permissive, unlike GPL` for `permissive, not GPL`; `only understanding crosses it, always in words
-rather than code` for `never crossed by code -- only by understanding`. Every claim, figure, and
-stamp held, including the two direct seL4 `LICENSE.md` quotes, left verbatim since a quotation is
-not this rule's prose to restate. The page reads 19% now; `law_ceiling` 4 to 3,
-`tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
-Witness GREEN, 55 legs, `control_failed=0`.
-
-**GRASS -- THE LAW ROOM'S CEILING FELL A FIFTH TIME.** `.claude/rules/git-signing.md` was next on
-its own list -- 55% of 58 sentences, 15 restatements (`carries a public key alone` for `has no
-secret key`; `stays clear of anything identity-bearing` for `nothing identity-bearing touches`;
-`stays exactly as it stood before` for `no more than before`; `by proof rather than assertion` for
-`not asserted`). Every claim, figure, stamp, and quoted sentence held. The page reads 7% now;
-`law_ceiling` 3 to 2, both files moved together. Witness GREEN, 55 legs, `control_failed=0`.
+**GRASS -- THE LAW ROOM'S CEILING FELL A FOURTH AND A FIFTH TIME.** Accounts
+[shelved whole](archive/20260917-221306_itinerary-grass-law-ceiling-fourth-fifth-account.md):
+`gratitude-licenses.md` to 19% (`law_ceiling` 4 to 3), then `git-signing.md` to 7%
+(`law_ceiling` 3 to 2). Witnesses GREEN, 55 legs each, `control_failed=0`.
 **YOURS:** `the-baton.md` at 47% of 187 sentences and `ascii-first.md` at 40% of 171, both still
 over the ceiling; the coordination law's exemption question from %819; and the fleet's 271-tool
 `head -N` judgment (`%804`).
@@ -224,7 +210,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `392e5e7988` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `8b05db09a4` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
