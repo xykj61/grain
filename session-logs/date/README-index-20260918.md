@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.031135` | [Civic Style pass on mand/README.md finds nothing to fix](20260918/20260918-031135_civic-style-audit-mand-clean.kyri) | Gauge queue re-confirmed empty; mand/README.md already names its own reward. |
+| `20260918.031135` | [Send confirmed -- both remotes hold fa10685d4](20260918/20260918-031135_send-confirmed-fa10685d4.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.030812` | [Gauge law-ceiling queue read: empty, one page already ruled](20260918/20260918-030812_gauge-law-ceiling-queue-read-empty.kyri) | law_ceiling=1, the-baton.md re-read via --explain, remaining negatives are quotes/named walls; nothing changed. |
 | `20260918.030555` | [SHOPPING.md register lifted](20260918/20260918-030555_shopping-tutorial-register-lift.kyri) | Three light edits, 73 to 79, ceiling unmoved. |
 | `20260918.030503` | [Send confirmed -- both remotes hold 791c49b4a](20260918/20260918-030503_send-confirmed-791c49b4a.kyri) | One table conflict, kept every row; Git nib carried to HEAD's parent in the same commit. |
