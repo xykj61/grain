@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.211557` | [No explicit task, status check on the amphora lane](20260917/20260917-211557_no-task-status-check.kyri) | Second look: claim board and REDS OPEN/BOOKED rows checked fleet-wide, nothing agent-doable stands. |
 | `20260917.211302` | [Amphora lane reads clean, nothing unclaimed to build](20260917/20260917-211302_amphora-lane-reads-clean.kyri) | Copal audit: 21 amphora witnesses GREEN, REDS/claim board swept, no unclaimed work in lane. |
 | `20260917.211142` | [the key-reach hazard, closed rather than ratcheted](20260917/20260917-211142_key-reader-hazard-closed.kyri) | Confined to the 4 fixed sites; no meter over zero. |
 | `20260917.211118` | [door_home_scan drops its readlink -f site](20260917/20260917-211118_door-home-readlink.kyri) | shell_dialect falls 9 to 8, GREEN, sent. |
