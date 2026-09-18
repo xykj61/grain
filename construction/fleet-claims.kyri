@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim grass-gauge-git-signing-sweep
-seat grass
-stamp 20260917.215651
-epoch 1789696611
-paths .claude/rules/git-signing.md
-what Gauge Field-target sweep of git-signing.md (55%, 32/58 negative sentences): restate negations affirmatively where safe, holding every claim, figure, stamp, and quote exactly. Grass's own assigned page from the ceiling list. Touches one law page.
 claim diffuser-tablecloth-fold-toy
 seat diffuser
 stamp 20260917.220250

@@ -119,11 +119,17 @@ rather than code` for `never crossed by code -- only by understanding`. Every cl
 stamp held, including the two direct seL4 `LICENSE.md` quotes, left verbatim since a quotation is
 not this rule's prose to restate. The page reads 19% now; `law_ceiling` 4 to 3,
 `tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
-Witness GREEN, 55 legs, `control_failed=0`. **YOURS:** the three pages still riding the ceiling --
-`the-baton.md` at 47% of 187 sentences chief among them, then `git-signing.md` at 55% of 58 and
-`ascii-first.md` at 40% of 171 -- and the coordination law's own exemption question, unchanged from
-%819; and, from the elder shelf, the fleet's 271-tool `head -N` judgment and whether a door owes
-both a first-hour and a whole-path clause (`%804`).
+Witness GREEN, 55 legs, `control_failed=0`.
+
+**GRASS -- THE LAW ROOM'S CEILING FELL A FIFTH TIME.** `.claude/rules/git-signing.md` was next on
+its own list -- 55% of 58 sentences, 15 restatements (`carries a public key alone` for `has no
+secret key`; `stays clear of anything identity-bearing` for `nothing identity-bearing touches`;
+`stays exactly as it stood before` for `no more than before`; `by proof rather than assertion` for
+`not asserted`). Every claim, figure, stamp, and quoted sentence held. The page reads 7% now;
+`law_ceiling` 3 to 2, both files moved together. Witness GREEN, 55 legs, `control_failed=0`.
+**YOURS:** `the-baton.md` at 47% of 187 sentences and `ascii-first.md` at 40% of 171, both still
+over the ceiling; the coordination law's exemption question from %819; and the fleet's 271-tool
+`head -N` judgment (`%804`).
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** `door_home_scan.sh`'s `resolve()`
 called `readlink -f`, the GNU-only resolve flag `shell_dialect` gates, and its own control copies
@@ -216,7 +222,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `49c1628ea3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `5a17ac74e2` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
