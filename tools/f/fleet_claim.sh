@@ -93,6 +93,27 @@ case "$name" in
   *[!a-z0-9-]*|"") echo "detail: a claim name is lowercase kebab-case: $name"; echo "verdict=bad_name"; exit 2 ;;
 esac
 
+# A FIELD VALUE CARRYING A NEWLINE BECOMES TWO LINES, and the second line's first word is read as a
+# field key by every reader of this board. Proven on metal in a throwaway pen before this wall was
+# built, rather than reasoned: `--what` carrying the continuation line `seat impostor` wrote that
+# key straight into the record, and `tools/fixtures/f/fleet_claim_form_scan.sh` answered
+# `repeated_field` twice, `corrupting=2`, `verdict=malformed` -- a claim whose `seat` line named a
+# seat other than the writer's own. A CORRUPTING finding is the kind `fleet_claim_scan.sh` refuses
+# on, so one stray newline in one pasted sentence reds the pre-build reading of every ship here.
+#
+# REFUSED BY NAME RATHER THAN FOLDED. A `what` sentence is a paragraph a hand composes, and this
+# fleet's own run to 1,198 bytes; silently joining its lines would change what a peer reads without
+# saying so, which is the fault this board exists to prevent wearing a tidier coat.
+has_newline() { [ "$(printf '%s' "$1" | wc -l | tr -d ' ')" != 0 ]; }
+if has_newline "$what"; then
+  echo "detail: the sentence carries a newline -- its continuation line would be read as a field key, and a record's own seat can be overwritten that way. Write it as one line."
+  echo "verdict=multiline_field"; exit 2
+fi
+if has_newline "$paths"; then
+  echo "detail: the paths carry a newline -- space-separate them on one line, since the reader splits this field on spaces"
+  echo "verdict=multiline_field"; exit 2
+fi
+
 held_by=$(awk -v n="$name" '
   /^[ \t]*#/ { next }
   $1 == "claim" { cur = ($2 == n) ; next }
@@ -101,6 +122,53 @@ held_by=$(awk -v n="$name" '
 
 tmp="$BOARD.claim.$$"
 trap 'rm -f "$tmp"' EXIT
+
+form_scan=tools/fixtures/f/fleet_claim_form_scan.sh
+
+# The count of CORRUPTING findings on a board -- the kind that puts a field or a record in the
+# wrong place, so some OTHER record reads false, and the kind `fleet_claim_scan.sh` refuses on.
+# Answers `unread` when the form reader is absent, rather than guessing zero.
+corrupting_count() {
+  [ -f "$form_scan" ] || { echo unread; return 0; }
+  sh "$form_scan" "$1" 2>/dev/null | awk -F= '$1=="corrupting"{print $2; f=1} END{if(!f) print "unread"}'
+}
+
+# THIS WRITER MAY NOT HAND BACK A BOARD WORSE FORMED THAN THE ONE IT INHERITED.
+#
+# It reads the form reader rather than restating its rules, so a shape that reader learns tomorrow
+# is walled here the day it lands -- one fold, drawn out on its own.
+#
+# IT REFUSES AN INCREASE RATHER THAN A CORRUPTING BOARD, and that distinction is the whole design:
+# a hand must still be able to declare on a board a peer damaged, since refusing there would let
+# one ship's bad conflict resolution stop every other ship from claiming -- the coordination
+# instrument failing shut, at the exact moment the fleet most needs it open.
+#
+# MEASURED OVER ALL 383 REVISIONS of the living board rather than reasoned from the one in front of
+# me: 5 carry a corrupting finding. Three are `%787`'s founding damage, a hand resolving a rebase
+# conflict with three newlines lost; two are a rebase keeping both sides of one claim name. NONE
+# was authored by a writer run. So this gate is prevention carrying its own proof that it moves
+# nothing today -- and the newline refusal above it names the one shape a writer CAN author.
+form_gate() {
+  before=$1
+  after=$(corrupting_count "$tmp")
+  case "$before$after" in
+    *unread*)
+      echo "form_gate=unread"
+      echo "detail: $form_scan is absent, so this write goes unchecked -- a readable claim outranks an unread form"
+      return 0 ;;
+  esac
+  if [ "$after" -gt "$before" ]; then
+    echo "form_gate=refused"
+    echo "detail: this write would take the board from $before corrupting finding(s) to $after -- run sh $form_scan --list to read them. A field ending in a bare claim header is the usual cause; reword it."
+    echo "verdict=would_corrupt"
+    exit 1
+  fi
+  echo "form_gate=passed"
+  if [ "$before" != 0 ]; then
+    echo "board_inherited_corrupting=$before"
+    echo "detail: the board arrived carrying $before corrupting finding(s) this write did not add -- your claim stands, and the board wants a hand"
+  fi
+}
 
 CARD=${FLEET_CLAIM_CARD:-construction/ITINERARY.md}
 nib_writer=tools/fixtures/r/remember_git_nib_write.sh
@@ -142,6 +210,7 @@ if [ "$verb" = close ]; then
     $1 == "claim" { drop = ($2 == n); if (drop) next }
     { if (!drop) print }
   ' "$BOARD" > "$tmp"
+  form_gate "$(corrupting_count "$BOARD")"
   cat "$tmp" > "$BOARD"
   carry_the_card
   echo "closed=$name"
@@ -197,6 +266,7 @@ if cmp -s "$tmp" "$BOARD"; then
   echo "verdict=claim_unchanged"
   exit 0
 fi
+form_gate "$(corrupting_count "$BOARD")"
 cat "$tmp" > "$BOARD"
 carry_the_card
 echo "claim=$name"

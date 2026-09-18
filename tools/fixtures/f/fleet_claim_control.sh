@@ -396,6 +396,117 @@ else
   say "a_full_board_still_updates_its_own=no"
 fi
 
+
+# --- the writer may not author a malformed board ------------------------------------------------
+# TWO READINGS STAND HERE AND EACH IS AIMED AT A SHAPE THE OTHER MISSES. The newline refusal names
+# a field value that becomes two lines; the form gate refuses any write that raises the board's
+# CORRUPTING count, whatever shape does it. A newline whose continuation reads `hello world` makes
+# an `unknown_key`, which is CONFINED, so only the first catches it; a sentence ending in a bare
+# `claim some-name` carries no newline at all, so only the second does. Both mutations below are
+# aimed that way on purpose.
+form_scan_pen="$tree/tools/fixtures/f/fleet_claim_form_scan.sh"
+form_corrupting() { sh "$form_scan_pen" "$1" 2>/dev/null | awk -F= '$1=="corrupting"{print $2}'; }
+NL='
+'
+cp "$tree/construction/fleet-claims.kyri" "$pen/before-form-legs.kyri"
+
+if (cd "$tree" && sh "$writer" --open newline-claim --paths "tools/n/nl.sh" --what "a sentence${NL}seat impostor" >/dev/null 2>&1); then
+  say "a_newline_in_the_sentence_is_refused=no"
+else
+  say "a_newline_in_the_sentence_is_refused=yes"
+fi
+if cmp -s "$pen/before-form-legs.kyri" "$tree/construction/fleet-claims.kyri"; then
+  say "a_refused_newline_leaves_the_board_untouched=yes"
+else
+  say "a_refused_newline_leaves_the_board_untouched=no"
+fi
+if (cd "$tree" && sh "$writer" --open newline-paths --paths "tools/a.sh${NL}what stolen" --what "one line" >/dev/null 2>&1); then
+  say "a_newline_in_the_paths_is_refused=no"
+else
+  say "a_newline_in_the_paths_is_refused=yes"
+fi
+# and the refusal lifts: the same claim, said on one line, walks free
+if (cd "$tree" && sh "$writer" --open newline-claim --paths "tools/n/nl.sh" --what "a sentence, seat impostor and all, on one line" >/dev/null 2>&1); then
+  say "a_one_line_sentence_walks_free=yes"
+else
+  say "a_one_line_sentence_walks_free=no"
+fi
+
+# the form gate: a sentence ending in a bare claim header is the `glued_header` signature, and it
+# carries no newline, so the refusal above cannot see it
+cp "$tree/construction/fleet-claims.kyri" "$pen/before-gate-leg.kyri"
+out=$(cd "$tree" && sh "$writer" --open glued-claim --paths "tools/g/g.sh" --what "the peer already opened claim port-band" 2>&1) || true
+case "$out" in *"verdict=would_corrupt"*) say "a_sentence_ending_in_a_bare_header_is_refused=yes" ;; *) say "a_sentence_ending_in_a_bare_header_is_refused=no" ;; esac
+if cmp -s "$pen/before-gate-leg.kyri" "$tree/construction/fleet-claims.kyri"; then
+  say "a_gate_refusal_leaves_the_board_untouched=yes"
+else
+  say "a_gate_refusal_leaves_the_board_untouched=no"
+fi
+if (cd "$tree" && sh "$writer" --open glued-claim --paths "tools/g/g.sh" --what "the peer already opened the port-band claim" >/dev/null 2>&1); then
+  say "the_same_sentence_reworded_walks_free=yes"
+else
+  say "the_same_sentence_reworded_walks_free=no"
+fi
+case "$(form_corrupting "$tree/construction/fleet-claims.kyri")" in
+  0) say "a_writer_run_leaves_the_board_uncorrupted=yes" ;;
+  *) say "a_writer_run_leaves_the_board_uncorrupted=no" ;;
+esac
+
+# AN INHERITED CORRUPTING BOARD STILL TAKES A CLAIM, which is the gate's whole design: refusing
+# there would let one ship's bad conflict resolution stop every other ship from declaring.
+printf 'claim planted-damage\nseat bakery\nstamp 20260917.120000\nepoch %s\npaths tools/p/p.sh\nwhat a sentence a hand glued to claim port-band\n' "$fresh" >> "$tree/construction/fleet-claims.kyri"
+case "$(form_corrupting "$tree/construction/fleet-claims.kyri")" in
+  0) say "the_planted_damage_is_corrupting=no" ;;
+  *) say "the_planted_damage_is_corrupting=yes" ;;
+esac
+out=$(cd "$tree" && sh "$writer" --open on-damaged --paths "tools/d/d.sh" --what "a claim opened on a board a peer damaged" 2>&1) || true
+case "$out" in *"verdict=claimed"*) say "an_inherited_corrupting_board_still_takes_a_claim=yes" ;; *) say "an_inherited_corrupting_board_still_takes_a_claim=no" ;; esac
+case "$out" in *"board_inherited_corrupting="*) say "an_inherited_corrupting_board_is_named=yes" ;; *) say "an_inherited_corrupting_board_is_named=no" ;; esac
+
+# A DUPLICATE NAME IS THE ONE CORRUPTING SHAPE A REBASE AUTHORS, twice in this board's 383
+# revisions, and the writer's drop-awk already repairs it by taking every record of that name
+# before appending one. Proven rather than assumed.
+cat "$pen/before-form-legs.kyri" > "$tree/construction/fleet-claims.kyri"
+printf 'claim doubled-name\nseat incense\nstamp 20260917.120000\nepoch %s\npaths tools/x/one.sh\nwhat the first side of a rebase\n' "$fresh" >> "$tree/construction/fleet-claims.kyri"
+printf 'claim doubled-name\nseat incense\nstamp 20260917.120100\nepoch %s\npaths tools/x/two.sh\nwhat the second side of a rebase\n' "$fresh" >> "$tree/construction/fleet-claims.kyri"
+case "$(form_corrupting "$tree/construction/fleet-claims.kyri")" in
+  0) say "a_doubled_name_is_corrupting=no" ;;
+  *) say "a_doubled_name_is_corrupting=yes" ;;
+esac
+(cd "$tree" && sh "$writer" --open doubled-name --paths "tools/x/one.sh" --what "one record, said once" >/dev/null 2>&1) || true
+if [ "$(grep -c '^claim doubled-name$' "$tree/construction/fleet-claims.kyri")" = 1 ]; then
+  say "an_inherited_doubled_name_is_repaired_by_its_seat=yes"
+else
+  say "an_inherited_doubled_name_is_repaired_by_its_seat=no"
+fi
+
+# --- MUTATION: strike the newline refusal, aimed at a shape only IT catches --------------------
+# The continuation line `hello world` makes an `unknown_key`, which is a CONFINED finding, so the
+# form gate below passes it. Without the refusal the board takes a second line in silence.
+cat "$pen/before-form-legs.kyri" > "$tree/construction/fleet-claims.kyri"
+mutant3="$tree/tools/f/mutant3_claim.sh"
+sed 's|^if has_newline "\$what"; then|if false; then|' "$writer" > "$mutant3"
+(cd "$tree" && sh tools/f/mutant3_claim.sh --open mutant-newline --paths "tools/m/m.sh" --what "a sentence${NL}hello world" >/dev/null 2>&1) || true
+if grep -q '^hello world$' "$tree/construction/fleet-claims.kyri"; then
+  say "mutation_the_newline_refusal_is_bitten=yes"
+else
+  say "mutation_the_newline_refusal_is_bitten=no"
+fi
+
+# --- MUTATION: strike the form gate, aimed at a shape only IT catches --------------------------
+# A sentence ending in a bare `claim port-band` carries no newline, so the refusal above is blind
+# to it. Without the gate the writer authors a corrupting board.
+cat "$pen/before-form-legs.kyri" > "$tree/construction/fleet-claims.kyri"
+mutant4="$tree/tools/f/mutant4_claim.sh"
+sed 's|^form_gate "\$(corrupting_count "\$BOARD")"$|:|' "$writer" > "$mutant4"
+(cd "$tree" && sh tools/f/mutant4_claim.sh --open mutant-glued --paths "tools/m/g.sh" --what "the peer already opened claim port-band" >/dev/null 2>&1) || true
+case "$(form_corrupting "$tree/construction/fleet-claims.kyri")" in
+  0) say "mutation_the_form_gate_is_bitten=no" ;;
+  *) say "mutation_the_form_gate_is_bitten=yes" ;;
+esac
+rm -f "$mutant3" "$mutant4"
+cat "$pen/before-form-legs.kyri" > "$tree/construction/fleet-claims.kyri"
+
 # --- an EMPTY board, which is the state every ship meets first ---------------------------------
 # The board ships empty, so this is the FIRST reading any ship takes -- and it was the one the pen
 # could not reach, because the absent-board leg exits before the parse ever runs. Found by running
