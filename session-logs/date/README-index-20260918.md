@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.004437` | [Send confirmed -- both remotes hold 07a852796](20260918/20260918-004437_send-confirmed-07a852796.kyri) | Third contested push; a clean-apply nib went stale and was corrected before this send. |
+| `20260918.004301` | [Send -- idle check and fold-repoint landed](20260918/20260918-004301_send-idle-check-and-fold-repoint-landed.kyri) | Both remotes hold 9fd784032 after one rebase; seven paths repointed, one paragraph condensed under the pin bound. |
 | `20260918.004102` | [Send -- sixth check landed, two repairs found along the way](20260918/20260918-004102_send-sixth-check-and-shedding-landed.kyri) | Both remotes hold 9e961a789 after two rebases; four links repointed, one account shed under bound. |
 | `20260918.003743` | [Seventh idle check -- Fire row confirms %819 resolved](20260918/20260918-003743_seventh-idle-check-fire-row-confirms-819-resolved.kyri) | Ran the register scan fresh rather than citing the card; law_ceiling=1, the-baton.md the sole named remainder, matches the account. |
 | `20260918.003514` | [Sixty-four names a family](20260918/20260918-003514_sixty-four-names-a-family.kyri) | 64 hex fits SHA3-256; SHA3-512 is 128. |
