@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.095553` | [Thirteenth empty-open turn, no task handed](20260918/20260918-095553_thirteenth-empty-open-turn.kyri) | Baton register re-checked at 23%, well under target; no docs-geode task found. |
 | `20260918.095544` | [Pheromone -- empty-open turn, no task handed](20260918/20260918-095544_pheromone-empty-open-turn.kyri) | Shape-rune STOP awaits Keaton; queue outside lane; claims board empty. |
 | `20260918.095211` | [Twelfth empty-open turn, no task handed](20260918/20260918-095211_twelfth-empty-open-turn.kyri) | Petrichor's lane gated on green interfaces, claims board empty, twelfth confirmation. |
 | `20260918.095232` | [Eleventh empty-open turn -- no task handed](20260918/20260918-095232_eleventh-empty-open-turn.kyri) | Tree clean, claims board empty, no agent-doable item in my own lane to pull. |
