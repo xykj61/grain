@@ -132,11 +132,25 @@ question. Full account:
 **This lap's own cold run held `tree_moved=yes`** since edits landed mid-run; the next lap's first
 move should be a fresh cold run held to properly.
 
+**Item 2's `backtick_path` half fell 68 to 64 at this lap's own commit** (`fd8b12c80`, both
+remotes). Most of the 68 living hits were never broken promises -- citations to gitignored-by-design
+files, citations naming a teacher's own tree, and one compile-relative symlink path the scan's
+three honest spellings cannot see. Two were genuinely fixable and landed: `context/QUIN.md`
+repointed to its citation's folded home, and `construction/SHRED_PREP.md`'s Class H table
+de-backticked three already-cut fossil paths its own prose already calls cut. Ceiling lowered 65 to
+64 in the same commit; witness and control GREEN, 22 legs. `construction/ready-to-ask-claude.md`'s
+four hits read as a fully superseded `20260702`-era strategy page and are named for Grass's
+reverse-reading lane rather than picked up here. `comment_path` (66/61) and the remaining ~62
+`backtick_path` hits stay per-citation judgment. **This lap's own cold run also held `tree_moved=yes`**
+for the reason above -- a session log write is structurally unavoidable every response, so a
+recovered-lock re-launch still met the same spoil.
+
 The overnight order, most durable first. Take the first item that needs no open word:
 
 1. **Fascia on touch.** Any page this loop opens, link home to root and down to its leaves.
-2. **`backtick_path` and `comment_path`**, both over-ceiling pre-existing backlogs (68/65 and
-   66/61) spread across pages this lap never opened -- each citation wants a look to tell a stale
-   reference from an illustrative placeholder before it can be repointed or marked.
+2. **`comment_path`**, an over-ceiling pre-existing backlog (66/61) spread across pages this lap
+   never opened -- each citation wants a look to tell a stale reference from an illustrative
+   placeholder before it can be repointed or marked. The remaining `backtick_path` hits (~62) share
+   the same shape and mostly resolve to "not a broken promise" on inspection.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
