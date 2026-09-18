@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim diffuser-offset-search
-seat diffuser
-stamp 20260918.005052
-epoch 1789707052
-paths tools/fixtures/t/torus_offset_search_scan.sh
-what Round two's proposal 1 (active-designing/20260918-002526): building a bounded scan that sweeps the single-parameter offset family {d,-d,2d,-2d} mod C, generalizing round one's two hand-picked members (d=1 ring4adj, d=g ring4wide) to find the best d for a given grid, and reporting whether it beats round one's measured spread of 33.

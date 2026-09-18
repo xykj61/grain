@@ -6657,6 +6657,24 @@ path tools/t/torus_place_witness.rish
 tier lap   # 4s; 29 behaviors in a pen, both verdicts reachable, three mutations bitten
 seated 20260915.175000
 
+# torus_offset_search -- round two's proposal 1, and the answer is the family's own maximum. Round
+# one's reading 3 compared exactly two hand-picked members of one offset family, {d,-d,2d,-2d} mod
+# C, at d=1 (run-kill 5) and d=g (run-kill 33). Sweeping every d from 1 to C/2 at the same founding
+# grid finds d=13, run-kill 52 -- which equals C - ceil(C/5) + 1, the theoretical ceiling for five
+# points splitting a ring as evenly as the integers allow. The search did not find a better guess;
+# it found the criterion's own optimum. A second grid (g=32) repeats the same shape.
+#
+# WHAT IS GATED. Both elder closed forms (5 and 4g+1) reproduce under this scan's own algorithm;
+# the search never reads below the hand-picked point it already knows; an aliasing grid (below the
+# five-distinct-copies precondition) refuses rather than guessing. REPORTED: whether the found
+# optimum beats round one's 33 -- the falsifier itself, a fact about geometry no lap repairs.
+#
+# Paper: `active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md`
+guard torus_offset_search
+path tools/t/torus_offset_search_witness.rish
+tier lap   # <1s; 13 behaviors, two grids, one mutation bitten, no digest population needed
+seated 20260918.005052
+
 # locality_key -- the door BOTH torus readings left open, and it turns out to be a price rather than
 # a yes. Each of those closes names the same remaining idea in the same words: a key built to carry
 # locality on purpose. This guard opens it and prices the crudest member of that family -- the file's
