@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260918.012606
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role coding assistant
+modality text
+model claude-sonnet-5
+model_status configured active-session model unverified beyond client selection (/model sonnet)
+voice Kyri
+host anonymized Linux workstation, America/New_York
+title shastra/ grows its glossary and its crux -- Tattva Sandarbha's pramana argument
+prompt Keaton asked how to complete, solidify, expand, improve, and organize shastra/ toward Vaishnava prema-bhakti and the Bhagavata-as-Uttara-Veda theme, in Kyri Bhakta-Radiant-Twilight voice, single-stranded and silo. He then approved the recommended plan outright.
+think Named the crux before the structure, per lindy-first-crux.md: Tattva Sandarbha's pramana argument (why trust the Bhagavatam at all) is what every later Sandarbha and the Uttara Veda claim itself rests on, so it gets built first and deeply rather than as one entry among seven.
+think Proposed and began a directory shape: glossary.md (one file, terms only), uttara-veda/README.md (not yet built -- named as next), sandarbhas/NN-name/README.md per work in Jiva's own teaching order, bhagavatam-commentaries/ and kavya-and-ritual/ last. Matches classical-vedic-astrology/'s studies/ silo pattern already in the tree.
+think Built glossary.md first: pramana, tattva, sambandha/abhidheya/prayojana, sandarbha, rasa, prema, bhakti, Uttara Veda -- each a plain first-principles entry that never leans on a later one, so later files can use the vocabulary without re-explaining it each time.
+think Built sandarbhas/01-tattva/README.md as the crux file. Wrote an explicit honesty note before the content: this session has not opened and read the verified archive.org text (elkman-s.-tattva-sandarbha-1986, tattva_sandarbha, tattva-sandarbha.-acyuta-grantha-mala) line by line -- the summary draws on established public scholarship about the work's argument (Elkman's study's general shape, wider academic consensus on Gaudiya philosophy) rather than a primary-source read, and says so plainly rather than letting a confident five-step argument imply more verification than it has earned.
+think The five-step argument summarized (perception/inference cannot reach transcendental truth -> testimony can -> Veda is apauruseya -> Purana explains the Veda -> the Bhagavata satisfies specific tests above rival Puranas) is standard, safe academic-consensus territory about this text's known structure, not a novel or uncertain claim -- kept the file honest about its own secondhand status regardless.
+obs Naming the file's own epistemic limit inside itself (rather than only in a session log) matters here specifically: this is a devotional-philosophical room where overclaiming authority on a text nobody in this session has actually read would be the same kind of dishonesty docs-implementation-sync.md forbids in a technical doc, wearing a more forgivable-looking coat.
+file shastra/glossary.md -- new file, eight terms, single-stranded
+file shastra/sandarbhas/01-tattva/README.md -- new file, the crux study, with an explicit secondhand-summary disclosure
+recommend check-in (either) -- uttara-veda/README.md is now buildable (it leans on this crux) and is the natural next file; the remaining five Sandarbhas wait in Jiva's own order after that
