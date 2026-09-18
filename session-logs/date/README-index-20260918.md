@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.041430` | [Send confirmed -- both remotes hold de5536851, response closes here](20260918/20260918-041430_send-confirmed-de5536851-response-closes.kyri) | Fifth hop; response ends deliberately rather than chasing further. |
 | `20260918.041220` | [Send confirmed -- both remotes hold c0262d502, chain closed](20260918/20260918-041220_send-confirmed-c0262d502-chain-closed.kyri) | Fourth and final hop; clean push, no further conflict. |
 | `20260918.041020` | [Send confirmed -- both remotes hold 976db703e, chain closes here](20260918/20260918-041020_send-confirmed-976db703e.kyri) | Third hop of a contested chain; docs-geode still reads clean. |
 | `20260918.040640` | [Send confirmed -- both remotes hold d338e483a, chain closes here](20260918/20260918-040640_send-confirmed-d338e483a.kyri) | Two-hop contested push; a self-referential nib caught and corrected by hand. |
