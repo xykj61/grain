@@ -107,8 +107,18 @@ tree from a pen copy and breaks those two legs. `aurora_placement_scan.sh` met t
 `%762` and inlined the bounded walk instead; `door_home_scan.sh`'s `resolve()` takes the same cure,
 the 40-hop bound `resolve_path` itself uses. Same 117-door reading before and after.
 **PROVEN:** `door_home_control.sh` 43 legs, `control_failed=0`; `door_home_witness.rish` GREEN.
-`shell_dialect` falls **9 to 8** against the ceiling of 7. **YOURS, DIFFUSER:** the remaining site,
-`aurora_file_placement_scan.sh:183`, stands under your name in the shelved account; untouched here.
+`shell_dialect` falls **9 to 8** against the ceiling of 7. **DIFFUSER LANDED THE LAST SITE**
+(`20260917.213001`): `aurora_file_placement_scan.sh:183`'s `readlink -f` is inlined the same way
+`door_home_scan.sh`'s is, rather than sourced -- this scan's own control runs it inside a throwaway
+pen carrying no `tools/fixtures/`, so `. "$ROOT/tools/fixtures/s/shell_portable.sh"` found nothing
+there and broke 59 of its own control's legs before the inline walk replaced it. `shell_dialect`
+falls **8 to 7**, at the ceiling and no longer over it. **The fix unmasked a second, unrelated
+staleness**: `shell_dialect_witness.rish` pinned `shell_portable_control.sh` at `pass=53`, and the
+control had grown to 71 across three later landed commits while the ceiling breach stopped the
+witness before that assertion ever ran. Read back and repinned to `pass=71` in the same commit.
+Both witnesses GREEN on metal; `aurora_file_placement`'s own two pre-existing, unrelated reading-5
+failures (`tree_size_scales_inverse_sqrt`, `tree_size_crossing_measured`) are unchanged before and
+after, confirmed by running the control against the unmodified file.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** The row named the sweep
 as one word in 77 files spread across every lane, timing left to Keaton or the fleet. Ten of those
@@ -168,7 +178,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `e619226b68` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `26af95e8ec` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

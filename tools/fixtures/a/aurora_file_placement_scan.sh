@@ -125,6 +125,33 @@ SLOPE_TOLERANCE=0.15        # how far the fitted log-log slope may sit from minu
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || ROOT=$PWD
 cd "$ROOT" || exit 0
 
+# `readlink -f` is GNU-only; the shell_dialect gate counts it and reds on every ship. The portable
+# spelling is `resolve_path` in shell_portable.sh, and this scan's own control runs it inside a
+# throwaway pen repository that carries no tools/fixtures/ at all -- so ROOT there names the pen,
+# and sourcing the helper by path would find nothing. Inlined instead, the same walk
+# door_home_scan.sh uses for the same reason, bounded at the same 40 hops resolve_path itself uses
+# -- the kernel's own SYMLOOP_MAX.
+resolve_path() {
+  _rp_target=$1
+  _rp_hops=0
+  while [ -L "$_rp_target" ]; do
+    _rp_hops=$((_rp_hops + 1))
+    [ "$_rp_hops" -le 40 ] || return 1
+    _rp_hop=$(readlink "$_rp_target" 2>/dev/null) || return 1
+    case "$_rp_hop" in
+      /*) _rp_target=$_rp_hop ;;
+      *)  _rp_target=$(dirname "$_rp_target")/$_rp_hop ;;
+    esac
+  done
+  _rp_dir=$(dirname "$_rp_target")
+  _rp_base=$(basename "$_rp_target")
+  _rp_dir=$(CDPATH= cd -P "$_rp_dir" 2>/dev/null && pwd -P) || return 1
+  case "$_rp_dir" in
+    /) printf '%s\n' "/$_rp_base" ;;
+    *) printf '%s\n' "$_rp_dir/$_rp_base" ;;
+  esac
+}
+
 echo "scan=aurora_file_placement"
 echo "row=7"
 echo "page=active-designing/20260910-060204_the-bounded-torus-moonshots.md"
@@ -180,7 +207,7 @@ xargs -n 400 wc -c < "$work/real.txt" 2>/dev/null \
 # ---- the symlink map: a spelled name to the real file it names --------------------------------
 : > "$work/linkmap.txt"
 while IFS= read -r l; do
-  t=$(readlink -f "$l" 2>/dev/null) || continue
+  t=$(resolve_path "$l" 2>/dev/null) || continue
   case "$t" in "$ROOT"/*) printf '%s\t%s\n' "$l" "${t#"$ROOT"/}" ;; esac
 done < "$work/links.txt" > "$work/linkmap.txt"
 
