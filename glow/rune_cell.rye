@@ -9,6 +9,7 @@
 //! (`rune_triple.rye`).
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
@@ -33,10 +34,14 @@ pub const CellSpec = struct {
 };
 
 pub fn left_slice(spec: *const CellSpec) []const u8 {
+    // invariant: a spec's left face never grows past the lexer's own name ceiling.
+    assert(spec.left_len <= max_name_len);
     return spec.left[0..spec.left_len];
 }
 
 pub fn right_slice(spec: *const CellSpec) []const u8 {
+    // invariant: a spec's right face never grows past the lexer's own name ceiling.
+    assert(spec.right_len <= max_name_len);
     return spec.right[0..spec.right_len];
 }
 
@@ -54,6 +59,10 @@ fn parse_ident(rest: []const u8) ParseError!struct { ident: []const u8, rest: []
     const ident = rest[0..end];
     if (ident[0] >= '0' and ident[0] <= '9') return error.MalformedFace;
     if (ident.len > max_name_len) return error.FaceTooLong;
+    // invariant: every returned ident cleared the ceiling check above and holds at
+    // least one character, so a caller never receives an empty or over-long face.
+    assert(ident.len > 0);
+    assert(ident.len <= max_name_len);
     return .{ .ident = ident, .rest = rest[end..] };
 }
 
@@ -73,5 +82,9 @@ pub fn parse(line: []const u8) ParseError!CellSpec {
     var spec: CellSpec = .{ .left_len = left.ident.len, .right_len = right.ident.len };
     @memcpy(spec.left[0..left.ident.len], left.ident);
     @memcpy(spec.right[0..right.ident.len], right.ident);
+    // invariant: a constructed spec never claims more of its fixed buffers than
+    // parse_ident already proved fit inside the lexer's name ceiling.
+    assert(spec.left_len <= max_name_len);
+    assert(spec.right_len <= max_name_len);
     return spec;
 }
