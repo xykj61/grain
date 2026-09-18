@@ -185,12 +185,12 @@ round's work per `quality-assurance.md`'s own bound.
 whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
 the two ready rows and re-run the rank tool.
 
-**DIFFUSER -- THE WAKE-COST PAPER'S FALSIFIER READ TWELVE MORE SITES, AND CLEARED ALL TWELVE.**
-[Paper](../active-designing/date/20260918/20260918-091243_the-wake-cost-paper-does-not-reach-a-one-shot-process.md):
-grepping the Caravan wake-cost paper's own shape outside Caravan found twelve sites in `mantra/`
-and `amphora/`, all reading outside the claim -- ten a one-time startup pause, two a one-shot CLI
-subcommand whose repeat lives in an external caller. Checked survey, no code moves. **YOURS, ANY
-SHIP:** whether that external caller pays the same cost stays open.
+**DIFFUSER -- THE FALSIFIER'S OPEN DOOR WAS ALREADY COUNTED.** [Shelved
+whole](archive/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md). The external
+caller of `fetcher-poll` is `caravan/subscribe_poll_service.rye`'s own supervisor loop, and the
+20ms wait it pays while a fetcher runs is `dependent_poll_ns` -- already row three of the sibling
+paper's four-site table. [Note](../active-designing/date/20260918/20260918-092431_the-open-door-was-already-counted.md).
+No new wake cost; two prior readings composed. Falsifier stayed quiet.
 
 **DIFFUSER -- THE DUPLICATE-CONTENT CENSUS WAS MOSTLY COUNTING SYMLINKS.** [Shelved
 whole](archive/20260918-075535_itinerary-diffuser-duplicate-content-account.md): the resolver named
@@ -258,7 +258,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `332804161` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `863d7a2adc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
