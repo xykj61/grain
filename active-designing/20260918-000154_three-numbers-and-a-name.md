@@ -213,6 +213,17 @@ says a decision returns to, waits for, or stays Keaton's word, printing each wit
 sentence. Reported and gated on nothing, since a pending decision is a state rather than a fault. It is named here as a
 proposal with its measurement rather than built, so the building is chosen rather than assumed.
 
+**Built** (`20260918.025301`): [`tools/fixtures/p/pending_decision_scan.sh`](../tools/fixtures/p/pending_decision_scan.sh)
+tells a forward-looking sentence from an already-granted one by its verb, and counts a `YOURS:` line
+and an `Open doors for Keaton` bullet beside them -- all four places, one reading, reported and
+gated on nothing exactly as proposed. Run it fresh rather than trusting the table above, whose count
+was one lap's measurement and moves as the tree does:
+
+```sh
+sh tools/fixtures/p/pending_decision_scan.sh
+rishi/bin/rishi run tools/p/pending_decision_witness.rish
+```
+
 ## Where this touches the wider vision
 
 **[Universal and Regenerative](../foundations/20260824-003828_universal-and-regenerative.md)** asks

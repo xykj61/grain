@@ -7840,3 +7840,13 @@ guard composite_key
 path tools/c/composite_key_witness.rish
 tier lap   # ~1s; 16 behaviors in a pen, three exact equalities, two mutations bitten
 seated 20260918.013000
+
+# WHY THIS ROW. active-designing/20260918-000154_three-numbers-and-a-name.md measured a decision
+# parked in four places at once -- a forward-looking sentence naming Keaton's word, a sentence
+# already recording a word granted, a YOURS: line on a living pin, and an Open doors for Keaton
+# section -- and found nothing read them together, then proposed a scan rather than an eighty-first
+# place to park one, reported and gated on nothing. This row is that proposal, built.
+guard pending_decision
+path tools/p/pending_decision_witness.rish
+tier lap   # ~1.2s cold reading over living tracked Markdown; 8 behaviors in a pen, all reported
+seated 20260918.025301
