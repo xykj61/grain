@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.233653` | [empty turn -- no request received, check-in only](20260917/20260917-233653_empty-turn-checkin.kyri) | Second empty turn in a row; check-in, no work opened. |
 | `20260917.233023` | [Send -- lower_call3 delegation landed on both remotes](20260917/20260917-233023_call3-sent.kyri) | Both remotes hold 8b68ab0bc after two rebases. |
 | `20260917.232917` | [Send -- the trio essay landed](20260917/20260917-232917_trio-checked-negative-sent.kyri) | Both remotes hold 6e3e46ea4 after one rebase. |
 | `20260917.232654` | [empty turn -- no request received, check-in only](20260917/20260917-232654_empty-turn-checkin.kyri) | Turn carried only the baton and reminders; no task to act on. |
