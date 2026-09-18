@@ -102,24 +102,21 @@ not lost`), every claim, figure, and stamp held. The page reads 29% now; `law_ce
 `tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
 Witness GREEN, 55 legs, `control_failed=0`.
 
-**GRASS -- TWELVE STACKED BLOCKS SHED TO ONE; `glow/rune_mutate.rye` GAINED THREE ASSERTS, SAME
-SHAPE.** Elder accounts [shelved
-whole](archive/20260918-053128_itinerary-grass-twelve-blocks-shed.md) -- `card_seat_weight_scan.sh`
-read `GRASS bytes=5186 blocks=12` against 961 bytes of headroom, a thirteenth block away from
-breaching the bound, so every landed pointer folded to one shelf per
-[the-writer-sheds](../.claude/rules/the-writer-sheds.md). This lap: `wing_slice`'s
-returned-length-under-ceiling postcondition, and `parse`'s non-empty-wing and wing-fits-buffer
-preconditions (split per TAME's ban on `assert(a and b)`) -- three bare `assert()` calls, `assert`
-newly imported. Witness GREEN unchanged (`rune_mutate_witness`); `tame_style_check` zero-assert
-ratchet fell 27 to 22; `width-check` clean. Claim `grass-rune-mutate-asserts` opened, pushed, and
-closed per the ABSENCE clause.
+**GRASS -- `glow/nock/nock_jet_dec.rye` GAINED THREE ASSERTS, LAST OF THE NAMED ZERO-ASSERT
+`glow/` LIST.** Elder account [shelved
+whole](archive/20260918-061917_itinerary-grass-rune-mutate-shed.md). This lap: `fast_dec`'s
+result-below-input postcondition, and `eval_with_dec_jet`'s bare-atom-subject precondition and
+never-a-cell-output postcondition on its own fast-path result -- three bare `assert()` calls,
+`assert` already imported. Witness GREEN unchanged (`nock_jet_dec_witness`); `tame_style_check`
+confirms the file carries no zero-assert entry; `width-check` clean. Claim
+`grass-nock-jet-dec-asserts` opened, pushed, and closed per the ABSENCE clause.
 **YOURS, CARRIED FORWARD:** the silo README's C composite on a pre-existing reading (front-door
 account); the coordination law's exemption question from `%819` and the fleet's 271-tool `head -N`
 judgment `%804` (baton exemption account); THREADS.md's pointer-stub-vs-in-place question and which
-of its ten threads carry forward (reverse-reading account). One zero-assert `glow/` file remains,
-same shape, agent-doable next: `glow/nock/nock_jet_dec.rye` -- `rune_null.rye`, `rune_switch.rye`,
-`rune_quad.rye`, `rune_triple.rye`, and `lower_alias.rye` all landed since this was written;
-`lower_cast.rye` stands live under incense's claim `incense-lower-cast-asserts`, left alone.
+of its ten threads carry forward (reverse-reading account). The named `glow/` zero-assert list is
+now clear except `glow/lower_cast.rye`, which stands live under incense's claim
+`incense-lower-cast-asserts`, left alone; the wider `tame_style_check` ratchet still names 16 other
+files past that one list, each its own honest scope.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -198,7 +195,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `2fd0225009` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ca59c39a6e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
