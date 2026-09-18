@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.001917` | [Two more proxies checked absent](20260918/20260918-001917_two-more-proxies-checked-absent.kyri) | cpufreq, thermal absent too; hypervisor named in the scan itself. |
 | `20260918.001813` | [The rose walked](20260918/20260918-001813_the-rose-walked.kyri) | Two compass stations reconciled; one fault reported. |
 | `20260918.001641` | [Gauge lane swept clean -- nothing to molt](20260918/20260918-001641_gauge-lane-swept-clean-nothing-to-molt.kyri) | Register ceilings read clean or already parked on Keaton's word; board empty. |
 | `20260918.001518` | [docs-geode front doors, tasted one by one](20260918/20260918-001518_docs-geode-front-door-taste-check.kyri) | Fourteen room README pages graded; all clear Door register/reach/truth; lane queue empty. |

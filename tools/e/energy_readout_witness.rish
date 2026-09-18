@@ -14,9 +14,19 @@
 # WHY THE PROBE NEEDS A GUARD OF ITS OWN. The reading this pier actually returns is a wall of "no",
 # and that answer is worth nothing until the probe has been shown saying "yes" to something real.
 # An instrument that CANNOT detect a facility and one that has simply never met one read alike from
-# their output alone. tools/fixtures/e/energy_readout_control.sh plants five fixtures in a
-# throwaway pen -- powercap present, permission-denied, absent, msr present, and perf gated two
-# ways by perf_event_paranoid -- and watches the probe answer each correctly.
+# their output alone. tools/fixtures/e/energy_readout_control.sh plants fixtures in a throwaway pen
+# -- powercap present, permission-denied, absent, msr present, perf gated two ways by
+# perf_event_paranoid, a cpufreq proxy, a thermal proxy, and a named virt detector -- and watches
+# the probe answer each correctly.
+#
+# WHY CPUFREQ AND THERMAL ARE PROXIES RATHER THAN FACILITIES. Row 6's own erratum
+# (`20260917.203312`) found every joule-bearing door closed on this pier -- powercap, msr, perf,
+# hwmon, all absent, the CPU underneath a real AMD EPYC-Rome hidden behind a Microsoft hypervisor's
+# own choice of what to pass through. A frequency reading or a temperature reading is downstream of
+# power rather than a count of it, so the scan tracks them on a SEPARATE `any_proxy_available` flag
+# and the control asserts that flag never bleeds into the joule-bearing `verdict=facility_available`
+# line -- a proxy standing in for the real thing would be exactly the confusion row 6's falsifier
+# warns against, one door lower.
 
 let control = run ["sh" "tools/fixtures/e/energy_readout_control.sh"]
 assert control.ok else "the energy-readout control did not reach verdict=ok: ${control.err_brief}"
@@ -30,6 +40,11 @@ assert control.out contains "powercap_absent=ok" else "the probe did not name an
 assert control.out contains "msr_present=ok" else "the probe did not recognize a planted, readable MSR device node: ${control.out_brief}"
 assert control.out contains "perf_paranoid_gate=ok" else "the probe did not gate perf on a locked-down perf_event_paranoid: ${control.out_brief}"
 assert control.out contains "perf_paranoid_open=ok" else "the probe did not open perf when perf_event_paranoid allows it: ${control.out_brief}"
+assert control.out contains "cpufreq_present=ok" else "the probe did not recognize a planted, readable cpufreq proxy: ${control.out_brief}"
+assert control.out contains "cpufreq_proxy_isolated=ok" else "a frequency proxy leaked into the joule-bearing verdict: ${control.out_brief}"
+assert control.out contains "thermal_present=ok" else "the probe did not recognize a planted, readable thermal proxy: ${control.out_brief}"
+assert control.out contains "thermal_proxy_isolated=ok" else "a temperature proxy leaked into the joule-bearing verdict: ${control.out_brief}"
+assert control.out contains "virt_name_present=ok" else "the probe did not name a planted virt-detect binary's own answer: ${control.out_brief}"
 
 # invariant: the live scan itself still runs and answers a verdict, on THIS host's real paths --
 # the control proves the eyes; this line proves they are pointed at the world rather than only at

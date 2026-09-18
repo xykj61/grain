@@ -7778,12 +7778,15 @@ tier lap
 seated 20260917.184937
 
 # ROW 6 OF THE BOUNDED TORUS MOONSHOTS ASSUMED A HOST THAT CAN READ ITS OWN JOULES, AND NOBODY HAD
-# ASKED THIS HOST. tools/fixtures/e/energy_readout_scan.sh probes five facilities -- powercap RAPL,
-# raw MSR, perf's energy-pkg event, hwmon, and nvidia-smi -- rather than RAPL alone, so a "no"
-# names the whole approach on this host rather than one path a kernel build happened to omit. This
-# guard proves the probe recognizes a real facility, an absent one, and a gated one, in a
-# throwaway pen, before trusting the wall of "no" this pier's own real paths return. 1.25s
-# measured `20260917.213500`, text and sysfs reads only, no build.
+# ASKED THIS HOST. tools/fixtures/e/energy_readout_scan.sh probes seven facilities -- powercap
+# RAPL, raw MSR, perf's energy-pkg event, hwmon, nvidia-smi, and (as of `20260918`) two DVFS/heat
+# proxies, cpufreq and thermal -- rather than RAPL alone, so a "no" names the whole approach on
+# this host rather than one path a kernel build happened to omit. The proxies are held on their
+# own flag and never promote to the joule-bearing verdict, and the hypervisor is now named by
+# `systemd-detect-virt` rather than only flagged. This guard proves the probe recognizes a real
+# facility, an absent one, a gated one, and a proxy correctly isolated, in a throwaway pen, before
+# trusting the wall of "no" this pier's own real paths return. 1.13s measured `20260918`, text and
+# sysfs reads only, no build.
 guard energy_readout
 path tools/e/energy_readout_witness.rish
 tier lap

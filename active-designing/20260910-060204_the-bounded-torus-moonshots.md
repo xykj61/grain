@@ -56,6 +56,24 @@ they do not move between runs here -- and it is **UNMEASURED for the other seven
 `sh tools/fixtures/e/energy_readout_scan.sh` on each rather than assuming this reading generalizes.
 Every other word on this page is kept as written.
 
+**Row 6 second erratum:** `20260918.001715` -- the first erratum's own falsifier reached only the
+direct counters; a reader locked out of RAPL might still bound a coarse proxy from clock frequency
+or heat, since power draws roughly as the cube of frequency and heat is downstream of power. The
+scan now probes two further doors, held apart from the joule-bearing verdict on their own flag so
+neither can be mistaken for an energy count: **cpufreq** at
+`/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq` and **thermal** at
+`/sys/class/thermal/thermal_zone*/temp`. **Both read absent, for the same underlying reason as the
+five before them** -- no cpufreq sysfs tree at all, and zero thermal zones exposing a readable
+`temp`. Seven independent doors now read no under one probe, in one 1.13-second run, which sharpens
+the first erratum's finding from "the direct counters are hidden" to "every locally observable
+power-adjacent signal is hidden, not only the direct ones." The hypervisor's name also moved from a
+hand-run check into the scan itself: `virt_detect_bin=systemd-detect-virt virt_name=microsoft` now
+prints beside the door table on every run. Recommended: **keep the first erratum's re-aim exactly**;
+this widens the standing guard's scope rather than changing its recommendation. The reading stands
+at [`20260918-001715_the-two-proxies-that-were-also-absent.md`](20260918-001715_the-two-proxies-that-were-also-absent.md).
+**Every figure in this clause is HELD for this host**, exactly as the first erratum's are, and
+**UNMEASURED for the other seven piers**. Every other word on this page is kept as written.
+
 **Erratum:** `20260916.055111` -- this page's **ranking section** was graded whole, and it
 holds where it claimed and not where it would have flattered. Against **read order**, which is
 what the ranking claimed to predict, the ten rows it actually governed read at Spearman rho
