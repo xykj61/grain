@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.224719` | [Cold open -- tree current, board empty, rota row read](20260917/20260917-224719_cold-open-check-in.kyri) | ABSENCE-checked, claim board empty, rota row 4 verified. |
 | `20260917.224056` | [Aurora's sealed and deciding hold no torus seam](20260917/20260917-224056_aurora-deciding-and-sealed-hold-no-torus-seam.kyri) | Checked negative: read both files whole, neither is periodic. |
 | `20260917.223843` | [plant_apply_args, a dead line removed](20260917/20260917-223843_plant-apply-args-and-a-dead-noop-line.kyri) | two glow-tend controls source plant.sh, both GREEN. |
 | `20260917.223745` | [Status check before the next moonshot](20260917/20260917-223745_status-check-before-next-moonshot.kyri) | Deferred a fourth torus-thread essay; named two clean next moves. |
