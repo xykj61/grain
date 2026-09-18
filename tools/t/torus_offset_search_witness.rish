@@ -1,0 +1,97 @@
+# tools/t/torus_offset_search_witness.rish -- a small search beats round one's two hand-picked
+# offsets, and reaches the family's own ceiling exactly.
+#
+# WHY THIS RUNG. Round two's proposal 1
+# (active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md)
+# named the open question torus_place_witness.rish left standing: its reading 3 compared exactly
+# two members of one family of replica-offset sets -- {d, -d, 2d, -2d} mod C -- at d=1 and d=g,
+# and never asked whether some other d in that same family beats either hand-picked point.
+#
+# THE ANSWER. Sweeping every d from 1 to C/2 at round one's own grid (g=8, C=64 cells) finds
+# d=13, run-kill length 52 -- against round one's own measured 33 for d=8. 52 is not merely
+# larger; it equals the theoretical ceiling for five points splitting 64 cells (C - ceil(C/5) + 1
+# = 64 - 13 + 1 = 52), so the search did not find a better guess -- it found the family's own
+# maximum. The same holds at a second grid (g=32): the elder closed form 4g+1 = 129 still measures
+# correctly, and the search still beats it and still reaches the ceiling.
+#
+# THE ARITHMETIC IS THE WHOLE READING. Five points (the cell itself plus four offsets) split a
+# ring of C cells into at most five gaps; the run-kill length is C minus the widest gap plus one,
+# so it is maximized exactly when the gaps are as even as the integers allow. Round one's own two
+# points, {1,-1,2,-2} and {g,-g,2g,-2g}, both cluster their five points into a short arc relative
+# to C -- neither was ever aiming for even spacing, because neither was chosen by that criterion.
+# A hand-picked shape from a fixed torus or ring axis is a POOR proxy for the criterion that
+# actually governs declustering spread; a one-parameter sweep over the SAME shape family finds the
+# criterion's own optimum in a search space bounded by C/2 integers.
+#
+# WHAT THIS DOES NOT ANSWER. Whether a fully generic four-offset set (not constrained to the
+# {d,-d,2d,-2d} shape) could do even better -- round two's own text names this as a larger,
+# separate question. Whether five copies is the right replica count for a real store; that is
+# round one's own inherited assumption, carried forward unchanged. Any real store -- this reading
+# opens none.
+#
+# WHAT IS GATED HERE, and what is only reported. Gated: both elder closed forms (5 and 4g+1)
+# reproduce under this scan's own algorithm at the grids where all five copies stay distinct
+# (round one's own precondition, inherited); the search never finds a run-kill length below the
+# hand-picked point it already knows. REPORTED: whether the found optimum beats round one's own
+# 33 -- a fact about one family's geometry at one grid, which is the falsifier itself rather than
+# a controllable pass/fail bit.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/t/torus_offset_search_control.sh -- 13 behaviors,
+# no digest population needed since the scan is pure arithmetic over one integer:
+#
+#   THE FOUNDING GRID (g=8) reproduces both of round one's own numbers under this algorithm, then
+#     finds a d that reaches the theoretical ceiling exactly and beats round one's 33.
+#   A SECOND GRID (g=32) repeats the same shape, so the finding is not one lucky point.
+#   AN ALIASING GRID (g=3, below the precondition every offset family shares) refuses honestly
+#     rather than reporting a false closed-form match.
+#   ONE MUTATION, proven landed by cmp before its reading: forcing the closed-form gate to always
+#     pass turns the aliasing grid's honest refusal into a false ok, showing the gate is
+#     load-bearing rather than decorative.
+#
+# Style: context/GAUGE_STYLE.md
+# Paper: active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/torus_offset_search_witness.rish
+
+say "torus-offset-search: Language EN -- round one's two hand-picked offsets were never the family's own maximum."
+say "torus-offset-search: Style Gauge, Meter -- every figure names its grid and the closed form it checks against."
+say "torus-offset-search: Lens TAME -- bound the sweep to C/2, derive the ceiling, prove the verdict against a planted mutation."
+
+let control = run ["sh" "tools/fixtures/t/torus_offset_search_control.sh"]
+say control.out
+assert control.ok else "torus-offset-search: the control must complete -- its own lines are printed above"
+
+assert control.out contains "g=8: d=1 reproduces round one's ring4adj closed form, 5" else "torus-offset-search: the near-offset closed form must reproduce under this scan's own algorithm"
+assert control.out contains "g=8: d=g reproduces round one's ring4wide measurement, 33" else "torus-offset-search: round one's own number must reproduce exactly before any comparison is trusted"
+assert control.out contains "g=8: the search finds 52, the theoretical ceiling for five points on 64 cells" else "torus-offset-search: the search must find the founding grid's own ceiling"
+assert control.out contains "g=8: the search reaches the ceiling exactly rather than approaching it" else "torus-offset-search: reaching the ceiling exactly is the strong form of the finding"
+assert control.out contains "g=8: the search beats round one's already-measured 33" else "torus-offset-search: the whole question this rung exists to answer must read yes"
+assert control.out contains "g=8: the instrument passes its own gate on the founding grid" else "torus-offset-search: the founding grid must pass"
+
+assert control.out contains "g=32: the elder closed form 4g+1 holds at a second grid" else "torus-offset-search: a second grid must reproduce the elder closed form too"
+assert control.out contains "g=32: the search beats round one's number here too" else "torus-offset-search: the finding must not be one lucky grid"
+assert control.out contains "g=32: the instrument passes at a grid four times round one's own" else "torus-offset-search: the second grid must pass"
+
+assert control.out contains "g=3: d=g aliases into fewer than five distinct copies and reads -1, named rather than guessed" else "torus-offset-search: an aliasing grid must be named rather than silently wrong"
+assert control.out contains "g=3: an aliasing grid refuses honestly rather than reporting a false closed-form match" else "torus-offset-search: the precondition must refuse rather than guess"
+
+assert control.out contains "m_gate: the mutation applied" else "torus-offset-search: a plant that changed no byte tests the real scan twice"
+assert control.out contains "m_gate: forcing closed_forms_hold=yes on an aliasing grid is the planted lie" else "torus-offset-search: the plant must actually force the gate"
+assert control.out contains "m_gate: without the real check, the mutant reads ok on a grid that should refuse -- the gate was load-bearing" else "torus-offset-search: the mutation must be shown to change the verdict"
+
+assert control.out contains "legs_expected=13" else "torus-offset-search: the control counts its own legs, so an empty pen cannot read as a full one"
+assert control.out contains "control_fail=0" else "torus-offset-search: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "torus-offset-search: the control must balance before it is believed"
+
+# The live reading, on round one's own founding grid.
+let live = run ["sh" "tools/fixtures/t/torus_offset_search_scan.sh"]
+say live.out
+assert live.ok else "torus-offset-search: the live reading must run on this tree, whatever it answers"
+assert live.out contains "instrument=torus_offset_search" else "torus-offset-search: the reading names its own instrument"
+assert live.out contains "grid=8" else "torus-offset-search: the default grid is round one's own founding grid"
+assert live.out contains "best_run_kill=52" else "torus-offset-search: the live search must find the ceiling on this tree, not only in the control's pen"
+assert live.out contains "search_beats_round_one=yes" else "torus-offset-search: the live reading must answer the question this rung exists for"
+assert live.out contains "verdict=ok" else "torus-offset-search: the live reading must pass its own gate"
+
+say "GREEN: torus-offset-search -- 13 behaviors, two grids, one mutation bitten, and round one's 33 beaten by a search that reaches its own family's ceiling exactly."
