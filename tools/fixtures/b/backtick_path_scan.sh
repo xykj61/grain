@@ -115,6 +115,12 @@ fi
 # scan landed: 65 living citations across 38 pages. Lowered to 64 on 20260918: context/QUIN.md's
 # citation repointed to where the file actually folded, and three already-cut SHRED_PREP.md fossil
 # paths de-backticked, since a fossil row's whole point is to name a path that no longer resolves.
+# A later lap's own edits put the count back to 65 before this scan next ran (Grass's
+# reverse-reading lane, `20260918`): `rye/README.md`'s own elder reference named
+# `archive/ALMANAC.md` room-relative to itself, when the file it means lives at
+# `rye-learning-process/archive/ALMANAC.md` -- the very spelling the SAME PAGE already uses two
+# lines below for the same file. Repointed to match, which returns the count to 64; the ceiling
+# holds there rather than falling further.
 # Lower it in the same commit as any sweep.
 ceiling="${BACKTICK_PATH_CEILING:-64}"
 list=no
