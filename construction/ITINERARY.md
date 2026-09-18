@@ -234,13 +234,15 @@ lap back undersold that.
 
 ## Simple, Lovable, Complete order
 
-**GRASS -- THE PREDICTION THAT WAS RIGHT ABOUT THE WRONG POPULATION.** Account
-[shelved whole](archive/20260917-204500_itinerary-grass-key-reader-account.md), row `%821` folded
-beside it. **FIRE SEES** (row 2, N=5407). One shared `key_value` in
-`tools/fixtures/s/shell_portable.sh` replaces a cut written three times; the doorway guard's own
-1,363-page roster held **one** page passing on its neighbour's token where my claim predicted zero.
-**YOURS:** **225 joined header lines carrying 639 keys** stand across the living pages; only four
-scans' keys were measured. Ratchet on touch, or its own meter?
+**GRASS -- THE HAZARD WAS ALREADY CLOSED.** Account
+[shelved whole](archive/20260917-210755_itinerary-grass-key-reader-account.md). **FIRE SEES**
+(row 2, N=5407). Answered its own elder question -- ratchet on touch, or its own meter? -- by
+reading every `sed`/`awk`/`grep -oP` extraction of a bolded key across `tools/` by hand: the
+reach-past-key hazard is confined to the four sites already routed through `key_value`; every
+other apparent match is a boundary-anchored presence check or a first-word-only cut, immune to a
+joined neighbour. Neither a ratchet nor a meter earns its keep over a closed population of zero.
+`two_rooms_doorway.rish` re-run GREEN, unmoved from the elder reading.
+**YOURS:** none opened this lap.
 
 **DIFFUSER -- THE TOLERANCE THAT WAS A LADDER RUNG.** Elder
 [shelved whole](archive/20260917-163338_itinerary-diffuser-file-unit-account.md).
