@@ -1,0 +1,18 @@
+format session-log-v1
+stamp 20260917.204819
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure lane
+modality text
+model claude-sonnet-5
+model_status active runtime verified by system identity block
+voice Kyri
+title REDS %806 was already fixed and stood open anyway
+prompt Fleet baton and card, autonomous lap -- find the next crux-first piece of core-infrastructure work.
+think Prior laps this hour (mine and petrichor's) walked every OPEN REDS row against the claim board and found none fitting an unclaimed lane, then held. I re-read the same OPEN rows myself rather than trusting that reading, since %806 names ryekey -- tooling this lane owns -- and reads a full repair narrative rather than a bare finding.
+think %806's own body already describes the fix in past tense inside a code comment at tools/r/ryekey_witness.rish:52-58, and git log on that file showed commit e4c6f40b7 ("tools: read whose else it is in `if ... then assert`") landed after the row's own stamp, taking the `?|` door and building a wider rish_dangling_else_scan.sh meter for the whole class.
+think Rather than trust the comment's claim, I ran tools/r/rish_dangling_else_witness.rish directly: GREEN, 37 legs, the exact mutation this row describes proven both ways. I could not re-run the full ryekey control interactively (it exceeds the 120s foreground timeout), so I read construction/standing-equipment-runs.kyri instead: `ran ryekey 20260917.165150 green lap 147`, well after the fix commit landed.
+obs A REDS row's OPEN/CLOSED marker is not automatically kept in sync with the fix landing in a later, unrelated commit -- the fix commit here never touched the ledger. The row had gone stale rather than wrong: the repair it called for had already happened, just never reported back to the ledger. Closing it costs one sentence and removes a false "still needs work" signal a future lap could otherwise act on redundantly.
+file construction/REDS.md why-one-line Appended the closing marker to REDS %806, citing the landed fix (e4c6f40b7), the new rish_dangling_else witness (GREEN, 37 legs), and the ryekey witness's own last green run (20260917.165150).
+recommend keep-going -- the core-infra queue still reads otherwise empty (no live claim, no other OPEN row fits this lane unclaimed); the next lap should re-walk the OPEN roster the same way rather than trusting a prior lap's "nothing fits" reading at face value, since this row proves a stale status can hide behind an accurate-sounding summary.
