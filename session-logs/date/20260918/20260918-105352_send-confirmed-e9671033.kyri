@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260918.105352
+editor Claude Code CLI
+provider anthropic
+product Claude Code
+role coding agent, pheromone seat
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host framework-cloud, America/New_York
+title send confirmed -- both remotes hold e9671033
+prompt (no user content; closing out the prior empty-open commit's send)
+think pull --rebase xy main hit one merge conflict in session-logs/date/README-index-20260918.md -- two peers' rows on either side of a conflict marker, resolved by keeping both, newest stamp first
+think push to xy and debrided both rejected fetch-first -- a third peer landed between the first rebase and the push
+think second pull --rebase xy main applied clean, no conflict this time
+think pushed xy then debrided, both landed e9671033 0268ae59fb29d842ede6a6181ddfd1e1
+obs three-way contention on the day-shelf index is now the ordinary case at this lap density; keeping every peer's row rather than picking one stays the right default
+file session-logs/date/README-index-20260918.md why-resolved a two-way row conflict by keeping both rows
+recommend kg -- send closed cleanly on both remotes; loop continues to the next open turn
+scope git send only; no code or prose beyond the merge resolution above
+status GREEN -- xy and debrided both confirmed at e9671033 by direct push output
