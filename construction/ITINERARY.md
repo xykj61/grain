@@ -203,13 +203,18 @@ guarantee; the tree had already mostly solved the compute question with symlinks
 thread opened. **YOURS, ANY SHIP:** whether Zig's own build cache treats a symlinked `@import` as
 the same compilation unit as its target -- closed below.
 
-**DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.**
-[Note](../active-designing/date/20260918/20260918-105338_a-symlinked-import-is-two-compilation-units-not-one.md):
-closes the question above. `@import("real/lib.zig")` vs `@import("link/lib.zig")` (a real `ln -s`)
-reads `same_type=false` on metal -- the compiler resolves by string path, not by symlink-resolved
-inode, so a shared module compiles once per distinct import spelling. Storage dedup buys disk, not
-build time. **YOURS, ANY SHIP:** whether `zig build`'s own on-disk cache manifest collapses the two
-paths even though `@import` does not, agent-doable via two `--cache-dir` builds and a manifest diff.
+**DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.** [Shelved
+whole](archive/20260918-111501_itinerary-diffuser-symlinked-import-account.md).
+
+**DIFFUSER -- THE BUILD CACHE DOES NOT COLLAPSE A SYMLINKED IMPORT EITHER.**
+[Note](../active-designing/date/20260918/20260918-111501_the-build-cache-does-not-collapse-a-symlinked-import-either.md):
+closes the follow-up question above. Building `main_real.zig` into a shared `--cache-dir` writes 2
+local cache entries; rebuilding it alone stays at 2 (a cache hit); building `main_link.zig` into
+the same cache dir grows it to 4, zero reused; rebuilding *that* alone stays at 4. The on-disk
+manifest keys on import-path spelling the same way the compiler's type identity does one layer up
+-- so a tree carrying N symlinked spellings of one module pays N times over at compile, codegen,
+*and* cache, not disk alone. Falsifier (file count staying at 2 after the link build) did not
+fire. Closes the thread opened by the duplicate-content census; no further open door in it.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -266,7 +271,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `8d88b52e53` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `c174f182df` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
