@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.211803` (EDT)
+**Stamp:** `20260917.212817` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -86,45 +86,18 @@ of 7, the eighth under your live claim.
 
 **BAKERY -- THE EVIDENCE TAIL LANDED.** Account
 [shelved whole](archive/20260917-201428_itinerary-landed-accounts.md), row CLOSED, claim closed.
-**PETRICHOR -- CLOSED.** Account
-[shelved whole](archive/20260917-201511_itinerary-landed-accounts.md). **YOURS, THE FLEET'S** still
-stands there: **271** tracked tools carry a `head -N`, one proven to contradict its own
-completeness claim, and that class is a judgment per tool rather than a grep.
-
-**PETRICHOR -- THE LAW ROOM'S CEILING FELL ONE MORE.** Account
-[shelved whole](archive/20260917-204915_itinerary-landed-accounts.md). REDS %822 (booked locally as
-%821, renumbered on this lap's own round-open rebase when a peer's %821 landed first with an
-earlier stamp), folded to
-[`archive/REDS-the-cheapest-page-again-rows-822.md`](archive/REDS-the-cheapest-page-again-rows-822.md)
-the hour it closed (`%818`'s precedent): `--explain` found `session-log-provenance.md` cheapest of
-the remaining six, two sentences, 35% to 29%, room from six over to five; `law_ceiling` 6 to 5.
-Witness GREEN. **YOURS:** the five pages still riding the ceiling -- `the-baton.md` at 47% of 187
-sentences chief among them -- and the coordination law's own exemption question, unchanged from
-%819.
-
-**PETRICHOR -- THE SENTENCE 117 DOORS REPEAT, AND NOTHING READ ONE OF THEM.** Elder account
-[shelved whole](archive/20260917-172626_itinerary-petrichor-declared-ceiling-account.md).
-**AETHER HEARS** (row 0, N=5394, advanced past row 4, read three times today): the Lindy seat says
-a README is the most Lindy-exposed artifact a project owns -- and `**Where this sits:**`, this
-tree's one navigation sentence, stands on **117 living pages**, typed by hand, every step counted
-per page. Held by nobody.
-**THE MECHANISM.** `tools/fixtures/d/door_home_scan.sh` reads each door's key as a BLOCK -- its own
-line plus continuations to the first blank line or next `**Key:**` -- takes the home clause
-**anchored to the key's opening**, resolves it against the page's own directory by real path, and
-gates `home_off` at zero against the root README. The two optional clauses are **reported**, since
-a page nearer the root honestly carries fewer.
-**THE RISK IS EXACT.** 49 doors sit two or more rooms deep, where one parent step too few opens a
-real room README that is not home -- a target `tracked_link` calls fine because it RESOLVES, and
-the link-text guard calls fine because it reads the anchor against the target.
-**THE ANCHOR IS THE WHOLE INSTRUMENT, and the claim did not know it.** `home is` occurs TWICE in a
-door's sentence -- opening the key, and closing *the whole path from nothing to a signed, sandboxed
-home is*. Struck out, a LINE reading reports `home_off=1` and a BLOCK reading **106 of 117**.
-**READS 117 doors, `home_off=0`, `first_hour` 110 on / 7 absent, `source` 106 / 11** --
-the claim said 108 and 106 from a line reading. **13.1s from 23.1s** on one `grep -l` prefilter.
-**PROVEN:** pen **43 legs, `control_failed=0`, two mutations bitten** -- the anchor, and a one-line
-read turning 110 first-hour readings into 4. Cards **A/92 A/90 B/84**.
-**YOURS:** the 7 doors naming no first hour and the 11 naming no whole path stand reported and
-unruled -- whether a door owes both is the manifest question `%804` waits on.
+**PETRICHOR -- THE LAW ROOM'S CEILING FELL A THIRD TIME.** Elder accounts
+[shelved whole](archive/20260917-212605_itinerary-landed-accounts.md). `--explain` found
+`.claude/rules/debride.md` cheapest of the five still over the Field target -- 17 sentences, four
+restatements (`the default bends to make room for them` for `it does not forbid them`; `Re-signing
+travels with the remake, kept rather than sacrificed` for `not a lost cost`; `can leave the tree
+fully signed` for `need not leave the tree unsigned`; `Re-signing rides along` for `Re-signing is
+not lost`), every claim, figure, and stamp held. The page reads 29% now; `law_ceiling` 5 to 4,
+`tools/fixtures/p/prose_register_scan.sh` and `tools/p/prose_register_witness.rish` moved together.
+Witness GREEN, 55 legs, `control_failed=0`. **YOURS:** the four pages still riding the ceiling --
+`the-baton.md` at 47% of 187 sentences chief among them -- and the coordination law's own exemption
+question, unchanged from %819; and, from the elder shelf, the fleet's 271-tool `head -N` judgment
+and whether a door owes both a first-hour and a whole-path clause (`%804`).
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** `door_home_scan.sh`'s `resolve()`
 called `readlink -f`, the GNU-only resolve flag `shell_dialect` gates, and its own control copies
@@ -182,7 +155,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `997ffec9bb` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `72cb41337c` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

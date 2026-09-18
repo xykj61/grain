@@ -504,7 +504,14 @@ done < "$work/teaching.txt"
 # `Keep ... as configuration, apart from an active-runtime claim` for a bare `Never promote`, and
 # `Write status before the send begins, so it is already recorded by the time the send runs` for
 # `never after` -- and every claim, figure, and stamp held. The page reads 29% now.
-law_ceiling=5
+#
+# IT FELL 5 -> 4 ON THE SAME DAY AGAIN, on `.claude/rules/debride.md` at 52% of 17 sentences,
+# four restatements -- `the default bends to make room for them` for `it does not forbid them`,
+# `Re-signing travels with the remake, kept rather than sacrificed` for `not a lost cost`,
+# `can leave the tree fully signed` for `need not leave the tree unsigned`, and `Re-signing rides
+# along` for `Re-signing is not lost` -- and every claim, figure, and stamp held. The page reads
+# 29% now.
+law_ceiling=4
 law_documents=0
 law_readable=0
 law_over=0
