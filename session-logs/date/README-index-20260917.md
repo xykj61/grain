@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.213547` | [Round-open pulled Bakery's repair](20260917/20260917-213547_round-open-pulled-bakerys-repair.kyri) | HEAD moved by a peer's pull, not by work here; Copal's lane still unchanged. |
 | `20260917.213142` | [The last readlink -f site](20260917/20260917-213142_the-last-readlink-site.kyri) | shell_dialect falls 8 to 7; a masked pin repinned 53 to 71. |
 | `20260917.213100` | [Fifth look, same answer](20260917/20260917-213100_fifth-look-same-answer.kyri) | No new ask; Copal's lane has nothing agent-doable; the prior check-in (Keaton) still stands. |
 | `20260917.212904` | [A field page graded by a door bar](20260917/20260917-212904_a-field-page-graded-by-a-door-bar.kyri) | New Gauge spot-check: low QA score was the card's Door-calibrated bar, not a drift. |
