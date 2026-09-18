@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.211302` | [Amphora lane reads clean, nothing unclaimed to build](20260917/20260917-211302_amphora-lane-reads-clean.kyri) | Copal audit: 21 amphora witnesses GREEN, REDS/claim board swept, no unclaimed work in lane. |
 | `20260917.211118` | [door_home_scan drops its readlink -f site](20260917/20260917-211118_door-home-readlink.kyri) | shell_dialect falls 9 to 8, GREEN, sent. |
 | `20260917.210803` | [The field a shell could read itself](20260917/20260917-210803_the-field-a-shell-could-read-itself.kyri) | Roster scan 5.8x faster, output identical. |
 | `20260917.210750` | [Three counters answer row 11's open question](20260917/20260917-210750_three-counters-answer-row-11.kyri) | Diffuser: caravan/dwell.rye and tally/region.rye read beside wrap_ring; QA letter B. |
