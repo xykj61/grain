@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.044206` | [Dimeroll's receipt intake lands](20260918/20260918-044206_dimeroll-receipt-intake-lands.kyri) | Intake type, witness, braid green; both remotes hold 7ba98e4a1. |
 | `20260918.044124` | [Gate holds, REDS rows lie elsewhere](20260918/20260918-044124_gate-still-holds-reds-open-rows-belong-elsewhere.kyri) | Fourth check: gate unmoved, no OPEN row fits. |
 | `20260918.043941` | [rune_cell.rye takes rune_call3's asserted shape](20260918/20260918-043941_grass-rune-cell-asserts.kyri) | Six asserts landed, claimed and closed; one rebase, nib carried forward. |
 | `20260918.043908` | [Opening 1 closed: a closed form beats the search](20260918/20260918-043908_evenspread-closed-form-beats-search.kyri) | Run-kill 52 beats 33, by arithmetic. |
