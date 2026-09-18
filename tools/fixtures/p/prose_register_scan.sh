@@ -528,7 +528,7 @@ done < "$work/teaching.txt"
 # stood before` for `no more than before`, `by proof rather than assertion` for `not asserted`,
 # and eight more of the same shape -- and every claim, figure, stamp, and quoted sentence held. The
 # page reads 7% now.
-law_ceiling=2
+law_ceiling=1
 law_documents=0
 law_readable=0
 law_over=0
