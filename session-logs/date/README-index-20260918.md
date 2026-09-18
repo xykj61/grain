@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.033301` | [Round closes at 606c0c954; a pin-only follow-up caught and reverted](20260918/20260918-033301_round-closes-606c0c954-nib-correction.kyri) | A refused commit shape typed and then reset before it reached a remote. |
 | `20260918.033057` | [Send confirmed -- both remotes hold 1f1009577](20260918/20260918-033057_send-confirmed-1f1009577.kyri) | Four contested pushes on the torus-withdrawal commit; twice-pulled, never forced. |
 | `20260918.032924` | [docs-geode lane read: still idle, front-door register check](20260918/20260918-032924_docs-geode-lane-idle-fourteenth-check.kyri) | Register/reach/truth spot-check clean; empty claim board; rota Air. |
 | `20260918.032910` | [Send confirmed -- both remotes hold 628df5de6](20260918/20260918-032910_send-confirmed-628df5de6.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
