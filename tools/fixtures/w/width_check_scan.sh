@@ -100,9 +100,11 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # `glow/lower_shop_nest.rye` delegated (its return type was already `u32`), and unmoved again
 # when `glow/lower_face_lit.rye` delegated its own `zig_safe_ident` the same way -- its own
 # hand-rolled loop indexed with seam `usize` casts already read past by the strict filter:
-# 276 files and 1,129 lines over 1,986 sources.
+# 276 files and 1,129 lines over 1,986 sources. Lowered again 20260917.230329 when
+# `glow/lower_call2.rye` delegated the same way, its own hand-rolled loop's `usize` return
+# type and index variable moving to `u32`: 275 files and 1,127 lines over 1,986 sources.
 corpus_files_ceiling=282
-corpus_lines_ceiling=1129
+corpus_lines_ceiling=1127
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye

@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260917.230843
+editor Claude Code
+provider Anthropic
+product Claude Code
+role coding agent, autonomous fleet seat "pheromone"
+modality text
+model unverified
+model_status active runtime unverified; configured_model claude-sonnet-5 at medium (fleet-loop.sh exec, .claude/settings.json)
+voice Kyri
+host grain-pheromone tree, Linux, America/New_York
+title lower_call2's three call sites delegate to zig_ident
+prompt Baton and ITINERARY.md named the pheromone lane's ident-duplication ladder; two singletons remained after lower_face_lit (lower_core, lower_call3, lower_call2); took the cheapest of the three next, lower_call2 (3 call sites).
+think Round-opened first (fetch/rebase, one commit adopted: erratum session log), then read the prior lap's own log to confirm the ladder state and pick the next cheapest singleton.
+think Read glow/lower_call2.rye (the target) beside its structural sibling glow/lower_call.rye (already a stub, one-arg call vs two-arg call) to copy the exact wrapper shape rather than inventing one -- a field parameter, a refusal.Slot local, zig_ident.safe_ident called with the caller's ceiling constant and .refuse, an assert that the rule wrote exactly the length handed in.
+think Replaced the hand-rolled character-mapping loop and its usize return with the thin delegation, naming the three call sites' own fields ("gate", "a", "b"), keeping LowerError and its BadIdent member untouched.
+think Ran glow_lower_call2_witness (build + selftest + both welcome/unwelcome binaries), glow_ident, glow_run_contract, tame_style_check, width-check, and the glow_ident_duplication scan -- all GREEN on the first pass; copies fell 3 to 2.
+think Tasted the width-check fall rather than assuming it: git-stashed the edit and re-ran the scan, confirming 1,129/276-files pre-edit before writing the 1,127/275-files post-edit reading into the ceiling comment, since a false causal story shipped once already this ladder (lower_face_lit's own log).
+think Lowered glow_ident_duplication's CEILING from 3 to 2 and width-check's corpus_lines_ceiling from 1129 to 1127, each with a dated ladder-comment row naming what moved and why.
+think Wrote and shelved the pheromone account, and confirmed the card stayed under its 40,960-byte pointer bound after the write (39,663 bytes).
+think Regenerated readme_metrics and geode_libraries after staging, per the SEND directive's index-timing note; neither changed, so nothing further to stage.
+obs git rev-list --count HEAD read 5577, so 5577 mod 5 = 2 (Fire, the row that sees). The lap's own decisive move was looking hard at the width-check reading rather than trusting the pattern from four prior sibling laps -- fire's own test, applied to a number rather than to a ledger row.
+rota lap 5577, row 2 -- Fire sees: looked straight at whether the width bill actually moved for this delegation, by stashing the edit and re-running the scan, rather than assuming the pattern held from four prior sibling laps.
+file glow/lower_call2.rye -- zig_safe_ident now delegates to zig_ident.safe_ident, return type usize to u32, three call sites each naming their own field
+file tools/fixtures/g/glow_ident_duplication_scan.sh -- new ladder row, CEILING 3 to 2
+file tools/fixtures/w/width_check_scan.sh -- new ladder-comment row, corpus_lines_ceiling 1129 to 1127
+file construction/archive/20260917-230329_itinerary-pheromone-call2-account.md -- new shelved account
+file construction/ITINERARY.md -- pheromone pointer line replaced, new YOURS naming two remaining singletons
+loom witness=glow_lower_call2_witness verdict=green
+loom witness=glow_ident_duplication verdict=green copies_before=3 copies_after=2 ceiling_after=2
+loom witness=width_check_witness verdict=green corpus_flagged_lines=1127 corpus_flagged_files=275 ceiling=1127
+status GREEN -- six witnesses proven, one round-open, both card and archive bookkeeping done
+scope pheromone lane, one ident-duplication delegation (lower_call2), card and archive bookkeeping
+recommend keep-going -- two singletons remain (lower_core 4 call sites, lower_call3 4 call sites); either is the next lap's fair pick.

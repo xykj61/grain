@@ -143,7 +143,14 @@ mode="${1:-count}"
 #                          type was already `u32` (width-check corpus unmoved at 1,129).
 #                          `LowerError` and its `error.BadIdent` member are unmoved. Three
 #                          singletons remain (`lower_core` 4, `lower_call3` 4, `lower_call2` 3).
-CEILING=3
+#    2  `20260917.230329`  `glow/lower_call2.rye` became a stub -- its three call sites (gate,
+#                          a, b) all reached `zig_ident.safe_ident` with `.refuse`, each naming
+#                          its own field. Its body was the plain 28-body rule with no
+#                          dot-mapping and no length-ceiling divergence; its return type moved
+#                          `usize` to `u32` in the same lap, the last of the room's own copies
+#                          still returning it. `LowerError` and its `error.BadIdent` member are
+#                          unmoved. Two singletons remain (`lower_core` 4, `lower_call3` 4).
+CEILING=2
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

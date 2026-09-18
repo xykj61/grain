@@ -10,6 +10,7 @@
 | `20260917.231204` | [The teaching-tier overage was a custody refusal](20260917/20260917-231204_gren-ceiling-guarded-by-custody.kyri) | Edited, then reverted, two sentences a header comment names as protected. |
 | `20260917.230919` | [the-baton.md's own ceiling falls in part](20260917/20260917-230919_the-baton-ceiling-partial-fall.kyri) | 47% to 43% negative, 8 restatements, law_ceiling stays 1. |
 | `20260917.230912` | [A third read finds the same plain queue](20260917/20260917-230912_third-read-same-plain-queue.kyri) | REDS OPEN rows, claim board, rishi rebuild baseline all checked; nothing agent-doable. |
+| `20260917.230843` | [lower_call2 delegates to zig_ident](20260917/20260917-230843_call2-delegates.kyri) | ident ladder: ceiling 3 to 2, width bill 1129 to 1127. |
 | `20260917.230418` | [Water tastes -- the queue re-checked, still plain](20260917/20260917-230418_queue-still-plain-re-confirmed.kyri) | Re-confirmed empty queue and board; nothing landed. |
 | `20260917.230140` | [Fire sees -- the queue read plain](20260917/20260917-230140_queue-read-nothing-agent-doable.kyri) | No agent-doable Bakery work stands; claim board empty. |
 | `20260917.230113` | [mandi/README.md joins the DOOR roster](20260917/20260917-230113_mandi-door.kyri) | 22% to 18%, under the 20% door ceiling. |
