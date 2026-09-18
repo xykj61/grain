@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260918.030503` | [Send confirmed -- both remotes hold 791c49b4a](20260918/20260918-030503_send-confirmed-791c49b4a.kyri) | One table conflict, kept every row; Git nib carried to HEAD's parent in the same commit. |
+| `20260918.030243` | [Send confirmed -- both remotes hold 3c99a22db](20260918/20260918-030243_send-confirmed-3c99a22db.kyri) | Pending-decisions reading landed; two contested pushes, both rows kept each time. |
 | `20260918.030132` | [Send confirmed -- both remotes hold db4d5638b, chain closed here](20260918/20260918-030132_send-confirmed-db4d5638b-chain-closed.kyri) | Two more contested pushes auto-resolved; nib stopped one commit stale per rule 2; chain ends here. |
 | `20260918.030057` | [Reverse-read: active-designing's torus thread found live](20260918/20260918-030057_reverse-read-active-designing-torus-thread-live.kyri) | Chain bottoms in a self-tending thread, not a stale premise; honest no-finding recorded. |
 | `20260918.025911` | [Send confirmed -- both remotes hold f34e8e307](20260918/20260918-025911_send-confirmed-f34e8e307.kyri) | One table conflict, kept both rows; twice-pulled, never forced. |
