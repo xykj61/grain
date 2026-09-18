@@ -137,19 +137,20 @@ whole](archive/20260918-093822_itinerary-grass-hold0-account.md).
 **GRASS -- hold1 repair, and the zero-assert ratchet's close.** [Shelved
 whole](archive/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md).
 
-**GRASS -- THE CAMELCASE RATCHET'S OWN REPAIR MISSED A SIBLING, FOUND ON REVERSE-READ.** The
-`20260918.102405` camelCase repair renamed `encodedFact`/`factCount` in
-`tally/receipt_offer_bounds.rye` and closed the ratchet 2 to 0 -- yet `tame_style_check` read **1**
-again on this lap's own re-run, since the same file's `productDigest` was never named that round.
-`pub fn productDigest(value: []const u8) BoundError!void` is now `pub fn product_digest(...)`; a
-whole-tree grep found zero call sites for either spelling, so no caller needed a matching edit.
-`tools/t/tally_receipt_offer_bounds_witness.rish` GREEN unchanged (`clean_green=yes`, `control_legs=7`,
-`control_failed=0`); `width-check` clean (`corpus_files_ceiling=282` unmoved);
-`tame_style_check`'s camelCase ratchet reads **0** again. No claim opened: an ordinary repair to one
-existing tracked file (with its `mantra/src/` symlink), named by no ledger row. **YOURS:** the
-ratchet roster stands at `@memcpy` migration (135), `parseInt(` migration (54), `Ed25519` migration
-(1), and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the
-next agent-doable pick is any one, claim-board checked first.
+**GRASS -- THE FOUNDATIONS REVERSE-READ CONTINUES PAST THE FIRST PACKET.** Account
+[shelved whole](archive/20260918-105634_itinerary-grass-camelcase-sibling-account.md): the
+camelCase ratchet's own repair missed a sibling, `productDigest` renamed to `product_digest`,
+ratchet back to 0. This lap continued the actual reverse-reading lane past
+`growing-a-language.md`'s already-closed packet: read
+[`../foundations/20260628-121512_the-foundation-beneath-the-work.md`](../foundations/20260628-121512_the-foundation-beneath-the-work.md)
+and found values prose carrying no forecast, only one checkable claim -- Mantra's pure-fold,
+signed-fact model -- which still holds. [Packet
+written](../active-designing/20260918-105558_a-reverse-read-of-the-foundation-beneath-the-work.md):
+**affirmed as testimony, no molt.** Next in the walk: `the-heart-in-the-work.md`, same stamp,
+second file. **YOURS:** the ratchet roster stands at `@memcpy` migration (135), `parseInt(`
+migration (54), `Ed25519` migration (1), and `functions_over_70=694` headed by
+`glow/lower_shop_gate_witness.rye` at 1035 lines; the next agent-doable pick is any one, claim-board
+checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
