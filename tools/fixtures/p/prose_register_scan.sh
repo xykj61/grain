@@ -511,7 +511,16 @@ done < "$work/teaching.txt"
 # `can leave the tree fully signed` for `need not leave the tree unsigned`, and `Re-signing rides
 # along` for `Re-signing is not lost` -- and every claim, figure, and stamp held. The page reads
 # 29% now.
-law_ceiling=4
+#
+# IT FELL 4 -> 3 ON THE CHEAPEST PAGE LEFT IN THE ROOM: `.claude/rules/gratitude-licenses.md` at
+# 52% of 21 sentences, six restatements -- `rather than a dependency` for `not a dependency`,
+# `leave the code exactly where it lives` for `never copy code`, `learning ideas and running tools
+# separately stay free` for `not learning ideas or running tools separately`, `rather than from
+# memory` for `not from memory`, `permissive, unlike GPL` for `permissive, not GPL`, and `only
+# understanding crosses it, always in words rather than code` for `never crossed by code -- only by
+# understanding` -- and every claim, figure, and stamp held, including the two direct seL4 license
+# quotes, left verbatim. The page reads 19% now.
+law_ceiling=3
 law_documents=0
 law_readable=0
 law_over=0

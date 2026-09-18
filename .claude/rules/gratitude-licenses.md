@@ -2,7 +2,7 @@
 
 **Canonical reference:** `external-research/20260620-014412_system.md` -> section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
 
-`gratitude/` is a reading library, not a dependency. We study concepts; we never copy code.
+`gratitude/` is a reading library rather than a dependency. We study concepts and leave the code exactly where it lives.
 
 ## GPL-3.0 -- gitlinks or not cloned
 
@@ -20,11 +20,11 @@ Per-project Radiant notes: see **997_SYSTEM.md**.
 | **Nix** | Local clone; not tracked by git | Store model -> Brix, Tablecloth; do not link libnix |
 | **libqrencode** | Gitlink | Build CLI to gitignored `tools/.build/` only; do not link into Rye binaries |
 
-LGPL limits **embedding** library code in programs we distribute -- not learning ideas or running tools separately. Full notes: **997_SYSTEM.md**.
+LGPL limits **embedding** library code in programs we distribute; learning ideas and running tools separately stay free. Full notes: **997_SYSTEM.md**.
 
 ## The microkernel family -- verified `20260821.041056` (license read granted by Keaton)
 
-Read from each project's own authoritative text, not from memory. Full verdict and sources: [`../../external-research/20260821-041056_the-microkernel-license-read.md`](../../external-research/20260821-041056_the-microkernel-license-read.md).
+Read from each project's own authoritative text rather than from memory. Full verdict and sources: [`../../external-research/20260821-041056_the-microkernel-license-read.md`](../../external-research/20260821-041056_the-microkernel-license-read.md).
 
 | Component | License | How we may hold it |
 |---|---|---|
@@ -37,7 +37,7 @@ Read from each project's own authoritative text, not from memory. Full verdict a
 
 **The load-bearing sentence**, from seL4's own `LICENSE.md`: the kernel's GPL *"does not cover user-level code that uses kernel services by normal system calls"*, and such usage *"does not fall under the heading of 'derived work'."* Caravan is a root task on the userlevel side of that line.
 
-**The obligation that rides with it:** a **per-file SPDX sweep at fetch time**. seL4 issue #245 (2020) reported ~14 GPL-tagged files inside `libsel4`; the two most prominent read `BSD-2-Clause` on master today, checked directly, yet a project that once shipped mixed headers can again. Intent is not a licence -- check every file's own tag and record it.
+**The obligation that rides with it:** a **per-file SPDX sweep at fetch time**. seL4 issue #245 (2020) reported ~14 GPL-tagged files inside `libsel4`; the two most prominent read `BSD-2-Clause` on master today, checked directly, yet a project that once shipped mixed headers can again. A file's own tag is the licence that counts -- check it and record it, rather than trusting intent.
 
 **FETCHED `20260821.042612` on Keaton's word** (*I grant the fetch, vendor sel4 userlevel and microkit*). Both are **gitlink submodules**, so no vendored source enters our git history: `vendor/sel4` (the whole seL4 repo -- the BSD userlevel is what we may link, the GPL kernel rides along on disk and is neither linked nor in our history) and `vendor/microkit`.
 
@@ -54,7 +54,7 @@ Read from each project's own authoritative text, not from memory. Full verdict a
 
 ## skarnet (s6, skalibs) -- ISC, not GPL
 
-**s6** and **skalibs** (Laurent Bercot) are **ISC** -- permissive, not GPL. **SixOS** (Adam Joseph) is the GPL-3.0 project that composes s6 with Nix.
+**s6** and **skalibs** (Laurent Bercot) are **ISC** -- permissive, unlike GPL. **SixOS** (Adam Joseph) is the GPL-3.0 project that composes s6 with Nix.
 
 - Local clones may exist on disk for reading; they are **not tracked by git**
 - Prefer **public API reference and design docs on the web** (skarnet.org) as the legal study surface
@@ -77,4 +77,4 @@ Read from each project's own authoritative text, not from memory. Full verdict a
 
 ## The clean-room path
 
-External research (`external-research/`) studies the world with attribution. Active designing (`active-designing/`) names only our own modules. The boundary between reading and building is the boundary between `gratitude/` and `rye/`, and it is never crossed by code -- only by understanding.
+External research (`external-research/`) studies the world with attribution. Active designing (`active-designing/`) names only our own modules. The boundary between reading and building is the boundary between `gratitude/` and `rye/`; only understanding crosses it, always in words rather than code.
