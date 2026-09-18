@@ -114,31 +114,34 @@ whole](archive/20260918-032957_itinerary-grass-baton-exemption-ruling-account.md
 exemption for `the-baton.md`, `law_ceiling` held at 1. **YOURS:** the coordination law's exemption
 question from %819; and the fleet's 271-tool `head -N` judgment (`%804`).
 
-**GRASS -- REVERSE-READING PACKET: `construction/THREADS.md` NAMES A CHAPTER TWO SEASONS GONE.**
-Per the reverse-reading steward mission (this Now block, and `.claude/rules/lindy-first-crux.md`),
-walked `session-logs/` backward from tonight's newest logs to find the oldest premise still
-load-bearing beneath them. `construction/THREADS.md` calls itself "the one living ledger of
-everything open," last refreshed `20260809.024320`, and states as current fact that **the Compass
-Chapter is OPEN** with ten threads under it (rune heads, a mold-to-shape debride, TAME core/shelf,
-Brix-infuse, seed publish, Kumara, Realidream, Ship-Pilot, housekeeping, three Rishi expressiveness
-gaps). The waymark ladders seated since (`.claude/rules/waymark-ladders.md`) show Compass closed
-and **two full chapters run after it** -- Harvest, then CION -- and this Now block itself describes
-a wholly different eight-ship Earth formation with none of Compass's nested-round structure. The
-premise a reader meets on opening the file is roughly six weeks stale. This is not inert:
-`recursion-prompts/seed/autonomous-loop.seed.md`'s own boundary condense-and-reaim step names
-`construction/THREADS.md` by path as one of the "crux to-do ledgers" a set-boundary pass deep-reads
-alongside ITINERARY and REDS -- so an unattended condense pass reading it today would be handed a
-chapter name, a round count, and a thread list that no longer describe this tree. `TASKS.md` and
-`ROADMAP.md` received exactly this repair on `20260823.103804` (fused into ITINERARY, left as
-pointer stubs per seventeen and twenty-two inbound machinery references respectively);
-`THREADS.md` predates that pass by two weeks and was not swept into it. **Disposition: standfasted**
-rather than fixed on this lap -- three of its ten threads are still marked `proposed`/`word-gated`
-and owned by Keaton (the mold-to-shape debride, TAME core/shelf, Brix-infuse merge, plus the
-Rishi expressiveness gaps), and folding the file into a pointer stub the way TASKS/ROADMAP took
-risks losing whichever of those Keaton still wants tracked, which is not this packet's call to
-make alone. **YOURS:** whether `THREADS.md` gets the same TASKS/ROADMAP pointer-stub treatment (and,
-if so, which of its ten threads carry forward into ITINERARY's own Now/order rather than being
-dropped), or is refreshed in place as a living ledger in its own right.
+**GRASS -- REVERSE-READING PACKET: `construction/THREADS.md`.** Account [shelved
+whole](archive/20260918-035201_itinerary-grass-threads-packet-account.md): standfasted, six weeks
+stale against the closed Compass Chapter. **YOURS:** pointer-stub vs in-place refresh, and which of
+its ten threads carry forward.
+
+**GRASS -- REVERSE-READING PACKET: FOUNDATIONS' SECOND-OLDEST PAIR, BOTH AFFIRMED CLEAN.**
+Continuing the rotation (`foundations/`, `active-designing/`, `session-logs/` each held one packet
+earlier tonight), walked `foundations/` newest-to-oldest again: the oldest file,
+`growing-a-language.md`, was already read this cycle (affirmed, no molt), so this packet takes the
+next-oldest pair by filename stamp -- `20260628-121512_the-foundation-beneath-the-work.md` and
+`20260628-121512_the-heart-in-the-work.md`, both `Voice: Reya 2` devotional pieces predating the
+Kyri molt. Read both whole and checked every load-bearing claim against the tree as it stands
+today rather than trusting the prose: **"Aurora is the dawn a machine wakes into"** still matches
+`context/LEXICON.md`'s live entry (*"The boot -- dawn on open hardware"*) and the build-stack row
+naming Aurora as a real rung; **"one owner with many witnesses, or one changer and never both"**
+still matches the ownership principle named in
+`context/specs/20260630-004512_module-name-provenance.md`; **"a garden of memory with a known
+edge"**, **"the smallest version that works before the larger one"**, and **"assertions at the door
+of a function, bounds carried inside the types"** all match TAME Guidance's live core reflexes
+unchanged. The one apparent mismatch -- **Kaeden Reyklah** named as coauthor rather than Keaton --
+is not a finding: both files carry a one-clock stamp in their own basename, so they are testimony
+under the stamp-and-name law and keep every word they wrote, and `MAP.md` already names this exact
+class as a living, standfasted hold (*"still name copyright Kaeden Reyklah -- a living hold until
+Keaton names a copyright rewrite"*). **Disposition: affirmed as testimony, no molt** -- the
+premises both pieces rest on (bounded memory, proven-smallest-first growth, assert-at-the-door,
+Aurora's meaning, the ownership rule) are all still load-bearing and unchanged twelve weeks later,
+which is the honest outcome the reverse-reading packet is built to report as readily as a stale
+one. No live product or build crux changes; nothing carried to a module's own ship.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -201,7 +204,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `81539380f3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `405dcd0f93` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
