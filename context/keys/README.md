@@ -5,7 +5,8 @@
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 **Language:** EN
-**Last updated:** 2026-06-21 (`015712`)
+**Last updated:** 2026-09-17 (`225018`; register swept to 0%, joined the DOOR roster)
+**Style:** Gauge, Door setting (see `../GAUGE_STYLE.md`)
 
 ---
 
@@ -18,7 +19,7 @@ These two OpenPGP public keys are distinct, rather than duplicates. They share a
 
 PGP armored keys share the same envelope (`-----BEGIN PGP PUBLIC KEY BLOCK-----`, similar line lengths, same email in the UID). **The base64 bodies differ** -- different key material, different fingerprints. Confirm this yourself with `sha256sum` or `gpg --import-options import-show --import <file>`.
 
-**Why keep both in the repo:** anyone cloning the project can verify commits against the sandbox key without hunting an external paste. The master public key is published here so the trust chain is visible -- master certifies sandbox; sandbox signs commits -- without ever placing private material in the tree.
+**Why keep both in the repo:** anyone cloning the project can verify commits against the sandbox key using what the repo already carries. The master public key is published here so the trust chain is visible -- master certifies sandbox; sandbox signs commits -- and only the public halves ever enter the tree.
 
 ---
 
