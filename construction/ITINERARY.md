@@ -40,11 +40,7 @@ Elder account [shelved whole](archive/20260917-201424_itinerary-pheromone-ident-
 the ident pair delegates (`u32` already, width bill zero), a witness leg stops reading a comment as
 a type, and the cold and hot passes both closed their own reds.
 **PHEROMONE -- THE CHEAPEST FALL, TAKEN TWICE.** Elder account
-[shelved whole](archive/20260917-203604_itinerary-pheromone-multi-pair-account.md): the
-`lower_multi` pair delegates (body md5 `1738b935`), width bill falls 1143 to 1139,
-`glow_ident_duplication`'s own ceiling falls 13 to 11 in the same commit. **PROVEN:**
-`glow_lower_multi`, `glow_lower_multi_typed`, `glow_ident`, `glow_run_contract`, `width-check`,
-`tame_style_check`, `glow_ident_duplication`, GREEN on metal.
+[shelved whole](archive/20260917-203604_itinerary-pheromone-multi-pair-account.md), all proof kept there.
 **PHEROMONE -- THE LARGEST LAP THIS ROOM OFFERED, TAKEN WHOLE.** Account
 [shelved whole](archive/20260917-211803_itinerary-pheromone-max-arm-len-account.md): the
 `max_arm_len` three -- `lower_conditional`, `lower_null`, `lower_switch` -- delegate to
@@ -231,7 +227,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `9ec2e56c2b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `2dad3cd186` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
