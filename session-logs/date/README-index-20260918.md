@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.084831` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084831_send-confirmed-d79f8f249.kyri) | Six contested pushes; pedersen exempt landed, ratchet 8->6. |
 | `20260918.084723` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084723_send-confirmed-d79f8f249.kyri) | Three rounds; merge over rebase kept both forwards. |
 | `20260918.084554` | [ember_core.rye closes the zero-assert ratchet, then a push divergence gets untangled](20260918/20260918-084554_ember-core-asserts-and-a-push-divergence.kyri) | Six named asserts land; a bad regex conflict-resolve is caught and repaired before commit. |
 | `20260918.084500` | [Send confirmed -- both remotes hold d995e0f3a](20260918/20260918-084500_send-confirmed-d995e0f3a.kyri) | A genuine two-remote fork found mid-send, resolved by merge rather than rebase. |
