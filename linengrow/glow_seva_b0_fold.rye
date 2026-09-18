@@ -11,9 +11,13 @@
 //!     -femit-bin=linengrow/bin/glow_seva_b0_fold_witness
 
 const std = @import("std");
+const assert = std.debug.assert;
 const claim = @import("glow_seva_b0_claim.rye");
 const elder = @import("seva_b0_fold.rye");
 const line = @import("glow_seva_b0_line.rye");
+
+/// A 32-byte root hex-encodes to exactly this many characters.
+const demo_root_hex_len: u32 = 64;
 
 pub const fold_version = "20260722.134831";
 
@@ -57,5 +61,11 @@ pub fn root_matches_expected(root: *const [32]u8) bool {
 
 /// True when Glow fold pin agrees with elder fold pin.
 pub fn pin_agrees_elder() bool {
+    // invariant: the product pin holds a genuine 32-byte root, not a truncated
+    // or corrupted constant, before it is compared byte for byte.
+    assert(expected_demo_root_hex.len == demo_root_hex_len);
+    // invariant: the elder pin holds the same shape, so a mismatch below is a
+    // real divergence rather than an accident of differing lengths.
+    assert(elder.expected_demo_root_hex.len == demo_root_hex_len);
     return std.mem.eql(u8, expected_demo_root_hex, elder.expected_demo_root_hex);
 }
