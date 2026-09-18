@@ -520,7 +520,15 @@ done < "$work/teaching.txt"
 # understanding crosses it, always in words rather than code` for `never crossed by code -- only by
 # understanding` -- and every claim, figure, and stamp held, including the two direct seL4 license
 # quotes, left verbatim. The page reads 19% now.
-law_ceiling=3
+# IT FELL 3 -> 2 ON `.claude/rules/git-signing.md` AT 55% OF 58 SENTENCES, 15 restatements --
+# `rather than the private field's` for `never the private field's`, `carries a public key alone`
+# for `has no secret key`, `stands as a privacy safeguard rather than a lapse` for `not a lapse`,
+# `starts empty of it` for `inherits none of it`, `stays clear of anything identity-bearing` for
+# `nothing identity-bearing touches`, `comes back empty` for `finds nothing`, `stays exactly as it
+# stood before` for `no more than before`, `by proof rather than assertion` for `not asserted`,
+# and eight more of the same shape -- and every claim, figure, stamp, and quoted sentence held. The
+# page reads 7% now.
+law_ceiling=2
 law_documents=0
 law_readable=0
 law_over=0
