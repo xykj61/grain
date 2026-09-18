@@ -10,6 +10,7 @@
 | `20260918.080801` | [Send confirmed -- both remotes hold 3ad3086aa](20260918/20260918-080801_send-confirmed-3ad3086aa.kyri) | Contested push, rebased past a peer, regenerated two pages (no change), pushed xy and debrided. |
 | `20260918.080553` | [Third empty open -- register account already closed](20260918/20260918-080553_empty-open-third.kyri) | the-baton.md reads 23% under its 30% target; agent-doable queue names no docs-geode pick. |
 | `20260918.080229` | [Send confirmed -- both remotes hold 8c1bf956c](20260918/20260918-080229_send-confirmed-8c1bf956c.kyri) | Rebased past a peer push, regenerated two pages (no change), pushed xy and debrided. |
+| `20260918.080222` | [An empty open -- no language-lane work stands agent-doable](20260918/20260918-080222_empty-open-no-language-work.kyri) | Card, REDS, and claim board all checked; no open row names agent-doable Glow-language work. |
 | `20260918.080119` | [Cold run books %826](20260918/20260918-080119_cold-run-books-826-and-two-cheap-fixes.kyri) | Books REDS %826, shelves comment_path, lands at 3be3470b3. |
 | `20260918.075952` | [Empty open, second check -- docs-geode lane still clean](20260918/20260918-075952_empty-open-second.kyri) | No fresh work found this turn; recommended check-in. |
 | `20260918.075938` | [Empty open -- claim board and REDS %825 checked clear](20260918/20260918-075938_empty-open-no-task.kyri) | No task this turn; verified pheromone-nock-jet-dec-asserts already landed and closed. |
