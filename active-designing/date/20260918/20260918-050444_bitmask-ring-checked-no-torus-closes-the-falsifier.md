@@ -1,6 +1,6 @@
 # The bitmask ring checked -- the thread's own falsifier closes negative
 
-**Stamp:** `20260918.054500`
+**Stamp:** `20260918.050444`
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../../../context/GAUGE_STYLE.md`](../../../context/GAUGE_STYLE.md))
 **Voice:** Kyri
