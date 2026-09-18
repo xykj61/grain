@@ -16,8 +16,12 @@ const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 
 fn file_len(cwd: Dir, io: std.Io, path: []const u8) u32 {
+    // invariant: every path named for this check is non-empty
+    assert(path.len > 0);
     var big: [1024]u8 = undefined;
     const read = cwd.readFile(io, path, &big) catch return 0;
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(read.len <= big.len);
     return @intCast(read.len);
 }
 
@@ -30,6 +34,8 @@ fn run_check(init: std.process.Init) !u8 {
         print("hold1-check: RED — missing {s}\n", .{station_path});
         return 1;
     };
+    // invariant: a successful read never exceeds the buffer it was read into
+    assert(station.len <= station_buf.len);
     const ping_len = file_len(cwd, io, ping_path);
     const frame_len = file_len(cwd, io, frame_path);
     const cols = hold1.station_cols(station);
@@ -55,6 +61,9 @@ fn run_check(init: std.process.Init) !u8 {
         print("hold1-check: RED — detail overflow\n", .{});
         return 1;
     };
+    // invariant: a formatted line never exceeds the row buffer it was drawn into
+    assert(chrome.len <= chrome_buf.len);
+    assert(detail.len <= detail_buf.len);
     print("hold1-check: skate row0 · {s}\n", .{chrome});
     print("hold1-check: skate row1 · {s}\n", .{detail});
     print("hold1-check: grid {d}x{d} (Desk rows)\n", .{ cols, hold1.desk_rows() });
