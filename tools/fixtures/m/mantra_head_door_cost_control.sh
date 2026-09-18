@@ -26,10 +26,10 @@ set -eu
 
 _sp_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _sp_steps=0
-while [ ! -d "$_sp_root/rishi/bin" ] || [ ! -d "$_sp_root/tools/fixtures" ]; do
+while [ ! -d "$_sp_root/rishi/src" ] || [ ! -d "$_sp_root/tools/fixtures" ]; do
   _sp_steps=$((_sp_steps + 1))
   if [ "$_sp_steps" -gt 8 ] || [ "$_sp_root" = "/" ] || [ -z "$_sp_root" ]; then
-    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    echo "$0: no tree root within 8 steps (needs rishi/src and tools/fixtures)" >&2
     exit 2
   fi
   _sp_root=$(dirname "$_sp_root")

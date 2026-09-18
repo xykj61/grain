@@ -25,7 +25,7 @@ export LC_ALL=C
 # deeper leaves this file correct (`tools/f/fixture_depth_witness.rish`).
 _fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _fd_steps=0
-while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+while [ ! -d "$_fd_root/rishi/src" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_steps=$((_fd_steps + 1))
   if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
     echo "$0: no tree root within 8 steps" >&2; exit 2
