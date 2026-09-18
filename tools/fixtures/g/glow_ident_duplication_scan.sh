@@ -126,7 +126,17 @@ mode="${1:-count}"
 #                          `u32` in the same lap. `LowerError` and its `error.BadIdent` member
 #                          are unmoved. Five singletons remain (`lower_core` 4, `lower_call3`
 #                          4, `lower_call2` 3, `lower_face_lit` 2, `lower_shop_nest` 2).
-CEILING=5
+#    4  `20260917.224500`  `glow/lower_shop_nest.rye` became a stub -- its two call sites (the
+#                          welcome and the argv path) both reached `zig_ident.safe_ident`
+#                          with `.refuse`. Its body was the same genuinely-different rule the
+#                          ladder named at seating: the elder answered a LENGTH ceiling AND a
+#                          bad character with the one name `error.MissingFace`, where every
+#                          other copy answered `error.BadIdent`. `LowerError` gains the
+#                          `error.BadIdent` member the module never carried before; its return
+#                          type was already `u32` (width-check corpus unmoved at 1,129). Four
+#                          singletons remain (`lower_core` 4, `lower_call3` 4, `lower_call2`
+#                          3, `lower_face_lit` 2).
+CEILING=4
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }

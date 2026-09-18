@@ -11,6 +11,7 @@
 | `20260917.223531` | [The writer sheds](20260917/20260917-223531_the-writer-sheds.kyri) | One live account per seat; five crossings priced. |
 | `20260917.222855` | [A torus index for Tally gardens](20260917/20260917-222855_a-torus-index-for-tally-gardens.kyri) | Moonshot: tier/slot addressing, falsifier named, power claim refused. |
 | `20260917.222753` | [The restatement the guard reserved](20260917/20260917-222753_the-restatement-the-guard-reserved.kyri) | GREEN fix reverted on the guard's own Keaton-word clause. |
+| `20260917.222618` | [Shop-nest takes the different rule](20260917/20260917-222618_shop-nest-takes-the-different-rule.kyri) | pheromone: lower_shop_nest's two call sites delegate to zig_ident; duplication ceiling 5 to 4 |
 | `20260917.222219` | [carriage control sources plant, and a law-line red closed](20260917/20260917-222219_carriage-control-sources-plant-and-a-law-line-red.kyri) | %519 spread continues; a `law` line broke a placard scan with no plant, fixed and closed |
 | `20260917.222209` | [The loop that waited on itself](20260917/20260917-222209_the-loop-that-waited-on-itself.kyri) | pgrep -f matched the waiting shell. |
 | `20260917.222132` | [Audit lanes clean, no red](20260917/20260917-222132_audit-lanes-clean-no-red.kyri) | ascii-document and prose-register both verdict=ok; %819 remainder is Keaton's word, not a task |
