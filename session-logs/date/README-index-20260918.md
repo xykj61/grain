@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.093115` | [grass-hold0-invariants](20260918/20260918-093115_grass-hold0-invariants.kyri) | hold0-check gets two named read-bound asserts; ratchet 4 to 3 |
 | `20260918.093027` | [Send confirmed -- both remotes hold 6debdc67b](20260918/20260918-093027_send-confirmed-6debdc67b.kyri) | Two round-opens genuinely dropped the local commit; both recovered from pier/diverged-* branches. |
 | `20260918.092914` | [Empty-open turn -- no task handed](20260918/20260918-092914_empty-open-check.kyri) | No user request in this turn beyond the standing baton; asked Keaton what to work on. |
 | `20260918.092905` | [Wake-cost open door closed](20260918/20260918-092905_wake-cost-open-door-closed.kyri) | fetcher-poll's caller traced to a constant already in the sibling table. |
