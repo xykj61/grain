@@ -32,6 +32,29 @@
 
 **Row 7 fourth erratum:** `20260917.163338` -- the third erratum's own paper named its weakest joint in its own words: the structure-drift tolerance it attached to the operand was **borrowed** from the room-granularity sibling rather than re-measured at file granularity. This is that re-measurement, by the sibling's method unchanged, at its threshold of `0.10` and its grid of 16 nodes. **The borrowing was sound, and the number it agreed with was a ladder rung.** `tools/fixtures/a/aurora_file_placement_scan.sh` reading 4 silences a rising share of the 7,549 file edges and lets the same count of unseen pairs carry traffic, holding the computed layout FIXED and costing it against a count-matched floor under the same distorted edges: the gain falls `0.366240` at zero, `0.141855` at sixty, `0.106710` at seventy and **`-0.001378`** at a hundred, where a layout costed against a graph it shares nothing with lands at chance to three decimals and proves the instrument from the far side. So `file_drift_crossing_pct=71.90`, above the **roughly two thirds** the paper cited. **On the sibling's five rungs both graphs answer 60**, which is a readout coarser than the effect: interpolating each graph's own live ladder gives **77.37** for 67 room pairs against **71.90** for 7,549 file edges, so the file unit's tolerance is genuinely lower and by **five points** rather than by the collapse its `0.2184`-against-`0.8463` locality would suggest -- because the count-matched floor is dealt into the layout's own occupancy, so the occupancy difference cancels and only the graph's contribution is left. **And the decay is straight, so the tolerance has a closed form.** Gain falls as `g0(1 - p)` to within `0.004641` over eight rungs, giving `1 - keep/g0 = 72.70` against the measured `71.90` -- the tolerance is set by the layout's own undistorted gain and the threshold, and the unit enters only through `g0`. That law holds on ~7,500 edges and fails on 67 room pairs (departure `0.1144`) and on the pen's 32 (`0.0703`), which is an inference from three points rather than a measured scaling law and is named as one. Recommended: **keep the third erratum's re-aim exactly**, and let its tolerance sentence say **seven tenths, measured here**, rather than two thirds borrowed. Rank stays twelfth. The reading stands at [`20260917-163338_the-tolerance-that-was-a-ladder-rung.md`](20260917-163338_the-tolerance-that-was-a-ladder-rung.md). **The ladder figures are FREE** -- the tree grows -- so run the scan rather than reading them; what is **walled** is that the sweep bites, reaches the far side, and falls straight. Every other word on this page is kept as written.
 
+**Row 6 erratum:** `20260917.203312` -- row 6 was ranked third at *one to two weeks*, and it was the
+last of the twelve carrying no erratum. Its own assumption named the one thing that would have to be
+true before any witness could be written -- *this pier's CPU exposes RAPL counters to a reader with
+the permissions we have* -- and nobody had checked it against a real host. `tools/fixtures/e/energy_readout_scan.sh`
+checks it five ways rather than one: powercap RAPL, raw MSR, perf's energy-pkg event, hwmon, and
+nvidia-smi. **Every door reads no, and each for its own reason.** Powercap carries no readable
+`intel-rapl:*/energy_uj`; MSR's own device node is absent; `perf` is not installed; hwmon exposes no
+power or energy input; no GPU tool is present. `cpuinfo_hypervisor_flag=yes`, and the hypervisor
+names itself `microsoft` under `systemd-detect-virt` -- so the CPU underneath is a real AMD
+EPYC-Rome, and the absence is the hypervisor's own choice of what to pass through rather than a
+missing kernel feature or a fixable permission. **This falsifies the row's own sentence on this one
+host, and no further.** The scan reads only the machine it runs on, and this fleet sails eight;
+running it on the other seven is the only way to close the wider question, and every one of those
+seven readings is free. Recommended **re-aim, keeping the rank of third**: split the first witness
+in two -- the facility probe is landed and belongs on every pier as a standing guard, cheap enough
+to run before any RAPL-specific code is written, and the millijoule-beside-bytes Meter row waits on
+a pier that answers `verdict=facility_available`, which none has yet been asked. The reading stands
+at [`20260917-203312_the-pier-that-cannot-hear-its-own-joules.md`](20260917-203312_the-pier-that-cannot-hear-its-own-joules.md).
+**Every figure in this clause is HELD for this host** -- the scan reads real system paths once and
+they do not move between runs here -- and it is **UNMEASURED for the other seven piers**, so run
+`sh tools/fixtures/e/energy_readout_scan.sh` on each rather than assuming this reading generalizes.
+Every other word on this page is kept as written.
+
 **Erratum:** `20260916.055111` -- this page's **ranking section** was graded whole, and it
 holds where it claimed and not where it would have flattered. Against **read order**, which is
 what the ranking claimed to predict, the ten rows it actually governed read at Spearman rho

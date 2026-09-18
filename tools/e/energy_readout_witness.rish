@@ -1,0 +1,41 @@
+# energy_readout_witness.rish -- the energy-facility probe, proven before its "no" is trusted.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/e/energy_readout_witness.rish
+#
+# WHAT THIS GUARDS. active-designing/20260910-060204_the-bounded-torus-moonshots.md row 6 assumes
+# "this pier's CPU exposes RAPL counters to a reader with the permissions we have." No row-6
+# instrument existed before this one, so the assumption stood unchecked against any real host.
+# tools/fixtures/e/energy_readout_scan.sh checks it against five facility paths -- powercap RAPL,
+# raw MSR, perf's energy-pkg event, hwmon, and nvidia-smi -- rather than RAPL alone, so a "no" here
+# says something about the whole approach on this host rather than about one path a kernel build
+# happened to omit.
+#
+# WHY THE PROBE NEEDS A GUARD OF ITS OWN. The reading this pier actually returns is a wall of "no",
+# and that answer is worth nothing until the probe has been shown saying "yes" to something real.
+# An instrument that CANNOT detect a facility and one that has simply never met one read alike from
+# their output alone. tools/fixtures/e/energy_readout_control.sh plants five fixtures in a
+# throwaway pen -- powercap present, permission-denied, absent, msr present, and perf gated two
+# ways by perf_event_paranoid -- and watches the probe answer each correctly.
+
+let control = run ["sh" "tools/fixtures/e/energy_readout_control.sh"]
+assert control.ok else "the energy-readout control did not reach verdict=ok: ${control.err_brief}"
+assert control.out contains "verdict=ok" else "energy-readout control verdict missing: ${control.out_brief}"
+assert control.out contains "control_failed=0" else "a control leg refused, so the probe's own readings are unproven: ${control.out_brief}"
+
+# Each leg named rather than left inside the composite above, per the 20260910.043000 lesson: a
+# control that reached its last line proves only that it reached its last line.
+assert control.out contains "powercap_found=ok" else "the probe did not recognize a planted, readable RAPL counter: ${control.out_brief}"
+assert control.out contains "powercap_absent=ok" else "the probe did not name an empty powercap root honestly: ${control.out_brief}"
+assert control.out contains "msr_present=ok" else "the probe did not recognize a planted, readable MSR device node: ${control.out_brief}"
+assert control.out contains "perf_paranoid_gate=ok" else "the probe did not gate perf on a locked-down perf_event_paranoid: ${control.out_brief}"
+assert control.out contains "perf_paranoid_open=ok" else "the probe did not open perf when perf_event_paranoid allows it: ${control.out_brief}"
+
+# invariant: the live scan itself still runs and answers a verdict, on THIS host's real paths --
+# the control proves the eyes; this line proves they are pointed at the world rather than only at
+# the pen.
+let live = run ["sh" "tools/fixtures/e/energy_readout_scan.sh"]
+assert live.ok else "the live energy-readout scan refused on this host: ${live.err_brief}"
+assert live.out contains "verdict=" else "the live scan produced no verdict line: ${live.out_brief}"
+
+say "GREEN: the energy-readout probe recognizes a real facility, an absent one, and a gated one, and it still answers on this host."
