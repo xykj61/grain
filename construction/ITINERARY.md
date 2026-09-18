@@ -148,16 +148,17 @@ one. No live product or build crux changes; nothing carried to a module's own sh
 whole](archive/20260918-043634_itinerary-grass-rune-calln-account.md): rune_calln.rye took
 rune_call2's shape; rune_call3.rye landed already by a peer.
 
-**GRASS -- `glow/rune_cell.rye` TOOK RUNE_CELL3'S SHAPE.** `glow/rune_cell.rye` (`:-`) gained
-`assert` on `left_slice`, `right_slice`, `parse_ident`'s postcondition (non-empty, within
-`max_name_len`), and `parse()`'s postcondition on the constructed spec's two face lengths, six bare
-`assert()` calls across five functions, `assert` newly imported from `std.debug`. Witness GREEN
-unchanged before and after (`glow_rune_cell_witness`); `tame_style_check` ratchet fell (the file no
-longer lists as zero-assert) and `width-check` re-run clean. Claim `grass-rune-cell-asserts` opened
-and pushed before the build, per the ABSENCE clause. **YOURS:** eleven zero-assert `glow/` files
-remain (`rune_bounded_trap.rye`, `rune_conditional.rye`, `rune_face.rye`, `rune_list.rye`,
-`rune_mutate.rye`, `rune_null.rye`, `rune_quad.rye`, `rune_switch.rye`, `rune_triple.rye`,
-`lower_alias.rye`, `lower_cast.rye`), same shape, agent-doable next.
+**GRASS -- `glow/rune_bounded_trap.rye` GAINED FOUR ASSERTS, SAME SHAPE.** Account [shelved
+whole](archive/20260918-044459_itinerary-grass-rune-cell-account.md) for the elder `rune_cell.rye`
+lap. `lent_of_slice`'s scan bound, `parse`'s remainder non-emptiness, its `lent_of` buffer-fit
+postcondition, and `run_bounded`'s returned-tick-under-ceiling postcondition -- four bare
+`assert()` calls across four functions, `assert` already imported and previously unused. Witness
+GREEN unchanged (`rune_bounded_trap_witness`, nine claims); `tame_style_check` zero-assert ratchet
+fell 27 to 26; `width-check` clean. Claim `grass-rune-bounded-trap-asserts` opened and pushed
+before the build (found clear via `fleet_claim_scan.sh --check` first), per the ABSENCE clause.
+**YOURS:** ten zero-assert `glow/` files remain (`rune_conditional.rye`, `rune_face.rye`,
+`rune_list.rye`, `rune_mutate.rye`, `rune_null.rye`, `rune_quad.rye`, `rune_switch.rye`,
+`rune_triple.rye`, `lower_alias.rye`, `lower_cast.rye`), same shape, agent-doable next.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -220,7 +221,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b50d4717a9` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4efeed3161` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

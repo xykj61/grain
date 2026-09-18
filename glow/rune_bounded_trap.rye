@@ -49,6 +49,9 @@ pub const TrapError = error{
 pub fn lent_of_slice(buf: *const [max_ident_len]u8) []const u8 {
     var len: u32 = 0;
     while (len < max_ident_len and buf[len] != 0) len += 1;
+    // invariant: the scan above stops at or before the buffer's own ceiling,
+    // so a returned slice never claims more than the buffer holds.
+    assert(len <= max_ident_len);
     return buf[0..len];
 }
 
@@ -61,6 +64,9 @@ pub fn parse(line: []const u8) ParseError!BoundSpec {
     var rest = line[2..];
     rest = std.mem.trimStart(u8, rest, " \t");
     if (rest.len == 0) return error.MissingBound;
+    // invariant: a line accepted past the rune-head check names a real bound
+    // remainder, never an empty one, once execution reaches here.
+    assert(rest.len > 0);
 
     // Cut at the first whitespace or brace seen OUTSIDE any parenthesized
     // call -- the bound expression ends there; a trap body, if any, follows
@@ -95,6 +101,9 @@ pub fn parse(line: []const u8) ParseError!BoundSpec {
         if (ident.len == 0 or ident.len >= max_ident_len) return error.IdentTooLong;
         var padded: [max_ident_len]u8 = [_]u8{0} ** max_ident_len;
         @memcpy(padded[0..ident.len], ident);
+        // invariant: a constructed lent_of bound never claims more of its
+        // fixed buffer than the length check above already proved fits.
+        assert(ident.len < max_ident_len);
         return BoundSpec{ .lent_of = padded };
     }
 
@@ -122,5 +131,8 @@ pub fn run_bounded(bound: u32, actual_steps: u32) TrapError!u32 {
         tick += 1;
         if (tick > bound) return error.BoundExceeded;
     }
+    // invariant: every tick past the bound already returned above, so a
+    // returned count never exceeds the ceiling it was checked against.
+    assert(tick <= bound);
     return tick;
 }
