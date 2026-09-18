@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.035922` | [Send confirmed -- both remotes hold 86ddd2012, chain closes here](20260918/20260918-035922_send-confirmed-86ddd2012.kyri) | Three contested pushes; twice-pulled, never forced. |
 | `20260918.035640` | [Send confirmed -- both remotes hold 6c772bbff](20260918/20260918-035640_send-confirmed-6c772bbff.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.035445` | [Send confirmed -- both remotes hold 81539380f](20260918/20260918-035445_send-confirmed-81539380f.kyri) | Two contested pushes; twice-pulled, never forced. |
 | `20260918.035338` | [Reverse-read: foundations' second-oldest pair, affirmed clean](20260918/20260918-035338_reverse-read-foundations-pair-affirmed-clean.kyri) | Two Reya-2 devotional pieces checked claim-by-claim; all still true, no molt. |
