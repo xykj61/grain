@@ -40,7 +40,10 @@ pub const JetError = error{
 /// The fast path -- O(1), native.
 pub fn fast_dec(n: u64) JetError!u64 {
     if (n == 0) return error.DecrementOfZero;
-    return n - 1;
+    const result = n - 1;
+    // invariant: a jet's fast path returns a value strictly below its input
+    assert(result < n);
+    return result;
 }
 
 /// Builds *[n slow_dec_formula] = dec(n), taking the bare atom n as the
@@ -111,11 +114,16 @@ pub fn eval_with_dec_jet(interp: *nock.Interp, subject: nock.Noun, formula: nock
                 const f2 = try interp.tail(formula);
                 const hint_part = try interp.head(f2);
                 if (!nock.is_cell(hint_part) and hint_part.atom == jet_dec_tag) {
+                    // invariant: the fast path fires only on a bare-atom subject
+                    assert(!nock.is_cell(subject));
                     const n = switch (subject) {
                         .atom => |v| v,
                         .cell => return error.NotAnAtom,
                     };
-                    return nock.Noun.a(try fast_dec(n));
+                    const result = try fast_dec(n);
+                    // invariant: the fast path's own output is never a cell
+                    assert(!nock.is_cell(nock.Noun.a(result)));
+                    return nock.Noun.a(result);
                 }
             }
             return interp.run(subject, formula);
