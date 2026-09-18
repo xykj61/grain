@@ -1,0 +1,73 @@
+//! mantra/src/receipt_offer_snapshot.rye -- the carrier the receipt contract's last mile wanted.
+//!
+//! Mantra is the receipt contract's shared room ("Mantra is shared on purpose," the product braid
+//! guard's own header), and this module is what "shared" buys: it reads a replayed
+//! `ReceiptState` -- the one durable reading both products project from -- and builds each
+//! product's own `OfferSnapshot`, the exact shape its `from_snapshot` already accepts.
+//!
+//! WHY A SYMLINK, rather than a relative `@import` reaching into `dimeroll/` or `linengrow/`
+//! directly. Zig refuses an `@import` that reaches outside its root file's directory (REDS %589,
+//! measured `20260917` in `rye/tests/mantra_weave_test.rye`), in either direction, so a module
+//! living in `mantra/src/` cannot name `../../dimeroll/receipt_offer.rye` any more than one of
+//! theirs could name a path back into this room. A RENAMED symlink placed beside the importing
+//! file resolves as though the target lived here -- proven by the two elder symlinks already
+//! standing in this directory, `tally_receipt_offer_bounds.rye` and `tally_receipt_refusal.rye` --
+//! and it works cleanly for `dimeroll/receipt_offer.rye` and `linengrow/receipt_offer.rye`
+//! specifically because each imports nothing beside `std`: reading 2 of REDS %589's own four,
+//! rather than reading 3, which is where a module with its OWN sibling imports (like
+//! `mantra/src/diff.rye`) fails through a renamed symlink. `mantra/src/dimeroll_receipt_offer.rye`
+//! and `mantra/src/linengrow_receipt_offer.rye` are those two symlinks.
+//!
+//! WHAT THIS DOES NOT DO. It never imports the peer product's own type, and never hands one
+//! product a view of the other -- each conversion function below reads only `ReceiptState` and
+//! writes only its own product's `OfferSnapshot`. The product braid guard reads past this room
+//! entirely (its own header names Mantra as the one room excluded from the two it scans), so this
+//! carrier is where the sharing the contract asks for actually lives, rather than a gap in what
+//! the guard can see.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const receipt = @import("receipt_offer.rye");
+const dimeroll_mod = @import("dimeroll_receipt_offer.rye");
+const linengrow_mod = @import("linengrow_receipt_offer.rye");
+
+/// Build Dimeroll's own snapshot from one replayed receipt state. Read-only: every
+/// field is a slice of a string `state.offer` already holds.
+pub fn dimeroll_snapshot_of(state: receipt.ReceiptState) dimeroll_mod.OfferSnapshot {
+    _ = print;
+    // invariant: a snapshot carries a receipt identity to trace evidence by.
+    assert(state.offer.receipt_id.len > 0);
+    // invariant: a snapshot carries a digest, the evidence's one source pointer.
+    assert(state.offer.product_digest.len > 0);
+    return .{
+        .receipt_id = state.offer.receipt_id,
+        .product_digest = state.offer.product_digest,
+        .value_amount = state.offer.value_amount,
+        .value_unit = state.offer.value_unit,
+        .expired = state.status == .expired,
+    };
+}
+
+/// Build Linengrow's own snapshot from one replayed receipt state. Read-only: every
+/// field is a slice of a string `state.offer` already holds.
+pub fn linengrow_snapshot_of(state: receipt.ReceiptState) linengrow_mod.OfferSnapshot {
+    _ = print;
+    // invariant: a snapshot carries a receipt identity to show this receipt as.
+    assert(state.offer.receipt_id.len > 0);
+    // invariant: a snapshot's expiration genuinely follows its issuance.
+    assert(state.offer.expires_at > state.offer.issued_at);
+    return .{
+        .receipt_id = state.offer.receipt_id,
+        .product_id = state.offer.product_id,
+        .purpose = state.offer.purpose,
+        .recipient_id = state.offer.recipient_id,
+        .value_amount = state.offer.value_amount,
+        .value_unit = state.offer.value_unit,
+        .value_basis = state.offer.value_basis,
+        .return_kind = state.offer.return_kind,
+        .issued_at = state.offer.issued_at,
+        .expires_at = state.offer.expires_at,
+        .expired = state.status == .expired,
+    };
+}

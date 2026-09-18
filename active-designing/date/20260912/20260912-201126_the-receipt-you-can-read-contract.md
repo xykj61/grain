@@ -6,6 +6,16 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260918.105100` -- closes the last mile named `20260918.100854`. Two renamed
+symlinks beside `mantra/src/receipt_offer_snapshot.rye`, `mantra/src/dimeroll_receipt_offer.rye`
+and `mantra/src/linengrow_receipt_offer.rye`, cross Zig's module boundary into each product room --
+each target module imports nothing beside `std`, so the symlink resolves cleanly (REDS %589's
+reading 2). The carrier reads one replayed `ReceiptState` into each product's own `OfferSnapshot`.
+`mantra/src/receipt_offer_snapshot_witness.rye` under
+`tools/m/mantra_receipt_offer_snapshot_witness.rish` proves acceptance cases 1 through 3 chained
+together from one `Log.append` and one `Log.replay`, plus case 5's expiration half; the product
+braid guard, which reads past Mantra entirely, stays `verdict=unbraided`. No elder row, number, or
+acceptance case was removed; this is the first commit to this page that adds a new checkable case.
 **Revised:** `20260918.100854` -- tightens admission, on Keaton's `20260918` word. The four
 borrowed rows named `20260916.065731` are replaced by their own derived numbers:
 `product_digest` moves from a 96-byte ceiling to an exact 64-byte length (SHA3-256 written in
@@ -235,10 +245,19 @@ the four types this contract publishes:
 
 | Public type | Declared in tracked Rye |
 |---|---:|
-| `ReceiptOfferFact` | **3** sources |
-| `ReceiptState` | **1** source |
-| `LinengrowReceipt` | **2** sources (`20260918.100854`) |
-| `DimerollReceiptIntake` | **1** source (`20260918.043437`) |
+| `ReceiptOfferFact` | **4** sources (`20260918.105100`) |
+| `ReceiptState` | **4** sources (`20260918.105100`) |
+| `LinengrowReceipt` | **2** sources |
+| `DimerollReceiptIntake` | **2** sources (`20260918.105100`) |
+
+The count is a word-presence reading across `mantra/src/`, `linengrow/`, and `dimeroll/` -- a
+module head naming the boundary it keeps counts alongside a declaration, since both are the same
+grep and this page has read it that way since `20260916`. Run it fresh rather than trusting the
+table:
+
+```sh
+grep -rl '\bReceiptState\b' --include='*.rye' mantra/src linengrow dimeroll | sort -u
+```
 
 **So `cross_type=0` was a true reading over a population where neither projection type had been
 written, and it stays true now that one has.** The braid guard is right and its own header says
@@ -255,12 +274,21 @@ and after expiry -- against an `OfferSnapshot` built from the contract's own fix
 `LinengrowReceipt`'s own mapping the same way -- product, recipient, purpose, offered value, value
 basis, promised return, issue and expiration times, and status, before and after expiry -- and
 carry the naming decision below: the new module is `receipt_offer.rye`, the type stays
-`LinengrowReceipt`. Neither projection has yet been chained through Mantra's actual `Log.append`
-and `Log.replay`, because Zig's own module boundary refuses an `@import` that reaches outside its
-root file's directory (REDS %589, proven on metal `20260917` in `rye/tests/mantra_weave_test.rye`),
-and both projection modules say so in their own module heads. The dual-product witness this
-milestone's acceptance still wants is what closes that last mile, once a carrier for the room
-boundary stands.
+`LinengrowReceipt`.
+
+**The last mile is closed, `20260918.105100`.** `mantra/src/receipt_offer_snapshot.rye` is the
+carrier both projection modules named as still missing: two renamed symlinks placed beside it,
+`mantra/src/dimeroll_receipt_offer.rye` and `mantra/src/linengrow_receipt_offer.rye`, resolve
+cleanly because REDS %589's own reading 2 applies -- each target module imports nothing beside
+`std`, so the symlink needs no further sibling resolution. The carrier reads one replayed
+`ReceiptState` and builds each product's own `OfferSnapshot`, writing no field either product does
+not already declare. `mantra/src/receipt_offer_snapshot_witness.rye`
+(`tools/m/mantra_receipt_offer_snapshot_witness.rish`) proves acceptance cases 1 through 3 chained
+together from **one** `Log.append` and **one** `Log.replay` -- Linengrow's reading and Dimeroll's
+reading of the very same replay, rather than three fixtures that merely happen to agree -- both
+before and after the expiration boundary (case 5's chained half). The product braid guard runs
+alongside it and reads `verdict=unbraided` still, because the carrier lives in Mantra, the one room
+that guard reads past by its own header's own words: "Mantra is shared on purpose."
 
 **The naming collision named below is resolved, on Keaton's `20260918` word.** `linengrow/` already
 held `receipt.rye`, `receipt_core.rye` and `receipt_verify_guest.rye` -- **SLC-L1's verifiable
@@ -273,10 +301,16 @@ Three). `LinengrowReceipt` keeps the contract's own word rather than moving to
 `LinengrowReceiptOffer`, since the braid guard reads the type off this page's residence table and
 nothing elsewhere hunts for the name.
 
-**Of the eight acceptance cases, none yet carries its own witness.** The two rostered guards hold
-the falsifier's code half and this page's ceiling declarations -- real work, and a different job
-from proving a case. This page already says a case becomes checkable only when its witness passes;
-the count is written here so a reader need not infer it.
+**Three of the eight acceptance cases now carry their own witness, `20260918.105100`.**
+`tools/m/mantra_receipt_offer_snapshot_witness.rish` is case 1 (admit and replay), case 2
+(read as Linengrow), and case 3 (read as Dimeroll), each proven against the same one replay
+rather than separately. Case 5's expiration half rides along the same chain. Cases 4, 6, 7, and 8
+still want their own: 4 waits on Brushstroke and Skate, which this milestone has not begun; 6 and
+7 want a refusal-side witness reading the same chain rather than the admission module's own
+refusal tests, which prove the field but not yet the chain; 8 is the falsifier's code half, already
+held by the product braid guard. The two earlier rostered guards -- the ceiling guard and the braid
+guard -- hold ground no acceptance case names, and stay real work of a different kind from proving
+a case.
 
 ## Completion and review edge
 

@@ -1412,6 +1412,17 @@ path tools/l/linengrow_receipt_offer_witness.rish
 tier lap
 seated 20260918.100854
 
+# The receipt contract's last mile: mantra/src/receipt_offer_snapshot.rye carries one replayed
+# ReceiptState into each product's own OfferSnapshot, through two renamed symlinks that cross
+# Zig's module boundary the same way tally_receipt_offer_bounds.rye and tally_receipt_refusal.rye
+# already do in this room. This guard proves acceptance cases 1-3 chained together from ONE
+# admitted fact and ONE replay -- rather than three separately-fed fixtures that merely agree --
+# both before and after expiry, and reads the product braid guard beside it.
+guard mantra_receipt_offer_snapshot
+path tools/m/mantra_receipt_offer_snapshot_witness.rish
+tier lap
+seated 20260918.105100
+
 guard tally_caller_map
 path tools/t/tally_caller_map_witness.rish
 tier lap

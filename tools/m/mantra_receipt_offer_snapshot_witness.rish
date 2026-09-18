@@ -1,0 +1,37 @@
+# tools/m/mantra_receipt_offer_snapshot_witness.rish -- the receipt contract's dual-product chain.
+#
+# This runner builds the Rye witness in a unique pen, then requires its complete GREEN sentence.
+# The Rye witness walks every declaration in the carrier module, so a public function cannot
+# escape semantic analysis merely because this fixture does not call it. Proves the contract's
+# acceptance cases 1-3 chained together, once, from one admitted fact -- case 1's admit and
+# replay, case 2's Linengrow reading and case 3's Dimeroll reading of that SAME replay, and case
+# 5's chained half at the expiration boundary.
+
+let zig = "vendor/zig-toolchain/zig"
+# The pen comes from the runtime rather than from `mktemp -d`, so it is released after a return,
+# a refusal, an `exit`, HUP, INT, or TERM. A failing assert below ends this run where it stands,
+# and the elder three-line shape left its build pen on a pier eight ships share (REDS %745).
+let pen = make-pen "mantra_receipt_offer_snapshot"
+let bin = "${pen}/receipt_offer_snapshot_witness"
+
+say "receipt-snapshot: Language EN -- one admitted offer, one replay, and both products read the same fact."
+say "receipt-snapshot: Style Gauge, Meter -- the chain is exercised before and after expiry, on metal."
+say "receipt-snapshot: Lens TAME -- the carrier crosses no product boundary; each conversion writes only its own product's snapshot."
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/receipt_offer_snapshot_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "receipt-snapshot: the Rye witness did not build"
+
+let proof = run ["sh" "-c" "${bin} 2>&1"]
+say proof.err
+assert proof.ok else "receipt-snapshot: the Rye witness exited non-zero"
+assert proof.out contains "GREEN: receipt offer snapshot" else "receipt-snapshot: the witness did not print its complete GREEN claim"
+say proof.out
+
+let braid = run ["sh" "tools/fixtures/r/receipt_product_braid_scan.sh"]
+say braid.err
+say braid.out
+assert braid.ok else "receipt-snapshot: the receipt product braid guard reddened"
+assert braid.out contains "verdict=unbraided" else "receipt-snapshot: the two receipt products no longer read as unbraided"
+
+say "GREEN: receipt-snapshot runner -- one admission and one replay chain into both products, and the boundary they never cross stays proven clean."
