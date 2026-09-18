@@ -54,9 +54,3 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim pheromone-ember-core-asserts
-seat pheromone
-stamp 20260918.083851
-epoch 1789735131
-paths ember/ember_core.rye
-what add named invariant asserts closing ember_core.rye out of the zero-assert ratchet
