@@ -6672,15 +6672,20 @@ seated 20260912.042053
 # their closed forms of 2g+1, 5 and 4g+1. What a torus supplies is a FIXED offset set handed down
 # by its shape; declustering needs no torus.
 #
-# WHAT IS GATED. The control, and the live reading's ARITHMETIC -- the three run-kill lengths
-# against their closed forms, and the wide ring out-surviving the torus. Those cannot move under
-# this tree. The live EVENNESS verdict is reported rather than gated: a p=0.001 test taken twice
-# refuses about one run in five hundred on a digest that is behaving correctly.
+# WHAT IS GATED. The control, and the live reading's ARITHMETIC -- the run-kill lengths against
+# their closed forms, and the wide ring out-surviving the torus. Those cannot move under this
+# tree. The live EVENNESS verdict is reported rather than gated: a p=0.001 test taken twice refuses
+# about one run in five hundred on a digest that is behaving correctly.
 #
-# Paper: `active-designing/date/20260915/20260915-175000_the-axis-that-carried-nothing.md`
+# A FOURTH RULE ADDED 20260918: `evenspread` spaces its five copies evenly around the ring
+# (round(i*C/5), i=0..4) and survives 52 against the free ring's 33 -- arithmetic beats the search
+# opened a step later. Closed form C-ceil(C/5)+1.
+#
+# Paper: `active-designing/date/20260915/20260915-175000_the-axis-that-carried-nothing.md` --
+#        `active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md`
 guard torus_place
 path tools/t/torus_place_witness.rish
-tier lap   # 4s; 29 behaviors in a pen, both verdicts reachable, three mutations bitten
+tier lap   # 4s; 31 behaviors in a pen, both verdicts reachable, three mutations bitten
 seated 20260915.175000
 
 # torus_offset_search -- round two's proposal 1, and the answer is the family's own maximum. Round

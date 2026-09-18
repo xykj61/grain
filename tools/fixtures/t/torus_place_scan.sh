@@ -32,15 +32,21 @@
 #   distance two, so BOTH are vertex-transitive and both give a replica set uniform at every cell.
 #   What distinguishes a placement rule is where its replicas SIT in the linear storage order, so
 #   this reading measures the shortest contiguous run of storage indices whose loss destroys every
-#   copy of some cell. Three rules are compared on one C:
+#   copy of some cell. Four rules are compared on one C:
 #
 #     torus4     -- the grid's own neighbours, offsets {+1, -1, +g, -g}
 #     ring4adj   -- a ring taking its nearest four, offsets {+1, -1, +2, -2}
 #     ring4wide  -- a ring free to choose, offsets {+g, -g, +2g, -2g}
+#     evenspread -- a ring spacing its five copies as evenly as the ring allows,
+#                   offsets {round(C/5), round(2C/5), round(3C/5), round(4C/5)}
 #
 #   Each holds five copies and each is uniform at every cell. The run lengths are computed over
-#   every cell rather than argued: 2g+1, 5, and 4g+1 are what the arithmetic gives, and a reading
-#   that disagrees with those closed forms is the finding rather than a rounding error.
+#   every cell rather than argued: 2g+1, 5, 4g+1, and C-ceil(C/5)+1 are what the arithmetic gives,
+#   and a reading that disagrees with those closed forms is the finding rather than a rounding
+#   error. `evenspread` is the fourth rule named in
+#   active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md: minimizing the
+#   largest gap between five points on a ring of C cells beats every fixed-offset rule above it,
+#   and an even split reaches the pigeonhole bound C-ceil(C/5)+1 exactly.
 #
 #   READING 4 -- EVENNESS UNDER GROWTH. The erratum's own recommendation: max-over-mean cell load
 #   at four prefixes of the population, so a reader sees whether imbalance falls as names arrive.
@@ -220,9 +226,9 @@ awk -v g="$GRID" -v z="$Z_CRITICAL" '
 ' "$PEN/names" > "$PEN/out"
 
 # Reading 3 -- the contiguous run that destroys every copy of some cell, computed over every cell
-# for three placement rules on one cell count. Each rule holds five copies and is uniform.
+# for four placement rules on one cell count. Each rule holds five copies and is uniform.
 awk -v g="$GRID" '
-  function runkill(rule,   c, x, y, i, lo, hi, best, o, idx, span) {
+  function runkill(rule,   c, x, y, i, lo, hi, best, o, idx, span, off) {
     best = -1
     cells = g * g
     for (c = 0; c < cells; c++) {
@@ -237,9 +243,15 @@ awk -v g="$GRID" '
       } else if (rule == "ring4adj") {
         at[1] = (c + 1) % cells; at[2] = (c - 1 + cells) % cells
         at[3] = (c + 2) % cells; at[4] = (c - 2 + cells) % cells
-      } else {
+      } else if (rule == "ring4wide") {
         at[1] = (c + g) % cells;     at[2] = (c - g + cells) % cells
         at[3] = (c + 2 * g) % cells; at[4] = (c - 2 * g + cells) % cells
+      } else {
+        # evenspread: five offsets (including 0) spaced at round(i*cells/5), i = 0..4.
+        for (i = 1; i <= 4; i++) {
+          off = int(i * cells / 5 + 0.5)
+          at[i] = (c + off) % cells
+        }
       }
       # The shortest circular run covering all five copies is the cell count minus the widest
       # gap between consecutive copies in index order.
@@ -257,12 +269,18 @@ awk -v g="$GRID" '
     printf "runkill_torus4=%d\n", runkill("torus4")
     printf "runkill_ring4adj=%d\n", runkill("ring4adj")
     printf "runkill_ring4wide=%d\n", runkill("ring4wide")
+    printf "runkill_evenspread=%d\n", runkill("evenspread")
     # A closed form holds only where the five copies of a rule are DISTINCT cells. Below those
     # grids the offsets alias around the ring and the measured length is the truth; saying so is
     # the difference between a precondition and a refusal.
     printf "runkill_torus4_closed=%s\n",    (g >= 3 ? sprintf("%d", 2 * g + 1) : "na")
     printf "runkill_ring4adj_closed=%s\n",  (g * g >= 5 ? "5" : "na")
     printf "runkill_ring4wide_closed=%s\n", (4 * g < g * g ? sprintf("%d", 4 * g + 1) : "na")
+    # the evenspread pigeonhole bound: the largest of five gaps summing to C is at least ceil(C/5),
+    # and an even split reaches it exactly (active-designing/20260918-043308, checked at four
+    # (C,k) pairs beyond this one by brute force over every offset subset).
+    cc = g * g
+    printf "runkill_evenspread_closed=%s\n", (cc >= 5 ? sprintf("%d", cc - int((cc + 4) / 5) + 1) : "na")
   }
 ' < /dev/null >> "$PEN/out"
 
@@ -276,7 +294,7 @@ cat "$PEN/out"
 read_field() { awk -v k="$1" -F= '$1 == k { print $2 }' "$PEN/out"; }
 
 closed_ok=yes
-for rule in torus4 ring4adj ring4wide; do
+for rule in torus4 ring4adj ring4wide evenspread; do
   m=$(read_field "runkill_$rule")
   c=$(read_field "runkill_${rule}_closed")
   [ "$c" = "na" ] && continue
