@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.214913` | [The same cure a third time](20260917/20260917-214913_the-same-cure-a-third-time.kyri) | section_citation 1015 to 54 processes. |
 | `20260917.214633` | [Civic Style lane reads clean this rotation](20260917/20260917-214633_civic-style-lane-reads-clean-this-rotation.kyri) | CIVIC_STYLE.md grades B (82); no new policy-reward work found to audit. |
 | `20260917.214444` | [Sixth look, same answer](20260917/20260917-214444_sixth-look-gates-only.kyri) | No agent-doable work stands; gates-only sentinel set rather than a seventh duplicate finding. |
 | `20260917.214010` | [The walk a meter could not open](20260917/20260917-214010_the-walk-a-meter-could-not-open.kyri) | 17 front doors reached; the meter reads on. |
