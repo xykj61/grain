@@ -49,17 +49,29 @@ the scan's own header; witness and control GREEN, 28 legs, `control_failed=0`. `
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
 
-**PHEROMONE -- `glow/rune_null.rye` GAINED THREE ASSERTS, SAME SHAPE.** An assert import, a
-length-ceiling postcondition on `subject_slice`'s scan, a post-trim non-emptiness precondition on
-`parse()`, and a constructed-spec buffer-fit postcondition on `parse()`'s own return -- three bare
-`assert()` calls, matching `rune_conditional.rye`'s and `rune_list.rye`'s own shape. `rune_null_witness`
-GREEN unchanged; `tame_style_check`'s zero-assert ratchet fell; `width-check` clean. Claim
-`pheromone-rune-null-asserts` opened, pushed, and closed, per the ABSENCE clause; `rune_mutate.rye`
-stood claimed live by grass the whole time and was left alone.
-**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's; five zero-assert
-`glow/` files remain past `rune_null.rye` (landed), `rune_mutate.rye` (grass's, in flight), and
-`rune_switch.rye` (petrichor's, in flight, CLAIM-AS-OVERRIDE): `rune_quad.rye`, `rune_triple.rye`,
-`lower_alias.rye`, `lower_cast.rye`, and `glow/nock/nock_jet_dec.rye`, same shape, agent-doable next.
+**PHEROMONE -- `mantra/bolt_apply_step.rye` GAINED FIVE ASSERTS, SAME SHAPE ONE MODULE OVER.**
+Elder account [shelved
+whole](archive/20260918-064010_itinerary-pheromone-rune-null-account.md): the `rune_null.rye`
+lap, and the finding that closed it -- a stale `pheromone-nock-jet-dec-asserts` claim, opened
+before grass's own identical landing, found and closed the next lap. The named `glow/`
+zero-assert list is now fully clear or claimed (`lower_cast.rye` stands under incense's live
+claim). This lap moved the same discipline into Mantra: an assert import, and bare postcondition
+asserts on `write_leaf_pending`'s five constructed-record fields, on `apply_pending`'s
+precondition (the pending record's content length still fits the catalog's own ceiling) and its
+postcondition (nothing left pending once `append_leaf` returns), and on `recover_after_crash`'s
+own postcondition -- five bare `assert()` calls, matching the same shape used across
+`rune_null.rye` and `nock_jet_dec.rye`. `mantra_bolt_apply_step_witness` GREEN unchanged;
+`tame_style_check`'s zero-assert ratchet fell 16 to 15; `width-check` clean. Claim
+`pheromone-mantra-bolt-apply-step-asserts` opened, pushed, and closed per the ABSENCE clause.
+**YOURS:** whether a body carries a parent hash at all is convention, and Keaton's; the 15
+remaining `tame_style_check` zero-assert files are `comlink/discovery/descriptor_test.rye`,
+`comlink/discovery/round_trip_wire.rye`, `comlink/turn_route.rye`, `ember/ember_core.rye`,
+`glow/lower_cast.rye` (incense's claim), `lantern/lantern_core.rye`,
+`linengrow/glow_seva_b0_fold.rye`, `linengrow/setu65_lab_tx_check.rye`,
+`linengrow/setu6_device_lab_check.rye`, `linengrow/setu_desk_hold0_check.rye`,
+`linengrow/setu_desk_hold1_check.rye`, `linengrow/setu_desk_hold_wayland_check.rye`,
+`mycelium/puddle_convergence.rye`, `scribble/scribble_core.rye`, `tally/pedersen.rye` -- some
+outside pheromone's own lane, each its own honest scope to check before claiming.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -213,7 +225,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `56898f9a07` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6554a0b7bd` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask

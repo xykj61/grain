@@ -20,6 +20,7 @@
 //! never needs to unsee it.
 
 const std = @import("std");
+const assert = std.debug.assert;
 const tally_copy = @import("tally_copy.rye");
 const ns = @import("recall_lap1.rye");
 
@@ -80,6 +81,14 @@ pub fn write_leaf_pending(
     pending.content_len = @intCast(content.len);
     tally_copy.copy_disjoint(u8, pending.tilak[0..tilak.len], tilak);
     pending.tilak_len = @intCast(tilak.len);
+    // invariant: every field the copies above just filled stays inside the
+    // buffer that holds it, so the record about to become visible to
+    // apply_pending never claims more than it was given.
+    assert(pending.peer_len <= 16);
+    assert(pending.bolt_len <= 32);
+    assert(pending.path_len <= ns.max_path);
+    assert(pending.content_len <= ns.max_resin_bytes);
+    assert(pending.tilak_len <= ns.max_tilak);
     state.pending = pending;
 }
 
@@ -90,6 +99,10 @@ pub fn write_leaf_pending(
 /// module adds no new admission rule of its own.
 pub fn apply_pending(state: *BoltApplyStep) ApplyError!void {
     const pending = state.pending orelse return error.NothingPending;
+    // invariant: a pending record only ever reaches this call through
+    // write_leaf_pending's own bounds checks, so its content length still
+    // fits the catalog's own ceiling before append_leaf is asked to admit it.
+    assert(pending.content_len <= ns.max_resin_bytes);
     try state.catalog.append_leaf(
         pending.peer[0..pending.peer_len],
         pending.bolt[0..pending.bolt_len],
@@ -99,6 +112,10 @@ pub fn apply_pending(state: *BoltApplyStep) ApplyError!void {
         pending.tilak[0..pending.tilak_len],
     );
     state.pending = null;
+    // invariant: the write-to-apply window this module exists to name is
+    // closed the moment append_leaf returns without an error -- a second
+    // apply_pending on the same state finds nothing pending to admit.
+    assert(state.pending == null);
 }
 
 /// A crash landed somewhere in the write-to-apply window. Discard the
@@ -106,4 +123,8 @@ pub fn apply_pending(state: *BoltApplyStep) ApplyError!void {
 /// there is nothing to undo, only something to forget.
 pub fn recover_after_crash(state: *BoltApplyStep) void {
     state.pending = null;
+    // invariant: a crash discards the pending leaf outright, so the state
+    // this function leaves behind matches apply_pending's own postcondition
+    // -- nothing pending, whichever of the two paths a caller took.
+    assert(state.pending == null);
 }
