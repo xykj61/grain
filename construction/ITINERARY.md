@@ -62,8 +62,10 @@ width bill unmoved (it already answered `u32`), `glow_ident_duplication`'s ceili
 the same commit -- `width-check`'s corpus falls 1,133 to 1,131, `glow_ident_duplication`'s
 ceiling falls 7 to 6. **PROVEN:** `lower_alias_witness`, `glow_ident`, `glow_run_contract`,
 `width-check`, `tame_style_check`, `glow_ident_duplication`, GREEN on metal.
-**YOURS:** six singletons remain -- `lower_core` (4), `lower_call3` (4), `lower_call2` (3),
-`lower_face_lit` (2), `lower_shop_nest` (2), `lower_trap` (1).
+**PHEROMONE -- THE CHEAPEST SINGLETON, TAKEN ALONE.** Account
+[shelved whole](archive/20260917-221033_itinerary-pheromone-trap-account.md).
+**YOURS:** five singletons remain -- `lower_core` (4), `lower_call3` (4), `lower_call2` (3),
+`lower_face_lit` (2), `lower_shop_nest` (2).
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.

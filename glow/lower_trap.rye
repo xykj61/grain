@@ -7,7 +7,10 @@
 //! shrink the slice or the hidden tick trips BoundExceeded (exit 1).
 
 const std = @import("std");
+const assert = std.debug.assert;
 const rbt = @import("rune_bounded_trap.rye");
+const refusal = @import("refusal.rye");
+const zig_ident = @import("zig_ident.rye");
 
 pub const LowerError = rbt.ParseError || error{
     Overflow,
@@ -46,7 +49,7 @@ pub fn emit_literal_program(bound: u32, actual_steps: u32, out: []u8) LowerError
 pub fn emit_lent_program(face: []const u8, shrink: bool, out: []u8) LowerError!u32 {
     var zig_face: [rbt.max_ident_len]u8 = undefined;
     const face_len = try zig_safe_ident(face, &zig_face);
-    const name = zig_face[0..face_len];
+    const name = zig_face[0..@as(usize, @intCast(face_len))];
     if (shrink) {
         const written = std.fmt.bufPrint(out,
             \\const std = @import("std");
@@ -87,22 +90,15 @@ pub fn emit_lent_program(face: []const u8, shrink: bool, out: []u8) LowerError!u
     return @intCast(written.len);
 }
 
-fn zig_safe_ident(face: []const u8, out: *[rbt.max_ident_len]u8) LowerError!usize {
-    if (face.len == 0 or face.len > rbt.max_ident_len) return error.BadIdent;
-    var i: usize = 0;
-    while (i < face.len) : (i += 1) {
-        const c = face[i];
-        const mapped: u8 = if (c == '-') '_' else c;
-        if (i == 0) {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or mapped == '_'))
-                return error.BadIdent;
-        } else {
-            if (!((mapped >= 'a' and mapped <= 'z') or (mapped >= 'A' and mapped <= 'Z') or (mapped >= '0' and mapped <= '9') or mapped == '_'))
-                return error.BadIdent;
-        }
-        out[i] = mapped;
-    }
-    return face.len;
+/// The one ident rule, reached through `glow/zig_ident.rye`. This module's single call site
+/// lowers a trap face and never a wing, so the dot stays refused.
+fn zig_safe_ident(face: []const u8, out: *[rbt.max_ident_len]u8) LowerError!u32 {
+    var slot: refusal.Slot = null;
+    const n = zig_ident.safe_ident(face, out[0..], rbt.max_ident_len, "trap-face", .refuse, &slot) catch return error.BadIdent;
+    // invariant: the rule wrote exactly the face it was handed, so the caller's own length is
+    // what returns rather than a truncation the buffer would have hidden
+    assert(n == face.len);
+    return n;
 }
 
 /// Parse one Glow line and emit a welcome-path program.

@@ -120,7 +120,13 @@ mode="${1:-count}"
 #                          member are unmoved. Six singletons remain (`lower_core` 4,
 #                          `lower_call3` 4, `lower_call2` 3, `lower_face_lit` 2,
 #                          `lower_shop_nest` 2, `lower_trap` 1).
-CEILING=6
+#    5  `20260917.222500`  the cheapest singleton fell: `glow/lower_trap.rye`, one call site.
+#                          Its body was the plain 28-body rule with no dot-mapping and no
+#                          length-ceiling divergence, and its return type moved `usize` to
+#                          `u32` in the same lap. `LowerError` and its `error.BadIdent` member
+#                          are unmoved. Five singletons remain (`lower_core` 4, `lower_call3`
+#                          4, `lower_call2` 3, `lower_face_lit` 2, `lower_shop_nest` 2).
+CEILING=5
 
 room="glow"
 [ -d "$room" ] || { echo "instrument=no_glow_room"; exit 1; }
