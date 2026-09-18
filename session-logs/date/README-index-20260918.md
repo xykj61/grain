@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.030812` | [Gauge law-ceiling queue read: empty, one page already ruled](20260918/20260918-030812_gauge-law-ceiling-queue-read-empty.kyri) | law_ceiling=1, the-baton.md re-read via --explain, remaining negatives are quotes/named walls; nothing changed. |
 | `20260918.030503` | [Send confirmed -- both remotes hold 791c49b4a](20260918/20260918-030503_send-confirmed-791c49b4a.kyri) | One table conflict, kept every row; Git nib carried to HEAD's parent in the same commit. |
 | `20260918.030243` | [Send confirmed -- both remotes hold 3c99a22db](20260918/20260918-030243_send-confirmed-3c99a22db.kyri) | Pending-decisions reading landed; two contested pushes, both rows kept each time. |
 | `20260918.030132` | [Send confirmed -- both remotes hold db4d5638b, chain closed here](20260918/20260918-030132_send-confirmed-db4d5638b-chain-closed.kyri) | Two more contested pushes auto-resolved; nib stopped one commit stale per rule 2; chain ends here. |
