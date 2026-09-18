@@ -6,9 +6,9 @@
 
 ---
 
-This shelf holds six documents from the wider Grain OS / `groupproject9/xy-mathematics` lineage — the visionary and technical writing that precedes this fork, kept whole and unaltered in their authors' own voices, exactly as `gratitude/` asks. Nothing here is edited; when we adapt these ideas into this fork's own secular, plain-English, module-named form, that adaptation lives elsewhere (see the siloed set named at the bottom) and never overwrites the originals here.
+This shelf holds six documents from the wider Grain OS / `groupproject9/xy-mathematics` lineage — the visionary and technical writing that precedes this fork, kept whole and unaltered in their authors' own voices, exactly as `gratitude/` asks. Every document here stays exactly as written; an adaptation of these ideas into this fork's own secular, plain-English, module-named form lives elsewhere (see the siloed set named at the bottom), keeping the originals here whole.
 
-These documents carry a mystical, visionary, and at times devotional register — Vedic scripture, aether theory, Gospel-of-Thomas epigraphs, a personal authorial voice. That register is real and worth preserving as written. It is also exactly why the siloed versions exist: so the load-bearing engineering ideas can travel into this fork's designs in clear, checkable, secular language without either erasing the originals or importing register that a technical proposal to a general audience should not carry.
+These documents carry a mystical, visionary, and at times devotional register — Vedic scripture, aether theory, Gospel-of-Thomas epigraphs, a personal authorial voice. That register is real and worth preserving as written. It is also exactly why the siloed versions exist: so the load-bearing engineering ideas can travel into this fork's designs in clear, checkable, secular language, keeping the originals whole and keeping their register here, rather than carried into a technical proposal for a general audience.
 
 ## What Lives Here (unaltered originals)
 
@@ -21,7 +21,7 @@ These documents carry a mystical, visionary, and at times devotional register �
 
 ## The Siloed Adaptations (this fork's own voice)
 
-The clear, secular, module-named adaptations — the versions safe to cite in this fork's own Acme Corporation guides and PR proposals — live under `external-research/grain-lineage-silo/` with an index at [`../../external-research/grain-lineage-silo/README.md`](../../external-research/grain-lineage-silo/README.md). When any Acme-facing writing references these ideas, it cites the siloed version, not the originals held here.
+The clear, secular, module-named adaptations — the versions safe to cite in this fork's own Acme Corporation guides and PR proposals — live under `external-research/grain-lineage-silo/` with an index at [`../../external-research/grain-lineage-silo/README.md`](../../external-research/grain-lineage-silo/README.md). When any Acme-facing writing references these ideas, it cites the siloed version, rather than the originals held here.
 
 ---
 
