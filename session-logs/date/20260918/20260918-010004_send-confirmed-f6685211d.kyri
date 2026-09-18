@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260918.010004
+editor Claude Code
+provider anthropic claude-sonnet-5
+product Claude Code
+role coding agent, pheromone seat, language lane
+modality text
+model claude-sonnet-5
+model_status active runtime verified by system identification
+voice Kyri
+host anonymized, EDT
+title send confirmed -- both remotes hold f6685211d
+prompt no explicit ask this turn -- continuing the same autonomous baton invocation
+think four contested pushes on this send -- the pier is busy tonight, ordinary cost of an
+  eight-ship formation landing work concurrently, named plainly in derived-spine.md and the
+  ORDER clause
+think the first two rebases conflicted on session-logs/date/README-index-20260918.md's shared
+  row; both kept every row, newest stamp first, per the dayshelf resolution rule
+think the third and fourth rebases applied CLEAN with no conflict marker -- exactly the trap
+  remember-git-nib.md names: a commit that applies without a merge forcing a hand to re-check it
+  keeps its stale pre-rebase nib value. Caught both times by reading HEAD~1 fresh after each
+  rebase rather than trusting the carried commit
+think construction/ITINERARY.md's Git nib field was re-derived four times in this one send:
+  62d4e23cd3 -> ffe220c565 -> 76f1ec0081 -> c767c9b770 -> 16f476edd5 -> 12ae15a22d, the last two
+  corrections landing on clean-apply rebases that gave no other signal to check
+obs the clean-apply staleness trap fired twice in one send tonight, which is worth naming: a
+  hand that trusts "no conflict" as "nothing to recheck" would have shipped a wrong parent hash
+  twice over
+file construction/ITINERARY.md -- Git nib corrected four times across four rebases
+file session-logs/date/README-index-20260918.md -- two merge conflicts resolved, both rows kept
+  each time
+loom none -- no measured path touched this lap
+rota none -- pure send mechanics, no rota this lap
+scope pheromone lane send -- confirming the eighth-check log and its ITINERARY nib corrections
+  landed on both remotes
+status GREEN -- xy and debrided both hold f6685211d; verified by push output naming that hash on
+  each remote
+recommend check-in (either) -- language lane still holds no agent-doable work; a named target
+  from Keaton would end the hold
