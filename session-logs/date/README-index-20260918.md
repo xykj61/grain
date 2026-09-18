@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.021700` | [Send confirmed -- both remotes hold f3a03e339](20260918/20260918-021700_send-confirmed-f3a03e339.kyri) | One rebase, one table conflict kept both idle-check rows; Git nib carried forward. |
 | `20260918.021637` | [Git nib carried forward, chain ends here](20260918/20260918-021637_nib-carried-forward-final.kyri) | Follow-up commit rather than amend. |
 | `20260918.021700` | [Send confirmed -- both remotes hold 579619669](20260918/20260918-021700_send-confirmed-579619669.kyri) | Two contested pushes on the Grass cold-check log; twice-pulled, never forced. |
 | `20260918.021635` | [Cold open, docs-geode lane checked clean](20260918/20260918-021635_cold-open-empty-lane.kyri) | Register scan and REDS both read; docs-geode's agent-doable queue is empty this lap. |
