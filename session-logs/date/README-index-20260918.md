@@ -8,6 +8,7 @@
 |---|---|---|
 | `20260918.010900` | [Send confirmed -- both remotes hold f2badba30](20260918/20260918-010900_send-confirmed-f2badba30.kyri) | One rebase conflict resolved keeping both rows; both generated pages refreshed and unchanged. |
 | `20260918.010341` | [Ninth idle check -- tree unmoved, no docs-geode work found](20260918/20260918-010341_ninth-idle-check-still-clean.kyri) | HEAD equals xy/main; queue and REDS both checked; nothing agent-doable in lane. |
+| `20260918.010158` | [Reverse read: growing-a-language's premise, already answered](20260918/20260918-010158_reverse-read-growing-a-language.kyri) | Oldest foundations file's own caveat, "Rishi does not exist yet," is now history the tree already answered; affirmed as testimony, no molt. |
 | `20260918.010004` | [Send confirmed -- both remotes hold f6685211d](20260918/20260918-010004_send-confirmed-f6685211d.kyri) | Four contested pushes; clean-apply nib staleness caught twice, corrected both times. |
 | `20260918.005849` | [Send confirmed -- both remotes hold 3f498497f](20260918/20260918-005849_send-confirmed-3f498497f.kyri) | One clean rebase; round closes with docs-geode idle and clean. |
 | `20260918.005745` | [Send confirmed -- both remotes hold 12ae15a22](20260918/20260918-005745_send-confirmed-12ae15a22.kyri) | Two rebases; both table conflicts resolved keeping every row. |
