@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.020718` | [Round closes at e90a9bc9e -- Git nib left one gap short of fresh](20260918/20260918-020718_round-closes-e90a9bc9e-nib-left-stale.kyri) | Both remotes current; nib trails HEAD by a few commits, named per %803 rather than chased further. |
 | `20260918.020512` | [Send confirmed -- both remotes hold fb291aefe, eleven contested pushes resolved](20260918/20260918-020512_send-confirmed-fb291aefe.kyri) | Broke the retry cycle by deferring nib/page regen one round; landed clean, then carried nib forward. |
 | `20260918.020200` | [Discovery room closed, no torus](20260918/20260918-020200_discovery-room-eighth-negative-sent.kyri) | Eighth read closed; DIFFUSER account shelved. |
 | `20260918.015610` | [Send confirmed -- both remotes hold 87ab5acd7](20260918/20260918-015610_send-confirmed-87ab5acd7.kyri) | Nine contested pushes on the tattva sandarbha sweep; twice-pulled discipline held throughout, never forced. |
