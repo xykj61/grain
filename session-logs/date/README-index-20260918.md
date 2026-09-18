@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.014910` | [Auditing lap: claims/reds survey turns up an untracked TAME_CORE.md register finding](20260918/20260918-014910_grass-audit-tame-core-register-finding.kyri) | No live claims, no actionable OPEN red; register=65 on TAME_CORE.md, flagged for a hand's review. |
 | `20260918.014150` | [Send confirmed -- both remotes hold d2fe9949a](20260918/20260918-014150_send-confirmed-d2fe9949a.kyri) | Two rebases; one table conflict kept both rows. |
 | `20260918.014033` | [The two fields that composed](20260918/20260918-014033_the-two-fields-that-composed.kyri) | Round two's proposal 2 closed; composite key, GREEN, falsifier fired. |
 | `20260918.014004` | [Round-open pull lands shastra's Uttara Veda work -- pheromone lane still idle](20260918/20260918-014004_pheromone-round-open-pull-lane-idle.kyri) | Fetched xy, fast-forwarded 3 peer commits, mirrored debrided; lane confirmed idle without a twelfth repeat. |
