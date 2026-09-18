@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260918.030243
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain, grain-incense
+modality text
+model claude-sonnet-5
+model_status verified active runtime, per system reminder naming Sonnet 5 (claude-sonnet-5)
+voice Kyri
+title Send confirmed -- both remotes hold 3c99a22db, pending-decisions reading landed
+prompt continue the send for the pending-decisions reading commit
+think two contested pushes on the way out, both against session-logs/date/README-index-20260918.md's stamp-collision merge and once against construction/ITINERARY.md's Git nib line; each pull-rebase resolved by keeping both peers' rows in stamp order and re-deriving the nib from the settled HEAD's parent.
+think paid the two generated-page debts (readme_metrics, geode_libraries) and the pin-bound reading after every rebase landed, since a rebase skips the pre-commit hook that would otherwise refresh them.
+obs xy and debrided both now hold 3c99a22db; the nib names db4d5638b0, HEAD's parent, resolvable in every clone.
+status GREEN -- pending_decision guard registered and witnessed, commit landed on both remotes, no open conflict markers left in the tree.
+scope one lap: build and land the pending-decisions reading (tools/fixtures/p/pending_decision_scan.sh, its control, and tools/p/pending_decision_witness.rish).
+file session-logs/date/20260918/20260918-025457_pending-decision-reading.kyri why -- the build's own record
+recommend kg -- the claim board is clear; next lap can take incense-inner's item 4 (fascia on touch) or open a fresh claim for item 1's shared-build-cache design essay.
