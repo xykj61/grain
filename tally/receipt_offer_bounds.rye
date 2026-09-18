@@ -61,7 +61,7 @@ pub fn amount(value: u64) BoundError!void {
     if (value > max_value_amount) return BoundError.AmountTooLarge;
 }
 
-pub fn encodedFact(length: u32) BoundError!void {
+pub fn encoded_fact(length: u32) BoundError!void {
     // invariant: the encoded-fact ceiling is positive.
     assert(max_encoded_fact_bytes > 0);
     // invariant: the incoming length already uses the published count width.
@@ -69,7 +69,7 @@ pub fn encodedFact(length: u32) BoundError!void {
     if (length > max_encoded_fact_bytes) return BoundError.TooLong;
 }
 
-pub fn factCount(count: u32) BoundError!void {
+pub fn fact_count(count: u32) BoundError!void {
     // invariant: one admitted offer is the bounded first replay.
     assert(max_replay_facts == 1);
     // invariant: the incoming count already uses the published count width.
