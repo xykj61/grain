@@ -60,3 +60,9 @@ stamp 20260918.060729
 epoch 1789726049
 paths glow/lower_cast.rye
 what add bare asserts to lower_cast.rye's zig_type_for_mold, unwelcome_raw_u64, emit_for, and the three lower_line_* entry points, same discipline as rune_quad/rune_null
+claim pheromone-nock-jet-dec-asserts
+seat pheromone
+stamp 20260918.062402
+epoch 1789727042
+paths glow/nock/nock_jet_dec.rye
+what add bare asserts to nock_jet_dec.rye's fast_dec and eval_with_dec_jet, same discipline as rune_null/rune_quad
