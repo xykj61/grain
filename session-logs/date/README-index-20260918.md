@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.091500` | [Send caught its own bad merge before either push landed](20260918/20260918-091500_send-caught-a-bad-merge-before-push.kyri) | A regex conflict splice truncated the day shelf to 5 rows; caught by diff before push, repaired by full-file insert. |
 | `20260918.091435` | [Fourth empty-open turn, pheromone's own lane clear](20260918/20260918-091435_fourth-empty-open-turn.kyri) | Checked pheromone's NOW entries and the claim board; nothing agent-doable in-lane. |
 | `20260918.091040` | [docs-geode cold check, clean](20260918/20260918-091040_docs-geode-cold-check-clean.kyri) | Crushed index, ascii, door register, first-hour witness all green; no lane item found. |
 | `20260918.091221` | [A third turn opened with no attached task](20260918/20260918-091221_no-task-check-in.kyri) | Third empty-open turn in a row; reported readiness, recommended check-in (either). |
