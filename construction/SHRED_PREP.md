@@ -69,7 +69,7 @@ its bound. The word stays **shred RED** until the next circle.*
 
 | Elder | Living mutant | What the cut asks |
 | --- | --- | --- |
-| `tools/fixtures/d/dated_classify.py` | `tools/fixtures/d/dated_classify.rish`, gated by `tools/d/dated_classify_witness.rish` | **CUT `20260830.190407`** on the circled word: elder and its parity seam removed, zero operational citers re-verified, the successor's witness GREEN on the lap of the cut. |
+| tools/fixtures/d/dated_classify.py (cut, no longer on disk) | `tools/fixtures/d/dated_classify.rish`, gated by `tools/d/dated_classify_witness.rish` | **CUT `20260830.190407`** on the circled word: elder and its parity seam removed, zero operational citers re-verified, the successor's witness GREEN on the lap of the cut. |
 | `tools/l/launch-hush-planet-chapter.rish` | `launch-fleet-chapter.rish hush` | see the note below |
 | `tools/l/launch-mystery-planet-chapter.rish` | `launch-fleet-chapter.rish mystery` | same |
 | `tools/l/launch-silence-planet-chapter.rish` | `launch-fleet-chapter.rish silence` | same |
@@ -236,8 +236,8 @@ and it was restored on the closing lap (REDS %284).*
 
 | Fossil | Living mutant | Condition before any cut |
 | --- | --- | --- |
-| `glow/lower_bartis.rye` (+ its witness) | `glow/lower_shop_gate.rye` | inbound references counted and repointed in the same round; every `glow/` witness proves the emitted code byte-identical across the rename |
-| `glow/lower_barket.rye` (+ its witness) | `glow/lower_shop_nest.rye` | same |
+| glow/lower_bartis.rye (cut, no longer on disk) (+ its witness) | `glow/lower_shop_gate.rye` | inbound references counted and repointed in the same round; every `glow/` witness proves the emitted code byte-identical across the rename |
+| glow/lower_barket.rye (cut, no longer on disk) (+ its witness) | `glow/lower_shop_nest.rye` | same |
 
 **These two are the whole cut surface**, which is the measurement that matters: of 32 `lower_*.rye`
 modules, 30 already carry a plain functional name. The Lexicon's *Rune alphabet* and *Barket* rows are
