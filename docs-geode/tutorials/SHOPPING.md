@@ -66,7 +66,7 @@ prices hide how many tokens a task truly takes.
 Does it explain itself when it is uncertain? Does it argue with you when you are wrong? Can you
 reach it from the places you work?
 
-**The trap: pleasantness is not accuracy.** A model that agrees with you warmly and confidently is
+**The trap: pleasantness can masquerade as accuracy.** A model that agrees with you warmly and confidently is
 more pleasant and less useful than one that says *I am not sure, and here is why*. When you compare
 the answers from your three real tasks, check the ones that turned out wrong -- and notice which
 model warned you.
@@ -118,7 +118,7 @@ throughput on a real network.
 
 ### Joy
 
-Does it get out of the way? Can you script it? Does the client stay quiet when nothing is happening?
+Does it get out of the way? Can you script it? Does the client stay quiet while idle?
 
 ---
 
@@ -130,7 +130,7 @@ Short on time? Ask these of any of the three, and you will avoid most of the bad
 2. **Who else can read this?**
 3. **What breaks the day I stop paying?**
 
-A vendor who answers all three plainly, in writing, on a page you can find without asking, has told
+A vendor who answers all three plainly, in writing, on a page already public, has told
 you a great deal about how they will behave later.
 
 ## Two habits worth more than any choice you make here
