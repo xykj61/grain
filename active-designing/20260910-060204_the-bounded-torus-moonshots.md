@@ -89,6 +89,18 @@ That question fits a supervision tree, where distance from the root already mean
 **One sentence of honesty before the twelve.** This page proposes; witnesses decide. A claim here
 enters the checkable room the day a witness on metal binds it, and stays here until then.
 
+**Row 11 paper landed:** `20260917.204915` -- the `20260915.212827` reading recommended writing the
+paper the measurements support rather than the three-definition paper row 11 first proposed. That
+paper is written: [`20260917-204915_bounded-cyclic-computing.md`](20260917-204915_bounded-cyclic-computing.md)
+binds two definitions -- a bound as a period, a proof that returns as a cycle -- against four
+witnesses read live at its own stamp (`wrap_ring`, `glow_trap_bound`, `bearing_quorum`,
+`cyclic_witness`), and drops the radius definition on the same three-instrument refusal the
+`20260915.212827` reading already found. One correction rides along: `cyclic_witness` had stood
+"unrun" because its `tier cadence` roster rota carries zero receipts, and this paper is the first
+place anything ran the instrument directly rather than reading the roster's silence about it --
+it passes, `verdict=cycles`, on metal. The ladder's twelve rows now all carry either a landed
+witness or a re-aimed finding; row 11 was the last to close.
+
 ---
 
 ## The twelve, single-stranded
