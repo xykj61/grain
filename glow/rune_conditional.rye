@@ -17,6 +17,7 @@
 //! parsers name for themselves.
 
 const std = @import("std");
+const assert = std.debug.assert;
 
 pub const max_test_len: u32 = 96;
 
@@ -35,6 +36,9 @@ pub const IfSpec = struct {
 pub fn test_slice(spec: *const IfSpec) []const u8 {
     var len: u32 = 0;
     while (len < max_test_len and spec.test_expr[len] != 0) len += 1;
+    // invariant: the scan above stops at or before the buffer's own
+    // ceiling, so a returned slice never claims more than the buffer holds.
+    assert(len <= max_test_len);
     return spec.test_expr[0..len];
 }
 
@@ -46,6 +50,9 @@ pub fn parse(line: []const u8) ParseError!IfSpec {
     var rest = line[2..];
     rest = std.mem.trimStart(u8, rest, " \t");
     if (rest.len == 0) return error.MissingTest;
+    // invariant: a line accepted past the missing-test check names a real
+    // remainder, never an empty one, once execution reaches here.
+    assert(rest.len > 0);
 
     // Cut at the first whitespace OUTSIDE parentheses -- then/else arms, if
     // they follow on the same line, are not this parser's job.
@@ -80,5 +87,8 @@ pub fn parse(line: []const u8) ParseError!IfSpec {
 
     var spec: IfSpec = .{};
     @memcpy(spec.test_expr[0..test_text.len], test_text);
+    // invariant: a constructed test spec never claims more of its fixed
+    // buffer than the length check above already proved fits.
+    assert(test_text.len <= max_test_len);
     return spec;
 }

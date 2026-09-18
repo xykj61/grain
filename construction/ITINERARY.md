@@ -47,10 +47,11 @@ in-flight file has nothing to grep for, since a peer's work two minutes old is o
 when the check runs. **PROVEN:** grass's `glow_rune_cell_witness` stands; this seat re-ran it
 unchanged after the fold.
 **YOURS:** whether a body carries a parent hash at all is convention, and Keaton's;
-`glow/rune_bounded_trap.rye`, `glow/rune_conditional.rye`, `glow/rune_face.rye`,
-`glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`, `glow/rune_quad.rye`,
-`glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`, `glow/lower_cast.rye`, and
-`glow/nock/nock_jet_dec.rye` remain zero-assert, same shape, agent-doable, next lap.
+`glow/rune_bounded_trap.rye` and `glow/rune_conditional.rye` landed since this was written (below);
+`glow/rune_face.rye`, `glow/rune_list.rye`, `glow/rune_mutate.rye`, `glow/rune_null.rye`,
+`glow/rune_quad.rye`, `glow/rune_switch.rye`, `glow/rune_triple.rye`, `glow/lower_alias.rye`,
+`glow/lower_cast.rye`, and `glow/nock/nock_jet_dec.rye` remain zero-assert, same shape,
+agent-doable, next lap.
 **INCENSE.** [Accounts shelved](archive/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
 **COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
@@ -124,29 +125,20 @@ whole](archive/20260918-035201_itinerary-grass-threads-packet-account.md): stand
 stale against the closed Compass Chapter. **YOURS:** pointer-stub vs in-place refresh, and which of
 its ten threads carry forward.
 
-**GRASS -- REVERSE-READING PACKET: FOUNDATIONS' SECOND-OLDEST PAIR, BOTH AFFIRMED CLEAN.**
-Continuing the rotation (`foundations/`, `active-designing/`, `session-logs/` each held one packet
-earlier tonight), walked `foundations/` newest-to-oldest again: the oldest file,
-`growing-a-language.md`, was already read this cycle (affirmed, no molt), so this packet takes the
-next-oldest pair by filename stamp -- `20260628-121512_the-foundation-beneath-the-work.md` and
-`20260628-121512_the-heart-in-the-work.md`, both `Voice: Reya 2` devotional pieces predating the
-Kyri molt. Read both whole and checked every load-bearing claim against the tree as it stands
-today rather than trusting the prose: **"Aurora is the dawn a machine wakes into"** still matches
-`context/LEXICON.md`'s live entry (*"The boot -- dawn on open hardware"*) and the build-stack row
-naming Aurora as a real rung; **"one owner with many witnesses, or one changer and never both"**
-still matches the ownership principle named in
-`context/specs/20260630-004512_module-name-provenance.md`; **"a garden of memory with a known
-edge"**, **"the smallest version that works before the larger one"**, and **"assertions at the door
-of a function, bounds carried inside the types"** all match TAME Guidance's live core reflexes
-unchanged. The one apparent mismatch -- **Kaeden Reyklah** named as coauthor rather than Keaton --
-is not a finding: both files carry a one-clock stamp in their own basename, so they are testimony
-under the stamp-and-name law and keep every word they wrote, and `MAP.md` already names this exact
-class as a living, standfasted hold (*"still name copyright Kaeden Reyklah -- a living hold until
-Keaton names a copyright rewrite"*). **Disposition: affirmed as testimony, no molt** -- the
-premises both pieces rest on (bounded memory, proven-smallest-first growth, assert-at-the-door,
-Aurora's meaning, the ownership rule) are all still load-bearing and unchanged twelve weeks later,
-which is the honest outcome the reverse-reading packet is built to report as readily as a stale
-one. No live product or build crux changes; nothing carried to a module's own ship.
+**GRASS -- REVERSE-READING PACKET: FOUNDATIONS' SECOND-OLDEST PAIR, BOTH AFFIRMED CLEAN.** Account
+[shelved whole](archive/20260918-045718_itinerary-grass-foundations-pair-account.md): both
+`20260628` Reya 2 pieces affirmed as testimony, no molt; nothing carried to a module's own ship.
+
+**GRASS -- `glow/rune_conditional.rye` GAINED THREE ASSERTS, SAME SHAPE.** Account
+[shelved whole](archive/20260918-045718_itinerary-grass-rune-conditional-account.md) for the
+`rune_bounded_trap.rye` / `rune_cell.rye` lap's own shape. `test_slice`'s buffer-fit postcondition,
+`parse`'s post-trim non-emptiness precondition, and the constructed spec's own buffer-fit
+postcondition -- three bare `assert()` calls, `assert` newly imported. Witness GREEN unchanged
+(`rune_conditional_witness`, six claims); `tame_style_check` zero-assert ratchet fell; `width-check`
+clean. Claim `grass-rune-conditional-asserts` opened, pushed, and closed, per the ABSENCE clause.
+**YOURS:** nine zero-assert `glow/` files remain (`rune_face.rye`, `rune_list.rye`,
+`rune_mutate.rye`, `rune_null.rye`, `rune_quad.rye`, `rune_switch.rye`, `rune_triple.rye`,
+`lower_alias.rye`, `lower_cast.rye`), same shape, agent-doable next.
 
 **GRASS -- `glow/rune_calln.rye` account.** [Shelved
 whole](archive/20260918-043634_itinerary-grass-rune-calln-account.md): rune_calln.rye took
@@ -225,7 +217,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `e58e70ad1a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `66b30705c5` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
