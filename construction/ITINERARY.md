@@ -201,7 +201,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1ddda8ef75` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e587f13386` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -277,24 +277,30 @@ joined neighbour. Neither a ratchet nor a meter earns its keep over a closed pop
 whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
 **DIFFUSER -- A DRAFT DUPLICATED A PEER'S OWN LANDED CLOSE, AND ONE FILE SURVIVED THE WITHDRAWAL.**
-This lap drafted a full re-read of Tablecloth, Amphora, and Brix believing them still open; two
-peer commits already on `xy/main` (`20260918-000049` and `20260918-024655`) had opened and closed
-all three, and closed the bitmask falsifier (`& (N - 1)`) across four modules, both before this
-draft began -- the ABSENCE clause's own hazard, met inside one evening's research thread rather than
-across a fleet checkout. The draft is rewritten to name the withdrawal plainly and keep only what
-neither peer piece covered: `mantra/beading.rye`, the content-addressed store one layer beneath
-Tablecloth's naming catalog, unmentioned by path in every prior torus-thread piece. It reads
-negative -- one bare modulus (a bead-count rounding, not an index), zero bitmask hits -- and names a
-fourth false-positive shape beside the thread's first three: `beading.rye`'s own header calls two
-chunking strategies its "first ring" and "second ring," Gall's-Law design-round language rather
-than address arithmetic. Paper [Tablecloth's store one layer
-down](../active-designing/date/20260918/20260918-031615_tablecloth-store-beading-checked-a-peer-beat-this-note-to-press.md);
-register 11% against the 30% Field ceiling.
-**MINE:** re-reading a peer's newest commit on the specific files in question, rather than trusting
-a session's own running tally of "what this thread has read," is the one guard `path_absence_scan.sh`
-cannot supply on its own -- it answers whether a path exists, never whether it was re-checked.
+[Shelved whole](archive/20260918-034727_itinerary-landed-accounts.md).
 **YOURS:** the cold endurance run's 21 reds of 355 guards, `tree_moved=no`, still stands unrepeated
 from two laps back, held there rather than repeated here.
+
+**DIFFUSER -- DECLUSTERING CHECKED AGAINST CARAVAN'S SMALL TABLES, AND STAYS A STORAGE-SCALE
+QUESTION.** Round two's two built openings (offset search, two-field key) landed; opening 3 (power
+signals across seven hosts) stands at one ship of eight reporting, past what this lane can finish
+alone. Before drafting a fourth opening, this lap asked whether the declustering metric -- how a
+placement scheme keeps a copy of every cell alive past a contiguous run of loss -- says anything
+about Caravan's own tables: `caravan/capabilities.rye` (`max_dependents=4`, `max_caps_per_dependent=8`),
+`caravan/regions.rye` (`max_domains=8`, `max_regions=12`, every grant hand-declared), and
+`caravan/boot.rye`'s per-dependent, uncoupled restart budget. **The finding:** at this size and
+declaration discipline, every slot is a decision already visible on the page -- too small a
+population for a placement algorithm to choose among, and no shared resource coupling one
+dependent's restarts to a neighbor's, so a "blast radius" reading has nothing to break. The finding
+is scoped to today's scale; a system at Microkit's own hundreds-of-domains scale meets a real
+version of the question. Paper [Declustering stays a storage-scale
+question](../active-designing/date/20260918/20260918-034116_declustering-stays-a-storage-scale-question.md);
+register 10% against the 30% Field ceiling, QA composite A (91, `--service 75`).
+**MINE:** a placement metric needs a population large enough to need a placement algorithm; a
+hand-declared table small enough to read in one sitting has already made the layout choice the
+metric exists to search for.
+**YOURS:** whether a fourth opening exists in a module this lane has not yet surveyed for
+population size before reaching for the declustering metric by habit.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
