@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue; recommends the lane hold. |
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
 | `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture; REDS row booked, row %805 folded, claim closed. |
 | `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself; recommends the lane hold for Keaton rather than re-check again. |
