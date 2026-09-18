@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260917.204109` | [The agent-doable queue reads empty](20260917/20260917-204109_the-agent-doable-queue-reads-empty.kyri) | Core infra lane surveyed: no live claim, no BOOKED row, rishi fresh; every open item wants Keaton's word. |
+| `20260917.204057` | [The pier that cannot hear its own joules](20260917/20260917-204057_the-pier-that-cannot-hear-its-own-joules.kyri) | Row 6's RAPL assumption fails five ways on this pier; probe landed as a fleet-wide instrument. |
 | `20260917.203723` | [The eleven OPEN REDS rows carry no docs-geode work](20260917/20260917-203723_open-reds-carry-no-docs-work.kyri) | Checked every OPEN ledger row by name for lane fit under CLAIM-AS-OVERRIDE; none touch docs-geode. |
 | `20260917.203432` | [Seven new finders copied rishi/bin after %788's census](20260917/20260917-203432_root-finder-new-growth.kyri) | REDS %820 booked and closed; root_finder_witness.rish back to finders_bare_new=0. |
 | `20260917.203340` | [GATES-ONLY set rather than a ninth confirm](20260917/20260917-203340_gates-only-set-rather-than-a-ninth-confirm.kyri) | Patchouli's mantra/tally lane sets the loop-gates-only sentinel: %807/%767/%765 unchanged, each wants Keaton's ruling. |
