@@ -3,6 +3,7 @@
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/descriptor_test.rye
 
 const std = @import("std");
+const assert = std.debug.assert;
 const print = std.debug.print;
 const desc = @import("descriptor.rye");
 
@@ -10,11 +11,17 @@ pub fn main() !void {
     const empty = desc.Descriptor.init_empty();
     if (empty.len != 0) return error.EmptyNotZero;
     if (empty.remaining() != desc.descriptor_max_bytes) return error.RemainingWrong;
+    // invariant: remaining() always reports the bound minus the descriptor's own len, so an
+    // empty descriptor's remaining space is the full bound by construction rather than by luck
+    assert(empty.remaining() == desc.descriptor_max_bytes - empty.len);
 
     const ok_src = "peer-key|udp://127.0.0.1:4000|fresh|lineage-0";
     const ok = desc.Descriptor.from_slice(ok_src) orelse return error.WelcomeFailed;
     if (ok.len != ok_src.len) return error.LenMismatch;
     if (!std.mem.eql(u8, ok.as_slice(), ok_src)) return error.BytesMismatch;
+    // invariant: as_slice's returned length always equals the descriptor's own len field, since
+    // both are read off the same stored value rather than computed two separate ways
+    assert(ok.as_slice().len == ok.len);
 
     var oversized: [desc.descriptor_max_bytes + 1]u8 = undefined;
     @memset(&oversized, 'x');
