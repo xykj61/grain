@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.232517` (EDT)
+**Stamp:** `20260918.055648` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -174,19 +174,22 @@ at its ceiling; Diffuser landed the last site.
 
 **DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
-**DIFFUSER -- THE BRANCH-CURSOR RING CHECKED, THE THIRD IDIOM ALSO NEGATIVE, THREAD CLOSES.**
-[Shelved whole](archive/20260918-052643_itinerary-diffuser-bitmask-and-opening1-shelved.md) for the
-elder bitmask-ring and Opening-1 accounts. The prior account's own named blind spot -- a ring
-cursor written as a branch, `if (i == N-1) i = 0 else i += 1`, rather than a modulus or a mask --
-now checked against every tracked `.rye` source: a loose pass returned 93 files on the bare
-compare-to-length-minus-one shape, and narrowing to names a real ring cursor carries (`idx`,
-`cursor`, `pos`, `head`, `tail`, `next`, `ring`) cut that to four, all four ordinary postcondition
-asserts, none a wraparound reset. Ten accounts in, all three known wraparound idioms checked
-(modulus, bitmask, branch-reset), no torus stands as a real module anywhere in this tree. Paper
-[here](../active-designing/date/20260918/20260918-052643_branch-cursor-ring-checked-third-idiom-also-negative.md);
-register 70% (13 sentences), reach grade 18 against 11, QA composite B+ (86, `--service 75`).
-**MINE:** the survey line closes here; the next honest move is a first-principles design proposal
-for Caravan/Aurora rather than an eleventh search -- that proposal is the next lap's work.
+**DIFFUSER -- TWO FIRST-PRINCIPLES PROPOSALS, CARAVAN AND AURORA.** [Shelved
+whole](archive/20260918-054803_itinerary-diffuser-branch-cursor-account.md) for the elder
+branch-cursor account, whose own close named this lap's work: design rather than an eleventh
+search. Paper
+[here](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md).
+**Caravan** -- `caravan/confer.rye` narrows a rights mask at every hop and never counts hops at
+all; since a narrowing chain is a descending path in the rights lattice, its length is bounded by
+the lattice height, measured today at `rights_declared=5`
+(`capability_lattice_scan.sh`). Proposed: a `hops_remaining` counter set to that height at the
+original grant, refusing at zero. Today's `widest_antichain=10` means every confer chain in the
+tree runs one hop already, so the bound is stated ahead of its first real use. **Aurora** -- Row
+7's own measured hop counts (mean hop 2.6667 mesh, 2.1333 torus at 16 cores) feed a standard
+per-hop energy model into a crossover rule, `M > L*s / ((Hm-Ht)*e)`, naming the traffic volume
+above which the torus's extra links earn back their static cost; `e` and `s` wait on the same
+joule reading Row 6 found closed on this pier. Register 6% (61 sentences), reach grade 15 against
+11, QA composite B (81, `--service 70`).
 **YOURS, BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3.
 **YOURS, ANY SHIP:** the cold run's 21 reds of 355 guards stays open, unanswered across several
 laps now for the same reason each time.
@@ -246,7 +249,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `6a461ae3cc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a79bb8cafc` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -317,9 +320,6 @@ other apparent match is a boundary-anchored presence check or a first-word-only 
 joined neighbour. Neither a ratchet nor a meter earns its keep over a closed population of zero.
 `two_rooms_doorway.rish` re-run GREEN, unmoved from the elder reading.
 **YOURS:** none opened this lap.
-
-**DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** [Shelved
-whole](archive/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
 
 **DIFFUSER -- A DRAFT DUPLICATED A PEER'S OWN LANDED CLOSE, AND ONE FILE SURVIVED THE WITHDRAWAL.**
 [Shelved whole](archive/20260918-034727_itinerary-landed-accounts.md).

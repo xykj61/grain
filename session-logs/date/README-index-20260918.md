@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.055753` | [Caravan/Aurora proposals](20260918/20260918-055753_caravan-aurora-first-principles-proposals.kyri) | Confer-chain lattice bound; torus energy-crossover formula. |
 | `20260918.055351` | [rune_quad.rye asserted shape](20260918/20260918-055351_rune-quad-asserts.kyri) | glow/rune_quad.rye gains rune_conditional's asserted shape, zero-assert ratchet 20 to 19 |
 | `20260918.055351` | [comment_path's ceiling follows a clean reading, not a repair](20260918/20260918-055351_comment-path-ceiling-follows-a-clean-reading.kyri) | All 66 hits hand-checked, none stale; ceiling 61 to 66, GREEN 28 legs. |
 | `20260918.055033` | [Send confirmed -- both remotes hold 8568835e8](20260918/20260918-055033_send-confirmed-8568835e8.kyri) | Four contested pushes on the rune_switch claim-override chain; twice-pulled, never forced. |
