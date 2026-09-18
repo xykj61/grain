@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim bakery-plant-adoption-comlink-tablecloth
-seat bakery
-stamp 20260917.220700
-epoch 1789697220
-paths tools/fixtures/c/comlink_carriage_control.sh tools/fixtures/c/comlink_glow_tend_control.sh tools/fixtures/t/tablecloth_glow_tend_control.sh
-what Continue REDS %519's spread: three controls apply sed edits in place through an unguarded edit() helper with NO verification the pattern matched at all (worse than the elder cmp-s pattern already fixed) -- source plant.sh and call plant_apply so an unmatched plant refuses by name.

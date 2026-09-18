@@ -116,10 +116,14 @@ expect_order='name shape invariant example readers nib'
 
 # The placard's six lines come before any rune, in one seated order (src/shape/PLACARD.md). A
 # continuation line under `shape` carries no keyword at column five, so it is read past rather
-# than counted -- which is why the keywords are gathered and then cut at six.
+# than counted -- which is why the keywords are gathered and then cut at six. An optional `law`
+# line (`.claude/rules/` glow_gate_law_agree_scan.sh's own field, seated `20260915.224152`) may
+# stand between `invariant` and `example` on a desk this scan also reads -- a second scan's
+# addition rather than a change to this scan's own contract -- so it is read past here too,
+# the same way a `shape` continuation is.
 placard_of() {
   if [ -f "$1" ]; then
-    got=$(sed -n 's/^::  \([a-z][a-z]*\)  .*/\1/p' "$1" | head -6 | tr '\n' ' ' | sed 's/ *$//')
+    got=$(sed -n 's/^::  \([a-z][a-z]*\)  .*/\1/p' "$1" | grep -v '^law$' | head -6 | tr '\n' ' ' | sed 's/ *$//')
     [ -n "$got" ] || got=none
     printf '%s\n' "$got"
   else

@@ -20,6 +20,8 @@
 set -eu
 
 root="$(pwd)"
+. "$root/tools/fixtures/p/plant.sh"
+
 scan="$root/tools/fixtures/c/comlink_carriage_scan.sh"
 [ -f "$scan" ] || { echo "verdict=scan_missing"; exit 1; }
 
@@ -43,11 +45,11 @@ fresh() {
   cp "$root/amphora/vessel_fetch_wire.rye" "$pen/work/amphora/"
 }
 
-# Rewrite a pen file through its original inode, so the mode it was copied with survives
-# (.claude/rules/exec-bit.md).
+# Rewrite a pen file through its original inode (.claude/rules/exec-bit.md), and refuse by name
+# rather than silently leaving the file untouched when the sed program matches nothing (REDS %519).
 edit() {
   f="$pen/work/$1"
-  sed "$2" "$f" > "$f.tmp" && cat "$f.tmp" > "$f" && rm -f "$f.tmp"
+  plant_apply "$f" "$2" "$1"
 }
 
 # `set -e` would kill the subshell the moment a planted case makes the scan exit non-zero,
