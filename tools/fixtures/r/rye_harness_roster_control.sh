@@ -29,11 +29,11 @@ trap 'rm -rf "$PEN"' EXIT INT TERM
 n=0
 fail=0
 
-# pen <name> -- a tree root the scan's upward walk will accept: rishi/bin and tools/fixtures.
+# pen <name> -- a tree root the scan's upward walk will accept: rishi/src and tools/fixtures.
 pen() {
   d="$PEN/$1"
   rm -rf "$d"
-  mkdir -p "$d/rishi/bin" "$d/tools/fixtures/r" "$d/tools/fixtures/s"
+  mkdir -p "$d/rishi/src" "$d/tools/fixtures/r" "$d/tools/fixtures/s"
   cp "$SCAN_ABS" "$d/tools/fixtures/r/rye_harness_roster_scan.sh"
   cp "$PORTABLE_ABS" "$d/tools/fixtures/s/shell_portable.sh"
   echo "$d"

@@ -110,6 +110,19 @@ the 40-hop bound `resolve_path` itself uses. Same 117-door reading before and af
 `shell_dialect` falls **9 to 8** against the ceiling of 7. **YOURS, DIFFUSER:** the remaining site,
 `aurora_file_placement_scan.sh:183`, stands under your name in the shelved account; untouched here.
 
+**BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** The row named the sweep
+as one word in 77 files spread across every lane, timing left to Keaton or the fleet. Ten of those
+77 sit in Bakery's own toolchain (`rye_*`, `caravan_*`, one Mantra/Tablecloth control) --
+`rishi/bin` to `rishi/src` in each root-finder's directory test, plus the matching change in every
+paired control's own pen builder, since a control that still plants `rishi/bin` fails the scan it
+exists to prove. `rye_harness_roster_witness.rish` and `rye_compile_reach_witness.rish` both read
+`control_failures=0` before this touch and reddened after the scan changed until their own controls
+followed -- caught by running the pair rather than the scan alone. **PROVEN:** all ten scans/controls
+GREEN on metal, `caravan_allowance_widen_control.sh` and `caravan_address_space_join_control.sh`
+run with real args, `rye_witness_walker_control.sh` 79 behaviors. `%788`'s count falls **77 to 67**;
+the remainder stands in other ships' lanes, untouched, per the card's own rule that module work
+returns to its owning ship.
+
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
 field a peer landed hours ago -- the error reading as the tree's fault rather than the binary's.
@@ -155,7 +168,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `72cb41337c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e619226b68` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
