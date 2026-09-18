@@ -9,6 +9,7 @@
 | `20260918.092019` | [Send confirmed -- both remotes hold 639d4fdae](20260918/20260918-092019_send-confirmed-639d4fdae.kyri) | Two rejected pushes, resolved by a second rebase and a day-shelf conflict fix. |
 | `20260918.091842` | [Fifth empty-open turn, board still empty](20260918/20260918-091842_fifth-empty-open-turn.kyri) | Clean tree, empty claims board, same reading as the four turns before it. |
 | `20260918.091723` | [Fifth empty-open turn, no task attached](20260918/20260918-091723_fifth-empty-open-turn.kyri) | Confirmed tree current and pheromone's lane clear again; honest idle record. |
+| `20260918.091700` | [Send confirmed -- both remotes hold 4d16b8166](20260918/20260918-091700_send-confirmed-4d16b8166.kyri) | Two rebases, ITINERARY nib re-pinned each time; xy and debrided both landed. |
 | `20260918.091500` | [Send caught its own bad merge before either push landed](20260918/20260918-091500_send-caught-a-bad-merge-before-push.kyri) | A regex conflict splice truncated the day shelf to 5 rows; caught by diff before push, repaired by full-file insert. |
 | `20260918.091435` | [Fourth empty-open turn, pheromone's own lane clear](20260918/20260918-091435_fourth-empty-open-turn.kyri) | Checked pheromone's NOW entries and the claim board; nothing agent-doable in-lane. |
 | `20260918.091253` | [glow_seva_b0_fold clears one more zero-assert file](20260918/20260918-091253_grass-fold-pin-agrees-asserts.kyri) | Two invariant asserts on pin_agrees_elder; TAME ratchet 5->4. |
