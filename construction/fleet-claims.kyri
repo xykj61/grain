@@ -54,3 +54,9 @@ format fleet-claims-v1
 # declaration may never be.
 
 
+claim grass-rune-conditional-asserts
+seat grass
+stamp 20260918.045357
+epoch 1789721637
+paths glow/rune_conditional.rye
+what add TAME contract asserts to rune_conditional.rye's parse/test_slice, same shape as rune_bounded_trap and rune_cell
