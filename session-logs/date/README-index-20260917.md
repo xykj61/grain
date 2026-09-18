@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.225927` | [The site tiebreak and the Fugue tree](20260917/20260917-225927_site-tiebreak-and-fugue-tree.kyri) | Mantra's fix beside a proof; falsifier named. |
 | `20260917.225531` | [A red read OPEN after its fix had landed](20260917/20260917-225531_a-fix-already-standing.kyri) | %742 closed, folded; two Bakery accounts shelved. |
 | `20260917.225438` | [lower_face_lit delegates to zig_ident](20260917/20260917-225438_face-lit-ident-delegation.kyri) | ident ladder: ceiling 4 to 3. |
 | `20260917.225238` | [Aether row rota read, erratum checked against a GREEN witness](20260917/20260917-225238_aether-row-rota-and-erratum-check.kyri) | Rota row 0, strand-count erratum confirmed, page graded above door. |
