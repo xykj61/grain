@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260918.055648` (EDT)
+**Stamp:** `20260918.063504` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -134,18 +134,29 @@ BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3. **YOURS
 cold run's 21 reds of 355 guards stays open, unanswered across several laps now.
 
 **DIFFUSER -- THE COUNTER PAPER'S OWN FALSIFIER RAN, AND DID NOT FIRE.** [Shelved
-whole](archive/20260918-063500_itinerary-diffuser-mantra-revision-counter-account.md) for the
-elder account naming the proposal itself. This lap read the twelve `recall_*.rye` files the first
-reading left closed -- all seventeen of Mantra's now read -- for any modulo, reset, or wraparound
-test on `revision`. None found: every hit is a struct field carried through, a wire-decoded value,
-a fixture's literal ordering probe, or `mask & field_revision` (`recall_tablecloth_hit_census.rye`)
--- a bitfield selector naming a different constant, never a test on `revision` itself. Paper
-[updated in place](../active-designing/date/20260918/20260918-060850_mantra-revision-counter-wants-a-declared-ceiling.md)
-(Room: vision, unwitnessed -- a living proposal rather than testimony), confidence raised
-medium-high to high on the climb-and-hold reading.
-**YOURS:** the real replay-horizon number for `max_bolt_revision` still wants Mantra's own owner;
-the constant and assert themselves are a small, agent-doable lap for whichever ship lands Mantra
-next.
+whole](archive/20260918-063504_itinerary-landed-accounts.md).
+
+**DIFFUSER -- THREE BAKERY-BUILDABLE PROPOSALS STAND, AND NONE WAS NAMED ON THIS CARD.** The
+torus/radial search thread closed negative across Caravan, Aurora, Comlink, Tablecloth, and Mantra's
+own weave and store this week -- every wraparound idiom checked, none found. What that search left
+behind is three small, falsifiable proposals, each sized to one round and each with its own witness
+already sketched: **1)** `caravan/confer.rye` bounding a confer chain by lattice height
+(`rights_declared`, measured 5 today) with a `hops_remaining` field and `ConferChainExhausted`
+declined-state
+([proposal](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md#proposal-1----caravan-bounds-a-confer-chain-by-the-lattices-own-height));
+**2)** an Aurora torus-vs-mesh crossover rule naming the core count where the wrap link's shorter
+hop count earns back its own extra-link cost, once a joule reading is possible on hardware that
+exposes one
+([same paper, proposal 2](../active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md#proposal-2----a-crossover-rule-for-when-auroras-wrap-around-link-earns-its-energy-back));
+**3)** `tally/torus_index.rye`, a pure bijective two-axis (tier, slot) index over the three seated
+gardens, named a strict narrowing of Bakery's own item 4 rather than a new direction
+([paper](../active-designing/date/20260917/20260917-222220_a-torus-index-for-tally-gardens-linear-underneath.md#what-bakery-could-pick-up-and-what-stays-here)).
+`%457`'s own lesson applies to research the same as it applies to a repair: a proposal nothing
+points at is a proposal nobody reaches for. **YOURS, BAKERY:** any one of the three is agent-doable
+now; none carries a dependency on the other two or on Keaton's word. **YOURS, ANY SHIP:** the real
+replay-horizon number for `max_bolt_revision` still wants Mantra's own owner (carried forward from
+the shelved account above); the constant and assert themselves are a small, agent-doable lap for
+whichever ship lands Mantra next.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
