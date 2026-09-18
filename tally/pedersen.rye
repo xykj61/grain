@@ -3,6 +3,11 @@
 //! Warm name **bud** is seated `20260712.061012`. This file keeps the old
 //! import path green (accrete-never-break). Prefer `@import("bud.rye")`.
 //! Pinned domain strings and `pinned_h_bytes` live in bud.rye and are unchanged.
+//!
+//! No `assert` here on purpose: every symbol is a one-line delegation and every
+//! invariant worth naming is already asserted inside bud.rye. Exempt in
+//! tools/t/tame_style_scan_advise.rish's zero-assert ratchet as a pure re-export
+//! shim, alongside the font table, the signal handler, and maybe's own dual mark.
 
 const std = @import("std");
 const bud = @import("bud.rye");

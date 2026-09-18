@@ -59,13 +59,13 @@ for f in $FILES; do
     case "$f" in
         comlink/guest_*|aurora/src/*|brushstroke/font8x8_data.rye|\
         caravan/supervisor_signal.rye|caravan/supervisor_exit.rye|pond/apps/window_input.rye|\
-        tally/maybe.rye)
+        tally/maybe.rye|tally/pedersen.rye)
             continue ;;
     esac
     zero_assert_total=$((zero_assert_total + 1))
     echo "  $f (zero assert — review on touch)"
 done
-echo "ratchet: zero assert( files remaining = ${zero_assert_total} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
+echo "ratchet: zero assert( files remaining = ${zero_assert_total} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself, a pure re-export shim)"
 
 # tools/*.py -- Python-at-seam law (parity with native advise)
 py_count=$(find tools -name '*.py' -type f 2>/dev/null | wc -l | tr -d ' ')

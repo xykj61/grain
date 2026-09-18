@@ -96,8 +96,14 @@ let za5 = where za4 as f: (f == "caravan/supervisor_signal.rye") == false
 let za6 = where za5 as f: (f == "caravan/supervisor_exit.rye") == false
 let za7 = where za6 as f: (f == "pond/apps/window_input.rye") == false
 let za8 = where za7 as f: (f == "tally/maybe.rye") == false
-for-each za8 as f do say "  ${f} (zero assert — review on touch)"
-say "ratchet: zero assert( files remaining = ${length za8} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
+# tally/pedersen.rye is a pure re-export shim for tally/bud.rye (accrete-never-break
+# keeping the old import path green) -- every function is a one-line delegation and
+# every invariant it could name already lives, asserted, in bud.rye. An assert on the
+# shim's own `main` would name nothing real; it would restate a check bud.rye already
+# makes, purely to satisfy this ratchet. Exempt on that reading rather than force one.
+let za9 = where za8 as f: (f == "tally/pedersen.rye") == false
+for-each za9 as f do say "  ${f} (zero assert — review on touch)"
+say "ratchet: zero assert( files remaining = ${length za9} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself, a pure re-export shim)"
 
 let long_fn = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_style_long_fn.rish"]
 say long_fn.out
