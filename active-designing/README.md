@@ -5,7 +5,12 @@
 > ladder, Dimeroll, the language, the inference voices, and the singles that hold the rest up -- so a
 > reader has somewhere to begin other than a directory listing.
 >
-> **The room holds 94 flat documents** (measured `20260827`), so the walking index is a way in
+> **The room holds 215 flat documents** -- read `20260918.001400` by
+> [`../tools/fixtures/r/room_bound_scan.sh`](../tools/fixtures/r/room_bound_scan.sh), which counts
+> this room by its own fold rule, and **the room is ENFORCED at 256**, so it stands at 84 percent
+> of a ceiling whose crossing forces a fold. The elder reading here said 94 and was measured
+> `20260827`; three weeks more than doubled it, which is the thing a census in prose cannot do for
+> itself. **Run the scan rather than trusting this line.** So the walking index is a way in
 > rather than a census: it carries the thirty-nine a reader most often wants, and the rest are
 > found by name. Every one of the 94 folds to `date/YYYYMMDD/` on the same rule, and a stale
 > reference to any of them is **resolved** rather than hunted --
