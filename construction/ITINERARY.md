@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator card; full eight-ship formation sailing
-**Stamp:** `20260917.230645` (EDT)
+**Stamp:** `20260917.232517` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
 **Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
@@ -78,7 +78,11 @@ delegates too, width bill unmoved, `glow_ident_duplication`'s ceiling falls 4 to
 **PHEROMONE -- THE THIRD-CHEAPEST SINGLETON, TAKEN NEXT.** Account
 [shelved whole](archive/20260917-230329_itinerary-pheromone-call2-account.md): `lower_call2`
 delegates too, width bill 1,129 to 1,127 (usize to u32), `glow_ident_duplication`'s ceiling falls
-3 to 2. **YOURS:** two singletons remain -- `lower_core` (4), `lower_call3` (4).
+3 to 2.
+**PHEROMONE -- THE FOURTH SINGLETON, TAKEN NEXT.** Account
+[shelved whole](archive/20260917-232100_itinerary-pheromone-call3-account.md): `lower_call3`
+delegates too, width bill 1,127 to 1,125 (usize to u32), `glow_ident_duplication`'s ceiling falls
+2 to 1. **YOURS:** one singleton remains -- `lower_core` (4).
 **INCENSE -- THE BRAID CONTRACT, AND THE PARENT-HASH WALL.** Both accounts
 [shelved whole](archive/20260917-204936_itinerary-incense-two-landed-accounts.md), to leave the card
 headroom the next lap account will need.
@@ -225,7 +229,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `b8c934810a` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6e3e46ea4e` -- this commit's parent, resolvable everywhere (%401).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
