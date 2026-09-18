@@ -1386,6 +1386,21 @@ path tools/r/receipt_product_braid_witness.rish
 tier lap
 seated 20260917.090914
 
+# Seated 20260918.043437. The receipt contract's Dimeroll projection stood at zero lines: the
+# product owing half the falsifier had not begun. `dimeroll/receipt_offer.rye` publishes
+# `DimerollReceiptIntake` and `from_snapshot`, reading a settled offer's own fields -- receipt_id,
+# product_digest, value_amount, value_unit, and whether it has expired -- and reporting
+# recognition_status=unrecognized-offer, journal_entry_count=0. It imports no other room: Zig's
+# module boundary refuses an @import reaching outside its root file's directory (REDS %589), so an
+# `OfferSnapshot` rather than Mantra's own `ReceiptState` type crosses that boundary, and the
+# module head says why. This guard builds the witness, proves the mapping field for field before
+# and after expiry against the contract's own fixture values, and reads the product braid guard
+# beside it. One `rye build`, one binary run, one awk pass -- no pen, no control.
+guard dimeroll_receipt_offer
+path tools/d/dimeroll_receipt_offer_witness.rish
+tier lap
+seated 20260918.043437
+
 guard tally_caller_map
 path tools/t/tally_caller_map_witness.rish
 tier lap

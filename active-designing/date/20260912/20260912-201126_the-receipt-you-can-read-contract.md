@@ -6,6 +6,13 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20260918.043437` -- purely additive. Dimeroll's projection lands:
+`dimeroll/receipt_offer.rye` publishes `DimerollReceiptIntake` and `from_snapshot`, and
+`dimeroll/receipt_offer_witness.rye` proves acceptance case 3's own half -- unrecognized offer,
+zero journal entries, both before and after expiry -- GREEN under
+`tools/d/dimeroll_receipt_offer_witness.rish`, which reads the product braid guard beside it. No
+elder row, number, sentence, or acceptance case was removed, and nothing this tree admits or
+refuses moved.
 **Revised:** `20260917.234833` -- purely additive. One section reports what stands built, measured
 against the tree; no elder row, number, sentence, or acceptance case was removed, and nothing this
 tree admits or refuses moved. The review found no claim on this page in need of correction.
@@ -117,8 +124,8 @@ under this page's own closing clause.
 **A guard now asks the question that found them** (`20260917.024441`). `%767` recorded in its own
 second field that nothing in this tree asked whether every field a contract publishes carries a
 ceiling that contract declares, so the borrow was visible only on a refusal line at runtime.
-[`../tools/r/receipt_contract_ceiling_witness.rish`](../tools/r/receipt_contract_ceiling_witness.rish)
-over [`../tools/fixtures/r/receipt_contract_ceiling_scan.sh`](../tools/fixtures/r/receipt_contract_ceiling_scan.sh)
+[`../../../tools/r/receipt_contract_ceiling_witness.rish`](../../../tools/r/receipt_contract_ceiling_witness.rish)
+over [`../../../tools/fixtures/r/receipt_contract_ceiling_scan.sh`](../../../tools/fixtures/r/receipt_contract_ceiling_scan.sh)
 reads this table, the `max_*` constants of `mantra/src/tally_receipt_offer_bounds.rye`, and every
 ceiling site in `mantra/src/receipt_offer.rye`, and holds two classes at **zero**: a field refused at
 a ceiling no row names, and a row stating a number other than the one the code refuses at. It reads
@@ -175,8 +182,8 @@ tracked Rye sources, `linengrow/` and `dimeroll/` named each other zero times, s
 clean and nothing was holding it clean. A boundary is cheap to hold before the code is written, and
 this contract is accepted for implementation, which is exactly when one saved afternoon buys a
 braid.
-[`../tools/r/receipt_product_braid_witness.rish`](../tools/r/receipt_product_braid_witness.rish)
-over [`../tools/fixtures/r/receipt_product_braid_scan.sh`](../tools/fixtures/r/receipt_product_braid_scan.sh)
+[`../../../tools/r/receipt_product_braid_witness.rish`](../../../tools/r/receipt_product_braid_witness.rish)
+over [`../../../tools/fixtures/r/receipt_product_braid_scan.sh`](../../../tools/fixtures/r/receipt_product_braid_scan.sh)
 reads the product pair off this page's own residence table -- so renaming a type here moves the
 guard with it -- and holds two classes at **zero**: an `@import` reaching the peer room, and the
 peer's projection type standing in a product room's source outside a comment and outside a string
@@ -208,16 +215,25 @@ the four types this contract publishes:
 | `ReceiptOfferFact` | **3** sources |
 | `ReceiptState` | **1** source |
 | `LinengrowReceipt` | **0** |
-| `DimerollReceiptIntake` | **0** |
+| `DimerollReceiptIntake` | **1** source (`20260918.043437`) |
 
-**So `cross_type=0` is a true reading over a population where neither projection type has been
-written.** The braid guard is right and its own header says why -- a boundary is cheap to hold
-before the code exists, which is the whole reason it was built early. What a reader meeting its
-green deserves to know is which of those two facts it reports today.
+**So `cross_type=0` was a true reading over a population where neither projection type had been
+written, and it stays true now that one has.** The braid guard is right and its own header says
+why -- a boundary is cheap to hold before the code exists, which is the whole reason it was built
+early, and the same boundary proved cheap to hold once one side arrived: `dimeroll/` grew from
+five files to eight and `cross_type` stayed zero.
 
-**Mantra's side has begun and Dimeroll's has not.** `mantra/src/` carries `receipt_offer.rye`, its
-two witnesses, and the two Tally bound modules. `dimeroll/` carries five files and not one is
-receipt-named, so the product owing half the falsifier stands at zero.
+**Mantra's side had begun and Dimeroll's now has too, and neither has met the other yet.**
+`mantra/src/` carries `receipt_offer.rye`, its two witnesses, and the two Tally bound modules.
+`dimeroll/` carries `receipt_offer.rye` and `receipt_offer_witness.rye`
+(`20260918.043437`), proving `DimerollReceiptIntake`'s own mapping -- unrecognized offer, zero
+journal entries, before and after expiry -- against an `OfferSnapshot` built from the contract's
+own fixture values. It has not yet been chained through Mantra's actual `Log.append` and
+`Log.replay`, because Zig's own module boundary refuses an `@import` that reaches outside its root
+file's directory (REDS %589, proven on metal `20260917` in `rye/tests/mantra_weave_test.rye`), and
+`dimeroll/receipt_offer.rye` says so in its own module head. The dual-product witness this
+milestone's acceptance still wants is what closes that last mile, once Linengrow's own side and a
+carrier for the room boundary both stand.
 
 **A NAMING COLLISION WAITS AT THE FIRST IMPLEMENTATION STEP, and it is the finding worth carrying
 off this page.** `linengrow/` already holds `receipt.rye`, `receipt_core.rye` and
