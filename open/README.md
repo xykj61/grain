@@ -19,7 +19,7 @@ Four short documents, each written for a different reader:
 | This page | anyone opening the room | Gauge, Door |
 | [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) | someone deciding whether a companion model belongs here | Gauge, Field -- Civic register, TAME lens |
 | [`COMPANION_MODELS_GUIDE.md`](COMPANION_MODELS_GUIDE.md) | a newcomer who has never heard "open-weight model" before | Bhakta |
-| [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) | someone ready to actually get a key and try a call | Bhakta opening, Gauge Field steps -- Civic register, TAME lens |
+| [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) | someone ready to actually get a key and try a call -- demos Together AI, notes the small differences for other providers | Bhakta opening, Gauge Field steps -- Civic register, TAME lens |
 | [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) | someone who needs every request to stay on US-incorporated, US-located hardware | Civic register, Gauge Field body, Bhakta aside, TAME lens |
 | [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) | someone weighing OpenRouter, Together AI, and Hugging Face against each other | Gauge Field, Civic register, TAME lens |
 | [`TWILIGHT_NOTE.md`](TWILIGHT_NOTE.md) | anyone reading at the end, wanting the room to close gently | Twilight |
