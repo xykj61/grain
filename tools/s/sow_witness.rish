@@ -7,10 +7,13 @@
 #
 # Duties:
 #   0. The wall can red -- the identity scan is shown a planted name and answers.
+#   0b. The key-material wall can red too -- shown a planted third-party API secret
+#       (OpenRouter, Anthropic, GitHub, AWS shapes), not only an SSH/PGP key.
 #   1. M1 -- the manifest classifies every tracked root path, exactly once.
 #   2. Project the seed fresh from the field.
 #   3. IDENT -- no maintainer identity string survives into seed/.
-#   4. NO_PERSONAL -- no `personal` path and no key material appears in seed/.
+#   4. NO_PERSONAL -- no `personal` path and no key material (SSH/PGP shapes, or a
+#      third-party API secret shape) appears in seed/.
 #
 # WHY DUTY 0 STANDS AHEAD OF THE OTHERS. Duties 1 through 4 all end in the same shape: a scan
 # runs over the projected seed and this witness asserts its clean word is present. That proves
@@ -40,6 +43,14 @@ let ctl = run ["sh" "tools/fixtures/s/sow_leak_control.sh"]
 say ctl.out
 assert ctl.ok else "the identity-wall control failed to run"
 assert (ctl.out contains "control_verdict=ok") else "the identity scan did not red on a planted maintainer name"
+
+# Duty 0b -- the key-material wall can red too, on a third-party API secret, not only an
+# SSH/PGP key shape (seated 20260920, after a real OpenRouter key was pasted into chat and
+# tested against this exact gap).
+let kctl = run ["sh" "tools/fixtures/s/sow_personal_control.sh"]
+say kctl.out
+assert kctl.ok else "the key-material control failed to run"
+assert (kctl.out contains "control_verdict=ok") else "the key-material scan did not red on a planted API secret"
 
 # Duty 1 -- manifest completeness (M1)
 let cover = run ["sh" "tools/fixtures/s/sow_manifest_cover.sh"]
