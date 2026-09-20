@@ -63,6 +63,21 @@ A reply carrying a `choices` array means the key and the path both work. An HTTP
 key; anything else means the network or the request shape, and the response body usually says
 which.
 
+**A real key stays outside this repository entirely.** The safe home for it is a shell profile
+(`~/.bashrc` or `~/.zshrc`) at the *user's* home directory, never a file this tree tracks, and
+never a file this tree gitignores either -- a gitignored file can still be staged with `-f` by an
+absent-minded hand, where a file outside the working tree cannot. A key pasted into a chat
+session, a Slack message, or any channel not built to carry secrets is worth rotating on the
+provider's own dashboard afterward, the same way a physical key gets a new lock once its copy has
+passed through an uncertain hand.
+
+**The seed's own scrub now reads for this shape.** `tools/fixtures/s/sow_personal_scan.sh` widened
+`20260920` to catch OpenRouter, Anthropic, OpenAI, GitHub, and AWS credential shapes, proven able
+to red on a planted secret by `tools/fixtures/s/sow_personal_control.sh` before the widening was
+trusted -- the same "a guard that cannot red guards nothing" standard this tree already holds
+every other wall to. The placeholder text in this very guide (`sk-or-v1-...`, three literal dots)
+is short of the pattern's own length floor on purpose, so a template stays a template.
+
 **Look up exact model slugs rather than typing a guess.** OpenRouter model identifiers follow the
 shape `author/slug`, and the exact slug for a given model changes as providers version their own
 releases -- the way `DeepSeek-V4-Flash-0731` carries its own release date in its own name. Ask
