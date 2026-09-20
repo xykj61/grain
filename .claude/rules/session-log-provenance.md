@@ -23,10 +23,17 @@ sh tools/fixtures/d/declared_model.sh override         # whether it can differ h
 
 The scan prints `resolved_model`, `resolved_effort` and `local_override` beside the declared pair and **gates neither**, since seven ships carrying an intended override would red a gate no lap may repair -- the shape [`derived-spine.md`](derived-spine.md) names as a gate somebody turns off. A log whose `configured_model` cites the tracked file while its clone runs another model has promoted a default into a claim, which is the one thing this rule exists to refuse.
 
-For this Codex pier, record `configured_model gpt-5.6-sol` and name the evidence:
-`~/.codex/config.toml` is the personal default; the fleet loop passes `-m "$CODEX_MODEL"`,
-defaulting to the same slug. An explicit model override is logged as the configured choice
-for that lap. Keep `model` tied to runtime evidence, as above.
+*Codex provenance retired* `20260920.135100` on Keaton's word -- this section once recorded a
+convention for logs written from a Codex CLI session on this pier: `configured_model
+gpt-5.6-sol`, evidenced by `~/.codex/config.toml` as the personal default and the fleet loop's
+`-m "$CODEX_MODEL"` flag defaulting to the same slug, with an explicit override logged as that
+lap's own configured choice. Keaton no longer runs Codex sessions himself, so the convention is
+retired here rather than followed. **This does not touch the fleet's own Codex loop tooling**
+(`tools/f/fleet-loop-codex.sh`, `tools/f/fleet_watch_codex.sh`) -- those stay live infrastructure
+a peer ship may still run, and a Codex-authored log arriving from one still records `model`,
+`provider`, and `product` per the rule above. Only the convention naming *this pier's own* Codex
+defaults is retired. Dated logs already carrying `configured_model gpt-5.6-sol` keep every word
+they wrote.
 
 ## Separate sessions stay separate
 
