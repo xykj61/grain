@@ -10,21 +10,21 @@ exempt, so the exemption lives in a rule rather than in a scan's own case statem
 [`ascii-first.md`](ascii-first.md) already writes its own exception in words: *"a specific,
 explicitly-named set of work rounds may use non-ASCII when it is the point of the work -- a
 Unicode-handling module's own test fixtures, an internationalization surface."* That sentence
-had no roster. `risala/` -- a room studying Classical and Quranic Arabic, where the script is
-the literal subject of every lesson -- was the first room to actually need it, and it landed
-as three matching `case` arms added straight into
+wanted a roster to point to. `risala/` -- a room studying Classical and Quranic Arabic, where the
+script is the literal subject of every lesson -- was the first room to actually need it, and it
+landed as three matching `case` arms added straight into
 [`tools/fixtures/a/ascii_document_scan.sh`](../../tools/fixtures/a/ascii_document_scan.sh),
-with the reason typed only as an inline comment. A rule that lives solely inside a scan is a
-rule the next room's author cannot find by reading `.claude/rules/`, and has to reverse-engineer
-from the guard's own refusal.
+with the reason typed only as an inline comment. This page gives that reason a home a reader
+finds by looking in `.claude/rules/` first, rather than by reading a guard's refusal and working
+backward.
 
 ## The test
 
 A room earns unicode-second, rather than a ratchet debt, when **the room's own front door names
 the script as its subject** -- the same test [`docs-implementation-sync`](docs-implementation-sync.md)
-already asks of any claim: assert it, don't assume it. A page that merely *quotes* a foreign
-word in passing stays under ascii-first's ordinary ratchet; a room built to *teach* a script,
-where the diacritics and the glyphs are the lesson, is what this rule names.
+already asks of any claim: assert it, don't assume it. A page that *quotes* a foreign word in
+passing stays under ascii-first's ordinary ratchet; a room built to *teach* a script, where the
+diacritics and the glyphs are the lesson, is what this rule names.
 
 ## The roster
 
@@ -32,11 +32,11 @@ where the diacritics and the glyphs are the lesson, is what this rule names.
 |---|---|---|
 | **`risala/`** | Classical and Quranic Arabic, IJMES transliteration | `risala/README.md`'s own "An ASCII-first exception, named plainly" section, `20260920` |
 
-**`shastra/`, `classical-vedic-astrology/`, and `cubist-bhakti-astrology/` are measured, not
-assumed, to belong here.** Read `20260920.133421`, none of the three carries enough non-ASCII to
-move `ascii_document_scan.sh`'s ratchet at all -- their Sanskrit terms are already held in plain
-transliteration rather than Devanagari. A room joins this roster when it is *measured* to need
-it, the way `risala/` was, not by category resemblance alone.
+**`shastra/`, `classical-vedic-astrology/`, and `cubist-bhakti-astrology/` earn their place by
+measurement, the same way `risala/` did.** Read `20260920.133421`, all three already hold their
+Sanskrit terms in plain transliteration rather than Devanagari, so today none moves
+`ascii_document_scan.sh`'s ratchet enough to need the roster. A room joins when its own
+measurement says so, category resemblance alone is not enough.
 
 ```sh
 sh tools/fixtures/a/ascii_document_scan.sh --list-all | grep -iE 'shastra|vedic|cubist|risala'
@@ -51,10 +51,10 @@ held unmodified, or the public projection).
 
 **Kept, in full:** every other rule in the tree. English prose inside the room still takes the
 ordinary ASCII substitutions -- `--` for a dash, straight quotes, `...` for an ellipsis --
-exactly as `risala/README.md` itself says. Commit subjects and bodies about the room stay ASCII,
-per [`ascii-first.md`](ascii-first.md)'s own words: the exception is scoped to the *document*, never
-to the commit that ships it. [`comlink-tendency`](comlink-tendency.md) still governs the room's own
-name. [`design-rooms`](design-rooms.md) still governs where the room sits in the tree.
+exactly as `risala/README.md` itself says. Commit subjects and bodies about the room stay ASCII
+throughout, per [`ascii-first.md`](ascii-first.md)'s own words: the exception is scoped to the
+*document* alone. [`comlink-tendency`](comlink-tendency.md) still governs the room's own name.
+[`design-rooms`](design-rooms.md) still governs where the room sits in the tree.
 
 ## Joining the roster
 
@@ -75,4 +75,4 @@ Keaton asked for the exception to get its own name rather than live only inside 
 `risala/` reads differently from every other page -- finds the reasoning in `.claude/rules/`
 first.
 
-Canonical Cursor twin: [`../../.cursor/rules/unicode-second.mdc`](../../.cursor/rules/unicode-second.mdc).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -127,6 +127,7 @@
 !/vendor/sel4/
 !/vendor/microkit/
 !/.cursor/
+!/.cursor-archive/
 !/CLAUDE.md
 !/ORGANIZING.md
 !/STEWARDS.md

@@ -59,7 +59,7 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md), the Cursor loop secti
 
 | Surface | Role |
 |---------|------|
-| [`cursor-and-the-compass.md`](../manual/tutorials/cursor-and-the-compass.md) | Stitched first-day path |
+| [`cursor-and-the-compass.md`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md) | Fossil -- stitched first-day path, retired `20260920.135100` |
 | [`../manual/grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
 | Markup pipeline silo | Scribble -> Brix -> Bron -> Mantra -> Seva |
 

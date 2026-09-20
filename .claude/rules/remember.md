@@ -13,7 +13,7 @@ When Keaton says **"remember"** (or **"remember for us"**), restates the living 
 
 ## What remember always keeps
 
-- **Jail vs host** -- Cursor's ai-jail authors and packs; **USB adb install runs in a plain host terminal**. Never claim device attach from inside the jail when `/dev/bus/usb` is missing.
+- **Jail vs host** -- the ai-jail enclosure authors and packs (`tools/ag/agent-jail.sh`, per CLAUDE.md's Enclosure section); **USB adb install runs in a plain host terminal**. Never claim device attach from inside the jail when `/dev/bus/usb` is missing.
 - **Waymarks before numbers** -- living *Now* lines use HAWM - TUBE - ZETA - JABS - LULU - STOA; dated `B0`/`B1` history stays readable.
 - **kg != send** -- remember does not commit, push, or merge. **send** ships; **kg** continues the next mechanical lap; **align** reconciles the plan.
 - **Witness before narrative** -- product nib claims cite a GREEN witness or an honest "eyes pending" note.

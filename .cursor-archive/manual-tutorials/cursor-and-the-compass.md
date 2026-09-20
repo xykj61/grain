@@ -4,7 +4,11 @@
 **Version:** `20260717.173427` (Eastern)
 **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Quin
-**Status:** Mixed register (Two Rooms) -- scaffold tutorial path; each section becomes checkable when its named witness is run and cited.
+**Status:** Fossil -- retired `20260920.135100` on Keaton's word, moved whole from
+`manual/tutorials/cursor-and-the-compass.md` in the same round that archived every
+`.cursor/rules/*.mdc` file. Kept for its onboarding shape -- foundations, witness habitat, log,
+send -- which a future first-day tutorial for the current editor may reuse; the Cursor-specific
+steps themselves no longer apply.
 **Audience:** an Acme Corporation employee opening Cursor on this tree for the first time.
 
 ---

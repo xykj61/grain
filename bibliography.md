@@ -52,7 +52,7 @@ Human orientation stays at [`MAP.md`](MAP.md). Filing law stays at [`ORGANIZING.
 
 ## Where Their Words Rest
 
-`gratitude/` holds source texts whole and unaltered -- the shelf of teachers kept close. `external-research/` holds our dated studies of them, written in our own voice with the teacher's vocabulary confined to the study. The body of the tree speaks only our voice, and thanks by name. Clean-room law: [`ORGANIZING.md`](ORGANIZING.md) - [`.cursor/rules/gratitude-licenses.mdc`](.cursor/rules/gratitude-licenses.mdc).
+`gratitude/` holds source texts whole and unaltered -- the shelf of teachers kept close. `external-research/` holds our dated studies of them, written in our own voice with the teacher's vocabulary confined to the study. The body of the tree speaks only our voice, and thanks by name. Clean-room law: [`ORGANIZING.md`](ORGANIZING.md) - [`.cursor-archive/rules/gratitude-licenses.mdc`](.cursor-archive/rules/gratitude-licenses.mdc).
 
 ## Orientation Elders
 

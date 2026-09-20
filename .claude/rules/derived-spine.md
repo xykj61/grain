@@ -215,4 +215,4 @@ here forward.
 **The other collision classes.** `%281` and `%291` -- one tree per star, or a lock -- are the build
 and source-file halves of the same root, and both stay Keaton's word. This closes the ledger half.
 
-Canonical Cursor twin: [`../../.cursor/rules/derived-spine.mdc`](../../.cursor/rules/derived-spine.mdc).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -19,4 +19,4 @@ When ordering any allocation -- a **chapter**, **equinox**, **journey**, **quest
 
 A tree that grows fast can spend its best hours on whatever shouts loudest. Lindy-first points the hours at what will outlast the shouting; crux-first points them at the hard move that actually advances the work rather than the easy one that merely adds to the count. Together they answer *what next?* the same way at every scale -- most durable, then hardest-solvable -- so the plan compounds instead of scattering.
 
-Canonical Cursor twin: [`../.cursor/rules/lindy-first-crux.mdc`](../../.cursor/rules/lindy-first-crux.mdc).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -2,7 +2,7 @@
 
 Keaton asked to **automate sends and check-ins** so **every work round ends with a check-in**. This preference stays on until he retires it by name.
 
-Canonical Cursor twin: `.cursor/rules/round-close-send-checkin.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
 
 ## When a round closes
 
@@ -10,7 +10,7 @@ After a kg / implement lap lands (witness GREEN when there is code, living pins 
 
 1. **Seat the check-in** for that lap (next STOA rung, or the area's check-in shape) -- leans named; next door sized toward the next constructive kg / survey / held door.
 2. **Send** in the same turn -- GPG-signed commit(s), push `xy` first, then mirror to `debrided` (Codeberg stays retired from living push). Update living ITINERARY **git nib** **in the same work commit** (seated `20260728.205029`) -- never a pin-only follow-up.
-3. **End the reply** on one closing line per `collaboration.md`: `kg` or a typed `check in (Cursor|Claude|checkpoint|either)` -- not "say send when ready," and **not** "recommend rest."
+3. **End the reply** on one closing line per `collaboration.md`: `kg` or a typed `check in (Claude|checkpoint|either)` -- not "say send when ready," and **not** "recommend rest."
 
 ## Rest -- Keaton owns it
 

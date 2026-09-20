@@ -87,4 +87,4 @@ separate reading, still to be taken.
 A page that many hands write and one hand owns stays the size its owner chooses; a page many hands write and nobody owns fills until it breaks, and then costs whoever arrives next. Putting the shedding where the writing is puts it where the knowledge is: the hand that just
 wrote an account is the one that knows the elder has landed.
 
-Canonical Cursor twin: `.cursor/rules/the-writer-sheds.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

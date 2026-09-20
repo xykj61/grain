@@ -437,4 +437,4 @@ roster answered at the door under a key literally named `**Room:**`, two of them
 and the guard read only `**Status:**` -- so the tree's own honest answers were being counted as
 silence. The guard reads both keys now.
 
-Canonical Cursor twin: `.cursor/rules/the-baton.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -6,7 +6,7 @@
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
 **Members:** the rooms under [`./`](./) -- `grain-os`, `guides`, `reference`, `tutorials`, `video-scripts`
-**Status:** Founded -- reference at parity **142**; three tutorials open (first-witness - run-record - Cursor-and-the-compass); Caravan and Tally reference partial; Grain OS onboarding under `grain-os/`; Pixel/HAWM/TUBE/JABS path indexed
+**Status:** Founded -- reference at parity **142**; two tutorials open (first-witness - run-record), Cursor-and-the-compass retired `20260920.135100`; Caravan and Tally reference partial; Grain OS onboarding under `grain-os/`; Pixel/HAWM/TUBE/JABS path indexed
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -31,7 +31,7 @@ The lane grows by the same law as the code: reference specifications open only w
 |---------|------|----------|
 | [`tutorials/first-witness.md`](tutorials/first-witness.md) | First `.rish` witness | Checkable |
 | [`tutorials/run-record-and-failures.md`](tutorials/run-record-and-failures.md) | Run-record fields and failures | Checkable |
-| [`tutorials/cursor-and-the-compass.md`](tutorials/cursor-and-the-compass.md) | Foundations - witness habitat - Cursor rules - log - send | Mixed -- scaffold `20260717.173427` |
+| [`cursor-and-the-compass.md`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md) | Foundations - witness habitat - Cursor rules - log - send | Fossil -- retired `20260920.135100` |
 | [`reference/rishi-language.md`](reference/rishi-language.md) | Rishi language reference (parity **142**) | Checkable |
 | [`../glow/`](../glow/) | Eight rune heads + desk generators (`glow/gen/`) | Checkable -- pin [`../glow/README.md`](../glow/README.md) |
 | Acme Glow first code | [`../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) | Checkable pointers + open-rune horizon |
@@ -64,7 +64,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`reference/tally-gardens.md`** -- named bounded memory regions (witnessed behavior only).
 - **`tutorials/first-witness.md`** -- run, read, write: your first `.rish` witness against the living suite.
 - **`tutorials/run-record-and-failures.md`** -- the four run-record fields and RW-4 failure paths.
-- **`tutorials/cursor-and-the-compass.md`** -- stitched first-day path: foundations -> witness habitat -> Cursor rules -> Bron log -> send (scaffold; sections earn checkable Status as witnesses land).
+- **`cursor-and-the-compass.md`** -- retired `20260920.135100`, held whole at [`.cursor-archive/manual-tutorials/`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md); its stitched first-day shape (foundations -> witness habitat -> rules -> log -> send) may seed a future single-editor tutorial.
 - **`guides/macos-ai-jail-setup.md`** -- the macOS sandbox-exec enclosure, witnessed green.
 - **`guides/self-hosted-vpn-setup.md`** -- the self-hosted WireGuard VPN, client half witnessed here, server half a real deploy artifact for your own VPS.
 - **`guides/key-cards-setup.md`** -- making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.
