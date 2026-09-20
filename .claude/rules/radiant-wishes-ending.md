@@ -27,4 +27,6 @@ A README or foundation may carry a small **gratitude coda** -- one or two quotes
 
 ## Why the rule exists
 
-The wish is where Radiant prose remembers who it is for. Keaton asked that earned prose keep ending this way -- a warm, honest close that leaves a reader glad they came. Canonical Cursor twin: `.cursor/rules/radiant-wishes-ending.mdc`.
+The wish is where Radiant prose remembers who it is for. Keaton asked that earned prose keep ending this way -- a warm, honest close that leaves a reader glad they came.
+
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

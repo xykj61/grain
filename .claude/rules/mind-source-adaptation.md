@@ -27,4 +27,4 @@ Apply this rule only inside the bounded MIND outer loop. It permits one eligible
 
 Preflight meter: `tools/fixtures/m/mind_source_adaptation_scan.sh`.
 
-Canonical Cursor twin: `.cursor/rules/mind-source-adaptation.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -58,4 +58,4 @@ regenerated rather than maintained in parallel.
 The manifest carries `scrub`, `template` and `personal`. Redact proposes a **fourth verdict** whose
 tool and witness are their own lap -- named here so that lap has a standard to build against.
 
-Canonical Cursor twin: `.cursor/rules/redact-technique.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

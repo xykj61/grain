@@ -383,4 +383,4 @@ A name owes nothing to an alphabet and everything to two readers: the one meetin
 and the one typing it on their ten-thousandth. A stamp tells them when, a name tells them what, and
 between them they promise only what the work actually keeps.
 
-Canonical Cursor twin: [`../../.cursor/rules/stamp-and-name.mdc`](../../.cursor/rules/stamp-and-name.mdc).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

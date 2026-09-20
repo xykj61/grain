@@ -134,4 +134,4 @@ can carry into work nobody is watching. Keaton asked for the flip on `20260824`,
 to reach past prose into comments and design, where the tree has always had taste and never had a
 number.
 
-Canonical Cursor twin: [`../../.cursor/rules/quality-assurance.mdc`](../../.cursor/rules/quality-assurance.mdc).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

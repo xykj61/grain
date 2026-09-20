@@ -1,5 +1,18 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260920.135100` -- walk-back nib `efa58efff4`.** Keaton asked to archive every
+Cursor-related rule (`.cursor-archive/rules/*.mdc`, 60 files) and molt-breach every living document
+referencing Cursor, since Cursor is no longer part of the working rhythm, plus a narrower
+provenance-only breach of the Codex-specific fields in `session-log-provenance.md`. *Swept:* the
+`.cursor-archive/rules/*.mdc` directory whole, moved to `.cursor-archive/rules/` with a banner; the
+"Canonical Cursor twin" pointer lines across `.claude/rules/*.md`; CLAUDE.md's Dual editors
+section; and the Codex provenance paragraph in `session-log-provenance.md`/`.mdc`. *What waits
+there, worth recalling:* several `.mdc` twins carried content that diverged from their `.md`
+canon rather than mirroring it byte-for-byte (`ascii-first.mdc` is a compressed rewrite, not a
+copy) -- any future editor revival should read the archived `.mdc` rather than assume the `.md`
+alone was the whole record. No lane account body beyond this one fold, no open gate, no dated
+testimony moved.
+
 **Checkpoint `20260917.204619` -- walk-back nib `48a4d5cf77`.** A round-open rebase carried peer
 landings into `construction/ITINERARY.md`, arriving at 41,217 bytes, 257 over its 40,960 ceiling,
 right after this lap's own `glow: lower_multi...` commit landed clean. *Swept:* the full inline
@@ -263,7 +276,7 @@ carry this repair and the seed export discrepancy found during the cold pass.
 **Language:** EN
 **Status:** Living ledger -- append-only
 **Voice:** Kyri
-**Rule:** [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md) - [`../.cursor/rules/checkpoint.mdc`](../.cursor/rules/checkpoint.mdc)
+**Rule:** [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md) - [`../.cursor-archive/rules/checkpoint.mdc`](../.cursor-archive/rules/checkpoint.mdc)
 **Kin:** **debride** removes; a **checkpoint** marks the way back before it does.
 
 ---

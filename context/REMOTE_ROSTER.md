@@ -46,7 +46,7 @@
 | `gp36-codeberg` | Codeberg groupproject36 (retired with Codeberg living push) |
 | `gp36-github` | GitHub groupproject36 (when configured) |
 
-**Push law:** every send pushes **`xy` first, then `debrided`** -- the ordering remote's fast-forward refusal is the round's compare-and-set, and a mirror-first push is how two locally-perfect spines fork (same branch, same commits). [`.cursor/rules/git-signing.mdc`](../.cursor/rules/git-signing.mdc) - [`.cursor/rules/send-word.mdc`](../.cursor/rules/send-word.mdc) - [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md).
+**Push law:** every send pushes **`xy` first, then `debrided`** -- the ordering remote's fast-forward refusal is the round's compare-and-set, and a mirror-first push is how two locally-perfect spines fork (same branch, same commits). [`.cursor-archive/rules/git-signing.mdc`](../.cursor-archive/rules/git-signing.mdc) - [`.cursor-archive/rules/send-word.mdc`](../.cursor-archive/rules/send-word.mdc) - [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md).
 
 **Create note:** if `xykj61/grain` is absent on GitHub, create the empty repo under the `xykj61` account (or load that account's deploy key), then `git push -u xy HEAD`. The remote URL is seated even before the empty repo exists.
 

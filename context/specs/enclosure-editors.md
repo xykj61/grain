@@ -1,4 +1,4 @@
-# Spec: Two Editors in One Enclosure -- Cursor, Zed, ai-jail, and a Cloneable Template
+# Spec: Zed in One Enclosure -- ai-jail and a Cloneable Template
 
 **Language:** EN  
 **Version:** `20260730.145920` (EDT) - SUNN  
@@ -10,11 +10,17 @@
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/e/enclosure.conf.example`  
 **Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
 
+*Cursor retired* `20260920.135100` on Keaton's word -- this spec once answered a two-editor
+question (Zed alongside a still-working Cursor install). Cursor is archived, unmodified, at
+[`../../.cursor-archive/rules/`](../../.cursor-archive/rules/README.md). The Zed-in-ai-jail steps
+below stand as written and are unaffected; every remaining mention of Cursor in this page is a
+historical comparison point, read past rather than followed.
+
 ---
 
 ## What This Is
 
-This spec answers a practical question: how do you run **Zed** inside **ai-jail** from your project folder, with **Claude Code** (Anthropic API billing), while **Cursor** keeps working -- and how does anyone who clones the repository do the same for their own username?
+This spec answers a practical question: how do you run **Zed** inside **ai-jail** from your project folder, with **Claude Code** (Anthropic API billing) -- and how does anyone who clones the repository do the same for their own username?
 
 The pattern matches `tools/key-card.conf`: copy the `.example`, fill in your values, run the launch script. Sensitive paths and keys stay gitignored; the template ships in git. Clone from **`https://github.com/xykj61/grain.git`** into `~/grain` unless your pier chooses another path (see [`SOURCE.md`](../../SOURCE.md)).
 

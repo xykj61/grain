@@ -20,4 +20,4 @@ The word **dogfooding** -- every form: dogfood, dogfooded, vegan-dogfood -- is *
 
 Sweep living surfaces on touch; past hits in dated rooms wait for their own circled molt. This rule governs what is written from here forward.
 
-Canonical Cursor twin: `.cursor/rules/vocabulary-first-resident.mdc`.
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
