@@ -21,6 +21,8 @@ Write every new document, code comment, and commit message in **plain 7-bit ASCI
 
 A specific, **explicitly-named set of work rounds** may use non-ASCII when it is the point of the work -- a Unicode-handling module's own test fixtures, an internationalization surface, a font codec's glyph tables. Name the exception in the round, and keep it out of the operator card, commit subjects, and general prose.
 
+**A whole room named this way keeps a roster of its own:** [`unicode-second`](unicode-second.md) names the rooms whose front door has claimed this exception -- `risala/` is the first -- and the three matching `case` arms inside `tools/fixtures/a/ascii_document_scan.sh` that hold them out of the document ratchet.
+
 ## What this does not change
 
 - **Dated artifacts are never rewritten** to retrofit this -- the one-clock law and accrete-never-break protect every dated log and testimony. This governs prose written from here forward, and repairs a *corruption* (mojibake) wherever found as a red, which is a fix, not a style rewrite.

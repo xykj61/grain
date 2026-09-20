@@ -41,6 +41,10 @@
 #     projection of this tree rather than the tree.
 #   * any `fixtures/` path -- planted controls. `tools/fixtures/living_card_ascii_control/` MUST
 #     stay non-ASCII or its own `prove-red` leg stops proving anything.
+#   * a room on the `.claude/rules/unicode-second.md` roster -- a room whose own front door names
+#     a script as its literal subject, per `.claude/rules/ascii-first.md`'s own exception clause.
+#     `risala/` joined `20260920.133421`, measured at 514 characters that could not honestly
+#     convert; see that rule for the test a room must pass before it is added here.
 #
 # THE UNIT IS A CHARACTER, counted by its UTF-8 lead byte under `LC_ALL=C` with the octal class
 # `[\300-\377]`. Both halves of that sentence were paid for by the sibling meters: "this awk reads
@@ -187,6 +191,7 @@ while IFS= read -r f; do
   case "$f" in '"'*) continue ;; esac     # a git-quoted path; the ratchet counts and names these
   case "$f" in
     gratitude/*|vendor/*|seed/*) continue ;;
+    risala/*) continue ;;   # ascii-first.md's own named exception -- Arabic script is the subject
     */fixtures/*|fixtures/*|*/fixture/*) continue ;;
     date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
   esac
@@ -315,6 +320,7 @@ trap 'rm -f "$LISTFILE" "$walled_list" "$derived_list"' EXIT INT TERM
   # a glob is dropped below, by the one enumeration rather than by a second spelling of the roster.
   case "$c" in
     gratitude/*|vendor/*|seed/*) continue ;;
+    risala/*) continue ;;   # ascii-first.md's own named exception -- Arabic script is the subject
     */fixtures/*|fixtures/*|*/fixture/*) continue ;;
     date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
   esac
@@ -402,6 +408,7 @@ while IFS= read -r f; do
   walled "$f" && continue
   case "$f" in
     gratitude/*|vendor/*|seed/*) continue ;;
+    risala/*) continue ;;   # ascii-first.md's own named exception -- Arabic script is the subject
     */fixtures/*|fixtures/*|*/fixture/*) continue ;;
     date/*|*/date/*|archive/*|*/archive/*|yonder/*|*/yonder/*) continue ;;
   esac
