@@ -292,6 +292,22 @@
   # ai-jail -- enclosure binary on /run/current-system/sw/bin after rebuild.
   #   Overlay above patchelfs the GitHub linux-x86_64 tarball (v1.20.2) and
   #   wraps BWRAP_BIN. Leave AIJAIL_BIN unset so command -v finds that path.
+  # huggingfaceCli - llmWithOpenrouter -- open-weight-model tooling named in
+  #   open/PROVIDER_SETUP.md and open/PROVIDER_COMPARISON.md (seated 20260920).
+  #   Declared here rather than left as an ad-hoc `nix-shell -p` each time,
+  #   since both were proven to actually resolve on this pier before being
+  #   declared: python313Packages.huggingface-hub (the `hf` CLI, version
+  #   1.16.0) and python313Packages.llm.withPlugins { llm-openrouter = true; }
+  #   (the `llm` CLI, version 0.30, with the llm-openrouter plugin at 0.6 --
+  #   `llm install <plugin>` is disabled under Nix on purpose, so the plugin
+  #   is declared at build time here instead). Both versions are current as
+  #   of this file's own nixpkgs pin, re-locked to the 2026-09-20 revision of
+  #   nixos-26.05 in the same round that added these two lines -- neither
+  #   package had moved in the seventeen days since the prior pin, which was
+  #   confirmed by reading both versions again after the update rather than
+  #   assumed. Two further plugin names, llm-together and llm-togetherai,
+  #   were tried the same way and refused to load (an empty `llm plugins`
+  #   list both times), so neither is declared here.
   environment.systemPackages = with pkgs; [
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
     tmux
@@ -311,6 +327,8 @@
     perl     # outer-terminal Perl -- legacy scripts pending the Rishi fold
     python3  # outer-terminal Python 3 -- absent on the pier before this (REDS memory)
     ai-jail  # enclosure -- GitHub release, patchelf'd; not a crates.io build
+    python313Packages.huggingface-hub  # `hf` CLI -- open/PROVIDER_COMPARISON.md
+    (python313Packages.llm.withPlugins { llm-openrouter = true; })  # `llm` CLI + OpenRouter
   ];
 
   system.stateVersion = "26.05";
