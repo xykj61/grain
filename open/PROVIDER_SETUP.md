@@ -4,7 +4,7 @@
 **Style:** Bhakta opening, Gauge Field body -- Civic register (name what a pricing model rewards), TAME lens (verify before trusting)
 **Voice:** Kyri
 **Status:** Vision -- practical setup instructions for a provider this tree does not yet call from any tracked code
-**Last updated:** `20260920.161500`
+**Last updated:** `20260920.190528`
 **Kin:** [`README.md`](README.md) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) (constrains this page's providers to US-incorporated, US-located hardware) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - [`../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md)
 
 ---
@@ -88,7 +88,7 @@ curl -s https://openrouter.ai/api/v1/models | grep -i '"id".*\(glm\|qwen\|deepse
 ```
 
 **A named CLI, for a more regular habit of use.** Simon Willison's `llm` tool carries an
-OpenRouter plugin maintained for exactly this router:
+OpenRouter plugin maintained for exactly this router. On a host with a plain `pip`:
 
 ```sh
 pip install llm
@@ -97,6 +97,22 @@ llm keys set openrouter            # pastes the key once, stores it locally, off
 llm models list | grep -i openrouter
 llm -m openrouter/<model-slug> "your prompt here"
 ```
+
+**On this pier specifically, `pip` does not exist at all** -- this is a declared NixOS host
+([`../.claude/rules/declared-host-config.md`](../.claude/rules/declared-host-config.md)), and
+`pip install llm` fails outright with `command not found`. Two things follow from that, checked
+on metal rather than assumed: `llm` itself installs cleanly through `nix-shell -p`, and its
+imperative `llm install <plugin>` step is disabled on Nix on purpose, printing its own message
+that plugins are declared through `llm.withPlugins` instead. The working one-liner, verified this
+round:
+
+```sh
+nix-shell -p '(python313Packages.llm.withPlugins { llm-openrouter = true; })' --run "llm keys set openrouter"
+nix-shell -p '(python313Packages.llm.withPlugins { llm-openrouter = true; })' --run "llm -m openrouter/<model-slug> 'your prompt here'"
+```
+
+**The plain `curl` call in Part 3 needs none of this**, and stays the most reliable path on this
+pier for exactly that reason -- it has no packaging system to disagree with.
 
 ## Part 4: what three alternative providers reward, named plainly
 
