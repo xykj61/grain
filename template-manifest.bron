@@ -106,6 +106,8 @@ allow cubist-bhakti-astrology      # the classical room reimagined; no personal 
 allow arbor                        # spoken tiles for a voice reader; local authoring only, no service reached
 allow mitra                        # the shed discipline's door; documentation-first, no personal content
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
+allow risala                       # siloed Classical/Quranic Arabic study room, opened 20260920; no personal content
+allow open                         # vision-marked companion-model room, opened 20260920; names the maintainer, IDENT-scrubbed like every allowed room
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
 allow spellbook      # the command words at depth 1, mirrored from context/SPELLBOOK.md
@@ -158,7 +160,6 @@ allow .gitattributes
 allow .gitmodules
 allow .cursorignore
 allow .claude
-allow .cursor
 allow GLOW_HOST.template.kyri
 allow GLOW_PROFILE.template.kyri
 allow publish-seed.template.sh   # the publisher a seed user inherits; the field's own stays personal
@@ -171,7 +172,10 @@ template  .gitignore                     # allowlist posture -- exactly what a t
 template  .gitmodules                    # gratitude/ and vendor/ submodule pins only
 template  template-manifest.bron         # this file -- the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
 scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
-scrub     .cursor                        # Cursor twins of the same rules
+personal  .cursor-archive                 # retired .cursor/rules/*.mdc twins, archived 20260920.135100; internal housekeeping, not shipped
+personal  shastra                         # siloed Sanskrit study room; never reviewed for publication, withheld fail-safe pending Keaton's word
+template  risala                          # siloed Classical/Quranic Arabic study room, opened 20260920; no maintainer name found
+scrub     open                            # vision-marked companion-model room, opened 20260920; names the maintainer as decision authority throughout
 
 # ---- root files ----
 scrub     README.md                      # names the living identity in its foot
