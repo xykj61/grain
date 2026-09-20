@@ -6,14 +6,15 @@
 #
 # Why this file exists. Grain's reader-facing docs address a generic Acme
 # Corporation employee, never a named individual (see
-# .cursor/rules/acme-employee-voice.mdc). That keeps the tree shareable and
+# .cursor-archive/rules/acme-employee-voice.mdc, Cursor retired 20260920.135100). That keeps the tree shareable and
 # teachable. But some things a real contributor genuinely needs are specific
 # and professional: the real name that signs the work, forge handles, the
 # clock stamps come from, the editor and voice defaults for session logs.
 # Rather than scatter those specifics through the generic docs, they live
 # here, in one loadable Bron profile — the sibling, in Bron, to GLOW_HOST.bron
-# (which declares the host and toolchain) and to .claude/rules / .cursor/rules
-# (which configure agent behavior). This one declares the contributor.
+# (which declares the host and toolchain) and to .claude/rules (which configure agent
+# behavior; Cursor's mirrored .cursor/rules retired 20260920.135100, archived at
+# .cursor-archive/rules/). This one declares the contributor.
 #
 # Single source of truth: canonical public fingerprints live in PUBKEYS.md,
 # not here — this file points at that record rather than copying it, per
@@ -104,7 +105,8 @@ seed_root_subject
 
 # --- Placeholder identities for examples ------------------------------------
 # Structurally-invalid @p placeholders for docs and commands (never a real
-# point). See .cursor/rules/placeholder-ship-names.mdc for the full table.
+# point). See .cursor-archive/rules/placeholder-ship-names.mdc for the full table
+# (Cursor retired 20260920.135100; content held unmodified).
 placeholder_galaxy ~acme
 placeholder_star ~acme-star
 placeholder_planet ~acme-corp-test-ship
