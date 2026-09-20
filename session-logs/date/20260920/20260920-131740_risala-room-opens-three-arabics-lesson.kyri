@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260920.131740
+editor Claude Code (CLI, remote cloud session)
+provider Anthropic
+product Claude Code
+role notebook study companion -- Sanskrit/Arabic comparative bhakti room
+modality text
+model claude-sonnet-5
+model_status active runtime identity confirmed by system reminder; no separate configured-default evidence read this session
+voice Kyri
+host anonymized cloud session, America/New_York
+title risala/ opens; Lesson 1 answers Brahman-Paramatman-Bhagavan-prema-bhakti across three Arabics
+prompt Keaton pasted a Gemini-drafted Arabic study curriculum plus a "Lesson 1" (roots, tashkeel, Basmalah parsing, comparative Brahman/Paramatman/Bhagavan/prema-bhakti mapping) and a follow-up question about the everyday-vs-classical-vs-Ghazali/Ibn-Arabi Arabic for prema-bhakti toward Bhagavan/Paramatman/Brahman, and asked (1) whether Gemini's content is right, (2) for the answer rewritten in this tree's own Kyri/Gauge/Bhakta/Radiant/Twilight style with Arabic script and romanized-Arabic-plus-English kept in separate sections as the standing pattern, and (3) for a new room modeled on shastra/ named for the Ghazali/Ibn 'Arabi equivalent of a shastra
+think fact-checked the four cited public-domain sources by live web search rather than trusting the pasted draft or my own training alone, per docs-implementation-sync's "assert it, don't assume it" -- confirmed Tafsir al-Jalalayn (Feras Hamza, Royal Aal al-Bayt Institute, altafsir.com), Lane's Arabic-English Lexicon on Perseus/Tufts (my own first instinct doubted the Perseus claim; the search proved it correct), Wright's Grammar of the Arabic Language (archive.org, multiple public-domain scans), and the Quranic Arabic Corpus (Kais Dukes, Leeds, corpus.quran.com, GPL)
+think checked the one nuance Gemini's draft did not flag: the root of "ism" (name) as س-م-و rather than the classically-disputed alternative و-س-م -- a real Basran/Kufan grammarian disagreement, not an error, so recorded as a flagged nuance rather than a correction
+think web-searched Ibn 'Arabi's al-Ahadiyyah/al-Wahidiyyah pairing against secondary scholarship to confirm the comparative-metaphysics section used genuine Akbarian technical vocabulary rather than invented terms, before reusing it
+think read shastra/README.md, shastra/glossary.md, and the shastra/sandarbhas/ subfolder shape to model the new room's structure, front-matter block, and single-stranded one-file-per-work convention exactly
+think weighed ihya/, shaykh/, and turath/ against risala/ using comlink-tendency's three tests (clear, fun, safe) -- ihya names one book and cannot hold Ibn 'Arabi; shaykh names the teacher's role rather than the shelf of texts (the same reason shastra/ is not named acharya/); turath is the broadest honest word and stays available if the room widens past treatise-and-commentary; risala is the direct semantic counterpart to shastra (both mean "treatise") so it was chosen, and the reasoning for setting aside the other three is written into risala/README.md rather than only decided silently
+think confirmed the ASCII-first rule's own named exception (a Unicode-handling module's own test fixtures / an internationalization surface) applies whole-cloth to this room, since Arabic script and IJMES transliteration diacritics are the literal subject rather than decoration, and named that exception plainly inside risala/README.md rather than leaving it implicit
+think built the lesson as five parts (why three registers; then Brahman, Paramatman, Bhagavan, and prema-bhakti each in turn), each concept split into an Arabic-script-only bulleted block and a separate transliteration-plus-English table, per Keaton's explicit formatting ask, so the pattern is now demonstrated once in Lesson 1 rather than only described in prose
+think grounded every Ghazali/Ibn 'Arabi term to a specific, checkable work rather than a vague attribution -- shawq/uns to Ihya' 'Ulum al-Din Book 36 (Kitab al-Mahabbah wa-l-Shawq wa-l-Uns wa-l-Rida), 'ishq to Tarjuman al-Ashwaq, al-Ilah al-Mu'taqad to the Fusus al-Hikam's chapter on Noah, al-Ahadiyyah/al-Wahidiyyah to the Fusus generally -- and marked shahid al-qalb explicitly as a fair paraphrase rather than a verbatim quoted phrase, so the lesson does not overclaim precision it cannot back
+obs the comparative Brahman/Paramatman/Bhagavan mapping in the original Gemini draft is real, checkable vocabulary used honestly, yet it is a constructed pedagogical bridge rather than how Islamic tradition categorizes itself -- named that caution once in risala/README.md and again at the close of Lesson 1, rather than let a reader mistake a teaching device for a native equivalence claim
+obs root README.md does not yet link shastra/ or cubist-bhakti-astrology/ despite both existing as siloed study rooms, so risala/ was left unlinked too, matching the tree's own current practice rather than inventing a new one
+file risala/README.md -- new: the room's front door, verified-sources table, naming rationale (risala over ihya/shaykh/turath), and the everyday/classical/technical register caution
+file risala/lessons/01-brahman-paramatman-bhagavan-and-prema-bhakti-in-three-arabics.md -- new: Lesson 1, the RTL/LTR-separated answer to Keaton's comparative-registers question
+file session-logs/date/20260920/20260920-131740_risala-room-opens-three-arabics-lesson.kyri -- new: this log
+file session-logs/date/README-index-20260920.md -- new: today's shelf, opened with this log's row
+recommend check-in (Keaton) -- confirm the room name risala/ (or prefer turath/) before more lessons accrete under it, and confirm whether risala/ should stay unlinked from root README.md like its siblings or be added now
