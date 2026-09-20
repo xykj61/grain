@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260920.180101
+editor Claude Code
+provider Anthropic
+product Claude Code
+role research and writing -- a US-only-datacenter policy for open-weight model providers
+modality text
+model unverified
+model_status active runtime unverified; no get_session introspection run this lap
+voice Kyri
+host anonymized Claude Code CLI session, America/New_York clock
+title open/US_DATACENTER_POLICY.md written, naming the two axes a US-only requirement actually asks about and one verified candidate
+prompt the operator asked for a new open/ writing or an adaptation of the provider-setup guide restricting model choice to completely open-weight models run only by USA-headquartered, USA-incorporated datacenter provider companies, with datacenter selection pinned to run only inside the USA
+think separated the request into two axes before researching anything, since collapsing them produces a wrong answer: which company TRAINED a model's weights (Zhipu/GLM, Alibaba/Qwen, DeepSeek, Moonshot/Kimi) is a different question from which company HOSTS and RUNS those weights, and open weights are a published file any company anywhere can legally download and serve on its own hardware, provided the license allows it -- so the operator's requirement is answerable regardless of a model's country of training, and is really a question about the second company alone
+think searched OpenRouter's own provider-routing documentation rather than assuming a country filter exists, and found there is no literal country field: the provider request object takes only, order, and allow_fallbacks, so a US-only enforcement through OpenRouter means naming specific verified provider slugs and setting allow_fallbacks to false, never a one-line region flag
+think fetched OpenRouter's own "Enforce AI Data Residency at the Routing Layer" post directly, which confirmed the same shape and named a real precedent for the EU case (pin to Mistral, an EU-headquartered anchor) -- the same pattern this page applies to the US case, one degree more carefully since no equivalent single well-known US-anchor provider was assumed without checking
+think searched Groq, Together AI, and Fireworks AI for headquarters and datacenter footprint rather than treating "US company" as settled by name recognition alone, and found a genuinely useful counter-example: Groq is Delaware-incorporated and headquartered in Mountain View, California, yet operates thirteen datacenters spanning North America, Europe, the Middle East, and Asia-Pacific -- a US headquarters does not by itself prove a US datacenter, and writing the page without this finding would have left a reader trusting company nationality as a proxy for hardware location
+think searched Together AI's own dedicated-endpoint documentation specifically for region-selection capability, and found the strongest, most checkable answer of the three: standard serverless tier runs from US datacenters by default, EU or other international capacity requires an explicit opt-in on a higher tier, and dedicated endpoints let a customer choose their deployment region outright under SOC 2 Type II and ISO 27001 certification
+think did not extend the same confidence to Fireworks AI, since its own multi-region footprint and any region-selection API were not confirmed this round -- named it plainly as an open question rather than assume it clears the bar the way Together AI's own documentation demonstrated
+think wrote open/US_DATACENTER_POLICY.md rather than folding this into PROVIDER_SETUP.md's own body, since the two questions differ in kind: PROVIDER_SETUP.md answers how to reach any open-weight model at all, while this page answers a narrower, stricter constraint on top of that -- keeping them as separate pages lets a reader who does not need the US-only constraint skip the page entirely, and a reader who does need it find one page stating exactly that policy rather than a paragraph buried inside a broader guide
+think led with the Civic-register question this tree's own context/CIVIC_STYLE.md asks first -- what does the policy actually want -- stating the two-condition test (US-incorporated company, US-located datacenter) before any provider name appears, so the standard exists independent of which provider currently meets it
+think wrote a concrete request-shape example (OpenRouter's provider.only plus allow_fallbacks:false, pinned to a named verified provider) rather than leaving the mechanism abstract, and named the load-bearing field explicitly -- allow_fallbacks:false is what actually prevents a silent substitution when the named provider is unavailable, which a reader skimming past the JSON might otherwise miss
+think ran the whole-tree register scan and the ASCII scan after writing, per the lesson this same room's earlier round taught about checking rather than assuming a new page reads clean -- both verdicts read ok on the first pass this time
+obs marked the page Status Vision, matching every other page in this room, since no tracked code in this tree calls any provider with a provider.only constraint today
+obs named SOC 2 Type II and ISO 27001 as the provider's own reported certifications rather than independently re-verified audit findings, since this tree has no access to the underlying audit reports and citing a certification as proven would overstate what was actually checked
+file open/US_DATACENTER_POLICY.md -- new: the policy, in five parts across four registers
+file open/README.md -- edited: one new table row
+file open/PROVIDER_SETUP.md -- edited: one Kin-line pointer to the new policy page
+recommend check in (either) -- confirm whether Together AI's dedicated endpoints are the provider this tree should actually build against, and whether Groq's or Fireworks AI's own region-pinning documentation should be read next to settle the two open questions this page leaves standing
