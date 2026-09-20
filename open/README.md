@@ -21,6 +21,7 @@ Four short documents, each written for a different reader:
 | [`COMPANION_MODELS_GUIDE.md`](COMPANION_MODELS_GUIDE.md) | a newcomer who has never heard "open-weight model" before | Bhakta |
 | [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) | someone ready to actually get a key and try a call | Bhakta opening, Gauge Field steps -- Civic register, TAME lens |
 | [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) | someone who needs every request to stay on US-incorporated, US-located hardware | Civic register, Gauge Field body, Bhakta aside, TAME lens |
+| [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) | someone weighing OpenRouter, Together AI, and Hugging Face against each other | Gauge Field, Civic register, TAME lens |
 | [`TWILIGHT_NOTE.md`](TWILIGHT_NOTE.md) | anyone reading at the end, wanting the room to close gently | Twilight |
 
 Together they answer one question: **what would it take for a model besides Claude to sit at

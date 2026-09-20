@@ -4,7 +4,7 @@
 **Style:** Civic register (name what the policy rewards), Gauge Field body, Bhakta aside, TAME lens (verify before trusting)
 **Voice:** Kyri
 **Status:** Vision -- a policy stated and researched, not yet wired into any tracked code
-**Last updated:** `20260920.180500`
+**Last updated:** `20260920.190528`
 **Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 ---
@@ -52,19 +52,30 @@ which of those thirteen sites actually answers a given request, unless Groq's ow
 region parameter and that parameter is set every time. **Verify the specific region a request
 lands in, not only the company's own mailing address**, per this tree's own TAME lens.
 
-## Part 3: the one candidate researched and verified for explicit region control
+## Part 3: two candidates researched and verified for explicit region control
 
-**Together AI is the strongest fit found this round, and it earns that place by being
-checkable.** Together Computer, Inc. is US-incorporated, headquartered in California. Its
-standard, default-tier serverless inference runs from US datacenters; reaching a datacenter
-outside the US requires opting into a higher-tier plan and naming that need explicitly during
-setup -- so a customer who never asks for EU or other international capacity stays on US soil by
-default rather than by hope. Its **dedicated endpoints** go further: a customer chooses the
-deployment region outright, under SOC 2 Type II and ISO 27001 certification, which is the kind of
-explicit, audited region-pinning this policy actually asks for.
+**Together AI earns its place by being checkable.** Together Computer, Inc. is US-incorporated,
+headquartered in California. Its standard, default-tier serverless inference runs from US
+datacenters; reaching a datacenter outside the US requires opting into a higher-tier plan and
+naming that need explicitly during setup -- so a customer who never asks for EU or other
+international capacity stays on US soil by default rather than by hope. Its **dedicated
+endpoints** go further: a customer chooses the deployment region outright, under SOC 2 Type II
+and ISO 27001 certification.
 
-**Groq and Fireworks AI stand as open questions rather than as ruled out.** Groq's own API may
-well expose a region parameter that pins a request to its North American sites specifically;
+**Hugging Face's Inference Endpoints reads even more explicitly, once checked.** Hugging Face,
+Inc. is Delaware-incorporated, headquartered in Brooklyn, New York. Its dedicated Inference
+Endpoints product names four available regions outright -- `AWS us-east-1`, `Azure eastus`,
+`GCP us-east4`, and one EU option, `AWS eu-west-1` -- so three of four are literal, documented US
+region codes rather than a plan tier a customer must ask into. Full comparison, with the ops path
+tested on this pier, at [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md).
+
+**Hugging Face's own router, Inference Providers, does not earn the same standing.** It routes to
+Together, Groq, Fireworks, and other partners under the hood -- the identical shape OpenRouter
+carries, and the identical per-provider verification burden this page already names for OpenRouter
+applies to it in full.
+
+**Groq and Fireworks AI still stand as open questions rather than as ruled out.** Groq's own API
+may well expose a region parameter that pins a request to its North American sites specifically;
 Fireworks AI's own multi-region footprint and any region-selection API were not confirmed this
 round. Naming a provider "clear" here without having read that provider's own region-control
 documentation would be exactly the unverified claim [`docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md)
@@ -95,10 +106,10 @@ contract, one named region, with nothing in between to silently substitute.
 
 ## Part 5: what this page does not decide
 
-**This page does not choose a provider for you.** It names Together AI as the one candidate
-whose region-pinning was verified this round, and names the two open questions (Groq, Fireworks
-AI) still wanting their own region-control documentation read before either earns the same
-standing. **This page does not audit a provider's own claims independently** -- SOC 2 Type II and
+**This page does not choose a provider for you.** It names Together AI and Hugging Face's
+Inference Endpoints as the two candidates whose region-pinning was verified this round, and names
+the two open questions (Groq, Fireworks AI) still wanting their own region-control documentation
+read before either earns the same standing. **This page does not audit a provider's own claims independently** -- SOC 2 Type II and
 ISO 27001 are the provider's own certifications, cited here as reported, not re-verified against
 the underlying audit report.
 
@@ -112,5 +123,7 @@ of any build.
 - [Enforce AI Data Residency at the Routing Layer -- OpenRouter Blog](https://openrouter.ai/blog/insights/ai-data-residency/)
 - [Groq | Wikipedia](https://en.wikipedia.org/wiki/Groq)
 - [Groq Raises $650M to Scale Its AI Inference Cloud Business](https://groq.com/newsroom/groq-raises-usd650m-to-scale-its-ai-inference-cloud-business)
+- [Hugging Face | Wikipedia](https://en.wikipedia.org/wiki/Hugging_Face)
+- [Inference Endpoints (dedicated) documentation -- access and regions](https://huggingface.co/docs/inference-endpoints/main/guides/access)
 - [EU Data Centers and Dedicated Model Deployment | Together AI Knowledge Base](https://support.together.ai/articles/8079447813-eu-data-centers-and-dedicated-model-deployment)
 - [Dedicated Model Inference | Together AI](https://www.together.ai/dedicated-endpoints)

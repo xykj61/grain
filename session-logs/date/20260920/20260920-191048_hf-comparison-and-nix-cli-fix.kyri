@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260920.191048
+editor Claude Code
+provider Anthropic
+product Claude Code
+role research and writing -- Hugging Face finances/ops comparison, a real pier CLI bug found and fixed
+modality text
+model unverified
+model_status active runtime unverified; no get_session introspection run this lap
+voice Kyri
+host anonymized Claude Code CLI session, America/New_York clock
+title Hugging Face compared against Together AI and OpenRouter on finances and ops, and PROVIDER_SETUP.md's pip-based CLI step fixed for this NixOS pier
+prompt the operator asked to compare the finances and ops of Together AI (the just-recommended starting path) against what Hugging Face offers, tested via this pier's own CLI; a follow-up "kg with what you advise" authorized fixing the pip-install bug the comparison surfaced and folding the Hugging Face findings into open/
+think searched Hugging Face's own pricing pages rather than assuming its Inference Endpoints and Inference Providers were one product with one price -- found they are two genuinely different financial shapes: Inference Providers is a per-token router (passing through the partner provider's own rate with no markup, structurally the same shape as OpenRouter), while Inference Endpoints is a dedicated per-GPU-hour rental, billed by the minute, always-on once minimum replicas is 1
+think named the always-on billing risk plainly rather than only listing the hourly rates, since a dedicated endpoint idling over a weekend at ten dollars an hour is the concrete failure mode that shape rewards a careless setup toward, and the earlier PROVIDER_COMPARISON research on Together AI's own dedicated endpoints carries the identical risk
+think searched Hugging Face Inc.'s own incorporation and headquarters rather than assuming it was a US company from name recognition alone, and confirmed Delaware incorporation, Brooklyn NY headquarters, plus the specific regions its Inference Endpoints product actually deploys to: AWS us-east-1, Azure eastus, GCP us-east4, and one EU option, AWS eu-west-1 -- three of four named regions are literal US region codes, which is a stronger, more checkable fit for US_DATACENTER_POLICY.md than Together AI's own opt-in-at-higher-tier shape
+think tested the actual pier CLI rather than reading Hugging Face's own install instructions and trusting them: `which huggingface-cli hf` found neither, `pip show huggingface_hub` failed because pip itself does not exist on this host, confirming this is a declared NixOS pier with no bare pip, pipx, or uv at all
+think found the working install path by trying nix-shell directly rather than guessing a package name: `nix-shell -p python313Packages.huggingface-hub --run "hf --version"` pulled and confirmed hf version 1.16.0 from nixpkgs' own cache, one version behind PyPI's 1.32.0 since nixpkgs pins a snapshot rather than tracking PyPI live
+think this same test surfaced a bug already shipped in open/PROVIDER_SETUP.md from an earlier round: its own `pip install llm` step for the llm CLI has the identical failure on this pier, since pip does not exist here regardless of which package is being installed
+think tried the equivalent nix-shell path for llm and found a second, sharper problem: nixpkgs' llm package disables the imperative `llm install <plugin>` command entirely, printing its own message that plugins must be declared through llm.withPlugins instead -- so simply substituting nix-shell for pip in the existing two-line recipe would still have failed at the plugin-install step
+think found and verified the actual working command rather than stopping at the error message: `nix-shell -p '(python313Packages.llm.withPlugins { llm-openrouter = true; })' --run "llm plugins"` correctly loaded and reported llm-openrouter version 0.6 -- the plugin is declared at shell-construction time rather than installed afterward, which is the Nix way of doing what pip's imperative install does on every other system
+think wrote open/PROVIDER_COMPARISON.md as its own page rather than folding the comparison into PROVIDER_SETUP.md's body, since it answers a different question -- which provider, not how to reach the one already chosen -- matching the same reasoning that split US_DATACENTER_POLICY.md out earlier this same room
+think fixed PROVIDER_SETUP.md's own Part 3 in the same round, replacing the untested pip recipe with the general pip path (kept, since most hosts do have pip) alongside the pier-specific nix-shell recipe that was actually run and confirmed, rather than leaving the bug live in a page this room already shipped
+think updated US_DATACENTER_POLICY.md's Part 3 to name two verified candidates instead of one, and reworded Part 5's summary sentence to match, rather than letting the page's own closing claim drift out of sync with a body it no longer accurately summarized
+think ran the whole-tree register scan, the ASCII scan, and the link lint after every edit this round rather than after all of them at once, catching nothing this time -- every check read ok on the first pass
+obs kept the Hugging Face per-token rate for the four specific open-weight models (GLM, Qwen, DeepSeek, Kimi) as an explicitly unconfirmed figure rather than estimating one from the general "no markup" policy, since the policy and a specific model's underlying partner rate are two different facts and only the first was actually checked
+obs treated the NixOS CLI friction as ops information worth documenting rather than a reason to avoid Nix-specific guidance -- a guide correct only in the abstract and wrong on the one pier it will actually be read from is a guide that has not been tested
+file open/PROVIDER_COMPARISON.md -- new: the finances-and-ops comparison across five parts
+file open/US_DATACENTER_POLICY.md -- edited: Hugging Face's Inference Endpoints added as a second verified candidate, Part 5's summary reworded to match
+file open/PROVIDER_SETUP.md -- edited: the llm CLI section gains the pier-tested nix-shell and withPlugins recipe beside the general pip recipe
+file open/README.md -- edited: one new table row
+recommend check in (either) -- confirm whether Hugging Face's Inference Endpoints or Together AI's dedicated endpoints should be the one this tree actually builds a first integration against, since both now stand as verified US-only candidates and nothing yet distinguishes a preferred one beyond the region-naming style
