@@ -14,7 +14,7 @@
 #   sh tools/fixtures/f/fleet_roster_scan.sh --seats         # every seat name, live and parked
 #   sh tools/fixtures/f/fleet_roster_scan.sh --live          # the seats sailing today
 #   sh tools/fixtures/f/fleet_roster_scan.sh --tree SEAT     # that seat's tree basename
-#   sh tools/fixtures/f/fleet_roster_scan.sh --engine SEAT   # claude | codex | field
+#   sh tools/fixtures/f/fleet_roster_scan.sh --engine SEAT   # claude | codex | opencode | field
 #   sh tools/fixtures/f/fleet_roster_scan.sh --lane SEAT     # the lane sentence
 #   sh tools/fixtures/f/fleet_roster_scan.sh --status SEAT   # live | parked
 #   sh tools/fixtures/f/fleet_roster_scan.sh --resolve NAME  # an elder name -> its seat; else itself
@@ -115,10 +115,29 @@ case "${1:-}" in
       _tree=$(sh "$0" --tree "$_s")
       _status=$(sh "$0" --status "$_s")
       _lane=$(sh "$0" --lane "$_s")
-      printf -- '-- %s (%s) -- %s\n' "$_s" "$_status" "$_lane"
-      printf 'cd ~/%s && FLEET_DRY=1 sh tools/f/fleet-loop.sh %s   # print the command, run nothing\n' "$_tree" "$_s"
-      printf 'cd ~/%s && LOOP_LAPS=1 sh tools/f/fleet-loop.sh %s   # one lap\n' "$_tree" "$_s"
-      printf 'cd ~/%s && sh tools/f/fleet-loop.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
+      _engine=$(sh "$0" --engine "$_s")
+      printf -- '-- %s (%s, %s) -- %s\n' "$_s" "$_status" "$_engine" "$_lane"
+      case "$_engine" in
+      claude)
+        printf 'cd ~/%s && FLEET_DRY=1 sh tools/f/fleet-loop.sh %s   # print the command, run nothing\n' "$_tree" "$_s"
+        printf 'cd ~/%s && LOOP_LAPS=1 sh tools/f/fleet-loop.sh %s   # one lap\n' "$_tree" "$_s"
+        printf 'cd ~/%s && sh tools/f/fleet-loop.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
+        ;;
+      codex)
+        printf 'cd ~/%s && LOOP_LAPS=1 sh tools/f/fleet-loop-codex.sh %s   # one lap\n' "$_tree" "$_s"
+        printf 'cd ~/%s && sh tools/f/fleet-loop-codex.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
+        ;;
+      opencode)
+        printf 'cd ~/%s && LOOP_LAPS=1 sh tools/f/fleet-loop-opencode.sh %s   # one lap\n' "$_tree" "$_s"
+        printf 'cd ~/%s && sh tools/f/fleet-loop-opencode.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
+        ;;
+      field)
+        printf '# %s is the interactive bench -- no unattended loop\n' "$_s"
+        ;;
+      *)
+        printf '# %s carries engine %s -- no unattended loop\n' "$_s" "$_engine"
+        ;;
+      esac
       printf '\n'
     done
     ;;
