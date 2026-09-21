@@ -66,3 +66,9 @@ stamp 20260921.103153
 epoch 1790001113
 paths caravan/confer.rye caravan/capabilities.rye tools/ca/caravan_confer_witness.rish
 what Bound a confer chain by the lattice's own height: a hops_remaining counter and a ConferChainExhausted refusal, proven from both sides.
+claim tally-torus-index
+seat copal
+stamp 20260921.115147
+epoch 1790005907
+paths tally/torus_index.rye tools/t/tally_torus_index_witness.rish
+what A pure bijective two-axis (tier, slot) index over Tally's named gardens, with a witness proving the bijection.
