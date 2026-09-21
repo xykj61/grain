@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.084807` | [recover two parked laps](20260921/20260921-084807_recover-two-parked-laps.kyri) | Recovered a bounded-capture fix and the day-shelf index, verified green. |
 | `20260921.072735` | [say_compose_bound's Glow share](20260921/20260921-072735_say-compose-bound-glow-share.kyri) | The Glow deferred site composes a bounded capture; witness green. |
 | `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
 | `20260921.072356` | [Size-aware placement paper](20260921/20260921-072356_size-aware-placement-paper.kyri) | Wrote the placement-unit paper, rebuilt stale rye. |
