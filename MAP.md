@@ -32,6 +32,8 @@ Welcome, traveler. Something over a hundred doors face you at this root -- `ls -
 
 Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by `template-manifest.bron`: `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.bron`).
 
+Beside the seven also stand **the siloed study rooms** -- plainly-named, self-contained, and outside the seven-room split because each would still be worth reading if the code around it vanished: [`shastra/`](shastra/README.md) - [`risala/`](risala/README.md) - [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) - [`cubist-bhakti-astrology/`](cubist-bhakti-astrology/) - [`open/`](open/README.md) - [`fleet/`](fleet/README.md).
+
 ## The Two Floors -- Open Shelves and Closed Stacks
 
 The library has two floors, seated `20260827.155213` so six always-on hands stop paying for the

@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- a working setup, proven live, not wired into any tracked automation
 **Last updated:** `20260920.202705`
-**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) (region evidence updated this same round) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md)
+**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) (region evidence updated this same round) - [`SHIP_QUICKSTART_TEMPLATE.md`](SHIP_QUICKSTART_TEMPLATE.md) (this page generalized) - [`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`](../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md) (the dated, ship-specific runbook this page draws from) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md)
 
 ---
 
