@@ -108,6 +108,7 @@ allow mitra                        # the shed discipline's door; documentation-f
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
 allow risala                       # siloed Classical/Quranic Arabic study room, opened 20260920; no personal content
 allow open                         # vision-marked companion-model room, opened 20260920; names the maintainer, IDENT-scrubbed like every allowed room
+allow fleet                        # fleet-naming study room, opened 20260920; no personal content, no maintainer name found
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
 allow spellbook      # the command words at depth 1, mirrored from context/SPELLBOOK.md
@@ -176,6 +177,7 @@ personal  .cursor-archive                 # retired .cursor/rules/*.mdc twins, a
 personal  shastra                         # siloed Sanskrit study room; never reviewed for publication, withheld fail-safe pending Keaton's word
 template  risala                          # siloed Classical/Quranic Arabic study room, opened 20260920; no maintainer name found
 scrub     open                            # vision-marked companion-model room, opened 20260920; names the maintainer as decision authority throughout
+template  fleet                           # fleet-naming study room, opened 20260920; no maintainer name found
 
 # ---- root files ----
 scrub     README.md                      # names the living identity in its foot
