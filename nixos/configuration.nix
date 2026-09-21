@@ -60,8 +60,8 @@
   # Upstream website/hot update lands Aug builds under ~/.local, yet stub-ld
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
-  # claude-code: nixos-26.05's pin lags upstream (the locked flake had 2.1.187).
-  # This overlay pins the latest release, 2.1.274, fetching the same native binary
+  # claude-code: nixos-26.05's pin lags upstream.
+  # This overlay pins the latest release, 2.1.278, fetching the same native binary
   # the nixpkgs derivation would, from the same downloads.claude.ai release path.
   # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
   # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
@@ -79,7 +79,7 @@
   # linked executable` and learns nothing about the version. The checksum is what a
   # hand can verify before the build; the version is what the build verifies after.
   #
-  # To bump: read downloads.claude.ai/claude-code-releases/latest, then that
+  # To bump: read github.com/anthropics/claude-code/releases/latest, then that
   # version's manifest.json for the linux-x64 checksum.
   nixpkgs.overlays = [
     (final: prev: {
@@ -103,24 +103,24 @@
       });
 
       cursor-cli = prev.cursor-cli.overrideAttrs (_old: {
-        version = "0-unstable-2026-08-04";
+        version = "0-unstable-2026-09-18";
         src = final.fetchurl {
-          url = "https://downloads.cursor.com/lab/2026.08.04-aaa8809/linux/x64/agent-cli-package.tar.gz";
-          hash = "sha256-4oIGjctc3WaLjOLjRWxYvhO7ZKg04a1J+FNLXNeqL+U=";
+          url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz";
+          hash = "sha256-sTCPWi/AVFi52JZnUphrsjqXG7zGfIQsHflMS4Eyutk=";
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.274";
+        version = "2.1.278";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.274/linux-x64/claude";
-          sha256 = "15e2d05148f801b5774032faad87e624ecd172e9903288bda448b892eb58fa07";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.278/linux-x64/claude";
+          sha256 = "5c4735937844e84f8a93306e841a5b0e12252909b07870f789b190468da147ab";
         };
       });
 
       # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
       # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
       # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
-      # upstream ships 0.154.0, so this overlay is the same declared road the two
+      # upstream ships 0.155.1, so this overlay is the same declared road the two
       # entries above take, for the fastest-moving of the three agent CLIs.
       #
       # This one REPLACES the derivation rather than overrideAttrs'ing it, because
@@ -138,20 +138,19 @@
       #
       # The build self-checks twice, exactly as claude-code's does: fetchurl fails
       # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
-      # and asserts the string carries 0.154.0. The sha256 below is the release
+      # and asserts the string carries 0.155.1. The sha256 below is the release
       # asset's own checksum, verified on this pier against the downloaded file
-      # (sha256sum == d7e18b25...7f02, 20260912) and the unpacked binary answered
-      # `codex-cli 0.154.0`.
+      # and the unpacked binary answered `codex-cli 0.155.1`.
       #
       # To bump: read the newest rust-vX.Y.Z tag at github.com/openai/codex/releases,
       # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
       codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
         pname = "codex";
-        version = "0.154.0";
+        version = "0.155.1";
 
         src = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "d7e18b2597ae8f242f5f31ee9e90deef48dbc9edd634d9868fb6435d08c07f02";
+          sha256 = "a0ef8b2debc3bf747e07b1a039354de31300ac0dcc2276498ba281470b5d9115";
         };
 
         # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
@@ -165,7 +164,7 @@
         # b476...4fc5, 20260828, 21,208,013 bytes.
         codeModeHost = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "a68df7cca23c6da7cde175677df7de61c73a234add1333a1254b86d641af01f7";
+          sha256 = "9fd083743af55be818aceb351d371fb5136f5b6aa3938f167087373d27067b2d";
         };
 
         # The tarball holds one bare file rather than a directory, so the default
@@ -191,6 +190,45 @@
           homepage = "https://github.com/openai/codex";
           license = final.lib.licenses.asl20;
           mainProgram = "codex";
+          platforms = [ "x86_64-linux" ];
+          sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
+        };
+      });
+
+      # Antigravity CLI: Google publishes a native Linux tarball and a manifest
+      # with a SHA-512 digest. The upstream installer self-updates in ~/.local;
+      # Nix keeps the pier reproducible by seating the current linux-amd64
+      # release here and making future bumps explicit.
+      antigravity-cli = final.stdenv.mkDerivation (finalAttrs: {
+        pname = "antigravity-cli";
+        version = "1.2.7";
+
+        src = final.fetchurl {
+          url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.2.7-6731160148115456/linux-x64/cli_linux_x64.tar.gz";
+          hash = "sha512-/sdp1hHEr98K5y04vbJlLI4sjnHk9t6XonuA3aPFBCkWDZ4Dd2o2pZuIV8IOdng8SknLD+uLL1w7+SWwzAO7dw==";
+        };
+
+        sourceRoot = ".";
+        nativeBuildInputs = [ final.autoPatchelfHook ];
+        buildInputs = [ final.stdenv.cc.cc.lib ];
+
+        installPhase = ''
+          runHook preInstall
+          install -Dm755 antigravity "$out/bin/agy"
+          runHook postInstall
+        '';
+
+        doInstallCheck = true;
+        installCheckPhase = ''
+          runHook preInstallCheck
+          "$out/bin/agy" --version
+          runHook postInstallCheck
+        '';
+
+        meta = {
+          description = "Google Antigravity CLI -- terminal agent client";
+          homepage = "https://antigravity.google/";
+          mainProgram = "agy";
           platforms = [ "x86_64-linux" ];
           sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
         };
@@ -330,6 +368,7 @@
     claude-code
     cursor-cli
     codex    # OpenAI Codex CLI -- DREAM's seat, run inside ai-jail on this pier
+    antigravity-cli  # Google Antigravity CLI -- `agy`
     vim
     neovim
     kakoune
