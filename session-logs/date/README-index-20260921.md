@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.033809` | [DeepSeek sits the bench -- the first open-weight session, rules adapted and logged](20260921/20260921-033809_deepseek-sits-the-bench.kyri) | Seated the AGENTS.md opencode door, wrote the expanding prompt, logged the session. |
 | `20260921.015700` | [The "dedicated" word swap published, diff confirmed against the named ref](20260921/20260921-015700_dedicated-published.kyri) | Published the word swap, one-line diff confirmed against seed/main by name. |
 | `20260921.015317` | ["the legal" becomes "the dedicated" in the welcome list](20260921/20260921-015317_legal-becomes-dedicated.kyri) | Swapped one word in the welcome-list sentence, all guards clean. |
 | `20260921.013010` | [Music-rockstars and traveling-artists edit published, diff confirmed against the named ref](20260921/20260921-013010_rockstars-published.kyri) | Published the edit, one-file diff confirmed against seed/main by name. |
