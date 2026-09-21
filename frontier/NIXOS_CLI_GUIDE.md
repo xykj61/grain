@@ -23,7 +23,7 @@ derivations run an install check where the binary supports one. A release bump i
 small, reviewable change: version, source URL, hash, and the note that explains the source.
 
 The Cursor binary is the harness; its model is selected at launch. The Incense frontier launcher
-uses `CURSOR_MODEL=${CURSOR_MODEL:-grok-4.7}`, so a model change is visible in the command and does
+uses `CURSOR_MODEL=${CURSOR_MODEL:-grok-4.7-high}`, so a model change is visible in the command and does
 not masquerade as a Nix package bump.
 
 ## Rebuild the pier

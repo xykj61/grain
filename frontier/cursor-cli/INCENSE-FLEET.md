@@ -11,7 +11,7 @@ at the door.
 From the repository root on the pier, inside the `tmux` session that holds the work:
 
 ```sh
-FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7 CURSOR_FORCE=1 \
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 \
   tools/l/launch-cursor-incense.sh
 ```
 
@@ -19,7 +19,7 @@ The launcher reads, in order, the shared fleet baton and the Incense seat prompt
 engine name, selected model, and captain role before invoking Cursor Agent CLI with:
 
 ```sh
-cursor-agent --model grok-4.7 --force -p '<assembled baton + Incense prompt>'
+cursor-agent --model grok-4.7-high --force -p '<assembled baton + Incense prompt>'
 ```
 
 The prompt is assembled from tracked files rather than copied into a second long command. That
@@ -31,8 +31,10 @@ keeps the shared fleet law, the Incense lane, and this Cursor engine in one read
 |---|---:|---|
 | `FLEET_BARE` | `0` | `1` runs `cursor-agent` directly on the pier; `0` runs it through `agent-jail.sh`. |
 | `FLEET_CAPTAIN` | `0` | `1` adds Incense's captain's-hat context for law, review, and custody. |
-| `CURSOR_MODEL` | `grok-4.7` | Explicit Cursor model ID. Override it without editing the launcher. |
+| `CURSOR_MODEL` | `grok-4.7-high` | Explicit Cursor model ID. Override it without editing the launcher. |
 | `CURSOR_FORCE` | `1` | `1` passes Cursor's `--force`; `0` keeps approval prompts. |
+| `CURSOR_PREFLIGHT` | `1` | Run a bounded model probe before the full prompt. |
+| `CURSOR_PREFLIGHT_TIMEOUT` | `45` | Seconds allowed for the model probe. |
 | `FLEET_DRY` | `0` | `1` prints the resolved command shape without starting an agent. |
 
 `FLEET_BARE` and `CURSOR_FORCE` are separate axes. Bare mode says where the process runs. Force
@@ -55,7 +57,7 @@ FLEET_DRY=1 FLEET_BARE=1 FLEET_CAPTAIN=1 \
 Keep the jail while retaining the same model and captain context:
 
 ```sh
-FLEET_BARE=0 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7 CURSOR_FORCE=1 \
+FLEET_BARE=0 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 \
   tools/l/launch-cursor-incense.sh
 ```
 
@@ -80,10 +82,10 @@ until then, the one-lap command is the honest ability this room proves.
 
 ## Current model note
 
-At this writing, Cursor's current flagship Grok model is `grok-4.7`, with model ID `grok-4.7` in
-the CLI. Model availability is account- and plan-dependent. If the CLI refuses that ID, run
-`cursor-agent models` or choose an available model explicitly; do not silently fall back to Auto
-and then record Grok as if it ran.
+At this writing, Cursor's current flagship Grok model is Grok 4.7. This CLI exposes its documented
+high-effort variant as `grok-4.7-high`. Model availability is account- and plan-dependent. If the
+bounded preflight refuses that ID, run `cursor-agent models` or choose an available model
+explicitly; do not silently fall back to Auto and then record Grok as if it ran.
 
 See Cursor's [CLI parameters](https://cursor.com/docs/cli/reference/parameters), [model reference](https://cursor.com/docs/models/grok-4-7),
 and [rules guide](https://cursor.com/docs/rules) for the vendor surface this adapter calls.
