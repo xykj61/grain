@@ -3,10 +3,12 @@
 # Orchestrated by tools/gen/chapter/voice_roster_witness.rish.
 #
 # First resident: the voice-variant system proven on our own tree before it is
-# claimed as a surface. Six authoritative sites declare the standing voice. A
-# seventh place -- the 400-odd dated docs carrying a **Voice:** header -- is NOT
-# checked here on purpose: those are Tier 2 testimony naming who actually wrote
-# them, and a voice change must never falsify authorship.
+# claimed as a surface. Five authoritative sites declare the standing voice,
+# down from six -- the mirrored `.cursor/rules/<voice>.mdc` site retired
+# `20260920.135100` alongside the whole Cursor family. A further place -- the
+# 400-odd dated docs carrying a **Voice:** header -- is NOT checked here on
+# purpose: those are Tier 2 testimony naming who actually wrote them, and a
+# voice change must never falsify authorship.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 #   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
@@ -31,13 +33,14 @@ check "context/README.md"                      "^\*\*Voice:\*\* $want"  "context
 upper=$(echo "$want" | tr 'a-z' 'A-Z')
 check "context/$upper.md"                      "^# $want"               "living identity note"
 
-if [ -f ".cursor/rules/$(echo "$want" | tr 'A-Z' 'a-z').mdc" ]; then
-  echo "detail: ok cursor rule present"
-else
-  echo "detail: drifted cursor rule absent for $want"
-  fail=$((fail + 1))
-fi
+# The sixth site, a mirrored `.cursor/rules/<voice>.mdc` declaration, retired
+# `20260920.135100` on Keaton's word alongside the whole Cursor family -- see
+# `.claude/rules/collaboration.md`'s Editor section. This bench no longer
+# maintains a second declaration to keep in sync, so the site is retired from
+# the roster rather than checked against the frozen archive at
+# `.cursor-archive/rules/`, which would misreport a retired duty as a live one.
+echo "detail: ok cursor rule retired 20260920.135100, no longer a declaration site"
 
-echo "sites=6"
+echo "sites=5"
 echo "drift=$fail"
 if [ "$fail" -eq 0 ]; then echo "verdict=ok"; exit 0; else echo "verdict=drift"; exit 1; fi

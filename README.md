@@ -1,3 +1,5 @@
+> **A grain is a tree you can hold.**
+
 <p align="center">
   <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a light-gold sephirot tree of hexagons on dark aetheric purple, drawn like a terminal" />
 </p>
@@ -15,20 +17,9 @@
   <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-meteor, honest register" src="https://img.shields.io/badge/status-crashed--meteor-b9954a"></a>
 </p>
 
+**Voice:** Kyri -- **Style:** Bhakta, Door setting -- full note at the foot of this page.
+
 ---
-
-**Voice:** [Kyri](context/KYRI.md) -- the standing voice this tree writes in, and the name of its
-own [Kyri notation](context/KYRI.md) that every session log is written in.
-
-**Style:** Bhakta at the **Door** setting, with [Gauge](context/GAUGE_STYLE.md) and
-[Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
-claims, and reaches for the image. Door is the dial Gauge reads it on: at or under 20% negative
-sentences, one cross-reference per hundred words, held by `tools/p/prose_register_witness.rish`. Its negation reads **6%**, down from 14, and the last of it lives
-in a teacher's quotation and a foundation's title, which keep their own words. Bhakta's own guide,
-`context/BHAKTA_STYLE.md`, stays in the maintainer's working tree rather than in this published
-copy, so it is named here rather than linked.
-
-> **A grain is a piece you can hold.**
 
 Welcome. You are at the start of a new internet, and your first interaction with it begins a
 trajectory on Earth that begins with you.
@@ -95,6 +86,12 @@ whole spirit, and **[`docs-geode/`](docs-geode/README.md)** holds the shipped sh
 [four demos you can run in a minute](docs-geode/demos/README.md), the
 [teaching surfaces](docs-geode/edu/README.md), and
 [how to read this tree](docs-geode/study/README.md).
+
+**Grown this season, and worth a visit of their own:** **[`open/`](open/README.md)** studies what
+it would take for an open-weight model to sit beside Claude at this bench, with a real setup
+proven live against Together AI; **[`fleet/`](fleet/README.md)** names the working ships that
+write this very tree; and **[`risala/`](risala/README.md)** carries Classical and Quranic Arabic
+study beside the older Sanskrit room, **[`shastra/`](shastra/README.md)**.
 
 ---
 
@@ -396,6 +393,16 @@ A single top-level **[LICENSE](LICENSE)** indexes the terms: code under
 How we treat each other: [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). How to report a weakness
 privately: [`SECURITY.md`](SECURITY.md). What changed: [`CHANGELOG.md`](CHANGELOG.md). How to
 contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+**Voice:** [Kyri](context/KYRI.md) -- the standing voice this tree writes in, and the name of its
+own [Kyri notation](context/KYRI.md) that every session log is written in.
+
+**Style:** Bhakta at the **Door** setting, with [Gauge](context/GAUGE_STYLE.md) and
+[Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
+claims, and reaches for the image. Door is the dial Gauge reads it on: at or under 20% negative
+sentences, one cross-reference per hundred words, held by `tools/p/prose_register_witness.rish`.
+Bhakta's own guide, `context/BHAKTA_STYLE.md`, stays in the maintainer's working tree rather than
+in this published copy, so it is named here rather than linked.
 
 ---
 
