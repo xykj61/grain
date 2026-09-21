@@ -37,7 +37,7 @@
 # design -- three commits and moved bytes, against one and unmoved for all seventeen resins.
 format kyri-resins-v1
 stamp 20260712.115753
-refreshed 20260906.233111
+refreshed 20260921.115355
 purpose chat-printout essay resins as Kyri values at the seam
 law Kyri carries immutable values; Brix composes wholes; this folder holds Kyri only
 witness tools/b/kyri_resins_catalog_witness.rish -- uncatalogued, orphan, duplicate, unsealed, and mismatched lines at zero
@@ -60,24 +60,25 @@ entry 20260712-220000_claude-signed-kumara-green.kyri signed-Kumara GREEN
 entry 20260712-220600_claude-day-close-resting.kyri day closed, signed-Kumara resting
 entry 20260725-224249_quin-handoff_fresh-session-bootstrap.md Quin fresh-session bootstrap -- Markdown in a Kyri room, kept as it landed
 
-seal 20260712-115753_morning-fold-thoughts.kyri e1b48bab165b83ad20295295325ef238d70f1236619f073cbf96973a202ede1c
-seal 20260712-120007_claude-combined-morning.kyri 1d05670625c0bacf8ff0b369aade5c37b4f88cca80e001d6c6a2d1562f4d5697
-seal 20260712-121719_claude-nib-seated.kyri 3755bebb1c57469887f1c0db1ab3cea5a8f61c605781636e978a78b5c972ed69
-seal 20260712-123700_claude-guidance-onpath-kvm.kyri 56bb701d9ecdd9989860b1af3005eecb808c49edaf1c2a96528384a439f147b7
-seal 20260712-143946_claude-afternoon-onpath-parity.kyri 586d465324db62f18483a109c66da4e5c918fd14f98fe49009e20ffac1f65e49
-seal 20260712-200445_claude-evening-g1-toolchain.kyri a9457d8fd12547dfa6ed155cb2020d8dbbaa1aa1e935939e2911d2dafede5dc4
-seal 20260712-204010_claude-g1-serial-green.kyri fbfa75e10c2b94427826561fb32fe380f219b6a2defdd7e72b5de20ea608c79f
-seal 20260712-210000_claude-g1-close-pond-sixbar.kyri 547f59e9bc588225c8cd8facb0dad9543cdf1f983226f837d1da9d6b34729cb0
-seal 20260712-211700_claude-exit-n-second-walk.kyri 3bb37912b9b5328bb9c4413e2deca0d80b531a2a9ddc3e654bdb61e8a586c06a
-seal 20260712-212200_claude-scorecard-witness-walk.kyri 24884bb17cd13dbe0af072d87c8ecbb31d09dc9dd04beb3882284edb8abf5262
-seal 20260712-212900_claude-freeze-worthy-affirm.kyri eb252de92aa60ed23b492e389037dfd64a4112eda1b16f1c790d3dc069a542f4
-seal 20260712-213800_claude-freeze-affirmed-master-seal.kyri 7c0c7e1c55810edb1255e675db4b87de31e989b6ff8d2ca25ff0d4eefb0d3acf
-seal 20260712-214500_claude-latch-monocypher.kyri 591478fcaa5ee5be330c04bc1ed8681cb7f5275c33d2bffe15882b92609a1fec
-seal 20260712-215100_claude-monocypher-pin.kyri db34dced4848212a43e4eaa716aa95e771075a2c8705cc5b67999edcc9423532
-seal 20260712-220000_claude-signed-kumara-green.kyri 77cc2d81310f0b13f36f7a6642760c161a3d0129f533a98bf4f27ae6a7411de4
-seal 20260712-220600_claude-day-close-resting.kyri 117a90c681445e7dea598c60520bde051628677d8bde30bad8fde6396710d421
-seal 20260725-224249_quin-handoff_fresh-session-bootstrap.md 2db0c8be53aee89ee168d794c485eff0c86d4a207336bfe742bf1e0f902c7fd8
+seal 20260712-115753_morning-fold-thoughts.kyri 598f265fc7570259439ea34120cdba7bae1649a25f7ded61092777db8f79788e
+seal 20260712-120007_claude-combined-morning.kyri adc98566647676081aef4392322020ce9dbf3412b55a47397254ea8cd8ed0cc4
+seal 20260712-121719_claude-nib-seated.kyri 8ee8e5a256695abcb2c4d941741e5ba36d282ba345ab4285ab1cae48e14b83c0
+seal 20260712-123700_claude-guidance-onpath-kvm.kyri c3fc8f61786b9dde2cc509f057afd889d9ae66f4376a45b468016e223b1211c6
+seal 20260712-143946_claude-afternoon-onpath-parity.kyri eb134f71d594c439de8a2dec5e37c12f8e45021119a14694fc6003c501f73a7c
+seal 20260712-200445_claude-evening-g1-toolchain.kyri 6c18e42d11894c9451f9705bf445cdefe0d7d52ddfd082698dbb0ff750dcd944
+seal 20260712-204010_claude-g1-serial-green.kyri 72ebe84ea8d4b1321e16988ed94a65550f83380ebb07b77e2b2921ad9abecf84
+seal 20260712-210000_claude-g1-close-pond-sixbar.kyri 9052d1947be17b8553e83c3fa6e83427689d83a9867c10b131b041d9defe5263
+seal 20260712-211700_claude-exit-n-second-walk.kyri 491ecc3d256374fc27e2f13a2fec3cafc2dbcf26201590906b7bf72c6a2db6a4
+seal 20260712-212200_claude-scorecard-witness-walk.kyri 3aef13d383e429f05674c4e1d07cbc665b3957b1e59d260d10f36cfeff168f72
+seal 20260712-212900_claude-freeze-worthy-affirm.kyri 896e9220c275acf74458c8f68e56c46708f4c827b30e5b68da8cb0a3c8912e86
+seal 20260712-213800_claude-freeze-affirmed-master-seal.kyri b732b907c568292c810515c6f7ca4916ab67115ce1ac6dc0c4e7b9e5b767570e
+seal 20260712-214500_claude-latch-monocypher.kyri a9d26d61697847cca2beec44f6c53442b152bc7ec56950ff3bea9fd6cf08afce
+seal 20260712-215100_claude-monocypher-pin.kyri 86452540b31e6e47d51322cbaddc2510c6d4f9dfd71130b283f5f5b397268912
+seal 20260712-220000_claude-signed-kumara-green.kyri 0667b41d012e3f6a63eee02844cade0b7ce915491cf6ba77f54a4486b94cc213
+seal 20260712-220600_claude-day-close-resting.kyri 8ab69c65b143720c44b4345d9db2408abee235f275b1284f177a4228488ae704
+seal 20260725-224249_quin-handoff_fresh-session-bootstrap.md 12bb853f4240cab75b159f9bcdc883d0c34c32d7cba2af496c967d9d0657ef19
 
 note folder born on Kaeden word for raw chat printout in .kyri; commit with the resin
 note the one .md entry is named rather than swept -- the law line says Kyri only, the room has held that file since 20260725, and a catalog states its exception instead of hiding it
 note a seal is the bytes; an entry is the meaning -- two lines rather than one field, because a note carries spaces and a digest appended after free-form prose is a digest nothing can parse
+note resealed 20260921.115355 -- the Bron-to-Kyri breach renamed every .bron file and reworked Bron references to Kyri, so all seventeen resins' bytes moved and their seals were recomputed to match; the landed witness stays green because each resin's one commit is the breach itself
