@@ -1,0 +1,23 @@
+---
+description: Grain project door for Cursor Agent CLI; terminal-only work on the pier
+alwaysApply: true
+---
+
+# Grain through Cursor Agent CLI
+
+This is the project door for Cursor Agent CLI. Work from a terminal on the pier, commonly reached
+from the Daylight DC-1 tablet through Termux, Mosh, and tmux. The GUI/editor lane is outside this
+rule's scope.
+
+Read [`AGENTS.md`](../../AGENTS.md) first. It names the shared project voice and points to the
+canonical rules under [`.claude/rules/`](../../.claude/rules/). Do not fork those rules into a
+second policy: read the specific canonical page when the task touches its subject.
+
+The living Cursor CLI field guide is [`frontier/cursor-cli/README.md`](../../frontier/cursor-cli/README.md).
+It owns the CLI/MOSH/Termux operating path and its boundary. The tracked project permission
+surface is [`.cursor/cli.json`](../cli.json); personal model choice, login, and cached CLI state
+stay outside Git in the user's Cursor config directory.
+
+Keep changes small, inspect before editing, preserve unrelated work, and verify the result with a
+named command or witness. Never place credentials, OAuth state, telemetry, or copied files from
+`loops/cursor/` in the repository.

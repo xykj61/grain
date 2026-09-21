@@ -35,3 +35,8 @@ same round that filled this room (`construction/CHECKPOINTS.md` `20260920.135100
 twin means writing a fresh one against the current `.md` canon, treating these files as a
 starting draft -- the `.md` pages have moved on in the months since most of these were last
 touched, and a fresh pass would serve better than a verbatim restore.
+
+Cursor has now returned for a narrower door: the terminal-only CLI lane. Its living adapter rules
+are under [`../../.cursor/rules/`](../../.cursor/rules/) and its current field guide is under
+[`../../frontier/cursor-cli/`](../../frontier/cursor-cli/). This fossil room remains excluded from
+Cursor indexing; these files are historical source material, not live instructions.
