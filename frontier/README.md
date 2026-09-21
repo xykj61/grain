@@ -28,7 +28,7 @@ system package and a user's private credentials.
 
 - **Codex** -- OpenAI's terminal coding agent, pinned to `0.155.1`.
 - **Cursor Agent** -- Cursor's terminal agent, pinned to installer build `2026.09.18-9a7762b`,
-  with the Incense CLI lane defaulting to Cursor Grok `grok-4.7`.
+  with the Incense CLI lane defaulting to Cursor Grok `grok-4.7-high`.
 - **Claude Code** -- Anthropic's terminal coding agent, pinned to `2.1.278`.
 - **Antigravity CLI** -- Google's terminal agent, exposed as `agy`, pinned to `1.2.7`.
 

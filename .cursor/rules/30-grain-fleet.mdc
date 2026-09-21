@@ -17,10 +17,14 @@ The launcher has four independent inputs:
 - `FLEET_CAPTAIN=1` gives the Incense prompt its captain's-hat context for law, review, and custody.
   It never authorizes human-only gates: keys, funds, provisioning, identity, or seed publication
   remain with the maintainer.
-- `CURSOR_MODEL` selects the model explicitly. The launcher default is the current Cursor Grok
-  model, `grok-4.7`; a log records this as configured selection, not proof of active runtime use.
+- `CURSOR_MODEL` selects the model explicitly. The launcher default is Cursor Grok 4.7 at its
+  documented high effort, `grok-4.7-high`; a log records this as configured selection, not proof
+  of active runtime use.
 - `CURSOR_FORCE=1` passes Cursor's `--force` flag. This is the CLI's force-allow equivalent for
   commands unless explicitly denied; it does not erase project rules or custody gates.
+- `CURSOR_PREFLIGHT=1` performs a bounded model probe first, so an unavailable model or transport
+  fault fails with a named error instead of looking like a hung terminal. Set it to `0` only when
+  a hand has already proved the model path.
 
 Keep the fleet invariants from the Claude and Codex loops: one writer per checkout, round-open
 before work, the baton before the lane, stop markers before a lap, session output in the shared

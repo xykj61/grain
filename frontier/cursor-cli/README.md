@@ -53,7 +53,7 @@ Incense seat context, selects the latest Cursor Grok model explicitly, and makes
 axes visible at the shell boundary:
 
 ```sh
-FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7 CURSOR_FORCE=1 \
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 \
   tools/l/launch-cursor-incense.sh
 ```
 
@@ -68,7 +68,8 @@ commit, and Kyri close remain the same fleet shape used by Claude and Codex. The
 adapter is [`../../.cursor/rules/30-grain-fleet.mdc`](../../.cursor/rules/30-grain-fleet.mdc).
 
 Use the CLI's model picker or `--model` for a session choice. The current default in the tracked
-Incense launcher is `grok-4.7`; the explicit variable keeps that choice inspectable. Do not bake a personal model ID,
+Incense launcher is `grok-4.7-high`; the explicit variable keeps that choice inspectable. The
+launcher preflights the model for a bounded period so unavailable models fail clearly. Do not bake a personal model ID,
 email, auth token, or telemetry payload into this tree. The official CLI configuration locations
 and permission schema are maintained in Cursor's documentation; the tracked project file contains
 only the project permission layer.
