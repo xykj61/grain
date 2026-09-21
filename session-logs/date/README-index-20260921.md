@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.144649` | [Luna across the piers](20260921/20260921-144649_luna-across-the-piers.kyri) | Set the personal, tmux, and eight-pier Codex defaults to GPT-5.6 Luna. |
 | `20260921.114713` | [recover the parked amphora sign-verb lap](20260921/20260921-114713_recover-amphora-sign-verb-lap.kyri) | Landed the sign-verb fix; cold pass tree_moved=no, 47 red. |
 | `20260921.102247` | [recover the parked scope-map lap](20260921/20260921-102247_recover-scope-map-parked-lap.kyri) | Landed the scope-map rows, cold pass tree_moved=no, 36 red. |
 | `20260921.095436` | [The Bron-to-Kyri breach -- one notation, one name, 2,926 files renamed](20260921/20260921-095436_bron-to-kyri-breach.kyri) | Molted every .bron file and every Bron reference to Kyri. |
