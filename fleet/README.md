@@ -12,12 +12,13 @@
 
 ## What this room holds
 
-Three short documents:
+Four short documents:
 
 | File | Reader | What it answers |
 |---|---|---|
 | This page | anyone opening the room | what a fleet is, here, and why it is named the way it is |
 | [`EARTH_FLEET.md`](EARTH_FLEET.md) | someone who wants to understand the eight named ships | what "Earth fleet" means, who the ships are, and how the naming works |
+| [`ENGINES.md`](ENGINES.md) | someone who wants to know how a ship runs its laps, and which engine it runs on | the three engines -- claude, codex, opencode -- and how a ship switches |
 | [`SETUP_GUIDE.md`](SETUP_GUIDE.md) | someone standing up a new ship, or wiring an existing one to an open-weight model | the practical steps, pointing back to [`open/`](../open/README.md) for the provider and harness half |
 
 ## What a fleet is, here

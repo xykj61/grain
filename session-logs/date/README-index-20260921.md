@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.035244` | [The OpenCode fleet loop seated -- DeepSeek at the helm, one loop for every ship](20260921/20260921-035244_opencode-fleet-loop-seated.kyri) | Seated the opencode loop and watcher, engine-aware recipe, documented in open/ and fleet/. |
 | `20260921.033809` | [DeepSeek sits the bench -- the first open-weight session, rules adapted and logged](20260921/20260921-033809_deepseek-sits-the-bench.kyri) | Seated the AGENTS.md opencode door, wrote the expanding prompt, logged the session. |
 | `20260921.015700` | [The "dedicated" word swap published, diff confirmed against the named ref](20260921/20260921-015700_dedicated-published.kyri) | Published the word swap, one-line diff confirmed against seed/main by name. |
 | `20260921.015317` | ["the legal" becomes "the dedicated" in the welcome list](20260921/20260921-015317_legal-becomes-dedicated.kyri) | Swapped one word in the welcome-list sentence, all guards clean. |
