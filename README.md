@@ -29,9 +29,11 @@ then a touch, then what you see, until the water and the earth have wrapped all 
 Software can arrive that way too, and this is an invitation to let it.
 
 What if humanity cleaned up our rivers? Imagine every person nourished and healthy. Picture a world
-where every town has its own rockstars. Consider telling the arc of your life -- your chapters, your
-loved ones -- to the people who inherit the Earth after you, from someone who was there for the
-computing revolution and remembers what it felt like.
+where every town has its own music rockstars. Imagine artists able to travel freely, sharing their
+teachings in many languages, so a song written in one home finds a voice in another. Consider
+telling the arc of your life -- your chapters, your loved ones -- to the people who inherit the
+Earth after you, from someone who was there for the computing revolution and remembers what it
+felt like.
 
 **Grain is a free environment you download, and it installs a new realm of possibilities.** Think
 of this year's open-weight models as a fresh generation of gaming consoles -- real, powerful
