@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
+| `20260921.072356` | [Size-aware placement paper](20260921/20260921-072356_size-aware-placement-paper.kyri) | Wrote the placement-unit paper, rebuilt stale rye. |
 | `20260921.064702` | [Grass recovers the parked packet, fixes declared_model](20260921/20260921-064702_grass-declared-model-fix.kyri) | Recovered the parked packet; declared_model fixed. |
 | `20260921.063116` | [Lesson 2 -- the twelve zodiac signs and the sky's craft in three Arabics](20260921/20260921-063116_risala-lesson-two-zodiac.kyri) | Wrote risala lesson 2 on the zodiac signs and craft terms in three Arabics. |
 | `20260921.060232` | [Recover parked lap, fold note](20260921/20260921-060232_recover-parked-lap-and-fold-build-cache-note.kyri) | Recovered stashed lap, folded note off card. |
