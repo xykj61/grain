@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260920.233953` | [Fair Trade and biocyclic vegan ecology named again, in humanized words grounded in the tree's own canon](20260920/20260920-233953_fair-trade-and-veganism-back-in.kyri) | Rewrote the who-this-is-for paragraph to give both standards their own plain sentence, grounded in context/BHAKTA_STYLE.md and a founding vision document. |
 | `20260920.223652` | [The humanized README published, diff confirmed against the named ref](20260920/20260920-223652_humanized-readme-published.kyri) | Published the three-sentence humanizing pass, one-file diff confirmed. |
 | `20260920.223305` | [Three stiff sentences warmed, including a genuinely garbled one caught by reading rather than skimming](20260920/20260920-223305_readme-humanized-and-a-typo-caught.kyri) | Warmed the who-this-is-for paragraph and the metrics-intro sentence, and fixed a real broken sentence in the Brix-declares paragraph; register held at 94, truth at 100. |
 | `20260920.220257` | [The HTML-comment Style declaration published, a one-line diff confirmed against the correctly-named ref this time](20260920/20260920-220257_hidden-style-line-published.kyri) | Published the hidden Style declaration, diffing against seed/main by name from the start. |
