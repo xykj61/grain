@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.151243` | [The misspelled room merged into frontier](20260921/20260921-151243_frontier-typo-merged.kyri) | Moved the three agent-seat documents into the single correctly spelled frontier room. |
 | `20260921.150927` | [Cursor CLI frontier revived for the pier](20260921/20260921-150927_cursor-cli-frontier-revived.kyri) | Restored a live CLI-only Cursor door, permission layer, and Termux/Mosh frontier guide. |
 | `20260921.145750` | [Ferontier seats renewed at the NixOS door](20260921/20260921-145750_ferontier-cli-renewal.kyri) | Pinned four terminal agents, packaged `agy`, and opened the ferontier room. |
 | `20260921.144649` | [Luna across the piers](20260921/20260921-144649_luna-across-the-piers.kyri) | Set the personal, tmux, and eight-pier Codex defaults to GPT-5.6 Luna. |

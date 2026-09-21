@@ -107,7 +107,7 @@ whole spirit, and **[`docs-geode/`](docs-geode/README.md)** holds the shipped sh
 **Grown this season, and worth a visit of their own:** **[`open/`](open/README.md)** studies what
 it would take for an open-weight model to sit beside Claude at this bench, with a real setup
 proven live against Together AI; **[`fleet/`](fleet/README.md)** names the working ships that
-write this very tree; **[`ferontier/`](ferontier/README.md)** documents the four pinned terminal
+write this very tree; **[`frontier/`](frontier/README.md)** documents the four pinned terminal
 agent seats on the NixOS pier; and **[`risala/`](risala/README.md)** carries Classical and Quranic Arabic
 study beside the older Sanskrit room, **[`shastra/`](shastra/README.md)**.
 
@@ -308,13 +308,13 @@ one reason: **thinking and building are filed separately, so each has space to b
   a named person's birth date, time, and place, and the friends whose skies seeded the library
   asked for privacy. What ships is the method alone, and the chart stays home.
 - **[`shastra/`](shastra/README.md)**, **[`risala/`](risala/README.md)**, **[`open/`](open/README.md)**,
-  **[`fleet/`](fleet/README.md)**, and **[`ferontier/`](ferontier/README.md)** -- plainly-named study
+  **[`fleet/`](fleet/README.md)**, and **[`frontier/`](frontier/README.md)** -- plainly-named study
   rooms sitting at the tree's root
   rather than inside `external-research/` or `.claude/rules/`, each answering the same test:
   would this still be worth reading if the code it describes were deleted? `shastra/` and
   `risala/` teach Sanskrit and Classical Arabic; `open/` teaches how this tree would study and
   reach an open-weight model beside Claude; `fleet/` teaches how the working ships that write this
-  very tree are named and set up; `ferontier/` teaches how their four terminal agents are pinned
+  very tree are named and set up; `frontier/` teaches how their four terminal agents are pinned
   and renewed on NixOS.
 
 **The rooms kept in the maintainer's field**

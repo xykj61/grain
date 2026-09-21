@@ -1,10 +1,11 @@
-# Ferontier -- the four agent CLIs at the pier door
+# Frontier -- the four agent CLIs at the pier door
 
 **Language:** EN  
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))  
 **Voice:** Kyri  
-**Status:** Built -- the NixOS configuration carries four pinned terminal agents  
-**Last updated:** `20260921.000000`  
+**Status:** Built -- the NixOS configuration carries four pinned terminal agents; Cursor CLI's
+terminal-only operating guide lives under [`cursor-cli/`](cursor-cli/README.md)
+**Last updated:** `20260921.151243`
 **Kin:** [`NIXOS_CLI_GUIDE.md`](NIXOS_CLI_GUIDE.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - [`../nixos/configuration.nix`](../nixos/configuration.nix) - [`../open/README.md`](../open/README.md) - [`../fleet/README.md`](../fleet/README.md)
 
 ---
