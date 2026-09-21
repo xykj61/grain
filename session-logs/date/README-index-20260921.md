@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.072735` | [say_compose_bound's Glow share](20260921/20260921-072735_say-compose-bound-glow-share.kyri) | The Glow deferred site composes a bounded capture; witness green. |
 | `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
 | `20260921.072356` | [Size-aware placement paper](20260921/20260921-072356_size-aware-placement-paper.kyri) | Wrote the placement-unit paper, rebuilt stale rye. |
 | `20260921.064702` | [Grass recovers the parked packet, fixes declared_model](20260921/20260921-064702_grass-declared-model-fix.kyri) | Recovered the parked packet; declared_model fixed. |

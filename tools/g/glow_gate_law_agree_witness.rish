@@ -63,7 +63,7 @@ assert control.out contains "control_verdict=ok" else "glow_gate_law_agree: the 
 # The leg TALLY, asserted beside the verdict. `control_verdict=ok` says only that the control
 # reached its last line, so a leg written tomorrow could read wrongly under a green witness --
 # the `control_unheard` shape one room over. Raise this number in the same commit that adds a leg.
-assert control.out contains "legs=79" else "glow_gate_law_agree: the control ran a different number of legs than this rung names -- a leg this witness cannot hear is a leg nobody is watching -- ${control.out}"
+assert control.out contains "legs=79" else "glow_gate_law_agree: the control ran a different number of legs than this rung names -- a leg this witness cannot hear is a leg nobody is watching -- ${control.out_brief}"
 
 # The two homes beyond a plain const, named so a reader of this witness knows the dot suffix is
 # held rather than merely written. Each is planted agreeing and then broken by growing the Rye

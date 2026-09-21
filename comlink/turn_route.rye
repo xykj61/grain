@@ -44,10 +44,10 @@ pub const RouteDecision = struct {
 /// with a higher key counter. Counters never descend, so newer means larger.
 pub fn turn_newer(a: *const tilak.Turn, b: *const tilak.Turn) bool {
     const result = if (a.reset_counter != b.reset_counter) a.reset_counter > b.reset_counter else a.key_counter > b.key_counter;
-    // invariant: strict newness never holds in both directions -- a cannot be
-    // newer than b while b is also newer than a.
     const reversed = if (b.reset_counter != a.reset_counter) b.reset_counter > a.reset_counter else b.key_counter > a.key_counter;
     const both_newer = result and reversed;
+    // invariant: strict newness never holds in both directions -- a cannot be
+    // newer than b while b is also newer than a.
     assert(!both_newer);
     return result;
 }
