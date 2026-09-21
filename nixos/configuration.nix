@@ -308,7 +308,20 @@
   #   assumed. Two further plugin names, llm-together and llm-togetherai,
   #   were tried the same way and refused to load (an empty `llm plugins`
   #   list both times), so neither is declared here.
+  # opencode -- the open-source Claude Code alternative named in
+  #   open/HARNESS_SETUP.md (seated 20260920), set up against Together AI's
+  #   deepseek-ai/DeepSeek-V4-Pro-0813 as the recommended starting model. This
+  #   pin (nixpkgs' 1.15.10, confirmed curlable and confirmed to actually run
+  #   `opencode run` end to end against a live Together AI call) sits one
+  #   major version behind upstream's own newest tag, v2.0.11 as of
+  #   2026-09-20 -- named honestly rather than silently carried, the same way
+  #   the kakoune comment above names its own gap, and left as a future
+  #   overlay lap rather than attempted here without a tested source hash.
+  #   Provider config lives outside this file, at ~/.config/opencode/opencode.json
+  #   and ~/.local/share/opencode/auth.json -- personal, untracked, documented
+  #   in open/HARNESS_SETUP.md rather than declared here.
   environment.systemPackages = with pkgs; [
+    opencode
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
     tmux
     git
