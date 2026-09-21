@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.152340` | [Cursor Incense fleet instruction and live model adapter](20260921/20260921-152340_cursor-incense-fleet-instruction.kyri) | Added the force-enabled Grok launcher, fleet inputs, shared Incense context, and frontier documentation. |
 | `20260921.151243` | [The misspelled room merged into frontier](20260921/20260921-151243_frontier-typo-merged.kyri) | Moved the three agent-seat documents into the single correctly spelled frontier room. |
 | `20260921.150927` | [Cursor CLI frontier revived for the pier](20260921/20260921-150927_cursor-cli-frontier-revived.kyri) | Restored a live CLI-only Cursor door, permission layer, and Termux/Mosh frontier guide. |
 | `20260921.145750` | [Ferontier seats renewed at the NixOS door](20260921/20260921-145750_ferontier-cli-renewal.kyri) | Pinned four terminal agents, packaged `agy`, and opened the ferontier room. |

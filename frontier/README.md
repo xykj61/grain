@@ -5,7 +5,7 @@
 **Voice:** Kyri  
 **Status:** Built -- the NixOS configuration carries four pinned terminal agents; Cursor CLI's
 terminal-only operating guide lives under [`cursor-cli/`](cursor-cli/README.md)
-**Last updated:** `20260921.151243`
+**Last updated:** `20260921.152230`
 **Kin:** [`NIXOS_CLI_GUIDE.md`](NIXOS_CLI_GUIDE.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - [`../nixos/configuration.nix`](../nixos/configuration.nix) - [`../open/README.md`](../open/README.md) - [`../fleet/README.md`](../fleet/README.md)
 
 ---
@@ -27,7 +27,8 @@ system package and a user's private credentials.
 ## The four seats
 
 - **Codex** -- OpenAI's terminal coding agent, pinned to `0.155.1`.
-- **Cursor Agent** -- Cursor's terminal agent, pinned to installer build `2026.09.18-9a7762b`.
+- **Cursor Agent** -- Cursor's terminal agent, pinned to installer build `2026.09.18-9a7762b`,
+  with the Incense CLI lane defaulting to Cursor Grok `grok-4.7`.
 - **Claude Code** -- Anthropic's terminal coding agent, pinned to `2.1.278`.
 - **Antigravity CLI** -- Google's terminal agent, exposed as `agy`, pinned to `1.2.7`.
 

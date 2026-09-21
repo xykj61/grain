@@ -1,0 +1,28 @@
+---
+description: Cursor CLI fleet adapter for the Incense ship, shared baton, bare mode, and captain role
+alwaysApply: true
+---
+
+# Fleet adapter
+
+When this session is launched through `tools/l/launch-cursor-incense.sh`, the prompt already carries
+the shared [`tools/f/fleet_baton.txt`](../../tools/f/fleet_baton.txt) and the Incense lane stanza
+from [`tools/i/incense_seat_prompt.txt`](../../tools/i/incense_seat_prompt.txt). Read them as the
+ship's operating context; do not replace them with a shorter personal summary.
+
+The launcher has four independent inputs:
+
+- `FLEET_BARE=1` runs `cursor-agent` on the pier host. `FLEET_BARE=0` uses the repository's
+  `agent-jail.sh` enclosure. Bare mode changes the enclosure, not the permission decision.
+- `FLEET_CAPTAIN=1` gives the Incense prompt its captain's-hat context for law, review, and custody.
+  It never authorizes human-only gates: keys, funds, provisioning, identity, or seed publication
+  remain with the maintainer.
+- `CURSOR_MODEL` selects the model explicitly. The launcher default is the current Cursor Grok
+  model, `grok-4.7`; a log records this as configured selection, not proof of active runtime use.
+- `CURSOR_FORCE=1` passes Cursor's `--force` flag. This is the CLI's force-allow equivalent for
+  commands unless explicitly denied; it does not erase project rules or custody gates.
+
+Keep the fleet invariants from the Claude and Codex loops: one writer per checkout, round-open
+before work, the baton before the lane, stop markers before a lap, session output in the shared
+window, and a commit plus Kyri log at close. Cursor is another engine at the same ship door, not a
+new fleet policy.

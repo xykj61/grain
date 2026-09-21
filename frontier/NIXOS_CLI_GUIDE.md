@@ -22,6 +22,10 @@ The version strings are not guesses. Nix fetches each fixed artifact by URL and 
 derivations run an install check where the binary supports one. A release bump is therefore a
 small, reviewable change: version, source URL, hash, and the note that explains the source.
 
+The Cursor binary is the harness; its model is selected at launch. The Incense frontier launcher
+uses `CURSOR_MODEL=${CURSOR_MODEL:-grok-4.7}`, so a model change is visible in the command and does
+not masquerade as a Nix package bump.
+
 ## Rebuild the pier
 
 From the repository root:
