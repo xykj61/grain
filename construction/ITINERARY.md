@@ -401,6 +401,8 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **First proof:** identical facts replay to identical product projections; first-over-bound refuses unchanged.
 
+**The weave's next movement is charted** at [`active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md) -- the seam, where the weave meets Tablecloth by content, with its first step and falsifier named.
+
 ### Copal -- Amphora receipt and portable bundle
 
 **Priority:** VERY HIGH Lindy; HIGH crux.
