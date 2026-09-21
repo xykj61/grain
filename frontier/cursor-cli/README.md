@@ -11,9 +11,10 @@ operations.
 
 1. Read [`../../AGENTS.md`](../../AGENTS.md) for the shared project door.
 2. Read [`TERMUX-MOSH-PIER.md`](TERMUX-MOSH-PIER.md) for the tablet-to-pier lane.
-3. Start the agent through [`../../tools/ag/agent-jail.sh`](../../tools/ag/agent-jail.sh), not
+3. Read [`INCENSE-FLEET.md`](INCENSE-FLEET.md) for the unified Incense launch instruction.
+4. Start the agent through [`../../tools/ag/agent-jail.sh`](../../tools/ag/agent-jail.sh), not
    by copying private state into the repository.
-4. Keep the agent inside a named `tmux` session so a transport interruption does not end the work.
+5. Keep the agent inside a named `tmux` session so a transport interruption does not end the work.
 
 The project-side permission file is [`../../.cursor/cli.json`](../../.cursor/cli.json). Cursor's
 personal model selection and login remain in the global CLI config and auth store; they are not
@@ -44,7 +45,30 @@ context; `.cursorignore` keeps the archive and runtime state out of indexing.
 ./tools/ag/agent-jail.sh cursor-agent -p 'inspect the current worktree; do not edit'
 ```
 
-Use the CLI's model picker or `--model` for a session choice. Do not bake a personal model ID,
+## Incense fleet launch
+
+The unified one-lap instruction is documented in [`INCENSE-FLEET.md`](INCENSE-FLEET.md) and
+implemented by a tracked script. It prepends the shared fleet baton and the
+Incense seat context, selects the latest Cursor Grok model explicitly, and makes the two fleet
+axes visible at the shell boundary:
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7 CURSOR_FORCE=1 \
+  tools/l/launch-cursor-incense.sh
+```
+
+`FLEET_BARE=1` means the agent runs directly on the pier; use `FLEET_BARE=0` to run through the
+repository's `agent-jail.sh`. `FLEET_CAPTAIN=1` adds Incense's law/review/custody role to the
+prompt, but never crosses a human-only gate. `CURSOR_FORCE=1` passes Cursor's `--force` flag,
+which is the CLI equivalent of allowing commands without an approval prompt unless a denial still
+applies. Preview the resolved command without launching it with `FLEET_DRY=1`.
+
+The shared baton, seat stanza, round-open, stop markers, one-writer rule, session-output window,
+commit, and Kyri close remain the same fleet shape used by Claude and Codex. The Cursor-specific
+adapter is [`../../.cursor/rules/30-grain-fleet.mdc`](../../.cursor/rules/30-grain-fleet.mdc).
+
+Use the CLI's model picker or `--model` for a session choice. The current default in the tracked
+Incense launcher is `grok-4.7`; the explicit variable keeps that choice inspectable. Do not bake a personal model ID,
 email, auth token, or telemetry payload into this tree. The official CLI configuration locations
 and permission schema are maintained in Cursor's documentation; the tracked project file contains
 only the project permission layer.
