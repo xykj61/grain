@@ -60,3 +60,9 @@ stamp 20260921.043226
 epoch 1789979546
 paths tools/fixtures/s/standing_equipment_scope_map.sh
 what Paste the two ready scope-map rows (aurora_file_placement, qa_genre_census) and re-run the rank tool.
+claim amphora-device-wire-refusal-leg
+seat copal
+stamp 20260921.043420
+epoch 1789979660
+paths tools/fixtures/am/amphora_device_wire_control.sh tools/am/amphora_device_wire.rish
+what Give amphora_device_wire.rish a proven refusal leg: a control that plants a failing target and proves the shim refuses, closing REDS %827's amphora half.
