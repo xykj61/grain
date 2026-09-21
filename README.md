@@ -61,10 +61,11 @@ If you like what comes back, **[join here](docs-geode/tutorials/the-first-hour.m
 pre-alpha for hobbyists, the bored, the confused, the excited, the hungry, the rich, the admired,
 the notorious, and the legal. Anyone under our Sun.
 
-**A word about who this is for.** We recommend Grain for humans from around eighth grade upward, and
-for agents powered by the state of the art in ethical, Fair Trade technology, whether frontier or
-open source. We all have a long way to go toward a better world, and each of us already carries
-responsibilities.
+**A word about who this is for.** We built Grain for people, roughly middle-school age and up, and
+for the AI companions working alongside them -- whichever model you trust, frontier or
+open-weight, so long as it was built with care for the people and the planet behind it. We are all
+still learning how to build a better world together, and each of us already carries a part of
+that work.
 
 So take a chance on us. Consider how it might feel if Grain helped turn the heavy jewels in your
 backpack into precious fabric -- a choice to accept that love is the biggest risk and worth gambling
@@ -167,7 +168,7 @@ the day a witness says otherwise.
 
 ## Where the tree stands
 
-A program generates these four numbers and a guard keeps them true. Run
+Here are four honest numbers, generated fresh each time rather than typed from memory. Run
 `rishi/bin/rishi run tools/r/readme_metrics.rish write` to refresh them;
 [`tools/r/readme_metrics_witness.rish`](tools/r/readme_metrics_witness.rish) compares the block
 against a fresh measurement on every push, so the most-read file in the project keeps telling
@@ -218,9 +219,9 @@ Every seated term, with the date and the reason we chose it, lives in
 Three of those names work together often enough to be worth reading as one idea, since it is the
 habit most of this tree runs on.
 
-**Brix declares.** A `.brix` file states what a system is made of, in one field per line, held to
-punctuation to get wrong. It is a statement about how things should be, written where a reader and
-a program can both find it.
+**Brix declares.** A `.brix` file states what a system is made of, in one field per line, plain
+enough that a stray character stands out rather than hiding. It is a statement about how things
+should be, written where a reader and a program can both find it.
 
 **Tablecloth addresses by content.** A thing is named by the bytes it is made of, so the same
 request returns the same bytes from any room, and *sameness* becomes something a machine settles
