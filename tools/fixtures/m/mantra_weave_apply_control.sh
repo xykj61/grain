@@ -178,7 +178,7 @@ run_order_reversed_exit="$(run_pen run_order_reversed "$reversed")"
 
 # AND THE PHASE THAT NAMES WHICH LEG IS READING. The same reversed-run module, with claim 9's call
 # removed from the witness copy, must reach exit 0 -- which is the measurement the design paper
-# `active-designing/20260916-105110_no-anchor-names-the-head.md` states: claim 9 is the only
+# `active-designing/date/20260916/20260916-105110_no-anchor-names-the-head.md` states: claim 9 is the only
 # reading in this file that presses the order law's first key. A `break_not_caught` reading here
 # would mean some other claim catches it too and the paper's sentence is wrong; a non-zero exit
 # for any other reason would mean the plant did something besides what it says.
