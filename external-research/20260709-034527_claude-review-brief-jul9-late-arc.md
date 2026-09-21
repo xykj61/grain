@@ -73,7 +73,7 @@ Counsel [`021112`](../counsel/20260709-021112_claude-counsel-slcl4-top-recommend
 | Tiers | `1000`, `5000`, `10000` smallest units -- **disjunctive** tier membership, not arbitrary range |
 | Crypto | Pedersen + Sigma; `H` from `fromUniform` on pinned domain-separation bytes |
 | Dependencies | **Zero new** -- Edwards25519 + SHA3 only |
-| Receipt | `.bron`: `claim`, `log_digest`, `commitment`, `tier_claimed`, `proof`, `stamp` |
+| Receipt | `.kyri`: `claim`, `log_digest`, `commitment`, `tier_claimed`, `proof`, `stamp` |
 | Witness | Offline prove+verify; welcome (3 tiers) + unwelcome (forged + wrong tier) |
 | Parity | **Fully eligible** once green -- deterministic, no network |
 | Proposed modules | `linengrow/disclosure_core.rye`; maybe `tally/pedersen.rye` |

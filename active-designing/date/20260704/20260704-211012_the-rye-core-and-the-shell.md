@@ -80,7 +80,7 @@ Each lap **widens the subject** the next layer may assume, yet inner layers stay
 
 **Mantra** holds history; the core never silently rewrites seated prose. **Weave** holds typed values; the core's outputs are values or bytes named by digest law. **Pond** applies policy at receipt; the core does not know enclosure rules — Pond does.
 
-**Tilak** sits at every seam the core crosses: manifest lines, frame lanes, Bron records. Unknown marks refuse whole — the core returns `error.InvalidFormat`, not partial trust. Tilak is how **type carries scope** at the boundary: bytes are not trusted until shape-cast succeeds.
+**Tilak** sits at every seam the core crosses: manifest lines, frame lanes, Kyri records. Unknown marks refuse whole — the core returns `error.InvalidFormat`, not partial trust. Tilak is how **type carries scope** at the boundary: bytes are not trusted until shape-cast succeeds.
 
 ## Catalog (green or proposed)
 

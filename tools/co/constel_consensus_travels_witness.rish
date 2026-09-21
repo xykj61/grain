@@ -14,7 +14,7 @@
 # tampered record refuses BadSignature and can never cross as consensus. Demo keeper seeds only -- no real
 # key, no funds, no network, no custody.
 #
-# Additive: r1 (constel_consensus) and the Cord's cord-bron reader/writer re-run GREEN at this round's door.
+# Additive: r1 (constel_consensus) and the Cord's cord-kyri reader/writer re-run GREEN at this round's door.
 #
 # Scope: active-designing/date/20260813/20260813-040613_constel-consensus-gossip-convergence-exploration.md
 #
@@ -45,9 +45,9 @@ let r1 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_consensus_witness.
 assert r1.ok else "constel-travels: rung one (two-node convergence) is not GREEN"
 assert r1.out contains "constel-consensus: GREEN" else "constel-travels: rung one did not speak its GREEN"
 
-# The Cord's cord-bron reader/writer this rung carries the converged Dag through stands at its door.
-let bron = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_cord_bron_witness.rish 2>&1"]
-assert bron.ok else "constel-travels: the cord-bron reader/writer (Cord r3) is not GREEN"
-assert bron.out contains "mycelium-cord-bron: GREEN" else "constel-travels: cord-bron did not speak its GREEN"
+# The Cord's cord-kyri reader/writer this rung carries the converged Dag through stands at its door.
+let kyri = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_cord_kyri_witness.rish 2>&1"]
+assert kyri.ok else "constel-travels: the cord-kyri reader/writer (Cord r3) is not GREEN"
+assert kyri.out contains "mycelium-cord-kyri: GREEN" else "constel-travels: cord-kyri did not speak its GREEN"
 
-say "constel-travels: GREEN — two nodes converge over gossip, A renders its Dag to a format cord-dag-v1 record, and a far node that never gossiped rebuilds from the bytes alone to the identical agreed order (supply 700, one star); a tampered record refuses whole; rung one and cord-bron stand at their door. The bytes are the network."
+say "constel-travels: GREEN — two nodes converge over gossip, A renders its Dag to a format cord-dag-v1 record, and a far node that never gossiped rebuilds from the bytes alone to the identical agreed order (supply 700, one star); a tampered record refuses whole; rung one and cord-kyri stand at their door. The bytes are the network."

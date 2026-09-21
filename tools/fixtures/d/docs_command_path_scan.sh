@@ -92,7 +92,7 @@ tr '\n' '\0' < "$work/pages" | LC_ALL=C xargs -0 awk '
       t = w[i]
       sub(/[),;:]+$/, "", t)
       sub(/^\.\//, "", t)
-      if (t !~ /^[A-Za-z0-9_.][A-Za-z0-9_.\/-]*\/[A-Za-z0-9_.-]+\.(rye|rish|sh|glow|md|kyri|bron|brix|brush|myc|txt|awk|zig)$/) continue
+      if (t !~ /^[A-Za-z0-9_.][A-Za-z0-9_.\/-]*\/[A-Za-z0-9_.-]+\.(rye|rish|sh|glow|md|kyri|kyri|brix|brush|myc|txt|awk|zig)$/) continue
       print page "\t" dirv "\t" cdv "\t" t
     }
   }

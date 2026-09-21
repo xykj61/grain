@@ -13,7 +13,7 @@
 //! about time rather than about rights.
 //!
 //! **A standby present beside the domain it would replace is a second
-//! writer.** `serial_cycle_shadow.bron` writes the tempting version:
+//! writer.** `serial_cycle_shadow.kyri` writes the tempting version:
 //! `beech` holds exactly what `birch` holds, so the ring already has a hand
 //! on the regions the day birch is lost. The refusal lands a whole layer
 //! earlier than any capability check. A directed region has exactly one
@@ -23,7 +23,7 @@
 //! detour drawn in advance is charged every day the hole is closed.
 //!
 //! **A standby given regions of its own is a different shape.**
-//! `serial_cycle_bypass.bron` answers that refusal honestly: `dogwood` gets
+//! `serial_cycle_bypass.kyri` answers that refusal honestly: `dogwood` gets
 //! its own arcs, every region keeps one writer and one reader, and the flow
 //! derivation is content. What falls away is the ring. alder now writes to
 //! two successors and cedar reads from two predecessors, so alder spans
@@ -38,7 +38,7 @@
 //!   around -- and the asks pay nothing for it, because a region belongs
 //!   to the document rather than to the domain that was lost.
 //!
-//! `serial_cycle_succession.bron` names `beech` where `birch` stood and
+//! `serial_cycle_succession.kyri` names `beech` where `birch` stood and
 //! moves nothing else. The four regions are the ring's own, name for name
 //! and byte for byte, so the two asks alder placed before the loss are
 //! exactly where it left them. Every attempt in this module already
@@ -95,13 +95,13 @@ const caravan_standby_version = "20260819.170944";
 pub const ring_path = cycle.declaration_path;
 
 /// A standby named beside the domain it would replace, which no ring reads.
-pub const shadow_path = "caravan/systems/serial_cycle_shadow.bron";
+pub const shadow_path = "caravan/systems/serial_cycle_shadow.kyri";
 
 /// A detour drawn in advance, which reads whole and is a different shape.
-pub const bypass_path = "caravan/systems/serial_cycle_bypass.bron";
+pub const bypass_path = "caravan/systems/serial_cycle_bypass.kyri";
 
 /// The same ring with the standby standing where the lost domain stood.
-pub const succession_path = "caravan/systems/serial_cycle_succession.bron";
+pub const succession_path = "caravan/systems/serial_cycle_succession.kyri";
 
 /// How many times one assigned step is attempted before the supervisor
 /// declines the domain by name -- the bound `decline.rye` runs under.

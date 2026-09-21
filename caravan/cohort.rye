@@ -22,7 +22,7 @@
 //! six, past the four dependents one supervisor holds. The shape with room
 //! for three is not a ring at all; it is the most ordinary shape in this
 //! tree, one server and its clients. `serve.rye` proved two clients never
-//! hear each other's bell, and `serial_three_clients.bron` turns that
+//! hear each other's bell, and `serial_three_clients.kyri` turns that
 //! isolation into room a supervisor can spend.
 //!
 //! **The widest set is not what you get by taking the first domain that
@@ -43,7 +43,7 @@
 //! three clients hold the machine together. A region only one domain can
 //! reach carries no direction, so the declaration answers `no directed flow
 //! to derive` rather than naming a ring -- the same kind of price
-//! `serial_cycle_wide_mute.bron` paid for silent sharing, stated here
+//! `serial_cycle_wide_mute.kyri` paid for silent sharing, stated here
 //! rather than hidden.
 //!
 //! **And the answer belongs to the document.** Subsets are weighed in
@@ -88,7 +88,7 @@ const caravan_cohort_version = "20260819.175639";
 
 /// One virtualiser and three clients: the first shape in this arc with room
 /// for three domains at the same moment.
-pub const declaration_path = "caravan/systems/serial_three_clients.bron";
+pub const declaration_path = "caravan/systems/serial_three_clients.kyri";
 
 /// The ring of four, kept here to be measured rather than run: its widest
 /// set is a pair, which is what sent this rung looking past a ring.

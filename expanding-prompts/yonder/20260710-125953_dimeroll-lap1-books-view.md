@@ -9,7 +9,7 @@
 
 1. `dimeroll/dimeroll_core.rye` — chart, post, fold, conservation  
 2. `dimeroll/dimeroll.rye` — selftest welcome + unwelcome  
-3. `dimeroll/fixtures/journal.bron` — pinned journal for books view  
+3. `dimeroll/fixtures/journal.kyri` — pinned journal for books view  
 4. `drawn_terminal` mode `booksviewtest` — Skate frame from fold  
 5. `tools/dimeroll_lap1.rish` + `tools/dimeroll_books_view.rish` — parity bolts  
 6. LEXICON **Dimeroll** row; TASKS/ROADMAP Visual Track note  

@@ -8,7 +8,7 @@ A docs-and-plans round — no code, no parity change. The grain-sketchbook was r
 
 ## What Lands
 
-- **`external-research/20260708-021912_grain-sketchbook-realidream-mining.md`** — what Realidream/Skate/DagCore actually were (their own docs' words first), what this tree already carries under truer names (the sketchbook's event DAG is Weave's unsigned ancestor), the three deliberate departures (immutable re-fold, Tilak over shared enums, Bron over JSON-in-payload), the two genuinely new seeds, and the gratitude trail.
+- **`external-research/20260708-021912_grain-sketchbook-realidream-mining.md`** — what Realidream/Skate/DagCore actually were (their own docs' words first), what this tree already carries under truer names (the sketchbook's event DAG is Weave's unsigned ancestor), the three deliberate departures (immutable re-fold, Tilak over shared enums, Kyri over JSON-in-payload), the two genuinely new seeds, and the gratitude trail.
 - **ROADMAP — the Visual Track** — Realidream's five-rung ladder from landed ground (Weave slice + Kumara) through SLC-2a (active rung, **unchanged**), Pond's word, Dexter's second consumer, to the horizon. Version stamp updated.
 - **TASKS — the Realidream lane block** — five items: sketchbook vendoring (Kaeden's word), gratitude lines (Kaeden's word), the **`spawn`/`wait-for` Rishi verb pair (proposed, parked — new names)**, labeled `continue :state` on-touch, the bond-naming standing habit.
 - **`active-designing/20260708-021912_rye-os-in-brix-terms.md`** — the extractions-as-bonds noticing, a truthful worked descriptor of today's system in seated `.brix` form, the `bond` line-form clearly proposed-and-parked. Brix's gate unmoved.

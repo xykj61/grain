@@ -31,7 +31,7 @@ SLC-L1 proved the local log edge. SLC-L2 proved sealed delivery. SLC-L3 proves t
 
 ## The Settlement Receipt — Fields Exactly
 
-The receipt is a **`.bron` value** — one field per line, space-separated, no quotes.
+The receipt is a **`.kyri` value** — one field per line, space-separated, no quotes.
 
 | Field | Type / shape | Meaning |
 |-------|----------------|---------|
@@ -50,11 +50,11 @@ The receipt is a **`.bron` value** — one field per line, space-separated, no q
 ## Two Lanes — Identical Flow
 
 ```
-tools/fixtures/slcl1_fact.bron  →  sign + append (SLC-L1 discipline)
+tools/fixtures/slcl1_fact.kyri  →  sign + append (SLC-L1 discipline)
        ↓
 lane seam (POSIX external interpreter)  →  testnet-shaped settlement response
        ↓
-settlement_receipt.bron  →  links log digest + chain tx + asset id
+settlement_receipt.kyri  →  links log digest + chain tx + asset id
        ↓
 verify  →  three-axis score + unwelcome paths
 ```
@@ -82,7 +82,7 @@ Live mode (`SLCL3_LIVE=1`) exits **2** on this bench — pinned selftest is the 
 
 ### In scope (landed `182500`; implementation removed `152612`)
 
-- One pinned `slcl1_fact.bron` settled on **both** testnet lanes — **was** GREEN before removal
+- One pinned `slcl1_fact.kyri` settled on **both** testnet lanes — **was** GREEN before removal
 - ~~`linengrow/settlement.rye`~~ — **removed**
 - ~~`tools/slcl3_settlement_witness.rish`~~ — **removed** from parity (**197**)
 - Settlement receipt goldens — **removed**; counsel/hammock kept as record
@@ -104,7 +104,7 @@ Live mode (`SLCL3_LIVE=1`) exits **2** on this bench — pinned selftest is the 
 | ~~`linengrow/settlement_core.rye`~~ | Removed |
 | ~~`linengrow/settlement.rye`~~ | Removed |
 | ~~`tools/fixtures/slcl3_lane_*_settle.sh`~~ | Removed |
-| ~~`tools/fixtures/settlement_receipt_lane_*.bron`~~ | Removed |
+| ~~`tools/fixtures/settlement_receipt_lane_*.kyri`~~ | Removed |
 | ~~`tools/slcl3_settlement_witness.rish`~~ | Removed from parity |
 
 ---

@@ -32,7 +32,7 @@
 #                                        SOURCE.md Step 8c's own pattern)
 #
 # Identity (name, forge handle, email) comes from GLOW_PROFILE.kyri, or the elder
-# GLOW_PROFILE.bron -- the notation molted `20260810` and both are read. The
+# GLOW_PROFILE.kyri -- the notation molted `20260810` and both are read. The
 # one gitignored source of truth this tree already keeps (see
 # GLOW_PROFILE.template.kyri). The GPG key's email is what lets a forge
 # show the signature as Verified, so it must match a verified address on
@@ -56,19 +56,19 @@ let repo = trim pwd_run.out
 let already_sandboxed = run ["sh" "-c" "sandbox-exec -p '(version 1)(allow default)' -- true 2>&1"]
 if (already_sandboxed.ok == false) then say "WARNING: sandbox_apply just failed for a no-op profile -- this terminal may already be inside a jail. Re-run from a plain, unsandboxed terminal for this script's own promise to hold."
 
-# Identity from GLOW_PROFILE.kyri or the elder .bron, the tree's one gitignored source of
-# truth for name/handle/email. Bron is key-then-value per line, so a
+# Identity from GLOW_PROFILE.kyri or .kyri, the tree's one gitignored source of
+# truth for name/handle/email. Kyri is key-then-value per line, so a
 # grep-and-cut lifts each field; assert each one so a missing profile
 # fails loudly here rather than minting a key with an empty identity.
-let name_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^name ' | head -1 | cut -d' ' -f2-"]
+let name_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.kyri 2>/dev/null | grep '^name ' | head -1 | cut -d' ' -f2-"]
 let profile_name = trim name_run.out
 assert (profile_name != "") else "GLOW_PROFILE has no 'name' -- copy GLOW_PROFILE.template.kyri and fill it in first."
 
-let email_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^email ' | head -1 | cut -d' ' -f2-"]
+let email_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.kyri 2>/dev/null | grep '^email ' | head -1 | cut -d' ' -f2-"]
 let profile_email = trim email_run.out
 assert (profile_email != "") else "GLOW_PROFILE has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
 
-let gh_handle_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^handle_github ' | head -1 | cut -d' ' -f2-"]
+let gh_handle_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.kyri 2>/dev/null | grep '^handle_github ' | head -1 | cut -d' ' -f2-"]
 let gh_handle = trim gh_handle_run.out
 
 let gh_comment = join [profile_email " " gh_handle " jail-only github (macOS Seatbelt, no master identity)"] ""
@@ -140,7 +140,7 @@ let existing_keys = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-
 let key_count = trim existing_keys.out
 
 if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key '${gpg_uid}' ed25519 sign 2y"]
-if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving its key material alone (rerun after editing GLOW_PROFILE.bron only regenerates identity if you delete the key first)."
+if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving its key material alone (rerun after editing GLOW_PROFILE.kyri only regenerates identity if you delete the key first)."
 let gpg_check = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
 assert (trim gpg_check.out != "0") else "no signing key present in .gnupg-rye/ after generation -- see gpg's own error above"
 

@@ -1,7 +1,7 @@
-//! linengrow/hearth_lulu0.rye -- LULU0: Hearth Bron mold (short home + display preset).
+//! linengrow/hearth_lulu0.rye -- LULU0: Hearth Kyri mold (short home + display preset).
 //!
 //! Waymark LULU. A Hearth record carries `home_id` (exactly two lowercase
-//! letters) and a closed `display_preset` enum. Bron text at the seam;
+//! letters) and a closed `display_preset` enum. Kyri text at the seam;
 //! Skate apply is LULU1. Device-free validation and round-trip only.
 
 const std = @import("std");
@@ -12,9 +12,9 @@ const tally_copy = @import("tally_copy.rye");
 pub const waymark: []const u8 = "LULU";
 pub const format_tag: []const u8 = "hearth-lulu0-v1";
 pub const home_id_len: u32 = 2;
-pub const max_bron_len: u32 = 512;
+pub const max_kyri_len: u32 = 512;
 pub const max_path_len: u32 = 32;
-/// Absolute path under an Android/app files root (`.../kd/hearth.bron`).
+/// Absolute path under an Android/app files root (`.../kd/hearth.kyri`).
 pub const max_abs_path_len: u32 = 160;
 
 /// Closed Glass phone presets (20:9 Pixel-class ladder + Mantrapod content floor).
@@ -132,7 +132,7 @@ pub const HearthError = error{
     UnknownPreset,
     UnknownWire,
     UnknownCellular,
-    BronTooLong,
+    KyriTooLong,
     PathTooLong,
 };
 
@@ -186,17 +186,17 @@ pub fn validate_home_id(home_id: []const u8) HearthError!void {
     }
 }
 
-/// Relative path `{home_id}/hearth.bron` under the short home.
+/// Relative path `{home_id}/hearth.kyri` under the short home.
 pub fn relative_hearth_path(home_id: []const u8, out: *[max_path_len]u8) HearthError!u32 {
     try validate_home_id(home_id);
-    const path = std.fmt.bufPrint(out, "{s}/hearth.bron", .{home_id}) catch return error.PathTooLong;
+    const path = std.fmt.bufPrint(out, "{s}/hearth.kyri", .{home_id}) catch return error.PathTooLong;
     // invariant: path fits the bound
     assert(path.len <= max_path_len);
     assert(path.len > home_id_len);
     return @intCast(path.len);
 }
 
-/// Absolute path `{files_root}/{home_id}/hearth.bron`.
+/// Absolute path `{files_root}/{home_id}/hearth.kyri`.
 pub fn join_files_hearth_path(
     files_root: []const u8,
     home_id: []const u8,
@@ -206,7 +206,7 @@ pub fn join_files_hearth_path(
     if (files_root.len == 0) return error.PathTooLong;
     const path = std.fmt.bufPrint(
         out,
-        "{s}/{s}/hearth.bron",
+        "{s}/{s}/hearth.kyri",
         .{ files_root, home_id },
     ) catch return error.PathTooLong;
     // invariant: absolute path fits the bound
@@ -230,8 +230,8 @@ pub fn join_files_home_dir(
     return @intCast(path.len);
 }
 
-/// Format a Hearth as Bron text. Returns bytes written.
-pub fn format_bron(h: Hearth, out: *[max_bron_len]u8) HearthError!u32 {
+/// Format a Hearth as Kyri text. Returns bytes written.
+pub fn format_kyri(h: Hearth, out: *[max_kyri_len]u8) HearthError!u32 {
     const text = std.fmt.bufPrint(
         out,
         \\format {s}
@@ -243,9 +243,9 @@ pub fn format_bron(h: Hearth, out: *[max_bron_len]u8) HearthError!u32 {
         \\
     ,
         .{ format_tag, h.home_id_slice(), h.preset.name(), h.wire.name(), h.cellular.name(), waymark },
-    ) catch return error.BronTooLong;
-    // invariant: Bron stays under the ceiling
-    assert(text.len <= max_bron_len);
+    ) catch return error.KyriTooLong;
+    // invariant: Kyri stays under the ceiling
+    assert(text.len <= max_kyri_len);
     return @intCast(text.len);
 }
 
@@ -261,10 +261,10 @@ fn trim(s: []const u8) []const u8 {
     return s[start..end];
 }
 
-/// Parse a hearth-lulu0-v1 Bron document into a validated Hearth.
+/// Parse a hearth-lulu0-v1 Kyri document into a validated Hearth.
 /// `wire_lane` / `cellular` optional -- missing means `.local` / `.off`.
-pub fn parse_bron(src: []const u8) HearthError!Hearth {
-    if (src.len > max_bron_len) return error.BronTooLong;
+pub fn parse_kyri(src: []const u8) HearthError!Hearth {
+    if (src.len > max_kyri_len) return error.KyriTooLong;
     var saw_format = false;
     var home: ?[]const u8 = null;
     var preset_name: ?[]const u8 = null;
@@ -308,19 +308,19 @@ pub fn parse_bron(src: []const u8) HearthError!Hearth {
     return try Hearth.init_full(home_id, preset, wire, cellular);
 }
 
-/// Device-free: fixture home `kd` + panel_max round-trips Bron.
+/// Device-free: fixture home `kd` + panel_max round-trips Kyri.
 pub fn kd_panel_max_round_trip() bool {
     const h = Hearth.init("kd", .panel_max) catch return false;
-    var buf: [max_bron_len]u8 = undefined;
-    const n = format_bron(h, &buf) catch return false;
-    const back = parse_bron(buf[0..n]) catch return false;
+    var buf: [max_kyri_len]u8 = undefined;
+    const n = format_kyri(h, &buf) catch return false;
+    const back = parse_kyri(buf[0..n]) catch return false;
     if (!std.mem.eql(u8, back.home_id_slice(), "kd")) return false;
     if (back.preset != .panel_max) return false;
     if (back.wire != .local) return false;
     return true;
 }
 
-/// Device-free: Bron without wire_lane / cellular still loads defaults.
+/// Device-free: Kyri without wire_lane / cellular still loads defaults.
 pub fn missing_wire_defaults_local() bool {
     const src =
         \\format hearth-lulu0-v1
@@ -329,25 +329,25 @@ pub fn missing_wire_defaults_local() bool {
         \\waymark LULU
         \\
     ;
-    const h = parse_bron(src) catch return false;
+    const h = parse_kyri(src) catch return false;
     return h.wire == .local and h.cellular == .off;
 }
 
 /// Device-free: usb_desk round-trips.
 pub fn usb_desk_wire_round_trips() bool {
     const h = Hearth.init_with_wire("kd", .scaled_540, .usb_desk) catch return false;
-    var buf: [max_bron_len]u8 = undefined;
-    const n = format_bron(h, &buf) catch return false;
-    const back = parse_bron(buf[0..n]) catch return false;
+    var buf: [max_kyri_len]u8 = undefined;
+    const n = format_kyri(h, &buf) catch return false;
+    const back = parse_kyri(buf[0..n]) catch return false;
     return back.wire == .usb_desk;
 }
 
 /// Device-free: cellular optional round-trips.
 pub fn cellular_optional_round_trips() bool {
     const h = Hearth.init_full("kd", .scaled_540, .local, .optional) catch return false;
-    var buf: [max_bron_len]u8 = undefined;
-    const n = format_bron(h, &buf) catch return false;
-    const back = parse_bron(buf[0..n]) catch return false;
+    var buf: [max_kyri_len]u8 = undefined;
+    const n = format_kyri(h, &buf) catch return false;
+    const back = parse_kyri(buf[0..n]) catch return false;
     return back.cellular == .optional;
 }
 
@@ -379,19 +379,19 @@ pub fn preset_sizes_are_honest() bool {
     return true;
 }
 
-/// Device-free: relative path for `kd` is `kd/hearth.bron`.
+/// Device-free: relative path for `kd` is `kd/hearth.kyri`.
 pub fn kd_hearth_path_is_short() bool {
     var path: [max_path_len]u8 = undefined;
     const n = relative_hearth_path("kd", &path) catch return false;
-    return std.mem.eql(u8, path[0..n], "kd/hearth.bron");
+    return std.mem.eql(u8, path[0..n], "kd/hearth.kyri");
 }
 
-/// Device-free: files-root join lands on `.../kd/hearth.bron`.
+/// Device-free: files-root join lands on `.../kd/hearth.kyri`.
 pub fn kd_files_join_is_honest() bool {
     const root = "/data/user/0/org.glow.app.seva_broadcaster/files";
     var path: [max_abs_path_len]u8 = undefined;
     const n = join_files_hearth_path(root, "kd", &path) catch return false;
-    const want = root ++ "/kd/hearth.bron";
+    const want = root ++ "/kd/hearth.kyri";
     return std.mem.eql(u8, path[0..n], want);
 }
 

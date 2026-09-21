@@ -1,7 +1,7 @@
 # tools/b/buhr_mcp_manifest_witness.rish -- BUHR Journey 3, Rung 3.
 #
 # The manifest tile, proven on metal: a JSON MCP host can discover a Grain tool.
-# A Bron `format mcp-tool-v1` manifest renders to the JSON tool descriptor a
+# A Kyri `format mcp-tool-v1` manifest renders to the JSON tool descriptor a
 # `tools/list` response carries -- a name, a description, an inputSchema of typed
 # properties with a required list, and an outputSchema -- and reads back into an
 # equal manifest. The value model is mapped honestly across the border (int/str/bool
@@ -24,13 +24,13 @@ assert build.ok else "buhr-j3r3: mcp_manifest build failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "buhr-j3r3: mcp_manifest selftest exited non-zero"
 assert selftest.out contains "GREEN" else "buhr-j3r3: selftest did not speak GREEN"
-assert selftest.out contains "int manifest — Bron mcp-tool-v1 -> JSON tools/list schema -> Bron, equal" else "buhr-j3r3: int manifest round-trip missing"
+assert selftest.out contains "int manifest — Kyri mcp-tool-v1 -> JSON tools/list schema -> Kyri, equal" else "buhr-j3r3: int manifest round-trip missing"
 assert selftest.out contains "str manifest — join's string schema round-trips" else "buhr-j3r3: str manifest round-trip missing"
 assert selftest.out contains "an unmappable value type is refused at the JSON border" else "buhr-j3r3: bad-type refusal missing"
 assert selftest.out contains "an unknown descriptor field is refused" else "buhr-j3r3: unknown-field refusal missing"
 
 # The tile is additive: rungs one and two stay their own GREEN binaries.
-let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mcp_bron_witness.rish 2>&1"]
+let rung1 = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mcp_kyri_witness.rish 2>&1"]
 assert rung1.ok else "buhr-j3r3: rung one witness regressed"
 assert rung1.out contains "GREEN: BUHR-J3r1" else "buhr-j3r3: rung one green line missing"
 

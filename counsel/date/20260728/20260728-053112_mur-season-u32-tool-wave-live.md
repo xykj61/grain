@@ -16,9 +16,9 @@
 | `tools/mala_m2_witness.rish` | `tools/murr_m2_witness.rish` |
 | `tools/comlink_mala_wire_lab.rish` | `tools/comlink_murr_wire_lab.rish` |
 | `comlink/run_mala_wire_lab.sh` | `comlink/run_murr_wire_lab.sh` |
-| `tools/fixtures/mala_m1_mint.bron` | `tools/fixtures/murr_m1_mint.bron` |
+| `tools/fixtures/mala_m1_mint.kyri` | `tools/fixtures/murr_m1_mint.kyri` |
 | `parity_ch01` M1/M2 stanzas | MUR / `murr_m1` / `murr_m2` |
-| `linengrow/mala.rye` fixture path | `murr_m1_mint.bron` (module file name held) |
+| `linengrow/mala.rye` fixture path | `murr_m1_mint.kyri` (module file name held) |
 | `pond/apps/drawn_terminal.rye` | `murr_mint_fixture` path |
 
 **Held:** `guest_mala_*` · `mala-*.elf` build names · `memo mala:mint` · `linengrow/mala*.rye` module rename · `bin/mala`

@@ -23,7 +23,7 @@ This quest completes the molt in one bounded pass so the whole voice surface is 
 ## What is already done (GREEN)
 
 - `context/RADIANT_STYLE.md`, `.claude/rules/radiant-style.md`, `.cursor/rules/radiant-style.mdc` -> Kyri.
-- The six `voice_roster` declaration sites -> Kyri (`CLAUDE.md`, `GLOW_PROFILE.template.bron`, `recursion_block.brix`, `context/README.md`, `context/KYRI.md`, `.cursor/rules/kyri.mdc`).
+- The six `voice_roster` declaration sites -> Kyri (`CLAUDE.md`, `GLOW_PROFILE.template.kyri`, `recursion_block.brix`, `context/README.md`, `context/KYRI.md`, `.cursor/rules/kyri.mdc`).
 - `voice_roster_witness.rish` + `voice_roster_negative_witness.rish` -> Kyri. **Both GREEN.**
 - commit-messages + session-logs rules (both editors) -> Kyri (earlier sweep).
 
@@ -34,7 +34,7 @@ This quest completes the molt in one bounded pass so the whole voice surface is 
    - `ORGANIZING.md` -- `**Voice:** Riyo`, "the standing writing voice" + `RIYO.md` cite.
    - `context/QUIN.md` -- `Standing voice:** **Riyo**`.
    - `context/LEXICON.md` -- the Quin entry's "writing voice passed to Riyo" living framing (accrete: Riyo -> then molted to Kyri).
-   - `GLOW_PROFILE.template.bron` -- reconcile the comment format the witness checks.
+   - `GLOW_PROFILE.template.kyri` -- reconcile the comment format the witness checks.
 2. **Rewrite `sunn12` to check Kyri** at every site, keeping the "must not require Quin" negative clauses and the dated-testimony intent. The filename stays (dated); its body tracks the current voice.
 3. **Verify GREEN:** `sunn12` -> `sunn14_witness_choir` -> `equinox_e1_east_pack_witness`, and the wider SUNN witnesses (sunn8-11,13 check different subjects and should stay green -- confirm).
 

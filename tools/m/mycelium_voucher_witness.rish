@@ -1,7 +1,7 @@
 # tools/m/mycelium_voucher_witness.rish -- the Voucher: a node's signed attestation of a position (r1).
 #
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - the Voucher - rung r1 -- the crux.
-# The Statement answered WHERE DO I STAND as a pure projection, and statement_bron let it cross a wire.
+# The Statement answered WHERE DO I STAND as a pure projection, and statement_kyri let it cross a wire.
 # Yet a statement that travels is still only a READING -- nothing binds those numbers to the real agreed
 # order they claim, so a holder could hand over any balance and the counterparty's only recourse would be
 # to replay the whole ledger. The Voucher fills that blind spot: PROOF OF POSITION WITHOUT REPLAY. A node

@@ -34,7 +34,7 @@ Ties in a 256-bit score are astronomically unlikely, yet the rule stays **total 
 
 - **r1 — the berth crux.** `mycelium/puddle.rye`: a bounded `Fleet` of identity-bearing hosts and named worlds; `berth` derives the placement; arrival-order independence, capacity, exactly-one-berth, and the `Oversubscribed` / `NoHosts` refusals proven on metal.
 - **r2 — the fleet heals (convergence).** A host departs; only its worlds re-berth, every world on a surviving host staying exactly where it was — the mesh self-heals with minimal disruption, the highest-weave-score property made visible.
-- **r3 — the fleet travels.** A `format puddle-fleet-v1` Bron record renders and parses byte-for-byte; the recovered fleet berths to the identical placement offline (two nodes agree by exchanging the roster alone).
+- **r3 — the fleet travels.** A `format puddle-fleet-v1` Kyri record renders and parses byte-for-byte; the recovered fleet berths to the identical placement offline (two nodes agree by exchanging the roster alone).
 - **r4 — reads true.** A real on-disk fixture, produced reproducibly, cross-checked against an independent `awk` reading — two tools, one answer — so a fleet's placement can never drift from a roster a keeper reads by hand.
 
 ## Custody, held plainly

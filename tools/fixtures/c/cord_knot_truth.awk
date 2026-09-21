@@ -9,7 +9,7 @@
 # the app, which parses the record and verifies the recovered Knot against its own digest; this awk measures
 # only the supply arithmetic, blind to the seal.
 #
-#   awk -f tools/fixtures/c/cord_knot_truth.awk tools/fixtures/c/cord_knot.bron
+#   awk -f tools/fixtures/c/cord_knot_truth.awk tools/fixtures/c/cord_knot.kyri
 #   -> "<supply> <stars>"
 
 $1 == "issued" { issued = $2 }

@@ -7,7 +7,7 @@
 
 ## Short answer
 
-**Yes — I like the aim.** Pond Glow GUI over one graph, Brushstroke/`.brush` in TAME · Radiant · Glow · Bron (never JS/HTML/CSS/JSON), Ubuntu 26.04 GNOME Wayland as the living seam, River studied at GPL clean-room distance — that is compass work already half-named in the tree.
+**Yes — I like the aim.** Pond Glow GUI over one graph, Brushstroke/`.brush` in TAME · Radiant · Glow · Kyri (never JS/HTML/CSS/JSON), Ubuntu 26.04 GNOME Wayland as the living seam, River studied at GPL clean-room distance — that is compass work already half-named in the tree.
 
 **No — I do not like opening another 128-round “innermost” right now that also swallows Genode · SixOS · s6 · Nix.** That bundles three seasons into one nest while MUR and Generator are already mid-pause / mid-flight.
 
@@ -60,7 +60,7 @@ s0–s7 seated thin Rishi homes and taxonomy draft. Pausing at s8 for a 128 GUI 
 | --- | --- |
 | Seat `src/sec` as a room (elder desk) | **Yes** — on his word; room open before furniture |
 | Refuse `src/web` | **Yes** — web stack stays out; Realidream is not HTML |
-| `.brush` / Brushstroke as Glow+Bron surface language | **Yes** — already lexicon; no JS/CSS/JSON as home tongue |
+| `.brush` / Brushstroke as Glow+Kyri surface language | **Yes** — already lexicon; no JS/CSS/JSON as home tongue |
 | Study River + Zig Wayland gratitude for compatibility | **Yes** — dedicate early *study laps*; GPL clean-room holds |
 | Ubuntu 26.04 GNOME Wayland as first seam | **Yes** — metalsmoke already proves the host door |
 | Mantra · Weave under the surface DAG | **Yes** — Realidream foundations already say so |

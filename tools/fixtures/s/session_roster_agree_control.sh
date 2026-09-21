@@ -66,7 +66,7 @@ list_shelf() {
     echo
     i=0
     while [ "$i" -lt "$2" ]; do
-      printf -- '- `%s.0000%02d` -- [a](%s/%s-0000%02d_a.bron) -- a row\n' "$1" "$i" "$1" "$1" "$i"
+      printf -- '- `%s.0000%02d` -- [a](%s/%s-0000%02d_a.kyri) -- a row\n' "$1" "$i" "$1" "$1" "$i"
       i=$((i + 1))
     done
   } > "$f"

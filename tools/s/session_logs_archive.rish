@@ -1,7 +1,7 @@
 # session_logs_archive.rish -- fold prior days' session logs into date/YYYYMMDD/.
 #
 # Convention (ORGANIZING.md): the working day stays flat; earlier days live under
-# session-logs/date/<YYYYMMDD>/. Folds Kyri (.kyri), the elder Bron (.bron), and historical
+# session-logs/date/<YYYYMMDD>/. Folds Kyri (.kyri), the elder Kyri (.kyri), and historical
 # Markdown (.md); README.md stays flat and has its links rewritten in place.
 #
 # The destination molted archive/ -> date/ on 20260821.161758 with the mark law

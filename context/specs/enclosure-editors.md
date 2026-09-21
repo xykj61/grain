@@ -131,7 +131,7 @@ chmod +x tools/cu/cursor-jail.sh tools/l/launch-zed.sh
 
 ### `ENCLOSURE` (retreat flag - Claude `20260712.212412` - master-seal `213600`)
 
-`ENCLOSURE=ai-jail` by default in `tools/e/enclosure.conf.example`. Wrappers (`cursor-jail.sh` - `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `bron-resins/pond-supersede-exit.bron` is present-with-content **and** detached `pond-supersede-exit.bron.asc` verifies against master `0646 2132...` alone (`tools/p/pond_exit_bron_master_seal.sh` - keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Chapter-closed is measured by bron and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
+`ENCLOSURE=ai-jail` by default in `tools/e/enclosure.conf.example`. Wrappers (`cursor-jail.sh` - `launch-zed.sh`) honor it. `ENCLOSURE=pond` **refuses** unless `kyri-resins/pond-supersede-exit.kyri` is present-with-content **and** detached `pond-supersede-exit.kyri.asc` verifies against master `0646 2132...` alone (`tools/p/pond_exit_kyri_master_seal.sh` - keyring holds only `context/keys/gpg_signing_06462132.pub.asc`). Chapter-closed is measured by kyri and `.asc` absent. Both `ENCLOSURE` values stay live one full season past the flip.
 
 **Pinned teacher binary (`20260712.131200`):** release **v1.12.0** under gitignored `tools/.cache/bin/ai-jail` (tarball sha256 `91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21`). Set `AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"` in personal `enclosure.conf`. Takes effect on the next `./tools/cu/cursor-jail.sh` launch. Study submodule `gratitude/ai-jail` tracks tag `v1.12.0`. Route one stays closed; Route two nest still on word.
 

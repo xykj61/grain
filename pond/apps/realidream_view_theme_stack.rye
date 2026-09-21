@@ -12,7 +12,7 @@
 //!
 //! It stays on witnessed ground end to end. Each layer is read through the real
 //! authoring loop (`brush_parse.parse_brush` validates, `collect_brush_style`
-//! reassembles the flat Bron), the layers compose through `tokens.resolve_stack` (the
+//! reassembles the flat Kyri), the layers compose through `tokens.resolve_stack` (the
 //! ping-pong per-key `brix/infuse` cascade, already witnessed), and the paint is rung
 //! five's unchanged `paint_origins`. The composition is proven by reading back three
 //! sources at once: the ground from the mode layer, the read origin from the accent
@@ -52,7 +52,7 @@ pub const StackError = error{
     LayerEmpty,
 };
 
-/// Read one `.brush` layer's style block into a flat Bron sheet, validated through the
+/// Read one `.brush` layer's style block into a flat Kyri sheet, validated through the
 /// real authoring loop. Returns the collected byte length in `out`. A layer that
 /// declares no style block is refused -- a cascade layer must carry tokens.
 fn read_layer(io: std.Io, path: []const u8, out: []u8) !u32 {

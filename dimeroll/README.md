@@ -37,7 +37,7 @@ Radiant pass `20260728.050004` -- living L1 rename-forward: **MUR** (was MALA)
 |------|------|
 | [`dimeroll_core.rye`](dimeroll_core.rye) | Chart, parse, fold, reports, exceptions, lap-4 filters |
 | [`dimeroll.rye`](dimeroll.rye) | Selftest binary |
-| [`fixtures/journal.bron`](fixtures/journal.bron) | Pinned welcome journal |
+| [`fixtures/journal.kyri`](fixtures/journal.kyri) | Pinned welcome journal |
 | `bin/dimeroll` | Build output |
 | `pond/apps/dimeroll/` | Symlinks for drawn-terminal import |
 

@@ -28,7 +28,7 @@ This fork already practices the principle without having named it:
 - **Physical infrastructure <-> governance** (the originals' own example): the cable's material layers and its consensus/ownership rules are two descriptions of one network; change the physical route, the governance adapts, and vice versa.
 - **State <-> effects** in the transition-function kernel: the stored state and the emitted effects are dual faces of one epoch's computation.
 - **Comlink's physical datagram <-> its capability/permission description**: the sealed bytes on the wire and the capability that authorizes them are two descriptions the system must keep in correspondence.
-- **A value <-> its Bron serialization**: the in-memory value and its on-disk/on-wire Bron form are meant to be exact mirrors -- this fork's "close the seam, never serialize-and-reparse" rule (TAME Root, one value model) is precisely a demand that the two descriptions stay in lockstep.
+- **A value <-> its Kyri serialization**: the in-memory value and its on-disk/on-wire Kyri form are meant to be exact mirrors -- this fork's "close the seam, never serialize-and-reparse" rule (TAME Root, one value model) is precisely a demand that the two descriptions stay in lockstep.
 
 Named as a rule this fork could adopt: **when a system has a concrete and an abstract description, make a change to either one provably force the matching change in the other -- and witness that correspondence, rather than trusting it.**
 
@@ -39,7 +39,7 @@ Named as a rule this fork could adopt: **when a system has a concrete and an abs
 
 ## What This Actually Gives This Fork
 
-- A name and a citable source for a discipline this fork already half-follows -- useful in the Glow supplement (a struct and its Bron form as dual descriptions), in Comlink (datagram and capability), and in the Realidream viewer thesis (every surface a pure fold from Weave to frame, which is a dual-description correspondence between log and view).
+- A name and a citable source for a discipline this fork already half-follows -- useful in the Glow supplement (a struct and its Kyri form as dual descriptions), in Comlink (datagram and capability), and in the Realidream viewer thesis (every surface a pure fold from Weave to frame, which is a dual-description correspondence between log and view).
 - A concrete candidate witness pattern: for any seam with two descriptions, add a test that deforms one side and asserts the other side deforms to match -- the "pair your assertions on two paths" rule, applied to whole descriptions rather than single values.
 
 ## Galaxy Pitch

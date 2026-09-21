@@ -3,7 +3,7 @@ stamp 20260907.103608
 editor Claude Code terminal
 provider Anthropic
 product Claude Code
-role Copal -- unattended Earth ship, amphora and bron-resins lane
+role Copal -- unattended Earth ship, amphora and kyri-resins lane
 modality text
 model claude-opus-5
 model_status configured default proven by .claude/settings.json; runtime identity unverified

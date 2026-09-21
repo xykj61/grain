@@ -9,9 +9,9 @@ this page keeps the account's exact words.
 ---
 
 **GRASS -- `linengrow/setu6_device_lab_check.rye` NAMES ITS TWO WRITE BOUNDS.** `run_check` wrote
-`format_lab_line`'s and `format_lab_bron`'s returned slices to disk with no assert of its own on
+`format_lab_line`'s and `format_lab_kyri`'s returned slices to disk with no assert of its own on
 either length. Two invariant asserts now restate what the caller was trusting:
-`line.len <= status_line_max` and `n <= bron_buf.len`, right after each call and before the write.
+`line.len <= status_line_max` and `n <= kyri_buf.len`, right after each call and before the write.
 `tools/s/setu6_device_lab_witness.rish` GREEN (a pre-existing, unrelated `FileNotFound` from a
 missing `tools/.cache/setu0/` directory was confirmed present before this edit too, by stashing the
 change and rerunning the same binary at the same call site); `width-check` GREEN; `tame_style_check`

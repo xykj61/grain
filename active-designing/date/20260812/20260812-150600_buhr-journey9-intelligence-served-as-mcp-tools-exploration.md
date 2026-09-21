@@ -5,7 +5,7 @@
 ## The blind spot
 
 BUHR's eight journeys built every module the equinox names and let the intelligence read
-every surface: Journey 3 spoke MCP in Bron (the owned `format mcp-call-v1` / `mcp-result-v1`
+every surface: Journey 3 spoke MCP in Kyri (the owned `format mcp-call-v1` / `mcp-result-v1`
 shape, a JSON host bridge, the whole `tools/list` envelope), and Journey 8 gathered the five
 voices — Lattice, Scribble, Ember, the living graph, and a named Tablecloth artifact — under
 one bounded Q-vane host (`quin_host_artifact.dispatch`). Yet those two halves have never met.
@@ -31,7 +31,7 @@ address.
 
 ## Grounded in witnessed ground
 
-- `pond/apps/mcp_bron.rye` (J3r1) — `parse_call`, `Call.arg_val`, `Result`, `parse_result`,
+- `pond/apps/mcp_kyri.rye` (J3r1) — `parse_call`, `Call.arg_val`, `Result`, `parse_result`,
   the bounded `format mcp-call-v1` / `mcp-result-v1` shapes. Reused unchanged.
 - `pond/apps/quin_host_artifact.rye` (J8r3) — `dispatch` over five voices, each Lantern-metered.
 - `lantern/lantern_core.rye` — the Request/Response contract the voices obey.

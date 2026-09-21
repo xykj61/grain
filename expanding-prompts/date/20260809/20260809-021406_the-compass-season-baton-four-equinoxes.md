@@ -88,7 +88,7 @@ What a person sees and the help they receive — the millstone that grinds the r
 
 - **Journey 1 — Realidream.** The DAG-unified GUI — editor and browser one surface over one graph; Brushstroke and Skate and Prin beneath it, Pond-sandboxed.
 - **Journey 2 — Quin's four voices.** Lattice · Scribble · Lantern · **Ember** — the inference stack, served and metered honestly.
-- **Journey 3 — MCP in Bron.** The model-context protocol spoken in Bron rather than JSON, with Bron↔JSON tiles in the elder-translation spirit.
+- **Journey 3 — MCP in Kyri.** The model-context protocol spoken in Kyri rather than JSON, with Kyri↔JSON tiles in the elder-translation spirit.
 - **Journey 4 — Tablecloth & friends.** Deepened storage; Dexter and Bookie, woven through Aurora · Caravan · Tally · Mantra · Weave · Lattice.
 
 ### Equinox 4 — **TACT** · The World *(ship-pilot-publishing-grainphone-and-commerce)*

@@ -729,7 +729,7 @@ hostile_head=$(run head_hostile.rye --setting meter --service 100)
   && echo "program_door_still_scored=yes" || echo "program_door_still_scored=no"
 
 
-# 8 -- a notation file's document is its comment block, and its records are data. Kyri and Bron
+# 8 -- a notation file's document is its comment block, and its records are data. Kyri
 # open a comment with `#`, which the prose reading drops as a Markdown heading, and close a record
 # with nothing at all, so consecutive records fuse into one pseudo-sentence rather than meeting the
 # reading's under-four-words floor one at a time. Both halves are planted here, and both are read a
@@ -864,7 +864,7 @@ em_cold=$(eldermeter roster_cold.kyri --setting meter --service 100)
 # prose path, where no extractor runs, so the whole comment block was invisible: warm and cold must
 # read IDENTICALLY there. This is the leg that tells a repair from a rewording.
 mkdir -p "$pen/elder/tools/fixtures/q" "$pen/elder/tools/fixtures/p"
-sed 's/^  \*\.bron|\*\.kyri)             artifact_kind=notation ;;$/  *.bron|*.kyri)             artifact_kind=prose ;;/' \
+sed 's/^  \*\.kyri|\*\.kyri)             artifact_kind=notation ;;$/  *.kyri|*.kyri)             artifact_kind=prose ;;/' \
   "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/elder/tools/fixtures/q/qa_report_card.sh"
 for d in $deps; do mkdir -p "$pen/elder/$(dirname "$d")" && cp "$d" "$pen/elder/$d"; done
 cp "$pen/roster_warm.kyri" "$pen/roster_cold.kyri" "$pen/elder/"
@@ -960,7 +960,7 @@ o=$(run uneven.rye --service 100)
 [ "$(val "$o" reference_lines)" -eq 0 ] && echo "key_column_binds_a_block=yes" || echo "key_column_binds_a_block=no ($(val "$o" reference_lines))"
 
 # A prose file is read the same way. Measured 20260831: exactly one living non-dated prose file of
-# 1,503 carries a reference block at all -- template-manifest.bron, whose every line reads
+# 1,503 carries a reference block at all -- template-manifest.kyri, whose every line reads
 # `template  <path>  # why` -- so this clause is written for the genre rather than for a population.
 printf 'This page explains one small thing and then shows the keys it uses.\n\n    ready      how many items the queue holds right now\n    capacity   the fixed ceiling the array was built with\n' > "$pen/doc.md"
 o=$(run doc.md --setting field --service 100)
@@ -1009,7 +1009,7 @@ for d in $deps; do [ -f "$d" ] || { echo "deps_list_resolves=no ($d)"; deps_bad=
 #
 # The plants below press on both sides of the floor and on both terms, because the grade term and
 # the cross-reference term are freed by different doors on purpose.
-cat > "$pen/hex_corpus.bron" <<'EOF'
+cat > "$pen/hex_corpus.kyri" <<'EOF'
 format cord-dag-v1
 block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 0 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
 block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 1 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
@@ -1017,7 +1017,7 @@ block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6
 block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 3 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
 block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 4 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
 EOF
-hex=$(run hex_corpus.bron --setting field --service 100)
+hex=$(run hex_corpus.kyri --setting field --service 100)
 [ "$(val "$hex" grade_mode)" = reported ] \
   && [ "$(val "$hex" reach)" -eq 100 ] \
   && echo "grade_floor_frees_the_corpus=yes" || echo "grade_floor_frees_the_corpus=no ($(val "$hex" reach))"
@@ -1100,9 +1100,9 @@ mkdir -p "$pen/eldergrade/tools/fixtures/q" "$pen/eldergrade/tools/fixtures/p"
 sed 's/^if \[ "\$sentences" -lt "\$register_floor" \]; then$/if false; then/; s/^    if (sent == 0 || words == 0) { print "0 0 0 0 0 0 0"; exit }$/    if (sent == 0 || words == 0) { print "10 0 0 0 0 0 0"; exit }/' \
   "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldergrade/tools/fixtures/q/qa_report_card.sh"
 for d in $deps; do mkdir -p "$pen/eldergrade/$(dirname "$d")" && cp "$d" "$pen/eldergrade/$d"; done
-cp "$pen/hex_corpus.bron" "$pen/empty_prose.kyri" "$pen/eldergrade/"
+cp "$pen/hex_corpus.kyri" "$pen/empty_prose.kyri" "$pen/eldergrade/"
 eldergrade() { ( cd "$pen/eldergrade" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
-eg_hex=$(eldergrade hex_corpus.bron --setting field --service 100)
+eg_hex=$(eldergrade hex_corpus.kyri --setting field --service 100)
 eg_empty=$(eldergrade empty_prose.kyri --setting field --service 100)
 [ "$(val "$eg_hex" reach)" -eq 0 ] \
   && [ "$(val "$eg_empty" reach)" -eq 0 ] \

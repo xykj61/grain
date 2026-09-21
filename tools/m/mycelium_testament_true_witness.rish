@@ -4,7 +4,7 @@
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r4 -- reads true.
 # r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
 # it travel as a record -- all over certificates sealed in the same process. r4 carries the reader onto a REAL
-# on-disk `format testament-v1` certificate a keeper can open and read -- tools/fixtures/t/testament_cert.bron,
+# on-disk `format testament-v1` certificate a keeper can open and read -- tools/fixtures/t/testament_cert.kyri,
 # produced reproducibly by mycelium/testament_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/
 # symlink (no network).
 #
@@ -13,7 +13,7 @@
 # its names, the head by rebuilding the demo Dag and computing its true order-head; and that pair equals
 # testament_cert_truth.awk's reading of the same bytes. The certificate is the receipt of the real verdict
 # (it self-proves against its own named roster on parse, and the sealed head is a real order-head), its record
-# a fixed point, its fixture reproducible, a tampered header refuses. Composes testament + testament_bron +
+# a fixed point, its fixture reproducible, a tampered header refuses. Composes testament + testament_kyri +
 # testament_fixture_gen + constel + voucher public API only; siloed dev fixtures -- no key, funds, network,
 # real value.
 #
@@ -44,7 +44,7 @@ assert selftest.out contains "The Testament agent-doable arc closes" else "mycel
 # The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-testament-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/t/testament_cert_truth.awk tools/fixtures/t/testament_cert.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/t/testament_cert_truth.awk tools/fixtures/t/testament_cert.kyri"]
 assert awk.ok else "mycelium-testament-true: awk truth read failed"
 assert awk.out contains "5 c2d99dd2" else "mycelium-testament-true: awk pair not 5 c2d99dd2"
 assert app.out == awk.out else "mycelium-testament-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -53,13 +53,13 @@ assert app.out == awk.out else "mycelium-testament-true: app and awk disagree â€
 # the Testament seals, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed one).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_fixture_gen.rye -femit-bin=mycelium/bin/testament_fixture_gen"]
 assert genbuild.ok else "mycelium-testament-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/testament_fixture_gen 2> /tmp/testament_cert_regen.bron; diff tools/fixtures/t/testament_cert.bron /tmp/testament_cert_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/testament_fixture_gen 2> /tmp/testament_cert_regen.kyri; diff tools/fixtures/t/testament_cert.kyri /tmp/testament_cert_regen.kyri && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-testament-true: the regenerated fixture drifted from the committed one"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-testament-true: the regenerated fixture drifted from the committed one"
 
 # The Testament r3 travel rung stands at the door -- a true reading of a real certificate means nothing unless
 # the record round-trips and proves itself offline against its own roster.
-let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_bron.rye -femit-bin=mycelium/bin/testament_bron && mycelium/bin/testament_bron 2>&1"]
+let r3 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/testament_kyri.rye -femit-bin=mycelium/bin/testament_kyri && mycelium/bin/testament_kyri 2>&1"]
 assert r3.ok else "mycelium-testament-true: the Testament r3 travel rung is not GREEN"
 assert r3.out contains "GREEN" else "mycelium-testament-true: the Testament r3 did not speak its GREEN"
 

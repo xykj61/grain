@@ -11,7 +11,7 @@
 
 Radiant pass `20260728.050219` -- living rename-forward: **MUR** (was MALA)
 Radiant pass `20260728.054644` -- entry/bin landed u49: `murr.rye` / `bin/murr`
-Radiant pass `20260728.053348` -- tool paths landed u32: `murr_m*_witness` - `murr_m1_mint.bron` - `run_murr_wire_lab` (was mala_*); guests/module held
+Radiant pass `20260728.053348` -- tool paths landed u32: `murr_m*_witness` - `murr_m1_mint.kyri` - `run_murr_wire_lab` (was mala_*); guests/module held
 ---
 
 ## Executive Landscape
@@ -52,7 +52,7 @@ Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on
 
 - `tally/pedersen.rye` -- `amount-G + blinding-H`; pinned H
 - `linengrow/disclosure_core.rye` -- Schnorr-style proof of knowledge of blinding for a **declared public** tier `{1000,5000,10000}`
-- Golden `tools/fixtures/slcl4_tier_proof.bron`; witness `tools/slcl4_sigma.rish`
+- Golden `tools/fixtures/slcl4_tier_proof.kyri`; witness `tools/slcl4_sigma.rish`
 - Plain-language notes: [`194437`](20260709-194437_what-parity-is.md), [`200022`](20260709-200022_pedersen-and-sigma-plainly.md)
 
 **Honesty pin:** lap 1 does **not** hide which tier; it hides the blinding. OR-proof / arbitrary-range remain later.
@@ -68,7 +68,7 @@ Seeds `0x61`/`0x62`. Memo prefixes `mala:mint` / `mala:send` / `mala:receipt` on
 ### Realidream thin view
 
 - Counsel `021112` named chain-read -> Skate; chain-read **deleted** `152612`
-- Re-scope [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.bron` (was mala_*) + `wov_exit_bundle_v1.bron` -> five-line Skate frame via `drawn-terminal thinviewtest`
+- Re-scope [`202427`](../expanding-prompts/yonder/20260709-202427_realidream-thin-view-local-facts.md): local `murr_m1_mint.kyri` (was mala_*) + `wov_exit_bundle_v1.kyri` -> five-line Skate frame via `drawn-terminal thinviewtest`
 - Stayed thin: no Pond, no Dexter, no new input, no network
 
 ### Hygiene

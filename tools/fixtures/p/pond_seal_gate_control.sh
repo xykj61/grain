@@ -29,7 +29,7 @@ while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
   ROOT=$(dirname "$ROOT")
 done
 SCAN="$ROOT/tools/fixtures/p/pond_seal_gate_scan.sh"
-SEAL_REL="tools/p/pond_exit_bron_master_seal.sh"
+SEAL_REL="tools/p/pond_exit_kyri_master_seal.sh"
 
 pen_root=$(mktemp -d)
 trap 'rm -rf "$pen_root"' EXIT INT TERM
@@ -104,7 +104,7 @@ cat > "$p/tools/l/launch-weak.sh" <<'PLANT'
 #!/usr/bin/env sh
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 if [ "$ENCLOSURE" = "pond" ]; then
-  if ! bash "tools/p/pond_exit_bron_master_seal.sh" --policy; then exit 1; fi
+  if ! bash "tools/p/pond_exit_kyri_master_seal.sh" --policy; then exit 1; fi
 fi
 PLANT
 reindex "$p"
@@ -119,7 +119,7 @@ cat > "$p/tools/l/launch-loose.sh" <<'PLANT'
 #!/usr/bin/env sh
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 if [ "$ENCLOSURE" = "pond" ]; then
-  bash "tools/p/pond_exit_bron_master_seal.sh" --require || true
+  bash "tools/p/pond_exit_kyri_master_seal.sh" --require || true
 fi
 PLANT
 reindex "$p"
@@ -149,7 +149,7 @@ cat > "$p/tools/l/launch-sealed.sh" <<'PLANT'
 #!/usr/bin/env sh
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 if [ "$ENCLOSURE" = "pond" ]; then
-  if ! bash "tools/p/pond_exit_bron_master_seal.sh" --require; then exit 1; fi
+  if ! bash "tools/p/pond_exit_kyri_master_seal.sh" --require; then exit 1; fi
 fi
 PLANT
 reindex "$p"
@@ -175,7 +175,7 @@ cat > "$p/tools/l/launch-zed.sh.example" <<'PLANT'
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 if [ "$ENCLOSURE" = "pond" ]; then
-  if ! sh "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then
+  if ! sh "${REPO_ROOT}/tools/p/pond_exit_kyri_master_seal.sh" --require; then
     exit 1
   fi
 elif [ "$ENCLOSURE" != "ai-jail" ]; then

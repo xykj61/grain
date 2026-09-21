@@ -6,7 +6,7 @@
 //!
 //! r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
 //! record -- all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
-//! record a keeper can open and read -- `tools/fixtures/c/constel_roster.bron`, produced reproducibly by
+//! record a keeper can open and read -- `tools/fixtures/c/constel_roster.kyri`, produced reproducibly by
 //! `mycelium/constel_fixture_gen.rye`, `@embedFile`-bound at compile time through the `mycelium/corpora/`
 //! symlink (no network).
 //!
@@ -23,7 +23,7 @@
 //! Genuineness beyond that: re-rendering the parsed roster reproduces the embedded bytes (a fixed point), and
 //! a tampered header refuses `BadFormat`.
 //!
-//! Composes constel + constel_bron + constel_fixture_gen + voucher public API only. Siloed, dev-only, demo
+//! Composes constel + constel_kyri + constel_fixture_gen + voucher public API only. Siloed, dev-only, demo
 //! ship seeds -- no real key, no funds, no network, no real value.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/constel_true.rye selftest
@@ -34,20 +34,20 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 
 const constel = @import("constel.rye");
-const constel_bron = @import("constel_bron.rye");
+const constel_kyri = @import("constel_kyri.rye");
 const gen = @import("constel_fixture_gen.rye");
 const voucher = @import("voucher.rye");
 
 pub const constel_true_version = "20260813.132009";
 pub const head_len: u32 = constel.head_len;
 
-const real_record = @embedFile("corpora/constel_roster.bron");
+const real_record = @embedFile("corpora/constel_roster.kyri");
 
 /// Parse the real roster off the embedded fixture bytes (self-certifying -- a carried key its name does not
 /// yield refuses PkMismatch).
 fn read_constel() !constel.Constel {
     var c: constel.Constel = undefined;
-    try constel_bron.parse(real_record, &c);
+    try constel_kyri.parse(real_record, &c);
     return c;
 }
 
@@ -113,10 +113,10 @@ fn welcome_reading_true_and_real() !void {
 /// bytes exactly (a fixed point), so the fixture is not a hand-mock.
 fn welcome_record_is_really_constel() !void {
     var c = try read_constel();
-    var buf: [constel_bron.max_record]u8 = undefined;
-    const len = try constel_bron.render(&c, buf[0..]);
+    var buf: [constel_kyri.max_record]u8 = undefined;
+    const len = try constel_kyri.render(&c, buf[0..]);
     // invariant: the re-render honors the record bound.
-    assert(len <= constel_bron.max_record);
+    assert(len <= constel_kyri.max_record);
     if (!std.mem.eql(u8, buf[0..len], real_record)) return error.NotFixedPoint;
     print("constel-true: the record re-renders to the embedded bytes exactly — the fixture is what the Constel emits, never a hand-mock.\n", .{});
 }
@@ -125,7 +125,7 @@ fn welcome_record_is_really_constel() !void {
 fn unwelcome_tampered_record_refuses() !void {
     const bad = "format constel-v2\nship xnvethqua 00\n";
     var c: constel.Constel = undefined;
-    if (constel_bron.parse(bad, &c)) |_| return error.TamperAdmitted else |err| {
+    if (constel_kyri.parse(bad, &c)) |_| return error.TamperAdmitted else |err| {
         if (err != error.BadFormat) return error.WrongTamper;
     }
     print("constel-true: a tampered header refused BadFormat.\n", .{});

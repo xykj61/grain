@@ -72,7 +72,7 @@ Source: [`counsel/20260708-221612_claude-counsel-six-open-points.md`](../counsel
 | On-chain verify | `sui::groth16` -- BN254 or BLS12-381 |
 | Circuit shape | Circom threshold -- private amount, public policy flag + binding digests |
 | Scoped out of v1 | zkLogin (auth), Seal (encryption), Nautilus (TEE) |
-| Receipt | `.bron` fields in hammock `194500` -- `curve`, `vk_id`, `proof`, `public_inputs` (<=8) |
+| Receipt | `.kyri` fields in hammock `194500` -- `curve`, `vk_id`, `proof`, `public_inputs` (<=8) |
 | Seam family | POSIX external interpreter -- same as SLC-L3 lanes |
 
 **Status:** study complete; build waits on Kaeden lap word.
@@ -140,7 +140,7 @@ Realidream ladder: rung 1 (SLC-2a drawn terminal) active; rungs 2-3 held; rung 4
 
 *Several iOS-brief questions are now answered in `221612`; these are the live ones.*
 
-1. **SLC-L4 implementation shape** -- Donor-amount privacy is sequenced first; ZK pin names `sui::groth16` + Circom threshold. What should the first witness lap prove? Circuit fields, `.bron` receipt, prover POSIX seam, and parity policy (fixture-only vs on-demand chain verify)?
+1. **SLC-L4 implementation shape** -- Donor-amount privacy is sequenced first; ZK pin names `sui::groth16` + Circom threshold. What should the first witness lap prove? Circuit fields, `.kyri` receipt, prover POSIX seam, and parity policy (fixture-only vs on-demand chain verify)?
 
 2. **Lap-open brief** -- What belongs in the active-designing scope note and expanding-prompt before Cursor's first `kg` pass once Kaeden gives lap word?
 

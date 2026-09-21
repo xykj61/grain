@@ -4,7 +4,7 @@
 //! may do, `channels.rye` names WHO it may talk to, and `regions.rye` names
 //! WHAT MEMORY it may touch. Each has been declared in Rye, by hand, at a
 //! constructor. This ring gathers all three into a single readable
-//! declaration -- a bounded Bron document naming domains, channels, regions,
+//! declaration -- a bounded Kyri document naming domains, channels, regions,
 //! and grants, parsed once and asserted whole.
 //!
 //! The point is the one the single-stranded brief makes plainly: an
@@ -13,7 +13,7 @@
 //! system a witness can check in one pass, a reviewer can read in one
 //! sitting, and a build can refuse before anything runs.
 //!
-//! The grammar is flat Bron -- `key value...` per line, `#` comments and
+//! The grammar is flat Kyri -- `key value...` per line, `#` comments and
 //! blank lines skipped -- the same shape `brix/infuse.rye` already merges:
 //!
 //!     system serial_stack

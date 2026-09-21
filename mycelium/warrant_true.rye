@@ -19,7 +19,7 @@
 //!     `endorse` lines in the record independently (`grep -c`) and cross-checks -- the certificate cannot
 //!     claim a quorum it did not carry.
 //!
-//! Additive -- composes `warrant` + `muster` + `muster_bron` + `kumara` public API only (each re-runs GREEN).
+//! Additive -- composes `warrant` + `muster` + `muster_kyri` + `kumara` public API only (each re-runs GREEN).
 //! Siloed, dev-only, demo validator and keeper seeds -- no real key, no funds, no network, no custody. A
 //! SERVED warrant (a holder fetching the live succession chain over Comlink) reaches the Comlink-served gate.
 //!
@@ -31,9 +31,9 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const warrant = @import("warrant.rye");
-const warrant_bron = @import("warrant_bron.rye");
+const warrant_kyri = @import("warrant_kyri.rye");
 const muster = @import("muster.rye");
-const muster_bron = @import("muster_bron.rye");
+const muster_kyri = @import("muster_kyri.rye");
 const kumara = @import("kumara.rye");
 
 pub const warrant_true_version = "20260813.112420";
@@ -121,8 +121,8 @@ fn run_selftest() !u8 {
 /// Emit the exact canonical `format muster-v1` bytes of the outgoing roll -- the bytes whose SHA-256 is the
 /// warrant's `prev` digest. Piped through `sha256sum`, it must equal the record's `prev` line.
 fn emit_roll_bytes(m: *const muster.Muster) !u8 {
-    var buf: [muster_bron.max_record]u8 = undefined;
-    const n = try muster_bron.render(m, buf[0..]);
+    var buf: [muster_kyri.max_record]u8 = undefined;
+    const n = try muster_kyri.render(m, buf[0..]);
     // invariant: exactly the canonical bytes are emitted, nothing appended, so an external hash matches.
     print("{s}", .{buf[0..n]});
     return 0;
@@ -132,8 +132,8 @@ fn emit_roll_bytes(m: *const muster.Muster) !u8 {
 /// lines and counts the `endorse` lines from.
 fn emit_warrant() !u8 {
     const w = try lawful_warrant();
-    var buf: [warrant_bron.max_record]u8 = undefined;
-    const n = try warrant_bron.render(&w, buf[0..]);
+    var buf: [warrant_kyri.max_record]u8 = undefined;
+    const n = try warrant_kyri.render(&w, buf[0..]);
     print("{s}", .{buf[0..n]});
     return 0;
 }

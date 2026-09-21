@@ -22,7 +22,7 @@ Nearly every document closes with a "May X, may Y, may Z" blessing. In one docum
 
 ## Two -- The Vocabulary Legibility Tax
 
-The private naming layer -- Rye, Rishi, Neth, Mantra, Glow, Rhyz, Pool, Quin, Bron, Brix, Tally, Amber, Comlink, and the rest -- is internally coherent and often beautiful. It is also a steep wall for anyone standing outside it. This cuts directly against the market position this tree stakes for itself: the most legible, witnessed layer for Urbit-adjacent work. A newcomer's onboarding cost is real, and legibility-to-outsiders is precisely the property the rhizome-node argument depends on (`../external-research/20260715-135200_zero-to-one-rhizome-market-position.md`).
+The private naming layer -- Rye, Rishi, Neth, Mantra, Glow, Rhyz, Pool, Quin, Kyri, Brix, Tally, Amber, Comlink, and the rest -- is internally coherent and often beautiful. It is also a steep wall for anyone standing outside it. This cuts directly against the market position this tree stakes for itself: the most legible, witnessed layer for Urbit-adjacent work. A newcomer's onboarding cost is real, and legibility-to-outsiders is precisely the property the rhizome-node argument depends on (`../external-research/20260715-135200_zero-to-one-rhizome-market-position.md`).
 
 **The refinement:** in any document a newcomer might reach first -- READMEs, guides, the root-level prose -- name the plain-English function on first use of a coined term, every time, rather than assuming the reader already carries the glossary. "Neth (the settlement vane)" costs six words and buys a reader who can follow. The coined vocabulary stays; the tax on entering it comes down.
 

@@ -1,6 +1,6 @@
 # Hearth · LULU — display presets, short home, and ZETA6 send
 
-*Owned Glow design: a Hearth preference record (Bron), declared presets (Brix/infuse discipline), waymark **LULU**, and ZETA6 keyboard send — so Glow Glass paragraphs and Glow Desk stations share one short home and one Skate budget down to the Mantrapod floor.*
+*Owned Glow design: a Hearth preference record (Kyri), declared presets (Brix/infuse discipline), waymark **LULU**, and ZETA6 keyboard send — so Glow Glass paragraphs and Glow Desk stations share one short home and one Skate budget down to the Mantrapod floor.*
 
 **Stamp:** `20260718.122145` (Eastern)  
 **Status:** Mixed — siloed design; ZETA6 Pixel GREEN · **LULU0–5 closed** · **SETU0–SETU5 GREEN** `20260718.184537` · SETU6 check-in · Amber/Amphora fuse declined [`20260718-133455`](20260718-133455_glass-desk-compose-amber-amphora-revive.md)  
@@ -15,7 +15,7 @@
 
 | Name | Role |
 |------|------|
-| **Hearth** | Preference mold — short `home_id` + display preset + (later) ret/send policy. Not a new kernel vane; a Bron record Pool may host as a settings agent. |
+| **Hearth** | Preference mold — short `home_id` + display preset + (later) ret/send policy. Not a new kernel vane; a Kyri record Pool may host as a settings agent. |
 | **LULU** | Waymark for hearth / display / wired-sync ladder. Input `glow-glass-hearth-display-and-wired-sync`, drawn `20260718.122145`. |
 | **ZETA6** | Same ZETA ladder: newline + ↑ send (product keyboard). |
 
@@ -45,13 +45,13 @@ Keaton’s example home id **`kd`** is the first fixture; schema allows any two 
 
 | Rung | Claim | Gate |
 |------|-------|------|
-| **LULU0** | Bron hearth: `home_id` (exactly 2 `a–z`) + `display_preset` enum; load/store path under short home | **GREEN** `hearth_lulu0_witness` `20260718.123900` |
+| **LULU0** | Kyri hearth: `home_id` (exactly 2 `a–z`) + `display_preset` enum; load/store path under short home | **GREEN** `hearth_lulu0_witness` `20260718.123900` |
 | **LULU1** | NativeActivity/Skate **applies** preset → logical size / scale table; panel_max reads window | **GREEN** closed `20260718.125639` |
 | **LULU2** | Glass Settings face lists presets (Pool agent when ready) | **GREEN** closed `20260718.130606` |
 | **LULU3** | Short `home_id` editor on glass | **GREEN** Pixel closed `20260718.131549` |
 | **LULU4** | `wire_lane` preference (`local` \| `usb_desk`) on Settings | **GREEN** Pixel closed `20260718.132031` |
 | **LULU5** | `cellular` preference (`off` \| `optional`) on Settings | **GREEN** Pixel closed `20260718.132503` |
-| **SETU0** | adb pull hearth Bron Glass→Desk (USB file path) | **GREEN** device-free + Pixel host `20260718.132731` · [`docs/SETU.md`](../docs/SETU.md) |
+| **SETU0** | adb pull hearth Kyri Glass→Desk (USB file path) | **GREEN** device-free + Pixel host `20260718.132731` · [`docs/SETU.md`](../docs/SETU.md) |
 | **SETU0.5** | Desk applies pulled Hearth → station card | **GREEN** `20260718.133328` |
 | **SETU1** | `usb_desk` Comlink lane ping; `local` refuses | **GREEN** `20260718.133853` |
 | **SETU2** | Ping over hosted UDP stand-in (port 38501) | **GREEN** `20260718.134348` |
@@ -64,7 +64,7 @@ Keaton’s example home id **`kd`** is the first fixture; schema allows any two 
 
 ```
 Brix  — declares preset table (infuse-shaped merge, closed enum)
-Bron  — hearth record values at the seam
+Kyri  — hearth record values at the seam
 Mantra / Tablecloth — durable hold when store v1 opens (horizon)
 Skate / Brushstroke — apply
 Pool  — optional settings agent host
@@ -86,7 +86,7 @@ Two scenes (welcome chat vs live chat) are **`advance_face` with N=2`** — same
 
 ## Why not a new vane
 
-Ojjo is benchmarks. Pool is the app host. Mantra already versions. **Hearth is a mold + Bron file**, not an Arvo-shaped vane, until a second consumer forces graduation (module law). Display apply stays Brushstroke/Skate.
+Ojjo is benchmarks. Pool is the app host. Mantra already versions. **Hearth is a mold + Kyri file**, not an Arvo-shaped vane, until a second consumer forces graduation (module law). Display apply stays Brushstroke/Skate.
 
 ---
 

@@ -21,7 +21,7 @@
 //! takes its grants from the words it was handed, and those words were
 //! written from the document that stood when it started. `serial_cycle`
 //! spawns `birch`; before that dependent is reaped the run derives
-//! `serial_cycle_succession.bron`, whose table has no `birch` in it at all;
+//! `serial_cycle_succession.kyri`, whose table has no `birch` in it at all;
 //! and birch runs to completion anyway, carrying two asks from `ask_ab` to
 //! `ask_bc` under grants that the newer document has already retired. **The
 //! domain the successor replaced carried the ask that came home.**
@@ -39,7 +39,7 @@
 //!   once, whether the replaced domain has finished or is still writing.
 //!
 //! Exactly one property answers to both readings: the regions may not move.
-//! `serial_cycle_moved.bron` reads as a whole ring and renames one arc, so
+//! `serial_cycle_moved.kyri` reads as a whole ring and renames one arc, so
 //! a domain still writing would fill a store nobody under the newer
 //! document ever reads, while a domain that had already finished would be
 //! harmed not at all. A supervisor cannot tell those apart, so it refuses
@@ -87,7 +87,7 @@ pub const succession_path = standby.succession_path;
 
 /// A successor that reads as a whole ring and moves one region under a
 /// writer that may still be writing.
-pub const moved_path = "caravan/systems/serial_cycle_moved.bron";
+pub const moved_path = "caravan/systems/serial_cycle_moved.kyri";
 
 /// A dependent's fixed argv: the program, the marker, its domain, its plan, the
 /// point it may be dropped at, how it wakes its successor, and how many

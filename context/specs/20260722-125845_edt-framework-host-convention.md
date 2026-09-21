@@ -34,7 +34,7 @@ TZ='America/New_York' date '+%Y%m%d.%H%M%S'
 
 Optional prose tag: append `EDT` (or `EST` in winter) in headers where a label helps. Filenames stay hyphen form without a timezone suffix.
 
-`GLOW_PROFILE.bron` on this host points `timezone America/New_York` and `timezone_label Eastern (EDT in summer - EST in winter)`.
+`GLOW_PROFILE.kyri` on this host points `timezone America/New_York` and `timezone_label Eastern (EDT in summer - EST in winter)`.
 
 Keaton set Ubuntu **Settings -> Date & Time** to **New York** at `20260722.130034` (confirmed: `date` prints `EDT -0400`; `/etc/localtime` -> `America/New_York`). Plain `date '+%Y%m%d.%H%M%S'` is enough for stamps on this host now. `TZ=America/New_York` remains a fine explicit override if a shell ever inherits a different zone.
 

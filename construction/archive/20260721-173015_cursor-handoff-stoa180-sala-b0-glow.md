@@ -51,7 +51,7 @@ send = commit (CONTRIBUTING/Radiant) · push origin+codeberg · stay on main
 kg = keep going next mechanical lap
 check-in = pause for lean
 nib = landed edge (product/suite/git) — not tip
-Stamps from Keaton or date -u; voice Quin; session-logs/*.bron every turn
+Stamps from Keaton or date -u; voice Quin; session-logs/*.kyri every turn
 
 ### Do not
 Rewrite dated mold briefs; whole-tree sed; force-push; claim @t lowers yet;

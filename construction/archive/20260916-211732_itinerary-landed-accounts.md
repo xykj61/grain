@@ -23,7 +23,7 @@ four root files GitHub itself recognises. `README.md` stood gated and reading ze
 straight into `MAP.md`, `ORGANIZING.md`, `SOURCE.md` and `docs-geode/README.md` -- **15, 6, 3 and 3**
 links into rooms the seed leaves behind. One page deep, on the walk that page exists to open.
 **THE SHARPEST WAS `MAP.md`**, which names the private rooms, says outright that
-`template-manifest.bron` withholds them, and then hands the seed reader a door to each.
+`template-manifest.kyri` withholds them, and then hands the seed reader a door to each.
 **NO GUARD COULD HAVE HEARD IT:** the roster is deliberately named rather than discovered, so it
 goes stale in silence by construction.
 **A SECOND FINDING RODE IN ON THE MEASUREMENT.** The scan printed a ratchet site only while its

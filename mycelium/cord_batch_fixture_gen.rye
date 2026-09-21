@@ -14,14 +14,14 @@
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch_fixture_gen.rye \
-//!     > tools/fixtures/c/cord_batch_dag.bron
+//!     > tools/fixtures/c/cord_batch_dag.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
 const cord_batch = @import("cord_batch.rye");
-const cord_batch_bron = @import("cord_batch_bron.rye");
+const cord_batch_kyri = @import("cord_batch_kyri.rye");
 const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 
@@ -59,11 +59,11 @@ fn seat_batch_dag(out: *cord_batch.BatchDag) !void {
 pub fn main() !void {
     var dag: cord_batch.BatchDag = undefined;
     try seat_batch_dag(&dag);
-    const pl = try cord_batch_bron.from_batch_dag(&dag);
-    var buf: [cord_batch_bron.max_record]u8 = undefined;
-    const n = try cord_batch_bron.render(&pl, &buf);
+    const pl = try cord_batch_kyri.from_batch_dag(&dag);
+    var buf: [cord_batch_kyri.max_record]u8 = undefined;
+    const n = try cord_batch_kyri.render(&pl, &buf);
     // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
-    assert(n <= cord_batch_bron.max_record);
+    assert(n <= cord_batch_kyri.max_record);
     print("{s}", .{buf[0..n]});
 }

@@ -21,7 +21,7 @@
 |---|---|---|
 | **A** | **Send STOA279** -- **chosen** with round-close | pier carries serial pin |
 | **B** | **Host boot->harvest retry** -- **chosen** -> STOA281 | host GREEN `20260722.153549` beside Pixel |
-| **C** | **HAWM1 / Pixel root into harvest Bron** | after host GREEN, or parallel kg |
+| **C** | **HAWM1 / Pixel root into harvest Kyri** | after host GREEN, or parallel kg |
 | **D** | **Fleets - HAWM2 - gold - JABS3 - UDP** | **held** |
 
 ---

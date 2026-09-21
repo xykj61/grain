@@ -9,7 +9,7 @@ Keep going / continue in the best path — treated as WOV gate affirm after seat
 
 ## Thinking trace
 
-Implemented in-memory `linengrow/wov_core.rye`: mint/transfer, exit bundle + attestation, `wov:root` on MALA log, prove balance, accept `wov:exit`, refuse double exit and tampered bundle. Golden `tools/fixtures/wov_exit_bundle_v1.bron` (write-fixture via stderr). Witness `tools/wov_exit_honesty.rish` wired in parity. Full suite GREEN — **91** GREEN lines, count **201**.
+Implemented in-memory `linengrow/wov_core.rye`: mint/transfer, exit bundle + attestation, `wov:root` on MALA log, prove balance, accept `wov:exit`, refuse double exit and tampered bundle. Golden `tools/fixtures/wov_exit_bundle_v1.kyri` (write-fixture via stderr). Witness `tools/wov_exit_honesty.rish` wired in parity. Full suite GREEN — **91** GREEN lines, count **201**.
 
 ## Observations
 

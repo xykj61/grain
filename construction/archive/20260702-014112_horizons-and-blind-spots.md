@@ -61,7 +61,7 @@ On the API name: the USB-C lane deserves one, and the naming stays yours. The ca
 | **Rye** | Thin frontend sealed; 116 std witnesses green; compiler fork deferred as ruled |
 | **Rishi** | SLC-1 whole; Lap 3 opens its public per-line surface |
 | **Brix** | Declarative descriptors serving; each brick individually simple |
-| **Bron** | Proposed, open — role still yours to shape |
+| **Kyri** | Proposed, open — role still yours to shape |
 | **Weave** | Content-addressed line history live; Kumara signing is its named horizon |
 | **Caravan** | Capability table and seed→chain supervision in parity |
 | **Tally** | Foundation seeds and gardens in parity |

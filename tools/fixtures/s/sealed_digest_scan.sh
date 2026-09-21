@@ -41,7 +41,7 @@
 #     guard demanding a checker for someone else's published value would be asking for a device in
 #     a witness, which is why the attribution is read rather than the digest.
 #
-# BOUNDS: living tracked `.md`, `.kyri` and `.bron`; the first 400 such documents; one grep per
+# BOUNDS: living tracked `.md`, `.kyri` and `.kyri`; the first 400 such documents; one grep per
 # digest found, capped at 64 digests, since a tree with more unread seals than that has a different
 # problem than this scan can name.
 set -eu
@@ -64,7 +64,7 @@ MAX_DIGESTS=64
 work=$(mktemp -d "${TMPDIR:-/tmp}/sealed-digest.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
-git ls-files '*.md' '*.kyri' '*.bron' \
+git ls-files '*.md' '*.kyri' '*.kyri' \
   | grep -vE '(^|/)(date|archive|yonder)/' \
   | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
   | grep -vE '^(gratitude|vendor|external-research|seed)/' \
@@ -87,7 +87,7 @@ while IFS= read -r doc; do
     case "$_line" in
       *published*|*publishes*|*upstream*|*"'s own"*|*vendor*) continue ;;
     esac
-    if printf '%s' "$_line" | grep -qE '\.(rye|rish|sh|md|kyri|bron|brix|txt|glow|zip|img)\b|byte for byte|SHA-?256|SHA3'; then
+    if printf '%s' "$_line" | grep -qE '\.(rye|rish|sh|md|kyri|kyri|brix|txt|glow|zip|img)\b|byte for byte|SHA-?256|SHA3'; then
       printf '%s\t%s\n' "$doc" "$d" >> "$work/seals.txt"
     fi
   done
@@ -102,8 +102,8 @@ done < "$work/docs.txt"
 # GENERIC: the document declares its own reader, and that reader is on the standing roster. A
 # guard that opens a catalog and recomputes every digest in it never spells one, so the spelled
 # test is blind to exactly the strongest form of checking there is -- and it fails in the
-# dangerous direction, calling a wall a silence. `bron-resins/manifest.bron` seals seventeen
-# resins and `tools/b/bron_resins_catalog_witness.rish` recomputes all seventeen every lap; the
+# dangerous direction, calling a wall a silence. `kyri-resins/manifest.kyri` seals seventeen
+# resins and `tools/b/kyri_resins_catalog_witness.rish` recomputes all seventeen every lap; the
 # spelled test read that as seventeen unread seals.
 #
 # THREE CONDITIONS, none of them satisfiable by prose: the document names a `witness ` path under

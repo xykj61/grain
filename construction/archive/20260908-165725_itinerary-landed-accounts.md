@@ -8,7 +8,7 @@
 and holds what is still OPEN. Nothing here was condensed: the PATCHOULI block below stands exactly
 as it was written, with its relative links re-anchored a directory deeper. Two of the three things
 it names have since moved. `seed_link` reads GREEN now -- a peer allowed
-`context/BHAKTA_STYLE.md` into `template-manifest.bron` in the same hour, and the ledger still
+`context/BHAKTA_STYLE.md` into `template-manifest.kyri` in the same hour, and the ledger still
 carries no row for it. The last line handed the next lap `rye/tests/mantra_weave_test.rye`; that lap
 found a second copy one function over -- the LCS diff, whose bounded module was imported by no
 program at all -- and took that instead, and lost it to BAKERY by 119 seconds.*

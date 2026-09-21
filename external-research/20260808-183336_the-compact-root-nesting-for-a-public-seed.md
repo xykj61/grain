@@ -53,7 +53,7 @@ The forty-four doors fall into three honest classes. Only one class wants a phys
 
 The largest root reduction for the *public seed* costs nothing in the private field, because the two-grain manifest already excludes it. These directories never appear in `grainos/grain` at all -- the projection tool simply refuses to copy them:
 
-`keys/`, `session-logs/`, `counsel/`, `bron-resins/`, `press/`, `classical-vedic-astrology/`, `work-in-progress/` (live cards), `saga/` (one steward's season narratives), `rye-learning-process/`, and the personal config siblings (`GLOW_HOST.bron`, `GLOW_PROFILE.bron`, `PUBKEYS.md`). That is roughly **ten root doors gone from the seed** without moving a byte in the private tree -- subtraction by projection, exactly the additive-privacy posture Movement I of the two-grain plan recommended.
+`keys/`, `session-logs/`, `counsel/`, `kyri-resins/`, `press/`, `classical-vedic-astrology/`, `work-in-progress/` (live cards), `saga/` (one steward's season narratives), `rye-learning-process/`, and the personal config siblings (`GLOW_HOST.kyri`, `GLOW_PROFILE.kyri`, `PUBKEYS.md`). That is roughly **ten root doors gone from the seed** without moving a byte in the private tree -- subtraction by projection, exactly the additive-privacy posture Movement I of the two-grain plan recommended.
 
 ### Class 2 -- Nests physically (cheap only where the reference count is small)
 
@@ -128,7 +128,7 @@ grainos/grain  (the seed)
 +-- external-research/ gratitude/ vendor/                 # The Reading Room
 ```
 
-Absent by projection, never subtracted from the private field: `keys/`, `session-logs/`, `counsel/`, `bron-resins/`, `press/`, `classical-vedic-astrology/`, `saga/`, the live `work-in-progress/` cards, and the personal config.
+Absent by projection, never subtracted from the private field: `keys/`, `session-logs/`, `counsel/`, `kyri-resins/`, `press/`, `classical-vedic-astrology/`, `saga/`, the live `work-in-progress/` cards, and the personal config.
 
 ---
 

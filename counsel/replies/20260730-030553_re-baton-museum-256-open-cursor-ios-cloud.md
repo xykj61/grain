@@ -67,7 +67,7 @@ WITNESS:
   rishi/bin/rishi run tools/gen/chapter/sundial.rish
   rishi/bin/rishi run tools/gen/chapter/fascia_metric_v0.rish
 
-SEND: GPG commit · push origin AND xykj61 · session .bron in the same send.
+SEND: GPG commit · push origin AND xykj61 · session .kyri in the same send.
 Refuse shred/deploy/wallet/gas/keys. ]
 ```
 

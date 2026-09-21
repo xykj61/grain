@@ -1,12 +1,12 @@
 //! pond/apps/constel_net_ledger_true.rye -- Constel dev-net ledger, Rung 4: the ledger reads true (the arc closes).
 //!
 //! Rungs one through three ran a sovereign ledger over the fake net's money, reserved stars beside its
-//! topology, and let a folded ledger travel as a `format constel-ledger-v1` Bron record -- all over
+//! topology, and let a folded ledger travel as a `format constel-ledger-v1` Kyri record -- all over
 //! ledgers seated in code. This closing rung carries the reader onto a **real** on-disk ledger record a
 //! keeper can open and add up, and proves the property the whole ledger rests on: what the reader
 //! *reports* about a fake net's supply is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/c/constel_net_ledger.bron`, a genuine `format constel-ledger-v1` record
+//! The corpus is `tools/fixtures/c/constel_net_ledger.kyri`, a genuine `format constel-ledger-v1` record
 //! produced reproducibly by `pond/apps/constel_net_ledger_fixture_gen.rye` (issue 100 - tax 30 - reserve
 //! vega 20 under the law-safe name `xnqvl34`, supply folding to 50), `@embedFile`-bound at compile time
 //! through a symlink in `pond/apps/corpora/` -- no network, the bytes read are the tree's own. Two
@@ -35,17 +35,17 @@ const print = std.debug.print;
 
 const constel_net = @import("constel_net.rye");
 const ledger = @import("constel_net_ledger.rye");
-const bron = @import("constel_net_ledger_bron.rye");
+const kyri = @import("constel_net_ledger_kyri.rye");
 const fold = @import("mycelium_fold.rye");
 
 pub const constel_net_ledger_true_version = "20260813.032037";
 
 /// The real ledger record, bound at compile time -- the tree's own bytes, never a drifting copy.
-const real_ledger = @embedFile("corpora/constel_net_ledger.bron");
+const real_ledger = @embedFile("corpora/constel_net_ledger.kyri");
 
 /// The full error set reading a real ledger can raise: rung three's parse refusals plus the Mycelium
 /// fold's own refusals (an alien signer, an overdraw), propagated whole.
-pub const ReadError = bron.BronError || ledger.AdmitError;
+pub const ReadError = kyri.KyriError || ledger.AdmitError;
 
 /// The three facts a keeper can count by hand: how many facts the ledger holds, its folded supply, and
 /// how many of those facts reserve a star.
@@ -60,7 +60,7 @@ pub const Reading = struct {
 /// by rung three's own reasons; the fold refuses a fact the sovereign did not sign -- here the bytes are
 /// the tree's own, so the reading is honest by construction.
 pub fn read_ledger(text: []const u8) ReadError!Reading {
-    const pl = try bron.parse(text);
+    const pl = try kyri.parse(text);
     // invariant: a real ledger record carries at least one fact -- an empty log is no ledger to read.
     if (pl.fact_count == 0) return error.MissingNet;
     const supply = try pl.supply();
@@ -91,13 +91,13 @@ fn welcome_reading_true_to_bytes() !void {
 /// The record is genuinely a ledger record and genuinely quarantined: re-rendering the parsed ledger
 /// reproduces the embedded bytes exactly, and the recovered name is still law-safe.
 fn welcome_record_is_really_a_ledger() !void {
-    const pl = try bron.parse(real_ledger);
+    const pl = try kyri.parse(real_ledger);
     // the quarantine holds on the real bytes -- the recovered name carries a digit
     assert(constel_net.name_safe(pl.name()));
     assert(std.mem.eql(u8, pl.name(), demo_name));
     // re-rendering the parsed ledger reproduces the embedded bytes exactly -- a real ledger record
-    var buf: [bron.max_record]u8 = undefined;
-    const n = try bron.render(&pl, &buf);
+    var buf: [kyri.max_record]u8 = undefined;
+    const n = try kyri.render(&pl, &buf);
     assert(n == real_ledger.len);
     assert(std.mem.eql(u8, buf[0..n], real_ledger));
     print("constel-net-ledger-true: the real record re-renders to the embedded bytes exactly, and its recovered name is still law-safe.\n", .{});

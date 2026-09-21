@@ -18,7 +18,7 @@ This is the same shape BUHR-J7r3 already proved for artifacts: `tablecloth_brix.
 
 ## Grounding — real modules, no new abstraction
 
-- **The declaration idiom** is `tablecloth_brix`'s own `format …-decl-v1` / `require <name>` shape, read line by line as flat Bron. The certificate reuses it: `format fairtrade-cert-v1`, one `require <criterion>` line per fair-trade requirement.
+- **The declaration idiom** is `tablecloth_brix`'s own `format …-decl-v1` / `require <name>` shape, read line by line as flat Kyri. The certificate reuses it: `format fairtrade-cert-v1`, one `require <criterion>` line per fair-trade requirement.
 - **The record** is a bounded set of named attestations a cooperative holds — the criteria it can honestly claim. Evaluating a certificate against a record is the same *every-required-name-is-held* join, refusing `Unsatisfied` on the first criterion the record lacks, never certifying a gap.
 - **Later rungs reach the signed and the booked halves** (below), grounded in `kumara`'s signing (as `commerce_trade_signed` binds a trade to two identities) and `dimeroll`'s trial-balance conservation (as `commerce_trade` books a fair-value trade) — so a certificate is not only satisfied but *signed by the parties* and *tied to a fairly-booked trade*. Disbursement stays custody gate #3.
 
@@ -26,7 +26,7 @@ This is the same shape BUHR-J7r3 already proved for artifacts: `tablecloth_brix.
 
 1. **AYRE-J7r1 — the certificate satisfied (the crux).** A `format fairtrade-cert-v1` certificate declaring required criteria is evaluated against a cooperative record of held attestations; a record holding every required criterion yields a satisfied certificate naming exactly the criteria met, in declared order; a record missing any required criterion refuses the whole evaluation (`Unsatisfied`) rather than certify a gap. A malformed or empty certificate refuses (`BadCertificate`). Pure declaration-satisfaction, no signing yet — the spine the later rungs wire real identity and books into, known correct first.
 2. **AYRE-J7r2 — the certificate signed.** Each criterion's attestation is signed by the attesting party over the exact fact (mirroring `commerce_trade_signed`); a satisfied certificate requires every attestation's signature to verify, so a steward cannot certify a criterion no party vouched for.
-3. **AYRE-J7r3 — the certificate travels.** The satisfied certificate renders to a `format fairtrade-cert-v1` (or paired manifest) Bron record and parses back byte-for-byte, still satisfied — a portable, verifiable certificate a recipient checks offline (mirroring the receipt-travel rungs).
+3. **AYRE-J7r3 — the certificate travels.** The satisfied certificate renders to a `format fairtrade-cert-v1` (or paired manifest) Kyri record and parses back byte-for-byte, still satisfied — a portable, verifiable certificate a recipient checks offline (mirroring the receipt-travel rungs).
 4. **AYRE-J7r4 — the certificate tied to a fair trade.** The certified cooperative's trade books fairly in Dimeroll (each book nets to zero, the pair conserves across the cash line, as `commerce_trade` proves), so a fair-trade certificate is bound to an honestly-booked fair-value trade — facts only; disbursement is custody gate #3, licensed counsel.
 
 ## Discipline this round keeps

@@ -26,7 +26,7 @@ loom kakoune before=2026.04.12 after=2026.05.21 hash_attempts=2 confirmed_indepe
 loom register foundation=100 design_page=100 sow_witness=GREEN infuse_check=matches
 rota lap 4459, row 4 -- Earth, the row that breathes in. What it surfaced: the concrete facts at the door were a 401, a hash, and a birth time, and each of the three corrected a claim I had already written down.
 file nixos/configuration.nix the template, plus the kakoune overlay at newest stable
-file nixos/local.bron this pier's two keys, sub_excluded from the seed
+file nixos/local.kyri this pier's two keys, sub_excluded from the seed
 file nixos/infuse.sh the composition, with --check and --install
 file .claude/rules/declared-host-config.md the direction, with its Cursor twin
 file foundations/20260909-004934_the-machine-you-can-write-down.md why a machine is written down, register 100

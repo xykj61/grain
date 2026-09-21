@@ -76,7 +76,7 @@ The fleet lives in `bat/` (the folder the vision baton named). Each archetype is
 
 The vision asked for names *in the style of* Battlestar Galactica, One Piece ship names, or Acme/MEGACORP corporate names — **original coinages only**, honoring copyright and never infringing a trademark, safe even in history and Weave. The register these three share is **the vessel that carries a crew across a gulf** and **the firm that carries a ledger across a fiscal year** — a baton carries state across a gulf in attention. So the fleet is named for **ships and trading-houses of an invented line**, drawn from the plain nautical and mercantile commons (a *galleon*, a *barque*, a *corsair* are common nouns no one owns), never from any named ship or company in any of those works.
 
-**Every name below greps to zero across the whole tree** (`.rye`, `.rish`, `.brix`, `.bron`, `.kyri`, `.md`) as of this brief — clear, warm, safe, and collision-free per the comlink-tendency's three tests. None is a real `@p`-shaped token; none is a real company. The copyright discipline is structural: each archetype's exemplar carries a `note original coinage; no named ship or company` line, and the style check turns away any exemplar that names a real vessel or firm.
+**Every name below greps to zero across the whole tree** (`.rye`, `.rish`, `.brix`, `.kyri`, `.md`) as of this brief — clear, warm, safe, and collision-free per the comlink-tendency's three tests. None is a real `@p`-shaped token; none is a real company. The copyright discipline is structural: each archetype's exemplar carries a `note original coinage; no named ship or company` line, and the style check turns away any exemplar that names a real vessel or firm.
 
 ### The six archetypes
 

@@ -11,7 +11,7 @@
 
 **Grounds in:** filetree append-front check-in `20260722.183514` lean **A** - ORGANIZING archive fold - one-clock / dated_guard  
 
-**dated_guard:** Do **not** content-merge dated briefs or `.bron` logs. Do **not** delete `session-logs/archive/`. Ignore is indexing only.
+**dated_guard:** Do **not** content-merge dated briefs or `.kyri` logs. Do **not** delete `session-logs/archive/`. Ignore is indexing only.
 
 ---
 
@@ -30,7 +30,7 @@
 | `vendor/` - `old/` - `vere/` | Study / elder -- open by path when needed |
 | `.cursor-state/` - enclosure leftovers | Machine-local |
 
-Living `session-logs/*.bron` (today's flat day) and living `active-designing/` briefs stay indexable.
+Living `session-logs/*.kyri` (today's flat day) and living `active-designing/` briefs stay indexable.
 
 ---
 

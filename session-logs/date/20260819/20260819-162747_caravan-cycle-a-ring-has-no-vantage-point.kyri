@@ -19,7 +19,7 @@ obs The vantage check is honestly weaker than it looks, and the README says so. 
 loom witness=caravan_cycle_witness asks=4 domains=3 flows=4 grants=8 laps=1 arcs=8 bells=6 rings=3 reach=3of4
 loom red_probe=reversed_edge result=walk_closed_nowhere outcome=the_grants_close_on_no_single_lap
 loom red_probe=chain_declaration result=two_domains_span_other_than_two outcome=the_shape_has_an_end
-file caravan/systems/serial_cycle.bron the ring declaration -- three domains, three circulating regions, one tail, and no ends anywhere in it
+file caravan/systems/serial_cycle.kyri the ring declaration -- three domains, three circulating regions, one tail, and no ends anywhere in it
 file caravan/cycle.rye the ring itself -- the shape derived twice from the grants, a lap that closes without waiting, an ask that comes home, and a whole no domain inside can read
 file tools/caravan_cycle_witness.rish the witness, GREEN on metal, both RED paths proven before the green was trusted
 file caravan/README.md the ladder row and the durable prose -- why a ring has no vantage point

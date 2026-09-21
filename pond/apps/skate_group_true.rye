@@ -1,11 +1,11 @@
 //! pond/apps/skate_group_true.rye -- Chapter 3 Journey 10 (Membership), Rung 4: the group reads true (Journey 10 closes).
 //!
 //! Rungs one through three fixed the quorum rule, signed each vote, and let a signed group travel as
-//! Bron -- all over groups seated in code. This closing rung carries the reader onto a **real** Skate
+//! Kyri -- all over groups seated in code. This closing rung carries the reader onto a **real** Skate
 //! group record a keeper can open and count, and proves the property the whole membership layer rests
 //! on: what the reader *reports* about a group is true to the bytes.
 //!
-//! The corpus is `surf/fixtures/group.bron`, a genuine `format skate-group-v1` record with real Ed25519
+//! The corpus is `surf/fixtures/group.kyri`, a genuine `format skate-group-v1` record with real Ed25519
 //! vote signatures (three founders at quorum 2; two votes admit Bram, one one-sided vote for Cate holds),
 //! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` -- no network, the bytes
 //! read are the tree's own. Two independent readings must agree: the app parses the record through rung
@@ -31,13 +31,13 @@ const print = std.debug.print;
 
 const group_mod = @import("skate_group.rye");
 const signed = @import("skate_group_signed.rye");
-const bron = @import("skate_group_bron.rye");
+const kyri = @import("skate_group_kyri.rye");
 const kumara = @import("kumara.rye");
 
 pub const skate_group_true_version = "20260812.204233";
 
 /// The real group record, bound at compile time -- the tree's own bytes, never a drifting copy.
-const real_group = @embedFile("corpora/skate_group.bron");
+const real_group = @embedFile("corpora/skate_group.kyri");
 
 /// The three facts a keeper can count by hand: founders, votes, and candidates admitted by quorum.
 pub const Reading = struct {
@@ -49,9 +49,9 @@ pub const Reading = struct {
 /// How many distinct votes name this candidate in the parsed record? The record holds each
 /// (voter, candidate) pair once (rung three's reader carries rung two's dedup), so this is a count of
 /// distinct hands.
-fn tally_of(pg: *const bron.PortableGroup, candidate: u32) u32 {
+fn tally_of(pg: *const kyri.PortableGroup, candidate: u32) u32 {
     // invariant: the scan stays within the parsed vote book.
-    assert(pg.vote_count <= bron.max_votes);
+    assert(pg.vote_count <= kyri.max_votes);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < pg.vote_count) : (i += 1) {
@@ -63,7 +63,7 @@ fn tally_of(pg: *const bron.PortableGroup, candidate: u32) u32 {
 /// Count candidates admitted by quorum -- a distinct candidate whose tally reaches the record's quorum.
 /// A candidate is counted once (at the first vote line that names them), so a candidate voted for twice
 /// is not double-counted, and one short of quorum is not counted at all.
-fn admitted_count(pg: *const bron.PortableGroup) u32 {
+fn admitted_count(pg: *const kyri.PortableGroup) u32 {
     var admitted: u32 = 0;
     var i: u32 = 0;
     while (i < pg.vote_count) : (i += 1) {
@@ -83,8 +83,8 @@ fn admitted_count(pg: *const bron.PortableGroup) u32 {
 
 /// Read the real group: parse it and count the three facts. The parse refuses a malformed record by
 /// rung three's own reasons; here the bytes are the tree's own, so the reading is honest by construction.
-pub fn read_group(text: []const u8) bron.BronError!Reading {
-    const pg = try bron.parse(text);
+pub fn read_group(text: []const u8) kyri.KyriError!Reading {
+    const pg = try kyri.parse(text);
     return .{ .founders = pg.founder_count, .votes = pg.vote_count, .admitted = admitted_count(&pg) };
 }
 
@@ -130,7 +130,7 @@ fn welcome_reading_true_to_bytes() !void {
 /// keyring, and the rebuilt group carries Bram's admission and Cate's hold exactly.
 fn welcome_record_is_really_honest() !void {
     const ring = try demo_ring();
-    const pg = try bron.parse(real_group);
+    const pg = try kyri.parse(real_group);
     try pg.still_quorum_honest(&ring); // a hollow or tampered fixture would refuse here
     const group = try pg.rebuild(&ring);
     assert(group.is_member(bram)); // admitted by quorum — a real seat

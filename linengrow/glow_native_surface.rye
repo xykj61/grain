@@ -95,7 +95,7 @@ pub var keyboard_mode: kb_layout.Mode = .letters;
 pub var keyboard_emoji_tab: kb_emoji.Tab = .smileys;
 /// LULU1: active display preset (default scaled_540 -- denser glyphs than panel_max).
 pub var active_preset: hearth.DisplayPreset = .scaled_540;
-/// LULU1: short home from Hearth Bron (default kd).
+/// LULU1: short home from Hearth Kyri (default kd).
 pub var active_home_id: [hearth.home_id_len]u8 = .{ 'k', 'd' };
 /// LULU4: Wired Glass sync-lane preference (default local).
 pub var active_wire: hearth.WireLane = .local;

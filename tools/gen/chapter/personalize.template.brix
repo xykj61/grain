@@ -105,7 +105,7 @@ personalize_guide manual/guides/first-season-personalize.md
 templates_index docs-geode/templates/README.md
 # Personal overlay sync (gitignored instances — not the git tree)
 # Recommend: Dropbox · Syncthing · iCloud Drive · Nextcloud — one tool.
-# Sync PERSONALIZE.brix · first_season_answers.brix · GLOW_*.bron · PUBKEYS.md
+# Sync PERSONALIZE.brix · first_season_answers.brix · GLOW_*.kyri · PUBKEYS.md
 # Never put the whole ~/grain working tree inside Dropbox as primary.
 personal_sync_tool dropbox
 personal_sync_folder ~/Dropbox/grain-personal

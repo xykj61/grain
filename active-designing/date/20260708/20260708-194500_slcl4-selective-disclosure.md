@@ -50,7 +50,7 @@ Each pass inherits **OA-L4** consent-before-counting discipline where reputation
 
 ## Proof Receipt — Fields (Proposed)
 
-The proof receipt is a **`.bron` value** — one field per line, space-separated, no quotes. Field set refined after path correction `023112` (Pedersen + Sigma, Curve25519):
+The proof receipt is a **`.kyri` value** — one field per line, space-separated, no quotes. Field set refined after path correction `023112` (Pedersen + Sigma, Curve25519):
 
 | Field | Meaning |
 |-------|---------|
@@ -70,7 +70,7 @@ Live Sui `groth16` verify may join later as an on-demand seam; v1 offline prove+
 ### In scope (when the lap opens)
 
 - One pass GREEN on metal with welcome + unwelcome verify paths
-- Proof receipt `.bron` golden per pass
+- Proof receipt `.kyri` golden per pass
 - Witness wired to parity increment
 - Offline prove+verify pair in `tools/parity.rish` once green (Zig-native, deterministic)
 - Live Sui verify stays on-demand (same category as chain-read; point 5)

@@ -97,7 +97,7 @@ Full brief: [`../active-designing/20260719-204650_hoon-core-polymorphism-tame-an
 2. Implement thin; witness GREEN (`rishi/bin/rishi run tools/…`).  
 3. Desk suite when desks change: `tools/glow_run_desk_witness.rish`.  
 4. Update `docs/STOA.md` (≤80 lines — merge rows), `TASKS.md`, `ROADMAP.md`, `glow/README.md` on touch, `REMEMBER.md` on pin.  
-5. Bron session log + README index; **send** on Keaton's word (origin + codeberg).  
+5. Kyri session log + README index; **send** on Keaton's word (origin + codeberg).  
 6. Style roster hard ceiling **256** files for Rishi `where` lists — do not dump whole `glow/` onto one roster.
 
 ### Smoke commands (device-free)
@@ -128,7 +128,7 @@ Framework session transcript (if needed): agent id `caef0084-89b7-4416-b1f2-87a2
 ## First message template (paste on iOS)
 
 ```
-Quin — Cursor Grok 4.5 300k High Fast. Pull main. Read work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md and REMEMBER.md. No adb — Glow language TAME only. STOA90 lean A (pronunciation table G1) unless I redirect. Also honor the cores/polymorphism + port-order brief seated this stamp. Session logs Bron; send when I say send.
+Quin — Cursor Grok 4.5 300k High Fast. Pull main. Read work-in-progress/20260719-204650_cursor-ios-handoff-glow-language.md and REMEMBER.md. No adb — Glow language TAME only. STOA90 lean A (pronunciation table G1) unless I redirect. Also honor the cores/polymorphism + port-order brief seated this stamp. Session logs Kyri; send when I say send.
 ```
 
 ---

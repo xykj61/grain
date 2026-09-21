@@ -111,7 +111,7 @@ Kumara decides authority.** None is weakened, and the three meet at one seam.
   seen at that round refuses `Equivocation`, the Dag unchanged), that a cycle-inducing reference refuses,
   and that safety holds while faulty authors stay below the `n/3` Byzantine threshold — the commit over the
   honest sub-DAG is unchanged by a quarantined equivocator.
-- **r3 — the Cord travels.** Render a committed Dag to a `format cord-dag-v1` Bron record — blocks, parents
+- **r3 — the Cord travels.** Render a committed Dag to a `format cord-dag-v1` Kyri record — blocks, parents
   as hex hashes, facts, signatures — and parse it back **byte-for-byte**, the recovered Dag committing to
   the identical order and folding to the identical supply, so a dev-net's consensus crosses as readable text.
 - **r4 — read a real Cord fixture true.** Cross-check the commit of a genuine on-disk Dag fixture against an

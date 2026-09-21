@@ -1,8 +1,8 @@
-//! pond/apps/skate_group_fixture_gen.rye -- generate surf/fixtures/group.bron with real Ed25519 vote signatures.
+//! pond/apps/skate_group_fixture_gen.rye -- generate surf/fixtures/group.kyri with real Ed25519 vote signatures.
 //!
 //! DAHL-J10r4 reads a real Skate group record true. This generator produces that fixture reproducibly:
 //! it builds a demo signed group over the demo keeper seeds and renders it through rung three's own
-//! `render`, so the fixture is exactly what `skate_group_bron` reads -- a genuine `format skate-group-v1`
+//! `render`, so the fixture is exactly what `skate_group_kyri` reads -- a genuine `format skate-group-v1`
 //! record, not a hand-typed shape. The group has three founders (quorum 2); two signed votes admit Bram
 //! (the quorum is met), and one one-sided signed vote for Cate holds (short of quorum), so the record
 //! carries both an admitted candidate and a holding one -- real structure a reader and an awk both count.
@@ -14,13 +14,13 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
 //!   rye build pond/apps/skate_group_fixture_gen.rye -femit-bin=pond/bin/skate-group-fixture-gen
-//!   pond/bin/skate-group-fixture-gen 2> surf/fixtures/group.bron
+//!   pond/bin/skate-group-fixture-gen 2> surf/fixtures/group.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-const bron = @import("skate_group_bron.rye");
+const kyri = @import("skate_group_kyri.rye");
 const signed = @import("skate_group_signed.rye");
 const kumara = @import("kumara.rye");
 
@@ -48,8 +48,8 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-fn build_fixture(ring: *const signed.Keyring) !bron.SignedGroup {
-    var sg = try bron.SignedGroup.open(demo_group, &.{ ivy, wren, flax }, 2);
+fn build_fixture(ring: *const signed.Keyring) !kyri.SignedGroup {
+    var sg = try kyri.SignedGroup.open(demo_group, &.{ ivy, wren, flax }, 2);
     // Two signed votes admit Bram (quorum 2 met).
     const ivy_votes = signed.sign_vote(&ivy_seed, demo_group, ivy, bram);
     const wren_votes = signed.sign_vote(&wren_seed, demo_group, wren, bram);
@@ -67,8 +67,8 @@ fn build_fixture(ring: *const signed.Keyring) !bron.SignedGroup {
 pub fn main() !u8 {
     const ring = try demo_ring();
     var sg = try build_fixture(&ring);
-    var buf: [bron.max_record]u8 = undefined;
-    const n = try bron.render(&sg, &buf);
+    var buf: [kyri.max_record]u8 = undefined;
+    const n = try kyri.render(&sg, &buf);
     print("{s}", .{buf[0..n]});
     return 0;
 }

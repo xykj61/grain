@@ -1,9 +1,9 @@
-# GLOW_HOST.bron — this host's toolchain and OS declaration.
+# GLOW_HOST.kyri — this host's toolchain and OS declaration.
 #
-# Copy this file to GLOW_HOST.bron at the repository root and fill in YOUR
-# values. GLOW_HOST.bron is gitignored (personal, machine-specific absolute
+# Copy this file to GLOW_HOST.kyri at the repository root and fill in YOUR
+# values. GLOW_HOST.kyri is gitignored (personal, machine-specific absolute
 # paths); only this .template is committed, so this works for anyone who
-# clones the fork. This is Grain's own root config — the sibling, in Bron,
+# clones the fork. This is Grain's own root config — the sibling, in Kyri,
 # to .claude/rules and .cursor/rules, but for the host and toolchain rather
 # than agent behavior.
 #
@@ -34,5 +34,5 @@ rye_lib /absolute/path/to/rye/lib
 zig_version 0.16.0
 
 # When this file was last confirmed correct on this host (your one-clock stamp;
-# timezone lives in GLOW_PROFILE.bron, not here).
+# timezone lives in GLOW_PROFILE.kyri, not here).
 checked YYYYMMDD.HHMMSS

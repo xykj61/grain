@@ -37,8 +37,8 @@ arrives loose -- and the page a reader opens first can no longer grow with the r
 disk; within a day, trust the rows. Naming law:
 [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-**The living notation is Kyri** (`.kyri`) -- immutable key-value at the seam, sibling to the elder
-`.bron`, with historical Markdown logs folded under `date/YYYYMMDD/` beside them. Rules:
+**The living notation is Kyri** (`.kyri`) -- immutable key-value at the seam, with historical
+Markdown logs folded under `date/YYYYMMDD/` beside them. Rules:
 [`../.claude/rules/session-logs.md`](../.claude/rules/session-logs.md) -
 the archived twin at [`../.cursor-archive/rules/session-logs.mdc`](../.cursor-archive/rules/session-logs.mdc) (Cursor retired `20260920.135100`). Growth law:
 [`../context/specs/append-only-growth-law.md`](../context/specs/append-only-growth-law.md).

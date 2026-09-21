@@ -81,7 +81,7 @@ let mk = run ["sh" "-c" "mkdir -p ${home}/a ${home}/b ${home}/c ${home}/d"]
 assert mk.ok else "pour_atomic: the plant homes must open -- ${mk.err_brief}"
 
 # --- leg 1: an honest pour lands a vessel both walls accept ---
-let good = "${home}/a/v.bron"
+let good = "${home}/a/v.kyri"
 let pour_good = run ["${home}/bin/amphora" "pour" season good]
 say pour_good.err
 assert pour_good.ok else "pour_atomic: the honest pour must pass -- read the line above"
@@ -117,7 +117,7 @@ say "leg_repour=welcomed_and_identical"
 # Without this the leg above has a cheap explanation: a pour that SAW the standing vessel and
 # declined to do the work would compare equal for a reason that has nothing to do with
 # determinism. Pouring into a path holding nothing takes that reading away.
-let fresh = "${home}/e/v.bron"
+let fresh = "${home}/e/v.kyri"
 let mk_fresh = run ["sh" "-c" "mkdir -p ${home}/e"]
 assert mk_fresh.ok else "pour_atomic: the fresh home must open -- ${mk_fresh.err_brief}"
 let pour_fresh = run ["${home}/bin/amphora" "pour" season fresh]
@@ -188,7 +188,7 @@ let build_elder = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder}/
 say build_elder.err
 assert build_elder.ok else "pour_atomic: the elder binary must build -- read the line above"
 
-let elder_vessel = "${home}/c/v.bron"
+let elder_vessel = "${home}/c/v.kyri"
 let elder_pour = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${elder}/bin/amphora pour ${season} ${elder_vessel}"]
 say elder_pour.err
 assert elder_pour.ok else "pour_atomic: the elder binary must pour an honest vessel first"
@@ -204,7 +204,7 @@ assert elder_unsealed.ok else "pour_atomic: and what the elder pour left carries
 say "leg_wall_removed=elder_loses_the_vessel"
 
 # --- the wall returned: the repaired binary over the same plant keeps every byte ---
-let kept_vessel = "${home}/d/v.bron"
+let kept_vessel = "${home}/d/v.kyri"
 let kept_pour = run ["${home}/bin/amphora" "pour" season kept_vessel]
 say kept_pour.err
 assert kept_pour.ok else "pour_atomic: the repaired binary pours its own plant"
@@ -238,7 +238,7 @@ let build_drift = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_bui
 say build_drift.err
 assert build_drift.ok else "pour_atomic: the drifting seal must build -- read the line above"
 
-let drift_vessel = "${home}/f/v.bron"
+let drift_vessel = "${home}/f/v.kyri"
 let mk_drift_home = run ["sh" "-c" "mkdir -p ${home}/f"]
 assert mk_drift_home.ok else "pour_atomic: the drift home must open -- ${mk_drift_home.err_brief}"
 let drift_first = run ["sh" "-c" "AMPHORA_VESSEL_SEAL=${home}/bin/vessel-seal-drift AMPHORA_VESSEL_CORE=${home}/bin/vessel-core ${home}/bin/amphora pour ${season} ${drift_vessel}"]

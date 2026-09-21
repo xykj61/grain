@@ -52,7 +52,7 @@ The answer is a separate roster: [`tools/crypto_vendored_parity_suite.rish`](../
 
 ## The arc, named -- DISC
 
-Seated `20260821.023219` on Keaton's word (*name the arc and start it*). The draw: `slh-dsa-hash-based-signature-ladder` -> SHA3-512 -> index 1079 of 5526 -> **DISC**, no collision with any seated name. Recorded in `context/LEXICON.md`, `.claude/rules/waymark-ladders.md`, the derive script's exclude roster, and re-sealed into `crux/waymark-registry.bron`, whose witness re-derives every corpus mark on metal.
+Seated `20260821.023219` on Keaton's word (*name the arc and start it*). The draw: `slh-dsa-hash-based-signature-ladder` -> SHA3-512 -> index 1079 of 5526 -> **DISC**, no collision with any seated name. Recorded in `context/LEXICON.md`, `.claude/rules/waymark-ladders.md`, the derive script's exclude roster, and re-sealed into `crux/waymark-registry.kyri`, whose witness re-derives every corpus mark on metal.
 
 The rungs, in the order the structure forces:
 

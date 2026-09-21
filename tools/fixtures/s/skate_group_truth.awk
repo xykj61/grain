@@ -7,7 +7,7 @@
 # counts admitted candidates: a candidate whose distinct-vote tally reaches the quorum. A candidate short
 # of quorum holds and is not counted among the admitted.
 #
-#   awk -f tools/fixtures/s/skate_group_truth.awk surf/fixtures/group.bron
+#   awk -f tools/fixtures/s/skate_group_truth.awk surf/fixtures/group.kyri
 #   -> "<founders> <votes> <admitted>"
 
 /^group /   { quorum = $3 }

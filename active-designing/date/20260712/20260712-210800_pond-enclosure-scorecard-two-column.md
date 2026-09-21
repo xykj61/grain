@@ -7,13 +7,13 @@
 **Style:** Radiant
 **Voice:** Rio 3
 **Last updated:** `20260712.213600` — freeze affirmed · master-seal custody
-**Status:** Checkable — column one frozen · column two gaps named · season-closed **measured** (exit bron and `.asc` absent · master-seal policy ready)
+**Status:** Checkable — column one frozen · column two gaps named · season-closed **measured** (exit kyri and `.asc` absent · master-seal policy ready)
 **Ground:** Claude shape [`20260712-210800_pond-sixbar-claude-shape-exit.md`](20260712-210800_pond-sixbar-claude-shape-exit.md) · baseline pin [`20260712-205600_pond-enclosure-sixbar-baseline.md`](20260712-205600_pond-enclosure-sixbar-baseline.md) · counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md)
 
 **Witness (column one):** `rishi/bin/rishi run tools/pond_enclosure_sixbar.rish`  
-**Witness (two-column living):** `rishi/bin/rishi run tools/pond_enclosure_scorecard.rish` — column one GREEN · gaps named · exit bron and `.asc` absent · master-seal policy · `ENCLOSURE=ai-jail` grepped  
+**Witness (two-column living):** `rishi/bin/rishi run tools/pond_enclosure_scorecard.rish` — column one GREEN · gaps named · exit kyri and `.asc` absent · master-seal policy · `ENCLOSURE=ai-jail` grepped  
 **Witness (column-two probes):** `rishi/bin/rishi run tools/pond_enclosure_col2_probes.rish` — refuse-until-candidate · measured truth · claim nothing  
-**Master-seal helper:** `tools/pond_exit_bron_master_seal.sh` — `--season-closed` · `--require` (VALIDSIG `0646 2132…` alone)
+**Master-seal helper:** `tools/pond_exit_kyri_master_seal.sh` — `--season-closed` · `--require` (VALIDSIG `0646 2132…` alone)
 
 ---
 

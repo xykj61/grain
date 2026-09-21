@@ -23,7 +23,7 @@
 # the four dependents one supervisor holds. The shape with room for three is
 # not a ring at all: it is the most ordinary shape in this tree, one server
 # and its clients. `serve.rye` proved two clients never hear each other's
-# bell, and `serial_three_clients.bron` turns that isolation into room.
+# bell, and `serial_three_clients.kyri` turns that isolation into room.
 #
 # The counterexample is what makes the derivation worth its cost. In that
 # document the virtualiser is declared first and touches every client, so a
@@ -66,15 +66,15 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # Three documents: the two rings measured for the room they lack, and the
 # server-and-clients shape that has room for three.
-let narrow = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_cycle.bron 2>&1"]
+let narrow = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_cycle.kyri 2>&1"]
 assert narrow.ok else "the ring of three could not be read"
 assert narrow.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring of three changed shape"
 
-let ring = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_cycle_wide.bron 2>&1"]
+let ring = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_cycle_wide.kyri 2>&1"]
 assert ring.ok else "the ring of four could not be read"
 assert ring.out contains "domains 4 -- channels 4 -- regions 5 -- grants 10" else "the ring of four changed shape"
 
-let clients = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_three_clients.bron 2>&1"]
+let clients = run ["sh" "-c" "caravan/bin/cohort_read caravan/systems/serial_three_clients.kyri 2>&1"]
 assert clients.ok else "the three-client declaration could not be read"
 assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document changed shape"
 assert clients.out contains "verdict: whole" else "the three-client declaration did not read whole"

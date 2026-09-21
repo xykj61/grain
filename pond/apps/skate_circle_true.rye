@@ -1,11 +1,11 @@
 //! pond/apps/skate_circle_true.rye -- Chapter 3 Journey 9 (Skate), Rung 4: the circle reads true (Journey 9 closes).
 //!
 //! Rungs one through three fixed the consent rule, signed each act, and let a signed circle travel as
-//! Bron -- all over circles seated in code. This closing rung carries the reader onto a **real** Skate
+//! Kyri -- all over circles seated in code. This closing rung carries the reader onto a **real** Skate
 //! circle record a keeper can open and count, and proves the property the whole social layer rests on:
 //! what the reader *reports* about a circle is true to the bytes.
 //!
-//! The corpus is `surf/fixtures/circle.bron`, a genuine `format skate-circle-v1` record with real
+//! The corpus is `surf/fixtures/circle.kyri`, a genuine `format skate-circle-v1` record with real
 //! Ed25519 signatures (three members; one mutual link and one one-sided hold), `@embedFile`-bound at
 //! compile time through a symlink in `pond/apps/corpora/` -- no network, the bytes read are the tree's
 //! own. Two independent readings must agree: the app parses the record through rung three and reports
@@ -29,13 +29,13 @@ const print = std.debug.print;
 
 const skate = @import("skate_circle.rye");
 const signed = @import("skate_circle_signed.rye");
-const bron = @import("skate_circle_bron.rye");
+const kyri = @import("skate_circle_kyri.rye");
 const kumara = @import("kumara.rye");
 
 pub const skate_circle_true_version = "20260812.201611";
 
 /// The real circle record, bound at compile time -- the tree's own bytes, never a drifting copy.
-const real_circle = @embedFile("corpora/skate_circle.bron");
+const real_circle = @embedFile("corpora/skate_circle.kyri");
 
 /// The three facts a keeper can count by hand: members, link requests, and mutual links.
 pub const Reading = struct {
@@ -47,9 +47,9 @@ pub const Reading = struct {
 /// Count the mutual links in a parsed circle -- an unordered pair {a,b} where both `a->b` and `b->a`
 /// appear. Each mutual pair is counted once (when the reciprocal sits at a later index), so a
 /// one-sided hold is never counted among them.
-fn mutual_links(pc: *const bron.PortableCircle) u32 {
+fn mutual_links(pc: *const kyri.PortableCircle) u32 {
     // invariant: the scan stays within the parsed request book.
-    assert(pc.link_count <= bron.max_links);
+    assert(pc.link_count <= kyri.max_links);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < pc.link_count) : (i += 1) {
@@ -66,8 +66,8 @@ fn mutual_links(pc: *const bron.PortableCircle) u32 {
 /// Read the real circle: parse it and count the three facts. The parse refuses a malformed record by
 /// rung three's own reasons; here the bytes are the tree's own, so the reading is honest by
 /// construction.
-pub fn read_circle(text: []const u8) bron.BronError!Reading {
-    const pc = try bron.parse(text);
+pub fn read_circle(text: []const u8) kyri.KyriError!Reading {
+    const pc = try kyri.parse(text);
     return .{ .members = pc.member_count, .links = pc.link_count, .mutual = mutual_links(&pc) };
 }
 
@@ -111,7 +111,7 @@ fn welcome_reading_true_to_bytes() !void {
 /// and the rebuilt circle carries the mutual link and the one-sided hold exactly.
 fn welcome_record_is_really_consented() !void {
     const ring = try demo_ring();
-    const pc = try bron.parse(real_circle);
+    const pc = try kyri.parse(real_circle);
     try pc.still_consented(&ring); // a hollow or tampered fixture would refuse here
     const circle = try pc.rebuild(&ring);
     assert(circle.linked(ivy, wren)); // the mutual link is real

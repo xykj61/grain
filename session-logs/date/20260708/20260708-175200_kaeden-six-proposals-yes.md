@@ -10,7 +10,7 @@ Kaeden: "yes to all" — the six small proposals from counsel `171712`.
 
 ## Thinking trace
 
-Read source counsels `222500`, `223100`, `222812`, `021912`. Applied affirmations across TASKS Open Questions, Realidream lane checkboxes, ROADMAP Visual Track gratitude shelf, LEXICON (Bron, Brix bonds, Silo retirement), and gratitude README with four new shelf notes plus `grain-sketchbook/` hold directory. SLC-L3 untouched — custody gate stays separate.
+Read source counsels `222500`, `223100`, `222812`, `021912`. Applied affirmations across TASKS Open Questions, Realidream lane checkboxes, ROADMAP Visual Track gratitude shelf, LEXICON (Kyri, Brix bonds, Silo retirement), and gratitude README with four new shelf notes plus `grain-sketchbook/` hold directory. SLC-L3 untouched — custody gate stays separate.
 
 ## Observations
 
@@ -26,7 +26,7 @@ Six proposals now carry Kaeden's word `174500` in the living plans. Open Questio
 - `work-in-progress/TASKS.md` — six affirmations; Realidream items checked.
 - `work-in-progress/ROADMAP.md` — gratitude shelf seated.
 - `work-in-progress/README.md` — last updated.
-- `context/LEXICON.md` — Bron, Brix, Silo retirement.
+- `context/LEXICON.md` — Kyri, Brix, Silo retirement.
 - `session-logs/20260708-175200_kaeden-six-proposals-yes.md` — this log.
 - `session-logs/README.md` — index row.
 

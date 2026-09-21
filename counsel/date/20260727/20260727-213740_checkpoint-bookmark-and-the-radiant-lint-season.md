@@ -43,7 +43,7 @@ Lexicon rows and the counsel reply shelf carry the same seats. Collaboration rul
 
 ## Radiant joins the compass
 
-`docs/COMPASS.md` and `docs/compass_card.bron` gain an explicit **Voice** step pointing at `context/RADIANT_STYLE.md`. The foundations return habit keeps its Style header and gains a vocabulary line so "follow our compass" includes how we speak.
+`docs/COMPASS.md` and `docs/compass_card.kyri` gain an explicit **Voice** step pointing at `context/RADIANT_STYLE.md`. The foundations return habit keeps its Style header and gains a vocabulary line so "follow our compass" includes how we speak.
 
 ## The Radiant Lint Chapter (sixteen rounds)
 

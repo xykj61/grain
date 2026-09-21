@@ -13,13 +13,13 @@
 //! Siloed, dev-only, demo host/world/keeper seeds -- no real key, no funds, no network, no world moved.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_fixture_gen.rye \
-//!     2> tools/fixtures/f/freight_manifest.bron
+//!     2> tools/fixtures/f/freight_manifest.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const freight = @import("freight.rye");
-const freight_bron = @import("freight_bron.rye");
+const freight_kyri = @import("freight_kyri.rye");
 const puddle = @import("puddle.rye");
 const cord = @import("cord.rye");
 const lapse = @import("lapse.rye");
@@ -84,7 +84,7 @@ pub fn seat_ledger() ![2]cord.Block {
 }
 
 /// Build the r3 manifest around a freshly-read position -- the fixture the world would carry to its berth.
-pub fn build_manifest() !freight_bron.Manifest {
+pub fn build_manifest() !freight_kyri.Manifest {
     const owner_pk = seeded(owner_byte).public_key.toBytes();
     const berth = seeded(berth_byte).public_key.toBytes();
     const blocks = try seat_ledger();
@@ -92,7 +92,7 @@ pub fn build_manifest() !freight_bron.Manifest {
     for (blocks) |blk| try cord.add(&dag, blk);
     const pos = try freight.read_position(&dag, owner_pk[0..]);
 
-    var m = freight_bron.Manifest{ .id = undefined, .id_len = world_id.len, .berth = undefined, .pos = pos };
+    var m = freight_kyri.Manifest{ .id = undefined, .id_len = world_id.len, .berth = undefined, .pos = pos };
     tally_copy.copy_disjoint(u8, m.id[0..world_id.len], world_id);
     tally_copy.copy_disjoint(u8, m.berth[0..puddle.pk_len], berth[0..puddle.pk_len]);
     // invariant: the fixture world reads the seated position -- balance credit-pledge, reserved pledge.
@@ -103,8 +103,8 @@ pub fn build_manifest() !freight_bron.Manifest {
 
 pub fn main() !void {
     var m = try build_manifest();
-    var buf: [freight_bron.max_record]u8 = undefined;
-    const len = try freight_bron.render(&m, buf[0..]);
+    var buf: [freight_kyri.max_record]u8 = undefined;
+    const len = try freight_kyri.render(&m, buf[0..]);
     // invariant: a rendered fixture is never empty.
     assert(len > 0);
     print("{s}", .{buf[0..len]});

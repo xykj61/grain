@@ -21,7 +21,7 @@ Radiant pass `20260725.105504`
 | P5–P7 | Doctrine + skeletons | counsel · EP · REMEMBER Now · bakeoff scorecard · Claude hook |
 | Session README fold | Coverage GREEN | elder 938 rows · living∪archive 940 · **0 missing** · 2 new (send logs) |
 
-PR #71 MERGED · send log `session-logs/20260724-134541_send-workshop-warehouse.bron`.
+PR #71 MERGED · send log `session-logs/20260724-134541_send-workshop-warehouse.kyri`.
 
 ## What resisted
 

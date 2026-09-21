@@ -41,7 +41,7 @@ pen() {
   mkdir -p "$d/room" "$d/seed/room" "$d/tools/fixtures/s"
   cp "$scan" "$d/tools/fixtures/s/sow_allow_reach_scan.sh"
   cp "$root/tools/fixtures/s/sow_reach_inputs.sh" "$d/tools/fixtures/s/sow_reach_inputs.sh"
-  printf 'allow room\nallow README.md\n' > "$d/template-manifest.bron"
+  printf 'allow room\nallow README.md\n' > "$d/template-manifest.kyri"
   printf 'a room that ships\n' > "$d/room/one.md"
   printf 'front door\n' > "$d/README.md"
   cp "$d/room/one.md" "$d/seed/room/one.md"
@@ -54,7 +54,7 @@ pen() {
     git config user.email pen@example.invalid
     git config user.name pen
     git config commit.gpgsign false
-    git add -A -- room README.md template-manifest.bron
+    git add -A -- room README.md template-manifest.kyri
     git commit -q -m 'pen: one allowed room'
   )
   printf '%s\n' "$d"
@@ -63,14 +63,14 @@ pen() {
 # Each scan runs its pen copy so it reads the pen manifest and index.
 pen_scan() { printf '%s/tools/fixtures/s/sow_allow_reach_scan.sh\n' "$1"; }
 run_scan() {
-  ( SOW_SEED=seed SOW_MANIFEST=template-manifest.bron sh "$(pen_scan "$1")" 2>&1 ) || true
+  ( SOW_SEED=seed SOW_MANIFEST=template-manifest.kyri sh "$(pen_scan "$1")" 2>&1 ) || true
 }
 run_rc() {
-  ( SOW_SEED=seed SOW_MANIFEST=template-manifest.bron sh "$(pen_scan "$1")" >/dev/null 2>&1 ) && echo 0 || echo $?
+  ( SOW_SEED=seed SOW_MANIFEST=template-manifest.kyri sh "$(pen_scan "$1")" >/dev/null 2>&1 ) && echo 0 || echo $?
 }
 
 stamp_receipt() {
-  (cd "$1" && sow_reach_inputs template-manifest.bron > seed/.sow-projection.log)
+  (cd "$1" && sow_reach_inputs template-manifest.kyri > seed/.sow-projection.log)
 }
 
 # ---------------------------------------------------------------------------
@@ -96,8 +96,8 @@ stamp_receipt "$b"
   cd "$b"
   mkdir -p late
   printf 'landed after the projection\n' > late/two.md
-  printf 'allow late\n' >> template-manifest.bron
-  git add -A -- late template-manifest.bron
+  printf 'allow late\n' >> template-manifest.kyri
+  git add -A -- late template-manifest.kyri
   git commit -q -m 'pen: a room allowed after the projection was taken'
 )
 out=$(run_scan "$b")
@@ -137,8 +137,8 @@ check "sibling_commit/rc" "$(run_rc "$b")" "0"
 (
   cd "$b"
   mkdir -p future
-  printf 'allow future\n' >> template-manifest.bron
-  git add template-manifest.bron
+  printf 'allow future\n' >> template-manifest.kyri
+  git add template-manifest.kyri
 )
 stamp_receipt "$b"
 check "barren_room/quiet" "$(run_rc "$b")" "0"
@@ -156,7 +156,7 @@ check "barren_to_shippable/no_accusation" "$(printf '%s\n' "$out" | grep -c '^em
 stamp_receipt "$b"
 check "barren_to_shippable/lifted" "$(run_rc "$b")" "0"
 
-printf '# coverage note\n' >> "$b/template-manifest.bron"
+printf '# coverage note\n' >> "$b/template-manifest.kyri"
 check "unstaged_manifest/rc" "$(run_rc "$b")" "2"
 stamp_receipt "$b"
 check "unstaged_manifest/lifted" "$(run_rc "$b")" "0"
@@ -210,9 +210,9 @@ check "blank_receipt/rc"      "$(run_rc "$d")" "2"
 # ---------------------------------------------------------------------------
 e=$(pen e)
 stamp_receipt "$e"
-out=$( ( SOW_SEED=nowhere-at-all SOW_MANIFEST=template-manifest.bron sh "$(pen_scan "$e")" 2>&1 ) || true )
+out=$( ( SOW_SEED=nowhere-at-all SOW_MANIFEST=template-manifest.kyri sh "$(pen_scan "$e")" 2>&1 ) || true )
 check "absent_seed/refuses" "$(printf '%s\n' "$out" | grep -c 'no projection at' || true)" "1"
-out=$( ( SOW_SEED=seed SOW_MANIFEST=nowhere.bron sh "$(pen_scan "$e")" 2>&1 ) || true )
+out=$( ( SOW_SEED=seed SOW_MANIFEST=nowhere.kyri sh "$(pen_scan "$e")" 2>&1 ) || true )
 check "absent_manifest/refuses" "$(printf '%s\n' "$out" | grep -c 'no manifest at' || true)" "1"
 
 # ---------------------------------------------------------------------------
@@ -291,7 +291,7 @@ check "producer_failure/lifted" "$(run_rc "$a")" "0"
 real_cp=$(command -v cp)
 cat > "$work/bin/cp" <<EOF
 #!/bin/sh
-printf '# moved during copy\\n' >> template-manifest.bron
+printf '# moved during copy\\n' >> template-manifest.kyri
 exec "$real_cp" "\$@"
 EOF
 chmod +x "$work/bin/cp"
@@ -299,7 +299,7 @@ real_cpio=$(command -v cpio || true)
 if [ -n "$real_cpio" ]; then
   cat > "$work/bin/cpio" <<EOF
 #!/bin/sh
-printf '# moved during copy\\n' >> template-manifest.bron
+printf '# moved during copy\\n' >> template-manifest.kyri
 exec "$real_cpio" "\$@"
 EOF
   chmod +x "$work/bin/cpio"

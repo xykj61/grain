@@ -10,7 +10,7 @@ const Dir = std.Io.Dir;
 const ac = @import("ember_core.rye");
 
 const ember_version = "20260710.225320";
-pub const fixture_path = "ember/fixtures/rye_corpus.bron";
+pub const fixture_path = "ember/fixtures/rye_corpus.kyri";
 
 fn load_fixture(io: std.Io) !ac.Catalog {
     const cwd = Dir.cwd();
@@ -103,7 +103,7 @@ fn welcome_path_suffix(io: std.Io) !void {
     const n_combo = try ac.query_corpus(&cat, .{ .kind = .rye, .path_suffix = ".rye" }, hits[0..]);
     assert(n_combo == 2);
 
-    const n_none = try ac.query_corpus(&cat, .{ .path_suffix = ".bron" }, hits[0..]);
+    const n_none = try ac.query_corpus(&cat, .{ .path_suffix = ".kyri" }, hits[0..]);
     assert(n_none == 0);
 
     print("ember: path_suffix filter — rye={d} rish={d}\n", .{ n_rye, n_rish });

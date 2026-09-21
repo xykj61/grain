@@ -1,11 +1,11 @@
 #!/bin/sh
-# tools/fixtures/v/vols_survey_render.sh -- VOLS survey, the census rendered as a Bron ledger.
+# tools/fixtures/v/vols_survey_render.sh -- VOLS survey, the census rendered as a Kyri ledger.
 #
 #   sh tools/fixtures/v/vols_survey_render.sh <root> <guardlist> <stamp>
 #
 # Renders the classified survey census (vols_classify_scan.sh) to a `format cion-survey-v1`
-# Bron record -- a durable artifact the molt (LOWE) reads, rather than a console print that
-# scrolls away. Bron is plain key-value, one field per line, parsed not evaluated
+# Kyri record -- a durable artifact the molt (LOWE) reads, rather than a console print that
+# scrolls away. Kyri is plain key-value, one field per line, parsed not evaluated
 # (context/TAME_GUIDANCE.md; the pond apps' format X-v1 records are kin).
 #
 # Shape:

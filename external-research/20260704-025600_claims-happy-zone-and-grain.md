@@ -49,7 +49,7 @@ Each strand constrains what claims we may write and where they may run.
 | Primitive | Claim type | Happy-zone example |
 |-----------|------------|-------------------|
 | **Keypair** | signature verifies over bytes | `ed25519_sign_test`, `slcl1_receipt` tamper path |
-| **Signed event** | canonical fact fields parse and round-trip | `slcl1_fact.bron` -> canonical bytes |
+| **Signed event** | canonical fact fields parse and round-trip | `slcl1_fact.kyri` -> canonical bytes |
 | **Log** | append-only line format survives parse | hex log line in `linengrow/receipt` |
 | **Projection / fold** | fold from log matches expected state | balance 100; session replay |
 | **Capability** | only entitled actor may change | Caravan capabilities table; Bookie horizon |
@@ -208,7 +208,7 @@ Raising parity does not add a new grain strand; it adds **one more honest claim*
 - SLC complete -- lap claims only spine, scope note lists out-of-scope
 - Seam honesty -- plain file I/O host seam, not Mantra weave yet
 
-**Still vision / unclaimed:** receipt `.bron`, golden file, Open Asks -- grain forbids collapsing these into the L1 witness claim.
+**Still vision / unclaimed:** receipt `.kyri`, golden file, Open Asks -- grain forbids collapsing these into the L1 witness claim.
 
 ---
 

@@ -11,7 +11,7 @@ When Keaton says **"send"** (from any client -- the Cursor iOS app, a desktop, a
 ## Discipline "send" always keeps
 
 - **Signing stays on** (`git-signing`); never bypass it.
-- **A `.bron` session log rides along** in the same send whenever possible (`session-logs`).
+- **A `.kyri` session log rides along** in the same send whenever possible (`session-logs`).
 - **Green before send, when there is code** -- the witness runs GREEN first, or the send honestly names why it could not (`docs-implementation-sync`).
 - **The branch is not left** -- after the fast-forward merge the client rests on `main`.
 

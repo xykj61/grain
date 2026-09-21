@@ -12,7 +12,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 The crypto library authors the mathematics that makes bytes -- hashes, signatures,
 sealed boxes. This module authors the **text those bytes travel in**. A key, a
 signature, a content address, or a sealed frame wears armor to cross a channel that
-passes printable characters. A Bron field is such a channel. So is a URL, and so is a
+passes printable characters. A Kyri field is such a channel. So is a URL, and so is a
 note pasted between two hands.
 
 Both modules keep one discipline. Each primitive is authored **from the standard**, in

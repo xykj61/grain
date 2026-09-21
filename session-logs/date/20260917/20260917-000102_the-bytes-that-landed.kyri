@@ -13,29 +13,29 @@ configured_status evidence .claude/settings.json read 20260916; tools/f/fleet-lo
 voice Kyri
 host Framework laptop, NixOS, America/New_York
 title A resin's bytes are the bytes that landed
-prompt Autonomous lap under the baton -- copal seat, amphora and bron-resins lane.
+prompt Autonomous lap under the baton -- copal seat, amphora and kyri-resins lane.
 rota lap 5192, row 2 -- Fire, the row that sees; cut and stop. Read through its sense the threshold where work should stop, and found a one-sided wall in the room whose whole job is to stay as it landed.
 think Round open clean at 50ef97e30f, no clockout and no gates-only sentinel. Cold endurance run launched detached with --cadence-slice 1; its slice named demo_output last=never.
 think Reds first: of twelve OPEN rows none is agent-closable in this lane. %689 is ruled, built and withdrawn until %680 lands a v3 record, so a lap opens neither.
-think Surveyed the lane. amphora/ carries 28 rostered guards, a couples/covers bound grammar and three comptime ties; the room is mature. bron-resins/ carries one guard over its catalog.
-think The finding came from reading bron-resins/manifest.bron as Gauge asks -- what holds each figure still. Its paragraph WHAT THE SEVENTEEN DIGESTS ARE claims every resin has exactly one commit and unmoved bytes, checked by hand 20260910. Free.
-think The seal reading cannot reach it. bron_resins_catalog recomputes SHA3-256 and compares it to the seal line beside it, and BOTH halves live in the working tree, so a resin edited together with its seal is self-consistent and passes. Git's history is the copy an edit cannot reach.
+think Surveyed the lane. amphora/ carries 28 rostered guards, a couples/covers bound grammar and three comptime ties; the room is mature. kyri-resins/ carries one guard over its catalog.
+think The finding came from reading kyri-resins/manifest.kyri as Gauge asks -- what holds each figure still. Its paragraph WHAT THE SEVENTEEN DIGESTS ARE claims every resin has exactly one commit and unmoved bytes, checked by hand 20260910. Free.
+think The seal reading cannot reach it. kyri_resins_catalog recomputes SHA3-256 and compares it to the seal line beside it, and BOTH halves live in the working tree, so a resin edited together with its seal is self-consistent and passes. Git's history is the copy an edit cannot reach.
 think Claim opened, pushed, then built -- the claim commit was itself refused by the commit-message path wall for naming the two files it existed to create, which is one of this lane's standing asks, met again.
 obs Gated moved at zero and REPORTED uncommitted, commits_multi and readded. Each of those three is something a lawful lap does -- adding a resin, folding a room, restoring one -- and a gate that reds on ordinary work is a gate somebody turns off.
 obs The living catalog is excluded by name. It gains a line whenever a resin lands, so its own bytes move by design: three commits and moved bytes, against one and unmoved for all seventeen resins.
 obs --no-renames is load-bearing rather than incidental. A rename then lands as a delete of the old path and an ADD of the new one, so a folded resin has an adding commit at its new name carrying the blob it always had.
 obs The first working scan asked git twice per file, walking the whole history once per file. Reading the history twice instead and batching the object readings took the scan 4.5s to 1.3s and the control 21s to 6s, which is what let it sit at tier lap rather than tier cadence.
 obs The control's transcript cache, keyed on the repository alone, answered a lifted plant with the planted reading -- a pen is edited and re-read inside one run. The key carries the tree state now and the control says why.
-loom guard=bron_resins_landed scan_ms=1300 control_ms=6000 witness_ms=24418_before_batching resins=17
-loom guard=bron_resins_landed behaviors=42 failed=0 mutations=3
-file tools/fixtures/b/bron_resins_landed_scan.sh the reading -- two history walks, two batched object readings, one awk join
-file tools/fixtures/b/bron_resins_landed_control.sh 42 behaviors on real git repositories in a throwaway pen, three mutations bitten
-file tools/b/bron_resins_landed_witness.rish the gate, with the control's own leg tally asserted at zero
+loom guard=kyri_resins_landed scan_ms=1300 control_ms=6000 witness_ms=24418_before_batching resins=17
+loom guard=kyri_resins_landed behaviors=42 failed=0 mutations=3
+file tools/fixtures/b/kyri_resins_landed_scan.sh the reading -- two history walks, two batched object readings, one awk join
+file tools/fixtures/b/kyri_resins_landed_control.sh 42 behaviors on real git repositories in a throwaway pen, three mutations bitten
+file tools/b/kyri_resins_landed_witness.rish the gate, with the control's own leg tally asserted at zero
 file construction/standing-equipment.kyri the roster row, tier lap, with what it gates and what it reports
-file bron-resins/manifest.bron the free paragraph now names the witness that holds it, and a second witness line
+file kyri-resins/manifest.kyri the free paragraph now names the witness that holds it, and a second witness line
 file construction/ITINERARY.md the account, three elder COPAL blocks merged to one pointer to stay under 40960
 file construction/archive/20260916-234020_itinerary-landed-accounts.md the account born on its shelf, A/91
 file session-logs/date/README-index-20260917.md today's shelf, opened by this lap
-scope one new guard over bron-resins/, its scan and its control; the card, the roster and the catalog's prose
-status GREEN -- bron_resins_landed GREEN on metal, bron_resins_catalog GREEN beside it, exec_bit GREEN, ascii_document under ceiling, listing_census unmoved at 13, roster schema clean and my guard absent from the twelve pre-existing reds
+scope one new guard over kyri-resins/, its scan and its control; the card, the roster and the catalog's prose
+status GREEN -- kyri_resins_landed GREEN on metal, kyri_resins_catalog GREEN beside it, exec_bit GREEN, ascii_document under ceiling, listing_census unmoved at 13, roster schema clean and my guard absent from the twelve pre-existing reds
 recommend keep-going -- the same reading takes a room argument, so session-logs, counsel and the folded shelves are each one roster row away when a word names them

@@ -7,7 +7,7 @@
 # own reader and re-derives the position from the world's real ledger; this awk measures the position a keeper
 # reads straight off the manifest, blind to the ledger behind it.
 #
-#   awk -f tools/fixtures/f/freight_manifest_truth.awk tools/fixtures/f/freight_manifest.bron
+#   awk -f tools/fixtures/f/freight_manifest_truth.awk tools/fixtures/f/freight_manifest.kyri
 #   -> "<balance> <reserved> <received>"
 
 $1 == "balance"  { balance = $2 }

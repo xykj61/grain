@@ -5,12 +5,12 @@
 //! rung carries that signed word *out of the store* as a portable **receipt** for the
 //! same real bytes, and proves it travels as text and returns whole.
 //!
-//! TACT Journey 2 built the receipt machinery (publish_receipt - publish_receipt_bron)
+//! TACT Journey 2 built the receipt machinery (publish_receipt - publish_receipt_kyri)
 //! and proved it over a hand-written demo sentence. Here the receipt vouches for a
 //! **real** tree document -- the same landed-edge waymark green-claim rung one carried,
 //! embedded at compile time through a symlink. The whole chain is proven over real
 //! bytes: a receipt for the real content verifies offline against the publisher's key
-//! (no store, no network), renders to a `format publication-v1` Bron record, parses
+//! (no store, no network), renders to a `format publication-v1` Kyri record, parses
 //! back byte-for-byte, still verifies, and the held **real** content matches the bound
 //! digest. The digest the receipt signs is cross-checked in the witness against an
 //! independent `sha256sum` of the same real file -- two tools, one answer -- so the
@@ -19,7 +19,7 @@
 //! Every tamper refuses: a flipped real byte fails the content half (matches_content),
 //! a wrong keeper key fails the signature half, an unknown record field refuses.
 //!
-//! Additive by construction: it composes publish_receipt / publish_receipt_bron public
+//! Additive by construction: it composes publish_receipt / publish_receipt_kyri public
 //! API over demo keeper seeds only; those demo selftests stay their own GREEN binaries.
 //! No custody crosses (the real key and the serve transport are held gates).
 //!
@@ -30,7 +30,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const receipt_mod = @import("publish_receipt.rye");
-const receipt_bron = @import("publish_receipt_bron.rye");
+const receipt_kyri = @import("publish_receipt_kyri.rye");
 const kumara = @import("kumara.rye");
 
 const provenance_receipt_version = "20260812.190000";
@@ -80,20 +80,20 @@ fn welcome_real_receipt_verifies() !void {
     print("provenance_receipt: real receipt — {d} bytes, sha256 {s}, verified offline\n", .{ receipt.whole_len, hex });
 }
 
-/// The receipt for the real document travels as Bron and returns byte-for-byte, still
+/// The receipt for the real document travels as Kyri and returns byte-for-byte, still
 /// verifying offline and still matching the real content -- provenance outlives the store.
 fn welcome_real_receipt_travels() !void {
-    var buf: [receipt_bron.max_record]u8 = undefined;
+    var buf: [receipt_kyri.max_record]u8 = undefined;
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
-    const n = try receipt_bron.render(&receipt, &buf);
-    const back = try receipt_bron.parse(buf[0..n]);
+    const n = try receipt_kyri.render(&receipt, &buf);
+    const back = try receipt_kyri.parse(buf[0..n]);
     // invariant: the round-tripped receipt equals the original, field for field
     assert(receipts_equal(&receipt, &back));
     // invariant: the recovered receipt still verifies offline
     assert(receipt_mod.verify_offline(&back, pubkey_of(&p_keeper)));
     // invariant: and still matches the real content it vouches for
     assert(receipt_mod.matches_content(&back, real_doc));
-    print("provenance_receipt: real receipt travelled through Bron ({d} bytes) and returned whole, still verifying\n", .{n});
+    print("provenance_receipt: real receipt travelled through Kyri ({d} bytes) and returned whole, still verifying\n", .{n});
 }
 
 /// A single flipped real byte fails the content half even under an authentic signature --
@@ -121,16 +121,16 @@ fn unwelcome_wrong_keeper() !void {
 
 /// An unknown field in the travelled record refuses -- never silently dropped.
 fn unwelcome_unknown_field() !void {
-    var buf: [receipt_bron.max_record]u8 = undefined;
+    var buf: [receipt_kyri.max_record]u8 = undefined;
     const receipt = try receipt_mod.make_publication(&p_keeper, planet_num, doc_name, real_doc);
-    const n = try receipt_bron.render(&receipt, &buf);
+    const n = try receipt_kyri.render(&receipt, &buf);
     // Append a stray field line to the otherwise-valid record.
     const stray = "surprise yes\n";
     // invariant: the record plus the stray line stays inside the buffer
-    assert(n + stray.len <= receipt_bron.max_record);
+    assert(n + stray.len <= receipt_kyri.max_record);
     var i: u32 = 0;
     while (i < stray.len) : (i += 1) buf[n + i] = stray[i];
-    if (receipt_bron.parse(buf[0 .. n + stray.len])) |_| {
+    if (receipt_kyri.parse(buf[0 .. n + stray.len])) |_| {
         return error.UnwelcomePassed;
     } else |err| {
         // invariant: an unknown field refuses rather than drop silently

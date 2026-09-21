@@ -22,7 +22,7 @@ Archive → versioning → standing audit → Maitreya → demand map
 
 ## 1. Archive verdict — say: *for*
 
-> **Amber seals content-addressed resins** — Kumara-signed `.bron` manifest naming SHA3-256 resins cut at content-defined boundaries. Each resin is the stored bytes; the digest is its name and proof; the manifest catalogs. Chunk-store host seam today; tar transport only. Canonical forever-names use SHA3-512 per the two-tier policy in [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md).
+> **Amber seals content-addressed resins** — Kumara-signed `.kyri` manifest naming SHA3-256 resins cut at content-defined boundaries. Each resin is the stored bytes; the digest is its name and proof; the manifest catalogs. Chunk-store host seam today; tar transport only. Canonical forever-names use SHA3-512 per the two-tier policy in [`context/specs/20260703-191112_resins-and-hash-tiers.md`](../context/specs/20260703-191112_resins-and-hash-tiers.md).
 
 **Ground:** Puddle archive verdict · Amber ring 1 · resin spec above.
 

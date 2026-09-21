@@ -16,7 +16,7 @@ fn run_selftest(_: std.process.Init) !u8 {
     print("setu0: waymark {s} -- GREEN\n", .{setu0.waymark});
 
     assert(setu0.fixture_pair_agrees());
-    print("setu0: fixture pointer + Bron agree -- GREEN\n", .{});
+    print("setu0: fixture pointer + Kyri agree -- GREEN\n", .{});
 
     assert(setu0.mismatch_refused());
     print("setu0: home_id mismatch refused -- GREEN\n", .{});

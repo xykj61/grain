@@ -23,14 +23,14 @@ far=$(mktemp -d)
 trap 'rm -rf "$home" "$far"' EXIT
 
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$home" "$STAMP"
-grep -q '^stamp_sig ' "$home/vessel.bron"
-"$ROOT/amphora/bin/vessel-core" verify "$home/vessel.bron" >/dev/null
+grep -q '^stamp_sig ' "$home/vessel.kyri"
+"$ROOT/amphora/bin/vessel-core" verify "$home/vessel.kyri" >/dev/null
 
 sh "$ROOT/tools/fixtures/a/amphora_carry.sh" "$home" "$far"
 sh "$ROOT/tools/fixtures/a/amphora_scrub_arrival.sh" "$far" "$SRC"
 
 # Unwelcome: flip one stamp_sig hex nibble -- scrub/verify must refuse.
-sig_line=$(grep '^stamp_sig ' "$far/vessel.bron")
+sig_line=$(grep '^stamp_sig ' "$far/vessel.kyri")
 # rewrite stamp_sig with a flipped first hex digit
 first=$(printf '%s' "$sig_line" | awk '{print substr($2,1,1)}')
 rest=$(printf '%s' "$sig_line" | awk '{print substr($2,2)}')
@@ -39,12 +39,12 @@ case "$first" in
   *) bad=a ;;
 esac
 {
-  grep -v '^stamp_sig ' "$far/vessel.bron"
+  grep -v '^stamp_sig ' "$far/vessel.kyri"
   printf 'stamp_sig %s%s\n' "$bad" "$rest"
-} > "$far/vessel.bron.bad"
-mv "$far/vessel.bron.bad" "$far/vessel.bron"
+} > "$far/vessel.kyri.bad"
+mv "$far/vessel.kyri.bad" "$far/vessel.kyri"
 
-if "$ROOT/amphora/bin/vessel-core" verify "$far/vessel.bron" 2>/dev/null; then
+if "$ROOT/amphora/bin/vessel-core" verify "$far/vessel.kyri" 2>/dev/null; then
   echo "FAIL tampered stamp_sig should not verify"
   exit 1
 fi

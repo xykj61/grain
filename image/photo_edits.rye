@@ -10,7 +10,7 @@
 //! for: an `EditList` records those verbs *as data*, and `apply` replays the whole list over a source image to
 //! produce a fresh edited image, the source never touched. Replay is deterministic -- the same list over the same
 //! source yields the same bytes every time -- which is the content-address guarantee an edited image never needs
-//! its pixels stored, only the pair (source, edit-list). The list itself travels as a flat-Bron
+//! its pixels stored, only the pair (source, edit-list). The list itself travels as a flat-Kyri
 //! `format photo-edits-v1` record, so `render(parse(render(x)))` is a fixed point. No network, no key, no funds.
 //!
 //! HUNK28 joined the first of the HUNK21+ filter family to this grammar (`saturate`); HUNK29 completes the
@@ -167,7 +167,7 @@ pub fn apply(allocator: std.mem.Allocator, source: *const qoi.Pixmap, list: *con
     return cur;
 }
 
-/// Render an edit-list as its `format photo-edits-v1` Bron record into `out`, one verb per line in held order,
+/// Render an edit-list as its `format photo-edits-v1` Kyri record into `out`, one verb per line in held order,
 /// returning its length. Refuses `Overflow` rather than writing past the buffer a caller supplied.
 pub fn render_edits(list: *const EditList, out: []u8) EditsError!u32 {
     // invariant: a rendered list names at most the edit ceiling.

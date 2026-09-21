@@ -8,7 +8,7 @@
 //! about two parties, so nothing in it could tell an isolated server from
 //! one that simply had no second client to leak to.
 //!
-//! This ring adds the third party. `serial_two_clients.bron` gives BOTH
+//! This ring adds the third party. `serial_two_clients.kyri` gives BOTH
 //! clients the duplex shape, and one run serves them both: the virtualiser
 //! asks each on its own channel, each answers on the region it holds, and
 //! the answers stand side by side without either client ever seeing the
@@ -59,7 +59,7 @@ const caravan_serve_version = "20260819.143515";
 
 /// The declaration two clients need: a receive and a transmit region for
 /// each of them, and no channel or grant joining one client to the other.
-pub const serial_two_clients_path = "caravan/systems/serial_two_clients.bron";
+pub const serial_two_clients_path = "caravan/systems/serial_two_clients.kyri";
 
 /// What an ask is prefixed with before the client it addresses.
 pub const ask_prefix = "serve: ask for ";

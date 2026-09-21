@@ -227,8 +227,8 @@ leg mutation_fixtures_bites 6 "$(read_leg files_read "$out")"
 # MUTATION TWO -- the extension dropped from the Rishi comment test, so a `#` line in a RYE file
 # reads as prose. The comment-versus-code split is the whole finding of this census, and a split
 # that cannot be wrong is not a measurement.
-sed 's@(ext == "rish" || ext == "bron" || ext == "kyri") \&\& @@' "$SCAN" > "$mut"
-leg mutation_two_applied 0 "$(grep -c 'ext == "bron"' "$mut")"
+sed 's@(ext == "rish" || ext == "kyri" || ext == "kyri") \&\& @@' "$SCAN" > "$mut"
+leg mutation_two_applied 0 "$(grep -c 'ext == "kyri"' "$mut")"
 : > "$pen/mod/wrongmark.rye"
 long '# not a Rye comment at all ' 130 >> "$pen/mod/wrongmark.rye"
 out=$(LINE_LENGTH_CORPUS="$pen" sh "$mut" 2>&1)

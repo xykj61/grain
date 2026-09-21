@@ -19,7 +19,7 @@ One reading order carries the whole first day: foundations -> rules -> first wit
 
 ## 1. Why We Build
 
-Start with the compressor when context is short: [`../../docs/COMPASS.md`](../../docs/COMPASS.md) - Bron cold-start card [`../../docs/compass_card.bron`](../../docs/compass_card.bron). Then the raw shelf: [`../../foundations/README.md`](../../foundations/README.md) -- sovereignty, calm, the person owns the device. Compass habit: [`../../foundations/20260826-024943_follow-our-compass.md`](../../foundations/20260826-024943_follow-our-compass.md).
+Start with the compressor when context is short: [`../../docs/COMPASS.md`](../../docs/COMPASS.md) - Kyri cold-start card [`../../docs/compass_card.kyri`](../../docs/compass_card.kyri). Then the raw shelf: [`../../foundations/README.md`](../../foundations/README.md) -- sovereignty, calm, the person owns the device. Compass habit: [`../../foundations/20260826-024943_follow-our-compass.md`](../../foundations/20260826-024943_follow-our-compass.md).
 
 ## 2. How Work Is Shaped
 
@@ -44,7 +44,7 @@ Always-on rules live under `.cursor/rules/`. Read in this order on day one:
 
 1. Quin voice - Radiant Style  
 2. TAME Guidance (`context/TAME_GUIDANCE.md`)  
-3. Session logs (Bron)  
+3. Session logs (Kyri)  
 4. Collaboration (keep-going vs check-in)  
 5. Align - send  
 6. Acme employee voice (for design docs)  
@@ -64,12 +64,12 @@ When it prints GREEN, you stand inside the witness habitat.
 
 ## 6. Log, Then Send
 
-Every turn closes with a Bron session log (`session-logs/YYYYMMDD-HHMMSS_sprig.bron`) and a newest-first row in `session-logs/README.md`. Once work is ready for the pier, **send** (commit - push - merge) -- Cursor's one word for shipping to your own history.
+Every turn closes with a Kyri session log (`session-logs/YYYYMMDD-HHMMSS_sprig.kyri`) and a newest-first row in `session-logs/README.md`. Once work is ready for the pier, **send** (commit - push - merge) -- Cursor's one word for shipping to your own history.
 
 ## 7. Markup Pipeline (orientation only)
 
-prose -> Scribble -> Brix -> Bron -> Mantra -> Seva - Glow programs under TAME.  
-Map: [`../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md`](../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md).
+prose -> Scribble -> Brix -> Kyri -> Mantra -> Seva - Glow programs under TAME.  
+Map: [`../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-kyri.md`](../../external-research/20260717-173427_markup-dsl-fusion-map-glow-brix-kyri.md).
 
 ## What This Tutorial Does Not Yet Claim
 

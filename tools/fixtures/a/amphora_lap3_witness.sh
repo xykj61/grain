@@ -45,13 +45,13 @@ trap 'rm -rf "$source" "$far"' EXIT
 
 # Source holds the full poured bundle.
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$source" "$STAMP"
-test -f "$source/vessel.bron"
+test -f "$source/vessel.kyri"
 test -d "$source/resins"
-grep -q '^seal_cargo ' "$source/vessel.bron"
-grep -q '^stamp_sig ' "$source/vessel.bron"
+grep -q '^seal_cargo ' "$source/vessel.kyri"
+grep -q '^stamp_sig ' "$source/vessel.kyri"
 
 # Far peer receives vessel + manifest only -- resins cross by Comlink fetch.
-cp "$source/vessel.bron" "$source/manifest.bron" "$far/"
+cp "$source/vessel.kyri" "$source/manifest.kyri" "$far/"
 mkdir -p "$far/resins"
 test ! -f "$far/resins/"* 2>/dev/null || {
   # ensure empty resins dir

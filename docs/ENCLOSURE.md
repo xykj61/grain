@@ -37,9 +37,9 @@ Personal `tools/e/enclosure.conf` is gitignored; [`tools/e/enclosure.conf.exampl
 | **`AIJAIL_BIN`** | optional | Pin teacher binary -- v1.12.0 pin proved in example comments; tarball sha256 in witness header |
 | **`USE_GPU`** | `true` (Zed on Wayland) | `/dev/dri` passthrough when true |
 | **`LANE_KVM`** | `false` | A-narrow gate -- `/dev/kvm` only when on |
-| **`ENCLOSURE`** | `ai-jail` | Retreat flag -- flip to `pond` only past master-signed exit bron |
+| **`ENCLOSURE`** | `ai-jail` | Retreat flag -- flip to `pond` only past master-signed exit kyri |
 
-Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless exit bron is present-with-content **and** master-signed -- verified by `tools/p/pond_exit_bron_master_seal.sh`.
+Wrappers honor `ENCLOSURE` before launch. `ENCLOSURE=pond` **refuses** unless exit kyri is present-with-content **and** master-signed -- verified by `tools/p/pond_exit_kyri_master_seal.sh`.
 
 ---
 
@@ -101,9 +101,9 @@ rishi/bin/rishi run tools/p/pond_enclosure_scorecard.rish
 rishi/bin/rishi run tools/p/pond_enclosure_col2_probes.rish
 
 # Master-seal policy / season-closed / require
-tools/p/pond_exit_bron_master_seal.sh --policy
-tools/p/pond_exit_bron_master_seal.sh --season-closed
-tools/p/pond_exit_bron_master_seal.sh --require   # only when exit bron + .asc present
+tools/p/pond_exit_kyri_master_seal.sh --policy
+tools/p/pond_exit_kyri_master_seal.sh --season-closed
+tools/p/pond_exit_kyri_master_seal.sh --require   # only when exit kyri + .asc present
 ```
 
 **Incumbent-anchored cells** record behavior -- never migrate literal ai-jail filenames or teacher binaries into Pond's required column.
@@ -112,7 +112,7 @@ tools/p/pond_exit_bron_master_seal.sh --require   # only when exit bron + .asc p
 
 ## Exit criteria -- six at once
 
-Held in a **single signed scorecard bron** at fixed path `bron-resins/pond-supersede-exit.bron` -- not a checklist in arbitrary order. **Absent** while season sleeps.
+Held in a **single signed scorecard kyri** at fixed path `kyri-resins/pond-supersede-exit.kyri` -- not a checklist in arbitrary order. **Absent** while season sleeps.
 
 | # | Criterion | Measure |
 |---|-----------|---------|
@@ -133,7 +133,7 @@ Full card: [`20260712-210800` exit criteria](../active-designing/date/20260712/2
 
 **Rider 1 -- breadth:** six must include daily editor sitting - full parity suite - QEMU leg - cold start after host reboot.
 
-**Rider 2 -- soak clock:** count begins when column two first goes all-green on a **frozen** candidate; `soak_start_nib <hash>` on exit bron and soak log. **Enforcing-code-resets:** changes to enclosure-enforcing code reset the count (namespaces, mounts, device nodes, seccomp/landlock, lane grant-refuse -- not launch ergonomics).
+**Rider 2 -- soak clock:** count begins when column two first goes all-green on a **frozen** candidate; `soak_start_nib <hash>` on exit kyri and soak log. **Enforcing-code-resets:** changes to enclosure-enforcing code reset the count (namespaces, mounts, device nodes, seccomp/landlock, lane grant-refuse -- not launch ergonomics).
 
 **Rider 3 -- red law:** one red resets count; two reds on one witness **parks** the season.
 
@@ -141,17 +141,17 @@ Full card: [`20260712-210800` exit criteria](../active-designing/date/20260712/2
 
 ## Master seal and ceremony
 
-**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel, so exit bron **counts only when master-signed** -- a detached `.asc` verifies against the master fingerprint proved in `tools/p/pond_exit_bron_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
+**Presence alone does not open the season.** An agent inside the jail could write and sandbox-sign the sentinel, so exit kyri **counts only when master-signed** -- a detached `.asc` verifies against the master fingerprint proved in `tools/p/pond_exit_kyri_master_seal.sh` (isolated keyring holding only `context/keys/gpg_signing_06462132.pub.asc`).
 
 **Chapter states:**
 
 | State | Measured by |
 |-------|-------------|
-| **Closed** | Exit bron and `.asc` absent - `--season-closed` GREEN |
+| **Closed** | Exit kyri and `.asc` absent - `--season-closed` GREEN |
 | **Soaking** | Named build word - frozen candidate - N in progress |
-| **Open** | Exit bron contentful + master `.asc` - `--require` GREEN |
+| **Open** | Exit kyri contentful + master `.asc` - `--require` GREEN |
 
-**Affirmation path (remaining):** Kaeden's **named supersede build word** -> freeze release candidate -> record `soak_start_nib` -> soak under N -> write exit bron -> master-sign on host (cold key only). Ceremony command lives in the exit card witness -- run it from the card.
+**Affirmation path (remaining):** Kaeden's **named supersede build word** -> freeze release candidate -> record `soak_start_nib` -> soak under N -> write exit kyri -> master-sign on host (cold key only). Ceremony command lives in the exit card witness -- run it from the card.
 
 Freeze affirmed: [`213600`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md).
 

@@ -23,7 +23,7 @@
 # MEASURED 20260831 across the tree: 154 program heads carry a block, 928 lines in all, and holding
 # them out moves 130 of those files -- 57 across the B door, one below it, mean +7.2 composite
 # points. Exactly one living non-dated prose file of 1,503 carries a block at all, and it is
-# template-manifest.bron, whose every line reads `template  <path>  # why`.
+# template-manifest.kyri, whose every line reads `template  <path>  # why`.
 #
 # USAGE
 #   awk -v MODE=prose -f reference_block.awk <file>   the lines that are NOT part of a block

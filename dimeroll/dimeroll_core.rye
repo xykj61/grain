@@ -201,7 +201,7 @@ fn trim_line(line: []const u8) []const u8 {
     return std.mem.trim(u8, line, " \t\r\n");
 }
 
-/// Parse one journal entry block from bron-like text:
+/// Parse one journal entry block from kyri-like text:
 /// debit cash\ncredit revenue\namount 1000\nmemo stipend\nstamp 20260710.125953\n
 pub fn parse_entry(text: []const u8, entry: *Entry) error{InvalidEntry, UnknownAccount, BadAmount}!void {
     var debit_set = false;
@@ -309,4 +309,4 @@ pub const welcome_journal =
     \\
 ;
 
-pub const fixture_path = "dimeroll/fixtures/journal.bron";
+pub const fixture_path = "dimeroll/fixtures/journal.kyri";

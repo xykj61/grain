@@ -22,7 +22,7 @@
 # would clear. The two tests separate only outside a ring, and the
 # separation costs the shape: a region joining two domains makes them
 # neighbors, so the mute document is no longer a ring, exactly the price
-# `serial_cycle_bypass.bron` paid for a spare route.
+# `serial_cycle_bypass.kyri` paid for a spare route.
 #
 # How much concurrency a ring permits is arithmetic rather than policy. In a
 # ring every domain is adjacent to two others, so the pairs left over are
@@ -72,21 +72,21 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # Four documents: the ring of three that has no room, the ring of four that
 # has two pairs of it, and the two mirrors that separate the tests.
-let narrow = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle.bron 2>&1"]
+let narrow = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle.kyri 2>&1"]
 assert narrow.ok else "the ring of three could not be read"
 assert narrow.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring of three changed shape"
 
-let wide = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide.bron 2>&1"]
+let wide = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide.kyri 2>&1"]
 assert wide.ok else "the ring of four could not be read"
 assert wide.out contains "domains 4 -- channels 4 -- regions 5 -- grants 10" else "the ring of four changed shape"
 assert wide.out contains "verdict: whole" else "the ring of four did not read whole"
 
-let wired = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_wired.bron 2>&1"]
+let wired = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_wired.kyri 2>&1"]
 assert wired.ok else "the wired declaration could not be read"
 assert wired.out contains "domains 4 -- channels 5 -- regions 5 -- grants 10" else "the wired document changed other than its channels"
 assert wired.out contains "verdict: whole" else "the wired declaration did not read whole"
 
-let mute = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_mute.bron 2>&1"]
+let mute = run ["sh" "-c" "caravan/bin/concurrent_read caravan/systems/serial_cycle_wide_mute.kyri 2>&1"]
 assert mute.ok else "the mute declaration could not be read"
 assert mute.out contains "domains 4 -- channels 4 -- regions 6 -- grants 12" else "the mute document changed other than its regions"
 assert mute.out contains "verdict: whole" else "the mute declaration did not read whole"

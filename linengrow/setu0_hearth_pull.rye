@@ -1,8 +1,8 @@
 //! linengrow/setu0_hearth_pull.rye -- SETU0: Desk parses hearth pulled from Glass.
 //!
-//! Affirmed thin face: USB (adb) carries `hearth_home` + `{id}/hearth.bron`
-//! from the app files dir to Desk; Desk parses Bron. Device-free helpers prove
-//! pointer + Bron agree. Host outer-terminal witness does the real adb pull.
+//! Affirmed thin face: USB (adb) carries `hearth_home` + `{id}/hearth.kyri`
+//! from the app files dir to Desk; Desk parses Kyri. Device-free helpers prove
+//! pointer + Kyri agree. Host outer-terminal witness does the real adb pull.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -36,7 +36,7 @@ pub fn parse_pointer_text(src: []const u8, out: *[hearth.home_id_len]u8) bool {
     return true;
 }
 
-/// Relative hearth path under files/: `{id}/hearth.bron`.
+/// Relative hearth path under files/: `{id}/hearth.kyri`.
 pub fn relative_hearth_from_pointer(
     pointer_text: []const u8,
     out: *[hearth.max_path_len]u8,
@@ -47,18 +47,18 @@ pub fn relative_hearth_from_pointer(
     return n;
 }
 
-/// True when pulled pointer and Bron name the same home_id and Bron parses.
-pub fn pulled_pair_agrees(pointer_text: []const u8, bron_text: []const u8) bool {
+/// True when pulled pointer and Kyri name the same home_id and Kyri parses.
+pub fn pulled_pair_agrees(pointer_text: []const u8, kyri_text: []const u8) bool {
     var home: [hearth.home_id_len]u8 = undefined;
     if (!parse_pointer_text(pointer_text, &home)) return false;
-    const h = hearth.parse_bron(bron_text) catch return false;
+    const h = hearth.parse_kyri(kyri_text) catch return false;
     return std.mem.eql(u8, h.home_id_slice(), home[0..]);
 }
 
-/// Device-free: fixture pointer + Bron agree on `kd`.
+/// Device-free: fixture pointer + Kyri agree on `kd`.
 pub fn fixture_pair_agrees() bool {
     const pointer = "kd\n";
-    const bron =
+    const kyri =
         \\format hearth-lulu0-v1
         \\home_id kd
         \\display_preset scaled_540
@@ -67,23 +67,23 @@ pub fn fixture_pair_agrees() bool {
         \\waymark LULU
         \\
     ;
-    if (!pulled_pair_agrees(pointer, bron)) return false;
+    if (!pulled_pair_agrees(pointer, kyri)) return false;
     var path: [hearth.max_path_len]u8 = undefined;
     const n = relative_hearth_from_pointer(pointer, &path) orelse return false;
-    return std.mem.eql(u8, path[0..n], "kd/hearth.bron");
+    return std.mem.eql(u8, path[0..n], "kd/hearth.kyri");
 }
 
 /// Device-free: mismatched home_id is refused.
 pub fn mismatch_refused() bool {
     const pointer = "ab\n";
-    const bron =
+    const kyri =
         \\format hearth-lulu0-v1
         \\home_id kd
         \\display_preset scaled_540
         \\waymark LULU
         \\
     ;
-    return !pulled_pair_agrees(pointer, bron);
+    return !pulled_pair_agrees(pointer, kyri);
 }
 
 comptime {

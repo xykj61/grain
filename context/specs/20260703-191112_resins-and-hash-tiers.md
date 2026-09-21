@@ -16,7 +16,7 @@ Radiant pass `20260725.035645`
 
 ## Amber and the resin
 
-**Amber** is **cellar software** -- the module and the discipline that seals a moment cold **in place** at home. A **resin** is one content-addressed unit at grain size: the stored bytes at a SHA3 name, cut at a content-defined boundary, listed in a Kumara-signed `.bron` manifest.
+**Amber** is **cellar software** -- the module and the discipline that seals a moment cold **in place** at home. A **resin** is one content-addressed unit at grain size: the stored bytes at a SHA3 name, cut at a content-defined boundary, listed in a Kumara-signed `.kyri` manifest.
 
 **Amphora** is **vessel software** -- the sealed container that carries resins (and other signed cargo) **in motion** across a crossing; it leaves the cellar under Amber's seal law and may return to a second dock for a cold scrub.
 

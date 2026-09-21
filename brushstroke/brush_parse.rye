@@ -38,12 +38,12 @@ pub const max_brush_bytes: u32 = 16 * 1024;
 /// Bound on one pin value (nib name - present word) after trim.
 pub const max_pin_bytes: u32 = 128;
 
-/// Bound on the OPTIONAL `style:` block's token count -- one flat Bron token per
+/// Bound on the OPTIONAL `style:` block's token count -- one flat Kyri token per
 /// line (paper - ink - edge - weight - space - elevate and their kin). Sized to
 /// hold the seam's named token family with headroom, well under infuse's 64.
 pub const max_style_tokens: u32 = 16;
 
-/// Bound on the reassembled `style:` token sheet in bytes -- a bounded Bron buffer
+/// Bound on the reassembled `style:` token sheet in bytes -- a bounded Kyri buffer
 /// tokens.rye's infuse/dress consume directly (infuse's own max_line is 512).
 pub const max_style_bytes: u32 = 512;
 
@@ -142,7 +142,7 @@ fn scan_brush_pins(src: []const u8) ParseError!BrushPins {
             in_style = false;
             continue;
         }
-        // OPTIONAL `style:` block -- a flat Bron token sheet tokens.rye consumes.
+        // OPTIONAL `style:` block -- a flat Kyri token sheet tokens.rye consumes.
         // Additive: a file with no `style:` header never enters this branch, so
         // its parse is byte-for-byte the pre-style behavior.
         if (std.mem.startsWith(u8, body, "style:")) {
@@ -242,7 +242,7 @@ fn count_frame_line(line: []const u8, body: []const u8, line_count: *u32) ParseE
 }
 
 /// Count one indented `style:` token line (`::    key value`). Returns whether
-/// still in-style. A token is a flat Bron pair: a space-delimited key and a
+/// still in-style. A token is a flat Kyri pair: a space-delimited key and a
 /// non-empty value -- exactly what tokens.rye's infuse/dress parse.
 fn count_style_token(line: []const u8, body: []const u8, style_count: *u32) ParseError!bool {
     // invariant: counter never enters past the style-token ceiling
@@ -262,7 +262,7 @@ fn count_style_token(line: []const u8, body: []const u8, style_count: *u32) Pars
 }
 
 /// A well-formed style token is `key value`: a non-empty key, a space, then a
-/// non-empty value -- the flat Bron shape tokens.rye parses. No CSS `:`/`;`, no
+/// non-empty value -- the flat Kyri shape tokens.rye parses. No CSS `:`/`;`, no
 /// braces; the owned tongue only.
 fn style_token_well_formed(text: []const u8) bool {
     const n = slice_len_u32(text);
@@ -340,7 +340,7 @@ pub fn lower_brush(src: []const u8, line_buf: *[max_frame_lines][]const u8) Pars
     return frame;
 }
 
-/// Reassemble the OPTIONAL `style:` block into a flat Bron token sheet in
+/// Reassemble the OPTIONAL `style:` block into a flat Kyri token sheet in
 /// `out` -- `key value\n` per token, exactly the shape tokens.rye's infuse and
 /// dress parse. Returns the byte length written (0 when the file declares no
 /// style block). This is the WADE1 bridge: a `.brush` file -> a token sheet.
@@ -567,7 +567,7 @@ fn prove_seed_fixture(garden: std.mem.Allocator, io: std.Io) !void {
 }
 
 /// Prove the OPTIONAL `style:` block: a `.brush` declaring style pins parses
-/// into a token sheet whose bytes are the flat Bron tokens.rye consumes, and a
+/// into a token sheet whose bytes are the flat Kyri tokens.rye consumes, and a
 /// `.brush` with no style block collects an empty sheet -- additive by default.
 fn prove_style_block() ParseError!void {
     const with_style =

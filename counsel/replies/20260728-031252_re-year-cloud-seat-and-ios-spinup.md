@@ -61,7 +61,7 @@ MISSION (Keaton · counsel/replies/20260728-031252_re-year-cloud-seat-and-ios-sp
      all scopes (outer · inner · innermost · core · quint · future nests).
   3) Distinguish Grain **year** from civil calendar year in the gloss.
   4) Land: Lexicon · short counsel charter (stamp from America/New_York) ·
-     prin lean if honest · REMEMBER bookmark note · session .bron · send.
+     prin lean if honest · REMEMBER bookmark note · session .kyri · send.
 
 FIVE SCOPES (do not advance paused rounds — local Keeh owns quint q2+):
   outer:      Constellation — PAUSED m8/m9
@@ -94,7 +94,7 @@ DELIVERABLES:
   - counsel/YYYYMMDD-HHMMSS_the-year-charter.md (or foundations twin) —
     year map of seasons × scopes; handback rules; hard lines
   - Optional: prin year door that prints the year map without breaking prin scope
-  - session-logs/*.bron + README prepend
+  - session-logs/*.kyri + README prepend
   - GPG commit + push origin + codeberg (round-close send)
   - Closing waymark: year seated · local quint bookmark unchanged unless asked
 

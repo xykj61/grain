@@ -20,7 +20,7 @@
 #   BINDING, from the body, in falling strength:
 #     instrument  a `tools/` path or an instrument-suffixed name (_witness, _scan, _control, _probe,
 #                 _census, _guard) -- the law's own word, a witness.
-#     artifact    a tracked module source, `.rye` `.rish` `.glow` `.brix` `.bron` -- the program the
+#     artifact    a tracked module source, `.rye` `.rish` `.glow` `.brix` `.kyri` -- the program the
 #                 claim is about.
 #     record      a tracked `construction/` pin -- `foundations/20260816-214652_standfast-the-stopped-line.md`
 #                 binds itself this way on its own face, naming `construction/REDS.md` as what
@@ -129,9 +129,9 @@ cut -f1 "$tmp/checkable.txt" > "$tmp/pagelist.txt"
 if [ -s "$tmp/pagelist.txt" ]; then
   grep -lE '(^|[^a-z0-9_])tools/[a-z]{1,3}/[a-z0-9_.-]+|[a-z0-9_]+_(witness|scan|control|probe|census|guard)([^a-z0-9_]|$)' \
     $(cat "$tmp/pagelist.txt") 2>/dev/null | sort -u > "$tmp/instrument.txt" || true
-  grep -lE '[a-z0-9_-]+/[a-z0-9_/.-]+\.(rye|rish|glow|brix|bron|brush)' \
+  grep -lE '[a-z0-9_-]+/[a-z0-9_/.-]+\.(rye|rish|glow|brix|kyri|brush)' \
     $(cat "$tmp/pagelist.txt") 2>/dev/null | sort -u > "$tmp/artifact.txt" || true
-  grep -lE 'construction/[A-Za-z0-9_.-]+\.(md|kyri|bron)' \
+  grep -lE 'construction/[A-Za-z0-9_.-]+\.(md|kyri|kyri)' \
     $(cat "$tmp/pagelist.txt") 2>/dev/null | sort -u > "$tmp/record.txt" || true
 else
   : > "$tmp/instrument.txt"; : > "$tmp/artifact.txt"; : > "$tmp/record.txt"
@@ -154,8 +154,8 @@ keep_tracked() {
 }
 
 keep_tracked 'tools/[a-z]{1,3}/[a-z0-9_.-]+\.(rish|sh|rye)' "$tmp/instrument.txt" "$tmp/instrument.tracked"
-keep_tracked '[a-z0-9_-]+/[a-z0-9_/.-]+\.(rye|rish|glow|brix|bron|brush)' "$tmp/artifact.txt" "$tmp/artifact.tracked"
-keep_tracked 'construction/[A-Za-z0-9_.-]+\.(md|kyri|bron)' "$tmp/record.txt" "$tmp/record.tracked"
+keep_tracked '[a-z0-9_-]+/[a-z0-9_/.-]+\.(rye|rish|glow|brix|kyri|brush)' "$tmp/artifact.txt" "$tmp/artifact.tracked"
+keep_tracked 'construction/[A-Za-z0-9_.-]+\.(md|kyri|kyri)' "$tmp/record.txt" "$tmp/record.tracked"
 
 # An instrument named by BARE NAME rather than by path still binds: the tree writes
 # `nib_honesty_scan.sh` in prose constantly, and refusing that spelling would report a naming

@@ -60,7 +60,7 @@ path proves the cloth degrades to flat color cleanly.
 ### Orbit 4 -- The cascade proven (rounds 46-60)
 
 **Arc.** The infuse cascade grows layered: base tokens, mode overlay, component overlay,
-each a flat Bron sheet folded by per-key infuse, extending `wade1_brush_style_test.rye`.
+each a flat Kyri sheet folded by per-key infuse, extending `wade1_brush_style_test.rye`.
 **Done.** A cascade witness proves layer order and refusal of a planted collision;
 `tame_style_check` green on every touched file.
 **Gates.** The cascade's shape is DJINN's call at gate %6.

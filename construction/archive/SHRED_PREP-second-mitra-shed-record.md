@@ -14,7 +14,7 @@ citer repointed first. The rows stay as the record; the word stays **shred RED**
 
 | Elder cut | Living mutant | Where its references went |
 | --- | --- | --- |
-| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | the council rota's own read list in `docs/compass_card.bron` repointed |
+| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | the council rota's own read list in `docs/compass_card.kyri` repointed |
 | `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | LEXICON, `foundations/README.md`, `gratitude/noah-b-realidream.md` |
 | `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | `foundations/README.md` |
 | `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |

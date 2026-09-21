@@ -22,7 +22,7 @@ STAMP=${3:-20260703.051812}
 
 rm -rf "$OUT"
 mkdir -p "$OUT/resins"
-MANIFEST="$OUT/manifest.bron"
+MANIFEST="$OUT/manifest.kyri"
 
 {
   printf '%s\n' '# cellar ring-1 export manifest'

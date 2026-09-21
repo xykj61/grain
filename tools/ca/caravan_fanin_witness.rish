@@ -52,7 +52,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 # The declaration stands unchanged. Two producers need no new wiring -- the
 # document already grants each client its own private pair of regions, and
 # that private pair is exactly what makes a region name an author.
-let decl = run ["sh" "-c" "caravan/bin/fanin_read caravan/systems/serial_two_clients.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/fanin_read caravan/systems/serial_two_clients.kyri 2>&1"]
 assert decl.ok else "the two-client declaration could not be read"
 assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"
 assert decl.out contains "verdict: whole" else "the two-client declaration did not read whole"

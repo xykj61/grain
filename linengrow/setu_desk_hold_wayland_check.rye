@@ -1,6 +1,6 @@
 //! linengrow/setu_desk_hold_wayland_check.rye -- raster hold from station cache.
 //!
-//! Reads tools/.cache/setu0/station.bron and reports Desk raster lit pixels.
+//! Reads tools/.cache/setu0/station.kyri and reports Desk raster lit pixels.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -9,7 +9,7 @@ const Dir = std.Io.Dir;
 const hold1 = @import("setu_desk_hold1.rye");
 const hold_wl = @import("setu_desk_hold_wayland.rye");
 
-const station_path = "tools/.cache/setu0/station.bron";
+const station_path = "tools/.cache/setu0/station.kyri";
 const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 

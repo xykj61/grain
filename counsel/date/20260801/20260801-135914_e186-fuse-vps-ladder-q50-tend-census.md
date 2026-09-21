@@ -33,7 +33,7 @@ Region is preference on the same SKU: SEA (river) or EWR (Ashburn-near). Guide a
 | tracked_total | — | **8627** |
 
 Rooms (orphan floor): session-logs 689 · counsel 87 · waymarks **84** ·
-expanding-prompts **36** · active-designing **15** · bron-resins 4 ·
+expanding-prompts **36** · active-designing **15** · kyri-resins 4 ·
 external-research 2 · foundations 2 · classical-vedic-astrology 1 · tools 1 (keeps).
 
 Cut held — Class O still waits class-and-rooms. SHRED_PREP floor refreshed.

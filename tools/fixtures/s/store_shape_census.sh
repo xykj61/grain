@@ -14,7 +14,7 @@
 # readings -- how many fields exist, how few records carry most of them, and how often a field
 # repeats inside one record. This census prints those three for each population the tree keeps.
 #
-# THE TWO POPULATIONS, AND WHY THE UNIT DIFFERS. Kyri notation (`.kyri`, and its elder `.bron`)
+# THE TWO POPULATIONS, AND WHY THE UNIT DIFFERS. Kyri notation (`.kyri`, and its .kyri)
 # stores both, and NOTHING IN THE NOTATION SAYS WHICH A FILE IS -- a reader infers it. That is
 # itself a finding and it is why this script takes the unit as an argument rather than guessing:
 #
@@ -72,7 +72,7 @@ if [ -n "${STORE_SHAPE_PEN:-}" ]; then
   find "$STORE_SHAPE_PEN/journal" -type f -name '*.kyri' 2>/dev/null | sort > "$work/journal.txt" || :
   registries=$(find "$STORE_SHAPE_PEN/registry" -type f -name '*.kyri' 2>/dev/null | sort | sed 's/$/:row/')
 else
-  git ls-files 'session-logs/*.kyri' 'session-logs/*.bron' > "$work/journal.txt" 2>/dev/null || :
+  git ls-files 'session-logs/*.kyri' 'session-logs/*.kyri' > "$work/journal.txt" 2>/dev/null || :
 fi
 journal_n=$(wc -l < "$work/journal.txt" | tr -d ' ')
 
@@ -142,8 +142,8 @@ fi
 if [ -z "${registries:-}" ]; then
 registries="construction/standing-equipment.kyri:guard
 construction/fleet-roster.kyri:seat
-construction/domain-registry.bron:domain
-construction/waymark-registry.bron:mark"
+construction/domain-registry.kyri:domain
+construction/waymark-registry.kyri:mark"
 fi
 
 if [ "$want" = all ] || [ "$want" = registry ]; then

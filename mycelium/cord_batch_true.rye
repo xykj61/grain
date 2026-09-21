@@ -10,7 +10,7 @@
 //! the whole consensus rests on: the order and supply the batched Cord reports are
 //! true to the bytes.
 //!
-//! The corpus is `tools/fixtures/c/cord_batch_dag.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/c/cord_batch_dag.kyri`, a genuine record produced
 //! reproducibly by `mycelium/cord_batch_fixture_gen.rye` (the honest two-batch scene
 //! -- issued 1000 - taxed 300 - supply 700 - one star, across two blocks),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no
@@ -35,13 +35,13 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
 const cord_batch = @import("cord_batch.rye");
-const cord_batch_bron = @import("cord_batch_bron.rye");
+const cord_batch_kyri = @import("cord_batch_kyri.rye");
 const fold = @import("fold.rye");
 
 pub const cord_batch_true_version = "20260813.050000";
 
 /// The real batched Cord record, bound at compile time -- the tree's own bytes.
-const real_batch = @embedFile("corpora/cord_batch_dag.bron");
+const real_batch = @embedFile("corpora/cord_batch_dag.kyri");
 
 /// The three facts a keeper can count by hand: how many blocks the batched Cord
 /// bundles, its folded supply, and how many of those facts reserve a star.
@@ -57,11 +57,11 @@ pub const Reading = struct {
 /// agreed order, so committing the rebuilt Dag must reproduce the file's order (the
 /// identity permutation) -- else the record is not a committed Cord and it refuses.
 pub fn read_batch(text: []const u8) !Reading {
-    const pl = try cord_batch_bron.parse(text);
+    const pl = try cord_batch_kyri.parse(text);
     // invariant: a real batched Cord record carries at least one block.
     if (pl.len == 0) return error.BadFormat;
     var dag: cord_batch.BatchDag = undefined;
-    try cord_batch_bron.rebuild(&pl, &dag);
+    try cord_batch_kyri.rebuild(&pl, &dag);
     var order: [cord.cord_max_blocks]u32 = undefined;
     const count = cord_batch.commit_batch(&dag, order[0..]);
     // invariant: the block lines are already in the agreed order, so the app's
@@ -95,9 +95,9 @@ fn welcome_reading_true_to_bytes() !void {
 /// The record is genuinely a committed batched Cord: re-rendering the parsed Dag
 /// reproduces the embedded bytes exactly, and re-committing reproduces the file's order.
 fn welcome_record_is_really_a_cord() !void {
-    const pl = try cord_batch_bron.parse(real_batch);
-    var buf: [cord_batch_bron.max_record]u8 = undefined;
-    const n = try cord_batch_bron.render(&pl, &buf);
+    const pl = try cord_batch_kyri.parse(real_batch);
+    var buf: [cord_batch_kyri.max_record]u8 = undefined;
+    const n = try cord_batch_kyri.render(&pl, &buf);
     // invariant: the re-render reproduces exactly the embedded bytes.
     assert(n == real_batch.len);
     assert(std.mem.eql(u8, buf[0..n], real_batch));

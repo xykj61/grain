@@ -3,7 +3,7 @@ stamp 20260910.125501
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role copal -- the amphora and bron-resins lane
+role copal -- the amphora and kyri-resins lane
 modality text
 model claude-opus-5
 model_status active runtime identity named in the harness environment block

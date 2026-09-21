@@ -26,7 +26,7 @@ Radiant pass `20260725.040728`
 
 - **The law already said stamps come from Keaton, verbatim.** This addendum does not change that rule; it names *which clock* Keaton's wall reads on this specific host, so a future reader -- human or agent -- is not left guessing whether an untagged stamp meant UTC, Pacific, Eastern, or something else.
 - **This is a second, separate host, not a correction to the first.** The macOS clone's own Pacific convention stands exactly as written -- nothing about that document is wrong, and nothing here supersedes it. Two real machines, two real clocks, two conventions, named honestly rather than forced to agree.
-- **Existing dated stamps are not rewritten.** Accrete, never break: every `.bron` log and every dated doc stamped on this host before this addendum, under the earlier Pacific convention (`GLOW_PROFILE.bron`'s own prior `timezone America/Los_Angeles`), keeps its stamp exactly as written. This document governs stamps written on this host **from here forward**.
+- **Existing dated stamps are not rewritten.** Accrete, never break: every `.kyri` log and every dated doc stamped on this host before this addendum, under the earlier Pacific convention (`GLOW_PROFILE.kyri`'s own prior `timezone America/Los_Angeles`), keeps its stamp exactly as written. This document governs stamps written on this host **from here forward**.
 - **The switch is a real, deliberate act, named plainly.** Keaton set this Ubuntu 26.04 LTS GNOME Wayland host's own system clock to New York time; this document exists so the tree's own stamps follow that real change rather than silently drifting out of sync with the machine that actually produces them.
 
 ## In Practice
@@ -35,9 +35,9 @@ Radiant pass `20260725.040728`
 TZ='America/New_York' date '+%Y%m%d.%H%M%S'
 ```
 
-reads the correct stamp for a new `.bron` session log, a new dated spec, or any other one-clock artifact on this host, from this document's own stamp forward.
+reads the correct stamp for a new `.kyri` session log, a new dated spec, or any other one-clock artifact on this host, from this document's own stamp forward.
 
-`GLOW_PROFILE.bron`'s own `timezone` and `timezone_label` fields on this host are updated to match, in the same commit as this document -- the profile is the machine-local pointer; this spec is the durable, committed record of why.
+`GLOW_PROFILE.kyri`'s own `timezone` and `timezone_label` fields on this host are updated to match, in the same commit as this document -- the profile is the machine-local pointer; this spec is the durable, committed record of why.
 
 ## Related
 

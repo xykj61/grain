@@ -1106,10 +1106,10 @@ let zeta0 = run ["sh" "tools/p/parity_time_one.sh" "zeta0" "--" "rishi/bin/rishi
 assert zeta0.ok else "ZETA0 keyboard layout witness failed"
 say "GREEN: ZETA0 keyboard layout witness passed."
 
-say "witness suite: LULU0 -- Hearth Bron mold (home_id + display_preset)..."
+say "witness suite: LULU0 -- Hearth Kyri mold (home_id + display_preset)..."
 let lulu0 = run ["sh" "tools/p/parity_time_one.sh" "lulu0" "--" "rishi/bin/rishi" "run" "tools/h/hearth_lulu0_witness.rish"]
-assert lulu0.ok else "LULU0 hearth Bron mold witness failed"
-say "GREEN: LULU0 hearth Bron mold witness passed."
+assert lulu0.ok else "LULU0 hearth Kyri mold witness failed"
+say "GREEN: LULU0 hearth Kyri mold witness passed."
 
 say "witness suite: LULU1 -- Hearth preset applies to Skate metrics..."
 let lulu1 = run ["sh" "tools/p/parity_time_one.sh" "lulu1" "--" "rishi/bin/rishi" "run" "tools/h/hearth_lulu1_witness.rish"]

@@ -13,4 +13,4 @@ obs Built with the vendored toolchain (RYE_ZIG=vendor/zig-toolchain/zig; rye/ris
 obs Ran under Keaton's standing full-approval mandate for recursive baton rounds. The convergence privacy audit runs in parallel in the background; its findings and the publish-readiness verdict land next.
 file settlement/constellation.rye max_for(sky) added; constellation_max now sky-computed from compass_sky; selftest proves compass 66 / council 31
 file tools/settlement_constellation_witness.rish unchanged; re-run GREEN against the new derivation
-recommend keep-going the constellation_max lap is landed and witnessed; next apply the convergence audit's findings when it lands, then the Bron→Kyri sweep and the Scribe dashboard
+recommend keep-going the constellation_max lap is landed and witnessed; next apply the convergence audit's findings when it lands, then the Kyri→Kyri sweep and the Scribe dashboard

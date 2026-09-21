@@ -37,7 +37,7 @@ The hex log line from SLC-L1 exceeds `wire_format.max_message`; this lap carries
 | Region | Size | Content |
 |--------|------|---------|
 | signature | 64 bytes | Ed25519 over canonical fact |
-| fact_len | u32 LE | length of canonical `.bron` bytes |
+| fact_len | u32 LE | length of canonical `.kyri` bytes |
 | fact | ≤ 256 bytes | canonical fact (fixture fits) |
 
 Encoded in `linengrow/receipt_core.rye`; sealed by `wire_format.sealMessage`.
@@ -86,7 +86,7 @@ Port **38473** — distinct from hosted wire demo (**38472**).
 ### In scope
 
 - Hosted UDP delivery of signed receipt under Comlink seal
-- Reuse `tools/fixtures/slcl1_fact.bron`
+- Reuse `tools/fixtures/slcl1_fact.kyri`
 - Witness green on metal
 
 ### Horizon for later laps

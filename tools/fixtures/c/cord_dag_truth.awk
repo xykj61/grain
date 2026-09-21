@@ -10,7 +10,7 @@
 # the Dag under the Cord's own `add` (re-verifying signatures) and folds the supply through the real law;
 # this awk measures the supply arithmetic a keeper counts, blind to the graph structure.
 #
-#   awk -f tools/fixtures/c/cord_dag_truth.awk tools/fixtures/c/cord_dag.bron
+#   awk -f tools/fixtures/c/cord_dag_truth.awk tools/fixtures/c/cord_dag.kyri
 #   -> "<blocks> <supply> <stars>"
 
 $1 == "block" {

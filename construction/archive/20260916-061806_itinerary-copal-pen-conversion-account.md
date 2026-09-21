@@ -6,7 +6,7 @@
 **Room:** Checkable -- every figure below names the instrument that reads it
 **Style:** Gauge at Meter
 **Voice:** Kyri
-**Seat:** copal -- `amphora/` and `bron-resins/`
+**Seat:** copal -- `amphora/` and `kyri-resins/`
 **Claim:** `copal-am-pen-refusal-release`, opened and pushed before the build
 
 ---

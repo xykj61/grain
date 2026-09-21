@@ -1,7 +1,7 @@
 //! pond/apps/corpus_real_ember.rye -- GISM Journey 5 (Real corpora), Rung 2.
 //!
 //! Rung one carried the reading voice (Scribble) onto a real tree document. This
-//! rung carries the **craft voice** (Ember) onto a real corpus: a Bron catalog of
+//! rung carries the **craft voice** (Ember) onto a real corpus: a Kyri catalog of
 //! chunks (path - kind - line count). Ember's demo read a hand-written catalog whose
 //! line counts were invented numbers; this catalog is **derived at compile time from
 //! real embedded tree files**, so every line count is provably the real file's own --
@@ -72,7 +72,7 @@ fn count_lines(bytes: []const u8) u32 {
     return n;
 }
 
-/// Build a real Bron catalog from the embedded members, each line count measured
+/// Build a real Kyri catalog from the embedded members, each line count measured
 /// from the real bytes. Returns the written slice -- a corpus derived from the tree,
 /// never a hand-written fiction.
 fn build_catalog(out_buf: []u8) error{ResultTooLong}![]const u8 {

@@ -22,7 +22,7 @@ The durable artifact is the **detached receipt** — the signed word made portab
 
 - **r1 — The receipt (the crux).** A `format publication-v1` record carries point · name · length · content-digest · signature. Verification is offline and in two honest halves: the signature verifies over the bound facts by the publisher's keeper key (a forged or wrong-key signature refuses), and — when the recipient holds the content — the content's SHA-256 matches the bound digest (a tampered artifact refuses). Neither half touches a store or a network. Reuses BUHR-J7r4's own signed-message layout so a receipt and a stored publication carry the identical signed word.
 - **r2 — Bound to the constellation.** The receipt names *whose* publication it is: the publisher's Deed verifies against the constellation commitment (the current member), and `place_of` resolves the point to its galaxy/star/planet — so a recipient learns not just that the signature is valid but that it belongs to a settled, current keeper.
-- **r3 — Portable Bron.** The receipt renders to a `format publication-v1` text record and parses back byte-for-byte, so it can be written to a file, pinned in Tablecloth, or carried by hand — a receipt is only useful if it travels.
+- **r3 — Portable Kyri.** The receipt renders to a `format publication-v1` text record and parses back byte-for-byte, so it can be written to a file, pinned in Tablecloth, or carried by hand — a receipt is only useful if it travels.
 - **r4 (serve) — the gate.** Handing the receipt to another keeper over Comlink reaches the **Comlink-served custody gate** — this rung surfaces for the maintainer's word rather than crossing it.
 
 ## What stays a gate

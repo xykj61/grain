@@ -59,9 +59,9 @@ pub const StoreError = error{ Full };
 pub const DimError = error{ BadDim };
 pub const ProfileError = error{ NoDimField, BadDimValue };
 
-// A real Bron dimension profile, embedded at build time. The store reads its active
+// A real Kyri dimension profile, embedded at build time. The store reads its active
 // dimension from this file the way topology loads a sky -- data, not a constant.
-const profile_bron = @embedFile("dim.profile.bron");
+const profile_kyri = @embedFile("dim.profile.kyri");
 
 // Object-storage backing. The whole store serializes to ONE portable blob --
 // the "object" a bucket would hold -- so a fresh node hydrates the entire store from a
@@ -120,11 +120,11 @@ pub const Store = struct {
     }
 };
 
-/// Read the active dimension from a Bron profile's `dim` field. Bron is plain
+/// Read the active dimension from a Kyri profile's `dim` field. Kyri is plain
 /// key-value, one field per line; `#` comments and blank lines are skipped, and the
 /// first `dim <n>` line wins. The value is bounded to 1..=max_dim, refused otherwise.
-pub fn dim_from_profile(bron: []const u8) ProfileError!u32 {
-    var lines = std.mem.splitScalar(u8, bron, '\n');
+pub fn dim_from_profile(kyri: []const u8) ProfileError!u32 {
+    var lines = std.mem.splitScalar(u8, kyri, '\n');
     while (lines.next()) |raw| {
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0 or line[0] == '#') continue;
@@ -140,9 +140,9 @@ pub fn dim_from_profile(bron: []const u8) ProfileError!u32 {
     return error.NoDimField;
 }
 
-/// A fresh, empty store whose active dimension is read from a Bron profile.
-pub fn init_from_profile(bron: []const u8) !Store {
-    return try Store.init(try dim_from_profile(bron));
+/// A fresh, empty store whose active dimension is read from a Kyri profile.
+pub fn init_from_profile(kyri: []const u8) !Store {
+    return try Store.init(try dim_from_profile(kyri));
 }
 
 /// The dot product over the first `dim` components, accumulated in f64 so many small
@@ -422,8 +422,8 @@ pub fn restore(bytes: []const u8) BlobError!Store {
 // city (tag 2), at active dimension 4. Directions legible by hand; vectors are sized
 // to max_dim, the unused tail zero.
 fn seat_store() !Store {
-    // The active dimension comes from the real embedded Bron profile (dim 4).
-    var store = try init_from_profile(profile_bron);
+    // The active dimension comes from the real embedded Kyri profile (dim 4).
+    var store = try init_from_profile(profile_kyri);
     const red: [max_dim]f32 = .{ 1, 0, 0, 0, 0, 0, 0, 0 };
     const green: [max_dim]f32 = .{ 0, 1, 0, 0, 0, 0, 0, 0 };
     const blue: [max_dim]f32 = .{ 0, 0, 1, 0, 0, 0, 0, 0 };
@@ -515,12 +515,12 @@ fn prove_profile_dim() !void {
 }
 
 fn prove_profile_read() !void {
-    // The dimension comes from a REAL embedded Bron profile file (dim.profile.bron).
-    const d = try dim_from_profile(profile_bron);
+    // The dimension comes from a REAL embedded Kyri profile file (dim.profile.kyri).
+    const d = try dim_from_profile(profile_kyri);
     if (d != 4) return error.ProfileDimWrong;
-    const store = try init_from_profile(profile_bron);
+    const store = try init_from_profile(profile_kyri);
     if (store.dim != 4) return error.ProfileInitWrong;
-    // Bron discipline: comments and blank lines skipped, first dim line wins.
+    // Kyri discipline: comments and blank lines skipped, first dim line wins.
     if ((try dim_from_profile("# a comment\n\ndim 3\ndim 7\n")) != 3) return error.CommentOrFirstWinWrong;
     // Malformed, out-of-bound, or missing dim are refused -- never clamped.
     if (dim_from_profile("format x\ndim 0\n")) |_| return error.ZeroProfileAccepted else |_| {}
@@ -679,7 +679,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     try prove_approx();
     try prove_snapshot();
     try prove_file_backing(init);
-    var full_store = try init_from_profile(profile_bron);
+    var full_store = try init_from_profile(profile_kyri);
     try prove_full(&full_store);
 
     print("mandate store: a vector store — upsert normalizes to a unit direction, so a query is a dot product; the nearest by cosine similarity returns most-similar-first, bounded and exact.\n", .{});
@@ -687,7 +687,7 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("mandate store: a tag filters the search (the nearest, but only nature); an upsert on an existing id updates in place, never growing the store.\n", .{});
     print("mandate store: remove drops a record by id (swap-remove, no realloc, no hole); a missing id changes nothing — create, read, update, delete all bounded.\n", .{});
     print("mandate store: the dimension is data — set at init from a profile, bounded by max_dim; one binary serves any dim 1..=max_dim, and an out-of-bound dim is refused.\n", .{});
-    print("mandate store: the dimension is read from a real Bron profile (mandate/dim.profile.bron) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
+    print("mandate store: the dimension is read from a real Kyri profile (mandate/dim.profile.kyri) — comments and blanks skipped, first dim line wins, malformed or out-of-bound refused.\n", .{});
     print("mandate store: an approximate index (SimHash LSH over fixed hyperplanes) scores only candidates within a bounded Hamming radius of the query's signature — same-bucket recall, fewer records touched; full radius degrades to exact.\n", .{});
     print("mandate store: object-storage backing — the whole store serializes to one portable blob (magic·version·dim·records), so a fresh node hydrates the entire store from a single object; snapshot/restore round-trips and corruption is refused.\n", .{});
     print("mandate store: the sixty-fifth record refuses by Full — the count holds at the ceiling, and remove opens the door again, since the bound is the live count rather than a latch.\n", .{});

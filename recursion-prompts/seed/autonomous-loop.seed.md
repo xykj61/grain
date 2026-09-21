@@ -304,7 +304,7 @@ rather than as history.
   all go quiet while every text reference is repointed correctly (`%169`, `%166`).
 - **Say `xy` for the field and `seed` for the projection.** `xy` is `xykj61/grain`: private, full
   history, every room. The seed is `grain-os/grain`: public, depersonalized, one Option-B commit,
-  and only the rooms `template-manifest.bron` allows. They were both being called *the grain repo*,
+  and only the rooms `template-manifest.kyri` allows. They were both being called *the grain repo*,
   and they are opposite things.
 
 **Two settled questions, so a lap does not reopen them.** The `%NNN` REDS row pattern **stands** --

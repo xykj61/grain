@@ -9,7 +9,7 @@
 #
 # Mycelium's front page answers the same problem a better way, and that is what this guard is
 # shaped around. Rather than listing all ninety-eight modules, mycelium/README.md names 31 base
-# modules in its nine-family map and publishes a SUFFIX TABLE -- `_bron`, `_true`, `_knot`,
+# modules in its nine-family map and publishes a SUFFIX TABLE -- `_kyri`, `_true`, `_knot`,
 # `_fixture_gen`, `_bench` -- so a companion module is reachable by rule instead of by row. That
 # rule reaches 95 of the 98 on its own, which is why the page stayed short and stayed honest.
 #

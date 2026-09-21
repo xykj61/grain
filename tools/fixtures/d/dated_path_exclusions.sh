@@ -315,9 +315,9 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   file asks for, so a healthy tree reads exactly what it read before the narrowing:
 #
 #     20260702-090000_theta.md      -> tools/rye/session_logs_archive.rye, a fold test's fixture path
-#     20260716-145955_rune.bron     -> tools/rye/session_logs_archive.rye, should_fold_flat input
-#     20260717-125858_skate.bron    -> tools/rye/session_logs_archive.rye, should_fold_flat input
-#     20260713-201910_old.bron      -> scribe/reader.rye, is_scribe_extension input
+#     20260716-145955_rune.kyri     -> tools/rye/session_logs_archive.rye, should_fold_flat input
+#     20260717-125858_skate.kyri    -> tools/rye/session_logs_archive.rye, should_fold_flat input
+#     20260713-201910_old.kyri      -> scribe/reader.rye, is_scribe_extension input
 #     20260810-113354_a-log.kyri    -> scribe/reader.rye, is_scribe_extension input
 #
 #   AND ONE NAME NO FILE EVER WORE. `20260816-205859_double-seat-expansion-eight-chapters.md` was
@@ -359,9 +359,9 @@ DP_FIXTURE_BASENAMES="20260905-183418_the-handoff-from-the-eight-core-round.md \
 20260703-235912_diet-and-the-crossing-manifest.md \
 20260811-220402_wade-bit-design-system-and-dimeroll-entities.md \
 20260702-090000_theta.md \
-20260716-145955_rune.bron \
-20260717-125858_skate.bron \
-20260713-201910_old.bron \
+20260716-145955_rune.kyri \
+20260717-125858_skate.kyri \
+20260713-201910_old.kyri \
 20260810-113354_a-log.kyri \
 20260816-205859_double-seat-expansion-eight-chapters.md \
 20260826-021735_earth-the-row-that-smells.md \
@@ -533,7 +533,7 @@ dp_discovered_fixture_basenames() {
       | grep -v '^tools/fixtures/d/dated_path_exclusions.sh$' \
       | grep -E '_(control|witness|scan)\.(rye|rish|sh|brix)$' \
       | xargs sed -e 's/^[[:space:]]*#.*$//' -e 's|^[[:space:]]*//.*$||' 2>/dev/null \
-      | grep -oE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)' \
+      | grep -oE '[0-9]{8}-[0-9]{6}[_.][A-Za-z0-9._-]+\.(md|kyri|kyri|rye|rish|tsv|brix|glow|sh)' \
       | sort -u > "$_dp_root/.dp_cand.$$"
     # ONE `awk` RATHER THAN THREE FORKS PER CANDIDATE. The elder shape here ran a `printf`, a
     # `sed`, and a `grep -qxF` for each of the 365 candidate basenames -- 1,095 processes, measured

@@ -19,8 +19,8 @@ let season = "tools/fixtures/amphora_first_resident_counsel"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_first_resident"
-let vessel = "${home}/counsel.bron"
-let out = "${home}/counsel.bron.season"
+let vessel = "${home}/counsel.kyri"
+let out = "${home}/counsel.kyri.season"
 # The witness builds the binaries it runs (REDS %334: a build named in a comment builds
 # nothing). The directory is made first: rye build refuses an absent -femit-bin directory
 # with "unable to open output directory", so a clone died here even with the build line.

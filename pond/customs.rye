@@ -6,7 +6,7 @@
 //!   rye build pond/customs.rye -femit-bin=pond/bin/customs
 //!   pond/bin/customs selftest
 //!   pond/bin/customs mark <tilak>
-//!   pond/bin/customs inspect <manifest.bron>
+//!   pond/bin/customs inspect <manifest.kyri>
 //!
 //! Ground: marked value [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md)
 //! - sealed crossing [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)

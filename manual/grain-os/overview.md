@@ -24,7 +24,7 @@
 | Umbrella | **Grain** | the whole system, by **Keaton Dunsford** / `xykj61` (dated Dunsford filing stays in elder stamps) | named; was Rye OS |
 | Variants | **Reya - Riyo - Trey - Triz - Quin** | five switchable OS builds, all in Glow | **five confirmed** (pairs `20260714.035600`; Quin fifth `20260717.162114`) |
 | Kernel spine | state as a pure fold over an append-only log of signed facts | the transition-function model | already this fork's stated spine |
-| Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Bron, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
+| Modules | Rishi, Mantra, Comlink, Caravan, Tally, Brix, Kyri, Aurora, Pond, Scribble, and the rest | the running seeds | many green today under the prior name |
 
 **Names, plainly.** The standing writing voice is **Kyri** ([`../../context/KYRI.md`](../../context/KYRI.md), molted from Riyo `20260810`). **Quin** remains the fifth OS variant and the inference Q-vane ([`../../context/QUIN.md`](../../context/QUIN.md)) -- the OS-variant name **Riyo** in the table above names a boot image, rather than the writing companion.
 

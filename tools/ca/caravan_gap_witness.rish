@@ -70,7 +70,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # The shape under test is the ring already proven, unchanged. The question
 # here is about a fall rather than about a shape, so nothing new is declared.
-let decl = run ["sh" "-c" "caravan/bin/gap_read caravan/systems/serial_cycle.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/gap_read caravan/systems/serial_cycle.kyri 2>&1"]
 assert decl.ok else "the ring declaration could not be read"
 assert decl.out contains "system serial_cycle" else "the ring declaration lost its name"
 assert decl.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"

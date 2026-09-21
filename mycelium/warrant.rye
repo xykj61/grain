@@ -26,7 +26,7 @@
 //!   - the count meets the PREVIOUS roll's Byzantine threshold (else BelowQuorum -- a thin handoff, short of
 //!     the outgoing set's own bar, is not yet a lawful succession).
 //!
-//! Composes muster - muster_bron - kumara public API only, editing none; the succession law is the
+//! Composes muster - muster_kyri - kumara public API only, editing none; the succession law is the
 //! Warrant's own bounded fold over two rolls and a quorum of the first. Siloed, dev-only, demo validator and
 //! keeper seeds -- no real key, no funds, no network, no custody. A SERVED warrant (a holder fetching the
 //! live succession chain over Comlink) reaches the Comlink-served gate.
@@ -38,7 +38,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const Sha256 = std.crypto.hash.sha2.Sha256;
 const muster = @import("muster.rye");
-const muster_bron = @import("muster_bron.rye");
+const muster_kyri = @import("muster_kyri.rye");
 const kumara = @import("kumara.rye");
 const tally_copy = @import("tally_copy.rye");
 
@@ -71,7 +71,7 @@ pub const WarrantError = error{
     NotMember, // an endorser is not an enrolled member of the previous roll — an outsider never authorizes
     BadSignature, // an endorsement did not verify over the bound tuple
     BelowQuorum, // fewer endorsements than the previous roll's Byzantine threshold — a thin handoff
-} || muster_bron.BronError;
+} || muster_kyri.KyriError;
 
 /// One outgoing validator's endorsement of a handoff -- its key and its signature over the bound tuple.
 pub const Endorsement = struct {
@@ -98,13 +98,13 @@ pub const Warrant = struct {
 
 /// The content-address of a roll: SHA-256 over its canonical `format muster-v1` bytes, so two rolls that
 /// name the same validators in the same order share one digest and any change is visible in the address.
-pub fn roll_digest(m: *const muster.Muster, out: *[digest_len]u8) muster_bron.BronError!void {
+pub fn roll_digest(m: *const muster.Muster, out: *[digest_len]u8) muster_kyri.KyriError!void {
     // invariant: the roll honors its static bound.
     assert(m.len <= muster.muster_max_members);
     // invariant: a SHA-256 digest is exactly thirty-two bytes.
     assert(digest_len == 32);
-    var buf: [muster_bron.max_record]u8 = undefined;
-    const n = try muster_bron.render(m, buf[0..]);
+    var buf: [muster_kyri.max_record]u8 = undefined;
+    const n = try muster_kyri.render(m, buf[0..]);
     Sha256.hash(buf[0..n], out, .{});
 }
 
@@ -129,7 +129,7 @@ fn warrant_body(epoch: u32, prev_digest: *const [digest_len]u8, next_digest: *co
 
 /// Open a handoff certificate for a rotation -- computing both roll digests from the actual rolls, with no
 /// endorsements yet. The epoch is the successor's sequence number, monotone across a chain of handoffs.
-pub fn open(epoch: u32, prev: *const muster.Muster, next: *const muster.Muster) muster_bron.BronError!Warrant {
+pub fn open(epoch: u32, prev: *const muster.Muster, next: *const muster.Muster) muster_kyri.KyriError!Warrant {
     // invariant: both rolls honor the static bound before a digest is taken.
     assert(prev.len <= muster.muster_max_members);
     assert(next.len <= muster.muster_max_members);

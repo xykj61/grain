@@ -1,8 +1,8 @@
 # tools/d/dahl_j11_council_sky_true_witness.rish -- Chapter 3 Journey 11 (Council skies), Rung 4 (Journey 11 closes).
 #
 # Rungs one through three fixed the council rule, signed each ballot, and let a signed council travel as
-# Bron -- all over councils seated in code. This closing rung carries the reader onto a real council record
-# a keeper can open and count. pond/apps/council_sky_true.rye @embedFile-binds surf/fixtures/council.bron
+# Kyri -- all over councils seated in code. This closing rung carries the reader onto a real council record
+# a keeper can open and count. pond/apps/council_sky_true.rye @embedFile-binds surf/fixtures/council.kyri
 # (a genuine format council-sky-v1 record with real Ed25519 ballot signatures -- the council sky's triad,
 # size 3, quorum 2; two yes-ballots decide proposal A, one yes-ballot holds proposal B open; produced
 # reproducibly by pond/apps/council_sky_fixture_gen.rye, demo seeds only) through a pond/apps/corpora/
@@ -37,7 +37,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j11r4: tamper refusa
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "dahl-j11r4: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/c/council_sky_truth.awk surf/fixtures/council.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/council_sky_truth.awk surf/fixtures/council.kyri"]
 assert awk.ok else "dahl-j11r4: awk truth read failed"
 assert app.out contains "3 3 1" else "dahl-j11r4: app triple not 3 3 1"
 assert awk.out contains "3 3 1" else "dahl-j11r4: awk triple not 3 3 1"
@@ -47,7 +47,7 @@ assert app.out == awk.out else "dahl-j11r4: app and awk disagree — the reading
 let r1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky.rye -femit-bin=pond/bin/council-sky && pond/bin/council-sky selftest 2>&1"]
 assert r1.ok else "dahl-j11r4: r1 did not stay GREEN"
 assert r1.out contains "GREEN" else "dahl-j11r4: r1 GREEN missing"
-let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_bron.rye -femit-bin=pond/bin/council-sky-bron && pond/bin/council-sky-bron selftest 2>&1"]
+let r3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/council_sky_kyri.rye -femit-bin=pond/bin/council-sky-kyri && pond/bin/council-sky-kyri selftest 2>&1"]
 assert r3.ok else "dahl-j11r4: r3 did not stay GREEN"
 assert r3.out contains "GREEN" else "dahl-j11r4: r3 GREEN missing"
 

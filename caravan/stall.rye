@@ -45,7 +45,7 @@
 //! attempt is refused `WriteDenied` before a byte moves. **The side that
 //! bears the loss is the only side that can report it drained.**
 //!
-//! Nothing in `serial_two_clients.bron` changes. The same regions that
+//! Nothing in `serial_two_clients.kyri` changes. The same regions that
 //! carried asks toward a server now carry answers back.
 //!
 //! Hosted ground: real processes, real files, pure policy, no kernel

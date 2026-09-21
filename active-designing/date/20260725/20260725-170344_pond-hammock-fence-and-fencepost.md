@@ -107,7 +107,7 @@ Bar6 three-door measure on this host (example sitting): `bus_env=set` · `bus_so
 
 **Exit re-read with the enforcement line drawn:**
 
-- Flip becomes **removing** the outer fence after a season of evidence (exit bron · master seal · N durability).  
+- Flip becomes **removing** the outer fence after a season of evidence (exit kyri · master seal · N durability).  
 - Retreat means **keeping** `ENCLOSURE=ai-jail` — something already running. Trivial by construction.  
 - Criterion 6 on the exit card still holds; the *story* of the flip changes from “swap walls” to “remove scaffolding.”
 

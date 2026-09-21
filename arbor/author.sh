@@ -177,7 +177,7 @@ prepare_descriptor() {
     safe_relative_path "$output"
     safe_relative_path "$catalog"
     case "$output" in arbor/*.arbor) ;; *) fail 'descriptor output must stay under arbor/ and end in .arbor' ;; esac
-    case "$catalog" in arbor/*.bron) ;; *) fail 'descriptor catalog must stay under arbor/ and end in .bron' ;; esac
+    case "$catalog" in arbor/*.kyri) ;; *) fail 'descriptor catalog must stay under arbor/ and end in .kyri' ;; esac
     check_arbor_file "$rendered_file" "$output"
     line_count=$(wc -l < "$rendered_file" | tr -d ' ')
     make_catalog "$output" "$line_count" "$catalog_file"
@@ -204,7 +204,7 @@ case "$command" in
         temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/grain-arbor.XXXXXX")
         rendered_file="$temp_dir/rendered.arbor"
         meta_file="$temp_dir/meta.txt"
-        catalog_file="$temp_dir/catalog.bron"
+        catalog_file="$temp_dir/catalog.kyri"
         trap 'rm -f "$rendered_file" "$meta_file" "$catalog_file"; rmdir "$temp_dir"' EXIT HUP INT TERM
         prepare_descriptor "$subject"
         case "$command" in

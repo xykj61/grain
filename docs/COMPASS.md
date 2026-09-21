@@ -14,7 +14,7 @@
 
 ## Thesis -- meet the rose before the cathedral
 
-Grain keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay whole. When time or context runs short, start here, then open one pointed source. A Bron pointer twin lives at [`compass_card.bron`](compass_card.bron).
+Grain keeps why-briefs in `foundations/` and living law in `context/`. Those shelves stay whole. When time or context runs short, start here, then open one pointed source. A Kyri pointer twin lives at [`compass_card.kyri`](compass_card.kyri).
 
 ## The rose (oldest conviction -> newest lap)
 
@@ -61,19 +61,19 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md), the Cursor loop secti
 |---------|------|
 | [`cursor-and-the-compass.md`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md) | Fossil -- stitched first-day path, retired `20260920.135100` |
 | [`../manual/grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
-| Markup pipeline silo | Scribble -> Brix -> Bron -> Mantra -> Seva |
+| Markup pipeline silo | Scribble -> Brix -> Kyri -> Mantra -> Seva |
 
 ## What this page refuses
 
 - Archiving foundations into `archive/` for token budget.
-- Rewriting dated essays into Bron.
+- Rewriting dated essays into Kyri.
 - Claiming GREEN for visionary why -- Status here is checkable *as a compressor* (links + reading order), rather than as a product witness.
 
 ## Hands-on
 
 ```bash
 # cold-start order (paths only)
-cat docs/compass_card.bron
+cat docs/compass_card.kyri
 # first GREEN in the habitat
 rishi/bin/rishi run tools/g/glow_expr_witness.rish
 ```

@@ -10,4 +10,4 @@ Closed rows for `20260805`, in the order the pin held them. Roster:
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260805.000001` | [`20260805-000001_e302-v90-knock-steward-door.bron`](20260805/20260805-000001_e302-v90-knock-steward-door.bron) | e302 v90 · first knock · keeper key-door |
+| `20260805.000001` | [`20260805-000001_e302-v90-knock-steward-door.kyri`](20260805/20260805-000001_e302-v90-knock-steward-door.kyri) | e302 v90 · first knock · keeper key-door |

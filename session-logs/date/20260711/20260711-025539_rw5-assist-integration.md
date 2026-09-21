@@ -6,7 +6,7 @@
 
 ## Thinking
 
-Kaeden said keep going after tip **427**. The named next climb was RW-5 assist integration: assist glass still read lantern `.bron` via `field_value`; the contract's "What Stays Outside" asked for the tip-**420** `complete_fixture` ask path. Extracted `ask_lantern_assist_band`, wired both assist composers, kept golden frames, registered tip **428**. Rest-until and ROCm stayed closed.
+Kaeden said keep going after tip **427**. The named next climb was RW-5 assist integration: assist glass still read lantern `.kyri` via `field_value`; the contract's "What Stays Outside" asked for the tip-**420** `complete_fixture` ask path. Extracted `ask_lantern_assist_band`, wired both assist composers, kept golden frames, registered tip **428**. Rest-until and ROCm stayed closed.
 
 ## Observations
 

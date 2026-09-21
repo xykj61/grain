@@ -7,7 +7,7 @@
 **Style:** Radiant
 **Voice:** Rio 3 recording Claude · Kaeden’s clock from the 21:27 paste
 **Status:** Checkable — freeze-worthy affirmed · four accretions landing · col2 probes open as kg
-**Ground:** handoff [`../bron-resins/20260712-212200_claude-scorecard-witness-walk.bron`](../bron-resins/20260712-212200_claude-scorecard-witness-walk.bron) · exit [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard [`20260712-210800_pond-enclosure-scorecard-two-column.md`](20260712-210800_pond-enclosure-scorecard-two-column.md) · tip `0032844`
+**Ground:** handoff [`../kyri-resins/20260712-212200_claude-scorecard-witness-walk.kyri`](../kyri-resins/20260712-212200_claude-scorecard-witness-walk.kyri) · exit [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard [`20260712-210800_pond-enclosure-scorecard-two-column.md`](20260712-210800_pond-enclosure-scorecard-two-column.md) · tip `0032844`
 
 ---
 
@@ -22,9 +22,9 @@ The living witness’s finest line is the one that refuses success — `assert g
 ## Four accretions (single lines · no reshape)
 
 1. **Enforcing seam** — enclosure-enforcing = constructs/configures namespaces, mounts and binds, device nodes, seccomp or landlock policy, or lane grant-refuse logic; convenience = launch ergonomics, logging, PATH, prompts.
-2. **Retreat flag** — `ENCLOSURE=ai-jail` in `enclosure.conf.example` (default); flip to `pond` only past the exit bron; both values live one full season. Witness greps the example.
-3. **Chapter-closed measured** — exit bron fixed path `bron-resins/pond-supersede-exit.bron`; scorecard asserts that file **absent** while the season sleeps.
-4. **Frozen candidate named** — soak-start log and exit bron carry `soak_start_nib <hash>`; every reset references the nib it reset from.
+2. **Retreat flag** — `ENCLOSURE=ai-jail` in `enclosure.conf.example` (default); flip to `pond` only past the exit kyri; both values live one full season. Witness greps the example.
+3. **Chapter-closed measured** — exit kyri fixed path `kyri-resins/pond-supersede-exit.kyri`; scorecard asserts that file **absent** while the season sleeps.
+4. **Frozen candidate named** — soak-start log and exit kyri carry `soak_start_nib <hash>`; every reset references the nib it reset from.
 
 Optional grace (no action): netns-by-visible-links stands; inode compare waits for a veth customs day.
 
@@ -42,4 +42,4 @@ Ruler freezes before any build word. Pattern: G1 skeleton — refuse-until-candi
 
 ---
 
-*May the four lines land soft, the card freeze hard, and the season stay closed until absence itself signs the bron.*
+*May the four lines land soft, the card freeze hard, and the season stay closed until absence itself signs the kyri.*

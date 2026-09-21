@@ -3,7 +3,7 @@ stamp 20260910.104407
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role repository agent -- COPAL seat, amphora/ and bron-resins/
+role repository agent -- COPAL seat, amphora/ and kyri-resins/
 modality text
 model claude-opus-5
 model_status active runtime identity reported by the harness environment block
@@ -14,7 +14,7 @@ evidence .claude/settings.json -- tools/f/fleet-loop.sh execs --effort medium ba
 voice Kyri
 host Linux pier, America/New_York, grain-copal checkout
 title The round that died at its send, and the ferry that never hashed
-prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and bron-resins/
+prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and kyri-resins/
 rota lap 4562, row 2 -- Fire, the row that sees; read through vision, its cardinal seat Standfast asks what must STOP, so the lap stopped its own new work the moment the cold open named an unlanded record and closed that before building anything
 think Opened by stopping a stale roster pass first. standing_equipment_run.sh --detach refused, naming pid 2729374 holding the lock with launch_head 038575b76a against HEAD 0da0fd7529 -- its verdict already fixed at tree_moved. Resolved it through the bounded call rather than pkill: one candidate in this tree, six peer trees refused by name, TERM sent, lock released in 16 seconds.
 think Held the tree still for the cold pass's 44 minutes. Every write until it closed went to amphora/bin/ and .lap/, both gitignored, so tree_at_close matched tree_at_open and tree_moved read no.

@@ -53,7 +53,7 @@ Wayland hop commits surface            ← host today; Glow never speaks it
 | --- | --- |
 | Weave aspect → served namespace | Comlink serves named data from Weave (elder graduation) |
 | Full hot-graph in fast memory | Tally ceilings + scale brief |
-| `.brush` surface language | After thin fixtures; Glow/Bron only |
+| `.brush` surface language | After thin fixtures; Glow/Kyri only |
 | Realidream editor+browser one surface | Far horizon — foundations stand |
 
 ## Thin witness

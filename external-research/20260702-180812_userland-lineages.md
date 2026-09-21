@@ -32,7 +32,7 @@
 
 ## What This Means for a Rye Userland
 
-Read together, the lineages sketch our userland's grain without writing a line of it: a curated, composed set of small utilities (the Alpine lesson) speaking Rishi and supervised by Caravan with readiness-as-fact and meaningful exits (the s6 lesson), each utility and each service declared as a value in `.brix` with data in `.bron`, built and placed by content address into an append-only store, activation a pointer swap (the Nix lesson), and the whole configuration -- services and packages alike -- shaped by one small override combinator rather than a module system (the sixos lesson). The siloed patterns, named in our own vocabulary and fitted to Tally's gardens and Pond's enclosure, cross the boundary in the companion brief.
+Read together, the lineages sketch our userland's grain without writing a line of it: a curated, composed set of small utilities (the Alpine lesson) speaking Rishi and supervised by Caravan with readiness-as-fact and meaningful exits (the s6 lesson), each utility and each service declared as a value in `.brix` with data in `.kyri`, built and placed by content address into an append-only store, activation a pointer swap (the Nix lesson), and the whole configuration -- services and packages alike -- shaped by one small override combinator rather than a module system (the sixos lesson). The siloed patterns, named in our own vocabulary and fitted to Tally's gardens and Pond's enclosure, cross the boundary in the companion brief.
 
 ---
 

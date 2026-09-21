@@ -270,7 +270,7 @@ fn run_selftest(_: std.Io) !u8 {
     // Both directions of the wreck rule, since a refusal proven only one way cannot be
     // told from a bypass. The manifest root walks free beside plain-bytes; a stranger
     // and an inviting-sounding kind the engine never named both refuse.
-    const manifest_line = mark_manifest ++ " " ++ ("ab" ** 32) ++ " nested.bron";
+    const manifest_line = mark_manifest ++ " " ++ ("ab" ** 32) ++ " nested.kyri";
     const nested = try parse_manifest_line(manifest_line);
     // invariant: the manifest root parses beside plain-bytes, so the roster admits both kinds; a
     // welcome proven for one mark alone would leave a narrowed roster reading green.

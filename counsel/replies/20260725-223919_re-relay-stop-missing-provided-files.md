@@ -17,7 +17,7 @@
 
 ## What resisted
 
-**C** asks to file `quin-handoff_fresh-session-bootstrap.md` (provided) into `bron-resins/` as a dated navigation artifact.  
+**C** asks to file `quin-handoff_fresh-session-bootstrap.md` (provided) into `kyri-resins/` as a dated navigation artifact.  
 **D** asks to apply `grain-readme_radiant-pass.md` (provided) onto `README.md`.
 
 On this pier, a host search found **only** the counsel memo at `/home/xy/grain/20260725-223409_the-tool-the-door-the-rung-and-the-lane.md`. The two “provided” companions are absent from the tree, Downloads, `/tmp`, and Cursor agent-tools. The relay paste names them yet does not embed their bodies.

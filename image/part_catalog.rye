@@ -10,7 +10,7 @@
 //! `SpriteIndex` (the picture) and, in the same held order, one `PartRecord` per product (the facts). `add_part`
 //! grows both together, so a product is never a window without facts or facts without a window. `render_part`
 //! reuses the sprite index to cut the product's picture; `part_of` reads its facts. The whole catalog travels
-//! as a flat-Bron `format part-catalog-v1` record, so `render(parse(render(x)))` is a fixed point over both the
+//! as a flat-Kyri `format part-catalog-v1` record, so `render(parse(render(x)))` is a fixed point over both the
 //! windows AND the facts.
 //!
 //! Price is recorded as a FACT -- a `u64` count of cents, the shape money takes on the wire -- never a balance the
@@ -30,7 +30,7 @@ pub const part_catalog_version = "20260814.000000";
 
 /// A part number and a material are short tokens, bounded at construction (TAME bounds). A part number like
 /// `HX-M8-40` and a material like `stainless-304` fit well inside these ceilings; both stay space-free so the
-/// flat-Bron line round-trips through a space-tokenizer exactly.
+/// flat-Kyri line round-trips through a space-tokenizer exactly.
 pub const max_part_number_len: u32 = 32;
 pub const max_material_len: u32 = 32;
 
@@ -81,7 +81,7 @@ const PartRecord = struct {
 };
 
 /// A field a person types as a single token: non-empty, within its ceiling, and free of the space and newline
-/// that would break the flat-Bron line. Refuses each fault by name so a bad field never reaches storage.
+/// that would break the flat-Kyri line. Refuses each fault by name so a bad field never reaches storage.
 fn check_token(field: []const u8, ceiling: u32) PartError!void {
     if (field.len == 0) return error.FieldEmpty;
     if (field.len > ceiling) return error.FieldTooLong;
@@ -186,7 +186,7 @@ pub const max_part_catalog_bytes: u32 = 22 + sprite.max_products * per_part_line
 
 const part_header = "format part-catalog-v1\n";
 
-/// Render a part catalog as its `format part-catalog-v1` Bron record into `out`, returning its length. One
+/// Render a part catalog as its `format part-catalog-v1` Kyri record into `out`, returning its length. One
 /// `part <name> <x> <y> <w> <h> <number> <material> <price_cents>` line per product, in held order. Refuses
 /// `Overflow` rather than writing past the buffer a caller supplied.
 pub fn render_part_catalog(cat: *const PartCatalog, out: []u8) PartError!u32 {

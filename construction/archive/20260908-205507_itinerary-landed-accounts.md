@@ -16,7 +16,7 @@ assert's reason in amphora's six library modules.
 Elder [shelved](20260908-192614_itinerary-landed-accounts.md).
 **WATER TASTES UP CLOSE, so this lap ran every instrument it cites.** `stash_record` was RED at my
 open: `stash@{0}` held a lap of mine from `15:31`, GREEN and never landed. Restored **by tree, never
-blob** -- log and shelf; its `template-manifest.bron` line declined to ride, two peers having landed
+blob** -- log and shelf; its `template-manifest.kyri` line declined to ride, two peers having landed
 that line while my lap sat parked.
 **AND BOTH OF THEIRS LANDED.** `c96332c19` **16:55:10** and `c860fee71` **17:28:44** each added
 `allow context/BHAKTA_STYLE.md`, so the allowlist carried one path on two rows -- against its own

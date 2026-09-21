@@ -32,7 +32,7 @@ the set. **Nothing asks whether a declared member can arrive.**
 Caravan, Mycelium, Rishi, the vault. The per-file reading is a DIFFERENT question,
 gated at nothing: names are global, so `OweMisrecorded` stands in 47 Caravan rungs and returns in
 two -- **165 of the 261** are that habit. **THREE WERE LEFT ON PURPOSE FOURTEEN MONTHS AGO**, in no
-instrument since: `20260720-032713_stoa97-token-mold-spec.bron` writes *"remain in ParseError set
+instrument since: `20260720-032713_stoa97-token-mold-spec.kyri` writes *"remain in ParseError set
 (no removal)"*.
 23 legs, 5 mutations bitten. GREEN, `tier lap` 7.6s. [Paper](../../active-designing/20260911-060527_the-refusal-nothing-can-make.md) A 96.
 **YOURS:** (1) **removing the nine narrows a public error set** -- provably inert, and a prior hand

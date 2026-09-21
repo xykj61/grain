@@ -14,7 +14,7 @@ behind the tree that made it.*
 
 ## The reading that seats this
 
-The public seed is an **allowlist projection**: `template-manifest.bron` names, path by path, what
+The public seed is an **allowlist projection**: `template-manifest.kyri` names, path by path, what
 crosses from the maintainer's field into `grain-os/grain`. Everything else stays home by construction, which is a
 stronger promise than care.
 

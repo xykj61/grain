@@ -52,7 +52,7 @@ impossible to bypass by construction.
   parallel rule. A forged bind and a non-galaxy number each refuse — the real protocol runs in the fake net.
 - **r2 — settle a topology.** Seat a star and a planet beneath the galaxy via `settlement.mint`, each under
   its rightful topology sponsor, proving the whole fractal address space settles inside the fake net.
-- **r3 — the net travels.** Render a spun-up constel to a `format constel-net-v1` Bron record and parse it
+- **r3 — the net travels.** Render a spun-up constel to a `format constel-net-v1` Kyri record and parse it
   back byte-for-byte, so a dev-net's roster crosses as text a person can read, the safe name riding with it.
 - **r4 — read a real fixture true.** Cross-check the harness's reading of a genuine on-disk constel record
   against an independent measure — two tools, one answer — so a fake net can never drift from the bytes.

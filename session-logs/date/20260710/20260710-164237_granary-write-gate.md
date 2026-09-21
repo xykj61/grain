@@ -9,7 +9,7 @@
 
 After the Skate weave view, the seating ruling's deferred write gate was the next keep-going item. Modeled on NS-L2 immutability: verify before mutate, prior facts stay, refuse exact replay.
 
-Added `publish` (verify → append durable log buffer → registry) and `load_log` (`---` separated facts). Selftest writes `granary/bin/write_gate_witness.bron`, reloads three facts, proves greeting unchanged after sketch accrete, refuses duplicate stamp_sig and lying publish with log untouched.
+Added `publish` (verify → append durable log buffer → registry) and `load_log` (`---` separated facts). Selftest writes `granary/bin/write_gate_witness.kyri`, reloads three facts, proves greeting unchanged after sketch accrete, refuses duplicate stamp_sig and lying publish with log untouched.
 
 ## Observations
 

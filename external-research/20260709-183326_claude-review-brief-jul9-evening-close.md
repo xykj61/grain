@@ -39,7 +39,7 @@ Counsel `152612` names what changed and what was already designed:
 | **WOV** | Rye overlay on vendored `gratitude/tigerbeetle` | 1-2 monarchs; never three |
 | **Mycelium** | Byzantine agreement among strangers | **Gated at M4** -- Kaeden's July 2 conclusion, not a new objection |
 
-**Kaeden's removal directive:** `comlink/chain_read_*.sh`, `linengrow/settlement*.rye`, witnesses, grpcurl bootstrap, bron goldens -- **gone from tree**. Hammock [`182500`](../active-designing/20260708-182500_slcl3-settlement-rail.md), session logs, and counsel remain as dated record.
+**Kaeden's removal directive:** `comlink/chain_read_*.sh`, `linengrow/settlement*.rye`, witnesses, grpcurl bootstrap, kyri goldens -- **gone from tree**. Hammock [`182500`](../active-designing/20260708-182500_slcl3-settlement-rail.md), session logs, and counsel remain as dated record.
 
 ---
 
@@ -53,7 +53,7 @@ Counsel `152612` names what changed and what was already designed:
 | `comlink/chain_read_{sui,monad}.sh` | Live chain-read POSIX seams |
 | `tools/chain_read_*` + witnesses | Rishi hosts |
 | `tools/ensure_grpcurl.sh` | grpcurl bootstrap for Sui gRPC |
-| `tools/fixtures/settlement_receipt_lane_*.bron` | Pinned goldens |
+| `tools/fixtures/settlement_receipt_lane_*.kyri` | Pinned goldens |
 | `tools/fixtures/slcl3_lane_*_settle.sh` | Lane settle fixtures |
 
 **Kept as record:** counsel, external-research, hammocks, session logs (including what landed at `182500`).
@@ -93,7 +93,7 @@ Counsel `152612` names what changed and what was already designed:
 | `mala:mint` | Issuer creates units; credits holder |
 | `mala:send` | Transfer; fold enforces conservation |
 
-Reuses SLC-L1 `.bron` envelope + `receipt_core` + Kumara. **No new dependencies.**
+Reuses SLC-L1 `.kyri` envelope + `receipt_core` + Kumara. **No new dependencies.**
 
 **M1 scope:** one issuer, one holder, one node -- mint, send, fold balance, verify; four unwelcome paths. Proposed `linengrow/mala.rye`, `tools/mala_m1_witness.rish`. **No code until Kaeden lap word.**
 

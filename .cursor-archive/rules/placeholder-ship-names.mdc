@@ -1,6 +1,6 @@
 ---
 description: Use only structurally-invalid, non-3-letter-segment placeholder ship names in docs, never real-syllable @p examples
-globs: "**/*.{md,bron,rish}"
+globs: "**/*.{md,kyri,rish}"
 alwaysApply: false
 ---
 # Placeholder Ship Names -- Never Real-Network-Valid

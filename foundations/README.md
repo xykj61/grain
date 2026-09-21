@@ -70,7 +70,7 @@ stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/
 
 **Docs compression (`20260712.223300`)** -- raw beneath - compress above - keeper honest: [`../docs/`](../docs/README.md) shelf - `living_docs_lint.rish` ratchet-advisory - Karpathy pattern distillation [`../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). the compass rose's Now and Order stations: [`ITINERARY.md`](../construction/ITINERARY.md) (the elder `TASKS.md` and `ROADMAP.md` fused into it `20260823.103804`).
 
-**Day-one compressor (`20260717.173848`)** -- when context is short, open [`../docs/COMPASS.md`](../docs/COMPASS.md) or the Bron card [`../docs/compass_card.bron`](../docs/compass_card.bron). This shelf stays; compressors point and never replace. Study [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md).
+**Day-one compressor (`20260717.173848`)** -- when context is short, open [`../docs/COMPASS.md`](../docs/COMPASS.md) or the Kyri card [`../docs/compass_card.kyri`](../docs/compass_card.kyri). This shelf stays; compressors point and never replace. Study [`../external-research/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md).
 
 ## What Lives Here
 

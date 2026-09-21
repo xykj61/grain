@@ -1,6 +1,6 @@
-//! linengrow/setu65_lab_tx_check.rye -- attempt lab TX from lab.bron mode/iface.
+//! linengrow/setu65_lab_tx_check.rye -- attempt lab TX from lab.kyri mode/iface.
 //!
-//! Reads tools/.cache/setu0/lab.bron. Stand-in -> SKIP. Armed -> attempt_iface_tx.
+//! Reads tools/.cache/setu0/lab.kyri. Stand-in -> SKIP. Armed -> attempt_iface_tx.
 //! Optional argv: dotted IPv4 peer (iface default gateway) for unicast lab TX.
 
 const std = @import("std");
@@ -12,7 +12,7 @@ const setu6 = @import("setu6_device_lab.rye");
 const setu65 = @import("setu65_lab_tx.rye");
 const tally_parse_int = @import("parse_int.rye");
 
-const lab_path = "tools/.cache/setu0/lab.bron";
+const lab_path = "tools/.cache/setu0/lab.kyri";
 
 fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
     // invariant: an empty key would match every line's first byte as a boundary

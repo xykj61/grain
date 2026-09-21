@@ -7,7 +7,7 @@
 # INDEPENDENTLY by booting the constellation from its ship names (each key a pure function of its name),
 # blind to the record text; this awk measures what a keeper reads straight off the roster.
 #
-#   awk -f tools/fixtures/c/constel_roster_truth.awk tools/fixtures/c/constel_roster.bron
+#   awk -f tools/fixtures/c/constel_roster_truth.awk tools/fixtures/c/constel_roster.kyri
 #   -> "<count> <firstkey8>"
 
 $1 == "ship" { count++; if (count == 1) key8 = substr($3, 1, 8) }

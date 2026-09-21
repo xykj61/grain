@@ -23,7 +23,7 @@ is the other half of Journey 16's own charter: **witness the whole conversion.**
 
 Two living artifacts still speak as if the molt were unfinished:
 
-1. **The seated survey ledger** (`work-in-progress/vols-survey-ledger.bron`) was rendered
+1. **The seated survey ledger** (`work-in-progress/vols-survey-ledger.kyri`) was rendered
    at stamp `20260812.221045`, *before* LOWE ran — it records `sites 223 · prose_gaps 79`.
    The live tree now renders `sites 144 · handles 144 · prose_gaps 0`: every prose gap has
    been relabeled and no longer carries a bare `lap N`. The seated map shows a road not yet
@@ -58,7 +58,7 @@ seal governs drift without forbidding the sanctioned keep.
 
 ## The two moves
 
-1. **Re-seat the ledger.** Regenerate `work-in-progress/vols-survey-ledger.bron` from the
+1. **Re-seat the ledger.** Regenerate `work-in-progress/vols-survey-ledger.kyri` from the
    live tree at a fresh live-clock stamp (the re-seat `vols_survey_true_witness` explicitly
    anticipates — "a future re-seat at a new stamp keeps this witness true"). The completed
    map records `prose_gaps 0`; the pre-LOWE render rests in git history and in the dated

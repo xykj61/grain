@@ -16,7 +16,7 @@ Rather than widen this Mac's own jail policy, Keaton pivoted the whole thread: s
 ## The Lens Applied
 
 - `SOURCE.md` Step 6 and Step 9 -- the Linux/NixOS ai-jail path already documented, `tools/cursor-jail.sh` defaulting `AIJAIL_FLAGS` to `--private-home --no-docker`.
-- `tools/generate_jail_local_keys_macos.rish` -- the macOS jail-local key generator, the direct pattern this Linux twin mirrors: identity from `GLOW_PROFILE.bron`, dedicated SSH deploy keys per forge, a jail-local `known_hosts`, a passphrase-free signing-only GPG key, all wired into git config directly, all gitignored.
+- `tools/generate_jail_local_keys_macos.rish` -- the macOS jail-local key generator, the direct pattern this Linux twin mirrors: identity from `GLOW_PROFILE.kyri`, dedicated SSH deploy keys per forge, a jail-local `known_hosts`, a passphrase-free signing-only GPG key, all wired into git config directly, all gitignored.
 - `.cursor/rules/send-word.mdc` -- the `send` word this very prompt closes with.
 
 ## Why Linux's Own Isolation Story Is Simpler Than macOS's
@@ -27,7 +27,7 @@ What is *not* yet solved: `urbit`'s own jailed Cursor session, inside its real p
 
 ## The Deliverable (scoped, half-drafted, not yet landed)
 
-**`tools/generate_jail_local_keys_linux.rish`** -- a near-direct port of `tools/generate_jail_local_keys_macos.rish`: same `GLOW_PROFILE.bron` identity source, same `.ssh/id_ed25519_jail_github` / `id_ed25519_jail_codeberg` / `known_hosts_jail` / `.git/ssh_config_urbit` / `.gnupg-rye/` shape, same direct `git config --local` wiring for `core.sshCommand`, `gpg.program`, and `user.signingkey`. The macOS-only pieces drop cleanly: no `sandbox-exec` self-check (Linux has no equivalent one-liner to detect "already inside `bwrap`" from a plain shell test -- worth naming as a real, smaller gap rather than faking a check), no macOS-specific comment fluff. `ssh-keygen`, `gpg`, and `ssh-keyscan` behave identically on both hosts, so the bulk of the script's own logic ports close to verbatim.
+**`tools/generate_jail_local_keys_linux.rish`** -- a near-direct port of `tools/generate_jail_local_keys_macos.rish`: same `GLOW_PROFILE.kyri` identity source, same `.ssh/id_ed25519_jail_github` / `id_ed25519_jail_codeberg` / `known_hosts_jail` / `.git/ssh_config_urbit` / `.gnupg-rye/` shape, same direct `git config --local` wiring for `core.sshCommand`, `gpg.program`, and `user.signingkey`. The macOS-only pieces drop cleanly: no `sandbox-exec` self-check (Linux has no equivalent one-liner to detect "already inside `bwrap`" from a plain shell test -- worth naming as a real, smaller gap rather than faking a check), no macOS-specific comment fluff. `ssh-keygen`, `gpg`, and `ssh-keyscan` behave identically on both hosts, so the bulk of the script's own logic ports close to verbatim.
 
 **Run from Keaton's own hands on the Framework host, outside any jail** -- the same non-negotiable discipline as the macOS generator: key *creation* never happens inside the process that will later use the keys.
 
@@ -40,7 +40,7 @@ The script above is scoped in full but not yet written to disk, tested, or commi
 ## Related
 
 - `context/specs/two-dev-environments-and-mobile-emulation.md` -- names the NixOS Framework host as the eventual sovereign dev machine; this prompt's Ubuntu-today, NixOS-eventually framing extends that same host's own timeline.
-- `session-logs/20260715-163500_macos_interim_env_grapheneos_ladder.bron` -- the GrapheneOS/postmarketOS settlement and this Mac's own G-ladder, landed just before this pivot.
+- `session-logs/20260715-163500_macos_interim_env_grapheneos_ladder.kyri` -- the GrapheneOS/postmarketOS settlement and this Mac's own G-ladder, landed just before this pivot.
 - `tools/generate_jail_local_keys_macos.rish` -- the direct pattern this Linux twin will mirror.
 - `SOURCE.md` Step 6 (Linux ai-jail install), Step 7 (the macOS multi-identity precedent this Linux note will mirror), Step 8b/8c (the copy-paste snippets this script replaces with a real tool).
 

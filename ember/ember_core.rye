@@ -128,7 +128,7 @@ fn field_value(text: []const u8, key: []const u8) ?[]const u8 {
     return null;
 }
 
-/// Parse a Bron-shaped corpus catalog (chunk blocks separated by blank lines after keys).
+/// Parse a Kyri-shaped corpus catalog (chunk blocks separated by blank lines after keys).
 pub fn parse_catalog(text: []const u8, out: *Catalog) CorpusError!void {
     out.count = 0;
     // invariant: a freshly reset catalog starts holding no chunks at all.

@@ -31,7 +31,7 @@ Dimeroll **records and reports; it does not hold or move money.** This journey b
 
 - **r1 — The two-sided trade (the crux).** A `Trade` (seller point · buyer point · item · price · stamp) renders to a pair of Dimeroll entries — the seller debits cash, credits revenue; the buyer debits expense, credits cash — each posted to its own `TrialBalance` and each conserving. The crux property: the seller's cash inflow equals the buyer's cash outflow equals the one agreed price, and the two cash movements sum to zero across the pair. Refuses a non-positive price (`BadAmount`) and a self-trade (seller == buyer). Records only; holds and moves nothing.
 - **r2 — Signed by both parties.** The trade names *whose* it is: seller and buyer each sign the exact trade (points · item · price) with a Kumara keeper key, and a recipient verifies both signatures offline — a forged or wrong-key signature refuses, so a recorded trade is one both parties actually agreed to, not a number one side wrote alone. (Mirrors J2r2's bind-to-identity, over the two-party shape.)
-- **r3 — Portable Bron.** The trade renders to a `format trade-v1` record and parses back byte-for-byte, so a trade travels between the two keepers' books and into an audit file — a trade is only useful if both sides can carry the identical fact.
+- **r3 — Portable Kyri.** The trade renders to a `format trade-v1` record and parses back byte-for-byte, so a trade travels between the two keepers' books and into an audit file — a trade is only useful if both sides can carry the identical fact.
 - **r4 (settle) — the gate.** Turning a booked trade into an actual disbursement reaches **custody gate #3** and surfaces for licensed counsel, never crossing.
 
 ---

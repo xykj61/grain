@@ -8,11 +8,11 @@
 //! chain a keeper can open and walk, and proves the property the whole Braid rests on: the atom's ALL-OR-
 //! NOTHING is true to the bytes -- a chain whose final link overdraws reverses whole, and not one coin moves.
 //!
-//! The corpus is `tools/fixtures/b/braid_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/b/braid_dag.kyri`, a genuine record produced reproducibly by
 //! `mycelium/braid_fixture_gen.rye` (a demo funder credits Alice 100 and Bob 50; a three-link braid routes
 //! Alice->Bob 100, Bob->Carol 120, Carol->Dave 200 -- the final link overdraws, so the whole chain reverses),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read
-//! are the tree's own. Two independent readings must agree: the app parses the record through `cord_bron`,
+//! are the tree's own. Two independent readings must agree: the app parses the record through `cord_kyri`,
 //! **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves it through `braid`, and
 //! reports the **terminal recipient**, the **committed count**, and the **rejected count**; the r4 witness
 //! cross-checks that triple against `tools/fixtures/b/braid_dag_truth.awk`'s reading of the same file -- two
@@ -20,7 +20,7 @@
 //! file order (round-ascending here); the app applies the full agreed-order resolution; the single chain's
 //! reversal is unambiguous, so both name the same terminal recipient and the same reject verdict.
 //!
-//! Additive -- composes `cord_bron` + `cord` + `braid` public API only (each re-runs GREEN).
+//! Additive -- composes `cord_kyri` + `cord` + `braid` public API only (each re-runs GREEN).
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/braid_true.rye -femit-bin=mycelium/bin/braid_true
@@ -30,13 +30,13 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const braid = @import("braid.rye");
 
 pub const braid_true_version = "20260813.081709";
 
 /// The real reverting-chain Cord record, bound at compile time -- the tree's own bytes, never a drift.
-const real_dag = @embedFile("corpora/braid_dag.bron");
+const real_dag = @embedFile("corpora/braid_dag.kyri");
 
 const hex_digits = "0123456789abcdef";
 
@@ -70,10 +70,10 @@ fn terminal_link(b: *const braid.Braid) !*const braid.Link {
 /// Read the real reverting-chain record: parse it, rebuild the Dag under `cord.add` (verifying every
 /// signature), resolve it through the Braid, and read off the terminal recipient and the atom-verdict counts.
 pub fn read_braid(text: []const u8) !Reading {
-    const rec = try cord_bron.parse(text);
+    const rec = try cord_kyri.parse(text);
     // invariant: a real linked-chain record carries blocks -- an empty Dag holds no braid to read.
     if (rec.len == 0) return error.BadFormat;
-    var dag = try cord_bron.rebuild(&rec);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try braid.resolve(&dag);
     const b = verdict.braid_at(0) orelse return error.NoBraid;
     const lk = try terminal_link(b);
@@ -103,8 +103,8 @@ fn welcome_reading_true_to_bytes() !void {
 /// The reverting chain moved not one coin -- the terminal recipient holds nothing, and every account stands
 /// exactly as genesis left it. Atomic all-or-nothing, read from the real bytes.
 fn welcome_reversal_moved_nothing() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try braid.resolve(&dag);
     const b = verdict.braid_at(0) orelse return error.NoBraid;
     const lk = try terminal_link(b);
@@ -118,8 +118,8 @@ fn welcome_reversal_moved_nothing() !void {
 /// Conservation holds over the real bytes: the balances sum to exactly what genesis issued -- no coin made or
 /// destroyed, whether a chain commits or reverses.
 fn welcome_conservation_over_the_real_bytes() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try braid.resolve(&dag);
     // invariant: the real record issued exactly the hundred-fifty the two genesis credits fund.
     assert(verdict.total_issued == 150);

@@ -62,7 +62,7 @@ off.
 
 ## Three of the nine were left on purpose, fourteen months ago
 
-`session-logs/date/20260720/20260720-032713_stoa97-token-mold-spec.bron` records the lap that made
+`session-logs/date/20260720/20260720-032713_stoa97-token-mold-spec.kyri` records the lap that made
 them unreachable, in its own words: *"TooFewLines/TooManyLines/MissingTuple remain in ParseError set
 (no removal); only their emission paths change -- now structural token failures map to other
 existing errors. Witness scripts do not check those specific errors by name."*

@@ -10,7 +10,7 @@ Kumara names *who a key is*. Vault names *how a person keeps the key alive* — 
 
 ## The word we never write
 
-The elder art calls the top of a key hierarchy the "master key." Vault never writes that word. As git chose **main** over **master**, Vault names the root of a keeping the **main key** — the one seed from which every derived key, every share, and every brain phrase descends. This is not decoration: the name appears in every tilak mark, every emitted Bron fact, and every witness line, so the discipline is enforced by grep, not by memory. Any occurrence of "master" in a Vault source file is a red the style check must turn away.
+The elder art calls the top of a key hierarchy the "master key." Vault never writes that word. As git chose **main** over **master**, Vault names the root of a keeping the **main key** — the one seed from which every derived key, every share, and every brain phrase descends. This is not decoration: the name appears in every tilak mark, every emitted Kyri fact, and every witness line, so the discipline is enforced by grep, not by memory. Any occurrence of "master" in a Vault source file is a red the style check must turn away.
 
 ## What Vault keeps, and what it refuses to hold
 
@@ -23,7 +23,7 @@ Custody first means the module is designed so that *building it cannot destroy a
 
 ## The tilaks — Vault's type-marks
 
-Vault follows Kumara's pattern exactly: each record is a `struct` with a `format vault-<mark>-v1` Bron head, a version that climbs by exactly one, a signature by the authorizing party, and a `make` / `verify` / `emit` triad proven by a selftest that refuses every tamper. Six marks carry the whole design.
+Vault follows Kumara's pattern exactly: each record is a `struct` with a `format vault-<mark>-v1` Kyri head, a version that climbs by exactly one, a signature by the authorizing party, and a `make` / `verify` / `emit` triad proven by a selftest that refuses every tamper. Six marks carry the whole design.
 
 | Tilak | What it is | Signed by | Holds |
 |---|---|---|---|
@@ -34,7 +34,7 @@ Vault follows Kumara's pattern exactly: each record is a `struct` with a `format
 | **relic** | a hardware-wallet attestation: which right-to-repair device (Ledger, Trezor, a RISC-V open device from Crowd Supply) holds a share, and its public attestation key | the device's attestation key | the device's public identity; never its internal seed |
 | **recover** | a recombination event: which `t` shares were presented, the reconstructed **public** identity, and a proof the reconstruction matches the keeping | the recovering keeper | the *proof* of recovery; never the reconstructed secret |
 
-Each mark is small, bounded by a named maximum, and emitted as immutable Bron so a `scribe/`-style reader can dispatch on its `format` line the way it already dispatches Kumara facts. The **shard** count `n` and threshold `t` carry named ceilings (a keeping splits into at most `max_shares` pieces; `t` never exceeds `n`, never falls below two), asserted at construction with a `// invariant:` comment on each.
+Each mark is small, bounded by a named maximum, and emitted as immutable Kyri so a `scribe/`-style reader can dispatch on its `format` line the way it already dispatches Kumara facts. The **shard** count `n` and threshold `t` carry named ceilings (a keeping splits into at most `max_shares` pieces; `t` never exceeds `n`, never falls below two), asserted at construction with a `// invariant:` comment on each.
 
 ## Sharding across the world — the disaster shape
 
@@ -50,7 +50,7 @@ Fire, hurricane, and tsunami are the named threats. The shape answers each: no s
 
 ## Air-gapped by construction
 
-Every operation that touches real key material is designed to run on a machine with no network — the `aurora/` boot already gives Grain an offline posture, and Vault leans on it. The tree-side model touches no device and no network; it proves the *shape* of an air-gapped ceremony (split here, carry there, recombine on a cold machine) so that when a pilot runs the real thing, the arithmetic and the marks are already witnessed. Vault emits Bron; a human carries the Bron; nothing dials out.
+Every operation that touches real key material is designed to run on a machine with no network — the `aurora/` boot already gives Grain an offline posture, and Vault leans on it. The tree-side model touches no device and no network; it proves the *shape* of an air-gapped ceremony (split here, carry there, recombine on a cold machine) so that when a pilot runs the real thing, the arithmetic and the marks are already witnessed. Vault emits Kyri; a human carries the Kyri; nothing dials out.
 
 ## The right-to-repair hardware lane
 
@@ -67,9 +67,9 @@ One lap, small enough to hold in mind, proving the load-bearing claim the whole 
 3. **refuses** `t-1` shares — two shares reconstruct nothing, proven by asserting the join of any two disagrees with the seed;
 4. **refuses a tampered share** — flip one byte of one share's bytes and the signature fails to verify, exactly as every Kumara tilak already refuses a tampered field;
 5. **survives a lost location** — drop every share of one location-class and assert `t` shares still remain among the rest;
-6. **emits** the shards as `format vault-shard-v1` Bron and re-reads them, so the round-trips through notation.
+6. **emits** the shards as `format vault-shard-v1` Kyri and re-reads them, so the round-trips through notation.
 
-The witness `tools/vault_shard_witness.rish` builds the binary, runs the selftest, checks the GREEN line and the tamper-refusal line, counts five `format vault-shard-v1` records in the emitted Bron, and confirms every share carries a full-length signature — the same witness shape `kumara_tilak_witness.rish` already uses. GREEN here means the disaster shape's arithmetic is real, on a fake key, with no real secret anywhere near the tree.
+The witness `tools/vault_shard_witness.rish` builds the binary, runs the selftest, checks the GREEN line and the tamper-refusal line, counts five `format vault-shard-v1` records in the emitted Kyri, and confirms every share carries a full-length signature — the same witness shape `kumara_tilak_witness.rish` already uses. GREEN here means the disaster shape's arithmetic is real, on a fake key, with no real secret anywhere near the tree.
 
 The **brainkey**, **glacier**, **relic**, and **recover** marks follow in later laps, each its own small witnessed step, each accreting beside the one before.
 

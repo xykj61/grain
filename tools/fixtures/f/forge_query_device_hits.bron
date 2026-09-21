@@ -1,7 +1,0 @@
-# forge tablecloth query device hits — forge-query device provenance fixture
-# Same cellar/Amphora forge filter shape; wire device marks virtio carriage.
-wire device
-filter_tilak cellar-manifest
-hit_count 2
-hit peerForge cellar 1 manifest.bron
-hit peerForge amphora 1 vessel.bron

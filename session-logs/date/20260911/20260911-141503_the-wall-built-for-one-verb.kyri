@@ -3,7 +3,7 @@ stamp 20260911.141503
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role COPAL -- amphora and bron-resins lane, grain-copal checkout
+role COPAL -- amphora and kyri-resins lane, grain-copal checkout
 modality text
 model claude-opus-5
 model_status active runtime unverified -- no runtime telemetry exposed to this session

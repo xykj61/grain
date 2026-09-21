@@ -126,7 +126,7 @@ every seat here, waits at gate %6.
 
 Observation. The placeholder domain `skate-ww.com` was purchased on Keaton's word,
 2026-08-26, and the registry row already reads: placeholder -- Skate Kumara sites
-written in `.brush` (source: `construction/domain-registry.bron`, read 2026-08-26; the
+written in `.brush` (source: `construction/domain-registry.kyri`, read 2026-08-26; the
 elder row `ska7e.com` sits nearby, role unassigned).
 
 Proposal. The domain hosts **Skate Kumara sites**: pages owned by Kumara identities,

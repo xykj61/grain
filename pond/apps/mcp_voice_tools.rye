@@ -15,7 +15,7 @@
 //! envelope a JSON MCP host already reads. Invocation reuses rung one's own result
 //! rendering and error mapping. Both are composition; no new transport, no new parser.
 //!
-//! Additive by construction: it imports mcp_bron, mcp_manifest, mcp_list, mcp_voice, and
+//! Additive by construction: it imports mcp_kyri, mcp_manifest, mcp_list, mcp_voice, and
 //! quin_host_artifact and calls only their public functions. Every module stays its own
 //! green binary. It reads no network - the real fetch and the Comlink-served transport
 //! stay the held custody/serve gates.
@@ -29,7 +29,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const lc = @import("lantern/lantern_core.rye");
-const mcp = @import("mcp_bron.rye");
+const mcp = @import("mcp_kyri.rye");
 const man = @import("mcp_manifest.rye");
 const lst = @import("mcp_list.rye");
 const mv = @import("mcp_voice.rye"); // rung one: render_ok / render_error / error_name

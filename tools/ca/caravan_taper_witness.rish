@@ -85,7 +85,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # The board declaration the rung below opened, unchanged: a region one
 # client writes and its siblings read, with no channel joining any of them.
-let published = run ["sh" "-c" "caravan/bin/taper_read caravan/systems/serial_three_clients_board.bron 2>&1"]
+let published = run ["sh" "-c" "caravan/bin/taper_read caravan/systems/serial_three_clients_board.kyri 2>&1"]
 assert published.ok else "the board declaration could not be read"
 assert published.out contains "domains 4 -- channels 3 -- regions 11 -- grants 22" else "the board declaration changed shape"
 assert published.out contains "verdict: whole" else "the board declaration did not read whole"

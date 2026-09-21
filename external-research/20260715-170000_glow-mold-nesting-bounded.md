@@ -10,7 +10,7 @@
 
 ## What This Answers
 
-How Glow's design resolves against Hoon's **molds** and their **nesting** -- the sixth design surface for a future Glow supplement, beside the five already scoped (runes, auras, cold/warm atoms, jet correctness, structs-and-nouns, line/comment discipline). The resolution lands at the language substrate, over Bron's value model, governed by the supplement -- never inside a vane, since types sit below the vanes exactly as the non-vane-strata study describes.
+How Glow's design resolves against Hoon's **molds** and their **nesting** -- the sixth design surface for a future Glow supplement, beside the five already scoped (runes, auras, cold/warm atoms, jet correctness, structs-and-nouns, line/comment discipline). The resolution lands at the language substrate, over Kyri's value model, governed by the supplement -- never inside a vane, since types sit below the vanes exactly as the non-vane-strata study describes.
 
 ## The Terms, Plainly
 
@@ -28,7 +28,7 @@ In Hoon the compiler trusts a mold to define a type. In Glow, a mold stays a coe
 
 ### Two -- nesting stays structural subtyping, yet stays decidable in bounded time
 
-Glow keeps `nest` as the subtype relation; it is genuinely good design, and Bron's flat one-value model (never "tangled") is already a more decidable shape than Hoon's arbitrary nouns, so the nest check is cheaper here than in Hoon. The rule Glow adds: no nesting relation whose decision requires unbounded recursion. The check itself is bounded, always -- a property a witness can assert.
+Glow keeps `nest` as the subtype relation; it is genuinely good design, and Kyri's flat one-value model (never "tangled") is already a more decidable shape than Hoon's arbitrary nouns, so the nest check is cheaper here than in Hoon. The rule Glow adds: no nesting relation whose decision requires unbounded recursion. The check itself is bounded, always -- a property a witness can assert.
 
 ### Three -- recursive molds carry an explicit bound
 
@@ -36,7 +36,7 @@ This is the crux, and where Glow diverges on purpose. Hoon's unbounded `list` is
 
 ## The One-Line Resolution
 
-Glow keeps Hoon's mold **readability** and nest **relation**, and replaces Hoon's mold **trust** with a stated, witnessed **bound** at every level -- atom (aura width), value (Bron's flat model), and structure (bounded recursion). Molds and nesting are resolved at the language substrate over Bron, seated in the Glow supplement beside the aura and cold/warm-atom rules.
+Glow keeps Hoon's mold **readability** and nest **relation**, and replaces Hoon's mold **trust** with a stated, witnessed **bound** at every level -- atom (aura width), value (Kyri's flat model), and structure (bounded recursion). Molds and nesting are resolved at the language substrate over Kyri, seated in the Glow supplement beside the aura and cold/warm-atom rules.
 
 ## The Sixth Supplement Surface
 

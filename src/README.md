@@ -27,7 +27,7 @@ pointed there still lands, and each naming on its own face what it carried into 
 - [`sec/`](sec/README.md) -- what it taught about **security and policy**.
 - [`til/`](til/README.md) -- what it taught about **tilaks**.
 
-**Refused:** `src/web`, the one elder room this floor declines to open. Surface language lives under `brushstroke/` and Glow/Bron/TAME/Radiant -- never JS/HTML/CSS/JSON as home tongue, and Realidream / Brushstroke / `.brush` carry that surface rather than an HTML stack.
+**Refused:** `src/web`, the one elder room this floor declines to open. Surface language lives under `brushstroke/` and Glow/Kyri/TAME/Radiant -- never JS/HTML/CSS/JSON as home tongue, and Realidream / Brushstroke / `.brush` carry that surface rather than an HTML stack.
 
 The O3 desk migration stands designed and awaits its declaration under the breach law at [`../context/BREACH.md`](../context/BREACH.md); [`gen/README.md`](gen/README.md) holds the room's own reading of where that word stands. Until the breach speaks, `glow/gen/` remains the desks' one true address.
 

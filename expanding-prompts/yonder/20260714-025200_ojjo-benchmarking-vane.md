@@ -22,7 +22,7 @@ Propose a new O-vane, **Ojjo** (a palindrome), a TAME-guidance safety/performanc
 Nothing here is built -- Ojjo has nothing to measure until a Glow program exists. When it does, the smallest-first ladder:
 
 1. **Lap 1 -- conformance, no timing.** A witness that runs task T two ways (Hoon/Dojo, Glow/Rish) and asserts **byte-identical output**. This alone is valuable -- a conformance suite proving Glow matches Hoon -- and it is unfakeable. No clock yet.
-2. **Lap 2 -- timing, host-stamped.** Add each system's own compile-time and runtime measurement, reported side by side, stamped with the warm-aura date atom and the host (`GLOW_PROFILE.bron`). Correctness from lap 1 stays the hard gate -- a fast-but-wrong result is red, not a near-miss.
+2. **Lap 2 -- timing, host-stamped.** Add each system's own compile-time and runtime measurement, reported side by side, stamped with the warm-aura date atom and the host (`GLOW_PROFILE.kyri`). Correctness from lap 1 stays the hard gate -- a fast-but-wrong result is red, not a near-miss.
 3. **Lap 3 -- steadiness.** Best-of-N and variance over repeated runs, in TigerBeetle's spirit that a distribution beats a single sample.
 4. **Lap 4 -- the task set.** Grow the benchmark corpus honestly and broadly, so no single task can be gamed into a misleading headline number.
 

@@ -62,20 +62,20 @@ Comlink — not one. It is the highest-Lindy new thread in this wave.
 Both seat their **decision** now; the mechanical repoints run as their own
 signed loop rounds so nothing half-renames. A cairn is planted before either cuts.
 
-### Bron → Kyri — one notation, chosen outright
+### Kyri → Kyri — one notation, chosen outright
 
-**Breach · debride.** Unify Bron and Kyri entirely, choosing **Kyri**. Kyri
-takes the responsibility of Bron: the `.kyri` notation *is* the immutable-value
-key-value format formerly named Bron. The new, load-bearing explanation of Kyri:
+**Breach · debride.** Unify Kyri entirely, choosing **Kyri**. Kyri
+takes the responsibility of Kyri: the `.kyri` notation *is* the immutable-value
+key-value format named Kyri. The new, load-bearing explanation of Kyri:
 
 > **Kyri is compressed receipts.** Every shortened object-notation log,
 > datagram, and send — tiles · tilaks · amphora resins — can be written in Kyri.
 > Kyri is also the standing voice, and the preferred Grain OS variant. One name,
 > one thread: named in gratitude after **Kyrie Irving**, the vegan NBA star.
 
-The 816 existing `.bron` session logs are dated artifacts under the one-clock
+The 816 existing `.kyri` session logs are dated artifacts under the one-clock
 law. The debride Keaton seats governs the **living name and notation going
-forward** and the living references; whether the dated `.bron` files are renamed
+forward** and the living references; whether the dated `.kyri` files are renamed
 in a deep pass is its own circled step, cairn-protected, not fired casually.
 
 ### work-in-progress → crux — a higher-sorting priority folder
@@ -142,7 +142,7 @@ impression is the freshest weave, in one clean deep pass rather than many.
 ## Brix configuration — the composition language in the plan
 
 **Crux · cross-cutting, infrastructure.** Brix (`.brix`) is Grain's composition
-language: it declares systems, evaluates to Bron/Kyri, interfaces with Mantra,
+language: it declares systems, evaluates to Kyri, interfaces with Mantra,
 and targets Aurora + Tally. It belongs explicitly in the season plan so
 configuration is authored *in Brix*, not scattered across ad-hoc files. Two
 strands:

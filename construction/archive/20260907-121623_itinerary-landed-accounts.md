@@ -13,7 +13,7 @@ same seat took off the stash and finished.*
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](REDS-a-declared-absence-is-not-breakage-rows-562.md)
 (the number waits on `xy`; the stamp is the key). `dated_path_scan.sh` asked one question of every dated
-name -- does a file of that name exist? -- so a shelf row reading `` `...bron` *(log never landed)* ``
+name -- does a file of that name exist? -- so a shelf row reading `` `...kyri` *(log never landed)* ``
 landed in `broken_gone` beside a stale link. **That row IS the repair**, word for word from the
 shelves' own header, and the census charged them for performing it. **88 of the 173**, from reading
 the citing LINE of all of them rather than sampling -- `declared=88 / promise=13 / mention=72`,

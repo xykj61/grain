@@ -29,7 +29,7 @@ The tree is whole and live, exactly as the grandparent handoff describes; the vo
 - **Fill the `[company sets: …]` facts** in the sales one-pager — offer, price, comp — so it can go to a real candidate.
 - **Build the first slice** — the curated trust directory — if the maintainer confirms it against facts only they hold (capital, relationships, software readiness).
 - **Build Mandate** — still the most concrete software module, from the grandparent handoff.
-- **The all-Rishi tooling molt** and **the Bron → Kyri notation molt** — real seasons, each on the maintainer's word.
+- **The all-Rishi tooling molt** and **the Kyri → Kyri notation molt** — real seasons, each on the maintainer's word.
 
 ## How to write the next baton
 

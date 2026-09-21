@@ -41,10 +41,10 @@ witness. The gate is what spares that lane the discovery.
 
 ## The cellar's catalog named 3 of its 17 resins, and nothing read it
 
-`bron-resins/manifest.bron` carries one `entry <basename> <note>` line per resin, and its own `note`
+`kyri-resins/manifest.kyri` carries one `entry <basename> <note>` line per resin, and its own `note`
 line states the habit that keeps it current -- *commit with the resin*. The habit held for the first
 three files of the first morning, `20260712`, and lapsed. The catalog also had **no reader**: three
-scans name `bron-resins/` only to skip it as testimony, and no witness, runner, or roster row opened
+scans name `kyri-resins/` only to skip it as testimony, and no witness, runner, or roster row opened
 it.
 
 **The council rota found it.** Lap 4114 read row 4, Earth, whose Dual seat is
@@ -56,13 +56,13 @@ the door, and the fact at this door was a catalog four fifths short.
 **A lantern rather than a loom, measured before the instrument was built.** Every tracked file in a
 living room whose name carries `manifest`, `catalog`, or `roster` was crossed with its readers, and
 every other one has one. So the repair is one cellar's scan rather than a general instrument, and
-the near-miss is named: `cellar/ring1_manifest_shape.bron` is cited only by `cellar/README.md`, and
+the near-miss is named: `cellar/ring1_manifest_shape.kyri` is cited only by `cellar/README.md`, and
 it is a *shape* rather than an enumeration, in a lane this seat does not hold.
 
 The catalog names all 17 now, each note written from that resin's own first header line rather than
-from a summary, and the one `.md` file in a room whose `law` line says Bron only is **named rather
+from a summary, and the one `.md` file in a room whose `law` line says Kyri only is **named rather
 than swept**, because a catalog states its exception instead of hiding it.
-`tools/b/bron_resins_catalog_witness.rish` is rostered `tier lap` at 4s over 34 planted behaviors.
+`tools/b/kyri_resins_catalog_witness.rish` is rostered `tier lap` at 4s over 34 planted behaviors.
 
 **Left standing, named:** the catalog's header promises SHA3-256 names *when sealed* and the entries
 carry plain paths, so the mark and digest of the-marked-value's three-field line are a later lap

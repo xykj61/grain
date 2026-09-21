@@ -15,7 +15,7 @@
 3. Write the canon map into `recursion_block.brix` (day-quarter · angular house · flanks; sign-ward demoted).  
 4. Erratum + supersede § *The Four Equinoxes* in the 256-season charter.  
 5. LEXICON byte-prefix append for **equinox map**.  
-6. Waymark · session bron · push origin + xykj61.
+6. Waymark · session kyri · push origin + xykj61.
 
 ## Canon (do not invent)
 

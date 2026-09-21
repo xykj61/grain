@@ -14,7 +14,7 @@
 
 ## Arc in one breath
 
-After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196**), Claude counsel **`220912`** walked the compass and recommended: clear Open Questions backlog, prepare SLC-L3. This evening filed that synthesis, refreshed the settlement seat, answered Bron beside Brix, and closed the remaining bench-workable Open Questions — leaving **SLC-L3** as the front Linengrow lap behind Kaeden's gate.
+After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196**), Claude counsel **`220912`** walked the compass and recommended: clear Open Questions backlog, prepare SLC-L3. This evening filed that synthesis, refreshed the settlement seat, answered Kyri beside Brix, and closed the remaining bench-workable Open Questions — leaving **SLC-L3** as the front Linengrow lap behind Kaeden's gate.
 
 ---
 
@@ -23,7 +23,7 @@ After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196
 | Commit | What landed |
 |--------|-------------|
 | **`fbf3899`** | Open Questions batch two — Silo/Brix, Linengrow home, TASKS naming (`223100`) |
-| **`4f7213d`** | Settlement refresh + SLC-L3 witness proposal + Bron proposal (`222500`) |
+| **`4f7213d`** | Settlement refresh + SLC-L3 witness proposal + Kyri proposal (`222500`) |
 | **`bc169a2`** | Roadmap synthesis counsel `220912`; TASKS next bench; ROADMAP OA-L4/L5 |
 | **`92d1004`** | July 7 full-day summary (earlier marathon) |
 | **`aa10515`** | tame_style_scan advise push log |
@@ -36,7 +36,7 @@ After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196
 | Stamp | Doc | Verdict |
 |-------|-----|---------|
 | **`220912`** | [Roadmap synthesis](counsel/20260707-220912_claude-counsel-roadmap-synthesis.md) | Migration enough; Rishi/Nushell aligned; no redesign |
-| **`222500`** | [Bron beside Brix](counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) | Bron = values at seams; Brix = composable wholes |
+| **`222500`** | [Kyri beside Brix](counsel/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md) | Kyri = values at seams; Brix = composable wholes |
 | **`223100`** | [Open Questions batch two](counsel/20260707-223100_claude-counsel-open-questions-batch-two.md) | Silo retired; Linengrow stays; keep TASKS.md |
 
 ---
@@ -60,7 +60,7 @@ After the July 7 hygiene marathon closed (`tame_style_scan` native, parity **196
 | Item | Status |
 |------|--------|
 | Settlement-seat refresh | ✓ `222500` |
-| Bron beside Brix | ✓ `222500` |
+| Kyri beside Brix | ✓ `222500` |
 | Brix and Silo | ✓ Silo module retired → Brix bonds + Tablecloth |
 | Linengrow home | Proposal: stay until SLC-L3 + deployable whole |
 | TASKS naming | Proposal: keep filename; **workbench** alias in README |
@@ -97,7 +97,7 @@ Each lap: work commit → four remotes → session logs (inline or follow-up).
 Tonight's push pairs:
 ```
 bc169a2  →  roadmap synthesis
-4f7213d  →  settlement + Bron
+4f7213d  →  settlement + Kyri
 fbf3899  →  Open Questions batch two
 ```
 

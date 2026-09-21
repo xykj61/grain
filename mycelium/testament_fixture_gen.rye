@@ -13,7 +13,7 @@
 //! Siloed, dev-only, demo ship and keeper seeds -- no real key, no funds, no network, no real value.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_fixture_gen.rye \
-//!     2> tools/fixtures/t/testament_cert.bron
+//!     2> tools/fixtures/t/testament_cert.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -21,7 +21,7 @@ const print = std.debug.print;
 
 const constel = @import("constel.rye");
 const testament = @import("testament.rye");
-const testament_bron = @import("testament_bron.rye");
+const testament_kyri = @import("testament_kyri.rye");
 
 // The Testament dev-net roster -- five named ships, the same names r1-r3 sealed (see testament.rye for the
 // naming law). testament_true.rye boots the identical roster from these names and rebuilds the identical demo
@@ -61,8 +61,8 @@ pub fn main() !void {
     const t = try sealed();
     // invariant: the whole roster sealed a voice.
     assert(t.seal.count == roster.len);
-    var buf: [testament_bron.max_record]u8 = undefined;
-    const len = try testament_bron.render(&t, buf[0..]);
+    var buf: [testament_kyri.max_record]u8 = undefined;
+    const len = try testament_kyri.render(&t, buf[0..]);
     // invariant: a rendered fixture is never empty.
     assert(len > 0);
     print("{s}", .{buf[0..len]});

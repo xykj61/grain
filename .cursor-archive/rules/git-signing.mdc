@@ -46,7 +46,7 @@ answered `.gitignore:8:/*`, the sandboxed-home blanket deny this tree points at 
 path, so the file was untracked incidentally rather than by a decision about its contents, and it
 carries no secret and no baked host path. **Tracked from `20260905.230357` on Keaton's word** (REDS
 `%444`): allow-back `!/publish-seed.sh` in `.gitignore`, verdict `personal` in
-`template-manifest.bron` -- *the field's own projector; the seed is its OUTPUT, never its carrier*
+`template-manifest.kyri` -- *the field's own projector; the seed is its OUTPUT, never its carrier*
 -- with `sow_witness` GREEN, so the boundary was moved by proof rather than by assertion. When a
 clone lacked it, it was
 reconstructed from this rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the

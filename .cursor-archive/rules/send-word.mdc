@@ -18,7 +18,7 @@ When Keaton says **"send"** (from a client terminal -- the Cursor iOS app, a des
 ## Discipline "send" always keeps
 
 - **Signing stays on.** Every commit is GPG-signed (`git-signing` rule); never bypass it.
-- **A session log rides along.** The work's `.bron` session log is committed in the same send whenever possible (`session-logs` rule).
+- **A session log rides along.** The work's `.kyri` session log is committed in the same send whenever possible (`session-logs` rule).
 - **Green before send, when there is code.** If the send includes code, its witness runs GREEN first (or the send honestly names why it could not, per `docs-implementation-sync`).
 - **The branch is not left.** After a fast-forward merge the client rests on `main`, ready for the next hand-off.
 

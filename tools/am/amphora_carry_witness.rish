@@ -19,7 +19,7 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_carry"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 let dock = "${home}/dock"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
@@ -46,12 +46,12 @@ let carry = run ["${home}/bin/amphora" "carry" vessel dock]
 assert carry.ok else "amphora_carry: carry must exit ok"
 assert carry.err contains "carry complete" else "amphora_carry: completion spoken"
 
-let equal = run ["cmp" "-s" vessel "${dock}/vessel.bron"]
+let equal = run ["cmp" "-s" vessel "${dock}/vessel.kyri"]
 assert equal.ok else "amphora_carry: far bytes must equal near bytes"
 
-let far = run ["${home}/bin/vessel-core" "verify" "${dock}/vessel.bron"]
+let far = run ["${home}/bin/vessel-core" "verify" "${dock}/vessel.kyri"]
 assert far.ok else "amphora_carry: far stamp must verify"
-let faropen = run ["${home}/bin/vessel-seal" "open-check" "${dock}/vessel.bron"]
+let faropen = run ["${home}/bin/vessel-seal" "open-check" "${dock}/vessel.kyri"]
 assert faropen.ok else "amphora_carry: far seal must open"
 
 let again = run ["${home}/bin/amphora" "carry" vessel dock]
@@ -59,9 +59,9 @@ assert again.ok else "amphora_carry: re-carry must welcome"
 
 let forkprep = run ["sh" "-c" "rm -rf ${home}/fork; cp -r ${season} ${home}/fork; printf x >> ${home}/fork/$(ls ${home}/fork | head -1)"]
 assert forkprep.ok else "amphora_carry: fork plant must prepare"
-let fv = run ["${home}/bin/amphora" "pour" "${home}/fork" "${home}/fork_v.bron"]
+let fv = run ["${home}/bin/amphora" "pour" "${home}/fork" "${home}/fork_v.kyri"]
 assert fv.ok else "amphora_carry: fork pour must pass"
-let plant = run ["cp" "${home}/fork_v.bron" "${dock}/vessel.bron"]
+let plant = run ["cp" "${home}/fork_v.kyri" "${dock}/vessel.kyri"]
 assert plant.ok else "amphora_carry: fork plant at dock"
 let refused = run ["${home}/bin/amphora" "carry" vessel dock]
 assert (refused.ok == false) else "amphora_carry: forked dock must refuse"

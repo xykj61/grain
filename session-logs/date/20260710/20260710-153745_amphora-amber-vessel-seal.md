@@ -9,7 +9,7 @@ keep going
 
 ## Thinking trace
 
-After Kumara `stamp_sig` (parity **227**), the next mechanical Amphora vow was Amber's encryption seal on `vessel.bron` — named in the silo as the first of the three pocket beats (seal, sign, hand across). Pond customs stayed held: that policy lap belongs to Pond.
+After Kumara `stamp_sig` (parity **227**), the next mechanical Amphora vow was Amber's encryption seal on `vessel.kyri` — named in the silo as the first of the three pocket beats (seal, sign, hand across). Pond customs stayed held: that policy lap belongs to Pond.
 
 Chose ChaCha20-Poly1305 over the cargo block, shoulder as associated data (readable without opening), witness key seed `0x63`×32 (distinct from stamp `0x62`). Rite order: pour clear cargo → **seal** → **sign**. Scrub verifies stamp on the sealed body, then `open-check` proves the seal opens. Fetcher opens seal in memory to recover digests for Comlink fetch.
 

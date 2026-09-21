@@ -10,7 +10,7 @@
 
 ## What This Answers
 
-The vane-parallel mapping proposal already returns an honest "no analog" for several modules -- Pond, Tally -- and names others (Bron, Aurora, Rishi) as language-, VM-, or shell-level rather than kernel-level. This doc gathers those scattered verdicts into one architecture: the three strata that deliberately sit **outside** the vane frame, why each belongs there, and how each maps onto a layer Urbit itself keeps outside its own ten vanes. It closes with how **Pond** narrows under the Glow vane model -- the one module whose role genuinely changes as Pool, Quin, Puddle, and the rest take their places.
+The vane-parallel mapping proposal already returns an honest "no analog" for several modules -- Pond, Tally -- and names others (Kyri, Aurora, Rishi) as language-, VM-, or shell-level rather than kernel-level. This doc gathers those scattered verdicts into one architecture: the three strata that deliberately sit **outside** the vane frame, why each belongs there, and how each maps onto a layer Urbit itself keeps outside its own ten vanes. It closes with how **Pond** narrows under the Glow vane model -- the one module whose role genuinely changes as Pool, Quin, Puddle, and the rest take their places.
 
 The starting fact, stated plainly: **not everything is a vane, and Urbit knows this too.** Arvo has ten vanes, yet Nock, Hoon, Vere, Zuse, the Dojo, and Ford are none of them -- they are the strata a vane rests on. Glow's non-vane modules fall into the same shape.
 
@@ -21,7 +21,7 @@ The starting fact, stated plainly: **not everything is a vane, and Urbit knows t
 | Glow module | Urbit layer it parallels | Why it is not a vane |
 |---|---|---|
 | **Rye** | Hoon (the language) | Everything nests on it; it nests in nothing. The language is the ground, not a system concern. |
-| **Bron** | Nock's noun (the value model) | The one-value model -- string, int, bool, list, record, composite, never tangled -- is the universal type vanes pass values *as*. The mapping calls it the single cleanest Urbit parallel in the tree. |
+| **Kyri** | Nock's noun (the value model) | The one-value model -- string, int, bool, list, record, composite, never tangled -- is the universal type vanes pass values *as*. The mapping calls it the single cleanest Urbit parallel in the tree. |
 | **Aurora** | Vere (the runtime) | The runtime boots and hosts the vanes; a host of vanes is not itself one. |
 | **Tally** | (no Urbit analog -- memory is below the language) | Bounded memory and named gardens; Nock handles memory implicitly at the VM level, so no kernel vane owns it. |
 

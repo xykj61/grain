@@ -204,7 +204,7 @@ echo "utf8_probe=proven_both_ways"
 # A GUARD THAT CANNOT RUN ITS INSTRUMENT MUST SAY SO. Captured to a file with the exit status
 # checked, because an empty answer from a failed awk is byte-identical to an empty answer from a
 # clean collection -- and the second is the reading everyone wants to hear.
-if ! git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' \
+if ! git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.kyri' '*.brix' '*.txt' \
   | LC_ALL=C xargs -0 awk -f "$UTF8_AWK" > "$TMPLIST.bad" 2>"$TMPLIST.err"; then
   echo "instrument=failed"
   echo "detail=utf8_pass_refused"
@@ -215,7 +215,7 @@ if ! git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix
 fi
 INVALID_LIST=$(cat "$TMPLIST.bad")
 rm -f "$TMPLIST.bad" "$TMPLIST.err"
-SCANNED=$(git ls-files -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' | grep -c .)
+SCANNED=$(git ls-files -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.kyri' '*.brix' '*.txt' | grep -c .)
 INVALID=$(printf '%s' "$INVALID_LIST" | grep -c . || true)
 echo "text_files_scanned=$SCANNED"
 echo "text_files_invalid_utf8=$INVALID"

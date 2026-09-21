@@ -20,7 +20,7 @@ whether the row earns a guard or a retirement.
 ## The measurement
 
 Read `20260911` over 4,915 tracked sources of the six extensions TAME governs -- `.rye`, `.rish`,
-`.brix`, `.bron`, `.glow`, `.kyri` -- with the vendored rooms, the public projection, the session-log
+`.brix`, `.kyri`, `.glow`, `.kyri` -- with the vendored rooms, the public projection, the session-log
 testimony and every `fixtures/` plant left out:
 
 | Reading | Count |

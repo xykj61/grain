@@ -15,7 +15,7 @@ An `.arbor` file is the readable artifact. Write only words that should be spoke
 - Keep the whole file within Scribble's document bound, at most eight tiles for Lattice's shape,
   and each tile within Lantern's local prompt bound.
 - Put titles, voice names, versions, paths, catalogs, and tile ordering in a neighboring `.brix`
-  or `.bron` sidecar. The `.arbor` file carries none of them.
+  or `.kyri` sidecar. The `.arbor` file carries none of them.
 - Write numbers as words. Expand abbreviations and symbolic instructions into natural speech.
 - Leave out headings, front matter, lists, links, code fences, stage directions, SSML, commands,
   paths, flags, sentinels, and other operational syntax.

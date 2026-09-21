@@ -30,7 +30,7 @@ far=$(mktemp -d)
 trap 'rm -rf "$home" "$far"' EXIT
 
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$home" "$STAMP"
-parent=$(awk '/^parent / {print $2; exit}' "$home/vessel.bron")
+parent=$(awk '/^parent / {print $2; exit}' "$home/vessel.kyri")
 test -n "$parent"
 
 # Fixture payment digest -- stands for a MALA receipt name (commerce coin already seated).
@@ -45,21 +45,21 @@ payment=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
   printf 'payment %s\n' "$payment"
   printf 'buyer alice\n'
   printf 'seller bob\n'
-} > "$home/delivery.bron"
+} > "$home/delivery.kyri"
 
-"$BIN" sign "$home/delivery.bron" >/dev/null
-grep -q '^stamp_sig ' "$home/delivery.bron"
+"$BIN" sign "$home/delivery.kyri" >/dev/null
+grep -q '^stamp_sig ' "$home/delivery.kyri"
 
 sh "$ROOT/tools/fixtures/a/amphora_carry.sh" "$home" "$far"
 # Carry also needs the delivery slip.
-cp "$home/delivery.bron" "$far/delivery.bron"
+cp "$home/delivery.kyri" "$far/delivery.kyri"
 
 sh "$ROOT/tools/fixtures/a/amphora_scrub_arrival.sh" "$far" "$SRC"
-"$BIN" verify "$far/delivery.bron" "$far/vessel.bron" >/dev/null
+"$BIN" verify "$far/delivery.kyri" "$far/vessel.kyri" >/dev/null
 echo "DELIVERY ok slip bound to vessel parent"
 
 # Unwelcome: flip payment nibble -- verify must refuse.
-pay_line=$(grep '^payment ' "$far/delivery.bron")
+pay_line=$(grep '^payment ' "$far/delivery.kyri")
 first=$(printf '%s' "$pay_line" | awk '{print substr($2,1,1)}')
 rest=$(printf '%s' "$pay_line" | awk '{print substr($2,2)}')
 case "$first" in
@@ -67,12 +67,12 @@ case "$first" in
   *) bad=a ;;
 esac
 {
-  grep -v '^payment ' "$far/delivery.bron"
+  grep -v '^payment ' "$far/delivery.kyri"
   printf 'payment %s%s\n' "$bad" "$rest"
-} > "$far/delivery.bron.bad"
-mv "$far/delivery.bron.bad" "$far/delivery.bron"
+} > "$far/delivery.kyri.bad"
+mv "$far/delivery.kyri.bad" "$far/delivery.kyri"
 
-if "$BIN" verify "$far/delivery.bron" "$far/vessel.bron" 2>/dev/null; then
+if "$BIN" verify "$far/delivery.kyri" "$far/vessel.kyri" 2>/dev/null; then
   echo "FAIL tampered payment should not verify"
   exit 1
 fi

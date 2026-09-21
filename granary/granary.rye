@@ -12,7 +12,7 @@ const Dir = std.Io.Dir;
 const gc = @import("granary_core.rye");
 const tally_copy = @import("tally_copy.rye");
 
-const write_gate_log_path = "granary/bin/write_gate_witness.bron";
+const write_gate_log_path = "granary/bin/write_gate_witness.kyri";
 
 fn welcome_registry_resolve_clone_frame(io: std.Io) !void {
     const cwd = Dir.cwd();

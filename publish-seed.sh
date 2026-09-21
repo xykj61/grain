@@ -40,7 +40,7 @@ rm -rf seed/.git
 #
 # The projection is agent-doable and the push is not; that line is drawn in the card's own custody
 # section. Both halves run here so a publish can never ship a projection nobody proved.
-echo "publish-seed: projecting the seed from template-manifest.bron ..."
+echo "publish-seed: projecting the seed from template-manifest.kyri ..."
 rishi/bin/rishi run tools/s/sow.rish || { echo "publish-seed: the projection refused -- nothing published" >&2; exit 1; }
 
 echo "publish-seed: proving the seed clean ..."

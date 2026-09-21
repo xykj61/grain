@@ -78,7 +78,7 @@ These never touch Wayland, never touch a human's GNOME session. They are **happy
 
 The first ~**140** witnesses in `tools/parity.rish` compile and run `rye/tests/*` against pristine std. That block is the checkable room at its largest honest scale -- every strengthening postcondition we claimed for `mem.*`, crypto, SHA3, and friends must still hold after each accretion.
 
-**Edge case -- compile green, product incomplete:** SLC-L1 compiles and selftests green while the receipt `.bron` shape and golden file remain horizon. The checkable room correctly reports *spine proven*; it does not claim *product lovable and complete* until the scope note's fuller boxes say so.
+**Edge case -- compile green, product incomplete:** SLC-L1 compiles and selftests green while the receipt `.kyri` shape and golden file remain horizon. The checkable room correctly reports *spine proven*; it does not claim *product lovable and complete* until the scope note's fuller boxes say so.
 
 ---
 
@@ -168,7 +168,7 @@ Amber's functional spec lived in the **vision + designed-not-built** lane until 
 
 ### 2. SLC-L1 -- partial complete
 
-Witness **152** proves sign -> append -> fold -> verify on metal. Scope note still names golden receipt `.bron`, temp log dir, and Kaeden edge affirmation for Open Asks. **Lesson:** the checkable room can be honestly partial; the vision room (lovable treasurer trust) may still ask for more before the product lap is *shared*.
+Witness **152** proves sign -> append -> fold -> verify on metal. Scope note still names golden receipt `.kyri`, temp log dir, and Kaeden edge affirmation for Open Asks. **Lesson:** the checkable room can be honestly partial; the vision room (lovable treasurer trust) may still ask for more before the product lap is *shared*.
 
 ### 3. PROPOSED SEED in work-in-progress
 
@@ -209,7 +209,7 @@ Bubble's harvest (*one log under every surface*) inspired Weave language already
 
 Sparks visible from this walk, none seated here:
 
-- **Receipt `.bron` + golden file** -- checkable follow-up to SLC-L1 witness
+- **Receipt `.kyri` + golden file** -- checkable follow-up to SLC-L1 witness
 - **SLC-2 scope note** -- vision until Comlink delivery witness lands
 - **TWO_ROOMS seated as context canon** -- Kaeden word; this memo does not seat it
 - **Mirrored-pair law in TAME supplement** -- happy-zone teaching awaits ruling

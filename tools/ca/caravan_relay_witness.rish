@@ -2,7 +2,7 @@
 #
 # Proves what opens the moment one domain holds two roles. Every ring in
 # this arc until now was one hop wide: each domain either asked or answered,
-# and the region it wrote said which. `serial_relay.bron` seats a middle --
+# and the region it wrote said which. `serial_relay.kyri` seats a middle --
 # `relay_virt` answers `client` and asks `backend` in the same run.
 #
 # Three findings ride here.
@@ -56,7 +56,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # The first declaration in this arc with a middle domain: three domains, two
 # channels, five directed regions, ten grants.
-let decl = run ["sh" "-c" "caravan/bin/relay_read caravan/systems/serial_relay.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/relay_read caravan/systems/serial_relay.kyri 2>&1"]
 assert decl.ok else "the chain declaration could not be read"
 assert decl.out contains "system serial_relay" else "the chain declaration lost its name"
 assert decl.out contains "domains 3 -- channels 2 -- regions 5 -- grants 10" else "the chain declaration changed shape"

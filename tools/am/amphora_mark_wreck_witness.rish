@@ -39,8 +39,8 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # never reached it (REDS %745). This witness pours 24MB a run, which is what made it %745's own
 # named case.
 let pen = make-pen "amphora_mark_wreck"
-let vessel = "${pen}/vessel.bron"
-let planted = "${pen}/planted.bron"
+let vessel = "${pen}/vessel.kyri"
+let planted = "${pen}/planted.kyri"
 
 # amphora/bin/ is gitignored, so a clone carries no binaries and this witness builds what
 # it runs rather than trusting a previous lap (REDS %334); mkdir first, since rye build

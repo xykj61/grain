@@ -1,7 +1,7 @@
 /*
  * proven-seat G1 — smallest posix receipt-verify guest.
  *
- * Seed stays: pinned witness fact from receipt_core / slcl1_fact.bron.
+ * Seed stays: pinned witness fact from receipt_core / slcl1_fact.kyri.
  * Seat changes: Genode posix (Libc::Component::construct via LIBS=posix).
  * Lap one: digest-grade — confirm the embedded fixture byte-identical to the
  * pinned canonical fact, then print GREEN on stdout (serial via /dev/log).

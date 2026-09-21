@@ -12,7 +12,7 @@
 # A region two domains hold read-only is a fact they agree about rather than
 # a hazard between them -- neither can see the other's hand in it, because
 # neither has a hand. Nothing new is declared;
-# `serial_three_clients_menu.bron` adds the one thing an ordinary server has
+# `serial_three_clients_menu.kyri` adds the one thing an ordinary server has
 # that the elder shape never carried, something published once and read by
 # everyone, and adds no new kind of word to say it.
 #
@@ -71,13 +71,13 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 
 # The elder shape with one published region added, and nothing else moved.
-let published = run ["sh" "-c" "caravan/bin/commute_read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+let published = run ["sh" "-c" "caravan/bin/commute_read caravan/systems/serial_three_clients_menu.kyri 2>&1"]
 assert published.ok else "the published declaration could not be read"
 assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
 assert published.out contains "verdict: whole" else "the published declaration did not read whole"
 
 # The elder shape itself is untouched by this rung.
-let clients = run ["sh" "-c" "caravan/bin/commute_read caravan/systems/serial_three_clients.bron 2>&1"]
+let clients = run ["sh" "-c" "caravan/bin/commute_read caravan/systems/serial_three_clients.kyri 2>&1"]
 assert clients.ok else "the three-client declaration could not be read"
 assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document moved beneath this rung"
 

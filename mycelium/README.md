@@ -33,7 +33,7 @@ Each family names a **base module** that fixes one crux, and stands beside a sma
 | Suffix | What it holds |
 |--------|---------------|
 | *(base)* | the primitive itself -- bounded, asserted, refusing by name |
-| `_bron` | the same fact **travels as text** -- a `format ...-v1` Bron record that round-trips |
+| `_kyri` | the same fact **travels as text** -- a `format ...-v1` Kyri record that round-trips |
 | `_true` | reads a **real on-disk fixture** from [`corpora/`](corpora/), a second tool cross-reading the same bytes |
 | `_knot` | **composition** -- the primitive checkpointed or joined with another |
 | `_fixture_gen` | the **reproducible generator** that emits a `corpora/` fixture byte-identically |
@@ -117,7 +117,7 @@ The witness names its Language - Style - Lens, then prints one `GREEN` line stat
 | Rye modules | 100 |
 | `mycelium_*_witness.rish` witnesses | 80 |
 | Reproducible fixture generators | 14 |
-| On-disk Bron fixtures ([`corpora/`](corpora/), `@embedFile`-bound) | 14 |
+| On-disk Kyri fixtures ([`corpora/`](corpora/), `@embedFile`-bound) | 14 |
 
 ## The two rooms -- what runs, and what waits for a hand
 

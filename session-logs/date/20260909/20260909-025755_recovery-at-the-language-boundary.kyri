@@ -20,7 +20,7 @@ obs Three historical session logs are recovered unchanged. The source changes de
 obs A local probe copied expr, tally_copy, the current lexer, and the parked lexer into session-output. Only import suffixes changed for direct Zig compilation. For 00000000000, expr returned zero, the current lexer accepted, and the parked lexer returned BadToken. This is evidence for holding the syntax change at Keaton's language gate.
 obs Both recovery branches and all fifteen stashes remain intact. Older orphan work remains for a later recovery lap; no parked work was discarded.
 obs The recovered REDS records keep their stamps and take numbers from the fetched spine. Routing shelves preserve the historical file fields rather than rewriting the logs.
-obs Incense's already classified NixOS template lacked an allow entry. The manifest gains that entry, while nixos/local.bron stays sub-excluded. The public seed was not published.
+obs Incense's already classified NixOS template lacked an allow entry. The manifest gains that entry, while nixos/local.kyri stays sub-excluded. The public seed was not published.
 obs Diffuser landed the script modes and watcher header at 9230cb0f0 before this send. My parallel edits to those files were withdrawn on integration; the upstream version is retained. The shell and Amphora cold reds came from rg absent on PATH; the installed ripgrep is used for subsequent verification.
 loom witness=glow_desk_run desks=347 bare=301 sample=46 failed_declined=2 failed_lower=1 failed_build=0 failed_run=0 control_behaviors=95 result=green
 loom qa=codex_watcher candidate_before=76 candidate_after=97 retained_upstream=93 candidate_withdrawn=yes program_lines_unchanged=yes
@@ -36,7 +36,7 @@ loom probe=parked_decimal_bound digits=11 parsed_value=0 current_accepts=1 parke
 loom witness=glow_decimal_law readers=14 law_held=1 law_absent=13 verdicts=2 control_behaviors=31 result=green
 loom witness=shell_portable_control pass=47 skip=0 fail=0
 loom witness=seed_link_probe outside_before=849 outside_after=848 ceiling=848
-loom witness=sow_exclusion_function nixos_selected=6 nixos_excluded=1 local_bron=excluded
+loom witness=sow_exclusion_function nixos_selected=6 nixos_excluded=1 local_kyri=excluded
 file tools/fixtures/g/glow_desk_run_scan.sh recover execution-stage failure counts
 file tools/fixtures/g/glow_desk_run_control.sh recover 95 behavior checks
 file tools/g/glow_desk_run_witness.rish assert the failure-stage split from the live corpus
@@ -44,7 +44,7 @@ file tools/fixtures/g/glow_decimal_law_scan.sh recover function-level reader and
 file tools/fixtures/g/glow_decimal_law_control.sh recover and extend to 31 control behaviors
 file tools/g/glow_decimal_law_witness.rish recover the ruling-neutral diagnostic guard
 file construction/standing-equipment.kyri restore the decimal guard to the lap roster
-file template-manifest.bron admit the already classified NixOS template and retain the local exclusion
+file template-manifest.kyri admit the already classified NixOS template and retain the local exclusion
 file session-logs/README.md derive the recovered closed-day count from its shelf
 file session-logs/CHAPTERS.md align the same closed-day count
 file construction/ITINERARY.md record recovery and the unlanded lexical bound

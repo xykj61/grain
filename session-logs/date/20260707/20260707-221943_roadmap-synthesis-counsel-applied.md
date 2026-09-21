@@ -18,7 +18,7 @@ Kaeden supplied Claude counsel `20260707-220912` — migration verification, Nus
 
 ## Observations
 
-Counsel aligns with Rio's prior landscape: mechanical queue empty; SLC-L3 is front of Linengrow with ruling gate. Next bench sittings are Bron proposal and settlement-seat refresh — both bench-workable.
+Counsel aligns with Rio's prior landscape: mechanical queue empty; SLC-L3 is front of Linengrow with ruling gate. Next bench sittings are Kyri proposal and settlement-seat refresh — both bench-workable.
 
 ## Files
 
@@ -29,4 +29,4 @@ Counsel aligns with Rio's prior landscape: mechanical queue empty; SLC-L3 is fro
 | `work-in-progress/TASKS.md` | Next bench + Open Questions |
 | `work-in-progress/ROADMAP.md` | OA-L4/L5 + parity 196 |
 
-**Recommend:** keep going to settlement-seat refresh or Bron first-proposal bench sitting — mechanical, single-thread, follows counsel `220912`.
+**Recommend:** keep going to settlement-seat refresh or Kyri first-proposal bench sitting — mechanical, single-thread, follows counsel `220912`.

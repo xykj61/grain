@@ -5,7 +5,7 @@
 **Style:** Gauge -- Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Status:** Vision -- a yonder note, and an **accretion** rather than a new module. It extends the Gleaner proposal with a second source family; if Keaton parks the Gleaner name, this note parks with it and its contents move to whatever the fetcher is eventually called
-**Kin:** [`Gleaner, the public signal fetcher`](20260825-171911_gleaner-the-public-signal-fetcher.md) - [`headwaters water shapes`](20260825-171914_headwaters-water-shapes.md) - [`the Missouri's first rung`](../external-research/20260825-171915_gallatin-headwaters-water-and-fiber.md) - [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Bron`](date/20260812/20260812-111800_buhr-journey3-mcp-in-bron-exploration.md) - [`Aparigraha`](../context/APARIGRAHA.md)
+**Kin:** [`Gleaner, the public signal fetcher`](20260825-171911_gleaner-the-public-signal-fetcher.md) - [`headwaters water shapes`](20260825-171914_headwaters-water-shapes.md) - [`the Missouri's first rung`](../external-research/20260825-171915_gallatin-headwaters-water-and-fiber.md) - [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Kyri`](date/20260812/20260812-111800_buhr-journey3-mcp-in-kyri-exploration.md) - [`Aparigraha`](../context/APARIGRAHA.md)
 **Naming law:** no new module name is proposed here; Gall's Law prefers a second source family inside a module that already exists in design over a sibling module that would duplicate its store, its fold, and its view
 
 ---

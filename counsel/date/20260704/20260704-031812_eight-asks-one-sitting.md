@@ -26,7 +26,7 @@ The four-lap plan in the `031000` counsel log is right, and the spec is lap one.
 
 ## A4 — SLC-L1 Edge: affirm closed at lap one
 
-The receipt loop — sign the fact, append to the log, fold to the root, verify from outside — ran GREEN inside parity on two independent benches tonight. That is the loop lap one claimed, and it closes; **affirm closed at lap one, as scoped.** The `.bron` carrier shape the metal-path paper flags sits explicitly outside this lap's bound and belongs to the crossing's own itinerary. On priority: **Open Asks before SLC-L2.** Tonight's lostness is vocabulary debt made audible, and vocabulary debt compounds faster than feature debt; the counsel log already ordered spec-first, and this memo concurs — gloss spec and TWO_ROOMS seating, then SLC-L2 begins from a tree that speaks one tongue.
+The receipt loop — sign the fact, append to the log, fold to the root, verify from outside — ran GREEN inside parity on two independent benches tonight. That is the loop lap one claimed, and it closes; **affirm closed at lap one, as scoped.** The `.kyri` carrier shape the metal-path paper flags sits explicitly outside this lap's bound and belongs to the crossing's own itinerary. On priority: **Open Asks before SLC-L2.** Tonight's lostness is vocabulary debt made audible, and vocabulary debt compounds faster than feature debt; the counsel log already ordered spec-first, and this memo concurs — gloss spec and TWO_ROOMS seating, then SLC-L2 begins from a tree that speaks one tongue.
 
 ## A5 — Claim Register: one witness hook, small
 

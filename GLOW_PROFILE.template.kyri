@@ -1,7 +1,7 @@
-# GLOW_PROFILE.bron — this contributor's professional profile.
+# GLOW_PROFILE.kyri — this contributor's professional profile.
 #
-# Copy this file to GLOW_PROFILE.bron at the repository root and fill in YOUR
-# values. GLOW_PROFILE.bron is gitignored (personal identity metadata); only
+# Copy this file to GLOW_PROFILE.kyri at the repository root and fill in YOUR
+# values. GLOW_PROFILE.kyri is gitignored (personal identity metadata); only
 # this .template is committed, so it works for anyone who clones the fork.
 #
 # Why this file exists. Grain's reader-facing docs address a generic Acme
@@ -11,7 +11,7 @@
 # and professional: the real name that signs the work, forge handles, the
 # clock stamps come from, the editor and voice defaults for session logs.
 # Rather than scatter those specifics through the generic docs, they live
-# here, in one loadable Bron profile — the sibling, in Bron, to GLOW_HOST.bron
+# here, in one loadable Kyri profile — the sibling, in Kyri, to GLOW_HOST.kyri
 # (which declares the host and toolchain) and to .claude/rules (which configure agent
 # behavior; Cursor's mirrored .cursor/rules retired 20260920.135100, archived at
 # .cursor-archive/rules/). This one declares the contributor.

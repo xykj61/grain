@@ -24,7 +24,7 @@ obs Both RED paths proven on metal before GREEN. Dropping the mask from items_co
 loom witness=caravan_mask_witness readings=4 children=7 passes_by_act=3 passes_masked=3 passes_fenced=2 passes_linked=1 slots_unspent_by_act=4 slots_unspent_masked=5 slots_unspent_fenced=6 slots_unspent_linked=6 out_of_turn_by_act=2 out_of_turn_masked=2 out_of_turn_fenced=1 out_of_mask_by_act=1 out_of_mask_masked=0 out_of_fence_masked=1 out_of_fence_fenced=0
 
 file caravan/mask.rye the thirty-third ring -- a phase names the siblings it follows as one u32, closed once at the door, every admission one bit test
-file tools/caravan_mask_witness.rish the witness on metal, GREEN over serial_three_clients_menu.bron, both RED paths named
+file tools/caravan_mask_witness.rish the witness on metal, GREEN over serial_three_clients_menu.kyri, both RED paths named
 file caravan/README.md the module roster row and the Mask section, carrying the numbers and the one-domain finding
 file crux/REMEMBER.md the live edge moved to this rung, the fence folded into the condensed pointer
 

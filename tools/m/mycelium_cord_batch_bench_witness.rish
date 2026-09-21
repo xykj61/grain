@@ -42,7 +42,7 @@ let r1 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fi
 assert r1.ok else "mycelium-cord-batch-bench: fact-batching r1 is not GREEN"
 assert r1.out contains "GREEN" else "mycelium-cord-batch-bench: fact-batching r1 did not speak its GREEN"
 
-let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_batch_bron.rye -femit-bin=mycelium/bin/cord_batch_bron && mycelium/bin/cord_batch_bron 2>&1"]
+let r2 = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_batch_kyri.rye -femit-bin=mycelium/bin/cord_batch_kyri && mycelium/bin/cord_batch_kyri 2>&1"]
 assert r2.ok else "mycelium-cord-batch-bench: fact-batching r2 is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-cord-batch-bench: fact-batching r2 did not speak its GREEN"
 

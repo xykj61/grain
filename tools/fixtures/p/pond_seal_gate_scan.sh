@@ -2,7 +2,7 @@
 # pond_seal_gate_scan.sh -- every launcher that admits ENCLOSURE=pond reaches the master seal.
 #
 # WHAT THIS READS. One admission door, tools/e/enclosure_gate.sh, carries the gate: it reads the
-# ENCLOSURE selector and admits the value `pond` only after tools/p/pond_exit_bron_master_seal.sh
+# ENCLOSURE selector and admits the value `pond` only after tools/p/pond_exit_kyri_master_seal.sh
 # --require returns zero, and the launchers enter through it (until 20260829 three launchers each
 # carried the same eight-line gate in full, and this scan held the copies in agreement; the door
 # is that agreement made structural). That seal is the custody boundary for the season flip -- it demands a
@@ -14,7 +14,7 @@
 # tools/ag/agent-jail.sh, because that is the one Pond's record describes. The same gate stands in
 # tools/cu/cursor-jail.sh and tools/l/launch-zed.sh.example, and until this scan no guard read
 # either. A rule written three times is a rule three files may quietly come to disagree about, and
-# the disagreement had already begun: two of the three assign a dead EXIT_BRON the seal script sets
+# the disagreement had already begun: two of the three assign a dead EXIT_KYRI the seal script sets
 # for itself, and the third does not.
 #
 # WHY DISCOVERY RATHER THAN A ROSTER. REDS %301 and %326 booked the same root twice -- a meter that
@@ -82,7 +82,7 @@ if [ -z "$ROOT" ]; then
   done
 fi
 
-SEAL_REL="tools/p/pond_exit_bron_master_seal.sh"
+SEAL_REL="tools/p/pond_exit_kyri_master_seal.sh"
 SEAL="$ROOT/$SEAL_REL"
 
 echo "pond_seal_gate_scan v1"
@@ -189,10 +189,10 @@ while IFS= read -r f; do
   # REACHES THE SEAL -- the seal script named and --require spelled on one line, so a call that
   # asks for the weaker --policy mode is read as what it is: a check of the keyring rather than of
   # the signature.
-  seal_line=$(grep -nE "pond_exit_bron_master_seal[^ ]*.*--require" "$pen/body" | head -1 || true)
+  seal_line=$(grep -nE "pond_exit_kyri_master_seal[^ ]*.*--require" "$pen/body" | head -1 || true)
   if [ -z "$seal_line" ]; then
     ungated_pond=$((ungated_pond + 1))
-    if grep -qE "pond_exit_bron_master_seal" "$pen/body"; then
+    if grep -qE "pond_exit_kyri_master_seal" "$pen/body"; then
       weak=$(grep -oE -- "--[a-z-]+" "$pen/body" | grep -E -- '--(policy|season-closed)' | head -1 || true)
       echo "detail: $f admits pond and reaches the seal as ${weak:-a weaker mode} rather than --require"
     else

@@ -15,7 +15,7 @@ Keaton wants Pond written in **Glow**, as the TAME-guided enclosure that can hon
 
 So this reply braids three strands Claude should weigh together, not as separate seasons:
 
-1. **Pond’s home and next SLC** (enclosure under Pool · Caravan grain · exit bron still law)  
+1. **Pond’s home and next SLC** (enclosure under Pool · Caravan grain · exit kyri still law)  
 2. **`glow/` comment and pin truth** (prerequisite for any Pond desk that lowers through this tree)  
 3. **Ordering against the finishing edge** (parity send · cold stranger REPORT · duty-8 · this braid)
 
@@ -27,7 +27,7 @@ Propose-never-seat: nothing here flips `ENCLOSURE=pond` or renames APIs without 
 
 ### What is already seated
 
-- Pond is the **enclosure supersede** of ai-jail — scorecard, six-bar, exit criteria, master-seal, retreat flag (`ENCLOSURE=ai-jail` default · `pond` only past master-signed exit bron). See `active-designing/20260712-210800_pond-supersede-exit-criteria.md` and companions.  
+- Pond is the **enclosure supersede** of ai-jail — scorecard, six-bar, exit criteria, master-seal, retreat flag (`ENCLOSURE=ai-jail` default · `pond` only past master-signed exit kyri). See `active-designing/20260712-210800_pond-supersede-exit-criteria.md` and companions.  
 - Second sitting counsel already placed **Pond among non-vane strata** beside Maze, Puddle, Brix — nursery and enclosure faces, not a kernel letter.  
 - **Pool** is the Gall-role keystone (applications · agents · market floor). Sala/Seva live under Pool; Mand lives as a module on that floor.
 
@@ -38,14 +38,14 @@ Propose-never-seat: nothing here flips `ENCLOSURE=pond` or renames APIs without 
 | **Pool** | Host — Pond is a citizen agent / apps-surface concern (editor enclosure), not a new kernel vane |
 | **Caravan grain** | Supervision discipline — s6-shaped bounds, named refuses, soak under N; Pond’s runtime fence inherits this grain without linking skarnet |
 | **Glow language** | Implementation path — desks · lower · witnesses; `text_floor` already names itself prerequisite for a Glow-written lexer arm |
-| **Teacher ai-jail** | Stays pinned in gratitude until exit bron + master `.asc`; one full season of retreat after flip |
+| **Teacher ai-jail** | Stays pinned in gratitude until exit kyri + master `.asc`; one full season of retreat after flip |
 
 Pond does **not** need a new waymark letter to start SLC. It needs a **named first ring**: one fence property that ai-jail already proves daily (e.g. write-fence to pier · private-home equivalent · or Landlock-shaped refuse), authored as Glow → Zig → host, witnessed GREEN, with `ENCLOSURE` still defaulting to ai-jail until soak and seal.
 
 ### What Pond-in-Glow must not invent
 
 - A second vocabulary for nest/shape while `glow/` headers still teach mold-first.  
-- Supersede by calendar or enthusiasm — only by exit bron · soak · master seal · Keaton’s named build word.  
+- Supersede by calendar or enthusiasm — only by exit kyri · soak · master seal · Keaton’s named build word.  
 - Claiming GPU/Wayland/Cursor AppImage paths as Pond’s job on day one — those stay host launchers (`launch-cursor.rish --cursor … --gpu`) until Pond earns them as optional bars.
 
 ---
@@ -120,7 +120,7 @@ Proposed sequence for Claude to affirm or reorder:
 | 1 | Finish parity · send ritual + bounds + `--cursor` | Green before narrative; lightened pier already untracked |
 | 2 | Cold stranger REPORT | OQ #4 cold path; depth-1 win is now measurable |
 | 3 | **Glow comment truth pass** (focused list above) | kg for headers/README; check-in for FaceSpec/CastSpec rename |
-| 4 | **Pond SLC ring-0 brief** (Glow · Pool · one fence property) | Claude seats shape; Quin builds; exit bron still absent |
+| 4 | **Pond SLC ring-0 brief** (Glow · Pool · one fence property) | Claude seats shape; Quin builds; exit kyri still absent |
 | 5 | Duty-8 shell harvest | Parallel when mechanical; does not block Pond brief |
 
 Holds stay holds: ambient gold · fleets · HAWM2 · JABS3 · UDP · deca · Ojjo · data-dignity options (counsel may still draft those unasked).

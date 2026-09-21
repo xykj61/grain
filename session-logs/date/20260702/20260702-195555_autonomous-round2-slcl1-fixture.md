@@ -9,6 +9,6 @@ Round 2 preps the witness season without crossing doors: pinned transaction-fact
 
 ## Files
 
-- `tools/fixtures/slcl1_fact.bron` — deterministic fact fixture
+- `tools/fixtures/slcl1_fact.kyri` — deterministic fact fixture
 - `work-in-progress/ready-to-ask-claude.md` — RTAC at 195426
 - `work-in-progress/README.md` — workbench index refresh

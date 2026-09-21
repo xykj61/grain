@@ -16,7 +16,7 @@ assert selftest.out contains "waymark SETU" else "HOLD1 missing waymark"
 assert selftest.out contains "usb_desk hold on Desk Skate" else "HOLD1 missing usb_desk fixture"
 assert selftest.out contains "local hold on Desk Skate" else "HOLD1 missing local fixture"
 
-let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu_desk_hold1_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold1: no station cache — fixture-only GREEN'; fi"]
+let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.kyri; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu_desk_hold1_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold1: no station cache — fixture-only GREEN'; fi"]
 assert live.ok else "HOLD1 live/optional check failed"
 say "${live.out_brief}"
 

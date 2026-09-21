@@ -87,7 +87,7 @@ DELIVERABLES:
   - year/wave season×scope map (counsel or docs-geode/wiki)
   - crush pipeline design + thinnest witness lean if ready
   - Geode d0 bow when measure greens (or honest blocker)
-  - session .bron · GPG commit · push origin + codeberg
+  - session .kyri · GPG commit · push origin + codeberg
   - waymark report
 
 HARD LINES:

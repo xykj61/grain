@@ -5,7 +5,7 @@
 //! ask in that ring came from one producer, so the question *who wrote
 //! this?* had one answer and never had to be asked.
 //!
-//! One server with two clients asks it. `serial_two_clients.bron` already
+//! One server with two clients asks it. `serial_two_clients.kyri` already
 //! declares the shape -- a virtualiser wired to `client_a` and `client_b`,
 //! each on its own private pair of regions -- and the moment both clients
 //! write, a single head stops being enough. Two crux questions open at
@@ -33,7 +33,7 @@
 //! producer and a quiet one served together on one pass, the quiet one
 //! finishing first.
 //!
-//! Nothing in `serial_two_clients.bron` changes. The same four regions that
+//! Nothing in `serial_two_clients.kyri` changes. The same four regions that
 //! carried one client's queue now carry two.
 //!
 //! Hosted ground: real processes, real files, pure policy, no kernel

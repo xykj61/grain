@@ -10,7 +10,7 @@
 
 ## Why now
 
-Composition through STOA13 can bind faces, call gates across lines, and type `@u32` desks. Glass still needs a **module shape** — a battery of named arms — before Glow can author what NativeActivity imports. That shape is Hoon's **core**: cell of battery + payload. Glow takes the *shape*, not Hoon's gold/iron/lead/zinc variance (Option A in [`../external-research/20260717-003402_hoon-core-variance-glow-rune-bron-brix-fusion.md`](../../external-research/20260717-003402_hoon-core-variance-glow-rune-bron-brix-fusion.md)).
+Composition through STOA13 can bind faces, call gates across lines, and type `@u32` desks. Glass still needs a **module shape** — a battery of named arms — before Glow can author what NativeActivity imports. That shape is Hoon's **core**: cell of battery + payload. Glow takes the *shape*, not Hoon's gold/iron/lead/zinc variance (Option A in [`../external-research/20260717-003402_hoon-core-variance-glow-rune-kyri-brix-fusion.md`](../../external-research/20260717-003402_hoon-core-variance-glow-rune-kyri-brix-fusion.md)).
 
 ## Thin face claim (STOA14)
 

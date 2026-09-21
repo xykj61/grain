@@ -10,7 +10,7 @@ Kaeden affirmed the path counsel. Named **assist/sight glass composition** from 
 
 ## Observations
 
-- Frames stay at eight lines; echo/user read pin fixtures beside `completion.bron`.
+- Frames stay at eight lines; echo/user read pin fixtures beside `completion.kyri`.
 - All eight witnesses GREEN; stdout carries `blocks=4`, `fence_rye=1`, `echo=1`, `user=steward-rio`.
 
 ## Files

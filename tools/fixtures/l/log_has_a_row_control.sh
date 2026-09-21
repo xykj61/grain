@@ -44,11 +44,11 @@ echo "$o" | grep -q 'no_row: 20260824-100000_one.kyri' && echo "no_row_named=yes
 room
 : > "$pen/session-logs/20260824-100000_one.kyri"
 : > "$pen/session-logs/20260824-100001_two.kyri"
-: > "$pen/session-logs/20260824-100002_three.bron"
-pin 20260824-100000_one.kyri 20260824-100002_three.bron
+: > "$pen/session-logs/20260824-100002_three.kyri"
+pin 20260824-100000_one.kyri 20260824-100002_three.kyri
 o=$(run)
 [ "$(val "$o" flat_logs_without_a_row)" = 1 ] && echo "one_of_three_found=yes" || echo "one_of_three_found=no"
-[ "$(val "$o" flat_logs)" = 3 ] && echo "bron_counted=yes" || echo "bron_counted=no"
+[ "$(val "$o" flat_logs)" = 3 ] && echo "kyri_counted=yes" || echo "kyri_counted=no"
 
 # 4 -- a FOLDED log needs no row in the living pin; its row is on the day's shelf.
 room; : > "$pen/session-logs/date/20260101/20260101-100000_folded.kyri"; pin

@@ -1,4 +1,4 @@
-# hawm_harvest_session_root_witness.rish -- STOA284: session_root in harvest Bron.
+# hawm_harvest_session_root_witness.rish -- STOA284: session_root in harvest Kyri.
 #
 # Proves hawm-harvest-v1 carries session_root (64 hex from HAWM1 capture, or
 # the deterministic fixture). Prefers on-disk hawm1-session-root.txt when
@@ -11,7 +11,7 @@ let helpers = run ["sh" "-c" "test -f tools/h/hawm1_capture_session_root.sh && t
 assert helpers.ok else "missing capture helper or harvest worker"
 
 say "hawm-root: fixture names session_root…"
-let fix = run ["sh" "-c" "grep -q '^session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe$' tools/fixtures/h/hawm_harvest_v1.bron"]
+let fix = run ["sh" "-c" "grep -q '^session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe$' tools/fixtures/h/hawm_harvest_v1.kyri"]
 assert fix.ok else "fixture missing deterministic seva-b0 session_root"
 
 say "hawm-root: ensure a 64-hex root file (capture from prior HAWM1 out or fixture)…"
@@ -24,7 +24,7 @@ let fold = run ["bash" "-c" "if test -f tools/.cache/hawm0/hawm0-boot-meta.txt &
 say "${fold.out_brief}"
 assert fold.ok else "harvest fold failed"
 
-let hex_line = run ["sh" "-c" "grep -E '^session_root [0-9a-f]{64}$' tools/.cache/hawm0/hawm-harvest.bron"]
+let hex_line = run ["sh" "-c" "grep -E '^session_root [0-9a-f]{64}$' tools/.cache/hawm0/hawm-harvest.kyri"]
 assert hex_line.ok else "harvest missing session_root 64-hex line"
 say "hawm-root: ${hex_line.out_brief}"
 

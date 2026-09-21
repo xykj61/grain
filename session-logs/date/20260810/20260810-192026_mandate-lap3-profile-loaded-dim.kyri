@@ -13,4 +13,4 @@ obs proved on metal — store builds, selftest GREEN (prove_profile_dim: a secon
 file mandate/store.rye dim is now runtime data bounded by max_dim; init(dim); vectors [max_dim]f32; prove_profile_dim added
 file mandate/keyed.rye refactored store.dim -> store.max_dim in lockstep; init(4); witness GREEN
 file mandate/README.md lap 3 documented; profile-loaded dim horizon marked landed
-recommend keep-going — Mandate CRUD + profile-loaded dim complete and GREEN on metal; remaining laps: read dim from an actual Bron profile file, approximate index, object-storage backing, served over Comlink — each on Keaton's word
+recommend keep-going — Mandate CRUD + profile-loaded dim complete and GREEN on metal; remaining laps: read dim from an actual Kyri profile file, approximate index, object-storage backing, served over Comlink — each on Keaton's word

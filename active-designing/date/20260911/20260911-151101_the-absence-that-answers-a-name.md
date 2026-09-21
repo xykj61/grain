@@ -153,7 +153,7 @@ least exactly when it is needed most, which is why this stops at the habit and s
 Whether the four Glow refusals should be retired or wired up. That is a public error set in a
 language module, so it is Keaton's word, and the measurement stands ready for it: four names, three
 files. Two of them are already ruled on.
-`session-logs/date/20260720/20260720-032713_stoa97-token-mold-spec.bron`
+`session-logs/date/20260720/20260720-032713_stoa97-token-mold-spec.kyri`
 writes, fourteen months back, that `TooFewLines/TooManyLines/MissingTuple` *"remain in ParseError
 set (no removal)"* -- so `rune_shape.TooFewLines` and `lower_named_cast.TooFewLines` stand by a
 decision somebody made on purpose, and reading them as leftovers would undo it. `MissingTagged` and

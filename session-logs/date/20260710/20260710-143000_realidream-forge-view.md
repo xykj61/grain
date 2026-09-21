@@ -5,7 +5,7 @@
 
 ## Thinking trace
 
-Kaeden said keep going after retiring Claude check-ins. Built the forge thin-view offered in strategy: pinned Amber ring-1 Tilak manifest (`tools/fixtures/forge_amber_manifest.bron` from export stamp `143000`), `forgeviewtest` in drawn_terminal folds cellar format · stamp · resin count · hello.txt digest prefix · Amphora proposed vessel line. Witness GREEN; parity **221**.
+Kaeden said keep going after retiring Claude check-ins. Built the forge thin-view offered in strategy: pinned Amber ring-1 Tilak manifest (`tools/fixtures/forge_amber_manifest.kyri` from export stamp `143000`), `forgeviewtest` in drawn_terminal folds cellar format · stamp · resin count · hello.txt digest prefix · Amphora proposed vessel line. Witness GREEN; parity **221**.
 
 ## Observations
 
@@ -14,7 +14,7 @@ Kaeden said keep going after retiring Claude check-ins. Built the forge thin-vie
 
 ## Files
 
-- `tools/fixtures/forge_amber_manifest.bron` — pinned cellar manifest.
+- `tools/fixtures/forge_amber_manifest.kyri` — pinned cellar manifest.
 - `pond/apps/drawn_terminal.rye` — `forgeviewtest`.
 - `tools/realidream_forge_view.rish` — witness.
 - `tools/parity.rish` · TASKS · ROADMAP — parity **221**.

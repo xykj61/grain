@@ -72,7 +72,7 @@ This is where the identity work already built pays forward. A Kumara point can c
 
 Named plainly, and held for a maintainer's word:
 
-1. **A topology profile** -- a Bron descriptor (composed by Brix) that names the quorum size, the tiers and their fan-outs, the theme (element and role names), and the routing rule. The d12-d60 shape becomes *one profile file*, not a set of hardcoded constants.
+1. **A topology profile** -- a Kyri descriptor (composed by Brix) that names the quorum size, the tiers and their fan-outs, the theme (element and role names), and the routing rule. The d12-d60 shape becomes *one profile file*, not a set of hardcoded constants.
 2. **`topology.rye`, parameterized** -- the tier constants lifted to read from a loaded profile, with the same asserts and bounds, so encode/decode/parent/route work for any well-formed shape. The witness grows a second profile and proves both round-trip.
 3. **`settlement/constellation.rye`, unchanged in spirit** -- it already settles by asking topology; it keeps its five transitions and its refusals across any loaded shape. Its bound (`constellation_max`) becomes a function of the profile rather than a fixed sixty-six.
 4. **Pond loads the profile** -- the application module reads a topology profile at startup, the way it already reads a customs policy, and hosts a constellation on that shape. Retiring the Pool framing is a molt: a living Pond mutant supersedes the dated Pool P-vane study, which stays a readable fossil.

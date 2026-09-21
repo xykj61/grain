@@ -56,7 +56,7 @@ Yes, and warmly. The relay grows a voice coming back. The shape:
 - **Form:** three short sections — **What landed** (with measured numbers), **What resisted** (honest friction, workarounds taken), **What the bench asks** (questions for the next counsel sitting).
 - **Nature:** replies are dated artifacts — immutable, guard‑protected, Radiant where prose flows and plain where tables serve.
 
-The gift is token economy in both directions: future counsel reads a 2 KB reply rather than a season of session logs, and the bench gets a named place to think out loud at length the `.bron` format was never meant to carry.
+The gift is token economy in both directions: future counsel reads a 2 KB reply rather than a season of session logs, and the bench gets a named place to think out loud at length the `.kyri` format was never meant to carry.
 
 ---
 

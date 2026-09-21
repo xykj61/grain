@@ -24,7 +24,7 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_listing"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 
 # The witness builds the binaries it runs: amphora/bin/ is gitignored, so a clone carries none of
 # them and this witness would die on a missing file rather than on an Amphora fact (REDS %334).
@@ -41,7 +41,7 @@ assert build_seal.ok else "listing: vessel-seal build failed -- read the line ab
 
 let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "listing: seed pour must pass"
-let keep = run ["sh" "-c" "cp ${vessel} ${home}/honest.bron"]
+let keep = run ["sh" "-c" "cp ${vessel} ${home}/honest.kyri"]
 assert keep.ok else "listing: honest copy must land"
 
 # --- the welcome, asserted as hard as every refusal below ---
@@ -51,9 +51,9 @@ assert honest.err contains "listing agrees count=4" else "listing: welcome names
 # Each restore leg gets its OWN vessel name, because restore derives its out-home from the vessel
 # path and guards an existing one as an identity fork -- two restores of one path would make the
 # second refuse for a reason belonging to the out-home rather than to the listing.
-let ok_copy = run ["sh" "-c" "cp ${vessel} ${home}/ok.bron"]
+let ok_copy = run ["sh" "-c" "cp ${vessel} ${home}/ok.kyri"]
 assert ok_copy.ok else "listing: honest restore copy must land"
-let honest_restore = run ["${home}/bin/amphora" "restore" "${home}/ok.bron"]
+let honest_restore = run ["${home}/bin/amphora" "restore" "${home}/ok.kyri"]
 assert honest_restore.ok else "listing: honest vessel must restore"
 assert honest_restore.err contains "listing=agrees" else "listing: the carry walls name the listing"
 
@@ -64,15 +64,15 @@ let lie_stamp = run ["${home}/bin/vessel-core" "sign" vessel]
 assert lie_stamp.ok else "listing: re-stamp must pass (isolates the listing wall)"
 let lie_check = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert (lie_check.ok == false) else "listing: lying digest must refuse"
-let lie_copy = run ["sh" "-c" "cp ${vessel} ${home}/lie.bron"]
+let lie_copy = run ["sh" "-c" "cp ${vessel} ${home}/lie.kyri"]
 assert lie_copy.ok else "listing: lying restore copy must land"
-let lie_restore = run ["${home}/bin/amphora" "restore" "${home}/lie.bron"]
+let lie_restore = run ["${home}/bin/amphora" "restore" "${home}/lie.kyri"]
 assert (lie_restore.ok == false) else "listing: lying digest must refuse at restore"
 assert lie_restore.err contains "listing disagrees" else "listing: restore names the listing wall"
 
 # LIFT the plant -- a refusal proven only from the failing side cannot be told from a wall that
 # refuses everything, so each plant is removed and the welcome shown returning.
-let lift1 = run ["sh" "-c" "cp ${home}/honest.bron ${vessel}"]
+let lift1 = run ["sh" "-c" "cp ${home}/honest.kyri ${vessel}"]
 assert lift1.ok else "listing: lift 1 must land"
 let after1 = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert after1.ok else "listing: welcome must return once the lie is lifted"
@@ -84,7 +84,7 @@ let drop_stamp = run ["${home}/bin/vessel-core" "sign" vessel]
 assert drop_stamp.ok else "listing: re-stamp after drop must pass"
 let drop_check = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert (drop_check.ok == false) else "listing: a dropped line must refuse"
-let lift2 = run ["sh" "-c" "cp ${home}/honest.bron ${vessel}"]
+let lift2 = run ["sh" "-c" "cp ${home}/honest.kyri ${vessel}"]
 assert lift2.ok else "listing: lift 2 must land"
 let after2 = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert after2.ok else "listing: welcome must return once the drop is lifted"
@@ -99,7 +99,7 @@ let ghost_stamp = run ["${home}/bin/vessel-core" "sign" vessel]
 assert ghost_stamp.ok else "listing: re-stamp after ghost must pass"
 let ghost_check = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert (ghost_check.ok == false) else "listing: a ghost line must refuse"
-let lift3 = run ["sh" "-c" "cp ${home}/honest.bron ${vessel}"]
+let lift3 = run ["sh" "-c" "cp ${home}/honest.kyri ${vessel}"]
 assert lift3.ok else "listing: lift 3 must land"
 let after3 = run ["${home}/bin/vessel-seal" "manifest-check" vessel]
 assert after3.ok else "listing: welcome must return once the ghost is lifted"
@@ -107,11 +107,11 @@ assert after3.ok else "listing: welcome must return once the ghost is lifted"
 # --- the elder shape: a head carrying NO listing makes no claim, so it is no disagreement ---
 # Vessels poured before the Q11 listing carry none, and their bytes are frozen. This door answers
 # whether the listing PRESENT is true; whether one is required belongs to the far-manifest door.
-let elder = run ["sh" "-c" "grep -v '^manifest ' ${home}/honest.bron > ${home}/elder.bron"]
+let elder = run ["sh" "-c" "grep -v '^manifest ' ${home}/honest.kyri > ${home}/elder.kyri"]
 assert elder.ok else "listing: elder shape must prepare"
-let elder_stamp = run ["${home}/bin/vessel-core" "sign" "${home}/elder.bron"]
+let elder_stamp = run ["${home}/bin/vessel-core" "sign" "${home}/elder.kyri"]
 assert elder_stamp.ok else "listing: elder re-stamp must pass"
-let elder_check = run ["${home}/bin/vessel-seal" "manifest-check" "${home}/elder.bron"]
+let elder_check = run ["${home}/bin/vessel-seal" "manifest-check" "${home}/elder.kyri"]
 assert elder_check.ok else "listing: an absent listing must welcome"
 assert elder_check.err contains "no listing to check" else "listing: elder answer names itself"
 

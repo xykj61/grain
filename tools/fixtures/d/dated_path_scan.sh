@@ -178,7 +178,7 @@ set +f
 # not stable between two invocations on this pier -- measured by running one pattern twice and
 # diffing. Every reader below is order-independent (`grep -v`, `grep -vxF -f`, an awk classifier),
 # so this is recorded to save the next reader a phantom diff rather than to warn of a fault.
-DP_REF_BODY='(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh)'
+DP_REF_BODY='(\.\./)*([A-Za-z0-9_.-]+/)*[0-9]{8}-[0-9]{6}(_[A-Za-z0-9._-]+)?\.(md|kyri|kyri|rye|rish|tsv|brix|glow|sh)'
 DP_REF_RE="(^|[^A-Za-z0-9_.-])($DP_REF_BODY)"
 DP_REF_STRIP='s|^\([^:]*\):[^A-Za-z0-9_.-]|\1:|'
 
@@ -194,7 +194,7 @@ git ls-files > "$work/all.txt"
 #
 set -f
 grep -rIoE "$DP_REF_RE" \
-  --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
+  --include=*.md --include=*.kyri --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
   . 2>/dev/null | sed "s|^\./||; $DP_REF_STRIP" > "$work/pairs.txt"
@@ -205,7 +205,7 @@ grep -rIoE "$DP_REF_RE" \
 for _rd in $(dp_readmit_dirs); do
   [ -d "$_rd" ] || continue
   grep -rIoE "$DP_REF_RE" \
-    --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
+    --include=*.md --include=*.kyri --include=*.kyri --include=*.rish \
     --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
     "$_rd" 2>/dev/null | sed "s|^\./||; $DP_REF_STRIP" >> "$work/pairs.txt"
 done
@@ -271,7 +271,7 @@ fi
 # last `grep -P` from the file.
 set -f
 grep -rIoE "! -[fe] +$DP_REF_BODY" \
-  --include=*.md --include=*.bron --include=*.kyri --include=*.rish \
+  --include=*.md --include=*.kyri --include=*.kyri --include=*.rish \
   --include=*.rye --include=*.sh --include=*.brix --include=*.mdc \
   $DP_GREP_EXCLUDES \
   . 2>/dev/null | sed 's|^\./||; s|:! -[fe] *|:|' | sort -u > "$work/absent.txt"

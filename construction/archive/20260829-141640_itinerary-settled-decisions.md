@@ -20,7 +20,7 @@ here exactly as the card carried it, and the card breathes again.
 |---|---|---|---|
 | **1 -- OPEN, the finishing edge** | The Language | **SOON** [x] | Rishi language spine complete; Brix-infuse, PLEAC, the cookbook in the interpreter, TAME core/shelf; all eight Aurora boot stages cross-building freestanding `riscv64`. Open: Aurora |
 | **2 -- word-gated** | Identity & Network | **JARL** | Kumara (5 tilaks) - Comlink turn-route and live handshake - d12-d60 topology - the settlement constellation - Vault, Mandate, Scribe |
-| **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Bron - Tablecloth |
+| **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Kyri - Tablecloth |
 | **4 -- word-gated** | The World | **TACT** | Ship-Pilot - publishing - Grainphone - commerce - CONTRIBUTING four-doors - Grain Energy PBC |
 
 **Now at JARL.** Four seats witnessed GREEN; the next-chapter breach is OPEN `20260810`

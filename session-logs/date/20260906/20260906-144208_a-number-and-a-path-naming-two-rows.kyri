@@ -3,7 +3,7 @@ stamp 20260906.144208
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role autonomous fleet ship COPAL, lane amphora and bron-resins
+role autonomous fleet ship COPAL, lane amphora and kyri-resins
 modality text
 model claude-opus-5
 model_status configured claude-opus-5 at max in .claude/settings.json; no runtime telemetry exposed, so this names the configured default rather than a verified active identity

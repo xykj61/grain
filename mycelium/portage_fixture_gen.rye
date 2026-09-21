@@ -13,13 +13,13 @@
 //! Siloed, dev-only, demo world/keeper seeds -- no real key, no funds, no network, no value crossed.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_fixture_gen.rye \
-//!     2> tools/fixtures/p/portage_record.bron
+//!     2> tools/fixtures/p/portage_record.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const portage = @import("portage.rye");
-const portage_bron = @import("portage_bron.rye");
+const portage_kyri = @import("portage_kyri.rye");
 const cord = @import("cord.rye");
 const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
@@ -115,7 +115,7 @@ pub fn seat_dest_dag() !cord.Dag {
 }
 
 /// Build the r3 record around the two real worlds -- the receipt the crossing would carry to the far shore.
-pub fn build_record() !portage_bron.Record {
+pub fn build_record() !portage_kyri.Record {
     const alice = seeded(alice_byte).public_key.toBytes();
     const bob = seeded(bob_byte).public_key.toBytes();
     const wtag = world_tag(world_name);
@@ -124,7 +124,7 @@ pub fn build_record() !portage_bron.Record {
     var dag_a = try seat_source_dag();
     var dag_b = try seat_dest_dag();
 
-    var r: portage_bron.Record = undefined;
+    var r: portage_kyri.Record = undefined;
     tally_copy.copy_disjoint(u8, r.id[0..], id[0..]);
     tally_copy.copy_disjoint(u8, r.from[0..], alice[0..]);
     tally_copy.copy_disjoint(u8, r.world[0..], wtag[0..]);
@@ -140,8 +140,8 @@ pub fn build_record() !portage_bron.Record {
 
 pub fn main() !void {
     var r = try build_record();
-    var buf: [portage_bron.max_record]u8 = undefined;
-    const len = try portage_bron.render(&r, buf[0..]);
+    var buf: [portage_kyri.max_record]u8 = undefined;
+    const len = try portage_kyri.render(&r, buf[0..]);
     // invariant: a rendered fixture is never empty.
     assert(len > 0);
     print("{s}", .{buf[0..len]});

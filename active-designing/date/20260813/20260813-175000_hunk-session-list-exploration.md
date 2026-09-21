@@ -21,7 +21,7 @@ A new file `pond/apps/session_list.rye`:
 - **`SessionSummary`** — a bounded record: the session's name (a slice into a fixed `[max_name]u8`), its edit-count, and its live position. No pixels, no recipe body — just what a keeper needs to choose.
 - **`SessionListing`** — a bounded array of summaries (at most `tablecloth.max_artifacts`).
 - **`list_sessions(cat, store)`** — walk `0..cat.count`, select every artifact whose name ends in `.session`, `open_session` each (HUNK18, verified before parse), and record its summary. A tampered session refuses through the open, so the listing is trustworthy as a whole or it names its failure.
-- **`render_listing(listing, out)`** — the listing travels as a flat-Bron `format session-list-v1` record, one `session <name> <edits> <position>` line per entry, matching the tree's manifest idiom (fixed point with a future parser, deferred).
+- **`render_listing(listing, out)`** — the listing travels as a flat-Kyri `format session-list-v1` record, one `session <name> <edits> <position>` line per entry, matching the tree's manifest idiom (fixed point with a future parser, deferred).
 
 ## What the witness must prove
 

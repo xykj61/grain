@@ -24,7 +24,7 @@ TigerBeetle live client (pin wrapper or pure in-memory stand-in OK for lap 1); d
 | Name | Role |
 |------|------|
 | `linengrow/wov_core.rye` | Bundle + root + exit checks |
-| `tools/fixtures/wov_exit_bundle_v1.bron` | Golden |
+| `tools/fixtures/wov_exit_bundle_v1.kyri` | Golden |
 | `tools/wov_exit_honesty.rish` | Witness |
 
 ---

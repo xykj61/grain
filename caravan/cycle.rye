@@ -80,7 +80,7 @@ const caravan_cycle_version = "20260819.162747";
 
 /// The ring declaration: three domains, three circulating regions, and one
 /// tail owned by the domain that counts its own laps.
-pub const declaration_path = "caravan/systems/serial_cycle.bron";
+pub const declaration_path = "caravan/systems/serial_cycle.kyri";
 
 /// How many regions one step may name. The widest step here reads every
 /// region one domain can reach, which is the ring's own width less the

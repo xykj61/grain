@@ -11,7 +11,7 @@ anyone can use. Silo protects us from borrowing; redact protects a person from b
 
 ## Why it exists
 
-A page carrying real figures has one honest destination today: withheld. `template-manifest.bron` is
+A page carrying real figures has one honest destination today: withheld. `template-manifest.kyri` is
 an allowlist, so a room absent from it never ships. That wall is right and it wastes something --
 **the specifics are private, and the method rarely is.** A tree that only knows how to withhold
 teaches nothing from its own hardest thinking.

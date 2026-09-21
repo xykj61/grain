@@ -15,13 +15,13 @@ Implement the two-lane SLC-L3 witness bolt when the gate opens.
 
 1. `active-designing/YYYYMMDD-HHMMSS_slcl3-settlement-rail.md` — hammock scope (fact fields, receipt shape, edge of complete)
 2. `tools/slcl3_settlement_witness.rish` — welcome + unwelcome paths per lane
-3. `tools/fixtures/settlement_receipt_lane_a.bron` / `lane_b.bron` — pinned goldens
+3. `tools/fixtures/settlement_receipt_lane_a.kyri` / `lane_b.kyri` — pinned goldens
 4. POSIX seams for Sui/Monad SDK invocation — external-interpreter family per `TAME_GUIDANCE.md`
 5. Parity increment + TASKS/ROADMAP pin
 
 ## Witness claims (happy zone)
 
-- One `slcl1_fact.bron` settled on Sui testnet (lane A)
+- One `slcl1_fact.kyri` settled on Sui testnet (lane A)
 - Same fact flow on Monad testnet (lane B)
 - Three-axis score recorded in witness output (integrity, verifiability, asset integrity)
 

@@ -14,7 +14,7 @@
 # account, and the only transfer that comes short is the round-2 one — so the app's full commit tie-break and
 # this file-order accounting name the same loser. It prints the triple `<loser-signer-hex> <moved> <short>`.
 #
-#   awk -f tools/fixtures/p/purse_dag_truth.awk tools/fixtures/p/purse_dag.bron
+#   awk -f tools/fixtures/p/purse_dag_truth.awk tools/fixtures/p/purse_dag.kyri
 #   -> "<loser-signer-hex> <moved> <short>"
 
 $1 == "block" && $4 == 1 {                       # an issue credits its recipient account

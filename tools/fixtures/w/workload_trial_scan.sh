@@ -116,7 +116,7 @@ classify_one() {
     echo host
   elif printf '%s\n' "$_body" | grep -qE '(^|[^a-zA-Z_/])(rye|glow_run|zig)[[:space:]]+(run|build)|/bin/(rye|rishi|glow[a-z_]*)|-femit-bin|rye_build\.sh|\$ZIG|[a-z]+/bin/[a-zA-Z0-9_-]+'; then
     echo metal
-  elif printf '%s\n' "$_body" | grep -qE 'git (ls-files|log|grep|show)|(^|[^a-zA-Z_])find[[:space:]]|sha3|[a-z_]+/[a-zA-Z0-9_.-]+\.(kyri|md|bron|rye|rish)'; then
+  elif printf '%s\n' "$_body" | grep -qE 'git (ls-files|log|grep|show)|(^|[^a-zA-Z_])find[[:space:]]|sha3|[a-z_]+/[a-zA-Z0-9_.-]+\.(kyri|md|kyri|rye|rish)'; then
     echo bytes
   else
     echo arithmetic

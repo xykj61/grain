@@ -57,7 +57,7 @@ say "GREEN: MUR M2 mailable Comlink (hosted + device wire) witness passed."
 | --- | --- |
 | Witness file rename + internal MALA strings | step 1 |
 | Wire lab / `run_mala_wire_lab.sh` | step 3 |
-| Fixture `mala_m1_mint.bron` | step 4 / module (rye-coupled) |
+| Fixture `mala_m1_mint.kyri` | step 4 / module (rye-coupled) |
 | `linengrow/mala*.rye` · `mala:*` | module wave |
 
 ## Sequencing lean

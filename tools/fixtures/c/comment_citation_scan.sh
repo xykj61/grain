@@ -32,7 +32,7 @@
 # broken citations, and repairing them would have written through the links into six correct bodies.
 #
 # WHAT THIS LEAVES OPEN, measured rather than assumed. tools/fixtures/t/tracked_link_scan.sh reads
-# `.md` alone, so a citation written inside a LIVING `.kyri` or `.bron` is read by neither guard.
+# `.md` alone, so a citation written inside a LIVING `.kyri` or `.kyri` is read by neither guard.
 # Measured 20260831: this tree tracks 4,080 such files, 13 of them carry `](`, and every one of the
 # 13 is dated testimony -- so the gap holds zero living files today. Teaching the link guard these
 # two notations is the obvious close and is NOT the right one alone: pointed at the same 13 dated
@@ -76,7 +76,7 @@ while IFS= read -r f; do
   #
   # The candidate list above once carried the whole answer in its own exclusions, `:!*.md :!*.mdc
   # :!*.markdown`, which were the card's prose extensions spelled a second time. On 20260831 the
-  # card's list grew and this one did not: REDS %392 added `.bron` and `.kyri` to it, correctly,
+  # card's list grew and this one did not: REDS %392 added `.kyri` and `.kyri` to it, correctly,
   # since a session log is prose rather than a program. Dated session logs walked into this
   # population as programs -- how many is `prose_skipped` on the next line, a field this comment cites
   # (REDS %400). The card read them the way it reads prose -- every line, rather than

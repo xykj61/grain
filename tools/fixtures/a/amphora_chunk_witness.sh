@@ -45,10 +45,10 @@ far=$(mktemp -d)
 trap 'rm -rf "$source" "$far"' EXIT
 
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$source" "$STAMP"
-test -f "$source/vessel.bron"
-grep -q '^seal_cargo ' "$source/vessel.bron"
+test -f "$source/vessel.kyri"
+grep -q '^seal_cargo ' "$source/vessel.kyri"
 
-cp "$source/vessel.bron" "$source/manifest.bron" "$far/"
+cp "$source/vessel.kyri" "$source/manifest.kyri" "$far/"
 mkdir -p "$far/resins"
 rm -f "$far/resins/"*
 

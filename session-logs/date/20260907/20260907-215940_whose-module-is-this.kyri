@@ -3,7 +3,7 @@ stamp 20260907.215940
 editor Claude Code, terminal
 provider Anthropic
 product Claude Code
-role COPAL -- unattended Earth ship, amphora and bron-resins lane
+role COPAL -- unattended Earth ship, amphora and kyri-resins lane
 modality text
 model unverified
 model_status active runtime unverified
@@ -14,7 +14,7 @@ evidence .claude/settings.json declares model claude-opus-5 and effortLevel max
 voice Kyri
 host Linux pier, x86_64, America/New_York
 title Whose module is this
-prompt the standing fleet baton -- take the next agent-doable lap, reds first, in the amphora and bron-resins lane
+prompt the standing fleet baton -- take the next agent-doable lap, reds first, in the amphora and kyri-resins lane
 rota lap 4217, row 2 -- Fire/Mars, the row that sees: cut and stop. The threshold asks what must stop and what must be cut, and its reading of Standfast is the eye refusing to look away from a known wrong. What the cold open put in front of me was a red naming my own parked lap, and what the fire lens found underneath was an instrument that had been reading a peer's work as this lane's for as long as the lane has had links.
 think THE COLD OPEN NAMED THREE REDS AND ONE OF THEM WAS MY OWN LAP. 150 guards, 1,357s, 145 green, 3 red, 2 gated. shared_pen and standing_equipment are the roster's self-mirror of one cause; stash_record was the third, refusing unlanded=1 against stash@{0} -- a round-open stash written at 20260907-212711, sixteen seconds before my own first reading of the clock. %499, fourth park in this seat.
 think THE OBVIOUS RECOVERY WOULD HAVE BEEN A ROLLBACK. git rev-parse stash@{0}^ answered 5ab5a5dec against HEAD at 3bc368761 -- three peer commits between them. git diff --name-only 5ab5a5dec..HEAD intersected with git stash show --name-only on exactly two paths, construction/ITINERARY.md and session-logs/date/README-index-20260907.md, so a whole-stash checkout would have reverted four peer card blocks and their index rows. The eight untouched paths came back with git checkout stash@{0} -- <path>, which reads the TREE so the mode rides; the two shared pages took git diff <base> <stash> -- <paths> piped to git apply --3way, both clean.

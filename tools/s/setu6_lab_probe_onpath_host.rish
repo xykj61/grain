@@ -2,7 +2,7 @@
 #
 # Run on the host. Looks for usb0 / ncm* / enx* (CDC-NCM gadget shape --
 # systemd predictable names use enx<mac> for Pixel USB tether). Writes
-# tools/.cache/setu0/lab.bron. Stand-in GREEN when absent; armed when present.
+# tools/.cache/setu0/lab.kyri. Stand-in GREEN when absent; armed when present.
 # Live frame TX over that iface: SETU6.5 onpath after this probe.
 #
 #   rishi/bin/rishi run tools/s/setu6_lab_probe_onpath_host.rish

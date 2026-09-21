@@ -26,7 +26,7 @@ Second parity run: **PARITY_EXIT=0** in ~130s. Committed all hygiene + OA-L5 wor
 
 | File | Why |
 |------|-----|
-| I6 amber fixtures + witness + `amber/ring1_manifest_shape.bron` | Tilak hygiene lap |
+| I6 amber fixtures + witness + `amber/ring1_manifest_shape.kyri` | Tilak hygiene lap |
 | `linengrow/open_asks_lap5_delivery.rye` + `tools/open_asks_lap5.rish` | OA-L5 wire |
 | `tools/parity.rish` | I6 + OA-L5 slots |
 | `mantra/recall_subscribe_poll_delivery.rye` | Demo no longer hangs on source-loop |

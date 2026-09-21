@@ -31,7 +31,7 @@
 //! wrote it, before a single byte is read.
 //!
 //! The same two regions carry the conversation either direction. Nothing
-//! in `serial_two_clients.bron` changes; only the order of who writes
+//! in `serial_two_clients.kyri` changes; only the order of who writes
 //! first does.
 //!
 //! Hosted ground: real processes, real files, pure policy, no kernel

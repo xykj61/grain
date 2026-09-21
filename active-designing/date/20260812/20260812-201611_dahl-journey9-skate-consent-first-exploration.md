@@ -37,12 +37,12 @@ The crux is the mutuality: a `link` between two members exists **only when both 
 
 - **r1 — Consent.** `pond/apps/skate_circle.rye`: a `Circle` keepers join only by their own explicit act; a `link` between two members exists only when both request it (one-sided **holds**, mutual **links**); no member is visible to another by default. Pure state machine, bounded. Refusals: join a taken seat (`AlreadyMember`), link a non-member (`NotMember`), self-link (`SelfLink`), a full circle (`CircleFull`), full links (`LinksFull`). The crux made checkable: a one-sided request never reads as linked; the mutual pair does; visibility follows the link exactly.
 - **r2 — Signed.** `pond/apps/skate_circle_signed.rye`: each consent act (join, link-request) is signed by that keeper's settled Kumara identity and verified against a caller-supplied keyring, mirroring `commerce_trade_signed.both_agree` — a steward cannot fabricate a keeper's consent. Honesty crux: forge or relabel a consent act and its signature falls.
-- **r3 — Travels.** `pond/apps/skate_circle_bron.rye`: render a circle's members and links to a `format skate-circle-v1` Bron record and parse it back byte-for-byte, still consent-honest offline (a link flipped after the crossing refuses); unknown/missing field · bad header each refuse.
+- **r3 — Travels.** `pond/apps/skate_circle_kyri.rye`: render a circle's members and links to a `format skate-circle-v1` Kyri record and parse it back byte-for-byte, still consent-honest offline (a link flipped after the crossing refuses); unknown/missing field · bad header each refuse.
 - **r4 — Read-true.** `pond/apps/skate_circle_true.rye`: carry the surface onto a real fixture (or settlement identities) and cross-check the membership/link count against an independent measure — two tools, one answer — so a circle can never drift from what a keeper can count by hand.
 
 ## Boundaries (custody-first)
 
-Skate records the *facts* of consent and holds nothing — it opens no network, moves no funds, and generates no real identity. The Comlink-served rung (a circle shared over the wire) reaches the serve custody gate and is the maintainer's hand; demo keeper seeds only, never a real Kumara instance (gate #4). Everything above — the pure rule, signing over demo seeds, Bron travel, reading a real fixture — is agent-doable and does not wait.
+Skate records the *facts* of consent and holds nothing — it opens no network, moves no funds, and generates no real identity. The Comlink-served rung (a circle shared over the wire) reaches the serve custody gate and is the maintainer's hand; demo keeper seeds only, never a real Kumara instance (gate #4). Everything above — the pure rule, signing over demo seeds, Kyri travel, reading a real fixture — is agent-doable and does not wait.
 
 ---
 

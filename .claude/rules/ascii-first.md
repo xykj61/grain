@@ -303,7 +303,7 @@ swept, re-poured, or retired governs a family and wants Keaton's word, which is 
 **What it still cannot see** is a `printf` argument assembling one line: finding it needs to know
 whether a quote sits inside another quote, which is parsing rather than scanning, so the meter
 **undercounts on purpose** and says so, the way all four siblings do. `amphora_pour.sh`'s own em
-dash left on an earlier lap and `amphora_vessel_lap1.bron` is a stored vessel rather than a shell
+dash left on an earlier lap and `amphora_vessel_lap1.kyri` is a stored vessel rather than a shell
 source, so both halves of the elder guess are closed by other means. **39 behaviors** stand proven
 on real git repositories in a throwaway pen under
 [`../../tools/fixtures/s/shell_written_ascii_control.sh`](../../tools/fixtures/s/shell_written_ascii_control.sh),

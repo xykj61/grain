@@ -1,6 +1,6 @@
 # STOA275 -- HAWM Log-Harvest Inventary
 
-*An Acme Corporation employee reading this gets the first HAWM deepen inventary after the Dexter->Sala finish: which host logs already exist, the agent-readable Bron harvest shape, and a device-free witness that folds meta (or a fixture) into `hawm-harvest.bron`. Multi-AVD fleets and GrapheneOS images stay held.*
+*An Acme Corporation employee reading this gets the first HAWM deepen inventary after the Dexter->Sala finish: which host logs already exist, the agent-readable Kyri harvest shape, and a device-free witness that folds meta (or a fixture) into `hawm-harvest.kyri`. Multi-AVD fleets and GrapheneOS images stay held.*
 
 **Language:** EN  
 **Version:** `20260722.152523` (EDT - Framework host)  
@@ -31,9 +31,9 @@ Jail truth: boot stays **host-onpath** (`/dev/kvm`). Inventary witness runs devi
 
 ## Harvest shape -- `hawm-harvest-v1`
 
-Bron fields (one per line, no quotes):
+Kyri fields (one per line, no quotes):
 
-```bron
+```kyri
 format hawm-harvest-v1
 stamp YYYYMMDD.HHMMSS
 waymark HAWM
@@ -50,15 +50,15 @@ emulator_log_path tools/.cache/hawm0/hawm0-emulator.log
 status GREEN
 ```
 
-Fixture: `tools/fixtures/hawm_harvest_v1.bron`  
+Fixture: `tools/fixtures/hawm_harvest_v1.kyri`  
 Writer: `tools/hawm_log_harvest_worker.sh`  
-Output: `tools/.cache/hawm0/hawm-harvest.bron` (gitignored cache)
+Output: `tools/.cache/hawm0/hawm-harvest.kyri` (gitignored cache)
 
 ---
 
 ## Verdict (one breath)
 
-**HAWM_HARVEST_V1.** Inventary of meta - emulator log - ephemeral Rish - logcat-held. First GREEN folds meta/fixture into Bron.
+**HAWM_HARVEST_V1.** Inventary of meta - emulator log - ephemeral Rish - logcat-held. First GREEN folds meta/fixture into Kyri.
 
 ---
 

@@ -9,7 +9,7 @@
 
 ## The Seed (what was asked)
 
-Rename Kumara as the **R-vane, Rhyz**, after the rhizome; add a gratitude reference to Michael Downs' *Timenergy*, Nick Land, and Deleuze & Guattari, and silo the concepts for our identity vane; **adopt** Azimuth-style point/planet/star tier naming for its identity tiers. Note that `SOURCE.md` changed without a version or name update. Clarify where we stand on the Glow warm-aura date format sweep for documents, folders, and metadata. Resolve all existing Kumara usages by **reviving** everything written and referenced with Rhyz. Expand and run the whole prompt; bron logs, full summaries, commits, pushes, and a full chat-summary printout.
+Rename Kumara as the **R-vane, Rhyz**, after the rhizome; add a gratitude reference to Michael Downs' *Timenergy*, Nick Land, and Deleuze & Guattari, and silo the concepts for our identity vane; **adopt** Azimuth-style point/planet/star tier naming for its identity tiers. Note that `SOURCE.md` changed without a version or name update. Clarify where we stand on the Glow warm-aura date format sweep for documents, folders, and metadata. Resolve all existing Kumara usages by **reviving** everything written and referenced with Rhyz. Expand and run the whole prompt; kyri logs, full summaries, commits, pushes, and a full chat-summary printout.
 
 ## Done This Pass
 

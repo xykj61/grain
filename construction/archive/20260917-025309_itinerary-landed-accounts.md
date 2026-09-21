@@ -96,7 +96,7 @@ answering the same numbers -- which is how a red is told from a lap's own damage
 |---|---|---|
 | `unheard_guard` | `control_unheard=20` against a ceiling of 18 | the lanes that landed the two unrun controls |
 | `law_guard_heard` | `sibling_refused`, behind the above | cascades |
-| `instrument_refusal` | `swallowed_instrument_passes=2` against zero | both lines in `tools/fixtures/b/bron_resins_landed_scan.sh` |
+| `instrument_refusal` | `swallowed_instrument_passes=2` against zero | both lines in `tools/fixtures/b/kyri_resins_landed_scan.sh` |
 | `built_tool_freshness` | `stale_tool` -- this pier's `rye` 9,770 seconds behind `rye/src/main.rye` | a machine fact, cleared by one `sh rye/bootstrap.sh` |
 | `ryekey` | `rishi: line 55: UnknownStatement` | `%806` |
 

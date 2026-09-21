@@ -2,7 +2,7 @@
 //! cascade by per-key infuse, and a lowering into the Skate cell grid.
 //!
 //! WADE1 is the `.brush` surface-bridge seam: a cascading component styleguide
-//! expressed in the tree's own tongue -- Bron infused into Bron, never a web
+//! expressed in the tree's own tongue -- Kyri infused into Kyri, never a web
 //! cascade (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md).
 //! The three layers the seam names live here as one module:
 //!
@@ -32,7 +32,7 @@ pub const tokens_version = "20260812.120515";
 
 // --- bounds -- every collection and loop names its maximum ----------------
 
-pub const max_sheet_bytes: u32 = 512; // one token sheet in Bron, bounded like infuse's max_line
+pub const max_sheet_bytes: u32 = 512; // one token sheet in Kyri, bounded like infuse's max_line
 pub const max_cascade_depth: u32 = 8; // deepest inheritance chain a component may stack
 
 pub const TokensError = error{ CascadeTooDeep, ChannelOutOfRange };
@@ -140,9 +140,9 @@ pub fn assert_warm_low_blue(argb: u32) TokensError!u32 {
     return argb;
 }
 
-// --- the token sheet, as Bron the cascade infuses ------------------------
+// --- the token sheet, as Kyri the cascade infuses ------------------------
 //
-// A token sheet is data, not code -- flat Bron infuse already parses:
+// A token sheet is data, not code -- flat Kyri infuse already parses:
 //   paper <hex>   ink <hex>   edge <hex>   weight <name>   space <px>   elevate <name>
 // The values are the palette hex words above (written as 0x... strings) so the
 // resolved sheet round-trips through infuse unchanged.
@@ -224,7 +224,7 @@ pub fn resolve_stack(layers: []const []const u8, out: []u8, scratch: []u8) !u32 
 
 // --- the lowering -- a resolved sheet dresses a Skate grid ----------------
 
-/// Read one token's hex value out of a resolved Bron sheet by key. Returns the
+/// Read one token's hex value out of a resolved Kyri sheet by key. Returns the
 /// ARGB8888 word. Refuses a missing or malformed token rather than guessing.
 fn token_argb(sheet: []const u8, key: []const u8) !u32 {
     // invariant: a key is present to match.

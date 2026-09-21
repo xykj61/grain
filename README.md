@@ -213,7 +213,7 @@ goal itself here, rather than a compromise on the way to one.
 | **[Aurora](aurora/)** | The dawn. The first code that wakes on bare hardware, before an operating system exists. |
 | **[Surf](surf/)** - **[Brushstroke](brushstroke/)** | The drawing surface, and the strokes made on it. |
 | **[Mycelium](mycelium/)** | The quiet network underneath, named for the thread that connects a forest. |
-| **[Brix](brix/README.md)** - [beginner door](foundations/20260823-222019_what-brix-infuse-is.md) | The declaring language. A `.brix` file says what a system is made of and how the parts fit, and evaluates to plain Bron a program can read. You declare the shape; the tree checks it holds. |
+| **[Brix](brix/README.md)** - [beginner door](foundations/20260823-222019_what-brix-infuse-is.md) | The declaring language. A `.brix` file says what a system is made of and how the parts fit, and evaluates to plain Kyri a program can read. You declare the shape; the tree checks it holds. |
 | **Tablecloth** | Holds a thing by its content rather than by where you put it. Ask for the same bytes and you get the same bytes, from any room, forever. [Beginner door](foundations/20260823-222020_what-tablecloth-is.md); it runs through several rooms rather than sitting in one, and [`brushstroke/tablecloth.rye`](brushstroke/tablecloth.rye) is the nearest single file. |
 
 Every seated term, with the date and the reason we chose it, lives in

@@ -20,7 +20,7 @@
 | Surface | State |
 |---|---|
 | hawm0 AVD | stopped |
-| `hawm-harvest.bron` | kept - session_root present |
+| `hawm-harvest.kyri` | kept - session_root present |
 | Pixel USB | may still be attached -- unused this lean |
 | Next HAWM | host `hawm0_boot_harvest_onpath_host` when reopened |
 

@@ -4,7 +4,7 @@
 //! response carries -- a single tool discovered. This rung carries that discovery to
 //! its real shape: the whole `tools/list` response, a bounded array of descriptors,
 //! so a JSON MCP host learns every Grain tool a server offers in one exchange. A
-//! bounded Bron catalog of manifests renders to a `format tools/list` JSON-RPC
+//! bounded Kyri catalog of manifests renders to a `format tools/list` JSON-RPC
 //! response (`{...,"result":{"tools":[<descriptor>,...]}}`), and that response reads
 //! back into an equal catalog.
 //!
@@ -228,7 +228,7 @@ fn welcome_two_tool_list_round_trips() !void {
     assert(manifests_equal(&list.tools[1], &back.tools[1]));
     assert(std.mem.eql(u8, back.tools[0].tool, "add"));
     assert(std.mem.eql(u8, back.tools[1].tool, "join"));
-    print("mcp_list: two-tool list — Bron catalog -> JSON tools/list -> Bron catalog, equal\n", .{});
+    print("mcp_list: two-tool list — Kyri catalog -> JSON tools/list -> Kyri catalog, equal\n", .{});
 }
 
 fn welcome_empty_list_round_trips() !void {

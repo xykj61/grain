@@ -29,7 +29,7 @@ loom qa redact_technique setting=field register=80 truth=100 composite=93 sow=GR
 file context/REDACT_TECHNIQUE.md the technique, its boundary, and the one-question check
 file .claude/rules/redact-technique.md the agent-facing rule
 file .cursor/rules/redact-technique.mdc the twin, to convention
-file template-manifest.bron the fourth verdict named as proposed and unbuilt, where a hand will meet it
+file template-manifest.kyri the fourth verdict named as proposed and unbuilt, where a hand will meet it
 scope one commissioned law seated as the mirror of an existing one, with its unbuilt half named rather than implied
 status GREEN -- sow witness green, tracked links ok, ascii documents ok
 recommend keep-going -- the first worked redaction is the proof this technique needs: take one landed counsel cell and produce its public generalisation, then compare the two for anything traceable.

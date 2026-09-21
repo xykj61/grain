@@ -78,7 +78,7 @@ None of these three is free, and picking one is a real ruling this project's own
 
 If and when Kaeden gives the word to move from scoping to a first landed witness, the smallest-lovable-complete shape, matching this project's own SLC discipline:
 
-1. **Noun representation** -- a Bron-adjacent value (atom or cell) as the interpreter's data model; Bron's existing one-value model is very close to a noun already, per the naming-mapping proposal's own finding
+1. **Noun representation** -- a Kyri-adjacent value (atom or cell) as the interpreter's data model; Kyri's existing one-value model is very close to a noun already, per the naming-mapping proposal's own finding
 2. **Opcodes 0-5 only, first** -- the Turing-complete primitive core, with a witness proving each opcode's stated reduction rule against hand-written fixture formulas, the same fixture-driven witness style this project already uses everywhere
 3. **Opcodes 6-11 second** -- the macro/sugar layer, each opcode's witness proving it reduces to the same result as its stated 0-5 expansion (this is directly testable: the spec literally defines each macro op as an expression in terms of the primitives)
 4. **No Hoon-fusion syntax work until the bare interpreter is green** -- Gall's Law again: grow the simple, working Nock core first; decide the fused-language rune question (above) only once there is a real target to compile onto

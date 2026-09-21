@@ -1,21 +1,21 @@
 # Compass Card and Foundations Compress
 
-*Decline archiving foundations into Bron essays. Seat a day-one Markdown compressor and a Bron compass card so LLM sessions meet the rose without loading the cathedral.*
+*Decline archiving foundations into Kyri essays. Seat a day-one Markdown compressor and a Kyri compass card so LLM sessions meet the rose without loading the cathedral.*
 
 **Version:** `20260717.173848` (Eastern)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
 **Status:** Checkable — design seated; compressor + card scaffolded this send (Two Rooms).
-**World study:** [`../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-bron-compress-for-llm-context.md)
+**World study:** [`../external-research/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md`](../external-research/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md)
 
 ---
 
 ## Decisions Seated Here
 
 1. **Do not archive or rewrite** `foundations/` or `context/` essays for token budget. The closed markdown inventory and the compass check-in still hold.
-2. **Bron does not replace why-prose.** Bron holds seam values and pointer cards; Radiant Markdown holds foundations.
+2. **Kyri does not replace why-prose.** Kyri holds seam values and pointer cards; Radiant Markdown holds foundations.
 3. **Extend docs compression** with [`../docs/COMPASS.md`](../docs/COMPASS.md) — day-one rose for employees and agents.
-4. **Seat** [`../docs/compass_card.bron`](../docs/compass_card.bron) — succinct cold-start reading order (paths only).
+4. **Seat** [`../docs/compass_card.kyri`](../docs/compass_card.kyri) — succinct cold-start reading order (paths only).
 5. This lap was documentation / agent hygiene; Dexter D2 Pixel look closed later the same day (`20260717.174336`).
 
 ## What Stays Unmoved
@@ -28,10 +28,10 @@
 
 | Lap | Claim | State |
 |---|---|---|
-| **C0** | COMPASS.md + compass_card.bron scaffold | **this send** |
+| **C0** | COMPASS.md + compass_card.kyri scaffold | **this send** |
 | **C1** | Tutorial + get-started cite both; ROADMAP aligned | **this send** |
 | **C2** | Optional thin `docs/TAME.md` if cold-load pain is measured | horizon |
-| **C3** | Optional LEXICON core Bron card | horizon — Keaton's word |
+| **C3** | Optional LEXICON core Kyri card | horizon — Keaton's word |
 
 ## Related
 

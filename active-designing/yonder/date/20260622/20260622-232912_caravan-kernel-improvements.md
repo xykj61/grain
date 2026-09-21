@@ -66,7 +66,7 @@ The safe-language tradition supervises processes through init/systemd convention
 - Restart on fall -- a child that exits non-zero is restarted, up to the stated limit
 - Chain-loading at startup -- each boot stage sets one piece of state and hands off to the next
 - Readiness as a signal -- a service announces readiness by a known mechanism, not by "wait and hope"
-- The policy is a **value** (a Bron record) -- not scattered flags, not daemon conventions
+- The policy is a **value** (a Kyri record) -- not scattered flags, not daemon conventions
 
 This model is proven in running code: the Caravan seed through chain-loading, each asserted.
 

@@ -54,7 +54,7 @@ Add markdown entries under `gratitude/`, each pinning the license verbatim and k
 
 In `work-in-progress/TASKS.md`, under Open Questions, record (as questions, not build tasks):
 
-- **Bron** -- proposed, role undefined. Brix describes *what a system is made of*; what does Bron describe alongside it? *(Open ruling for Kaeden.)*
+- **Kyri** -- proposed, role undefined. Brix describes *what a system is made of*; what does Kyri describe alongside it? *(Open ruling for Kaeden.)*
 - **Tablecloth** -- proposed layout or structured-view layer, named and not yet shaped.
 - **.brush** -- a surface-description extension for the day Brushstroke becomes a small language of its own; horizon, raised only when a hand-written surface proves it needs one.
 - **Dexter / Kumara as modules** -- the names are given; whether each earns a full module of its own is the open part.
@@ -96,6 +96,6 @@ End with one line. After this round, the architecture is recorded, the names car
 - [ ] Weave named in the substrate doc (affirmed in place), lexicon, README, and index
 - [ ] Dexter, Kumara, Bookie in the lexicon with provenance; the fuller naming thinking logged in the session log and a durable note
 - [ ] Three gratitude entries with licenses verbatim and the clean-room line
-- [ ] Open names (Bron, Tablecloth, .brush, Dexter/Kumara-as-modules) and three research reservations recorded in TASKS; no empty files
+- [ ] Open names (Kyri, Tablecloth, .brush, Dexter/Kumara-as-modules) and three research reservations recorded in TASKS; no empty files
 - [ ] SLC-2a confirmed as the unchanged active rung; nothing above it begun
 - [ ] `rye build` and parity green on metal; session log shipped; four remotes pushed; check-in with Claude recommended

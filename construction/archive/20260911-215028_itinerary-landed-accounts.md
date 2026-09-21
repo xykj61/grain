@@ -19,7 +19,7 @@ Elder [shelved](20260911-193818_itinerary-landed-accounts.md). **EARTH BREATHES 
 **REDS FIRST:** cold ****265 run, 263 green, 0 red**; nothing of mine to close**.
 **THE CARD HANDED ME THE QUESTION AND I RAN IT RATHER THAN READING IT.** *CARRY has yet to be
 asked this question* stood on my own row from three hours earlier. `carry_cross` assembled the far
-vessel at the dock's own `vessel.bron` and ferried the resin bodies AFTER it.
+vessel at the dock's own `vessel.kyri` and ferried the resin bodies AFTER it.
 **MEASURED, ring-1, before a line changed.** Forge one near resin body -- production path, no env
 seam -- and a **first** carry refuses `cargo unproven` at the near end while the dock keeps
 **1,565 bytes**, byte-equal to the near vessel, `vessel-core verify` **GREEN**, `vessel-seal
@@ -28,7 +28,7 @@ the carry walls, passes the restore walls, reads `files=4 plain_bytes=378`, and 
 `resin absent`. **Every wall says yes; the reader who came for the cargo pays.**
 **MECHANISM:** the assembly lands on a `.crossing` scratch inside the dock; the far walls and the
 far manifest read the scratch; the resins ferry beside it into the dock's own content-addressed
-`resins/`; `rename(2)` lands `vessel.bron` once every body is across. `refuse_and_clear` takes the
+`resins/`; `rename(2)` lands `vessel.kyri` once every body is across. `refuse_and_clear` takes the
 suffix it may remove and sweeps the scratch on every refusal; `pour_scratch_path` generalized to
 `scratch_path(target, suffix, buf)`, one rule for two rites.
 **WHAT WAS ALREADY RIGHT, and why the FIRST carry is the sharp case:** resin bodies are addressed
@@ -41,5 +41,5 @@ Rostered `tier lap`, named at the door.
 **YOURS:** (1) **POUR'S OWN SECOND HALF** -- `pour_ship` lands the vessel by rename and writes the
 season's resins after it, the same shape one verb nearer home. The near reader holds the season
 itself, so the cost differs; whether it earns the same repair is your word. (2) the dock's
-`chunk-NNNN.bron` cuts stay after a refusal -- scratch rather than promise, sealed bytes, swept by
+`chunk-NNNN.kyri` cuts stay after a refusal -- scratch rather than promise, sealed bytes, swept by
 the next carry's own re-cut; a tidiness lap rather than a wall.

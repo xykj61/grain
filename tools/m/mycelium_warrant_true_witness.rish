@@ -13,7 +13,7 @@
 #     roll bytes the app emits (prev-bytes, next-bytes);
 #   - THE COUNT -- the app's reported endorsement count equals an independent grep count of the record's
 #     `endorse` lines.
-# Composes warrant + warrant_bron + muster + muster_bron + kumara public API only; demo validator and keeper
+# Composes warrant + warrant_kyri + muster + muster_kyri + kumara public API only; demo validator and keeper
 # seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
@@ -23,7 +23,7 @@
 
 say "mycelium-warrant-true: Language EN — a warrant does not merely assert a roll; it signs the roll's content-address, so a keeper who hashes the canonical roll bytes recovers the exact digest every validator endorsed."
 say "mycelium-warrant-true: Style Radiant — the signed facts are true to the bytes a keeper can open and hash: the prev/next digests the certificate carries equal a system sha256sum of the same roll records, and the endorsement count equals an independent line count."
-say "mycelium-warrant-true: Lens TAME — the app emits exactly the canonical roll bytes and the rendered certificate over warrant + muster_bron public API; two independent tools (sha256sum, grep) read the same facts; demo seeds only, no key held."
+say "mycelium-warrant-true: Lens TAME — the app emits exactly the canonical roll bytes and the rendered certificate over warrant + muster_kyri public API; two independent tools (sha256sum, grep) read the same facts; demo seeds only, no key held."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/warrant_true"

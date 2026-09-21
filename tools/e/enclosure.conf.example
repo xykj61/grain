@@ -71,9 +71,9 @@ USE_GPU=true
 LANE_KVM=false
 
 # Enclosure selector (Claude 212412 retreat · 213600 master-seal).
-# Default ai-jail. Flip to pond only after bron-resins/pond-supersede-exit.bron
-# is present-with-content AND master-signed (.bron.asc · fpr 0646 2132…).
-# Helper: tools/p/pond_exit_bron_master_seal.sh. Both ENCLOSURE values stay live
+# Default ai-jail. Flip to pond only after kyri-resins/pond-supersede-exit.kyri
+# is present-with-content AND master-signed (.kyri.asc · fpr 0646 2132…).
+# Helper: tools/p/pond_exit_kyri_master_seal.sh. Both ENCLOSURE values stay live
 # one full season past the flip.
 ENCLOSURE=ai-jail
 

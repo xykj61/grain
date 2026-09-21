@@ -63,7 +63,7 @@ Each pattern is siloed (our words, our names) and tagged with the thread it feed
 
 **The pattern:** before touching an unfamiliar piece of logic, look first at the *data it operates on* -- the shapes, the free lists, the fixed slot counts. The structure of the data usually explains the code before the code does.
 
-**Where it lands:** a plain habit for our own bench and design sittings, and a gentle reinforcement of Bron-first thinking -- name the values at the seam before writing the logic that moves them.
+**Where it lands:** a plain habit for our own bench and design sittings, and a gentle reinforcement of Kyri-first thinking -- name the values at the seam before writing the logic that moves them.
 
 ---
 

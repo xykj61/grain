@@ -12,7 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260707.222812` | [Open Questions final pass](20260707/20260707-222812_claude-counsel-open-questions-final-pass.md) | Kumara = extraction not graduation; two-backend lean wait; next = Kumara lap |
 | `20260707.223100` | [Open Questions batch two](20260707/20260707-223100_claude-counsel-open-questions-batch-two.md) | Silo retired into Brix bonds; Linengrow stays until SLC-L3; keep TASKS.md |
-| `20260707.222500` | [Bron beside Brix -- first proposal](20260707/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) | Bron = values at seams; Brix = composable wholes; graduation rule for `bron/` |
+| `20260707.222500` | [Kyri beside Brix -- first proposal](20260707/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md) | Kyri = values at seams; Brix = composable wholes; graduation rule for `kyri/` |
 | `20260707.220912` | [Roadmap synthesis](20260707/20260707-220912_claude-counsel-roadmap-synthesis.md) | Migration enough; Rishi/Nushell aligned; Open Questions + SLC-L3 prep next |
 | `20260707.214012` | [Next bench choice](20260707/20260707-214012_claude-counsel-next-bench-choice.md) | OA wire complete; `.sh` migration ready; lap 4 needs hands; season judgment to Kaeden |
 | `20260707.213212` | [TigerBeetle alignment arc closed](20260707/20260707-213212_claude-counsel-tigerbeetle-arc-closed.md) | All ratchets zero; no next TAME season lap; AST-grade rules wait on parser |

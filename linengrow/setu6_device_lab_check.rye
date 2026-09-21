@@ -1,4 +1,4 @@
-//! linengrow/setu6_device_lab_check.rye -- write lab.bron from iface arg or none.
+//! linengrow/setu6_device_lab_check.rye -- write lab.kyri from iface arg or none.
 //!
 //!   linengrow/bin/setu6_device_lab_check           # stand-in (no iface)
 //!   linengrow/bin/setu6_device_lab_check usb0      # armed
@@ -26,18 +26,18 @@ fn run_check(init: std.process.Init) !u8 {
     // invariant: format_lab_line already bounds its own return to status_line_max, restated
     // here since the write below trusts line's length to stay inside line_buf
     assert(line.len <= setu6.status_line_max);
-    var bron_buf: [setu6.max_lab_bron_len]u8 = undefined;
-    const n = setu6.format_lab_bron(s, &bron_buf) orelse {
-        print("setu6-check: RED — bron overflow\n", .{});
+    var kyri_buf: [setu6.max_lab_kyri_len]u8 = undefined;
+    const n = setu6.format_lab_kyri(s, &kyri_buf) orelse {
+        print("setu6-check: RED — kyri overflow\n", .{});
         return 1;
     };
-    // invariant: n is the byte count format_lab_bron wrote into bron_buf, so the write below
-    // must never slice past what bron_buf actually holds
-    assert(n <= bron_buf.len);
+    // invariant: n is the byte count format_lab_kyri wrote into kyri_buf, so the write below
+    // must never slice past what kyri_buf actually holds
+    assert(n <= kyri_buf.len);
     const cwd = Dir.cwd();
-    try cwd.writeFile(io, .{ .sub_path = setu6.lab_bron_path, .data = bron_buf[0..n] });
+    try cwd.writeFile(io, .{ .sub_path = setu6.lab_kyri_path, .data = kyri_buf[0..n] });
     print("setu6-check: {s}\n", .{line});
-    print("setu6-check: wrote {s}\n", .{setu6.lab_bron_path});
+    print("setu6-check: wrote {s}\n", .{setu6.lab_kyri_path});
     print("GREEN: SETU6 — lab card held on Desk.\n", .{});
     return 0;
 }

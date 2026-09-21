@@ -34,15 +34,15 @@ The eventual "shedding" of the elder descriptor would be a **deep git-history de
 
 ### Shed complete — old-waymark session logs (waymark debride `20260818`)
 
-**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate %1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.bron`](../waymark-registry.bron), so no waymark fact was lost. The REDS ledger and `construction/CHECKPOINTS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
+**Executed (`20260818`, Keaton's word — "do it all").** The waymark debride carried the dead elder marks out of the living tree, the dated session logs, and all git history (deep debride, custody gate %1). The ~80 old-waymark dated logs were removed rather than rewritten; the living ladders (DREY · FORA · WADE · LOWE) and the module **Dimeroll** carry only their standing names. Canonical naming truth is sealed and self-verifying in [`waymark-registry.kyri`](../waymark-registry.kyri), so no waymark fact was lost. The REDS ledger and `construction/CHECKPOINTS.md` walk-back rows stayed live — the reds record and recovery markers are not shed.
 
-### Pending molt — Bron → Kyri (by molt, not rewrite · opens after JARL)
+### Pending molt — Kyri → Kyri (by molt, not rewrite · opens after JARL)
 
-**Decision (`20260810`, Keaton's word):** the session-log notation **Bron** re-grows under the favorite word **Kyri**. Measured scale: **2,163** `.bron` files, **378** living references. This is a **molt, never a rewrite** — the **2,163 existing `.bron` files are never renamed** (one-clock law / accrete-never-break protect every dated artifact); **new** logs are born `.kyri`; the notation spec grows a Kyri mutant while the Bron spec stays a readable fossil; the 378 references update forward and tools read **both** extensions. No history rewrite, no unsigning, no force-push.
+**Decision (`20260810`, Keaton's word):** the session-log notation **Kyri** re-grows under the favorite word **Kyri**. Measured scale: **2,163** `.kyri` files, **378** living references. This is a **molt, never a rewrite** — the **2,163 existing `.kyri` files are never renamed** (one-clock law / accrete-never-break protect every dated artifact); **new** logs are born `.kyri`; the notation spec grows a Kyri mutant while the Kyri spec stays a readable fossil; the 378 references update forward and tools read **both** extensions. No history rewrite, no unsigning, no force-push.
 
 | Molt target (pending) | Becomes | When | Scope |
 | --- | --- | --- | --- |
-| `active-designing/yonder/date/20260621/20260621-063912_bron-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.bron` files kept whole as fossils |
+| `active-designing/yonder/date/20260621/20260621-063912_kyri-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.kyri` files kept whole as fossils |
 
 Charter: `../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`. Open decision recorded there: does **Kyri** name the voice, the notation, or both. Pending note only — no fossil row until the Kyri spec mutant seats; opens no cut.
 

@@ -29,6 +29,6 @@ took the CAUSE. `set -m` around that call gives the holder its own group.
 Under a launcher that dies: **`unavailable` at `f16c05934`, `ok` repaired**; the witness closes
 GREEN under the launch that reddened it.
 **AIR PRESSED FOUR FENCES IN MY LANE AND ALL FOUR HELD** -- amphora's cross-roof orders carry
-markers **and** comptime asserts; `bron-resins`' *Bron only* law names its own `.md` exception.
+markers **and** comptime asserts; `kyri-resins`' *Kyri only* law names its own `.md` exception.
 **Yours:** the card and pin bounds, both sized per ship at eight; `%530`'s published double.
 

@@ -30,7 +30,7 @@ Sources for an Acme employee to re-check: [Google Pixel phone hardware tech spec
 
 ## Same-ratio lower presets (macOS-shaped idea, Glow-owned table)
 
-macOS offers scaled resolutions that keep aspect and trade sharpness for density. Glow's version is a **closed Bron/Brix table**, not a free integer:
+macOS offers scaled resolutions that keep aspect and trade sharpness for density. Glow's version is a **closed Kyri/Brix table**, not a free integer:
 
 | Preset id | Logical WxH | Notes |
 |-----------|-------------|--------|
@@ -71,7 +71,7 @@ That content budget must fit inside every LULU preset (letterboxed or pillarboxe
 
 Canon study: [`yonder/20260619-225212_s6-sixos-nix-infuse.md`](yonder/20260619-225212_s6-sixos-nix-infuse.md) - map already seated: **Brix declares - Tablecloth holds - Caravan supervises**.
 
-**Short home (`kd`):** a two-character `home_id` in a Bron hearth record -- the Glow parallel to a short `/home/xy`-style identity people can say and type on a low-density glass. Not a Nix profile; not `/nix/store`. Persistence: Bron file first (LULU0); Mantra/Tablecloth when store v1 opens.
+**Short home (`kd`):** a two-character `home_id` in a Kyri hearth record -- the Glow parallel to a short `/home/xy`-style identity people can say and type on a low-density glass. Not a Nix profile; not `/nix/store`. Persistence: Kyri file first (LULU0); Mantra/Tablecloth when store v1 opens.
 
 ---
 

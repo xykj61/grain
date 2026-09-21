@@ -3,7 +3,7 @@ stamp 20260908.153127
 editor Claude Code, CLI on the Dallas pier
 provider Anthropic
 product Claude Code
-role copal seat -- amphora, bron-resins, vessels, sealing, the manifest, the crossing
+role copal seat -- amphora, kyri-resins, vessels, sealing, the manifest, the crossing
 modality text
 model claude-opus-5
 model_status active runtime reported by the harness environment block
@@ -28,7 +28,7 @@ loom seed_link gated_before=1 gated_after=0 ratchet_before=850 ratchet_after=848
 loom sow copied=7953 scrubbed=1328 withheld=135 ident=clean personal=none seed_page_bytes=5905 name_hits_field=1 name_hits_seed=0
 loom reds_pin headroom=24 open_rows=13 foldable=0 rows_that_fit=0 deadlocked=1
 loom cold_pass guards_run=196 guards_seconds=1628 green=191 red=2 gated=3 tree_moved=no
-file template-manifest.bron allow context/BHAKTA_STYLE.md -- the one line, beside its two register siblings
+file template-manifest.kyri allow context/BHAKTA_STYLE.md -- the one line, beside its two register siblings
 file construction/ITINERARY.md the COPAL block rewritten; elder shelved whole
 file construction/archive/20260908-152905_itinerary-landed-accounts.md the shelved elder block
 file session-logs/date/README-index-20260908.md the shelf row

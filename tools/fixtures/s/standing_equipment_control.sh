@@ -1493,9 +1493,9 @@ cp "$pen/seedcap.kyri" "$seedpen/seedcap.kyri"
 cp "$pen/tools/real_witness.rish" "$seedpen/tools/real_witness.rish"
 ( cd "$seedpen" \
     && git init -q . && git config user.email a@b.c && git config user.name t \
-    && printf 'allow tools\n' > template-manifest.bron \
+    && printf 'allow tools\n' > template-manifest.kyri \
     && git add -A >/dev/null && git commit -q -m "pen: a field with one allowed room" ) >/dev/null 2>&1
-project() { ( cd "$seedpen" && . "$reach" && sow_reach_inputs template-manifest.bron ) ; }
+project() { ( cd "$seedpen" && . "$reach" && sow_reach_inputs template-manifest.kyri ) ; }
 
 run_seed_in() { # run_seed_in <cwd> [env-assignment...]
   _cwd=$1; shift

@@ -1,6 +1,6 @@
 //! linengrow/hearth_lulu4.rye -- LULU4: thin Wired Glass preference on Settings.
 //!
-//! Declares sync lane (`local` | `usb_desk`) in Hearth Bron and paints it on
+//! Declares sync lane (`local` | `usb_desk`) in Hearth Kyri and paints it on
 //! Settings row 9. Tap cycles the lane and persists. Live USB/Setu sync is a
 //! later check-in -- this rung is preference + chrome only.
 

@@ -1,6 +1,6 @@
-# 968 - Prompt Caching, ZON, and What Bron Already Is
+# 968 - Prompt Caching, ZON, and What Kyri Already Is
 
-*Two ideas from different worlds converge on the same insight. Claude's prompt caching rewards stable, structured context placed early in the request -- the longer it stays identical across turns, the more tokens are read from cache at one-tenth the cost. ZON (Zero Overhead Notation) reduces token consumption by half compared to JSON through tabular encoding and minimal delimiters. Our own Bron format -- plain key-value, one field per line, no quotes, no braces -- is already a token-efficient notation. This research reads both and asks what they teach our system.*
+*Two ideas from different worlds converge on the same insight. Claude's prompt caching rewards stable, structured context placed early in the request -- the longer it stays identical across turns, the more tokens are read from cache at one-tenth the cost. ZON (Zero Overhead Notation) reduces token consumption by half compared to JSON through tabular encoding and minimal delimiters. Our own Kyri format -- plain key-value, one field per line, no quotes, no braces -- is already a token-efficient notation. This research reads both and asks what they teach our system.*
 
 **Language:** EN
 **Version:** `20260621.063112` (Rye chronological stamp)
@@ -56,7 +56,7 @@ The insight is not "use ZON" -- it is that **the format of data sent to an LLM d
 
 ---
 
-## What Bron Already Is
+## What Kyri Already Is
 
 Our Brix format -- the `.brix` descriptor -- is already a token-efficient notation:
 
@@ -86,7 +86,7 @@ Compare the same data in JSON:
 
 The JSON version uses 27 tokens of syntactic overhead (braces, brackets, quotes, commas, colons) that the Brix version does not. At scale -- thousands of API calls, each carrying configuration data -- this difference compounds.
 
-**Bron is our ZON.** Not by adoption, by convergence: the same design pressure (minimal syntax, human-readable, machine-parseable) produced the same shape. The difference is that Brix is simpler -- it has no type system, no nesting, no arrays-of-objects. It is plain key-value, and that plainness is its strength.
+**Kyri is our ZON.** Not by adoption, by convergence: the same design pressure (minimal syntax, human-readable, machine-parseable) produced the same shape. The difference is that Brix is simpler -- it has no type system, no nesting, no arrays-of-objects. It is plain key-value, and that plainness is its strength.
 
 ---
 
@@ -100,13 +100,13 @@ The project's CLAUDE.md, `.claude/rules/*.md`, and `context/*.md` files are load
 - **Ordered by stability.** The most permanent content (identity, style, TAME rules) goes first. Session-specific content (current task, git status) goes last.
 - **Concise.** Every unnecessary word is a token; every token costs money or context. The rules should be as short as they can be without losing clarity.
 
-### 2. Use Bron for LLM-facing configuration
+### 2. Use Kyri for LLM-facing configuration
 
 When Rishi scripts or Pond policies are sent to an LLM (for code generation, for CI configuration, for forge interactions), Brix is the right format -- fewer tokens than JSON, human-readable, machine-parseable with `splitLines` and `indexOf(' ')`.
 
-### 3. Bron grows toward structured data
+### 3. Kyri grows toward structured data
 
-The seed Brix format is flat key-value. As it grows toward the lawful composition combinator (`active-designing/982`, `997`), it may gain nesting and lists. When it does, the ZON insight applies: use tabular encoding for repeated structures, minimize delimiters, keep the 1:1 mapping to the value model. Bron should never become as heavy as JSON.
+The seed Brix format is flat key-value. As it grows toward the lawful composition combinator (`active-designing/982`, `997`), it may gain nesting and lists. When it does, the ZON insight applies: use tabular encoding for repeated structures, minimize delimiters, keep the 1:1 mapping to the value model. Kyri should never become as heavy as JSON.
 
 ### 4. Rye can implement its own prompt-caching client
 

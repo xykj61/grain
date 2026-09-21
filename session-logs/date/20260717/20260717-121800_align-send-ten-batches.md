@@ -3,7 +3,7 @@
 **Stamp:** `20260717.121800`  
 **Editor:** Cursor · **Model:** Cursor Grok 4.5 300k High Fast · **Voice:** Quin  
 **Host:** Ubuntu 26.04 LTS GNOME Wayland (Framework 16 AMD) — Eastern time  
-**Format note:** Keaton asked for this batch summary as Markdown. Living session logs remain Bron (`.bron`); this file is an explicit MD roll-up for the arc below.
+**Format note:** Keaton asked for this batch summary as Markdown. Living session logs remain Kyri (`.kyri`); this file is an explicit MD roll-up for the arc below.
 
 **Prompt:** Summarize the last 8–10 batches of work in an md session log, align following the compass, and send.
 
@@ -69,11 +69,11 @@ That single GREEN closes TUBE0.5’s on-device half. Pixel USB path is the same 
 
 ---
 
-## Related Bron logs (this morning’s packaging slice)
+## Related Kyri logs (this morning’s packaging slice)
 
-- `20260717-121445_sala-fold-wired-tube05-apk.bron`
-- `20260717-121625_tube05-install-proof-host-witness.bron`
-- `20260717-121743_tube05-jailed-slice-ready.bron`
+- `20260717-121445_sala-fold-wired-tube05-apk.kyri`
+- `20260717-121625_tube05-install-proof-host-witness.kyri`
+- `20260717-121743_tube05-jailed-slice-ready.kyri`
 
 ## Recommend
 

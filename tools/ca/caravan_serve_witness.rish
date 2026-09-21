@@ -39,7 +39,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 
 # The two-client declaration reads whole before anything runs on it.
-let decl = run ["sh" "-c" "caravan/bin/serve_read caravan/systems/serial_two_clients.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/serve_read caravan/systems/serial_two_clients.kyri 2>&1"]
 assert decl.ok else "the two-client declaration could not be read"
 assert decl.out contains "system serial_two_clients" else "the two-client declaration lost its name"
 assert decl.out contains "domains 3 -- channels 2 -- regions 4 -- grants 8" else "the two-client declaration changed shape"

@@ -3,7 +3,7 @@
 # hold the same set of seated marks, read in BOTH directions.
 #
 # WHY THIS EXISTS. `.claude/rules/waymark-ladders.md` calls
-# `construction/waymark-registry.bron` "the sealed, self-verifying canonical record of every
+# `construction/waymark-registry.kyri` "the sealed, self-verifying canonical record of every
 # waymark ever drawn" and "the authority", with its own table as "its readable face". The registry
 # witness proves two other things: the SHA3-512 seal proves every row stands as written, and the
 # re-derivation proves every row present is honest. Both readings stay green while a name is simply
@@ -35,7 +35,7 @@
 set -eu
 
 RULE=".claude/rules/waymark-ladders.md"
-REG="construction/waymark-registry.bron"
+REG="construction/waymark-registry.kyri"
 
 [ -f "$RULE" ] || { echo "verdict=rule_absent"; exit 1; }
 [ -f "$REG" ]  || { echo "verdict=registry_absent"; exit 1; }

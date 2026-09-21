@@ -5,7 +5,7 @@
 
 ## Thinking trace
 
-Kaeden asked autonomous progress on TASKS/ROADMAP/WIP. Doors remain Kaeden-gated. Best unblocked path: Linengrow SLC-L1 hammock spec — all four checklist boxes sourced from existing tree (SLC-1 template, TASKS skeleton, bron notation, ed25519 parity, open-asks gate). Edit 5 witness verified GREEN standalone (not wired).
+Kaeden asked autonomous progress on TASKS/ROADMAP/WIP. Doors remain Kaeden-gated. Best unblocked path: Linengrow SLC-L1 hammock spec — all four checklist boxes sourced from existing tree (SLC-1 template, TASKS skeleton, kyri notation, ed25519 parity, open-asks gate). Edit 5 witness verified GREEN standalone (not wired).
 
 ## Observations
 

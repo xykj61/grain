@@ -7,7 +7,7 @@
 //! r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
 //! state across a healing, r3 let a world's freight travel as text -- all over ledgers seated in code. r4
 //! carries the reader onto a REAL on-disk `format freight-v1` record a keeper can open and read --
-//! `tools/fixtures/f/freight_manifest.bron`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
+//! `tools/fixtures/f/freight_manifest.kyri`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:
@@ -21,7 +21,7 @@
 //! Genuineness beyond that: re-rendering the parsed manifest reproduces the embedded bytes (a fixed point),
 //! and a tampered header refuses `BadFormat`.
 //!
-//! Composes freight + freight_bron + freight_fixture_gen + cord + kumara public API only. Siloed, dev-only,
+//! Composes freight + freight_kyri + freight_fixture_gen + cord + kumara public API only. Siloed, dev-only,
 //! demo host/world/keeper seeds -- no real key, no funds, no network, no world moved.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight_true.rye selftest
@@ -31,14 +31,14 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const freight = @import("freight.rye");
-const freight_bron = @import("freight_bron.rye");
+const freight_kyri = @import("freight_kyri.rye");
 const gen = @import("freight_fixture_gen.rye");
 const cord = @import("cord.rye");
 const kumara = @import("kumara.rye");
 
 pub const freight_true_version = "20260813.121424";
 
-const real_manifest = @embedFile("corpora/freight_manifest.bron");
+const real_manifest = @embedFile("corpora/freight_manifest.kyri");
 
 fn seeded(byte: u8) kumara.KeyPair {
     const seed: [kumara.seed_length]u8 = .{byte} ** kumara.seed_length;
@@ -47,9 +47,9 @@ fn seeded(byte: u8) kumara.KeyPair {
 
 /// Parse the real manifest and read its position triple -- the numbers the app reports and awk independently
 /// reads off the same bytes.
-fn read_manifest() !freight_bron.Manifest {
-    var m: freight_bron.Manifest = undefined;
-    try freight_bron.parse(real_manifest, &m);
+fn read_manifest() !freight_kyri.Manifest {
+    var m: freight_kyri.Manifest = undefined;
+    try freight_kyri.parse(real_manifest, &m);
     // invariant: the parsed manifest names a world within the id bound.
     assert(m.id_len >= 1);
     assert(m.id_len <= 24);
@@ -85,10 +85,10 @@ fn welcome_reading_true_and_real() !void {
 /// bytes exactly (a fixed point), so the fixture is not a hand-mock.
 fn welcome_record_is_really_freight() !void {
     const m = try read_manifest();
-    var buf: [freight_bron.max_record]u8 = undefined;
-    const len = try freight_bron.render(&m, buf[0..]);
+    var buf: [freight_kyri.max_record]u8 = undefined;
+    const len = try freight_kyri.render(&m, buf[0..]);
     // invariant: the re-render honors the record bound.
-    assert(len <= freight_bron.max_record);
+    assert(len <= freight_kyri.max_record);
     if (!std.mem.eql(u8, buf[0..len], real_manifest)) return error.NotFixedPoint;
     print("freight-true: the record re-renders to the embedded bytes exactly — the fixture is what the Freight emits, never a hand-mock.\n", .{});
 }
@@ -96,8 +96,8 @@ fn welcome_record_is_really_freight() !void {
 /// A tampered record refuses: a wrong header is caught before any field is read.
 fn unwelcome_tampered_record_refuses() !void {
     const bad = "format freight-v2\nworld alpha\n";
-    var m: freight_bron.Manifest = undefined;
-    if (freight_bron.parse(bad, &m)) |_| return error.TamperAdmitted else |err| {
+    var m: freight_kyri.Manifest = undefined;
+    if (freight_kyri.parse(bad, &m)) |_| return error.TamperAdmitted else |err| {
         if (err != error.BadFormat) return error.WrongTamper;
     }
     print("freight-true: a tampered header refused BadFormat.\n", .{});

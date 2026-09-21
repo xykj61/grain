@@ -1,8 +1,8 @@
-//! pond/apps/council_sky_fixture_gen.rye -- generate surf/fixtures/council.bron with real Ed25519 ballot signatures.
+//! pond/apps/council_sky_fixture_gen.rye -- generate surf/fixtures/council.kyri with real Ed25519 ballot signatures.
 //!
 //! DAHL-J11r4 reads a real council record true. This generator produces that fixture reproducibly: it
 //! builds a demo signed council over the demo keeper seeds and renders it through rung three's own
-//! `render`, so the fixture is exactly what `council_sky_bron` reads -- a genuine `format council-sky-v1`
+//! `render`, so the fixture is exactly what `council_sky_kyri` reads -- a genuine `format council-sky-v1`
 //! record, not a hand-typed shape. The council loads the council sky at its triad level (size 3, quorum
 //! 2); on proposal A two signed yes-ballots decide it (passed), and on proposal B one signed yes-ballot
 //! holds it open (short of quorum), so the record carries both a decided proposal and an open one -- real
@@ -15,13 +15,13 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr, not stdout:
 //!
 //!   rye build pond/apps/council_sky_fixture_gen.rye -femit-bin=pond/bin/council-sky-fixture-gen
-//!   pond/bin/council-sky-fixture-gen 2> surf/fixtures/council.bron
+//!   pond/bin/council-sky-fixture-gen 2> surf/fixtures/council.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-const bron = @import("council_sky_bron.rye");
+const kyri = @import("council_sky_kyri.rye");
 const signed = @import("council_sky_signed.rye");
 const topology = @import("topology.rye");
 const kumara = @import("kumara.rye");
@@ -47,8 +47,8 @@ fn demo_ring() error{KeyringFull}!signed.Keyring {
     return ring;
 }
 
-fn build_fixture(ring: *const signed.Keyring) !bron.SignedCouncil {
-    var sc = try bron.SignedCouncil.open(demo_council, topology.council_sky, 3);
+fn build_fixture(ring: *const signed.Keyring) !kyri.SignedCouncil {
+    var sc = try kyri.SignedCouncil.open(demo_council, topology.council_sky, 3);
     // Proposal A: two signed yes-ballots decide it (quorum 2 met).
     const b0a = signed.sign_ballot(&seat0_seed, demo_council, sc.council.size, 0, prop_a, true);
     const b1a = signed.sign_ballot(&seat1_seed, demo_council, sc.council.size, 1, prop_a, true);
@@ -66,8 +66,8 @@ fn build_fixture(ring: *const signed.Keyring) !bron.SignedCouncil {
 pub fn main() !u8 {
     const ring = try demo_ring();
     var sc = try build_fixture(&ring);
-    var buf: [bron.max_record]u8 = undefined;
-    const n = try bron.render(&sc, &buf);
+    var buf: [kyri.max_record]u8 = undefined;
+    const n = try kyri.render(&sc, &buf);
     print("{s}", .{buf[0..n]});
     return 0;
 }

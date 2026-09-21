@@ -10,7 +10,7 @@
 
 The Constel dev-net harness closed its own four-round arc — a fake constellation, quarantined by a
 law-safe name, running the real settlement protocol from genesis (r1 named genesis · r2 settled the
-fractal · r3 travels as Bron · r4 reads a fixture true). That harness was named the **crux of Chapter D**
+fractal · r3 travels as Kyri · r4 reads a fixture true). That harness was named the **crux of Chapter D**
 for one reason: *build the dev-net once and every later Chapter-D rung has a bench.* Its own exploration
 named the rungs waiting on that bench — **Mycelium consensus** first among them.
 
@@ -60,7 +60,7 @@ the fake net's genesis.
 - **r2 — star reservations settle beside the topology.** A `star_reserve` fact reserves a star name under
   the sovereign, draining supply like tax, mirroring the harness's r2 topology settlement — the ledger and
   the address space grow together inside the fake net.
-- **r3 — the ledger travels.** Render a folded ledger to a `format constel-ledger-v1` Bron record and parse
+- **r3 — the ledger travels.** Render a folded ledger to a `format constel-ledger-v1` Kyri record and parse
   it back byte-for-byte, the safe name and the sovereign key riding with it, so a dev-net's books cross as
   readable text.
 - **r4 — read a real ledger fixture true.** Cross-check the harness's fold of a genuine on-disk ledger

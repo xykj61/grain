@@ -2,7 +2,7 @@
 #
 # Device-free half of the boot->harvest chain: proves the onpath script is
 # seated, names the kvm refuse, and re-folds on-disk meta (or fixture) into
-# hawm-harvest.bron. Full boot GREEN stays host-onpath:
+# hawm-harvest.kyri. Full boot GREEN stays host-onpath:
 #   rishi/bin/rishi run tools/h/hawm0_boot_harvest_onpath_host.rish
 #
 #   rishi/bin/rishi run tools/h/hawm0_boot_harvest_chain_witness.rish

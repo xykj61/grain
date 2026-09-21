@@ -8,7 +8,7 @@
 # through the Puddle's own reader and berths every world; this awk measures the roster shape a keeper
 # counts, blind to the placement.
 #
-#   awk -f tools/fixtures/p/puddle_fleet_truth.awk tools/fixtures/p/puddle_fleet.bron
+#   awk -f tools/fixtures/p/puddle_fleet_truth.awk tools/fixtures/p/puddle_fleet.kyri
 #   -> "<hosts> <worlds> <total-capacity>"
 
 $1 == "host" {

@@ -4,7 +4,7 @@
 //! declaration and proves it whole. That ring reads a source literal, so the
 //! architecture still lived inside the program that checked it. This ring
 //! takes the last step the declaration was always reaching for: the document
-//! lives beside the code as its own `.bron` artifact, and the reader loads
+//! lives beside the code as its own `.kyri` artifact, and the reader loads
 //! it from disk into a bounded buffer before a single line is parsed.
 //!
 //! Two properties make that step worth its own module. The read is bounded
@@ -26,9 +26,9 @@
 //!
 //! The artifacts this ring reads live in `caravan/systems/`:
 //!
-//!     serial_stack.bron    the worked example, read whole
-//!     unheld_region.bron   parses line by line, falls short whole
-//!     write_execute.bron   refused at its own line by the grammar
+//!     serial_stack.kyri    the worked example, read whole
+//!     unheld_region.kyri   parses line by line, falls short whole
+//!     write_execute.kyri   refused at its own line by the grammar
 //!
 //! Hosted ground, pure policy, no kernel underneath it yet.
 //!
@@ -156,9 +156,9 @@ pub fn report(parsed: *const system.System) void {
 // Self-test -- the artifacts on disk, read as an operator would read them
 // =========================================================================
 
-pub const serial_stack_path = "caravan/systems/serial_stack.bron";
-pub const unheld_region_path = "caravan/systems/unheld_region.bron";
-pub const write_execute_path = "caravan/systems/write_execute.bron";
+pub const serial_stack_path = "caravan/systems/serial_stack.kyri";
+pub const unheld_region_path = "caravan/systems/unheld_region.kyri";
+pub const write_execute_path = "caravan/systems/write_execute.kyri";
 
 /// Answers whether reading this path was refused with the named error.
 /// Capturing the error keeps each check readable at its call site and off
@@ -227,7 +227,7 @@ pub fn check_refusals(io: std.Io) void {
     print("  W xor X held at the grammar -- rwx refused in the file itself\n", .{});
 
     // invariant: an absent document answers by its own name
-    assert(load_refused(io, "caravan/systems/no_such_system.bron", error.NoSuchDocument));
+    assert(load_refused(io, "caravan/systems/no_such_system.kyri", error.NoSuchDocument));
     print("  an absent document answers NoSuchDocument\n", .{});
 
     // A buffer one line wide is the smallest legal bound, so reading the

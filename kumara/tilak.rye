@@ -14,7 +14,7 @@
 //!
 //! A "template" is this shape; an "instance" is one filled quintet of tilaks for
 //! a real pilot. This module builds and verifies an instance from two seeds and
-//! serializes it to Bron facts -- the first identity template plus a witnessed
+//! serializes it to Kyri facts -- the first identity template plus a witnessed
 //! example instance. The pilot's own instance is filled by his hand, from his own
 //! seed kept in his own jail; this file never invents a real pilot's key.
 //!
@@ -31,7 +31,7 @@
 //!
 //!   rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 //!   kumara/bin/tilak selftest      # prove make + verify + tamper-reject
-//!   kumara/bin/tilak emit          # print an example instance as Bron facts
+//!   kumara/bin/tilak emit          # print an example instance as Kyri facts
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -278,7 +278,7 @@ pub fn verify_sponsor(s: *const Sponsor, child_pubkey: [pubkey_len]u8) bool {
     return true;
 }
 
-// --- Bron serialization -------------------------------------------------
+// --- Kyri serialization -------------------------------------------------
 
 const hex_digits = "0123456789abcdef";
 
@@ -300,18 +300,18 @@ fn tier_name(t: Tier) []const u8 {
     };
 }
 
-// The Bron facts are data, so they go to stdout (diagnostics use stderr `print`).
+// The Kyri facts are data, so they go to stdout (diagnostics use stderr `print`).
 // A line is short -- a hex field is at most 128 characters -- so a stack buffer holds it.
-const max_bron_line: u32 = 256;
+const max_kyri_line: u32 = 256;
 
 fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
-    var buf: [max_bron_line]u8 = undefined;
+    var buf: [max_kyri_line]u8 = undefined;
     const line = std.fmt.bufPrint(&buf, fmt, args) catch return;
     const out = std.Io.File.stdout();
     out.writeStreamingAll(io, line) catch {};
 }
 
-/// Emit a point as a Bron fact -- one field per line, immutable at the seam.
+/// Emit a point as a Kyri fact -- one field per line, immutable at the seam.
 pub fn emit_point(io: std.Io, p: *const Point) void {
     var keeper_hex: [pubkey_len * 2]u8 = undefined;
     to_hex(&p.keeper, &keeper_hex);
@@ -323,7 +323,7 @@ pub fn emit_point(io: std.Io, p: *const Point) void {
     put_line(io, "version {d}\n", .{p.version});
 }
 
-/// Emit a bind as a Bron fact.
+/// Emit a bind as a Kyri fact.
 pub fn emit_bind(io: std.Io, b: *const Bind) void {
     var kpub: [pubkey_len * 2]u8 = undefined;
     var keeper: [pubkey_len * 2]u8 = undefined;
@@ -349,7 +349,7 @@ fn power_name(p: Power) []const u8 {
     };
 }
 
-/// Emit a rotation record as a Bron fact.
+/// Emit a rotation record as a Kyri fact.
 pub fn emit_turn(io: std.Io, t: *const Turn) void {
     var net_hex: [pubkey_len * 2]u8 = undefined;
     var sig_hex: [sig_len * 2]u8 = undefined;
@@ -362,7 +362,7 @@ pub fn emit_turn(io: std.Io, t: *const Turn) void {
     put_line(io, "sig {s}\n", .{sig_hex});
 }
 
-/// Emit a capability record as a Bron fact.
+/// Emit a capability record as a Kyri fact.
 pub fn emit_cap(io: std.Io, c: *const Cap) void {
     var holder_hex: [pubkey_len * 2]u8 = undefined;
     var sig_hex: [sig_len * 2]u8 = undefined;
@@ -376,7 +376,7 @@ pub fn emit_cap(io: std.Io, c: *const Cap) void {
     put_line(io, "version {d}\n", .{c.version});
 }
 
-/// Emit a sponsor link as a Bron fact.
+/// Emit a sponsor link as a Kyri fact.
 pub fn emit_sponsor(io: std.Io, s: *const Sponsor) void {
     var sig_hex: [sig_len * 2]u8 = undefined;
     to_hex(&s.sig, &sig_hex);

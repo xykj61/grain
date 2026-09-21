@@ -19,7 +19,7 @@ Radiant pass `20260727.230010` — Sound Arc III: edu added to select_wave; grat
 
 | Tree | Count | Reason |
 |------|------:|--------|
-| `session-logs/` | ~1,111 | Structured field records (Bron), not prose |
+| `session-logs/` | ~1,111 | Structured field records (Kyri), not prose |
 | `external-research/yonder/strengthening-compiler/` | 115 | Numbered technical notes, not Radiant prose |
 | `.claude/` | 22 | Machine-facing rules |
 | `gratitude/` | 78 | Unaltered originals — clean-room hold |

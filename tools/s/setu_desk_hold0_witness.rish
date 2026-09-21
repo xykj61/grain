@@ -21,7 +21,7 @@ assert selftest.out contains "usb_desk hold line" else "HOLD0 missing fixture"
 assert selftest.out contains "local ignores stale" else "HOLD0 missing stale-bin fixture"
 
 # Optional live check when station cache is already present (host pull ran).
-let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.bron; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu_desk_hold0_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold0: no station cache — fixture-only GREEN'; fi"]
+let live = run ["sh" "-c" "if test -f tools/.cache/setu0/station.kyri; then mkdir -p linengrow/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh linengrow/setu_desk_hold0_check.rye -femit-bin=${check} && ${check} 2>&1; else echo 'hold0: no station cache — fixture-only GREEN'; fi"]
 assert live.ok else "HOLD0 live/optional check failed"
 say "${live.out_brief}"
 

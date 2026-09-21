@@ -1,6 +1,6 @@
 # STOA282 -- After Host Boot->Harvest GREEN - Check-In
 
-*An Acme Corporation employee reading this gets the fork after the host boot->harvest chain printed GREEN beside a USB Pixel: the serial pin held, the harvest Bron is fresh, and the next door is either Sala/HAWM1 root into that Bron or a held thicker season.*
+*An Acme Corporation employee reading this gets the fork after the host boot->harvest chain printed GREEN beside a USB Pixel: the serial pin held, the harvest Kyri is fresh, and the next door is either Sala/HAWM1 root into that Kyri or a held thicker season.*
 
 **Language:** EN  
 **Version:** `20260722.153651` (EDT - Framework host)  
@@ -26,7 +26,7 @@ STOA281: host `hawm0_boot_harvest_onpath_host` GREEN - `serial emulator-5554` - 
 | | Lean | What it opens |
 |---|---|---|
 | **A** | **Send STOA281** -- **chosen** with round-close | pier carries host GREEN + serial field |
-| **B** | **HAWM1 / Sala root into harvest Bron** -- **recommended** | extend `hawm-harvest-v1` with a root/hex field (emulator still up) |
+| **B** | **HAWM1 / Sala root into harvest Kyri** -- **recommended** | extend `hawm-harvest-v1` with a root/hex field (emulator still up) |
 | **C** | **HAWM1 Sala witness re-run on live emulator** | prove push/shell pin under Pixel+AVD |
 | **D** | **Fleets - HAWM2 - gold - JABS3 - UDP** | **held** |
 

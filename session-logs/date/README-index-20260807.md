@@ -10,4 +10,4 @@ Closed rows for `20260807`, in the order the pin held them. Roster:
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260807.055227` | [`20260807-055227_pull-and-place-hands-midwalk.bron`](20260807/20260807-055227_pull-and-place-hands-midwalk.bron) | pull · place hands mid-walk · demote vs Mitra |
+| `20260807.055227` | [`20260807-055227_pull-and-place-hands-midwalk.kyri`](20260807/20260807-055227_pull-and-place-hands-midwalk.kyri) | pull · place hands mid-walk · demote vs Mitra |

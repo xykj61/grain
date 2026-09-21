@@ -33,11 +33,11 @@ sixos is Adam Joseph's operating system, and its shape is **Nixpkgs plus infuse 
 | **s6** (supervision) | **Caravan** | supervise the services a course declares |
 | (the C allocator, implicit) | **Tally** | bound the memory beneath all of it |
 | **stage-1 / boot** | **Aurora** | wake the machine into Caravan |
-| **Nix expression syntax** | **Bron** | the data notation a `.brix` is written in |
+| **Nix expression syntax** | **Kyri** | the data notation a `.brix` is written in |
 
 ## The Package System Is an Ensemble, Not One Module
 
-The clarification is that the *package manager* is not Brix alone. It is Brix at the head of a small ensemble, each part single-stranded. A `.brix` description, written in Bron notation, evaluates through its lawful *bond* into a course of bricks -- a closure of exactly what the system needs. Those bricks live content-addressed in Tablecloth, named by the hash of their content, written once and kept. Their history is woven by Mantra. They travel between machines over Comlink, every artifact signed and every transfer sealed at identity -- the substituter reimagined on a public-key model rather than anonymous HTTP. The services the course declares are supervised by Caravan, with its capability table naming what each child may do. Tally bounds the memory underneath. Aurora boots the machine into Caravan, which brings the declared system to life.
+The clarification is that the *package manager* is not Brix alone. It is Brix at the head of a small ensemble, each part single-stranded. A `.brix` description, written in Kyri notation, evaluates through its lawful *bond* into a course of bricks -- a closure of exactly what the system needs. Those bricks live content-addressed in Tablecloth, named by the hash of their content, written once and kept. Their history is woven by Mantra. They travel between machines over Comlink, every artifact signed and every transfer sealed at identity -- the substituter reimagined on a public-key model rather than anonymous HTTP. The services the course declares are supervised by Caravan, with its capability table naming what each child may do. Tally bounds the memory underneath. Aurora boots the machine into Caravan, which brings the declared system to life.
 
 So Brix is precisely the *language of composition and override*; the *package manager* is the whole ensemble working together; and the boundary between them keeps each module about one thing.
 

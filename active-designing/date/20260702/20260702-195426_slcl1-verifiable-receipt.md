@@ -1,6 +1,6 @@
 # SLC-L1 — The Verifiable Receipt
 
-*A hammock scope note: the transaction fact named in `.bron`, the sign-append-fold-verify pipeline drawn honestly, and the edge of complete stated so the first Linengrow lap stays genuinely simple — no ledger, no market, one signer and one receipt anyone can check.*
+*A hammock scope note: the transaction fact named in `.kyri`, the sign-append-fold-verify pipeline drawn honestly, and the edge of complete stated so the first Linengrow lap stays genuinely simple — no ledger, no market, one signer and one receipt anyone can check.*
 
 **Stamp:** `20260702.195426`
 **Voice:** Rio 3, with **Kaeden Reyklah** as coauthor
@@ -36,7 +36,7 @@ SLC-L2 grows **sealed delivery** over Comlink. SLC-L3 grows **settlement** on Su
 
 ## The Transaction Fact — Fields Exactly
 
-The fact is a **`.bron` value** — one field per line, space-separated, no quotes (see [`yonder/20260621-063912_bron-notation.md`](yonder/20260621-063912_bron-notation.md)).
+The fact is a **`.kyri` value** — one field per line, space-separated, no quotes (see [`yonder/20260621-063912_kyri-notation.md`](yonder/20260621-063912_kyri-notation.md)).
 
 | Field | Type / shape | Meaning |
 |-------|----------------|---------|
@@ -48,7 +48,7 @@ The fact is a **`.bron` value** — one field per line, space-separated, no quot
 
 Example (illustrative keys):
 
-```bron
+```kyri
 # transaction fact — illustrative
 from DBF853437A937B4E36B93611D949807AC26B2B99
 to 06462132D3E63B834F976E03A81D720B9235FA7A
@@ -57,7 +57,7 @@ memo stipend for animation micro-gig
 stamp 20260702.195426
 ```
 
-The **signed envelope** wraps the canonical `.bron` bytes (UTF-8, LF line endings, trailing newline on the last field line) with the ed25519 signature the parity suite already witnesses (`rye/tests/ed25519_sign_test.rye`).
+The **signed envelope** wraps the canonical `.kyri` bytes (UTF-8, LF line endings, trailing newline on the last field line) with the ed25519 signature the parity suite already witnesses (`rye/tests/ed25519_sign_test.rye`).
 
 ---
 
@@ -70,7 +70,7 @@ The **signed envelope** wraps the canonical `.bron` bytes (UTF-8, LF line ending
 | **Receipt** | **Pure fold** over the log: for each verified record, update running balance per `(from, to)` pair or per `from` only in v1 | projection in foundations vocabulary |
 | **Verify** | Recompute fold from log; re-check each signature; compare to claimed receipt | same ed25519 verify path |
 
-**Receipt shape (v1):** a `.bron` value naming the log digest, the fold state at the tail, and the tail record's signature — so a third party checks the log without the writer's cooperation.
+**Receipt shape (v1):** a `.kyri` value naming the log digest, the fold state at the tail, and the tail record's signature — so a third party checks the log without the writer's cooperation.
 
 ---
 
@@ -103,10 +103,10 @@ Named now; **landed** `20260704.021800` at parity **152**.
 
 **Welcome path:**
 
-1. Load a fixture fact from `tools/fixtures/slcl1_fact.bron`
+1. Load a fixture fact from `tools/fixtures/slcl1_fact.kyri`
 2. Sign with deterministic test key (same discipline as ed25519 witness)
 3. Append to a temp log under `tools/fixtures/slcl1_log/`
-4. Fold → receipt `.bron`
+4. Fold → receipt `.kyri`
 5. Verify → `(v.ok == true)` asserted; receipt fields match pinned golden
 
 **Unwelcome path:**

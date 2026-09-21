@@ -6,7 +6,7 @@
 **Voice:** Quin
 **Status:** research for understanding -- testing vocabulary - foundations fit - Cursor onboarding (Two Rooms). Addressed to a generic Acme Corporation employee.
 **Companion silo:** [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md)
-**Fusion companion:** [`20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md`](20260717-173427_markup-dsl-fusion-map-glow-brix-bron.md)
+**Fusion companion:** [`20260717-173427_markup-dsl-fusion-map-glow-brix-kyri.md`](20260717-173427_markup-dsl-fusion-map-glow-brix-kyri.md)
 
 ---
 
@@ -17,7 +17,7 @@ An Acme Corporation employee reading this is weighing four questions that arrive
 1. Are we following the single-stranded foundation and designing docs for Glow OS, and the happy-zone testing methodology?
 2. Is there a better, professional name for that testing concept in documentation?
 3. Is documentation complete enough to introduce foundations, rules, cycles, loops, and logging for Cursor development?
-4. (Answered in the fusion companion.) How do Glow, Brix, Bron, Nix/infuse, Clay/Ford, marks, Udon, Sail, and related Urbit DSL surfaces compose?
+4. (Answered in the fusion companion.) How do Glow, Brix, Kyri, Nix/infuse, Clay/Ford, marks, Udon, Sail, and related Urbit DSL surfaces compose?
 
 ## Are We Following the Foundations?
 
@@ -62,7 +62,7 @@ The foundation keeps J.B. Rainsberger's phrase **happy zone** (gratitude: `grati
 - First-witness tutorials - Rishi reference
 - Always-on Cursor rules (Quin - Radiant - TAME - session-logs - align - send - collaboration - Acme voice)
 - Compass - grain - LEXICON loop words (gate - itinerary - lap - nib)
-- Bron session-log law
+- Kyri session-log law
 
 ### What is still missing (honest gaps)
 
@@ -86,11 +86,11 @@ The foundation keeps J.B. Rainsberger's phrase **happy zone** (gratitude: `grati
 | **Nib** | Landed edge (product - suite - git) |
 | **Align** | Reconcile plan with compass and green witnesses |
 | **Send / kg** | Commit - push - merge to the pier |
-| **Session log (Bron)** | Immutable reasoning record at the seam |
+| **Session log (Kyri)** | Immutable reasoning record at the seam |
 | **Witness habitat** | Where the lap's claim is proven (this study) |
 | **Thin edge / metalsmoke** | Where the host or device is proven sparingly |
 
-An Acme tutorial should walk these in that order, with one worked example (run a Rishi witness -> write a Bron log -> send).
+An Acme tutorial should walk these in that order, with one worked example (run a Rishi witness -> write a Kyri log -> send).
 
 ## What This Does Not Claim
 

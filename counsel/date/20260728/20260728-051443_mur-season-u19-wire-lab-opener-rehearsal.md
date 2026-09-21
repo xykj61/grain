@@ -64,7 +64,7 @@ No `git mv` · no guest rye rename · no QEMU re-run · no deploy/shred.
 
 ## Next
 
-**u20** — step 4 fixture dry-run (`mala_m1_mint.bron` rye-coupled), **or** seat **kg u32** to execute steps 1–3 live.
+**u20** — step 4 fixture dry-run (`mala_m1_mint.kyri` rye-coupled), **or** seat **kg u32** to execute steps 1–3 live.
 
 ---
 

@@ -2,7 +2,7 @@
 # sow_project.sh -- project the clean public seed from the private field.
 #
 # POSIX seam (cp / sed / git-ls-files) per ORGANIZING's .sh boundary; driven by
-# tools/s/sow.rish, which reads template-manifest.bron. The mechanism named in
+# tools/s/sow.rish, which reads template-manifest.kyri. The mechanism named in
 # external-research/20260808-045124 (Movement I), pinned to the seed/ target by
 # 20260808-062500 (field + seed layout).
 #
@@ -66,7 +66,7 @@ trap 'rm -rf "$LOCK"' EXIT INT TERM
 # The three inputs are named by environment so a pen can drive this same script
 # against a synthetic field. Every default is the real one, so a bare run is the
 # run it always was.
-MANIFEST="${SOW_MANIFEST:-template-manifest.bron}"
+MANIFEST="${SOW_MANIFEST:-template-manifest.kyri}"
 SEED="${SOW_SEED:-seed}"
 SCRUB="${SOW_SCRUB:-tools/fixtures/s/sow_scrub.sed}"
 # The copy pass-through, named so it can be refused. Step 7 says why.

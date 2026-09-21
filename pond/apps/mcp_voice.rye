@@ -1,6 +1,6 @@
 //! pond/apps/mcp_voice.rye - BUHR Journey 9, Rung 1: the intelligence, served as an MCP tool.
 //!
-//! Journey 3 spoke MCP in Bron - the owned `format mcp-call-v1` / `mcp-result-v1` shape,
+//! Journey 3 spoke MCP in Kyri - the owned `format mcp-call-v1` / `mcp-result-v1` shape,
 //! a JSON host bridge, the whole tools/list envelope. Journey 8 gathered the five voices
 //! (Lattice, Scribble, Ember, the living graph, a named Tablecloth artifact) under one
 //! bounded Q-vane host. Those two halves never met: the MCP host's tools/call dispatched
@@ -13,7 +13,7 @@
 //! back as a *named* MCP error, never a fabricated result. The artifact voice's integrity
 //! guarantee travels with it: its answers still rest on bytes that proved themselves.
 //!
-//! Additive by construction: it imports mcp_bron (the shape) and quin_host_artifact (the
+//! Additive by construction: it imports mcp_kyri (the shape) and quin_host_artifact (the
 //! voices) and calls only their public functions. Neither contract changes; both stay
 //! their own green binaries. It reads no network - the real fetch and the Comlink-served
 //! transport stay the held custody/serve gates.
@@ -27,7 +27,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const lc = @import("lantern/lantern_core.rye");
-const mcp = @import("mcp_bron.rye");
+const mcp = @import("mcp_kyri.rye");
 const qha = @import("quin_host_artifact.rye"); // the five-voice Q-vane host
 
 const mcp_voice_version = "20260812.150600";

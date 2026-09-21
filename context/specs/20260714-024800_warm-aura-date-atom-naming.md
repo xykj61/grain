@@ -43,7 +43,7 @@ The warm-aura date atom is TAME-guided in the same sense every value in this tre
 - **Bounded and fixed-width.** `YYYYMMDD` is always 8 digits; `HHMMSS` always 6. A stamp that is not exactly `8-6` (filename) or `8.6` (version) or `8` (folder) is malformed, the way an out-of-range index is malformed -- checkable at a glance.
 - **Monotonic -- later is larger.** The one retained semantic. A new stamp sorts after every earlier one, in every folder, on every forge, in the filesystem, identically. This is the invariant the whole naming law rests on.
 - **Accrete, never break.** A stamp, once written, is never recomputed or renamed -- the append-only log made literal in the filesystem (root rule 4). Dated artifacts are immutable per `dated_guard`; this atom is why.
-- **Taken from the contributor verbatim.** The clock is the contributor's own (Pacific, on this clone -- `GLOW_PROFILE.bron`'s `timezone`), recorded in prose where a log's meaning depends on it, never rewritten across hosts.
+- **Taken from the contributor verbatim.** The clock is the contributor's own (Pacific, on this clone -- `GLOW_PROFILE.kyri`'s `timezone`), recorded in prose where a log's meaning depends on it, never rewritten across hosts.
 
 ## How the Archiving/Reviving Sweep Aligns to It
 

@@ -39,7 +39,7 @@ fn parse_u32(text: []const u8) ?u32 {
     return tally_parse_int.parse_int(u32, text, .{}) catch null;
 }
 
-/// Desk Skate cols from station.bron; fall back to min_cols.
+/// Desk Skate cols from station.kyri; fall back to min_cols.
 pub fn station_cols(station_text: []const u8) u32 {
     if (field_value(station_text, "cols")) |raw| {
         if (parse_u32(raw)) |c| {

@@ -89,7 +89,7 @@ rishi/bin/rishi run tools/proven_seat_g1_build_guest.rish
 rishi/bin/rishi run tools/proven_seat_g1.rish
 ```
 
-Guest sources: `tools/proven_seat_g1_guest/` (posix · digest-grade fixture from `receipt_core` / `slcl1_fact.bron`). Serial: `KERNEL=nova BOARD=pc` · expect/m4/bison under `host-tools/`.
+Guest sources: `tools/proven_seat_g1_guest/` (posix · digest-grade fixture from `receipt_core` / `slcl1_fact.kyri`). Serial: `KERNEL=nova BOARD=pc` · expect/m4/bison under `host-tools/`.
 
 ---
 

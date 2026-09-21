@@ -7,7 +7,7 @@
 
 ## Deliverables
 
-1. Move sources to `dimeroll/` root; fixture at `dimeroll/fixtures/journal.bron`  
+1. Move sources to `dimeroll/` root; fixture at `dimeroll/fixtures/journal.kyri`  
 2. Repoint witnesses, compass, drawn-terminal, indexes  
 3. `fold_income_statement` · `fold_balance_sheet` · `collect_exceptions`  
 4. `tools/dimeroll_lap2.rish` wired in parity (**209**)  

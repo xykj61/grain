@@ -3,7 +3,7 @@
 //! Chapter 2, Yield. The spool arc closed red %73 and stood on three rungs -- chunking
 //! (mantra/spool.rye), naming (spool_cloth.rye), owner-signed (spool_keyed.rye). This is
 //! the arc's finishing rung: a **portable receipt** for a large owner-signed document, the
-//! large-artifact sibling of TACT-J2's publish_receipt / publish_receipt_bron and of
+//! large-artifact sibling of TACT-J2's publish_receipt / publish_receipt_kyri and of
 //! GISM-J6r2's provenance_receipt (which travelled a receipt for a document small enough
 //! to fit one resin). Here the receipt vouches for a document too large for one resin --
 //! wound across many -- and proves the signed word detaches from the spool and travels.
@@ -13,7 +13,7 @@
 //! spool_keyed binds when it winds the document. So one Publication vouches for a document
 //! whether it lives in one resin or sixty. The crux this rung proves: a large document
 //! winds across resins under an owner's signature, a portable receipt travels as a
-//! `format publication-v1` Bron record and returns byte-for-byte, still verifies offline
+//! `format publication-v1` Kyri record and returns byte-for-byte, still verifies offline
 //! (no store, no spool, no network), and the bytes **reassembled from the resins** match
 //! the digest the receipt bound -- provenance for a large document outlives the store it
 //! was born in. The detached receipt carries the identical signature spool_keyed stored,
@@ -21,7 +21,7 @@
 //!
 //! Every tamper refuses: reassembled bytes with one byte flipped fail the content half
 //! (matches_content), a wrong keeper key fails the signature half, an unknown record field
-//! refuses the travel. Composes spool_keyed / publish_receipt / publish_receipt_bron public
+//! refuses the travel. Composes spool_keyed / publish_receipt / publish_receipt_kyri public
 //! API over demo keeper seeds only; those selftests stay their own GREEN binaries. No
 //! custody crosses (the real key and the serve transport are held gates).
 //!
@@ -37,7 +37,7 @@ const beading = @import("mantra/beading.rye");
 const spool = @import("mantra/spool.rye");
 const skeyed = @import("spool_keyed.rye");
 const receipt_mod = @import("publish_receipt.rye");
-const receipt_bron = @import("publish_receipt_bron.rye");
+const receipt_kyri = @import("publish_receipt_kyri.rye");
 const keyed = @import("tablecloth_keyed.rye");
 const kumara = @import("kumara.rye");
 const tilak = @import("kumara_tilak.rye");
@@ -160,13 +160,13 @@ fn welcome_reassembled_matches_receipt(w: *const World, store: *const beading.Be
     print("spool_receipt: reassembled {d} B from the resins; sha256 {s} matched the receipt, verified offline.\n", .{ n, hex });
 }
 
-/// The receipt for the large document travels as Bron and returns byte-for-byte, still
+/// The receipt for the large document travels as Kyri and returns byte-for-byte, still
 /// verifying offline and still matching the reassembled spool bytes -- provenance for a
 /// large document outlives the store it was born in.
 fn welcome_large_receipt_travels(store: *const beading.BeadStore, kc: *const skeyed.KeyedLargeCatalog, receipt: *const receipt_mod.Publication) !void {
-    var buf: [receipt_bron.max_record]u8 = undefined;
-    const written = try receipt_bron.render(receipt, &buf);
-    const back = try receipt_bron.parse(buf[0..written]);
+    var buf: [receipt_kyri.max_record]u8 = undefined;
+    const written = try receipt_kyri.render(receipt, &buf);
+    const back = try receipt_kyri.parse(buf[0..written]);
     // invariant: the round-tripped receipt equals the original, field for field
     assert(receipts_equal(receipt, &back));
     // invariant: the recovered receipt still verifies offline
@@ -176,7 +176,7 @@ fn welcome_large_receipt_travels(store: *const beading.BeadStore, kc: *const ske
     const n = try skeyed.fetch_owned_large(kc, store, doc_name, out[0..]);
     // invariant: the travelled receipt still matches the bytes read from the resins
     assert(receipt_mod.matches_content(&back, out[0..n]));
-    print("spool_receipt: the large-document receipt travelled through Bron ({d} bytes) and returned whole, still matching the reassembled bytes.\n", .{written});
+    print("spool_receipt: the large-document receipt travelled through Kyri ({d} bytes) and returned whole, still matching the reassembled bytes.\n", .{written});
 }
 
 /// Reassembled bytes with one byte flipped fail the content half even under an authentic
@@ -203,14 +203,14 @@ fn unwelcome_wrong_keeper(receipt: *const receipt_mod.Publication) !void {
 
 /// An unknown field in the travelled record refuses -- never silently dropped.
 fn unwelcome_unknown_field(receipt: *const receipt_mod.Publication) !void {
-    var buf: [receipt_bron.max_record]u8 = undefined;
-    const written = try receipt_bron.render(receipt, &buf);
+    var buf: [receipt_kyri.max_record]u8 = undefined;
+    const written = try receipt_kyri.render(receipt, &buf);
     const stray = "surprise yes\n";
     // invariant: the record plus the stray line stays inside the buffer
-    assert(written + stray.len <= receipt_bron.max_record);
+    assert(written + stray.len <= receipt_kyri.max_record);
     var i: u32 = 0;
     while (i < stray.len) : (i += 1) buf[written + i] = stray[i];
-    if (receipt_bron.parse(buf[0 .. written + stray.len])) |_| {
+    if (receipt_kyri.parse(buf[0 .. written + stray.len])) |_| {
         return error.UnwelcomePassed;
     } else |err| {
         // invariant: an unknown field refuses rather than drop silently
@@ -238,7 +238,7 @@ fn run_spool_receipt_selftest() !u8 {
     try unwelcome_unknown_field(&receipt);
 
     print("spool_receipt: version {s}\n", .{spool_receipt_version});
-    print("GREEN: a portable receipt for a large owner-signed document travels as Bron and returns whole, still matching the bytes reassembled from the resins — the spool arc's finishing rung.\n", .{});
+    print("GREEN: a portable receipt for a large owner-signed document travels as Kyri and returns whole, still matching the bytes reassembled from the resins — the spool arc's finishing rung.\n", .{});
     return 0;
 }
 

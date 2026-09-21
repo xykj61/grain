@@ -13,7 +13,7 @@
 # population grows with every lap and a figure typed into prose is stale by the next one.
 #
 # WHAT IT COUNTS. Tracked sources of the six extensions TAME governs -- `.rye`, `.rish`, `.brix`,
-# `.bron`, `.glow`, `.kyri` -- minus four rooms, each left out for its own reason:
+# `.kyri`, `.glow`, `.kyri` -- minus four rooms, each left out for its own reason:
 #
 #   vendor/ gratitude/   third-party text, held unmodified; their line lengths are their authors'.
 #   seed/                the public projection, whose bytes are a copy of what is measured here.
@@ -29,7 +29,7 @@
 # comments puts 72 percent of this whole population outside what a column rule was written for.
 #
 # THE SPLIT, AND WHY IT IS THE WHOLE FINDING. A long line is counted as a **comment** when its
-# first non-blank characters open one in that language -- `//` in Rye, `#` in Rishi, Bron and
+# first non-blank characters open one in that language -- `//` in Rye, `#` in Rishi, Kyri and
 # Kyri, `::` in Glow -- and as **code** otherwise. Measured `20260911`: of 101,957 lines past a
 # hundred columns, **54,917 are own-line comments**. The rule was written for code a reader has to
 # follow across a terminal; more than half of what it catches here is prose, governed already by
@@ -82,11 +82,11 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 if [ -n "$CORPUS" ]; then
   ( cd "$CORPUS" && find . -type f \
       \( -name '*.rye' -o -name '*.rish' -o -name '*.brix' \
-         -o -name '*.bron' -o -name '*.glow' -o -name '*.kyri' \) \
+         -o -name '*.kyri' -o -name '*.glow' -o -name '*.kyri' \) \
       | sed 's|^\./||' ) > "$pen/all.txt"
   base=$CORPUS
 else
-  git ls-files '*.rye' '*.rish' '*.brix' '*.bron' '*.glow' '*.kyri' > "$pen/all.txt"
+  git ls-files '*.rye' '*.rish' '*.brix' '*.kyri' '*.glow' '*.kyri' > "$pen/all.txt"
   base=.
 fi
 
@@ -133,7 +133,7 @@ awk -v maxcol="$MAXCOL" '
       comment = 0
       if (ext == "rye"  && s ~ /^\/\//) comment = 1
       if (ext == "glow" && s ~ /^::/)   comment = 1
-      if ((ext == "rish" || ext == "bron" || ext == "kyri") && s ~ /^#/) comment = 1
+      if ((ext == "rish" || ext == "kyri" || ext == "kyri") && s ~ /^#/) comment = 1
       claim = 0
       if (ext == "rish" && comment == 0 && (s ~ /^say / || s ~ /^assert /)) claim = 1
       over++

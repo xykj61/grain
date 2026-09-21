@@ -12,7 +12,7 @@ host copal tree, one clock America/New_York
 title REDS %745 moves OPEN to BOOKED -- the amphora pen leak was already repaired
 prompt No fresh user prompt this turn; the baton's own ORDER and ABSENCE clauses governed the lap. Card read, fleet-claims read for overlap, then the copal lane's own booked red (%745) checked against the tree as it stands today.
 think Checked fleet_baton state first: no gates-only, no clockout, tree level with xy/main.
-think Read fleet-claims.kyri for overlap with amphora/bron-resins -- none of the three live claims (grass, incense, bakery) touch this lane.
+think Read fleet-claims.kyri for overlap with amphora/kyri-resins -- none of the three live claims (grass, incense, bakery) touch this lane.
 think Grepped ITINERARY for the Copal lane's own scope: Amphora receipt fields, provenance, auth, version refusal, round-trip meaning, portable bundle seam.
 think Grepped REDS.md for OPEN rows naming amphora, vessel, or receipt -- found %745, explicitly naming "the nineteen-file repair is copal's lane and its next lap."
 think Ran pen_release_scan.sh --list: never_removed=9, and none of the nine offending files sit under tools/am/ -- rye_key_control, slc1_accept, slc1_version_step2, four caravan subscribe-poll witnesses, and mantra_recall_subscribe_poll_stop.

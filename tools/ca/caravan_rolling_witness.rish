@@ -65,7 +65,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 
 # One document, asked a new question rather than replaced by a second one.
-let clients = run ["sh" "-c" "caravan/bin/rolling_read caravan/systems/serial_three_clients.bron 2>&1"]
+let clients = run ["sh" "-c" "caravan/bin/rolling_read caravan/systems/serial_three_clients.kyri 2>&1"]
 assert clients.ok else "the three-client declaration could not be read"
 assert clients.out contains "domains 4 -- channels 3 -- regions 9 -- grants 15" else "the three-client document changed shape"
 assert clients.out contains "verdict: whole" else "the three-client declaration did not read whole"

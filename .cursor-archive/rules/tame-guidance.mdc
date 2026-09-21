@@ -1,13 +1,13 @@
 ---
-description: TAME Guidance for Rye, Rishi, Brix, Bron, Kyri, Glow, Brush, Mycelium -- invariants, bounds, widths, garden memory
-globs: "**/*.{rye,rish,brix,bron,kyri,myc}"
+description: TAME Guidance for Rye, Rishi, Brix, Kyri, Kyri, Glow, Brush, Mycelium -- invariants, bounds, widths, garden memory
+globs: "**/*.{rye,rish,brix,kyri,kyri,myc}"
 alwaysApply: false
 ---
 
 # TAME Guidance -- Code
 
 **Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) - **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md` - **Compressed core (read first):** `context/TAME_CORE.md` -- apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Bron (`.bron`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
+**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md` - **Compressed core (read first):** `context/TAME_CORE.md` -- apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Kyri (`.kyri`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
 
 Full checkable surface: supplement section **What We Check, and When**.
 

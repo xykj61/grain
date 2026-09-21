@@ -10,7 +10,7 @@
 //! distinct-node count the threshold reads is the count of members present, and every member's order-head
 //! is the very order the fixture folds.
 //!
-//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.bron` (a demo funder credits Alice
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.kyri` (a demo funder credits Alice
 //! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
 //! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
 //! time through the existing `mycelium/corpora/` symlink -- no network, the bytes read are the tree's own. A
@@ -18,7 +18,7 @@
 //! proves both.
 //!
 //! Two independent readings must agree, and the quorum must be honest:
-//!   - THE POSITION -- the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
+//!   - THE POSITION -- the app parses the record through `cord_kyri`, REBUILDS the Dag under `cord.add`
 //!     (re-verifying every signature), gathers a three-node quorum over the genesis-funded account, and
 //!     emits the agreed triple; the r4 witness cross-checks it against `tools/fixtures/s/statement_dag_truth.awk`'s
 //!     per-account deadline-clock reading of the same bytes -- two tools, one answer.
@@ -30,7 +30,7 @@
 //! The chosen account is the GENESIS-FUNDED one -- the recipient of the issue fact, whom both tools identify
 //! the same way -- so no magic constant chooses whose position the quorum vouches.
 //!
-//! Additive -- composes `cord_bron` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `kumara`
+//! Additive -- composes `cord_kyri` + `cord` + `lapse` + `statement` + `voucher` + `chorus` + `kumara`
 //! public API only (each re-runs GREEN). Siloed, dev-only, demo node and keeper seeds -- no real key, no
 //! funds, no network, no custody. A SERVED chorus (a holder fetching several nodes' attestations over
 //! Comlink) reaches the Comlink-served gate, the maintainer's hand.
@@ -42,7 +42,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const lapse = @import("lapse.rye");
 const statement = @import("statement.rye");
 const voucher = @import("voucher.rye");
@@ -53,7 +53,7 @@ pub const chorus_true_version = "20260813.102533";
 
 /// The real ledger record, bound at compile time -- the tree's own bytes, never a drift. Reused from the
 /// Lapse's fixture, since a chorus is a quorum of signatures over exactly the position that ledger projects.
-const real_dag = @embedFile("corpora/lapse_dag.bron");
+const real_dag = @embedFile("corpora/lapse_dag.kyri");
 
 /// The threshold this fixture's mesh must meet -- three distinct nodes vouch the funded account.
 const true_threshold: u32 = 3;
@@ -110,10 +110,10 @@ fn funded_account(l: *const lapse.Ledger) ?u32 {
 /// quorum is believed at the full threshold, and every member's recomputed order-head matches its signed one
 /// -- both asserted.
 pub fn vouch_real(text: []const u8) !Reading {
-    const rec = try cord_bron.parse(text);
+    const rec = try cord_kyri.parse(text);
     // invariant: a real ledger record carries blocks -- an empty Dag holds no account to vouch.
     if (rec.len == 0) return error.BadFormat;
-    var dag = try cord_bron.rebuild(&rec);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
     const pk = verdict.accounts[ai].pk[0..];
@@ -162,8 +162,8 @@ fn welcome_distinct_count_is_members_present() !void {
     const r = try vouch_real(real_dag);
     assert(r.voices == true_threshold);
     // Rebuild and gather to test the threshold boundary directly.
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
     const nodes = three_nodes();
@@ -180,8 +180,8 @@ fn welcome_distinct_count_is_members_present() !void {
 /// The quorum checks against the very ledger it vouches: `check_against` re-derives the order-head and
 /// re-reads the funded account's Statement from the rebuilt fixture Dag and confirms the one agreed triple.
 fn welcome_check_against_the_real_ledger() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
     const nodes = three_nodes();

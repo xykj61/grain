@@ -103,7 +103,7 @@ trap 'rm -rf "$work"' EXIT
 
 # THE PATH SHAPE IS THE HOOK'S, single-homed by citation rather than by copy of a reason. A slash
 # and an extension this tree writes; everything else is read past.
-path_shape='^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$'
+path_shape='^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|kyri|rish|rye|brix|sh|json|txt)$'
 
 # Pull the path token out of every `file` field. The value is the text after the first space, so
 # the path is its first whitespace-delimited word; trailing prose punctuation is stripped, since a
@@ -128,7 +128,7 @@ exists() {
 
 # -- the staged reading: this commit's own logs -------------------------------------------------
 git diff --cached --name-only --diff-filter=ACMR 2>/dev/null \
-  | grep -E '^session-logs/.*\.(kyri|bron)$' > "$work/staged_logs.txt" || : > "$work/staged_logs.txt"
+  | grep -E '^session-logs/.*\.(kyri|kyri)$' > "$work/staged_logs.txt" || : > "$work/staged_logs.txt"
 staged_logs=$(wc -l < "$work/staged_logs.txt" | tr -d ' ')
 
 : > "$work/staged_bad.txt"
@@ -160,7 +160,7 @@ fi
 
 # -- the standing reading: every tracked log, reported ------------------------------------------
 : > "$work/all_bad.txt"
-grep -E '^session-logs/.*\.(kyri|bron)$' "$work/tracked.txt" > "$work/logs.txt" || : > "$work/logs.txt"
+grep -E '^session-logs/.*\.(kyri|kyri)$' "$work/tracked.txt" > "$work/logs.txt" || : > "$work/logs.txt"
 logs=$(wc -l < "$work/logs.txt" | tr -d ' ')
 
 # ONE PASS OVER THE ROOM, not one process per log. Read file by file this cost 55s on this pier,

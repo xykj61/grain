@@ -19,7 +19,7 @@ Add to `work-in-progress/TASKS.md`, under Open Questions, each as a question rat
 - **Input** -- the counterpart to drawing. Who carries keyboard and pointer events into the fold, on both the hosted and the sovereign backend? Within the surface, or beside it? The drawn terminal will ask this first.
 - **Identity as a module** -- does the keypair primitive earn its own home, the thing that signs a fact before it enters Weave? Today identity rests in keys kept outside the family.
 - **The value-model core** -- does the one value model carry a name of its own, or is it simply Rye? This governs the seam where a value crosses modules without being flattened to text.
-- **Bron** -- proposed, role undefined. Brix describes *what a system is made of*; what does Bron describe alongside it? Hold until the role is clear. *(Open ruling for Kaeden.)*
+- **Kyri** -- proposed, role undefined. Brix describes *what a system is made of*; what does Kyri describe alongside it? Hold until the role is clear. *(Open ruling for Kaeden.)*
 - **Tablecloth** -- proposed layout or structured-view layer, named and not yet shaped. Hold until its shape is clear.
 - **.brush** -- a surface-description extension for the day Brushstroke becomes a small language of its own. Horizon; raised only when a hand-written surface proves it needs one.
 
@@ -54,7 +54,7 @@ End with one line, and it is almost certainly: *"Recommend: check in with Claude
 
 ## Definition of Done
 
-- [ ] The open names recorded in TASKS as Open Questions (Bron, Tablecloth, .brush, input, identity, value-model core)
+- [ ] The open names recorded in TASKS as Open Questions (Kyri, Tablecloth, .brush, input, identity, value-model core)
 - [ ] The three research pieces scoped in TASKS as reserved for Claude, no empty files created
 - [ ] SLC-2a confirmed as the unchanged active rung; nothing above it begun
 - [ ] `rye build` and parity green on metal; session log shipped; four remotes pushed; check-in with Claude recommended

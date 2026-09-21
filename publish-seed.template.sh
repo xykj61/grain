@@ -2,7 +2,7 @@
 # publish-seed.template.sh -- project YOUR public seed, prove it clean, and publish it.
 #
 # WHY THIS FILE SHIPS AND ITS SIBLING DOES NOT. This tree's own publisher, `publish-seed.sh`, is
-# `personal` in `template-manifest.bron` by law: the field is the seed's PROJECTOR, never its
+# `personal` in `template-manifest.kyri` by law: the field is the seed's PROJECTOR, never its
 # carrier. So a newcomer who clones the public seed inherits every room except the one that would
 # let them publish their own. This template is that room, with the maintainer's five literals
 # standing as fillable stubs.
@@ -14,7 +14,7 @@
 # THE BARE FORM CANNOT PUBLISH, and keep it that way. A force-push to a public repository is
 # irreversible; `--push` is your own explicit word, typed once, at the moment you mean it.
 #
-# FILLING IT FROM YOUR PROFILE. Every stub below has a matching field in `GLOW_PROFILE.bron` (copy
+# FILLING IT FROM YOUR PROFILE. Every stub below has a matching field in `GLOW_PROFILE.kyri` (copy
 # `GLOW_PROFILE.template.kyri` and fill it). An agent asked to "fill my publisher from my profile"
 # reads those five fields and writes these five lines, which is the whole reason the field names
 # match the shell names one for one.

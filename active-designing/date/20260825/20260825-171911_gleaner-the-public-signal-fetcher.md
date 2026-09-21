@@ -5,7 +5,7 @@
 **Style:** Gauge -- Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Status:** Vision -- a yonder note. The name is proposed and uncollided (`git grep -il gleaner` reads 0 files at tip `c2ea226`); the shape is designed; nothing is built; a build waits on Keaton's word
-**Kin:** [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Bron`](date/20260812/20260812-111800_buhr-journey3-mcp-in-bron-exploration.md) - [`Dimeroll`](../dimeroll/README.md) (the Skate-view pattern) - [`Comlink tendency`](../.claude/rules/comlink-tendency.md) - [`Aparigraha`](../context/APARIGRAHA.md)
+**Kin:** [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Kyri`](date/20260812/20260812-111800_buhr-journey3-mcp-in-kyri-exploration.md) - [`Dimeroll`](../dimeroll/README.md) (the Skate-view pattern) - [`Comlink tendency`](../.claude/rules/comlink-tendency.md) - [`Aparigraha`](../context/APARIGRAHA.md)
 **Naming law:** name for clarity, fun, and safety at any length; waymark still governs ladder rungs; Keaton's word seats
 
 ---
@@ -31,7 +31,7 @@ Two alternates for the collision lap, both uncollided at tip: **Windrow** (the r
 Gleaner invents no storage, no wire, and no view.
 
 - **Tablecloth** is the named artifact store over `mantra/beading.rye`'s content-addressed `BeadStore`: a human name bound to a content address, so asking for a record by name returns exactly the bytes whose hash it carries. A fetched record is a resin like any other.
-- **`mandate/serve.rye`** already carries a bounded request/response pair over a store; the MCP-in-Bron exploration designs the `format mcp-tool-v1` manifest and `format mcp-call-v1` envelope on top of it. Gleaner's tools are two such manifests.
+- **`mandate/serve.rye`** already carries a bounded request/response pair over a store; the MCP-in-Kyri exploration designs the `format mcp-tool-v1` manifest and `format mcp-call-v1` envelope on top of it. Gleaner's tools are two such manifests.
 - **Dimeroll's Skate views** are the pattern for seeing a fold: a five- or six-line frame per view, one witness per view, one command per view.
 - **`tools/fetch_gratitude_web.sh`** is the tree's one permitted web seam today -- an external interpreter kept as a `.sh` by standing law. Gleaner's fetch begins as that shape and grows a `.rish` wrapper the way the other shell bodies did, with the missing Rishi verb noted in the body.
 

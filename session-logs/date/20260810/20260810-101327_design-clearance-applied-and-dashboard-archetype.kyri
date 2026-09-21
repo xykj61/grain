@@ -12,6 +12,6 @@ think Finished the Scribe arc's last lap: the dashboard now labels each baton by
 obs The allowlist proved its worth twice over this round: it grew by ~794 agent-certified design/waymark files (the public seed now carries the design corpus too), AND its agent-read gate caught six classes of deeply personal content that six prior grep/IDENT passes never surfaced. Clearing by certification, not by scrubbing-and-hoping, is what makes the seed trustworthy.
 obs Scribe is now whole: the reader parses and dispatches, the dashboard lays out and labels, the bat fleet shapes the batons. A visitor to grain-os/grain meets a working Kyri toolchain, the doctrine, the specs, and now the design corpus — all provably clean.
 file scribe/dashboard.rye Row gains archetype; the Batons shelf labels each baton by its fleet shape
-file template-manifest.bron 19 flagged files withheld; active-designing + waymarks allowed
+file template-manifest.kyri 19 flagged files withheld; active-designing + waymarks allowed
 file tools/fixtures/sow_scrub.sed the Pixel serial, macOS username, kae3g, Brooke scrubbed
 recommend keep-going the design corpus is cleared and the Scribe arc is complete; the seed is richer and provably clean; the push stays Keaton's hand

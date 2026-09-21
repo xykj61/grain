@@ -20,7 +20,7 @@ think Read the REDS pin. Nine of thirteen rows read OPEN and most surface as gat
 think The rebase onto xy/main met three conflicted files: PATCHOULI had published the same port at 16:15:30, thirty-six minutes ahead of my commit. Upstream wins, so I reset onto theirs rather than resolving a conflict between two answers to one question.
 think Reading their version against mine found the difference that mattered. They bound the model and kept the CLI's own LCS; mine also called mantra/src/diff.rye. So main.rye still allocated (m + 1) * (n + 1) cells of u32 straight from two caller lengths, with no named maximum, no named error, and no check at the edge -- in the file that reads a user's document off disk.
 think That is not duplicate work and it is a TAME bound rather than a tidy. diff.rye has named max_diff_lines, max_diff_table_bytes and check_bounds since 20260907, and calling it is how the CLI inherits the fence. split_lines travelled with it, because the slice handed to diff is the slice diff reads its ceiling against.
-think The cold pass also answered seed_link red: README.md links context/BHAKTA_STYLE.md, seated hours earlier, and template-manifest.bron carried every sibling register page and not that one. Reds first, so the manifest row went in ahead of everything else.
+think The cold pass also answered seed_link red: README.md links context/BHAKTA_STYLE.md, seated hours earlier, and template-manifest.kyri carried every sibling register page and not that one. Reds first, so the manifest row went in ahead of everything else.
 obs Thirty-six minutes is the price of the standing question this card has asked from five blocks: nothing in the ledger shows a red is being worked. This is the first firing where both hands finished the work rather than one finding the other's parked lap.
 obs A duplicated repair is still worth reading. Comparing the two versions is what found the unbounded table, which neither hand would have looked for while porting.
 obs I repaired a shelf link mid-pass and cost a thirty-minute hot run to tree_moved=yes. Holding still while the roster runs means holding still, and a guard that is easy to satisfy by hand is easy to satisfy at the wrong moment.
@@ -28,7 +28,7 @@ loom roster=standing_equipment_cold guards=197 wall_s=1720 green=191 red=3 gated
 loom roster=standing_equipment_hot guards=197 wall_s=1795 green=192 red=2 tree_moved=no
 loom port=mantra_main_rye lines_before=667 lines_after=606 record_bytes_moved=0
 file mantra/src/main.rye the CLI calls diff.rye's diff and split_lines rather than its own copies, so the quadratic LCS table is bounded, named and refused at the edge for the first time
-file template-manifest.bron context/BHAKTA_STYLE.md joins the seed, closing the front door link the public projection could not resolve
+file template-manifest.kyri context/BHAKTA_STYLE.md joins the seed, closing the front door link the public projection could not resolve
 file construction/ITINERARY.md the BAKERY block, and the elder shelved with its links repointed
 scope one red repair on the shared front door, and one bound brought to the CLI's diff by calling the module that already names it
 status GREEN -- mantra_diff, mantra_weave_model, rw1_history_contract, slc1_accept, tame_style_check, width-check, seed_link, sow_witness, fold_shelf_link; the hot roster reads 192 green with stash_record and the standing_equipment line that reflects it, both the open deadlock this ledger already carries

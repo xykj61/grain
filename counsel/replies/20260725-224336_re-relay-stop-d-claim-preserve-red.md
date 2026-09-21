@@ -12,7 +12,7 @@
 
 | Step | Result |
 |------|--------|
-| **C** | Handoff filed as-is at [`../../bron-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md`](../../bron-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md) — rename-pending lines kept as testimony |
+| **C** | Handoff filed as-is at [`../../kyri-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md`](../../kyri-resins/20260725-224249_quin-handoff_fresh-session-bootstrap.md) — rename-pending lines kept as testimony |
 | **D apply** | `grain-readme_radiant-pass.md` copied onto `README.md` |
 | **D markdown_structure** | **GREEN** with `MARKDOWN_STRUCTURE_FILES=README.md` |
 | **D claim_preserve** | **RED** with `CLAIM_PRESERVE_FILES=README.md` — STOP |

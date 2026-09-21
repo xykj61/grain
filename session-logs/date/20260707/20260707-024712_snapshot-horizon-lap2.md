@@ -14,7 +14,7 @@ Counsel I2 named bundle prefixes (`catalog/`, `trust/`), a SHA3-512 head record 
 
 ## Observations
 
-- Continuity fact uses counsel's Bron sketch; live-instance refusal and Pond customs remain horizon (Kaeden gate on custody shape).
+- Continuity fact uses counsel's Kyri sketch; live-instance refusal and Pond customs remain horizon (Kaeden gate on custody shape).
 - `weave/` and `brix/` bundle slices deferred to a later lap.
 - Lap 1 version string still accepted on import for the batch wrapper; horizon export bumps `snapshot_export_version` to `20260707.024712`.
 

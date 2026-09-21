@@ -24,18 +24,18 @@ All five tilaks are seated, and each carries a signature by its authorizing part
 
 ## Template and instance
 
-A **template** is this shape; an **instance** is one filled quintet of tilaks for a real pilot. `kumara/tilak.rye` builds and verifies an instance from two seeds and serializes it to Bron facts -- the first identity template plus a witnessed example instance. It never invents a real pilot's key: the example uses two plain seeds (`0x11...`, `0x22...`), and the maintainer's own instance is filled by his hand, from his own seed, when he words it.
+A **template** is this shape; an **instance** is one filled quintet of tilaks for a real pilot. `kumara/tilak.rye` builds and verifies an instance from two seeds and serializes it to Kyri facts -- the first identity template plus a witnessed example instance. It never invents a real pilot's key: the example uses two plain seeds (`0x11...`, `0x22...`), and the maintainer's own instance is filled by his hand, from his own seed, when he words it.
 
 ## Build and prove
 
 ```
 rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 kumara/bin/tilak selftest      # a bind verifies both ways; each changed signature refuses (diagnostics on stderr)
-kumara/bin/tilak emit          # print an example instance as Bron facts (data on stdout)
+kumara/bin/tilak emit          # print an example instance as Kyri facts (data on stdout)
 rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
 ```
 
-The example instance lives at [`example-instance.bron`](example-instance.bron) -- a point fact and a bind fact, both signatures present at full Ed25519 length, the point kept by the keeper the bind names.
+The example instance lives at [`example-instance.kyri`](example-instance.kyri) -- a point fact and a bind fact, both signatures present at full Ed25519 length, the point kept by the keeper the bind names.
 
 ## Settled since, and held still
 

@@ -29,7 +29,7 @@ The tree is whole and live. The voice is Kyri throughout; the operator words hav
 - **Build the first slice** — the curated trust directory (see the pick-the-first-slice memo).
 - **Fill the `[company sets: …]` facts** in the Linengrow sales one-pager.
 - **Write a first Linengrow profile** in the new magazine voice, once a real subject gives real consent.
-- **Build Mandate**, the all-Rishi tooling molt, or the Bron → Kyri notation molt — each a real season on the maintainer's word.
+- **Build Mandate**, the all-Rishi tooling molt, or the Kyri → Kyri notation molt — each a real season on the maintainer's word.
 
 ## How to write the next baton
 

@@ -3,7 +3,7 @@
 # Proves the first two tilaks of a Kumara identity are made, signed both ways, and
 # verified -- the load-bearing pair every other tilak hangs from. The crypto rides on
 # tally/kumara.rye (Ed25519 at the seam); this witness drives the built module and
-# checks both the proof and the Bron facts it emits.
+# checks both the proof and the Kyri facts it emits.
 #
 #   rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
 
@@ -15,7 +15,7 @@ let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" 
 assert build.ok else "kumara tilak witness must build the binary it runs -- ${build.err_brief}"
 
 # The module's own selftest -- every tilak verifies, every tamper refuses.
-# Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
+# Diagnostics print to stderr; the Kyri facts of `emit` go to stdout.
 let st = run ["kumara/bin/tilak" "selftest"]
 assert st.ok else "kumara tilak selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
@@ -53,4 +53,4 @@ assert (em.out contains "power hand") else "the transfer capability names its po
 let point_keeper = find em.out "\nkeeper [0-9a-f]{64}"
 assert (length point_keeper) == 1 else "the point names one keeper"
 
-say "GREEN: kumara tilak — all five tilaks made, each signed by its authorizing party, verified, emitted as Bron; every tamper refuses."
+say "GREEN: kumara tilak — all five tilaks made, each signed by its authorizing party, verified, emitted as Kyri; every tamper refuses."

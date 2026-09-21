@@ -25,7 +25,7 @@
 # every pledge opens affordably, and the order is unambiguous by round — so the app's full resolve and this
 # file-order accounting name the same position. It prints `<chosen-account-hex> <balance> <reserved> <received>`.
 #
-#   awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.bron
+#   awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.kyri
 #   -> "<chosen-account-hex> <balance> <reserved> <received>"
 
 BEGIN {

@@ -35,7 +35,7 @@
 //! overwriting an ask nobody has read -- so a full queue is a refusal an
 //! operator can see, never a message that silently went missing.
 //!
-//! Nothing in `serial_two_clients.bron` changes. The same two regions per
+//! Nothing in `serial_two_clients.kyri` changes. The same two regions per
 //! channel that carried one message now carry four.
 //!
 //! Hosted ground: real processes, real files, pure policy, no kernel

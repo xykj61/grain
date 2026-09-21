@@ -21,7 +21,7 @@ set -eu
 
 here=$(cd "$(dirname "$0")" && pwd -P)
 tmpl="$here/configuration.nix"
-local_file="${GRAIN_NIXOS_LOCAL:-$here/local.bron}"
+local_file="${GRAIN_NIXOS_LOCAL:-$here/local.kyri}"
 live=${GRAIN_NIXOS_LIVE:-/etc/nixos/configuration.nix}
 
 [ -f "$tmpl" ] || { echo "infuse: no template at $tmpl" >&2; exit 2; }

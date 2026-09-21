@@ -24,17 +24,17 @@ Microkit is deliberately **subtractive**: it exposes a small, opinionated slice 
 - **Channels as a static, build-time supervision graph.** Caravan's supervision tree can borrow the lesson that the *whole graph is known and declared*, not discovered. Express the wiring as a bounded, asserted Rye record -- a fixed roster of links between named components -- so the supervision topology is inspectable at construction, not emergent at runtime. This pairs naturally with the parity witnesses: a static graph is a graph a witness can check whole.
 - **Memory regions as explicit, named, permissioned shares.** When Caravan components must share state, model it as a declared region with a named holder set and named permissions -- explicit width, asserted bounds, no ambient sharing -- mirroring Microkit's deliberate-sharing rule.
 - **The event vocabulary as a closed, named set.** Microkit's few entry points (notified, protected-call, fault) argue for a *small, closed* event vocabulary. Caravan's exit/fault vocabulary already leans this way; the Microkit lesson is to keep the whole event surface small enough to enumerate and assert over, rather than open-ended.
-- **A declarative system description as the source of truth.** A Caravan configuration that names components and wiring declaratively -- parsed, bounded, asserted, then realized -- fits the tree's existing Brix/Bron habit of declaring systems as data. The static description is the artifact a witness reads to prove the graph.
+- **A declarative system description as the source of truth.** A Caravan configuration that names components and wiring declaratively -- parsed, bounded, asserted, then realized -- fits the tree's existing Brix/Kyri habit of declaring systems as data. The static description is the artifact a witness reads to prove the graph.
 
 ## What stays out
 
 - **No Microkit source, no libmicrokit, no its build tooling in our tree.** Concepts and the shape of the model only; Caravan stays our own Rye.
-- **No adoption of Microkit's file format verbatim as our config.** The *idea* of a declarative static description enters; the concrete syntax stays ours (Brix/Bron shaped), not a copy.
+- **No adoption of Microkit's file format verbatim as our config.** The *idea* of a declarative static description enters; the concrete syntax stays ours (Brix/Kyri shaped), not a copy.
 - **No dynamic PD creation as a default.** Microkit's whole virtue is static-at-build-time; Equinox 1 keeps that virtue. Any later controlled dynamism is a deliberate, separately-witnessed ring, never the starting posture.
 - **No implication that a Caravan mirror is "Microkit-compatible."** We sit *beside* the model honestly; we do not claim binary or interface compatibility we have not built and witnessed.
 
 ## Open questions this brief leaves to a later round
 
-- How closely Caravan's declarative supervision description should resemble Microkit's system-description shape while staying Brix/Bron-native.
+- How closely Caravan's declarative supervision description should resemble Microkit's system-description shape while staying Brix/Kyri-native.
 - Whether the single-threaded, passive-until-signalled PD model fits every Caravan ring, or only the leaf components, with richer supervisors above.
 - How a static Microkit-style graph coexists with the deliberate later dynamism Genode's ideas would bring to a post-GREEN ring.

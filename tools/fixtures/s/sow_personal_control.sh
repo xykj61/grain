@@ -18,7 +18,7 @@
 # EVERY CASE RUNS IN A PEN. The scan reads a relative `seed` from its own working directory, so
 # each case runs with its cwd inside a throwaway copy holding a seed/ of its own. The real
 # seed/ stays untouched, no projection runs, and custody gate %1 sits far from this file.
-# template-manifest.bron is read too (for the `personal`/`sub_exclude` halves of the scan), so
+# template-manifest.kyri is read too (for the `personal`/`sub_exclude` halves of the scan), so
 # each pen also carries an empty one -- absent, the scan's own `grep` warns to stderr and reads
 # no rows, which is the same "nothing personal, nothing sub_excluded" answer an empty file gives.
 #
@@ -65,7 +65,7 @@ run_case() {
   d="$PEN/$1"
   rm -rf "$d"
   mkdir -p "$d/seed/$(dirname "$2")"
-  : > "$d/template-manifest.bron"
+  : > "$d/template-manifest.kyri"
   printf '%s\n' "$3" > "$d/seed/$2"
   out=$(cd "$d" && sh "$SCAN")
   verdict=$(printf '%s\n' "$out" | head -1)

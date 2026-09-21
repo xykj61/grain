@@ -16,11 +16,11 @@ The suite at `20260703-200712`, superseding every prior cut (the `195112` packet
 
 ## Standing (unchanged)
 
-Mysticeti answered — blocks, in layers, with the owned-versus-shared sorting as the treasure. The Move ladder counseled: fixed verbs are law today, a linear value-object tier waits on measured demand. The compute market read as a choreography of seated modules. The Bron correction stands pinned (proposed-open since the 20260702 sitting, role Kaeden's). Marketplace candidates (Mela, Haat, Mandi; one live collision noted) and practice-ground candidates (Lila, Greenhouse, Nursery, Chalk, Slate, Rehearsal) remain parked. Scribble's shape and the foundations graduation for the silo piece remain open boxes marked (Kaeden).
+Mysticeti answered — blocks, in layers, with the owned-versus-shared sorting as the treasure. The Move ladder counseled: fixed verbs are law today, a linear value-object tier waits on measured demand. The compute market read as a choreography of seated modules. The Kyri correction stands pinned (proposed-open since the 20260702 sitting, role Kaeden's). Marketplace candidates (Mela, Haat, Mandi; one live collision noted) and practice-ground candidates (Lila, Greenhouse, Nursery, Chalk, Slate, Rehearsal) remain parked. Scribble's shape and the foundations graduation for the silo piece remain open boxes marked (Kaeden).
 
 ## Next step
 
-Kaeden's words in any order: the Pottery seat (or another from the table); marketplace and practice-ground picks; Scribble's shape; Bron's role; foundations graduation. Further silo extractions queue behind the name seats. The ungated diet — chrono wire first — still waits on a full-tree zip at `999359e` or the true tip.
+Kaeden's words in any order: the Pottery seat (or another from the table); marketplace and practice-ground picks; Scribble's shape; Kyri's role; foundations graduation. Further silo extractions queue behind the name seats. The ungated diet — chrono wire first — still waits on a full-tree zip at `999359e` or the true tip.
 
 ## README row (for Cursor to prepend, matching standing columns)
 

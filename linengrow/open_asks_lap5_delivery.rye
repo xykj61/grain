@@ -127,7 +127,7 @@ fn load_signed_request(io: std.Io, poster_kp: kumara.KeyPair) !struct {
     stipend_buf: [16]u8,
     stipend_len: u32,
 } {
-    const fixture_path = "tools/fixtures/o/open_asks_request.bron";
+    const fixture_path = "tools/fixtures/o/open_asks_request.kyri";
     const cwd = Dir.cwd();
     var fixture_buf: [oa.max_oa_fact]u8 = undefined;
     const fixture_read = try cwd.readFile(io, fixture_path, &fixture_buf);

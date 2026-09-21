@@ -68,7 +68,7 @@ assert draw_run.out contains "JABS" else "JABS missing"
 assert draw_run.out contains "LULU" else "LULU missing"
 assert draw_run.out contains "STOA" else "STOA missing"
 assert draw_run.out contains "SUNN" else "SUNN missing"
-let pole_hand = run ["sh" "-c" "grep -c 'mark POLE .* status hand-seated' construction/waymark-registry.bron"]
+let pole_hand = run ["sh" "-c" "grep -c 'mark POLE .* status hand-seated' construction/waymark-registry.kyri"]
 assert pole_hand.ok else "POLE hand-seated row scan failed"
 let pole_hand_n = trim pole_hand.out
 assert pole_hand_n == "1" else "POLE must stand hand-seated in the registry (input debrided 20260825)"

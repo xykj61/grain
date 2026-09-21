@@ -15,7 +15,7 @@
 
 This morning we studied the wiki shape — immutable raw sources beneath, a compressing living layer above, a lint that keeps the layer honest — and tonight the tree is ready to implement it in its own voice.
 
-The dated notes in `active-designing/`, the counsel shelf, and the Bron session logs **are** the raw layer: immutable by law and machine-enforced. What is missing is the compression layer. Today alone scattered the proven-seat and enclosure stories across roughly eighteen notes — the exact case where a page pays.
+The dated notes in `active-designing/`, the counsel shelf, and the Kyri session logs **are** the raw layer: immutable by law and machine-enforced. What is missing is the compression layer. Today alone scattered the proven-seat and enclosure stories across roughly eighteen notes — the exact case where a page pays.
 
 ---
 
@@ -197,7 +197,7 @@ Close with gratitude lines per Silo scope.
 
 This design and the **docs-geode** "inner docs crush" charter (`counsel/20260728-031722_the-geode-season-charter.md`, the `docs-geode/` folder) describe one season from two angles -- compressing living pages above an immutable shelf. They are fused here into a single season, and four durable jobs are booked into it. Full context: [`../external-research/20260816-221015_standfast-correction-and-the-decision-wave.md`](../external-research/20260816-221015_standfast-correction-and-the-decision-wave.md).
 
-1. **Bron -> Kyri unification.** Move every living Bron reference to Kyri (voice, notation, compressed receipts, preferred variant under one name). New logs are already `.kyri`; the 2,163 dated `.bron` files stay under the one-clock law and tools read both. The deep rename of dated bytes is a separate circled step.
+1. **Kyri -> Kyri unification.** Move every living Kyri reference to Kyri (voice, notation, compressed receipts, preferred variant under one name). New logs are already `.kyri`; the 2,163 dated `.kyri` files stay under the one-clock law and tools read both. The deep rename of dated bytes is a separate circled step.
 2. **Quin -> Kyri molt.** Fold Quin's variant identity into `context/KYRI.md`, move the inference Q-vane (Lattice, Scribble, Lantern, Ember) to the inference/forge home where a reader will find it, and fossilize `context/QUIN.md` Class H. A molt, awaiting a confirming word.
 3. **REMEMBER and TAME_GUIDANCE breakdown.** Split each huge file into a short always-loaded hub plus linked leaves (REMEMBER: a scannable hub over dated `crux/remember/` history pages; TAME: lean on `context/TAME_CORE.md` as the read layer, the supplement as deep reference).
 4. **Session-log index ASCII sweep.** Normalize the legacy non-ASCII in `session-logs/README.md` as a ratchet round, under the ASCII-first rule, rather than a mid-session blast.

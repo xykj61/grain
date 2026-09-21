@@ -37,7 +37,7 @@ date '+%Y%m%d.%H%M%S'
 
 Optional prose tag: append `UDT` in headers where a timezone label helps (`20260720.232932 UDT`). Filenames stay hyphen form without a timezone suffix.
 
-While UDT governed living stamps, `GLOW_PROFILE.bron` on this host pointed `timezone Etc/UTC` and `timezone_label UDT (UTC)`. After `20260722.125845`, the living pointer is Eastern again -- see the EDT return seating.
+While UDT governed living stamps, `GLOW_PROFILE.kyri` on this host pointed `timezone Etc/UTC` and `timezone_label UDT (UTC)`. After `20260722.125845`, the living pointer is Eastern again -- see the EDT return seating.
 
 ## Related
 

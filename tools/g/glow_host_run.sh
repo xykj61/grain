@@ -5,7 +5,7 @@
 #   ./tools/g/glow_host_run.sh -- sh tools/fixtures/r/rye_build.sh rishi/src/main.rye -femit-bin=rishi/bin/rishi
 #   ./tools/g/glow_host_run.sh -- rishi/bin/rishi run tools/p/parity.rish
 #
-# Reads GLOW_HOST.kyri, or the elder GLOW_HOST.bron (copy from GLOW_HOST.template.kyri and fill in your
+# Reads GLOW_HOST.kyri, or the elder GLOW_HOST.kyri (copy from GLOW_HOST.template.kyri and fill in your
 # own paths), sets RYE_ZIG and RYE_LIB from it, refuses to run if the file's
 # declared os/arch does not match this actual host (`uname -s`/`uname -m`),
 # and only then execs the given command.
@@ -21,8 +21,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-# THE NOTATION MOLTED AND THE FILES ON DISK DID NOT (`20260810`). Bron became Kyri -- the same
-# immutable key-value format under a warmer name -- and this reader takes `.kyri` first, `.bron`
+# THE NOTATION MOLTED AND THE FILES ON DISK DID NOT (`20260810`). Kyri became Kyri -- the same
+# immutable key-value format under a warmer name -- and this reader takes `.kyri` first, `.kyri`
 # after, exactly as the session-log tools read both. A clone carrying the elder spelling keeps
 # working, which is what makes this a molt rather than a break; GLOW_HOST_CONF still wins over both.
 if [ -n "${GLOW_HOST_CONF:-}" ]; then
@@ -30,7 +30,7 @@ if [ -n "${GLOW_HOST_CONF:-}" ]; then
 elif [ -f "$REPO_ROOT/GLOW_HOST.kyri" ]; then
   CONF="$REPO_ROOT/GLOW_HOST.kyri"
 else
-  CONF="$REPO_ROOT/GLOW_HOST.bron"
+  CONF="$REPO_ROOT/GLOW_HOST.kyri"
 fi
 
 if [ "${1:-}" = "--" ]; then
@@ -51,15 +51,15 @@ EOF
   exit 1
 fi
 
-# Bron is plain key-value, one field per line, space-separated, # comments.
-bron_get() {
+# Kyri is plain key-value, one field per line, space-separated, # comments.
+kyri_get() {
   awk -v k="$1" '$1 == k { $1=""; sub(/^ /, ""); print; exit }' "$CONF"
 }
 
-declared_os="$(bron_get os)"
-declared_arch="$(bron_get arch)"
-rye_zig="$(bron_get rye_zig)"
-rye_lib="$(bron_get rye_lib)"
+declared_os="$(kyri_get os)"
+declared_arch="$(kyri_get arch)"
+rye_zig="$(kyri_get rye_zig)"
+rye_lib="$(kyri_get rye_lib)"
 
 actual_os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 case "$actual_os" in

@@ -65,7 +65,7 @@ Hard lines unchanged: no live Sui deploy · no wallet · no gas · no private ke
 | Generator | `gen_twah_fund_prep` | `gen_djin_fund_prep` | **`gen_gren_fund_prep`** |
 | Executive | — | DJINN | **Keaton lean** (Grain Energy PBC President); DJINN → **Murr** |
 
-Dated counsel stamped *Twah* or *Djin* **rename-forwards** to **Gren** for living doors. Session-log bron files and dated Inner/Constellation hours stay historical artifacts. Rumi silo stays gratitude for the **Djin hour**.
+Dated counsel stamped *Twah* or *Djin* **rename-forwards** to **Gren** for living doors. Session-log kyri files and dated Inner/Constellation hours stay historical artifacts. Rumi silo stays gratitude for the **Djin hour**.
 
 ## Sixteen rounds (i0–i15)
 

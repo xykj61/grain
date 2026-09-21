@@ -77,7 +77,7 @@ Today's real, witnessed rish/bash setup surface:
 
 - [`tools/vpn_wireguard_client_setup.rish`](../tools/vpn_wireguard_client_setup.rish) -- host-side, real and witnessed (idempotent key generation, config template, never prints the private key).
 - [`tools/vpn_wireguard_server_setup.sh`](../tools/vpn_wireguard_server_setup.sh) -- VPS-side, syntax-checked, awaiting its first real run.
-- [`tools/glow_host_run.sh`](../tools/glow_host_run.sh) -- reads `GLOW_HOST.bron`, refuses a mismatched toolchain; the pattern any future host<->VPS script should follow.
+- [`tools/glow_host_run.sh`](../tools/glow_host_run.sh) -- reads `GLOW_HOST.kyri`, refuses a mismatched toolchain; the pattern any future host<->VPS script should follow.
 
 **The natural next script, named but not built here** (the same honesty the VPN server half already keeps -- do not pretend a script is witnessed against infrastructure that does not exist yet): a Rish provisioner that, given a VPS reachable over the tunnel, (1) confirms nested virt with the two-line `/proc/cpuinfo` + `/dev/kvm` check, (2) refuses loudly if the provider turned out not to expose it (so you learn before you build, not after), and (3) otherwise fetches the pinned Genode toolchain and runs the proven-seat G0 boot on the remote box. Building it wants a real nested-virt VPS to witness against first -- so it is named as the next rung, not stubbed in ahead of the metal.
 

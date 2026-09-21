@@ -20,7 +20,7 @@
 # citation keeps resolving, now to something true.
 #
 # WHAT IS PROVEN, on metal.
-#   No tracked `.md`, `.bron`, `.kyri`, or `.txt` is empty -- zero bytes or whitespace only,
+#   No tracked `.md`, `.kyri`, or `.txt` is empty -- zero bytes or whitespace only,
 #   because a file holding one newline says exactly as much as a file holding none. 8,486
 #   documents read in one pass.
 #   Twenty-two behaviors on throwaway repositories: the agreeing tree free and reading zero, a
@@ -73,7 +73,7 @@ assert control.out contains "zero_byte_counted=yes" else "empty-document: the re
 assert control.out contains "zero_byte_named=yes" else "empty-document: the refusal must name the file, so the repair is one edit away"
 assert control.out contains "whitespace_refused=yes" else "empty-document: whitespace says exactly as much as nothing"
 assert control.out contains "one_character_free=yes" else "empty-document: one honest sentence is enough; this rung counts presence, never quality"
-assert control.out contains "bron_refused=yes" else "empty-document: a session log is a document"
+assert control.out contains "kyri_refused=yes" else "empty-document: a session log is a document"
 assert control.out contains "kyri_refused=yes" else "empty-document: a Kyri record is a document"
 assert control.out contains "fixture_free=yes" else "empty-document: a control planting an empty file is instrument, never field"
 assert control.out contains "fixture_not_counted=yes" else "empty-document: instrument must not even be counted"
