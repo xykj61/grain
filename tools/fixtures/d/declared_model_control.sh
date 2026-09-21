@@ -29,7 +29,7 @@ build() {
   d=$1; want=$2
   # The pen wears the root's two markers and mirrors the folded letter room (letter fold,
   # seated 20260828), so the copied reading's depth-proof walk resolves the pen root.
-  rm -rf "$d"; mkdir -p "$d/.claude/rules" "$d/.cursor/rules" "$d/tools/fixtures/d" "$d/rishi/bin" \
+  rm -rf "$d"; mkdir -p "$d/.claude/rules" "$d/tools/fixtures/d" "$d/rishi/bin" \
     "$d/recursion-prompts/seed" "$d/docs-geode/tutorials"
   cp "$scan_abs" "$d/tools/fixtures/d/declared_model_scan.sh"
   cp "$read_abs" "$d/tools/fixtures/d/declared_model.sh"
@@ -39,9 +39,7 @@ build() {
   printf 'model %s\neffort max\n' "$want" > "$d/GLOW_PROFILE.template.kyri"
   printf 'The loop runs `"model": "%s"` at max effort.\n' "$want" > "$d/recursion-prompts/seed/autonomous-loop.seed.md"
   printf 'Record `model %s` on new logs; settings configures max.\n' "$want" > "$d/.claude/rules/session-logs.md"
-  printf 'Record `model` on new logs; settings configures max.\n' > "$d/.cursor/rules/session-logs.mdc"
   printf 'settings.json proves the configured default at max.\n' > "$d/.claude/rules/session-log-provenance.md"
-  printf 'settings.json proves the configured default at max.\n' > "$d/.cursor/rules/session-log-provenance.mdc"
   printf 'Where the effort setting lives: settings.json reads max.\n' > "$d/docs-geode/tutorials/running-the-fleet.md"
   ( cd "$d" && git init -q . && git add -A && git -c user.email=pen@pen -c user.name=pen commit -qm pen ) >/dev/null 2>&1
 }
@@ -145,7 +143,7 @@ build "$pen/effort" claude-opus-5
 out=$(runscan "$pen/effort")
 echo "$out" | grep -q 'declared_effort=max' && leg effort_reading_reported yes || leg effort_reading_reported no
 echo "$out" | grep -q 'declaring_effort_over=0' && leg effort_agreement_free yes || leg effort_agreement_free no
-echo "$out" | grep -q 'declaring_effort_documents=6' && leg effort_roster_counted yes || leg effort_roster_counted no
+echo "$out" | grep -q 'declaring_effort_documents=4' && leg effort_roster_counted yes || leg effort_roster_counted no
 
 # 10b -- one effort site naming another value is bitten and counted. This is the exact fault that
 # stood in `.claude/rules/session-logs.md` for eight days with every guard in the tree green.
@@ -183,7 +181,7 @@ printf '{ "model": "claude-opus-5", "effortLevel": "high" }\n' > "$pen/effortmov
 ( cd "$pen/effortmoved" && git add -A && git -c user.email=pen@pen -c user.name=pen commit -qm moved ) >/dev/null 2>&1
 out=$(runscan "$pen/effortmoved")
 echo "$out" | grep -q 'declared_effort=high' && leg effort_driver_is_source yes || leg effort_driver_is_source no
-echo "$out" | grep -q 'declaring_effort_over=6' && leg effort_whole_roster_bitten yes || leg effort_whole_roster_bitten no
+echo "$out" | grep -q 'declaring_effort_over=4' && leg effort_whole_roster_bitten yes || leg effort_whole_roster_bitten no
 
 # 11 -- THE LOCAL OVERRIDE (`20260917.184231`). `.claude/settings.local.json` outranks the tracked
 # file and `.gitignore` denies it, so a clone can RUN a model no tracked byte names. These legs

@@ -110,7 +110,7 @@ done
 # The effort declaring roster: living pages that state what `.claude/settings.json` itself carries.
 # NAMED rather than discovered, exactly as the model roster above is, so a file cannot join the
 # enforced tier by accident and red on work it never agreed to cover.
-DECLARING_EFFORT=".claude/rules/session-logs.md .cursor/rules/session-logs.mdc .claude/rules/session-log-provenance.md .cursor/rules/session-log-provenance.mdc recursion-prompts/seed/autonomous-loop.seed.md docs-geode/tutorials/running-the-fleet.md"
+DECLARING_EFFORT=".claude/rules/session-logs.md .claude/rules/session-log-provenance.md recursion-prompts/seed/autonomous-loop.seed.md docs-geode/tutorials/running-the-fleet.md"
 
 effort_total=0
 effort_over=0
