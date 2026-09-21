@@ -4,8 +4,8 @@
 **Style:** Civic register (name what the policy rewards), Gauge Field body, Bhakta aside, TAME lens (verify before trusting)
 **Voice:** Kyri
 **Status:** Vision -- a policy stated and researched, not yet wired into any tracked code
-**Last updated:** `20260920.190528`
-**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
+**Last updated:** `20260920.202849`
+**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`HARNESS_SETUP.md`](HARNESS_SETUP.md) (the measured region evidence) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)
 
 ---
 
@@ -54,13 +54,22 @@ lands in, not only the company's own mailing address**, per this tree's own TAME
 
 ## Part 3: two candidates researched and verified for explicit region control
 
-**Together AI earns its place by being checkable.** Together Computer, Inc. is US-incorporated,
-headquartered in California. Its standard, default-tier serverless inference runs from US
-datacenters; reaching a datacenter outside the US requires opting into a higher-tier plan and
-naming that need explicitly during setup -- so a customer who never asks for EU or other
-international capacity stays on US soil by default rather than by hope. Its **dedicated
-endpoints** go further: a customer chooses the deployment region outright, under SOC 2 Type II
-and ISO 27001 certification.
+**Together AI earns its place by being checkable, and this round moved it from checkable-by-policy
+to checked-by-measurement.** Together Computer, Inc. is US-incorporated, headquartered in
+California. Its standard, default-tier serverless inference runs from US datacenters; reaching a
+datacenter outside the US requires opting into a higher-tier plan and naming that need explicitly
+during setup -- so a customer who never asks for EU or other international capacity stays on US
+soil by default rather than by hope. Its **dedicated endpoints** go further: a customer chooses
+the deployment region outright, under SOC 2 Type II and ISO 27001 certification.
+
+**The default tier's own claim was measured directly, not only cited.** Together's API response
+carries an `x-request-id` header (repeated inside the JSON body's own `id` field) shaped
+`<uuid>-aws_<region>`. Four live calls this round -- three to `deepseek-ai/DeepSeek-V4-Pro-0813`,
+one to `zai-org/GLM-5.3` -- answered `aws_ue1` once and `aws_ue2` three times, both AWS US regions
+(`us-east-1` Virginia, `us-east-2` Ohio). Full method, and the exact command to re-run this
+check, at [`HARNESS_SETUP.md`](HARNESS_SETUP.md) Part 6. Four samples describe four samples --
+this measures the default tier's stated behavior on real, timestamped calls, and does not carry
+the weight of a formal, audited SLA.
 
 **Hugging Face's Inference Endpoints reads even more explicitly, once checked.** Hugging Face,
 Inc. is Delaware-incorporated, headquartered in Brooklyn, New York. Its dedicated Inference

@@ -22,6 +22,7 @@ Four short documents, each written for a different reader:
 | [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) | someone ready to actually get a key and try a call -- demos Together AI, notes the small differences for other providers | Bhakta opening, Gauge Field steps -- Civic register, TAME lens |
 | [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) | someone who needs every request to stay on US-incorporated, US-located hardware | Civic register, Gauge Field body, Bhakta aside, TAME lens |
 | [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) | someone weighing OpenRouter, Together AI, and Hugging Face against each other | Gauge Field, Civic register, TAME lens |
+| [`HARNESS_SETUP.md`](HARNESS_SETUP.md) | someone ready to run a real coding harness against Together AI | Gauge Field, Civic register, TAME lens |
 | [`TWILIGHT_NOTE.md`](TWILIGHT_NOTE.md) | anyone reading at the end, wanting the room to close gently | Twilight |
 
 Together they answer one question: **what would it take for a model besides Claude to sit at
