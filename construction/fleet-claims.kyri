@@ -60,3 +60,9 @@ stamp 20260921.043226
 epoch 1789979546
 paths tools/fixtures/s/standing_equipment_scope_map.sh
 what Paste the two ready scope-map rows (aurora_file_placement, qa_genre_census) and re-run the rank tool.
+claim provenance-register-sweep
+seat petrichor
+stamp 20260921.092654
+epoch 1789997214
+paths .claude/rules/session-log-provenance.md
+what Sweep session-log-provenance.md's register under the Field target, closing the last page of %819.
