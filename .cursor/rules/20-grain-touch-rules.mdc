@@ -1,0 +1,17 @@
+---
+description: Cursor CLI touch rules for Grain code, prose, and Kyri session records
+globs: "**/*.{rye,rish,brix,kyri,md}"
+alwaysApply: false
+---
+
+# Touch rules
+
+Before writing code, read [`context/TAME_GUIDANCE.md`](../../context/TAME_GUIDANCE.md) and the
+specific living rule named by [`AGENTS.md`](../../AGENTS.md). Before writing a session record,
+read [`.claude/rules/session-logs.md`](../../.claude/rules/session-logs.md) and
+[`.claude/rules/session-log-provenance.md`](../../.claude/rules/session-log-provenance.md).
+
+Docs and implementation stay synchronized: if a touched document cites a path, command, witness,
+or behavior, check that target and update the citation in the same change when it moves. Use plain
+Gauge prose, bounded commands, and a named verification step. Do not silently rewrite historical
+logs or fossils.

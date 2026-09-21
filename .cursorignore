@@ -4,6 +4,10 @@
 
 # --- Every archive shelf (tracked; keep out of the index) ---
 **/archive/
+.cursor-archive/
+
+# --- Agent runtime state (ignored; never project context) ---
+loops/
 
 # --- Regenerated build & host caches (usually gitignored; still on disk) ---
 tools/.cache/

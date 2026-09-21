@@ -1,0 +1,22 @@
+---
+description: Cursor CLI safety for a remote pier; approvals, secrets, and irreversible operations
+alwaysApply: true
+---
+
+# Remote terminal safety
+
+The terminal is a narrow bridge to the pier. Treat every command as running on the remote host,
+even when the input arrives from a Bluetooth keyboard or trackball on the tablet.
+
+- Keep the long-lived agent inside `tmux`; Mosh provides transport roaming, not process survival.
+- Prefer the repository launcher, `./tools/ag/agent-jail.sh cursor-agent ...`, so the project's
+  enclosure and durable auth mapping stay in one place.
+- Inspect a target before changing it. Do not use destructive commands, force Git operations,
+  firewall changes, or `nixos-rebuild` without an explicit human approval at the pier.
+- Do not print, commit, or paste auth files, API keys, cookies, private keys, or the contents of
+  ignored `loops/` state.
+- A model setting in a local CLI cache is not project policy. Record configuration separately from
+  verified runtime identity in session logs, following `.claude/rules/session-log-provenance.md`.
+
+When the network drops, reconnect Mosh and attach to the existing tmux session before deciding
+whether work was lost.

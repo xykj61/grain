@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "editor": {
+    "vimMode": false
+  },
+  "permissions": {
+    "allow": [
+      "Shell(git)",
+      "Shell(find)",
+      "Shell(grep)",
+      "Shell(sed)",
+      "Shell(rishi)",
+      "Shell(rye)",
+      "Shell(mosh)",
+      "Shell(tmux)",
+      "Shell(./tools/ag/agent-jail.sh)"
+    ],
+    "deny": [
+      "Shell(rm)",
+      "Shell(shred)",
+      "Shell(sudo)",
+      "Shell(nixos-rebuild)",
+      "Shell(git:push)",
+      "Shell(git:reset)",
+      "Shell(git:clean)"
+    ]
+  }
+}

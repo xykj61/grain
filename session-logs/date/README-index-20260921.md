@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.150927` | [Cursor CLI frontier revived for the pier](20260921/20260921-150927_cursor-cli-frontier-revived.kyri) | Restored a live CLI-only Cursor door, permission layer, and Termux/Mosh frontier guide. |
 | `20260921.145750` | [Ferontier seats renewed at the NixOS door](20260921/20260921-145750_ferontier-cli-renewal.kyri) | Pinned four terminal agents, packaged `agy`, and opened the ferontier room. |
 | `20260921.144649` | [Luna across the piers](20260921/20260921-144649_luna-across-the-piers.kyri) | Set the personal, tmux, and eight-pier Codex defaults to GPT-5.6 Luna. |
 | `20260921.114713` | [recover the parked amphora sign-verb lap](20260921/20260921-114713_recover-amphora-sign-verb-lap.kyri) | Landed the sign-verb fix; cold pass tree_moved=no, 47 red. |
