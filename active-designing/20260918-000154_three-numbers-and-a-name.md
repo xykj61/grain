@@ -224,6 +224,15 @@ sh tools/fixtures/p/pending_decision_scan.sh
 rishi/bin/rishi run tools/p/pending_decision_witness.rish
 ```
 
+## The falsifier
+
+The four-places reading above is a measurement, and its falsifier is one command: run
+`sh tools/fixtures/p/pending_decision_scan.sh` and read a count different from the 80 and 44 named
+here, which would mean the four places have drifted apart since this page was written. The three
+decisions themselves are proposals awaiting Keaton's word rather than projections, so they carry no
+falsifier of their own -- the one number that could kill the page's claim is the census, and it is
+re-runnable rather than trusted.
+
 ## Where this touches the wider vision
 
 **[Universal and Regenerative](../foundations/20260824-003828_universal-and-regenerative.md)** asks
