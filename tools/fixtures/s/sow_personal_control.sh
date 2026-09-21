@@ -34,6 +34,8 @@
 #   7 free    -- an ordinary page of prose reads NO_PERSONAL
 #   8 bitten  -- the elder guard's own subject, an embedded SSH public key, still reads
 #                PERSONAL_BAD after the widening (the new pattern must not crowd out the old)
+#   9 bitten  -- a Together AI-shaped key (tgp_v1_...) reads PERSONAL_BAD -- added the same
+#                day a real Together key was confirmed live, widening the guard on sight
 #
 # Run from the repository root.
 set -eu
@@ -79,6 +81,7 @@ OR_KEY="sk-or-v1-""$(printf '%040d' 1)"
 ANT_KEY="sk-ant-""api03-fakefakefakefakefakefakefakefakefakefakefakefakefake"
 GH_KEY="ghp_""fakeFakeFakeFakeFakeFakeFakeFakeFake"
 AWS_KEY="AKIA""FAKE0FAKE0FAKE0FAKE"
+TOGETHER_KEY="tgp_v1_""$(printf '%040d' 2)"
 
 # ---- 1: an OpenRouter-shaped key reds -------------------------------------------------
 run_case openrouter "notes/a.md" "export OPENROUTER_API_KEY=\"$OR_KEY\""
@@ -115,6 +118,10 @@ check "7 free: an ordinary page of prose reads NO_PERSONAL" NO_PERSONAL "$verdic
 # ---- 8: the elder guard's own subject still reds after the widening --------------------
 run_case sshkey "a.md" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeFakeFakeFakeFakeFakeFake user@host"
 check "8 bitten: an embedded SSH public key still reads PERSONAL_BAD" PERSONAL_BAD "$verdict"
+
+# ---- 9: a Together AI-shaped key reds ----------------------------------------------------
+run_case together "a.md" "export TOGETHER_API_KEY=\"$TOGETHER_KEY\""
+check "9 bitten: a Together AI-shaped key plant reads PERSONAL_BAD" PERSONAL_BAD "$verdict"
 
 echo "control_cases=$((PASS + FAIL))"
 echo "control_fail=$FAIL"
