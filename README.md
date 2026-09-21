@@ -63,9 +63,12 @@ the notorious, and the legal. Anyone under our Sun.
 
 **A word about who this is for.** We built Grain for people, roughly middle-school age and up, and
 for the AI companions working alongside them -- whichever model you trust, frontier or
-open-weight, so long as it was built with care for the people and the planet behind it. We are all
-still learning how to build a better world together, and each of us already carries a part of
-that work.
+open-weight, so long as it was built with care for the people and the planet behind it. That care
+has two names here. **Fair Trade** means the hands and the land behind a thing are treated as well
+as the thing itself. **Biocyclic vegan ecology** is a gentler standard still: growing food from
+plant matter alone, returning what is taken, and building nothing that has to harm a living
+creature able to feel it. We are all still learning how to build a better world together, and each
+of us already carries a part of that work.
 
 So take a chance on us. Consider how it might feel if Grain helped turn the heavy jewels in your
 backpack into precious fabric -- a choice to accept that love is the biggest risk and worth gambling
