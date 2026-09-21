@@ -292,6 +292,13 @@ one reason: **thinking and building are filed separately, so each has space to b
   teachings. The **readings themselves stay in the maintainer's field**, since a natal chart holds
   a named person's birth date, time, and place, and the friends whose skies seeded the library
   asked for privacy. What ships is the method alone, and the chart stays home.
+- **[`shastra/`](shastra/README.md)**, **[`risala/`](risala/README.md)**, **[`open/`](open/README.md)**,
+  and **[`fleet/`](fleet/README.md)** -- plainly-named study rooms sitting at the tree's root
+  rather than inside `external-research/` or `.claude/rules/`, each answering the same test:
+  would this still be worth reading if the code it describes were deleted? `shastra/` and
+  `risala/` teach Sanskrit and Classical Arabic; `open/` teaches how this tree would study and
+  reach an open-weight model beside Claude; `fleet/` teaches how the working ships that write this
+  very tree are named and set up.
 
 **The rooms kept in the maintainer's field**
 
