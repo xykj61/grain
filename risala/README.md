@@ -78,6 +78,7 @@ risala/
 +-- README.md          this bibliography and its verification note
 +-- lessons/            one file per lesson, numbered, single-stranded
     +-- 01-brahman-paramatman-bhagavan-and-prema-bhakti-in-three-arabics.md
+    +-- 02-the-twelve-zodiac-signs-and-the-skys-craft-in-three-arabics.md
 ```
 
 Single-stranded, same as `shastra/`: one file answers one question, and a lesson earns its own
