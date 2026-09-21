@@ -22,7 +22,7 @@ A name runs to whatever length its meaning wants, and the three tests above are 
 
 ## Accrete-never-break
 
-This keeps every name already loved. Names seated and lived-with stay; dated testimony keeps every word it ever wrote. The tendency governs what is **born from here forward**, and frees whatever is still soft -- which, in this crashed-meteor phase, is still most of it.
+This keeps every name already loved. Names seated and lived-with stay; dated testimony keeps every word it ever wrote. The tendency governs what is **born from here forward**, and frees whatever is still soft -- which, in this crashed-wave phase, is still most of it.
 
 ## Why the tendency exists
 

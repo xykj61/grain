@@ -14,7 +14,7 @@
   <img alt="Prose: Bhakta register" src="https://img.shields.io/badge/prose-Bhakta-d9b45a">
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
-  <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-meteor, honest register" src="https://img.shields.io/badge/status-crashed--meteor-b9954a"></a>
+  <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-wave, honest register" src="https://img.shields.io/badge/status-crashed--wave-b9954a"></a>
 </p>
 
 **Voice:** Kyri -- **Style:** Bhakta, Door setting -- full note at the foot of this page.
