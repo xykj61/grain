@@ -61,7 +61,7 @@ What is Helen Atthowe's ecological agriculture, and, radiantly, how might we sou
 
 If you like what comes back, **[join here](docs-geode/tutorials/the-first-hour.md)** -- an early
 pre-alpha for hobbyists, the bored, the confused, the excited, the hungry, the rich, the admired,
-the notorious, and the legal. Anyone under our Sun.
+the notorious, and the dedicated. Anyone under our Sun.
 
 **A word about who this is for.** We built Grain for people, roughly middle-school age and up, and
 for the AI companions working alongside them -- whichever model you trust, frontier or
