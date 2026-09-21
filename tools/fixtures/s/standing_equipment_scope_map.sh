@@ -76,6 +76,7 @@ build_edge="rye/ rishi/src/ rishi/bin/ tally/copy.rye vendor/zig-toolchain/"
 sed -e "s|\[build\]|$build_edge|g" <<'MAP'
 ales_roster tools/al/ales_roster_witness.rish tools/fixtures/a/ales_roster_bijection_scan.sh tools/al/ tools/*/ales_*_witness.rish
 ales_suite tools/al/ales_suite_witness.rish tools/fixtures/a/ tools/al/ lotus/ tools/*/ales_*_witness.rish [build]
+aurora_file_placement tools/a/aurora_file_placement_witness.rish tools/fixtures/a/aurora_file_placement_scan.sh tools/fixtures/a/aurora_file_placement_control.sh *.rye
 borrowed_number DISCOVERY
 caravan_ladder_roster tools/ca/caravan_ladder_roster_witness.rish tools/fixtures/c/caravan_ladder_roster_scan.sh caravan/ tools/ca/ tools/fixtures/c/caravan_ladder_roster_control.sh
 caravan_suite tools/ca/caravan_suite_witness.rish tools/fixtures/c/ tools/ca/ caravan/ vendor/sel4/ tools/*/caravan_*_witness.rish [build]
@@ -118,6 +119,7 @@ pond_policy_launcher tools/p/pond_policy_launcher_witness.rish tools/fixtures/p/
 pond_enclosure_built tools/p/pond_enclosure_built_witness.rish tools/fixtures/p/ pond/ tools/ag/agent-jail.sh
 pond_enclosure_state tools/p/pond_enclosure_state_witness.rish tools/fixtures/p/pond_enclosure_state_scan.sh tools/ag/agent-jail.sh tools/e/enclosure.conf* tools/fixtures/p/pond_enclosure_state_control.sh
 prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md */README.md
+qa_genre_census tools/q/qa_genre_census_witness.rish tools/fixtures/q/qa_genre_census_scan.sh tools/fixtures/q/qa_genre_census_control.sh *_witness.* *_scan.* *_control.*
 radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh .claude/rules/ foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md tools/fixtures/r/radiant_negation_baseline.txt tools/fixtures/radiant_negation_control/
 scope_trace tools/s/scope_trace_witness.rish tools/fixtures/s/scope_trace.sh tools/fixtures/s/scope_trace_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/p/plant.sh construction/standing-equipment.kyri tools/fixtures/s/standing_equipment_scope_map.sh
 scope_rank tools/s/standing_equipment_scope_rank_witness.rish tools/fixtures/s/standing_equipment_scope_rank.sh tools/fixtures/s/standing_equipment_scope_rank_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/s/standing_equipment_scope_map.sh construction/standing-equipment.kyri

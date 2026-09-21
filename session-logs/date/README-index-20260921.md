@@ -9,6 +9,7 @@
 | `20260921.095436` | [The Bron-to-Kyri breach -- one notation, one name, 2,926 files renamed](20260921/20260921-095436_bron-to-kyri-breach.kyri) | Molted every .bron file and every Bron reference to Kyri. |
 | `20260921.093713` | [The seed published -- AGENTS.md classified, both doors force-updated](20260921/20260921-093713_seed-published.kyri) | Classified AGENTS.md in the manifest, projected and proved the seed, pushed both doors. |
 | `20260921.084807` | [recover two parked laps](20260921/20260921-084807_recover-two-parked-laps.kyri) | Recovered a bounded-capture fix and the day-shelf index, verified green. |
+| `20260921.084219` | [scope-map two rows landed](20260921/20260921-084219_scope-map-two-rows-landed.kyri) | aurora_file_placement and qa_genre_census mapped; rank tool verdict=ok. |
 | `20260921.072735` | [say_compose_bound's Glow share](20260921/20260921-072735_say-compose-bound-glow-share.kyri) | The Glow deferred site composes a bounded capture; witness green. |
 | `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
 | `20260921.072356` | [Size-aware placement paper](20260921/20260921-072356_size-aware-placement-paper.kyri) | Wrote the placement-unit paper, rebuilt stale rye. |
