@@ -33,7 +33,7 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- every room holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness; the count stands on that page rather than in this row, so it moves when the tree does |
 | [`edu/`](edu/README.md) | Tutorials (shipped; `edu/yonder/` holds drafts) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- five checks you can run, with dated example output; the fifth compares an announced plan with its recorded steps |
-| [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
+| [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Kyri |
 | [`blog/`](blog/README.md) | Blog posts | **living** -- [Eighteen times, two agents did the same job](blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md), the room's first piece, landed against the entry criterion the door names |
 | [`lessons/`](lessons/README.md) | Reading walks for someone meeting computing itself | **living** -- [the house from above](lessons/20260910-060225_lesson-1-the-house-from-above.md) through [the painted face](lessons/20260910-060225_lesson-8-the-painted-face.md), written in [Bhakta](../context/BHAKTA_STYLE.md): no assumed background, first principles in order, one honest sentence about why it matters |
 | [`press/`](press/README.md) | Press releases | **living** -- announcements, a magazine piece, a public projection and a paired telling, each indexed with its honest scope; the table on that page is the count |

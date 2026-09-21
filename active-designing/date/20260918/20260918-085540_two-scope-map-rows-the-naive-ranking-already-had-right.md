@@ -51,7 +51,7 @@ named room --
 
 - `aurora_file_placement` reads every tracked `*.rye` file, roughly 1,730 sources.
 - `qa_genre_census` reads every tracked path matching `_(witness|scan|control)\.` outside the
-  `.md`/`.mdc`/`.bron`/`.kyri` families -- every program-named guard file in the tree.
+  `.md`/`.mdc`/`.kyri`/`.kyri` families -- every program-named guard file in the tree.
 
 The map's own header defines DISCOVERY narrowly -- "reads `git ls-files` with **no pathspec**" --
 so each guard sits outside that word by the letter of the rule, since each carries a pathspec

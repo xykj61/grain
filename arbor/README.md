@@ -63,7 +63,7 @@ Lantern supplies the request edge. Each tile stays within `max_prompt_len` from
 option.
 
 Ember supplies the corpus seam. Its catalog already accepts `kind other` and filters by
-`path_suffix`, so [`launch-chatgpt-chapter.corpus.bron`](launch-chatgpt-chapter.corpus.bron) can name
+`path_suffix`, so [`launch-chatgpt-chapter.corpus.kyri`](launch-chatgpt-chapter.corpus.kyri) can name
 the finished `.arbor` value without changing Ember or claiming a new trained kind.
 
 ## What the chapter adaptation keeps

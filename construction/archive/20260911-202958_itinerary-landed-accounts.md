@@ -35,6 +35,6 @@ pair, so `"sub//a.txt"` in `amphora/manifest_entry.rye:293` lost a `return error
 `produced` 10,073 -> 10,080**, `dead_sites` **9** either way. **Pen 23 -> 27, two bitten.** GREEN.
 [Paper](../../active-designing/20260911-151101_the-absence-that-answers-a-name.md) A93.
 **ALSO YOURS:** of the **four Glow dead refusals**, **two are ruled on** --
-`20260720-032713_stoa97-token-mold-spec.bron` writes `TooFewLines` *remains in ParseError set (no
+`20260720-032713_stoa97-token-mold-spec.kyri` writes `TooFewLines` *remains in ParseError set (no
 removal)*, so both stand on a decision that reading them as leftovers would undo.
 `rune_shape.MissingTagged` and `rune_core.NotBarePayload` carry no record.

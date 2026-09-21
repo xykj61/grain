@@ -348,7 +348,7 @@ workload exists, because a workload is what turns most of these from readings in
 **Any performance number for SQLite, PostgreSQL or turbopuffer.** Neither binary is here and no
 benchmark was run.
 
-**A schema language.** *How* an index is declared -- in Brix, in Bron, or in Rye source -- is a
+**A schema language.** *How* an index is declared -- in Brix, in Kyri, or in Rye source -- is a
 real design question and it is the next paper rather than a paragraph in this one.
 
 **Concurrency past one writer.** The single-writer invariant is inherited without argument,

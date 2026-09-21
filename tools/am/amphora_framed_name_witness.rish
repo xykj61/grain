@@ -45,9 +45,9 @@ assert selftest.ok else "framed: the name rule must prove both directions -- rea
 assert selftest.err contains "keep it one record" else "framed: the selftest names the framing rule"
 
 # --- the welcome, asserted as hard as every refusal below ---
-let pour = run ["${home}/bin/amphora" "pour" season "${home}/ok.bron"]
+let pour = run ["${home}/bin/amphora" "pour" season "${home}/ok.kyri"]
 assert pour.ok else "framed: an ordinary season must pour"
-let restore = run ["${home}/bin/amphora" "restore" "${home}/ok.bron"]
+let restore = run ["${home}/bin/amphora" "restore" "${home}/ok.kyri"]
 assert restore.ok else "framed: an ordinary season must restore whole"
 assert restore.err contains "restore same-parent ok" else "framed: the ordinary restore re-pours to its own parent"
 
@@ -67,10 +67,10 @@ assert (trim two_files.out) == "2" else "framed: the crafted season holds exactl
 # --- the pour door: refused by its own name, with nothing written ---
 let mkout = run ["sh" "-c" "mkdir -p ${home}/out"]
 assert mkout.ok else "framed: the crafted pour needs a home of its own, so the honest pour's resins cannot stand in for its own"
-let door = run ["sh" "-c" "${home}/bin/amphora pour ${home}/season ${home}/out/craft.bron; true"]
+let door = run ["sh" "-c" "${home}/bin/amphora pour ${home}/season ${home}/out/craft.kyri; true"]
 say door.err
 assert door.err contains "season name is not one record" else "framed: the pour door must refuse by its own name -- read the reading above"
-let no_vessel = run ["sh" "-c" "test ! -e ${home}/out/craft.bron"]
+let no_vessel = run ["sh" "-c" "test ! -e ${home}/out/craft.kyri"]
 assert no_vessel.ok else "framed: the refusal must arrive BEFORE any vessel is written"
 let no_resins = run ["sh" "-c" "test ! -d ${home}/out/resins"]
 assert no_resins.ok else "framed: the refusal must arrive BEFORE any resin is written"
@@ -98,22 +98,22 @@ let eb3 = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${elder_dir}/vess
 if eb3.ok == false then say eb3.err
 assert eb3.ok else "framed: elder vessel-core build failed -- read the line above"
 
-let elder_pour = run ["sh" "-c" "${elder_dir}/bin/amphora pour ${home}/season ${home}/out/elder.bron; true"]
+let elder_pour = run ["sh" "-c" "${elder_dir}/bin/amphora pour ${home}/season ${home}/out/elder.kyri; true"]
 say elder_pour.err
 assert elder_pour.err contains "pour complete" else "framed: the wall removed, the crafted season must pour clean -- otherwise this witness proves nothing -- read the reading above"
-let listed = run ["sh" "-c" "grep -c '^manifest ' ${home}/out/elder.bron | tr -d ' '"]
+let listed = run ["sh" "-c" "grep -c '^manifest ' ${home}/out/elder.kyri | tr -d ' '"]
 say listed.out
 assert (trim listed.out) == "4" else "framed: the elder head must list more names than the season holds, for two files -- read the reading above"
-let forged_name = run ["sh" "-c" "grep -c '^manifest plain-bytes .* evil.txt$' ${home}/out/elder.bron | tr -d ' '"]
+let forged_name = run ["sh" "-c" "grep -c '^manifest plain-bytes .* evil.txt$' ${home}/out/elder.kyri | tr -d ' '"]
 say forged_name.out
 assert (trim forged_name.out) == "2" else "framed: the elder head must list a name the season never held -- read the reading above"
-let stamped = run ["sh" "-c" "grep -c '^stamp_sig ' ${home}/out/elder.bron | tr -d ' '"]
+let stamped = run ["sh" "-c" "grep -c '^stamp_sig ' ${home}/out/elder.kyri | tr -d ' '"]
 assert (trim stamped.out) == "1" else "framed: the forged listing must ride under a real Kumara stamp, or the harm is overstated"
 
 # --- the wall returned: the repaired binary meets the same season and refuses it again ---
-let returned = run ["sh" "-c" "${home}/bin/amphora pour ${home}/season ${home}/out/again.bron; true"]
+let returned = run ["sh" "-c" "${home}/bin/amphora pour ${home}/season ${home}/out/again.kyri; true"]
 assert returned.err contains "season name is not one record" else "framed: the wall must return"
-let still_none = run ["sh" "-c" "test ! -e ${home}/out/again.bron"]
+let still_none = run ["sh" "-c" "test ! -e ${home}/out/again.kyri"]
 assert still_none.ok else "framed: the returned wall must still write nothing"
 
 say "rule=both-directions door=pour wall_removed=listed_4_names_for_2_files wall_returned=refused_before_write"

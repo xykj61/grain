@@ -2,7 +2,7 @@
 
 **Stamp:** `20260813.135126` · **Status:** Vision -- Living (self-approved design read) · **Voice:** Kyri
 **Register:** Radiant · **Chapter:** D (Kresfa & Mycelium) — the double-seat expansion
-**Kin:** [`the Constel`](20260813-132009_mycelium-constel-named-dev-net-exploration.md) (a named, reproducible dev-net reaches quorum) · [`the Chorus`](20260813-102533_mycelium-chorus-quorum-attestation-exploration.md) (quorum attestation · `chorus_bron` travel) · [`the Muster`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) (a known validator roll) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) (Chapter D) · [`placeholder-ship-names`](../.claude/rules/placeholder-ship-names.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
+**Kin:** [`the Constel`](20260813-132009_mycelium-constel-named-dev-net-exploration.md) (a named, reproducible dev-net reaches quorum) · [`the Chorus`](20260813-102533_mycelium-chorus-quorum-attestation-exploration.md) (quorum attestation · `chorus_kyri` travel) · [`the Muster`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) (a known validator roll) · [`the double-seat expansion`](20260813-020035_double-seat-expansion-six-seasons.md) (Chapter D) · [`placeholder-ship-names`](../.claude/rules/placeholder-ship-names.md) · [`Lindy-first, crux-first`](../.claude/rules/lindy-first-crux.md)
 
 ---
 
@@ -14,7 +14,7 @@ A **Testament** is that carried belief: a portable certificate that says *this n
 
 ## The blind spot, and why it is the next crux
 
-The season already lets a quorum travel: `chorus_bron` renders a Chorus to `format chorus-v1` and re-verifies it at a **stated** threshold, needing no ledger. That is real and it stands. Yet a bare travelling Chorus carries a weakness a named constellation was invented to close: **it cannot tell an enrolled ship from a stranger with a valid signature.** `verify_chorus` proves the voices are distinct, agree, and sign honestly — it does not prove *whose* voices they are. A recipient handed a `chorus-v1` record trusts the threshold the record states and the keys the record names, with nothing to check those keys against.
+The season already lets a quorum travel: `chorus_kyri` renders a Chorus to `format chorus-v1` and re-verifies it at a **stated** threshold, needing no ledger. That is real and it stands. Yet a bare travelling Chorus carries a weakness a named constellation was invented to close: **it cannot tell an enrolled ship from a stranger with a valid signature.** `verify_chorus` proves the voices are distinct, agree, and sign honestly — it does not prove *whose* voices they are. A recipient handed a `chorus-v1` record trusts the threshold the record states and the keys the record names, with nothing to check those keys against.
 
 The Constel binding is exactly what a bare Chorus lacks: membership in a **specific, named roster**, and a threshold **derived** from that roster's size rather than trusted from the record. A Testament fuses the two — it carries the constellation's ship **names**, so a recipient boots the identical roster from the names alone (Constel's whole gift: reproducible from names, no stored keys), seats the Muster, and confirms the sealed quorum are that constellation's own ships meeting *its* Byzantine threshold. The certificate is bound not to a set of anonymous keys but to a constellation a keeper can name and re-boot.
 

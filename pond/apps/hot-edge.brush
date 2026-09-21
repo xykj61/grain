@@ -1,6 +1,6 @@
 ::  name       hot-edge theme
 ::  shape      a style: token sheet that recolors the living edge (WADE1 cascade)
-::  invariant  each style token is `key value` flat Bron; head stays warm/low-blue
+::  invariant  each style token is `key value` flat Kyri; head stays warm/low-blue
 ::  example    a dark sheet whose head accent burns terracotta, not the default ochre
 ::  readers    brush_parse.rye (style sheet) → tokens.rye (infuse) → mantra_browser_heads
 ::  nib        surface-wade1-theme-v0
@@ -10,8 +10,8 @@
 ::  light ink, and a hotter head accent for the living edge of each lane's history.
 ::  The head key is the whole point: a theme recolors the newest revision node on
 ::  its own token, without touching the edge rule or the reading ink. The cascade
-::  is per-key infuse (Bron over Bron), never a CSS rail.
-::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::  is per-key infuse (Kyri over Kyri), never a CSS rail.
+::  Tongue: Glow · Kyri · TAME · Radiant. Never JS · HTML · CSS · JSON.
 ::
 ::  at-nib:     mantra-graph-hot-edge
 ::  present:    Frame

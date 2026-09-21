@@ -48,7 +48,7 @@ write_reg() { # write_reg <pen> <MARK:status>...
       m=${row%%:*}; s=${row##*:}
       echo "mark $m | input in-$m | index 1 | status $s | note planted"
     done
-  } > "$p/construction/waymark-registry.bron"
+  } > "$p/construction/waymark-registry.kyri"
 }
 
 run_in() { ( cd "$1" && sh "$scan" 2>&1 ); }

@@ -14,5 +14,5 @@ obs A general lesson worth carrying: a doc destined for the seed must only hard-
 loom witness=sow_witness result=GREEN seed_changelog_links=2 both_resolve=true
 file CHANGELOG.md new — points to git log + the private session-log record; seed-safe links
 file .gitignore allowlist CHANGELOG.md
-file template-manifest.bron allow + scrub CHANGELOG.md
+file template-manifest.kyri allow + scrub CHANGELOG.md
 recommend keep-going AHOY2 core complete; remaining is the honest-badges review (a confirm), then AHOY1's low-Lindy gratitude tail or WADE1's .brush surface bridge. AHOY3 (final seed force-push) stays Keaton's hand

@@ -1,6 +1,6 @@
 # STOA288 -- After HAWM Rest - Resume Check-In
 
-*An Acme Corporation employee reading this gets the fork after Keaton said continue: the HAWM deepen chain stays GREEN and folded (AVD down, harvest Bron kept), the Pixel is still on USB, and the next door is a sized resume -- not fleets, not gold, and not a silent reopen of held seasons.*
+*An Acme Corporation employee reading this gets the fork after Keaton said continue: the HAWM deepen chain stays GREEN and folded (AVD down, harvest Kyri kept), the Pixel is still on USB, and the next door is a sized resume -- not fleets, not gold, and not a silent reopen of held seasons.*
 
 **Language:** EN  
 **Version:** `20260722.154654` (EDT - Framework host)  

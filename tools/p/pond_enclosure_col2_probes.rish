@@ -8,7 +8,7 @@
 
 let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/col2-probes-meta.txt"
-let exit_bron = "bron-resins/pond-supersede-exit.bron"
+let exit_kyri = "kyri-resins/pond-supersede-exit.kyri"
 let scorecard_pin = "active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md"
 let exit_card = "active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md"
 
@@ -17,9 +17,9 @@ let have_sc = run ["test" "-f" scorecard_pin]
 assert have_sc.ok else "missing ${scorecard_pin}"
 let have_ex = run ["test" "-f" exit_card]
 assert have_ex.ok else "missing ${exit_card}"
-let bron_gone = run ["sh" "-c" "test ! -e ${exit_bron} && test ! -e ${exit_bron}.asc"]
-assert bron_gone.ok else "exit bron or .asc present — col2 probes are refuse-until-candidate only while season sleeps"
-let seal = run ["bash" "tools/p/pond_exit_bron_master_seal.sh" "--season-closed"]
+let kyri_gone = run ["sh" "-c" "test ! -e ${exit_kyri} && test ! -e ${exit_kyri}.asc"]
+assert kyri_gone.ok else "exit kyri or .asc present — col2 probes are refuse-until-candidate only while season sleeps"
+let seal = run ["bash" "tools/p/pond_exit_kyri_master_seal.sh" "--season-closed"]
 assert seal.ok else "master-seal --season-closed failed"
 
 say "pond col2 probes: re-measure three-door bus against pond-required…"
@@ -44,7 +44,7 @@ say "pond col2 probes: bar parity translation — hold (incumbent-anchored cells
 say "pond col2 probes: daily-driver · customs · N soak — hold until named build word + frozen candidate"
 
 let pond_bin = run ["test" "-x" "pond/bin/enclosure"]
-if pond_bin.ok then say "pond col2 probes: NOTICE pond/bin/enclosure present — still refuse supersede claim without exit bron"
+if pond_bin.ok then say "pond col2 probes: NOTICE pond/bin/enclosure present — still refuse supersede claim without exit kyri"
 if pond_bin.ok == false then say "pond col2 probes: no Pond enclosure binary — refuse-until-candidate stands"
 
 say "pond col2 probes: writing ${meta}…"
@@ -66,7 +66,7 @@ let w6 = run ["sh" "-c" "echo gpu_customs hold >> ${meta}"]
 assert w6.ok
 let w7 = run ["sh" "-c" "echo claim none >> ${meta}"]
 assert w7.ok
-let w8 = run ["sh" "-c" "echo exit_bron absent >> ${meta}"]
+let w8 = run ["sh" "-c" "echo exit_kyri absent >> ${meta}"]
 assert w8.ok
 let w9 = run ["sh" "-c" "echo season closed >> ${meta}"]
 assert w9.ok

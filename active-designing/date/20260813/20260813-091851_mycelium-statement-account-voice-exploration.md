@@ -30,13 +30,13 @@ Because the resolved ledger is itself arrival-independent (the Pledge and Lapse 
 ## The four rungs (crux-first, mirroring the seated arc shape)
 
 - **r1 — the crux.** `mycelium/statement.rye`: the Statement projection, its reconciliation and conservation proven over a resolved ledger built the proven way (Cord blocks → `lapse.resolve`), across open · posted · voided · lapsed scenes; an unknown account reads a true zero statement; arrival-independence inherited (two permutations, one statement); a bounded human render a keeper reads.
-- **r2 — travels.** `mycelium/statement_bron.rye`: render a Statement to a `format statement-v1` record and parse it back byte-for-byte, so a statement crosses a wire and still reconciles; malformed header · bad hex · unknown field refuse.
+- **r2 — travels.** `mycelium/statement_kyri.rye`: render a Statement to a `format statement-v1` record and parse it back byte-for-byte, so a statement crosses a wire and still reconciles; malformed header · bad hex · unknown field refuse.
 - **r3 — across a Knot.** `mycelium/statement_knot.rye`: a statement read over a ledger resolved across an epoch cut (the `Knot` seam), proving the account's position is continuous across the join — the honest seam the Statement meets is that reserved/received accumulate across the base.
 - **r4 — true to the bytes.** `mycelium/statement_true.rye`: read a real on-disk Cord record (reusing the Lapse's own fixture) and cross-check the app's statement triple for a chosen account against an independent `awk` reading of the same bytes — two tools, one answer.
 
 ## Discipline this journey keeps
 
-- **Additive.** Composes `cord` · `fold` · `lapse` (and `cord_bron` · `cord_knot` at the later rungs) public API only, editing none; each stays its own GREEN binary.
+- **Additive.** Composes `cord` · `fold` · `lapse` (and `cord_kyri` · `cord_knot` at the later rungs) public API only, editing none; each stays its own GREEN binary.
 - **Bounded.** Every list names its ceiling — the pledge lines are bounded by `lapse_max_pledges`, the accounts by `lapse_max_accounts`; no unbounded walk.
 - **Custody-first.** Demo keeper seeds only — no real key, no funds, no network, no custody. A *served* statement (a holder fetching their statement over Comlink) reaches the Comlink-served gate, the maintainer's hand.
 - **TAME.** Opening triad, ≥2 contract asserts per function each with a positive `// invariant:`, explicit widths, named errors, `copy_disjoint` over bare memcpy.

@@ -4,7 +4,7 @@
 # WHY THIS FILE EXISTS. The model id was written down four ways and two of them disagreed. On
 # 20260824 `.claude/settings.json` and `GLOW_PROFILE.template.kyri` read `claude-opus-5` while
 # `recursion-prompts/seed/autonomous-loop.seed.md` read `claude-opus-4-6`, and the personal
-# `GLOW_PROFILE.bron` carried `claude-opus-4-6` in its field beneath a comment of its own saying
+# `GLOW_PROFILE.kyri` carried `claude-opus-4-6` in its field beneath a comment of its own saying
 # `Model is Opus 5`. A file disagreeing with itself is the clearest form the fault takes.
 #
 # This is REDS %187, %190, %192, and %199 a fifth time -- a constant spelled in several places is a

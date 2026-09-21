@@ -20,7 +20,7 @@ The functional spec lives at [`context/specs/20260701-221512_cellar-functional-s
 
 | Piece | Path |
 |-------|------|
-| Manifest shape | [`ring1_manifest_shape.bron`](ring1_manifest_shape.bron) |
+| Manifest shape | [`ring1_manifest_shape.kyri`](ring1_manifest_shape.kyri) |
 | Fixture tree | [`../tools/fixtures/cellar_ring1_tree/`](../tools/fixtures/cellar_ring1_tree/) |
 | Export / verify / restore | [`../tools/fixtures/c/cellar_ring1_export.sh`](../tools/fixtures/c/cellar_ring1_export.sh) - verify - restore |
 | Witness | [`../tools/ce/cellar_first_ring.rish`](../tools/ce/cellar_first_ring.rish) |

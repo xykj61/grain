@@ -1,7 +1,7 @@
 #!/bin/sh
 # sow_allow_reach_scan.sh -- an allowed room that ships nothing is counted, not trusted.
 #
-# WHY THIS EXISTS (REDS %485). `template-manifest.bron` is an allowlist: the seed ships only what an
+# WHY THIS EXISTS (REDS %485). `template-manifest.kyri` is an allowlist: the seed ships only what an
 # `allow` line names. On `20260906` a second filter inside `tools/fixtures/s/sow_project.sh` --
 # `grep -vxE 'gratitude|vendor'`, a hard exclusion by NAME, running after the allowlist -- silently
 # discarded an allowed room. The manifest read allow, the projection ran, and `sow_witness` answered
@@ -35,7 +35,7 @@ set -eu
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
 cd "$root"
 
-MANIFEST=${SOW_MANIFEST:-template-manifest.bron}
+MANIFEST=${SOW_MANIFEST:-template-manifest.kyri}
 SEED=${SOW_SEED:-seed}
 
 [ -f "$MANIFEST" ] || { echo "refused: no manifest at $MANIFEST"; exit 2; }

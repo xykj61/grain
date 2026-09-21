@@ -13,7 +13,7 @@
 1. **B** — 64 Surface · not 128 innermost · not OS-bundled  
 2. Prep spine → early rounds **p1–p3** (thin gen home · Glow hygiene · vegan-dogfood)  
 3. **`src/sec` OPEN** · **`src/web` REFUSED**  
-4. `.brush` under `brushstroke/` · Glow/Bron/TAME/Radiant  
+4. `.brush` under `brushstroke/` · Glow/Kyri/TAME/Radiant  
 5. Ubuntu Wayland first seam  
 6–8. River/Zig study · connector · Pond frame · DAG paper as **p4–p8**  
 9. O3 declaration-gated  

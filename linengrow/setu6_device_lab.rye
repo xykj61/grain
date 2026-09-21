@@ -14,10 +14,10 @@ const tally_copy = @import("tally_copy.rye");
 
 pub const waymark: []const u8 = setu0.waymark;
 pub const lab_format: []const u8 = "setu-lab-v1";
-pub const lab_bron_path = "tools/.cache/setu0/lab.bron";
+pub const lab_kyri_path = "tools/.cache/setu0/lab.kyri";
 pub const status_line_max: u32 = 96;
 pub const iface_name_max: u32 = 16;
-pub const max_lab_bron_len: u32 = 256;
+pub const max_lab_kyri_len: u32 = 256;
 
 pub const LabMode = enum {
     stand_in,
@@ -75,7 +75,7 @@ pub fn format_lab_line(s: LabStatus, out: *[status_line_max]u8) ?[]const u8 {
     return line;
 }
 
-pub fn format_lab_bron(s: LabStatus, out: *[max_lab_bron_len]u8) ?u32 {
+pub fn format_lab_kyri(s: LabStatus, out: *[max_lab_kyri_len]u8) ?u32 {
     const text = std.fmt.bufPrint(
         out,
         \\format {s}
@@ -97,7 +97,7 @@ pub fn format_lab_bron(s: LabStatus, out: *[max_lab_bron_len]u8) ?u32 {
     ) catch return null;
     // invariant: the line was formatted into a fixed row buffer, so a longer one would be drawn
     // past the row it belongs to
-    assert(text.len <= max_lab_bron_len);
+    assert(text.len <= max_lab_kyri_len);
     return @intCast(text.len);
 }
 

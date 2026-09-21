@@ -46,7 +46,7 @@ is the pinned word list `tools/w/waymark_derive.rish` draws from, and
 `tools/w/waymark_derive_witness.rish` proves the draw. **Editing it re-draws seated waymarks.** It
 is not in scope and must be named out loud so nobody's sweep finds it.
 
-**3. The public seed already scrubs both editor rooms.** `template-manifest.bron` reads
+**3. The public seed already scrubs both editor rooms.** `template-manifest.kyri` reads
 `scrub .cursor  # Cursor twins of the same rules` beside `scrub .claude`. So retiring `.cursor/`
 changes **nothing public** -- this is entirely a private-field tidy, which lowers its risk and also
 lowers its urgency.
@@ -81,7 +81,7 @@ vendor or outlives it.**
 66 living files, concentrated in three places:
 
 - **`arbor/`** -- 7 of its 9 files are ChatGPT chapter corpora
-  (`launch-chatgpt-chapter{,-dark-euphoria-light-terra}.{arbor,brix,corpus.bron}`) plus
+  (`launch-chatgpt-chapter{,-dark-euphoria-light-terra}.{arbor,brix,corpus.kyri}`) plus
   `launch-mystery-chapter.arbor`. `README.md` and `author.sh` are the room itself.
 - **The MIND supervisor family** -- `tools/l/chatgpt-mind.sh` (byte-pinned, its SHA-256 the
   adaptation receipt), `tools/l/chatgpt-mind.rish`, `tools/l/chatgpt-mind-rishi-adaptation.md`,
@@ -113,7 +113,7 @@ seats and those legs must go with them in the same commit, or the guard reds on 
 | `SOURCE.md` | 1 | **58 mentions**; Part One's stated end is *a working, jailed Cursor* |
 | `CLAUDE.md`, `CONTRIBUTING.md`, `ORGANIZING.md`, `bibliography.md`, `context/specs/enclosure-editors.md` | 5 | the Dual editors posture |
 | `tools/l/launch-cursor-agent.rish`, `tools/fixtures/r/rs3_launch_macos_cursor.rish` | 2 | launchers |
-| `.cursorignore`, `template-manifest.bron` | 2 | the dotfile and its verdict |
+| `.cursorignore`, `template-manifest.kyri` | 2 | the dotfile and its verdict |
 
 **The crux is `SOURCE.md`.** Part One is written as *a first day that ends with Cursor open inside
 the enclosure*. Retiring Cursor rewrites the onboarding guide's spine, not a paragraph -- and that

@@ -56,7 +56,7 @@ The Realidream lane and Linengrow SLC ladder are **one road seen two ways**. A *
 
 When wanted, the bench can land **non-chain scaffolding** for the SLC-L3 witness:
 
-- `.bron` fixture handling
+- `.kyri` fixture handling
 - SLC-L1 fold reuse
 - Receipt assembly and verify path
 

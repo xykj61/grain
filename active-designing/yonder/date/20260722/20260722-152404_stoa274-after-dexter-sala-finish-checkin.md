@@ -43,7 +43,7 @@ Pixel install still proves both roots. Shape-only living (STOA257) and N-field i
 Thin inventary brief naming:
 
 1. Which host logs exist today (AVD `logcat`, emulator stdout, Rish printouts).  
-2. One agent-readable harvest shape (Bron or fixed text) for "boot -> attach -> one GREEN witness".  
+2. One agent-readable harvest shape (Kyri or fixed text) for "boot -> attach -> one GREEN witness".  
 3. First witness target: harvest after `hawm0_boot` + `hawm1_sala` (or pack/install) without claiming multi-AVD fleets.
 
 **Not in inventary:** GrapheneOS system image under emulator (HAWM2) - multi-identity fleet orchestration - in-jail KVM ownership.

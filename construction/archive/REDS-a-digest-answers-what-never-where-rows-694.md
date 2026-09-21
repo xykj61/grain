@@ -27,10 +27,10 @@ stamp seed are witness constants, so forging costs two commands. Then `amphora r
 
 ```
 amphora: carry walls verified rite=stamp-then-seal listing=agrees
-amphora: restore walls verified out=/tmp/.../v2.bron.season
+amphora: restore walls verified out=/tmp/.../v2.kyri.season
 amphora: restore catalog files=2 plain_bytes=187
 amphora: restore files proven count=2
-amphora: cargo unproven -- '/tmp/.../v2.bron.season'   (the em dash is the program's own; spelled ASCII here)
+amphora: cargo unproven -- '/tmp/.../v2.kyri.season'   (the em dash is the program's own; spelled ASCII here)
 exit=2
 ```
 

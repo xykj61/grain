@@ -73,7 +73,7 @@ already GREEN spine (present today, no work):
 Two honest couplings a reader should hold:
 
 - **The shared reader is the one soft coupling.** Vault, Starseeding, and Loom each name
-  a "scribe-style reader" to re-read their emitted Bron by its `format` line — but every
+  a "scribe-style reader" to re-read their emitted Kyri by its `format` line — but every
   one needs only the reader's *existing* `parse` and format-dispatch, **not** the new
   `is_inventory` / `archetype_of` / `validates_*` predicates the Bat-Fleet lap adds. So the
   reader-extension and the composing modules do not block each other; they touch the same
@@ -106,7 +106,7 @@ token); a ghost point refuses with `NotOwner`; a duplicate `(point, realm)` refu
 `AlreadyPassported`. No chain, no key — only a 32-byte attestation digest produced off-tree.
 
 **Why first:** lowest risk in the set. `passport` greps clean in code (zero hits in
-`.rye`/`.rish`/`.brix`/`.bron`, one `.md` hit in the vision baton), the shape is a known tilak,
+`.rye`/`.rish`/`.brix`/`.kyri`, one `.md` hit in the vision baton), the shape is a known tilak,
 and it lands the exact `settlement/names.rye` witness pattern the plan reuses twice more.
 
 ### 2 · Starseeding — the boot that raises a star
@@ -117,7 +117,7 @@ and it lands the exact `settlement/names.rye` witness pattern the plan reuses tw
 
 First lap: `open` a galaxy, grant its keeper a `sow` cap signed for a star number whose
 `topology.decode(n).tier == .star`, `mint` the star, assert `tier == .star` and
-`settlement.verify == true`, emit a `starseed-descriptor-v1` Bron binding point · sponsor ·
+`settlement.verify == true`, emit a `starseed-descriptor-v1` Kyri binding point · sponsor ·
 constellation digest · SHA3-256 image digest, round-trip it byte-for-byte, and refuse three
 ways — `WrongTier` (a pure planet), `WrongSponsor`, and a tampered descriptor.
 
@@ -158,13 +158,13 @@ First lap: `vault/shard.rye` splits a fake `0x11…` seed into `n=5` shares at `
 `shard` tilak carrying a location-class), recombines three distinct `t`-subsets and asserts each
 reproduces the seed byte-for-byte, refuses `t-1` shares, refuses a tampered share (flip a byte, the
 signature fails), survives a lost location (drop one class, `t` shares remain), and round-trips the
-shards through `format vault-shard-v1` Bron.
+shards through `format vault-shard-v1` Kyri.
 
 **Why fourth:** highest stakes, so it lands after the witnessed-lap rhythm is well-grooved and after
 the reader it re-reads through is stable. The mitigation is structural and must be in place *before*
 the first file: seat the six marks in the Lexicon (comlink-tendency), and **never write the word
 master** — the module names the root of a keeping the **main key**, enforced by grep in every mark,
-Bron fact, and witness line. Only fake seeds in-tree; the style check turns away any file hard-coding
+Kyri fact, and witness line. Only fake seeds in-tree; the style check turns away any file hard-coding
 32 bytes of anything but the blessed fake pattern. The `brainkey` · `glacier` · `relic` · `recover`
 marks follow as their own later laps, each accreting beside the one before.
 
@@ -218,7 +218,7 @@ scribe/reader.rye (GREEN today)
         │
         ├─► [3] Bat Fleet + Dashboard  — EXTENDS reader (is_inventory · archetype_of · validates_*)
         │
-        └─► [4] Vault                  — re-reads vault-shard-v1 Bron through the reader
+        └─► [4] Vault                  — re-reads vault-shard-v1 Kyri through the reader
 ```
 
 Yet the *true* pacing constraint is not a code dependency at all — it is **risk sequencing and

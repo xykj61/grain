@@ -42,7 +42,7 @@
 
 | Path | Why hold |
 | --- | --- |
-| `tools/fixtures/mala_m1_mint.bron` | step 4 · also hard-wired in `linengrow/mala.rye` + `pond/apps/drawn_terminal.rye` |
+| `tools/fixtures/mala_m1_mint.kyri` | step 4 · also hard-wired in `linengrow/mala.rye` + `pond/apps/drawn_terminal.rye` |
 | `tools/comlink_mala_wire_lab.rish` · `comlink/run_mala_wire_lab.sh` | step 3 |
 | `comlink/guest_mala_*` | module wave (u15 list) |
 | `linengrow/mala*.rye` · `mala:*` memos · `bin/mala` | module wave stop line |

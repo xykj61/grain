@@ -6,7 +6,7 @@
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
 **Last updated:** `20260918.093311` (seven module-ring links now name `README.md` directly rather than the bare directory, so the doorway guard's inbound count actually reaches them; every link and every claim kept) - **Prior:** `20260916.190457`, the five routing sections moved from prose paragraphs into tables
 
-*The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at `template-manifest.bron`. **A room named here in plain backticks rather than as a link is a field room the public seed leaves behind** -- so this page reads whole in both repositories, and points at no door that is not there.*
+*The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at `template-manifest.kyri`. **A room named here in plain backticks rather than as a link is a field room the public seed leaves behind** -- so this page reads whole in both repositories, and points at no door that is not there.*
 
 ---
 
@@ -22,15 +22,15 @@ Welcome, traveler. Something over a hundred doors face you at this root -- `ls -
 
 | Room | What lives there | The doors |
 |------|------------------|-----------|
-| **1 - The Front Door** | What orients a newcomer before they dive | `README` - `MAP` - `SOURCE` - `CLAUDE` - `CONTRIBUTING` - `ORGANIZING` - licenses - `.template` files - `llms.txt` - `template-manifest.bron` |
+| **1 - The Front Door** | What orients a newcomer before they dive | `README` - `MAP` - `SOURCE` - `CLAUDE` - `CONTRIBUTING` - `ORGANIZING` - licenses - `.template` files - `llms.txt` - `template-manifest.kyri` |
 | **2 - The Law** | The disciplines we keep on purpose | `context/` - `.claude/rules/` |
 | **3 - The Why** | The reasons beneath the work | `foundations/` - `saga/` |
 | **4 - The Language & the Machines** | Glow and the module ring | `glow/` (with `glow/nock/`) - `src/` - the ring |
 | **5 - The Teaching** | Pages that teach only what runs | `docs/` - `docs-geode/` - `manual/` - `docs-geode/edu/yonder/` - `nixos-guide/` |
-| **6 - The Workrooms** | Where the work is shaped and recorded | `active-designing/` - `active-reviving/` - `waymarks/` - `expanding-prompts/` - `construction/` - `counsel/` - `session-logs/` - `bron-resins/` - `tools/` |
+| **6 - The Workrooms** | Where the work is shaped and recorded | `active-designing/` - `active-reviving/` - `waymarks/` - `expanding-prompts/` - `construction/` - `counsel/` - `session-logs/` - `kyri-resins/` - `tools/` |
 | **7 - The Reading Room** | The world, studied whole with thanks | `external-research/` - `gratitude/` - `vendor/` |
 
-Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by `template-manifest.bron`: `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.bron`).
+Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by `template-manifest.kyri`: `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.kyri`).
 
 Beside the seven also stand **the siloed study rooms** -- plainly-named, self-contained, and outside the seven-room split because each would still be worth reading if the code around it vanished: [`shastra/`](shastra/README.md) - [`risala/`](risala/README.md) - [`classical-vedic-astrology/`](classical-vedic-astrology/README.md) - [`cubist-bhakti-astrology/`](cubist-bhakti-astrology/) - [`open/`](open/README.md) - [`fleet/`](fleet/README.md).
 
@@ -123,7 +123,7 @@ When a page here says GREEN, a machine said it first.
 | `expanding-prompts/` | The runnable plans |
 | [`construction/`](construction/README.md) | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
 | `counsel/` | The advice ledger |
-| [`session-logs/`](session-logs/README.md) - `bron-resins/` | The diary and its compressions |
+| [`session-logs/`](session-logs/README.md) - `kyri-resins/` | The diary and its compressions |
 | [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
 ### 7 - The Reading Room
@@ -132,7 +132,7 @@ When a page here says GREEN, a machine said it first.
 
 ## The Two Grains
 
-This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in `template-manifest.bron`, and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. The plan behind the two-grains split stands in the field at `external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`.
+This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in `template-manifest.kyri`, and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. The plan behind the two-grains split stands in the field at `external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`.
 
 ## Licenses (hold)
 

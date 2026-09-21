@@ -17,7 +17,7 @@ through `tools/fixtures/r/reds_fold_reanchor.sh`.
 Elder [shelved](20260910-022927_itinerary-landed-accounts.md) whole.
 **AETHER HEARS** what a page keeps repeating, so I read my own lane's law for the line it says
 twice. `foundations/20260703-202312_the-marked-value.md` names a manifest line's **three** fields --
-*type-mark, digest, name* -- and the vow *the digest is checked twice*. `bron-resins/manifest.bron`
+*type-mark, digest, name* -- and the vow *the digest is checked twice*. `kyri-resins/manifest.kyri`
 carried two. Its own first line still read *plain paths today*, eighty-nine days on.
 **MEASURED BEFORE BUILDING:** every resin has **exactly one commit** in the tree's whole history and
 its blob there is byte-identical to its blob at HEAD, checked one file at a time -- so these are the

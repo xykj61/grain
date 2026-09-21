@@ -73,7 +73,7 @@ The attestation digest is the seam between two worlds. Off-tree, a real ownershi
 
 **passport** is clear, warm, and safe. A newcomer knows what a passport is the instant they hear it: a document that carries your identity across a border you did not dissolve. That is precisely the act — a Kumara point carrying its name across the border into the incumbent namespaces.
 
-Grep confirms it is free to seat: **zero** hits in `.rye` / `.rish` / `.brix` / `.bron`, and a single `.md` hit — the vision baton itself, where Keaton's own word introduces it. It collides with nothing seated, borrows no sacred term, and can never parse as an `@p` address. It is the maintainer's own chosen word, and the comlink-tendency asks for exactly this: the plainest true word, at whatever length it wants to be.
+Grep confirms it is free to seat: **zero** hits in `.rye` / `.rish` / `.brix` / `.kyri`, and a single `.md` hit — the vision baton itself, where Keaton's own word introduces it. It collides with nothing seated, borrows no sacred term, and can never parse as an `@p` address. It is the maintainer's own chosen word, and the comlink-tendency asks for exactly this: the plainest true word, at whatever length it wants to be.
 
 The subordinate words follow the same test:
 

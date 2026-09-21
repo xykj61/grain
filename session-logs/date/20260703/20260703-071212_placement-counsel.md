@@ -20,7 +20,7 @@ eventual home early and one avoided file-move, at the cost of a one-consumer mod
 rule made law yesterday; Weave's parked-aspect precedent shows the graduation path lands clean.
 
 **Ratifications — recommend one breath, now, before the SLC-2b build starts.** Archive verdict
-first (ring 1 already wrote `.bron` shapes to disk; the word turns practice into law before
+first (ring 1 already wrote `.kyri` shapes to disk; the word turns practice into law before
 more accumulate), versioning rule second (frees the witnessed chrono sweep to wire in the next
 arithmetic), standing audit rule third (governs RW-1, next on the ladder), Maitreya owns time
 fourth, demand map fifth (also unlocks the survey's proxy-column question).

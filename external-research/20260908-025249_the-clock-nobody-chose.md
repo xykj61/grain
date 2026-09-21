@@ -17,7 +17,7 @@ wake -- is worth writing, and named three ways it could be wrong. The first:
 > only mains-powered targets, this paper is enthusiasm.*
 
 **It fails.** Of the 33 living and hand-seated waymark ladders in
-[`../construction/waymark-registry.bron`](../construction/waymark-registry.bron) at this stamp,
+[`../construction/waymark-registry.kyri`](../construction/waymark-registry.kyri) at this stamp,
 **13 name a hardware deployment target, and 7 of those are battery-primary** by my reading of the
 ladders' own seated descriptions. The roadmap holds battery targets, so the first falsifier fails on its own terms.
 
@@ -46,7 +46,7 @@ such:
 | **ALES** | "Lotus creative suite ... XLR - USB-C - guitar" | mixed |
 | **JARL** | "Kumara - d12/d60 topology - Comlink - settlement" | mixed |
 | **WADE** | "Vultr SEA IaC ... Swift macOS Dock shell" | mains-leaning |
-| **BUHR** | "Realidream - Quin voices - MCP-in-Bron" | mains-leaning |
+| **BUHR** | "Realidream - Quin voices - MCP-in-Kyri" | mains-leaning |
 | **FORA** | "sandbox/testnet/localhost Comlink p2p constellations ... run from inside the jailed pier" | mains |
 
 **DREY is the sharpest single entry**, and it needs no classification from me: a capture "held only

@@ -66,7 +66,7 @@ cargo=$(sed -n 's/.* cargo=\([0-9][0-9]*\).*/\1/p' "$pen/pour.out" | tail -n 1)
 i=1
 while [ "$i" -le "$askers" ]; do
   mkdir -p "$pen/far_$i/resins"
-  cp "$pen/near/vessel.bron" "$pen/near/manifest.bron" "$pen/far_$i/"
+  cp "$pen/near/vessel.kyri" "$pen/near/manifest.kyri" "$pen/far_$i/"
   i=$((i + 1))
 done
 

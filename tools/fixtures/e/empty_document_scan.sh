@@ -14,7 +14,7 @@
 # actually lives, which is accretion rather than a rewrite, since there was nothing to preserve.
 #
 # WHAT IS GATED, hard. No tracked document is empty. A document is a tracked regular file whose
-# extension carries prose or a record -- `.md`, `.bron`, `.kyri`, `.txt` -- and empty means zero
+# extension carries prose or a record -- `.md`, `.kyri`, `.txt` -- and empty means zero
 # bytes or nothing but whitespace, because a file holding one newline says exactly as much as a
 # file holding none.
 #
@@ -85,7 +85,7 @@ awk -F'\t' '
     mode = meta[1]; sha = meta[2]
     if (mode != "100644" && mode != "100755") next
     path = $2
-    if (path !~ /\.(md|bron|kyri|txt)$/) next
+    if (path !~ /\.(md|kyri|kyri|txt)$/) next
     if (path ~ /^tools\/fixtures\//) next          # instrument, never field
     if (path ~ /^context\/fixtures\//) next        # instrument, never field
     if (path ~ /(^|\/)\.gitkeep$/) next            # a placeholder meant to be empty

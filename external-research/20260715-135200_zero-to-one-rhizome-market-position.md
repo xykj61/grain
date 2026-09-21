@@ -63,7 +63,7 @@ Concretely, the day's own Neth work is a small instance of exactly this move: no
 
 - `20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md` -- the built-system study whose closed ladder this doc uses as its concrete evidence.
 - `context/specs/20260713-214400_urbit-parallel-naming-mapping-proposal.md` -- the naming discipline this market framing sits beside.
-- `session-logs/20260715-135200_zero-to-one-rhizome-synthesis.bron` -- the session that first worked through this framing in conversation, before this doc gave it a durable home.
+- `session-logs/20260715-135200_zero-to-one-rhizome-synthesis.kyri` -- the session that first worked through this framing in conversation, before this doc gave it a durable home.
 - `PUBKEYS.md` -- this fork's own real Azimuth star and planet, the concrete stake inside the network this doc discusses rather than a hypothetical one.
 
 ---

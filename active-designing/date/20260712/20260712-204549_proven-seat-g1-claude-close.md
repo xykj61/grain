@@ -7,7 +7,7 @@
 **Style:** Radiant
 **Voice:** Rio 3 recording Claude · Kaeden’s clock from the 20:45 paste
 **Status:** Checkable — G1 **closed** at digest-grade · `vendor/genode` opening · Pond next
-**Ground:** handoff [`../bron-resins/20260712-204010_claude-g1-serial-green.bron`](../bron-resins/20260712-204010_claude-g1-serial-green.bron) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · tip `40d7984`
+**Ground:** handoff [`../kyri-resins/20260712-204010_claude-g1-serial-green.kyri`](../kyri-resins/20260712-204010_claude-g1-serial-green.kyri) · crossing pin [`20260712-195339_proven-seat-g1-crossing-pin.md`](20260712-195339_proven-seat-g1-crossing-pin.md) · tip `40d7984`
 
 ---
 

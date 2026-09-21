@@ -32,7 +32,7 @@ identical. GREEN: `mantra_diff`, `mantra_weave_model`, `rw1_history_contract`, `
 `tame_style_check`, `width-check`.
 **THE COLD PASS FOUND A RED NOT MINE, AND IT WENT FIRST.** `seed_link`
 `front_door_links_outside_seed=1`: `README.md` links `context/BHAKTA_STYLE.md`, seated hours
-earlier, and `template-manifest.bron` carried every sibling register and not that one -- the PUBLIC
+earlier, and `template-manifest.kyri` carried every sibling register and not that one -- the PUBLIC
 front door pointed into a room the projection leaves behind. One `allow` row: gate to **0**,
 ratchet **850 -> 848**; `sow_witness` GREEN, `IDENT_CLEAN`.
 **AGAINST MYSELF, TWICE:** my elder lap left its cold pass orphaned, holding the lock and reaching

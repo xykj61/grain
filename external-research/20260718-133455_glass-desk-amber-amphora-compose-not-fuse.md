@@ -12,7 +12,7 @@
 
 ## The question, restated
 
-Glow Glass (used Pixel, GrapheneOS) and Glow Desk (the pier) already share a short home and a Hearth Bron fold. USB can carry that fold (SETU0). Should the next product move **fuse** that path into Amber seasons, Amphora pours, Tilak-marked values, and resins -- one Glass<->Desk rune stack -- or keep the ladders apart and **compose** later?
+Glow Glass (used Pixel, GrapheneOS) and Glow Desk (the pier) already share a short home and a Hearth Kyri fold. USB can carry that fold (SETU0). Should the next product move **fuse** that path into Amber seasons, Amphora pours, Tilak-marked values, and resins -- one Glass<->Desk rune stack -- or keep the ladders apart and **compose** later?
 
 ## What each word already owns (checkable roles)
 
@@ -22,7 +22,7 @@ Glow Glass (used Pixel, GrapheneOS) and Glow Desk (the pier) already share a sho
 | **Amphora** | Vessel software -- sealed traveling container across a crossing | Carriage |
 | **Resin** | Content-addressed unit at a SHA3 name | Store unit |
 | **Tilak** | Type-mark a value wears at a seam (absorb / express / tend) | Type seam |
-| **LULU / Hearth** | Preference mold -- `home_id`, display preset, wire/cell prefs as Bron | Product prefs |
+| **LULU / Hearth** | Preference mold -- `home_id`, display preset, wire/cell prefs as Kyri | Product prefs |
 | **SETU** | Wire-first Glass<->Desk carry of that fold (adb file path today; live lane later) | Product lane |
 
 Fusing those duties into one ladder would ask Amber to become a phone settings daemon and SETU to become a cellar season. That blurs Two Rooms and reopens finished Green metal under a new name.
@@ -36,7 +36,7 @@ Wired Glass SLC (used Pixel, cellular optional/off, USB to Desk) stays a **produ
 ## Why not fuse now
 
 1. **Different jobs.** Hearth answers "where is home, how dense is the glass." Amber answers "seal this season cold." Amphora answers "carry these sealed bytes across a dock."  
-2. **Warm vs cold.** Today's `hearth.bron` and Desk `station.bron` are warm preference cards. Amber's resting state is *not touching* -- seasons, not Settings toggles.  
+2. **Warm vs cold.** Today's `hearth.kyri` and Desk `station.kyri` are warm preference cards. Amber's resting state is *not touching* -- seasons, not Settings toggles.  
 3. **Finishing edge.** LULU0-5 and SETU0 are GREEN. Jumping into a Glass Amber rune season invents design while Desk has only begun to *apply* a pulled fold (SETU0.5).  
 4. **Legibility.** Waymarks exist so ladders do not collide. One "Amber-on-phone" ladder would hide LULU and SETU claims behind cellar vocabulary.
 
@@ -44,7 +44,7 @@ Wired Glass SLC (used Pixel, cellular optional/off, USB to Desk) stays a **produ
 
 When the fold deserves a seal (second consumer, durable publish, or Desk cellar season):
 
-1. Mark hearth / station as a **Tilak**-typed value (absorb Bron -> marked fold; express back to chrome).  
+1. Mark hearth / station as a **Tilak**-typed value (absorb Kyri -> marked fold; express back to chrome).  
 2. Seal bytes as a **resin**; catalog under Desk's Amber season when custody opens by hand.  
 3. Carry Glass<->Desk with **Amphora** (or SETU's live lane serving Amphora), reusing TUBE3's digest+seal pattern.  
 4. Keep **SETU** as the product waymark for the wire habit; keep **Amber** / **Amphora** as cellar / vessel modules.

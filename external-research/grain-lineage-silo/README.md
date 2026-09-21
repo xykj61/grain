@@ -29,7 +29,7 @@ Where a source used another project's vocabulary, the silo uses this fork's own,
 | Nock | the Nock interpreter (scoped in `../20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`) |
 | the Loom (Urbit's allocator) | Tally (named gardens / roads) |
 | the grain point | the state-at-center: the transition function's single updated state, held as Mantra's fold head |
-| sheaf / topos value model | Bron (one value model) folded by Mantra |
+| sheaf / topos value model | Kyri (one value model) folded by Mantra |
 | Langlands / mirror-symmetry duality | the dual-description design principle (two faces of one system) |
 | aether / field-theoretic claims | labeled plainly as contested physics, separated from the geometry that stands without them |
 
@@ -40,11 +40,11 @@ Where a source used another project's vocabulary, the silo uses this fork's own,
 - [`the-state-at-center.md`](the-state-at-center.md) -- "The Grain Point," siloed: the pure transition function and static-allocation kernel, mapped onto this fork's Glow kernel variants, Mantra, Tally, and Caravan.
 - [`one-carrier-many-flows.md`](one-carrier-many-flows.md) -- "Silken Ground," siloed: one shared carrier for several utility flows, with the speculative materials science labeled as such.
 - [`dual-description-design-principle.md`](dual-description-design-principle.md) -- the Langlands/mirror-symmetry material, siloed into a plain, reusable design rule this fork already half-practices.
-- [`whole-in-every-part.md`](whole-in-every-part.md) -- the topos/sheaf convergence essay, siloed to its one engineering claim (local data that agrees glues into a global whole) and its tie to Bron and Mantra, with the devotional register set aside.
+- [`whole-in-every-part.md`](whole-in-every-part.md) -- the topos/sheaf convergence essay, siloed to its one engineering claim (local data that agrees glues into a global whole) and its tie to Kyri and Mantra, with the devotional register set aside.
 
 ## How This Informs Designs, Foundations, and Context
 
-Each siloed doc ends with a short, honest "What this actually gives this fork" section pointing at the specific design surface it touches -- the Glow kernel variants, the Nock interpreter, Tally's allocator, Comlink's dual physical/governance descriptions, Bron's value model. It stays citable understanding rather than an adopted decision here, and Kaeden's word alone seats any of it into `context/specs/` or a module home.
+Each siloed doc ends with a short, honest "What this actually gives this fork" section pointing at the specific design surface it touches -- the Glow kernel variants, the Nock interpreter, Tally's allocator, Comlink's dual physical/governance descriptions, Kyri's value model. It stays citable understanding rather than an adopted decision here, and Kaeden's word alone seats any of it into `context/specs/` or a module home.
 
 ---
 

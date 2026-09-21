@@ -43,7 +43,7 @@ sets=0; mirrors=0; drifted=0; absent=0; unresolved=0
 canonical=""
 
 # The descriptor is Brix: one field per line, `#` comments, no quotes and no braces. Read it the
-# way Bron is read -- a first word naming the field, the rest its value.
+# way Kyri is read -- a first word naming the field, the rest its value.
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ''|'#'*) continue ;; esac
   key=${line%% *}

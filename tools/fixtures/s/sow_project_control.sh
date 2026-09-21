@@ -62,7 +62,7 @@ mk_pen() {
     echo 'allow room'
     echo 'sub_exclude room/excluded.md'
     echo 'sub_exclude room/shut'
-  } > "$PEN/pen-manifest.bron"
+  } > "$PEN/pen-manifest.kyri"
 
   printf 'a plain page with nobody in it\n'                    > "$PEN/room/plain.md"
   printf 'written by Keaton on a tuesday\n'                    > "$PEN/room/named.md"
@@ -132,7 +132,7 @@ mk_pen() {
 run_projection() {  # run_projection SCRIPT-PATH [PATH-PREFIX]
   ( cd "$PEN"
     PATH="${2:-}${2:+:}$PATH" \
-    SOW_MANIFEST=pen-manifest.bron \
+    SOW_MANIFEST=pen-manifest.kyri \
     SOW_SEED=pen-seed \
     SOW_SCRUB=pen-scrub.sed \
     SEED_LOCK_DIR=pen.lock \

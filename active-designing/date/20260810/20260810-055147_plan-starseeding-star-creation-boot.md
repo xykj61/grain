@@ -17,7 +17,7 @@ The name says the act plainly. A galaxy already shines; Starseeding sows the nex
 starseeding/                    <- the top-level module (grep-clear: no such dir today)
   README.md                     <- Radiant introduction, written when the first lap is GREEN
   starseed.rye                  <- the command: compose settlement (mint the star) + aurora (emit the boot descriptor)
-  descriptor.rye                <- the Bron boot descriptor a star is born with (format starseed-descriptor-v1)
+  descriptor.rye                <- the Kyri boot descriptor a star is born with (format starseed-descriptor-v1)
   bin/                          <- emitted binaries (built on demand)
   kumara.rye        -> ../tally/kumara.rye           (symlink, as siblings do)
   kumara_tilak.rye  -> ../kumara/tilak.rye
@@ -31,7 +31,7 @@ The **born-name is already blessed** — Keaton seated "Starseeding" as a propos
 
 ## What "ring-3" means here, said honestly
 
-The seat calls Starseeding a **ring-3 boot command**, and this brief keeps that word in its true, narrow sense — the one **Mand** already established (`context/LEXICON.md` → Mand: ring-1 vs ring-3). *Ring-3* is the **hosted, test-only reach**: a command that runs in a normal hosted process against fake seeds and prints what it would do, the way `mand/mand_ring3.rye` reaches test-only. It is **not** an x86 privilege ring, and it makes no claim to run in a kernel. The star it raises is modeled in the Rye-side ledger; the descriptor it emits is Bron a human can read. A real star, born from a real keeper's own entropy in his own jail, is his hand alone — never this module's.
+The seat calls Starseeding a **ring-3 boot command**, and this brief keeps that word in its true, narrow sense — the one **Mand** already established (`context/LEXICON.md` → Mand: ring-1 vs ring-3). *Ring-3* is the **hosted, test-only reach**: a command that runs in a normal hosted process against fake seeds and prints what it would do, the way `mand/mand_ring3.rye` reaches test-only. It is **not** an x86 privilege ring, and it makes no claim to run in a kernel. The star it raises is modeled in the Rye-side ledger; the descriptor it emits is Kyri a human can read. A real star, born from a real keeper's own entropy in his own jail, is his hand alone — never this module's.
 
 This is the custody-first posture stated up front: **building Starseeding cannot create anything real and cannot destroy anything.** It mints into an in-memory constellation, emits a descriptor to disk, and refuses every tamper. No key enters the tree.
 
@@ -56,14 +56,14 @@ Settlement already provides the two doors, and their invariants already enforce 
 
 Aurora's `deciding` stage (`aurora/src/deciding.rye`) already models the piece Starseeding needs: a `Decision` value that names the next stage's image by its **SHA3-256 digest** ("in the full Aurora, this would be the SHA3-256 digest of the next stage's verified image"). Starseeding grows that seed by one honest step: instead of a stand-in `config_tag`, the star's boot descriptor names the star's identity and the digest of the image it would wake.
 
-`descriptor.rye` seats a small, bounded record — `format starseed-descriptor-v1` Bron, in the tilak tradition Kumara and Vault already use:
+`descriptor.rye` seats a small, bounded record — `format starseed-descriptor-v1` Kyri, in the tilak tradition Kumara and Vault already use:
 
 - the **star's point number** and its decoded `tier` (asserted `.star`);
 - its **sponsor** (the galaxy) and the **constellation digest** proving the star is a settled member (`settlement`'s `deed_digest` over the star's owned Deed);
 - the **SHA3-256 digest** of the boot image the star would load — the same content-name Aurora's `named`/`sealed` stages already compute freestanding, so a descriptor written hosted names bytes a bare hart could verify;
 - a **version** that climbs by exactly one, like every Deed and every tilak.
 
-The descriptor is emitted as immutable Bron a `scribe/`-style reader dispatches on its `format` line — the star is *born with the fact of how it boots*, and that fact is legible to a person and re-readable by a machine. No image is executed by this ring-3 command; the descriptor names the boot, and a later ring would carry it to metal, exactly as `aurora/src/deciding.rye` today names a choice the full boot would honor.
+The descriptor is emitted as immutable Kyri a `scribe/`-style reader dispatches on its `format` line — the star is *born with the fact of how it boots*, and that fact is legible to a person and re-readable by a machine. No image is executed by this ring-3 command; the descriptor names the boot, and a later ring would carry it to metal, exactly as `aurora/src/deciding.rye` today names a choice the full boot would honor.
 
 ## The smallest witnessed first lap
 
@@ -74,8 +74,8 @@ One lap, small enough to hold in mind, proving the single load-bearing claim the
 1. **opens** a galaxy — `settlement.open(galaxy_number, galaxy_bind)` on a valid galaxy number (tier `.galaxy`), yielding a constellation and the galaxy's Deed;
 2. **grants** the galaxy's keeper a `sow` cap over the galaxy and signs it for the chosen **star** number (a number whose `topology.decode(star).tier == .star`, e.g. in `[12, 60)`);
 3. **seeds the star** — `settlement.mint(...)` returns the star's Deed; assert its `tier == .star`, its `sponsor` is the galaxy, and `settlement.verify(&con, &star_deed) == true` (the star **settles**, the target's first proof);
-4. **emits** the boot descriptor — `descriptor.make(...)` builds a `starseed-descriptor-v1` record binding the star's point, sponsor, constellation digest, and a SHA3-256 image digest, then writes it as Bron (the target's second proof: **a boot descriptor emits**);
-5. **round-trips** the descriptor — re-read the Bron, assert every field returns byte-for-byte, and assert its constellation digest still matches the star's Deed;
+4. **emits** the boot descriptor — `descriptor.make(...)` builds a `starseed-descriptor-v1` record binding the star's point, sponsor, constellation digest, and a SHA3-256 image digest, then writes it as Kyri (the target's second proof: **a boot descriptor emits**);
+5. **round-trips** the descriptor — re-read the Kyri, assert every field returns byte-for-byte, and assert its constellation digest still matches the star's Deed;
 6. **refuses** the three ways it must — a **non-star number** (a pure planet, tier `.planet`) is turned away before any mint (`WrongTier`); a **wrong sponsor** (a star minted under a galaxy that is not its `topology` parent) is refused by `mint` (`WrongSponsor`); and a **tampered descriptor** (flip one byte of the star's key in the bound Deed) fails the digest check, exactly as `settlement`'s shared surface already refuses a tampered deed.
 
 The witness is a Rishi companion beside the two it already leans on:

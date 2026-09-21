@@ -314,7 +314,7 @@ pub fn report(
 // Self-test -- the artifacts on disk, derived as a supervisor would
 // =========================================================================
 
-pub const wide_roster_path = "caravan/systems/wide_roster.bron";
+pub const wide_roster_path = "caravan/systems/wide_roster.kyri";
 
 /// Derives the worked example's roster and checks every claim it makes.
 pub fn check_serial_stack(io: std.Io) u8 {

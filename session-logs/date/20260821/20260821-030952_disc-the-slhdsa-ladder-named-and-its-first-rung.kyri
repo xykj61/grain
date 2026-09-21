@@ -30,7 +30,7 @@ file crypto/slhdsa_thash.rye rung DISC0 -- the address and the tweakable hash fa
 file tools/crypto_slhdsa_thash_witness.rish the structural proofs, suite-registered, no vendor dependency
 file tools/crypto_slhdsa_thash_parity_witness.rish the function-level diff that found the key-pair byte
 file tools/fixtures/pqclean_slhdsa_thash_harness.c PQClean's own prf_addr and thash over identical inputs
-file crux/waymark-registry.bron DISC seated and the body re-sealed, every corpus mark re-derived GREEN
+file crux/waymark-registry.kyri DISC seated and the body re-sealed, every corpus mark re-derived GREEN
 file context/LEXICON.md DISC seated with the ladder's rungs named
 file .claude/rules/waymark-ladders.md the rule table's DISC row
 file tools/waymark_derive.rish input drawn, DISC added to the exclude roster so it can never redraw

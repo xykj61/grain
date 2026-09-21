@@ -18,7 +18,7 @@ Zig 0.16.0 — the pinned toolchain — ships incremental compilation (`zig buil
 
 ## Parked
 
-The word **Bron** holds no seat in LEXICON; this round read it as the plain description of the inter-agent message seam. It parks in RTAC as a name candidate only on Kaeden's word.
+The word **Kyri** holds no seat in LEXICON; this round read it as the plain description of the inter-agent message seam. It parks in RTAC as a name candidate only on Kaeden's word.
 
 ## Next step
 
@@ -26,4 +26,4 @@ Kaeden's word on the three extraction candidates — *the bench is a block*, *th
 
 ## README row (for Cursor to prepend, matching standing columns)
 
-| 20260703.193012 | [Bench-as-block research](20260703-193012_bench-as-block-research.md) | External-research survey shipped: bench as block, Ford's lesson, three-ring build counsel, the message seam; Bron parked for RTAC; extractions await the word. |
+| 20260703.193012 | [Bench-as-block research](20260703-193012_bench-as-block-research.md) | External-research survey shipped: bench as block, Ford's lesson, three-ring build counsel, the message seam; Kyri parked for RTAC; extractions await the word. |

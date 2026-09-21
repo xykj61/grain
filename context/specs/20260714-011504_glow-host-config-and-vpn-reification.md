@@ -1,4 +1,4 @@
-# `GLOW_HOST.bron`, and Reifying the VPN Guide in Rish
+# `GLOW_HOST.kyri`, and Reifying the VPN Guide in Rish
 
 **Language:** EN
 **Version:** `20260714.011504` (Pacific)
@@ -10,17 +10,17 @@ Radiant pass `20260725.040728`
 
 ---
 
-## `GLOW_HOST.bron` -- Glow OS's Own Root Config
+## `GLOW_HOST.kyri` -- Glow OS's Own Root Config
 
-Keaton asked to "reify and strengthen and fortify" the toolchain setup to check the OS cleanly, via a template metaconfig cloned and filled with personal details, in Bron, at the root -- named as **Glow OS's own version of the Claude and Cursor rules**, but for the host and toolchain rather than agent behavior. That pattern is now real, tested, and in place:
+Keaton asked to "reify and strengthen and fortify" the toolchain setup to check the OS cleanly, via a template metaconfig cloned and filled with personal details, in Kyri, at the root -- named as **Glow OS's own version of the Claude and Cursor rules**, but for the host and toolchain rather than agent behavior. That pattern is now real, tested, and in place:
 
-- **[`GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron)** -- tracked, committed, filled with placeholders. Copy to `GLOW_HOST.bron` (gitignored, personal -- machine-specific absolute paths never belong in git) and fill in your own `os`, `arch`, `rye_zig`, `rye_lib`.
-- **[`tools/glow_host_run.sh`](../../tools/glow_host_run.sh)** -- reads `GLOW_HOST.bron`, **refuses** to run if the declared `os`/`arch` doesn't match this actual host (`uname`), **refuses** if `rye_zig` isn't an executable file or `rye_lib` isn't a directory, and only then execs the given command with `RYE_ZIG`/`RYE_LIB` set correctly.
+- **[`GLOW_HOST.template.kyri`](../../GLOW_HOST.template.kyri)** -- tracked, committed, filled with placeholders. Copy to `GLOW_HOST.kyri` (gitignored, personal -- machine-specific absolute paths never belong in git) and fill in your own `os`, `arch`, `rye_zig`, `rye_lib`.
+- **[`tools/glow_host_run.sh`](../../tools/glow_host_run.sh)** -- reads `GLOW_HOST.kyri`, **refuses** to run if the declared `os`/`arch` doesn't match this actual host (`uname`), **refuses** if `rye_zig` isn't an executable file or `rye_lib` isn't a directory, and only then execs the given command with `RYE_ZIG`/`RYE_LIB` set correctly.
 - **[`tools/glow_host_run_witness.sh`](../../tools/glow_host_run_witness.sh)** -- proves both paths, fresh, on demand: a permit witness (builds/runs cleanly with zero pre-set env vars) and a refuse witness (a mismatched `os` is rejected). **Both confirmed green on this host.**
 
 ### Why This Closes the Exact Footgun Found
 
-The earlier native-arm64 parity witness run ([`20260714-005658_native-arm64-parity-witness-run.md`](20260714-005658_native-arm64-parity-witness-run.md)) found that `rye build` silently falls back to whatever `zig` is on `PATH` if `RYE_ZIG` isn't set -- which on this Mac meant a mismatched Homebrew Zig 0.15.2, producing dozens of confusing "invalid builtin function" errors before the real cause was traced. `GLOW_HOST.bron` + `glow_host_run.sh` close this permanently: **there is no more silent fallback.** Either the declared host matches and the declared, verified toolchain runs, or the wrapper refuses loudly and says exactly why.
+The earlier native-arm64 parity witness run ([`20260714-005658_native-arm64-parity-witness-run.md`](20260714-005658_native-arm64-parity-witness-run.md)) found that `rye build` silently falls back to whatever `zig` is on `PATH` if `RYE_ZIG` isn't set -- which on this Mac meant a mismatched Homebrew Zig 0.15.2, producing dozens of confusing "invalid builtin function" errors before the real cause was traced. `GLOW_HOST.kyri` + `glow_host_run.sh` close this permanently: **there is no more silent fallback.** Either the declared host matches and the declared, verified toolchain runs, or the wrapper refuses loudly and says exactly why.
 
 **Confirmed by direct test**, with `RYE_ZIG`/`RYE_LIB` explicitly unset in the shell:
 
@@ -28,7 +28,7 @@ The earlier native-arm64 parity witness run ([`20260714-005658_native-arm64-pari
 $ rm -f rishi/bin/rishi
 $ env -u RYE_ZIG -u RYE_LIB ./tools/glow_host_run.sh -- rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 $ ls rishi/bin/rishi
--rwxr-xr-x ... rishi/bin/rishi   # built correctly, using GLOW_HOST.bron alone
+-rwxr-xr-x ... rishi/bin/rishi   # built correctly, using GLOW_HOST.kyri alone
 ```
 
 ## The Self-Hosted VPN, Reified in Rish
@@ -50,7 +50,7 @@ Building this surfaced three genuine language limitations, not authoring mistake
 
 ## Why Both of These Matter Together
 
-Both artifacts are instances of the same discipline: **check reality before trusting a shortcut.** `GLOW_HOST.bron` checks the real host before trusting a toolchain path; the VPN script checks for `wg` before trusting that a key can be generated, and checks the filesystem before trusting that a key needs generating at all. Neither pretends to have done more than it actually did -- the server script is named plainly as syntax-checked-only, not deploy-witnessed.
+Both artifacts are instances of the same discipline: **check reality before trusting a shortcut.** `GLOW_HOST.kyri` checks the real host before trusting a toolchain path; the VPN script checks for `wg` before trusting that a key can be generated, and checks the filesystem before trusting that a key needs generating at all. Neither pretends to have done more than it actually did -- the server script is named plainly as syntax-checked-only, not deploy-witnessed.
 
 ---
 

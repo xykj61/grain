@@ -80,7 +80,7 @@ together.
 1. **r1 — the crux.** `mycelium/pledge.rye`: reserve · post · void folded over a
    code-seated scene; the equivocation resolved once across every arrival permutation;
    conservation over balance + reserved; every refusal held.
-2. **r2 — travels as a record.** `pledge_bron.rye`: the verdict renders to a
+2. **r2 — travels as a record.** `pledge_kyri.rye`: the verdict renders to a
    `format pledge-v1` record and parses back byte-for-byte, conservation as the record's
    own law.
 3. **r3 — reads across a Knot.** `pledge_knot.rye`: the two-phase verdict reads one hand

@@ -75,7 +75,7 @@ its reach while it runs (`confer.rye`, `revoke.rye`). A supervised process that 
 not `curl` is the same sentence Caravan already speaks about capabilities. **A tool grant is a
 capability**, and Caravan is where capabilities live.
 
-**Mantra** is the descriptor vane: a grant set is a descriptor, and Brix already evaluates to Bron.
+**Mantra** is the descriptor vane: a grant set is a descriptor, and Brix already evaluates to Kyri.
 The roster below wants to be **read** by three instruments without any of them parsing it twice --
 which is REDS `%409`'s lesson, and Mantra is the module whose job that is.
 

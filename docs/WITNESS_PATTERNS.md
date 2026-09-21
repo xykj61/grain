@@ -29,7 +29,7 @@ These are **named habits** in our witness collection -- pointers and examples on
 |---------|---------|
 | Pond col2 before build word | `tools/p/pond_enclosure_col2_probes.rish` |
 | G1 crossing spike | `tools/p/proven_seat_g1_crossing_probe.rish` |
-| Chapter closed (exit bron absent) | `tools/p/pond_exit_bron_master_seal.sh --season-closed` |
+| Chapter closed (exit kyri absent) | `tools/p/pond_exit_kyri_master_seal.sh --season-closed` |
 
 **Law:** a chapter opens on one thing alone -- a named word against a card signed whole. Landing probes prepare that word and leave the season closed. Raw: [`212412`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md).
 

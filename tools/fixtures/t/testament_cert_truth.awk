@@ -8,7 +8,7 @@
 # from its names, the head by rebuilding the demo Dag and computing its true order-head — blind to the record
 # text; this awk measures what a keeper reads straight off the certificate.
 #
-#   awk -f tools/fixtures/t/testament_cert_truth.awk tools/fixtures/t/testament_cert.bron
+#   awk -f tools/fixtures/t/testament_cert_truth.awk tools/fixtures/t/testament_cert.kyri
 #   -> "<ship_count> <head8>"
 
 $1 == "ship" { ships++ }

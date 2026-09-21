@@ -168,7 +168,7 @@ FNR == 1 { page = FILENAME; sub(/^\.\//, "", page); dir = page; if (!sub(/\/[^\/
     # An anchor is a promise about a path only when it is shaped like one.
     if (txt ~ /[ #*?]/) continue
     if (txt !~ /\//) continue
-    if (txt !~ /\.(md|mdc|rish|rye|sh|kyri|bron|brix|glow|awk|json|txt|nix|brush|myc)$/) continue
+    if (txt !~ /\.(md|mdc|rish|rye|sh|kyri|kyri|brix|glow|awk|json|txt|nix|brush|myc)$/) continue
     if (tgt ~ /^(https?:|mailto:|#)/) continue
     sub(/#.*$/, "", tgt)
     if (tgt == "") continue

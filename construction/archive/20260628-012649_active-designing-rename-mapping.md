@@ -55,7 +55,7 @@ Both carry header `Version: 20260618.184912`:
 | `972_who_executor_sealer_opener.md` | `20260620-042612_who-executor-sealer-opener.md` |
 | `971_tally_and_who.md` | `20260620-042812_tally-and-who.md` |
 | `970_explicit_width_in_rye.md` | `20260621-051312_explicit-width-in-rye.md` |
-| `969_bron_notation.md` | `20260621-063912_bron-notation.md` |
+| `969_kyri_notation.md` | `20260621-063912_kyri-notation.md` |
 | `968_the_compiler_fork.md` | `20260621-070712_the-compiler-fork.md` |
 | `967_caravan_kernel_improvements.md` | `20260622-232912_caravan-kernel-improvements.md` |
 | `976_what_we_mean_by_seed.md` | `20260622-235012_what-we-mean-by-seed.md` |

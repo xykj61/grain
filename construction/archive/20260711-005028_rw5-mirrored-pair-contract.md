@@ -15,7 +15,7 @@
 
 **Asker:** `pond/apps/drawn_terminal.rye` — issues bounded `lantern_core.Request` values and calls `complete_fixture` against pinned fixtures.
 
-**Answerer:** `lantern/lantern_core.rye` + `lantern/fixtures/*.bron` — the same path `lantern selftest` already proves.
+**Answerer:** `lantern/lantern_core.rye` + `lantern/fixtures/*.kyri` — the same path `lantern selftest` already proves.
 
 **Contract:** the questions the app may ask (base completion, echo pin, user pin) and the shapes Lantern must return — welcome and unwelcome alike.
 
@@ -29,9 +29,9 @@ Mode: `pond/bin/drawn-terminal rw5collabtest`.
 
 | Probe | App must |
 |-------|----------|
-| Base completion | `complete_fixture` on `completion.bron`; tokens 24/12 eos |
-| Echo pin | `complete_fixture` on `completion_echo.bron` with `echo=true` |
-| User pin | `complete_fixture` on `completion_user.bron` with `user=steward-rio` |
+| Base completion | `complete_fixture` on `completion.kyri`; tokens 24/12 eos |
+| Echo pin | `complete_fixture` on `completion_echo.kyri` with `echo=true` |
+| User pin | `complete_fixture` on `completion_user.kyri` with `user=steward-rio` |
 
 ### Unwelcome paths (survive)
 
@@ -71,7 +71,7 @@ Mode: `lantern/bin/lantern rw5contracttest` — six probes only, reusing existin
 
 ## Relation to existing laps
 
-`tools/lantern_lap*.rish` remain the deep answerer suite. Assist glass laps **415**–**418** folded echo/user onto Skate via bron reads; tip **428** routes that band through `ask_lantern_assist_band` → `complete_fixture` (same ask path as tip **420**). RW-5 isolates the asker against `complete_fixture`; assist integration reuses that ask without a second mirrored pair.
+`tools/lantern_lap*.rish` remain the deep answerer suite. Assist glass laps **415**–**418** folded echo/user onto Skate via kyri reads; tip **428** routes that band through `ask_lantern_assist_band` → `complete_fixture` (same ask path as tip **420**). RW-5 isolates the asker against `complete_fixture`; assist integration reuses that ask without a second mirrored pair.
 
 ## Assist integration (tip 428) — landed
 

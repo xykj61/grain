@@ -6,7 +6,7 @@
 
 ## Verdict
 
-**u32 step 4 is rehearsed — with an honest couple.** The only mala golden fixture is `tools/fixtures/mala_m1_mint.bron`. Renaming its **path** requires two living rye path strings (`linengrow/mala.rye` · `pond/apps/drawn_terminal.rye`). The bron **body** still carries `memo mala:mint` — that memo rename waits for the **module wave**. Tool wave may end at step 3 and defer the fixture, or do a thin path-only step 4.
+**u32 step 4 is rehearsed — with an honest couple.** The only mala golden fixture is `tools/fixtures/mala_m1_mint.kyri`. Renaming its **path** requires two living rye path strings (`linengrow/mala.rye` · `pond/apps/drawn_terminal.rye`). The kyri **body** still carries `memo mala:mint` — that memo rename waits for the **module wave**. Tool wave may end at step 3 and defer the fixture, or do a thin path-only step 4.
 
 ## Baseline (this stamp)
 
@@ -14,7 +14,7 @@
 | --- | --- |
 | `gen_murr` | GREEN · deploy RED |
 | `gen_mala` | ABSENT |
-| `tools/fixtures/mala_m1_mint.bron` | PRESENT · sole `*mala*` fixture |
+| `tools/fixtures/mala_m1_mint.kyri` | PRESENT · sole `*mala*` fixture |
 | Body memo | `mala:mint` (module-wave content) |
 | Hard path readers | `linengrow/mala.rye:48` · `pond/apps/drawn_terminal.rye:190` |
 
@@ -24,15 +24,15 @@
 
 | Lean | When | Work |
 | --- | --- | --- |
-| **A — thin path** | tool wave wants golden name aligned | `git mv` → `murr_m1_mint.bron` · update the two rye path strings · leave `memo mala:mint` + header comment rename-forward · M1 selftest GREEN |
+| **A — thin path** | tool wave wants golden name aligned | `git mv` → `murr_m1_mint.kyri` · update the two rye path strings · leave `memo mala:mint` + header comment rename-forward · M1 selftest GREEN |
 | **B — defer** | prefer zero rye edits in tool wave | keep path until u48 · tool wave exit after steps 1–3 GREEN |
 
 **Default lean when kg u32 opens:** **A** if M1/M2 witnesses already renamed; **B** if a sitting wants zero rye touch.
 
 ### Moves for lean A (when live)
 
-1. `git mv tools/fixtures/mala_m1_mint.bron tools/fixtures/murr_m1_mint.bron`
-2. `linengrow/mala.rye` — path string only → `tools/fixtures/murr_m1_mint.bron` (no core/module rename)
+1. `git mv tools/fixtures/mala_m1_mint.kyri tools/fixtures/murr_m1_mint.kyri`
+2. `linengrow/mala.rye` — path string only → `tools/fixtures/murr_m1_mint.kyri` (no core/module rename)
 3. `pond/apps/drawn_terminal.rye` — `mala_mint_fixture` path (+ optional const name → `murr_mint_fixture`)
 4. Fixture header comment: `MUR M1 — pinned first mint… (was MALA)` · **keep** `memo mala:mint` until module memo wave
 5. Expanding-prompt / ER path citations — light repoint

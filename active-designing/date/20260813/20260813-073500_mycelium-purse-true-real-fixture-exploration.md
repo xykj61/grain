@@ -2,7 +2,7 @@
 
 **Stamp:** `20260813.073500` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Mixed -- Self-approved design read for one rung
-**Kin:** [`../mycelium/purse.rye`](../mycelium/purse.rye) · [`../mycelium/purse_bron.rye`](../mycelium/purse_bron.rye) · [`../mycelium/purse_knot.rye`](../mycelium/purse_knot.rye) · the mirror [`20260813-064129_mycelium-till-double-spend-exploration.md`](20260813-064129_mycelium-till-double-spend-exploration.md)
+**Kin:** [`../mycelium/purse.rye`](../mycelium/purse.rye) · [`../mycelium/purse_kyri.rye`](../mycelium/purse_kyri.rye) · [`../mycelium/purse_knot.rye`](../mycelium/purse_knot.rye) · the mirror [`20260813-064129_mycelium-till-double-spend-exploration.md`](20260813-064129_mycelium-till-double-spend-exploration.md)
 
 ---
 
@@ -21,7 +21,7 @@ shared drawer to many private purses.
 
 ## The crux — two tools, one answer
 
-The app (`mycelium/purse_true.rye`) parses the real record through `cord_bron`, **rebuilds**
+The app (`mycelium/purse_true.rye`) parses the real record through `cord_kyri`, **rebuilds**
 the Dag under `cord.add` (re-verifying every signature), resolves it through `purse`, and
 reports the triple **`<loser-hex> <moved> <short>`** — the signer of the spent-out
 transfer, the count of transfers that moved coins, the count that came up short. An
@@ -33,7 +33,7 @@ So the loser of a contested purse can never drift from an order a keeper can wal
 
 ## The fixture scene
 
-`tools/fixtures/purse_dag.bron`, produced reproducibly by `mycelium/purse_fixture_gen.rye`
+`tools/fixtures/purse_dag.kyri`, produced reproducibly by `mycelium/purse_fixture_gen.rye`
 and `@embedFile`-bound through a symlink in `mycelium/corpora/`:
 
 - a demo funder issues a genesis credit of **100 to Alice** (round 0);
@@ -60,7 +60,7 @@ lacks (the full commit tie-break) could change which holder loses.
 
 ## Discipline
 
-Additive — composes `cord_bron` + `cord` + `purse` public API only (each re-runs GREEN at
+Additive — composes `cord_kyri` + `cord` + `purse` public API only (each re-runs GREEN at
 the witness door). Siloed, dev-only, demo seeds — no real key, no funds, no network, no
 custody. A tampered record refuses `BadFormat`, never read as true. The fixture is
 reproducible: the generator re-emits byte-identical bytes.

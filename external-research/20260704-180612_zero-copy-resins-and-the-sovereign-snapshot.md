@@ -47,7 +47,7 @@ Concretely, three lanes:
 2. **Need-resin lane** -- peer sends `(tilak, digest, length)` plus **raw resin bytes once**; receiver stores at content address; subsequent crosses use lane 1.
 3. **Vessel lane** -- **Amphora (vessel software)** carries a Kumara-signed manifest naming many resins; Comlink fetches by digest; verified twice at mouth and receipt.
 
-Bron records and Weave facts should be **views** over immutable resin bytes (shape-cast at the seam), not parsed into heap graphs that re-encode on send. That is the Rye-side echo of TigerBeetle's fixed nouns: **the hot path names bytes; conversion is absorb's job, off the hot path.**
+Kyri records and Weave facts should be **views** over immutable resin bytes (shape-cast at the seam), not parsed into heap graphs that re-encode on send. That is the Rye-side echo of TigerBeetle's fixed nouns: **the hot path names bytes; conversion is absorb's job, off the hot path.**
 
 ---
 
@@ -76,7 +76,7 @@ Our clean-room translation:
 | Pier folder | **Kumara identity** + **Weave** subgraph + **Mantra** HEAD + **Brix** closure + cellar catalog |
 | Event log replay | Fold **signed facts** on **Weave** until **Mantra** projection matches pinned HEAD |
 | Desk / `%base` | **Brix** descriptors + golden base merge policy (Pond customs) |
-| Jam/cue wire | **Not adopted** -- we carry **content-addressed resins** and **Bron** views, not noun jam |
+| Jam/cue wire | **Not adopted** -- we carry **content-addressed resins** and **Kyri** views, not noun jam |
 | Marks / conversions | **Tilak** + absorb / express / tend |
 
 **We do not import Urbit's gate, arm, or mark syntax** ([`gates-arms-and-the-urbit-lineage`](20260704-002912_gates-arms-and-the-urbit-lineage.md)). We import the **honesty**: *state is a fold over an append-only log of immutable signed facts* -- already canon in Mantra - Weave - the receipt lap.
@@ -130,7 +130,7 @@ What belongs inside the **largest honest export** -- the bounded union of everyt
 
 ### E. Policy and enclosure (Pond - Caravan)
 
-- Pond policy bundle as Bron -- what may run, what may be placed.
+- Pond policy bundle as Kyri -- what may run, what may be placed.
 - Caravan capability seeds for the services the world expects on first boot.
 
 ### F. Boot spine (Aurora)
@@ -152,7 +152,7 @@ What belongs inside the **largest honest export** -- the bounded union of everyt
 
 1. Quiesce -- Caravan drains children; Mantra pins HEAD.
 2. Fold walk -- enumerate Weave + Tablecloth closure; name every resin.
-3. Seal -- write resins to working-tier paths; compose `.bron` manifest; Kumara-sign.
+3. Seal -- write resins to working-tier paths; compose `.kyri` manifest; Kumara-sign.
 4. Optional vessel -- pour season into **Amphora** for offsite Comlink crossing.
 5. Verify twice -- write-time digest + independent oracle (`openssl dgst -sha3-256` today).
 
@@ -217,7 +217,7 @@ No lap claims the Urbit sentence whole. Each closes one claim.
 
 **Is the Urbit-like snapshot possible?** Yes as architecture -- **replay the log, boot the pier** is already our fold doctrine. The maximum export is **Weave slice + resin closure + Brix + Kumara trust + Aurora boot spine**, not a mystery ISO.
 
-**What is not decided tonight:** checkpoint frequency, bead size, whether Bron records inline small facts or always point to resins, and the exact Comlink frame layout. Those are **Kaeden-gated** or **witness-gated** stops -- not gaps in the goal.
+**What is not decided tonight:** checkpoint frequency, bead size, whether Kyri records inline small facts or always point to resins, and the exact Comlink frame layout. Those are **Kaeden-gated** or **witness-gated** stops -- not gaps in the goal.
 
 ---
 

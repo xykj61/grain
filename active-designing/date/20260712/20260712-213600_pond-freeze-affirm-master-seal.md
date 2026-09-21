@@ -7,7 +7,7 @@
 **Style:** Radiant
 **Voice:** Rio 3 · Claude proposes · Kaeden seats by paste
 **Status:** Checkable — seated — freeze affirmed · master-seal landed
-**Ground:** Exit card [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard witness · `tools/pond_exit_bron_master_seal.sh`
+**Ground:** Exit card [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) · scorecard witness · `tools/pond_exit_kyri_master_seal.sh`
 
 ---
 
@@ -17,7 +17,7 @@ Every accretion seam read in place. Claude affirms the freeze. Ask two: hold the
 
 ## Custody line (lands with this seating)
 
-Presence alone does not open the season. The sandbox key lives inside the jail (bar5 proves it daily); an agent could write and even sandbox-sign the sentinel. The exit bron **counts only when master-signed** — detached `bron-resins/pond-supersede-exit.bron.asc` verified against master `0646 2132…` alone, in a keyring holding only `context/keys/gpg_signing_06462132.pub.asc`, checked by wrapper and scorecard via `tools/pond_exit_bron_master_seal.sh`.
+Presence alone does not open the season. The sandbox key lives inside the jail (bar5 proves it daily); an agent could write and even sandbox-sign the sentinel. The exit kyri **counts only when master-signed** — detached `kyri-resins/pond-supersede-exit.kyri.asc` verified against master `0646 2132…` alone, in a keyring holding only `context/keys/gpg_signing_06462132.pub.asc`, checked by wrapper and scorecard via `tools/pond_exit_kyri_master_seal.sh`.
 
 Bar5 asserts the master secret absent from the enclosure; this line makes that absence the thing that keeps the season shut.
 

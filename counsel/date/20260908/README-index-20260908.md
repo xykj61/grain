@@ -5,7 +5,7 @@
 each cell carries no stamp of its own.
 
 **Why this room.** These are counsel printouts about a real family fund, carrying real figures and a
-property under contract. `counsel/` is absent from `template-manifest.bron`, which is an **allowlist**
+property under contract. `counsel/` is absent from `template-manifest.kyri`, which is an **allowlist**
 -- so the room is withheld from the public seed by construction rather than by a rule anyone has to
 remember. `press/` and `dimeroll/` are allowed and were the wrong homes for this.
 

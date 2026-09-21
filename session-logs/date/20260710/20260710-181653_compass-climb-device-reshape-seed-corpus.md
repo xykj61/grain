@@ -25,7 +25,7 @@ Soak / live TB / ROCm / Pond-Lantern stay closed.
 - `pond/apps/drawn_terminal.rye` · `pond/apps/anvil/anvil_core.rye` symlink  
 - `tools/realidream_forge_query_device_view.rish` · `tools/inference_anvil_corpus_view.rish`  
 - `lattice/` reshape · `tools/lattice_lap3.rish`  
-- `lantern/` temperature+seed · `fixtures/completion_seed.bron` · `tools/lantern_lap3.rish`  
+- `lantern/` temperature+seed · `fixtures/completion_seed.kyri` · `tools/lantern_lap3.rish`  
 - `tools/parity.rish` · TASKS · ROADMAP · LEXICON · READMEs · hammocks
 
 ## Recommend

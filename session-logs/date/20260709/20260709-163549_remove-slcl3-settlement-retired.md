@@ -20,7 +20,7 @@ Aligned counsel `152612` and ZK study `223327` with Kaeden's delete directive (c
 
 ## Observations
 
-- **772 lines** removed across settlement core, witnesses, chain-read hosts, grpcurl bootstrap, bron goldens, settle fixtures.
+- **772 lines** removed across settlement core, witnesses, chain-read hosts, grpcurl bootstrap, kyri goldens, settle fixtures.
 - Parity witness count **197** (SLC-L3 stanza dropped from `tools/parity.rish`).
 - Historical briefs (`211637`, `015832`) still cite landed files — correct as dated record.
 - Full parity green not reconfirmed this pass; doorway green confirmed.

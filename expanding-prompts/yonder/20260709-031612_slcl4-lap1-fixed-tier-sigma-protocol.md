@@ -24,7 +24,7 @@ Build SLC-L4's first lap: a Zig-native, pairing-free proof that a donation amoun
 - A Sigma protocol proving the committed amount **opens to a declared, publicly-checked tier** -- three named candidates to start: `1000`, `5000`, `10000` (smallest currency unit, matching SLC-L1's own amount convention). This is a **single proof of knowledge** for the declared tier -- not a disjunctive OR-proof across tiers (the tier is public; nothing to disjoin). Naming the tiers explicitly, rather than reaching for an arbitrary-range circuit, is this lap's whole reason for being smaller than the general case.
 - Fiat-Shamir via SHA3-256, exactly as this tree already hashes everything else -- the challenge is the hash of the commitment and all public tier candidates; no interaction, no separate randomness beacon.
 - Offline prove and verify, both in one process, both asserted in the same selftest: build a commitment, prove it opens to a chosen tier, verify the proof against the commitment and the public tier list, and -- the unwelcome path -- verify that a forged proof or a wrong tier claim is refused.
-- A `.bron` proof receipt, fields drawn directly from the hammock as refined: `claim` (`donor-amount-privacy`), `log_digest`, `commitment` (hex), `tier_claimed`, `proof` (the Sigma-protocol transcript, hex), `stamp`.
+- A `.kyri` proof receipt, fields drawn directly from the hammock as refined: `claim` (`donor-amount-privacy`), `log_digest`, `commitment` (hex), `tier_claimed`, `proof` (the Sigma-protocol transcript, hex), `stamp`.
 - A parity-eligible witness: this whole thing is deterministic, no network, no external tool -- it belongs in `tools/parity.rish` the moment it is green, the same as any other hosted selftest.
 
 **Explicitly out of scope, named so no one reaches for it by accident mid-lap:**
@@ -45,7 +45,7 @@ Every operation this lap needs already lives in Zig's vendored 0.16 stdlib: `std
 
 ## Verification Shape
 
-Build from bare. Run the offline selftest: commitment construction, honest proof for each of the three tiers (welcome path, three times -- one declared tier per proof), a forged proof rejected, a true commitment claimed against the wrong tier rejected (unwelcome path, at least twice). Confirm the `.bron` golden matches the hammock's field order exactly. Only once all of that is green does this lap wire into `tools/parity.rish` and get called finished.
+Build from bare. Run the offline selftest: commitment construction, honest proof for each of the three tiers (welcome path, three times -- one declared tier per proof), a forged proof rejected, a true commitment claimed against the wrong tier rejected (unwelcome path, at least twice). Confirm the `.kyri` golden matches the hammock's field order exactly. Only once all of that is green does this lap wire into `tools/parity.rish` and get called finished.
 
 ---
 

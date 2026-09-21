@@ -79,7 +79,7 @@ ships it as `template` -- so retiring it is a manifest edit and a `git rm`.
    against 51 `.claude/rules/*.md`. Retiring the room retires the guard.
 2. **25 rules end with a `Canonical Cursor twin` line**, each naming its partner. Those footers
    become false the moment the partner goes.
-3. **`template-manifest.bron` reads `scrub .cursor`**, so the public seed already carries the room
+3. **`template-manifest.kyri` reads `scrub .cursor`**, so the public seed already carries the room
    depersonalised -- retiring it changes what a stranger inherits.
 
 None of that forbids the retirement. It means the retirement is **one round with three named

@@ -9,7 +9,7 @@
 
 ## Where the road stands
 
-Chapter 3, Commons, Journey 9 (Skate) stands complete end to end — two keepers come to *see* each other only by mutual consent, the whole arc signed, travelled as Bron, and read true on a real fixture. Journey 9 answered how **exactly two** keepers meet. The 1,024-round itinerary's next Lindy-first crux on the whole road is **Journey 10 — Membership**: the one surface that genuinely needs **quorum**, proven at **more than two keepers**, extending the consensus idea `settlement/names.rye` already names.
+Chapter 3, Commons, Journey 9 (Skate) stands complete end to end — two keepers come to *see* each other only by mutual consent, the whole arc signed, travelled as Kyri, and read true on a real fixture. Journey 9 answered how **exactly two** keepers meet. The 1,024-round itinerary's next Lindy-first crux on the whole road is **Journey 10 — Membership**: the one surface that genuinely needs **quorum**, proven at **more than two keepers**, extending the consensus idea `settlement/names.rye` already names.
 
 This is a new domain, so the itinerary's filling law asks for a design read before the first round — this document.
 
@@ -38,12 +38,12 @@ The crux is the distinctness and the threshold together: **one keeper can never 
 
 - **r1 — Quorum.** `pond/apps/skate_group.rye`: a `Group` opens with a founder roster and a fixed quorum `t` (`2 ≤ t ≤ roster`); a member votes for a candidate; the candidate is seated only when `t` **distinct** members have voted. Pure state machine, bounded. Refusals: a non-member votes (`NotMember`), a member votes twice for one candidate (`AlreadyVoted`), a candidate already seated (`AlreadyMember`), a quorum below two or above the founders (`BadThreshold` / `TooFewFounders`), a duplicate founder (`DuplicateFounder`), a full roster (`GroupFull`), a full vote book (`VotesFull`). The crux made checkable: a single member voting twice never reaches a quorum of two; three distinct votes are needed to admit under `t = 3`; admission is derived from the distinct-vote count, never written.
 - **r2 — Signed.** `pond/apps/skate_group_signed.rye`: each vote is signed by that member's settled Kumara identity over the exact facts (a tag, the group id, the voter point, the candidate point), verified against a caller-supplied keyring, mirroring `skate_circle_signed`. A steward cannot fabricate a member's vote; relabel a vote's candidate after signing and the signature falls.
-- **r3 — Travels.** `pond/apps/skate_group_bron.rye`: render a group's roster, quorum, and signed votes to a `format skate-group-v1` Bron record and parse it back byte-for-byte, still quorum-honest offline (a vote signature flipped after the crossing refuses); unknown/missing field · bad header · bad hex each refuse.
-- **r4 — Read-true.** `pond/apps/skate_group_true.rye`: carry the reader onto a real fixture (`skate/fixtures/group.bron`, real Ed25519 vote signatures) and cross-check the roster size, vote count, and **admitted-by-quorum count** against an independent measure (an awk truth script) — two tools, one answer — so a group's membership can never drift from what a keeper can count by hand.
+- **r3 — Travels.** `pond/apps/skate_group_kyri.rye`: render a group's roster, quorum, and signed votes to a `format skate-group-v1` Kyri record and parse it back byte-for-byte, still quorum-honest offline (a vote signature flipped after the crossing refuses); unknown/missing field · bad header · bad hex each refuse.
+- **r4 — Read-true.** `pond/apps/skate_group_true.rye`: carry the reader onto a real fixture (`skate/fixtures/group.kyri`, real Ed25519 vote signatures) and cross-check the roster size, vote count, and **admitted-by-quorum count** against an independent measure (an awk truth script) — two tools, one answer — so a group's membership can never drift from what a keeper can count by hand.
 
 ## Boundaries (custody-first)
 
-Membership records the *facts* of quorum and holds nothing — it opens no network, moves no funds, and generates no real identity. The Comlink-served rung (a group shared over the wire) reaches the serve custody gate and is the maintainer's hand; demo keeper seeds only, never a real Kumara instance (gate #4). Everything above — the pure rule, signing over demo seeds, Bron travel, reading a real fixture — is agent-doable and does not wait.
+Membership records the *facts* of quorum and holds nothing — it opens no network, moves no funds, and generates no real identity. The Comlink-served rung (a group shared over the wire) reaches the serve custody gate and is the maintainer's hand; demo keeper seeds only, never a real Kumara instance (gate #4). Everything above — the pure rule, signing over demo seeds, Kyri travel, reading a real fixture — is agent-doable and does not wait.
 
 ---
 

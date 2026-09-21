@@ -2,7 +2,7 @@
 //!
 //! Rungs one and two built the artifact store and proved a manifest is an honest index of
 //! a live store. This rung makes the "Brix-facing" half literal. Brix is the composition
-//! language that declares a system and evaluates to Bron; here a small Brix-facing
+//! language that declares a system and evaluates to Kyri; here a small Brix-facing
 //! descriptor - `format tablecloth-decl-v1`, one `require <name>` line per artifact a
 //! system needs - is *evaluated against a live store* into a `format tablecloth-v1`
 //! manifest of exactly those declared artifacts, in declared order.

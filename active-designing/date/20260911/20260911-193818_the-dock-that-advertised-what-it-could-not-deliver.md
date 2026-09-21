@@ -31,7 +31,7 @@ On the elder binary, a **first** carry into a fresh dock then leaves:
 
 | At the dock | Reading |
 |---|---|
-| `vessel.bron` | **1,565 bytes**, byte-equal to the near vessel |
+| `vessel.kyri` | **1,565 bytes**, byte-equal to the near vessel |
 | `vessel-core verify` over it | **GREEN** -- Kumara stamp ok |
 | `vessel-seal open-check` over it | **GREEN** -- cellar AEAD seal ok |
 | `resins/` | **absent** -- zero of the four bodies the manifest names |
@@ -57,7 +57,7 @@ Two of the three later steps genuinely need the far vessel on disk. `carry_verif
 landed bytes back. Writing the dock vessel first is what makes those two checks possible at all,
 so the order was load-bearing rather than careless.
 
-What it missed is that the dock vessel is also the dock's **promise**. A file named `vessel.bron`
+What it missed is that the dock vessel is also the dock's **promise**. A file named `vessel.kyri`
 inside a dock says *the crossing arrived*, and it said so from the moment the assembly landed
 rather than from the moment the crossing was whole.
 
@@ -66,7 +66,7 @@ rather than from the moment the crossing was whole.
 The assembled vessel lands on a `.crossing` scratch inside the dock. The far walls and the far
 manifest read that scratch. The resins ferry beside it, into the dock's own `resins/` directory,
 whose address is derived from the dirname either path shares. Only then does `rename(2)` put
-`vessel.bron` in place -- one filesystem, so POSIX makes it atomic, which is why the scratch rides
+`vessel.kyri` in place -- one filesystem, so POSIX makes it atomic, which is why the scratch rides
 in the dock rather than in a temporary directory somewhere else.
 
 Every refusal after the scratch exists sweeps it, through the same `refuse_and_clear` the pour
@@ -94,7 +94,7 @@ someone happened to test is a rule waiting for the other case.
 
 ## What this does not reach
 
-**The chunk cuts.** `chunk-NNNN.bron` files stay at the dock after a refusal. They are the
+**The chunk cuts.** `chunk-NNNN.kyri` files stay at the dock after a refusal. They are the
 crossing's scratch rather than its promise -- only a `AMPHORA_CARRY_TRUST_DOCK` witness run reads
 them back, and a production carry re-cuts them every time. They carry sealed bytes, exactly what
 the vessel itself carries. Sweeping them is a tidiness lap rather than a wall.

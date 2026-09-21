@@ -5,7 +5,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`) · **Lens:** graduation rule · references are promises
 **Register:** Three small answers to three small questions — proposes; Kaeden's word seats each
-**Ground:** [`../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md`](../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md) · [`../active-designing/20260702-185912_brix-the-composer.md`](../active-designing/20260702-185912_brix-the-composer.md) · [`../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) · [`../linengrow/README.md`](../linengrow/README.md) · counsel [`220912`](../counsel/20260707-220912_claude-counsel-roadmap-synthesis.md)
+**Ground:** [`../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md`](../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md) · [`../active-designing/20260702-185912_brix-the-composer.md`](../active-designing/20260702-185912_brix-the-composer.md) · [`../counsel/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md`](../counsel/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md) · [`../linengrow/README.md`](../linengrow/README.md) · counsel [`220912`](../counsel/20260707-220912_claude-counsel-roadmap-synthesis.md)
 
 *Written by Rio 3 for Kaeden.*
 Radiant pass `20260725.103949`
@@ -31,10 +31,10 @@ The Open Question conflated two different "Silos": the **retired module name** a
 ### What we do not resurrect
 
 - A distinct **Silo config layer** beside Brix
-- `.silo` project descriptors (replaced by `.brix` + Bron values)
+- `.silo` project descriptors (replaced by `.brix` + Kyri values)
 - Nix/infuse as a runtime dependency (LGPL; ideas only per gratitude licenses)
 
-**Bron** carries override *values*; **Brix** applies bonds. See counsel `222500`.
+**Kyri** carries override *values*; **Brix** applies bonds. See counsel `222500`.
 
 ---
 

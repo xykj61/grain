@@ -103,7 +103,7 @@
 # `::` sitting mid-sentence in a `//` comment stays prose rather than becoming a second head to
 # strip.
 #
-# AND A NOTATION'S PROSE IS ITS COMMENT BLOCK, WHILE ITS RECORDS ARE DATA. Kyri and Bron open a
+# AND A NOTATION'S PROSE IS ITS COMMENT BLOCK, WHILE ITS RECORDS ARE DATA. Kyri open a
 # comment with `#` and close a record with nothing, so a `.kyri` read as a document lost its whole
 # argument to the heading rule and read its records as ONE pseudo-sentence: 498 comment lines and
 # 7,271 words dropped from `construction/standing-equipment.kyri`, 457 records read as a single
@@ -123,7 +123,7 @@
 # notation carrying a comment block has a document, so Meter is refused and the reading falls to
 # Field, this card's own default, since Meter carries no ceiling to fall back on. A notation with no
 # comment block is all record, so the free pass stands. The split is the family's, not an
-# invention: measured across all 4,090 tracked `.bron` and `.kyri` files, 3,983 carry zero comment
+# invention: measured across all 4,090 tracked `.kyri` and `.kyri` files, 3,983 carry zero comment
 # lines -- 3,928 session logs, which `.claude/rules/session-logs.md` already seats at Meter, plus 55
 # data corpora -- and 107 carry a document. At Field the nineteen read 81 to 92, an eleven-point
 # spread, every one at or above B, so the class never needed the relief. Field rather than Door
@@ -144,7 +144,7 @@
 # active-designing/docs/glow/fixtures/anchor_bad.rye printed `meter_reach=100 (0 words reported, not
 # scored)` beside `reach=0 (grade 0 against 9 ... 0 words)` in one run. Data corpora show it
 # largest, where the syllable heuristic counts vowel groups inside a 128-character hex string --
-# mycelium/corpora/braid_dag.bron reads 6.1 syllables per word and a grade of 59 over 30 words --
+# mycelium/corpora/braid_dag.kyri reads 6.1 syllables per word and a grade of 59 over 30 words --
 # and 41 of the 55 record-only files read D+ on that alone.
 #
 # So the grade term takes the same cited floor, and the cross-reference term keeps the index door it

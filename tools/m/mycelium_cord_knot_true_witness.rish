@@ -35,7 +35,7 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-cord-knot-true: measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/c/cord_knot_truth.awk tools/fixtures/c/cord_knot.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/cord_knot_truth.awk tools/fixtures/c/cord_knot.kyri"]
 assert awk.ok else "mycelium-cord-knot-true: awk truth read failed"
 assert awk.out contains "700 1" else "mycelium-cord-knot-true: awk pair not 700 1"
 assert app.out == awk.out else "mycelium-cord-knot-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -43,12 +43,12 @@ assert app.out == awk.out else "mycelium-cord-knot-true: app and awk disagree â€
 # The fixture is genuinely what the Knot emits -- regenerate and diff, proving no hand-mock.
 let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mycelium/cord_knot_fixture_gen.rye -femit-bin=mycelium/bin/cord_knot_fixture_gen"]
 assert gen.ok else "mycelium-cord-knot-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/cord_knot_fixture_gen 2> /tmp/cord_knot_regen.bron; diff tools/fixtures/c/cord_knot.bron /tmp/cord_knot_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/cord_knot_fixture_gen 2> /tmp/cord_knot_regen.kyri; diff tools/fixtures/c/cord_knot.kyri /tmp/cord_knot_regen.kyri && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-cord-knot-true: fixture regeneration failed"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-cord-knot-true: the regenerated fixture drifted from the committed one"
 
 # The travel (r2) and throughput (r3) rounds the reader stands on stay GREEN at this door.
-let r2 = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_cord_knot_bron_witness.rish 2>&1"]
+let r2 = run ["sh" "-c" "rishi/bin/rishi run tools/m/mycelium_cord_knot_kyri_witness.rish 2>&1"]
 assert r2.ok else "mycelium-cord-knot-true: the r2 travel round is not GREEN"
 assert r2.out contains "GREEN" else "mycelium-cord-knot-true: the r2 travel round did not speak its GREEN"
 

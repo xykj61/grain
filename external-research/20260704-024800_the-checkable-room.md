@@ -93,7 +93,7 @@ The door opens one way -- vision earns proof:
 4. **Witness** -- `tools/*_witness.rish` or quartet block in `parity.rish`.
 5. **Pin** -- ROADMAP, TASKS, RTAC parity arithmetic; session log; bench tip.
 
-**Amber** crossed this door at parity **144**. **SLC-L1** crossed at **152** for the spine claim; golden receipt `.bron` remains outside. **crossing_manifest_seed** crossed parse only -- header still says PROPOSED SEED because module home is a separate claim.
+**Amber** crossed this door at parity **144**. **SLC-L1** crossed at **152** for the spine claim; golden receipt `.kyri` remains outside. **crossing_manifest_seed** crossed parse only -- header still says PROPOSED SEED because module home is a separate claim.
 
 Partial crossing is honest: the checkable room admits **slices** of a vision, each with its own witness, rather than pretending the whole image landed because one lap went green.
 

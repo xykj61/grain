@@ -979,7 +979,7 @@ pub fn main() void {
     expect("(?i)stamp", "The STAMP line", true);
     expect("(?i)[a-z]+", "ABC", true);
     // real seam patterns (with explicit repetition for the 8/6 digit stamp)
-    expect("(^|/)\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d\\d\\d_", "session-logs/20260809-110311_x.bron", true);
+    expect("(^|/)\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d\\d\\d_", "session-logs/20260809-110311_x.kyri", true);
     expect("(^|/)\\d\\d\\d\\d\\d\\d\\d\\d-\\d\\d\\d\\d\\d\\d_", "README.md", false);
     expect("^#\\s", "# a heading", true);
     expect("^#\\s", "#nospace", false);

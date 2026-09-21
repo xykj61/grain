@@ -91,7 +91,7 @@ trap 'rm -rf "$work"' EXIT INT TERM
 # kinds the card reads as something other than a program.
 git ls-files \
   | grep -E '(^|/)[^/]*_(witness|scan|control)\.[^/.]+$' \
-  | grep -vE '\.(md|mdc|markdown|bron|kyri)$' \
+  | grep -vE '\.(md|mdc|markdown|kyri|kyri)$' \
   | sort > "$work/candidates.txt"
 candidates=$(wc -l < "$work/candidates.txt" | tr -d ' ')
 

@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — LEXICON rows seat the dual vocabulary  
 **Register:** Intent for desk/API rename · Checkable for the living-prose pin  
-**Grounds in:** [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../external-research/20260715-170000_glow-mold-nesting-bounded.md) · [`20260720-192738_stoa130-stated-nesting-gold.md`](20260720-192738_stoa130-stated-nesting-gold.md) · counsel [`../session-logs/20260720-223052_glow-os-word-than-mold.bron`](../session-logs/20260720-223052_glow-os-word-than-mold.bron)
+**Grounds in:** [`../external-research/20260715-170000_glow-mold-nesting-bounded.md`](../external-research/20260715-170000_glow-mold-nesting-bounded.md) · [`20260720-192738_stoa130-stated-nesting-gold.md`](20260720-192738_stoa130-stated-nesting-gold.md) · counsel [`../session-logs/20260720-223052_glow-os-word-than-mold.kyri`](../session-logs/20260720-223052_glow-os-word-than-mold.kyri)
 
 **dated_guard:** Do **not** rewrite dated STOA briefs, desk names, or session logs that say *mold*. Those keep Hoon-era and desk-suffix *mold* as historical names. Living Glow OS prose uses **shape** from this pin forward.
 

@@ -34,7 +34,7 @@ The original grounds much of its language in "aether-theoretic field interaction
 ## What This Actually Gives This Fork
 
 - A concrete, testable version of Rye OS's own stated RISC-V-and-beyond hardware horizon: the "no edge, bounded distance, uniform neighborhood" property is a real design target even on ordinary hardware (it argues for ring/torus network topologies in Comlink and Caravan, which need no exotic silicon).
-- The coordinate-is-the-address idea rhymes directly with Mantra's content-addressing and Bron's one-value model -- worth citing when those seams are next revisited.
+- The coordinate-is-the-address idea rhymes directly with Mantra's content-addressing and Kyri's one-value model -- worth citing when those seams are next revisited.
 - A clean example, for the Glow kernel variants, of "bound everything and know the maximum before you run," which is TAME's own root rule expressed as hardware.
 
 ## Galaxy Pitch

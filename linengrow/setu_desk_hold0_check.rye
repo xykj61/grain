@@ -1,6 +1,6 @@
 //! linengrow/setu_desk_hold0_check.rye -- print Desk hold status from cache.
 //!
-//! Reads tools/.cache/setu0/station.bron and reports lane_ping.bin /
+//! Reads tools/.cache/setu0/station.kyri and reports lane_ping.bin /
 //! lane_frame.bin presence and size.
 
 const std = @import("std");
@@ -9,7 +9,7 @@ const print = std.debug.print;
 const Dir = std.Io.Dir;
 const hold0 = @import("setu_desk_hold0.rye");
 
-const station_path = "tools/.cache/setu0/station.bron";
+const station_path = "tools/.cache/setu0/station.kyri";
 const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 

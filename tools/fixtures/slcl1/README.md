@@ -10,8 +10,8 @@ Deterministic inputs for `tools/s/slcl1_receipt.rish` — witness **GREEN** at p
 
 | File | Role |
 |------|------|
-| [`slcl1_fact.bron`](../slcl1_fact.bron) | Canonical transaction fact (pinned keys) |
+| [`slcl1_fact.kyri`](../slcl1_fact.kyri) | Canonical transaction fact (pinned keys) |
 | `slcl1_log/empty.log` | Empty append log (created by witness) |
-| `slcl1_golden_receipt.bron` | Pinned receipt after first append (lands with witness) |
+| `slcl1_golden_receipt.kyri` | Pinned receipt after first append (lands with witness) |
 
 Ground: [`../../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`](../../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md)

@@ -14,5 +14,5 @@ obs Seated nixos/ as personal in the seed manifest (host-specific: hostname, dis
 obs Installing git-filter-repo this way unblocks the eventual waymark-elder deep debride cleanly from the jail; counsel on whether that debride is worth it (even with an immutable registry it loses reds-lessons + walk-backs) rides in the reply, not committed
 file nixos/ tracked copy of the pier's declarative config, with git-filter-repo added
 file tools/pier_nixos_track.sh guarded/reversible outer script: symlink /etc/nixos -> repo + rebuild
-file template-manifest.bron personal nixos (withheld from the public seed)
+file template-manifest.kyri personal nixos (withheld from the public seed)
 recommend check-in Keaton runs the outer script to install filter-repo; I recommend seating an immutable hash-sealed waymark registry next (good regardless), then weighing the debride with the registry in hand

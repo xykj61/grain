@@ -10,7 +10,7 @@ Accrete-never-break is the **default**, not an absolute. The tree's fuller law i
 
 **This means no artifact's immutability can make a debride "self-defeating."** A debride is licensed to remake *anything*, precisely because remaking dead tissue is its whole purpose:
 
-- A **SHA3-sealed** file (e.g. `construction/waymark-registry.bron`): a debride may **remove the dead rows and re-seal** -- the seal protects against *accidental* edits, not against a *circled* debride.
+- A **SHA3-sealed** file (e.g. `construction/waymark-registry.kyri`): a debride may **remove the dead rows and re-seal** -- the seal protects against *accidental* edits, not against a *circled* debride.
 - The **REDS ledger** ("rows are never edited or removed") and the **append-only CHECKPOINTS**: a debride may rewrite or drop their dead-tissue rows -- that law is the accrete *default*, which the debride word overrides.
 - **One-clock dated logs / testimony**: a debride may shed or rewrite them; the one-clock law protects them from *casual* edits, not from a named debride.
 

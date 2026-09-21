@@ -25,8 +25,8 @@ trap 'rm -rf "$home" "$dock" "$far"' EXIT
 
 # (1) Home cellar -- pour season into vessel bundle.
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$home" "$STAMP"
-test -f "$home/vessel.bron"
-test -f "$home/manifest.bron"
+test -f "$home/vessel.kyri"
+test -f "$home/manifest.kyri"
 test -d "$home/resins"
 
 # (2) Dock copy -- second media path holding the same vessel bundle.

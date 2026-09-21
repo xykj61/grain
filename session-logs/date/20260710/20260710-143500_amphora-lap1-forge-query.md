@@ -16,7 +16,7 @@ Kaeden said keep going and open any gates or graduate anything needed. Opened Am
 ## Files
 
 - `amphora/` — README, manifest_entry, vessel_core.
-- `tools/fixtures/amphora_vessel_lap1.bron` · `forge_query_hits.bron`.
+- `tools/fixtures/amphora_vessel_lap1.kyri` · `forge_query_hits.kyri`.
 - `tools/amphora_lap1.rish` · `realidream_forge_query_view.rish`.
 - `pond/apps/drawn_terminal.rye` — forge + forgequery views.
 - LEXICON · sealed crossing · TASKS · ROADMAP · parity · gitignore.

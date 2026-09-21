@@ -48,7 +48,7 @@ file .claude/rules/session-log-provenance.md provider-neutral provenance law for
 file .cursor/rules/session-log-provenance.mdc scoped Cursor and Codex-facing twin with valid frontmatter
 file .claude/rules/session-logs.md living Kyri format points at the provenance law
 file .cursor/rules/session-logs.mdc living Kyri twin aligned with the Claude rule
-file GLOW_PROFILE.template.bron clone defaults now declare configuration rather than active telemetry
+file GLOW_PROFILE.template.kyri clone defaults now declare configuration rather than active telemetry
 file CLAUDE.md top-level session-log door now names Kyri and the provenance seam
 file session-logs/README.md newest-first way into this record
 recommend check-in the next Equinox crux enters the excluded shell-dialect family, while this signed logging lap waits locally for a separate send

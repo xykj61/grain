@@ -6,7 +6,7 @@
 #
 # HUNK4 bound each product to a window, HUNK5 painted a window as a page, HUNK6 gave the sheet a content
 # address; this rung lets the index itself travel. image/sprite_catalog.rye render_catalog writes a SpriteIndex
-# as a flat-Bron format sprite-catalog-v1 record (one product <name> <x> <y> <w> <h> line per entry), and
+# as a flat-Kyri format sprite-catalog-v1 record (one product <name> <x> <y> <w> <h> line per entry), and
 # parse_catalog reads it back into a fresh index over a given sheet -- so render(parse(render(x))) is a fixed
 # point and the rebuilt index renders every product from the same window byte-for-byte. Parse validates each
 # window against the actual sheet (a window past a smaller sheet refuses through SpriteIndex.add), so a catalog
@@ -16,7 +16,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/h/hunk_sprite_catalog_witness.rish
 
-say "hunk-sprite-catalog: Language EN — HUNK7 lets the marketplace index travel: render_catalog writes it as a flat-Bron sprite-catalog-v1 record and parse_catalog reads it back over a sheet into a fresh index."
+say "hunk-sprite-catalog: Language EN — HUNK7 lets the marketplace index travel: render_catalog writes it as a flat-Kyri sprite-catalog-v1 record and parse_catalog reads it back over a sheet into a fresh index."
 say "hunk-sprite-catalog: Style Radiant — render(parse(render)) is a fixed point and the rebuilt index renders the same windows, so a marketplace crosses to text and home again losing nothing."
 say "hunk-sprite-catalog: Lens TAME — parse validates each window against the real sheet through SpriteIndex.add; a catalog names no bytes the sheet lacks; named refusals; bounded buffers; no network, no key, no funds."
 

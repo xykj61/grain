@@ -187,25 +187,25 @@ const open_asks_view_max_lines: u32 = 8;
 const open_asks_escrow_view_max_lines: u32 = 8;
 const open_asks_reputation_view_max_lines: u32 = 8;
 const open_asks_civic_sight_view_max_lines: u32 = 8;
-const murr_mint_fixture = "tools/fixtures/m/murr_m1_mint.bron";
-const wov_bundle_fixture = "tools/fixtures/w/wov_exit_bundle_v1.bron";
-const dimeroll_journal_fixture = "dimeroll/fixtures/journal.bron";
-const ember_corpus_fixture = "ember/fixtures/rye_corpus.bron";
-const lantern_completion_fixture = "lantern/fixtures/completion.bron";
-const lantern_echo_fixture = "lantern/fixtures/completion_echo.bron";
-const lantern_user_fixture = "lantern/fixtures/completion_user.bron";
-const tablecloth_query_hits_fixture = "tools/fixtures/t/tablecloth_query_hits.bron";
-const tablecloth_query_device_hits_fixture = "tools/fixtures/t/tablecloth_query_device_hits.bron";
-const forge_cellar_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.bron";
-const amphora_vessel_fixture = "tools/fixtures/.forge_view_bundle/vessel.bron";
-const amphora_device_fetch_hits_fixture = "tools/fixtures/a/amphora_device_fetch_hits.bron";
+const murr_mint_fixture = "tools/fixtures/m/murr_m1_mint.kyri";
+const wov_bundle_fixture = "tools/fixtures/w/wov_exit_bundle_v1.kyri";
+const dimeroll_journal_fixture = "dimeroll/fixtures/journal.kyri";
+const ember_corpus_fixture = "ember/fixtures/rye_corpus.kyri";
+const lantern_completion_fixture = "lantern/fixtures/completion.kyri";
+const lantern_echo_fixture = "lantern/fixtures/completion_echo.kyri";
+const lantern_user_fixture = "lantern/fixtures/completion_user.kyri";
+const tablecloth_query_hits_fixture = "tools/fixtures/t/tablecloth_query_hits.kyri";
+const tablecloth_query_device_hits_fixture = "tools/fixtures/t/tablecloth_query_device_hits.kyri";
+const forge_cellar_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.kyri";
+const amphora_vessel_fixture = "tools/fixtures/.forge_view_bundle/vessel.kyri";
+const amphora_device_fetch_hits_fixture = "tools/fixtures/a/amphora_device_fetch_hits.kyri";
 const scribble_snippets_fixture = "scribble/fixtures/session_snippets.md";
 const scribble_rish_snippets_fixture = "scribble/fixtures/session_rish_snippets.md";
 const scribble_outline_fixture = "scribble/fixtures/outline.md";
 const scribble_outline_h3_fixture = "scribble/fixtures/outline_h3.md";
 const scribble_fence_kinds_fixture = "scribble/fixtures/fence_kinds.md";
-const forge_query_hits_fixture = "tools/fixtures/f/forge_query_hits.bron";
-const forge_query_device_hits_fixture = "tools/fixtures/f/forge_query_device_hits.bron";
+const forge_query_hits_fixture = "tools/fixtures/f/forge_query_hits.kyri";
+const forge_query_device_hits_fixture = "tools/fixtures/f/forge_query_device_hits.kyri";
 const granary_front_page_fixture = "granary/fixtures/front_page.md";
 const status_full_text = "transcript full — earlier lines still ran; :quit to close";
 const poll_timeout_ms: i32 = 50;
@@ -371,7 +371,7 @@ fn run_thin_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Unwelcome -- missing fixture path refuses.
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
-    if (cwd.readFile(io, "tools/fixtures/does_not_exist_thin_view.bron", &probe)) |_| {
+    if (cwd.readFile(io, "tools/fixtures/does_not_exist_thin_view.kyri", &probe)) |_| {
         return error.UnwelcomePassed;
     } else |_| {}
 
@@ -967,7 +967,7 @@ fn run_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
     // Unwelcome -- missing fixture path refuses.
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
-    if (cwd.readFile(io, "tools/fixtures/does_not_exist_query_view.bron", &probe)) |_| {
+    if (cwd.readFile(io, "tools/fixtures/does_not_exist_query_view.kyri", &probe)) |_| {
         return error.UnwelcomePassed;
     } else |_| {}
 
@@ -1243,7 +1243,7 @@ fn run_forge_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const cwd = std.Io.Dir.cwd();
     var probe: [8]u8 = undefined;
-    if (cwd.readFile(io, "tools/fixtures/does_not_exist_forge_view.bron", &probe)) |_| {
+    if (cwd.readFile(io, "tools/fixtures/does_not_exist_forge_view.kyri", &probe)) |_| {
         return error.UnwelcomePassed;
     } else |_| {}
 
@@ -1307,7 +1307,7 @@ fn run_forge_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
-    const hosted = try cwd.readFile(io, "tools/fixtures/f/forge_cellar_manifest.bron", &buf);
+    const hosted = try cwd.readFile(io, "tools/fixtures/f/forge_cellar_manifest.kyri", &buf);
     if (field_value(hosted, "wire")) |_| return error.HostedMarkedDevice;
 
     var out: [160]u8 = undefined;
@@ -1455,8 +1455,8 @@ fn run_forge_query_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
         "realidream forge query",
         "filter tilak cellar-manifest",
         "hits 2",
-        "hit peerForge cellar 1 manifest.bron",
-        "hit peerForge amphora 1 vessel.bron",
+        "hit peerForge cellar 1 manifest.kyri",
+        "hit peerForge amphora 1 vessel.kyri",
         "forge query fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -1525,8 +1525,8 @@ fn run_forge_query_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u
         "realidream forge query device",
         "filter tilak cellar-manifest",
         "hits 2",
-        "hit peerForge cellar 1 manifest.bron",
-        "hit peerForge amphora 1 vessel.bron",
+        "hit peerForge cellar 1 manifest.kyri",
+        "hit peerForge amphora 1 vessel.kyri",
         "forge query device fold green",
     };
     assert(lines_equal(&golden, frame));
@@ -2371,10 +2371,10 @@ fn run_forge_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !
         "realidream forge query unified",
         "hosted filter tilak cellar-manifest",
         "hosted hits 2",
-        "hosted hit peerForge cellar 1 manifest.bron",
+        "hosted hit peerForge cellar 1 manifest.kyri",
         "device filter tilak cellar-manifest",
         "device hits 2",
-        "device hit peerForge cellar 1 manifest.bron",
+        "device hit peerForge cellar 1 manifest.kyri",
         "forge query unified fold green",
     };
     assert(lines_equal(&golden, frame));

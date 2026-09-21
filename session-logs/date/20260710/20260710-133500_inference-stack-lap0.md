@@ -25,8 +25,8 @@ Assist view composes Anvil corpus counts, Lantern fixture tokens/suggestion, Dim
 |------|-----|
 | `lattice/lattice_core.rye`, `lattice/lattice.rye`, `lattice/README.md` | f32 matmul lap 0 |
 | `scribble/scribble_core.rye`, `scribble/scribble.rye`, `scribble/fixtures/sample.md`, `scribble/README.md` | markdown blocks + rye_fence |
-| `lantern/lantern_core.rye`, `lantern/lantern.rye`, `lantern/fixtures/completion.bron`, `lantern/README.md` | fixture completion contract |
-| `anvil/anvil_core.rye`, `anvil/anvil.rye`, `anvil/fixtures/rye_corpus.bron`, `anvil/README.md` | corpus catalog |
+| `lantern/lantern_core.rye`, `lantern/lantern.rye`, `lantern/fixtures/completion.kyri`, `lantern/README.md` | fixture completion contract |
+| `anvil/anvil_core.rye`, `anvil/anvil.rye`, `anvil/fixtures/rye_corpus.kyri`, `anvil/README.md` | corpus catalog |
 | `pond/apps/drawn_terminal.rye` | `assistviewtest` + version `133500` |
 | `tools/lattice_lap1.rish` … `tools/inference_assist_view.rish` | witnesses 211–215 |
 | `tools/parity.rish` | wired new suite arms |

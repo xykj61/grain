@@ -269,7 +269,7 @@ sed -n '/^measure() {/,/^}/p' "$reg_scan" > "$work/measure.sh"
 # classification serves all three rather than two that can come to disagree.
 case "$path" in
   *.md|*.mdc|*.markdown)     artifact_kind=prose ;;
-  *.bron|*.kyri)             artifact_kind=notation ;;
+  *.kyri|*.kyri)             artifact_kind=notation ;;
   *)                         artifact_kind=program ;;
 esac
 
@@ -281,7 +281,7 @@ program_genre_meter=no
 if [ "$artifact_kind" = prose ]; then
   prose_path="$root/$path"
 elif [ "$artifact_kind" = notation ]; then
-  # THE THIRD FAMILY THE SAME FAULT REACHED. Kyri and Bron are key-value notations: `#` opens a
+  # THE THIRD FAMILY THE SAME FAULT REACHED. Kyri is a key-value notation: `#` opens a
   # COMMENT, and every other line is one `key value` record. Read raw, the file gives BOTH readings
   # the wrong half. measure() drops a leading `#` as a Markdown heading, which is right for a
   # document and exactly inverted here, since a notation file keeps its whole document behind that
@@ -294,7 +294,7 @@ elif [ "$artifact_kind" = notation ]; then
   # single 915-word sentence, for a reading grade of 327, Reach 0, and a composite of C+ 75 -- a
   # number measured wholly on the half that says nothing. All nineteen tracked notation files
   # carrying 200 words or more of comment prose read EXACTLY ONE sentence that day, template-
-  # manifest.bron at 1,786 words of it. One sentence nineteen times is the signature of a reading
+  # manifest.kyri at 1,786 words of it. One sentence nineteen times is the signature of a reading
   # that never found the prose.
   #
   # WHY IT ARRIVED THROUGH THIS DOOR. REDS %276 made this repair for programs and %358 taught it
@@ -383,7 +383,7 @@ fi
 # WHICH SETTING A ROSTER TAKES, ANSWERED BY MEASUREMENT RATHER THAN ASSERTED. The free pass belongs
 # where there is nothing to read, and a notation file's own grammar says which case it is in.
 #
-# Measured 20260831 across all 4,090 tracked .bron and .kyri files, and the family splits cleanly:
+# Measured 20260831 across all 4,090 tracked .kyri and .kyri files, and the family splits cleanly:
 # 3,983 carry ZERO comment lines and 107 carry at least one. The zero side is 3,928 session logs --
 # which .claude/rules/session-logs.md already seats at Meter -- plus 55 pure data corpora under
 # mycelium/corpora/, pond/apps/corpora/ and bat/. Those files are all record, they are Gauge's own
@@ -438,7 +438,7 @@ fi
 #
 # IT RUNS AFTER the branch above rather than inside it, so all three artifact kinds are read the
 # same way. A notation's records arrive here already carrying the period that branch appends, and
-# the ones that are ALSO a key table -- template-manifest.bron's 123 `template  <path>  # why`
+# the ones that are ALSO a key table -- template-manifest.kyri's 123 `template  <path>  # why`
 # lines -- are held out here as well; both roads end at "this is not prose", which is the answer.
 #
 # WHAT THIS REACHES, measured 20260831. Across every tracked program source: 154 heads carry a
@@ -756,7 +756,7 @@ awk 'NR <= 40 { if ($0 ~ /^---[ \t]*$/) exit; print }' "$root/$path" \
 # files, a 60-log sample, 163 programs, and all 107 documented notation files -- 207 sat under this
 # floor and 137 of them took a scored Reach below 100 anyway. The worst readings are data corpora,
 # where the syllable heuristic counts vowel groups inside a 128-character hex string:
-# mycelium/corpora/braid_dag.bron reads 6.1 syllables per word and a grade of 59 over 30 words, and
+# mycelium/corpora/braid_dag.kyri reads 6.1 syllables per word and a grade of 59 over 30 words, and
 # 41 of the 55 record-only files read D+ on that alone. Session logs are untouched -- 0 of 60 sat
 # under the floor with a scored grade -- which is the answer to the door that sent this lap out.
 #
@@ -925,7 +925,7 @@ illustrations=0
 # the CommonMark rule as far as this needs it; an unclosed fence swallows the rest of the file,
 # which is what a renderer does too.
 case "$path" in
-  *.md|*.mdc|*.markdown|*.bron|*.kyri) truth_source=prose ;;
+  *.md|*.mdc|*.markdown|*.kyri|*.kyri) truth_source=prose ;;
   *)                                       truth_source=comments ;;
 esac
 
@@ -1002,9 +1002,9 @@ citers=$( ( cd "$root" && git grep -l -- "$(basename "$path")" -- ':!'"$path" 2>
 named_by_card=no
 [ -f "$root/construction/ITINERARY.md" ] && grep -q -- "$(basename "$path")" "$root/construction/ITINERARY.md" 2>/dev/null && named_by_card=yes
 in_seed=no
-if [ -f "$root/template-manifest.bron" ]; then
+if [ -f "$root/template-manifest.kyri" ]; then
   room=$(echo "$path" | cut -d/ -f1)
-  grep -qE "^allow ($room|$path)\$" "$root/template-manifest.bron" 2>/dev/null && in_seed=yes
+  grep -qE "^allow ($room|$path)\$" "$root/template-manifest.kyri" 2>/dev/null && in_seed=yes
 fi
 
 # --- The card ------------------------------------------------------------------------------------

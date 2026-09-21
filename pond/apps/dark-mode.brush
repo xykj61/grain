@@ -1,6 +1,6 @@
 ::  name       dark-mode layer
 ::  shape      a style: layer that sets the ground (paper/ink) only — no accent
-::  invariant  each style token is `key value` flat Bron; both stay warm/low-blue
+::  invariant  each style token is `key value` flat Kyri; both stay warm/low-blue
 ::  example    Bark page, Flax ink — the mode, with the accent left to another layer
 ::  readers    brush_parse.rye → tokens.resolve_stack → mantra_browser_theme_stack
 ::  nib        surface-wade1-mode-dark-v0
@@ -9,7 +9,7 @@
 ::  a light ink — and deliberately leaves `head` (the living-edge accent) for a
 ::  separate accent layer to set. Stacking a mode layer and an accent layer proves
 ::  the WADE1 cascade composes independent authored layers, top wins, base inherits.
-::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::  Tongue: Glow · Kyri · TAME · Radiant. Never JS · HTML · CSS · JSON.
 ::
 ::  at-nib:     mantra-graph-dark-mode
 ::  present:    Frame

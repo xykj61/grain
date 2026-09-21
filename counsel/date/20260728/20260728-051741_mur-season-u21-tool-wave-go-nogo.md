@@ -31,7 +31,7 @@ Steps 1–4 are rehearsed. Baselines hold. No early murr tool homes. Hard lines 
 | **1** | `git mv` M1/M2 witnesses → `murr_m*_witness.rish` · harden say/assert · keep `mala.rye` build paths | `murr_m1_witness` GREEN; M2 GREEN or honest hold |
 | **2** | Same sitting: `parity_ch01` M1/M2 stanzas → MUR / `murr_m*` | chapter child honest |
 | **3** | `comlink_murr_wire_lab.rish` + `run_murr_wire_lab.sh` · update M2 caller · **guests stay `guest_mala_*`** | lab GREEN or honest hold |
-| **4** | Default **lean A** — path → `murr_m1_mint.bron` + two rye path strings · **keep `memo mala:mint`** | M1 GREEN |
+| **4** | Default **lean A** — path → `murr_m1_mint.kyri` + two rye path strings · **keep `memo mala:mint`** | M1 GREEN |
 
 **Stop line:** no `linengrow/mala*.rye` module rename · no `mala:*` memo rewrite · no guest rye rename · no WOV retire · no shred.
 

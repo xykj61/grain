@@ -25,7 +25,7 @@ The floor Bit will dress is real code, most of it green under witnesses:
 
 - **`brush_parse.rye`** -- the `.brush` language: parse, refuse, lower to a glass Frame; paints stdout and fills a Skate grid headlessly. Its own head names the boundary: "No Wayland window - no CSS/HTML/JSON."
 - **`tokens.rye`** -- the WADE1 token sheet: Flax, Bark, Oat, and Walnut as ARGB8888 constants; paper/ink/edge plus weight/space/elevate fields; a cascade by per-key infuse (`brix_infuse.rye`); a lowering that dresses a Skate cell grid.
-- **`wade1_brush_style_test.rye`** -- the authoring loop proven end to end: a `.brush` file declares a `style:` block -> flat Bron token sheet -> infuse cascade -> styled Skate runs, from a file on disk.
+- **`wade1_brush_style_test.rye`** -- the authoring loop proven end to end: a `.brush` file declares a `style:` block -> flat Kyri token sheet -> infuse cascade -> styled Skate runs, from a file on disk.
 - **`skate_grid.rye` and `wayland_seed.rye`** -- the paint targets: the headless cell grid and the Wayland window seed.
 - **A real application to dress** -- the Photos journey: `crop_editor.rye` (HUNK62), the `edit_filmstrip` family, `filter_picker.rye`, the `part_facets` catalog family, `photo_library.rye`, `library_view.rye` -- roughly forty screen modules over `qoi.rye` decode, each drawing its own chrome today.
 - **`font8x8_data.rye`** -- the tree's one typeface, an 8x8 bitmap.

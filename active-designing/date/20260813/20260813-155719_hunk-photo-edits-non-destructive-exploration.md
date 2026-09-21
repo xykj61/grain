@@ -11,7 +11,7 @@
 
 The Photos app now holds six pure verbs — crop, flip_h, flip_v, rotate_quarter, scale, adjust (HUNK3 · HUNK8 · HUNK9 · HUNK10). Each returns a fresh open image and leaves its source untouched. That purity is exactly what a *non-destructive* editor is built on: a photo library keeps the original bytes forever and records the edits **as data beside them**, so an edit is undoable, replayable, and shareable without ever mutating the source.
 
-HUNK11 is that keystone: an **edit-list** — a bounded, ordered sequence of edit verbs recorded as a value — and one function, `apply`, that **replays** the whole list over a source image to produce a fresh edited image, the source never touched. The list itself **travels as text** (a flat-Bron `format photo-edits-v1` record, one verb per line), so `render(parse(render(x)))` is a fixed point exactly as the sprite catalog's does (HUNK7). This composes every verb the journey built and ties the Photos app to the tree's travel-as-text spine.
+HUNK11 is that keystone: an **edit-list** — a bounded, ordered sequence of edit verbs recorded as a value — and one function, `apply`, that **replays** the whole list over a source image to produce a fresh edited image, the source never touched. The list itself **travels as text** (a flat-Kyri `format photo-edits-v1` record, one verb per line), so `render(parse(render(x)))` is a fixed point exactly as the sprite catalog's does (HUNK7). This composes every verb the journey built and ties the Photos app to the tree's travel-as-text spine.
 
 ## Why this is the Lindy-first crux
 

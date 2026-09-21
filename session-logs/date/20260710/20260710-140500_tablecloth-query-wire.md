@@ -5,7 +5,7 @@
 
 ## Thinking trace
 
-Kaeden asked whether we can simplify a Comlink aspect into a TAME-guided GraphQL-like path for Realidream backends shared across Rye OS clients. Refreshed foundations: Weave as streaming DAG; Hyperfiddle as gratitude only; Tablecloth query counsel `005612` (filter, not language); Visual Track departures (Bron, never JSON-in-payload); Comlink as sealed fact lane.
+Kaeden asked whether we can simplify a Comlink aspect into a TAME-guided GraphQL-like path for Realidream backends shared across Rye OS clients. Refreshed foundations: Weave as streaming DAG; Hyperfiddle as gratitude only; Tablecloth query counsel `005612` (filter, not language); Visual Track departures (Kyri, never JSON-in-payload); Comlink as sealed fact lane.
 
 Recommendation: do **not** introduce GraphQL. Grow **Tablecloth query over Comlink** — the same optional-field filter, sealed request/response of catalog names, client folds locally into Skate.
 

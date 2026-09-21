@@ -2,7 +2,7 @@
 
 **Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` - witness `tools/w/waymark_derive.rish` - Lexicon **Waymark**.
 
-**Immutable registry (single source of truth, seated `20260817`):** `construction/waymark-registry.bron` is the sealed, self-verifying canonical record of **every** waymark ever drawn -- living, retired, abandoned, transient, hand-seated -- each drawn row carrying its input, index, and status. Witness [`../../tools/w/waymark_registry_witness.rish`](../../tools/w/waymark_registry_witness.rish) proves it GREEN two ways: a **SHA3-512 seal** over the body (any edit breaks it) and a **re-derivation** of every collection mark from its input on metal. This registry is the authority; the table below is its readable face. Because the canonical truth is sealed here, the elder marks in old logs and git history are redundant historical noise -- the naming truth no longer depends on them.
+**Immutable registry (single source of truth, seated `20260817`):** `construction/waymark-registry.kyri` is the sealed, self-verifying canonical record of **every** waymark ever drawn -- living, retired, abandoned, transient, hand-seated -- each drawn row carrying its input, index, and status. Witness [`../../tools/w/waymark_registry_witness.rish`](../../tools/w/waymark_registry_witness.rish) proves it GREEN two ways: a **SHA3-512 seal** over the body (any edit breaks it) and a **re-derivation** of every collection mark from its input on metal. This registry is the authority; the table below is its readable face. Because the canonical truth is sealed here, the elder marks in old logs and git history are redundant historical noise -- the naming truth no longer depends on them.
 
 ## When a ladder opens
 
@@ -33,7 +33,7 @@ Before the first rung is written as `X0` / `X1` / ... in TASKS, ROADMAP, compres
 | **POLE** | *(input debrided `20260825` -- it carried a name; hand-seated)* | DJINN -> Bozo exec - Keaton -> Murr exec - Linn->Bozo Capricorn 10 |
 | **SOON** | `glow-language-runes-stdlib-and-pipeline` | Compass Chapter Equinox 1 -- The Language (Glow runes - stdlib/PLEAC - Brix-infuse - pipeline) |
 | **JARL** | `kumara-identity-comlink-and-fractal-network` | Compass Chapter Equinox 2 -- Identity & Network (Kumara - d12/d60 topology - Comlink - settlement) |
-| **BUHR** | `realidream-surface-and-quin-inference-and-mcp-2` | Compass Chapter Equinox 3 -- Surface & Intelligence (Realidream - Quin voices - MCP-in-Bron) |
+| **BUHR** | `realidream-surface-and-quin-inference-and-mcp-2` | Compass Chapter Equinox 3 -- Surface & Intelligence (Realidream - Quin voices - MCP-in-Kyri) |
 | **TACT** | `ship-pilot-publishing-grainphone-and-commerce` | Compass Chapter Equinox 4 -- The World (Ship-Pilot - publishing - Grainphone - commerce) |
 | **GISM** | `harvest-season-equinox-1-yield` | Harvest Chapter Equinox 1 -- Yield (prove built modules on real data) |
 | **AYRE** | `harvest-season-equinox-2-trade` | Harvest Chapter Equinox 2 -- Trade (fair-trade certification - cash-first) |

@@ -1,6 +1,6 @@
 # Comlink View Filter -- Not GraphQL
 
-*A hammock scope note: the GraphQL-shaped need -- typed reads for Realidream frontends across Rye OS clients -- lands as a **thin filter over Comlink's fact lane**, reusing Tablecloth query, carrying Bron-shaped request and response, never a schema language or JSON HTTP gateway.*
+*A hammock scope note: the GraphQL-shaped need -- typed reads for Realidream frontends across Rye OS clients -- lands as a **thin filter over Comlink's fact lane**, reusing Tablecloth query, carrying Kyri-shaped request and response, never a schema language or JSON HTTP gateway.*
 
 **Stamp:** `20260710.140500`
 **Voice:** Rio 3
@@ -26,13 +26,13 @@ Our grain already answered the shape of that read **in-process**: Tablecloth que
 
 | Temptation | Why we keep the grain thin |
 |------------|----------------------------|
-| **GraphQL** | Outside LEXICON and TAME; Visual Track prefers Bron-shaped values over JSON-in-payload |
+| **GraphQL** | Outside LEXICON and TAME; Visual Track prefers Kyri-shaped values over JSON-in-payload |
 | **HTTP REST gateway** | Host seam for browsers later; Rye OS clients ride Comlink |
 | **New Comlink module** | This is an **aspect of the fact lane** -- Tablecloth query over sealed datagrams |
 | **Schema language / resolvers** | Filter fields already named: peer - bolt - revision - tilak - path_hint |
 | **Full Realidream viewer** | Still held -- Pond policy + Dexter second consumer; this lap serves the **data path** |
 
-Hyperfiddle's lesson maps to **Weave - fold - Tilak**. Values cross seams as **Bron** (or compact wire that encodes the same fields).
+Hyperfiddle's lesson maps to **Weave - fold - Tilak**. Values cross seams as **Kyri** (or compact wire that encodes the same fields).
 
 ---
 
@@ -71,7 +71,7 @@ Client fold: names -> local Skate lines or a later resin fetch. The host remains
 
 ### In scope (lap 1b -- query view)
 
-- `tools/fixtures/tablecloth_query_hits.bron` -- wire answer shape as fixture
+- `tools/fixtures/tablecloth_query_hits.kyri` -- wire answer shape as fixture
 - `pond/apps/drawn_terminal.rye` `queryviewtest` -- fold hits -> Skate
 - `tools/realidream_query_view.rish` -- witness; parity **220**
 
@@ -83,7 +83,7 @@ Client fold: names -> local Skate lines or a later resin fetch. The host remains
 
 ### In scope (lap 2c -- query device view - landed `20260710.174752`)
 
-- `tools/fixtures/tablecloth_query_device_hits.bron` -- device-provenance hit fixture
+- `tools/fixtures/tablecloth_query_device_hits.kyri` -- device-provenance hit fixture
 - `pond/apps/drawn_terminal.rye` `querydeviceviewtest` -- fold -> Skate
 - `tools/realidream_query_device_view.rish`; parity **247**
 
@@ -95,7 +95,7 @@ Client fold: names -> local Skate lines or a later resin fetch. The host remains
 
 ### In scope (lap 2e -- forge query device view - landed `20260710.181653`)
 
-- `forgequerydeviceviewtest` folds `forge_query_device_hits.bron` (`wire device`) into a six-line Skate frame
+- `forgequerydeviceviewtest` folds `forge_query_device_hits.kyri` (`wire device`) into a six-line Skate frame
 - Hosted forge query fixture without `wire device` stays unwelcome for this mode
 - Parity **256**; sibling to query device view; unified already at **255**
 
@@ -132,7 +132,7 @@ Client fold: names -> local Skate lines or a later resin fetch. The host remains
 | `tools/mantra_recall_tablecloth_query_wire.rish` | Hosted witness |
 | `comlink/guest_tablecloth_query_*.rye` | Device virtio guests (request + response) |
 | `tools/mantra_recall_tablecloth_query_device.rish` | Device witness (parity **246**) |
-| `tools/fixtures/tablecloth_query_device_hits.bron` | Device-provenance hit fixture |
+| `tools/fixtures/tablecloth_query_device_hits.kyri` | Device-provenance hit fixture |
 | `tools/realidream_query_device_view.rish` | Device Skate view (parity **247**) |
 | `tools/realidream_query_unified_view.rish` | Hosted + device Skate fold (parity **248**) |
 

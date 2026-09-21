@@ -26,14 +26,14 @@ fi
 "$BIN" selftest >/dev/null
 
 # Welcome
-out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_welcome.bron" 2>&1)
+out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_welcome.kyri" 2>&1)
 echo "$out" | grep -q 'verdict=place' || { echo "FAIL welcome not place"; echo "$out"; exit 1; }
 echo "$out" | grep -q 'GREEN' || { echo "FAIL welcome missing GREEN"; exit 1; }
 echo "ADMIT ok plain-bytes"
 
 # Hold -- exit 1
 set +e
-hold_out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_hold.bron" 2>&1)
+hold_out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_hold.kyri" 2>&1)
 hold_code=$?
 set -e
 test "$hold_code" -eq 1 || { echo "FAIL hold exit want 1 got $hold_code"; echo "$hold_out"; exit 1; }
@@ -42,7 +42,7 @@ echo "HOLD ok await-word"
 
 # Refuse -- exit 2
 set +e
-refuse_out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_refuse.bron" 2>&1)
+refuse_out=$("$BIN" inspect "$ROOT/tools/fixtures/p/pond_customs_refuse.kyri" 2>&1)
 refuse_code=$?
 set -e
 test "$refuse_code" -eq 2 || { echo "FAIL refuse exit want 2 got $refuse_code"; echo "$refuse_out"; exit 1; }

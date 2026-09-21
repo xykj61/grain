@@ -84,7 +84,7 @@ account to fund, exactly as the Purse's.
    an all-affording chain commits whole, a chain whose last step overdraws reverses whole;
    the verdict identical across every arrival permutation; conservation over every path;
    every refusal held.
-2. **r2 — travels as a record.** `braid_bron.rye`: the verdict renders to a
+2. **r2 — travels as a record.** `braid_kyri.rye`: the verdict renders to a
    `format braid-v1` record and parses back byte-for-byte, conservation as the record's own
    law.
 3. **r3 — reads across a Knot.** `braid_knot.rye`: the linked-chain verdict reads one hand

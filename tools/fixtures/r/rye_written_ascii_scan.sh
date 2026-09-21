@@ -51,7 +51,7 @@
 #
 # THE SHELL HALF CLOSED THE NEXT DAY, and the guess above read seven hundred times small. This
 # header priced the remainder from the two fixture files it happened to know --
-# `tools/fixtures/a/amphora_pour.sh` and `tools/fixtures/a/amphora_vessel_lap1.bron`, "2 characters
+# `tools/fixtures/a/amphora_pour.sh` and `tools/fixtures/a/amphora_vessel_lap1.kyri`, "2 characters
 # in 2 files" -- and a meter can only price what it opens, which is the reading rather than a
 # scold. `tools/fixtures/s/shell_written_ascii_scan.sh` reads a HEREDOC BODY across 3,556 tracked
 # `.sh` and `.rish` sources and finds 1,419 characters in 122 files (`20260912.023000`), 1,417 of

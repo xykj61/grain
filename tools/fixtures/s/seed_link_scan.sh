@@ -3,7 +3,7 @@
 #
 # WHY. This tree publishes two ways from one set of files. The maintainer's field carries every
 # room; the public seed is an ALLOWLIST projection of it, named path by path in
-# template-manifest.bron and pushed to grain-os/grain. One README serves both. So a link that
+# template-manifest.kyri and pushed to grain-os/grain. One README serves both. So a link that
 # resolves perfectly in the field -- `gratitude/Rust.md`, `construction/ITINERARY.md` -- resolves NOWHERE
 # for the reader who arrives at the seed, because the seed never carried that room.
 #
@@ -53,7 +53,7 @@
 
 set -u
 
-MANIFEST=${SEED_LINK_MANIFEST:-template-manifest.bron}
+MANIFEST=${SEED_LINK_MANIFEST:-template-manifest.kyri}
 
 # The front door: what a first-time visitor opens. Named, never discovered -- a guard whose
 # enforced set grows by itself is a guard that reds on work it never agreed to cover.

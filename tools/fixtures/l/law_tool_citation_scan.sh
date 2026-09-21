@@ -103,7 +103,7 @@ max_cited=4096
 max_room_cited=4096
 
 # The file shapes this tree authors. A token ending in none of them is prose rather than a path.
-room_ext='md|mdc|rye|rish|sh|txt|kyri|bron|brix|glow|myc|brush|nix|json|example'
+room_ext='md|mdc|rye|rish|sh|txt|kyri|kyri|brix|glow|myc|brush|nix|json|example'
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -122,7 +122,7 @@ cite() {
   # shellcheck disable=SC2046
   grep -ohE 'tools(/[A-Za-z0-9_.-]+)+' $(cat "$work/pages.txt") 2>/dev/null \
     | sed 's/[.,;:)]*$//' \
-    | grep -E '\.(rish|sh|rye|txt|kyri|bron)$|^tools/hooks/[A-Za-z0-9_-]+$' \
+    | grep -E '\.(rish|sh|rye|txt|kyri|kyri)$|^tools/hooks/[A-Za-z0-9_-]+$' \
     | sort -u > "$work/cited.txt" || : > "$work/cited.txt"
 }
 

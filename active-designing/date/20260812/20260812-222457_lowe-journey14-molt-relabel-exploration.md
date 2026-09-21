@@ -3,13 +3,13 @@
 **Stamp:** `20260812.222457` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Mixed -- Self-approved design round — opens Journey 14 of Chapter 4 (Seal) in the 1,024-round itinerary
 **Waymark:** **LOWE** (CION Equinox 2 — Molt, already seated; each journey is `LOWE-J<N>`)
-**Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-215153_vols-journey13-survey-complete-census-exploration.md`](20260812-215153_vols-journey13-survey-complete-census-exploration.md) · [`../work-in-progress/vols-survey-ledger.bron`](../work-in-progress/vols-survey-ledger.bron) · [`../tools/gen/chapter/cion_module_labeling_witness.rish`](../tools/gen/chapter/cion_module_labeling_witness.rish) · [`../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`](../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
+**Kin:** [`../work-in-progress/REMEMBER.md`](../work-in-progress/REMEMBER.md) · [`20260812-171050_the-1024-round-itinerary.md`](20260812-171050_the-1024-round-itinerary.md) · [`20260812-215153_vols-journey13-survey-complete-census-exploration.md`](20260812-215153_vols-journey13-survey-complete-census-exploration.md) · [`../work-in-progress/vols-survey-ledger.kyri`](../work-in-progress/vols-survey-ledger.kyri) · [`../tools/gen/chapter/cion_module_labeling_witness.rish`](../tools/gen/chapter/cion_module_labeling_witness.rish) · [`../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`](../context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md)
 
 ---
 
 ## Where the road stands
 
-Chapter 4's first journey, Survey (VOLS), closed with a census complete by construction: **223 sites = 144 kept witness handles + 79 prose gaps**, seated as the living pin `work-in-progress/vols-survey-ledger.bron`, read true against an independent measure. The map LOWE relabels against stands on metal — every prose gap named, every kept handle set apart.
+Chapter 4's first journey, Survey (VOLS), closed with a census complete by construction: **223 sites = 144 kept witness handles + 79 prose gaps**, seated as the living pin `work-in-progress/vols-survey-ledger.kyri`, read true against an independent measure. The map LOWE relabels against stands on metal — every prose gap named, every kept handle set apart.
 
 Journey 14 is **Molt (LOWE)**: *relabel every living now-line to chronological/semantic form, dated testimony untouched.* Where VOLS named the work, LOWE does it — it carries each of the 79 prose gaps from a bare `lap N` capability identity to a **semantic label plus stamp**, the form the labeling law already seated for the seven hand-swept modules, and it **grows the CION guard** to cover each relabeled surface so it can never drift back.
 

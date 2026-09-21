@@ -6,11 +6,11 @@
 
 ## Prompt
 
-`go` then `kg` — push settlement/Bron lap; continue Open Questions backlog.
+`go` then `kg` — push settlement/Kyri lap; continue Open Questions backlog.
 
 ## go
 
-Pushed `4f7213d` to four remotes — settlement refresh, Bron proposal, TASKS/linengrow hygiene.
+Pushed `4f7213d` to four remotes — settlement refresh, Kyri proposal, TASKS/linengrow hygiene.
 
 ## kg
 

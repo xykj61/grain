@@ -17,7 +17,7 @@
 # BadSignature), and the count meets the previous roll's Byzantine threshold n−(n−1)/3 (else BelowQuorum).
 # The crux demonstration: the successor's OWN fresh keys, signing their own coronation, REFUSE
 # verify_warrant NotMember -- a set cannot crown itself; only the roll it succeeds can hand authority
-# forward. Composes muster + muster_bron + kumara public API only, editing none; demo validator and keeper
+# forward. Composes muster + muster_kyri + kumara public API only, editing none; demo validator and keeper
 # seeds -- no key, no funds, no network, no custody.
 #
 # Scope: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
@@ -27,7 +27,7 @@
 
 say "mycelium-warrant: Language EN — a validator set does not seize authority; it receives it: a successor roll is believed only when a Byzantine quorum of the roll it replaces signed its content-address."
 say "mycelium-warrant: Style Radiant — the Muster named which nodes are the validators; the Warrant lets that roll change hands without ever letting a set crown itself, so trust chains forward across epochs without a trusted third party."
-say "mycelium-warrant: Lens TAME — the succession law composes muster + muster_bron + kumara public API; the certificate is bounded at warrant_max_sigs; each endorsement is domain-separated and digest-bound; every endorser must be enrolled in the previous roll and the count must meet its Byzantine threshold; refuses tamper; demo seeds only, no key held."
+say "mycelium-warrant: Lens TAME — the succession law composes muster + muster_kyri + kumara public API; the certificate is bounded at warrant_max_sigs; each endorsement is domain-separated and digest-bound; every endorser must be enrolled in the previous roll and the count must meet its Byzantine threshold; refuses tamper; demo seeds only, no key held."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mycelium/bin/warrant"

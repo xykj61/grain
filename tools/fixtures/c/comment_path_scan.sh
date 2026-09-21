@@ -15,7 +15,7 @@
 # tools/fixtures/l/link_text_promise_scan.sh divide the same work for pages.
 #
 # WHAT IS READ. A tracked authored source, on a line whose first non-blank characters are its
-# language's comment mark: `//` in .rye and .zig, `::` in .glow, `#` in .rish, .sh, .kyri, .bron and
+# language's comment mark: `//` in .rye and .zig, `::` in .glow, `#` in .rish, .sh, .kyri, .kyri and
 # .brix. A span counts only when it LOOKS like a path a reader would copy -- it holds a slash, ends
 # in an extension this tree writes, and carries no space, glob or punctuation a path would not.
 #
@@ -136,7 +136,7 @@ awk '$1 == "120000" { sub(/^[^\t]*\t/, ""); print }' "$work/staged.txt" > "$work
 # tracked spelling.
 # An empty pattern file is read differently by different greps, so the symlink filter runs only
 # when there is something to filter -- a portability trap rather than a style choice.
-git ls-files '*.rye' '*.rish' '*.sh' '*.kyri' '*.bron' '*.glow' '*.brix' '*.zig' \
+git ls-files '*.rye' '*.rish' '*.sh' '*.kyri' '*.kyri' '*.glow' '*.brix' '*.zig' \
   | grep -v '^vendor/' | grep -v '^gratitude/' | grep -v '^seed/' > "$work/all.txt" || true
 if [ -s "$work/links.txt" ]; then
   grep -vxF -f "$work/links.txt" "$work/all.txt" > "$work/kept.txt" || true
@@ -213,7 +213,7 @@ FNR == 1 {
     if (s ~ /^[^\/]*:/) continue
     if (s ~ /^(\/|!|~)/) continue
     if (s !~ /\//) continue
-    if (s !~ /\.(md|mdc|rish|rye|sh|kyri|bron|brix|glow|awk|json|txt|nix|brush|myc|zig|py)$/) continue
+    if (s !~ /\.(md|mdc|rish|rye|sh|kyri|kyri|brix|glow|awk|json|txt|nix|brush|myc|zig|py)$/) continue
     if (placeholder(s)) { print "placeholder\t" page "\t" s; continue }
     # Three honest spellings: root-relative, page-relative, room-relative.
     if (here(norm(s))) continue

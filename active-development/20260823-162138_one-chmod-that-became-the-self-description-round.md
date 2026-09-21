@@ -113,7 +113,7 @@ depth; and the living seed prompt in `recursion-prompts/seed/` names folded path
 | `context/specs/enclosure-editors.md` (9) | same two | `tools/l/...` |
 | `tools/l/launch-cursor.sh.example` (3) | copy target at the old depth | beside the example |
 | `tools/l/launch-zed.sh.example` (2 + secrets) | same, plus `tools/secrets.env` | `tools/l/`, `tools/s/` |
-| `tools/p/pond_exit_bron_master_seal.sh` | a comment naming the old launcher | repointed |
+| `tools/p/pond_exit_kyri_master_seal.sh` | a comment naming the old launcher | repointed |
 | `ember/README.md` (6) | `tools/oven_*`, and the elder module name | `tools/e/ember_*` |
 
 **Left standing, each for a stated reason:** the `versions/` prompts under `recursion-prompts/` are

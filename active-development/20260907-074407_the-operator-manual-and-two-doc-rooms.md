@@ -25,7 +25,7 @@ tomorrow will not read. What a hand actually needs:
   the watcher type a ship's relaunch into a stranger's keyboard.
 - **Where effort is set:** three files per tree -- the `--effort` flag in `tools/f/fleet-loop.sh`
   (twice, the dry-run printf and the real invocation), `effortLevel` in `.claude/settings.json`, and
-  an `effort` line in the untracked per-clone `GLOW_PROFILE.bron`. A `sed` leaves running shells on
+  an `effort` line in the untracked per-clone `GLOW_PROFILE.kyri`. A `sed` leaves running shells on
   the old value, so a change is not live until the loops are relaunched -- **read `ps` rather than
   the file** to know which is running.
 - **After a session limit or an account switch:** log in on the host **first**, since `agent-jail.sh`
@@ -48,7 +48,7 @@ may be one room wearing two names, or two rooms with an honest boundary. What de
 - **What each actually holds** -- read both indexes rather than inferring from the names.
 - **Who cites each** -- a whole-tree inbound sweep, which is lawful and required before any move
   (*references are promises*).
-- **How the seed manifest treats them** -- `template-manifest.bron` may already give them different
+- **How the seed manifest treats them** -- `template-manifest.kyri` may already give them different
   verdicts, and a merge would have to choose one.
 
 **A merge that turns out to be two rooms costs every inbound reference**, so the proposal comes back

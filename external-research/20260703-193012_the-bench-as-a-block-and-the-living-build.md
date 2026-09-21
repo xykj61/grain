@@ -67,7 +67,7 @@ The loop's current discipline is already prior art of a high order. Packets name
 
 Two economics govern the LLM-shaped seam. First, **stability is speed**: a model's cheapest input is the prefix it has already seen, so laws and recipes accreted verbatim from prompt version to prompt version are cache-shaped bytes -- accrete-never-break turns out to be a performance optimization as well as a design stability law. Reference rather than repeat, once a fact is seated in the tree. Second, **two registers, kept distinct**: radiant prose for the human at the center, plain values for the machines -- `.brix` descriptors, `.rish` structured results, zips carrying comments. The wider world converged on the same split this year: the Model Context Protocol now rests under neutral Linux Foundation stewardship as the standard seam between an agent and its tools, and the Agent-to-Agent protocol reached v1.0 beside it for agent-to-agent task exchange. Between Cursor and Claude today the mailbox is single and ordered -- the actor model's oldest lesson -- and the moment a second concurrent writer exists, ordering earns real machinery. That machinery already has a name and a gate: Mycelium, at M4, exactly where it belongs.
 
-One word in the commissioning question, *Bron*, holds no seat in LEXICON and is read here purely as the seam's plain description -- inter-agent message passing. If it is a name candidate, it parks in RTAC on Kaeden's word, per the standing law.
+One word in the commissioning question, *Kyri*, holds no seat in LEXICON and is read here purely as the seam's plain description -- inter-agent message passing. If it is a name candidate, it parks in RTAC on Kaeden's word, per the standing law.
 
 ## What Wants Extraction
 

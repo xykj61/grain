@@ -3,7 +3,7 @@
 //! Closes the seam the WADE1 bridge names
 //! (active-designing/date/20260812/20260812-000456_wade1-brush-surface-bridge-seam.md): a
 //! `.brush` *file* declares a `style:` token block; the parser reassembles it
-//! into a flat Bron token sheet; tokens.rye's infuse cascade resolves it; and a
+//! into a flat Kyri token sheet; tokens.rye's infuse cascade resolves it; and a
 //! resolved sheet dresses a Skate grid to the declared colors. Source -> token
 //! sheet -> infuse cascade -> Skate styled runs, proven from a file on disk.
 //!
@@ -26,7 +26,7 @@ const styled_fixture = "brushstroke/styled-frame.brush";
 const grid_cols: u32 = 32;
 const grid_rows: u32 = 4;
 
-/// Read the fixture, collect its declared style into a bounded Bron sheet, and
+/// Read the fixture, collect its declared style into a bounded Kyri sheet, and
 /// return the byte length. The sheet buffer is the caller's, tokens.rye-shaped.
 fn read_style_sheet(garden: std.mem.Allocator, io: std.Io, out: *[brush.max_style_bytes]u8) !u32 {
     const cwd = std.Io.Dir.cwd();

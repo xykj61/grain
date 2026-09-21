@@ -12,7 +12,7 @@
 # the only draw that comes short is the round-2 draw — so the app's full commit tie-break and this file-order
 # accounting name the same loser. It prints the triple `<loser-signer-hex> <drew> <short>`.
 #
-#   awk -f tools/fixtures/t/till_dag_truth.awk tools/fixtures/t/till_dag.bron
+#   awk -f tools/fixtures/t/till_dag_truth.awk tools/fixtures/t/till_dag.kyri
 #   -> "<loser-signer-hex> <drew> <short>"
 
 $1 == "block" && $4 == 1 {                       # an issue funds the treasury

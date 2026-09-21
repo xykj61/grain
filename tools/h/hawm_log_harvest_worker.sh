@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# hawm_log_harvest_worker.sh -- STOA275: fold HAWM0 boot meta into a Bron harvest.
+# hawm_log_harvest_worker.sh -- STOA275: fold HAWM0 boot meta into a Kyri harvest.
 #
 # Reads tools/.cache/hawm0/hawm0-boot-meta.txt (or --fixture) and writes
-# tools/.cache/hawm0/hawm-harvest.bron with the hawm-harvest-v1 shape.
+# tools/.cache/hawm0/hawm-harvest.kyri with the hawm-harvest-v1 shape.
 # Device-free when meta already exists; does not boot the emulator.
 #
 #   ./tools/h/hawm_log_harvest_worker.sh
@@ -15,8 +15,8 @@ cd "$REPO_ROOT"
 
 CACHE="$REPO_ROOT/tools/.cache/hawm0"
 META="$CACHE/hawm0-boot-meta.txt"
-OUT="$CACHE/hawm-harvest.bron"
-FIXTURE="$REPO_ROOT/tools/fixtures/h/hawm_harvest_v1.bron"
+OUT="$CACHE/hawm-harvest.kyri"
+FIXTURE="$REPO_ROOT/tools/fixtures/h/hawm_harvest_v1.kyri"
 STAMP="$(date '+%Y%m%d.%H%M%S')"
 
 use_fixture=0

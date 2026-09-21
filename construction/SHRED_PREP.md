@@ -46,7 +46,7 @@ Prior pin (counsel e184): orphans **895** - health_now **41** -- delta **+26** o
 | waymarks | 84 | orphan floor | await opening word |
 | expanding-prompts | 36 | orphan floor | await opening word |
 | active-designing | 15 | orphan floor | await opening word |
-| bron-resins | 4 | orphan floor | await opening word |
+| kyri-resins | 4 | orphan floor | await opening word |
 | external-research | 2 | orphan floor | await opening word |
 | foundations | 2 | orphan floor | await opening word |
 | classical-vedic-astrology | 1 | orphan floor | await opening word |
@@ -118,7 +118,7 @@ occurrences across 243 tracked files**, 187 of them dated testimony that keeps e
 
 **Left standing on purpose -- each a fact rather than a name we own:** `context/PUBKEYS.md`
 (`Kaeden Reyklah`, `@veganreyklah2` -- a surname and a real account inside the record whose job is
-to name them); `construction/domain-registry.bron` (`reyklah.com`, `.net` -- real registrations);
+to name them); `construction/domain-registry.kyri` (`reyklah.com`, `.net` -- real registrations);
 every comment teaching what a thing molted FROM; and 187 dated files plus git history.
 
 **Second pass, granted `20260908.181500`.** The env var `VEGANREYKLAH2_ROOT` becomes **`GRAIN_ROOT`**
@@ -170,7 +170,7 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 *Four closed sections, awaiting no decision, stand whole at [`archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md) -- folded `20260823.234815`, and the recital of what moved rides on the shelf rather than on this pin (REDS %232).*
 
-- Molts seated and sheds complete, `20260810`-`20260818` (Pool->Pond - Riyo->Kyri - root `.brix` - old-waymark logs - Bron->Kyri pending): [`archive/SHRED_PREP-molts-seated-20260810-20260818.md`](archive/SHRED_PREP-molts-seated-20260810-20260818.md)
+- Molts seated and sheds complete, `20260810`-`20260818` (Pool->Pond - Riyo->Kyri - root `.brix` - old-waymark logs - Kyri->Kyri pending): [`archive/SHRED_PREP-molts-seated-20260810-20260818.md`](archive/SHRED_PREP-molts-seated-20260810-20260818.md)
 
 ## Hard lines
 
@@ -209,7 +209,7 @@ Their readings and decisions remain available; neither queues a new cut.
 
 Keaton asked `20260907` why both editor rooms still stood. **`.vscode` needed no prep and is gone**:
 one file, no guard naming it, no living citer -- retired in that lap with its `.gitignore` un-ignores
-and its `template-manifest.bron` rows.
+and its `template-manifest.kyri` rows.
 
 **`.cursor` is a different act, because three things bind it and each is checkable.**
 
@@ -217,7 +217,7 @@ and its `template-manifest.bron` rows.
 | --- | --- | --- |
 | `.cursor/` -- 53 rule twins | `.claude/rules/*.md`, 51 rules, which every seat prompt already names as the law a lap reads | **Gate `%7`.** `tools/r/rule_twin_witness.rish` compares the two rooms and sits on the roster at that gate, so retiring the room retires the guard -- Keaton's word, not a lap's. |
 | the 25 rules ending in a *Canonical Cursor twin* line | the same rules with that footer removed | Each footer names a partner; the moment the partner goes, 25 living sentences become false. One sweep, in the same commit as the removal. |
-| `scrub .cursor` in `template-manifest.bron` | the manifest without that row | The public seed ships the room depersonalised today, so the retirement changes what a stranger inherits -- and `sow_allow_reach` will read the room as gone rather than as silently missing, which is the guard doing its job. |
+| `scrub .cursor` in `template-manifest.kyri` | the manifest without that row | The public seed ships the room depersonalised today, so the retirement changes what a stranger inherits -- and `sow_allow_reach` will read the room as gone rather than as silently missing, which is the guard doing its job. |
 
 **Measured `20260907.023053`:** `.cursor` holds 53 tracked files, all under `rules/`; `.claude/rules`
 holds 51 `.md`; `rule_twin` reads 39 drifted pairs against a ceiling of 36 and has been gated at

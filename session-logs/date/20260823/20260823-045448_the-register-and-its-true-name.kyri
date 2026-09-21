@@ -37,7 +37,7 @@ think Keaton set the model to Fable 5 in the rules, then corrected mid-turn to k
 obs `claude --help` names the flag rather than my guessing it: `--effort low|medium|high|xhigh|max`, with `effortLevel` as the settings key. The host copy at `~/.claude/settings.json` reads medium and leaves when ai-jail exits, so max is seated in the TRACKED `.claude/settings.json` inside ~/grain, in both profiles as an `effort` field, and passed explicitly as `--effort max` on all five claude invocations in the season recipe. Three homes, so a drifted settings file cannot quietly lower it.
 obs Seated three names for one style: New Gauge Style in full, Gauge Style in short form, and Gauge Guidance where it addresses an agent -- the loop seed and the season recipe now say Gauge Guidance, which is to prose what TAME Guidance is to code. Status bar reads New Gauge.
 file .claude/settings.json max effort seated where a fresh clone inherits it
-file GLOW_PROFILE.template.bron the effort field and why an unattended lap takes the top of the scale
+file GLOW_PROFILE.template.kyri the effort field and why an unattended lap takes the top of the scale
 file tools/launch-claude-chapter.rish --effort max on every invocation; the recipe prompt follows Gauge Guidance
 file recursion-prompts/seed/autonomous-loop.seed.md section 0 describes max mode and where it is set
 loom witness=prose_register door_docs=5 door_max_pct=20 readme_before=46 readme_after=13 foundation_before=54 foundation_after=11 radiant_baseline=29 teaching_over=14 ceiling=14 control_behaviors=9

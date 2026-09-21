@@ -35,7 +35,7 @@ The counsel `171712` gate-sort held: six small proposals and one custody gate (S
 | `dcd5452` | `PUBKEYS.template.md`; `identity_shape.rish` context fallback; `identity_check.rish` |
 | `48ebc2b` | Identity witness wired into `tools/parity.rish` |
 | `223e575` | Parity **197** GREEN on cloud (~2m28s) |
-| `74378c5` | **SLC-L3** -- `settlement_core.rye`, `settlement.rye`, lane seams, bron goldens, witness |
+| `74378c5` | **SLC-L3** -- `settlement_core.rye`, `settlement.rye`, lane seams, kyri goldens, witness |
 | `095e620` | Doorway fix for SLC-L3 hammock; post-land hygiene; parity **198** |
 | `2fad0c0` | Merge PR #3 -- SLC-L3 settlement branch |
 | `e751b94` | SLC-L4 design hammock -- three ZK passes named |
@@ -49,7 +49,7 @@ Source: counsel [`171712`](../counsel/20260708-171712_claude-counsel-every-gate-
 
 | Proposal | Affirmation landed in |
 |----------|----------------------|
-| **Bron beside Brix** | `context/LEXICON.md` -- Bron = immutable values at seams; Brix = composable descriptions |
+| **Kyri beside Brix** | `context/LEXICON.md` -- Kyri = immutable values at seams; Brix = composable descriptions |
 | **Silo retirement** | LEXICON + gratitude README -- module retired; Brix bonds; lowercase silo = astrology lane |
 | **Linengrow home** | TASKS Open Questions -- stay in repo until SLC-L3 witnessed + deployable whole |
 | **TASKS.md name** | `work-in-progress/README.md` -- keep name; "workbench" as alias only |
@@ -81,7 +81,7 @@ Counsel `171712` named a pre-existing gap (not a regression): missing template, 
 
 A signed SLC-L1 civic fact settles on a **public testnet** thin rail; a third party verifies the settlement receipt **without trusting our folder**.
 
-### Receipt shape (`.bron`)
+### Receipt shape (`.kyri`)
 
 Seven fields: `log_digest`, `chain`, `asset`, `tx_id`, `amount`, `fact_stamp`, `stamp`. Goldens pin six; `log_digest` computed at runtime.
 

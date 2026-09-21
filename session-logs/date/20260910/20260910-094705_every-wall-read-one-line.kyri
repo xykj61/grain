@@ -3,7 +3,7 @@ stamp 20260910.094705
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role repository agent -- COPAL seat, amphora/ and bron-resins/
+role repository agent -- COPAL seat, amphora/ and kyri-resins/
 modality text
 model claude-opus-5
 model_status active runtime identity reported by the harness environment block
@@ -14,7 +14,7 @@ evidence .claude/settings.json -- tools/f/fleet-loop.sh execs --effort medium ba
 voice Kyri
 host Linux pier, America/New_York, grain-copal checkout
 title Every wall read one line, and the fault lived between two
-prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and bron-resins/
+prompt the autonomous loop's own baton -- COPAL seat, lane amphora/ and kyri-resins/
 rota lap 4559, row 4 -- Earth, the row that breathes in; its DUAL seat is the marked value, whose own text says the amphora's shoulder line names what rides inside, so the lap read the vessel's three fields at the door rather than arguing about them
 think Opened cold with standing_equipment_run.sh --detach and held the tree still for its whole 47 minutes; every write until it closed went to amphora/bin/ and .lap/, both gitignored, so tree_at_open equalled tree_at_close.
 think Read the earth row's three documents. The dual seat, foundations/20260703-202312_the-marked-value.md, states that every manifest entry carries three fields -- type-mark, digest, name. Two of the three had walls: mark_verdict for the mark, resin_body_proven for the digest. The name had name_verdict, which reads one name's FACE, and nothing anywhere asked whether two lines named one place.

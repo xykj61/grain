@@ -22,7 +22,7 @@ Each component is a `_<name>.prompt.md` file with:
 
 - **A one-line purpose** -- what request this component serves.
 - **Tokens** -- `{{LIKE_THIS}}` placeholders the user fills.
-- **The expanded prompt body** -- written so that, once tokens are filled, it can be handed to an agent as-is and produce work in this fork's own discipline (research before code, name the fork honestly, log to bron, cite the silo not the original, address the generic employee).
+- **The expanded prompt body** -- written so that, once tokens are filled, it can be handed to an agent as-is and produce work in this fork's own discipline (research before code, name the fork honestly, log to kyri, cite the silo not the original, address the generic employee).
 - **A "produces" line** -- what artifacts a good run leaves behind.
 
 Components are prefixed `_` (like a template partial) so they sort together and read as skeletons rather than finished prompts.
@@ -34,7 +34,7 @@ Components are prefixed `_` (like a template partial) so they sort together and 
 
 ## Why It Is Shaped This Way
 
-This fork has, in a single season, run the same few prompt shapes many times: "design a fusion," "propose a name," "silo a source," "scope a module." Writing each as a component means the discipline (secular voice, held-whole gratitude, bounded TAME, honest open-questions, bron logging) is carried in the template rather than remembered each time -- the same reason a UI library exists. In time these generalize into the shared prompt vocabulary a mature Grain hands to every contributor.
+This fork has, in a single season, run the same few prompt shapes many times: "design a fusion," "propose a name," "silo a source," "scope a module." Writing each as a component means the discipline (secular voice, held-whole gratitude, bounded TAME, honest open-questions, kyri logging) is carried in the template rather than remembered each time -- the same reason a UI library exists. In time these generalize into the shared prompt vocabulary a mature Grain hands to every contributor.
 
 ---
 

@@ -9,12 +9,12 @@
 //! can open and walk, and proves the property the whole Statement rests on: an account's own line --
 //! WHERE DO I STAND? -- is true to the bytes.
 //!
-//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.bron`, a genuine record produced
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.kyri`, a genuine record produced
 //! reproducibly by `mycelium/lapse_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to
 //! Bob under a deadline the order's clock reaches, so it LAPSES and the hundred comes home; Alice pledges
 //! 100 to Carol under a far deadline and leaves it OPEN), `@embedFile`-bound at compile time through a
 //! symlink in `mycelium/corpora/` -- no network, the bytes read are the tree's own. Two independent readings
-//! must agree: the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add` (re-verifying
+//! must agree: the app parses the record through `cord_kyri`, REBUILDS the Dag under `cord.add` (re-verifying
 //! every signature), resolves it through `lapse`, projects the genesis-funded account's `Statement` through
 //! `statement`, and reports the account key with its balance - reserved - received; the r4 witness
 //! cross-checks that against `tools/fixtures/s/statement_dag_truth.awk`'s per-account deadline-clock reading of
@@ -26,7 +26,7 @@
 //! the same way (the app as the account whose received equals what genesis issued, the awk as the first
 //! kind-1 fact's recipient) -- so no magic constant chooses whose line is read.
 //!
-//! Additive -- composes `cord_bron` + `cord` + `lapse` + `statement` public API only (each re-runs GREEN).
+//! Additive -- composes `cord_kyri` + `cord` + `lapse` + `statement` public API only (each re-runs GREEN).
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody. A SERVED statement (a
 //! holder fetching their own line over Comlink) reaches the Comlink-served gate, the maintainer's hand.
 //!
@@ -37,7 +37,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const lapse = @import("lapse.rye");
 const statement = @import("statement.rye");
 
@@ -45,7 +45,7 @@ pub const statement_true_version = "20260813.091851";
 
 /// The real ledger record, bound at compile time -- the tree's own bytes, never a drift. Reused from the
 /// Lapse's fixture, since a statement is a projection of exactly the resolved ledger the Lapse produces.
-const real_dag = @embedFile("corpora/lapse_dag.bron");
+const real_dag = @embedFile("corpora/lapse_dag.kyri");
 
 const hex_digits = "0123456789abcdef";
 
@@ -88,10 +88,10 @@ fn funded_account(l: *const lapse.Ledger) ?u32 {
 /// Read the real record: parse it, rebuild the Dag under `cord.add` (verifying every signature), resolve it
 /// through the Lapse, project the genesis-funded account's Statement, and read off its position.
 pub fn read_statement(text: []const u8) !Reading {
-    const rec = try cord_bron.parse(text);
+    const rec = try cord_kyri.parse(text);
     // invariant: a real ledger record carries blocks -- an empty Dag holds no account to read.
     if (rec.len == 0) return error.BadFormat;
-    var dag = try cord_bron.rebuild(&rec);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
     const pk = verdict.accounts[ai].pk[0..];
@@ -127,8 +127,8 @@ fn welcome_reading_true_to_bytes() !void {
 /// The projected statement reconciles over the real bytes: the funded account's reserved equals exactly the
 /// amount of its single still-open made pledge (to Carol), the lapsed pledge (to Bob) counting toward none.
 fn welcome_statement_reconciles_over_real_bytes() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     const ai = funded_account(&verdict) orelse return error.NoFundedAccount;
     const s = try statement.statement_for(&verdict, verdict.accounts[ai].pk[0..]);
@@ -145,8 +145,8 @@ fn welcome_statement_reconciles_over_real_bytes() !void {
 /// Conservation holds over the real bytes: across every account, balance + reserved sums to exactly what
 /// genesis issued -- the projection conserves, not merely the ledger it reads.
 fn welcome_statements_conserve_over_real_bytes() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try lapse.resolve(&dag);
     // invariant: the real record issued exactly the two hundred the genesis credit funds.
     assert(verdict.total_issued == 200);

@@ -14,7 +14,7 @@ Kaeden said kg (keep going). After tablecloth device wire (**246**), the Visual 
 
 ## Files
 
-- `tools/fixtures/tablecloth_query_device_hits.bron`
+- `tools/fixtures/tablecloth_query_device_hits.kyri`
 - `pond/apps/drawn_terminal.rye` — `querydeviceviewtest`
 - `tools/realidream_query_device_view.rish` · `tools/parity.rish`
 - hammock · TASKS · ROADMAP · LEXICON

@@ -50,7 +50,7 @@ length names a family rather than an algorithm, and the scheme stays free to mov
 
 **Which matters, because this tree already owns SHA3.** `crypto/sha3.rye`, `crypto/sha3_digest.rye`
 and `crypto/keccak256.rye` stand written, and SHA3-512 already seals
-`construction/waymark-registry.bron` and addresses content in Aurora.
+`construction/waymark-registry.kyri` and addresses content in Aurora.
 
 **And SHA3-512 is a real alternative with a real argument.** Its width is **128** hex characters
 rather than 64, so the row would read differently:

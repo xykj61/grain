@@ -2,8 +2,8 @@
 #
 # Claude 210800 - 212412 - 213600: column one = incumbent (sixbar); column two
 # = gaps. Proves column one GREEN, records column-two gap rows, asserts exit
-# bron and .asc absent (master-seal policy ready) and ENCLOSURE=ai-jail in the
-# example -- season-closed is measured. Exit bron counts only when master-signed.
+# kyri and .asc absent (master-seal policy ready) and ENCLOSURE=ai-jail in the
+# example -- season-closed is measured. Exit kyri counts only when master-signed.
 #
 #   rishi/bin/rishi run tools/p/pond_enclosure_scorecard.rish
 
@@ -11,9 +11,9 @@ let cache = "tools/.cache/pond-enclosure"
 let meta = "${cache}/scorecard-meta.txt"
 let scorecard = "active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md"
 let exit_card = "active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md"
-let exit_bron = "bron-resins/pond-supersede-exit.bron"
+let exit_kyri = "kyri-resins/pond-supersede-exit.kyri"
 let example = "tools/e/enclosure.conf.example"
-let master_seal = "tools/p/pond_exit_bron_master_seal.sh"
+let master_seal = "tools/p/pond_exit_kyri_master_seal.sh"
 
 say "pond scorecard: requiring two-column doc · exit card…"
 let have_sc = run ["test" "-f" scorecard]
@@ -24,7 +24,7 @@ let sc_text = read-file scorecard
 assert sc_text contains "Incumbent-measured" else "scorecard must name incumbent-measured column"
 assert sc_text contains "Pond-required" else "scorecard must name pond-required column"
 
-say "pond scorecard: season-closed measured — master-seal helper · bron and .asc absent…"
+say "pond scorecard: season-closed measured — master-seal helper · kyri and .asc absent…"
 let have_seal = run ["test" "-x" master_seal]
 assert have_seal.ok else "missing executable ${master_seal}"
 let seal_closed = run ["bash" master_seal "--season-closed"]
@@ -32,8 +32,8 @@ assert seal_closed.ok else "master-seal --season-closed failed"
 assert seal_closed.out contains "season closed measured" else "master-seal missing season-closed OK"
 let card_text = read-file exit_card
 assert card_text contains "master-signed" else "exit card must name master-signed custody"
-assert card_text contains "pond-supersede-exit.bron.asc" else "exit card must name detached .asc"
-say "pond scorecard: ${exit_bron} and .asc absent — season sleeps · master-seal policy ready"
+assert card_text contains "pond-supersede-exit.kyri.asc" else "exit card must name detached .asc"
+say "pond scorecard: ${exit_kyri} and .asc absent — season sleeps · master-seal policy ready"
 
 say "pond scorecard: retreat flag greppable on example…"
 let have_example = run ["test" "-f" example]
@@ -68,7 +68,7 @@ if gap_bus == "closed" then say "pond scorecard column two: bus three-door close
 say "pond scorecard column two: GAP gpu-lane-customs — present-when-granted / absent-when-not not yet Pond policy"
 # Finest line (Claude 212412): refuse false supersede green on the incumbent.
 assert gap_bus == "open" else "column two bus already closed on this host — re-read exit card; do not claim supersede from this witness alone"
-say "pond scorecard: supersede season remains closed (exit bron absent · master-seal required · measured)"
+say "pond scorecard: supersede season remains closed (exit kyri absent · master-seal required · measured)"
 
 say "pond scorecard: writing ${meta}…"
 let mkdir = run ["mkdir" "-p" cache]
@@ -91,7 +91,7 @@ let w7 = run ["sh" "-c" "echo gap_gpu_lane_customs open >> ${meta}"]
 assert w7.ok
 let w8 = run ["sh" "-c" "echo supersede_season closed >> ${meta}"]
 assert w8.ok
-let w8b = run ["sh" "-c" "echo exit_bron absent ${exit_bron} >> ${meta}"]
+let w8b = run ["sh" "-c" "echo exit_kyri absent ${exit_kyri} >> ${meta}"]
 assert w8b.ok
 let w8c = run ["sh" "-c" "echo enclosure_default ai-jail >> ${meta}"]
 assert w8c.ok

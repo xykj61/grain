@@ -203,7 +203,7 @@ than leaving it distributed across three companion studies.
 
 | Falsifier | Run | What it returned |
 |---|---|---|
-| **First** -- name the deployment; given a mains-only roadmap this paper is enthusiasm | `20260908.025249` | **Fails.** Of 33 living and hand-seated ladders in `construction/waymark-registry.bron`, **13 name a hardware target and 7 are battery-primary**. DREY settles it alone: firmware whose capture is *"held only while powered, provably dissolved on power-down."* |
+| **First** -- name the deployment; given a mains-only roadmap this paper is enthusiasm | `20260908.025249` | **Fails.** Of 33 living and hand-seated ladders in `construction/waymark-registry.kyri`, **13 name a hardware target and 7 are battery-primary**. DREY settles it alone: firmware whose capture is *"held only while powered, provably dissolved on power-down."* |
 | **Second** -- exhibit the layer that already bounds wakefulness | `20260908.021719` | **Fires on its terms, and stops short of its purpose.** Caravan bounds wakefulness twice, and the wake-and-rate shape this paper proposed is already written once at `caravan/harvest.rye:134`. There is nothing to duplicate, because the existing layer states almost no maximum. |
 | **Third** -- a power budget in which compute is a minority share | `20260908.005732` | **Neither fires nor survives.** It returns a threshold rather than a verdict: compute is a minority share exactly when the processor is awake under **14.5 percent** of wall time. |
 

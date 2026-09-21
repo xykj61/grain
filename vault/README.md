@@ -16,7 +16,7 @@ The first lap is the **disaster arithmetic**: a secret splits **Shamir-style ove
 
 - **The field is arithmetic, not memory.** GF(256) addition is XOR; multiplication is the AES field (0x11b), inversion by `a^254`. Pure functions, no tables, no state.
 - **Split and join.** `split` builds a degree `t-1` polynomial per secret byte (the byte as its constant term) and evaluates it at `x = 1..n`; `join` reconstructs by Lagrange interpolation at `x = 0`.
-- **A share is a signed shard tilak** in a **location-class** -- `home` (air-gapped machine), `kin` (other continents), `cold` (paper or steel), `relic` (hardware wallet), and one `brain` share a pilot carries in his own head. The keeper signs each share (its x, location, and a digest of its bytes), so a **tampered share never verifies**. Emitted as `format vault-shard-v1` Bron.
+- **A share is a signed shard tilak** in a **location-class** -- `home` (air-gapped machine), `kin` (other continents), `cold` (paper or steel), `relic` (hardware wallet), and one `brain` share a pilot carries in his own head. The keeper signs each share (its x, location, and a digest of its bytes), so a **tampered share never verifies**. Emitted as `format vault-shard-v1` Kyri.
 
 The selftest proves it all on a **fake** key: five shares at a threshold of three recombine byte-for-byte from three distinct subsets, two shares reveal nothing, a tampered share is refused, and a lost location is survived while three remain.
 

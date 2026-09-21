@@ -4,7 +4,7 @@
 **Shelf (full, lossless):** [`TAME_GUIDANCE.md`](TAME_GUIDANCE.md) - **Source:** `../gratitude/TIGER_STYLE.md` (studied) - **Agent rules:** [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - [`../.cursor-archive/rules/tame-guidance.mdc`](../.cursor-archive/rules/tame-guidance.mdc)
 **Room:** checkable -- reflexes bound to the witness scripts named at its close
 
-Token-dense on purpose. This is the smallest form that still holds TAME's highest points, so it can ride in the agent rules and be present every time we write **`.rye` - `.rish` - `.brix` - `.bron` - `.kyri` - Glow - Brush - `.myc`** code. The shelf keeps the full reasoning; the core keeps the reflexes.
+Token-dense on purpose. This is the smallest form that still holds TAME's highest points, so it can ride in the agent rules and be present every time we write **`.rye` - `.rish` - `.brix` - `.kyri` - `.kyri` - Glow - Brush - `.myc`** code. The shelf keeps the full reasoning; the core keeps the reflexes.
 
 ## The spine
 
@@ -32,8 +32,8 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 ## The other family tongues
 
 - **Rishi (`.rish`)** -- `run` returns `{ out, err, code, ok }`; check `.ok` **before** trusting `out`. `assert ... else "msg"` as a gate. `if/then/else`, `for-each`. No integer div/mod; put `run [ ... ]` args on one line.
-- **Brix (`.brix`)** -- composition language; declares systems, **evaluates to Bron**; every field bounded; override by **`double-seat`**/infuse, never silent reflow.
-- **Bron / Kyri (`.bron` - `.kyri`)** -- data notation: one `key value` per line, `#` comments, no quotes/braces; **parsed, not evaluated**; immutable values.
+- **Brix (`.brix`)** -- composition language; declares systems, **evaluates to Kyri**; every field bounded; override by **`double-seat`**/infuse, never silent reflow.
+- **Kyri / Kyri (`.kyri` - `.kyri`)** -- data notation: one `key value` per line, `#` comments, no quotes/braces; **parsed, not evaluated**; immutable values.
 - **Glow** -- the language: runes, **shape** (never Hoon's *mold*), lowers Glow->Rye->Zig->RISC-V; the Root rules hold through the lowering.
 - **Brush (Brushstroke)** -- paint/Skate surface; bounded frames, zero-copy where the pixels allow.
 - **Myc (`.myc` / Mycelium)** -- Sui-side reimpl; the same bounds, asserts, and named errors cross the seam.

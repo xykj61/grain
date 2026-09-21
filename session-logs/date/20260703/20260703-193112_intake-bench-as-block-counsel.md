@@ -12,7 +12,7 @@ Kaeden pasted the closing narrative and `files (8).zip`. Extracted outer packet 
 
 - Counsel round — no gate trio, no parity run; ground held as reported until full-tree zip.
 - Three extraction candidates named; await Kaeden word on fresh anchor each.
-- **Bron** ambiguity noted: LEXICON already seats Bron as `.bron` notation; counsel used the word for message-seam prose — parked in RTAC, not promoted.
+- **Kyri** ambiguity noted: LEXICON already seats Kyri as `.kyri` notation; counsel used the word for message-seam prose — parked in RTAC, not promoted.
 - Prior uncommitted `191912` commit-push log included in this seating batch.
 
 ## Files
@@ -23,7 +23,7 @@ Kaeden pasted the closing narrative and `files (8).zip`. Extracted outer packet 
 | `session-logs/20260703-193012_bench-as-block-research.md` | Claude counsel log seated |
 | `active-designing/20260703-140212_the-bench.md` | Ground link to survey |
 | `work-in-progress/TASKS.md` | Living-build counsel + extraction horizon |
-| `work-in-progress/ready-to-ask-claude.md` | Landed `193012` block; Bron note |
+| `work-in-progress/ready-to-ask-claude.md` | Landed `193012` block; Kyri note |
 | `session-logs/README.md` | Index rows |
 
 **Recommend:** keep going to **chrono sweep wire** when a full-tree zip at `999359e` lands — versioning rule ratified, witness green unwired; mechanical unless parity red.

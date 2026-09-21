@@ -17,11 +17,11 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_restore"
-let vessel = "${home}/v.bron"
-let out_home = "${home}/v.bron.season"
-let hello = "${home}/v.bron.season/hello.txt"
-let nested = "${home}/v.bron.season/nested/leaf.txt"
-let blob = "${home}/v.bron.season/blob.bin"
+let vessel = "${home}/v.kyri"
+let out_home = "${home}/v.kyri.season"
+let hello = "${home}/v.kyri.season/hello.txt"
+let nested = "${home}/v.kyri.season/nested/leaf.txt"
+let blob = "${home}/v.kyri.season/blob.bin"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -59,7 +59,7 @@ assert b.ok else "amphora_restore: blob.bin must land"
 let again = run ["${home}/bin/amphora" "restore" vessel]
 assert again.ok else "amphora_restore: same-parent re-restore must welcome"
 
-let plant = run ["sh" "-c" "rm -rf ${home}/v.bron.season && mkdir -p ${home}/v.bron.season && echo other > ${home}/v.bron.season/x.txt"]
+let plant = run ["sh" "-c" "rm -rf ${home}/v.kyri.season && mkdir -p ${home}/v.kyri.season && echo other > ${home}/v.kyri.season/x.txt"]
 assert plant.ok else "amphora_restore: plant fork fixture"
 
 let fork = run ["${home}/bin/amphora" "restore" vessel]

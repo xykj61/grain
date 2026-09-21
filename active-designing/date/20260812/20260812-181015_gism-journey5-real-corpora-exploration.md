@@ -31,7 +31,7 @@ The demo was tuned to fit; the real bytes will not. That is not a failure to pre
 
 ## The honest substrate — no network crosses
 
-A real corpus does **not** mean a network fetch. That seam is the held gate (BUHR J5's real-network-fetch rung waits on the maintainer's word), and it stays held here. Instead the round binds a real tree file at **compile time** with `@embedFile` — the idiom already lived-with in `mandate/store.rye` (`@embedFile("dim.profile.bron")`). Compile-time embedding gives real bytes with a demo's determinism: reproducible, no runtime filesystem, no network, the same reading every build. The corpus is real; the reading stays a pure fold over known bytes.
+A real corpus does **not** mean a network fetch. That seam is the held gate (BUHR J5's real-network-fetch rung waits on the maintainer's word), and it stays held here. Instead the round binds a real tree file at **compile time** with `@embedFile` — the idiom already lived-with in `mandate/store.rye` (`@embedFile("dim.profile.kyri")`). Compile-time embedding gives real bytes with a demo's determinism: reproducible, no runtime filesystem, no network, the same reading every build. The corpus is real; the reading stays a pure fold over known bytes.
 
 ## The four rounds (filled, not invented)
 

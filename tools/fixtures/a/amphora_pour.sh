@@ -2,9 +2,9 @@
 # amphora_pour.sh -- pour a cellar ring-1 season into an Amphora vessel bundle.
 #
 # Layout (cellar + vessel at one dock):
-#   outdir/manifest.bron
+#   outdir/manifest.kyri
 #   outdir/resins/<digest>
-#   outdir/vessel.bron
+#   outdir/vessel.kyri
 #
 # Usage: amphora_pour.sh [source_tree] outdir [stamp]
 set -eu
@@ -28,12 +28,12 @@ STAMP=${3:-20260710.143726}
 
 sh "$ROOT/tools/fixtures/c/cellar_ring1_export.sh" "$SRC" "$OUT" "$STAMP"
 
-MANIFEST="$OUT/manifest.bron"
-VESSEL="$OUT/vessel.bron"
+MANIFEST="$OUT/manifest.kyri"
+VESSEL="$OUT/vessel.kyri"
 CARGO_PLAIN="$OUT/.cargo-plain"
 
 # The cargo listing is built BEFORE the parent, because the parent is a digest OF the listing.
-# It read `sha3_256 manifest.bron` until 20260911 -- the digest of a sibling FILE that the
+# It read `sha3_256 manifest.kyri` until 20260911 -- the digest of a sibling FILE that the
 # vessel does not carry, so a vessel arriving alone could never have its parent checked, and
 # `amphora restore` (which hashes the listing, per `parent_of_cargo` in amphora/src/main.rye)
 # refused every vessel this script poured. One format word, two preimages: see the REDS row.

@@ -13,7 +13,7 @@
   networking.useDHCP = true;
 
   # One clock, named rather than offset (REDS %90). The one-clock law asks the host
-  # to name America/New_York, and GLOW_PROFILE.bron declared it -- yet this line was
+  # to name America/New_York, and GLOW_PROFILE.kyri declared it -- yet this line was
   # never written, so the pier ran UTC by absence and one_clock_witness duty 3 stood
   # RED. Stamps stayed correct only because every caller passed TZ explicitly; the
   # ground now carries the claim the profile makes.

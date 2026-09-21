@@ -46,7 +46,7 @@ is described here and copied there.
 ## The seed boundary
 
 The working tree keeps its host configuration in `nixos/`. The public seed currently
-withholds that room: `template-manifest.bron` names its template intent, while the
+withholds that room: `template-manifest.kyri` names its template intent, while the
 `allow` rows alone drive the projection and contain no `allow nixos` entry.
 The portable examples live in `nixos-guide/templates/`.
 

@@ -21,7 +21,7 @@
 //!
 //! Composes r1's public gossip fixpoint and commit helpers (`seeded`, `gossip_merge`,
 //! `commits_equal`, `committed_supply`) with the Cord's own `format cord-dag-v1`
-//! reader/writer (`from_dag`, `render`, `parse`, `rebuild`); r1 and cord-bron re-run
+//! reader/writer (`from_dag`, `render`, `parse`, `rebuild`); r1 and cord-kyri re-run
 //! GREEN at this round's door. Siloed, dev-only, demo seeds -- no real key, no funds,
 //! no network, no custody; a Cord gossiped over Comlink reaches the serve gate.
 //!
@@ -33,7 +33,7 @@ const print = std.debug.print;
 const cord = @import("cord.rye");
 const fold = @import("fold.rye");
 const cc = @import("constel_consensus.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 
 /// Seat two nodes, each begun from its own genesis, and gossip them to convergence
 /// exactly as r1 does -- then return node A's converged Dag for the network to carry.
@@ -97,18 +97,18 @@ pub fn main() !void {
     if (state.star_count != 1) return error.StarCount;
 
     // The network travels: the converged Dag renders to a format cord-dag-v1 record.
-    const pl = try cord_bron.from_dag(&converged);
-    var buf: [cord_bron.max_record]u8 = undefined;
-    const n = try cord_bron.render(&pl, &buf);
+    const pl = try cord_kyri.from_dag(&converged);
+    var buf: [cord_kyri.max_record]u8 = undefined;
+    const n = try cord_kyri.render(&pl, &buf);
     // invariant: the record carries every block of the converged mesh.
     assert(pl.len == converged.len);
 
     // A far node -- never gossiped, holds no channel, begins empty -- reconstructs the
     // whole history from the bytes alone and re-admits each block under r1's own add,
     // re-verifying every signature.
-    const heard = try cord_bron.parse(buf[0..n]);
+    const heard = try cord_kyri.parse(buf[0..n]);
     if (heard.len != 4) return error.RosterLostOverWire;
-    var far_dag = try cord_bron.rebuild(&heard);
+    var far_dag = try cord_kyri.rebuild(&heard);
     if (far_dag.len != 4) return error.FarRebuildPartial;
 
     // The crux: the far node commits to the byte-identical agreed order and folds the
@@ -124,7 +124,7 @@ pub fn main() !void {
     // far node ever holds the forgery.
     var tampered = heard;
     tampered.blocks[0].sig[0] ^= 0xff;
-    if (cord_bron.rebuild(&tampered)) |_| {
+    if (cord_kyri.rebuild(&tampered)) |_| {
         return error.TamperCrossed;
     } else |err| {
         if (err != error.BadSignature) return error.WrongTamper;

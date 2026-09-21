@@ -26,7 +26,7 @@ cd "$here" || exit 1
 command -v git >/dev/null 2>&1 || { echo "announced_length: REFUSED -- git is absent" >&2; exit 2; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "announced_length: REFUSED -- not a git tree" >&2; exit 2; }
 
-living=$(git ls-files '*.md' '*.kyri' '*.bron' 2>/dev/null \
+living=$(git ls-files '*.md' '*.kyri' '*.kyri' 2>/dev/null \
   | grep -vE '(^|/)(date|archive|yonder)/|^session-logs/|^seed/|^gratitude/|^vendor/') || true
 [ -n "$living" ] || { echo "announced_length: REFUSED -- no living files listed" >&2; exit 2; }
 

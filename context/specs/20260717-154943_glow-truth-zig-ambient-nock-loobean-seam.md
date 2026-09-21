@@ -49,7 +49,7 @@ A future `@f` / loob aura, if seated, is a **named mold for the seam**, not a re
 
 ## Related
 
-- Counsel that named the gap: `session-logs/20260717-154803_glow-loobean-vs-zig-bool-counsel.bron`
+- Counsel that named the gap: `session-logs/20260717-154803_glow-loobean-vs-zig-bool-counsel.kyri`
 - Glow supplement scoping (auras; this ruling accretes beside it): [`../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)
 - Glow tooling home: [`../../glow/README.md`](../../glow/README.md)
 

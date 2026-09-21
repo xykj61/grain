@@ -41,7 +41,7 @@ build_pen() {
   git config user.name pen
   git config commit.gpgsign false
 
-  cat > template-manifest.bron <<'EOF'
+  cat > template-manifest.kyri <<'EOF'
 allow room
 allow other
 allow vendor
@@ -183,7 +183,7 @@ leg "an unread span is neither" "$(read_key "$(run_scan --span "50 years")" chur
 
 # ---- 10. the instrument refuses rather than guessing ------------------------------------------
 build_pen
-rm -f "$PEN/field/template-manifest.bron"
+rm -f "$PEN/field/template-manifest.kyri"
 rc=0; ( cd "$PEN/field" && sh "$SCAN" >/dev/null 2>&1 ) || rc=$?
 leg "no manifest refuses"      "$rc"                                        2
 

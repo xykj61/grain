@@ -40,7 +40,7 @@ Distinct from cold/warm atoms, but worth naming while it is fresh: a Glow-native
 
 ### 4. Structs and Nouns
 
-Hoon's "everything is a noun" (atom or cell) is close to Rye OS's own Bron one-value model, already named as the cleanest existing parallel in the naming-mapping proposal. A Glow struct is proposed here as **a named mold over a noun**, in the TAME spirit of "structs carry their invariant": every struct declaration in Glow states, in a comment block immediately above it, what must hold at all times -- the same discipline Rye's own root rules already require of Zig structs, extended to Glow's noun-backed values.
+Hoon's "everything is a noun" (atom or cell) is close to Rye OS's own Kyri one-value model, already named as the cleanest existing parallel in the naming-mapping proposal. A Glow struct is proposed here as **a named mold over a noun**, in the TAME spirit of "structs carry their invariant": every struct declaration in Glow states, in a comment block immediately above it, what must hold at all times -- the same discipline Rye's own root rules already require of Zig structs, extended to Glow's noun-backed values.
 
 ### 5. Comment and Line-Width Patterns, Hoon-Grade
 

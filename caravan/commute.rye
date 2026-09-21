@@ -39,7 +39,7 @@
 //! hears no bell that was never rung, and the run refuses -- faster and
 //! wrong, measured rather than argued.
 //!
-//! **Nothing new is declared, again.** `serial_three_clients_menu.bron`
+//! **Nothing new is declared, again.** `serial_three_clients_menu.kyri`
 //! adds the one thing an ordinary server has that the elder shape never
 //! carried -- something published once and read by everyone -- and adds no
 //! new kind of word to say it. The direction was in the grants from the
@@ -81,7 +81,7 @@ const caravan_commute_version = "20260819.190500";
 
 /// The three-client shape with a published region added and nothing else
 /// changed. A fifth question of one declaration, asked of one more grant.
-pub const declaration_path = "caravan/systems/serial_three_clients_menu.bron";
+pub const declaration_path = "caravan/systems/serial_three_clients_menu.kyri";
 
 /// How many dependents of one document this supervisor holds unreaped at once.
 pub const max_in_flight: u32 = cohort.max_in_flight;

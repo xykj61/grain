@@ -26,22 +26,22 @@ assert test.out contains "W xor X survives the wire" else "caravan boot selftest
 assert test.out contains "refused whole, never half-booted" else "caravan boot selftest did not refuse the wide declaration before spawning"
 
 # The worked example boots whole, handing every declared grant across once.
-let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.bron 2>&1"]
+let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.kyri 2>&1"]
 assert worked.ok else "the worked example did not boot"
 assert worked.out contains "started 3 -- capabilities handed 6 -- restarts 0" else "the worked example did not boot its declared shape"
 assert worked.out contains "serial_virt: up, holding 2" else "the virtualiser did not come up holding its grants"
 assert worked.out contains "client_b: up, holding 2" else "the second client did not come up holding its grants"
 
 # A declaration past the roster bound starts nothing and says so by name.
-let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.bron 2>&1"]
+let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.kyri 2>&1"]
 assert wide.out contains "TooManyDomains" else "the wide declaration was not refused by name"
 
 # The grammar still refuses rwx before any dependent is spawned.
-let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.bron 2>&1"]
+let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.kyri 2>&1"]
 assert refused.out contains "BadPermission" else "the rwx document reached the boot"
 
 # An absent document refuses at the door, never as a spawn failure.
-let missing = run ["sh" "-c" "${bin} caravan/systems/no_such_system.bron 2>&1"]
+let missing = run ["sh" "-c" "${bin} caravan/systems/no_such_system.kyri 2>&1"]
 assert missing.out contains "NoSuchDocument" else "an absent document did not refuse at the door"
 
 say "GREEN: Caravan boot witness passed."

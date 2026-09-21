@@ -35,5 +35,5 @@ LionsOS is the strongest living argument that a system can be **safe first and f
 ## Open questions this brief leaves to a later round
 
 - How much of the sDDF queue discipline Caravan adopts now versus when its device seam actually opens.
-- Where LionsOS's static-composition shape and Microkit's system description meet Caravan's Brix/Bron-native declaration (see the Microkit brief).
+- Where LionsOS's static-composition shape and Microkit's system description meet Caravan's Brix/Kyri-native declaration (see the Microkit brief).
 - Which measured LionsOS performance claims are worth reproducing as parity-witness targets once the RISC-V-under-QEMU bring-up (Equinox 4) can run them.

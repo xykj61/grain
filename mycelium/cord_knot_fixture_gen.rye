@@ -14,14 +14,14 @@
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_fixture_gen.rye \
-//!     2> tools/fixtures/c/cord_knot.bron
+//!     2> tools/fixtures/c/cord_knot.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
 const cord_knot = @import("cord_knot.rye");
-const cord_knot_bron = @import("cord_knot_bron.rye");
+const cord_knot_kyri = @import("cord_knot_kyri.rye");
 const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 
@@ -66,10 +66,10 @@ pub fn main() !void {
     // invariant: the sealed scene is the honest supply the selftests checkpoint.
     assert(knot.state.supply() == 700);
     assert(knot.state.star_count == 1);
-    var buf: [cord_knot_bron.max_record]u8 = undefined;
-    const n = try cord_knot_bron.render(&knot, buf[0..]);
+    var buf: [cord_knot_kyri.max_record]u8 = undefined;
+    const n = try cord_knot_kyri.render(&knot, buf[0..]);
     // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
-    assert(n <= cord_knot_bron.max_record);
+    assert(n <= cord_knot_kyri.max_record);
     print("{s}", .{buf[0..n]});
 }

@@ -14,7 +14,7 @@
 
 ### Vision
 
-**Rye OS** is a system that belongs wholly to the one who runs it: one language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Bron), one memory model (Tally), one boot (Aurora), one enclosure (Pond). **Linengrow** is the flagship application on the same spine — transparent civic commerce grown from signed facts and pure folds.
+**Rye OS** is a system that belongs wholly to the one who runs it: one language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Kyri), one memory model (Tally), one boot (Aurora), one enclosure (Pond). **Linengrow** is the flagship application on the same spine — transparent civic commerce grown from signed facts and pure folds.
 
 Rye today is a **thin, honest frontend** on pinned Zig 0.16.0 — `rye/lib/std` through pristine symlinks; safety lives in authored `.rye` (assertions, width law, the gate trio). The strengthening chronicle **completed** as analysis; it is record, not product.
 
@@ -173,7 +173,7 @@ From [`ROADMAP.md`](../work-in-progress/ROADMAP.md) — The Ground table, refres
 | **Comlink** | Sealed datagram | Full crypto; hosted wire in parity |
 | **Pond** | `pond/apps/drawn_terminal.rye` | SLC-2a Laps 1–3 + SLC-2b **145**; Lap 3 metal-closed GNOME |
 | **Brix** | `.brix` descriptor, 10 bricks | Read by Mantra |
-| **Bron** | Data notation | Used by Brix |
+| **Kyri** | Data notation | Used by Brix |
 | **Amber** | `cellar/` module home | First lap **144** — resin seal witness |
 | **Aurora** | Six-stage relay RISC-V | Freestanding |
 | **Linengrow** | `linengrow/receipt.rye` | SLC-L1 at **152** |

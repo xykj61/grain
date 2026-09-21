@@ -19,7 +19,7 @@ cd "$root"
 build="$root/tools/.build/tigerbeetle"
 tb="$build/tigerbeetle"
 data="$build/0_0.tigerbeetle"
-proj="$build/wov_tb_projection_live.bron"
+proj="$build/wov_tb_projection_live.kyri"
 port="${WOV_TB_PORT:-3010}"
 cluster=0
 

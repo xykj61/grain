@@ -224,7 +224,7 @@ FNR == 1 {
     if (s ~ /[ \t#*?(){},|]/) continue
     if (s ~ /^(https?:|mailto:|\/|!|~)/) continue
     if (s !~ /\//) continue
-    if (s !~ /\.(md|mdc|rish|rye|sh|kyri|bron|brix|glow|awk|json|txt|nix|brush|myc|zig|py)$/) continue
+    if (s !~ /\.(md|mdc|rish|rye|sh|kyri|kyri|brix|glow|awk|json|txt|nix|brush|myc|zig|py)$/) continue
     if (placeholder(s)) { print "placeholder\t" page "\t" s; continue }
     # Three honest spellings: root-relative, page-relative, room-relative.
     if (here(norm(s))) continue

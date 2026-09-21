@@ -37,13 +37,13 @@ protocol's guarantee, unchanged.
 - `pond/apps/tablecloth.rye` (J7r1) — `Catalog`, `store_artifact`, `fetch_artifact` (verified,
   `DigestMismatch` on tamper), `address_hex`, `artifact_len`. Reused unchanged, over its
   public API.
-- `pond/apps/mcp_bron.rye` (J3r1) — the flat-Bron `key value` idiom and the bounded
+- `pond/apps/mcp_kyri.rye` (J3r1) — the flat-Kyri `key value` idiom and the bounded
   envelope discipline the resource shapes mirror (`format …-v1`, unknown field refused).
 - `mantra/beading.rye` — the content-addressed `BeadStore` Tablecloth names over; the tamper
   refusal originates here.
 
 The bridge invents no storage and no transport: it reads a URI, fetches through the store's
-verified path, and renders in an owned Bron shape. It reads no network — the real network
+verified path, and renders in an owned Kyri shape. It reads no network — the real network
 fetch and the Comlink-served transport stay the held custody/serve gates.
 
 ## The rungs, Lindy-first crux-first

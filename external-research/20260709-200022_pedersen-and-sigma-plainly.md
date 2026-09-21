@@ -86,7 +86,7 @@ with `tier` **public** and in `{1000, 5000, 10000}`.
 
 **What lap 1 does *not* prove yet:** "this commitment is one of those tiers, and I will not tell you which." That needs a harder construction (an OR-proof or a range proof). Counsel `023112` deliberately started with the smaller ritual.
 
-**Proof bytes on disk:** 64 bytes -- nonce point `A` (32) plus response scalar `z` (32) -- plus the commitment `C` beside them in the golden `.bron`.
+**Proof bytes on disk:** 64 bytes -- nonce point `A` (32) plus response scalar `z` (32) -- plus the commitment `C` beside them in the golden `.kyri`.
 
 ---
 
@@ -95,7 +95,7 @@ with `tier` **public** and in `{1000, 5000, 10000}`.
 ```text
 Pedersen          ->  make the sealed blob C
 Sigma (Fiat-Shamir) ->  prove you know the seal for a stated tier
-.bron receipt       ->  store C + proof for the witness to re-check
+.kyri receipt       ->  store C + proof for the witness to re-check
 ```
 
 Parity's `tools/slcl4_sigma.rish` builds the binary, runs selftest, and checks the golden fixture. That is how "Pedersen + Sigma" earn a green line in the suite.

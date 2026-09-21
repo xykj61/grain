@@ -16,7 +16,7 @@
 #
 # So the rights of a running domain are frozen at its spawn. `serial_cycle`
 # spawns birch; before that dependent is reaped the run derives
-# `serial_cycle_succession.bron`, whose table has no birch in it at all;
+# `serial_cycle_succession.kyri`, whose table has no birch in it at all;
 # and birch carries two asks from ask_ab to ask_bc anyway, under grants the
 # newer document has already retired. The domain the successor replaced
 # carried the ask that came home.
@@ -33,7 +33,7 @@
 #   once, whether the replaced domain has finished or is still writing.
 #
 # Exactly one property answers to both readings: the regions may not move.
-# `serial_cycle_moved.bron` reads as a whole ring and renames one arc, so a
+# `serial_cycle_moved.kyri` reads as a whole ring and renames one arc, so a
 # domain still writing would fill a store nobody under the newer document
 # ever reads, while a domain that had already finished would be harmed not
 # at all. A supervisor cannot tell those apart, so it refuses the document
@@ -77,16 +77,16 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # Three documents for one ring: the shape the lap opens on, the successor
 # derived mid-flight, and the successor a supervisor must refuse.
-let ring = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle.bron 2>&1"]
+let ring = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle.kyri 2>&1"]
 assert ring.ok else "the ring declaration could not be read"
 assert ring.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"
 
-let next = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_succession.bron 2>&1"]
+let next = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_succession.kyri 2>&1"]
 assert next.ok else "the succession declaration could not be read"
 assert next.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the succession did not keep the ring's own shape"
 assert next.out contains "verdict: whole" else "the succession declaration did not read whole"
 
-let moved = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_moved.bron 2>&1"]
+let moved = run ["sh" "-c" "caravan/bin/inflight_read caravan/systems/serial_cycle_moved.kyri 2>&1"]
 assert moved.ok else "the moved declaration could not be read"
 assert moved.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the moved declaration changed shape"
 assert moved.out contains "verdict: whole" else "the moved declaration did not read whole"
@@ -106,7 +106,7 @@ assert test.out contains "a declaration reaches a domain at the moment it is spa
 assert test.out contains "a mid-flight swap reads back as one of three verdicts" else "the swap verdicts did not read back"
 
 # The swap itself, taken with the dependent unreaped beneath it.
-assert test.out contains "swap to caravan/systems/serial_cycle_succession.bron while birch is unreaped: safe whether the replaced domain finished or is still writing" else "the successor was not derived mid-flight"
+assert test.out contains "swap to caravan/systems/serial_cycle_succession.kyri while birch is unreaped: safe whether the replaced domain finished or is still writing" else "the successor was not derived mid-flight"
 assert test.out contains "a successor was derived 1 time with 1 dependent unreaped beneath it" else "the unreaped dependent was not counted at the swap"
 
 # The freeze: a domain runs to completion under a document that has already
@@ -120,7 +120,7 @@ assert test.out contains "4 asks come home, 2 of them carried by the domain the 
 # The refusal: a successor that moves a region, judged while its writer may
 # still be writing, refused under both readings at once.
 assert test.out contains "the moved successor reads as a ring, so shape alone would have waved it through" else "the moved successor did not read as a ring"
-assert test.out contains "swap to caravan/systems/serial_cycle_moved.bron while birch is unreaped: a region moved under a writer that may still be writing" else "a moved region was not named at the swap"
+assert test.out contains "swap to caravan/systems/serial_cycle_moved.kyri while birch is unreaped: a region moved under a writer that may still be writing" else "a moved region was not named at the swap"
 assert test.out contains "a successor moving one region is refused mid-flight, with the writer still unreaped" else "a moved region was carried anyway"
 assert test.out contains "the refusal refuses the successor and never the running dependent, which is reaped first" else "a refusal abandoned the dependent it had spawned"
 

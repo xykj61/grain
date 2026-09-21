@@ -39,7 +39,7 @@ OA-L2 grows **cross-party delivery** (SLC-L2 carriage). OA-L3 grows **MUR bounty
 
 ## Fact Shapes — Fields Exactly
 
-All facts are **`.bron` values** — one field per line, space-separated, canonical bytes signed with Ed25519 (see [`yonder/20260621-063912_bron-notation.md`](yonder/20260621-063912_bron-notation.md)).
+All facts are **`.kyri` values** — one field per line, space-separated, canonical bytes signed with Ed25519 (see [`yonder/20260621-063912_kyri-notation.md`](yonder/20260621-063912_kyri-notation.md)).
 
 ### Request fact
 
@@ -137,7 +137,7 @@ Named now; **not wired** until OA-L1 implementation greens on metal.
 
 **Welcome path:**
 
-1. Load fixture request from `tools/fixtures/open_asks_request.bron`
+1. Load fixture request from `tools/fixtures/open_asks_request.kyri`
 2. Poster key signs → append
 3. Applicant key signs application with matching `request_ref` → append
 4. Poster signs acceptance → append

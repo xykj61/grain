@@ -17,7 +17,7 @@
 # is honest on this fixture because the genesis credits come first and the chain's links are round-ascending,
 # so file order equals the agreed order. It prints the triple `<terminal-recipient-hex> <committed> <rejected>`.
 #
-#   awk -f tools/fixtures/b/braid_dag_truth.awk tools/fixtures/b/braid_dag.bron
+#   awk -f tools/fixtures/b/braid_dag_truth.awk tools/fixtures/b/braid_dag.kyri
 #   -> "<terminal-recipient-hex> <committed> <rejected>"
 
 function hexval(s,   i, c, v) {

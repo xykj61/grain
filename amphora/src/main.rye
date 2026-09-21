@@ -270,7 +270,7 @@ const carry_scratch_suffix = ".crossing";
 /// Assembled far-side vessel name inside a dock directory.
 /// Format vocabulary, not product vocabulary (Q21 lean; Class W precedent --
 /// Keaton's rename word replaces it whole, accrete-migrate on rename).
-const dock_vessel_name = "vessel.bron";
+const dock_vessel_name = "vessel.kyri";
 
 /// Default stamp tool path when AMPHORA_VESSEL_CORE is unset (repo layout).
 const default_core_bin = "amphora/bin/vessel-core";
@@ -1267,7 +1267,7 @@ fn read_vessel_parent(io: std.Io, vessel_path: []const u8, out: *[digest_hex_len
     return error.StampUnverified;
 }
 
-/// Build `<dock>/vessel.bron` -- the far-side path the fork law guards.
+/// Build `<dock>/vessel.kyri` -- the far-side path the fork law guards.
 fn dock_vessel_path(dock: []const u8, buf: []u8) CliError![]const u8 {
     // invariant: a dock is a real directory, so the far vessel lands somewhere the
     // fork law can guard rather than at a bare filename.
@@ -1299,7 +1299,7 @@ fn plan_chunks(vessel_bytes: u32) u32 {
     return count;
 }
 
-/// One chunk's on-dock name: chunk-NNNN.bron (format vocabulary, park open).
+/// One chunk's on-dock name: chunk-NNNN.kyri (format vocabulary, park open).
 fn dock_chunk_path(dock: []const u8, index: u32, buf: []u8) CliError![]const u8 {
     // invariant: a chunk lands at a real dock, so the four-digit name below extends a
     // directory rather than standing alone.
@@ -1307,7 +1307,7 @@ fn dock_chunk_path(dock: []const u8, index: u32, buf: []u8) CliError![]const u8 
     // invariant: and its index is inside the plan, so the `chunk-NNNN` name stays four
     // digits wide and the assemble pass reading in order finds every piece.
     assert(index < max_carry_chunks);
-    return std.fmt.bufPrint(buf, "{s}/chunk-{d:0>4}.bron", .{ dock, index }) catch {
+    return std.fmt.bufPrint(buf, "{s}/chunk-{d:0>4}.kyri", .{ dock, index }) catch {
         return error.PathTooLong;
     };
 }
@@ -1506,7 +1506,7 @@ fn carry_cross(
         };
     }
     // The assembled vessel lands on a `.crossing` scratch inside the dock, and the
-    // dock's own `vessel.bron` is renamed into place only once the resins beside it
+    // dock's own `vessel.kyri` is renamed into place only once the resins beside it
     // have all crossed. A carry that writes the dock vessel first is a carry whose
     // every later refusal leaves a dock advertising cargo it cannot deliver --
     // measured on metal `20260911`, with one near resin body forged so the ferry

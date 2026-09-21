@@ -16,21 +16,21 @@ most expect to be whole -- a cellar of testimony whose whole job is to stay exac
 
 ## The mechanism
 
-`bron-resins/manifest.bron` is the resin cellar's catalog, and under the heading *WHAT THE SEVENTEEN
+`kyri-resins/manifest.kyri` is the resin cellar's catalog, and under the heading *WHAT THE SEVENTEEN
 DIGESTS ARE* it states the room's law in its own prose: *every resin in this room has exactly one
 commit in the tree's whole history, and its blob at that commit is byte-identical to its blob at
 HEAD -- checked one file at a time, all seventeen equal.* A hand took that reading on `20260910` and
 nothing read it again. In Gauge's fifth question about a figure -- what holds it still -- the answer
 was **free**.
 
-`tools/fixtures/b/bron_resins_landed_scan.sh` takes the reading the paragraph describes, and
-`tools/b/bron_resins_landed_witness.rish` holds it. For each file directly in the room, the scan
+`tools/fixtures/b/kyri_resins_landed_scan.sh` takes the reading the paragraph describes, and
+`tools/b/kyri_resins_landed_witness.rish` holds it. For each file directly in the room, the scan
 resolves the commit that ADDED that path, names the blob that commit recorded, names the blob the
 working file would land as, and compares the two.
 
 ## Why the seal beside it cannot see this
 
-`bron_resins_catalog_witness.rish` has recomputed each resin's SHA3-256 against its `seal` line
+`kyri_resins_catalog_witness.rish` has recomputed each resin's SHA3-256 against its `seal` line
 since `20260910.014500`, so a resin edited in place reds. **Both halves of that comparison live in
 the working tree.** An edit landing together with an updated seal is self-consistent, the digest
 answers, and every gate in this room stays green. The seal is a wall against drift rather than
@@ -63,11 +63,11 @@ resins**.
 ## The reading, and what holds it
 
 ```
-room=bron-resins  resins=17  landed=17  uncommitted=0
+room=kyri-resins  resins=17  landed=17  uncommitted=0
 moved=0  commits_multi=0  readded=0  verdict=ok
 ```
 
-Held by `bron_resins_landed`, rostered at `tier lap`, so it answers at every open on every ship.
+Held by `kyri_resins_landed`, rostered at `tier lap`, so it answers at every open on every ship.
 
 ## Proven on real history rather than on a directory of files
 
@@ -135,6 +135,6 @@ this lane's, and the instrument takes a room argument so the answer costs a rost
 
 | Artifact | Grade |
 |---|---|
-| `tools/fixtures/b/bron_resins_landed_scan.sh` | B/83 |
-| `tools/b/bron_resins_landed_witness.rish` | B/82 |
-| `tools/fixtures/b/bron_resins_landed_control.sh` | B/80 |
+| `tools/fixtures/b/kyri_resins_landed_scan.sh` | B/83 |
+| `tools/b/kyri_resins_landed_witness.rish` | B/82 |
+| `tools/fixtures/b/kyri_resins_landed_control.sh` | B/80 |

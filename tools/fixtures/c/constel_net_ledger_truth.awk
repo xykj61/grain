@@ -9,7 +9,7 @@
 # hand. The `net` line's safe name and the `sovereign` line's key are checked in the app (which re-folds
 # and re-verifies the signatures); this awk measures the supply arithmetic a keeper counts.
 #
-#   awk -f tools/fixtures/c/constel_net_ledger_truth.awk tools/fixtures/c/constel_net_ledger.bron
+#   awk -f tools/fixtures/c/constel_net_ledger_truth.awk tools/fixtures/c/constel_net_ledger.kyri
 #   -> "<facts> <supply> <reservations>"
 
 $1 == "fact" {

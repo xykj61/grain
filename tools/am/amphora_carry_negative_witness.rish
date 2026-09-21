@@ -24,9 +24,9 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_cneg"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 let dock = "${home}/dock"
-let far = "${home}/dock/vessel.bron"
+let far = "${home}/dock/vessel.kyri"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -51,7 +51,7 @@ assert pour.ok else "carry_neg: pour must pass"
 let seed = run ["${home}/bin/amphora" "carry" vessel dock]
 assert seed.ok else "carry_neg: seed carry must pass"
 
-let torn_prep = run ["sh" "-c" "rm ${far} ${dock}/chunk-0002.bron"]
+let torn_prep = run ["sh" "-c" "rm ${far} ${dock}/chunk-0002.kyri"]
 assert torn_prep.ok else "carry_neg: torn plant must prepare"
 let torn = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (torn.ok == false) else "carry_neg: missing chunk must refuse"
@@ -62,7 +62,7 @@ say "plant_missing=refused"
 
 let heal1 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal1.ok else "carry_neg: heal after torn must pass"
-let empty_prep = run ["sh" "-c" "rm ${far}; : > ${dock}/chunk-0001.bron"]
+let empty_prep = run ["sh" "-c" "rm ${far}; : > ${dock}/chunk-0001.kyri"]
 assert empty_prep.ok else "carry_neg: empty plant must prepare"
 let empty = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (empty.ok == false) else "carry_neg: empty chunk must refuse"
@@ -71,7 +71,7 @@ say "plant_empty=refused"
 
 let heal2 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal2.ok else "carry_neg: heal after empty must pass"
-let swap_prep = run ["sh" "-c" "rm ${far}; mv ${dock}/chunk-0001.bron ${dock}/t; mv ${dock}/chunk-0002.bron ${dock}/chunk-0001.bron; mv ${dock}/t ${dock}/chunk-0002.bron"]
+let swap_prep = run ["sh" "-c" "rm ${far}; mv ${dock}/chunk-0001.kyri ${dock}/t; mv ${dock}/chunk-0002.kyri ${dock}/chunk-0001.kyri; mv ${dock}/t ${dock}/chunk-0002.kyri"]
 assert swap_prep.ok else "carry_neg: reorder plant must prepare"
 let swapped = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (swapped.ok == false) else "carry_neg: reordered chunks must refuse"
@@ -80,7 +80,7 @@ say "plant_reorder=refused"
 
 let heal3 = run ["${home}/bin/amphora" "carry" vessel dock]
 assert heal3.ok else "carry_neg: heal after reorder must pass"
-let forge_prep = run ["sh" "-c" "rm ${far}; n=$(wc -c < ${dock}/chunk-0003.bron); head -c $n /dev/zero | tr '\\0' 'z' > ${dock}/chunk-0003.bron"]
+let forge_prep = run ["sh" "-c" "rm ${far}; n=$(wc -c < ${dock}/chunk-0003.kyri); head -c $n /dev/zero | tr '\\0' 'z' > ${dock}/chunk-0003.kyri"]
 assert forge_prep.ok else "carry_neg: forge plant must prepare"
 let forged = run ["env" "AMPHORA_CARRY_TRUST_DOCK=1" "${home}/bin/amphora" "carry" vessel dock]
 assert (forged.ok == false) else "carry_neg: forged chunk must refuse"

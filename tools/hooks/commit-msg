@@ -148,7 +148,7 @@ fi
 # citation rather than a typo anywhere.
 paths=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
   | tr ' ' '\n' \
-  | grep -E '^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$' \
+  | grep -E '^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|kyri|rish|rye|brix|sh|json|txt)$' \
   | sort -u)
 # AND A BARE DATED BASENAME IS CHECKED TOO, because a line break defeats the rule above. On
 # 20260905 a body cited `expanding-prompts/20260905-183418_the-handoff-...md` for a file whose real
@@ -160,7 +160,7 @@ paths=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
 # directory survived the wrap.
 dated=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
   | tr ' ' '\n' \
-  | grep -E '^[0-9]{8}-[0-9]{6}([_.][A-Za-z0-9._-]*)?\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$' \
+  | grep -E '^[0-9]{8}-[0-9]{6}([_.][A-Za-z0-9._-]*)?\.(md|mdc|kyri|kyri|rish|rye|brix|sh|json|txt)$' \
   | sort -u)
 tracked=""
 if test -n "$dated"; then tracked=$(git ls-files 2>/dev/null | sed 's|.*/||' | sort -u); fi

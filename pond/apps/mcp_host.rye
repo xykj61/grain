@@ -1,13 +1,13 @@
 //! pond/apps/mcp_host.rye -- BUHR Journey 3, Rung 5: the JSON host bridge.
 //!
-//! Rungs one through four fixed the pieces: the owned Bron shape (r1), the call and
+//! Rungs one through four fixed the pieces: the owned Kyri shape (r1), the call and
 //! result tiles (r2), the manifest tile (r3), and the tools/list envelope (r4). This
 //! rung joins them into one entry -- a JSON MCP host's whole conversation, served over
 //! the owned shapes end to end. A JSON-RPC request arrives; `serve` reads its method
 //! and routes it: a `tools/list` request answers with the server's whole catalog (r4);
-//! a `tools/call` request crosses into a Bron `Call` (r2), dispatches to the real
+//! a `tools/call` request crosses into a Kyri `Call` (r2), dispatches to the real
 //! Grain tool (r1's `dispatch` -- `add` over integers, `join` over strings), and
-//! crosses the Bron result back to a JSON-RPC response (r2). An unknown method answers
+//! crosses the Kyri result back to a JSON-RPC response (r2). An unknown method answers
 //! with a JSON-RPC error, never a fabricated result.
 //!
 //! The whole bridge is composition: it adds no transport and no parser of its own but
@@ -21,7 +21,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const mcp = @import("mcp_bron.rye");
+const mcp = @import("mcp_kyri.rye");
 const mj = @import("mcp_json.rye");
 const man = @import("mcp_manifest.rye");
 const lst = @import("mcp_list.rye");
@@ -34,7 +34,7 @@ pub const max_response: u32 = lst.max_list_json; // the largest response is a fu
 
 pub const HostError = mj.JsonError || mcp.McpError || lst.ListError;
 
-/// The server's own tool catalog, in Bron -- the two demonstration tools rungs one
+/// The server's own tool catalog, in Kyri -- the two demonstration tools rungs one
 /// through four already prove. A real server would grow this list; the bridge treats
 /// it as data, rendering whatever manifests it holds.
 const add_manifest =
@@ -155,8 +155,8 @@ fn build_catalog(list: *lst.ToolList) HostError!void {
     assert(list.count <= lst.max_tools);
 }
 
-/// Answer a `tools/call` request: cross the JSON request into a Bron Call, dispatch it
-/// to the real Grain tool, and cross the Bron result back into a JSON-RPC response.
+/// Answer a `tools/call` request: cross the JSON request into a Kyri Call, dispatch it
+/// to the real Grain tool, and cross the Kyri result back into a JSON-RPC response.
 fn serve_call(src: []const u8, out: []u8) HostError![]const u8 {
     // invariant: the response buffer respects the bridge bound
     assert(out.len <= max_response);

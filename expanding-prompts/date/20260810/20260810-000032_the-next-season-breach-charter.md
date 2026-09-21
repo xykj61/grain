@@ -4,7 +4,7 @@
 **Stamp:** `20260810.000032`
 **Voice:** Riyo (until Kyri seats — see move three)
 **Style:** Radiant · a decision record and a runnable plan; the maintainer's seat-approvals named plainly
-**Status:** **OPEN `20260810`** — the breach is opened on Keaton's word ("open the breach, start with Pond"), JARL's settlement doors all standing. **Move One (Pond) begun:** Pond seated as the application module, Pool retired into it by molt (`../foundations/20260810-011514_pond-the-application-module.md`). Moves two through four (Bron→Kyri, Kyri the voice, and the loadable skies that finish move one) follow as their own rounds. Accrete-never-break: this charter and its moves add; the molt keeps every fossil readable.
+**Status:** **OPEN `20260810`** — the breach is opened on Keaton's word ("open the breach, start with Pond"), JARL's settlement doors all standing. **Move One (Pond) begun:** Pond seated as the application module, Pool retired into it by molt (`../foundations/20260810-011514_pond-the-application-module.md`). Moves two through four (Kyri→Kyri, Kyri the voice, and the loadable skies that finish move one) follow as their own rounds. Accrete-never-break: this charter and its moves add; the molt keeps every fossil readable.
 **Opened:** `20260810`, after JARL's settlement completed. **Kin:** `../active-designing/20260809-234413_loadable-topologies-and-pond-silo-brief.md` · `../foundations/20260810-011514_pond-the-application-module.md` · `../work-in-progress/SHRED_PREP.md`.
 
 ---
@@ -19,16 +19,16 @@ Every move keeps the tree's own disciplines: **accrete-never-break** (dated arti
 
 Pond becomes the full application module of Grain; the Pool vane framing retires into it by molt; and the constellation generalizes to loadable **sky** profiles a community loads like a game. The whole plan, in our own names, is drawn in the silo brief this charter links. Scope of the molt stays **tight** — the Pool study and its direct kin only.
 
-## Move Two — Bron → Kyri, by Molt
+## Move Two — Kyri → Kyri, by Molt
 
-The session-log notation named **Bron** re-grows under the maintainer's favorite word, **Kyri**. This is the largest rename the tree has faced, and the honest measure is why the method matters:
+The session-log notation named **Kyri** re-grows under the maintainer's favorite word, **Kyri**. This is the largest rename the tree has faced, and the honest measure is why the method matters:
 
-- **2,163** existing `.bron` files, and **378** living references across docs, rules, and tools.
+- **2,163** existing `.kyri` files, and **378** living references across docs, rules, and tools.
 
 So it is a **molt, never a rewrite**:
 
-1. The notation spec (`../active-designing/yonder/20260621-063912_bron-notation.md`) grows a living **Kyri** mutant; the Bron spec stays a readable fossil.
-2. **New** session logs are born `.kyri`; the **2,163 existing `.bron` files are never renamed** — the one-clock law and accrete-never-break protect every dated artifact, exactly as they protect a dated stamp. History stays honest; the extension simply turns forward.
+1. The notation spec (`../active-designing/yonder/20260621-063912_kyri-notation.md`) grows a living **Kyri** mutant; the Kyri spec stays a readable fossil.
+2. **New** session logs are born `.kyri`; the **2,163 existing `.kyri` files are never renamed** — the one-clock law and accrete-never-break protect every dated artifact, exactly as they protect a dated stamp. History stays honest; the extension simply turns forward.
 3. The **378 living references** update forward — `session-logs.md` and its kin say "new logs are `.kyri`," and any tool that parses the notation learns to read **both** extensions, so nothing old breaks.
 4. No history rewrite, no force-push, no unsigning of commits — the deep-debride cost is refused; the molt path keeps every signature intact.
 

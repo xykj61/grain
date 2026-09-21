@@ -12,7 +12,7 @@
 
 ## The blind spot the itinerary left open
 
-BUHR is **Surface & Intelligence**, and the equinox names four things it holds: Realidream's DAG surface, Quin's four voices, MCP-in-Bron, and **Tablecloth** ([`../context/LEXICON.md`](../context/LEXICON.md), the BUHR row). Six journeys have now built the first three — the Q-vane voices (Journey 1), the Realidream Mantra graph browsed, edited, and fused (Journeys 2–5), the MCP descriptor shape and its JSON tiles (Journey 3), and the intelligence reading the living surface (Journey 6). Each runs green.
+BUHR is **Surface & Intelligence**, and the equinox names four things it holds: Realidream's DAG surface, Quin's four voices, MCP-in-Kyri, and **Tablecloth** ([`../context/LEXICON.md`](../context/LEXICON.md), the BUHR row). Six journeys have now built the first three — the Q-vane voices (Journey 1), the Realidream Mantra graph browsed, edited, and fused (Journeys 2–5), the MCP descriptor shape and its JSON tiles (Journey 3), and the intelligence reading the living surface (Journey 6). Each runs green.
 
 One name in that row has never been built: **Tablecloth** — the Lexicon's *"Brix-facing application database and artifact store"* (line 189), held apart on purpose from the already-witnessed namespace *query* of the same name. It is the last unbuilt module the equinox itself promised, and so it is exactly where the itinerary's finger has been pointing all along.
 
@@ -24,7 +24,7 @@ This is the hardest *tractable* move Tablecloth offers, and the one every later 
 
 ## The ground it stands on
 
-Tablecloth invents no storage. The tree already carries a content-addressed store, proven to the byte: `mantra/beading.rye`'s **`BeadStore`** — it beads content into content-defined chunks, deposits each once (a bead held twice is stored once, the dedup dividend), records the recipe as a bead-index, and reassembles the whole with every bead proving itself against its digest and the reassembled whole proving itself against the resin's own digest ([`../mantra/beading.rye`](../mantra/beading.rye), selftest green). Tablecloth adds only the **naming layer** the artifact store wants: a bounded catalog mapping a human name to a stored content address, and a **Brix-facing manifest** — a `format tablecloth-v1` flat-Bron listing (`artifact <name> <digest> <len>`) that publishes the catalog as the Bron a Brix descriptor evaluates to.
+Tablecloth invents no storage. The tree already carries a content-addressed store, proven to the byte: `mantra/beading.rye`'s **`BeadStore`** — it beads content into content-defined chunks, deposits each once (a bead held twice is stored once, the dedup dividend), records the recipe as a bead-index, and reassembles the whole with every bead proving itself against its digest and the reassembled whole proving itself against the resin's own digest ([`../mantra/beading.rye`](../mantra/beading.rye), selftest green). Tablecloth adds only the **naming layer** the artifact store wants: a bounded catalog mapping a human name to a stored content address, and a **Brix-facing manifest** — a `format tablecloth-v1` flat-Kyri listing (`artifact <name> <digest> <len>`) that publishes the catalog as the Kyri a Brix descriptor evaluates to.
 
 ## The first door
 

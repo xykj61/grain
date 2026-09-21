@@ -30,11 +30,7 @@
 !/CONTRIBUTING.md
 !/GLOW_HOST.template.kyri
 !/GLOW_PROFILE.template.kyri
-# The elder .bron spellings stay un-ignored so a clone that still carries one is not silently
-# untracked by the molt; the notation molted 20260810 and the readers accept both.
-!/GLOW_HOST.template.bron
-!/GLOW_PROFILE.template.bron
-!/template-manifest.bron
+!/template-manifest.kyri
 !/.brix
 !/keys_*.png
 !/keys_*.svg
@@ -112,7 +108,7 @@
 !/surf/
 !/cellar/
 !/amphora/
-!/bron-resins/
+!/kyri-resins/
 !/granary/
 !/mandi/
 !/mand/
@@ -141,7 +137,7 @@
 # at runtime and the only literals are two public GitHub remotes and the anonymous noreply address.
 # Untracked, it was absent from seven of eight ships, reddening commit_message_guard on each and
 # costing every one of them a full cold roster pass every lap. It stays OUT of the public seed by
-# the `personal` verdict in template-manifest.bron, which is a decision rather than an accident.
+# the `personal` verdict in template-manifest.kyri, which is a decision rather than an accident.
 !/publish-seed.sh
 !/publish-seed.template.sh
 !/.claude/

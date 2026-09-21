@@ -23,23 +23,23 @@ far=$(mktemp -d)
 trap 'rm -rf "$home" "$far"' EXIT
 
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$home" "$STAMP"
-grep -q '^seal_nonce ' "$home/vessel.bron"
-grep -q '^seal_tag ' "$home/vessel.bron"
-grep -q '^seal_cargo ' "$home/vessel.bron"
-grep -q '^stamp_sig ' "$home/vessel.bron"
+grep -q '^seal_nonce ' "$home/vessel.kyri"
+grep -q '^seal_tag ' "$home/vessel.kyri"
+grep -q '^seal_cargo ' "$home/vessel.kyri"
+grep -q '^stamp_sig ' "$home/vessel.kyri"
 # Clear cargo must be gone after seal.
-if grep -q '^cargo ' "$home/vessel.bron"; then
+if grep -q '^cargo ' "$home/vessel.kyri"; then
   echo "FAIL clear cargo still present after seal"
   exit 1
 fi
-"$ROOT/amphora/bin/vessel-core" verify "$home/vessel.bron" >/dev/null
-"$ROOT/amphora/bin/vessel-seal" open-check "$home/vessel.bron" >/dev/null
+"$ROOT/amphora/bin/vessel-core" verify "$home/vessel.kyri" >/dev/null
+"$ROOT/amphora/bin/vessel-seal" open-check "$home/vessel.kyri" >/dev/null
 
 sh "$ROOT/tools/fixtures/a/amphora_carry.sh" "$home" "$far"
 sh "$ROOT/tools/fixtures/a/amphora_scrub_arrival.sh" "$far" "$SRC"
 
 # Unwelcome: flip one seal_cargo hex nibble -- open-check must refuse.
-cargo_line=$(grep '^seal_cargo ' "$far/vessel.bron")
+cargo_line=$(grep '^seal_cargo ' "$far/vessel.kyri")
 first=$(printf '%s' "$cargo_line" | awk '{print substr($2,1,1)}')
 rest=$(printf '%s' "$cargo_line" | awk '{print substr($2,2)}')
 case "$first" in
@@ -47,12 +47,12 @@ case "$first" in
   *) bad=a ;;
 esac
 {
-  grep -v '^seal_cargo ' "$far/vessel.bron"
+  grep -v '^seal_cargo ' "$far/vessel.kyri"
   printf 'seal_cargo %s%s\n' "$bad" "$rest"
-} > "$far/vessel.bron.bad"
-mv "$far/vessel.bron.bad" "$far/vessel.bron"
+} > "$far/vessel.kyri.bad"
+mv "$far/vessel.kyri.bad" "$far/vessel.kyri"
 
-if "$ROOT/amphora/bin/vessel-seal" open-check "$far/vessel.bron" 2>/dev/null; then
+if "$ROOT/amphora/bin/vessel-seal" open-check "$far/vessel.kyri" 2>/dev/null; then
   echo "FAIL tampered seal_cargo should not open"
   exit 1
 fi

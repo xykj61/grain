@@ -3,7 +3,7 @@
 set -eu
 OUT=${1:?usage: cellar_ring1_restore.sh outdir targetdir}
 TARGET=${2:?usage: cellar_ring1_restore.sh outdir targetdir}
-MANIFEST="$OUT/manifest.bron"
+MANIFEST="$OUT/manifest.kyri"
 
 test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
 rm -rf "$TARGET"

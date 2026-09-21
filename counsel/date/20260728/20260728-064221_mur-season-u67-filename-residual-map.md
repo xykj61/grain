@@ -28,7 +28,7 @@
 | --- | --- | --- |
 | **Dated counsel / ER / expanding-prompts** | **HOLD** — one-clock fossils | constellation m1–m4 · mala-m1/m2 prompts · mala-wov counsel |
 | **Dated specs / foundations** | **HOLD** — canonical cites keep stable names | `…_mala-kind-field.md` · `…_mala-and-kamala-harris.md` |
-| **Session logs (live + archive)** | **HOLD** — stamped history | constellation · ketu-mala bron |
+| **Session logs (live + archive)** | **HOLD** — stamped history | constellation · ketu-mala kyri |
 | **Gratitude person name** | **HOLD** | `gratitude/kamala-harris.md` (person, not currency) |
 | **Living code / tools / bins** | **CLEAR** | no tracked `mala*` rye/rish homes |
 

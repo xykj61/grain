@@ -55,7 +55,7 @@ thing many hands feed.
 
 Kyri is the immutable-value notation: key-value fields, one per line, comments by
 `#`, with a zero-copy reader at `scribe/reader.rye` whose fields are slices into
-the source, never copied (`context/LEXICON.md`, molted from Bron `20260810`). The
+the source, never copied (`context/LEXICON.md`, named Kyri `20260810`). The
 insight is coordinate-as-address in its software form: a field's offset in the
 source buffer is its address, so the reader carries no copy that could disagree
 with the document. The wafer essay's own bug names the risk in this pattern -- a

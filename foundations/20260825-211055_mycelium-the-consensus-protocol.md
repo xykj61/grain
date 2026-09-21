@@ -43,7 +43,7 @@ Every module obeys the tree's TAME discipline ([`../.claude/rules/tame-guidance.
 
 ## The map -- nine families
 
-The season groups cleanly into nine families, base-first. Each module fixes one crux and stands beside its `_bron` (travels as text), `_true` (reads a real on-disk fixture), and `_knot` (composition) companions, which this map folds into the base name.
+The season groups cleanly into nine families, base-first. Each module fixes one crux and stands beside its `_kyri` (travels as text), `_true` (reads a real on-disk fixture), and `_knot` (composition) companions, which this map folds into the base name.
 
 ### 1 - Identity & signing
 - **`kumara.rye`** -- deterministic keypair derivation and Ed25519 signing at the seam; identical seeds yield identical keys, so a name can *be* an identity.

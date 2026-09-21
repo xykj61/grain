@@ -231,7 +231,7 @@ pub fn main(init: std.process.Init) !u8 {
 
     const io = init.io;
     const cwd = std.Io.Dir.cwd();
-    const fixture = try cwd.readFileAlloc(io, "lantern/fixtures/completion.bron", garden, .limited(4096));
+    const fixture = try cwd.readFileAlloc(io, "lantern/fixtures/completion.kyri", garden, .limited(4096));
     const resp = try lantern.parse_fixture(fixture);
     var gridf = try skate.Grid.init(garden, face_cols, face_rows);
     const fed_kind = try face_from_response(&gridf, "what does the forge advise", resp);

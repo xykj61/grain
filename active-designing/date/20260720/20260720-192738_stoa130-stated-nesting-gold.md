@@ -8,7 +8,7 @@
 **Voice:** Quin  
 **Status:** Checkable — nest · bartis · barket witnesses bind renamed APIs  
 **Register:** Checkable — `glow_nest_type_witness` · `glow_lower_bartis_witness` · `glow_barket_lower_witness`  
-**Grounds in:** [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) · [`20260720-181950_stoa119-wet-accept-under-stated-mold.md`](20260720-181950_stoa119-wet-accept-under-stated-mold.md) · counsel `session-logs/20260720-192529_wet-dry-glow-paradigm-terms.bron`
+**Grounds in:** [`20260719-204650_hoon-core-polymorphism-tame-and-port-order.md`](20260719-204650_hoon-core-polymorphism-tame-and-port-order.md) · [`20260720-181950_stoa119-wet-accept-under-stated-mold.md`](20260720-181950_stoa119-wet-accept-under-stated-mold.md) · counsel `session-logs/20260720-192529_wet-dry-glow-paradigm-terms.kyri`
 
 **dated_guard:** Do **not** rewrite dated STOA110–121 wording artifacts. Those keep Hoon-era *wet* / *dry* as historical names. Living pins and APIs use Glow terms from this lap forward.
 

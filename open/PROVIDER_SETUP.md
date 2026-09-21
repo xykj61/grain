@@ -38,7 +38,7 @@ below rather than left for a reader to guess at.
 ## Part 3: setting up on this pier
 
 Store the key as an environment variable, never hardcoded into a file this tree tracks -- the
-same discipline `GLOW_PROFILE.bron` already keeps for every other personal credential:
+same discipline `GLOW_PROFILE.kyri` already keeps for every other personal credential:
 
 ```sh
 export TOGETHER_API_KEY="..."

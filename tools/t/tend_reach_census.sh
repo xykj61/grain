@@ -8,7 +8,7 @@ set -e
 cd "$(git rev-parse --show-toplevel)"
 git ls-files > /tmp/trc_all.txt
 # One pass: (file:name) pairs, unique, for every basename-shaped token.
-rg -o --no-heading -H '[A-Za-z0-9_.-]+\.(md|bron|rish|rye|glow|sh)' $(cat /tmp/trc_all.txt | tr '\n' ' ') 2>/dev/null | sort -u > /tmp/trc_pairs.txt
+rg -o --no-heading -H '[A-Za-z0-9_.-]+\.(md|kyri|rish|rye|glow|sh)' $(cat /tmp/trc_all.txt | tr '\n' ' ') 2>/dev/null | sort -u > /tmp/trc_pairs.txt
 # Distinct-file mention count per name.
 awk -F: '{print $2}' /tmp/trc_pairs.txt | sort | uniq -c | awk '{print $2" "$1}' > /tmp/trc_counts.txt
 echo "method v2-self-mention-excluded"

@@ -14,7 +14,7 @@
 | `linengrow/mala_delivery.rye` | `linengrow/murr_delivery.rye` |
 | `linengrow/bin/mala-delivery` | `linengrow/bin/murr-delivery` |
 | `memo_* = "mala:…"` in `murr_core` | `"murr:…"` |
-| `tools/fixtures/murr_m1_mint.bron` memo | `murr:mint` |
+| `tools/fixtures/murr_m1_mint.kyri` memo | `murr:mint` |
 | `drawn_terminal` mint display strings | `murr:mint` |
 | `murr_m2_witness` build path | `murr_delivery` → `murr-delivery` |
 

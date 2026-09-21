@@ -1,11 +1,11 @@
-//! pond/apps/mcp_json.rye -- BUHR Journey 3, Rung 2: the Bron<->JSON tiles.
+//! pond/apps/mcp_json.rye -- BUHR Journey 3, Rung 2: the Kyri<->JSON tiles.
 //!
-//! Rung one fixed the descriptor shape: MCP spoken in Bron, call and result
+//! Rung one fixed the descriptor shape: MCP spoken in Kyri, call and result
 //! envelopes that round-trip on the owned notation. This rung opens the named
 //! horizon -- the tiles that let a Grain tool meet a JSON-speaking MCP host without
-//! either side bending to the other. A Bron `Call` renders to a real JSON-RPC
+//! either side bending to the other. A Kyri `Call` renders to a real JSON-RPC
 //! `tools/call` request; a JSON request reads back into the same bounded `Call`. A
-//! Bron `Result` renders to the JSON-RPC response shape (a `content` text item on
+//! Kyri `Result` renders to the JSON-RPC response shape (a `content` text item on
 //! success, a `code`/`message` object on error) and reads back into the same
 //! `Result`. The crux property carries across the tile: parse(render(x)) recovers x,
 //! and render(parse(json)) reproduces the json -- the two worlds meet, faithfully.
@@ -13,7 +13,7 @@
 //! This is a purpose-built reader for the MCP `tools/call` envelope, not a general
 //! JSON parser: it reads objects, strings, and unsigned ids, refuses an unknown
 //! field rather than dropping it, and bounds every collection. It reuses rung one's
-//! `mcp_bron.rye` shapes (Call, Arg, Result) and the byte-by-byte bounded append the
+//! `mcp_kyri.rye` shapes (Call, Arg, Result) and the byte-by-byte bounded append the
 //! tree already trusts (kin to mantra_browser.rye) -- no @memcpy, no new transport.
 //!
 //!   rye build pond/apps/mcp_json.rye -femit-bin=pond/bin/mcp-json
@@ -22,7 +22,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
-const mcp = @import("mcp_bron.rye");
+const mcp = @import("mcp_kyri.rye");
 
 const mcp_json_version = "20260812.163000";
 
@@ -40,7 +40,7 @@ pub const JsonError = error{
     TooManyArgs,
 };
 
-// --- the writer: Bron shapes -> JSON bytes ---------------------------------
+// --- the writer: Kyri shapes -> JSON bytes ---------------------------------
 
 /// Append `s` into `out` at cursor `n`, bounded by the caller's buffer. Byte by
 /// byte within a named bound -- the tree's trusted append, no @memcpy.
@@ -147,7 +147,7 @@ pub fn result_to_json(res: *const mcp.Result, out: []u8) JsonError![]const u8 {
     return out[0..n];
 }
 
-// --- the reader: JSON bytes -> Bron shapes ---------------------------------
+// --- the reader: JSON bytes -> Kyri shapes ---------------------------------
 
 /// A bounded scratch arena the reader interns decoded strings into, so a Call's or
 /// Result's slices outlive the source bytes they came from.
@@ -508,7 +508,7 @@ pub fn result_from_json(src: []const u8, scratch: []u8, out: *mcp.Result) JsonEr
 // --- witnesses -------------------------------------------------------------
 
 fn welcome_call_tile_round_trips() !void {
-    const bron =
+    const kyri =
         \\format mcp-call-v1
         \\id 7
         \\tool add
@@ -516,7 +516,7 @@ fn welcome_call_tile_round_trips() !void {
         \\arg b 3
     ;
     var call: mcp.Call = undefined;
-    try mcp.parse_call(bron, &call);
+    try mcp.parse_call(kyri, &call);
 
     var jbuf: [max_json]u8 = undefined;
     const json = try call_to_json(&call, &jbuf);
@@ -531,11 +531,11 @@ fn welcome_call_tile_round_trips() !void {
     assert(back.arg_count == 2);
     assert(std.mem.eql(u8, back.arg_val("a").?, "2"));
     assert(std.mem.eql(u8, back.arg_val("b").?, "3"));
-    print("mcp_json: call tile — Bron add -> JSON-RPC tools/call -> Bron, recovered\n", .{});
+    print("mcp_json: call tile — Kyri add -> JSON-RPC tools/call -> Kyri, recovered\n", .{});
 }
 
 fn welcome_result_tile_round_trips() !void {
-    const bron =
+    const kyri =
         \\format mcp-call-v1
         \\id 7
         \\tool add
@@ -543,7 +543,7 @@ fn welcome_result_tile_round_trips() !void {
         \\arg b 3
     ;
     var call: mcp.Call = undefined;
-    try mcp.parse_call(bron, &call);
+    try mcp.parse_call(kyri, &call);
     var rbuf: [512]u8 = undefined;
     const rendered = try mcp.dispatch(&call, &rbuf);
     var res: mcp.Result = undefined;
@@ -560,7 +560,7 @@ fn welcome_result_tile_round_trips() !void {
     assert(back.id == 7);
     assert(!back.is_error);
     assert(std.mem.eql(u8, back.value, "5"));
-    print("mcp_json: result tile — Bron result 5 -> JSON-RPC content -> Bron, recovered\n", .{});
+    print("mcp_json: result tile — Kyri result 5 -> JSON-RPC content -> Kyri, recovered\n", .{});
 }
 
 fn welcome_error_result_tile() !void {
@@ -581,7 +581,7 @@ fn welcome_error_result_tile() !void {
     assert(back.id == 1);
     assert(back.is_error);
     assert(std.mem.eql(u8, back.err_name, "unknown_tool"));
-    print("mcp_json: error tile — Bron error -> JSON-RPC code/message -> Bron, recovered\n", .{});
+    print("mcp_json: error tile — Kyri error -> JSON-RPC code/message -> Kyri, recovered\n", .{});
 }
 
 fn welcome_escaping_round_trips() !void {

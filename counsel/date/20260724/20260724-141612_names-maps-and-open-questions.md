@@ -59,7 +59,7 @@ The map, drawn from the root as it stands today:
 |---|---|---|
 | `context/`, `foundations/` | Compass | everyone; guarded by `living_docs_lint` and `dated_guard` |
 | `README` · `ORGANIZING` · `CONTRIBUTING` · `SOURCE` · `PUBKEYS` · licenses · `CLAUDE.md` | Pier papers | the pier itself |
-| `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `bron-resins/` · `GLOW_HOST` / `GLOW_PROFILE` cards | Relay genres | the counsel↔bench relay |
+| `counsel/` · `expanding-prompts/` · `session-logs/` · `work-in-progress/` · `kyri-resins/` · `GLOW_HOST` / `GLOW_PROFILE` cards | Relay genres | the counsel↔bench relay |
 | `active-designing/` · `active-reviving/` | Design & revival sittings | Maze-adjacent: proposals earning shape |
 | `external-research/` · `gratitude/` · `external-research/yonder/strengthening-compiler/` · `classical-vedic-astrology/` · `old/` · `vere/` | Study shelves | silo sources; elders named and honored |
 | `glow/` · `rye/` · `rishi/` · `tools/` | Languages and bench | instruments of the whole; Ojjo consumes their parity |

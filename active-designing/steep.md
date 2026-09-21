@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living named horizon -- no code lap yet; visionary room until a first-lap hammock opens
-**Ground:** Kaeden word `210433` (Rest-until for status; Steep reserved for this app) - Comlink - Mantra - Granary - Pond customs - Brix/Bron - published-set gate counsel `060112`
+**Ground:** Kaeden word `210433` (Rest-until for status; Steep reserved for this app) - Comlink - Mantra - Granary - Pond customs - Brix/Kyri - published-set gate counsel `060112`
 **Frozen dated original:** [`20260710-210433_steep-peer-file-sharing-name.md`](yonder/date/20260710/20260710-210433_steep-peer-file-sharing-name.md)
 
 *Written by Kaeden and Rio 3.*
@@ -37,7 +37,7 @@ When a named peer asks for a piece by digest, the serving side gates on *pieces 
 
 When a gate opens, the first checkable lap is likely:
 
-1. **Catalog** -- Bron piece list bound to one content digest (Anvil/Granary-shaped, our tree only in fixtures).
+1. **Catalog** -- Kyri piece list bound to one content digest (Anvil/Granary-shaped, our tree only in fixtures).
 2. **Verify fold** -- reassemble or checksum pieces into the named whole; mismatch refused.
 3. **One-peer fetch** -- Comlink hosted (then device) carriage of one piece under Pond customs -- gated by the published-set / peer-offer precedent above.
 

@@ -5,7 +5,7 @@
 # token (Madder), seated in tokens.base_sheet. This rung closes the authoring loop that
 # token was named for: a real .brush file (pond/apps/read-source.brush) whose style:
 # block overrides the read key is read through the actual authoring loop (parse_brush
-# validates, collect_brush_style reassembles the flat Bron), infused over base_sheet by
+# validates, collect_brush_style reassembles the flat Kyri), infused over base_sheet by
 # the WADE1 cascade (tokens.resolve), and painted by rung five's own paint_origins
 # unchanged -- so every read origin burns the authored amber while the ink, edge rule,
 # and living-edge head stand untouched. The recolor is proven two ways: the themed read

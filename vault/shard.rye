@@ -251,7 +251,7 @@ pub fn verify_shard(shard: *const Shard, keeper_pubkey: [pubkey_len]u8) bool {
     return true;
 }
 
-// --- Bron emission ----------------------------------------------------------
+// --- Kyri emission ----------------------------------------------------------
 
 const hex_digits = "0123456789abcdef";
 
@@ -281,7 +281,7 @@ fn put_line(io: std.Io, comptime fmt: []const u8, args: anytype) void {
     std.Io.File.stdout().writeStreamingAll(io, line) catch {};
 }
 
-/// Emit a shard as a Bron fact -- one field per line, immutable at the seam.
+/// Emit a shard as a Kyri fact -- one field per line, immutable at the seam.
 pub fn emit_shard(io: std.Io, shard: *const Shard) void {
     var byte_hex: [max_secret_len * 2]u8 = undefined;
     var sig_hex: [sig_len * 2]u8 = undefined;

@@ -111,7 +111,7 @@ set -f
 find . -type d \( $DP_FIND_PRUNE \) -prune -o -type f \
   $DP_FIND_EXCLUDES $DP_FIND_PATHS \
   \( -name '*.md' -o -name '*.mdc' -o -name '*.rish' -o -name '*.rye' -o -name '*.sh' \
-     -o -name '*.bron' -o -name '*.kyri' -o -name '*.brix' -o -name '*.txt' \) -print 2>/dev/null \
+     -o -name '*.kyri' -o -name '*.kyri' -o -name '*.brix' -o -name '*.txt' \) -print 2>/dev/null \
   | sed 's|^\./||' \
   | awk -F/ '$NF !~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/' \
   > "$work/living.txt"
@@ -141,7 +141,7 @@ if [ -s "$work/candidates.txt" ]; then
       }
       {
         line = $0; out = ""
-        while (match(line, /(\.\.\/)*([A-Za-z0-9_.-]+\/)+[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9](_[A-Za-z0-9._-]+)?\.(md|bron|kyri|rye|rish|tsv|brix|glow|sh|txt)/)) {
+        while (match(line, /(\.\.\/)*([A-Za-z0-9_.-]+\/)+[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9](_[A-Za-z0-9._-]+)?\.(md|kyri|kyri|rye|rish|tsv|brix|glow|sh|txt)/)) {
           pre = substr(line, 1, RSTART - 1)
           m = substr(line, RSTART, RLENGTH)
           line = substr(line, RSTART + RLENGTH)

@@ -46,7 +46,7 @@ a file.
 
 ## A whole system is a file you can read
 
-Here is a real one, [`systems/serial_stack.bron`](systems/serial_stack.bron), trimmed to its
+Here is a real one, [`systems/serial_stack.kyri`](systems/serial_stack.kyri), trimmed to its
 declarations. One serial device driver serves two clients, and both clients share a read-only font.
 
 ```
@@ -142,7 +142,7 @@ rishi/bin/rishi run tools/ca/caravan_ladder_roster_witness.rish
 
 ## What Caravan does today, and where it stops
 
-Caravan supervises processes, and stops exactly there. [`system.rye`](system.rye) reads flat Bron,
+Caravan supervises processes, and stops exactly there. [`system.rye`](system.rye) reads flat Kyri,
 the same notation Brix descriptors use, and it declares Caravan's own rings alone -- composing a
 build stays Brix's work, and Pond's policy layer stays its own.
 

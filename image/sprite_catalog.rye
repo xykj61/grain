@@ -5,7 +5,7 @@
 //! Teacher, thanked clean-room: McMaster-Carr's one-sprite-sheet render trick (concept only, siloed).
 //!
 //! HUNK4 bound each product to a window, HUNK5 painted a window as a page, HUNK6 gave the sheet a content
-//! address. This rung lets the *index itself* travel: `render_catalog` writes a `SpriteIndex` as a flat-Bron
+//! address. This rung lets the *index itself* travel: `render_catalog` writes a `SpriteIndex` as a flat-Kyri
 //! `format sprite-catalog-v1` record -- one `product <name> <x> <y> <w> <h>` line per entry -- and
 //! `parse_catalog` reads that text back into a fresh index over a given sheet, so `render(parse(render(x)))`
 //! is a fixed point and the rebuilt index renders every product from the same window byte-for-byte. Parse
@@ -37,7 +37,7 @@ pub const CatalogError = error{
 
 const header = "format sprite-catalog-v1\n";
 
-/// Render a sprite index as its `format sprite-catalog-v1` Bron record into `out`, returning its length. One
+/// Render a sprite index as its `format sprite-catalog-v1` Kyri record into `out`, returning its length. One
 /// `product <name> <x> <y> <w> <h>` line per entry, in held order. Refuses `Overflow` rather than writing past
 /// the buffer a caller supplied.
 pub fn render_catalog(index: *const sprite.SpriteIndex, out: []u8) CatalogError!u32 {

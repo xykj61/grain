@@ -46,7 +46,7 @@ runtime, the only literals are the two public GitHub remotes and the anonymous n
 a grep for a name, a home directory, key material, or a personal address comes back empty. When a
 clone lacks it, it is reconstructed from this rule and the guard's own greps -- which happened on
 `20260827`, and the guard witness proved the reconstruction before it shipped. **It is tracked from `20260905.230357`, on Keaton's word** (REDS `%444`): `.gitignore` carries the
-allow-back `!/publish-seed.sh` and `template-manifest.bron` the verdict `personal` -- *the field's
+allow-back `!/publish-seed.sh` and `template-manifest.kyri` the verdict `personal` -- *the field's
 own projector; the seed stands only as its OUTPUT, apart from ever serving as its carrier* -- so every
 ship in the private field carries it, while the public seed's share of it stays exactly as it stood
 before. `sow_witness` is GREEN with the

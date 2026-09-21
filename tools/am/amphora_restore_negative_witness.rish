@@ -20,7 +20,7 @@ let tamp_sh = "tools/fixtures/a/amphora_tamper_seal_cargo.sh"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_rneg"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -43,33 +43,33 @@ let pour = run ["${home}/bin/amphora" "pour" season vessel]
 assert pour.ok else "rneg: seed pour must pass"
 
 # --- plant 1: tamper seal_cargo, then re-stamp so the seal wall is the one that speaks ---
-let bak = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.bak"]
+let bak = run ["sh" "-c" "cp ${home}/v.kyri ${home}/v.kyri.bak"]
 assert bak.ok else "rneg: bak must land"
-let tamp_prep = run ["sh" tamp_sh "${home}/v.bron"]
+let tamp_prep = run ["sh" tamp_sh "${home}/v.kyri"]
 assert tamp_prep.ok else "rneg: tamper plant must prepare"
-let restamp = run ["${home}/bin/vessel-core" "sign" "${home}/v.bron"]
+let restamp = run ["${home}/bin/vessel-core" "sign" "${home}/v.kyri"]
 assert restamp.ok else "rneg: re-stamp after tamper must pass (isolates seal wall)"
 let tamp = run ["${home}/bin/amphora" "restore" vessel]
 assert (tamp.ok == false) else "rneg: tampered seal_cargo must refuse"
 assert tamp.err contains "seal unopened" else "rneg: tamper names seal unopened"
-let tamp_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
+let tamp_out = run ["sh" "-c" "test ! -e ${home}/v.kyri.season"]
 assert tamp_out.ok else "rneg: tamper refusal must leave no out-home"
 say "plant_tamper_seal=refused"
 
-let heal1 = run ["sh" "-c" "cp ${home}/v.bron.bak ${home}/v.bron"]
+let heal1 = run ["sh" "-c" "cp ${home}/v.kyri.bak ${home}/v.kyri"]
 assert heal1.ok else "rneg: heal vessel after tamper"
 
 # --- plant 2: truncate vessel ---
-let trunc_prep = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.full; n=$(wc -c < ${home}/v.bron); head -c $((n/2)) ${home}/v.bron.full > ${home}/v.bron"]
+let trunc_prep = run ["sh" "-c" "cp ${home}/v.kyri ${home}/v.kyri.full; n=$(wc -c < ${home}/v.kyri); head -c $((n/2)) ${home}/v.kyri.full > ${home}/v.kyri"]
 assert trunc_prep.ok else "rneg: truncate plant must prepare"
 let trunc = run ["${home}/bin/amphora" "restore" vessel]
 assert (trunc.ok == false) else "rneg: truncated vessel must refuse"
 assert trunc.err contains "stamp unverified" else "rneg: truncate names stamp unverified"
-let trunc_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
+let trunc_out = run ["sh" "-c" "test ! -e ${home}/v.kyri.season"]
 assert trunc_out.ok else "rneg: truncate refusal must leave no out-home"
 say "plant_truncated=refused"
 
-let heal2 = run ["sh" "-c" "cp ${home}/v.bron.full ${home}/v.bron"]
+let heal2 = run ["sh" "-c" "cp ${home}/v.kyri.full ${home}/v.kyri"]
 assert heal2.ok else "rneg: heal vessel after truncate"
 
 # --- plant 3: forge one resin body ---
@@ -84,7 +84,7 @@ say "plant_forged_digest=refused"
 # `rm -rf` of a partial season until `20260910.073234`, because the restore wrote each body and
 # proved it afterward; `restore_prove_resins` now proves every resin while the out-home still
 # does not exist, so the sweep became an assertion.
-let forge_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
+let forge_out = run ["sh" "-c" "test ! -e ${home}/v.kyri.season"]
 assert forge_out.ok else "rneg: forge refusal must leave no out-home"
 let heal3 = run ["${home}/bin/amphora" "pour" season vessel]
 assert heal3.ok else "rneg: re-pour heal must pass"

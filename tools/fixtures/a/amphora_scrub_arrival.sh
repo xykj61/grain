@@ -20,8 +20,8 @@ done
 BUNDLE=${1:?usage: amphora_scrub_arrival.sh bundle_dir [source_tree]}
 SRC=${2:-"$ROOT/tools/fixtures/cellar_ring1_tree"}
 
-VESSEL="$BUNDLE/vessel.bron"
-MANIFEST="$BUNDLE/manifest.bron"
+VESSEL="$BUNDLE/vessel.kyri"
+MANIFEST="$BUNDLE/manifest.kyri"
 test -f "$VESSEL" || { echo "FAIL missing vessel"; exit 1; }
 test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
 
@@ -29,7 +29,7 @@ parent=$(awk '/^parent / {print $2; exit}' "$VESSEL")
 test -n "$parent" || { echo "FAIL vessel missing parent"; exit 1; }
 # The parent is checked below, once `vessel-seal` is built -- it is the digest of the CARGO
 # LISTING the vessel carries, so the preimage travels with the vessel. It read
-# `sha3_256 manifest.bron` until 20260911: the digest of a sibling file, uncheckable at any
+# `sha3_256 manifest.kyri` until 20260911: the digest of a sibling file, uncheckable at any
 # dock the vessel reaches alone, and disagreeing with `parent_of_cargo` in amphora/src/main.rye.
 
 # Amphora vessel parse on metal (wreck rule already seated at lap 1).

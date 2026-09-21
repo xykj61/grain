@@ -3,7 +3,7 @@ stamp 20260907.072018
 editor Claude Code, terminal
 provider Anthropic
 product Claude Code
-role Copal -- amphora/ and bron-resins/, the vessels and the crossing
+role Copal -- amphora/ and kyri-resins/, the vessels and the crossing
 modality text
 model claude-opus-5
 model_status configured default proven by .claude/settings.json; runtime identity unverified

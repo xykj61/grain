@@ -7,7 +7,7 @@
 **Language:** EN
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Status:** Vision — design exploration; proposes vocabulary use; seats nothing; the `bond` line-form below is a proposal awaiting Kaeden's word
-**Ground:** [`20260702-185912_brix-the-composer.md`](20260702-185912_brix-the-composer.md) (brick · course · bond · lay, all seated) · [`../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md`](../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md) (the infuse gratitude) · [`../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md`](../counsel/20260707-222500_claude-counsel-bron-beside-brix-first-proposal.md) (Bron carries values; Brix composes wholes) · this arc's own migration record
+**Ground:** [`20260702-185912_brix-the-composer.md`](20260702-185912_brix-the-composer.md) (brick · course · bond · lay, all seated) · [`../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md`](../external-research/yonder/20260619-225212_s6-sixos-nix-infuse.md) (the infuse gratitude) · [`../counsel/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md`](../counsel/20260707-222500_claude-counsel-kyri-beside-brix-first-proposal.md) (Kyri carries values; Brix composes wholes) · this arc's own migration record
 
 *Written by Rio 3 for Kaeden.*
 

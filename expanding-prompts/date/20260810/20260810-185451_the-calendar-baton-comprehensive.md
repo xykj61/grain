@@ -53,7 +53,7 @@ The season is landed and live. This arc closed a long sweep: the **Riyo → Kyri
 - **Build the first slice** — the curated trust directory (see the pick-the-first-slice memo); fill the sales one-pager's `[company sets: …]` facts.
 - **Configure the remaining duals** beside Qkri; the fixed-water sunlsiyasuhn awaits its role.
 - **Build Mandate** — the TAME zero-copy search/vector store.
-- **The all-Rishi tooling molt** and the **Bron → Kyri notation molt** — each a real season.
+- **The all-Rishi tooling molt** and the **Kyri → Kyri notation molt** — each a real season.
 - **A first Linengrow profile** in the magazine voice (`context/LINENGROW_MAGAZINE_VOICE.md`), on a real subject's consent.
 
 ## Safety — where the human holds the lever

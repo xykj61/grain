@@ -2,7 +2,7 @@
 
 **Stamp:** `20260813.112420` · **Language:** EN · **Voice:** Kyri · **Style:** Radiant
 **Status:** Vision -- Self-approved design round — opens a fresh Mycelium journey (Chapter D)
-**Kin:** [`../mycelium/muster.rye`](../mycelium/muster.rye) · [`../mycelium/muster_bron.rye`](../mycelium/muster_bron.rye) · [`../mycelium/chorus.rye`](../mycelium/chorus.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-110039_mycelium-muster-known-validator-set-exploration.md`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
+**Kin:** [`../mycelium/muster.rye`](../mycelium/muster.rye) · [`../mycelium/muster_kyri.rye`](../mycelium/muster_kyri.rye) · [`../mycelium/chorus.rye`](../mycelium/chorus.rye) · [`../mycelium/kumara.rye`](../mycelium/kumara.rye) · [`20260813-110039_mycelium-muster-known-validator-set-exploration.md`](20260813-110039_mycelium-muster-known-validator-set-exploration.md) · [`../.claude/rules/lindy-first-crux.md`](../.claude/rules/lindy-first-crux.md) · [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md)
 
 ---
 
@@ -23,7 +23,7 @@ A **Warrant** (the instrument that *authorizes* — a quorum of the sitting vali
 - a **next digest** — the content-address of the successor roll being authorized;
 - a bounded set of **endorsements** — each a *current* validator's signature over the tuple `(domain · epoch · prev_digest · next_digest)`, distinct, up to `warrant_max_sigs`.
 
-The Warrant invents no new attestation of its own. It composes `muster.rye` (the roll and its threshold), `muster_bron.rye` (the canonical bytes a digest is taken over), and `kumara.rye` (the signature). Its one new law is the **succession law** laid over two rolls and a quorum of the first.
+The Warrant invents no new attestation of its own. It composes `muster.rye` (the roll and its threshold), `muster_kyri.rye` (the canonical bytes a digest is taken over), and `kumara.rye` (the signature). Its one new law is the **succession law** laid over two rolls and a quorum of the first.
 
 ## The signed tuple — domain-separated, digest-bound
 
@@ -50,7 +50,7 @@ A successor authorized by a Byzantine quorum of the roll it replaces passes; a s
 ## The four rungs (crux-first, mirroring the seated arc shape)
 
 - **r1 — the crux.** `mycelium/warrant.rye`: `roll_digest`, the `Warrant` record, `open`/`endorse` (a current validator signs the tuple; refuse `DuplicateSigner`, `WarrantFull`), and `verify_warrant(warrant, prev, next)` folding the five laws above. Proven across a full outgoing quorum (three of four retiring validators authorize a fresh successor → passes), a self-coronation (the successor's own keys sign → `NotMember`), a thin handoff (two of four → `BelowQuorum`), a re-pointed certificate (right signatures, wrong `next` roll → `DigestMismatch`), and the endorse refusals real.
-- **r2 — travels.** `mycelium/warrant_bron.rye`: render a Warrant to a `format warrant-v1` record (epoch · prev/next digest hex · one `endorse <pk-hex> <sig-hex>` line per signer) and parse it back byte-for-byte, so a whole handoff crosses a wire and a recipient re-judges it offline against the two rolls; malformed header · bad hex · unknown field · a duplicate endorser · an over-full certificate each refuse.
+- **r2 — travels.** `mycelium/warrant_kyri.rye`: render a Warrant to a `format warrant-v1` record (epoch · prev/next digest hex · one `endorse <pk-hex> <sig-hex>` line per signer) and parse it back byte-for-byte, so a whole handoff crosses a wire and a recipient re-judges it offline against the two rolls; malformed header · bad hex · unknown field · a duplicate endorser · an over-full certificate each refuse.
 - **r3 — across a Knot (the chain).** `mycelium/warrant_knot.rye`: a **succession chain** — genesis roll → warrant → roll → warrant → roll — survives a checkpoint, each roll authorized by the previous roll's own quorum, so a stranger holding only the genesis roll verifies the roll standing today by walking the handoffs; a broken link (a roll no lawful quorum authorized) refuses the whole chain.
 - **r4 — reads true.** `mycelium/warrant_true.rye`: the certificate's signed facts are true to an independent measurement — the roll digests cross-check against an external `sha256sum` of the canonical bytes, and the endorsement count against an independent line count, so a keeper can open, hash, and count the same handoff a warrant claims.
 

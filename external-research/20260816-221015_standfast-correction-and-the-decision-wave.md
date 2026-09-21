@@ -19,7 +19,7 @@ The operator card had been silently corrupting itself into unreadable mojibake f
 - **The color decision.** American spelling: `color`, not `colour`, normalized on touch. This is a USA project, and the shorter word is ASCII-clean either way.
 - **The council rota (d27).** The recursion prompt now deep-reads one canon doc per lap from a list of 27 foundation and context documents, cycling by lap index -- the sky fractal's fullest ring, breadth over frequency since the core lenses reinforce every lap. Chosen over 15.
 - **The inner-loop pointer.** A directive block at the top of REMEMBER that the running loop reads first each lap and may edit as it goes, so the outer shell loop can be re-aimed without a restart -- the outer loop pointing at an inner one.
-- **The session-log rule sync.** Matched to the profile of record: Claude Code, `claude-opus-4-8`, the Vultr VPS pier with the Daylight DC-1 as the hand device, and the `.kyri` filename default (the notation molted from Bron). This session's own four mis-attributed logs were corrected to the truth -- a factual model-field fix the rule allows.
+- **The session-log rule sync.** Matched to the profile of record: Claude Code, `claude-opus-4-8`, the Vultr VPS pier with the Daylight DC-1 as the hand device, and the `.kyri` filename default (the notation named Kyri). This session's own four mis-attributed logs were corrected to the truth -- a factual model-field fix the rule allows.
 - **The work-in-progress to crux rename.** The living pins moved to `crux/` so they sort high alphabetically, cairn-first (walk-back nib `947c592333`), with a committed back-compat symlink so the 2,000+ dated logs that cite the old path still resolve unchanged. Only the loop paths and the living rules that name the ledgers were repointed; dated ledgers kept their history and resolve through the symlink.
 
 ## Decided this session (recorded, direction set)
@@ -31,7 +31,7 @@ The operator card had been silently corrupting itself into unreadable mojibake f
 
 The docs-compression layer design and the docs-geode "inner docs crush" charter describe the same work from two angles; they are fused into one season, and three durable jobs are booked there:
 
-1. **The Bron to Kyri unification.** Every living reference to the Bron notation moves to Kyri; new logs are already `.kyri`; the 2,163 dated `.bron` files stay (one-clock law) and tools read both. The deep rename of dated bytes is a separate circled step. This unifies notation, voice, and compressed receipts under one name.
+1. **The Kyri unification.** Every living reference to the Kyri notation moves to Kyri; new logs are already `.kyri`; the 2,163 dated `.kyri` files stay (one-clock law) and tools read both. The deep rename of dated bytes is a separate circled step. This unifies notation, voice, and compressed receipts under one name.
 2. **The REMEMBER and TAME_GUIDANCE breakdown.** Both files are very large with very long lines. The recommendation below sizes the split.
 3. **The session-log index ASCII sweep.** `session-logs/README.md` still carries legacy non-ASCII in its historical rows; a scheduled ratchet normalizes it rather than a mid-session blast.
 
@@ -53,7 +53,7 @@ The cleanest unification keeps each concern in its most durable home rather than
 - **The inference Q-vane moves to a technical home.** Lattice, Scribble, Lantern, and Ember are an inference subsystem, not a voice or a variant; they belong with the inference and forge documents (the Lantern/Lattice/Ember lineage), where a reader looking for the intelligence stack will actually find them.
 - **`context/QUIN.md` becomes a writing fossil** pointing to both homes, kept whole per accrete-never-break, prepped Class H -- a molt, not a cut.
 
-This is the "most Lindy compatible replacement doc" the question asks for: not one merged page, but each role placed where it will still read true in three years. It is a molt and belongs in the same docs-compression season as the Bron-to-Kyri unification, and it waits for a confirming word before QUIN.md is fossilized.
+This is the "most Lindy compatible replacement doc" the question asks for: not one merged page, but each role placed where it will still read true in three years. It is a molt and belongs in the same docs-compression season as the Kyri-to-Kyri unification, and it waits for a confirming word before QUIN.md is fossilized.
 
 ## The values note, carried forward
 

@@ -27,8 +27,8 @@ These are the only new names this lap should introduce. They are already propose
 | `linengrow/mala.rye` | Module home + selftest binary source | **Yes — introduce** |
 | `linengrow/bin/mala` | Emitted binary | **Yes — introduce** |
 | `tools/mala_m1_witness.rish` | Build + selftest witness | **Yes — introduce** |
-| `tools/fixtures/mala_m1_mint.bron` | Pinned first mint fact | **Yes — introduce** |
-| `mala:mint` / `mala:send` | Memo prefixes on the existing SLC-L1 `.bron` envelope | **Yes — bind as M0 shapes** (no new `kind` field this lap) |
+| `tools/fixtures/mala_m1_mint.kyri` | Pinned first mint fact | **Yes — introduce** |
+| `mala:mint` / `mala:send` | Memo prefixes on the existing SLC-L1 `.kyri` envelope | **Yes — bind as M0 shapes** (no new `kind` field this lap) |
 
 **Optional, not this round unless width forces it:**
 

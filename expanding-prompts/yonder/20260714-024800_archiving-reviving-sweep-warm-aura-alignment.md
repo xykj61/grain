@@ -33,7 +33,7 @@ So this is a **naming-alignment sweep**: confirm every dated folder and every ch
 3. **Point `ORGANIZING.md`'s "One Clock" section at the spec** -- one added sentence, so the durable filing guide names the atom and the folder rule, and a future fold has one rule to read.
 4. **Give the reviving index the same footing** -- a one-line note in `active-reviving/README.md` that a revival uses the warm-aura date atom for its own stamp, so reviving and archiving speak the same clock. *(No rename; reviving already uses stamps.)*
 5. **Populate ROADMAP + TASKS + to-dos** -- a short "archiving/reviving sweep" entry naming the sweep as a naming-alignment pass with the claims above, so the plan is visible where work is tracked.
-6. **Log, commit, push** -- a bron session log, a CONTRIBUTING/Radiant commit, both remotes.
+6. **Log, commit, push** -- a kyri session log, a CONTRIBUTING/Radiant commit, both remotes.
 
 ## The Discipline It Keeps
 

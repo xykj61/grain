@@ -74,7 +74,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # Nothing new is declared: a turn's names ride beside the phase, where
 # authorship belongs, rather than in the document, where a ceiling belongs.
-let published = run ["sh" "-c" "caravan/bin/precede_read caravan/systems/serial_three_clients_menu.bron 2>&1"]
+let published = run ["sh" "-c" "caravan/bin/precede_read caravan/systems/serial_three_clients_menu.kyri 2>&1"]
 assert published.ok else "the published declaration could not be read"
 assert published.out contains "domains 4 -- channels 3 -- regions 10 -- grants 19" else "the published document changed shape"
 assert published.out contains "verdict: whole" else "the published declaration did not read whole"

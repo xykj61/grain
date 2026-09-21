@@ -112,7 +112,7 @@ if ! tr '\n' '\0' < "$work/sources" | LC_ALL=C xargs -0 awk '
       s = $0
       while (match(s, /([A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+/)) {
         tok = substr(s, RSTART, RLENGTH); s = substr(s, RSTART + RLENGTH)
-        if (tok ~ /\.(md|rye|rish|sh|bron|kyri|txt|tsv|brix|glow|zig|c|h)$/) print F "\t" tok
+        if (tok ~ /\.(md|rye|rish|sh|kyri|kyri|txt|tsv|brix|glow|zig|c|h)$/) print F "\t" tok
       }
     }' > "$work/lits.raw" 2>"$work/lits.err"; then
   echo "instrument=failed"

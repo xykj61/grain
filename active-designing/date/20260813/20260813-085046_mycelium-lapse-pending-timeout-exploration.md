@@ -95,7 +95,7 @@ birth** and refuses whole (`BadDeadline`) — a reservation must name a future, 
    at or past the deadline finds the pledge lapsed and returns the coins to the pledger; the
    verdict identical across every arrival permutation; conservation over every path; a
    never-reached deadline stays open; every refusal held.
-2. **r2 — travels as a record.** `lapse_bron.rye`: the verdict renders to a `format lapse-v1`
+2. **r2 — travels as a record.** `lapse_kyri.rye`: the verdict renders to a `format lapse-v1`
    record and parses back byte-for-byte, conservation as the record's own law.
 3. **r3 — reads across a Knot.** `lapse_knot.rye`: the deadline verdict reads one hand whether
    the pledge lives in a full Cord or a sealed checkpoint, the clock carried across the cut.

@@ -8,7 +8,7 @@
 
 ## Why this journey opens
 
-The Statement answered the plainest question a holder ever asks — *where do I stand?* — as a pure, bounded projection of one account out of a resolved ledger, and `statement_bron` let that answer cross a wire byte-for-byte. Yet a statement that travels is still only a **reading**: a recipient who holds the bytes can check the arithmetic reconciles internally, but nothing binds those numbers to the real agreed order they claim to project. A holder could hand a counterparty a statement showing any balance at all, and the counterparty's only recourse would be to obtain the whole ledger and replay it.
+The Statement answered the plainest question a holder ever asks — *where do I stand?* — as a pure, bounded projection of one account out of a resolved ledger, and `statement_kyri` let that answer cross a wire byte-for-byte. Yet a statement that travels is still only a **reading**: a recipient who holds the bytes can check the arithmetic reconciles internally, but nothing binds those numbers to the real agreed order they claim to project. A holder could hand a counterparty a statement showing any balance at all, and the counterparty's only recourse would be to obtain the whole ledger and replay it.
 
 That is the blind spot the whole ledger set names but never fills: **proof of position without replay.** A civic mesh where a keeper cannot prove their balance to a counterparty — a co-op vouching a member's standing, a supplier confirming a buyer can pay — is a ledger legible only to whoever already holds it whole. The Statement made the position *readable*; this journey makes it *provable*.
 
@@ -39,7 +39,7 @@ A Voucher whose numbers match ledger A cannot pass `check_against` a genuinely d
 ## The four rungs (crux-first, mirroring the seated arc shape)
 
 - **r1 — the crux.** `mycelium/voucher.rye`: the order-head fold, the Voucher record, `make_voucher` (from one Dag), `verify_voucher` (offline), and `check_against` (re-derive and agree), proven across open · posted · lapsed scenes; arrival-independence inherited (a voucher made against one permutation checks against another); tamper refuses (`BadSignature` on a flipped field or wrong signer, `check_against` false against a different ledger).
-- **r2 — travels.** `mycelium/voucher_bron.rye`: render a Voucher to a `format voucher-v1` record and parse it back byte-for-byte, so a proof of position crosses a wire and still verifies offline; malformed header · bad hex · unknown field refuse.
+- **r2 — travels.** `mycelium/voucher_kyri.rye`: render a Voucher to a `format voucher-v1` record and parse it back byte-for-byte, so a proof of position crosses a wire and still verifies offline; malformed header · bad hex · unknown field refuse.
 - **r3 — across a Knot.** `mycelium/voucher_knot.rye`: a Voucher read over a ledger resolved across an epoch cut (the `Knot` seam), proving the vouched position is continuous across the join and the order-head folds the whole agreed order, base included.
 - **r4 — true to the bytes.** `mycelium/voucher_true.rye`: read a real on-disk Cord fixture and cross-check the vouched triple for a chosen account against an independent `awk` reading of the same bytes — two tools, one answer, and the order-head recomputed from the fixture matches the signed one.
 

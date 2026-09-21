@@ -38,7 +38,7 @@ We hold the work as an offering, and we keep it a place of joy. The foundation w
 
 ## Part Two -- Brix, the Composer (clarified, recorded as a brief)
 
-sixos is **Nixpkgs plus infuse plus s6**, and each maps onto a module we already hold. Brix is the composer language -- the Nixpkgs-and-infuse role -- with its vocabulary already named: *brick*, *course*, *bond*, *lay*. The clarification is that the package *system* is Brix at the head of an ensemble: a `.brix` description in **Bron** notation evaluates through its lawful *bond* (our infuse analog) into a course of bricks, held content-addressed in **Tablecloth** (our store), remembered by **Mantra**, distributed under PKI seal over **Comlink** (the substituter reimagined on identity, in the Ames lineage), supervised by **Caravan** (the s6 analog), bounded by **Tally**, and booted by **Aurora** -- all in Rye's one value model, rooted in a keypair rather than in Nix-on-Linux.
+sixos is **Nixpkgs plus infuse plus s6**, and each maps onto a module we already hold. Brix is the composer language -- the Nixpkgs-and-infuse role -- with its vocabulary already named: *brick*, *course*, *bond*, *lay*. The clarification is that the package *system* is Brix at the head of an ensemble: a `.brix` description in **Kyri** notation evaluates through its lawful *bond* (our infuse analog) into a course of bricks, held content-addressed in **Tablecloth** (our store), remembered by **Mantra**, distributed under PKI seal over **Comlink** (the substituter reimagined on identity, in the Ames lineage), supervised by **Caravan** (the s6 analog), bounded by **Tally**, and booted by **Aurora** -- all in Rye's one value model, rooted in a keypair rather than in Nix-on-Linux.
 
 The full statement lives in [`active-designing/20260702-185912_brix-the-composer.md`](../../active-designing/20260702-185912_brix-the-composer.md).
 
@@ -46,7 +46,7 @@ The full statement lives in [`active-designing/20260702-185912_brix-the-composer
 
 ## Part Three -- The Modules That Compose Here
 
-Beyond Caravan and Tally, this conversation gathers: **Comlink**, both sealed networking and the PKI distribution layer where the network-key model lives; **Pond**, the ai-jail successor, which on a microkernel becomes a capability-confined enclosure rather than a Linux sandbox; **Bron**, the data notation Brix is written in; **Tablecloth**, the content-addressed store; and **Aurora**, the boot that brings Caravan up and the keystone of the kernel horizon. The display pair, **Brushstroke** and **Skate**, belong to the SLC environment as the way a person sees the system. The unification worth holding: the *capability* primitive we use for civic ownership is the same capability a microkernel uses for isolation -- one architecture, expressed in silicon.
+Beyond Caravan and Tally, this conversation gathers: **Comlink**, both sealed networking and the PKI distribution layer where the network-key model lives; **Pond**, the ai-jail successor, which on a microkernel becomes a capability-confined enclosure rather than a Linux sandbox; **Kyri**, the data notation Brix is written in; **Tablecloth**, the content-addressed store; and **Aurora**, the boot that brings Caravan up and the keystone of the kernel horizon. The display pair, **Brushstroke** and **Skate**, belong to the SLC environment as the way a person sees the system. The unification worth holding: the *capability* primitive we use for civic ownership is the same capability a microkernel uses for isolation -- one architecture, expressed in silicon.
 
 ---
 

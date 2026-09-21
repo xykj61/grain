@@ -12,7 +12,7 @@
 ## What landed
 
 - **Glow words** seated in Lexicon Cursor-loop: **check-in** · **checkpoint** · **bookmark** · **Radiant** (with disambiguation from Gate, remember, waymark, TAME crash-safety).
-- **Compass Voice step** — `docs/COMPASS.md` · `docs/compass_card.bron` · foundations return habit vocabulary line — Radiant is on the rose for cold starts.
+- **Compass Voice step** — `docs/COMPASS.md` · `docs/compass_card.kyri` · foundations return habit vocabulary line — Radiant is on the rose for cold starts.
 - **Progress bookmark** — counsel page table of main · workshop · bench STOP · held words · flags.
 - **Radiant Lint Chapter** chartered — sixteen rounds, bow measured this sitting:
   - radiant_lint GREEN (sum=2 planted only)

@@ -26,7 +26,7 @@ Read left to right: prose becomes block values (Scribble), those values carry a 
 
 ## Fusion 1 -- Scribble x Hoon's Markdown Marks
 
-**What each side already is.** Scribble already turns markdown into Bron block values -- headings, paragraphs, fenced code with `rye_fence`/`rish_fence`/plain kinds ([`../scribble/README.md`](../scribble/README.md)). Urbit handles markdown through a **mark**: `%md` is a named type with **conversion gates** (for example `%md` to `%html`), and Clay runs those conversions when a file crosses a boundary that needs a different shape.
+**What each side already is.** Scribble already turns markdown into Kyri block values -- headings, paragraphs, fenced code with `rye_fence`/`rish_fence`/plain kinds ([`../scribble/README.md`](../scribble/README.md)). Urbit handles markdown through a **mark**: `%md` is a named type with **conversion gates** (for example `%md` to `%html`), and Clay runs those conversions when a file crosses a boundary that needs a different shape.
 
 **The fusion.** Scribble becomes Glow OS's **markdown mark**: not only a parser, but a typed value with declared, TAME-bounded conversions -- `scribble` (blocks) to `html`, to `skate` (the drawn-terminal frame Scribble views already produce), to `plain`. In Glow terms this is exactly the aura/mark discipline the Glow supplement already proposes: a value is not just "some blocks," it is "blocks of mark `scribble`, with these named conversions and their bounds." Every conversion is a gate with a paired witness proving `scribble -> html -> scribble` round-trips (the dual-description witness pattern from the grain-lineage silo). Scribble keeps its name; it gains the mark role.
 

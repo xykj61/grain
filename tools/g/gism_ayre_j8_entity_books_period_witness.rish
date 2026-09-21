@@ -3,7 +3,7 @@
 # Chapter 2, Yield -- the accounting spine, never braided. Rungs one and two booked a segregated
 # inter-entity transfer and proved it one both stewards signed. pond/apps/entity_books_period.rye
 # makes a closed period travel: an entity's period folds to a sealed statement (name, close stamp,
-# trial-balance nets) that renders to a `format entity-period-v1` Bron record and parses back
+# trial-balance nets) that renders to a `format entity-period-v1` Kyri record and parses back
 # preserving every field, and the recovered period still conserves and still balances (its
 # reconstructed trial balance sums to zero, its balance sheet balances). An unknown field
 # (UnknownField, never dropped), a missing account net (MissingField), a wrong header (BadFormat),
@@ -14,7 +14,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_ayre_j8_entity_books_period_witness.rish
 
-say "gism-ayre-j8r3: Language EN — a closed period travels as Bron and returns still conserving and balancing, checkable offline."
+say "gism-ayre-j8r3: Language EN — a closed period travels as Kyri and returns still conserving and balancing, checkable offline."
 say "gism-ayre-j8r3: Lens TAME — the round trip preserves every field; a missing net, an unknown field, a wrong header, and unbalanced nets refuse."
 
 let zig = "vendor/zig-toolchain/zig"
@@ -39,4 +39,4 @@ assert selftest.out contains "refused UnknownField (never dropped)" else "gism-a
 assert selftest.out contains "refused MissingField" else "gism-ayre-j8r3: missing-field refusal missing"
 assert selftest.out contains "unbalanced nets refused Unbalanced" else "gism-ayre-j8r3: unbalanced refusal missing"
 
-say "GREEN: GISM-AYRE-J8r3 entity_books_period — a closed period travels as Bron and returns still conserving and balancing; missing, unknown, malformed, and unbalanced records refuse."
+say "GREEN: GISM-AYRE-J8r3 entity_books_period — a closed period travels as Kyri and returns still conserving and balancing; missing, unknown, malformed, and unbalanced records refuse."

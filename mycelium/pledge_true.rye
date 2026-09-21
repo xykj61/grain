@@ -8,19 +8,19 @@
 //! two-phase transfer a keeper can open and walk, and proves the property the whole Pledge rests on: the
 //! HONORED recipient is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/p/pledge_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/p/pledge_dag.kyri`, a genuine record produced reproducibly by
 //! `mycelium/pledge_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to Bob at round 1;
 //! Alice posts it at round 2, honoring it so the reserved hundred reaches Bob; Alice pledges 100 to Carol at
 //! round 3 and leaves it open), `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` --
 //! no network, the bytes read are the tree's own. Two independent readings must agree: the app parses the
-//! record through `cord_bron`, **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves
+//! record through `cord_kyri`, **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves
 //! it through `pledge`, and reports the **honored recipient**, the **posted count**, and the **open count**;
 //! the r4 witness cross-checks that triple against `tools/fixtures/p/pledge_dag_truth.awk`'s reading of the same
 //! file -- two tools, one answer. The awk applies the simplest honest slice of the agreed order (pledge-state
 //! accounting in file order); the app applies the full commit tie-break; the single post unambiguously honors
 //! the round-1 pledge, so both name the same honored recipient.
 //!
-//! Additive -- composes `cord_bron` + `cord` + `pledge` public API only (each re-runs GREEN).
+//! Additive -- composes `cord_kyri` + `cord` + `pledge` public API only (each re-runs GREEN).
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/pledge_true.rye -femit-bin=mycelium/bin/pledge_true
@@ -30,13 +30,13 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const pledge = @import("pledge.rye");
 
 pub const pledge_true_version = "20260813.075049";
 
 /// The real two-phase-transfer Cord record, bound at compile time -- the tree's own bytes, never a drift.
-const real_dag = @embedFile("corpora/pledge_dag.bron");
+const real_dag = @embedFile("corpora/pledge_dag.kyri");
 
 const hex_digits = "0123456789abcdef";
 
@@ -73,10 +73,10 @@ fn first_posted(l: *const pledge.Ledger) ?u32 {
 /// Read the real two-phase-transfer record: parse it, rebuild the Dag under `cord.add` (verifying every
 /// signature), resolve it through the Pledge, and read off the honored pledge's recipient.
 pub fn read_pledge(text: []const u8) !Reading {
-    const rec = try cord_bron.parse(text);
+    const rec = try cord_kyri.parse(text);
     // invariant: a real two-phase record carries blocks -- an empty Dag holds no pledge to read.
     if (rec.len == 0) return error.BadFormat;
-    var dag = try cord_bron.rebuild(&rec);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try pledge.resolve(&dag);
     const pi = first_posted(&verdict) orelse return error.NoHonoredPledge;
     const pl = verdict.pledge_at(pi) orelse return error.NoHonoredPledge;
@@ -106,8 +106,8 @@ fn welcome_reading_true_to_bytes() !void {
 /// The honored pledge's reserved coins reached its recipient, and the open pledge still holds coins reserved
 /// by its pledger -- the two-phase law read from the real bytes.
 fn welcome_honored_moved_open_reserved() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try pledge.resolve(&dag);
     const pi = first_posted(&verdict) orelse return error.NoHonoredPledge;
     const pl = verdict.pledge_at(pi) orelse return error.NoHonoredPledge;
@@ -121,8 +121,8 @@ fn welcome_honored_moved_open_reserved() !void {
 /// Conservation holds over the real bytes: balance + reserved sums to exactly what genesis issued -- no coin
 /// made or destroyed by reserving, honoring, or holding a pledge.
 fn welcome_conservation_over_the_real_bytes() !void {
-    const rec = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&rec);
+    const rec = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&rec);
     const verdict = try pledge.resolve(&dag);
     // invariant: the real record issued exactly the two hundred the genesis credit funds.
     assert(verdict.total_issued == 200);

@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/s/setu6_device_lab_witness.rish
 #
-# Host iface classify + lab.bron:
+# Host iface classify + lab.kyri:
 #   rishi/bin/rishi run tools/s/setu6_lab_probe_onpath_host.rish
 
 let zig = "vendor/zig-toolchain/zig"

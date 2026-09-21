@@ -110,7 +110,7 @@ Keaton's word this stamp: *seat all recommendations in the order you best recomm
 | **1** | **Shape B** — pause Generator · open **64** Surface (refuse nested-128 “innermost” + OS bundle) | **p0 · seated** |
 | **2** | Prep spine before inventing surface language — thin Rishi homes · Glow happy-zone · **vegan-dogfood** in `src/` | **p1–p3** |
 | **3** | Open **`src/sec`** room · **refuse `src/web`** | **p0 · seated** (room) |
-| **4** | `.brush` / Brushstroke grow under **`brushstroke/`** · Glow · Bron · TAME · Radiant only — never JS/HTML/CSS/JSON | **standing** |
+| **4** | `.brush` / Brushstroke grow under **`brushstroke/`** · Glow · Kyri · TAME · Radiant only — never JS/HTML/CSS/JSON | **standing** |
 | **5** | Ubuntu 26.04 GNOME Wayland = first living seam (metalsmoke already GREEN) | **standing** |
 | **6** | River + Zig Wayland gratitude **study** · GPL clean-room · never vendor River | **p4–p5** |
 | **7** | Glow connector seam sketch on GNOME · one Pond-framed Brushstroke frame from values | **p6–p7** |

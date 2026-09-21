@@ -18,7 +18,7 @@
 # order is unambiguous by round — so the app's full commit tie-break and this file-order accounting name the
 # same lapsed recipient. It prints the triple `<lapsed-recipient-hex> <lapsed> <open>`.
 #
-#   awk -f tools/fixtures/l/lapse_dag_truth.awk tools/fixtures/l/lapse_dag.bron
+#   awk -f tools/fixtures/l/lapse_dag_truth.awk tools/fixtures/l/lapse_dag.kyri
 #   -> "<lapsed-recipient-hex> <lapsed> <open>"
 
 BEGIN {

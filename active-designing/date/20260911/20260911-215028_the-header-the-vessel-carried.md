@@ -69,7 +69,7 @@ the table spells are what people reach for when they are writing a sentence.
 const head = std.fmt.bufPrint(&text, "# amphora vessel -- season poured for crossing\n...
 ```
 
-Three bytes of that line were an em dash. The vessel is a `.bron`-family artifact: it is cut into
+Three bytes of that line were an em dash. The vessel is a `.kyri`-family artifact: it is cut into
 340-byte chunk frames, ferried to a far dock, reassembled, and demanded byte-equal. Nothing was
 broken -- the crossing moves bytes and compares bytes. What stood was a persisted record in the
 tree's own notation carrying a character the tree's own law retires, in the one place the law's
@@ -135,7 +135,7 @@ control reached its last line, so a leg written tomorrow would pass unheard unde
 ## What this does not reach
 
 **The shell half.** `tools/fixtures/a/amphora_pour.sh` writes a vessel header carrying an em dash,
-and `tools/fixtures/a/amphora_vessel_lap1.bron` is a stored vessel carrying one. Both sit in
+and `tools/fixtures/a/amphora_vessel_lap1.kyri` is a stored vessel carrying one. Both sit in
 `fixtures/`, which every meter in this family reads past by design -- the planted mojibake control
 must keep its high bytes or its own prove-red leg proves nothing. The residue is 2 characters in 2
 files, named here rather than guessed at, and a shell writer's meter is its own lap.

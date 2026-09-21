@@ -20,12 +20,12 @@ assert (add 3 4) == 7 else "a two-parameter function binds each argument"
 # A function composes the runes -- classify by shape, the census's own predicate.
 fn classify path: ?: (?! (path matches "\d{8}-\d{6}")) ("live") (?: (path matches "\.png$") ("dated-bin") ("dated"))
 assert (classify "README.md") == "live" else "classify: a plain name is live"
-assert (classify "20260809-110311_x.bron") == "dated" else "classify: a dated name is dated"
+assert (classify "20260809-110311_x.kyri") == "dated" else "classify: a dated name is dated"
 assert (classify "20260809-110311_x.png") == "dated-bin" else "classify: a dated image is a binary"
 
 # The point: call a function per element inside a fold -- accumulation over a computed
 # predicate, no shell.
-let files = ["a.md" "20260809-110311_b.bron" "c.md" "20260101-000000_d.md"]
+let files = ["a.md" "20260809-110311_b.kyri" "c.md" "20260101-000000_d.md"]
 let dated = fold files from 0 as acc f: acc + (?: ((classify f) == "live") (0) (1))
 assert dated == 2 else "a fold counts by calling a function per element"
 

@@ -11,7 +11,7 @@
 //! digest and the whole against its recorded address BEFORE parse), recording a bounded summary -- name, edit-count,
 //! live position -- for each. The honesty guarantee, borrowed from `mcp_resource_list`: a listing never names a
 //! session it cannot honestly reopen, so a tampered session refuses `DigestMismatch` through the open and the whole
-//! listing refuses rather than advertising a phantom. The listing travels as a flat-Bron `format session-list-v1`
+//! listing refuses rather than advertising a phantom. The listing travels as a flat-Kyri `format session-list-v1`
 //! record. No network, no key, no funds.
 //!
 //! HUNK20 closes the travel round-trip: `parse_listing` reads a `format session-list-v1` record back into a fresh

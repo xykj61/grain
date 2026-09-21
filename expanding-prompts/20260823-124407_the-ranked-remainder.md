@@ -102,7 +102,7 @@ front page is exactly that.
 
 ### 2.1 The `constels/` room
 
-Kumara live implementations derived from **kres** and **brix** templates, written in Kyri and Bron,
+Kumara live implementations derived from **kres** and **brix** templates, written in Kyri,
 at the held `constels.com` and `constel.net`. Feeds the **Growthcircle** integration at the
 Mercury / air / Gemini seat -- seat 3 of the twelve, shared with Siya, confirmed `20260823`.
 

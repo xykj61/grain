@@ -19,7 +19,7 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_pour"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and

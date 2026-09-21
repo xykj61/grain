@@ -3,7 +3,7 @@ stamp 20260908.005228
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role COPAL -- Amphora and bron-resins lane, unattended fleet ship
+role COPAL -- Amphora and kyri-resins lane, unattended fleet ship
 modality text
 model claude-opus-5
 model_status configured default proven by .claude/settings.json; no runtime telemetry exposed

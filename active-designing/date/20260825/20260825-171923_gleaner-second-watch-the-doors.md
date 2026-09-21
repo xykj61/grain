@@ -6,7 +6,7 @@
 **Voice:** Kyri
 **Status:** Vision -- a yonder note that accretes to the Gleaner proposal; the name Gleaner is still proposed (`git grep -il gleaner` reads 0 files at tip `ae8286e`); nothing is built; a build waits on Keaton's word
 **Grows beside:** [`Gleaner, the public-signal fetcher`](20260825-171911_gleaner-the-public-signal-fetcher.md) -- the shape, the bounds, the refusals, and the first lap stand there as written
-**Kin:** [`a works at the top of the Brazos`](../external-research/20260825-171921_brazos-headwaters-works-and-fiber.md) - [`headwater works shapes`](20260825-171920_headwater-works-shapes.md) - [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Bron`](date/20260812/20260812-111800_buhr-journey3-mcp-in-bron-exploration.md)
+**Kin:** [`a works at the top of the Brazos`](../external-research/20260825-171921_brazos-headwaters-works-and-fiber.md) - [`headwater works shapes`](20260825-171920_headwater-works-shapes.md) - [`Tablecloth, the named artifact store`](date/20260812/20260812-142132_buhr-journey7-tablecloth-artifact-store-exploration.md) - [`MCP-in-Kyri`](date/20260812/20260812-111800_buhr-journey3-mcp-in-kyri-exploration.md)
 
 ---
 

@@ -6,7 +6,7 @@
 //! the whole spine rests on: what a fold *reports* is **true to the bytes a keeper can open and add up
 //! by hand**, so an entity's balance can never drift from the facts.
 //!
-//! The corpus is `dimeroll/fixtures/journal.bron`, the module's own byte-stable lap-1 fixture,
+//! The corpus is `dimeroll/fixtures/journal.kyri`, the module's own byte-stable lap-1 fixture,
 //! `@embedFile`-bound at compile time through a symlink in `pond/apps/corpora/` -- no network, the
 //! bytes read are the tree's own, never a drifting copy. The journal is parsed by
 //! `dimeroll_core.parse_journal`, loaded into a rung-one `Entity`, and folded to a trial balance;
@@ -34,7 +34,7 @@ const gc = @import("dimeroll/dimeroll_core.rye");
 pub const entity_books_true_version = "20260812.201055";
 
 /// The real corpus -- Dimeroll's own byte-stable journal fixture, bound at compile time.
-const real_journal = @embedFile("corpora/dimeroll_journal.bron");
+const real_journal = @embedFile("corpora/dimeroll_journal.kyri");
 
 /// What an auditor reads off an entity's books: how many facts, their amount total, and the
 /// debit-positive cash net. Each is a number a keeper can recompute by hand from the same bytes.

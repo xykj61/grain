@@ -15,7 +15,7 @@
 | `gen_mala` | ABSENT |
 | `tools/murr_m1_witness.rish` | **GREEN** |
 | `tools/murr_m2_witness.rish` | **GREEN** |
-| Old `tools/mala_m*_witness` · `comlink_mala_*` · `run_mala_*` · `mala_m1_mint.bron` | **ABSENT** |
+| Old `tools/mala_m*_witness` · `comlink_mala_*` · `run_mala_*` · `mala_m1_mint.kyri` | **ABSENT** |
 | New `murr_*` tool homes | **PRESENT** (5) |
 
 ## Tool calendar note

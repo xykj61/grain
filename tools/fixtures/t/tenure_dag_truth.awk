@@ -11,7 +11,7 @@
 # `<winner-signer-hex> <held> <reservations>`. The app applies the FULL agreed-order tie-break; on this
 # fixture the two rounds differ, so both name the same holder — that is the cross-check.
 #
-#   awk -f tools/fixtures/t/tenure_dag_truth.awk tools/fixtures/t/tenure_dag.bron
+#   awk -f tools/fixtures/t/tenure_dag_truth.awk tools/fixtures/t/tenure_dag.kyri
 #   -> "<winner-signer-hex> <held> <reservations>"
 
 $1 == "block" && $4 == 3 {

@@ -24,7 +24,7 @@ Both movements are shaped for a generic reader. Where this plan says *you*, it m
 
 *Can a personal-versus-public split be done with gitignore alone?* **No.** A `.gitignore` decides what a working tree tracks from here forward. It cannot un-track what is already committed, it cannot reach into git history, and it cannot rewrite prose that names one person throughout. The split you want is a **repository-topology** decision with a **generation boundary**, not an ignore-rule toggle. Three facts settle it:
 
-1. **The personal content is tracked on purpose, not ignored.** The session logs, the counsel decision records, the compressed reasoning trails in `bron-resins/`, and the living operator cards in `work-in-progress/` are all committed deliberately -- they *are* the honest record of one maintainer's season. A template must ship these empty or absent, and gitignore cannot retroactively make a tracked tree forget them.
+1. **The personal content is tracked on purpose, not ignored.** The session logs, the counsel decision records, the compressed reasoning trails in `kyri-resins/`, and the living operator cards in `work-in-progress/` are all committed deliberately -- they *are* the honest record of one maintainer's season. A template must ship these empty or absent, and gitignore cannot retroactively make a tracked tree forget them.
 
 2. **The history carries identity.** Every commit is authored under a real name and email, many commit messages turn on *"on the maintainer's word,"* and the tree's own history records a real name change as a declared event. Real cryptographic material and identity artifacts live in the history too. None of that is reachable by `.gitignore`; only a fresh history or a filtered one removes it.
 
@@ -36,7 +36,7 @@ So the honest verdict matches the instinct behind the request: **treat the whole
 
 The good news is that the tree was built with this day in mind. The conventions that a split needs already exist and simply need to be extended:
 
-- **Template files for every personal fill-in.** `GLOW_HOST.template.bron`, `GLOW_PROFILE.template.bron`, and `PUBKEYS.template.md` are committed; their filled-in siblings are gitignored. `tools/enclosure.conf.example` and the key-card example follow the same shape. The pattern -- *ship the template, withhold the fill-in* -- is proven.
+- **Template files for every personal fill-in.** `GLOW_HOST.template.kyri`, `GLOW_PROFILE.template.kyri`, and `PUBKEYS.template.md` are committed; their filled-in siblings are gitignored. `tools/enclosure.conf.example` and the key-card example follow the same shape. The pattern -- *ship the template, withhold the fill-in* -- is proven.
 - **The Acme-employee voice.** The reader-facing docs already address a generic Acme Corporation employee rather than a named person (`../.claude/rules/acme-employee-voice.md`). The de-personalizing convention for prose is written and in force.
 - **Placeholder ship names.** Example `@p` names are structurally invalid on the live network by design (`../.claude/rules/placeholder-ship-names.md`), so the template already refuses to leak a real address.
 - **An allowlist `.gitignore`.** The root ignores everything and allows the project back in folder by folder -- the exact posture a template wants.
@@ -53,10 +53,10 @@ From a full root audit, the tree divides cleanly. The proportion is roughly four
 |---|---|
 | `keys/`, `keys_*.png`, `keys_*.svg` | Identity QR cards and key material for one person. |
 | `PUBKEYS.md`, `.ssh/`, `.gnupg-rye/`, `.gh/` | Real fingerprints, private keys, forge auth. (Most already gitignored.) |
-| `GLOW_HOST.bron`, `GLOW_PROFILE.bron` | One host's paths; one contributor's identity. (Templates already exist.) |
+| `GLOW_HOST.kyri`, `GLOW_PROFILE.kyri` | One host's paths; one contributor's identity. (Templates already exist.) |
 | `session-logs/` | Years of reasoning traces that name the maintainer by design. |
 | `counsel/` | Decision records -- one person's deliberations, *"on the maintainer's word."* |
-| `bron-resins/` | Compressed personal reasoning trails. |
+| `kyri-resins/` | Compressed personal reasoning trails. |
 | `work-in-progress/REMEMBER.md`, `TASKS.md`, `ROADMAP.md` | The live, real-time work queue of one maintainer. |
 | `press/` | Personal announcements -- a name change, a fund, local ventures. |
 | `classical-vedic-astrology/` | A personal-life study library, privacy-gated. |
@@ -64,7 +64,7 @@ From a full root audit, the tree divides cleanly. The proportion is roughly four
 | `SAFE.md`, `STEWARDS.md` | Custodianship and steward mappings by real name. |
 | Licenses' copyright line | Names a real copyright holder. |
 
-**Template -- belongs to the public Grain:** all of the language and system code (`rye/`, `rishi/`, `glow/`, `tally/`, `caravan/`, `comlink/`, `mantra/`, `aurora/`, `mand/`, `mandi/`, `mycelium/`, `nock/`, `granary/`, `pond/`, `lattice/`, `lantern/`, `scribble/`, `oven/`, `amphora/`, `bron-resins/` *code*, `brushstroke/`, `cellar/`, `linengrow/`, `dimeroll/`, `src/`); the disciplines (`context/` -- TAME, Radiant, Lexicon, the specs; the `.template` files; `CLAUDE.md`; `ORGANIZING.md`; `CONTRIBUTING.md`); the teaching (`manual/`, `edu/`, `docs/`, `docs-geode/`, `nixos-guide/`); the study library (`gratitude/`, `external-research/`, `vendor/`); and the tooling (`tools/`, minus the gitignored secrets).
+**Template -- belongs to the public Grain:** all of the language and system code (`rye/`, `rishi/`, `glow/`, `tally/`, `caravan/`, `comlink/`, `mantra/`, `aurora/`, `mand/`, `mandi/`, `mycelium/`, `nock/`, `granary/`, `pond/`, `lattice/`, `lantern/`, `scribble/`, `oven/`, `amphora/`, `kyri-resins/` *code*, `brushstroke/`, `cellar/`, `linengrow/`, `dimeroll/`, `src/`); the disciplines (`context/` -- TAME, Radiant, Lexicon, the specs; the `.template` files; `CLAUDE.md`; `ORGANIZING.md`; `CONTRIBUTING.md`); the teaching (`manual/`, `edu/`, `docs/`, `docs-geode/`, `nixos-guide/`); the study library (`gratitude/`, `external-research/`, `vendor/`); and the tooling (`tools/`, minus the gitignored secrets).
 
 **Mixed -- template after a scrubbing pass:** `SOURCE.md`, `STEWARDS.md`, `context/RIYO.md` and `context/QUIN.md`, parts of `foundations/` and `active-designing/`, and a handful of `.claude`/`.cursor` rules (`session-logs.md`, `collaboration.md`) that name the maintainer as decision authority. The scrub is exactly what the Acme-voice rule already prescribes: replace the name with the generic reader or a role -- *"the steward," "the maintainer"* -- and keep the structure.
 
@@ -84,19 +84,19 @@ Two options reach this. They differ in how they treat history.
 
 Option B wants three seated things:
 
-1. **A classification manifest** -- a Bron file (proposed `template-manifest.bron`) that records, for every root path, one verdict: `template`, `personal`, or `scrub`. This is the single source of truth for the boundary, checkable and diffable, far more robust than a scattering of ignore lines. It supersedes nothing; it *names* what the `.gitignore` and `.template` files already imply.
+1. **A classification manifest** -- a Kyri file (proposed `template-manifest.kyri`) that records, for every root path, one verdict: `template`, `personal`, or `scrub`. This is the single source of truth for the boundary, checkable and diffable, far more robust than a scattering of ignore lines. It supersedes nothing; it *names* what the `.gitignore` and `.template` files already imply.
 
 2. **A projection tool** -- a Rishi script (proposed `tools/sow.rish`, *sow the seed from the standing field*) that reads the manifest and produces the template tree: copying `template` paths verbatim, running `scrub` paths through the name-to-role and Acme-voice transform, and refusing to copy any `personal` path. Its own witness proves the negative that matters most: **no personal path, and no real key or name, ever appears in the projected seed.** That witness is the heart of the breach -- a fix is closed by a witness on metal, never by a claim (`../.claude/rules/reds-first.md`).
 
 3. **A history decision, declared.** The public seed starts fresh (Option B). The private field keeps its full, signed, faithful history exactly as it stands -- accrete-never-break holds; nothing is rewritten on the personal side.
 
-*The names `sow.rish` and `template-manifest.bron` are proposals, not seatings.* Per the counsel-cell discipline, a proposed name stays proposed until the maintainer speaks it; the Lexicon and the waymark ladder own the final word.
+*The names `sow.rish` and `template-manifest.kyri` are proposals, not seatings.* Per the counsel-cell discipline, a proposed name stays proposed until the maintainer speaks it; the Lexicon and the waymark ladder own the final word.
 
 ### The breach, written first (the six promises)
 
 Per `../context/BREACH.md`, a breach declares its scope, reason, and far-side shape before the first file moves:
 
-- **Scope.** Create one new public repository (the seed). Add `template-manifest.bron` and `tools/sow.rish` (+ its witness) to the private field. Move nothing personal; the private tree is unchanged but for these additive tools.
+- **Scope.** Create one new public repository (the seed). Add `template-manifest.kyri` and `tools/sow.rish` (+ its witness) to the private field. Move nothing personal; the private tree is unchanged but for these additive tools.
 - **Reason.** Let any person hold a private Grain and contribute to a public one, without ever risking personal identity, keys, or decision records crossing into the public history.
 - **Far-side shape.** Two repositories: a public `grain` template with clean history and generic voice, and the maintainer's private downstream -- the standing field -- which can pull template updates as an upstream and never pushes its harvest back.
 - **Every byte kept.** The private history is untouched. The public history is new, not carved from the old.
@@ -131,7 +131,7 @@ The distillation rule is simple and preserves the record: **the invariant moves 
 *"Tend"* is this project's stewardship-and-traceability discipline: a **Tend limb** is a small witness that locks one named Rye constant to a Glow shape pedestal in the museum and proves it lowers cleanly. Because the pattern repeats across dozens of witnesses, cleaning the template radiates:
 
 1. **The Tend-limb witness family first** -- `tools/aurora_glow_tend_limb1_witness.rish` and its Caravan/Mantra/Tally kin. Standardize the header (one structured metadata block instead of three loose `say` lines), extract the shared placard/example/elder checks into a reusable library, and write the discipline plainly at the top: *"A Tend limb proves a named constant locks its Rye definition to a Glow shape pedestal, and lowers cleanly."* One clean template propagates to forty-plus copies.
-2. **`tools/waymark_derive.rish` second** -- the highest-stakes script (deterministic four-letter naming by SHA3-512, with digest pins guarding naming-grade integrity). It is already exemplary in its status-checking; the distillation moves its deep context into a brief *why* header and lifts the seated-draws table into a `.bron` ledger, leaving the prose clean.
+2. **`tools/waymark_derive.rish` second** -- the highest-stakes script (deterministic four-letter naming by SHA3-512, with digest pins guarding naming-grade integrity). It is already exemplary in its status-checking; the distillation moves its deep context into a brief *why* header and lifts the seated-draws table into a `.kyri` ledger, leaving the prose clean.
 3. **The suite orchestrators third** -- `tools/glow_tend_a1_suite.rish` and kin. Name each sub-witness explicitly in the progress lines for traceability, and clarify the two-lap (pure / metal) discipline in a structured header.
 
 The witnesses that gate the build -- `width-check.rish`, `tame_style_check.rish`, `tame-check.rish`, `one_clock_witness.rish` -- are already clean and need no distillation; they can stand as the reference style the rest is brought up to.
@@ -142,7 +142,7 @@ The witnesses that gate the build -- `width-check.rish`, `tame_style_check.rish`
 
 When the maintainer gives the word, this plan files forward as a dated prompt in `../expanding-prompts/` (`YYYYMMDD-HHMMSS_short-slug.md`, per that stack's one-clock naming), with milestones a witness can gate:
 
-1. **M1 -- Manifest.** Seat `template-manifest.bron` classifying every root path. Witness: every tracked root path has exactly one verdict.
+1. **M1 -- Manifest.** Seat `template-manifest.kyri` classifying every root path. Witness: every tracked root path has exactly one verdict.
 2. **M2 -- Projection.** Seat `tools/sow.rish` + its witness. Witness GREEN: the projected seed contains no `personal` path, no real key, no real name.
 3. **M3 -- Scrub pass.** Bring the `scrub` set to Acme-voice. Witness: no maintainer name in the projected seed.
 4. **M4 -- Seed repository.** Grow the fresh public history from the projection (Option B). Verify no personal commit is present.

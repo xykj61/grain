@@ -10,7 +10,7 @@
 #
 # WHAT IT PRINTS. One `piece <path> citers=<n>` line per counsel file -- citers counted as LIVING
 # tracked files outside counsel/ that name the piece's basename (a file whose own basename carries
-# a one-clock stamp is testimony and does not count; session-logs, waymarks, and bron-resins are
+# a one-clock stamp is testimony and does not count; session-logs, waymarks, and kyri-resins are
 # testimony rooms and do not count). Then pieces=, cited=, orphans=, and verdict=ok -- a census
 # gates nothing; the campaign reads it.
 #
@@ -26,7 +26,7 @@ pen=$(mktemp -d); trap 'rm -rf "$pen"' EXIT
 ( cd "$ROOT" && git ls-files 2>/dev/null ) \
   | grep -v '^counsel/' \
   | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
-  | grep -vE '^(session-logs|waymarks|bron-resins|vendor|gratitude|seed)/' \
+  | grep -vE '^(session-logs|waymarks|kyri-resins|vendor|gratitude|seed)/' \
   > "$pen/living" || : > "$pen/living"
 
 # One concatenated haystack, so 764 pieces cost one read of the living corpus rather than 764.

@@ -11,11 +11,11 @@ voice Kyri
 host anonymized OpenCode CLI session, America/New_York clock
 title The seed published -- AGENTS.md classified, both doors force-updated
 prompt Keaton asked to publish the seed
-think ran publish-seed.sh bare; the witness refused with M1_BAD because AGENTS.md stood in the tree but unclassified in template-manifest.bron -- the file I seated earlier had never entered the seed manifest
+think ran publish-seed.sh bare; the witness refused with M1_BAD because AGENTS.md stood in the tree but unclassified in template-manifest.kyri -- the file I seated earlier had never entered the seed manifest
 think classified AGENTS.md as allow plus scrub, the same treatment CLAUDE.md carries, and committed and pushed the manifest fix to xy and debrided
 think re-ran the bare form: SOW_OK copied=8756 scrubbed=1422 withheld=136, SOW_WITNESS_GREEN, committed cee6139842
 think surfaced the push as custody gate %1 and asked Keaton, who said run --push now
 think ran publish-seed.sh --push; the projection re-ran (copied=8757 scrubbed=1423, the fleet's own commits in between) and force-updated both doors to f3d6aee1
 obs the seed is unsigned and anonymous by design -- author grain-ww, parents=0, signed=N -- so the public projection stays unlinked from the maintainer
-file template-manifest.bron -- AGENTS.md classified allow + scrub
+file template-manifest.kyri -- AGENTS.md classified allow + scrub
 recommend keep-going -- the seed is published to grain-os/grain and grain-ww/grain

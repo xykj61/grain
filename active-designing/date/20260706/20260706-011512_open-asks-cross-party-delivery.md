@@ -45,7 +45,7 @@ OA-L1 facts fit under `wire_format.max_message` when hex-encoded on a log line; 
 
 | Region | Size | Content |
 |--------|------|---------|
-| signature | 64 bytes | Ed25519 over canonical `.bron` bytes |
+| signature | 64 bytes | Ed25519 over canonical `.kyri` bytes |
 | fact_len | u32 LE | length of canonical fact |
 | fact | ≤ 512 bytes | canonical request or application (fixture fits) |
 
@@ -114,7 +114,7 @@ Port **38474** — distinct from SLC-L2 delivery (**38473**) and hosted wire dem
 ### In scope
 
 - Hosted UDP delivery of **request** and **application** facts under Comlink seal
-- Reuse `tools/fixtures/open_asks_request.bron` and OA-L1 deterministic seeds (`0x51` / `0x52`)
+- Reuse `tools/fixtures/open_asks_request.kyri` and OA-L1 deterministic seeds (`0x51` / `0x52`)
 - Poster-side fold reaches `applied` after cross-party round trip
 - Witness green on metal
 

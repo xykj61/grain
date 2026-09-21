@@ -18,7 +18,7 @@ at what must be cut. The cold endurance run read `seed_link` **RED on every ship
 rather than a page.
 **THE MECHANISM.** `inseed()` in `tools/fixtures/s/seed_link_scan.sh` walked a link target UPWARD
 looking for an `allow` row, which is the right question about a FILE and the wrong one about a
-ROOM. `template-manifest.bron` allows `context/` twenty-one named pages and never the directory,
+ROOM. `template-manifest.kyri` allows `context/` twenty-one named pages and never the directory,
 so step 6 of `sow_project.sh` creates `context/` to hold them while the walk answered that the
 room was not there. `context/README.md` began naming its own rooms with a `[./](./)` link and the
 ratchet crossed its ceiling on a link that opens in both repositories. The clause below the walk

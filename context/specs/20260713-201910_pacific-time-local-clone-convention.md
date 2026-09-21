@@ -19,7 +19,7 @@ Radiant pass `20260725.035955`
 ## Why It Is Shaped This Way
 
 - **The law already said stamps come from Kaeden, verbatim.** This addendum does not change that rule; it names *which clock* Kaeden's wall reads, so a future reader -- human or agent -- is not left guessing whether an untagged stamp meant UTC, Pacific, or something else.
-- **Existing dated stamps are not rewritten.** Accrete, never break: every `.bron` log and every dated doc stamped before this addendum keeps its stamp exactly as written. This document governs stamps written **from here forward** on this local clone.
+- **Existing dated stamps are not rewritten.** Accrete, never break: every `.kyri` log and every dated doc stamped before this addendum keeps its stamp exactly as written. This document governs stamps written **from here forward** on this local clone.
 - **Upstream and this fork may diverge here, and that is fine.** If `groupproject36/veganreyklah2` later states its own timezone convention, this fork's Pacific convention stands on its own -- the two histories are already diverging by design (see `SOURCE.md` and the fork rationale in this project's own root).
 
 ## In Practice
@@ -28,7 +28,7 @@ Radiant pass `20260725.035955`
 TZ='America/Los_Angeles' date '+%Y%m%d.%H%M%S'
 ```
 
-reads the correct stamp for a new `.bron` session log, a new dated spec, or any other one-clock artifact on this clone.
+reads the correct stamp for a new `.kyri` session log, a new dated spec, or any other one-clock artifact on this clone.
 
 ---
 

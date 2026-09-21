@@ -1027,7 +1027,7 @@ capability_state() {
       # while `tools/fixtures/s/sow_allow_reach_scan.sh` refuses four ways: no directory, no receipt
       # at `$SEED/.sow-projection.log`, a receipt naming no inputs, and a receipt whose coverage
       # inputs have MOVED. Three were invisible here, and the fourth is the one that fires. The
-      # receipt hashes `template-manifest.bron` together with `git ls-files` over every `allow` room,
+      # receipt hashes `template-manifest.kyri` together with `git ls-files` over every `allow` room,
       # so any commit that adds, deletes, or renames a tracked path under one of those rooms staled
       # every ship's receipt at once -- measured `20260909`, **12 of the last 40 commits** did, and
       # `tools/` is an allowed room, so a lap that lands one tool file stales the fleet. The guard
@@ -1040,7 +1040,7 @@ capability_state() {
       # UNKNOWN IS REAL HERE, unlike the elder `test -d`: the coverage reading calls `git`, which is
       # a tool that can go missing, and an unknown answer RUNS the guard rather than hiding it.
       _seed=${SOW_SEED:-seed}
-      _manifest=${SOW_MANIFEST:-template-manifest.bron}
+      _manifest=${SOW_MANIFEST:-template-manifest.kyri}
       [ -d "$_seed" ] || { echo absent; return 0; }
       [ -f "$_seed/.sow-projection.log" ] || { echo absent; return 0; }
       _recorded=$(cat "$_seed/.sow-projection.log" 2>/dev/null || true)

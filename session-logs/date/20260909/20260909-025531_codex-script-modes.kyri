@@ -24,7 +24,7 @@ obs exec_bit_scan found 59 plain shebang files at mode 100644 against ceiling 57
 obs The watcher graded C+ 76 before its comment rewrite. Its draft graded A 93. The control graded A+ 100; its content stands.
 obs Without rg on PATH the portable-helper control passed 45 checks and skipped the two checks in one optional branch. shell_dialect requires all 47. Installed Ripgrep 15.1.0 was found in the Nix store; adding its bin directory to this pass's PATH produced 47 passes, zero skips and zero failures. The complete shell_dialect witness passed. No host configuration was changed.
 obs The Amphora bounds scan likewise found zero declarations without rg and reported agreement with rg. Its cold witness failed on the disagree plant; the complete amphora_bounds_agree witness passed with rg available, including the planted disagreement.
-obs At the cold base, SOURCE.md links nixos/configuration.nix and template-manifest.bron marks nixos as template without allow nixos. tools/fixtures/s/sow_project.sh iterates allow rows.
+obs At the cold base, SOURCE.md links nixos/configuration.nix and template-manifest.kyri marks nixos as template without allow nixos. tools/fixtures/s/sow_project.sh iterates allow rows.
 inference The current projection will omit the linked configuration. A directory audit belongs before any export-list expansion; no public seed was published in this lap.
 obs The first commit message was refused by the mechanism-sentence hook: it counted one mechanism word where three were required. Reworded the message to name each script file and its direct call behavior; the repair itself stays unchanged.
 loom commit_message first_body_words=85 first_mechanism_words=1 required_mechanism_words=3

@@ -19,7 +19,7 @@ An Acme Corporation employee arrives at this project and is told: the maker's re
 4. **Fuse the doc pipeline**: Scribble with Hoon's markdown marks, Brix with Ford, Mantra/Weave with Clay — in Glow, under the proposed names.
 5. **Grow docs in Urbit's shape** — overview, getting-started, per-variant reference — with navigation links and a single shared template for all four variant names.
 6. **Consider Maze** — a proposed M-vane (after Lick's L) bundling proposals not in the canonical ten, such as the TAME linter.
-7. **Log everything** as bron and as this expanded prompt; conclude the archive process; commit and push in the fork's own disciplined style.
+7. **Log everything** as kyri and as this expanded prompt; conclude the archive process; commit and push in the fork's own disciplined style.
 
 ## How It Was Carried Out (this turn)
 

@@ -48,7 +48,7 @@
 | A named path from Glow values to a hosted window | A new Glow rune that opens windows |
 | Documented hops + witnesses per hop | Merging glow/ into brushstroke/ |
 | Reuse `wayland_seed` + Pond metalsmoke | Inventing Vulkan/GPU in p5 |
-| `.brush` later describes surfaces in Glow/Bron | HTML · CSS · JSON · `src/web` |
+| `.brush` later describes surfaces in Glow/Kyri | HTML · CSS · JSON · `src/web` |
 
 ## Minimal next proofs (charted)
 

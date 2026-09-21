@@ -35,7 +35,7 @@ flowchart TB
   subgraph app [Linengrow -- application]
     SLC2[SLC-L2 sealed delivery]
     SLC1[SLC-L1 receipt loop]
-    Receipt[receipt.rye / .bron facts]
+    Receipt[receipt.rye / .kyri facts]
   end
 
   subgraph comlink [Comlink -- meaning on the wire]
@@ -91,7 +91,7 @@ flowchart TB
 | Dependency | Role | Landed? |
 |------------|------|---------|
 | `linengrow/receipt.rye` | Ed25519 sign - append log line - fold balance - verify | Yes -- SLC-L1 |
-| `tools/fixtures/slcl1_fact.bron` | Golden fact for witness | Yes |
+| `tools/fixtures/slcl1_fact.kyri` | Golden fact for witness | Yes |
 | SLC-L2 scope | One receipt, two identities, sealed on the wire | **Horizon** -- carriage ready |
 
 SLC-L2 **depends on** Comlink carrying bytes unchanged; it **does not depend on** virtio specifically once hosted UDP or a future Pond socket could substitute -- the **datagram letter** is the invariant ([`wire_format.rye`](../comlink/wire_format.rye)).

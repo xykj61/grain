@@ -161,7 +161,7 @@ classify() {
   if printf '%s' "$_line" | grep -qE 'for (room|d|r) in |ENFORCE=|PINS=|DECLARING=|ROOMS='; then
     echo roster; return
   fi
-  if [ "$(printf '%s' "$_line" | grep -oE 'counsel|waymarks|foundations|active-designing|external-research|expanding-prompts|construction|gratitude|archive|yonder|bron-resins' | sort -u | wc -l)" -ge 3 ]; then
+  if [ "$(printf '%s' "$_line" | grep -oE 'counsel|waymarks|foundations|active-designing|external-research|expanding-prompts|construction|gratitude|archive|yonder|kyri-resins' | sort -u | wc -l)" -ge 3 ]; then
     echo roster; return
   fi
   if printf '%s' "$_line" | grep -qE "\\^($fields)[ '\"/\\\\]"; then echo field; return; fi

@@ -270,7 +270,7 @@ Four equinoxes (SOON [x] - JARL - BUHR - TACT); four JARL seats GREEN; next-chap
 
 ## Waymarks
 
-**No roster here** (`20260907`; it stood at 13 of 30). Seated set `construction/waymark-registry.bron`, sealed; face `.claude/rules/waymark-ladders.md`, agreed **both ways** by `waymark_registry_witness`. Live chapter: **SOON - JARL - BUHR - TACT**. Draw: `tools/w/waymark_derive.rish`. Claims `waymarks/`.
+**No roster here** (`20260907`; it stood at 13 of 30). Seated set `construction/waymark-registry.kyri`, sealed; face `.claude/rules/waymark-ladders.md`, agreed **both ways** by `waymark_registry_witness`. Live chapter: **SOON - JARL - BUHR - TACT**. Draw: `tools/w/waymark_derive.rish`. Claims `waymarks/`.
 
 ---
 
@@ -289,7 +289,7 @@ Four equinoxes (SOON [x] - JARL - BUHR - TACT); four JARL seats GREEN; next-chap
 ## Two grains
 
 The private field is `~/grain`; the public template **grain-os/grain** is *projected* by
-`tools/s/sow.rish` along `template-manifest.bron`, proven clean by `tools/s/sow_witness.rish` -- no
+`tools/s/sow.rish` along `template-manifest.kyri`, proven clean by `tools/s/sow_witness.rish` -- no
 name or key crosses. The scrub reaches every name, handle, and contact form case-insensitively, and
 a leaking file is withheld whole: privacy over completeness (%225). Raw PII waits for the **Vault**.
 The publish push is Keaton's hand.
@@ -328,7 +328,7 @@ so the armed-wall promise rides on the publisher.
 | **`%530` bound twice**, both published ([law](../../.claude/rules/derived-spine.md)) | live |
 | **Gate `%7`** -- retire `.cursor` ([prep](../SHRED_PREP.md)) | live |
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
-| **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
+| **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Kyri) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
 | **Three corridor bundles placed, held at the gate** -- fiber (KC), headwaters (Gallatin), works (Brazos); Laps 6-9 await the word. Prompts: `expanding-prompts/20260825-1719{12,18,24}_*.md` | check-in `20260825.171907` |
 | **Kumara seed-key derivation** -- one high-entropy seed in Vault from which the Comlink X25519/Ed25519 and post-quantum SLH-DSA-SHAKE-256s keys derive by domain-separated SHAKE-256, the path carrying a scheme tag and a version. An agent writes and witnesses the derivation against test vectors and fake constel identities and stops there | booked - custody-gated |

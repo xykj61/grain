@@ -77,7 +77,7 @@ const caravan_relay_version = "20260819.162139";
 
 /// The chain declaration: a client, a relay that holds both roles, a
 /// backend, and the five directed regions that join them.
-pub const declaration_path = "caravan/systems/serial_relay.bron";
+pub const declaration_path = "caravan/systems/serial_relay.kyri";
 
 /// How many regions one step may name. The settling step reads the whole
 /// chain at once, so the bound is the chain's own width rather than a

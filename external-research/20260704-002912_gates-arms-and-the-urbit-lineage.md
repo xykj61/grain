@@ -41,7 +41,7 @@ Urbit's stack compresses forty years of Lisp-shaped thought into a small noun la
 | **core** | `[battery payload]` -- code map plus data context | **Concept affirmed, name not adopted** -- Zig `struct` + methods already live this shape |
 | **arm** | Named method in a core's battery (`++ grab`, `++ grow`, ...) | **Concept only** -- we name duties **absorb / express / tend**, not *arms* |
 | **gate** | One-arm core with sample -- typed callable | **Do not adopt** -- Zig `fn` + captures + `struct` methods suffice |
-| **door** | Core that is its own context -- parameterized module | **Concept maps to Tilak/Bron mark**, not to a Rye keyword |
+| **door** | Core that is its own context -- parameterized module | **Concept maps to Tilak/Kyri mark**, not to a Rye keyword |
 | **mark** | File type as a door: type + conversions + revision ops | **Concept -> Tilak**; Urbit's `++grab` / `++grow` / `++grad` -> our triad, renamed |
 | **grab** | Convert *from* other marks *into* this mark | **absorb** (seated) |
 | **grow** | Convert *from* this mark *to* other marks | **express** (seated) |
@@ -51,7 +51,7 @@ Urbit's stack compresses forty years of Lisp-shaped thought into a small noun la
 
 Ford's famous line -- the build system as **an arm of Clay** -- is architectural, not syntactic: the builder lives **inside** the versioned filesystem vane, not as a peer kernel. Our mirror is **Brix inside Mantra's memory of files**, `rye` as growing verbs, not a new module named Ford. The word *arm* there means *aspect of*, which is closer to our **graduation rule** (module vs aspect) than to a Hoon `++` arm.
 
-**Clean-room discipline holds:** we study Urbit in `gratitude/`; our implementations speak **Tilak**, **Weave**, **Bron**, **shape-cast** -- never `++grab` in Rye source.
+**Clean-room discipline holds:** we study Urbit in `gratitude/`; our implementations speak **Tilak**, **Weave**, **Kyri**, **shape-cast** -- never `++grab` in Rye source.
 
 ---
 

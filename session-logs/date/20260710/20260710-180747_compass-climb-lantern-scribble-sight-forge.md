@@ -22,10 +22,10 @@ Witness before narrative. Hosted before device on the forge-query fold.
 
 ## Files
 
-- `lantern/lantern_core.rye` · `lantern.rye` · `fixtures/allowed_models.bron` · `tools/lantern_lap2.rish`
+- `lantern/lantern_core.rye` · `lantern.rye` · `fixtures/allowed_models.kyri` · `tools/lantern_lap2.rish`
 - `scribble/scribble_core.rye` · `scribble.rye` · `fixtures/session_rish_snippets.md` · `tools/scribble_lap3.rish`
 - `pond/apps/drawn_terminal.rye` — assist sight + forge query unified compose/dispatch
-- `tools/inference_assist_view_lap3.rish` · `tools/realidream_forge_query_unified_view.rish` · `tools/fixtures/forge_query_device_hits.bron`
+- `tools/inference_assist_view_lap3.rish` · `tools/realidream_forge_query_unified_view.rish` · `tools/fixtures/forge_query_device_hits.kyri`
 - `tools/parity.rish` · TASKS · ROADMAP · LEXICON · READMEs · hammock
 
 ## Recommend

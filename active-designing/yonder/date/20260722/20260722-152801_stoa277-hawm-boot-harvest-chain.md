@@ -1,6 +1,6 @@
 # STOA277 -- HAWM0 Boot -> Harvest Chain
 
-*An Acme Corporation employee reading this gets the one-shot host chain after inventary: `hawm0_boot_onpath_host` then `hawm_log_harvest_worker` into `hawm-harvest.bron`. The chain is authored and the harvest half is GREEN device-free. Full boot GREEN needs `/dev/kvm` on a plain host terminal -- the jail refuses honestly when KVM is absent.*
+*An Acme Corporation employee reading this gets the one-shot host chain after inventary: `hawm0_boot_onpath_host` then `hawm_log_harvest_worker` into `hawm-harvest.kyri`. The chain is authored and the harvest half is GREEN device-free. Full boot GREEN needs `/dev/kvm` on a plain host terminal -- the jail refuses honestly when KVM is absent.*
 
 **Language:** EN  
 **Version:** `20260722.152801` (EDT - Framework host)  

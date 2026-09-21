@@ -23,7 +23,7 @@ Radiant pass `20260725.104245`
 |---------|------|
 | `tally/pedersen.rye` | `C = amount·G + r·H`; pinned `H` via SHA3 domain → `fromUniform` |
 | `linengrow/disclosure_core.rye` | Sigma prove/verify for a **declared** public tier |
-| Golden `tools/fixtures/slcl4_tier_proof.bron` | Receipt field order |
+| Golden `tools/fixtures/slcl4_tier_proof.kyri` | Receipt field order |
 | Witness `tools/slcl4_sigma.rish` | Parity **200** |
 
 ---
@@ -49,7 +49,7 @@ This is a standard Schnorr-style proof of knowledge of the discrete log of `(C �
 | Tier allow-list | Prove and verify both refuse unknown tiers |
 | Welcome path | All three tiers prove + verify in selftest |
 | Unwelcome | Forged proof refused; wrong-tier claim against true `C` refused |
-| Receipt | `.bron` fields match prompt: claim, log_digest, commitment, tier_claimed, proof, stamp |
+| Receipt | `.kyri` fields match prompt: claim, log_digest, commitment, tier_claimed, proof, stamp |
 | Clean room | No pairing, no external ZK toolchain; Edwards25519 + SHA3 only |
 
 ---

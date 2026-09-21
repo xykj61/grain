@@ -18,7 +18,7 @@ being published.
 
 ## Why this is better than withholding
 
-Today a page carrying real figures has one honest destination: withheld. `template-manifest.bron`
+Today a page carrying real figures has one honest destination: withheld. `template-manifest.kyri`
 allows a room or it does not, and a room absent from the allowlist never ships. That is a good wall
 and it wastes something.
 

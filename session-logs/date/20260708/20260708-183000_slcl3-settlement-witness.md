@@ -5,7 +5,7 @@
 
 ## Thinking trace
 
-Kaeden opened the SLC-L3 gate (`182500`). The branch already held `settlement_core.rye`, `settlement.rye`, lane POSIX seams, and bron goldens from the prior pass. First metal run failed on `FileNotFound` for the lane capture file — shell redirect under `std.process.spawn` did not land output on disk while stdout inherited to the parent. Switched `invoke_lane_seam` to `std.process.run` with captured stdout; duplicated seam strings into arena memory to avoid use-after-free.
+Kaeden opened the SLC-L3 gate (`182500`). The branch already held `settlement_core.rye`, `settlement.rye`, lane POSIX seams, and kyri goldens from the prior pass. First metal run failed on `FileNotFound` for the lane capture file — shell redirect under `std.process.spawn` did not land output on disk while stdout inherited to the parent. Switched `invoke_lane_seam` to `std.process.run` with captured stdout; duplicated seam strings into arena memory to avoid use-after-free.
 
 Second failure: `AmountMismatch` from dangling slices — `built.amount` and `built.fact_stamp` pointed at stack buffers inside `build_slcl1_log`. Fixed by re-parsing canonical fact fields in `run_lane` and unwelcome paths.
 
@@ -15,14 +15,14 @@ After fixes: `linengrow/bin/settlement selftest` GREEN — both lanes, three axe
 
 - Thin rail stays POSIX external-interpreter family per TAME — no SDK link.
 - Mainnet treasury and SLC-L4 remain out of scope; witness scores, prose does not crown.
-- Golden bron fixtures pin six fields; `log_digest` computed at runtime.
+- Golden kyri fixtures pin six fields; `log_digest` computed at runtime.
 
 ## Files
 
 - `linengrow/settlement_core.rye` — receipt shape, digest, amount, lane verify.
 - `linengrow/settlement.rye` — two-lane selftest; `process.run` seam capture.
 - `tools/fixtures/slcl3_lane_*_settle.sh` — pinned testnet seams.
-- `tools/fixtures/settlement_receipt_lane_*.bron` — lane goldens.
+- `tools/fixtures/settlement_receipt_lane_*.kyri` — lane goldens.
 - `tools/slcl3_settlement_witness.rish` — build + run witness.
 - `active-designing/20260708-182500_slcl3-settlement-rail.md` — hammock scope.
 - `tools/parity.rish` — parity **198** stanza.

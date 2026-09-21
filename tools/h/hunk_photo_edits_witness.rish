@@ -8,7 +8,7 @@
 # holds an `EditList` and one `apply` that replays the whole list over a source image, returning a fresh edited image
 # with the source untouched. Replay is deterministic -- the same list over the same source yields the same bytes every
 # time, the content-address guarantee an edited image never needs its pixels stored -- and the list travels as a
-# flat-Bron `format photo-edits-v1` record, so render(parse(render(x))) is a fixed point. The selftest proves replay
+# flat-Kyri `format photo-edits-v1` record, so render(parse(render(x))) is a fixed point. The selftest proves replay
 # composes the verbs by hand byte-for-byte, is deterministic and non-destructive (the empty list recovers the source),
 # stays an open image, travels as a fixed point, and refuses a bad header, an unknown verb, a malformed field, and an
 # extra field by name, with an out-of-bounds crop surfacing its own OutOfBounds through the fold. No network, no key,

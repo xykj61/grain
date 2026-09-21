@@ -29,7 +29,7 @@
 # stays visible rather than becoming invisible by being permitted.
 #
 # Kin: tools/s/sow_witness.rish (the rung that gates on this) - tools/fixtures/s/sow_project.sh
-# (the allowlist projector) - template-manifest.bron (the boundary itself).
+# (the allowlist projector) - template-manifest.kyri (the boundary itself).
 #
 # Run from the repository root.
 set -eu
@@ -37,7 +37,7 @@ set -eu
 # Both inputs are injectable so the guard can be proven able to RED on a throwaway pair rather
 # than only ever observed passing on the real tree. Defaults are the real ones, so every existing
 # caller is unchanged.
-manifest="${1:-template-manifest.bron}"
+manifest="${1:-template-manifest.kyri}"
 roots_file="${2:-}"
 [ -f "$manifest" ] || { echo "refused: no manifest at $manifest" >&2; exit 1; }
 

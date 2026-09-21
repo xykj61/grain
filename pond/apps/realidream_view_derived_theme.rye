@@ -13,7 +13,7 @@
 //!
 //! It stays on witnessed ground end to end. The theme is read by the real `.brush`
 //! authoring loop (`brush_parse.parse_brush` validates the file, `collect_brush_style`
-//! reassembles its style block into the flat Bron sheet `tokens.rye` consumes); the
+//! reassembles its style block into the flat Kyri sheet `tokens.rye` consumes); the
 //! cascade is `tokens.resolve` (per-key `brix/infuse`, already witnessed); the paint is
 //! rung eight's `paint_flow` unchanged. The recolor is proven two ways: the themed flow
 //! resolves to the authored honey, and the base sheet's default flow color (Weld)
@@ -52,7 +52,7 @@ pub const ThemeError = error{
 };
 
 /// Resolve the theme fixture into a token sheet: read the `.brush` file, validate it
-/// through the real authoring loop, collect its `style:` block into flat Bron, and
+/// through the real authoring loop, collect its `style:` block into flat Kyri, and
 /// infuse that override over `tokens.base_sheet`. Returns the resolved sheet's byte
 /// length in `out`. The `flow` key the theme overrides now wins in the cascade.
 pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
@@ -73,7 +73,7 @@ pub fn resolve_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
     // invariant: a theme fixture declares a non-empty style block to override with.
     if (surface.style_count == 0) return error.ThemeMissingFlow;
 
-    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    // Reassemble the style block into the flat Kyri sheet tokens.rye's infuse reads.
     var override_buf: [bp.max_style_bytes]u8 = undefined;
     const over_len = try bp.collect_brush_style(src, &override_buf);
     // invariant: a declared style block collects at least one token line.

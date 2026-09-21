@@ -15,7 +15,7 @@ const wl = @import("wayland_seed.rye");
 const hold1 = @import("setu_desk_hold1.rye");
 const hold_wl = @import("setu_desk_hold_wayland.rye");
 
-const station_path = "tools/.cache/setu0/station.bron";
+const station_path = "tools/.cache/setu0/station.kyri";
 const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 

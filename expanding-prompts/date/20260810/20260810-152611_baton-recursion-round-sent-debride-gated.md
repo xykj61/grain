@@ -23,7 +23,7 @@ The **debride of "old logs no longer needed"** is held, correctly, and is the si
 
 - Debride overrides accrete-never-break, so its rule requires a **specific named target** and a **cairn** (walk-back marker) first.
 - "Old logs no longer needed" names no specific target, and the 2,000+ dated logs are protected by the one-clock law — a vague sweep is not safe to run.
-- **Low-regret scope on offer:** debride only the archived Markdown logs that already have a superseding `.kyri`/`.bron`, with a cairn dropped first. This waits on the maintainer naming the scope.
+- **Low-regret scope on offer:** debride only the archived Markdown logs that already have a superseding `.kyri`/`.kyri`, with a cairn dropped first. This waits on the maintainer naming the scope.
 
 `mitra` / shedding likewise stays RED — only molt-prep is done.
 
@@ -32,7 +32,7 @@ The **debride of "old logs no longer needed"** is held, correctly, and is the si
 - **Name the debride scope** (which logs, exactly) — or leave the logs whole.
 - **Configure the other two duals** beside Qkri.
 - **Build the first slice** (curated trust directory), fill the sales one-pager `[company sets: …]` facts, or write a first Linengrow profile on a real subject's consent.
-- **Build Mandate**, or open the all-Rishi / Bron→Kyri notation molts.
+- **Build Mandate**, or open the all-Rishi / Kyri→Kyri notation molts.
 
 ## How to write the next baton
 

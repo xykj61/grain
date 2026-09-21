@@ -2,7 +2,7 @@
 #
 # Rungs one through three named a fake dev-net, settled a whole d12-d60 branch, and let a constel travel
 # as a format constel-net-v1 record -- all over nets seated in code. This closing rung carries the reader
-# onto a REAL on-disk constel record (tools/fixtures/c/constel_net.bron, produced reproducibly by
+# onto a REAL on-disk constel record (tools/fixtures/c/constel_net.kyri, produced reproducibly by
 # pond/apps/constel_net_fixture_gen.rye, @embedFile-bound through a pond/apps/corpora/ symlink) and proves
 # what the reader reports is true to the bytes. The crux is the cross-check: constel_net_true reports the
 # roster size - galaxy - planet, and tools/fixtures/c/constel_net_truth.awk reads the same file independently;
@@ -37,15 +37,15 @@ assert selftest.out contains "The harness's agent-doable arc closes" else "const
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "constel-net-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/c/constel_net_truth.awk tools/fixtures/c/constel_net.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/constel_net_truth.awk tools/fixtures/c/constel_net.kyri"]
 assert awk.ok else "constel-net-true: awk truth read failed"
 assert awk.out contains "3 3 267" else "constel-net-true: awk triple not 3 3 267"
 assert app.out == awk.out else "constel-net-true: app and awk disagree — the reading drifted from the bytes"
 
 # Rung three stays its own GREEN binary -- this rung reads the record it renders, never replaces it, so
 # the travel crux stands at r4's door.
-let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_bron_witness.rish 2>&1"]
+let r3 = run ["sh" "-c" "rishi/bin/rishi run tools/co/constel_net_kyri_witness.rish 2>&1"]
 assert r3.ok else "constel-net-true: rung three (the net travels) is not GREEN under the closing rung"
-assert r3.out contains "constel-net-bron: GREEN" else "constel-net-true: rung three did not speak its GREEN"
+assert r3.out contains "constel-net-kyri: GREEN" else "constel-net-true: rung three did not speak its GREEN"
 
 say "constel-net-true: GREEN — a real constel record reads true (app==awk, 3 3 267) and is a genuine, law-safe harness net; rung three stands at its door. The Constel dev-net harness's agent-doable arc closes."

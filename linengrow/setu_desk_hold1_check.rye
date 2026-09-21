@@ -1,6 +1,6 @@
 //! linengrow/setu_desk_hold1_check.rye -- paint Desk hold chrome from cache.
 //!
-//! Reads tools/.cache/setu0/station.bron (+ ping/frame presence) and paints
+//! Reads tools/.cache/setu0/station.kyri (+ ping/frame presence) and paints
 //! the HOLD0 line onto a Desk-sized Skate grid; prints the painted line.
 
 const std = @import("std");
@@ -11,7 +11,7 @@ const hold0 = @import("setu_desk_hold0.rye");
 const hold1 = @import("setu_desk_hold1.rye");
 const skate = @import("skate_grid.rye");
 
-const station_path = "tools/.cache/setu0/station.bron";
+const station_path = "tools/.cache/setu0/station.kyri";
 const ping_path = "tools/.cache/setu0/lane_ping.bin";
 const frame_path = "tools/.cache/setu0/lane_frame.bin";
 

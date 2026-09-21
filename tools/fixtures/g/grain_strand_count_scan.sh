@@ -60,7 +60,7 @@ trap 'rm -rf "$work"' EXIT INT TERM
 
 git ls-files '*.md' '*.mdc' 2>/dev/null \
   | grep -v -E '/(date|archive|yonder)/' \
-  | grep -v -E '^(session-logs|counsel|waymarks|external-research|gratitude|vendor|seed|research-silo|bron-resins|press|saga|journey|spellbook)/' \
+  | grep -v -E '^(session-logs|counsel|waymarks|external-research|gratitude|vendor|seed|research-silo|kyri-resins|press|saga|journey|spellbook)/' \
   | head -"$MAX_DOCS" > "$work/docs.txt"
 
 # invariant: the document corpus is never empty here either -- an empty list would report zero

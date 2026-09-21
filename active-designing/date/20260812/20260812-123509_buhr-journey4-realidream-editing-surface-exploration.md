@@ -13,7 +13,7 @@
 
 ## Where the plan stands
 
-The BUHR exploration named three journeys, and all three now run green. Journey 1 composed Quin's four voices into the bounded Q-vane host. Journey 2 built the Realidream Mantra browser — the append-only log rendered as a readable revision graph, painted onto WADE1's styled Skate surface, and made themeable end to end by the `.brush` authoring loop (rungs one through seven, the whole theming arc). Journey 3 spoke MCP in Bron, from the owned descriptor shape through the JSON host bridge. The written itinerary is complete.
+The BUHR exploration named three journeys, and all three now run green. Journey 1 composed Quin's four voices into the bounded Q-vane host. Journey 2 built the Realidream Mantra browser — the append-only log rendered as a readable revision graph, painted onto WADE1's styled Skate surface, and made themeable end to end by the `.brush` authoring loop (rungs one through seven, the whole theming arc). Journey 3 spoke MCP in Kyri, from the owned descriptor shape through the JSON host bridge. The written itinerary is complete.
 
 That completion is itself the blind spot this exploration names: the Realidream vision promises **reading the web and writing the program at once, on one graph** ([`../foundations/20260728-220203_realidream.md`](../foundations/20260728-220203_realidream.md)), and Journey 2 built only the reading half. The graph is rendered; nothing yet writes to it through the surface. The next journey is the other half of the promise.
 

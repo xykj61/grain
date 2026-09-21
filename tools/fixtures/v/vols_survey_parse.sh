@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/v/vols_survey_parse.sh -- VOLS survey, parse a cion-survey-v1 Bron ledger.
+# tools/fixtures/v/vols_survey_parse.sh -- VOLS survey, parse a cion-survey-v1 Kyri ledger.
 #
 #   sh tools/fixtures/v/vols_survey_parse.sh <record>
 #
@@ -31,7 +31,7 @@ if [ "$header" != "format cion-survey-v1" ]; then
   exit 1
 fi
 
-# Pull each declared total; a Bron field is "key value" (space, not =).
+# Pull each declared total; a Kyri field is "key value" (space, not =).
 for k in stamp surfaces sites handles prose_gaps guarded_sites; do
   v=$(sed -n "s/^$k //p" "$record" | head -1)
   echo "$k=$v"

@@ -13,7 +13,7 @@ Design and name the **first lap** so Cursor can implement it rung by rung afterw
 
 | Step | Deliverable |
 |------|-------------|
-| **(a) Manifest shape** | The sealed-record `.bron` manifest on paper — fields, digest addressing, Kumara signature seam |
+| **(a) Manifest shape** | The sealed-record `.kyri` manifest on paper — fields, digest addressing, Kumara signature seam |
 | **(b) Export** | One directory → content-addressed resins + manifest |
 | **(c) Verify** | Two paths; one golden pinned by an independent digest tool |
 | **(d) Restore** | Bit-faithful compare after restore |
@@ -23,7 +23,7 @@ Design and name the **first lap** so Cursor can implement it rung by rung afterw
 
 - **Invocation** — explicit shell command; docked bare drive is precondition, never trigger; scrub cold, key warm only for signing seconds
 - **Keys** — master cold (`0646…FA7A`); sandbox signing (`DBF8…2B99`); unknown fingerprint = error on sight
-- **Archive verdict** (optional Kaeden affirmation) — Kumara-signed `.bron` manifest; SHA3-addressed resins; bead-store host seam; tar demoted to transport wrapper
+- **Archive verdict** (optional Kaeden affirmation) — Kumara-signed `.kyri` manifest; SHA3-addressed resins; bead-store host seam; tar demoted to transport wrapper
 
 ## Cursor needs from this sitting
 

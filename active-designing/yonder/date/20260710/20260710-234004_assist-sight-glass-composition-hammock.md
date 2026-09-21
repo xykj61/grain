@@ -27,7 +27,7 @@ Carriage for claims already GREEN as module or standalone views:
 | **417** | Lantern `user` | Assist view lap 17 |
 | **418** | same -- lap close | Assist sight lap 15 |
 
-Frames stay at **8** lines. Echo and user read pin fixtures beside `completion.bron`; the main lantern band keeps tokens and stop reason.
+Frames stay at **8** lines. Echo and user read pin fixtures beside `completion.kyri`; the main lantern band keeps tokens and stop reason.
 
 ## Horizon stays closed
 

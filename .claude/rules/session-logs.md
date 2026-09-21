@@ -4,19 +4,19 @@ At the end of **every** response -- before finishing the turn -- write a session
 
 Provider, product, model, and joint-session attribution follow [`session-log-provenance.md`](session-log-provenance.md). Configuration describes a default; only runtime evidence identifies the model that produced a log.
 
-## Format -- Kyri (living law; molted from Bron `20260810`)
+## Format -- Kyri (living law; named Kyri `20260810`)
 
-**New logs are `.kyri`** -- the notation formerly named **Bron**, molted to Kyri on Keaton's word (`20260810`): the same immutable-value format (key-value, one field per line, `#` comments, no quotes, no braces), a warmer name from the favorites list. Spec: `active-designing/yonder/date/20260621/20260621-063912_bron-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`. The **`.bron` logs already on disk are never renamed** -- the one-clock law and accrete-never-break protect every dated artifact, and tools read both extensions. **Count them rather than quoting a number**: this sentence carried `2,163` while `git ls-files 'session-logs/*' | grep -c '\.bron$'` read **2,783** on `20260827`, and a figure copied into prose drifts the first lap nobody edits both. The sharper reading from the same measurement: **688 of those `.bron` logs are stamped after the `20260810` molt this paragraph announces**, so the law above is followed by some hands and not others. That is a fact about the tree rather than about the rule, and it is written here so the next reader meets it instead of assuming the molt took. A full sweep of the remaining living Bron references to Kyri, and teaching the fold/align tools `.kyri`, follow as their own rounds.
+**New logs are `.kyri`** -- the Kyri notation, named on Keaton's word (`20260810`): immutable key-value, one field per line, `#` comments, no quotes, no braces. Spec: `active-designing/yonder/date/20260621/20260621-063912_kyri-notation.md` (bannered as the Kyri notation; kept readable) and counsel `20260707-222500`.
 
 Historical Markdown logs live under `session-logs/date/YYYYMMDD/` (folded by day). Write every new session log as `.kyri`.
 
 ## Filename
 
-`session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri` -- **a log is born on its day's shelf**, seated `20260827.171500` on Keaton's word: write it straight into `date/YYYYMMDD/` rather than flat in the room. Hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the notation molted from Bron `20260810`); the `.bron` logs already on disk are never renamed and tools read both.
+`session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_short-sprig.kyri` -- **a log is born on its day's shelf**, seated `20260827.171500` on Keaton's word: write it straight into `date/YYYYMMDD/` rather than flat in the room. Hyphen stamp in the filename; body field `stamp YYYYMMDD.HHMMSS` (dot form). New logs are `.kyri` (the Kyri notation, named `20260810`).
 
 **Countdown prefixes** (`99999_`, etc.) are **retired**. One clock only.
 
-Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md` (extension is `.bron` for this stream). Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
+Full naming law: `context/specs/20260627-102012_one-clock-naming-law.md` (extension is `.kyri` for this stream). Files sort ascending by stamp; the living index in `session-logs/README.md` reads newest first.
 
 When two logs share a second, add `_short-sprig` from `title` (or from `prompt` when titles match). Derive a missing stamp from the file's first-commit date per the naming law.
 
@@ -89,7 +89,7 @@ recommend keep-going|check-in what and why
 
 ## Archive fold
 
-Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the destination molted from `archive/` on `20260821.161758` with the mark law ([`stamp-and-name.md`](stamp-and-name.md)), since ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/s/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/s/session_logs_archive.rish` -- folds `.kyri`, `.bron`, and historical `.md`; today's stamp stays flat, and the index is repointed in the same pass. Run fold on Keaton's word.
+Prior (and closed) days' logs live under `session-logs/date/YYYYMMDD/` -- the destination molted from `archive/` on `20260821.161758` with the mark law ([`stamp-and-name.md`](stamp-and-name.md)), since ORGANIZING defines archive as finished-and-historical while a log from nine days ago is the live record. **Preview:** `rishi/bin/rishi run tools/s/session_logs_archive_preview.rish`. **Fold:** `rishi/bin/rishi run tools/s/session_logs_archive.rish` -- folds `.kyri`, and historical `.md`; today's stamp stays flat, and the index is repointed in the same pass. Run fold on Keaton's word.
 
 **The room is bounded at 256 flat files**, enforced by `rishi/bin/rishi run tools/r/room_bound_witness.rish` -- because at roughly a hundred and eight logs a day an emptied room refills past GitHub's 1,000-entry listing cap in nine days, so the bound is the fix and the fold is only how it is met. **A stale reference is resolved, never rewritten:** `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference> [<citing-file>]`.
 

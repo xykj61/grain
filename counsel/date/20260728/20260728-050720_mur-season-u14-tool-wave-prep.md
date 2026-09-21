@@ -27,11 +27,11 @@
 
 | Home today | Lean rename | Couples with |
 |------------|-------------|--------------|
-| `tools/mala_m1_witness.rish` | → `murr_m1_witness.rish` | `linengrow/mala.rye` · `bin/mala` · fixture `mala_m1_mint.bron` |
+| `tools/mala_m1_witness.rish` | → `murr_m1_witness.rish` | `linengrow/mala.rye` · `bin/mala` · fixture `mala_m1_mint.kyri` |
 | `tools/mala_m2_witness.rish` | → `murr_m2_witness.rish` | delivery + device lab |
 | `tools/comlink_mala_wire_lab.rish` | → `comlink_murr_wire_lab.rish` | `comlink/run_mala_wire_lab.sh` · guests |
 | `tools/parity_ch01.rish` stanzas | say-lines + path strings | `parity_time_one` labels `mala_m1` / `mala_m2` |
-| `tools/fixtures/mala_m1_mint.bron` | → `murr_m1_mint.bron` (or keep dated) | M1 golden |
+| `tools/fixtures/mala_m1_mint.kyri` | → `murr_m1_mint.kyri` (or keep dated) | M1 golden |
 
 ### Modules — **u48–u79** (not this prep's open)
 
@@ -48,7 +48,7 @@
 | **1** | Rename witnesses + update paths; keep building `mala.rye` until module wave | M1/M2 witnesses GREEN under new names |
 | **2** | Update `parity_ch01` suite announces + `parity_time_one` labels | parity chapter GREEN |
 | **3** | Rename wire lab rish + shell entry; guests may wait module wave if paths only | lab GREEN or honest hold |
-| **4** | Fixtures / golden bron paths | selftest still GREEN |
+| **4** | Fixtures / golden kyri paths | selftest still GREEN |
 | **Stop** | Do **not** rename `linengrow/mala*.rye` or `mala:*` memos in tool wave | module wave owns that |
 
 **Discipline:** one GREEN witness gate per step; no silent tree-wide sed; inbound refs repointed before delete of old paths.

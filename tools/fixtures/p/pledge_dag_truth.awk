@@ -14,7 +14,7 @@
 # pledge is even seated — so the app's full commit tie-break and this file-order accounting name the same
 # honored recipient. It prints the triple `<honored-recipient-hex> <posted> <open>`.
 #
-#   awk -f tools/fixtures/p/pledge_dag_truth.awk tools/fixtures/p/pledge_dag.bron
+#   awk -f tools/fixtures/p/pledge_dag_truth.awk tools/fixtures/p/pledge_dag.kyri
 #   -> "<honored-recipient-hex> <posted> <open>"
 
 $1 == "block" && $4 == 2 {                        # a two-phase phase rides a kind-2 fact

@@ -38,7 +38,7 @@ assert ("The STAMP here" matches "(?i)stamp") == true else "(?i) folds case"
 
 # The real seam patterns the molt has been delegating to rg.
 let dated = "(^|/)\d\d\d\d\d\d\d\d-\d\d\d\d\d\d_"
-assert ("session-logs/20260809-110311_x.bron" matches dated) == true else "dated-name should match"
+assert ("session-logs/20260809-110311_x.kyri" matches dated) == true else "dated-name should match"
 assert ("README.md" matches dated) == false else "a plain name is not dated"
 assert ("# heading" matches "^#\s") == true else "H1 heading pattern"
 assert ("#nospace" matches "^#\s") == false else "H1 needs the space"
@@ -54,7 +54,7 @@ assert ("the cat sat" matches "\bcat\b") == true else "\\b word boundary"
 assert ("category" matches "\bcat\b") == false else "\\b rejects inside a word"
 
 # Composes with the rest of the value model: a filter over a list.
-let names = ["20260809-110311_a.md" "README.md" "20260101-000000_b.bron" "TASKS.md"]
+let names = ["20260809-110311_a.md" "README.md" "20260101-000000_b.kyri" "TASKS.md"]
 let dated_names = where names as f: (f matches dated)
 assert (length dated_names) == 2 else "matches works inside a where filter"
 

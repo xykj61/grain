@@ -21,23 +21,23 @@ Glow Glass and Glow Desk will someday carry Tilak-marked hearth/station resins t
 
 | Own name | Duty on Glass / Desk | Must not become |
 |----------|----------------------|-----------------|
-| **Hearth** (LULU) | Warm preference Bron — home, preset, wire/cell | An Amber season |
+| **Hearth** (LULU) | Warm preference Kyri — home, preset, wire/cell | An Amber season |
 | **SETU** | Product wire habit — USB carry, then live lane | The Amphora module itself |
 | **Amber** | Cellar — seal in place when a season opens by hand | Settings chrome or a phone daemon |
 | **Amphora** | Vessel — sealed pour across a crossing | Preference toggle handler |
 | **Tilak** | Mark at the seam when the fold graduates | Required for every Skate line |
-| **Resin** | Content-addressed bytes when seal earns a digest | A synonym for `hearth.bron` today |
+| **Resin** | Content-addressed bytes when seal earns a digest | A synonym for `hearth.kyri` today |
 
 ## What is already true on metal
 
 - **LULU0–5** — Hearth prefs on Glass GREEN.  
-- **SETU0** — adb pull of pointer + Bron; Desk parse GREEN.  
-- **SETU0.5** — Desk applies pulled Hearth under a seated window and writes `station.bron` (warm card).  
+- **SETU0** — adb pull of pointer + Kyri; Desk parse GREEN.  
+- **SETU0.5** — Desk applies pulled Hearth under a seated window and writes `station.kyri` (warm card).  
 - **TUBE3** — Glass already consumes an Amphora-fetched Manifest resin. That is the compose precedent for a later hearth resin, not a reason to redraw SETU as Amber.
 
 ## Graduation shape (horizon — check-in before build)
 
-1. **Tilak** — absorb Hearth / station Bron into a marked value; express back to chrome.  
+1. **Tilak** — absorb Hearth / station Kyri into a marked value; express back to chrome.  
 2. **Resin** — content-address the sealed bytes (working SHA3-256 tier).  
 3. **Amphora** — Glass↔Desk vessel (reuse digest+seal habits from TUBE3 / Amphora laps).  
 4. **Amber** — Desk cellar season seals when Keaton opens custody by hand; Glass does not wake the cellar.  

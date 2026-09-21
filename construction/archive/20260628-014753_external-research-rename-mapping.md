@@ -83,7 +83,7 @@ No stamp collisions (the `968` number pair resolves: `050312` vs `063112`).
 | `968_usize_boundary_not_design.md` | `20260621-050312_usize-boundary-not-design.md` |
 | `967_literal_usize_ban_language_fork.md` | `20260621-051312_literal-usize-ban-language-fork.md` |
 | `968_prompt_caching_zon_brix.md` | `20260621-063112_prompt-caching-zon-brix.md` |
-| `966_brix_vs_bron.md` | `20260621-064612_brix-vs-bron.md` |
+| `966_brix_vs_kyri.md` | `20260621-064612_brix-vs-kyri.md` |
 | `965_rye_compiler_fork.md` | `20260621-070712_rye-compiler-fork.md` |
 | `964_sel4_redox_through_tame_rye.md` | `20260622-232912_sel4-redox-through-tame-rye.md` |
 

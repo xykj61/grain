@@ -3,7 +3,7 @@ stamp 20260910.053931
 editor Claude Code CLI
 provider Anthropic
 product Claude Code
-role Copal -- the amphora and bron-resins lane
+role Copal -- the amphora and kyri-resins lane
 modality text
 model claude-opus-5
 model_status active runtime identity self-reported by the harness banner
@@ -13,7 +13,7 @@ configured_status .claude/settings.json read this lap; a config is not runtime t
 voice Kyri
 host Framework laptop, NixOS, America/New_York
 title A digest answers what the bytes are and never where they land
-prompt autonomous fleet lap -- Copal seat, amphora and bron-resins
+prompt autonomous fleet lap -- Copal seat, amphora and kyri-resins
 rota lap 4528, row 3 -- Water, the row that tastes; care and flow. Read what-brix-infuse-is, the-happy-zone-and-the-thin-edge, growing-a-language. The middle one is the whole lap: every seam carries TWO small answers, a collaboration check with the asker and a contract check with the answerer. Restore is the answerer, its contract is write each named file INTO the out-home, and only the first half of that sentence had ever been checked.
 think Water's sense is to taste the thing up close, so this lap built the CLI and poured real vessels rather than reading scans about them. Read read_season, build_cargo_plain, append_cargo_line and restore_write_prove in one sitting and the missing half was one line: dest = bufPrint("{s}/{s}", .{out_home, name}), with no reader anywhere asking what name could be.
 think Proved it before writing anything. A pen, two files, one pour; vessel-seal open to get the cargo plain, one name rewritten to ../escaped.txt in both the listing and the cargo, re-sealed and re-stamped (the seal key and stamp seed are witness constants, so a forge costs two commands). restore printed carry walls verified, listing=agrees, restore files proven count=2, THEN refused on the parent compare -- with escaped.txt already standing one directory above the out-home.

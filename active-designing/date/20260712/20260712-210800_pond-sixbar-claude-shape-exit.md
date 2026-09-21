@@ -8,7 +8,7 @@
 **Style:** Radiant
 **Voice:** Rio 3 recording Claude · Kaeden’s clock from the 21:08 / 21:14 pastes
 **Status:** Checkable — shape affirmed · bar6 rewrite named · exit criteria first · **N seated**
-**Ground:** handoff [`../bron-resins/20260712-210000_claude-g1-close-pond-sixbar.bron`](../bron-resins/20260712-210000_claude-g1-close-pond-sixbar.bron) · baseline [`20260712-205600_pond-enclosure-sixbar-baseline.md`](20260712-205600_pond-enclosure-sixbar-baseline.md) · counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · tip `6a5d094`
+**Ground:** handoff [`../kyri-resins/20260712-210000_claude-g1-close-pond-sixbar.kyri`](../kyri-resins/20260712-210000_claude-g1-close-pond-sixbar.kyri) · baseline [`20260712-205600_pond-enclosure-sixbar-baseline.md`](20260712-205600_pond-enclosure-sixbar-baseline.md) · counsel [`../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · tip `6a5d094`
 
 ---
 

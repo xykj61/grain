@@ -21,8 +21,8 @@
 //! descriptor never declared is `unknown_argument`, a declared argument left unbound is
 //! `missing_argument`, and a `{name}` naming no declared argument is `unbound_placeholder`.
 //!
-//! It invents no storage and no transport: it reads a descriptor and a request in owned Bron
-//! shapes kin to mcp_bron.rye, fills bounded text, and renders an owned result. It reads no
+//! It invents no storage and no transport: it reads a descriptor and a request in owned Kyri
+//! shapes kin to mcp_kyri.rye, fills bounded text, and renders an owned result. It reads no
 //! network -- the real fetch and the Comlink-served transport stay the held custody/serve
 //! gates.
 //!
@@ -121,7 +121,7 @@ pub const GetRequest = struct {
 };
 
 /// Split a line into its first space-delimited token (the key) and the trimmed remainder
-/// (the value). The flat-Bron `key value` idiom the whole tree shares.
+/// (the value). The flat-Kyri `key value` idiom the whole tree shares.
 fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     // invariant: the line respects the bounded head length
     assert(line.len <= max_line);

@@ -26,13 +26,13 @@ STAMP=20260710.145313
 
 rm -rf "$OUT"
 sh "$ROOT/tools/fixtures/a/amphora_pour.sh" "$SRC" "$OUT" "$STAMP"
-test -f "$OUT/manifest.bron"
-test -f "$OUT/vessel.bron"
+test -f "$OUT/manifest.kyri"
+test -f "$OUT/vessel.kyri"
 test -d "$OUT/resins"
-grep -q '^seal_nonce ' "$OUT/vessel.bron"
-grep -q '^seal_cargo ' "$OUT/vessel.bron"
-grep -q '^stamp_sig ' "$OUT/vessel.bron"
-entries=$(grep -c '^entry ' "$OUT/manifest.bron")
+grep -q '^seal_nonce ' "$OUT/vessel.kyri"
+grep -q '^seal_cargo ' "$OUT/vessel.kyri"
+grep -q '^stamp_sig ' "$OUT/vessel.kyri"
+entries=$(grep -c '^entry ' "$OUT/manifest.kyri")
 test "$entries" -eq 2
 
 echo "FORGE_POUR ok bundle=$OUT stamp=$STAMP sealed entries=$entries"

@@ -15,7 +15,7 @@ May we be given the strength to work toward more animal and nature sacredness; t
 ## Seated Already (recap, for the reset)
 
 - **JARL settlement whole** — Kumara identity (5 tilaks), Comlink (turn-route + handshake), the **inclusive** d12·d60 topology (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles), settlement (5 transitions), shared-surface shrink (Deed/Commitment), human-name custody. Six witnesses GREEN.
-- **Breach OPEN** — **Pond** = the application module (Pool retired in). **Loadable skies** lap 1 (a `Sky` struct, two skies). **Kyri** seated as the notation (was Bron; new logs `.kyri`). **Skate** decided = Grain's general social network (the outfits skin). **Kyri** the coming voice (retires "variant").
+- **Breach OPEN** — **Pond** = the application module (Pool retired in). **Loadable skies** lap 1 (a `Sky` struct, two skies). **Kyri** seated as the notation (was Kyri; new logs `.kyri`). **Skate** decided = Grain's general social network (the outfits skin). **Kyri** the coming voice (retires "variant").
 
 ## Proposed Modules — named, collision-checked, not yet built
 
@@ -47,9 +47,9 @@ These are **outreach intentions**, not done deals; every real person and company
 
 The thinkers Keaton named are honored as **constellation tribute seats** — pre-assigned Skate keys as a gesture of lineage, **not** real accounts and **not** claims of endorsement. Seated in `context/inspirations.kyri` (companion to this baton). They span mathematics and physics (Grothendieck, McCarthy, Frenkel, Wheeler), philosophy and mysticism (Plotinus, Vyasa, Kapila, Kumara, Žižek, Berdyaev, Ghalib, Yarvin, Baldwin, Castaneda, Khnum Ibomu), and the living partners (Atthowe, Kathryn, Jalen Brunson).
 
-## The Bron → Kyri Fossil Decision
+## The Kyri → Kyri Fossil Decision
 
-Keaton authorized either **breach-molting the `.bron` fossil extensions to `.kyri`** or pruning them. The recommended honest path: **rename the extensions** in a focused round (a mechanical, non-destructive sweep of ~2,163 files plus their README links and the fold/align tools), **never prune** — the reasoning record is worth keeping, and a rename loses nothing. Until that round, new logs are already `.kyri` and old `.bron` read fine (tools read both).
+Keaton authorized either **breach-molting the `.kyri` fossil extensions to `.kyri`** or pruning them. The recommended honest path: **rename the extensions** in a focused round (a mechanical, non-destructive sweep of ~2,163 files plus their README links and the fold/align tools), **never prune** — the reasoning record is worth keeping, and a rename loses nothing. Until that round, new logs are already `.kyri` and old `.kyri` read fine (tools read both).
 
 ## Gaps Keaton Still Needs to Fill
 

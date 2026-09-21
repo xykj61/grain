@@ -13,7 +13,7 @@
 
 ## Chapter open (named job)
 
-**Job:** Desk folds `station.bron` + held `lane_ping.bin` / `lane_frame.bin` into one honest status line a hand can trust after a host pull.  
+**Job:** Desk folds `station.kyri` + held `lane_ping.bin` / `lane_frame.bin` into one honest status line a hand can trust after a host pull.  
 **Budget:** one status mold · device-free witness · host path after SETU0.5 chain · no gadget, no new Glass chrome.  
 **Close when:** HOLD0 GREEN and a person can read Desk hold status after pull without opening binary dumps.
 
@@ -29,7 +29,7 @@
 ## Stack
 
 ```
-SETU0–0.5  — pull + station.bron
+SETU0–0.5  — pull + station.kyri
 SETU1 / 5  — lane_ping.bin · lane_frame.bin (when usb_desk)
 HOLD0      — Desk reads and names what it holds
 HOLD1      — Desk paints that hold on Skate cells

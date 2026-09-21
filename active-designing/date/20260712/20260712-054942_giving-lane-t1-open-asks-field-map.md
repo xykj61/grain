@@ -63,7 +63,7 @@ Recorded in [`../counsel/20260712-061012_claude-counsel-post-seam-disposition.md
 
 ## What T1 does not open
 
-- No new `.bron` fields
+- No new `.kyri` fields
 - No SLC-L4 wire into OA-L5
 - No change to civic sight golden
 - No sanctuary care-log map (parallel path; same asymmetry applies when its season opens)

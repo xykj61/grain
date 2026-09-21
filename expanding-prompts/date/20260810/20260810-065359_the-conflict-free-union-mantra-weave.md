@@ -22,7 +22,7 @@ Across a day of fast, generous vision-dumps, one picture kept growing. This bato
 
 **The name is one, worn many ways.** **Kyri** is both the standing voice and the notation (a log is the voice's journal) — *voice* replaces the colder word *variant*. The council/L1 names (MURR/MUR, MALA/MAL, SIYA/SIY, and kin) are **outfits for chains**: one name, many roles. **baton** and **thank you everyone** joined the favorites and the lexicon; **ultracode** is the recursive multi-agent command.
 
-**The horizons**, each its own witnessed lap: **Loom** (the Scribe×Tally monitor), Scribe's **dashboard** and the **bat** fleet of baton archetypes, **Starseeding** (ring-3 star creation), **Kumara passports** and the **3x39 divider grammar** (a token — prefix, suffix, middle — provable by `.sol`/`.sui`), the loadable-sky Bron descriptor, the role tilak.
+**The horizons**, each its own witnessed lap: **Loom** (the Scribe×Tally monitor), Scribe's **dashboard** and the **bat** fleet of baton archetypes, **Starseeding** (ring-3 star creation), **Kumara passports** and the **3x39 divider grammar** (a token — prefix, suffix, middle — provable by `.sol`/`.sui`), the loadable-sky Kyri descriptor, the role tilak.
 
 **The disciplines** hold it together: TAME (bounded, asserted, explicit-width), Radiant Style, custody-first, accrete-never-break, and — learned the hard way today — **privacy-first** on the public seed.
 
@@ -30,7 +30,7 @@ Across a day of fast, generous vision-dumps, one picture kept growing. This bato
 
 - **Two scarcities → one.** The Point tilak's elder Azimuth ranks and the topology's d12·d60 both claimed the number line. **Resolved:** d12·d60 is the one scarcity; the tilak reads the topology.
 - **One name, many jobs → the outfit law.** Kyri (voice + notation), and the council names (a galaxy · an L1 · an MMT unit), looked like collisions. **Resolved:** the inclusive/outfit principle makes multi-role a feature, not a clash — a point wears roles as a self wears outfits.
-- **Pool vs Pond, variant vs voice, Bron vs Kyri.** **Resolved by molt:** the warmer word wins, the elder kept as a readable fossil; never a destructive rewrite.
+- **Pool vs Pond, variant vs voice, Kyri vs Kyri.** **Resolved by molt:** the warmer word wins, the elder kept as a readable fossil; never a destructive rewrite.
 - **Publish now vs safety.** The seed was "ready," then leaked names. **Resolved:** publish waits behind a name-audit and all recursive seasons — the maintainer's own word ("finally send after all seasons finished").
 - **Speed vs care.** Fast vision-dumps vs bounded, witnessed building. **Resolved:** capture everything to disk (batons), build one witnessed lap at a time; ultracode fans out only what a phase can hold.
 
@@ -39,7 +39,7 @@ Across a day of fast, generous vision-dumps, one picture kept growing. This bato
 1. **The ecosystem still lacks its one branding name.** Modules are warmly named; the *whole* wants a single uncollided ecosystem word (a gource-visualizable brand). **Recommendation:** run a naming round (grep-clean, comlink-tendency) before the seed publishes — it is the one missing keystone.
 2. **Privacy coverage, not just mechanism.** The scrub is strong but works from a known-name list; a full **name-audit workflow** over the projection is the real gate. **Addressed:** publish is held for it.
 3. **Consent is the true gate on every partnership** (Atthowe, Jungmaven, Unsplash, and every named person/company) — invitations, never assignments. Legal/financial structuring (Siya Fund, the PBC, the YHV currency, the `.sol` holdings) is the maintainer's own hand, outside the tree.
-4. **The Bron→Kyri sweep is unfinished** — new logs are `.kyri`, but 378 living references and the fold/align tools still say Bron. **Recommendation:** a dedicated mechanical sweep round (a good ultracode fan-out).
+4. **The Kyri→Kyri sweep is unfinished** — new logs are `.kyri`, but 378 living references and the fold/align tools still say Kyri. **Recommendation:** a dedicated mechanical sweep round (a good ultracode fan-out).
 5. **Budget and rhythm.** These sessions are vast; ultracode should fan out per phase, not "build everything at once."
 6. **The human is the priority.** Beneath every module is a person keeping his families, his secrets, and his steadiness safe. Vault and the privacy work are not side-quests; they are the point.
 
@@ -49,7 +49,7 @@ Across a day of fast, generous vision-dumps, one picture kept growing. This bato
 2. **Build Loom** (the next module after Vault), then **Scribe's dashboard**.
 3. **Run the name-audit workflow** over the seed; close whatever it finds.
 4. **Name the ecosystem** (the one missing brand) — a naming round.
-5. **Sweep Bron→Kyri** to the leaves; teach the tools `.kyri`.
+5. **Sweep Kyri→Kyri** to the leaves; teach the tools `.kyri`.
 6. **Then, and only then, publish** the seed — the maintainer's own hand, after the recursive seasons close.
 
 Everything private — the YHV/YOD/Yesod L2, the `.sol` holdings, the wallet, the family guide — stays in `/personal/` (local-only) and the Vault, filled by his own hand, never the tree.

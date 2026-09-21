@@ -22,7 +22,7 @@ A supervised service **tells** Caravan when it is truly ready, as a signed fact 
 
 ## The Manual Is a Value
 
-Every utility carries its own teaching as data: a small `.bron` record -- name, one-line meaning, argument shapes, examples, exit meanings. `rishi` renders it on request (`:man <name>` in the shell; `--help` at the utility's door), and the manual lane renders the same records into reference pages. **One source, two surfaces** -- the page can never drift from the program, because the page *is* the program's own record. This lands as the man-page answer: yes, and as a value rather than a file format.
+Every utility carries its own teaching as data: a small `.kyri` record -- name, one-line meaning, argument shapes, examples, exit meanings. `rishi` renders it on request (`:man <name>` in the shell; `--help` at the utility's door), and the manual lane renders the same records into reference pages. **One source, two surfaces** -- the page can never drift from the program, because the page *is* the program's own record. This lands as the man-page answer: yes, and as a value rather than a file format.
 
 ## The Store Is Already Ours
 
@@ -30,13 +30,13 @@ A package is a sealed, content-addressed, Kumara-signed record -- the Amber shap
 
 ## One Combinator Shapes the Whole
 
-Configuration wants no module system. It wants **one small override combinator**: a base declaration (the `.brix` composition with its `.bron` data), and a way to *infuse* changes -- replace this value, extend that list, wrap that command -- applied uniformly to packages and services alike, producing a new whole value with the old one untouched. Brix's bond overrides were this pattern's first appearance in our tree; tonight names it as the *only* configuration mechanism the userland needs. The whole machine -- tools, services, policies -- folds from one declared value, and a changed machine is a new value beside the old, ready to activate or to hand back.
+Configuration wants no module system. It wants **one small override combinator**: a base declaration (the `.brix` composition with its `.kyri` data), and a way to *infuse* changes -- replace this value, extend that list, wrap that command -- applied uniformly to packages and services alike, producing a new whole value with the old one untouched. Brix's bond overrides were this pattern's first appearance in our tree; tonight names it as the *only* configuration mechanism the userland needs. The whole machine -- tools, services, policies -- folds from one declared value, and a changed machine is a new value beside the old, ready to activate or to hand back.
 
 ---
 
 ## The Ladder, Gated
 
-Nothing above starts before the three doors and the Amber season. When its turn comes, the first lap is one utility: `echo`-sized, opening lines at its head, `.bron` man record beside it, declared in `.brix`, witnessed green, rendered by `:man`. The second lap adds readiness-as-fact to one Caravan child. The combinator earns its lap only when two real configurations exist to differ.
+Nothing above starts before the three doors and the Amber season. When its turn comes, the first lap is one utility: `echo`-sized, opening lines at its head, `.kyri` man record beside it, declared in `.brix`, witnessed green, rendered by `:man`. The second lap adds readiness-as-fact to one Caravan child. The combinator earns its lap only when two real configurations exist to differ.
 
 ---
 

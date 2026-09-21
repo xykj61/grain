@@ -12,8 +12,8 @@
 //! named many times, never rewritten in place - accrete-never-break as the store's own
 //! data model, the discipline the Realidream editor earned as "an edit is an append".
 //!
-//! The Brix-facing face is a `format tablecloth-v1` flat-Bron manifest - one line per
-//! artifact, `artifact <name> <digest> <len>` - the Bron a Brix descriptor evaluates to.
+//! The Brix-facing face is a `format tablecloth-v1` flat-Kyri manifest - one line per
+//! artifact, `artifact <name> <digest> <len>` - the Kyri a Brix descriptor evaluates to.
 //! Render and parse round-trip it name for name and address for address. A name is one
 //! field of that line, so a space or a newline inside one refuses at the store edge
 //! (NameHasSeparator) rather than rendering a manifest this module's own parser rejects.

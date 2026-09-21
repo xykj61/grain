@@ -103,7 +103,7 @@ WITNESS:
   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold.rye
   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/build_bounds.rye
 
-SEND: GPG commit · push origin AND xykj61 · session .bron same send ·
+SEND: GPG commit · push origin AND xykj61 · session .kyri same send ·
       Cloud merge-here on xykj61 if Option 2 still holds · name auth-refused.
 Refuse shred/deploy/wallet/gas/keys. Round-recos YES — seat recommended leans.
 Report baton-shaped: greens · reds · meters delta · pins · next · both piers. ]

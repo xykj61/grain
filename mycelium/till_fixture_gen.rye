@@ -21,7 +21,7 @@
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/till_fixture_gen.rye \
-//!     2> tools/fixtures/t/till_dag.bron
+//!     2> tools/fixtures/t/till_dag.kyri
 //!
 //! Kin: mycelium/tenure_fixture_gen.rye (the name-contest sibling).
 
@@ -29,7 +29,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 
@@ -72,11 +72,11 @@ fn seat_dag() !cord.Dag {
 
 pub fn main() !void {
     var dag = try seat_dag();
-    const pl = try cord_bron.from_dag(&dag);
-    var buf: [cord_bron.max_record]u8 = undefined;
-    const n = try cord_bron.render(&pl, &buf);
+    const pl = try cord_kyri.from_dag(&dag);
+    var buf: [cord_kyri.max_record]u8 = undefined;
+    const n = try cord_kyri.render(&pl, &buf);
     // invariant: the render is bounded and non-empty -- a real record carries its header.
     assert(n > 0);
-    assert(n <= cord_bron.max_record);
+    assert(n <= cord_kyri.max_record);
     print("{s}", .{buf[0..n]});
 }

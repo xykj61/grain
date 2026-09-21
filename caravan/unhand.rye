@@ -98,7 +98,7 @@ const caravan_unhand_version = "20260819.215134";
 /// which the grant reading already handles perfectly. Here `client_a` writes
 /// a board its siblings read, with no channel joining any of them -- the one
 /// shape where the ceiling and the line handed over genuinely disagree.
-pub const declaration_path = "caravan/systems/serial_three_clients_board.bron";
+pub const declaration_path = "caravan/systems/serial_three_clients_board.kyri";
 
 /// How many dependents one supervisor may hold at once, unchanged.
 pub const max_in_flight: u32 = understudy_rung.max_in_flight;
@@ -776,7 +776,7 @@ const written_queue = [_]Phase{
 /// one turn's hops may name. The board declaration gives every client five,
 /// so the elder three-client shape carries this test instead -- named here
 /// rather than left for a reader to wonder about.
-const narrow_declaration_path = "caravan/systems/serial_three_clients.bron";
+const narrow_declaration_path = "caravan/systems/serial_three_clients.kyri";
 
 // =========================================================================
 // Self-test

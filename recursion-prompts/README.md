@@ -8,7 +8,7 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Members:** the rooms under [`./`](./) -- `seed`, `versions`, read against the rooms on disk by
 [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
-**Kin:** [`../context/baton-museum/recursion_prompt.brix`](../context/baton-museum/recursion_prompt.brix) (the shape) - [`../bron-resins/`](../bron-resins/) (the filled-handoff cellar this is modeled on) - [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) (the craft guide)
+**Kin:** [`../context/baton-museum/recursion_prompt.brix`](../context/baton-museum/recursion_prompt.brix) (the shape) - [`../kyri-resins/`](../kyri-resins/) (the filled-handoff cellar this is modeled on) - [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) (the craft guide)
 
 ---
 
@@ -28,7 +28,7 @@ test, and `seed/` and `versions/` keep their jobs exactly as below.
 
 A **recursion prompt** is the one artifact an autonomous agent reads once and then lives inside for hours. It wakes a fresh bench that already knows where it stands, under the tree's laws held whole. Every unattended run this project has enjoyed came from one such prompt.
 
-The **baton museum** holds the *shape* of a recursion prompt: `recursion_prompt.brix`, its fields named. **bron-resins** holds *filled handoff instances*, kept for the record. This cellar sits between them and holds the **living, fillable templates** beside their **dated filled versions**, so the next run is a form to fill rather than a page to invent.
+The **baton museum** holds the *shape* of a recursion prompt: `recursion_prompt.brix`, its fields named. **kyri-resins** holds *filled handoff instances*, kept for the record. This cellar sits between them and holds the **living, fillable templates** beside their **dated filled versions**, so the next run is a form to fill rather than a page to invent.
 
 The name **resin** is the image: sap that hardens around what it carries and preserves it whole across a long chapter. A recursion prompt is resin for a whole autonomous run -- it hardens the laws, the route, and the gates around the work so the far side opens intact.
 
@@ -57,7 +57,7 @@ recursion-prompts/
     20260812-071043_autonomous-loop.md   this session's expanded loop, filled and honored
 ```
 
-A **seed** is a template with `{{fill}}` slots and its laws stated in full. A **version** is a seed filled at a one-clock stamp for a real run -- kept afterward the way bron-resins keeps its handoffs, so a future run can read what actually woke the bench and improve on it.
+A **seed** is a template with `{{fill}}` slots and its laws stated in full. A **version** is a seed filled at a one-clock stamp for a real run -- kept afterward the way kyri-resins keeps its handoffs, so a future run can read what actually woke the bench and improve on it.
 
 ## How to mint a recursion prompt
 

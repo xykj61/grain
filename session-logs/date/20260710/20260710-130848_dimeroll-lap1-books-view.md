@@ -28,7 +28,7 @@ Focus on Realidream / Tablecloth / Brushstroke for a simple visual of existing S
 |------|-----|
 | `linengrow/dimeroll_core.rye` | Chart, journal parse, trial-balance fold |
 | `linengrow/dimeroll.rye` | Selftest binary (welcome + unwelcome) |
-| `tools/fixtures/dimeroll_journal.bron` | Pinned journal for booksviewtest |
+| `tools/fixtures/dimeroll_journal.kyri` | Pinned journal for booksviewtest |
 | `pond/apps/drawn_terminal.rye` | `booksviewtest` + fold → six Skate lines |
 | `tools/dimeroll_lap1.rish` | Lap-1 witness |
 | `tools/dimeroll_books_view.rish` | Books-view witness |

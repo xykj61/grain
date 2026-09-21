@@ -31,7 +31,7 @@ promises, and each room states its own.
 |---|---|---|
 | Tracked files | 33 | 42 |
 | Living inbound citers, excluding the room itself and dated testimony | 69 | 180 |
-| Seed manifest verdict (`template-manifest.bron`) | `template` | `template` |
+| Seed manifest verdict (`template-manifest.kyri`) | `template` | `template` |
 | Cross-citations to the other room | 4 | 8 |
 
 **249 living inbound references** ride on the two paths. A merge repoints every one of them, and the

@@ -36,7 +36,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 
 # The declaration a reply needs reads whole before anything runs on it.
-let decl = run ["sh" "-c" "caravan/bin/roundtrip_read caravan/systems/serial_duplex.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/roundtrip_read caravan/systems/serial_duplex.kyri 2>&1"]
 assert decl.ok else "the duplex declaration could not be read"
 assert decl.out contains "system serial_duplex" else "the duplex declaration lost its name"
 assert decl.out contains "verdict: whole" else "the duplex declaration did not read whole"

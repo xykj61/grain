@@ -428,7 +428,7 @@ if [ -f tools/fixtures/s/shell_dialect_touch_scan.sh ]; then
 fi
 
 # RULE EIGHT -- a document this commit carries holds something. `empty_document_scan.sh` holds the
-# whole law -- a tracked `.md`, `.bron`, `.kyri` or `.txt` that is zero bytes or whitespace alone --
+# whole law -- a tracked `.md`, `.kyri` or `.txt` that is zero bytes or whitespace alone --
 # and it has stood at `tier lap` inside a roster pass since 20260823. What it never did was read at
 # COMMIT time, so the reading arrived after the commit had already shipped the hole.
 #

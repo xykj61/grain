@@ -1,7 +1,7 @@
 # CSS · Sail · glob — elder surface-style teachers (gratitude silo)
 
 **Role for us:** Research silo for how elder stacks describe drawn surfaces. **Not a rail we ship.**  
-**Grain tongue for surfaces:** `.brush` under `brushstroke/` — Glow · Bron · TAME · Radiant only.  
+**Grain tongue for surfaces:** `.brush` under `brushstroke/` — Glow · Kyri · TAME · Radiant only.  
 **Seat:** Surface Chapter p12 · `brushstroke/seed-frame.brush` · counsel `20260728.201911`
 
 ## What we study (from counsel research)

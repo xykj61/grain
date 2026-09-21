@@ -24,17 +24,17 @@ assert test.out contains "each in its own words" else "caravan roster selftest d
 assert test.out contains "never half-seated" else "caravan roster selftest did not prove the roster bound"
 
 # The worked example seats whole and enforces exactly what it declares.
-let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.bron 2>&1"]
+let worked = run ["sh" "-c" "${bin} caravan/systems/serial_stack.kyri 2>&1"]
 assert worked.ok else "the worked example did not seat a roster"
 assert worked.out contains "dependents 3 -- capabilities 6 -- declared grants 6" else "the worked example did not conserve its grants"
 assert worked.out contains "enforces exactly what the document permits" else "the worked example roster did not agree with its map"
 
 # A whole declaration wider than the table refuses by the supervisor's own name.
-let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.bron 2>&1"]
+let wide = run ["sh" "-c" "${bin} caravan/systems/wide_roster.kyri 2>&1"]
 assert wide.out contains "TooManyDomains" else "the wide declaration was not refused by name"
 
 # The grammar still refuses rwx before a roster is ever derived.
-let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.bron 2>&1"]
+let refused = run ["sh" "-c" "${bin} caravan/systems/write_execute.kyri 2>&1"]
 assert refused.out contains "BadPermission" else "the rwx document reached the roster"
 
 say "GREEN: Caravan roster witness passed."

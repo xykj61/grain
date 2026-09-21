@@ -3,7 +3,7 @@
 set -eu
 OUT=${1:?usage: cellar_ring1_verify.sh outdir [golden_manifest_digest]}
 GOLDEN=${2:-}
-MANIFEST="$OUT/manifest.bron"
+MANIFEST="$OUT/manifest.kyri"
 # The digest tool lives at a path relative to this tree, not to wherever OUT points.
 # Root by upward walk (seated 20260828): the letter fold moved this script one
 # directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds

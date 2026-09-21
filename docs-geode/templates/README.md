@@ -30,7 +30,7 @@ right.
 
 **Root `.gitignore`** denies everything at the pier root, then allow-lists project trees. Personal identity files stay **out of git** by design -- copy from the tracked templates, and never commit the filled instances.
 
-**Cloud sync of gitignored personal files** (recommended): sync the *instance* files with a folder sync tool (Dropbox, Syncthing, iCloud Drive, Nextcloud -- pick one you already trust), rather than forcing them into git. See the personalize guide section "Sync personal files without git." The repository itself lives on GitHub (`xykj61/grain` beginner clone); Dropbox carries the small set of pier-local Bron/Brix identity files that gitignore holds back.
+**Cloud sync of gitignored personal files** (recommended): sync the *instance* files with a folder sync tool (Dropbox, Syncthing, iCloud Drive, Nextcloud -- pick one you already trust), rather than forcing them into git. See the personalize guide section "Sync personal files without git." The repository itself lives on GitHub (`xykj61/grain` beginner clone); Dropbox carries the small set of pier-local Kyri/Brix identity files that gitignore holds back.
 
 ## Brix law (reminder)
 

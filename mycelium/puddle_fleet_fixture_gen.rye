@@ -12,13 +12,13 @@
 //! Siloed, dev-only, demo host and world seeds -- no real key, no funds, no network, no world provisioned.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_fleet_fixture_gen.rye \
-//!     2> tools/fixtures/p/puddle_fleet.bron
+//!     2> tools/fixtures/p/puddle_fleet.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const puddle = @import("puddle.rye");
-const puddle_bron = @import("puddle_bron.rye");
+const puddle_kyri = @import("puddle_kyri.rye");
 const kumara = @import("kumara.rye");
 
 fn host_key(byte: u8) [puddle.pk_len]u8 {
@@ -45,8 +45,8 @@ fn seat_fleet() !puddle.Fleet {
 
 pub fn main() !void {
     var f = try seat_fleet();
-    var buf: [puddle_bron.max_record]u8 = undefined;
-    const len = try puddle_bron.render(&f, buf[0..]);
+    var buf: [puddle_kyri.max_record]u8 = undefined;
+    const len = try puddle_kyri.render(&f, buf[0..]);
     // invariant: a rendered fixture is never empty.
     assert(len > 0);
     print("{s}", .{buf[0..len]});

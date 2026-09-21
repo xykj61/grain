@@ -47,7 +47,7 @@ OPERATIONAL (baton fusion · living):
   EQUINOX · 256 OPEN · git nib c0408f60ba · e116 GREEN · e117 next
   museum: context/baton-museum/ · 13 halls · census_breach_count=0
   e116 seat: waymarks/20260731-153703_e116-dated-one-definition-green.md
-  e116 verify: session-logs/20260731-165818_e116-fuse-verify-already-green.bron
+  e116 verify: session-logs/20260731-165818_e116-fuse-verify-already-green.kyri
   e115 seat: waymarks/20260731-152135_e115-instrument-suite-green.md
   e114 seat: waymarks/20260731-151129_e114-thing-not-name-green.md
   almanac: ch1–ch7 FULL · ch8 seats 113–120 · remaining 121–128 (128 reserved)

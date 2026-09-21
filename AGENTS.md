@@ -55,7 +55,7 @@ place here is `.claude/rules/open-weight-companions.md`.
 ## The languages
 
 **Glow**, **Rishi**, and **Rye** are this project's programming languages. TAME Guidance governs
-`.rye`, `.rish`, `.brix`, and `.bron`; read `context/TAME_GUIDANCE.md` before writing any of them.
+`.rye`, `.rish`, `.brix`, and `.kyri`; read `context/TAME_GUIDANCE.md` before writing any of them.
 
 ---
 

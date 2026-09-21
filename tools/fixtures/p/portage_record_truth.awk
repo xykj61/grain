@@ -8,7 +8,7 @@
 # against both worlds' real rebuilt ledgers and the digest from the crossing's own content seeds; this awk
 # measures what a keeper reads straight off the receipt, blind to the ledgers behind it.
 #
-#   awk -f tools/fixtures/p/portage_record_truth.awk tools/fixtures/p/portage_record.bron
+#   awk -f tools/fixtures/p/portage_record_truth.awk tools/fixtures/p/portage_record.kyri
 #   -> "<amount> <digest8>"
 
 $1 == "amount" { amount = $2 }

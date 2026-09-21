@@ -64,7 +64,7 @@ build() {
     && git init -q . \
     && git config user.email pen@example.invalid \
     && git config user.name Pen \
-    && printf 'allow README.md\nallow shipped\nallow SECURITY.md\nallow SOURCE.md\n' > pen-manifest.bron \
+    && printf 'allow README.md\nallow shipped\nallow SECURITY.md\nallow SOURCE.md\n' > pen-manifest.kyri \
     && printf '# shipped\n' > shipped/here.md \
     && printf '# withheld\n' > withheld/there.md \
     && printf '# front\n' > README.md \
@@ -85,7 +85,7 @@ build_carried() {
     && git init -q . \
     && git config user.email pen@example.invalid \
     && git config user.name Pen \
-    && printf 'allow README.md\nallow deep/inner/page.md\n' > pen-manifest.bron \
+    && printf 'allow README.md\nallow deep/inner/page.md\n' > pen-manifest.kyri \
     && printf '# withheld\n' > withheld/there.md \
     && printf '# front\n' > README.md \
     && printf '%s\n' "$body" > "$doc" \
@@ -93,7 +93,7 @@ build_carried() {
   echo "$d"
 }
 
-verdict_of() { ( cd "$1" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null; ) }
+verdict_of() { ( cd "$1" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" 2>/dev/null; ) }
 
 # 1. The agreeing tree -- the front door links only into the shipped room. Free, reading zero.
 d=$(build agreeing README.md 'see [here](shipped/here.md)')
@@ -159,22 +159,22 @@ d=$(build listing shipped/many.md 'placeholder')
 ( cd "$d" && i=1; : > shipped/many.md
   while [ "$i" -le 7 ]; do printf 'see [x%s](../withheld/there.md)\n' "$i" >> shipped/many.md; i=$((i + 1)); done
   git add -A && git commit -qm 'pen: seven dead links, two past the print cap' ) >/dev/null 2>&1
-capped=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null ) | grep -c '^ratchet:' )
-listed=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --list 2>/dev/null ) | grep -c '^ratchet:' )
+capped=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" 2>/dev/null ) | grep -c '^ratchet:' )
+listed=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" --list 2>/dev/null ) | grep -c '^ratchet:' )
 [ "$capped" -eq 5 ] && leg default_caps_at_five yes || leg default_caps_at_five no
 [ "$listed" -eq 7 ] && leg list_names_every_site yes || leg list_names_every_site no
 
 # 10. The advice line points a lane at --list, and stays quiet when it has nothing to add.
-out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null ) )
+out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" 2>/dev/null ) )
 echo "$out" | grep -q 'advice: 7 sites stand and five are named' && leg advice_points_at_list yes || leg advice_points_at_list no
-out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --list 2>/dev/null ) )
+out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" --list 2>/dev/null ) )
 echo "$out" | grep -q '^advice:' && leg advice_quiet_when_listing no || leg advice_quiet_when_listing yes
 d2=$(build advice_small shipped/one.md 'see [there](../withheld/there.md)')
-out=$( ( cd "$d2" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" 2>/dev/null ) )
+out=$( ( cd "$d2" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" 2>/dev/null ) )
 echo "$out" | grep -q '^advice:' && leg advice_quiet_under_cap no || leg advice_quiet_under_cap yes
 
 # 11. An argument the scan does not know refuses rather than being read past.
-out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$scan" --nonesuch 2>/dev/null ) )
+out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$scan" --nonesuch 2>/dev/null ) )
 echo "$out" | grep -q 'verdict=bad_argument' && leg unknown_argument_refused yes || leg unknown_argument_refused no
 
 over_carried=$((ceiling + 1))
@@ -205,7 +205,7 @@ echo "$out" | grep -q 'ratchet: deep/inner/page.md -> ../../withheld/' && leg em
 #     matched nothing cannot read as a clause that holds.
 d=$(build_carried mutation deep/inner/page.md 'see [this room](./)')
 if plant_write "$scan" "$pen/mutant.sh" 's/if (p in carried) return 1/if (0) return 1/' carried_clause; then
-  out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.bron sh "$pen/mutant.sh" 2>/dev/null ) )
+  out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$pen/mutant.sh" 2>/dev/null ) )
   echo "$out" | grep -q 'other_living_links_outside_seed=1' && leg mutation_carried_counted yes || leg mutation_carried_counted no
 else
   leg mutation_carried_counted no

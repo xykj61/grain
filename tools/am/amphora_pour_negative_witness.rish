@@ -21,7 +21,7 @@ let season = "tools/fixtures/cellar_ring1_tree"
 # The elder sweep stood on the straight-line success path below every assert, where a refusal
 # never reached it (REDS %745).
 let home = make-pen "amphora_pour_neg"
-let vessel = "${home}/v.bron"
+let vessel = "${home}/v.kyri"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -62,7 +62,7 @@ let still = run ["${home}/bin/vessel-core" "verify" vessel]
 assert still.ok else "amphora_pour_neg: refused pour must clobber nothing"
 say "plant_fork=refused standing=untouched"
 
-let missing = run ["${home}/bin/amphora" "pour" "${home}/absent" "${home}/v2.bron"]
+let missing = run ["${home}/bin/amphora" "pour" "${home}/absent" "${home}/v2.kyri"]
 assert (missing.ok == false) else "amphora_pour_neg: missing season must refuse"
 assert missing.err contains "season absent" else "amphora_pour_neg: absence must name its fault"
 say "plant_missing=refused"

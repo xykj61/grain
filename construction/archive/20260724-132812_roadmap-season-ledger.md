@@ -20,7 +20,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 
 ## The Vision
 
-**Rye OS** — a system that belongs wholly to the one who runs it. One language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Bron), one memory model (Tally), one boot (Aurora), one enclosure (Pond). **Linengrow** is the flagship application those modules serve — transparent civic commerce grown from the same spine. Each module individually simple; together they compose a desktop, a forge, a network, and a boot — on x86_64 today and RISC-V as the horizon.
+**Rye OS** — a system that belongs wholly to the one who runs it. One language (Rye), one value model, one kernel (Caravan), one compositor (Brushstroke), one shell (Rishi), one version history (Mantra), one network (Comlink), one database (Tablecloth), one composition language (Brix), one data notation (Kyri), one memory model (Tally), one boot (Aurora), one enclosure (Pond). **Linengrow** is the flagship application those modules serve — transparent civic commerce grown from the same spine. Each module individually simple; together they compose a desktop, a forge, a network, and a boot — on x86_64 today and RISC-V as the horizon.
 
 **Rye today** is a thin, honest frontend on pinned Zig 0.16.0 — `rye/lib/std` leaned upon through pristine symlinks, safety living in authored `.rye` (assertions at call sites, `width-check.rish`, the trio). The strengthening chronicle **completed** as analysis; it is record, not product.
 
@@ -38,7 +38,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 ## Local macOS proposal-to-Urbit thread (`20260713.201910`)
 
-*A parallel thread to the product roadmap below: this `~/urbit` clone lives on Keaton's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, and developed in the open as a **collaborative pull-request proposal to Urbit** — an infinite game played with the project, not a competitive fork against it (spirit named in [`../gratitude/TechnoOptimistManifesto.md`](../../gratitude/TechnoOptimistManifesto.md)). **Landed:** Pass 1 repo mechanics + keys + Pacific-time convention; both forges pushed and signature-verified; the macOS enclosure equivalent (`sandbox-exec` launcher, witnessed green) + setup guide; the design thread — **Glow** named as the fused Rye-Hoon language, four variants (Riyo/Reya/Trey/Triz) proposed, Nock interpreter and Glow TAME supplement scoped, the grain lineage held whole and siloed; a root README + `GLOW_PROFILE.bron` + root rule 9 (docs↔implementation sync); the **warm-aura date atom** naming the whole tree's one clock ([`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../../context/specs/20260714-024800_warm-aura-date-atom-naming.md)); the `.peal` audio easter egg + Glow audio-Tilak lane. **Confirmed since (`20260714`):** the fork→proposal reframe (committed + re-signed + force-pushed); all four OS-variant names (Reya·Riyo·Trey·Triz) as two diverse-redundant pairs; the Ojjo O-vane name; and the Pool P-vane proposed (Gall-expanded content-creation computational data market, zero kernel collision). **Open (Keaton's word):** Pool confirm; the diverse-redundancy build shape; Ojjo/Pool build timing; Azimuth/Comlink integration; vere issue migration; seating the Glow supplement; host FileVault. Granular boxes in [`TASKS.md`](../TASKS.md).*
+*A parallel thread to the product roadmap below: this `~/urbit` clone lives on Keaton's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, and developed in the open as a **collaborative pull-request proposal to Urbit** — an infinite game played with the project, not a competitive fork against it (spirit named in [`../gratitude/TechnoOptimistManifesto.md`](../../gratitude/TechnoOptimistManifesto.md)). **Landed:** Pass 1 repo mechanics + keys + Pacific-time convention; both forges pushed and signature-verified; the macOS enclosure equivalent (`sandbox-exec` launcher, witnessed green) + setup guide; the design thread — **Glow** named as the fused Rye-Hoon language, four variants (Riyo/Reya/Trey/Triz) proposed, Nock interpreter and Glow TAME supplement scoped, the grain lineage held whole and siloed; a root README + `GLOW_PROFILE.kyri` + root rule 9 (docs↔implementation sync); the **warm-aura date atom** naming the whole tree's one clock ([`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../../context/specs/20260714-024800_warm-aura-date-atom-naming.md)); the `.peal` audio easter egg + Glow audio-Tilak lane. **Confirmed since (`20260714`):** the fork→proposal reframe (committed + re-signed + force-pushed); all four OS-variant names (Reya·Riyo·Trey·Triz) as two diverse-redundant pairs; the Ojjo O-vane name; and the Pool P-vane proposed (Gall-expanded content-creation computational data market, zero kernel collision). **Open (Keaton's word):** Pool confirm; the diverse-redundancy build shape; Ojjo/Pool build timing; Azimuth/Comlink integration; vere issue migration; seating the Glow supplement; host FileVault. Granular boxes in [`TASKS.md`](../TASKS.md).*
 
 **The archiving/reviving sweep is a naming-alignment, not a file-move** — settled `20260714.000100` (no bulk flatten) and aligned `20260714.024800` to the warm-aura date atom: every dated folder is bare `YYYYMMDD` (the `session-logs/archive/` pattern), every version/filename stamp is the one atom, and every future fold has one rule to follow. Prompt: [`../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md`](../../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md).
 
@@ -68,7 +68,7 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Caravan** | seed → bounded → twin → chain → service → poll service → **restart-on-ok** → **signal ring** → capabilities | Hosted; graceful stop complete through parity **179** |
 | **Tally** | seed + named gardens (blob/diff/frame) | 15 invariants; seed + gardens in parity |
 | **Brix** | `.brix` descriptor, 10 tracked bricks | Read by Mantra |
-| **Bron** | Data notation (`.bron`) | Used by `.brix` |
+| **Kyri** | Data notation (`.kyri`) | Used by `.brix` |
 | **Tablecloth** | Application database + Brix artifact store (horizon); **Tablecloth query** = namespace filter at parity **175** | Store designed (future); query landed |
 | **Mantra** | Weave + referential namespace + reference spec `20260707-011412` | parity **159–175**; [`mantra/README.md`](../../mantra/README.md) |
 | **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** — type, run, version, recall (SLC-1 **done**) | Gate trio + four SLC-1 witnesses incl. `slc1_accept.rish` |
@@ -234,21 +234,21 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **JABS2 finish-zone + remember, `20260717.213058`–`213242`** — close-hint row 13 only (mode switch no longer finishes the app); mode round-trip GREEN; **remember** word + `REMEMBER.md` card; Acme first-Glow / open-runes note.
 
-**JABS2 bare-ret GREEN · Hearth/LULU/ZETA6 seat, `20260717.213745`–`20260718.122145`** — empty ret → `chat ·` (Pixel confirmed). Design: **ZETA6** ret=newline · ↑=send; waymark **LULU** (hearth display presets, short home `kd`, Wired Glass SLC); Pixel 10a max 1080×2424 @ 20:9; Mantrapod floor = Skate budget provisional; Brix/Bron/Tablecloth stack (not a new vane). Next build: ZETA6 then LULU0.
+**JABS2 bare-ret GREEN · Hearth/LULU/ZETA6 seat, `20260717.213745`–`20260718.122145`** — empty ret → `chat ·` (Pixel confirmed). Design: **ZETA6** ret=newline · ↑=send; waymark **LULU** (hearth display presets, short home `kd`, Wired Glass SLC); Pixel 10a max 1080×2424 @ 20:9; Mantrapod floor = Skate budget provisional; Brix/Kyri/Tablecloth stack (not a new vane). Next build: ZETA6 then LULU0.
 
 **ZETA6 device-free GREEN, `20260718.122938`** — `ret` → newline · `^` → submit; multiline Dexter shows `P{n} ·` last line; pack ready for Pixel look. Next: Pixel look, then LULU0.
 
-**ZETA6 Pixel look GREEN, `20260718.123705`** — Keaton: `P1`–`P6` newlines + `^` → chat. Primitive Skate face is intentional SLC; density/presets wait on **LULU**. Next: LULU0 Bron hearth.
+**ZETA6 Pixel look GREEN, `20260718.123705`** — Keaton: `P1`–`P6` newlines + `^` → chat. Primitive Skate face is intentional SLC; density/presets wait on **LULU**. Next: LULU0 Kyri hearth.
 
-**LULU0 GREEN, `20260718.123900`** — Hearth Bron mold: `home_id` + `display_preset` (panel_max · scaled_720 · scaled_540 · mantrapod_floor); path `{id}/hearth.bron`; fixture `kd`. Next: **LULU1** apply in Skate.
+**LULU0 GREEN, `20260718.123900`** — Hearth Kyri mold: `home_id` + `display_preset` (panel_max · scaled_720 · scaled_540 · mantrapod_floor); path `{id}/hearth.kyri`; fixture `kd`. Next: **LULU1** apply in Skate.
 
-**LULU1 device-free GREEN, `20260718.124214`** — `apply_glass` drives Skate scale/cols from Hearth; default `kd` · `scaled_540` via Bron at activity start; pack for Pixel look. Next: Pixel look, then LULU2 check-in.
+**LULU1 device-free GREEN, `20260718.124214`** — `apply_glass` drives Skate scale/cols from Hearth; default `kd` · `scaled_540` via Kyri at activity start; pack for Pixel look. Next: Pixel look, then LULU2 check-in.
 
 **LULU1 Pixel look GREEN, `20260718.124528`** — Keaton: glyphs larger under `scaled_540`. Status chrome `kd · scaled_540` on Skate row 1 (`20260718.124610`). Next: LULU2 Settings — check-in.
 
 **LULU1 status + cycle, `20260718.124821`** — Keaton: status chrome GREEN. Tap row 1 advances closed presets (`scaled_540` → `mantrapod_floor` → …). Next: Pixel eyes on cycle; LULU2 Settings check-in.
 
-**LULU1 cycle Pixel + persist, `20260718.125312`** — Keaton: tap-cycle GREEN. Bron save/load at `files/{home}/hearth.bron` so restart keeps the last preset. Next: Pixel eyes on restart; LULU2 Settings check-in.
+**LULU1 cycle Pixel + persist, `20260718.125312`** — Keaton: tap-cycle GREEN. Kyri save/load at `files/{home}/hearth.kyri` so restart keeps the last preset. Next: Pixel eyes on restart; LULU2 Settings check-in.
 
 **LULU1 closed, `20260718.125639`** — Keaton: persist GREEN across force-close + reopen. Next: **LULU2** Settings thin face — check-in (proposal in `docs/LULU.md`).
 
@@ -266,7 +266,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **LULU4 Pixel GREEN · LULU5 packed, `20260718.132031`** — Keaton: wire toggle GREEN. Cellular `off|optional` on Settings (preference only). Next: LULU5 Pixel eyes; then Setu USB check-in.
 
-**LULU5 Pixel GREEN · preference ladder closed, `20260718.132503`** — Keaton: cell toggle GREEN. LULU0–5 Settings prefs closed on Pixel. Next: **SETU0** adb Bron pull — check-in thin face in `docs/LULU.md`; or **send** LULU3–5.
+**LULU5 Pixel GREEN · preference ladder closed, `20260718.132503`** — Keaton: cell toggle GREEN. LULU0–5 Settings prefs closed on Pixel. Next: **SETU0** adb Kyri pull — check-in thin face in `docs/LULU.md`; or **send** LULU3–5.
 
 **SETU0 affirmed + GREEN, `20260718.132731`** — Keaton affirmed adb pull thin face. Device-free parse GREEN; host pull on Pixel 10a GREEN (`home_id kd` agrees). Compressor [`docs/SETU.md`](../../docs/SETU.md). Next: **send** LULU3–5 + SETU0; or **SETU1** CDC-NCM check-in.
 
@@ -282,7 +282,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **SETU4 sent · SETU5 GREEN, `20260718.184449`–`184537`** — pier `3512444e73`. Kg: framed ping fits Comlink device max_frame; `lane_frame.bin` held. Live QEMU/Pixel CDC-NCM lab is **SETU6** check-in. Next: **send** SETU5.
 
-**SETU5 sent · Desk Hearth Hold · HOLD0 GREEN, `20260718.184733`–`185306`** — pier SETU5. Chapter open (not SETU6): Desk status line over `station.bron` + held ping/frame. Next: **send** HOLD0; HOLD1 / SETU6 stay check-in.
+**SETU5 sent · Desk Hearth Hold · HOLD0 GREEN, `20260718.184733`–`185306`** — pier SETU5. Chapter open (not SETU6): Desk status line over `station.kyri` + held ping/frame. Next: **send** HOLD0; HOLD1 / SETU6 stay check-in.
 
 **HOLD0 host look · stale-bin honesty, `20260718.190639`–`190736`** — Pixel pull closed the season job; local wire no longer claims leftover ping/frame; host SKIP clears cache bins. Next: **send** honesty polish; HOLD1 check-in.
 
@@ -814,7 +814,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **STOA274 after Dexter→Sala finish check-in, `20260722.152404`** — season turn; lean A HAWM 1A inventary (recommended) · lean B screenshot optional · lean D held. Brief [`active-designing/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md`](../../active-designing/yonder/20260722-152404_stoa274-after-dexter-sala-finish-checkin.md).
 
-**STOA275 HAWM log-harvest inventary GREEN, `20260722.152523`** — `hawm-harvest-v1` Bron; fixture + meta fold. Brief [`active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md`](../../active-designing/yonder/20260722-152523_stoa275-hawm-log-harvest-inventory.md).
+**STOA275 HAWM log-harvest inventary GREEN, `20260722.152523`** — `hawm-harvest-v1` Kyri; fixture + meta fold. Brief [`active-designing/20260722-152523_stoa275-hawm-log-harvest-inventory.md`](../../active-designing/yonder/20260722-152523_stoa275-hawm-log-harvest-inventory.md).
 
 **STOA276 after HAWM harvest check-in, `20260722.152631`** — lean A send · lean B host boot→harvest chain · lean D fleets held. Brief [`active-designing/20260722-152631_stoa276-after-hawm-harvest-checkin.md`](../../active-designing/yonder/20260722-152631_stoa276-after-hawm-harvest-checkin.md).
 
@@ -951,13 +951,13 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Glow OS · Glow Desk · Glow Glass seated, `20260717.183622`** — Keaton: **Glow OS** unifies; **Glow Desk** = desktop; **Glow Glass** = mobile. Lexicon + silo [`../active-designing/20260717-183425_glow-form-factor-names-and-orientation.md`](../../active-designing/yonder/20260717-183425_glow-form-factor-names-and-orientation.md). Orientation firmware stays check-in.
 
-**Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Bron→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
+**Witness habitat + markup pipeline, `20260717.173427`** — foundations fit study affirms single-strand · sameness · happy-zone practice in the suite; teaching path was the gap. Seats **witness habitat** as Acme synonym (foundations keep *happy zone*). Fusion map holds Scribble→Brix→Kyri→Mantra→Sala with Glow under TAME; Udon/Sail/Zuse horizon. Tutorial scaffold [`../manual/tutorials/cursor-and-the-compass.md`](../../manual/tutorials/cursor-and-the-compass.md); silo [`../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md`](../active-designing/20260717-173427_witness-habitat-and-the-markup-pipeline.md). Product next remains Dexter D2.
 
 **Align pass — three prompts closed, `20260717.173848`** — compass rose walked against the last three seated laps:
 
 1. **Dexter · Dill · glass** (`172832`…`175220`) — Dexter = Brushstroke/Sala; D0–D3 GREEN; D3 look GREEN with IME/caret gaps named; **own English QWERTY glass keyboard** seated; Dill gap.
 2. **Witness habitat + markup** (`173427`) — Acme testing face; fusion spine; Cursor-and-the-compass tutorial scaffold.
-3. **Foundations / LLM compress** (`173848`) — decline archive/Bron essays; COMPASS + compass card seated.
+3. **Foundations / LLM compress** (`173848`) — decline archive/Kyri essays; COMPASS + compass card seated.
 4. **Glass keyboard / ZETA** (`175220`/`180025`) — decline Graphene IME host; waymark **ZETA**; ZETA0 layout tables GREEN.
 
 **Aligned next (one step):** **ZETA hit-box + phone density + portrait fill** — fix wrong keys and tiny centered chrome. Hold orientation/firmware and desktop·mobile product naming for check-in. Hold ZETA4 emoji, TAME Lap 3 crypto, B2, `(jam …)`, Dill, M1.
@@ -974,7 +974,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 | 3 | **Dexter graduation** | **graduated `20260715.205500`** — Sala R2 (the unified viewer) is the second thin-view consumer the rule waited for | ~~second consumer arrives~~ — arrived |
 | 4 | **Realidream** | horizon — ask, receipt, reputation, sanctuary page rendered as views over Weave; thin-view exception proves local facts → frame without Pond/Dexter | rungs 1–3 |
 
-**Gratitude shelf for the lane:** Hyperfiddle (Dustin Getz — UIs as streaming DAGs) · Matklad (project-wide semantic graph) · the Nostr protocol (signed-event, relay-subscribed shape — [`nips/`](../gratitude/nips/)) · TigerBeetle (already kept) · grain-sketchbook (Kaeden's archived prototype — [`grain-sketchbook.md`](../../gratitude/grain-sketchbook.md)) · Noah B. (name's artistic source — [`noah-b-realidream.md`](../../gratitude/noah-b-realidream.md)). **Affirmed `174500`.** **Departures the lane keeps:** immutable facts re-folded, never nodes patched; meaning per-entry via Tilak, never one shared enum across consumers; values cross seams as Bron, never JSON-in-a-payload.
+**Gratitude shelf for the lane:** Hyperfiddle (Dustin Getz — UIs as streaming DAGs) · Matklad (project-wide semantic graph) · the Nostr protocol (signed-event, relay-subscribed shape — [`nips/`](../gratitude/nips/)) · TigerBeetle (already kept) · grain-sketchbook (Kaeden's archived prototype — [`grain-sketchbook.md`](../../gratitude/grain-sketchbook.md)) · Noah B. (name's artistic source — [`noah-b-realidream.md`](../../gratitude/noah-b-realidream.md)). **Affirmed `174500`.** **Departures the lane keeps:** immutable facts re-folded, never nodes patched; meaning per-entry via Tilak, never one shared enum across consumers; values cross seams as Kyri, never JSON-in-a-payload.
 
 ### The Audio Tilak lane — `.peal`, and Glow over sound (horizon, opened `20260714.023700`)
 
@@ -988,7 +988,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 | **A3** | **Brushstroke peal view** | a Brushstroke component that renders a peal's waveform/metadata as an immediate-mode frame — Landscape/Realidream-compatible, drawn from the value every frame, per the three living essays | A2 · Brushstroke frame seam · Realidream rung 1 |
 | **A4** | **Maitreya time seam** | playback/decode as a bounded host seam under **Maitreya** (the media driver already named in `LEXICON.md` for audio/video time), so Realidream can play a peal through the same seam Lotus and Linengrow will | A3 · Maitreya first lap |
 
-**Departures this lane keeps (same as Realidream's):** the peal is an immutable signed value re-folded, never a mutable buffer patched; its meaning rides a Tilak, never a shared enum; it crosses seams as Bron-wrapped bytes, never an untyped payload. **The codec stays borrowed and free; the mark stays ours** — anything needing raw Opus re-probes in one step.
+**Departures this lane keeps (same as Realidream's):** the peal is an immutable signed value re-folded, never a mutable buffer patched; its meaning rides a Tilak, never a shared enum; it crosses seams as Kyri-wrapped bytes, never an untyped payload. **The codec stays borrowed and free; the mark stays ours** — anything needing raw Opus re-probes in one step.
 
 ---
 

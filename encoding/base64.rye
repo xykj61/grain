@@ -1,5 +1,5 @@
 //! encoding/base64.rye -- Base64 (RFC 4648) authored in pure Rye. Base64 is the binary-to-text armor every wire format and text-safe
-//! artifact leans on: a signed-carry frame written into a Bron field, a vault-sealed blob pasted into a note, a public key or a content
+//! artifact leans on: a signed-carry frame written into a Kyri field, a vault-sealed blob pasted into a note, a public key or a content
 //! address rendered for a human to read. The crypto library proves the bytes; this module renders them to text and back, byte-for-byte,
 //! so a hand can carry a key or a seal through any channel that only passes printable characters and recover it exactly.
 //!

@@ -25,7 +25,7 @@ That is the whole transferable insight. Everything else in the essay -- Grothend
 
 The sheaf condition is, almost exactly, this fork's own value model and log discipline stated in category-theory language:
 
-- **Bron's one value model** -- values compose (placed side by side) and never tangle (woven so reading one needs the others) -- is the sheaf's "agree on overlaps, glue into a whole" rule, applied to data structure.
+- **Kyri's one value model** -- values compose (placed side by side) and never tangle (woven so reading one needs the others) -- is the sheaf's "agree on overlaps, glue into a whole" rule, applied to data structure.
 - **Mantra's fold** -- global state reconstructed as a pure fold over many local, immutable, signed facts -- is the sheaf condition applied to time: each fact is a local section, and they glue into one consistent global state because they are made to agree.
 - **The Realidream thesis** -- every surface a pure fold from the Weave to the frame -- is the same claim once more: many local facts, one coherent rendered whole.
 
@@ -38,7 +38,7 @@ So the essay's gift, siloed, is a precise mathematical name for something this f
 
 ## What This Actually Gives This Fork
 
-- A rigorous vocabulary -- sheaf, gluing, local section, global section -- for describing why Bron + Mantra work, usable when those seams need precise language (a spec, a paper, a proposal to a mathematically literate galaxy holder).
+- A rigorous vocabulary -- sheaf, gluing, local section, global section -- for describing why Kyri + Mantra work, usable when those seams need precise language (a spec, a paper, a proposal to a mathematically literate galaxy holder).
 - Reinforcement, from an unexpected direction, of the rule this fork already keeps: never serialize-and-reparse across a seam; make the parts agree so the whole glues.
 
 ## Galaxy Pitch

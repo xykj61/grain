@@ -22,7 +22,7 @@ whose moment you are in, open its page, and follow that page rather than a memor
 | **Chemical Formulas** | you are about to run a core operation (a send, a fold, a seed projection) and want its conservation law in one line | [`context/CHEMICAL_FORMULAS.md`](context/CHEMICAL_FORMULAS.md) |
 | **New Gauge Style** | you are writing prose -- documentation, analysis, a design essay, a README | [`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md) |
 | **Civic Style** | the writing touches money, incentives, or outcomes -- name what the thing rewards | [`context/CIVIC_STYLE.md`](context/CIVIC_STYLE.md) |
-| **TAME Guidance** | you are writing or reviewing code -- Rye, Rishi, Brix, Bron, Kyri, Glow, Brush | [`context/TAME_CORE.md`](context/TAME_CORE.md) first, then [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) |
+| **TAME Guidance** | you are writing or reviewing code -- Rye, Rishi, Brix, Kyri, Kyri, Glow, Brush | [`context/TAME_CORE.md`](context/TAME_CORE.md) first, then [`context/TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) |
 | **The voice** | you are writing anything at all -- Kyri is who writes here | [`context/KYRI.md`](context/KYRI.md) |
 | **The dictionary** | a coined word needs its plain function -- nib, sprig, waymark, crux, resin | [`context/LEXICON.md`](context/LEXICON.md) |
 | **The living card** | you need the work-front, the custody gates, or the next door | [`construction/ITINERARY.md`](construction/ITINERARY.md) |

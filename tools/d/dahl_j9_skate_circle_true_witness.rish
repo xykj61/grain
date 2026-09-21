@@ -2,7 +2,7 @@
 #
 # Rungs one through three fixed the consent rule, signed each act, and let a signed circle travel -- all
 # over circles seated in code. This closing rung carries the reader onto a real Skate circle record a
-# keeper can open and count. pond/apps/skate_circle_true.rye @embedFile-binds surf/fixtures/circle.bron
+# keeper can open and count. pond/apps/skate_circle_true.rye @embedFile-binds surf/fixtures/circle.kyri
 # (a genuine format skate-circle-v1 record with real Ed25519 signatures -- three members, one mutual
 # link, one one-sided hold) through a corpora symlink, parses it through rung three, and reports the
 # member count, link count, and mutual-link count. The crux is the cross-check: tools/fixtures/
@@ -27,11 +27,11 @@ assert buildr1.ok else "dahl-j9r4: skate_circle (r1) build failed"
 let selfr1 = run ["sh" "-c" "${binr1} selftest 2>&1"]
 assert selfr1.ok else "dahl-j9r4: skate_circle (r1) selftest exited non-zero"
 
-let binr3 = "pond/bin/skate-circle-bron"
-let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_circle_bron.rye -femit-bin=${binr3}"]
-assert buildr3.ok else "dahl-j9r4: skate_circle_bron (r3) build failed"
+let binr3 = "pond/bin/skate-circle-kyri"
+let buildr3 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/skate_circle_kyri.rye -femit-bin=${binr3}"]
+assert buildr3.ok else "dahl-j9r4: skate_circle_kyri (r3) build failed"
 let selfr3 = run ["sh" "-c" "${binr3} selftest 2>&1"]
-assert selfr3.ok else "dahl-j9r4: skate_circle_bron (r3) selftest exited non-zero"
+assert selfr3.ok else "dahl-j9r4: skate_circle_kyri (r3) selftest exited non-zero"
 assert selfr3.out contains "GREEN" else "dahl-j9r4: r3 did not speak GREEN"
 
 let bin = "pond/bin/skate-circle-true"
@@ -48,7 +48,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j9r4: tamper refusal
 # The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
 let measure = run ["sh" "-c" "${bin} measure 2>&1"]
 assert measure.ok else "dahl-j9r4: measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/s/skate_circle_truth.awk surf/fixtures/circle.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/skate_circle_truth.awk surf/fixtures/circle.kyri"]
 assert awk.ok else "dahl-j9r4: awk reading of the fixture failed"
 assert measure.out == awk.out else "dahl-j9r4: the app reading disagrees with the independent awk count of the same bytes"
 

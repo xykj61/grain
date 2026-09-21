@@ -2,7 +2,7 @@
 # glow_host_run_witness.sh -- proves tools/g/glow_host_run.sh actually closes the
 # RYE_ZIG/RYE_LIB PATH-fallback footgun, on this host, fresh every run.
 #
-# Permit witness: a correct GLOW_HOST.kyri (or the elder .bron) builds cleanly with no pre-set env.
+# Permit witness: a correct GLOW_HOST.kyri (or .kyri) builds cleanly with no pre-set env.
 # Refuse witness: a host declaration naming the wrong os is rejected.
 #
 # Run: ./tools/g/glow_host_run_witness.sh
@@ -12,8 +12,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-if [ ! -f "GLOW_HOST.kyri" ] && [ ! -f "GLOW_HOST.bron" ]; then
-  echo "SKIP: no GLOW_HOST.kyri or GLOW_HOST.bron on this host yet -- copy GLOW_HOST.template.kyri and fill it in first." >&2
+if [ ! -f "GLOW_HOST.kyri" ] && [ ! -f "GLOW_HOST.kyri" ]; then
+  echo "SKIP: no GLOW_HOST.kyri or GLOW_HOST.kyri on this host yet -- copy GLOW_HOST.template.kyri and fill it in first." >&2
   exit 0
 fi
 
@@ -33,7 +33,7 @@ rm -f /tmp/glow_host_witness_permit.out
 echo "== refuse witness: wrong declared os is rejected =="
 WRONG_CONF="$(mktemp -t glow_host_witness_wrong)"
 # read whichever spelling this host carries -- the notation molted 20260810 and both are read
-HOST_CONF=GLOW_HOST.kyri; [ -f "$HOST_CONF" ] || HOST_CONF=GLOW_HOST.bron
+HOST_CONF=GLOW_HOST.kyri; [ -f "$HOST_CONF" ] || HOST_CONF=GLOW_HOST.kyri
 sed 's/^os .*/os the-wrong-os/' "$HOST_CONF" > "$WRONG_CONF"
 if GLOW_HOST_CONF="$WRONG_CONF" ./tools/g/glow_host_run.sh -- rye/bin/rye version \
     >/tmp/glow_host_witness_refuse.out 2>&1; then

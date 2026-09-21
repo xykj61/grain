@@ -11,11 +11,11 @@
 
 ## Claim
 
-Desk holds a **lab card** (`lab.bron`): SETU5 payload ready · host iface `none|usb0|ncm*` · mode `stand-in|armed`. Device-free fixtures GREEN. Host probe writes the card; stand-in is honest when Pixel is still charging+debug.
+Desk holds a **lab card** (`lab.kyri`): SETU5 payload ready · host iface `none|usb0|ncm*` · mode `stand-in|armed`. Device-free fixtures GREEN. Host probe writes the card; stand-in is honest when Pixel is still charging+debug.
 
 ## Budget
 
-- One status mold + `lab.bron`
+- One status mold + `lab.kyri`
 - Device-free witness + host probe rish
 - No root configfs / no Amber fuse / no live AF_PACKET TX yet
 

@@ -45,7 +45,7 @@ Bounds, named:
 
 - **Content-defined chunking across resin boundaries** (dedup across large-artifact edits, mirroring beading's second ring) — its own later rung; r1 uses fixed-size resins for a predictable store bound.
 - **The keyed/provenance layer on real large documents** — once the spool stands, `tablecloth`'s naming layer and `tablecloth_keyed`'s owner-signing rebind to the spool so a *signed* real document travels; a natural r2/r3.
-- **A portable spool-index format** (Bron `format spool-v1`) so a large artifact's recipe travels like a bead-index — a later rung, kin to `publish_receipt_bron`.
+- **A portable spool-index format** (Kyri `format spool-v1`) so a large artifact's recipe travels like a bead-index — a later rung, kin to `publish_receipt_kyri`.
 
 No custody crosses: demo bytes and the store only; gate #4 (Keaton's real Kumara instance) untouched.
 

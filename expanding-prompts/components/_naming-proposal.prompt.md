@@ -18,6 +18,6 @@ Propose a name for **{{THING}}** from the candidate(s) **{{CANDIDATES}}**, which
 2. **Check the fit.** If the role is a vane, confirm the four-letter convention and the alphabet position. If it is a rename of an existing module, grep the inbound-reference count so the migration cost is a real number, not a guess.
 3. **Recommend without deciding.** Give a clear recommendation with reasoning, but leave the confirm/deny to Keaton — add the candidate to `context/specs/20260713-235600_names-awaiting-confirmation.md`.
 4. **Do not rename anything.** Recording a proposal is not executing a migration; migrations wait for Keaton's word and go cheapest-first.
-5. **Log it** — bron session log, Pacific stamp, and if the name could matter past this fork, a Galaxy Pitch block.
+5. **Log it** — kyri session log, Pacific stamp, and if the name could matter past this fork, a Galaxy Pitch block.
 
-**Produces:** a new row (or section) on the names-awaiting-confirmation checklist; a bron session log; commits pushed to both remotes.
+**Produces:** a new row (or section) on the names-awaiting-confirmation checklist; a kyri session log; commits pushed to both remotes.

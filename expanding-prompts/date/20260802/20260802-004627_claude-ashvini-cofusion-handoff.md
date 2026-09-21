@@ -150,7 +150,7 @@ git status -sb
 3. Update living pins in **one work commit**: REMEMBER · waymark · season charter path Claude named · recursion_block / equinox map if Claude chartered them.  
 4. Do **not** begin Q58 bundle cut in the Ashvini open commit unless Keaton said both.  
 5. First mechanical lap after pins: prove absence greps still true, then charter/create the first Glow Tend limb Claude named (default lean: **Tally** `.glow` or bartis surface + witness under TAME).  
-6. Round-close: GPG commit · dual-push `origin` + `xykj61` · session `.bron` in same send · REMEMBER git nib in work commit (+ at most one amend) · print fusion recursion prompt.  
+6. Round-close: GPG commit · dual-push `origin` + `xykj61` · session `.kyri` in same send · REMEMBER git nib in work commit (+ at most one amend) · print fusion recursion prompt.  
 7. Hard lines unchanged.
 
 ### C) If Keaton refuses Ashvini / holds Equinox

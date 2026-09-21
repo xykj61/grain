@@ -1,6 +1,6 @@
 //! linengrow/setu0_hearth_pull_check.rye -- Desk-side agree check for SETU0 host pull.
 //!
-//! Reads tools/.cache/setu0/hearth_home and hearth.bron (written by the host
+//! Reads tools/.cache/setu0/hearth_home and hearth.kyri (written by the host
 //! rish after adb run-as cat). Exits 0 and prints GREEN when they agree.
 
 const std = @import("std");
@@ -11,19 +11,19 @@ const setu0 = @import("setu0_hearth_pull.rye");
 const hearth = @import("hearth_lulu0.rye");
 
 const ptr_path = "tools/.cache/setu0/hearth_home";
-const bron_path = "tools/.cache/setu0/hearth.bron";
+const kyri_path = "tools/.cache/setu0/hearth.kyri";
 
 fn run_check(io: std.Io) !u8 {
     const cwd = Dir.cwd();
     var ptr_buf: [64]u8 = undefined;
     const ptr_read = try cwd.readFile(io, ptr_path, &ptr_buf);
-    var bron_buf: [hearth.max_bron_len]u8 = undefined;
-    const bron_read = try cwd.readFile(io, bron_path, &bron_buf);
+    var kyri_buf: [hearth.max_kyri_len]u8 = undefined;
+    const kyri_read = try cwd.readFile(io, kyri_path, &kyri_buf);
     // invariant: pulls fit the seated bounds
     assert(ptr_read.len <= ptr_buf.len);
-    assert(bron_read.len <= bron_buf.len);
-    if (!setu0.pulled_pair_agrees(ptr_read, bron_read)) {
-        print("setu0-check: RED — pointer and Bron disagree or fail to parse\n", .{});
+    assert(kyri_read.len <= kyri_buf.len);
+    if (!setu0.pulled_pair_agrees(ptr_read, kyri_read)) {
+        print("setu0-check: RED — pointer and Kyri disagree or fail to parse\n", .{});
         return 1;
     }
     var home: [hearth.home_id_len]u8 = undefined;

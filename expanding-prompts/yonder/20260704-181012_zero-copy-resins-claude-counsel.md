@@ -100,7 +100,7 @@ Deliver **designs Cursor can draft into `context/specs/` or `active-designing/` 
 | **I4** | **Witness ladder** | Map research laps 1-5 to named `tools/*_witness.rish` claims; red-then-green order; **do not invent parity numbers** -- mark `[Cursor verify on metal]` or cite existing |
 | **I5** | **Tally bounds table** | max resins per batch, max vessel bytes, max manifest lines, max replay garden -- one row per bound with rationale |
 | **I6** | **Amber manifest hygiene lap** | Delta from ring-1 `relpath` to Tilak line; golden migration story |
-| **I7** | **Continuity / double-boot fact** | Bron shape sketch; Pond refusal rule |
+| **I7** | **Continuity / double-boot fact** | Kyri shape sketch; Pond refusal rule |
 
 ---
 

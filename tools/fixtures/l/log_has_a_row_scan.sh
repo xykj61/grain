@@ -70,7 +70,7 @@ elder_ceiling=${LOG_ROW_ELDER_CEILING:-216}
 # The flat room -- still the law for a log written flat by hand, and still gated at zero.
 flat=0
 flat_missing=0
-for f in "$root"/session-logs/*.kyri "$root"/session-logs/*.bron; do
+for f in "$root"/session-logs/*.kyri "$root"/session-logs/*.kyri; do
   [ -f "$f" ] || continue
   b=$(basename "$f")
   flat=$((flat + 1))
@@ -88,7 +88,7 @@ set --
 for f in "$root"/session-logs/date/README-index-*.md; do
   [ -f "$f" ] && set -- "$@" "$f"
 done
-reading=$(find "$root/session-logs/date" -type f \( -name '*.kyri' -o -name '*.bron' \) -print 2>/dev/null | awk \
+reading=$(find "$root/session-logs/date" -type f \( -name '*.kyri' -o -name '*.kyri' \) -print 2>/dev/null | awk \
   -v law="$born_on_shelf_day" -v pin="$pin" '
   # The living pin: one row per day, naming a count and the shelf that holds it.
   FILENAME == pin {

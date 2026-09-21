@@ -6,7 +6,7 @@
 //!
 //! r1 derived the berth, r2 healed the fleet, r3 let it travel -- all over fleets seated in code. r4 carries
 //! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count --
-//! `tools/fixtures/p/puddle_fleet.bron`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
+//! `tools/fixtures/p/puddle_fleet.kyri`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! The crux is TWO TOOLS, ONE ANSWER: the app parses the record through r3's own reader and reports the
@@ -17,7 +17,7 @@
 //! reproduces the embedded bytes exactly (a fixed point -- the fixture is what the Puddle emits, not a
 //! hand-mock), and a tampered header refuses `BadFormat`.
 //!
-//! Composes puddle.rye + puddle_bron.rye public API only. Siloed, dev-only, demo host and world seeds -- no
+//! Composes puddle.rye + puddle_kyri.rye public API only. Siloed, dev-only, demo host and world seeds -- no
 //! real key, no funds, no network, no world provisioned; a served fleet reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_true.rye selftest
@@ -27,11 +27,11 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const puddle = @import("puddle.rye");
-const puddle_bron = @import("puddle_bron.rye");
+const puddle_kyri = @import("puddle_kyri.rye");
 
 pub const puddle_true_version = "20260813.120312";
 
-const real_fleet = @embedFile("corpora/puddle_fleet.bron");
+const real_fleet = @embedFile("corpora/puddle_fleet.kyri");
 
 /// The roster shape of a fleet -- the triple the app reports and awk independently reads.
 const Shape = struct {
@@ -43,7 +43,7 @@ const Shape = struct {
 /// Parse the real record and read its roster shape -- hosts, worlds, and total capacity.
 fn read_shape(text: []const u8) !Shape {
     var f: puddle.Fleet = undefined;
-    try puddle_bron.parse(text, &f);
+    try puddle_kyri.parse(text, &f);
     // invariant: the parsed fleet honors both static bounds.
     assert(f.host_count <= puddle.max_hosts);
     assert(f.world_count <= puddle.max_worlds);
@@ -59,7 +59,7 @@ fn welcome_reading_true_to_bytes() !void {
     const s = try read_shape(real_fleet);
 
     var f: puddle.Fleet = undefined;
-    try puddle_bron.parse(real_fleet, &f);
+    try puddle_kyri.parse(real_fleet, &f);
     var placement: [puddle.max_worlds]u32 = undefined;
     try puddle.berth(&f, &placement);
 
@@ -81,11 +81,11 @@ fn welcome_reading_true_to_bytes() !void {
 /// bytes exactly (a fixed point), so the fixture is not a hand-mock.
 fn welcome_record_is_really_a_fleet() !void {
     var f: puddle.Fleet = undefined;
-    try puddle_bron.parse(real_fleet, &f);
-    var buf: [puddle_bron.max_record]u8 = undefined;
-    const len = try puddle_bron.render(&f, buf[0..]);
+    try puddle_kyri.parse(real_fleet, &f);
+    var buf: [puddle_kyri.max_record]u8 = undefined;
+    const len = try puddle_kyri.render(&f, buf[0..]);
     // invariant: the re-render honors the record bound.
-    assert(len <= puddle_bron.max_record);
+    assert(len <= puddle_kyri.max_record);
     if (!std.mem.eql(u8, buf[0..len], real_fleet)) return error.NotFixedPoint;
     print("puddle-true: the record re-renders to the embedded bytes exactly — the fixture is what the Puddle emits, never a hand-mock.\n", .{});
 }
@@ -94,7 +94,7 @@ fn welcome_record_is_really_a_fleet() !void {
 fn unwelcome_tampered_record_refuses() !void {
     const bad = "format puddle-fleet-v2\nhost aa 4\n";
     var f: puddle.Fleet = undefined;
-    if (puddle_bron.parse(bad, &f)) |_| return error.TamperAdmitted else |err| {
+    if (puddle_kyri.parse(bad, &f)) |_| return error.TamperAdmitted else |err| {
         if (err != error.BadFormat) return error.WrongTamper;
     }
     print("puddle-true: a tampered header refused BadFormat.\n", .{});

@@ -37,7 +37,7 @@
 # from a busy span where no candidate moved -- `churn_quiet=yes` tells the two apart.
 set -eu
 
-MANIFEST=template-manifest.bron
+MANIFEST=template-manifest.kyri
 PUBLISHER=publish-seed.sh
 PROJECTOR=tools/fixtures/s/sow_project.sh
 WITNESS=tools/s/sow_witness.rish

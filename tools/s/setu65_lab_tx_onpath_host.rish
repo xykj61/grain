@@ -1,6 +1,6 @@
 # setu65_lab_tx_onpath_host.rish -- SETU6.5 host: TX gate after lab probe.
 #
-# Run on the host after SETU6 probe has written lab.bron.
+# Run on the host after SETU6 probe has written lab.kyri.
 # Stand-in -> SKIP GREEN. Armed -> unicast framed UDP :38503 to the iface
 # default gateway (Pixel tether peer). Limited broadcast needs CAP.
 #
@@ -21,7 +21,7 @@ let peer = ""
 if (iface != "") then let gw = run ["sh" "-c" "ip -4 route show default dev ${iface} 2>/dev/null | awk '{print $3; exit}' || true"]
 if (iface != "") then let peer = trim gw.out
 
-say "setu65-host: attempting TX from lab.bron (iface ${iface} peer ${peer})…"
+say "setu65-host: attempting TX from lab.kyri (iface ${iface} peer ${peer})…"
 if (peer != "") then let tx = run ["sh" "-c" "${check} ${peer} 2>&1"]
 if (peer == "") then let tx = run ["sh" "-c" "${check} 2>&1"]
 say "${tx.out_brief}"

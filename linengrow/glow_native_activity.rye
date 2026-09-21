@@ -51,8 +51,8 @@ const lulu2 = @import("hearth_lulu2.rye");
 const lulu3 = @import("hearth_lulu3.rye");
 const tally_copy = @import("tally_copy.rye");
 
-/// LULU0->LULU1: default short-home hearth (kd - scaled_540) as Bron at the seam.
-const default_hearth_bron =
+/// LULU0->LULU1: default short-home hearth (kd - scaled_540) as Kyri at the seam.
+const default_hearth_kyri =
     \\format hearth-lulu0-v1
     \\home_id kd
     \\display_preset scaled_540
@@ -140,7 +140,7 @@ extern fn write(fd: c_int, buf: [*]const u8, n: usize) isize;
 extern fn close(fd: c_int) c_int;
 extern fn mkdir(path: [*:0]const u8, mode: c_int) c_int;
 
-/// Same files root as seva_root.txt -- Hearth Bron lives at `{root}/{home}/hearth.bron`.
+/// Same files root as seva_root.txt -- Hearth Kyri lives at `{root}/{home}/hearth.kyri`.
 const android_files_root = "/data/user/0/org.glow.app.seva_broadcaster/files";
 
 fn write_root_file(hex: *const [64]u8) void {
@@ -302,16 +302,16 @@ fn save_hearth_preference() void {
     ) catch return;
     var path_z: [hearth.max_abs_path_len + 1]u8 = undefined;
     const path_c = path_to_c(path_buf[0..path_n], &path_z) orelse return;
-    var bron: [hearth.max_bron_len]u8 = undefined;
-    const bron_n = hearth.format_bron(h, &bron) catch return;
+    var kyri: [hearth.max_kyri_len]u8 = undefined;
+    const kyri_n = hearth.format_kyri(h, &kyri) catch return;
     const fd = open(path_c, O_WRONLY | O_CREAT | O_TRUNC, 0o600);
     if (fd < 0) return;
     defer _ = close(fd);
-    _ = write(fd, &bron, bron_n);
+    _ = write(fd, &kyri, kyri_n);
 }
 
 fn load_hearth_preference() void {
-    // Pointer names active home; Bron under `{home}/hearth.bron`; else default.
+    // Pointer names active home; Kyri under `{home}/hearth.kyri`; else default.
     var home: [hearth.home_id_len]u8 = .{ 'k', 'd' };
     if (!read_home_pointer(&home)) {
         home = .{ 'k', 'd' };
@@ -336,13 +336,13 @@ fn load_hearth_preference() void {
         return;
     }
     defer _ = close(fd);
-    var bron: [hearth.max_bron_len]u8 = undefined;
-    const n = read(fd, &bron, bron.len);
+    var kyri: [hearth.max_kyri_len]u8 = undefined;
+    const n = read(fd, &kyri, kyri.len);
     if (n <= 0) {
         apply_default_hearth();
         return;
     }
-    if (hearth.parse_bron(bron[0..@intCast(n)])) |h| {
+    if (hearth.parse_kyri(kyri[0..@intCast(n)])) |h| {
         apply_hearth_record(h);
     } else |_| {
         apply_default_hearth();
@@ -350,7 +350,7 @@ fn load_hearth_preference() void {
 }
 
 fn apply_default_hearth() void {
-    if (hearth.parse_bron(default_hearth_bron)) |h| {
+    if (hearth.parse_kyri(default_hearth_kyri)) |h| {
         apply_hearth_record(h);
         // invariant: the default hearth is the home this build ships with, pinned so a change
         // to the preset table surfaces here rather than as a different home appearing on the
@@ -903,7 +903,7 @@ export fn ANativeActivity_onCreate(
     g_b1_ready = b1_carriage.run_demo_carriage(&g_b1_line, &g_b1_len);
     g_jabs2_lens = .{ 0, 0 };
     g_jabs2_ready = jabs2_audience.run_demo_audience(&g_jabs2_lines, &g_jabs2_lens);
-    // LULU1: load Hearth from files/{home}/hearth.bron when present.
+    // LULU1: load Hearth from files/{home}/hearth.kyri when present.
     load_hearth_preference();
     g_dexter_editor.reset();
     g_dexter_held_len = 0;

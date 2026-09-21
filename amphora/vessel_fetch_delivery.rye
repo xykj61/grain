@@ -444,7 +444,7 @@ fn fetch_one(digest_hex: []const u8, out_bytes: *[vfw.max_resin_bytes]u8) !u32 {
 fn run_fetcher(io: std.Io, bundle_dir: []const u8) !u8 {
     var vessel_buf: [2048]u8 = undefined;
     var vessel_path_buf: [384]u8 = undefined;
-    const vessel_path = try std.fmt.bufPrint(&vessel_path_buf, "{s}/vessel.bron", .{bundle_dir});
+    const vessel_path = try std.fmt.bufPrint(&vessel_path_buf, "{s}/vessel.kyri", .{bundle_dir});
     const vessel_text = try read_file_limited(io, vessel_path, &vessel_buf);
 
     var digests: [8][64]u8 = undefined;

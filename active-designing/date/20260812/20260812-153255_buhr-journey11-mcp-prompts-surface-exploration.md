@@ -41,19 +41,19 @@ quietly ignore an argument the caller meant to matter.
 
 ## Grounded in witnessed ground
 
-- `pond/apps/mcp_bron.rye` (J3r1) — the flat-Bron `key value` idiom, the bounded `format …-v1`
+- `pond/apps/mcp_kyri.rye` (J3r1) — the flat-Kyri `key value` idiom, the bounded `format …-v1`
   envelope discipline, unknown-field-refused, and the round-trip property this rung mirrors.
 - `pond/apps/mcp_resource.rye` (J10r1) — the length-delimited body idiom (a `template`/`content`
   body may hold interior newlines, read exactly after its marker and checked against a
   published length), reused so a multi-line template survives the crossing.
-- `brix/infuse.rye` — per-key override over flat Bron: the argument bindings *are* a flat-Bron
+- `brix/infuse.rye` — per-key override over flat Kyri: the argument bindings *are* a flat-Kyri
   key/value set, exactly the shape infuse already reasons over; the fill's binding lookup is
   kin to it.
 - The Lantern request shape (Quin's voices, J1) — a filled prompt is precisely a prompt a voice
   can answer, which is what the horizon rung joins.
 
 The bridge invents no storage and no transport: it reads a descriptor and a request in owned
-Bron shapes, fills bounded text, and renders an owned result. It reads no network — the real
+Kyri shapes, fills bounded text, and renders an owned result. It reads no network — the real
 network fetch and the Comlink-served transport stay the held custody/serve gates.
 
 ## The rungs, Lindy-first crux-first

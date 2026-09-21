@@ -87,7 +87,7 @@ echo "enforce_files=$files"
 echo "enforce_hits=$hits"
 
 # The record, reported so the scale stays visible and failed never -- these rooms keep their words.
-adv=$(grep -rlE "$PROSE" --include=*.md --include=*.kyri --include=*.bron \
+adv=$(grep -rlE "$PROSE" --include=*.md --include=*.kyri --include=*.kyri \
         session-logs active-designing external-research counsel waymarks construction/archive construction/yonder \
         2>/dev/null | wc -l | tr -d ' ')
 echo "record_files_keeping_the_word=$adv"

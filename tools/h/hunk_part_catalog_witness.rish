@@ -9,7 +9,7 @@
 # a material, and a price in cents (recorded as a FACT, a u64, never a balance the tree can move). A PartCatalog
 # holds one SpriteIndex (the pictures) and one PartRecord per product (the facts) in the same held order; add_part
 # grows both together so a part is never a window without facts. render_part_catalog / parse_part_catalog carry
-# the whole thing as a flat-Bron format part-catalog-v1 record, so render(parse(render(x))) is a fixed point over
+# the whole thing as a flat-Kyri format part-catalog-v1 record, so render(parse(render(x))) is a fixed point over
 # BOTH the windows and the facts. No network, no key, no funds; disbursement stays a custody gate.
 #
 # Run from the repository root:

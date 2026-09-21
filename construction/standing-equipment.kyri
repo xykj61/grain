@@ -2134,7 +2134,7 @@ host macos
 seated 20260829.104233
 
 # pond_seal_gate -- the custody gate for the season flip, read wherever it is spelled. Three tracked
-# launchers admit ENCLOSURE=pond only behind pond_exit_bron_master_seal.sh --require, and
+# launchers admit ENCLOSURE=pond only behind pond_exit_kyri_master_seal.sh --require, and
 # pond_policy_launcher reads exactly one of them because that is the one Pond's record describes.
 # This discovers the launchers with `git grep` rather than listing them (%301, %326) and gates three
 # readings at zero: an ungated pond, a seal call whose exit code nothing reads (%311's vacuous wall,
@@ -3844,12 +3844,12 @@ seated 20260911.133000
 # amphora_carry_atomic -- the same question a third time, at the dock's own scale.
 # `pour_atomic` asks what a refused POUR leaves at the target path; this asks what a refused
 # CARRY leaves at the far dock. `carry_cross` assembled the far vessel at the dock's own
-# `vessel.bron` and ferried the resin bodies AFTER it, so a refusal between those steps left a
+# `vessel.kyri` and ferried the resin bodies AFTER it, so a refusal between those steps left a
 # dock holding a listing whose bodies had yet to arrive. Measured on metal `20260911.183720` on
 # the ring-1 fixture, before a line changed, with one near resin body forged so
 # `ferry_prove_resins` answers `cargo unproven` -- the production path, needing no env seam and
 # no permission game: a FIRST carry into a fresh dock refuses at the near end and leaves 1,565
-# bytes at `dock/vessel.bron`, byte-equal to the near vessel, with `vessel-core verify` GREEN
+# bytes at `dock/vessel.kyri`, byte-equal to the near vessel, with `vessel-core verify` GREEN
 # and `vessel-seal open-check` GREEN, standing beside ZERO of the four bodies its manifest
 # names. A far `amphora restore` over that dock passes the carry walls, passes the restore
 # walls, reads its catalog whole -- `files=4 plain_bytes=378` -- and only then answers `resin
@@ -3860,7 +3860,7 @@ seated 20260911.133000
 # promise a far reader trusts, so the vessel is the last thing that may appear in it. The
 # assembly lands on a `.crossing` scratch inside the dock now, the far walls and the far
 # manifest read that scratch, the resins ferry beside it into the dock's own content-addressed
-# `resins/`, and `rename(2)` -- one filesystem, so POSIX makes it atomic -- puts `vessel.bron`
+# `resins/`, and `rename(2)` -- one filesystem, so POSIX makes it atomic -- puts `vessel.kyri`
 # in place once every body is across. Every refusal after the scratch exists sweeps it, since a
 # scratch left standing is a vessel under another name.
 #
@@ -3881,7 +3881,7 @@ seated 20260911.193818
 # in Rye, and `tools/fixtures/a/amphora_pour.sh` in shell, which feeds ten witnesses. Both
 # stamp `format amphora-v1` on what they produce, and until `20260911` they computed `parent`
 # over different preimages -- the Rye pour over the cargo LISTING the vessel carries, the shell
-# pour over `manifest.bron`, a sibling FILE that stays at the near dock. One season poured both
+# pour over `manifest.kyri`, a sibling FILE that stays at the near dock. One season poured both
 # ways: same four names, same four digests, two parents.
 #
 # Two consequences, the second worse than the first. A vessel arriving alone at a far dock could
@@ -5098,14 +5098,14 @@ guard build_lock_ignore
 path tools/b/build_lock_ignore_witness.rish
 tier lap
 seated 20260917.065842
-# bron_resins_catalog -- the cellar's catalog names every resin it holds, and now something reads it.
+# kyri_resins_catalog -- the cellar's catalog names every resin it holds, and now something reads it.
 #
-# WHAT WAS MEASURED (`20260907.000030`). `bron-resins/` is the resin cellar and
-# `bron-resins/manifest.bron` is its catalog, one `entry <basename> <note>` line per resin. It named
+# WHAT WAS MEASURED (`20260907.000030`). `kyri-resins/` is the resin cellar and
+# `kyri-resins/manifest.kyri` is its catalog, one `entry <basename> <note>` line per resin. It named
 # THREE of the room's SEVENTEEN. Its own `note` line states the habit that keeps it -- *commit with
 # the resin* -- and that habit was kept for the first three files of the first morning, `20260712`,
-# and dropped. Nothing in the tree read the catalog: three scans name `bron-resins/` only to skip it
-# as testimony (`counsel_census_scan.sh`, `waymark_rung_drift_scan.sh`, and `template-manifest.bron`'s
+# and dropped. Nothing in the tree read the catalog: three scans name `kyri-resins/` only to skip it
+# as testimony (`counsel_census_scan.sh`, `waymark_rung_drift_scan.sh`, and `template-manifest.kyri`'s
 # `personal` verdict), and no witness, runner, or roster row touched it. A catalog covering a fifth
 # of its room reads exactly like a whole one -- `%514`'s lesson standing in a room where the silence
 # had lasted eighty-seven days.
@@ -5118,11 +5118,11 @@ seated 20260917.065842
 #
 # A LANTERN RATHER THAN A LOOM, measured before the instrument was built. Every tracked file in a
 # living room whose name carries `manifest`, `catalog`, or `roster` was crossed with its readers:
-# the mycelium corpora each have a witness and a Rye reader, `forge_cellar_manifest.bron` is read by
+# the mycelium corpora each have a witness and a Rye reader, `forge_cellar_manifest.kyri` is read by
 # `pond/apps/drawn_terminal.rye`, and the seat rosters are read by twenty, nine, and eight sites.
-# `bron-resins/manifest.bron` was the ONE enumeration of a room with no reader at all. So this is a
+# `kyri-resins/manifest.kyri` was the ONE enumeration of a room with no reader at all. So this is a
 # scan for one cellar rather than a general instrument, and the near-miss is named:
-# `cellar/ring1_manifest_shape.bron` is cited only by `cellar/README.md`, and it is a SHAPE rather
+# `cellar/ring1_manifest_shape.kyri` is cited only by `cellar/README.md`, and it is a SHAPE rather
 # than an enumeration, in a lane this seat does not hold.
 #
 # THREE GATES AND ONE REPORTED READING, and they are separate because they fail in separate
@@ -5133,7 +5133,7 @@ seated 20260917.065842
 # `misread` and exits 2, never zero, since zero is the reading a healthy cellar gives.
 #
 # The fourteen notes were written from each resin's OWN first header line rather than from a
-# summary. The one `.md` file in a room whose `law` line says Bron only is named in the catalog
+# summary. The one `.md` file in a room whose `law` line says Kyri only is named in the catalog
 # rather than swept, because a catalog states its exception instead of hiding it.
 #
 # SEALED `20260910.014500`, and the elder reading above had two of a manifest line's three fields.
@@ -5180,19 +5180,19 @@ seated 20260917.065842
 # caught in itself (an unreadable source leaves a copy that differs from the original and reads as a
 # landed plant).
 
-guard bron_resins_catalog
-path tools/b/bron_resins_catalog_witness.rish
+guard kyri_resins_catalog
+path tools/b/kyri_resins_catalog_witness.rish
 tier lap
 seated 20260907.000030
 
-# bron_resins_landed -- a resin's bytes are the bytes that landed, read out of git rather than out
-# of the working tree. `bron-resins/manifest.bron` states the room's law in its own prose: *every
+# kyri_resins_landed -- a resin's bytes are the bytes that landed, read out of git rather than out
+# of the working tree. `kyri-resins/manifest.kyri` states the room's law in its own prose: *every
 # resin in this room has exactly one commit in the tree's whole history, and its blob at that
 # commit is byte-identical to its blob at HEAD -- checked one file at a time, all seventeen equal.*
 # A hand took that reading on `20260910` and nothing held it afterwards, which is Gauge's fifth
 # question about a figure -- what holds it still -- answered `free`.
 #
-# WHAT THE SEAL BESIDE IT CANNOT SEE. `bron_resins_catalog` recomputes each resin's SHA3-256 and
+# WHAT THE SEAL BESIDE IT CANNOT SEE. `kyri_resins_catalog` recomputes each resin's SHA3-256 and
 # compares it to the `seal` line, so a resin edited in place reds. Both halves of that comparison
 # live in the WORKING TREE, so an edit landing together with an updated seal is self-consistent and
 # every gate in this room stays green. Git's history is the one copy an edit cannot reach, and this
@@ -5221,8 +5221,8 @@ seated 20260907.000030
 # re-add read `same`; dropping the catalog exclusion, which reds a healthy cellar; and reporting the
 # move while exiting clean, which is how a guard fails most quietly.
 
-guard bron_resins_landed
-path tools/b/bron_resins_landed_witness.rish
+guard kyri_resins_landed
+path tools/b/kyri_resins_landed_witness.rish
 tier lap
 seated 20260916.234020
 # topology_churn -- what ONE DEPARTURE costs a table everybody shares, at 720 points.
@@ -5486,7 +5486,7 @@ tier cadence
 seated 20260907.173400
 
 # STORE SHAPE -- the tree keeps two data shapes in one notation, and a store fitted to one is wrong
-# for the other. The census walks every tracked `.kyri` and `.bron` session-log record plus four
+# for the other. The census walks every tracked `.kyri` and `.kyri` session-log record plus four
 # named registries, reading field names at line start, and prints how many records carry a field
 # more than once. Measured `20260907`: journal 4,337 records, 91% multi-valued; registries 413 rows,
 # zero. The witness binds the SEPARATION rather than any count, since every count grows daily and a
@@ -6279,7 +6279,7 @@ seated 20260915.202715
 # (`MissingTagged` and `TooFewLines` in `rune_shape`, `TooFewLines` in `lower_named_cast`,
 # `NotBarePayload` in `rune_core`) and five across Caravan, Mycelium, Rishi's matcher and the vault.
 # Three of the four Glow names were left deliberately: `session-logs/date/20260720/
-# 20260720-032713_stoa97-token-mold-spec.bron` records a lap deciding "remain in ParseError set (no
+# 20260720-032713_stoa97-token-mold-spec.kyri` records a lap deciding "remain in ParseError set (no
 # removal); only their emission paths change". That decision has stood in no instrument since, which
 # is what this row changes -- the removal itself is a language-surface question and stays Keaton's.
 #

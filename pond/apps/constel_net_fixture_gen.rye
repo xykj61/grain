@@ -2,7 +2,7 @@
 //!
 //! Rung four reads a genuine on-disk constel record and cross-checks the harness's reading against an
 //! independent measure. This generator produces that fixture reproducibly, so the on-disk bytes are
-//! exactly what the harness renders -- a keeper can regenerate `tools/fixtures/c/constel_net.bron` and get
+//! exactly what the harness renders -- a keeper can regenerate `tools/fixtures/c/constel_net.kyri` and get
 //! the identical record, never a hand-mocked shape. It settles the demo d12-d60 branch (rung two),
 //! builds a portable roster (rung three), and prints the `format constel-net-v1` record to stdout.
 //!
@@ -12,14 +12,14 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr:
 //!
 //!   rye build pond/apps/constel_net_fixture_gen.rye -femit-bin=pond/bin/constel-net-fixture-gen
-//!   pond/bin/constel-net-fixture-gen 2> tools/fixtures/c/constel_net.bron
+//!   pond/bin/constel-net-fixture-gen 2> tools/fixtures/c/constel_net.kyri
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
 const topology_net = @import("constel_net_topology.rye");
-const bron = @import("constel_net_bron.rye");
+const kyri = @import("constel_net_kyri.rye");
 const kumara = @import("kumara.rye");
 
 pub const constel_net_fixture_gen_version = "20260813.024836";
@@ -50,12 +50,12 @@ fn emit_record() !u8 {
         &demo_p_keeper,
         planet_num,
     );
-    const pc = bron.from_settled(&net);
-    var buf: [bron.max_record]u8 = undefined;
-    const n = try bron.render(&pc, &buf);
+    const pc = kyri.from_settled(&net);
+    var buf: [kyri.max_record]u8 = undefined;
+    const n = try kyri.render(&pc, &buf);
     // invariant: the render is bounded and non-empty -- a real record always carries its header.
     assert(n > 0);
-    assert(n <= bron.max_record);
+    assert(n <= kyri.max_record);
     print("{s}", .{buf[0..n]});
     return 0;
 }

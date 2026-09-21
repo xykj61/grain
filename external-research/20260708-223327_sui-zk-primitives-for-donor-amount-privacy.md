@@ -78,7 +78,7 @@ Linengrow's privacy law (mechanism transparent, individual private) wants:
 
 Public-input budget: keep `threshold`, `log_digest` (as two field elements if needed), and at most one settlement binding -- stay under eight.
 
-### Proof receipt (`.bron`) -- refined from the hammock
+### Proof receipt (`.kyri`) -- refined from the hammock
 
 Hammock proposed fields wait on this pin. With Groth16 pinned:
 
@@ -127,7 +127,7 @@ SLC-L3 taught the thin rail: POSIX script as external interpreter; Rishi host; w
 
 - Circom circuit authored and ceremony / test keys policy
 - Move package that pins VK and exposes verify
-- `disclosure_core` + witness + golden bron
+- `disclosure_core` + witness + golden kyri
 - Live testnet verify path (on-demand witness, not parity)
 - Monad lane: no native Groth16 twin assumed -- Sui is the first verify seat; Monad stays settlement-only until a separate study
 

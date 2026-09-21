@@ -21,9 +21,9 @@ This tree runs a stricter cousin of the pattern without calling it a wiki:
 
 | Layer | Our shape |
 |-------|-----------|
-| Raw | dated `active-designing/`, counsel, Bron session logs -- accrete-never-break |
+| Raw | dated `active-designing/`, counsel, Kyri session logs -- accrete-never-break |
 | Compressed | `docs/` shelf (five pages under ceiling) |
-| Schema | TAME Guidance, LEXICON nib law, ORGANIZING, session-log Bron fields |
+| Schema | TAME Guidance, LEXICON nib law, ORGANIZING, session-log Kyri fields |
 
 Karpathy's gains for us were **deltas**, not adoption -- especially a named **lint** pass on living prose.
 

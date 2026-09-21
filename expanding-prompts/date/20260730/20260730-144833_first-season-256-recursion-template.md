@@ -10,7 +10,7 @@
 
 1. `cp tools/gen/chapter/personalize.template.brix PERSONALIZE.brix` and fill it.  
 2. `cp tools/gen/chapter/first_season_answers.template.brix first_season_answers.brix` (gitignored).  
-3. `cp GLOW_PROFILE.template.bron GLOW_PROFILE.bron` and fill it.  
+3. `cp GLOW_PROFILE.template.kyri GLOW_PROFILE.kyri` and fill it.  
 4. Skim `tools/gen/chapter/first_season_journeys.brix` and `first_season_questions.brix`.  
 5. Walk SOURCE.md Part One on your host.  
 6. Ask the agent to apply the `replace_*` map from `PERSONALIZE.brix` to *living* pier papers you own — never rewrite shared dated testimony on the upstream Grain history.
@@ -43,7 +43,7 @@ EQUINOX B–D: named deepen-craft · offer-upstream · rest-and-review — not o
 OPERATIONAL:
   PERSONALIZE.brix filled · replace_map ready
   clone <your_clone_url> · dir <your_repo_dir>
-  profile GLOW_PROFILE.bron · host GLOW_HOST.bron
+  profile GLOW_PROFILE.kyri · host GLOW_HOST.kyri
   compass · universals pointed from personalize.template.brix
   handback when pausing: <handback_when_paused>
 

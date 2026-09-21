@@ -20,7 +20,7 @@
 | Page | Role |
 |------|------|
 | [`COMPASS.md`](COMPASS.md) | Day-one rose -- foundations, witness habitat, the editor loop |
-| [`compass_card.bron`](compass_card.bron) | Agent cold-start reading order, as paths rather than prose |
+| [`compass_card.kyri`](compass_card.kyri) | Agent cold-start reading order, as paths rather than prose |
 | [`CRYPTO.md`](CRYPTO.md) | Chapter G crypto -- the audit guide, routing to the record in `crypto/` |
 | [`PROVEN_SEAT.md`](PROVEN_SEAT.md) | Proven-seat ladder -- Genode through signed-Kumara |
 | [`STOA.md`](STOA.md) | Glow language ladder -- rune heads, nest, product, cast |

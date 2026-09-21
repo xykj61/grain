@@ -69,13 +69,13 @@ check "dated testimony is read past"        yes "$(has "$out" 'unread=0')"
 # no single condition can be the whole test by accident.
 D4=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 mkdir -p construction
-printf 'format catalog-v1\nseal thing.rye %s\n' "$D4" > context/catalog.bron
+printf 'format catalog-v1\nseal thing.rye %s\n' "$D4" > context/catalog.kyri
 git add -A >/dev/null; git commit -qm catalog
 out=$(ask)
 check "a catalog seal with no reader is unread" yes "$(has "$out" 'unread=1')"
 
 # 1. a witness line naming a file that does not exist proves nothing
-printf 'witness tools/s/absent_witness.rish -- reads every seal\n' >> context/catalog.bron
+printf 'witness tools/s/absent_witness.rish -- reads every seal\n' >> context/catalog.kyri
 git add -A >/dev/null; git commit -qm declared
 out=$(ask)
 check "a witness that is not there is not a reader" yes "$(has "$out" 'unread=1')"
@@ -99,7 +99,7 @@ git add -A >/dev/null; git commit -qm unrostered
 out=$(ask)
 check "dropping the roster row restores unread" yes "$(has "$out" 'unread=1')"
 check "and the generic count falls with it"     yes "$(has "$out" 'read_generically=0')"
-rm -rf construction context/catalog.bron tools/s/absent_witness.rish
+rm -rf construction context/catalog.kyri tools/s/absent_witness.rish
 git add -A >/dev/null; git commit -qm cleanup
 
 # A corpus of zero refuses rather than reporting clean (REDS %170).

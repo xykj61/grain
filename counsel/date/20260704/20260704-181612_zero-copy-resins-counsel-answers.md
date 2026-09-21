@@ -56,7 +56,7 @@ The minimum frame preserving batching without breaking Tally gardens is given wh
 
 **Adopt next, as concepts:** the **checkpoint resin** — pack's analog — enters the vocabulary now as *a resin whose Tilak names a folded-state view, derived and never authoritative*; its metal waits for lap five, and adopting the concept early costs nothing because a checkpoint is just another content-addressed unit under the existing law. The **practice-world** pattern — fake ships — maps to Puddle worlds with throwaway Kumara identities; its name stays parked in RTAC with the testnet candidates, per the naming budget. And **meld's deduplication arrives structurally free**: content addressing already stores one copy of identical bytes, so the analog needs no work at all, only this sentence.
 
-**Permanently out of scope:** the jam/cue noun wire — we carry content-addressed resins and Bron views, never noun serialization; the persistent-heap image — our state is the log, never the heap; and any global PKI registry — Kumara plus petnames plus the settlement market answer identity in our own grain. The one Urbit sentence worth keeping whole is the one the tree already owns: *replay the log, and the world returns.*
+**Permanently out of scope:** the jam/cue noun wire — we carry content-addressed resins and Kyri views, never noun serialization; the persistent-heap image — our state is the log, never the heap; and any global PKI registry — Kumara plus petnames plus the settlement market answer identity in our own grain. The one Urbit sentence worth keeping whole is the one the tree already owns: *replay the log, and the world returns.*
 
 ### F. Priority: the Edit 5 slot, and eight weeks smallest-first
 
@@ -178,7 +178,7 @@ Delta from ring-1's `relpath + digest` to the seated `<mark> <sha3-256-hex> <nam
 
 ### I7 — Continuity / double-boot fact
 
-Bron shape sketch, offered for the custody gate rather than assumed:
+Kyri shape sketch, offered for the custody gate rather than assumed:
 
 ```
 continuity {

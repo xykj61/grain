@@ -52,7 +52,7 @@ let mk = run ["sh" "-c" "mkdir -p ${home}/h ${home}/f ${home}/a"]
 assert mk.ok else "pbw: the three plant homes must open"
 
 # --- leg 1: the honest season restores whole, and the two proof lines arrive in order ---
-let honest = "${home}/h/honest.bron"
+let honest = "${home}/h/honest.kyri"
 let pour_honest = run ["${home}/bin/amphora" "pour" season honest]
 if pour_honest.ok == false then say pour_honest.err
 assert pour_honest.ok else "pbw: honest pour must pass -- read the line above"
@@ -61,7 +61,7 @@ if restore_honest.ok == false then say restore_honest.err
 assert restore_honest.ok else "pbw: honest restore must pass -- read the line above"
 assert restore_honest.err contains "restore resins proven" else "pbw: the honest restore says its resins were proven"
 assert restore_honest.err contains "restore files proven" else "pbw: the honest restore says its files were written"
-let honest_leaf = run ["sh" "-c" "cat ${home}/h/honest.bron.season/nested/leaf.txt"]
+let honest_leaf = run ["sh" "-c" "cat ${home}/h/honest.kyri.season/nested/leaf.txt"]
 assert honest_leaf.ok else "pbw: the honest restore must land a nested leaf"
 assert honest_leaf.out contains "nested leaf" else "pbw: the leaf carries its own bytes"
 say "leg_honest=whole"
@@ -70,7 +70,7 @@ say "leg_honest=whole"
 # The SECOND resin by directory order is forged rather than the first, so at least one honest
 # file stands ahead of the forgery in the write walk. That ordering is what made the elder fault
 # visible: an earlier honest write is a mutation, whatever the refusal afterward says.
-let forged = "${home}/f/forged.bron"
+let forged = "${home}/f/forged.kyri"
 let pour_forged = run ["${home}/bin/amphora" "pour" season forged]
 if pour_forged.ok == false then say pour_forged.err
 assert pour_forged.ok else "pbw: forged-plant pour must pass -- read the line above"
@@ -78,7 +78,7 @@ let forge_prep = run ["sh" "-c" "f=$(ls ${home}/f/resins | sed -n 2p); test x$f 
 assert forge_prep.ok else "pbw: the forge plant must prepare"
 let forged_restore = run ["sh" "-c" "${home}/bin/amphora restore ${forged}; true"]
 assert forged_restore.err contains "cargo unproven" else "pbw: a forged resin refuses by name"
-let forged_out = run ["sh" "-c" "test ! -e ${home}/f/forged.bron.season"]
+let forged_out = run ["sh" "-c" "test ! -e ${home}/f/forged.kyri.season"]
 assert forged_out.ok else "pbw: the refusal must leave NO out-home -- this is the whole rule"
 # Read straight off the captured stream rather than piping it back through a shell: a nested
 # quote around a multi-line interpolation is one more thing that can be wrong, and the value is
@@ -88,7 +88,7 @@ assert (forged_restore.err contains "resins proven") == false else "pbw: the pre
 say "leg_forged=refused_before_write"
 
 # --- leg 3: an absent resin refuses at the same door, ahead of the out-home ---
-let absent = "${home}/a/absent.bron"
+let absent = "${home}/a/absent.kyri"
 let pour_absent = run ["${home}/bin/amphora" "pour" season absent]
 if pour_absent.ok == false then say pour_absent.err
 assert pour_absent.ok else "pbw: absent-plant pour must pass -- read the line above"
@@ -96,7 +96,7 @@ let drop = run ["sh" "-c" "rm -f ${home}/a/resins/$(ls ${home}/a/resins | sed -n
 assert drop.ok else "pbw: the absent plant must drop one resin"
 let absent_restore = run ["sh" "-c" "${home}/bin/amphora restore ${absent}; true"]
 assert absent_restore.err contains "resin absent" else "pbw: a missing resin refuses by name"
-let absent_out = run ["sh" "-c" "test ! -e ${home}/a/absent.bron.season"]
+let absent_out = run ["sh" "-c" "test ! -e ${home}/a/absent.kyri.season"]
 assert absent_out.ok else "pbw: the absent refusal must leave no out-home either"
 say "leg_absent=refused_before_write"
 
@@ -122,18 +122,18 @@ assert elder_build.ok else "pbw: elder amphora build failed -- read the line abo
 let elder_seal = run ["sh" "-c" "cp ${home}/bin/vessel-seal ${home}/bin/vessel-core ${elder_dir}/bin/"]
 assert elder_seal.ok else "pbw: the elder pen must carry its sibling tools"
 
-let elder_restore = run ["sh" "-c" "cp ${forged} ${home}/f/elder.bron && ${elder_dir}/bin/amphora restore ${home}/f/elder.bron; true"]
+let elder_restore = run ["sh" "-c" "cp ${forged} ${home}/f/elder.kyri && ${elder_dir}/bin/amphora restore ${home}/f/elder.kyri; true"]
 assert elder_restore.err contains "cargo unproven" else "pbw: the elder refuses too -- the fault was never the verdict"
-let elder_out = run ["sh" "-c" "test -d ${home}/f/elder.bron.season && find ${home}/f/elder.bron.season -type f | wc -l"]
+let elder_out = run ["sh" "-c" "test -d ${home}/f/elder.kyri.season && find ${home}/f/elder.kyri.season -type f | wc -l"]
 assert elder_out.ok else "pbw: the wall removed, the out-home must STAND -- otherwise this witness proves nothing"
 let elder_files = trim elder_out.out
 assert elder_files != "0" else "pbw: the wall removed, a file must land before the refusal -- got ${elder_files}"
 say "wall_removed=mutation_before_refusal files=${elder_files}"
 
 # --- the wall returned: the repaired binary, over the very same forged vessel ---
-let returned = run ["sh" "-c" "rm -rf ${home}/f/elder.bron.season && cp ${forged} ${home}/f/again.bron && ${home}/bin/amphora restore ${home}/f/again.bron; true"]
+let returned = run ["sh" "-c" "rm -rf ${home}/f/elder.kyri.season && cp ${forged} ${home}/f/again.kyri && ${home}/bin/amphora restore ${home}/f/again.kyri; true"]
 assert returned.err contains "cargo unproven" else "pbw: the repaired restore refuses the same vessel"
-let returned_out = run ["sh" "-c" "test ! -e ${home}/f/again.bron.season"]
+let returned_out = run ["sh" "-c" "test ! -e ${home}/f/again.kyri.season"]
 assert returned_out.ok else "pbw: the wall returned, nothing may land"
 say "wall_returned=refused_before_write"
 

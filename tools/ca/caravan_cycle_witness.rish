@@ -3,7 +3,7 @@
 # Proves what opens when a shape loses its ends. Every declaration in this
 # arc has had them: serial_relay gave a chain a middle, and a client that
 # only asks and a backend that only answers were the whole point.
-# `serial_cycle.bron` removes them -- alder writes ask_ab and reads ask_ca,
+# `serial_cycle.kyri` removes them -- alder writes ask_ab and reads ask_ca,
 # birch writes ask_bc and reads ask_ab, cedar writes ask_ca and reads
 # ask_bc, so every domain is a middle and the flow graph closes on itself.
 #
@@ -66,7 +66,7 @@ assert read_bin_build.ok else "caravan read build failed -- ${read_bin_build.err
 
 # The first declaration in this arc with no ends: three domains, three
 # channels, four directed regions, eight grants.
-let decl = run ["sh" "-c" "caravan/bin/cycle_read caravan/systems/serial_cycle.bron 2>&1"]
+let decl = run ["sh" "-c" "caravan/bin/cycle_read caravan/systems/serial_cycle.kyri 2>&1"]
 assert decl.ok else "the ring declaration could not be read"
 assert decl.out contains "system serial_cycle" else "the ring declaration lost its name"
 assert decl.out contains "domains 3 -- channels 3 -- regions 4 -- grants 8" else "the ring declaration changed shape"

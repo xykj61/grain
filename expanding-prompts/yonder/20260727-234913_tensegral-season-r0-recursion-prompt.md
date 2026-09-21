@@ -48,7 +48,7 @@ Shorthand that means the same paste: **`kg`** after prep GREEN, naming this file
 | **Arc seed table** | Re-print Arc I–V seed witnesses from the prep receipt so Arc I opens with names ready |
 | **Prin** | Affirm `%prin` prep seat (Prim was a typo → Prin; Brix `alias Prim Prin`) |
 
-**4. Write the r0 motion** — counsel page + reply; update season charter progress bookmark (prep GREEN · r0 landed); session log Bron; REMEMBER pin after send.
+**4. Write the r0 motion** — counsel page + reply; update season charter progress bookmark (prep GREEN · r0 landed); session log Kyri; REMEMBER pin after send.
 
 **5. Close** — send (GPG commit · push origin + codeberg) · check-in with leans for Arc I kg vs revise measure. Do **not** start Arc I inside r0 unless an Acme employee explicitly expands the paste.
 

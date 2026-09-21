@@ -17,7 +17,7 @@ Keep going; continue in the best path; open anything needed.
 
 ## Observations
 
-- Exit honesty stays byte-compatible with lap 1 golden `wov_exit_bundle_v1.bron`.
+- Exit honesty stays byte-compatible with lap 1 golden `wov_exit_bundle_v1.kyri`.
 - Live cluster-of-one is ready outside the enclosure; enclosure witnesses stay honest via SKIP.
 - Seam B (Zig client protocol) stays later.
 
@@ -26,7 +26,7 @@ Keep going; continue in the best path; open anything needed.
 | File | Why |
 |------|-----|
 | `linengrow/wov_tb_host.rye` | Projection → Book → root/prove/exit |
-| `tools/fixtures/wov_tb_projection_v1.bron` | Golden TB-shaped balance table |
+| `tools/fixtures/wov_tb_projection_v1.kyri` | Golden TB-shaped balance table |
 | `tools/wov_tb_ensure_binary.sh` | Stage pin binary under `tools/.build/` |
 | `tools/wov_tb_repl_lab.sh` | Live REPL lab; SKIP without io_uring |
 | `tools/wov_tb_host.rish` | Witness |

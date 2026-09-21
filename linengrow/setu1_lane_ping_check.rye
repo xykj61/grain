@@ -1,6 +1,6 @@
 //! linengrow/setu1_lane_ping_check.rye -- seal a lane ping from cached station.
 //!
-//! Reads tools/.cache/setu0/station.bron. If wire_lane is local, prints SKIP
+//! Reads tools/.cache/setu0/station.kyri. If wire_lane is local, prints SKIP
 //! (lane not armed). If usb_desk, seals + opens a Comlink ping, writes
 //! tools/.cache/setu0/lane_ping.bin, and prints GREEN.
 
@@ -12,7 +12,7 @@ const hearth = @import("hearth_lulu0.rye");
 const setu1 = @import("setu1_lane_ping.rye");
 const wf = @import("wire_format.rye");
 
-const station_path = "tools/.cache/setu0/station.bron";
+const station_path = "tools/.cache/setu0/station.kyri";
 const ping_path = "tools/.cache/setu0/lane_ping.bin";
 
 fn field_value(src: []const u8, key: []const u8) ?[]const u8 {

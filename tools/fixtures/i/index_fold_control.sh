@@ -85,7 +85,7 @@ echo "$out" | grep -q '^stale_rows_gated=0$' && note ok "2 free: a row whose day
 
 # --- 3. FREE: the flat log carries no sprig (REDS %178) ---------------------------------------
 reset_pen
-room session-logs "20260813-101010.bron" "| \`20260813.101010\` | [a](20260813-101010.bron) | sprigless |"
+room session-logs "20260813-101010.kyri" "| \`20260813.101010\` | [a](20260813-101010.kyri) | sprigless |"
 out=$(census)
 echo "$out" | grep -q '^stale_rows_gated=0$' && note ok "3 free: a SPRIGLESS flat log holds its day open, since the sprig is optional" || note no "3 free: a SPRIGLESS flat log holds its day open, since the sprig is optional"
 
@@ -103,7 +103,7 @@ echo "$out" | grep -q '^stale_rows_gated=0$' && note ok "5 free: a prose bullet 
 
 # --- 6. BITTEN: the elder list shape is read too ----------------------------------------------
 reset_pen
-room session-logs "-" "- \`20260813.101010\` — [a](date/20260813/20260813-101010_a.bron) — elder shape"
+room session-logs "-" "- \`20260813.101010\` — [a](date/20260813/20260813-101010_a.kyri) — elder shape"
 out=$(census)
 echo "$out" | grep -q '^stale_rows_gated=1$' && note ok "6 bitten: the elder list-shape row is read, not skipped" || note no "6 bitten: the elder list-shape row is read, not skipped"
 

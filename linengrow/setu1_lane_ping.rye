@@ -95,7 +95,7 @@ pub fn fixture_local_refuses() bool {
 /// Device-free: station apply + usb_desk ping from a pulled pair.
 pub fn fixture_station_ping_from_pull() bool {
     const pointer = "kd\n";
-    const bron =
+    const kyri =
         \\format hearth-lulu0-v1
         \\home_id kd
         \\display_preset scaled_540
@@ -104,7 +104,7 @@ pub fn fixture_station_ping_from_pull() bool {
         \\waymark LULU
         \\
     ;
-    const s = setu05.apply_pulled(pointer, bron) orelse return false;
+    const s = setu05.apply_pulled(pointer, kyri) orelse return false;
     if (!lane_armed(s.wire)) return false;
     var buf: [@intCast(wf.wire_capacity)]u8 = undefined;
     const sealed_len = seal_lane_ping(s.wire, s.home_id_slice(), s.preset, &buf) orelse return false;

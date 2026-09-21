@@ -249,7 +249,7 @@ Four places name it, and on this tree today three agree:
 |---|---|
 | `tools/f/fleet-loop.sh` (two lines: the dry-run printf and the real invocation) | `--effort medium` |
 | `.claude/settings.json` -> `effortLevel` | `medium` |
-| the untracked per-clone `GLOW_PROFILE.bron` | `effort medium` |
+| the untracked per-clone `GLOW_PROFILE.kyri` | `effort medium` |
 | the tracked `GLOW_PROFILE.template.kyri` | `effort max` |
 
 **Read `ps` rather than a file to know what is running.** Editing any of these leaves already-running

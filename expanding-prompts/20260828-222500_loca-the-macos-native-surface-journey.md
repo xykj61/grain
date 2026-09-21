@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting
 **Voice:** Kyri
 **Status:** Journey seat -- five quests named, the first ready to run; Keaton's word opens it
-**Waymark:** **LOCA**, drawn `20260828.222500` from `macos-native-surface-rye-backend`, index 2761, sealed in [`../construction/waymark-registry.bron`](../construction/waymark-registry.bron)
+**Waymark:** **LOCA**, drawn `20260828.222500` from `macos-native-surface-rye-backend`, index 2761, sealed in [`../construction/waymark-registry.kyri`](../construction/waymark-registry.kyri)
 **Finding:** [`../active-designing/20260828-215659_the-window-rye-raised.md`](../active-designing/20260828-215659_the-window-rye-raised.md)
 **Standing on:** [`../tools/rye/objc_seam.rye`](../tools/rye/objc_seam.rye) - [`../tools/rye/macos_window_probe.rye`](../tools/rye/macos_window_probe.rye) - [`../tools/rye/macos_cell_grid_probe.rye`](../tools/rye/macos_cell_grid_probe.rye)
 

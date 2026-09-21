@@ -11,7 +11,7 @@
 # WHAT IT COUNTS. Occurrences of <SEATED-WAYMARK><digits> -- the seated draws and hand-seated
 # names from .claude/rules/waymark-ladders.md -- in LIVING tracked files: a file whose own
 # basename carries a one-clock stamp is testimony and is never read here, and the closed rooms
-# that hold only testimony (session-logs, counsel, waymarks, bron-resins) are left whole.
+# that hold only testimony (session-logs, counsel, waymarks, kyri-resins) are left whole.
 # Dated marks keep every letter they wrote; this reads only what speaks as now.
 #
 # THE CEILING ONLY FALLS. The baseline is the drift standing on the day the meter was seated --
@@ -89,7 +89,7 @@ else
   # shelves, so both readers agree on what a shelf is.
   ( cd "$ROOT" && git ls-files 2>/dev/null ) \
     | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
-    | grep -vE '^(session-logs|counsel|waymarks|bron-resins|vendor|gratitude|seed)/' \
+    | grep -vE '^(session-logs|counsel|waymarks|kyri-resins|vendor|gratitude|seed)/' \
     | grep -vE '^construction/archive/REDS-.*rows-.*\.md$' \
     > "$files" || : > "$files"
 fi

@@ -10,7 +10,7 @@ Kaeden said keep going and document with professional references. Wired Realidre
 ## Observations
 
 - Parity count stays **226** — forge view deepens witness **221**, no new stanza.
-- Static `forge_amber_manifest.bron` remains on disk for history; forge view no longer reads it.
+- Static `forge_amber_manifest.kyri` remains on disk for history; forge view no longer reads it.
 - Horizons named honestly: vessel encryption, Kumara stamp, Pond customs, commerce.
 
 ## Files
@@ -19,4 +19,4 @@ Kaeden said keep going and document with professional references. Wired Realidre
 - `external-research/20260710-145313_amphora-crossing-plainly.md`
 - Affirmed `002952` · study `201612` · amphora README · LEXICON · TASKS · external-research README
 
-**Recommend:** keep going to Kumara vessel stamp on `vessel.bron`, or Pond customs at Amphora receipt.
+**Recommend:** keep going to Kumara vessel stamp on `vessel.kyri`, or Pond customs at Amphora receipt.

@@ -21,7 +21,7 @@ a shelf is for.
 ## The rows, as the card carried them
 
 - **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Ember** = the inference vane (`20260827`, REDS `%300`; **Lumen** retired, **Q-vane** a readable peer) gathering Lattice, Lantern, Ember, Scribble.
-- **Seated breaches (checkpoint first):** **the vane -> Ember** (`%300`; Q-vane a peer); **Bron -> Kyri** and **Quin voice -> Kyri**; **Oven -> Kiln through history** CUT `20260827.043900`: word-bounded rewrite, HEAD tree byte-identical, testimony protected, re-signed, `xy` force-pushed whole; benches reclone (checkpoint `20260827.040024`).
+- **Seated breaches (checkpoint first):** **the vane -> Ember** (`%300`; Q-vane a peer); **Kyri -> Kyri** and **Quin voice -> Kyri**; **Oven -> Kiln through history** CUT `20260827.043900`: word-bounded rewrite, HEAD tree byte-identical, testimony protected, re-signed, `xy` force-pushed whole; benches reclone (checkpoint `20260827.040024`).
 - **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; re-signing proven (`20260817`).
 
 ---

@@ -38,7 +38,7 @@ The bench closed substantial Linengrow ground **after** the settlement sitting. 
 
 | Landed | Parity | What SLC-L3 inherits |
 |--------|--------|----------------------|
-| **SLC-L1** verifiable receipt | **152** | `.bron` transaction fact, sign -> append -> fold -> verify |
+| **SLC-L1** verifiable receipt | **152** | `.kyri` transaction fact, sign -> append -> fold -> verify |
 | **SLC-L2** sealed delivery | **155** | Comlink seal identity-to-identity |
 | **OA-L1-L5** closed asks + wire | **156-184** | Cross-party facts, escrow, reputation fold -- liveness-tolerant civic flows proven |
 | **Comlink device + hosted wire** | **154+** | Crossing patterns for sealed payloads |
@@ -84,11 +84,11 @@ The witness must prove the **thinnest** rail that closes the loop -- not a full 
 ### The flow (identical on both lanes)
 
 ```
-slcl1_fact.bron  ->  sign + append (our log, already proven)
+slcl1_fact.kyri  ->  sign + append (our log, already proven)
        v
 settlement_init  ->  testnet stablecoin transfer (lane-specific RPC + asset)
        v
-settlement_receipt.bron  ->  links log digest + chain tx + asset id
+settlement_receipt.kyri  ->  links log digest + chain tx + asset id
        v
 verify           ->  recompute + explorer check + asset peg metadata
 ```
@@ -127,10 +127,10 @@ Per verdict `005512`, the witness scores **three** things, not two:
 
 **Welcome path (per lane):**
 
-1. Load pinned `tools/fixtures/slcl1_fact.bron` + deterministic keys
+1. Load pinned `tools/fixtures/slcl1_fact.kyri` + deterministic keys
 2. Append to temp log (reuse SLC-L1 discipline)
 3. Invoke lane settlement seam (shell/SDK -- external interpreter)
-4. Produce `settlement_receipt.bron` golden
+4. Produce `settlement_receipt.kyri` golden
 5. Verify without writer cooperation
 
 **Unwelcome paths:**

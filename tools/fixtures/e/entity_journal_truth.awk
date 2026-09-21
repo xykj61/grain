@@ -6,7 +6,7 @@
 # amounts, and computes the debit-positive cash net (cash debits raise it, cash credits lower it).
 # Comment (`#`) and separator (`---`) lines carry no debit/credit/amount key and are ignored.
 #
-#   awk -f tools/fixtures/e/entity_journal_truth.awk dimeroll/fixtures/journal.bron
+#   awk -f tools/fixtures/e/entity_journal_truth.awk dimeroll/fixtures/journal.kyri
 #   -> "<entries> <amount_sum> <cash_net>"
 
 /^debit /  { blk_debit = $2 }

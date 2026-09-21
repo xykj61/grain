@@ -4,7 +4,7 @@
 # real tree document to a settled identity inside the owner-signed catalog; this witness
 # proves the signed word travels *out of the store* as a portable receipt for the same
 # real bytes, and returns whole. The receipt for the real document (a compile-time embed
-# of a living waymark green-claim, symlinked) verifies offline, renders to Bron, parses
+# of a living waymark green-claim, symlinked) verifies offline, renders to Kyri, parses
 # back byte-for-byte, still verifies, and its held real content matches the bound digest.
 #
 # The crux cross-check: the length and SHA-256 the receipt signs equal an independent wc -c
@@ -39,7 +39,7 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-j6r2: provenance_receipt selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-j6r2: selftest did not speak GREEN"
 assert selftest.out contains "real receipt — ${wc.out_brief} bytes, sha256 ${sha.out_brief}, verified offline" else "gism-j6r2: real offline receipt disagrees with wc -c and sha256sum over the real file"
-assert selftest.out contains "travelled through Bron (272 bytes) and returned whole, still verifying" else "gism-j6r2: Bron round-trip missing"
+assert selftest.out contains "travelled through Kyri (272 bytes) and returned whole, still verifying" else "gism-j6r2: Kyri round-trip missing"
 assert selftest.out contains "tampered real content refused" else "gism-j6r2: tampered-content refusal missing"
 assert selftest.out contains "wrong keeper key refused" else "gism-j6r2: wrong-keeper refusal missing"
 assert selftest.out contains "unknown record field refused (UnknownField)" else "gism-j6r2: unknown-field refusal missing"
@@ -49,8 +49,8 @@ assert selftest.out contains "unknown record field refused (UnknownField)" else 
 let d1 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt.rye -femit-bin=pond/bin/publish-receipt && pond/bin/publish-receipt selftest 2>&1"]
 assert d1.ok else "gism-j6r2: publish_receipt (demo) regressed"
 assert d1.out contains "GREEN" else "gism-j6r2: publish_receipt (demo) did not speak GREEN"
-let d2 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt_bron.rye -femit-bin=pond/bin/publish-receipt-bron && pond/bin/publish-receipt-bron selftest 2>&1"]
-assert d2.ok else "gism-j6r2: publish_receipt_bron (demo) regressed"
-assert d2.out contains "GREEN" else "gism-j6r2: publish_receipt_bron (demo) did not speak GREEN"
+let d2 = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh pond/apps/publish_receipt_kyri.rye -femit-bin=pond/bin/publish-receipt-kyri && pond/bin/publish-receipt-kyri selftest 2>&1"]
+assert d2.ok else "gism-j6r2: publish_receipt_kyri (demo) regressed"
+assert d2.out contains "GREEN" else "gism-j6r2: publish_receipt_kyri (demo) did not speak GREEN"
 
-say "GREEN: GISM-J6r2 — a real publication's receipt verifies offline, travels as Bron, and cross-checks against wc -c and sha256sum; the demo receipts stay GREEN."
+say "GREEN: GISM-J6r2 — a real publication's receipt verifies offline, travels as Kyri, and cross-checks against wc -c and sha256sum; the demo receipts stay GREEN."

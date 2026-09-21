@@ -32,7 +32,7 @@
 | **OA-L3** | Counsel seated -- [`20260706-013012_open-asks-escrow-hammock.md`](../../active-designing/20260706-013012_open-asks-escrow-hammock.md) |
 | **Settlement** | Sui seated; two-lane witness proposed (softenings landed) |
 | **Seeds** | Poster `0x51`, applicant `0x52` -- same as OA-L1/L2 |
-| **Fixture** | `tools/fixtures/open_asks_request.bron` |
+| **Fixture** | `tools/fixtures/open_asks_request.kyri` |
 | **Receipt spine** | `linengrow/receipt_core.rye` -- reuse fact shape |
 
 ---

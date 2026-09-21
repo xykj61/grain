@@ -11,7 +11,7 @@
 
 **Grounds in:** STOA285 lean **B** - `tools/hawm0_stop.sh` - STOA281-284 chain  
 
-**dated_guard:** Do **not** delete `hawm-harvest.bron` or reopen fleets from this stop alone.
+**dated_guard:** Do **not** delete `hawm-harvest.kyri` or reopen fleets from this stop alone.
 
 ---
 

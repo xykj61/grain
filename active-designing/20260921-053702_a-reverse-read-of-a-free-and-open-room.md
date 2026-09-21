@@ -26,7 +26,7 @@ brief was written:
 - *"We can shape our shared tools in the same spirit: open to read, free to use, and kept for
   everyone."* -- the tree still keeps exactly this split. `xy` is the field (private, full history,
   every room the tree has) and `grain-os/grain` is the seed (public, depersonalized, only the rooms
-  `template-manifest.bron` allows), named as such in `context/LEXICON.md` and projected through
+  `template-manifest.kyri` allows), named as such in `context/LEXICON.md` and projected through
   `tools/fixtures/s/sow_project.sh`. The "free and open room" the essay describes is the public
   seed, and it still ships.
 

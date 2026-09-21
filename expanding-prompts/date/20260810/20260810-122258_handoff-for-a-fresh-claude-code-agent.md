@@ -20,7 +20,7 @@ Grain is a personal OS built so the software running a life belongs to the perso
 
 - **Identity & settlement** — Kumara (the keypair that signs a fact), the inclusive **d12·d60 topology** (a number names a place and wears every lower role as an *outfit*), a Sui-style ledger, human-name custody.
 - **The breach** — Vault (Shamir key-sharding), Kumara contact (a cold main key certifies a live descendant), Basin (a bounded circular buffer), Mandate (a vector store), the **Scribe** toolchain (reader · dashboard · bat fleet), Sundial (the health face), the d27 outfit-seat.
-- **The languages** — **Rye** (systems, a Zig 0.16 dialect), **Rishi** (the shell, `.rish`), **Brix** (composition), **Kyri** (data notation, `.kyri`, sibling to the elder `.bron`).
+- **The languages** — **Rye** (systems, a Zig 0.16 dialect), **Rishi** (the shell, `.rish`), **Brix** (composition), **Kyri** (data notation, `.kyri`, .kyri).
 
 ## The disciplines — read these before any large act
 
@@ -41,7 +41,7 @@ The season is **landed and live**. Grain's public template is published and kept
 - **`classical-vedic-astrology/`** *(a study silo, withheld from the seed)* — public in the field, never in the OS template.
 - **`/personal/`** *(local-only, gitignored, never any git)* — the maintainer's identity, keys, wallet, and private readings.
 
-The projection is driven by `template-manifest.bron` (the allowlist) through `tools/fixtures/sow_project.sh`, and proven by `tools/sow_witness.rish` (`IDENT_CLEAN` · `NO_PERSONAL`).
+The projection is driven by `template-manifest.kyri` (the allowlist) through `tools/fixtures/sow_project.sh`, and proven by `tools/sow_witness.rish` (`IDENT_CLEAN` · `NO_PERSONAL`).
 
 ## The words the maintainer speaks
 

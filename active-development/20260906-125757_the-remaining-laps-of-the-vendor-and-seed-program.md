@@ -24,13 +24,13 @@ the second filter that made the allowlist a lie by omission -- now gated by `sow
 
 **Lap C -- the scrub-script template.** `publish-seed.sh` is `personal` in the manifest by law: the
 field's own projector, never the seed's carrier. So a seed user arrives with everything except a publisher. This lap
-writes `publish-seed.template.sh` -- the same five steps, with the field's five literals standing as fillable stubs -- and adds the fields that fill them to `GLOW_PROFILE.template.bron`, so a newcomer's own
+writes `publish-seed.template.sh` -- the same five steps, with the field's five literals standing as fillable stubs -- and adds the fields that fill them to `GLOW_PROFILE.template.kyri`, so a newcomer's own
 agent can write their publisher from their own profile. The five literals, measured: the two remote
 URLs, the anonymous identity name and email, and the root-commit subject, which is the one word
 their own commit-msg wall must learn to exempt.
 
-**Lap D -- the Glow profiles molt from Bron to Kyri.** `GLOW_PROFILE.template.bron` and
-`GLOW_HOST.template.bron` become `.kyri`, in the field and in the seed, with every inbound reference
+**Lap D -- the Glow profiles molt from Kyri.** `GLOW_PROFILE.template.kyri` and
+`GLOW_HOST.template.kyri` become `.kyri`, in the field and in the seed, with every inbound reference
 repointed in the same commit and the fascia proven back to the front door. The notation molted on
 `20260810` and these two never followed. **References are promises**, so the sweep is whole-tree by
 law, and the census of what points at them is the lap's first move.

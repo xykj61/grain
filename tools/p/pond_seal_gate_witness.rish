@@ -4,7 +4,7 @@
 #
 # WHAT THIS HOLDS. One admission door carries the gate -- tools/e/enclosure_gate.sh reads the
 # ENCLOSURE selector and admits the value pond only after
-# tools/p/pond_exit_bron_master_seal.sh --require returns zero; tools/ag/agent-jail.sh,
+# tools/p/pond_exit_kyri_master_seal.sh --require returns zero; tools/ag/agent-jail.sh,
 # tools/cu/cursor-jail.sh and tools/l/launch-zed.sh.example each enter through it (each carried
 # the gate in full until 20260829, sharing zero literal lines, with drift already begun).
 # That seal is the custody boundary for the season flip: it demands a detached signature verifying

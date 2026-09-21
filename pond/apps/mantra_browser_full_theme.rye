@@ -48,7 +48,7 @@ pub const FullThemeError = error{
 };
 
 /// Resolve the full theme into a token sheet: read the `.brush` file, validate it
-/// through the real authoring loop, collect its `style:` block into flat Bron, and
+/// through the real authoring loop, collect its `style:` block into flat Kyri, and
 /// infuse that override over `tokens.base_sheet`. A full theme must name all three
 /// re-skin tokens -- `paper`, `ink`, and `head` -- or it refuses ThemeIncomplete.
 pub fn resolve_full_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
@@ -69,7 +69,7 @@ pub fn resolve_full_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
     // invariant: a full theme declares a non-empty style block to override with.
     if (surface.style_count == 0) return error.ThemeIncomplete;
 
-    // Reassemble the style block into the flat Bron sheet tokens.rye's infuse reads.
+    // Reassemble the style block into the flat Kyri sheet tokens.rye's infuse reads.
     var override_buf: [bp.max_style_bytes]u8 = undefined;
     const over_len = try bp.collect_brush_style(src, &override_buf);
     // invariant: a declared style block collects at least one token line.

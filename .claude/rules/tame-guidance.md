@@ -1,7 +1,7 @@
 # TAME Guidance -- Code
 
 **Canon:** `external-research/TAME_GUIDANCE.md` (voiced Tiger Style) - **Source:** `gratitude/TIGER_STYLE.md`
-**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md`. **Compressed core (read first):** `context/TAME_CORE.md`. Apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Bron (`.bron`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
+**Operational supplement (the shelf):** `context/TAME_GUIDANCE.md`. **Compressed core (read first):** `context/TAME_CORE.md`. Apply when writing or reviewing Rye (`.rye`), Rishi (`.rish`), Brix (`.brix`), Kyri (`.kyri`), Kyri (`.kyri`), Glow, Brush (Brushstroke), and Mycelium (`.myc`) code.
 
 Full checkable surface: supplement section **What We Check, and When**.
 
@@ -20,7 +20,7 @@ The highest points, token-dense; the full form is [`context/TAME_CORE.md`](../..
 ## When this rule is active
 
 - Writing or editing any `.rye` source file
-- Writing or editing any `.brix` descriptor or `.bron` notation
+- Writing or editing any `.brix` descriptor or `.kyri` notation
 - Writing or editing any `.rish` script
 - Reviewing, suggesting changes to, or explaining any of the above
 
@@ -55,8 +55,8 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 | Language | Key discipline |
 |----------|----------------|
 | **Rye** | `u32` bounded, `u64` wire. Seam-only `usize`. Unqualified `assert`. Named errors with `try`. Short functions named with a verb. |
-| **Brix** | Composition language -- declares systems. Evaluates to Bron. Interfaces with Mantra, targets Aurora + Tally. |
-| **Bron** | Data notation -- plain key-value, one field per line. Parsed, not evaluated. |
+| **Brix** | Composition language -- declares systems. Evaluates to Kyri. Interfaces with Mantra, targets Aurora + Tally. |
+| **Kyri** | Data notation -- plain key-value, one field per line. Parsed, not evaluated. |
 | **Rishi** | `run` always returns `{ out, err, code, ok }`. Check `ok` before trusting `out`. `assert` as a pipeline gate. `if/then/else` for conditionals. `for-each` for iteration. |
 
 ## Chapter memory (Rye only)

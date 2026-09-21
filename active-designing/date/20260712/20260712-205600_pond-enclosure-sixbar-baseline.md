@@ -39,7 +39,7 @@ Baseline records each door; pond-required wants all three closed (env empty · s
 
 ## What this is not
 
-- Not Pond supersede — exit criteria [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) **complete** · N = six-over-seven seated `211400` · season closed until exit bron
+- Not Pond supersede — exit criteria [`20260712-210800_pond-supersede-exit-criteria.md`](20260712-210800_pond-supersede-exit-criteria.md) **complete** · N = six-over-seven seated `211400` · season closed until exit kyri
 - Not signed Ed25519 proven-seat depth — banked; fresh morning for crypto teacher
 - Not Route two / inward lane nest — still parked (may fire inside supersede season under trigger law)
 

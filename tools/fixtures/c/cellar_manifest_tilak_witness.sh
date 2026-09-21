@@ -44,8 +44,8 @@ fi
 # Unwelcome -- unknown mark refuses whole.
 bad=$(mktemp -d)
 cp -r "$tmpdir/resins" "$bad/"
-cp "$tmpdir/manifest.bron" "$bad/manifest.bron"
-printf 'entry bogus-mark %s nested/leaf.txt\n' "$first_resin" >> "$bad/manifest.bron"
+cp "$tmpdir/manifest.kyri" "$bad/manifest.kyri"
+printf 'entry bogus-mark %s nested/leaf.txt\n' "$first_resin" >> "$bad/manifest.kyri"
 if sh "$ROOT/tools/fixtures/c/cellar_ring1_verify.sh" "$bad" 2>/dev/null; then
   echo "FAIL unknown mark should not verify"
   exit 1

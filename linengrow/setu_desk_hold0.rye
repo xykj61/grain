@@ -1,6 +1,6 @@
 //! linengrow/setu_desk_hold0.rye -- HOLD0: Desk status over held hearth + frame.
 //!
-//! Chapter: Desk Hearth Hold (`20260718.185147`). Desk reads station.bron and
+//! Chapter: Desk Hearth Hold (`20260718.185147`). Desk reads station.kyri and
 //! reports whether lane_ping.bin / lane_frame.bin are held -- one status line.
 //! When wire_lane is not armed (local), leftover ping/frame files are ignored.
 
@@ -44,7 +44,7 @@ fn field_value(src: []const u8, key: []const u8) ?[]const u8 {
     return null;
 }
 
-/// Parse station.bron text into hold fields (frame/ping supplied by caller).
+/// Parse station.kyri text into hold fields (frame/ping supplied by caller).
 /// Unarmed wire (local) never claims ping/frame -- leftovers stay on disk unread.
 pub fn status_from_station(
     station_text: []const u8,

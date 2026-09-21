@@ -66,7 +66,7 @@ Redox is a Unix-like microkernel OS written in Rust. Its kernel is ~20K lines --
 | **Language safety** | None (C) | Strong (Rust ownership) | Explicit widths, assertions, (future) borrow-checking over gardens |
 | **Width model** | `word_t` (architecture-specific) | `usize` (architecture-specific) | `u32`/`u64` only -- same on every target |
 | **Memory model** | Untyped capabilities, pre-allocated | General-purpose allocator | Tally gardens: bounded, bump, whole-region release |
-| **Capability model** | Finest-grained in any kernel | Basic process isolation | Capabilities as values; policy as a Bron record |
+| **Capability model** | Finest-grained in any kernel | Basic process isolation | Capabilities as values; policy as a Kyri record |
 | **Supervision** | Not part of the kernel | Unix-style init | s6-inherited: one parent, one child, restart on fall, chain-loading |
 | **Boot** | Not formally modeled | Standard BIOS/UEFI | Aurora: verified relay of named values from owner key |
 | **IPC** | Synchronous call + notification | URL-based scheme calls | Call + notify; data via Tally shared regions (zero-copy) |
@@ -87,7 +87,7 @@ We do not claim to match seL4's full formal proof -- that is a 10-person-year in
 
 4. **Aurora chains the boot to the kernel.** seL4 and Redox do not formally model the boot. Aurora verifies every stage from the owner key through privilege transitions to the kernel handoff. The boot and the kernel share one verification chain.
 
-5. **Supervision is structural, not conventional.** Caravan's one-parent-per-child, restart-on-fall, chain-loading model is proven in running code (seed through chain). The supervision is a value (Bron policy), not a daemon convention.
+5. **Supervision is structural, not conventional.** Caravan's one-parent-per-child, restart-on-fall, chain-loading model is proven in running code (seed through chain). The supervision is a value (Kyri policy), not a daemon convention.
 
 ---
 

@@ -18,7 +18,7 @@ theme() { # $1 = equinox 0..3 -> "WAYMARK|holds" (Compass Chapter, season 1)
   case "$1" in
     0) echo "SOON|The Language — Glow runes · stdlib · Brix-infuse · pipeline" ;;
     1) echo "JARL|Identity & Network — Kumara · d12·d60 topology · Comlink · settlement" ;;
-    2) echo "BUHR|Surface & Intelligence — Realidream · Quin voices · MCP-in-Bron" ;;
+    2) echo "BUHR|Surface & Intelligence — Realidream · Quin voices · MCP-in-Kyri" ;;
     3) echo "TACT|The World — Ship-Pilot · publishing · Grainphone · commerce" ;;
     *) echo "?|out of range" ;;
   esac

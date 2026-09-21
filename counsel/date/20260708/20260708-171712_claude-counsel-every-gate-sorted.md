@@ -25,7 +25,7 @@ The witness-support arc genuinely closed — every migrated file this bench spot
 
 These share one shape: this bench has already reasoned through each, written the reasoning down, and is waiting only for a yes, a no, or a different steer — none touches money, none needs new research, and clearing all six costs about as much attention as clearing one.
 
-- **Bron beside Brix** — Bron carries immutable values at seams; Brix carries composable system descriptions. Proposed `222500`.
+- **Kyri beside Brix** — Kyri carries immutable values at seams; Brix carries composable system descriptions. Proposed `222500`.
 - **Silo's retirement** — the module name retired, its infuse pattern folded into Brix bonds, lowercase "silo" kept for the unrelated astrology reading technique. Proposed `223100`.
 - **Linengrow's home** — stays in this repo until SLC-L3 witnesses and a deployable civic whole exists. Proposed `223100`.
 - **`TASKS.md`'s name** — keeps its name; "workbench" lives as a conversational alias in `work-in-progress/README.md` only. Proposed `223100`.

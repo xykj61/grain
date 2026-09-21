@@ -27,7 +27,7 @@ Enterprise commerce asks for exactly four things -- a spending policy, an audit 
 
 ## The Interfaces, Held Lightly
 
-The seam to the outside world is the agent-protocol pair the earlier research pinned -- the context standard for tools, the task standard between agents -- with the payment layer joining them as it settles. Our own loop's carrier question stands where Kaeden left it: **Bron remains proposed and open in the tree's table, role his to shape**, with the resolved-record reading from the packaging sitting and the message-passing reading from last night braiding naturally into one candidate duty. Nothing here presumes his answer.
+The seam to the outside world is the agent-protocol pair the earlier research pinned -- the context standard for tools, the task standard between agents -- with the payment layer joining them as it settles. Our own loop's carrier question stands where Kaeden left it: **Kyri remains proposed and open in the tree's table, role his to shape**, with the resolved-record reading from the packaging sitting and the message-passing reading from last night braiding naturally into one candidate duty. Nothing here presumes his answer.
 
 ## Names Parked for RTAC
 
@@ -44,7 +44,7 @@ Granary stays reserved where it already leads, for the sharing surface; two mark
 
 ## A Note on Counsel
 
-This survey counsels; it seats nothing, and it is research rather than financial, legal, or investment advice. Every decision here -- names, gates, the shaping of Bron and Scribble, any commerce undertaken -- waits on Kaeden's word, per the standing laws of the loop.
+This survey counsels; it seats nothing, and it is research rather than financial, legal, or investment advice. Every decision here -- names, gates, the shaping of Kyri and Scribble, any commerce undertaken -- waits on Kaeden's word, per the standing laws of the loop.
 
 ## Gratitude
 

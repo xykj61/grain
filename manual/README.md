@@ -45,7 +45,7 @@ A beginner Glow-language textbook waits on a general parser. Until then, learn R
 | Surface | Role | Register |
 |---------|------|----------|
 | [`guides/pixel-10a-grapheneos-setup.md`](guides/pixel-10a-grapheneos-setup.md) | Flash GrapheneOS on a Pixel 10a | Checkable (guide) |
-| [`../docs/COMPASS.md`](../docs/COMPASS.md) | Day-one rose compressor - [`compass_card.bron`](../docs/compass_card.bron) | Checkable compress |
+| [`../docs/COMPASS.md`](../docs/COMPASS.md) | Day-one rose compressor - [`compass_card.kyri`](../docs/compass_card.kyri) | Checkable compress |
 | [`../docs/HAWM.md`](../docs/HAWM.md) | HAWM ladder compressor | Checkable compress |
 | [`../docs/TUBE.md`](../docs/TUBE.md) | App-manifest + NativeActivity APK compressor | Checkable compress |
 | [`../docs/STOA.md`](../docs/STOA.md) | Glow language SLC compressor (STOA0-3) | Checkable compress |
@@ -74,7 +74,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`video-scripts/`** -- three newcomer video scripts, written to be recorded: [`intro-what-is-grain.md`](video-scripts/intro-what-is-grain.md) (what Grain is, zero prior knowledge), [`first-module-walkthrough.md`](video-scripts/first-module-walkthrough.md) (build a module and watch it go green), and [`contributing-walkthrough.md`](video-scripts/contributing-walkthrough.md) (write one the Grain way and send it back). Each scene names its visual, its on-screen text, and its voiceover; every command shown is real.
 - **`guides/20260731-014410_opus-bench-raise.md`** -- Opus in-container raise: restore `vendor/zig-toolchain/lib` plus the `zig` wrapper; M1 census GREEN beside it.
 
-*Next rooms, in season: Aurora interface reference when the surface stabilizes; a Glow language reference when a general parser lands; utility pages rendered from their own `.bron` man records when the toolset's first lap lands.*
+*Next rooms, in season: Aurora interface reference when the surface stabilizes; a Glow language reference when a general parser lands; utility pages rendered from their own `.kyri` man records when the toolset's first lap lands.*
 
 ---
 

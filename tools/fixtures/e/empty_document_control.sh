@@ -64,8 +64,8 @@ d=$(build one_line notes/brief.md 'x')
 verdict_of "$d" | grep -q 'verdict=ok' && echo "one_character_free=yes" || echo "one_character_free=no"
 
 # 5. A session log and a Kyri record are documents too.
-d=$(build bron logs/a.bron '')
-verdict_of "$d" | grep -q 'verdict=empty_document' && echo "bron_refused=yes" || echo "bron_refused=no"
+d=$(build kyri logs/a.kyri '')
+verdict_of "$d" | grep -q 'verdict=empty_document' && echo "kyri_refused=yes" || echo "kyri_refused=no"
 d=$(build kyri logs/a.kyri '')
 verdict_of "$d" | grep -q 'verdict=empty_document' && echo "kyri_refused=yes" || echo "kyri_refused=no"
 

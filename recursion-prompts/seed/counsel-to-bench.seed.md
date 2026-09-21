@@ -1,6 +1,6 @@
 # SEED — counsel to bench · a voice that packages, a bench that applies
 
-*A blank fillable recursion prompt for the two-hand loop: a counsel instance (phone, fresh chat) reads the bench's send summaries and produces the next counsel memo or relay; the bench applies. Copy into `../versions/` at a fresh live-clock stamp. Elder shape: [`../../context/baton-museum/recursion_prompt.brix`](../../context/baton-museum/recursion_prompt.brix); a filled elder rests in [`../../bron-resins/`](../../bron-resins/).*
+*A blank fillable recursion prompt for the two-hand loop: a counsel instance (phone, fresh chat) reads the bench's send summaries and produces the next counsel memo or relay; the bench applies. Copy into `../versions/` at a fresh live-clock stamp. Elder shape: [`../../context/baton-museum/recursion_prompt.brix`](../../context/baton-museum/recursion_prompt.brix); a filled elder rests in [`../../kyri-resins/`](../../kyri-resins/).*
 
 ---
 

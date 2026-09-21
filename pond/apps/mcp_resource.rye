@@ -18,7 +18,7 @@
 //! carries uri - digest - length - content, and a round-trip reader recovers uri and body.
 //!
 //! It invents no storage and no transport: it reads a URI, fetches through the verified
-//! path, and renders in an owned Bron shape kin to mcp_bron.rye. It reads no network -- the
+//! path, and renders in an owned Kyri shape kin to mcp_kyri.rye. It reads no network -- the
 //! real network fetch and the Comlink-served transport stay the held custody/serve gates.
 //!
 //!   rye build pond/apps/mcp_resource.rye -femit-bin=pond/bin/mcp-resource
@@ -63,7 +63,7 @@ pub const ReadRequest = struct {
 };
 
 /// Split a line into its first space-delimited token (the key) and the trimmed
-/// remainder (the value). The flat-Bron `key value` idiom the whole tree shares.
+/// remainder (the value). The flat-Kyri `key value` idiom the whole tree shares.
 fn key_val(line: []const u8) struct { key: []const u8, val: []const u8 } {
     // invariant: the line respects the bounded head length
     assert(line.len <= max_line);

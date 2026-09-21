@@ -53,7 +53,7 @@ Everything that folds can be sealed. The contract is three verbs, shared by ever
 
 ## Packaging — Brix Composes, Pond Runs
 
-A package is that same sealed shape wearing a name: content-addressed, Kumara-signed, whole. `.brix` already names what a system is made of, so the manager is **Brix's tool aspect** rather than a new name: read the descriptor, fetch each resin by digest over Comlink, verify signature and digest on two paths, place it, and hand the composed application to **Pond**, where enclosure policy meets a running whole. The lexicon already holds `.bron` as the data notation between modules, which makes it the natural carrier for the *resolved record* — the lock that remembers exactly which resins were laid — and that role stays yours to affirm, as the open table has always said.
+A package is that same sealed shape wearing a name: content-addressed, Kumara-signed, whole. `.brix` already names what a system is made of, so the manager is **Brix's tool aspect** rather than a new name: read the descriptor, fetch each resin by digest over Comlink, verify signature and digest on two paths, place it, and hand the composed application to **Pond**, where enclosure policy meets a running whole. The lexicon already holds `.kyri` as the data notation between modules, which makes it the natural carrier for the *resolved record* — the lock that remembers exactly which resins were laid — and that role stays yours to affirm, as the open table has always said.
 
 ## The Opening Lines
 

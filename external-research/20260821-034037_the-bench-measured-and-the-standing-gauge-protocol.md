@@ -2,7 +2,7 @@
 
 **Stamp:** `20260821.034037` - **Status:** Mixed -- Living (measurement record + booked protocol) - **Voice:** Kyri - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Register:** Radiant - **Chapter:** the Microkernel Target double-seat (Caravan is its Equinox 1)
-**Kin:** [`the microkernel target and the OS parity question`](20260817-185851_microkernel-target-and-the-os-parity-question.md) - [`.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`.claude/rules/docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md) - `GLOW_PROFILE.bron`
+**Kin:** [`the microkernel target and the OS parity question`](20260817-185851_microkernel-target-and-the-os-parity-question.md) - [`.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`.claude/rules/docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md) - `GLOW_PROFILE.kyri`
 
 ---
 
@@ -24,7 +24,7 @@ It also records three premise corrections the measurement produced. None of them
 | implied 2 vCPU (`crux/REMEMBER.md`: "HP AMD 2vCPU/4GB shared") | **4 vCPU**, AMD EPYC-Rome |
 | the history cleanup "almost certainly drew the full bundle well below its old seated 192 MB" | **`.git` is 911 MB on disk, `size-pack` 844 MiB** -- roughly four times the figure it was guessed to be under |
 
-The root is a single stale line. `GLOW_PROFILE.bron` -- the machine-local source of truth -- has read **`AMD 4vCPU/8GB - 180GB NVMe`** correctly all along, and the 180 GB checks out exactly (`vda` is 193,273,528,320 bytes). The operator card's Host line still says `2vCPU/4GB`. A counsel essay that reads the card rather than the profile inherits the drift and then reasons carefully from it -- which is how a wrong premise produces a well-argued conclusion about buying hardware.
+The root is a single stale line. `GLOW_PROFILE.kyri` -- the machine-local source of truth -- has read **`AMD 4vCPU/8GB - 180GB NVMe`** correctly all along, and the 180 GB checks out exactly (`vda` is 193,273,528,320 bytes). The operator card's Host line still says `2vCPU/4GB`. A counsel essay that reads the card rather than the profile inherits the drift and then reasons carefully from it -- which is how a wrong premise produces a well-argued conclusion about buying hardware.
 
 The third correction is different in kind and worth its own sentence: *"almost certainly"* is a guess wearing a measurement's clothes. The bundle is not below 192 MB. It is 844 MiB packed.
 

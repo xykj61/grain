@@ -11,7 +11,7 @@
 # every signature are checked in the app, which rebuilds the Dag under add_batch (re-verifying signatures)
 # and folds through the real law; this awk measures only the supply arithmetic, blind to the graph.
 #
-#   awk -f tools/fixtures/c/cord_batch_truth.awk tools/fixtures/c/cord_batch_dag.bron
+#   awk -f tools/fixtures/c/cord_batch_truth.awk tools/fixtures/c/cord_batch_dag.kyri
 #   -> "<blocks> <supply> <stars>"
 
 $1 == "block" { blocks += 1 }

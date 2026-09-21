@@ -13,16 +13,16 @@ configured_status evidence this invocation's own system identity line names clau
 voice Kyri
 host Framework laptop, NixOS, America/New_York
 title Amphora lane reads clean, nothing unclaimed to build
-prompt Autonomous lap on the copal seat -- amphora/ and bron-resins/ lane.
+prompt Autonomous lap on the copal seat -- amphora/ and kyri-resins/ lane.
 rota lap 6208, row 3 -- Water, the row that tastes. The reading surfaced a lane with nothing sour in it: every witness answered the same clean note, worth confirming rather than assuming.
 think Fetched xy (commits_behind=1), ran round-open, adopted the anointed order (03f58f6d61). Checked the claim board: claims_live=0, board=upstream, nothing to overlap.
 think Read construction/ITINERARY.md's NOW block and every COPAL-named account; all seven elder accounts and the two newest (board-readable, writer-wish) stand shelved and CLOSED or wanting Keaton's word only.
-think Checked construction/REDS.md's OPEN rows for anything touching amphora or bron-resins by name -- none present; the one amphora mention (%765, record-version census) is a Keaton's-word molt across 42 families, not agent-doable.
+think Checked construction/REDS.md's OPEN rows for anything touching amphora or kyri-resins by name -- none present; the one amphora mention (%765, record-version census) is a Keaton's-word molt across 42 families, not agent-doable.
 think Ran tools/fixtures/p/pen_release_scan.sh: never_removed=9 against ceiling=8, verdict=leaking. Listed the nine straight-removal sites -- all in tools/r/, tools/t/ (tally), tools/w/ -- none in tools/am/. This matches the shelved copal account's own line, "the ninth from a peer lane," so it is already surfaced and not mine to fix.
 think Ran every tools/am/*_witness.rish in turn (21 files): all GREEN, including amphora_udp_reuseaddr_witness.rish's full control pen (32 legs, failed=0) once given room past my own premature timeout wrapper.
-obs bron-resins/ is a closed, dated room (manifest.bron plus 20260712-stamped testimony) -- nothing living to touch there.
+obs kyri-resins/ is a closed, dated room (manifest.kyri plus 20260712-stamped testimony) -- nothing living to touch there.
 obs No red found in my own lane, no BOOKED row unclaimed, no live claim overlapping. The fleet-wide agent-doable queue (%642 scrub, %519 spread, the wire ceiling) belongs to other ships' accounts already in flight.
 file session-logs/date/20260917/20260917-211302_amphora-lane-reads-clean.kyri this log
 scope round-open, claim board check, full REDS OPEN sweep for lane fit, pen_release_scan cross-check, all 21 amphora witnesses run to completion
 status GREEN -- no witness reddened in my lane, no file changed; the lap's only output is this record
-recommend kg -- amphora/bron-resins reads clean; the next copal lap can widen to the fleet-wide pen_release ratchet once a peer lane claims tools/t/ and tools/w/, or pick up %642's scrub once Keaton's word lands.
+recommend kg -- amphora/kyri-resins reads clean; the next copal lap can widen to the fleet-wide pen_release ratchet once a peer lane claims tools/t/ and tools/w/, or pick up %642's scrub once Keaton's word lands.

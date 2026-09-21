@@ -38,7 +38,7 @@ bitten**, the control's own tally asserted beside its verdict. Law page, Cursor 
 Amphora pour, carry and grand-round GREEN after the header moved.
 [Paper](../../active-designing/20260911-215028_the-header-the-vessel-carried.md) **A 92**.
 **YOURS:** (1) the **shell half** -- `amphora_pour.sh` writes a vessel header carrying an em dash and
-`amphora_vessel_lap1.bron` is a stored vessel carrying one; 2 characters in 2 files, both inside
+`amphora_vessel_lap1.kyri` is a stored vessel carrying one; 2 characters in 2 files, both inside
 `fixtures/`, which this family reads past by design so the planted mojibake control keeps its bytes.
 A shell writer's meter, or a named exemption. (2) the remaining **290** are every one a sweep rather
 than a judgment, ranked by room and owned by whichever lane holds it.

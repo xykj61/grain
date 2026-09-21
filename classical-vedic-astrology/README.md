@@ -53,7 +53,7 @@ classical-vedic-astrology/
 |-------|---------|---------|
 | 20260701.232912 | [Sample reading](readings/alice-sample-reading.md) | The demonstration reading, under a placeholder name. This is the one that ships. |
 
-*One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and privacy is kept by design. **The method ships; the chart stays private.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.bron` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
+*One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and privacy is kept by design. **The method ships; the chart stays private.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.kyri` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
 
 ## Templates
 

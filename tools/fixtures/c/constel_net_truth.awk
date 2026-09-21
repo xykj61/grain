@@ -7,7 +7,7 @@
 # planet), and prints the triple. The `net` line's safe name is checked in the app, not here — this awk
 # measures the roster shape a keeper counts.
 #
-#   awk -f tools/fixtures/c/constel_net_truth.awk tools/fixtures/c/constel_net.bron
+#   awk -f tools/fixtures/c/constel_net_truth.awk tools/fixtures/c/constel_net.kyri
 #   -> "<points> <galaxy> <planet>"
 
 /^point / { count += 1; if (count == 1) galaxy = $2; planet = $2 }

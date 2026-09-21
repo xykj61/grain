@@ -9,12 +9,12 @@
 //! property the whole namespace rests on: the WINNER of a contested name is true to the
 //! bytes.
 //!
-//! The corpus is `tools/fixtures/t/tenure_dag.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/t/tenure_dag.kyri`, a genuine record produced
 //! reproducibly by `mycelium/tenure_fixture_gen.rye` (genesis funds; "vega" uncontested;
 //! "bandun" reserved by one keeper at round 1 and contested by another at round 2),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no
 //! network, the bytes read are the tree's own. Two independent readings must agree: the
-//! app parses the record through `cord_bron`, **rebuilds** the Dag under `cord.add`
+//! app parses the record through `cord_kyri`, **rebuilds** the Dag under `cord.add`
 //! (re-verifying every signature), resolves it through `tenure`, and reports the
 //! **holder of "bandun"** (the winning signer), the **held count**, and the **reservation
 //! count**; the r4 witness cross-checks that triple against
@@ -23,7 +23,7 @@
 //! wins); the app applies the full commit tie-break; on this fixture the rounds differ,
 //! so both name the same holder.
 //!
-//! Additive -- composes `cord_bron` + `cord` + `tenure` public API only (each re-runs
+//! Additive -- composes `cord_kyri` + `cord` + `tenure` public API only (each re-runs
 //! GREEN). Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   rye build mycelium/tenure_true.rye -femit-bin=mycelium/bin/tenure_true
@@ -33,13 +33,13 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const cord = @import("cord.rye");
-const cord_bron = @import("cord_bron.rye");
+const cord_kyri = @import("cord_kyri.rye");
 const tenure = @import("tenure.rye");
 
 pub const tenure_true_version = "20260813.062952";
 
 /// The real contested Cord record, bound at compile time -- the tree's own bytes, never a drifting copy.
-const real_dag = @embedFile("corpora/tenure_dag.bron");
+const real_dag = @embedFile("corpora/tenure_dag.kyri");
 
 /// The contested name this fixture carries -- the one two keepers reach for at once.
 const contested_name = "bandun";
@@ -69,10 +69,10 @@ pub const Reading = struct {
 /// Read the real contested record: parse it, rebuild the Dag under `cord.add` (verifying every
 /// signature), resolve it through the Tenure, and read off the holder of the contested name.
 pub fn read_tenure(text: []const u8) !Reading {
-    const pl = try cord_bron.parse(text);
+    const pl = try cord_kyri.parse(text);
     // invariant: a real contested record carries blocks -- an empty Dag holds no contest to read.
     if (pl.len == 0) return error.BadFormat;
-    var dag = try cord_bron.rebuild(&pl);
+    var dag = try cord_kyri.rebuild(&pl);
     const verdict = try tenure.resolve(&dag);
     const who = verdict.holder_of(contested_name) orelse return error.ContestedNameFree;
     // invariant: a held name resolves to a full-width holder key.
@@ -98,8 +98,8 @@ fn welcome_reading_true_to_bytes() !void {
 /// The winner read from the real bytes is the round-1 reservation, not the round-2 contestant -- the
 /// earlier round holds the name, exactly as the agreed order rules.
 fn welcome_winner_is_the_earlier_round() !void {
-    const pl = try cord_bron.parse(real_dag);
-    var dag = try cord_bron.rebuild(&pl);
+    const pl = try cord_kyri.parse(real_dag);
+    var dag = try cord_kyri.rebuild(&pl);
     const verdict = try tenure.resolve(&dag);
     // Exactly one contested loss recorded -- "bandun" reached for twice, granted once.
     assert(verdict.contest_count == 1);

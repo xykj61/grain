@@ -56,7 +56,7 @@ All three ran **GREEN** on this cloud host at `20260715.054500` -- the first tim
 
 `rye/README.md`'s own building section fetches the official Zig 0.16.0 release tarball and verifies it against its published checksum before it trusts a single byte -- the discipline this whole tree holds everywhere else ("verify a toolchain before you trust it," `GLOW_HOST.template.kyri`'s own header comment). The `pip install ziglang` path rests instead on PyPI's own package signing and the `ziglang` maintainer's re-packaging of the official release -- a real and genuinely different trust chain, chosen over the same one by a shortcut.
 
-This holds for a same-sitting cloud agent for the reasons named above (an ephemeral host, a credential store elsewhere, and the whole VM discarded at session end), rather than standing in for the checksum-verified fetch on a persistent host that a session's own tooling and identity will live on for weeks. `GLOW_HOST.bron` stays the source of truth for a *persistent* host's pinned, verified toolchain path; this pip recipe is this guide's own, narrower thing -- a same-sitting convenience for an environment that is disposable by design.
+This holds for a same-sitting cloud agent for the reasons named above (an ephemeral host, a credential store elsewhere, and the whole VM discarded at session end), rather than standing in for the checksum-verified fetch on a persistent host that a session's own tooling and identity will live on for weeks. `GLOW_HOST.kyri` stays the source of truth for a *persistent* host's pinned, verified toolchain path; this pip recipe is this guide's own, narrower thing -- a same-sitting convenience for an environment that is disposable by design.
 
 ## What This Does Not Set Up
 
@@ -70,7 +70,7 @@ This holds for a same-sitting cloud agent for the reasons named above (an epheme
 - `../../rye/README.md` -- the persistent-host build path this recipe stands beside.
 - `../../context/specs/enclosure-editors.md` -- the ai-jail-enclosed persistent-host path this guide stands beside.
 - `../../construction/archive/20260703-021412_counsel-and-confirmation-tests.md` -- the earlier Cursor for iOS round that first used this exact pip recipe, against a persistent ai-jail host rather than a disposable cloud VM.
-- `../../session-logs/date/20260715/20260715-062000_cloud-toolchain-raised-neth-green.bron` -- the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
+- `../../session-logs/date/20260715/20260715-062000_cloud-toolchain-raised-neth-green.kyri` -- the session that confirmed this recipe fresh and ran the Neth witnesses GREEN on it.
 
 ---
 

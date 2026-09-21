@@ -24,7 +24,7 @@ Logic before carriage; witness before narrative; hosted before device.
 
 - `pond/apps/drawn_terminal.rye` — forge device/unified + assist snippets  
 - `tools/realidream_forge_{device,unified}_view.rish` · fixtures  
-- `lantern/lantern_core.rye` · `lantern.rye` · `completion_length.bron`  
+- `lantern/lantern_core.rye` · `lantern.rye` · `completion_length.kyri`  
 - `tools/inference_assist_view_lap2.rish` · `tools/parity.rish`  
 - TASKS · ROADMAP · LEXICON · READMEs · hammock
 

@@ -33,7 +33,7 @@ seam, then read those same bytes back into Linengrow and Dimeroll. It also says 
 no module.
 
 [The Sealed Crossing](../foundations/20260703-201612_the-sealed-crossing.md), written `20260703`,
-gives Amphora its durable boundary. A Bron or Kyri record is the letter. Amphora is the crate that
+gives Amphora its durable boundary. A Kyri or Kyri record is the letter. Amphora is the crate that
 carries one or more letters across a custody boundary and returns them whole.
 
 The oldest deciding premise is [Four Promises a Tool Can Keep](../foundations/20260628-133212_four-promises-a-tool-can-keep.md),

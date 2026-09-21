@@ -20,11 +20,11 @@
 //! the declaration alone, and neither is declared anywhere.
 //!
 //! **Both tests are needed, because a channel is declared apart from the
-//! grants.** `serial_cycle_wide_wired.bron` keeps every region and every
+//! grants.** `serial_cycle_wide_wired.kyri` keeps every region and every
 //! grant of the ring and adds one line, `channel alder cedar`, so that pair
 //! shares no memory at all and still may not run together. A concurrency
 //! test that read only the grants would wave it through, and
-//! `serial_cycle_wide_mute.bron` is its mirror -- a store shared in silence
+//! `serial_cycle_wide_mute.kyri` is its mirror -- a store shared in silence
 //! that a test reading only the channels would clear.
 //!
 //! **The two tests separate only outside a ring, and the separation costs
@@ -32,15 +32,15 @@
 //! inside a true ring region-adjacency and channel-adjacency coincide and
 //! either test alone would answer correctly. The mute document earns its
 //! silent sharing by ceasing to be a ring, which is the same price
-//! `serial_cycle_bypass.bron` paid for a spare route. So the pair of tests
+//! `serial_cycle_bypass.kyri` paid for a spare route. So the pair of tests
 //! is what a supervisor keeps: the shape it is handed may not be a ring.
 //!
 //! **How much concurrency a ring permits is arithmetic, not policy.** In a
 //! ring every domain is adjacent to two others, so the pairs that may run
 //! together are exactly the non-adjacent ones -- `n * (n - 3) / 2` of them.
-//! A ring of three has none at all, which is why `serial_cycle.bron` was
+//! A ring of three has none at all, which is why `serial_cycle.kyri` was
 //! entirely serial and nothing in this module could have made it otherwise.
-//! A ring of four has two, and `serial_cycle_wide.bron` spends both of them
+//! A ring of four has two, and `serial_cycle_wide.kyri` spends both of them
 //! in one lap.
 //!
 //! **And a supervisor holding two unreaped outcomes owes both a reaping
@@ -87,14 +87,14 @@ const caravan_concurrent_version = "20260819.174843";
 // =========================================================================
 
 /// A ring of four: the first shape in this arc with any room in it.
-pub const declaration_path = "caravan/systems/serial_cycle_wide.bron";
+pub const declaration_path = "caravan/systems/serial_cycle_wide.kyri";
 
 /// The same ring with one bare channel laid across a region-disjoint pair.
-pub const wired_path = "caravan/systems/serial_cycle_wide_wired.bron";
+pub const wired_path = "caravan/systems/serial_cycle_wide_wired.kyri";
 
 /// The mirror of the wired document: a region shared in silence, with no
 /// channel over it, by a pair the channels alone would have cleared.
-pub const mute_path = "caravan/systems/serial_cycle_wide_mute.bron";
+pub const mute_path = "caravan/systems/serial_cycle_wide_mute.kyri";
 
 /// The ring of three, kept here to be measured rather than run: every pair
 /// in it is adjacent, so it admits no concurrency at all.

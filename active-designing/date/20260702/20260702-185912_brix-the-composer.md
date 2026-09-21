@@ -28,11 +28,11 @@ The clarity this brief holds arrived through a crossing — the declarative line
 | Supervise what a course declares | **Caravan** | the capability table names what each child may do |
 | Bound the memory beneath | **Tally** | gardens under every part |
 | Wake the machine into the whole | **Aurora** | boot ends where supervision begins |
-| Carry the data a `.brix` speaks | **Bron** | the notation between modules |
+| Carry the data a `.brix` speaks | **Kyri** | the notation between modules |
 
 ## The Package System Is an Ensemble, Not One Module
 
-The package manager is Brix at the head of a small ensemble, each part single-stranded. A `.brix` description, written in Bron notation, evaluates through its lawful bond into a course of bricks — a closure of exactly what the system needs. Those bricks live content-addressed in Tablecloth, named by the digest of their content. Their history is woven by Mantra. They travel between machines over Comlink, every artifact signed and every transfer sealed identity to identity — distribution on a public-key model rather than anonymous fetching, so an artifact is what its digest says and comes from whom it claims. The services the course declares are supervised by Caravan; Tally bounds the memory; Aurora boots the machine into Caravan, which brings the declared system to life. Brix is precisely the *language of composition and override*; the *package manager* is the whole ensemble; and the boundary keeps each module about one thing.
+The package manager is Brix at the head of a small ensemble, each part single-stranded. A `.brix` description, written in Kyri notation, evaluates through its lawful bond into a course of bricks — a closure of exactly what the system needs. Those bricks live content-addressed in Tablecloth, named by the digest of their content. Their history is woven by Mantra. They travel between machines over Comlink, every artifact signed and every transfer sealed identity to identity — distribution on a public-key model rather than anonymous fetching, so an artifact is what its digest says and comes from whom it claims. The services the course declares are supervised by Caravan; Tally bounds the memory; Aurora boots the machine into Caravan, which brings the declared system to life. Brix is precisely the *language of composition and override*; the *package manager* is the whole ensemble; and the boundary keeps each module about one thing.
 
 ## Two Divergences, On Purpose
 

@@ -7,7 +7,7 @@ alwaysApply: false
 
 **Canonical:** `context/LEXICON.md` -- **Nib** seated `20260712.121719` - residue polish `20260712.122600`.
 
-In new prose, rules, session logs, living ledger *Now* lines, and Bron fields, use **nib** for the **landed-edge** sense of the work:
+In new prose, rules, session logs, living ledger *Now* lines, and Kyri fields, use **nib** for the **landed-edge** sense of the work:
 
 | Form | Meaning |
 |------|---------|
@@ -30,4 +30,4 @@ Historical *tip* stays readable in dated logs, counsel titles, frozen witnesses,
 
 Any future nib vocabulary witness must match `\bnib\b` -- the tree holds one authored *nibble* (`granary/granary.rye` tamper probe) that must not false-positive.
 
-Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over `tip` / `product_tip`.
+Kyri session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over `tip` / `product_tip`.
