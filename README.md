@@ -17,7 +17,7 @@
   <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-wave, honest register" src="https://img.shields.io/badge/status-crashed--wave-b9954a"></a>
 </p>
 
-**Voice:** Kyri -- **Style:** Bhakta, Door setting -- full note at the foot of this page.
+<!-- **Voice:** Kyri -- **Style:** Bhakta, Door setting -- full note at the foot of this page. -->
 
 ---
 
