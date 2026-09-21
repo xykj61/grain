@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
 | `20260921.064702` | [Grass recovers the parked packet, fixes declared_model](20260921/20260921-064702_grass-declared-model-fix.kyri) | Recovered the parked packet; declared_model fixed. |
 | `20260921.063116` | [Lesson 2 -- the twelve zodiac signs and the sky's craft in three Arabics](20260921/20260921-063116_risala-lesson-two-zodiac.kyri) | Wrote risala lesson 2 on the zodiac signs and craft terms in three Arabics. |
 | `20260921.054440` | [head-door-cost control repointed after the fold moved its paper](20260921/20260921-054440_head-door-cost-control-repoint.kyri) | Repointed the control's paper path the fold left stale; 27 legs green. |

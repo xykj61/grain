@@ -12,5 +12,10 @@ if r.err != "" then say r.err
 # with it, which `shim_reason` holds for every shim this roster seats. Both `say` lines stand ABOVE
 # it on purpose: an assert ends the run, so a reason said below one reaches a reader only when the
 # run passes, which is the shape `20260911.055635` repaired one room over.
+#
+# THE REFUSAL IS PROVEN, not merely written. `tools/fixtures/am/amphora_device_wire_control.sh`
+# plants a failing target and watches this shim exit non-zero, then a passing target and watches it
+# exit zero -- both directions, one pen, so the assert below is a demonstrated refusal rather than
+# an inherited one. That control is what keeps this shim out of the redleg scan's no-marker count.
 assert r.ok else "amphora_device_wire: the virtio vessel-fetch lab refused -- ${r.out_brief} ${r.err_brief}"
 exit r.code
