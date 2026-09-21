@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260920.223652` | [The humanized README published, diff confirmed against the named ref](20260920/20260920-223652_humanized-readme-published.kyri) | Published the three-sentence humanizing pass, one-file diff confirmed. |
 | `20260920.223305` | [Three stiff sentences warmed, including a genuinely garbled one caught by reading rather than skimming](20260920/20260920-223305_readme-humanized-and-a-typo-caught.kyri) | Warmed the who-this-is-for paragraph and the metrics-intro sentence, and fixed a real broken sentence in the Brix-declares paragraph; register held at 94, truth at 100. |
 | `20260920.220257` | [The HTML-comment Style declaration published, a one-line diff confirmed against the correctly-named ref this time](20260920/20260920-220257_hidden-style-line-published.kyri) | Published the hidden Style declaration, diffing against seed/main by name from the start. |
 | `20260920.215836` | [The one-line "Voice: Kyri -- Style: Bhakta" declaration moved into an HTML comment, so the front door jumps straight from the status badges to the opening prose](20260920/20260920-215836_style-line-hidden-in-a-comment.kyri) | Reused the file's own existing HTML-comment convention (already used for the generated metrics block) to keep the mechanical Style declaration machine-readable while invisible to a reader. |
