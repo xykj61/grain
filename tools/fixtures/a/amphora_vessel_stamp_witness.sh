@@ -50,4 +50,25 @@ if "$ROOT/amphora/bin/vessel-core" verify "$far/vessel.kyri" 2>/dev/null; then
 fi
 echo "TAMPER refused"
 
-echo "GREEN: Amphora vessel stamp — pour signed, scrub verified, tamper refused"
+# Unwelcome: a foreign grammar refuses the sign verb BEFORE it writes, so a vessel
+# nobody understands never lands carrying a stamp_sig over bytes the signer could not read.
+foreign="$home/foreign.bron"
+cat > "$foreign" <<'EOF'
+format amphora-v2
+stamp 20260710.145843
+shoulder amber-ring1-season
+parent 0000000000000000000000000000000000000000000000000000000000000000
+cargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt
+EOF
+cp "$foreign" "$foreign.before"
+if "$ROOT/amphora/bin/vessel-core" sign "$foreign" 2>/dev/null; then
+  echo "FAIL foreign grammar should not sign"
+  exit 1
+fi
+if ! cmp -s "$foreign" "$foreign.before"; then
+  echo "FAIL foreign grammar sign wrote the file before refusing"
+  exit 1
+fi
+echo "FOREIGN refused"
+
+echo "GREEN: Amphora vessel stamp — pour signed, scrub verified, tamper refused, foreign grammar refused"

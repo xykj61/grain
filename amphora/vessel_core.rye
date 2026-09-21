@@ -120,8 +120,12 @@ const CanonicalParts = struct {
     sealed: bool,
 };
 
-fn take_canon_kv(parts: *CanonicalParts, key: []const u8, value: []const u8) error{InvalidVessel}!void {
+fn take_canon_kv(parts: *CanonicalParts, key: []const u8, value: []const u8) error{InvalidVessel, UnknownVersion}!void {
     if (std.mem.eql(u8, key, "format")) {
+        // A signature authenticates bytes rather than their meaning. Refuse a
+        // foreign grammar before any caller trusts the fields that follow, so the
+        // sign verb cannot mint a signature over bytes it does not understand.
+        if (!std.mem.eql(u8, value, vessel_format)) return error.UnknownVersion;
         parts.format = value;
     } else if (std.mem.eql(u8, key, "stamp")) {
         parts.stamp = value;
@@ -142,7 +146,7 @@ fn take_canon_kv(parts: *CanonicalParts, key: []const u8, value: []const u8) err
     } else return error.InvalidVessel;
 }
 
-fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidVessel, Overflow}!void {
+fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidVessel, UnknownVersion, Overflow}!void {
     parts.format = "";
     parts.stamp = "";
     parts.shoulder = "";
@@ -191,7 +195,7 @@ fn scan_canonical_parts(text: []const u8, parts: *CanonicalParts) error{InvalidV
 
 /// Build canonical bytes: format - stamp - shoulder - parent - cargo | seal_* .
 /// Skips comments, blanks, and stamp_sig. Seal and clear cargo are mutually exclusive.
-pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, Overflow}!u32 {
+pub fn write_canonical(text: []const u8, out: []u8) error{InvalidVessel, UnknownVersion, Overflow}!u32 {
     var parts: CanonicalParts = undefined;
     try scan_canonical_parts(text, &parts);
     var off: u32 = 0;
@@ -436,6 +440,15 @@ fn run_selftest(io: std.Io) !u8 {
         return error.UnwelcomePassed;
     } else |_| {}
     if (parse_vessel("format amphora-v2\nstamp x\nshoulder y\nparent 0000000000000000000000000000000000000000000000000000000000000000\ncargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\nstamp_sig 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\n", &fields)) |_| {
+        return error.UnwelcomePassed;
+    } else |fault| {
+        assert(fault == error.UnknownVersion);
+    }
+
+    // Unwelcome: a foreign grammar refuses the canonical write too, so the sign verb
+    // cannot mint a signature over bytes it does not understand and then write them.
+    var foreign_canon: [max_vessel_len]u8 = undefined;
+    if (write_canonical("format amphora-v2\nstamp x\nshoulder y\nparent 0000000000000000000000000000000000000000000000000000000000000000\ncargo plain-bytes cd416bd6cae889877c353fc9abe39daaff1668666049a8fd10974248d99d23ab hello.txt\n", &foreign_canon)) |_| {
         return error.UnwelcomePassed;
     } else |fault| {
         assert(fault == error.UnknownVersion);
