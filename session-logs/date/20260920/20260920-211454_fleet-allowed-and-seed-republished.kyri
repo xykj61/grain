@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260920.211454
+editor Claude Code
+provider Anthropic
+product Claude Code
+role publish -- fleet/ allowed into the seed manifest, the seed republished
+modality text
+model unverified
+model_status active runtime unverified; no get_session introspection run this lap
+voice Kyri
+host anonymized Claude Code CLI session, America/New_York clock
+title fleet/ allowed into template-manifest.bron and the public seed republished with this round's whole arc
+prompt Keaton asked to confirm the new folders were allowed in the publish-seed manifest and to publish the seed again
+think checked which rooms already carried an allow row before adding anything: risala/ and open/ were both allowed in an earlier round this same session, and fleet/ (opened this round) had none -- grepped for it directly rather than assuming a room this new might already be covered
+think grepped fleet/'s own three files for "Keaton" before choosing a classification, per the same discipline the risala/open rounds used -- zero hits, so fleet/ ships template rather than scrub, the clean-room classification rather than the name-transform one
+think did not add expanding-prompts/ to the allowlist even though this round wrote a new file there, since the operator's own request named "these new folders" -- open/ and fleet/ -- and the whole expanding-prompts/ directory carries no allow row by deliberate, standing policy (its own manifest comment calls it one of several "personal-heavy dirs" staying withheld until each file earns its place one at a time); opening the whole room was not asked for and would have been a scope decision this round had no standing to make on its own
+think ran the projection and the full witness before trusting the manifest edit, per the same TAME lens every prior seed round in this session used -- SOW_WITNESS_GREEN, M1_OK, and grepped the projected seed/fleet/ and seed/open/ directories directly for "Keaton," confirming zero occurrences across all twelve files between the two rooms
+think ran the bare publish-seed.sh first, fetched the current public HEAD, and diffed against it before pushing -- eighteen files changed, and every one of them was something this round or the round just before it actually touched: README, MAP, fleet/, open/, the two scrub-hardening files, and the four witness-repair files, nothing unexpected in the diff
+obs this was the smallest, cleanest custody-gate crossing of the day -- one file added to the manifest, one projection, one witness run, one diff review, one push -- because every room being published had already been proven clean in the rounds that built it, rather than needing first-time scrutiny at publish time
+file template-manifest.bron -- edited: one allow row and one template classification row for fleet, committed separately (544aafc80)
+file seed/ (gitignored) -- reprojected and published: 9c64b4edaeb4a947c98c4450f9541140368ae07c, to grain-os/grain and grain-ww/grain
+recommend kg -- the whole day's arc, from the first Cursor archive round through this publish, is now live on both public doors; nothing in this session is left half-shipped
