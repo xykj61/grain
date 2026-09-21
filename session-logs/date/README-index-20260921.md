@@ -9,7 +9,7 @@
 | `20260921.072441` | [amphora device wire refusal leg landed](20260921/20260921-072441_amphora-device-wire-refusal-leg.kyri) | Control plants a failing target; redleg fell 56 to 55. |
 | `20260921.064702` | [Grass recovers the parked packet, fixes declared_model](20260921/20260921-064702_grass-declared-model-fix.kyri) | Recovered the parked packet; declared_model fixed. |
 | `20260921.063116` | [Lesson 2 -- the twelve zodiac signs and the sky's craft in three Arabics](20260921/20260921-063116_risala-lesson-two-zodiac.kyri) | Wrote risala lesson 2 on the zodiac signs and craft terms in three Arabics. |
-| `20260921.060232` | [Recover the parked lap and fold the build-cache note off the card](20260921/20260921-060232_recover-parked-lap-and-fold-build-cache-note.kyri) | Recovered the stashed lap and folded the build-cache note off the card. |
+| `20260921.060232` | [Recover parked lap, fold note](20260921/20260921-060232_recover-parked-lap-and-fold-build-cache-note.kyri) | Recovered stashed lap, folded note off card. |
 | `20260921.054440` | [head-door-cost control repointed after the fold moved its paper](20260921/20260921-054440_head-door-cost-control-repoint.kyri) | Repointed the control's paper path the fold left stale; 27 legs green. |
 | `20260921.044006` | [The opencode fleet sails -- seven ships clocked in, incense left interactive](20260921/20260921-044006_opencode-fleet-sails.kyri) | Flipped seven ships to opencode, swapped the watcher, clocked in windows 2-8. |
 | `20260921.035244` | [The OpenCode fleet loop seated -- DeepSeek at the helm, one loop for every ship](20260921/20260921-035244_opencode-fleet-loop-seated.kyri) | Seated the opencode loop and watcher, engine-aware recipe, documented in open/ and fleet/. |
