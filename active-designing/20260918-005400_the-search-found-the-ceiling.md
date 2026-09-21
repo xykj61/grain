@@ -69,7 +69,7 @@ which stays a conjecture until it is run. **Whether five copies is the right rep
 real store is round one's own inherited assumption, carried forward as-is. **A real store** stays
 untouched here; this reading measures one integer's effect on one circular arithmetic quantity.
 
-## What would falsify it
+## The falsifier
 
 The scan's own gate reproduces both elder closed forms and holds the search's best answer at or
 above the hand-picked point it already knows. The FINDING itself -- that the search reaches the
