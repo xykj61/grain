@@ -103,6 +103,7 @@ allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residual
 # -- the disciplines (context, granular -- identity/specs/keys withheld) --
 allow context/KYRI.md   # the standing voice, depersonalized 20260823.173634 so the seed ships it
 allow cubist-bhakti-astrology      # the classical room reimagined; no personal readings live here
+allow shastra                      # siloed Sanskrit study room, cleared 20260920 on Keaton's word; no maintainer name found
 allow arbor                        # spoken tiles for a voice reader; local authoring only, no service reached
 allow mitra                        # the shed discipline's door; documentation-first, no personal content
 allow classical-vedic-astrology   # method, teachings, studies, templates and tooling; the readings are sub_excluded
@@ -174,7 +175,7 @@ template  .gitmodules                    # gratitude/ and vendor/ submodule pins
 template  template-manifest.bron         # this file -- the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
 scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
 personal  .cursor-archive                 # retired .cursor/rules/*.mdc twins, archived 20260920.135100; internal housekeeping, not shipped
-personal  shastra                         # siloed Sanskrit study room; never reviewed for publication, withheld fail-safe pending Keaton's word
+template  shastra                         # siloed Sanskrit study room; cleared 20260920 on Keaton's word, no maintainer name found
 template  risala                          # siloed Classical/Quranic Arabic study room, opened 20260920; no maintainer name found
 scrub     open                            # vision-marked companion-model room, opened 20260920; names the maintainer as decision authority throughout
 template  fleet                           # fleet-naming study room, opened 20260920; no maintainer name found
