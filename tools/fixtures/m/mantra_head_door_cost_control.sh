@@ -2,7 +2,7 @@
 # tools/fixtures/m/mantra_head_door_cost_control.sh -- every class planted, every rule priced.
 #
 # WHAT THIS DOES. tools/fixtures/m/mantra_head_door_cost_scan.sh counts both sides of the
-# falsifier written into active-designing/20260916-105110_no-anchor-names-the-head.md. This
+# falsifier written into active-designing/date/20260916/20260916-105110_no-anchor-names-the-head.md. This
 # control plants one site of each class into a copy of the module room, plants three shapes of
 # design page, and strikes two rules out of a copy of the scan itself -- watching each reading
 # move exactly where the scan's header says it will.
@@ -38,7 +38,7 @@ done
 
 root="$(pwd)"
 scan="$root/tools/fixtures/m/mantra_head_door_cost_scan.sh"
-paper="$root/active-designing/20260916-105110_no-anchor-names-the-head.md"
+paper="$root/active-designing/date/20260916/20260916-105110_no-anchor-names-the-head.md"
 # THE PEN SITS INSIDE THIS TREE, under the lap's own gitignored scratch room. A mutated copy of
 # the scan has to find a tree root within eight steps of itself, and a copy in /tmp finds none --
 # so a mutation run there refuses at its first line and reads exactly like a mutation that bit.
