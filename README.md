@@ -33,10 +33,15 @@ where every town has its own rockstars. Consider telling the arc of your life --
 loved ones -- to the people who inherit the Earth after you, from someone who was there for the
 computing revolution and remembers what it felt like.
 
-**Grain is a free environment you download, and it installs a new realm of possibilities.** With
-Grain, your AI bowling alley gets bumper lanes. If that sentence was hard to follow, Grain is right
-there to ask what it means, and again after that, as many times as the universe allows -- because
-the game of Grain is itself helping you harvest and blossom your dreams.
+**Grain is a free environment you download, and it installs a new realm of possibilities.** Think
+of this year's open-weight models as a fresh generation of gaming consoles -- real, powerful
+hardware, each one capable on its own. Grain is the game built to run on any of them: the reason
+that hardware finally has somewhere meaningful to point itself. With Grain, the accuracy of the
+answers your AI gives you rises, because it is working from your own words and your own records,
+on your own machine, rather than guessing at a stranger's version of your context from across the
+internet. Ask it anything, in your own plain words, and if an answer itself is hard to follow, ask
+again -- Grain explains itself as many times as it takes, because teaching you as you go is the
+whole game, not a side effect of it.
 
 **Try us before you trust us.** You are reading this in a web browser you chose. Here is something
 you can copy and paste into any AI search engine, and there are many today. It stays entirely
