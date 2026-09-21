@@ -6,7 +6,7 @@
 The original card text:
 
 **DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.**
-[Note](../active-designing/date/20260918/20260918-105338_a-symlinked-import-is-two-compilation-units-not-one.md):
+[Note](../../active-designing/date/20260918/20260918-105338_a-symlinked-import-is-two-compilation-units-not-one.md):
 closes the question above. `@import("real/lib.zig")` vs `@import("link/lib.zig")` (a real `ln -s`)
 reads `same_type=false` on metal -- the compiler resolves by string path, not by symlink-resolved
 inode, so a shared module compiles once per distinct import spelling. Storage dedup buys disk, not

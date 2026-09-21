@@ -20,7 +20,9 @@
 | `20260921.145750` | [Ferontier seats renewed at the NixOS door](20260921/20260921-145750_ferontier-cli-renewal.kyri) | Pinned four terminal agents, packaged `agy`, and opened the ferontier room. |
 | `20260921.144649` | [Luna across the piers](20260921/20260921-144649_luna-across-the-piers.kyri) | Set the personal, tmux, and eight-pier Codex defaults to GPT-5.6 Luna. |
 | `20260921.114713` | [recover the parked amphora sign-verb lap](20260921/20260921-114713_recover-amphora-sign-verb-lap.kyri) | Landed the sign-verb fix; cold pass tree_moved=no, 47 red. |
+| `20260921.114130` | [send the recovered seam lap](20260921/20260921-114130_send-the-recovered-seam-lap.kyri) | Sent the seam doc, its pointer, two link fixes, and the prior log. |
 | `20260921.102247` | [recover the parked scope-map lap](20260921/20260921-102247_recover-scope-map-parked-lap.kyri) | Landed the scope-map rows, cold pass tree_moved=no, 36 red. |
+| `20260921.101214` | [recover the parked seam lap](20260921/20260921-101214_recover-the-parked-seam-lap.kyri) | Recovered the seam doc, its pointer, and two archive link fixes. |
 | `20260921.095436` | [The Bron-to-Kyri breach -- one notation, one name, 2,926 files renamed](20260921/20260921-095436_bron-to-kyri-breach.kyri) | Molted every .bron file and every Bron reference to Kyri. |
 | `20260921.093713` | [The seed published -- AGENTS.md classified, both doors force-updated](20260921/20260921-093713_seed-published.kyri) | Classified AGENTS.md in the manifest, projected and proved the seed, pushed both doors. |
 | `20260921.085542` | [amphora sign verb verifies before it writes](20260921/20260921-085542_amphora-sign-verb-verify-before-write.kyri) | Foreign grammar refuses; three reds closed. |
