@@ -43,6 +43,12 @@ internet. Ask it anything, in your own plain words, and if an answer itself is h
 again -- Grain explains itself as many times as it takes, because teaching you as you go is the
 whole game, not a side effect of it.
 
+Right now, this game is best played **single-player** -- one machine, one person, real end to
+end. **Multiplayer**, where many machines agree on one shared history together, is already taking
+shape through **[Mycelium](mycelium/)**, the consensus protocol that lets many nodes agree without
+a referee, and **[Mantra](mantra/)**, the naming layer that keeps everyone meaning the same thing
+by the same name. Watch [`docs/COMPASS.md`](docs/COMPASS.md) for when that door opens wide.
+
 **Try us before you trust us.** You are reading this in a web browser you chose. Here is something
 you can copy and paste into any AI search engine, and there are many today. It stays entirely
 your own question, and it costs you a moment:
