@@ -43,6 +43,9 @@ keeps the shared fleet law, the Incense lane, and this Cursor engine in one read
 | `CURSOR_PREFLIGHT` | `1` | Run a bounded model probe before the full prompt. |
 | `CURSOR_PREFLIGHT_TIMEOUT` | `45` | Seconds allowed for the model probe. |
 | `CURSOR_INLINE_CONTEXT` | `0` | `0` asks Cursor to read the tracked context files in place; `1` embeds their contents in the prompt. |
+| `CURSOR_RUN_TIMEOUT` | `900` | Seconds allowed for the full print-mode lap; `0` disables the bound. |
+| `CURSOR_OUTPUT_FORMAT` | `text` | Cursor print output format: `text`, `json`, or `stream-json`. |
+| `CURSOR_STREAM_PARTIAL_OUTPUT` | `0` | `1` streams partial deltas; requires `CURSOR_OUTPUT_FORMAT=stream-json`. |
 | `FLEET_DRY` | `0` | `1` prints the resolved command shape without starting an agent. |
 
 `FLEET_BARE` and `CURSOR_FORCE` are separate axes. Bare mode says where the process runs. Force
@@ -73,6 +76,16 @@ probe on the same pier/account, `CURSOR_PREFLIGHT=0` removes that extra request 
 ```sh
 FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high \
   CURSOR_FORCE=1 CURSOR_PREFLIGHT=0 tools/l/launch-cursor-incense.sh
+```
+
+Print mode normally buffers plain text until the agent completes. The launcher therefore bounds a
+full lap at 900 seconds and reports a named timeout. For visible live activity, opt into Cursor's
+streaming event format:
+
+```sh
+CURSOR_OUTPUT_FORMAT=stream-json CURSOR_STREAM_PARTIAL_OUTPUT=1 \
+  FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high \
+  CURSOR_FORCE=1 tools/l/launch-cursor-incense.sh
 ```
 
 For short, latency-sensitive work, use the available Grok 4.6 variant explicitly. It is not

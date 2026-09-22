@@ -9,6 +9,9 @@
 #   CURSOR_PREFLIGHT=1 run a bounded model probe before the full prompt
 #   CURSOR_PREFLIGHT_TIMEOUT=45 seconds allowed for that probe
 #   CURSOR_INLINE_CONTEXT=0 read the tracked baton and seat files in place; 1 embeds them
+#   CURSOR_RUN_TIMEOUT=900 seconds allowed for the full print-mode lap; 0 disables the bound
+#   CURSOR_OUTPUT_FORMAT=text text output; stream-json can show live events
+#   CURSOR_STREAM_PARTIAL_OUTPUT=0 stream partial deltas when output format is stream-json
 #   FLEET_DRY=1        print the resolved command shape and run nothing
 #
 # Example:
@@ -30,6 +33,9 @@ model=${CURSOR_MODEL:-grok-4.7-high}
 preflight=${CURSOR_PREFLIGHT:-1}
 preflight_timeout=${CURSOR_PREFLIGHT_TIMEOUT:-45}
 inline_context=${CURSOR_INLINE_CONTEXT:-0}
+run_timeout=${CURSOR_RUN_TIMEOUT:-900}
+output_format=${CURSOR_OUTPUT_FORMAT:-text}
+stream_partial=${CURSOR_STREAM_PARTIAL_OUTPUT:-0}
 baton=tools/f/fleet_baton.txt
 seat_prompt=tools/i/incense_seat_prompt.txt
 FLEET_BARE=$bare
@@ -49,6 +55,13 @@ done
 case "$preflight" in 0|1) ;; *) echo "launch-cursor-incense: CURSOR_PREFLIGHT must be 0 or 1" >&2; exit 2 ;; esac
 case "$preflight_timeout" in ''|*[!0-9]*) echo "launch-cursor-incense: CURSOR_PREFLIGHT_TIMEOUT must be a nonnegative integer" >&2; exit 2 ;; esac
 case "$inline_context" in 0|1) ;; *) echo "launch-cursor-incense: CURSOR_INLINE_CONTEXT must be 0 or 1" >&2; exit 2 ;; esac
+case "$run_timeout" in ''|*[!0-9]*) echo "launch-cursor-incense: CURSOR_RUN_TIMEOUT must be a nonnegative integer" >&2; exit 2 ;; esac
+case "$output_format" in text|json|stream-json) ;; *) echo "launch-cursor-incense: CURSOR_OUTPUT_FORMAT must be text, json, or stream-json" >&2; exit 2 ;; esac
+case "$stream_partial" in 0|1) ;; *) echo "launch-cursor-incense: CURSOR_STREAM_PARTIAL_OUTPUT must be 0 or 1" >&2; exit 2 ;; esac
+if [ "$stream_partial" = 1 ] && [ "$output_format" != stream-json ]; then
+  echo "launch-cursor-incense: CURSOR_STREAM_PARTIAL_OUTPUT=1 requires CURSOR_OUTPUT_FORMAT=stream-json" >&2
+  exit 2
+fi
 
 if [ "${FLEET_DRY:-0}" != 1 ] && [ "$preflight" = 1 ]; then
   probe_file=$(mktemp "${TMPDIR:-/tmp}/cursor-incense-probe.XXXXXX")
@@ -108,7 +121,7 @@ prompt=$(
 
 if [ "${FLEET_DRY:-0}" = 1 ]; then
   echo "launch-cursor-incense: FLEET_DRY=1 -- no agent launched"
-  printf 'FLEET_BARE=%s FLEET_CAPTAIN=%s CURSOR_MODEL=%s CURSOR_FORCE=%s CURSOR_PREFLIGHT=%s CURSOR_INLINE_CONTEXT=%s\n' "$bare" "$captain" "$model" "$force" "$preflight" "$inline_context"
+  printf 'FLEET_BARE=%s FLEET_CAPTAIN=%s CURSOR_MODEL=%s CURSOR_FORCE=%s CURSOR_PREFLIGHT=%s CURSOR_INLINE_CONTEXT=%s CURSOR_RUN_TIMEOUT=%s CURSOR_OUTPUT_FORMAT=%s\n' "$bare" "$captain" "$model" "$force" "$preflight" "$inline_context" "$run_timeout" "$output_format"
   if [ "$bare" = 1 ]; then
     printf 'cursor-agent --model %q %s -p <assembled Incense prompt>\n' "$model" "$( [ "$force" = 1 ] && printf -- '--force' || true )"
   else
@@ -119,14 +132,39 @@ fi
 
 args=(--model "$model")
 [ "$force" = 1 ] && args+=(--force)
+args+=(--output-format "$output_format")
+[ "$stream_partial" = 1 ] && args+=(--stream-partial-output)
 args+=(-p "$prompt")
+
+run_agent() {
+  if [ "$run_timeout" = 0 ]; then
+    "$@"
+  else
+    timeout --foreground "$run_timeout" "$@"
+  fi
+}
 
 if [ "$bare" = 1 ]; then
   command -v cursor-agent >/dev/null 2>&1 || {
     echo "launch-cursor-incense: cursor-agent is not on PATH" >&2
     exit 2
   }
-  exec cursor-agent "${args[@]}"
+  if run_agent cursor-agent "${args[@]}"; then
+    exit 0
+  else
+    code=$?
+  fi
+else
+  if run_agent ./tools/ag/agent-jail.sh cursor-agent "${args[@]}"; then
+    exit 0
+  else
+    code=$?
+  fi
 fi
 
-exec ./tools/ag/agent-jail.sh cursor-agent "${args[@]}"
+if [ "$code" -eq 124 ]; then
+  echo "launch-cursor-incense: full Cursor lap timed out after ${run_timeout}s" >&2
+elif [ "$code" -eq 130 ]; then
+  echo "launch-cursor-incense: full Cursor lap interrupted" >&2
+fi
+exit "$code"
