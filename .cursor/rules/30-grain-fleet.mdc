@@ -26,6 +26,12 @@ The launcher has four independent inputs:
   fault fails with a named error instead of looking like a hung terminal. Set it to `0` only when
   a hand has already proved the model path.
 
+Cost/effectiveness default: keep `grok-4.7-high` for difficult repository work, keep prompts
+file-backed and bounded, and do not inflate the context with pasted files. The launcher does not
+select Cursor's 500k long-context tier. A repeated lap may set `CURSOR_PREFLIGHT=0` after a known-
+good probe to avoid the small extra startup request. `grok-4.6-high` is an explicit responsiveness
+fallback, not a cheaper published token tier; never claim it ran unless `CURSOR_MODEL` says so.
+
 Keep the fleet invariants from the Claude and Codex loops: one writer per checkout, round-open
 before work, the baton before the lane, stop markers before a lap, session output in the shared
 window, and a commit plus Kyri log at close. Cursor is another engine at the same ship door, not a
