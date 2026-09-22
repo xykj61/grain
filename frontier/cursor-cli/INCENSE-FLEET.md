@@ -45,6 +45,37 @@ a jailed process can still receive `--force`.
 view of the fleet, but human-only gates remain human-only: no key use, funds, provisioning,
 maintainer identity, or public-seed publication.
 
+## Cost-effective operating profile
+
+The default is `grok-4.7-high` because it is the strongest general-purpose choice in the current
+Cursor Grok family and its ordinary published token rates match Grok 4.6. “High” is an effort
+setting, not a separate price tier; difficult work may still consume more output and reasoning
+tokens. Keep the prompt narrow, work in one bounded lap, and ask for inspection before edits when
+the task is uncertain. This preserves effectiveness without paying for unnecessary context.
+
+The launcher does not request Cursor's fast or 500k long-context pricing tiers. Avoid pasting large
+files into the prompt; point the agent at tracked files instead. The default preflight is a small
+bounded model probe that prevents a dead terminal when a model is unavailable. After a successful
+probe on the same pier/account, `CURSOR_PREFLIGHT=0` removes that extra request for repeated laps:
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high \
+  CURSOR_FORCE=1 CURSOR_PREFLIGHT=0 tools/l/launch-cursor-incense.sh
+```
+
+For short, latency-sensitive work, use the available Grok 4.6 variant explicitly. It is not
+cheaper per token in the normal pricing table, but it may be more responsive on a path where
+Grok 4.7 is slow or unavailable:
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.6-high \
+  CURSOR_FORCE=1 tools/l/launch-cursor-incense.sh
+```
+
+Check `cursor-agent models` before changing the model ID. Account availability and Cursor's
+selected billing mode control the final rate; this repository does not silently select a cheaper
+model or claim that a fallback model ran.
+
 ## Safer variants
 
 Preview the exact shape without launching:
