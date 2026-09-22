@@ -74,13 +74,17 @@ The shared baton, seat stanza, round-open, stop markers, one-writer rule, sessio
 commit, and Kyri close remain the same fleet shape used by Claude and Codex. The Cursor-specific
 adapter is [`../../.cursor/rules/30-grain-fleet.mdc`](../../.cursor/rules/30-grain-fleet.mdc).
 
+By default the launcher gives Cursor the two tracked context paths and asks it to read them in
+place. This avoids duplicating roughly 20 KB of fleet context inside the request. Set
+`CURSOR_INLINE_CONTEXT=1` only for a CLI path that cannot read repository files itself.
+
 Use the CLI's model picker or `--model` for a session choice. The current default in the tracked
 Incense launcher is `grok-4.7-high`; the explicit variable keeps that choice inspectable. The
 launcher preflights the model for a bounded period so unavailable models fail clearly. For cost,
 the launcher keeps the prompt file-backed, avoids the 500k long-context tier, and permits
 `CURSOR_PREFLIGHT=0` after the model path has already been proven. Grok 4.6 is a responsive
-fallback, not a cheaper per-token tier. Do not bake a personal model ID, email, auth token, or
-telemetry payload into this tree. The official CLI configuration locations
+fallback (`cursor-grok-4.6-high`), not a cheaper per-token tier. Do not bake a personal model ID,
+email, auth token, or telemetry payload into this tree. The official CLI configuration locations
 and permission schema are maintained in Cursor's documentation; the tracked project file contains
 only the project permission layer.
 

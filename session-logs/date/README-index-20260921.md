@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260921.211700 | [20260921-211700_cursor-resource-exhaustion-compacted.kyri](20260921/20260921-211700_cursor-resource-exhaustion-compacted.kyri) | Compacted Cursor fleet context after resource exhaustion |
+| 20260921.211345 | [20260921-211345_cursor-full-path-alive.kyri](20260921/20260921-211345_cursor-full-path-alive.kyri) | Answered the Cursor full-path probe |
 | 20260921.211109 | [20260921-211109_cursor-launch-copy-paste-repaired.kyri](20260921/20260921-211109_cursor-launch-copy-paste-repaired.kyri) | Repaired tablet paste and Cursor probe diagnostics |
 | 20260921.205820 | [20260921-205820_cursor-guide-cost-profile.kyri](20260921/20260921-205820_cursor-guide-cost-profile.kyri) | Optimized Cursor CLI guide for cost and effectiveness |
 | 20260921.154545 | [20260921-154545_cursor-usage-rate-compared.kyri](20260921/20260921-154545_cursor-usage-rate-compared.kyri) | Compared current Grok 4.7 and 4.6 Cursor usage rates |
