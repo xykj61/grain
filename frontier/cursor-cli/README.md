@@ -78,6 +78,11 @@ By default the launcher gives Cursor the two tracked context paths and asks it t
 place. This avoids duplicating roughly 20 KB of fleet context inside the request. Set
 `CURSOR_INLINE_CONTEXT=1` only for a CLI path that cannot read repository files itself.
 
+The launcher bounds a full print-mode lap at 900 seconds because Cursor's normal text output may
+remain silent until completion. Set `CURSOR_OUTPUT_FORMAT=stream-json
+CURSOR_STREAM_PARTIAL_OUTPUT=1` when live event output is useful; set `CURSOR_RUN_TIMEOUT=0` only
+for a deliberately unbounded lap.
+
 Use the CLI's model picker or `--model` for a session choice. The current default in the tracked
 Incense launcher is `grok-4.7-high`; the explicit variable keeps that choice inspectable. The
 launcher preflights the model for a bounded period so unavailable models fail clearly. For cost,

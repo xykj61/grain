@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260921.213012 | [20260921-213012_cursor-lap-timeout-added.kyri](20260921/20260921-213012_cursor-lap-timeout-added.kyri) | Added a bound and live output option to Cursor laps |
 | 20260921.211700 | [20260921-211700_cursor-resource-exhaustion-compacted.kyri](20260921/20260921-211700_cursor-resource-exhaustion-compacted.kyri) | Compacted Cursor fleet context after resource exhaustion |
 | 20260921.211345 | [20260921-211345_cursor-full-path-alive.kyri](20260921/20260921-211345_cursor-full-path-alive.kyri) | Answered the Cursor full-path probe |
 | 20260921.211109 | [20260921-211109_cursor-launch-copy-paste-repaired.kyri](20260921/20260921-211109_cursor-launch-copy-paste-repaired.kyri) | Repaired tablet paste and Cursor probe diagnostics |

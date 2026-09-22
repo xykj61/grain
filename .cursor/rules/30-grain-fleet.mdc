@@ -28,6 +28,9 @@ The launcher has four independent inputs:
 - `CURSOR_INLINE_CONTEXT=0` keeps the request compact by pointing Cursor at the tracked baton and
   Incense seat files. Set it to `1` only when the CLI cannot read those files from the repository;
   embedding them duplicates context and can trigger resource exhaustion.
+- `CURSOR_RUN_TIMEOUT=900` bounds the full print-mode lap. Cursor's plain text output may be silent
+  while it works; use `CURSOR_OUTPUT_FORMAT=stream-json CURSOR_STREAM_PARTIAL_OUTPUT=1` when live
+  activity is needed. Set the timeout to `0` only deliberately.
 
 Cost/effectiveness default: keep `grok-4.7-high` for difficult repository work, keep prompts
 file-backed and bounded, and do not inflate the context with pasted files. The launcher does not
