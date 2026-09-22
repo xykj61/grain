@@ -8,6 +8,7 @@
 #   CURSOR_FORCE=1     pass Cursor's --force permission flag; default enabled
 #   CURSOR_PREFLIGHT=1 run a bounded model probe before the full prompt
 #   CURSOR_PREFLIGHT_TIMEOUT=45 seconds allowed for that probe
+#   CURSOR_INLINE_CONTEXT=0 read the tracked baton and seat files in place; 1 embeds them
 #   FLEET_DRY=1        print the resolved command shape and run nothing
 #
 # Example:
@@ -28,6 +29,7 @@ force=${CURSOR_FORCE:-1}
 model=${CURSOR_MODEL:-grok-4.7-high}
 preflight=${CURSOR_PREFLIGHT:-1}
 preflight_timeout=${CURSOR_PREFLIGHT_TIMEOUT:-45}
+inline_context=${CURSOR_INLINE_CONTEXT:-0}
 baton=tools/f/fleet_baton.txt
 seat_prompt=tools/i/incense_seat_prompt.txt
 FLEET_BARE=$bare
@@ -46,6 +48,7 @@ done
 [ -n "$model" ] || { echo "launch-cursor-incense: CURSOR_MODEL must not be empty" >&2; exit 2; }
 case "$preflight" in 0|1) ;; *) echo "launch-cursor-incense: CURSOR_PREFLIGHT must be 0 or 1" >&2; exit 2 ;; esac
 case "$preflight_timeout" in ''|*[!0-9]*) echo "launch-cursor-incense: CURSOR_PREFLIGHT_TIMEOUT must be a nonnegative integer" >&2; exit 2 ;; esac
+case "$inline_context" in 0|1) ;; *) echo "launch-cursor-incense: CURSOR_INLINE_CONTEXT must be 0 or 1" >&2; exit 2 ;; esac
 
 if [ "${FLEET_DRY:-0}" != 1 ] && [ "$preflight" = 1 ]; then
   probe_file=$(mktemp "${TMPDIR:-/tmp}/cursor-incense-probe.XXXXXX")
@@ -85,10 +88,15 @@ if [ "${FLEET_DRY:-0}" != 1 ] && [ "$preflight" = 1 ]; then
 fi
 
 prompt=$(
-  cat "$baton"
-  printf '\n'
-  cat "$seat_prompt"
-  printf '\n'
+  if [ "$inline_context" = 1 ]; then
+    cat "$baton"
+    printf '\n'
+    cat "$seat_prompt"
+    printf '\n'
+  else
+    printf '%s\n' "Read these tracked files whole, in this order, before acting: $baton; $seat_prompt. They are the shared fleet baton and Incense seat context. Do not replace them with a summary."
+    printf '%s\n\n' "Keep this context file-backed rather than quoting it into the prompt; use repository tools to read it from the current tree."
+  fi
   printf '%s\n' "YOU ARE $seat -- Cursor Agent CLI, running $( [ "$bare" = 1 ] && printf bare || printf inside-ai-jail ) on the pier, in this tree."
   printf '%s\n' "Use the Cursor CLI model selected by this launch: $model. Record configured_model $model as an explicit fleet CLI selection and keep active runtime identity separate."
   if [ "$captain" = 1 ]; then
@@ -100,7 +108,7 @@ prompt=$(
 
 if [ "${FLEET_DRY:-0}" = 1 ]; then
   echo "launch-cursor-incense: FLEET_DRY=1 -- no agent launched"
-  printf 'FLEET_BARE=%s FLEET_CAPTAIN=%s CURSOR_MODEL=%s CURSOR_FORCE=%s CURSOR_PREFLIGHT=%s\n' "$bare" "$captain" "$model" "$force" "$preflight"
+  printf 'FLEET_BARE=%s FLEET_CAPTAIN=%s CURSOR_MODEL=%s CURSOR_FORCE=%s CURSOR_PREFLIGHT=%s CURSOR_INLINE_CONTEXT=%s\n' "$bare" "$captain" "$model" "$force" "$preflight" "$inline_context"
   if [ "$bare" = 1 ]; then
     printf 'cursor-agent --model %q %s -p <assembled Incense prompt>\n' "$model" "$( [ "$force" = 1 ] && printf -- '--force' || true )"
   else

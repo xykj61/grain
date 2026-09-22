@@ -42,6 +42,7 @@ keeps the shared fleet law, the Incense lane, and this Cursor engine in one read
 | `CURSOR_FORCE` | `1` | `1` passes Cursor's `--force`; `0` keeps approval prompts. |
 | `CURSOR_PREFLIGHT` | `1` | Run a bounded model probe before the full prompt. |
 | `CURSOR_PREFLIGHT_TIMEOUT` | `45` | Seconds allowed for the model probe. |
+| `CURSOR_INLINE_CONTEXT` | `0` | `0` asks Cursor to read the tracked context files in place; `1` embeds their contents in the prompt. |
 | `FLEET_DRY` | `0` | `1` prints the resolved command shape without starting an agent. |
 
 `FLEET_BARE` and `CURSOR_FORCE` are separate axes. Bare mode says where the process runs. Force
@@ -60,8 +61,12 @@ setting, not a separate price tier; difficult work may still consume more output
 tokens. Keep the prompt narrow, work in one bounded lap, and ask for inspection before edits when
 the task is uncertain. This preserves effectiveness without paying for unnecessary context.
 
-The launcher does not request Cursor's fast or 500k long-context pricing tiers. Avoid pasting large
-files into the prompt; point the agent at tracked files instead. The default preflight is a small
+The launcher does not request Cursor's fast or 500k long-context pricing tiers. It hands Cursor the
+tracked baton and seat paths by default, so Cursor reads the source files in the repository rather
+than receiving a second pasted copy in the prompt. This compact handoff avoids duplicated context
+and is the recommended mode. Set `CURSOR_INLINE_CONTEXT=1` only when a particular CLI path cannot
+read the files itself. Avoid pasting large files into the prompt; point the agent at tracked files
+instead. The default preflight is a small
 bounded model probe that prevents a dead terminal when a model is unavailable. After a successful
 probe on the same pier/account, `CURSOR_PREFLIGHT=0` removes that extra request for repeated laps:
 
@@ -75,7 +80,7 @@ cheaper per token in the normal pricing table, but it may be more responsive on 
 Grok 4.7 is slow or unavailable:
 
 ```sh
-FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.6-high \
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=cursor-grok-4.6-high \
   CURSOR_FORCE=1 tools/l/launch-cursor-incense.sh
 ```
 
