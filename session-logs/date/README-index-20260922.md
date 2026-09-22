@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.195815 | [20260922-195815_seven-codex-loops-up.kyri](20260922/20260922-195815_seven-codex-loops-up.kyri) | Seven Codex loops are up |
 | 20260922.195453 | [20260922-195453_seven-codex-inners.kyri](20260922/20260922-195453_seven-codex-inners.kyri) | Seven inners and seat lines name Codex |
 | 20260922.175738 | [20260922-175738_fleet-ship-door-spells.kyri](20260922/20260922-175738_fleet-ship-door-spells.kyri) | Fleet spells name the ship and the door |
 | 20260922.175159 | [20260922-175159_seven-ships-on-codex.kyri](20260922/20260922-175159_seven-ships-on-codex.kyri) | Seven live ships seated on Codex |
