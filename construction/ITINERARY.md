@@ -209,6 +209,12 @@ whole](archive/20260918-111501_itinerary-diffuser-symlinked-import-account.md).
 **DIFFUSER -- THE BUILD CACHE DOES NOT COLLAPSE A SYMLINKED IMPORT EITHER.** [Shelved
 whole](archive/20260921-055148_itinerary-diffuser-build-cache-note-account.md).
 
+**DIFFUSER -- HAND BAKERY THE SIZE-AWARE PLACEMENT CHANGE.** The file-unit paper
+([`../active-designing/date/20260921/20260921-072253_the-unit-of-placement-is-the-file.md`](../active-designing/date/20260921/20260921-072253_the-unit-of-placement-is-the-file.md))
+names `tools/fixtures/a/aurora_file_placement_scan.sh` as buildable: compare each largest-file
+size with the node capacity, then carry the ceiling into Aurora's placement. The radial/polar
+finding remains closed; no topology build follows it.
+
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
 `rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.
