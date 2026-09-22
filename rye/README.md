@@ -2,21 +2,47 @@
 
 **Language:** EN
 **Version:** `20260620.033912` (Rye chronological stamp)
-**Last updated:** 2026-08-26 (Gauge pass -- register and reach; every command, path, and claim held exactly)
-**Style:** Gauge (see `../context/GAUGE_STYLE.md`)
+**Last updated:** 2026-09-22 (Radiant-Gauge pass -- the language door and its return paths)
+**Style:** Radiant + Gauge (warmth carried by [`Radiant Style`](../context/RADIANT_STYLE.md), claims held by [`Gauge Style`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- living language module
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour with Rye in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md) - the sibling shell
 this language builds is [`../rishi/README.md`](../rishi/README.md)
 
+## The fascia: a handrail through Grain
+
+The visible edge of Rye reaches in two directions. Upward, it returns to the [`Grain root`](../README.md),
+where the project names its larger promise. Downward, it leads into the files and commands that let
+the language take a first breath on your machine. Across the room, it introduces the family that grows
+from the same soil.
+
+| Reach | Door | What it carries |
+|---|---|---|
+| Home | [`Grain README`](../README.md) | the whole tree, its invitation, and its present shape |
+| Begin | [`The first hour`](../docs-geode/tutorials/the-first-hour.md) | a guided arrival from a fresh checkout to a green result |
+| Build | [`SOURCE.md`](../SOURCE.md) | the signed, sandboxed route through the system |
+| Learn | [`Rye learning process`](../rye-learning-process/README.md) | the record of how the language became itself |
+| Sibling | [`Rishi`](../rishi/README.md) | the shell and witness language that grows beside Rye |
+| Higher voice | [`Glow`](../glow/README.md) | the language people write before Rye carries it to metal |
+| Bare metal | [`Aurora`](../aurora/README.md) | the first RISC-V seed that wakes below the application layer |
+| Craft | [`TAME Guidance`](../context/TAME_GUIDANCE.md) · [`Kyri`](../context/KYRI.md) | the discipline and voice that keep the work clear |
+
+The path has a gentle return: after a build, follow the command's receipt back through this page,
+step up to [`Grain home`](../README.md), or continue outward through [`the docs geode`](../docs-geode/README.md).
+Every door leaves a reader with a next door.
+
 ---
 
-## What Rye Is
+## What Rye is
 
-Rye is the systems language we are growing from Zig 0.16.0. This first version is honest about what it is: a careful front-end that runs `.rye` source through the Zig 0.16.0 toolchain, on a standard library that is now Rye's own. A `.rye` file is Zig source at heart for now. Every capability the toolchain offers -- SHA3-512 in the standard crypto library included -- is therefore Rye's too, by construction. And Rye has begun to diverge: it carries its own copy of the standard library, and it counts its versions in its own way. Over time, it grows further into its own shape.
+Rye is Grain's systems language: a careful front-end grown from Zig 0.16.0, with a standard library
+held under Rye's care and a chronological clock of its own. A `.rye` file currently travels through
+the Zig toolchain, so every capability the toolchain carries, including SHA3-512, arrives by
+construction. Rye adds its own library path, its own receipts, its own tests, and its own way of
+counting time. Each piece brings the language closer to its own shape.
 
-The `rye` command speaks four verbs:
+The [`rye` command](src/main.rye) speaks four verbs:
 
 - `rye version` -- print Rye's chronological version and the backend it stands upon.
 - `rye run <file.rye>` -- compile and run a single `.rye` source file, against Rye's own standard library.
@@ -52,9 +78,14 @@ rye/
     rye                     <- the built command (after building)
 ```
 
-The lessons learned while building Rye live in their own home, `../rye-learning-process/`, with the elder reference at `../rye-learning-process/archive/ALMANAC.md` -- gate trio, Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
+The lessons learned while building Rye live in the [`Rye learning process`](../rye-learning-process/),
+with the elder reference at [`ALMANAC.md`](../rye-learning-process/archive/ALMANAC.md) -- gate trio,
+Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
 
-Sibling modules built with `rye build` include **Rishi** (`../rishi/`), **Caravan** (`../caravan/`), **Tally** (`../tally/`), **Brushstroke** (`../brushstroke/`), **Mantra** (`../mantra/`), and **Aurora** (`../aurora/`). What *seed* means in this family is defined in `../active-designing/yonder/date/20260622/20260622-235012_what-we-mean-by-seed.md`.
+Sibling modules built with `rye build` include [`Rishi`](../rishi/), [`Caravan`](../caravan/),
+[`Tally`](../tally/), [`Brushstroke`](../brushstroke/), [`Mantra`](../mantra/), and
+[`Aurora`](../aurora/). What *seed* means in this family is defined in
+[`the seed note`](../active-designing/yonder/date/20260622/20260622-235012_what-we-mean-by-seed.md).
 
 ---
 
@@ -140,9 +171,19 @@ The `rye` command allocates from `init.garden` -- the process season allocator t
 
 ---
 
-## Rye's Garden
+## Rye's garden and the way out
 
-Rye is the language at the bottom of a wider ecosystem we are designing in the open: **Tally**, the garden allocator; **Caravan**, the supervisor-kernel; **Tablecloth**, the content-addressed store; **Mantra**, version control; **Aurora**, boot; and **Pond** -- a gentle, TAME-style reimplementation of the `ai-jail` sandbox we work inside, a bounded enclosure where an agent can build in safety. The explorations behind these names live in `../external-research/`, and the from-scratch setup that ties the tools together lives in `../SOURCE.md`.
+Rye is the language at the bottom of a wider ecosystem we are designing in the open: **Tally**, the
+garden allocator; **Caravan**, the supervisor-kernel; **Tablecloth**, the content-addressed store;
+**Mantra**, version control; [`Aurora`](../aurora/), boot; and **Pond**, a gentle TAME-style
+reimplementation of the `ai-jail` sandbox, a bounded enclosure where an agent can build in safety.
+The explorations behind these names live in [`external-research`](../external-research/), and the
+from-scratch setup that ties the tools together lives in [`SOURCE.md`](../SOURCE.md).
+
+When your Rye reading is complete, the clean exit is [`Grain home`](../README.md). From there,
+[`the docs geode`](../docs-geode/README.md) offers the wider shelf, [`Glow`](../glow/README.md)
+offers the higher language, and [`Rishi`](../rishi/README.md) offers the neighboring shell. Rye is
+a room in the tree, and a good room leaves its reader oriented toward the whole house.
 
 ---
 
