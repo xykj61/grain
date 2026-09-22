@@ -7,6 +7,7 @@
 **Status:** Proposed -- vision. The arithmetic is checkable; the proposal is unwitnessed.
 **Room:** vision -- a measured proposal, unwitnessed.
 **Lane:** Diffuser -- moonshots and whitepaper research, aimed at Aurora's placement (Bakery's lane).
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - the scan this page reads is [`../../../tools/fixtures/a/aurora_file_placement_scan.sh`](../../../tools/fixtures/a/aurora_file_placement_scan.sh) - a citizen's doorway to the same tree is [`../../../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md`](../../../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md)
 **Kin:** [`20260910/20260910-060204_the-bounded-torus-moonshots.md`](../20260910/20260910-060204_the-bounded-torus-moonshots.md) (the placement scan this piece reads), [`20260916/20260916-042700_the-grid-that-was-already-flat.md`](../20260916/20260916-042700_the-grid-that-was-already-flat.md).
 
 ## What is, before what could be

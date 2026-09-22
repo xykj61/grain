@@ -7,6 +7,7 @@
 **Status:** Proposed -- vision. The arithmetic is checkable, and the finding is a negative result.
 **Room:** vision -- a measured proposal, unwitnessed.
 **Lane:** Diffuser -- moonshots and whitepaper research, aimed at Aurora's placement (Bakery's lane).
+**Where this sits:** home is [`../../../README.md`](../../../README.md) - the sibling reading is [`20260921-072253_the-unit-of-placement-is-the-file.md`](20260921-072253_the-unit-of-placement-is-the-file.md) - a citizen's doorway to the same tree is [`../../../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md`](../../../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md)
 **Kin:** [`../20260916/20260916-042700_the-grid-that-was-already-flat.md`](../20260916/20260916-042700_the-grid-that-was-already-flat.md) (the mesh-vs-torus arithmetic this piece extends), [`../20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md`](../20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md).
 
 ## What is, before what could be

@@ -98,6 +98,8 @@ permission to direct work, never to cross a gate.
 
 ## next -- the loop updates this section
 
+On `20260922.143256` the captain seated one fruit and one engine for each of the other seven ships, in `recursion-prompts/<seat>-inner.md`. Codex takes bakery and copal. Cursor takes patchouli, pheromone, grass, petrichor, and diffuser. The roster engine stays each ship's own row.
+
 Item 3 (the pending-decisions reading) landed at `3c99a22db` -- one scan, one control, one witness,
 reported and gated on nothing. Item 1 (shared build caches) landed at this lap's own commit --
 [`active-designing/20260918-031251_the-cache-eight-trees-could-share.md`](../active-designing/20260918-031251_the-cache-eight-trees-could-share.md)
