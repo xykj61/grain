@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** A new Glow rune or a raise of the shape ceiling returns to the interactive bench. The roster row stays the sailing engine until a later word flips it.
+**Cursor.** A new Glow rune or a raise of the shape ceiling returns to the interactive bench. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 
