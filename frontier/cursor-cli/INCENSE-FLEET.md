@@ -136,6 +136,10 @@ The launcher does not publish, push, spend, provision, or cross a human gate by 
 one bounded agent session. A later fleet loop or watcher may be built around this same entry point;
 until then, the one-lap command is the honest ability this room proves.
 
+## The interactive paste
+
+The block above is the one-lap print. The conversation pastes live as **incense interactive** in [`../../context/SPELLBOOK.md`](../../context/SPELLBOOK.md). The cursor line there is bare, captain, `--yolo`, and `grok-4.7-high`. The same spell seats Claude, Codex, Antigravity, and OpenCode.
+
 ## Current model note
 
 At this writing, Cursor's current flagship Grok model is Grok 4.7. This CLI exposes its documented

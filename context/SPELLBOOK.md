@@ -39,6 +39,57 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **tend** | a light keeping round -- freshen, ratchet-on-touch, add no new weight | tend rounds |
 | **survey** | the looking pass that names sites and gaps before the first GREEN | `.claude/rules/vocabulary-survey.md` |
 | **expand** | grow an intent into a runnable plan in `expanding-prompts/` | `expanding-prompts/` |
+| **incense interactive** | begin a captain conversation; the next word names the door | this page |
+
+## incense interactive
+
+Run any line from the repository root, inside tmux on the pier. It opens a conversation. Each line sets `FLEET_BARE=1` and `FLEET_CAPTAIN=1`. The flag after the command is the permission grant that engine reads. The captain's gates stay manual: keys, funds, provisioning, identity, and the public seed.
+
+The one-lap prints stay in their own scripts: [`../tools/l/launch-cursor-incense.sh`](../tools/l/launch-cursor-incense.sh), [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh), [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh), and [`../tools/f/fleet-loop-opencode.sh`](../tools/f/fleet-loop-opencode.sh).
+
+### incense interactive cursor
+
+Cursor reads `--yolo` and `--model`. The shell also sets `CURSOR_FORCE=1`, which the print launcher turns into `--force`.
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier. Begin an interactive session."
+```
+
+Home: [`../frontier/cursor-cli/INCENSE-FLEET.md`](../frontier/cursor-cli/INCENSE-FLEET.md).
+
+### incense interactive claude
+
+Claude Code treats a prompt as an interactive session. It reads `--dangerously-skip-permissions`. `--print` is its one-lap door. The paste names `claude-sonnet-5` at `--effort medium`, the resolved model on the live seats. [`.claude/settings.json`](../.claude/settings.json) still declares `claude-opus-5` as the fleet default a clone's local settings can outrank.
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Claude Code. Begin an interactive session."
+```
+
+### incense interactive codex
+
+Codex forwards these flags to the interactive CLI. `codex exec` is its one-lap door. The model is the default in [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh).
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Codex. Begin an interactive session."
+```
+
+### incense interactive antigravity
+
+The command is `agy`. It reads `--dangerously-skip-permissions` and `--prompt-interactive`. The paste leaves the model to the signed-in account; `agy models` lists that account's models after sign-in. Home: [`../frontier/ANTIGRAVITY.md`](../frontier/ANTIGRAVITY.md).
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 agy --dangerously-skip-permissions --prompt-interactive "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Antigravity. Begin an interactive session."
+```
+
+### incense interactive opencode
+
+OpenCode on Together is the interactive open door. The model is the one proven in [`../open/HARNESS_SETUP.md`](../open/HARNESS_SETUP.md) and named in [`../tools/f/fleet-loop-opencode.sh`](../tools/f/fleet-loop-opencode.sh). `opencode run --interactive` keeps the session open after the first message.
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 opencode run --interactive --dangerously-skip-permissions -m together/deepseek-ai/DeepSeek-V4-Pro-0813 "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in OpenCode. Begin an interactive session."
+```
+
+OpenRouter and Hugging Face remain the request APIs in [`../open/PROVIDER_SETUP.md`](../open/PROVIDER_SETUP.md). This pier's OpenCode config seats Together only, so those two wait for their own model line before they earn a paste.
 
 ## The invoked kin -- tools and disciplines a chant calls by name
 

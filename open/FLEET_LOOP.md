@@ -76,6 +76,8 @@ cd ~/grain-<seat> && sh tools/f/fleet-loop-opencode.sh <seat>          # the loo
 cd ~/grain-<seat> && LOOP_LAPS=1 sh tools/f/fleet-loop-opencode.sh <seat>   # one lap
 ```
 
+The interactive captain paste is **incense interactive opencode** in [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md).
+
 The recipe is also printed by the seat table itself, engine-aware:
 
 ```sh
