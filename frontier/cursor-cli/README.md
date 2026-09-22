@@ -57,6 +57,13 @@ FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 \
   tools/l/launch-cursor-incense.sh
 ```
 
+If entering this from a tablet, keep the `\` as the last character on its line; trailing spaces
+turn the continuation into a separate shell command. A one-line form is also safe:
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 tools/l/launch-cursor-incense.sh
+```
+
 `FLEET_BARE=1` means the agent runs directly on the pier; use `FLEET_BARE=0` to run through the
 repository's `agent-jail.sh`. `FLEET_CAPTAIN=1` adds Incense's law/review/custody role to the
 prompt, but never crosses a human-only gate. `CURSOR_FORCE=1` passes Cursor's `--force` flag,

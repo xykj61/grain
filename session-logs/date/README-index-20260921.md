@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260921.211109 | [20260921-211109_cursor-launch-copy-paste-repaired.kyri](20260921/20260921-211109_cursor-launch-copy-paste-repaired.kyri) | Repaired tablet paste and Cursor probe diagnostics |
 | 20260921.205820 | [20260921-205820_cursor-guide-cost-profile.kyri](20260921/20260921-205820_cursor-guide-cost-profile.kyri) | Optimized Cursor CLI guide for cost and effectiveness |
 | 20260921.154545 | [20260921-154545_cursor-usage-rate-compared.kyri](20260921/20260921-154545_cursor-usage-rate-compared.kyri) | Compared current Grok 4.7 and 4.6 Cursor usage rates |
 | `20260921.153329` | [Cursor Incense hang diagnosed and bounded](20260921/20260921-153329_cursor-incense-hang-diagnosed.kyri) | Found the latest-model stall, corrected the model ID, and added a named preflight timeout. |
