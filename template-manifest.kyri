@@ -110,6 +110,8 @@ allow classical-vedic-astrology   # method, teachings, studies, templates and to
 allow risala                       # siloed Classical/Quranic Arabic study room, opened 20260920; no personal content
 allow open                         # vision-marked companion-model room, opened 20260920; names the maintainer, IDENT-scrubbed like every allowed room
 allow fleet                        # fleet-naming study room, opened 20260920; no personal content, no maintainer name found
+allow frontier                     # pier CLI door, opened 20260921; scrubbed like open/
+allow .cursor                      # living Cursor CLI rules; the retired archive stays personal
 allow context/document-mirrors.brix   # which documents live in more than one room, proven identical
 allow ember-voices   # the voices room at depth 1; its KYRI.md is a proven mirror of context/KYRI.md
 allow spellbook      # the command words at depth 1, mirrored from context/SPELLBOOK.md
@@ -176,6 +178,8 @@ template  .gitmodules                    # gratitude/ and vendor/ submodule pins
 template  template-manifest.kyri         # this file -- the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
 scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
 personal  .cursor-archive                 # retired .cursor/rules/*.mdc twins, archived 20260920.135100; internal housekeeping, not shipped
+scrub     .cursor                         # living CLI rules and the tracked permission surface; no credentials
+scrub     frontier                        # pier CLI door; names the maintainer as decision authority, scrubbed like open/
 template  shastra                         # siloed Sanskrit study room; cleared 20260920 on Keaton's word, no maintainer name found
 template  risala                          # siloed Classical/Quranic Arabic study room, opened 20260920; no maintainer name found
 scrub     open                            # vision-marked companion-model room, opened 20260920; names the maintainer as decision authority throughout

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.145225 | [20260922-145225_seed-doors-published.kyri](20260922/20260922-145225_seed-doors-published.kyri) | Seed published after two rooms classified |
 | 20260922.144619 | [20260922-144619_send-then-the-seed.kyri](20260922/20260922-144619_send-then-the-seed.kyri) | Field send, then the public seed |
 | 20260922.143557 | [20260922-143557_seven-fruits-citizen-door.kyri](20260922/20260922-143557_seven-fruits-citizen-door.kyri) | Seven fruits assigned; a citizen door drafted |
 | 20260922.135509 | [20260922-135509_incense-interactive-doors.kyri](20260922/20260922-135509_incense-interactive-doors.kyri) | Five interactive captain pastes, one per door |
