@@ -66,3 +66,9 @@ stamp 20260921.115147
 epoch 1790005907
 paths tally/torus_index.rye tools/t/tally_torus_index_witness.rish
 what A pure bijective two-axis (tier, slot) index over Tally's named gardens, with a witness proving the bijection.
+claim copal-oven-season-o1
+seat copal
+stamp 20260922.195814
+epoch 1790121494
+paths tools/gen/chapter/oven_season_o1_witness.rish construction/standing-equipment.kyri
+what Roster the existing Oven Chapter o1 witness and prove its forward forge-path reading.
