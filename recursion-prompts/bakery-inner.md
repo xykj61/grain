@@ -7,11 +7,11 @@
 
 ## engine
 
-**Codex.** The fruit is a bounded re-run of a tool the card already names. The roster row in [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. Incense stays claude.
 
 ## fruit
 
-Paste the two ready rows from the scope-map ranking account and re-run [`../tools/fixtures/r/rank_outcome_scan.sh`](../tools/fixtures/r/rank_outcome_scan.sh). The card marks this agent-doable, with no hardware wait. Check the claim board before editing.
+The Now block's first bakery item asks where repeated work lives. This lap answers that with the measurement already on the card: paste the two ready rows from the scope-map ranking account and re-run [`../tools/fixtures/r/rank_outcome_scan.sh`](../tools/fixtures/r/rank_outcome_scan.sh). Check the claim board before editing. Leave the content-keyed cache itself for the lap that has this measurement in hand.
 
 ## gates
 

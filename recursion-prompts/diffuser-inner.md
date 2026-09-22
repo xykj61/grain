@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is fascia on the two newest design pages, which are prose. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. The fruit is one fascia check, then a handoff. Incense stays claude.
 
 ## fruit
 

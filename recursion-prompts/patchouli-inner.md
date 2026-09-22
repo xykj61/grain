@@ -7,11 +7,11 @@
 
 ## engine
 
-**Cursor.** The fruit is a reading. The weave's door is still a word, and a code lap that chooses it would spend that word. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. The weave's door is still a word. Incense stays claude.
 
 ## fruit
 
-Re-read [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md) and the card's note that the stated twelve place constructions reproduce as six. Confirm the module still matches that note. Stop before choosing which door the weave walks through.
+The Now block's first patchouli item is bounded offer, consent, use, value, expiration, and correction facts drawn from existing value forms. This lap names those existing forms in `mantra/` and `tally/` and writes the map in the lap log. Define no new type. Choose no weave door. The twelve-to-six place-construction note on [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md) stays a check beside that map, and the door stays unchosen.
 
 ## gates
 
