@@ -49,7 +49,9 @@ case "$preflight_timeout" in ''|*[!0-9]*) echo "launch-cursor-incense: CURSOR_PR
 
 if [ "${FLEET_DRY:-0}" != 1 ] && [ "$preflight" = 1 ]; then
   probe_file=$(mktemp "${TMPDIR:-/tmp}/cursor-incense-probe.XXXXXX")
-  trap 'rm -f "$probe_file"' EXIT HUP INT TERM
+  # Keep the probe output available to the failure handler. EXIT cleanup also runs after an
+  # interrupt, while trapping INT/TERM here would delete the evidence before it can be shown.
+  trap 'rm -f "$probe_file"' EXIT
   probe_args=(--model "$model")
   [ "$force" = 1 ] && probe_args+=(--force)
   probe_args+=(-p 'Reply with exactly: CURSOR_MODEL_READY')
@@ -68,7 +70,13 @@ if [ "${FLEET_DRY:-0}" != 1 ] && [ "$preflight" = 1 ]; then
     fi
   fi
   if [ "$probe_code" -ne 0 ] || ! grep -q 'CURSOR_MODEL_READY' "$probe_file"; then
-    echo "launch-cursor-incense: model probe failed or timed out (code $probe_code)" >&2
+    if [ "$probe_code" -eq 124 ]; then
+      echo "launch-cursor-incense: model probe timed out after ${preflight_timeout}s" >&2
+    elif [ "$probe_code" -eq 130 ]; then
+      echo "launch-cursor-incense: model probe interrupted" >&2
+    else
+      echo "launch-cursor-incense: model probe failed (code $probe_code)" >&2
+    fi
     tail -20 "$probe_file" >&2 || true
     echo "launch-cursor-incense: try cursor-agent models, then set CURSOR_MODEL to an available ID" >&2
     exit 3

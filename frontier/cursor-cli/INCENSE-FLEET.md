@@ -15,6 +15,13 @@ FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 \
   tools/l/launch-cursor-incense.sh
 ```
 
+The backslash above must be the final character on its line. To avoid copy/paste whitespace from
+a tablet terminal, the same launch may be entered as one line:
+
+```sh
+FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_MODEL=grok-4.7-high CURSOR_FORCE=1 tools/l/launch-cursor-incense.sh
+```
+
 The launcher reads, in order, the shared fleet baton and the Incense seat prompt. It then adds the
 engine name, selected model, and captain role before invoking Cursor Agent CLI with:
 
