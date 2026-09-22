@@ -54,12 +54,6 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim provenance-register-sweep
-seat petrichor
-stamp 20260921.092654
-epoch 1789997214
-paths .claude/rules/session-log-provenance.md
-what Sweep session-log-provenance.md's register under the Field target, closing the last page of %819.
 claim confer-chain-hop-bound
 seat bakery
 stamp 20260921.103153
