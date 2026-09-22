@@ -7,7 +7,7 @@
 
 ## engine
 
-**Codex.** The fruit is one witness, written in Rye under TAME. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. Incense stays claude.
 
 ## fruit
 

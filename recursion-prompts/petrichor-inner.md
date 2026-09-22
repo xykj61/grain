@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is prose on the docs shelf: a grade and a fascia pass. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. The fruit is one grade on the learning floor. Incense stays claude.
 
 ## fruit
 

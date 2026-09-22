@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** A new Glow rune or a raise of the shape ceiling returns to the interactive bench. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
+**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. A new Glow rune or a raise of the shape ceiling still returns to the interactive bench. Incense stays claude.
 
 ## fruit
 
