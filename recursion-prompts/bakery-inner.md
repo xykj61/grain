@@ -7,7 +7,7 @@
 
 ## engine
 
-**Codex.** The fruit is a bounded re-run of a tool the card already names. The roster row in [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) stays the sailing engine until a later word flips it.
+**Codex.** The fruit is a bounded re-run of a tool the card already names. The roster row in [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 

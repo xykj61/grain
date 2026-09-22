@@ -108,8 +108,9 @@ way the other two watchers do.
 **It does not claim the loop has run overnight.** The script is written and syntax-checked; the
 proof that it holds a full night is a night it has actually held, which has not happened yet.
 
-**It does not flip any ship's engine.** The roster still reads `claude` for all eight Earth ships.
-This page documents the switch; Keaton's word performs it.
+**It does not seat the fleet.** A ship's engine is the `engine` field in
+`construction/fleet-roster.kyri`. From `20260922` the seven live ships besides incense read
+`codex`. This page documents the OpenCode loop; the roster is the seating.
 
 **It does not repeat `HARNESS_SETUP.md`.** That page proves the provider and harness connection;
 this page assumes it and documents the loop that rides on top of it.

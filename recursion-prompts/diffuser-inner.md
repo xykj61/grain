@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is fascia on the two newest design pages, which are prose. The roster row stays the sailing engine until a later word flips it.
+**Cursor.** The fruit is fascia on the two newest design pages, which are prose. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 

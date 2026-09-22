@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is one reverse-reading packet, one disposition, in prose. The roster row stays the sailing engine until a later word flips it.
+**Cursor.** The fruit is one reverse-reading packet, one disposition, in prose. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 

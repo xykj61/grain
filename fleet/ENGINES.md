@@ -3,8 +3,8 @@
 **Language:** EN
 **Style:** Gauge Field, Bhakta opening (assume no background), Radiant warmth
 **Voice:** Kyri
-**Status:** Vision -- describes three engines, one of them newly seated and not yet run overnight
-**Last updated:** `20260921.035152`
+**Status:** Living -- three engines, and the seven live ships besides incense read codex
+**Last updated:** `20260922.175159`
 **Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/FLEET_LOOP.md`](../open/FLEET_LOOP.md) - [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri)
 
 ---
@@ -22,7 +22,7 @@ or watches a ship reads that one field.
 | Engine | Harness | Model | Loop script |
 |---|---|---|---|
 | `claude` | Claude Code | Claude | `tools/f/fleet-loop.sh` |
-| `codex` | Codex CLI | GPT-5.6-sol | `tools/f/fleet-loop-codex.sh` |
+| `codex` | Codex CLI | GPT-5.6-luna | `tools/f/fleet-loop-codex.sh` |
 | `opencode` | OpenCode | DeepSeek V4 Pro via Together AI | `tools/f/fleet-loop-opencode.sh` |
 
 The three loops are siblings, not rivals. Each is a **mutant** of the first -- the Claude loop is
@@ -46,7 +46,7 @@ names the three engines and how a ship picks one.
 ## How a ship switches engines
 
 1. Open [`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) and find the ship's row.
-2. Change the `engine` line -- `engine claude` to `engine opencode`, for example.
+2. Change the `engine` line -- `engine opencode` to `engine codex`, for example.
 3. Commit the roster change and push, the same as any other work.
 
 That is the whole switch. The loop, the watcher, and the recipe all read the engine field, so no
@@ -67,8 +67,9 @@ ship's next lap will run.
 
 ## What this page does not claim
 
-**It does not claim any ship has switched.** All eight Earth ships still read `claude` today. This
-page documents the switch; Keaton's word performs it.
+**The seating is the roster.** From `20260922` the seven live ships besides incense read `codex`.
+Incense reads `claude`. The parked aether rows keep the engine they already had. This page
+describes the three engines; `construction/fleet-roster.kyri` is the word that seats one.
 
 **It does not claim the OpenCode loop has run overnight.** The script is written and syntax-checked;
 the proof that it holds a full night is a night it has actually held.

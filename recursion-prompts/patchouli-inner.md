@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is a reading. The weave's door is still a word, and a code lap that chooses it would spend that word. The roster row stays the sailing engine until a later word flips it.
+**Cursor.** The fruit is a reading. The weave's door is still a word, and a code lap that chooses it would spend that word. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 

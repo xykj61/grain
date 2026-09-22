@@ -7,7 +7,7 @@
 
 ## engine
 
-**Cursor.** The fruit is prose on the docs shelf: a grade and a fascia pass. The roster row stays the sailing engine until a later word flips it.
+**Cursor.** The fruit is prose on the docs shelf: a grade and a fascia pass. The roster row reads codex from `20260922`, on Keaton's word. Incense stays claude.
 
 ## fruit
 
