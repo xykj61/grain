@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260923.011038
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Codex commits match Claude
+prompt can we update our Codex commit message style rules to match our Claude ones how our recent Claude commits have looked?
+think Recent Codex subjects are title case with an empty body. Recent Claude subjects are a lowercase component prefix under 50 characters, a body that names a file or a call, and a Related section that names the session log file. The living rule is .claude/rules/commit-messages.md. The Codex loop cats tools/f/fleet_baton.txt on every lap, so the shape belongs there, and the loop script names the same rule for a lap that starts after this file is on xy
+obs The running Codex processes keep the script they already loaded. They read the baton again on the next lap, after a send
+rota none -- a captain edit, no council row this turn
+file .claude/rules/commit-messages.md the worked example is now fleet: aim case 4 at the receipt card
+file tools/f/fleet_baton.txt the SEND paragraph names that shape
+file tools/f/fleet-loop-codex.sh the close line points at the same rule
+recommend check-in Cursor -- say send when the ships should read this on their next lap
+scope the Codex commit shape
+status written locally; not sent

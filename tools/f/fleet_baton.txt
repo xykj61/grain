@@ -173,8 +173,10 @@ staging hook's pages ride the same commit (%376). A round that adds a witness re
 BEFORE the hot pass -- readme_metrics.rish write and geode_libraries.rish write -- because the hook
 refreshes them at commit, which is after the pass reads them. Regenerate readme_metrics AFTER
 git add: its scan counts with git ls-files, which reads the INDEX, so a page written ahead of
-staging carries a number one short. geode_libraries walks the tree with find and does not care. The commit body names its mechanism in
-plain engineering words before any metaphor. The Git nib names HEAD's parent, read after the final
+staging carries a number one short. geode_libraries walks the tree with find and does not care. Write the commit the way `.claude/rules/commit-messages.md` shows: a lowercase
+component prefix, a present-tense subject under 50 characters, one body paragraph
+that names the file or the call, and a Related section that names the session log
+file. The body uses plain engineering words before any metaphor. The Git nib names HEAD's parent, read after the final
 rebase (%401), and a follow-up commit landing on top of the work commit carries that nib
 forward too -- rewritten to HEAD read BEFORE the follow-up is made, since that HEAD becomes its
 parent -- or the next lap's guard reds (%450). Push xy then gp405, twice-pulled, never forced.

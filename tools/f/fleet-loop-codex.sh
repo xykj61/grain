@@ -148,6 +148,7 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     echo "Recover unfinished work and session logs from this seat's stashes before new work; inspect git stash list and the newest seat transcript. Never discard a parked lap."
     echo "At the send, preserve the lap-open head and xy/main before the second fetch; run sh tools/f/fleet_moved_proof.sh LAP_OPEN_HEAD XY_BEFORE xy/main. A full verdict owes the full hot roster; scoped is lawful only on an independent mapped closure."
     echo "Close every lap with a commit and a session log, and push xy then gp405."
+    echo "Write that commit in the shape of .claude/rules/commit-messages.md: a lowercase component prefix, a present-tense subject under 50 characters, a body paragraph that names the file or the call, and a Related section that names the session log file."
   } > "$prompt_file"
 
   set +e
