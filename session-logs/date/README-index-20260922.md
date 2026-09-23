@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.202108 | [20260922-202108_ceiling-and-case4-unread.kyri](20260922/20260922-202108_ceiling-and-case4-unread.kyri) | Ceiling and case 4 have not landed |
 | 20260922.201705 | [20260922-201705_case-4-is-the-card.kyri](20260922/20260922-201705_case-4-is-the-card.kyri) | Case 4 aimed at the existing Receipt Card |
 | 20260922.201223 | [20260922-201223_incense-crux-reminder.kyri](20260922/20260922-201223_incense-crux-reminder.kyri) | Crux reminder for the incense seat |
 | 20260922.200759 | [20260922-200759_pheromone-ceiling-ruling.kyri](20260922/20260922-200759_pheromone-ceiling-ruling.kyri) | Shape ceiling recommendation for Pheromone |

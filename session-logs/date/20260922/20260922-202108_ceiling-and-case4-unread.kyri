@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260922.202108
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Ceiling and case 4 have not landed
+prompt kg -- read the ceiling and the card order, stamp nothing unless both are true
+think xy/main is 9c2d84db6. glow/rune_shape.rye still has max_fields 9. No field-order proof commit is on xy. Pheromone's HEAD is 82481f9b3 and Diffuser's HEAD is 8ddd58231, each equal to that clone's stale xy ref
+think Both loops are inside a cold pass whose transcript is still growing and has no run_verdict line. The ruling and the case-4 aim were pushed after those laps opened, so the next round-open is what adopts them
+obs The milestone stays unstamped. This kg does not edit the card or the ceiling
+rota none -- a reading, no council row this turn
+file glow/rune_shape.rye max_fields still 9
+file construction/ITINERARY.md the case 4 aim is on xy and not yet in the two ship HEADs
+recommend check-in Cursor -- read again after both cold passes close and the two results are on xy
+scope the kg reading of the two open laps
+status not landed; nothing stamped; not sent
