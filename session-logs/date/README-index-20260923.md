@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260923.022020 | [20260923-022020_outer-rebuild-green.kyri](20260923/20260923-022020_outer-rebuild-green.kyri) | Outer rebuild is green |
 | 20260923.021710 | [20260923-021710_pin-clis-and-seat-luna.kyri](20260923/20260923-021710_pin-clis-and-seat-luna.kyri) | Pin the CLIs and seat Luna |
 | 20260923.011038 | [20260923-011038_codex-commits-match-claude.kyri](20260923/20260923-011038_codex-commits-match-claude.kyri) | Codex commits match Claude |
 | 20260923.010336 | [20260923-010336_ceiling-held-by-roster-red.kyri](20260923/20260923-010336_ceiling-held-by-roster-red.kyri) | Ceiling held by roster red |

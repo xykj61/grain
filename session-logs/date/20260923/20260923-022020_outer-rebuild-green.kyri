@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260923.022020
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Outer rebuild is green
+prompt rebuild green
+think claude --version on the system path reads 2.1.280. codex --version reads codex-cli 0.156.1. The user config model key still reads gpt-6-luna
+obs Keaton named the rebuild green, and the two binaries on the system path match the pins
+rota none -- a captain witness, no council row this turn
+file /run/current-system/sw/bin/claude version 2.1.280
+file /run/current-system/sw/bin/codex version 0.156.1
+recommend check-in Cursor -- a sailing loop still in flight keeps the model it bound at start
+scope the outer rebuild witness
+status green; not sent
