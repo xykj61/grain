@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260923.010336
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Ceiling held by roster red
+prompt check in
+think xy/main is 91905438d and max_fields is still 9. Pheromone's 00:04 lap finished 366 guards with Glow guards green, tree_moved=no, and run_verdict=guard_red, then closed the shape claim without editing Glow. A new claim, pheromone-receipt-shape-ceiling, is open, and the 00:10 pass has about 20 minutes of guards left with about 36 minutes of lap left. Diffuser's 23:01 pass closed guard_red, and the current lap is inside a hot roster, not case 4
+obs The milestone stays unstamped. The cap is no longer what holds the ceiling. The roster-wide red is
+rota none -- a captain check-in, no council row this turn
+file glow/rune_shape.rye max_fields still 9 on xy/main
+file session-logs/date/20260923/20260923-000458_pheromone-shape-red-hold.kyri the hold
+recommend check-in Cursor -- the standing roster reds do not hold this raise when Glow guards are green and the tree did not move
+scope the 01:02 check-in
+status held; nothing stamped; not sent
