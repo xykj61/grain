@@ -34,20 +34,15 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE RECEIPT'S FIRST TYPE DOES NOT FIT GLOW'S SHAPE RUNE, MEASURED ON METAL
-(`20260918.093521`).** `ReceiptOfferFact`
+**PHEROMONE -- THE RECEIPT'S FIRST TYPE FITS GLOW'S SHAPE RUNE, PROVEN ON METAL
+(`20260923`).** `ReceiptOfferFact`
 ([the contract](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md))
-publishes **15** fields. `glow/bin/glow_run` against a `+$ ... $: ... ==` desk carrying all 15
-(`.lap/shape-receipt-offer.glow`) answers `too many Glow lines`, exit 2 -- structural, not a typo:
-`glow/rune_shape.rye`'s `max_fields` is **9**, `glow/tokens.rye`'s `looks_like_shape_only` fast-path
-only a **3-to-11**-line desk, and past that a shape falls to the generic multi-line budget of 6,
-far short of the 18 lines 15 fields need. `glow/refusal_witness.rye` already proves the 9-field
-ceiling on a planted 10-face tuple; this is that ceiling meeting a real product type. **Pheromone's
-own STOP clause**: a new rune or language ruling returns to Incense. Two bounded options, named
-rather than chosen: raise `max_fields` and its two dependent budgets, or split the fact into nested
-desks joined by a small envelope -- which first wants to know whether Glow composes a shape from
-named sub-shapes at all. Nothing here is a red; nothing admitted or refused moved; the `.lap/`
-sketches are scratch and unshipped.
+publishes **15** fields. `glow/rune_shape.rye` now admits fifteen fields, and
+`glow/tokens.rye`'s shape-only peek carries the contract's 18-line desk through the same path.
+The planted refusal moved with the ceiling: fifteen fields are admitted and the sixteenth names
+`TooManyFields`. Both demo arrays now fill their fifteen slots, and the Glow shape-capacity,
+refusal, and contract-specific guards pass on metal. No new rune was added; the change stays inside
+the existing shape and lowering path.
 
 **INCENSE.** [Account shelved](archive/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
@@ -343,7 +338,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `563255fd87` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `eecae95885` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -497,8 +492,9 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   `usize`; the scan pins it at **five** with a written argument, and a sixth refuses. th5 REDS on
   metal and is rostered by nobody, so the tree carries a live contradiction no runner hears --
   `%810`'s class with a disagreement inside it. Which reading is right is TAME's call.
-- **The Glow field capacity** -- `20260720` froze `$:` at nine faces, reserving a widening for your
-  word; the contract's widest type names fifteen (`glow_shape_capacity`). Nine, sixteen, or nesting?
+- **The Glow field capacity** -- `$:` now admits fifteen faces, the contract's widest type, with the
+  sixteenth still refused (`glow_shape_capacity`). The existing shape and lowering path carries it;
+  no new rune was added.
 
 ## Archive and record
 
