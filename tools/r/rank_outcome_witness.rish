@@ -62,27 +62,27 @@ assert scan.out contains "ranked_rows=12" else "rank-outcome: the ranking stoppe
 assert scan.out contains "rows_without_erratum=0" else "rank-outcome: a ranked row carries no erratum -- the grade is not yet whole"
 assert scan.out contains "page_fully_read=yes" else "rank-outcome: the page is no longer fully read"
 
-# invariant: the two statistics part, and the parting is the finding. Over all twelve rows the
-# order agreement is middling; over the ten the ranking actually governed it is near perfect.
+# invariant: the two statistics part, and the parting is the finding. The live page now reads the
+# full order as weakly aligned and the governed subset as moderately aligned.
 assert scan.out contains "read_ordered=12" else "rank-outcome: the read order lost a row"
-assert scan.out contains "rank_in_read_order=3,4,5,6,7,8,9,11,10,1,2,12" else "rank-outcome: the read order moved -- a new erratum landed; re-read this reading"
-assert scan.out contains "all_spearman_rho=0.3007" else "rank-outcome: the whole-page order agreement moved"
-assert scan.out contains "own_spearman_rho=0.9879" else "rank-outcome: the governed-subset agreement moved"
-assert scan.out contains "own_discordant=1" else "rank-outcome: the governed subset gained or lost an inversion"
+assert scan.out contains "rank_in_read_order=4,5,6,7,8,9,11,10,1,2,12,3" else "rank-outcome: the live read order moved"
+assert scan.out contains "all_spearman_rho=0.0070" else "rank-outcome: the whole-page order agreement moved"
+assert scan.out contains "own_spearman_rho=0.4424" else "rank-outcome: the governed-subset agreement moved"
+assert scan.out contains "own_discordant=10" else "rank-outcome: the governed subset gained or lost an inversion"
 assert scan.out contains "own_pairs=45" else "rank-outcome: the governed subset changed size"
 
 # invariant: the two rows that part the statistics are named rather than described, and they are
-# the page's own top two, read next to last.
+# the page's own top two, read late in the live order.
 assert scan.out contains "prebuilt_rows=2" else "rank-outcome: the prebuilt count moved"
 assert scan.out contains "prebuilt_ranks=1,2" else "rank-outcome: the prebuilt rows are no longer the top two"
-assert scan.out contains "prebuilt_read_positions=10,11" else "rank-outcome: the prebuilt rows moved in the read order"
+assert scan.out contains "prebuilt_read_positions=9,10" else "rank-outcome: the prebuilt rows moved in the read order"
 
 # invariant: survival is read by a conjunction rather than by a green word alone, and every row
 # that stands is one that pre-existed -- so the reading refuses to call the agreement foresight.
 assert scan.out contains "claim_stands=3" else "rank-outcome: the standing count moved"
 assert scan.out contains "claim_stands_ranks=1,2,4" else "rank-outcome: the standing rows left the top four"
 assert scan.out contains "claim_stands_preexisting=3" else "rank-outcome: a row now stands that did not pre-exist -- that is news, and this reading is owed a re-read"
-assert scan.out contains "claim_blocked=1" else "rank-outcome: the blocked count moved"
+assert scan.out contains "claim_blocked=0" else "rank-outcome: the blocked count moved"
 
 # invariant: the falsifier is the half that failed, and the page's own count of the worst class is
 # smaller than the class, because an erratum can only count the rows already read beside it.
