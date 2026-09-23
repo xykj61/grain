@@ -344,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `454acde3b6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `aaca87b153` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -424,6 +424,10 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 ### Diffuser -- Brushstroke and Skate product surface
 
 **Priority:** HIGH Lindy; VERY HIGH crux.
+
+**Open research:** `20260923-113006_diffuser-toroidal-wake-budget.md` -- bound a toroidal
+wake-budget proposal against Caravan polling, name its assumptions and falsifier, and hand Bakery
+the smallest buildable seam if the reading supports one.
 
 1. Acceptance case 4: the 72 by 18 Receipt Card already stands in `skate/Sources/SkateCore/ReceiptCard.swift`. Prove its Still frame and accessibility snapshot carry `LinengrowReceipt`'s deciding fields in one reading order. The Consent Rail waits until a grant fact and a revoke fact exist.
 2. Render Still, Settle, and Respond on the existing Skate grid and event ring.

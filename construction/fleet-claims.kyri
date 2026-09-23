@@ -115,3 +115,9 @@ stamp 20260923.100408
 epoch 1790172248
 paths tools/fixtures/s/standing_equipment_scope_map.sh tools/fixtures/s/standing_equipment_scope_rank.sh
 what Add the two measured scope-map rows and rerun ranking to verify their savings.
+claim diffuser-toroidal-wake-budget
+seat diffuser
+stamp 20260923.113009
+epoch 1790177409
+paths active-designing/date/20260923/20260923-113006_diffuser-toroidal-wake-budget.md construction/ITINERARY.md
+what Study whether a bounded toroidal wake budget can reduce scheduler polling while preserving receipt progress, with assumptions and a falsifier.
