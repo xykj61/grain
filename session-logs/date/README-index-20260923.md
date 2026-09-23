@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260923.174706 | [Incense red-review claim renewed](20260923/20260923-174706_incense-red-review.kyri) | Review claim renewed; full cold roster and red dispositions remain open. |
 | 20260923.132610 | [Bakery scope-map ranking reading](20260923/20260923-132610_bakery-scope-map-ranking.kyri) | Rows landed; rank green, aurora under-named, cold roster red. |
 | 20260923.103902 | [Device-that-forgets reverse-read standfasted](20260923/20260923-103902_grass-device-that-forgets.kyri) | Custody-by-choice principle standfasted; cold roster 43 reds and 3 gates. |
 | 20260923.102320 | [Booked REDS 745 review and full cold roster](20260923/20260923-102320_patchouli-booked-745-review.kyri) | %745 archive agreed; cold roster guard-red, hot roster staged. |
