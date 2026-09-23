@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260923.025616 | [Glow shape custody hold](20260923/20260923-025616_pheromone-shape-custody-hold.kyri) | Full cold roster red; language ruling parked for Keaton. |
 | 20260923.025114 | [Recovered fascia metric witness](20260923/20260923-025114_copal-fascia-recovery.kyri) | Recovered and sealed the parked fascia witness; direct and refusal legs green. |
 | 20260923.014431 | [Rank outcome hot roster close](20260923/20260923-014431_rank-outcome-hot-close.kyri) | Hot roster closed tree-still with 319 green, 44 red, and 3 gated guards. |
 | 20260923.002535 | [Patchouli closeout](20260923/20260923-002535_patchouli-closeout.kyri) | Recovered value-form receipt; shelf index and card nib closed. |
