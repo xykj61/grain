@@ -111,7 +111,7 @@ LINEAR_DEV_MAX=0.05         # a decay reads STRAIGHT when no rung departs from t
                             # reading 4 and reading 5, so the two can never drift apart.
 
 # READING 5's own bounds -- the size ladder, in edges drawn from this tree's own graph.
-SIZE_LADDER="4000 2000 1000 500 250 100 50"
+SIZE_LADDER="4000 2000 1000 500 250 100 50 25"
 MAX_SIZE_RUNGS=8            # rungs graded per run
 SIZE_DRAWS=3                # subsamples averaged per rung, since one draw of 50 edges out of
                             # ~7,500 is itself a sample. The full rung is the whole graph and is

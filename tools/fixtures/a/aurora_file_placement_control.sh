@@ -57,7 +57,7 @@ leg scan_exits_zero 0 "$status"
 leg verdict_read read "$(key "$OUT" verdict)"
 leg names_its_row 7 "$(key "$OUT" row)"
 leg names_the_page_it_answers \
-  active-designing/20260916-095958_the-two-ways-a-proxy-drifts.md "$(key "$OUT" answers)"
+  active-designing/date/20260916/20260916-095958_the-two-ways-a-proxy-drifts.md "$(key "$OUT" answers)"
 
 # ---- the bounds are named ----------------------------------------------------------------------
 for b in max_files max_edges max_grids max_samples cap_slack_pct; do
@@ -203,13 +203,13 @@ leg p2_drift_zero_matches_placement yes "$p2agree"
 # than the -1 the scan prints when no rung pair brackets the threshold
 p2c=$(key "$P2" file_drift_crossing_pct)
 case "$p2c" in ''|-*) leg p2_crossing_bracketed yes no ;; *) leg p2_crossing_bracketed yes yes ;; esac
-# ---- PEN TWO, READING 5: a graph under the ladder grades nothing, and SAYS so -------------------
-# Every rung of the size ladder stands at or above this pen's whole edge count, so there is nothing
-# to subsample. The verdict must read `ungraded` rather than `no`: a reading that says no when it
-# means it could not look is a finding nobody made.
-leg p2_size_ungraded ungraded "$(key "$P2" drift_scatter_scales_as_inverse_sqrt)"
+# ---- PEN TWO, READING 5: one rung below the graph grades, and the slope stays ungraded ----------
+# The ladder's smallest rung (25) sits below this pen's 32 edges, so exactly one rung grades and
+# the slope fit -- which wants two rungs -- reads `ungraded`. A graph under the ladder grades
+# nothing and SAYS so, which pen four proves below; this pen proves the one-rung case in between.
+leg p2_size_one_rung yes "$(key "$P2" drift_scatter_scales_as_inverse_sqrt)"
 leg p2_size_slope_ungraded ungraded "$(key "$P2" drift_scatter_slope_near_half)"
-leg p2_size_rungs_zero 0 "$(key "$P2" size_rungs_graded)"
+leg p2_size_rungs_one 1 "$(key "$P2" size_rungs_graded)"
 # and the full rung still runs on a 32-edge graph, so the re-seat proof holds at both ends of the
 # size range this scan ever sees
 leg p2_size_reseat_matches yes "$(key "$P2" size_full_rung_matches_placement)"
@@ -250,6 +250,13 @@ leg p4_verdict read "$(key "$P4" verdict)"
 leg p4_edges 15 "$(key "$P4" import_edges)"
 leg p4_reading5_read read "$(key "$P4" reading5)"
 leg p4_size_reseat_matches yes "$(key "$P4" size_full_rung_matches_placement)"
+# a graph under the ladder grades nothing, and SAYS so. The ladder's smallest rung is 25 and this
+# pen holds 15 edges, so there is nothing to subsample -- the verdict must read `ungraded` rather
+# than `no`, which is the finding-nobody-made shape pen two can no longer prove now that the 25
+# rung sits below its 32 edges.
+leg p4_size_ungraded ungraded "$(key "$P4" drift_scatter_scales_as_inverse_sqrt)"
+leg p4_size_slope_ungraded ungraded "$(key "$P4" drift_scatter_slope_near_half)"
+leg p4_size_rungs_zero 0 "$(key "$P4" size_rungs_graded)"
 # the check can only bite where the layout costs something, so the pen's own cost is asserted
 # positive before the plant below is read as proof of anything
 p4cost=$(key "$P4" size_full_rung_cost)
