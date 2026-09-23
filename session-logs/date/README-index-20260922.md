@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.233843 | [20260922-233843_shape-claim-ceiling-still-9.kyri](20260922/20260922-233843_shape-claim-ceiling-still-9.kyri) | Shape claim open, ceiling still 9 |
 | 20260922.223053 | [20260922-223053_pass-meets-the-cap.kyri](20260922/20260922-223053_pass-meets-the-cap.kyri) | Pass meets the cap |
 | 20260922.215617 | [20260922-215617_second-pass-inside-the-cap.kyri](20260922/20260922-215617_second-pass-inside-the-cap.kyri) | Second pass fits, fruit is tight |
 | 20260922.210046 | [20260922-210046_lap-cap-before-the-pass.kyri](20260922/20260922-210046_lap-cap-before-the-pass.kyri) | Lap cap before the pass |
