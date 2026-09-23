@@ -834,6 +834,7 @@ pub fn check_wire() u8 {
         const at = slot_offset(seq);
         const from_front = at - @as(u64, index_bytes);
         const ring: u32 = @intCast(from_front / @as(u64, slot_stride)); // seam: an offset arrives as u64
+        // invariant: every visited slot is seen at most once during the full ring walk
         assert(!seen[ring]);
         seen[ring] = true;
     }
