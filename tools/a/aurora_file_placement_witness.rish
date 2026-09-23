@@ -183,7 +183,7 @@ assert ctl.out contains "control_verdict=ok" else "aurora-file-placement: the co
 # failure count, so a leg written tomorrow is heard the day it lands rather than passing unread
 # under a green verdict.
 assert ctl.out contains "control_failures=0" else "aurora-file-placement: a planted behavior differed from what was stated"
-assert ctl.out contains "control_checks=100" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
+assert ctl.out contains "control_checks=103" else "aurora-file-placement: the control's leg count moved -- read it, then raise this line"
 
 # invariant: each of the eight mutations was planted AND bit. A refusal proven only in the passing
 # direction cannot be told from a bypass.
@@ -220,9 +220,16 @@ assert ctl.out contains "leg p1_intra_share ok" else "aurora-file-placement: the
 assert ctl.out contains "leg p3_empty_verdict ok" else "aurora-file-placement: an empty tree was read as a real population"
 
 # invariant: a graph smaller than the ladder's top rung grades nothing and SAYS `ungraded` rather
-# than `no`. A verdict reading no when it means it could not look is a finding nobody made.
-assert ctl.out contains "leg p2_size_ungraded ok" else "aurora-file-placement: a graph too small to subsample reported a refutation instead of a silence"
-assert ctl.out contains "leg p2_size_slope_ungraded ok" else "aurora-file-placement: the slope fit answered on a ladder it never graded"
+# than `no`. A verdict reading no when it means it could not look is a finding nobody made. Pen four
+# holds 15 edges, under the ladder's smallest rung of 25, so it is where that silence is proven now
+# that the 25 rung sits below pen two's 32.
+assert ctl.out contains "leg p4_size_ungraded ok" else "aurora-file-placement: a graph too small to subsample reported a refutation instead of a silence"
+assert ctl.out contains "leg p4_size_slope_ungraded ok" else "aurora-file-placement: the slope fit answered on a ladder it never graded"
+# invariant: a graph just above the ladder's smallest rung grades exactly one rung, and the slope
+# fit -- which wants two -- stays ungraded. Pen two's 32 edges sit above the 25 rung, so it proves
+# the one-rung case between the full ladder and the silence pen four proves.
+assert ctl.out contains "leg p2_size_one_rung ok" else "aurora-file-placement: a graph one rung above the ladder's floor graded the wrong count"
+assert ctl.out contains "leg p2_size_slope_ungraded ok" else "aurora-file-placement: the one-rung slope fit answered where it should stay ungraded"
 
 # invariant: the re-seat check is proven on a pen whose layout actually COSTS something, since two
 # wrong answers agree at zero. Pen four's cost is asserted positive before its plant is believed.
