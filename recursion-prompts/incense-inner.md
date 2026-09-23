@@ -100,6 +100,8 @@ permission to direct work, never to cross a gate.
 
 On `20260922.143256` the captain seated one fruit for each of the other seven ships, in `recursion-prompts/<seat>-inner.md`. On `20260922` those seven roster rows and those seven inner engines read codex, and their seat prompts name Codex. Incense stays claude, and this captain session stays the interactive seat.
 
+On `20260922.200759` no sailing ship was parked on a hand gate. The one open choice on this bench was Pheromone's shape ceiling. The recommendation, written into `recursion-prompts/pheromone-inner.md`, is to raise `max_fields` from 9 to 15 and the shape-only line peek with it, and to leave the receipt as one fact.
+
 Item 3 (the pending-decisions reading) landed at `3c99a22db` -- one scan, one control, one witness,
 reported and gated on nothing. Item 1 (shared build caches) landed at this lap's own commit --
 [`active-designing/20260918-031251_the-cache-eight-trees-could-share.md`](../active-designing/20260918-031251_the-cache-eight-trees-could-share.md)
