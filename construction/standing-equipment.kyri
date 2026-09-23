@@ -7929,3 +7929,10 @@ guard fascia_metric_v0
 path tools/gen/chapter/fascia_metric_v0.rish
 tier lap
 seated 20260922.225159
+
+# brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
+# paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
+guard brush_parse
+path tools/gen/chapter/brush_parse_witness.rish
+tier lap
+seated 20260923.040437
