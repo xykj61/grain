@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.203302 | [20260922-203302_sixth-reading-unstamped.kyri](20260922/20260922-203302_sixth-reading-unstamped.kyri) | Sixth reading, still unstamped |
 | 20260922.203106 | [20260922-203106_fifth-reading-unstamped.kyri](20260922/20260922-203106_fifth-reading-unstamped.kyri) | Fifth reading, still unstamped |
 | 20260922.202925 | [20260922-202925_fourth-reading-unstamped.kyri](20260922/20260922-202925_fourth-reading-unstamped.kyri) | Fourth reading, still unstamped |
 | 20260922.202547 | [20260922-202547_third-reading-unstamped.kyri](20260922/20260922-202547_third-reading-unstamped.kyri) | Third reading, still unstamped |
