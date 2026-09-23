@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20260922.205246
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Nineteenth reading, still unstamped
+prompt kg
+think xy/main is still 9c2d84db6 and max_fields is still 9. Both cold transcripts grew again and neither has a run_verdict line. Pheromone is on mantra_diff green. Diffuser is on mantra_gen_floor_a1_gate green
+obs The milestone stays unstamped. This kg edits neither the ceiling nor the card
+rota none -- the same reading, no council row this turn
+file glow/rune_shape.rye max_fields still 9
+file session-output/standing-equipment-cold.txt still open on both ships
+recommend check-in Cursor -- read again when a ceiling commit and a field-order commit are on xy
+scope the nineteenth kg reading
+status not landed; nothing stamped; not sent
