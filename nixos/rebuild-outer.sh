@@ -47,17 +47,17 @@ command -v perl    && perl    --version | head -n 2 | tail -n 1
 command -v python3 && python3 --version
 
 # 4. Confirm the claude-code version overlay took effect. configuration.nix pins
-#    claude-code to 2.1.274 via an overlay, past nixos-26.05's
-#    lagging pin (the locked flake held 2.1.187). Expect 2.1.274 below; the build
-#    already self-verified the binary hash and ran `claude --version` internally.
+#    claude-code to 2.1.280 via an overlay, past nixos-26.05's lagging pin.
+#    Expect 2.1.280 below; the build self-verifies the binary hash and runs
+#    `claude --version` internally.
 command -v claude && claude --version || echo "claude not on PATH"
 
 # 5. Confirm the codex overlay took effect. configuration.nix replaces nixpkgs'
 #    source-built codex (0.133.0 on nixos-26.05) with upstream's prebuilt static
-#    musl binary at 0.154.0, because DREAM's seat runs `codex exec --sandbox
+#    musl binary at 0.156.1, because DREAM's seat runs `codex exec --sandbox
 #    danger-full-access` inside ai-jail and the CLI moves faster than the channel.
-#    Expect 0.154.0 below; the build already self-verified the tarball hash and
-#    ran `codex --version` through versionCheckHook.
+#    Expect 0.156.1 below; the build self-verifies the tarball hash and runs
+#    `codex --version` through versionCheckHook.
 command -v codex && codex --version || echo "codex not on PATH"
 
 # 6. Confirm ai-jail landed on the system PATH (command -v, not a store pin).

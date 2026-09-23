@@ -4,7 +4,7 @@
 **Style:** Gauge Field, Bhakta opening (assume no background), Radiant warmth
 **Voice:** Kyri
 **Status:** Living -- three engines, and the seven live ships besides incense read codex
-**Last updated:** `20260922.175159`
+**Last updated:** `20260923.021710`
 **Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/FLEET_LOOP.md`](../open/FLEET_LOOP.md) - [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri)
 
 ---
@@ -22,7 +22,7 @@ or watches a ship reads that one field.
 | Engine | Harness | Model | Loop script |
 |---|---|---|---|
 | `claude` | Claude Code | Claude | `tools/f/fleet-loop.sh` |
-| `codex` | Codex CLI | GPT-5.6-luna | `tools/f/fleet-loop-codex.sh` |
+| `codex` | Codex CLI | GPT-6-luna | `tools/f/fleet-loop-codex.sh` |
 | `opencode` | OpenCode | DeepSeek V4 Pro via Together AI | `tools/f/fleet-loop-opencode.sh` |
 
 The three loops are siblings, not rivals. Each is a **mutant** of the first -- the Claude loop is

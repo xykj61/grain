@@ -61,15 +61,14 @@
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
   # claude-code: nixos-26.05's pin lags upstream.
-  # This overlay pins the latest release, 2.1.278, fetching the same native binary
+  # This overlay pins the latest release, 2.1.280, fetching the same native binary
   # the nixpkgs derivation would, from the same downloads.claude.ai release path.
   # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
   # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
   # argument -- overrideAttrs works on both the locked rev and future ones. The
-  # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest,
-  # verified on metal against the downloaded binary (sha256sum == 15e2d051...fa07,
-  # 20260917.175948; the elder 2.1.235 read bfcf0ae2...d5d5, 20260819). The build
-  # self-checks twice: fetchurl fails loudly on any hash mismatch, and
+  # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest
+  # for 2.1.280, and nix store prefetch-file reproduced that same digest on
+  # 20260923. The build self-checks twice: fetchurl fails loudly on any hash mismatch, and
   # versionCheckHook runs `claude --version`.
   #
   # The VERSION STRING is proven by that hook rather than here, and the reason is
@@ -110,17 +109,17 @@
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.278";
+        version = "2.1.280";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.278/linux-x64/claude";
-          sha256 = "5c4735937844e84f8a93306e841a5b0e12252909b07870f789b190468da147ab";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.280/linux-x64/claude";
+          sha256 = "1e08503dbdf3c2cb0d706d32f3408277388d1c76ef108673e8fe42c1b322925b";
         };
       });
 
       # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
       # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
       # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
-      # upstream ships 0.155.1, so this overlay is the same declared road the two
+      # upstream ships 0.156.1, so this overlay is the same declared road the two
       # entries above take, for the fastest-moving of the three agent CLIs.
       #
       # This one REPLACES the derivation rather than overrideAttrs'ing it, because
@@ -138,19 +137,18 @@
       #
       # The build self-checks twice, exactly as claude-code's does: fetchurl fails
       # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
-      # and asserts the string carries 0.155.1. The sha256 below is the release
-      # asset's own checksum, verified on this pier against the downloaded file
-      # and the unpacked binary answered `codex-cli 0.155.1`.
+      # and asserts the string carries 0.156.1. The sha256 below is the release
+      # asset's own checksum from nix store prefetch-file on 20260923.
       #
       # To bump: read the newest rust-vX.Y.Z tag at github.com/openai/codex/releases,
       # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
       codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
         pname = "codex";
-        version = "0.155.1";
+        version = "0.156.1";
 
         src = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "a0ef8b2debc3bf747e07b1a039354de31300ac0dcc2276498ba281470b5d9115";
+          sha256 = "aff46539a83aff86e3c62c592bce2c50d95391f9df289afaf03a50c01d14533d";
         };
 
         # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
@@ -164,7 +162,7 @@
         # b476...4fc5, 20260828, 21,208,013 bytes.
         codeModeHost = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "9fd083743af55be818aceb351d371fb5136f5b6aa3938f167087373d27067b2d";
+          sha256 = "a929daa9f6a0bddc00c0c9e6402df117b125acd96f9d554f6c99c32c7e66c608";
         };
 
         # The tarball holds one bare file rather than a directory, so the default
