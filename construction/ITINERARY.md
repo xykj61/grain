@@ -379,7 +379,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `99387c9ce4` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `2ace6a1fed` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -458,7 +458,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Priority:** HIGH Lindy; VERY HIGH crux.
 
-1. Implement the Receipt Card and Consent Rail as bounded Brushstroke descriptions shared by Linengrow and Dimeroll.
+1. Acceptance case 4: the 72 by 18 Receipt Card already stands in `skate/Sources/SkateCore/ReceiptCard.swift`. Prove its Still frame and accessibility snapshot carry `LinengrowReceipt`'s deciding fields in one reading order. The Consent Rail waits until a grant fact and a revoke fact exist.
 2. Render Still, Settle, and Respond on the existing Skate grid and event ring.
 3. Prove reduced-motion, renderer-loss, hidden-document, settled-frame, deterministic-description, focus-order, and accessibility equivalence.
 4. Measure frame time, pulse count, event capacity, and accessibility parity before proposing richer motion.

@@ -102,6 +102,8 @@ On `20260922.143256` the captain seated one fruit for each of the other seven sh
 
 On `20260922.200759` no sailing ship was parked on a hand gate. The one open choice on this bench was Pheromone's shape ceiling. The recommendation, written into `recursion-prompts/pheromone-inner.md`, is to raise `max_fields` from 9 to 15 and the shape-only line peek with it, and to leave the receipt as one fact.
 
+On `20260922.201400` the crux order for this seat is: hold the accepted contract, let Pheromone land that ceiling, and let Diffuser prove acceptance case 4 on the existing Receipt Card. The Consent Rail waits for a grant fact. The dual-product chain for cases 1, 2, 3, 5, 6, and 7 already has its witnesses.
+
 Item 3 (the pending-decisions reading) landed at `3c99a22db` -- one scan, one control, one witness,
 reported and gated on nothing. Item 1 (shared build caches) landed at this lap's own commit --
 [`active-designing/20260918-031251_the-cache-eight-trees-could-share.md`](../active-designing/20260918-031251_the-cache-eight-trees-could-share.md)
