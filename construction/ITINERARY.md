@@ -151,6 +151,10 @@ lap on. **YOURS:** the ratchet roster stands at `@memcpy` migration (135), `pars
 (54), and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the
 next agent-doable pick is any one, claim-board checked first.
 
+**GRASS -- THE FREE-AND-OPEN ROOM REVERSE-READ.** Booked as `grass-free-open-room`: read
+`foundations/20260628-133212_a-free-and-open-room.md`, write one evidence-backed disposition, and
+leave the packet at `active-designing/date/20260923/20260923-033231_grass-reverse-read-of-a-free-and-open-room.md`.
+
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
@@ -332,7 +336,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `535a35e9de` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `143388bc9e` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
