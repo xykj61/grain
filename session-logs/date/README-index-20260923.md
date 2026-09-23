@@ -7,7 +7,10 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20260923.065943 | [Pheromone roster held](20260923/20260923-065943_pheromone-roster-held.kyri) | Glow recovery parked; cold roster stopped before verdict. |
+| 20260923.065913 | [Incense fascia gate and 21-red claim](20260923/20260923-065913_incense-fascia-gate-and-21-red-claim.kyri) | Cold roster red; closed cross-lane fascia claim and booked oldest unclaimed red review. |
 | 20260923.061008 | [Open-room foundation rota reading](20260923/20260923-061008_grass-open-room-rota.kyri) | Standfasted existing disposition; hot roster guard-red. |
+| 20260923.050641 | [Incense cold roster close](20260923/20260923-050641_incense-cold-roster-close.kyri) | Cold roster red; 44 reds, 3 gates, tree held still. |
+| 20260923.044407 | [Patchouli cold roster close](20260923/20260923-044407_patchouli-cold-claim-close.kyri) | Value-forms claim closed; cold roster guard-red. |
 | 20260923.044407 | [Patchouli cold roster after recovered claim closure](20260923/20260923-044407_patchouli-cold-claim-close.kyri) | Stale value-forms claim closed; cold roster guard-red with tree held still. |
 | 20260923.032153 | [Patchouli cold roster close](20260923/20260923-032153_patchouli-cold-close.kyri) | Cold roster guard-red; 45 reds, 3 gates, tree held still. |
 | 20260923.031638 | [Close recovered yonder grade](20260923/20260923-031638_petrichor-yonder-grade-close.kyri) | Yonder page A; claim closed; hot roster tree-still with 45 reds and 3 gates. |

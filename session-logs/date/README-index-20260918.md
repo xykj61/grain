@@ -12,6 +12,7 @@
 | `20260918.112705` | [Round closes -- both remotes hold 0d408275a, nib pin left one rebase behind](20260918/20260918-112705_round-closes-0d408275a-nib-gap.kyri) | Six contested pushes, the last of them clean; nib amend target turned out already public, reverted rather than forced. |
 | `20260918.112548` | [Fleet shutdown prep -- clockout armed on all eight ships](20260918/20260918-112548_fleet-shutdown-prep.kyri) | .loop-clockout touched fleet-wide; four seats already ended, diffuser and petrichor still mid-lap. |
 | `20260918.112500` | [Send confirmed -- both remotes hold 9eb297e02, seven contested rebases](20260918/20260918-112500_send-confirmed-9eb297e02.kyri) | Six conflicting rebase rounds resolved by stamp order; xy and debrided confirmed at 9eb297e025. |
+| `20260918.093625` | [Fascia clean, claim clear, cold run held](20260918/20260918-093625_holding-the-cold-run.kyri) | Fascia scan clean; cold run launched and held for its verdict. |
 | `20260918.112212` | [Round closes -- both remotes hold c4131393b](20260918/20260918-112212_round-closes-c4131393b.kyri) | A second contested rebase against another fresh peer commit landed clean; xy and debrided confirmed. |
 | `20260918.112135` | [Empty-open turn, fourth in a row -- state unchanged since the last check](20260918/20260918-112135_fourth-empty-open-still-gated.kyri) | Fetched, re-checked ITINERARY, claim board, REDS; nothing changed, nothing to build. |
 | `20260918.111930` | [Send confirmed -- both remotes hold 76f8fd0b6](20260918/20260918-111930_send-confirmed-76f8fd0b6.kyri) | One contested rebase, day-shelf row merged; xy and debrided confirmed by direct rev-parse. |
@@ -196,8 +197,9 @@
 | `20260918.063535` | [Second cold check confirms queue still empty](20260918/20260918-063535_docs-geode-cold-check-still-empty.kyri) | Claims board, ITINERARY, REDS OPEN rows re-walked; same empty verdict. |
 | `20260918.063114` | [Send confirmed -- both remotes hold e94667988](20260918/20260918-063114_send-confirmed-e94667988.kyri) | One rebase, one day-shelf row conflict resolved, nib re-pinned twice. |
 | `20260918.063114` | [Stale claim, wrong seat](20260918/20260918-063114_pheromone-claim-name-mismatch.kyri) | REDS %825: pheromone's claim never closed; card wrongly named grass's. |
-| `20260918.062742` | [Mantra revision falsifier closed](20260918/20260918-062742_mantra-revision-falsifier-closed.kyri) | All 17 recall_*.rye read, no cyclic use of revision found. |
 | `20260918.063020` | [docs-geode cold check, no work](20260918/20260918-063020_docs-geode-cold-check-no-work.kyri) | All 14 front doors graded clear of B; rune_switch.rye card line stale; no agent-doable lane task. |
+| `20260918.062812` | [Cold run recovered and relaunched](20260918/20260918-062812_cold-run-recovered-and-relaunched.kyri) | Stale in-flight pass TERMed via the bounded call, relaunched at fresh HEAD. |
+| `20260918.062742` | [Mantra revision falsifier closed](20260918/20260918-062742_mantra-revision-falsifier-closed.kyri) | All 17 recall_*.rye read, no cyclic use of revision found. |
 | `20260918.062601` | [Round closes -- 0a25bfc85](20260918/20260918-062601_send-confirmed-0a25bfc85.kyri) | Both remotes confirmed after four contested pushes. |
 | `20260918.062400` | [Send confirmed -- both remotes hold ca59c39a6](20260918/20260918-062400_send-confirmed-ca59c39a6.kyri) | One row-ordering conflict resolved, all three new rows kept. |
 | `20260918.062130` | [docs-geode still gated](20260918/20260918-062130_docs-geode-still-gated.kyri) | Re-check: product path still waits on the public seam; no fresh lane work. |
