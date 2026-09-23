@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.223053 | [20260922-223053_pass-meets-the-cap.kyri](20260922/20260922-223053_pass-meets-the-cap.kyri) | Pass meets the cap |
 | 20260922.215617 | [20260922-215617_second-pass-inside-the-cap.kyri](20260922/20260922-215617_second-pass-inside-the-cap.kyri) | Second pass fits, fruit is tight |
 | 20260922.210046 | [20260922-210046_lap-cap-before-the-pass.kyri](20260922/20260922-210046_lap-cap-before-the-pass.kyri) | Lap cap before the pass |
 | 20260922.205718 | [20260922-205718_waiting-on-the-cold-passes.kyri](20260922/20260922-205718_waiting-on-the-cold-passes.kyri) | Waiting is the cold passes |
