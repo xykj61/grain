@@ -91,3 +91,9 @@ stamp 20260922.212822
 epoch 1790126902
 paths mantra/src/receipt_offer.rye tally/receipt_offer_bounds.rye
 what Map existing bounded offer, consent, use, value, expiration, and correction forms without defining a new type.
+claim pheromone-glow-shape-15
+seat pheromone
+stamp 20260922.224653
+epoch 1790131613
+paths glow/rune_shape.rye glow/tokens.rye glow/glow_run.rye glow/refusal_witness.rye
+what Raise Glow shape capacity to fifteen fields, widen its peek and fixed arrays, and witness fifteen admitted with sixteen refused.
