@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.200759 | [20260922-200759_pheromone-ceiling-ruling.kyri](20260922/20260922-200759_pheromone-ceiling-ruling.kyri) | Shape ceiling recommendation for Pheromone |
+| 20260922.200353 | [20260922-200353_incense-itinerary-read.kyri](20260922/20260922-200353_incense-itinerary-read.kyri) | Incense itinerary read for this session |
 | 20260922.195815 | [20260922-195815_seven-codex-loops-up.kyri](20260922/20260922-195815_seven-codex-loops-up.kyri) | Seven Codex loops are up |
 | 20260922.195453 | [20260922-195453_seven-codex-inners.kyri](20260922/20260922-195453_seven-codex-inners.kyri) | Seven inners and seat lines name Codex |
 | 20260922.175738 | [20260922-175738_fleet-ship-door-spells.kyri](20260922/20260922-175738_fleet-ship-door-spells.kyri) | Fleet spells name the ship and the door |
