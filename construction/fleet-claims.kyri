@@ -109,3 +109,9 @@ stamp 20260923.085621
 epoch 1790168181
 paths construction/REDS.md construction/archive/REDS-the-pen-the-runtime-took-over-rows-745.md construction/archive/20260916-012247_itinerary-pier-filled-account.md
 what Review booked REDS 745 and confirm its archived row and pier-filled account still agree.
+claim bakery-scope-map-ranking
+seat bakery
+stamp 20260923.100408
+epoch 1790172248
+paths tools/fixtures/s/standing_equipment_scope_map.sh tools/fixtures/s/standing_equipment_scope_rank.sh
+what Add the two measured scope-map rows and rerun ranking to verify their savings.
