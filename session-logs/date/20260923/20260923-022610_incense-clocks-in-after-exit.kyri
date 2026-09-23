@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20260923.022610
+editor Cursor Agent CLI
+provider xAI
+product Cursor
+role fleet captain
+modality text
+model unverified
+model_status active runtime unverified
+configured_model grok-4.7-high
+configured_status explicit fleet CLI selection from this launch
+evidence user named FLEET_CAPTAIN=1 bare on the pier; system identity names Grok 4.7; neither is a separate runtime probe
+voice Kyri
+host NixOS workspace; America/New_York
+title Incense clocks in after exit
+prompt can you prime the watcher and incense autopilot loop to run clock in awaiting my exit from this session so I can sleep? it can run luna too
+think The Codex watch now runs with an empty skip, so incense is in its set. The first pass read GATED by loop-clockout and did not type into the cursor-agent pane. A detached waiter removes .loop-clockout only after pier:incense is a shell whose last line is a prompt. The loop that watch then arms is tools/f/fleet-loop-codex.sh, whose CODEX_MODEL default is gpt-6-luna
+obs The roster engine for incense is codex. This pane stays the interactive seat until Keaton leaves it
+rota none -- a captain prime, no council row this turn
+file construction/fleet-roster.kyri incense engine codex
+file tools/f/fleet_watch_codex.sh launched with WATCH_SKIP empty
+file .loop-clockout held until the incense pane is a shell
+recommend check-in Cursor -- leave this pane; the watch arms the Luna loop on the next pass after the prompt returns
+scope priming the night autopilot
+status primed; clockout still set; not sent

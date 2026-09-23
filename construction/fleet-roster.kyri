@@ -22,12 +22,13 @@
 # refused. The word is retired from the seat name, never from the reader's muscle memory.
 format fleet-roster-v1
 
-# ENGINE `codex` on the seven live ships besides incense, `20260922` on Keaton's word.
-# Incense stays `claude`. The parked aether rows keep the engine they already had.
+# ENGINE `codex` on every live ship, `20260923` on Keaton's word, so the night
+# autopilot including incense reads Codex. The parked aether rows keep the engine
+# they already had.
 # -- the three Earth ships, names seated 20260904 on Keaton's word ----------------------------
 seat incense
 tree grain-incense
-engine claude
+engine codex
 lane law, active-designing, iterative review, and the captain's hat
 status live
 seated 20260904.013013
