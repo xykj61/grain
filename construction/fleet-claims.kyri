@@ -54,12 +54,6 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim confer-chain-hop-bound
-seat bakery
-stamp 20260921.103153
-epoch 1790001113
-paths caravan/confer.rye caravan/capabilities.rye tools/ca/caravan_confer_witness.rish
-what Bound a confer chain by the lattice's own height: a hops_remaining counter and a ConferChainExhausted refusal, proven from both sides.
 claim tally-torus-index
 seat copal
 stamp 20260921.115147
@@ -85,3 +79,9 @@ stamp 20260922.212853
 epoch 1790126933
 paths tools/gen/chapter/fascia_metric_v0.rish
 what Roster the existing fascia metric witness and prove its direct green reading and named shred refusal from both sides.
+claim bakery-rank-outcome-refresh
+seat bakery
+stamp 20260922.212925
+epoch 1790126965
+paths tools/r/rank_outcome_witness.rish tools/fixtures/r/rank_outcome_scan.sh
+what Refresh the rank-outcome witness to the live page reading and prove the changed order and figures from both sides.
