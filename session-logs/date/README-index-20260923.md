@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260923.193840 | [Copal stale-claim recovery](20260923/20260923-193840_copal-claim-recovery.kyri) | Closed two stale claims; Oven witness green; fresh cold roster remains. |
 | 20260923.174706 | [Incense red-review claim renewed](20260923/20260923-174706_incense-red-review.kyri) | Review claim renewed; full cold roster and red dispositions remain open. |
 | 20260923.132610 | [Bakery scope-map ranking reading](20260923/20260923-132610_bakery-scope-map-ranking.kyri) | Rows landed; rank green, aurora under-named, cold roster red. |
 | 20260923.103902 | [Device-that-forgets reverse-read standfasted](20260923/20260923-103902_grass-device-that-forgets.kyri) | Custody-by-choice principle standfasted; cold roster 43 reds and 3 gates. |
