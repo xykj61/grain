@@ -158,6 +158,12 @@ against the first receipt contract: bounded consent, truthful signed facts, port
 accessible use still carry do no harm, tell the truth, hold lightly, and be kind. [Packet written](../active-designing/date/20260923/20260923-073443_grass-reverse-read-of-four-promises.md):
 **affirmed, no molt.** The next oldest foundation is the next walk.
 
+**GRASS -- THE DEVICE THAT FORGETS KEEPS CUSTODY BY CHOICE.** Read
+[`../foundations/20260628-133212_the-device-that-forgets.md`](../foundations/20260628-133212_the-device-that-forgets.md)
+against the receipt contract. [Packet written](../active-designing/date/20260923/20260923-103832_grass-device-that-forgets-reverse-read.md):
+**standfasted as a product principle, no molt or repair.** Hardware volatility, repairable parts,
+and deletion remain future acceptance work; the next oldest foundation is the next walk.
+
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
