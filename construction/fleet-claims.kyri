@@ -97,3 +97,9 @@ stamp 20260923.030106
 epoch 1790146866
 paths glow/rune_shape.rye glow/tokens.rye glow/refusal_witness.rye glow/lower_shape.rye glow/lower_named_cast.rye tools/g/glow_refusal_witness.rish tools/g/glow_shape_capacity_witness.rish active-designing/docs/glow/machine-reading.md active-designing/docs/glow/runes.md construction/ITINERARY.md
 what Raise Glow shape capacity to the receipt contract's 15 fields, carry the shape-only peek and refusal fixture with it, and prove both sides.
+claim bakery-rune-assert-queue
+seat bakery
+stamp 20260923.032114
+epoch 1790148074
+paths caravan/queue.rye tools/r/rune_assert_sweep.rish
+what Name the slot-walk invariant so the standing assert ratchet falls back to its held ceiling.
