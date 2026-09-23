@@ -196,3 +196,12 @@ The overnight order, most durable first. Take the first item that needs no open 
    this lane's own files, named here rather than claimed.
 
 When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and stop.
+
+On `20260923.050258` a settled-head cold pass completed at `0a00eafbf2`: 369 guards ran, 322 green, 44 red, 3 gated, none unrun; `tree_moved=no`, `run_verdict=guard_red`. The ALES suite took 502 seconds. Its transcript is `session-output/standing-equipment-cold.txt`. The receipt counted 42 stashes, and its detail lines match `git stash list`; every parked entry stays preserved. Next: read current red evidence before opening a repair, claim any booked red before its cold pass, and run the full hot roster after staging.
+
+
+On `20260923.065913` the settled-head cold pass ran 369 guards: 322 green, 44 red, 3 gated, none unrun; `tree_moved=no`, `run_verdict=guard_red`. Cadence slice 1 selected `season_leaf_choir` from `last=never`; that guard read red. Its transcript is `session-output/standing-equipment-cold.txt`.
+
+The `fascia_home_link` scan lists five orphan room READMEs in `.cursor-archive/rules/`, `fleet/`, `frontier/`, `frontier/cursor-cli/`, and `open/`. They sit outside this seat's lane, so the `incense-fascia-home-link` claim closed without editing them. The two parked `20260918` seat logs and their index rows are restored; `stash_record_scan` reads 28 landed and 0 unlanded.
+
+Claim-as-override opened `incense-cold-21-red-review` for the oldest unclaimed any-ship backlog named in Diffuser's shelved account. Its planned page is `active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md`. Next lap: round-open, settle HEAD, run the full cold roster, then review the remaining agent-doable reds and record one disposition each for Diffuser's next sitting.
