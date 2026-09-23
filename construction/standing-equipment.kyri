@@ -7921,3 +7921,11 @@ guard pending_decision
 path tools/p/pending_decision_witness.rish
 tier lap   # ~1.2s cold reading over living tracked Markdown; 8 behaviors in a pen, all reported
 seated 20260918.025301
+
+# fascia_metric_v0 -- one of the Generator Chapter witnesses that had lived outside the standing
+# roster. Its direct metric reading stays GREEN while its named shred verb refuses, so the chapter
+# witness now has a seat where both directions can answer on every lap.
+guard fascia_metric_v0
+path tools/gen/chapter/fascia_metric_v0.rish
+tier lap
+seated 20260922.225159

@@ -91,7 +91,7 @@ projection makes
 ([here](archive/20260916-084104_itinerary-landed-accounts.md)).
 **THEIR ASKS, STILL STANDING:** the resin room's landed wall for other rooms; the 45 **written**
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
-exempt from the commit-message path wall; and the nine unrostered `tools/gen/chapter/` witnesses.
+exempt from the commit-message path wall; and the eight remaining unrostered `tools/gen/chapter/` witnesses.
 
 **BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
 [shelved whole](archive/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
