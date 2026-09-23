@@ -237,9 +237,8 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 (`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
-**BAKERY -- `rune_assert_sweep`'s one remaining slot-walk assertion.** Claimed as
-`bakery-rune-assert-queue` before the cold run; `caravan/queue.rye` is the bounded touch, and the
-adjacent invariant sentence should lower `unnamed_assert` from 6,481 to its held ceiling of 6,480.
+**BAKERY -- `rune_assert_sweep`'s one remaining slot-walk assertion.** Landed in the queue witness;
+the adjacent invariant sentence lowers `unnamed_assert` from 6,481 to its held ceiling of 6,480.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -344,7 +343,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `aaca87b153` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3bffd173fba` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
