@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260923.095726
+editor Codex
+provider OpenAI
+product Codex
+role petrichor
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-5.6-luna
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-5.6-luna; user instruction 2026-09-21
+voice Kyri
+host Linux workspace; America/New_York
+title Close recovered yonder claim
+prompt recover the parked yonder close and land its claim-board change
+think The yonder page remains A/94 with truth 100 and service 100, so the recovered work is a claim close rather than a page edit.
+obs The parked stash conflicted against newer claims; current board and parent nib were kept, and only petrichor-yonder-grade was removed.
+obs The fresh cold roster held at HEAD 454acde3b6 and returned run_verdict=lap_unclosed because one intended claim-close file remained staged; no tree movement was reported.
+rota lap 6296, row 1 -- Air - Saturn; TAME named bounded assertions and single-stranded named free parts, so the claim close stayed one-file and one-purpose.
+file docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md grade A/94; no edit required
+file construction/fleet-claims.kyri closed petrichor-yonder-grade after upstream absence and overlap checks
+file construction/ITINERARY.md kept its current parent nib; the recovered stale nib made no change
+file session-output/standing-equipment-cold.txt cold pass returned run_verdict=lap_unclosed
+loom qa_register=87 qa_reach=90 qa_truth=100 qa_service=100 qa_composite=94 cold_run_verdict=lap_unclosed staged_files=1
+recommend rerun the full hot roster after this close and keep the standing reds visible
+scope yonder grade recheck, parked stash recovery, claim close, and cold roster receipt
+status RED -- claim close is ready, but the cold receipt is lap_unclosed and the hot roster remains open
