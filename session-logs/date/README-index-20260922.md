@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260922.210046 | [20260922-210046_lap-cap-before-the-pass.kyri](20260922/20260922-210046_lap-cap-before-the-pass.kyri) | Lap cap before the pass |
 | 20260922.205718 | [20260922-205718_waiting-on-the-cold-passes.kyri](20260922/20260922-205718_waiting-on-the-cold-passes.kyri) | Waiting is the cold passes |
 | 20260922.205415 | [20260922-205415_twentieth-reading-unstamped.kyri](20260922/20260922-205415_twentieth-reading-unstamped.kyri) | Twentieth reading, still unstamped |
 | 20260922.205246 | [20260922-205246_nineteenth-reading-unstamped.kyri](20260922/20260922-205246_nineteenth-reading-unstamped.kyri) | Nineteenth reading, still unstamped |
