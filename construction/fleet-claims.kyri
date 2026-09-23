@@ -85,3 +85,9 @@ stamp 20260922.212925
 epoch 1790126965
 paths tools/r/rank_outcome_witness.rish tools/fixtures/r/rank_outcome_scan.sh
 what Refresh the rank-outcome witness to the live page reading and prove the changed order and figures from both sides.
+claim patchouli-value-forms
+seat patchouli
+stamp 20260922.212822
+epoch 1790126902
+paths mantra/src/receipt_offer.rye tally/receipt_offer_bounds.rye
+what Map existing bounded offer, consent, use, value, expiration, and correction forms without defining a new type.
