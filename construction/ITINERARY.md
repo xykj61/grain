@@ -195,8 +195,11 @@ BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
 `perf` or a context-switch counter.
 
 **DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
-whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** paste
-the two ready rows and re-run the rank tool.
+whole](archive/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** the
+two rows already landed in `dbc5306a0`; the current rank reads `qa_genre_census` at 769s cost,
+0.075 touch, and 711s saving. `aurora_file_placement` is under-named by the proposed `*.rye`
+row: its trace reads 1,777 files, with 5 gaps. The broad QA trace refused its 6053523-line output
+bound, so no second coverage verdict is claimed.
 
 **DIFFUSER -- THE FALSIFIER'S OPEN DOOR WAS ALREADY COUNTED.** [Shelved
 whole](archive/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md). The external
@@ -344,7 +347,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `54237be5c` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `94a51ba104` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
