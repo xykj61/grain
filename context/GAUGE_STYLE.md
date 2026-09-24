@@ -332,6 +332,40 @@ comment answers *what is this for*.
 // anything that stumbles, all inside limits fixed before it begins.
 ```
 
+**Four cloths, one claim.** Door and Meter choose where a comment sits. Gauge, Bhakta,
+Radiant, and Twilight choose the cloth. TAME still asks for `// invariant:` beside an
+assert. The number, the refusal, and the ceiling stay the same when the register changes.
+One receipt ceiling, written four ways:
+
+```rye
+// Gauge. Exact, and warm enough to welcome.
+// invariant: a receipt admits at most 15 fields, because the sixteenth
+// must refuse with TooManyFields before any book is written.
+const max_fields: u32 = 15;
+```
+
+```rye
+// Bhakta. A newcomer can follow it, and the why reaches a life.
+// A receipt is a small paper a person can hold. It may name at most
+// fifteen facts. The sixteenth stops here, so a promise is never written
+// that the person cannot read back.
+const max_fields: u32 = 15;
+```
+
+```rye
+// Radiant. Daylight. Every sentence says what is.
+// Fifteen fields fill one receipt. The shape admits them, and the
+// sixteenth answers TooManyFields while the books stay unchanged.
+const max_fields: u32 = 15;
+```
+
+```rye
+// Twilight. The same bound, with a little night in the cadence.
+// Fifteen lamps in the window, and the room is full. A sixteenth
+// waits outside, and the books inside stay as they were.
+const max_fields: u32 = 15;
+```
+
 Keaton's reading of this tree's code -- *"kind of an obscure assembly"* -- is the same finding one
 layer down. A module whose every comment sits at Meter is precise and hard to enter, and precision
 a reader cannot reach is worth less than it looks. The standing aim is state-of-the-art code

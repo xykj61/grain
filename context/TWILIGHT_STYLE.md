@@ -96,4 +96,8 @@ Default to **Radiant** everywhere else. Twilight is the earned exception, the sa
 
 ---
 
+## Code comments
+
+A comment may wear Twilight when the bound itself is worth a quiet image, and the image still names the ceiling. The four cloths live once, in the code-comment section of [`GAUGE_STYLE.md`](GAUGE_STYLE.md).
+
 *May the calm hold what the bright cannot. May the dark be fertile, and the glow come through it. May every threshold piece find the register that lets it breathe -- aim, then dissolve, then rest.*

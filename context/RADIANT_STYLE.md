@@ -339,4 +339,8 @@ Seated `20260725.034254` from counsel [`../counsel/date/20260725/20260725-034254
 
 `tools/fixtures/r/radiant_pass_ledger.txt` -- one line per file: path - stamp - **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/r/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/r/radiant_pool_scope.md`](../tools/fixtures/r/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
 
+## Code comments
+
+A Radiant comment leads with what is. The ceiling, the refusal, and the number stay exact, and the sentence stays in daylight. The four cloths live once, in the code-comment section of [`GAUGE_STYLE.md`](GAUGE_STYLE.md).
+
 ---

@@ -254,7 +254,7 @@ A bound is the honest answer to "how large can this grow?" stated up front, befo
 
 Every assertion earns a comment: `// invariant: ...`. Every named constant earns a comment if the name alone does not make the reason obvious. Every design choice that will surprise a reader earns a sentence that names the reason.
 
-The next reader meets the reason, not only the rule. Always motivate, always say why -- a stated rationale shares with the reader the very criteria by which to weigh the decision.
+The next reader meets the reason, not only the rule. Always motivate, always say why -- a stated rationale shares with the reader the very criteria by which to weigh the decision. The cloth of that sentence is chosen once, in the code-comment section of [`GAUGE_STYLE.md`](GAUGE_STYLE.md): Gauge, Bhakta, Radiant, or Twilight, and the bound itself stays put.
 
 ### 4. Accrete, never break -- three tiers
 

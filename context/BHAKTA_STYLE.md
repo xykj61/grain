@@ -99,4 +99,8 @@ projection carries horizon, assumptions, falsifier and confidence; observation, 
 projection stay in their own sentences. **Accessible means measured too.** The reader who needs the plainest
 words most needs to be able to check what they are told.
 
+## Code comments
+
+A comment may wear this register when the reader of the code is meeting the idea for the first time. The bound stays the bound. The words say what the bound is for in a life. The four cloths, and the one receipt ceiling written in each, live in the code-comment section of [`GAUGE_STYLE.md`](GAUGE_STYLE.md).
+
 *May the door stay open, and may everyone who walks through it be trusted with the whole truth.*
