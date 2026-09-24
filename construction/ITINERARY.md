@@ -90,6 +90,13 @@ projection makes
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
 exempt from the commit-message path wall; and the seven remaining unrostered `tools/gen/chapter/` witnesses.
 
+**COPAL -- THE GRAD SEAL WITNESS IS ROSTERED, WITH ITS DEPENDENCY RED NAMED.** The witness proves
+the three living pins and its planted negative. Its CION module half is RED because the downstream
+scan still finds bare-ordinal drift in `lattice/README.md` and
+`tools/gen/chapter/fascia_metric_v0.rish`; those surfaces belong to their owning lanes. The cold
+roster held `tree_moved=no` at `f5cf094d68`, with 53 stashed entries, and the witness proof stopped
+at that named dependency rather than claiming GREEN.
+
 **BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
 [shelved whole](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
 this account once carried for Diffuser is closed -- see the row below naming the fall 9 to 7.
