@@ -77,3 +77,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim petrichor-yonder-grade
+seat petrichor
+stamp 20260924.164026
+epoch 1790282426
+paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
+what Grade and, if needed, raise the yonder learning-floor page to B or better.
