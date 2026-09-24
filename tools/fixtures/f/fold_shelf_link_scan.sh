@@ -66,7 +66,7 @@
 #
 # WHAT IS READ PAST, each for a reason the tree already seats.
 #   A CODE SPAN. `](../X)` inside backticks is prose ABOUT a link, and Markdown renders it
-#   literally rather than as a link. `construction/archive/REDS-a-citation-in-a-comment-rows-218.md`
+#   literally rather than as a link. `construction/archive/REDS/REDS-a-citation-in-a-comment-rows-218.md`
 #   quotes two broken links as its own subject; repairing those would destroy the testimony. The
 #   same shape is one of the five blessed cases in `comment_citation_control.sh`.
 #   A PLACEHOLDER. `](date/YYYYMMDD/name)` is a shape built from letters, and stamp-and-name asks

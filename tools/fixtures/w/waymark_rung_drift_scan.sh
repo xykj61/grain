@@ -90,7 +90,7 @@ else
   ( cd "$ROOT" && git ls-files 2>/dev/null ) \
     | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
     | grep -vE '^(session-logs|counsel|waymarks|kyri-resins|vendor|gratitude|seed)/' \
-    | grep -vE '^construction/archive/REDS-.*rows-.*\.md$' \
+    | grep -vE '^construction/archive/REDS/REDS-.*rows-.*\.md$' \
     > "$files" || : > "$files"
 fi
 

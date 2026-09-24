@@ -9,7 +9,7 @@
 # remembers" has forecast its own next firing. A lantern that fires twice becomes a loom. This is
 # the loom.
 #
-#   sh tools/fixtures/r/reds_fold.sh construction/archive/REDS-<sprig>-rows-<a>-<b>.md 266 267 268 \
+#   sh tools/fixtures/r/reds_fold.sh construction/archive/REDS/REDS-<sprig>-rows-<a>-<b>.md 266 267 268 \
 #       --why "what the three rows taught together"
 #
 # WHAT IT DOES, in order: reads the clause and the stamp BEFORE a byte moves, reads the named rows
@@ -51,7 +51,7 @@
 #   unknown_option   -- an option this tool does not know, refused rather than read as a row.
 #
 # WHAT IT WRITES BESIDE THE MOVE, from `20260830`: the recital row in
-# `construction/archive/REDS-fold-recital.md` naming which rows moved, on what stamp, onto which
+# `construction/archive/REDS/REDS-fold-recital.md` naming which rows moved, on what stamp, onto which
 # shelf. Those three facts are the tool's own -- it sorted the rows, it read each row's status
 # marker, and it was handed the shelf -- so a hand writing them out was copying what the tool
 # already held. Twice on `20260830` a fold shipped without its line and
@@ -78,7 +78,7 @@ MAX_ROWS=12
 MAX_WHY=1024
 
 PIN=construction/REDS.md
-RECITAL=construction/archive/REDS-fold-recital.md
+RECITAL=construction/archive/REDS/REDS-fold-recital.md
 REANCHOR=tools/fixtures/r/reds_fold_reanchor.sh
 
 # One clock, cited rather than spelled -- the canonical zone of the naming law, overridable exactly

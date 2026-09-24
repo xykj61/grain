@@ -81,6 +81,6 @@ Lantern serves bounded request/response inference inside Pond. Each lap deepens 
 | [`fixtures/completion_presence_penalty.kyri`](fixtures/completion_presence_penalty.kyri) | presence_penalty pin |
 | [`fixtures/completion_n.kyri`](fixtures/completion_n.kyri) | n pin |
 
-**RW-5** (`20260711.005028`) -- mirrored pair with Drawn Terminal at `complete_fixture`: collaboration tip **420** (`tools/r/rw5_lantern_collab.rish`), contract tip **421** (`tools/r/rw5_lantern_contract.rish` - `lantern rw5contracttest`). Contract on paper: [`../construction/archive/20260711-005028_rw5-mirrored-pair-contract.md`](../construction/archive/20260711-005028_rw5-mirrored-pair-contract.md).
+**RW-5** (`20260711.005028`) -- mirrored pair with Drawn Terminal at `complete_fixture`: collaboration tip **420** (`tools/r/rw5_lantern_collab.rish`), contract tip **421** (`tools/r/rw5_lantern_contract.rish` - `lantern rw5contracttest`). Contract on paper: [`../construction/archive/20260711-005028_rw5-mirrored-pair-contract.md`](../construction/archive/date/20260711/20260711-005028_rw5-mirrored-pair-contract.md).
 
 *May every completion honor its budget. May length stops stay honest. May only listed models speak. May seed, top_p, err_stop, stop_sequence, prompt, max_tokens, text, temperature, TopPMismatch, err_stop, length_stop, stopped_reason, and stream pins keep the fixture path deterministic.*

@@ -39,7 +39,7 @@ set -eu
 
 MODE=${1:-check}
 LEDGER=${LEDGER:-construction/REDS.md}
-ARCHIVE_GLOB=${ARCHIVE_GLOB:-construction/archive/REDS-*rows-*.md}
+ARCHIVE_GLOB=${ARCHIVE_GLOB:-construction/archive/REDS/REDS-*rows-*.md}
 
 # invariant: the 20 rows the ledger opened with on 20260729 -- 6 already written into the tree and
 # 14 recovered out of chat windows. The headline states this arithmetic itself, so the constant is

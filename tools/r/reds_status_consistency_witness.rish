@@ -93,7 +93,7 @@ assert scan.out contains "verdict=every_status_agrees" else "reds-status-consist
 # 3 -- agreement at the live edge. The highest prose row this reading finds is the last row the
 # spine counts. A disagreement here means the two extraction rules have drifted, and the edge is
 # where a new row lands, so it is where drift shows first.
-let edge = run ["sh" "-c" "want=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^expect_next=//p'); got=$(sh tools/fixtures/r/reds_status_consistency_scan.sh | sed -n 's/^highest_row=//p'); echo spine_last=$((want-1)) status_highest=$got; test $((want-1)) -eq $got"]
+let edge = run ["sh" "-c" "want=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS/REDS-*rows-*.md construction/REDS.md | sed -n 's/^expect_next=//p'); got=$(sh tools/fixtures/r/reds_status_consistency_scan.sh | sed -n 's/^highest_row=//p'); echo spine_last=$((want-1)) status_highest=$got; test $((want-1)) -eq $got"]
 say edge.out
 assert edge.ok else "reds-status-consistency: the status reading and the spine must agree on the last row"
 

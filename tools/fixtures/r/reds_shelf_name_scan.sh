@@ -105,7 +105,7 @@ MAX_SHELVES=4096
 
 # Tracked shelves only. A shelf a clone does not carry is not a promise this tree makes, and an
 # untracked file in `construction/archive` is somebody's scratch.
-shelf_list=$(git ls-files 'construction/archive/REDS-*rows-*.md' 2>/dev/null || true)
+shelf_list=$(git ls-files 'construction/archive/REDS/REDS-*rows-*.md' 2>/dev/null || true)
 
 shelves_read=0
 unread_shelves=0

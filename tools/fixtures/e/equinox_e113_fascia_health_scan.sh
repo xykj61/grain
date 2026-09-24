@@ -123,7 +123,7 @@ sh tools/fixtures/r/reds_spine_grep.sh 'git ls-files' >/dev/null || {
 # because rows 1..229 sit on fold shelves under construction/archive/. Its own witness has
 # always passed both, and this call site never learned to. Same shape the %231 repair fixed
 # for `reds_row_present`, in the neighbouring function nobody was looking at.
-MONO=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md)
+MONO=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS/REDS-*rows-*.md construction/REDS.md)
 echo "$MONO"
 echo "$MONO" | rg -q '^verdict=ok$' || {
   echo "reds_row=failed"

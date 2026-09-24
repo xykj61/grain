@@ -18,7 +18,7 @@
 # contents, which is REDS %97's shape.
 set -eu
 
-SPINE=${REDS_SPINE_GLOB:-"construction/archive/REDS-*rows-*.md construction/REDS.md"}
+SPINE=${REDS_SPINE_GLOB:-"construction/archive/REDS/REDS-*rows-*.md construction/REDS.md"}
 
 n=0
 for f in $SPINE; do

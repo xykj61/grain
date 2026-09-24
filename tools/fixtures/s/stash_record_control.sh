@@ -266,7 +266,7 @@ kinds() { ( cd "$pen/kinds" && sh "$src" "$@" 2>&1 ); }
 # classification has to hold when it meets them that way.
 mkdir -p "$pen/kinds/tools/fixtures/f" "$pen/kinds/construction/archive" "$pen/kinds/tools/fixtures/a"
 echo "the elder version" > "$pen/kinds/tools/fixtures/f/moved_guard.rish"
-printf '# rows\n'        > "$pen/kinds/construction/archive/REDS-a-pen-shelf-rows-1.md"
+printf '# rows\n'        > "$pen/kinds/construction/archive/REDS/REDS-a-pen-shelf-rows-1.md"
 printf '# accounts\n'    > "$pen/kinds/construction/archive/20260101-010101_itinerary-landed-accounts.md"
 printf '# a real pen\n'  > "$pen/kinds/tools/fixtures/a/parked_pen_control.sh"
 ( cd "$pen/kinds" && g stash push -u -m "fleet-round-open 20260101-090909: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
@@ -312,8 +312,8 @@ ck "and the moved count falls to zero" "orphans_moved=0" "$(kinds)"
 ( cd "$pen/kinds" && mkdir -p construction && printf '# the landed shelf\n' > construction/REDS-a-pen-shelf-rows-1.md
   g add -A && g commit -qm "land the shelf under a path of its own" )
 outall=$(kinds all)
-ck "a shelf answered elsewhere reads moved" "construction/archive/REDS-a-pen-shelf-rows-1.md	orphan:moved:construction/REDS-a-pen-shelf-rows-1.md" "$outall"
-nk "and stops being read as a shelf"        "construction/archive/REDS-a-pen-shelf-rows-1.md	orphan:shelf" "$outall"
+ck "a shelf answered elsewhere reads moved" "construction/archive/REDS/REDS-a-pen-shelf-rows-1.md	orphan:moved:construction/REDS-a-pen-shelf-rows-1.md" "$outall"
+nk "and stops being read as a shelf"        "construction/archive/REDS/REDS-a-pen-shelf-rows-1.md	orphan:shelf" "$outall"
 ck "so the shelf count falls by one"        "orphans_shelf=1" "$(kinds)"
 
 # AND THE KINDS LIFT THE WAY THE COUNT DOES -- one at a time, which is the whole point of the

@@ -39,7 +39,7 @@ set -eu
 # what the planted single-file pens in the witness rely on.
 if [ "$#" -eq 0 ]; then
   set -- construction/REDS.md
-  for shelf in construction/archive/REDS-*rows-*.md; do
+  for shelf in construction/archive/REDS/REDS-*rows-*.md; do
     # An unmatched glob stays literal in POSIX sh, so a tree that has never folded is read
     # exactly as it was before -- the living pin alone, and honestly.
     [ -f "$shelf" ] && set -- "$shelf" "$@"

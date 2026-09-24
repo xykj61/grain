@@ -25,7 +25,7 @@
 #
 #   sh tools/r/reds_shelf_resolve.sh REDS-a-borrowed-scope-rows-396.md
 #   sh tools/r/reds_shelf_resolve.sh %501
-#   sh tools/r/reds_shelf_resolve.sh construction/archive/REDS-...-rows-512.md
+#   sh tools/r/reds_shelf_resolve.sh construction/archive/REDS/REDS-...-rows-512.md
 #   sh tools/r/reds_shelf_resolve.sh --map > /tmp/m   # emit the row map, resolve nothing
 #   REDS_SHELF_MAP=/tmp/m sh tools/r/reds_shelf_resolve.sh %501   # reuse it
 #
@@ -56,7 +56,7 @@ set -eu
 # standing today and far below anything a shell sort would labour over.
 MAX_SHELVES=4096
 
-SHELF_GLOB=${REDS_SHELF_GLOB:-construction/archive/REDS-*.md}
+SHELF_GLOB=${REDS_SHELF_GLOB:-construction/archive/REDS/REDS-*.md}
 PIN=${REDS_PIN:-construction/REDS.md}
 
 usage() {

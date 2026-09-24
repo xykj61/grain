@@ -357,7 +357,7 @@ fi
 # draft of this comment got it backwards. It cited the Petrichor seat being answered 436 against an
 # anointed maximum of 434 -- taken from that seat's own report and never checked. Verified after:
 # `%435` stands on the anointed spine, folded to
-# `construction/archive/REDS-the-page-that-became-its-own-ancestor-rows-435.md`, so the maximum was
+# `construction/archive/REDS/REDS-the-page-that-became-its-own-ancestor-rows-435.md`, so the maximum was
 # 435 and **436 was the correct answer**. The skip never fired. The hazard the refusal guards is
 # real and has simply not happened yet.
 gitdir=$(git rev-parse --git-dir 2>/dev/null || echo .git)
