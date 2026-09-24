@@ -24,10 +24,10 @@ Radiant pass `20260728.052441` -- living L1 rename-forward: **MUR** (was MALA); 
 
 | Order | Study (our words) | Opens in | Unlocks | Status |
 |-------|-------------------|----------|---------|--------|
-| **1** | Capability-protocol idiom beside Comlink's sealed datagram | `external-research/` (named teachers stay there) | Consumer-edge design note | **Landed** [`../external-research/20260712-053324_ocapn-beside-comlink.md`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
-| **2** | One existing seed through a component-model target | `external-research/` (portable ABI lineage) | "Anywhere" before bare metal | **Landed** [`../external-research/20260712-054135_component-model-one-seed.md`](../external-research/20260712-054135_component-model-one-seed.md) -- pick **receipt verify-witness** |
-| **3** | Proven-seat guest for Rye userland -- Caravan stays horizon | `external-research/` (verified microkernel lineage) | Guest, never merger | **Landed** [`../external-research/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) |
-| **4** | Giving-asymmetric money for Linengrow's giving lane | `external-research/` beside money-close-to-home | Complements MUR / settlement seat (was MALA) | **Landed** [`../external-research/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) |
+| **1** | Capability-protocol idiom beside Comlink's sealed datagram | `external-research/` (named teachers stay there) | Consumer-edge design note | **Landed** [`../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md`](../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md) |
+| **2** | One existing seed through a component-model target | `external-research/` (portable ABI lineage) | "Anywhere" before bare metal | **Landed** [`../external-research/date/20260712/20260712-054135_component-model-one-seed.md`](../external-research/date/20260712/20260712-054135_component-model-one-seed.md) -- pick **receipt verify-witness** |
+| **3** | Proven-seat guest for Rye userland -- Caravan stays horizon | `external-research/` (verified microkernel lineage) | Guest, never merger | **Landed** [`../external-research/date/20260712/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/date/20260712/20260712-054342_proven-seat-guest-genode-sel4.md) |
+| **4** | Giving-asymmetric money for Linengrow's giving lane | `external-research/` beside money-close-to-home | Complements MUR / settlement seat (was MALA) | **Landed** [`../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) |
 
 Logic before carriage throughout. Each study lands as understanding + a short design conclusion; none ships a new wire or renames a module.
 
@@ -52,7 +52,7 @@ Logic before carriage throughout. Each study lands as understanding + a short de
 
 ## Giving lane (T0 seated - T1 mapped)
 
-Private payer - transparent payee -- [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - study [`../external-research/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) - **T1 gap map** [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md).
+Private payer - transparent payee -- [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - study [`../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) - **T1 gap map** [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md).
 
 ## Out of scope this season
 

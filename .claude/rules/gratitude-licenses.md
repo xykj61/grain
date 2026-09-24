@@ -1,6 +1,6 @@
 # Gratitude Licenses -- Clean-Room Discipline
 
-**Canonical reference:** `external-research/20260620-014412_system.md` -> section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
+**Canonical reference:** `external-research/date/20260620/20260620-014412_system.md` -> section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
 
 `gratitude/` is a reading library rather than a dependency. We study concepts and leave the code exactly where it lives.
 
@@ -24,7 +24,7 @@ LGPL limits **embedding** library code in programs we distribute; learning ideas
 
 ## The microkernel family -- verified `20260821.041056` (license read granted by Keaton)
 
-Read from each project's own authoritative text rather than from memory. Full verdict and sources: [`../../external-research/20260821-041056_the-microkernel-license-read.md`](../../external-research/20260821-041056_the-microkernel-license-read.md).
+Read from each project's own authoritative text rather than from memory. Full verdict and sources: [`../../external-research/date/20260821/20260821-041056_the-microkernel-license-read.md`](../../external-research/date/20260821/20260821-041056_the-microkernel-license-read.md).
 
 | Component | License | How we may hold it |
 |---|---|---|

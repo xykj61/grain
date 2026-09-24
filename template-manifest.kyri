@@ -3,8 +3,8 @@ stamp 20260808.183536
 voice Riyo
 status proposal
 # The single source of truth for the two-grain boundary.
-# Companion plan: external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
-# Root-nesting plan:  external-research/20260808-183336_the-compact-root-nesting-for-a-public-seed.md
+# Companion plan: external-research/date/20260808/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
+# Root-nesting plan:  external-research/date/20260808/20260808-183336_the-compact-root-nesting-for-a-public-seed.md
 #
 # Every tracked root path carries exactly one verdict:
 #   template -- copied verbatim into the public seed (grain-os/grain)
@@ -484,26 +484,26 @@ sub_exclude active-designing/yonder/date/20260722/20260722-153358_stoa279-hawm-e
 sub_exclude active-designing/yonder/date/20260714/20260714-184500_macos-full-private-home-design.md
 sub_exclude waymarks/date/20260725/20260725-112515_radiant-wave35.md
 # external-research dual-gate clearance (20260810 . w50krsfnv) -- 13 copyright + 21 personal
-sub_exclude external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md
-sub_exclude external-research/20260704-185412_ends-first-map-orientation.md
-sub_exclude external-research/20260706-002612_the-settlement-seat-under-three-lights.md
-sub_exclude external-research/20260706-005512_settlement-seat-verification-and-verdict.md
-sub_exclude external-research/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md
-sub_exclude external-research/20260708-211637_ios-session-claude-review-brief.md
-sub_exclude external-research/20260708-223327_sui-zk-primitives-for-donor-amount-privacy.md
-sub_exclude external-research/20260709-183326_claude-review-brief-jul9-evening-close.md
-sub_exclude external-research/20260709-200022_pedersen-and-sigma-plainly.md
-sub_exclude external-research/20260712-053324_ocapn-beside-comlink.md
-sub_exclude external-research/20260712-054521_taler-giving-lane-asymmetry.md
-sub_exclude external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md
-sub_exclude external-research/20260714-012125_neth-vps-cost-and-cluster-plan.md
-sub_exclude external-research/20260715-135200_zero-to-one-rhizome-market-position.md
-sub_exclude external-research/20260717-144200_openvm-pairing-hint-soundness-lessons.md
-sub_exclude external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md
-sub_exclude external-research/20260729-165912_cooperative-houses-direction-archetypes.md
-sub_exclude external-research/20260730-014500_the-standard-behind-it.md
-sub_exclude external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
-sub_exclude external-research/20260809-232015_loadable-topologies-and-pond-the-application-module.md
+sub_exclude external-research/date/20260701/20260701-213412_deep-archive-and-sovereign-host-blueprint.md
+sub_exclude external-research/date/20260704/20260704-185412_ends-first-map-orientation.md
+sub_exclude external-research/date/20260706/20260706-002612_the-settlement-seat-under-three-lights.md
+sub_exclude external-research/date/20260706/20260706-005512_settlement-seat-verification-and-verdict.md
+sub_exclude external-research/date/20260707/20260707-222500_settlement-seat-refresh-and-slcl3-witness-proposal.md
+sub_exclude external-research/date/20260708/20260708-211637_ios-session-claude-review-brief.md
+sub_exclude external-research/date/20260708/20260708-223327_sui-zk-primitives-for-donor-amount-privacy.md
+sub_exclude external-research/date/20260709/20260709-183326_claude-review-brief-jul9-evening-close.md
+sub_exclude external-research/date/20260709/20260709-200022_pedersen-and-sigma-plainly.md
+sub_exclude external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md
+sub_exclude external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md
+sub_exclude external-research/date/20260714/20260714-001017_neth-mala-settlement-l1-l2-design.md
+sub_exclude external-research/date/20260714/20260714-012125_neth-vps-cost-and-cluster-plan.md
+sub_exclude external-research/date/20260715/20260715-135200_zero-to-one-rhizome-market-position.md
+sub_exclude external-research/date/20260717/20260717-144200_openvm-pairing-hint-soundness-lessons.md
+sub_exclude external-research/date/20260728/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md
+sub_exclude external-research/date/20260729/20260729-165912_cooperative-houses-direction-archetypes.md
+sub_exclude external-research/date/20260730/20260730-014500_the-standard-behind-it.md
+sub_exclude external-research/date/20260808/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md
+sub_exclude external-research/date/20260809/20260809-232015_loadable-topologies-and-pond-the-application-module.md
 sub_exclude external-research/yonder/strengthening-compiler/README.md
 sub_exclude external-research/yonder/strengthening-compiler/9902_mem_is_aligned.md
 sub_exclude external-research/yonder/strengthening-compiler/9912_mem_find_min_max.md

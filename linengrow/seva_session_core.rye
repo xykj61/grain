@@ -1,6 +1,6 @@
 //! linengrow/seva_session_core.rye -- Seva B0: a session is a signed, ordered, replayable log.
 //!
-//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! Per external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B0: a broadcast (or a recorded session, Asciinema's shape) is not a
 //! video -- it is a replayable log of signed, timestamped, strictly-ordered
 //! events, re-rendered by folding. This is the smallest real lap of the Seva

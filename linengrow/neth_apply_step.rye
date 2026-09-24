@@ -1,6 +1,6 @@
 //! linengrow/neth_apply_step.rye -- Neth's apply step, distinct from writing.
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 3 ("written is not acknowledged -- the manifest is the moment of
 //! truth"): a result can be fully written to real, valid storage and still
 //! count for nothing until a separate, authoritative step formally admits

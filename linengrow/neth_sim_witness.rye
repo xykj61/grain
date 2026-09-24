@@ -3,7 +3,7 @@
 //!   rye build linengrow/neth_sim_witness.rye -femit-bin=linengrow/bin/neth_sim_witness
 //!   linengrow/bin/neth_sim_witness
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 4 and linengrow/neth_sim.rye. Four claims:
 //!   1. Same seed, same drop rate, two independent replicas -- byte-for-
 //!      byte identical delivery traces and final roots. This is

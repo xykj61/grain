@@ -10,7 +10,7 @@
 # 340-byte payload where one worst-case entry costs 676 bytes, so its attainable count is zero.
 # Both were found by hand, one lap apart, and the second firing is what turns a lantern into a
 # loom (`.claude/rules/reds-first.md`). The census and the arithmetic are Diffuser's, in
-# `external-research/20260910-001454_the-count-in-front-of-the-byte-ceiling.md`; this is the
+# `external-research/date/20260910/20260910-001454_the-count-in-front-of-the-byte-ceiling.md`; this is the
 # standing instrument that reading asked for.
 #
 # The class is quiet on purpose. A bound too SMALL refuses honest work and is found within a day.

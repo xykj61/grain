@@ -17,7 +17,7 @@ is a seer who hears the human and speaks faithfully to the machine -- which is a
 shell's whole work. Scripts carry the `.rish` extension. The reasoning behind
 the name and the design lives in `../active-designing/yonder/date/20260619/20260619-051312_the-faithful-hand.md`,
 `../foundations/20260618-184912_growing-a-language.md`, and this README. (Historical:
-`../external-research/20260621-051612_rishi-shell-redirect.md` is a redirect stub.)
+`../external-research/date/20260621/20260621-051612_rishi-shell-redirect.md` is a redirect stub.)
 
 ## What This First Version Does
 
@@ -191,7 +191,7 @@ Two north stars guide further growth. `tests/hello.rish` is what runs today;
 `examples/pond.rish` is where we are headed -- an illustrative sketch of Rishi
 composing a sandbox policy as a value and opening a **Pond** enclosure over
 Caravan's isolation and Tally's bounded gardens. The reasoning lives in
-`../external-research/20260618-180812_pond-foundation.md`.
+`../external-research/date/20260618/20260618-180812_pond-foundation.md`.
 
 `say` writes to standard output. When a Rishi script is run as a child via
 `run ["rishi" "run" "child.rish"]`, the child's `say` output appears in

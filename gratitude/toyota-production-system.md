@@ -7,7 +7,7 @@ in our own vocabulary; the teachers are named here, warmly, and nowhere else.*
 **Stamp:** `20260729.222500`
 **Kind:** gratitude · named teachers
 **Silo:** `foundations/20260729-224828_reds-first-and-the-allocation.md`
-**Study:** `external-research/20260729-224828_the-line-that-stops-itself.md`
+**Study:** `external-research/date/20260729/20260729-224828_the-line-that-stops-itself.md`
 
 ---
 

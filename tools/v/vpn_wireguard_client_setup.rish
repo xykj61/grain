@@ -1,7 +1,7 @@
 # vpn_wireguard_client_setup.rish -- the real, runnable client half of the
 # self-hosted WireGuard VPN guide.
 #
-# Reifies external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md
+# Reifies external-research/date/20260713/20260713-212900_self-hosted-vpn-cto-credential-security.md
 # Steps 4-5 (the parts this Mac, as the client, can actually do). Steps 1-3
 # (provisioning the VPS) cannot run here -- this Mac is not the server -- so
 # they are a separate deploy artifact: tools/v/vpn_wireguard_server_setup.sh,

@@ -12,7 +12,7 @@
 # breaks neither -- so it lifts as a shorter weave, and the next `mantra add` writes that
 # shorter weave back under its own honest digest. The history loses lines and the store still
 # reads consistent. The finding is written up whole at
-# external-research/20260908-170154_a-name-is-a-proof-computed-once.md.
+# external-research/date/20260908/20260908-170154_a-name-is-a-proof-computed-once.md.
 #
 # WHAT THE REPAIR IS. `read_blob` reads through `readFileAlloc` under a limit one past
 # `max_blob_bytes`, so a blob past the ceiling refuses `BlobTooLarge` rather than truncating;

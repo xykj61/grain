@@ -3,7 +3,7 @@
 # A broadcast is one ordered log carrying the broadcaster's content and
 # viewers' chat, each a signed fact from its own author, verified against its
 # own key; only consented voices fold, and the VOD is the log at rest. See
-# external-research/20260715-181500_sala-broadcast-live-session-fold.md
+# external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 # and linengrow/seva_session_core.rye (replay_multi + ActorRegistry).
 #
 # Run from the repository root:

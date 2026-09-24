@@ -22,7 +22,7 @@ Human orientation stays at [`MAP.md`](MAP.md). Filing law stays at [`ORGANIZING.
 
 **Jason Cohen** -- the Simple, Lovable, Complete essay, resting in [`gratitude/`](gratitude/) (`Your customers hate MVPs. Make a SLC instead..html`). His warmer sibling of the minimum-viable habit became our shipping law -- distilled at [`context/SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md).
 
-**John Gall** -- Gall's Law: a working whole grows only from a smaller working whole. Principles summary at [`gratitude/Systemantics.md`](gratitude/Systemantics.md); honored in [`external-research/20260620-014412_system.md`](external-research/20260620-014412_system.md).
+**John Gall** -- Gall's Law: a working whole grows only from a smaller working whole. Principles summary at [`gratitude/Systemantics.md`](gratitude/Systemantics.md); honored in [`external-research/date/20260620/20260620-014412_system.md`](external-research/date/20260620/20260620-014412_system.md).
 
 **Rich Hickey** -- Simple Made Easy - Spec-ulation - Language of the System - Hammock-Driven Development -- whole transcripts in [`gratitude/`](gratitude/) (`SimpleMadeEasy.md` - `Spec_ulation.md` - `LanguageSystem.md` - `HammockDrivenDev.md`). Accrete-never-break and hammock analysis grow from this shelf.
 

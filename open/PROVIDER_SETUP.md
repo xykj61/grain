@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- practical setup instructions for a provider this tree does not yet call from any tracked code
 **Last updated:** `20260920.192026`
-**Kin:** [`README.md`](README.md) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) (why Together AI is this page's default demo) - [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - [`../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md)
+**Kin:** [`README.md`](README.md) - [`HARNESS_RATIONALE.md`](HARNESS_RATIONALE.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) (why Together AI is this page's default demo) - [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md)
 
 ---
 

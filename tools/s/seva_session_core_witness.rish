@@ -4,7 +4,7 @@
 # is a signed, strictly-ordered, replayable log that folds to a deterministic
 # session root. Composes on receipt_core + kumara, gates on nothing but the
 # fold primitives already green. See
-# external-research/20260715-181500_sala-broadcast-live-session-fold.md
+# external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 # and linengrow/seva_session_core.rye.
 #
 # Run from the repository root:

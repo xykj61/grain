@@ -2,7 +2,7 @@
 
 **Seated:** `20260808.205404` on Keaton's word - **Status:** Living - **Cites, never restates**
 
-Canon: `external-research/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement II).
+Canon: `external-research/date/20260808/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement II).
 
 Grain descends from Urbit's ideas and can offer work back to that world, **yet its worth is not contingent on Urbit's blessing.** The bounded, asserted, explicit-width discipline and the civic, custody-first direction are promises to **whoever runs the software** -- families, small collectives, civic builders who may never hear the word "vane." Their reception is the verdict, not a galaxy holder's attention.
 

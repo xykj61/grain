@@ -21,7 +21,7 @@
 # first with tools/g/generate_jail_local_keys_macos.rish, run from an
 # ordinary terminal outside any jail -- see the macOS guide.
 #
-# See: external-research/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md
+# See: external-research/date/20260713/20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md
 # and SOURCE.md Step 6/9 (the Linux/NixOS path this mirrors).
 #
 # What this gives you, and what it does not:

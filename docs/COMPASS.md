@@ -32,7 +32,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | 9 | [`ITINERARY.md`](../construction/ITINERARY.md) | Now and season (`TASKS`/`ROADMAP` fused in `20260823.103804`) |
 | 10 | Run one witness | Proof before narrative |
 
-Acme face for happy-zone testing: **witness habitat** -- [`LEXICON`](../context/LEXICON.md) - study [`20260717-173427`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).
+Acme face for happy-zone testing: **witness habitat** -- [`LEXICON`](../context/LEXICON.md) - study [`20260717-173427`](../external-research/date/20260717/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).
 
 ## Cursor loop words (do not load the whole lexicon)
 

@@ -72,7 +72,7 @@ living Realidream also reaches:
 
 | Path | From |
 | --- | --- |
-| `external-research/20260712-054521_taler-giving-lane-asymmetry.md` | money |
+| `external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md` | money |
 | `active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md` | money |
 
 ---

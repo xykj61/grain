@@ -34,7 +34,7 @@ The five variants are **one design, built more than once, on purpose** -- rather
 
 ## Glow, the Language Beneath
 
-Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bounded semantics underneath -- so a reader gets Hoon's directness while leaving Hoon's unbounded-recursion habit behind. Its type surface (auras, cold and warm atoms, structs as molds over nouns) and its linting are scoped in the Glow supplement ([`../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)).
+Glow keeps Hoon's rune tradition as *surface syntax* while compiling to TAME-bounded semantics underneath -- so a reader gets Hoon's directness while leaving Hoon's unbounded-recursion habit behind. Its type surface (auras, cold and warm atoms, structs as molds over nouns) and its linting are scoped in the Glow supplement ([`../../external-research/date/20260713/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../../external-research/date/20260713/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md)).
 
 ## Honest Status
 

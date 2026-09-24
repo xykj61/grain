@@ -2,7 +2,7 @@
 #
 # The optimization spine's move one, held as a room law (design:
 # active-designing/date/20260826/20260826-021136_caravan-rearchitected-the-optimization-spine.md; reading:
-# external-research/20260826-021135_caravan-read-against-the-optimization-spine.md). A ring
+# external-research/date/20260826/20260826-021135_caravan-read-against-the-optimization-spine.md). A ring
 # buffer's wrap is semantics and a linear count's wrap is aliasing, so a modulo whose result
 # becomes a value owes one `// invariant:` line naming `wrap-as-periodic` or `wrap-as-linear`.
 # A modulo feeding a comparison with zero is a divisibility predicate -- nothing wraps, nothing

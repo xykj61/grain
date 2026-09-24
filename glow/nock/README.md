@@ -16,7 +16,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ## The Primitive Core
 
-Per [`../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../../external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md)'s phased plan, this lap proves the Turing-complete primitive core.
+Per [`../external-research/date/20260713/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md`](../../external-research/date/20260713/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md)'s phased plan, this lap proves the Turing-complete primitive core.
 
 | File | Proves |
 |---|---|

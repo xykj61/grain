@@ -3,7 +3,7 @@
 # WHAT THIS ENFORCES, AND WHY IT IS NOT DECORATIVE. seL4 splits its licensing at the kernel boundary: the kernel is GPL-2.0 and the
 # userlevel is BSD-2-Clause, and seL4's own LICENSE.md states the GPL "does not cover user-level code that uses kernel services by normal
 # system calls." Caravan is a root task on the permissive side, so it may LINK libsel4 rather than clean-room it
-# (external-research/20260821-041056_the-microkernel-license-read.md, granted `20260821`).
+# (external-research/date/20260821/20260821-041056_the-microkernel-license-read.md, granted `20260821`).
 #
 # A project-level verdict is not a licence, though. seL4 issue #245 reported in 2020 that roughly fourteen files inside libsel4 carried
 # GPL headers despite the project's stated intent -- a project that once shipped mixed headers can ship them again, and "the project

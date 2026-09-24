@@ -3,7 +3,7 @@
 //!   rye build linengrow/seva_session_core_witness.rye -femit-bin=linengrow/bin/seva_session_core_witness
 //!   linengrow/bin/seva_session_core_witness
 //!
-//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! Per external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B0 and linengrow/seva_session_core.rye. Four claims:
 //!   1. A session of three signed, ordered events replays to a deterministic
 //!      root twice, agreeing bit-for-bit on root, count, and last sequence --

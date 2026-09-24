@@ -18,7 +18,7 @@ rather than summarized, so a reader can reproduce it or spot where their own att
 ## Part 1: the harness, and the choice behind it
 
 **OpenCode** is this page's recommendation -- the most-used open coding harness in the world by
-its own research (see [`../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md)),
+its own research (see [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md)),
 and it carries Together AI as a first-class, named provider rather than an afterthought.
 
 **The choice, if you have one:** [`Aider`](https://aider.chat) is the lighter alternative --

@@ -10,7 +10,7 @@ Andrej Karpathy's **LLM Wiki** gist describes a three-layer personal knowledge b
 
 We hold the gist as a study copy only — [`llm-wiki.md`](llm-wiki.md). Refresh: `tools/f/fetch_gratitude_web.sh karpathy-llm-wiki`.
 
-Our own-voice distillation — how the `living_docs_lint` keeper relates to Karpathy's **lint** operation — lives at [`../../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md).
+Our own-voice distillation — how the `living_docs_lint` keeper relates to Karpathy's **lint** operation — lives at [`../../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md).
 
 ## What became real practice here
 

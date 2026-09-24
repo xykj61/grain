@@ -39,7 +39,7 @@
 # before such a row is trusted. The instrument is Linux-only, which the roster carries as
 # `capability trace_instrument`.
 #
-# Style: context/GAUGE_STYLE.md - Paper: external-research/20260907-061951_the-map-a-guard-writes-for-itself.md
+# Style: context/GAUGE_STYLE.md - Paper: external-research/date/20260907/20260907-061951_the-map-a-guard-writes-for-itself.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/scope_trace_witness.rish

@@ -3,7 +3,7 @@
 //!   rye build linengrow/neth_serial_core_witness.rye -femit-bin=linengrow/bin/neth_serial_core_witness
 //!   linengrow/bin/neth_serial_core_witness
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 1 and linengrow/neth_serial_core.rye. Three claims, each welcome
 //! or unwelcome on purpose:
 //!   1. Two independent calls, same prior log, same one new pre-signed

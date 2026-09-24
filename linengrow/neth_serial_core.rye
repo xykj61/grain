@@ -1,6 +1,6 @@
 //! linengrow/neth_serial_core.rye -- Neth's small serial core.
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 1 ("the small serial core, everything else pipelined"): a
 //! system that must keep one true order does not parallelize the
 //! ordering, it shrinks the one place order truly matters until it is

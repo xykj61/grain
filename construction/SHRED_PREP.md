@@ -203,7 +203,7 @@ Their readings and decisions remain available; neither queues a new cut.
 
 | Elder | Living mutant | Measurement and cut |
 | --- | --- | --- |
-| `external-research/20260908-151344_what-a-table-store-should-be-here.md` | `external-research/20260909-035800_the-bounds-a-store-promises.md` | Judged Truth 50 made the elder F (59); the sourced revision grades A (95). Before the molt: one living citer, four dated citers. The card repoints; dated testimony keeps its links. Elder body preserved beneath its banner; cut RED. |
+| `external-research/date/20260908/20260908-151344_what-a-table-store-should-be-here.md` | `external-research/date/20260909/20260909-035800_the-bounds-a-store-promises.md` | Judged Truth 50 made the elder F (59); the sourced revision grades A (95). Before the molt: one living citer, four dated citers. The card repoints; dated testimony keeps its links. Elder body preserved beneath its banner; cut RED. |
 
 ### Class M -- `.cursor`, prepped `20260907.023053` (cut stays RED; `.vscode` retired outright)
 

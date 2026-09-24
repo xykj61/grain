@@ -78,10 +78,10 @@
 | Note | Path |
 |------|------|
 | README order | drop into `external-research/` |
-| Matklad distilled | [`../external-research/20260712-093812_matklad-teachings-distilled.md`](../external-research/20260712-093812_matklad-teachings-distilled.md) |
-| Mesh inference study | [`../external-research/20260712-093812_mesh-inference-study.md`](../external-research/20260712-093812_mesh-inference-study.md) -- horizon only; Kumara-pass admission boundary first |
-| Dependency ladder | [`../external-research/20260712-093812_dependency-ladder.md`](../external-research/20260712-093812_dependency-ladder.md) -- A1 parity - A2 enclosure filed - A3 `lane_kvm`... |
-| Infusion map | [`../external-research/20260712-093812_infusion-map.md`](../external-research/20260712-093812_infusion-map.md) |
+| Matklad distilled | [`../external-research/date/20260712/20260712-093812_matklad-teachings-distilled.md`](../external-research/date/20260712/20260712-093812_matklad-teachings-distilled.md) |
+| Mesh inference study | [`../external-research/date/20260712/20260712-093812_mesh-inference-study.md`](../external-research/date/20260712/20260712-093812_mesh-inference-study.md) -- horizon only; Kumara-pass admission boundary first |
+| Dependency ladder | [`../external-research/date/20260712/20260712-093812_dependency-ladder.md`](../external-research/date/20260712/20260712-093812_dependency-ladder.md) -- A1 parity - A2 enclosure filed - A3 `lane_kvm`... |
+| Infusion map | [`../external-research/date/20260712/20260712-093812_infusion-map.md`](../external-research/date/20260712/20260712-093812_infusion-map.md) |
 
 **RTAC parks from infusion:** mesh onto horizon (not a lap)? - gossip-of-capabilities / mesh-node / model-runtime names - Flax-Bark-Oat-Walnut seat - Loam/Ember hold - web-glass home - foundations compute-as-harvest - hammocks genode-seams / mesh
 
@@ -153,7 +153,7 @@
 
 **Docs compression layer -- shipped:** five pages under ceiling - [`living_docs_lint.rish`](../tools/l/living_docs_lint.rish) seated (ratchet-advisory - five duties) - doorway roster joins `docs/` - Status Checkable on every page - **keeper folds GREEN** `223300` (keeps-list - module Status - ORGANIZING inbound - Karpathy/ai-memory dispositions closed).
 
-**Karpathy gist + ai-memory -- closed `223300`:** gist -> [`gratitude/karpathy/`](../gratitude/karpathy/) - distillation [`20260712-223300`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md) - ai-memory study shelf [`gratitude/ai-memory/`](../gratitude/ai-memory/) - daemon still parked.
+**Karpathy gist + ai-memory -- closed `223300`:** gist -> [`gratitude/karpathy/`](../gratitude/karpathy/) - distillation [`20260712-223300`](../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md) - ai-memory study shelf [`gratitude/ai-memory/`](../gratitude/ai-memory/) - daemon still parked.
 
 ---
 
@@ -202,10 +202,10 @@
 
 | # | Study | Ask when chapter opens | Output shape | Status |
 |---|-------|----------------------|--------------|--------|
-| **1** | OCapN idiom beside Comlink sealed datagram | How does CapTP's session idiom compose with a record fold without becoming it? What is the smallest consumer-edge pass shape (access vs truth)? | ER note + design conclusion; Door 3 test plan | **Landed** [`053324`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
-| **2** | Component-model target for one existing seed | Which one seed is the honest first portable ABI target? What stays identical across browser / host / later Caravan host? | ER note + one-seed pick | **Landed** [`054135`](../external-research/20260712-054135_component-model-one-seed.md) -- pick **`receipt_core`** |
-| **3** | Genode / seL4 guest for Rye userland | What is the smallest guest witness that proves Rye userland on a proven seat without renaming Caravan? | ER note + guest witness sketch | **Landed** [`054342`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) -- G0-G3; guest never merger |
-| **4** | GNU Taler for Linengrow giving lane | How does payer-privacy / payee-transparency map onto MUR + selective disclosure without replacing the settlement seat? (was MALA) | ER note beside *Money That Stays Close to Home* | **Landed** [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) -- private payer - transparent payee |
+| **1** | OCapN idiom beside Comlink sealed datagram | How does CapTP's session idiom compose with a record fold without becoming it? What is the smallest consumer-edge pass shape (access vs truth)? | ER note + design conclusion; Door 3 test plan | **Landed** [`053324`](../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md) |
+| **2** | Component-model target for one existing seed | Which one seed is the honest first portable ABI target? What stays identical across browser / host / later Caravan host? | ER note + one-seed pick | **Landed** [`054135`](../external-research/date/20260712/20260712-054135_component-model-one-seed.md) -- pick **`receipt_core`** |
+| **3** | Genode / seL4 guest for Rye userland | What is the smallest guest witness that proves Rye userland on a proven seat without renaming Caravan? | ER note + guest witness sketch | **Landed** [`054342`](../external-research/date/20260712/20260712-054342_proven-seat-guest-genode-sel4.md) -- G0-G3; guest never merger |
+| **4** | GNU Taler for Linengrow giving lane | How does payer-privacy / payee-transparency map onto MUR + selective disclosure without replacing the settlement seat? (was MALA) | ER note beside *Money That Stays Close to Home* | **Landed** [`054521`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) -- private payer - transparent payee |
 
 ### Four Seam studies -- **complete** (`20260712.054521`)
 
@@ -224,7 +224,7 @@ Warm names for Pedersen / Sigma -- [`../context/specs/20260712-061012_bud-and-mu
 
 ### Giving-lane T0 -- **seated** (`20260712.054650`) - T1 -- **mapped** (`20260712.054942`)
 
-Private payer - transparent payee -- [`foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - study [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) - OA field map [`054942`](../active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md) (top gaps: public completion `amount` and `from`).
+Private payer - transparent payee -- [`foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - study [`054521`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) - OA field map [`054942`](../active-designing/date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md) (top gaps: public completion `amount` and `from`).
 
 ### Encrypt-to-future-identity -- **horizon park** (`20260712.114600`)
 
@@ -236,7 +236,7 @@ Private payer - transparent payee -- [`foundations/20260629-014512_money-that-st
 
 ### Door 3 spark (parked to itinerary until word)
 
-In-process pass admits published read + signed submit; refuses unpublished digest / lying signature -- test plan in [`053324`](../external-research/20260712-053324_ocapn-beside-comlink.md). Code waits on Kaeden.
+In-process pass admits published read + signed submit; refuses unpublished digest / lying signature -- test plan in [`053324`](../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md). Code waits on Kaeden.
 
 ### Three doors (wire) -- compressed reminder
 
@@ -279,7 +279,7 @@ Full-tree zip discipline unchanged; use **58** not 43.
 | Item | Path |
 |------|------|
 | Zero-copy counsel (A-H, I1-I7) | [`counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md`](../counsel/date/20260704/20260704-181612_zero-copy-resins-counsel-answers.md) |
-| Ends-first orientation (Part Three addendum) | [`external-research/20260704-185412_ends-first-map-orientation.md`](../external-research/20260704-185412_ends-first-map-orientation.md) |
+| Ends-first orientation (Part Three addendum) | [`external-research/date/20260704/20260704-185412_ends-first-map-orientation.md`](../external-research/date/20260704/20260704-185412_ends-first-map-orientation.md) |
 | Unified Cursor lane | [`expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md`](../expanding-prompts/yonder/20260704-185412_cursor-lane-zip42-counsel-unified.md) |
 | Unified cut log | [`../session-logs/date/20260704/20260704-185412_unified-packet-cut.md`](../session-logs/date/20260704/20260704-185412_unified-packet-cut.md) |
 
@@ -315,7 +315,7 @@ Full-tree zip at `git rev-parse HEAD` after intake commits; comment **is** the t
 
 | Item | Path |
 |------|------|
-| Orientation | [`external-research/20260704-031812_the-view-from-the-floor.md`](../external-research/20260704-031812_the-view-from-the-floor.md) |
+| Orientation | [`external-research/date/20260704/20260704-031812_the-view-from-the-floor.md`](../external-research/date/20260704/20260704-031812_the-view-from-the-floor.md) |
 | Eight asks counsel | [`counsel/date/20260704/20260704-031812_eight-asks-one-sitting.md`](../counsel/date/20260704/20260704-031812_eight-asks-one-sitting.md) |
 | Claude log | [`../session-logs/date/20260704/20260704-031812_zip41-152-eight-asks.md`](../session-logs/date/20260704/20260704-031812_zip41-152-eight-asks.md) |
 
@@ -384,16 +384,16 @@ Claude bench still pins **150** until recipe v5 re-run on Claude metal at zip **
 
 | # | Path | Role |
 |---|------|------|
-| 1 | `external-research/20260704-024600_two-rooms-on-the-metal-path.md` | Maps live programs to checkable vs vision registers |
-| 2 | `external-research/20260704-024800_the-checkable-room.md` | Checkable register definition |
-| 3 | `external-research/20260704-024900_claim.md` | **Claim** definition; LEXICON row |
-| 4 | `external-research/20260704-025600_claims-happy-zone-and-grain.md` | Claim x happy zone x grain braid |
+| 1 | `external-research/date/20260704/20260704-024600_two-rooms-on-the-metal-path.md` | Maps live programs to checkable vs vision registers |
+| 2 | `external-research/date/20260704/20260704-024800_the-checkable-room.md` | Checkable register definition |
+| 3 | `external-research/date/20260704/20260704-024900_claim.md` | **Claim** definition; LEXICON row |
+| 4 | `external-research/date/20260704/20260704-025600_claims-happy-zone-and-grain.md` | Claim x happy zone x grain braid |
 
 #### External-research -- itinerary migration
 
 | Action | Path |
 |--------|------|
-| **New canonical primer** | `external-research/20260704-030600_itinerary-and-the-crossing-manifest.md` |
+| **New canonical primer** | `external-research/date/20260704/20260704-030600_itinerary-and-the-crossing-manifest.md` |
 | **Deleted from live tree** | `external-research/20260703-235912_diet-and-the-crossing-manifest.md` |
 | **Archived locally** | `archive/external-research/20260703-235912_diet-and-the-crossing-manifest.md` (gitignored - accretion-never-break in session logs) |
 
@@ -430,7 +430,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 | **A3** | **TWO_ROOMS seating** | Recommend: seat `context/TWO_ROOMS.md` as context canon, or hold proposed; if seat, exact LEXICON rows + ORGANIZING cross-link |
 | **A4** | **SLC-L1 edge** | Affirm receipt scope closed at lap 1, or name SLC-L2 vs Open Asks priority -- [`active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md) |
 | **A5** | **Claim register** | Review claim quartet; propose witness hooks (if any) for checkable-room discipline in parity or width-check |
-| **A6** | **Amphora lap one** | Crossing manifest: witness design for Tilak marks on seed [`20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) per [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
+| **A6** | **Amphora lap one** | Crossing manifest: witness design for Tilak marks on seed [`20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) per [`external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md) |
 | **A7** | **Fold reading map** | Lap 3 of canonical refinement -- where does *fold canon* live (plural docs); interface-as-fold currency |
 | **A8** | **ROADMAP / TASKS / decoder** | Granular refresh plan per [`20260703-041850_claude-strategy-roadmap-counsel.md`](archive/date/20260703/20260703-041850_claude-strategy-roadmap-counsel.md) -- structure and deltas only |
 
@@ -439,7 +439,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 1. This section (RTAC)
 2. `context/specs/20260704-020800_one-word-one-gate.md`
 3. `context/specs/20260704-030300_itinerary-retires-diet.md`
-4. `external-research/20260704-030600_itinerary-and-the-crossing-manifest.md`
+4. `external-research/date/20260704/20260704-030600_itinerary-and-the-crossing-manifest.md`
 5. Vocabulary quartet (`024600` -> `024800` -> `024900` -> `025600`)
 6. `context/TWO_ROOMS.md`
 7. `foundations/20260703-182612_sameness-is-the-macro.md`
@@ -563,7 +563,7 @@ Law: [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703
 | Type-marks silo | [`foundations/20260703-202312_the-marked-value.md`](../foundations/20260703-202312_the-marked-value.md) |
 | Sealed crossing | [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) |
 | What needs ordering | [`foundations/20260703-200712_what-needs-ordering.md`](../foundations/20260703-200712_what-needs-ordering.md) |
-| Amphora (research) | [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) |
+| Amphora (research) | [`external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md) |
 | Pottery suite (4 research) | `200712` mysticeti - move-for-rye - compute-commerce - cloneable-repo |
 | Seed (witnessed) | [`20260703-202312_crossing_manifest_seed.rye`](20260703-202312_crossing_manifest_seed.rye) - `tools/cr/crossing_manifest_seed.rish` |
 | Log | [`../session-logs/date/20260703/20260703-202312_the-marked-value-round.md`](../session-logs/date/20260703/20260703-202312_the-marked-value-round.md) |
@@ -576,7 +576,7 @@ Prior tip: `ecb6a0b`
 
 | Item | Path |
 |------|------|
-| Survey | [`external-research/20260703-193012_the-bench-as-a-block-and-the-living-build.md`](../external-research/20260703-193012_the-bench-as-a-block-and-the-living-build.md) |
+| Survey | [`external-research/date/20260703/20260703-193012_the-bench-as-a-block-and-the-living-build.md`](../external-research/date/20260703/20260703-193012_the-bench-as-a-block-and-the-living-build.md) |
 | Log | [`../session-logs/date/20260703/20260703-193012_bench-as-block-research.md`](../session-logs/date/20260703/20260703-193012_bench-as-block-research.md) |
 
 Counsel only -- seats nothing. Three extraction candidates await Kaeden word. **Kyri** (message-seam sense) parks in RTAC; LEXICON already holds **Kyri** as `.kyri` notation. Open itinerary unchanged: chrono wire first; full-tree zip at `999359e` restores metal truth.
@@ -608,8 +608,8 @@ Prior tip: `7395bd1`
 
 | Item | Path |
 |------|------|
-| Silo | [`external-research/20260703-043912_the-issuers-ledger.md`](../external-research/20260703-043912_the-issuers-ledger.md) |
-| Survey | [`external-research/20260703-043912_circulation-portfolio-survey.md`](../external-research/20260703-043912_circulation-portfolio-survey.md) |
+| Silo | [`external-research/date/20260703/20260703-043912_the-issuers-ledger.md`](../external-research/date/20260703/20260703-043912_the-issuers-ledger.md) |
+| Survey | [`external-research/date/20260703/20260703-043912_circulation-portfolio-survey.md`](../external-research/date/20260703/20260703-043912_circulation-portfolio-survey.md) |
 | Log | [`../session-logs/date/20260703/20260703-043912_issuers-ledger-circulation-survey.md`](../session-logs/date/20260703/20260703-043912_issuers-ledger-circulation-survey.md) |
 
 Zip comment `df88223` verified character-for-character. **Cursor metal:** parity **143 GREEN** (116 std + 27 blocks), chrono **147 GREEN**, designed-not-built **GREEN** at count=1. Three staged words untouched. Counsel brief sealed.
@@ -620,7 +620,7 @@ Prior tip: `df88223`
 
 | Commit | Aspect |
 |--------|--------|
-| *(this push)* | [`external-research/20260703-033602_first-lap-goes-green.md`](../external-research/20260703-033602_first-lap-goes-green.md) -- lap - green - Edit 5 graduation vocabulary |
+| *(this push)* | [`external-research/date/20260703/20260703-033602_first-lap-goes-green.md`](../external-research/date/20260703/20260703-033602_first-lap-goes-green.md) -- lap - green - Edit 5 graduation vocabulary |
 | *(this push)* | Claude strategy + ROADMAP/TASKS counsel brief - RTAC refresh |
 
 Prior tip: `778f4b8` - parity **143** - chrono **143** - Doors 1-3 closed
@@ -631,7 +631,7 @@ Prior tip: `778f4b8` - parity **143** - chrono **143** - Doors 1-3 closed
 - **Value-object alternates (`200712`):** Grain - Bead - Murti - Tulsi - Loam - Kiln -- beside seated **Pottery** (`.pott`); **Mudra** released `062656` -> seated as fixed-tier proof ([`../context/specs/20260712-061012_bud-and-mudra-names-seated.md`](../context/specs/20260712-061012_bud-and-mudra-names-seated.md))
 - **Marketplace (`200712`):** Mela - Haat - Mandi (one live collision noted)
 - **Practice ground (`200712`):** Lila - Greenhouse - Nursery - Chalk - Slate - Rehearsal
-- **Itinerary vocabulary (`001012` -> `030300` -> `030600`):** **Itinerary** - **open itinerary** - **stops** - **journey's pause** - **off-route** -- [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md); primer [`external-research/20260704-030600_itinerary-and-the-crossing-manifest.md`](../external-research/20260704-030600_itinerary-and-the-crossing-manifest.md); recursion prompt v4 [`expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md)
+- **Itinerary vocabulary (`001012` -> `030300` -> `030600`):** **Itinerary** - **open itinerary** - **stops** - **journey's pause** - **off-route** -- [`context/specs/20260704-030300_itinerary-retires-diet.md`](../context/specs/20260704-030300_itinerary-retires-diet.md); primer [`external-research/date/20260704/20260704-030600_itinerary-and-the-crossing-manifest.md`](../external-research/date/20260704/20260704-030600_itinerary-and-the-crossing-manifest.md); recursion prompt v4 [`expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md`](../expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md)
 - **Toll word (`004912` counsel):** **Toll** *(proposed)* -- ordering price beside itinerary; *levy* - *the narrows* parked -- [`counsel/date/20260704/20260704-004912_gate-unify-counsel.md`](../counsel/date/20260704/20260704-004912_gate-unify-counsel.md)
 - **Build watcher aspect:** *Tend* - *Agni* (no seat until a seed runs) -- *Tend* also a Tilak duty; watcher name still open
 
@@ -686,12 +686,12 @@ Repo intaken at `cbb2b96`; all six Kaeden asks served in one proposal zip.
 |-----|--------|
 | Metalsmoke, siloed | [`active-designing/date/20260703/20260703-013412_metalsmoke.md`](../active-designing/date/20260703/20260703-013412_metalsmoke.md) |
 | Yonder pass eleven | Zed-rules + astrology-silos prompts to `expanding-prompts/yonder/`; index + spec repointed; Lap 3 prompt held until Door 2 closes |
-| Recursion-prompt craft guide | [`external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) |
+| Recursion-prompt craft guide | [`external-research/date/20260703/20260703-013412_writing-recursion-prompts.md`](../external-research/date/20260703/20260703-013412_writing-recursion-prompts.md) |
 | ER audit | Verdict: healthy; four flags -- compiler-fork memo wants a held-under-thin-frontend status line; two early editor memos are next-pass yonder candidates; license table refresh when next gratitude lands; blueprint companion line accreted (done) |
 | WIP aging audit | Verdict: sound; one gap found and closed -- width Phase 1b re-anchored in TASKS; open-threads stub honest; all 0702 files live |
-| Purchase guide | [`external-research/20260703-013412_home-server-purchase-guide.md`](../external-research/20260703-013412_home-server-purchase-guide.md) -- three tiers (~$2.9k core / ~$5.2k value / ~$8k new), OCuLink path confirmed (A2 has none native; adapter card -> DEG1), tinybox red + apex tower appendices |
+| Purchase guide | [`external-research/date/20260703/20260703-013412_home-server-purchase-guide.md`](../external-research/date/20260703/20260703-013412_home-server-purchase-guide.md) -- three tiers (~$2.9k core / ~$5.2k value / ~$8k new), OCuLink path confirmed (A2 has none native; adapter card -> DEG1), tinybox red + apex tower appendices |
 
-**Added (`20260703.015512`):** the friend's question -- bandwidth and moderation -- answered whole at [`external-research/20260703-015512_bandwidth-and-moderation.md`](../external-research/20260703-015512_bandwidth-and-moderation.md); four concepts infused as recorded design in TASKS (egress budget - household headroom - moderation-fact shape - resin-refusal fact); purchase guide accreted one budget sentence; no door, gate, or name touched.
+**Added (`20260703.015512`):** the friend's question -- bandwidth and moderation -- answered whole at [`external-research/date/20260703/20260703-015512_bandwidth-and-moderation.md`](../external-research/date/20260703/20260703-015512_bandwidth-and-moderation.md); four concepts infused as recorded design in TASKS (egress budget - household headroom - moderation-fact shape - resin-refusal fact); purchase guide accreted one budget sentence; no door, gate, or name touched.
 
 **Handoff (`20260703.020012`):** recursion prompt v3 seated at [`expanding-prompts/yonder/20260703-020012_cursor-recursion-prompt-v3.md`](../expanding-prompts/yonder/20260703-020012_cursor-recursion-prompt-v3.md); bundle final for ROUND ZERO (eight commits + hash bookkeeping).
 

@@ -65,7 +65,7 @@
 # is because it reports this sweep's own reach, which is what it was always worded to do -- and the
 # reading a designer wants -- and the program that produced it, named there rather than here, since
 # a Rye path spelled in a scan this scan never builds reads as a runner's claim to
-# `rye_compile_reach` -- lives in `external-research/20260907-225617_the-floor-is-attained.md`.
+# `rye_compile_reach` -- lives in `external-research/date/20260907/20260907-225617_the-floor-is-attained.md`.
 # This sweep's three published figures (63,903 swept, best 9, 1,240 attainers) reproduced to the
 # number under that independent program, which is what earned it the credit to correct one sentence.
 #

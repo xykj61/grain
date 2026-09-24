@@ -7,7 +7,7 @@
 # Nothing compared that claim to the guard's behavior. The map's own header calls a row naming LESS
 # than its guard gates "the one direction that skips real work", and on 20260906 thirteen rows
 # stood in it; a sample of eight on 20260907 found six under-named, one of them by 816 files
-# (external-research/20260907-061951_the-map-a-guard-writes-for-itself.md). A map row is a header,
+# (external-research/date/20260907/20260907-061951_the-map-a-guard-writes-for-itself.md). A map row is a header,
 # and the observed read set is the pack -- so this program opens the pack.
 #
 # THE MECHANISM, in plain words. Run the guard under `strace -f -y -e trace=openat`, read the

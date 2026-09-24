@@ -4,7 +4,7 @@
 #
 # WHY THIS READING EXISTS. The roster pass is the largest recurring workload on this pier: 160
 # guards in 1,074 seconds, measured 20260907 across eight ships, of which four fifths never skips
-# (external-research/20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md). A `--scoped`
+# (external-research/date/20260907/20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md). A `--scoped`
 # pass skips a guard no changed path reaches, so every second it saves comes from one row of
 # tools/fixtures/s/standing_equipment_scope_map.sh -- and until now nobody could say WHICH rows
 # earned their keep, or which unwritten row would earn the most. That paper named the arithmetic

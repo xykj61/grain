@@ -12,7 +12,7 @@
 //! is used correctly -- `vault/shard.rye` computes over GF(256), a finite *field*,
 //! and every field is a ring. A circular byte pool is a geometric circle, not an
 //! algebraic ring, so it earns a geometric word. See the ring/sheaf study:
-//! `../external-research/20260810-080654_ring-sheaf-and-the-sacred-mathematical-words.md`.
+//! `../external-research/date/20260810/20260810-080654_ring-sheaf-and-the-sacred-mathematical-words.md`.
 //!
 //! This first lap is the buffer itself, on SYNTHETIC samples only -- reds-first: prove
 //! the self-stopping line (filled saturates, the head wraps, the sequence stays

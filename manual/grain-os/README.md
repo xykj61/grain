@@ -30,7 +30,7 @@ These docs deliberately mirror the shape of Urbit's own documentation -- an over
 
 ## How This Relates to the Existing Manual
 
-This sits inside the existing four-room manual (`../README.md`) as the Grain onboarding surface. It stands beside the reference specs (Rishi language, Caravan capabilities, Tally gardens) rather than replacing them; it is the front door a newcomer to Grain reads first. In time, the Scribble/Brix/Mantra fusion designed in [`../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) will *build* these pages.
+This sits inside the existing four-room manual (`../README.md`) as the Grain onboarding surface. It stands beside the reference specs (Rishi language, Caravan capabilities, Tally gardens) rather than replacing them; it is the front door a newcomer to Grain reads first. In time, the Scribble/Brix/Mantra fusion designed in [`../../external-research/date/20260713/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../external-research/date/20260713/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md) will *build* these pages.
 
 ## A Note on Examples
 

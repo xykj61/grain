@@ -3,7 +3,7 @@
 # lookup pays for translation, measured against a control that holds everything else equal.
 #
 # WHY. The elder study in this tree measured a table's cost against its FOOTPRINT and named the
-# boundary worth designing to: external-research/20260906-042838_the-table-that-fits.md reads
+# boundary worth designing to: external-research/date/20260906/20260906-042838_the-table-that-fits.md reads
 # 1.65 ns for a dependent load inside L1d against 161.84 ns from 64 MiB. That reading is sound
 # and it is one axis. A load's address is translated before any cache is asked, translations are
 # cached in a structure with a capacity of its own, and that capacity is counted in PAGES rather
@@ -68,7 +68,7 @@
 # while four guards read it every lap with grep. So the witness builds the probe through this flag
 # and stops, which costs about nineteen seconds and catches exactly that rot.
 #
-# Read against: external-research/20260906-061229_the-address-that-does-not-fit.md
+# Read against: external-research/date/20260906/20260906-061229_the-address-that-does-not-fit.md
 # Refusals proven by: tools/fixtures/t/tlb_reach_control.sh
 set -eu
 

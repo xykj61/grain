@@ -4,7 +4,7 @@
 **Kernel license:** GPL-2.0 (studied clean-room; never cloned into our git history)
 **Microkit / docs:** BSD-family and open documentation; studied from the public manual and site only
 **Studied for:** Caravan -- Grain's supervision and isolation discipline
-**Clean-room brief:** [`../external-research/20260819-120534_sel4-microkit-caravan-cleanroom-study.md`](../external-research/20260819-120534_sel4-microkit-caravan-cleanroom-study.md)
+**Clean-room brief:** [`../external-research/date/20260819/20260819-120534_sel4-microkit-caravan-cleanroom-study.md`](../external-research/date/20260819/20260819-120534_sel4-microkit-caravan-cleanroom-study.md)
 
 ---
 

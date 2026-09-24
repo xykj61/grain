@@ -1,7 +1,7 @@
 # tools/m/microkernel_zig_target_probe_witness.rish -- the Microkernel Target arc's Equinox 3 question, answered against the real toolchain
 # on metal rather than from memory: can the Rye compiler lower to a capability-microkernel target today?
 #
-# THE QUESTION, AS SEATED AND LEFT OPEN. external-research/20260817-185851_microkernel-target-and-the-os-parity-question.md names it and
+# THE QUESTION, AS SEATED AND LEFT OPEN. external-research/date/20260817/20260817-185851_microkernel-target-and-the-os-parity-question.md names it and
 # does not answer it: "Can Zig target seL4 / Genode today? ... This is the external-research question the request named, and it should be
 # answered against real toolchain versions, not from memory." The 20260819 recenter restates it as still open and leading Equinox 3. It is
 # the arc's crux and it is UNGATED -- answering it needs no fetch, no license read, and no hardware.
@@ -19,7 +19,7 @@
 #
 # Chapter: the Lindy-priority Microkernel Target double-seat (ordered ahead of Chapters A-H on seated word `20260817`), Equinox 3.
 # Kin: tools/au/aurora_seed_freestanding_witness.rish (the elder freestanding riscv64 proof this borrows its build shape from) -
-# external-research/20260819-094721_microkernel-target-study-weight-recenter.md
+# external-research/date/20260819/20260819-094721_microkernel-target-study-weight-recenter.md
 #
 # HONEST SCOPE -- a toolchain probe, not a port. No kernel is booted, no real capability is invoked, no hardware is touched.
 #

@@ -4,7 +4,7 @@
 # witness: append+fold is bounded and asserted, and the pipelined stages
 # (Comlink carriage, disk write, record signing) are named as living
 # outside the call, not inside it. See
-# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 # and linengrow/neth_serial_core.rye.
 #
 # Run from the repository root:

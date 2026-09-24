@@ -357,7 +357,7 @@ steam-run ./tools/cu/cursor-jail.sh
 ## Related
 
 - **`SOURCE.md`** -- SSH, GPG, signing inside the sandbox, full Cursor launch.
-- **`external-research/20260618-180812_pond-foundation.md`** -- Pond re-grows ai-jail in Rye.
+- **`external-research/date/20260618/20260618-180812_pond-foundation.md`** -- Pond re-grows ai-jail in Rye.
 - **`tools/e/enclosure.conf.example`** -- fill-in template for this spec.
 
 ---

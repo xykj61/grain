@@ -1,6 +1,6 @@
 //! linengrow/neth_root_install.rye -- Neth's two-posture root install.
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 2 ("graduated trust -- authoritative at the source, verified
 //! everywhere else"): the same kind of message earns two different levels
 //! of trust depending on where it came from.

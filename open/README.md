@@ -6,7 +6,7 @@
 **Status:** Vision -- first draft, nothing here is built or witnessed yet ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))
 **Last updated:** `20260920.141121`
 **Born from:** [`../expanding-prompts/20260920-141121_open-weight-harness-companions.md`](../expanding-prompts/20260920-141121_open-weight-harness-companions.md)
-**Kin:** [`../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - siblings [`../shastra/README.md`](../shastra/README.md), [`../risala/README.md`](../risala/README.md)
+**Kin:** [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - siblings [`../shastra/README.md`](../shastra/README.md), [`../risala/README.md`](../risala/README.md)
 
 ---
 
@@ -40,7 +40,7 @@ rationale leans on (Tiller) stays a candidate from that research; seating it for
 Keaton's word alone to give.
 
 The dated study this room teaches from lives at
-[`../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md).
+[`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md).
 That page is the source of record; this room exists to carry its findings to a reader who was
 somewhere else when the research happened.
 

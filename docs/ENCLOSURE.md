@@ -172,7 +172,7 @@ Freeze affirmed: [`213600`](../active-designing/date/20260712/20260712-213600_po
 
 ## Puddle doorway -- horizon
 
-**Pond** is the enclosure aspect inside one running whole. **Puddle** hosts many Ponds -- snapshot semantics, fleet orchestration, Amber-compatible export. Exploration only: [`external-research/20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/20260702-035018_puddle-sandboxed-rye-containers.md).
+**Pond** is the enclosure aspect inside one running whole. **Puddle** hosts many Ponds -- snapshot semantics, fleet orchestration, Amber-compatible export. Exploration only: [`external-research/date/20260702/20260702-035018_puddle-sandboxed-rye-containers.md`](../external-research/date/20260702/20260702-035018_puddle-sandboxed-rye-containers.md).
 
 The same `lane_kvm` fact graduates to Pond customs at supersede -- same gate, policy-as-value moves home (Gall's Law on the wall).
 

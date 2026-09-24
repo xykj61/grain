@@ -38,7 +38,7 @@ Files already on disk:
 
 **Task:** Add entries to `gratitude/README.md` beside Tiger, Hickey, Gall — attribution, what we learn, where it is honored. Note Hammock slide images live in `gratitude/HammockDrivenDev/` if present.
 
-**Also:** Add one-line pointers in `external-research/20260620-014412_system.md` gratitude section if appropriate.
+**Also:** Add one-line pointers in `external-research/date/20260620/20260620-014412_system.md` gratitude section if appropriate.
 
 Show diff; commit in Radiant voice on Kaeden's word.
 

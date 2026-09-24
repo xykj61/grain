@@ -13,7 +13,7 @@ lines into a forty-column by eight-row proof grid. The core carries that exact s
 inline storage, with eight palette seats and slot zero kept as the existing foreground sentinel.
 
 The package belongs to phase two of the
-[native macOS decision](../external-research/20260826-145514_skate-native-macos-decision-tablecloth.md).
+[native macOS decision](../external-research/date/20260826/20260826-145514_skate-native-macos-decision-tablecloth.md).
 This package stays headless and testable. A future AppKit view may present its finished frame. The
 paired measurement described in the decision record remains the gate for any C seam.
 

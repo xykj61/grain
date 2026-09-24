@@ -1,6 +1,6 @@
 # nock_lap2_witness.rish -- Nock's macro layer proves out against lap 1.
 #
-# Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+# Per external-research/date/20260713/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
 # phased plan and glow/nock/nock_core.rye: opcodes 6 (if/then/else), 7 (compose),
 # 8 (extend the subject), 9 (invoke an arm), and 11 (hint) each proven
 # natively AND proven equal to a hand-built formula using only lap 1's

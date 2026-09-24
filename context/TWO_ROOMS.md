@@ -6,12 +6,12 @@
 **Voice:** Quin
 **Status:** Seated -- checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/t/two_rooms_doorway.rish`)
 **Ground:** drafted from the second harvest
-([`external-research/20260703-071712_the-second-harvest.md`](../external-research/20260703-071712_the-second-harvest.md));
+([`external-research/date/20260703/20260703-071712_the-second-harvest.md`](../external-research/date/20260703/20260703-071712_the-second-harvest.md));
 vocabulary companions:
-[`20260704-024800_the-checkable-room.md`](../external-research/20260704-024800_the-checkable-room.md) -
-[`20260704-024900_claim.md`](../external-research/20260704-024900_claim.md) -
-[`20260704-025600_claims-happy-zone-and-grain.md`](../external-research/20260704-025600_claims-happy-zone-and-grain.md) -
-[`20260704-024600_two-rooms-on-the-metal-path.md`](../external-research/20260704-024600_two-rooms-on-the-metal-path.md);
+[`20260704-024800_the-checkable-room.md`](../external-research/date/20260704/20260704-024800_the-checkable-room.md) -
+[`20260704-024900_claim.md`](../external-research/date/20260704/20260704-024900_claim.md) -
+[`20260704-025600_claims-happy-zone-and-grain.md`](../external-research/date/20260704/20260704-025600_claims-happy-zone-and-grain.md) -
+[`20260704-024600_two-rooms-on-the-metal-path.md`](../external-research/date/20260704/20260704-024600_two-rooms-on-the-metal-path.md);
 metal-path cases seated above; forward-facing pages name their room from stamp `20260705.203144` -- [`specs/20260705-203144_canonical-glosses.md`](specs/20260705-203144_canonical-glosses.md)
 
 ---
@@ -39,11 +39,11 @@ The checkable room is the bench's world, and its law is already canon: only what
 bind enters as fact, and the bench pins what it reports. Code, gates, arithmetic, verified
 policy ground, figures with sources -- these live here, and their sentences carry the register's
 plain confidence. Nothing in this note weakens that law by a hair. Fuller definition:
-[`external-research/20260704-024800_the-checkable-room.md`](../external-research/20260704-024800_the-checkable-room.md).
+[`external-research/date/20260704/20260704-024800_the-checkable-room.md`](../external-research/date/20260704/20260704-024800_the-checkable-room.md).
 Claim vocabulary:
-[`external-research/20260704-024900_claim.md`](../external-research/20260704-024900_claim.md).
+[`external-research/date/20260704/20260704-024900_claim.md`](../external-research/date/20260704/20260704-024900_claim.md).
 Braid with grain and happy zone:
-[`external-research/20260704-025600_claims-happy-zone-and-grain.md`](../external-research/20260704-025600_claims-happy-zone-and-grain.md).
+[`external-research/date/20260704/20260704-025600_claims-happy-zone-and-grain.md`](../external-research/date/20260704/20260704-025600_claims-happy-zone-and-grain.md).
 
 Landed edges in this room prefer **nib** vocabulary in new prose -- product nib - suite nib -
 git nib -- so the pen's place is named without borrowing git's tip metaphor (`LEXICON.md`).

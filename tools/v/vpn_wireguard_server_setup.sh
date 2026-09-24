@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vpn_wireguard_server_setup.sh -- the server half of the self-hosted
 # WireGuard VPN guide (Steps 1-3 of
-# external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md).
+# external-research/date/20260713/20260713-212900_self-hosted-vpn-cto-credential-security.md).
 #
 # This is NOT meant to run on this Mac -- copy it to your VPS (Debian/Ubuntu
 # LTS, root access) and run it there. It is the deploy artifact the client

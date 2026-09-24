@@ -3,7 +3,7 @@
 //!   rye build linengrow/pool_isolation_witness.rye -femit-bin=linengrow/bin/pool_isolation_witness
 //!   linengrow/bin/pool_isolation_witness
 //!
-//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! Per external-research/date/20260715/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung P1 and linengrow/pool_host_seam.rye. Two Pool agents, each with its
 //! own state resource in Caravan's capability table, cannot touch each
 //! other's state except through a named, granted capability. Five claims:

@@ -10,7 +10,7 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Seating:** [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md) - settle [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md) - steward [`../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md`](../active-designing/date/20260711/20260711-004652_commerce-citizen-steward-demo-hammock.md)
-**Study:** [`../external-research/20260703-200712_compute-commerce-on-the-network.md`](../external-research/20260703-200712_compute-commerce-on-the-network.md)
+**Study:** [`../external-research/date/20260703/20260703-200712_compute-commerce-on-the-network.md`](../external-research/date/20260703/20260703-200712_compute-commerce-on-the-network.md)
 
 ## What a verified listing proves, and what it does not
 

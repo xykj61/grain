@@ -6,7 +6,7 @@
 # ceiling. Sibling of `tools/fixtures/p/pier_work_census_scan.sh`, which reads the machine; this
 # one reads one guard at a time.
 #
-# WHY IT EXISTS. `external-research/20260910-072912_the-seconds-this-pier-actually-spends.md`
+# WHY IT EXISTS. `external-research/date/20260910/20260910-072912_the-seconds-this-pier-actually-spends.md`
 # priced this pier's assurance bill and projected that a resident reader -- one process that
 # opens the tree once and answers many questions -- would remove the kernel half of it. A later
 # lap proved that projection on ONE guard at 17.4x. The open question was whether that saving is

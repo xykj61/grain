@@ -23,7 +23,7 @@
 #   The machine-level lines above it carry no such caveat -- /proc/stat's own
 #   counters are exact over any window.
 #
-# Reading: external-research/20260910-072912_the-seconds-this-pier-actually-spends.md
+# Reading: external-research/date/20260910/20260910-072912_the-seconds-this-pier-actually-spends.md
 #
 # Usage: sh tools/fixtures/p/pier_work_census_scan.sh [--interval SECONDS]
 
