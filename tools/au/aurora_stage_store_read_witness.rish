@@ -1,0 +1,17 @@
+# aurora_stage_store_read_witness.rish -- read the store by resin alone.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_read_witness.rish
+#
+# The read fixture takes a SHA3-512 resin and returns those bytes.
+# It does not name a stage path. An unknown resin returns nothing.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_read_check.sh"]
+say proof.out
+assert proof.ok else "resin read refused -- ${proof.err_brief}"
+assert proof.out contains "resin-only=yes" else "the read named a stage path"
+assert proof.out contains "same=yes" else "the bytes read back differ"
+assert proof.out contains "missing=nothing" else "an unknown resin returned bytes"
+assert proof.out contains "GREEN" else "resin read did not close GREEN"
+
+say "GREEN: the lasting store answers a resin, with no stage path on the read."
