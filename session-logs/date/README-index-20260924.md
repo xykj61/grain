@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.144525 | [The hosted device wire was heard](20260924/20260924-144525_incense-virtio-hosted.kyri) | Padding-free, a whole datagram, GREEN, no QEMU. |
 | 20260924.143319 | [The next wire already lives in Comlink](20260924/20260924-143319_incense-virtio-wire-page.kyri) | Aurora has no virtio stage; Comlink already crosses. |
 | 20260924.134325 | [The next strand is a new list](20260924/20260924-134325_incense-what-next.kyri) | virtio-net is the next wire the door already names. |
 | 20260924.134324 | [Pheromone Glow ENOSPC hold](20260924/20260924-134324_pheromone-enospc-hold.kyri) | Landed Glow kept; cold roster stopped before verdict. |

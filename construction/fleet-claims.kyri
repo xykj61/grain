@@ -83,9 +83,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-virtio-hosted
-seat incense
-stamp 20260924.144400
-epoch 1790275440
-paths tools/co/comlink_device_wire_hosted_witness.rish active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md
-what Hear the hosted device-wire selftest and record it on the virtio-wire design page.
