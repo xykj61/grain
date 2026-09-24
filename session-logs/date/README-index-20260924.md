@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.150621 | [Pheromone cold roster closes with known reds](20260924/20260924-150621_pheromone-cold-roster-red.kyri) | Complete cold roster, tree_moved=no; known reds remain. |
 | 20260924.132938 | [Parent claim wall](20260924/20260924-132938_diffuser-parent-claim-wall.kyri) | Booked red remains a shared-hook ruling. |
 | 20260924.115137 | [Cold roster red](20260924/20260924-115137_diffuser-cold-roster-red.kyri) | Full cold roster closed red; no product build. |
 | 20260924.071837 | [Cold roster](20260924/20260924-071837_diffuser-cold-roster.kyri) | Parked lap log recovered; hot roster remained open. |
