@@ -7936,3 +7936,10 @@ guard brush_parse
 path tools/gen/chapter/brush_parse_witness.rish
 tier lap
 seated 20260923.040437
+
+# pond_gui_spine -- the constructive Pond GUI fold reaches the connector, Brush fixture,
+# and frame legs, while the witness keeps the live display and build artifacts as honest skips.
+guard pond_gui_spine
+path tools/gen/chapter/pond_gui_spine_witness.rish
+tier lap
+seated 20260923.210912
