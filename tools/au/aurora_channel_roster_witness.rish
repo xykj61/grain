@@ -1,0 +1,30 @@
+# aurora_channel_roster_witness.rish -- the channel roster's three sentences, on the host.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_channel_roster_witness.rish
+#
+# The stage after aurora/src/posted.rye owes three sentences, named in
+# active-designing/date/20260924/20260924-092253_aurora-channel-roster.md.
+# This witness hears them from caravan/channels.rye on the host. Waking the
+# freestanding ELF wants qemu-system-riscv64, and that leg stays with the
+# qemu_riscv capability: absent here, the line names the skip and the hosted
+# sentences still pass.
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "tools/.build/aurora_channel_roster"
+
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh caravan/channels.rye -femit-bin=${bin}"]
+assert build.ok else "channel roster build failed -- ${build.err_brief}"
+
+let test = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert test.ok else "channel roster selftest exited non-zero"
+say test.out
+assert test.out contains "channels: 5 domains" else "the roster did not speak its domain count"
+assert test.out contains "channels: 4 channels" else "the roster did not speak its channel count"
+assert test.out contains "each channel names two declared domains" else "the roster did not speak the two-domain join"
+assert test.out contains "GREEN" else "channel roster selftest not GREEN"
+
+let qemu = run ["sh" "-c" "if command -v qemu-system-riscv64 >/dev/null 2>&1; then echo present; else echo absent; fi"]
+if qemu.out contains "absent" then say "skipped_capability aurora_channel_roster_boot wants=qemu_riscv here=absent" else say "qemu_riscv here=present; the boot row wakes the stage, and this witness stays on the host"
+
+say "GREEN: channel roster spoken on the host."
