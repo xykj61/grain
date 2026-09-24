@@ -81,5 +81,5 @@ claim incense-stage-store-read
 seat incense
 stamp 20260924.173408
 epoch 1790285648
-paths tools/fixtures/a/aurora_stage_store_read.sh tools/au/aurora_stage_store_read_witness.rish active-designing/date/20260924/20260924-165957_tablecloth-stages-as-values.md
+paths tools/fixtures/a/aurora_stage_store_read.sh tools/fixtures/a/aurora_stage_store_read_check.sh tools/au/aurora_stage_store_read_witness.rish active-designing/date/20260924/20260924-165957_tablecloth-stages-as-values.md
 what Read one stage resin back with no stage path on the read.
