@@ -25,4 +25,6 @@ The six files remain the living stages. Counting them counts stages. The resin i
 
 [`aurora_stage_store_read_witness.rish`](../../../tools/au/aurora_stage_store_read_witness.rish) asks that directory with a resin and no stage path. Seed's hex comes back as seed's bytes. An unknown resin returns nothing. A file whose bytes no longer hash to the resin asked also returns nothing, and the witness puts the original bytes back. The read fixture names the store and the hex, and it does not name `aurora/src`.
 
+[`aurora_stage_store_put_witness.rish`](../../../tools/au/aurora_stage_store_put_witness.rish) writes the bytes `any bytes may land` into that same directory under their own resin. A second write adds nothing. The resin reads those bytes back. The six living stages stay held beside it, so the directory can hold more than the six.
+
 Bakery keeps the fusion build, and with it Tally's bounded gardens. Diffuser keeps the wake measurement. The six living stages stay six until the count is told to move.

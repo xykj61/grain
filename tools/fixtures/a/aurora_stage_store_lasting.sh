@@ -34,5 +34,5 @@ cmp -s "$root/aurora/src/seed.rye" "$store/$seed_resin"
 files=$(find "$store" -type f | wc -l | tr -d ' ')
 test -d "$store"
 
-echo "stage-store-lasting added=${added} held=${held} files=${files} read=seed same=yes remains=yes"
+echo "stage-store-lasting added=${added} held=${held} stages=6 files=${files} read=seed same=yes remains=yes"
 echo GREEN

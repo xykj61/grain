@@ -1,0 +1,22 @@
+# aurora_stage_store_put_witness.rish -- any bytes land under their resin.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_put_witness.rish
+#
+# A short byte string is written into the lasting store. The second
+# write adds nothing. The read returns those bytes from the resin alone.
+# The six living stages stay held.
+
+let lasting = run ["sh" "tools/fixtures/a/aurora_stage_store_lasting.sh"]
+assert lasting.ok else "lasting store refused -- ${lasting.err_brief}"
+assert lasting.out contains "held=6" else "the six stages were not held"
+assert lasting.out contains "stages=6" else "the living stages did not stay six"
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_put_check.sh"]
+say proof.out
+assert proof.ok else "put refused -- ${proof.err_brief}"
+assert proof.out contains "added=0" else "the second write grew a resin already held"
+assert proof.out contains "read=yes" else "the resin did not return the bytes"
+assert proof.out contains "GREEN" else "put did not close GREEN"
+
+say "GREEN: any bytes land under their resin, and a second write adds nothing."
