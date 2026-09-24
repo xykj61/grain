@@ -7944,6 +7944,13 @@ path tools/gen/chapter/almanac_breach_witness.rish
 tier lap
 seated 20260924.072938
 
+# relay_resin_census -- the Generator Chapter resin limb keeps twelve named beads bounded,
+# requires the manifest bead beyond that limb, and checks the resin and bead lexicon seam.
+guard relay_resin_census
+path tools/gen/chapter/relay_resin_census_witness.rish
+tier lap
+seated 20260924.090630
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse

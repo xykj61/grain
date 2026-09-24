@@ -77,18 +77,9 @@ writer had no wall against a `--what`/`--paths` newline corrupting the board; tw
 (`has_newline`, `form_gate`) refuse it now, proven on 62-to-77 control legs. **YOURS:** whether
 the board should refuse a hand editing it at all is still Keaton's word.
 
-**COPAL -- SEVEN ELDER ACCOUNTS, SHELVED WHOLE:** the copy step that became a pass-through
-([here](archive/date/20260917/20260917-140717_itinerary-landed-accounts.md)), its scrub ask standing; the room the
-projection makes
-([here](archive/date/20260917/20260917-172111_itinerary-landed-accounts.md)), the minutes spent starting grep
-([here](archive/date/20260917/20260917-010818_itinerary-landed-accounts.md)), the resin bytes that landed
-([here](archive/date/20260916/20260916-234020_itinerary-landed-accounts.md)), the `echo` population
-([here](archive/date/20260916/20260916-195248_itinerary-landed-accounts.md)), the meter that priced a gap
-([here](archive/date/20260916/20260916-195045_itinerary-landed-accounts.md)), `%646`'s sweep
-([here](archive/date/20260916/20260916-084104_itinerary-landed-accounts.md)).
-**THEIR ASKS, STILL STANDING:** the resin room's landed wall for other rooms; the 45 **written**
-characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
-exempt from the commit-message path wall; and the seven remaining unrostered `tools/gen/chapter/` witnesses.
+**COPAL -- SEVEN ELDER ACCOUNTS, SHELVED WHOLE:** [account](archive/20260924-104400_itinerary-copal-elder-accounts.md).
+**YOURS:** the resin room's landed wall, 45 written characters, 1,417 almanac characters, claim-path
+exemption, and the remaining unrostered chapter witnesses.
 
 **COPAL -- THE GRAD SEAL WITNESS IS ROSTERED, WITH ITS DEPENDENCY RED NAMED.** The witness proves
 the three living pins and its planted negative. Its CION module half is RED because the downstream
@@ -366,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8ddd4533b3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7b9f639c59` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -394,6 +385,13 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Priority:** VERY HIGH Lindy; HIGH crux.
 
+**COPAL -- THE ALMANAC BREACH CHAPTER WITNESS LANDED.** Account shelved whole at
+[`archive/20260924-105500_itinerary-copal-almanac-account.md`](archive/20260924-105500_itinerary-copal-almanac-account.md).
+
+**COPAL -- THE RESIN CENSUS CHAPTER WITNESS IS CLAIMED.** `relay_resin_census_witness.rish` is
+the next unrostered chapter witness: it keeps twelve named beads bounded, requires the manifest
+bead beyond that limb, and checks the resin and bead lexicon seam. Its proof stays a roster
+addition; no Amphora vessel or custody seam changes in this lap.
 1. Seal the receipt fields and provenance in an existing Amphora vessel.
 2. Prove authentication, version refusal, and round-trip meaning.
 3. Prepare the portable bundle seam for Granary without opening network or identity custody.
