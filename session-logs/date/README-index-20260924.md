@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.083642 | [Bakery cold roster hold](20260924/20260924-083642_bakery-cold-roster-hold.kyri) | Fresh cold roster held without verdict; no ranking work claimed. |
 | 20260924.062049 | [Grass open-room claim close](20260924/20260924-062049_grass-open-room-claim-close.kyri) | Existing disposition confirmed; stale claim closed; cold roster red. |
 | 20260924.051121 | [Closed duplicate Patchouli value-forms claim](20260924/20260924-051121_patchouli-value-forms-receipt.kyri) | Existing Mantra/Tally forms confirmed; cold roster guard-red. |
 | 20260924.074637 | [Pheromone cold roster red](20260924/20260924-074637_pheromone-cold-roster-red.kyri) | 372 guards; 50 reds, 3 gates; tree held still. |
