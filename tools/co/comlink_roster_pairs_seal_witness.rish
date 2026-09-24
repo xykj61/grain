@@ -1,0 +1,23 @@
+# comlink_roster_pairs_seal_witness.rish -- the four pairs seal and open.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comlink_roster_pairs_seal_witness.rish
+#
+# comlink/roster_pairs_seal.rye seals the four canonical pairs with
+# wire_format.seal_message and opens them again. The guests' sentence
+# stays "Meet me where the rye grows." No virtio driver is added.
+
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build comlink/roster_pairs_seal.rye -lc -femit-bin=tools/.build/roster_pairs_seal"]
+assert build.ok else "roster pair seal build failed -- ${build.err_brief}"
+
+let seal = run ["sh" "-c" "tools/.build/roster_pairs_seal 2>&1"]
+say seal.out
+assert seal.ok else "roster pair seal exited non-zero"
+assert seal.out contains "serial_driver serial_virt" else "the first pair did not open"
+assert seal.out contains "client_a timer_driver" else "the last pair did not open"
+assert seal.out contains "pairs=4" else "the pair count was not four"
+assert seal.out contains "sentence=kept" else "the guests' sentence moved"
+assert seal.out contains "GREEN" else "roster pair seal not GREEN"
+
+say "GREEN: four roster pairs sealed and opened; the guests' sentence stays."
