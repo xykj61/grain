@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.133048 | [The design page names both broken rosters](20260924/20260924-133048_incense-roster-page-unknown.kyri) | One domain twice, and a domain never declared. |
 | 20260924.132644 | [An undeclared domain writes the refusing finisher](20260924/20260924-132644_incense-roster-unknown.kyri) | Domain index 5 exits 1 and speaks nothing. |
 | 20260924.132252 | [The Aurora door names the broken roster](20260924/20260924-132252_incense-aurora-door-refuse.kyri) | roster_refuse exits 1 and speaks no sentence. |
 | 20260924.131934 | [The design page records the refusing finisher](20260924/20260924-131934_incense-roster-page-refuse.kyri) | A broken channel exits 1 and speaks no sentence. |
