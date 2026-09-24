@@ -73,7 +73,8 @@ accepted product contract while the elder forty-by-eight media frame keeps its o
 initializer admits the deciding Linengrow fields, refuses empty, non-ASCII, over-wide, or
 over-limit input before publishing a value, and renders twelve deterministic ASCII lines. The
 accessibility reader walks those same rendered bytes in row order, so visual and semantic text
-read from one set of bytes.
+read from one set of bytes. `ReceiptAccessibilitySnapshot` names the eleven deciding fields,
+including the amount and unit separately, in that same order.
 
 The Consent Rail carries the receipt's purpose, recipient, expiration, and consent status through
 one bounded presentation value. Still is complete. Settle reaches the same folded or expanded
