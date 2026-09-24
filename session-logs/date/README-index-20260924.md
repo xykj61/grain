@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.172712 | [The stage store remains and only grows](20260924/20260924-172712_incense-stage-store-lasting.kyri) | Second pass adds nothing; bytes stay off the branch. |
 | 20260924.172011 | [A resin hands its bytes back](20260924/20260924-172011_incense-stage-store.kyri) | Six resins written; seed returns; lasting store unbuilt. |
 | 20260924.171119 | [Six stage resins print](20260924/20260924-171119_incense-stage-resin.kyri) | SHA3-512 for six stages; the store stays unbuilt. |
 | 20260924.170646 | [Fleet Codex default is gpt-6-sol](20260924/20260924-170646_incense-codex-gpt-6-sol.kyri) | Bakery Claude is opus-5.5; seven ships clock out. |

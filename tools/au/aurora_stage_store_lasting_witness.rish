@@ -1,0 +1,26 @@
+# aurora_stage_store_lasting_witness.rish -- the stage store remains and only grows.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_lasting_witness.rish
+#
+# The first pass adds any missing living-stage resin. The second pass
+# holds all six and adds nothing. The directory stays on disk.
+
+let first = run ["sh" "tools/fixtures/a/aurora_stage_store_lasting.sh"]
+say first.out
+assert first.ok else "lasting store refused -- ${first.err_brief}"
+assert first.out contains "read=seed" else "seed was not handed back"
+assert first.out contains "same=yes" else "the bytes handed back differ"
+assert first.out contains "remains=yes" else "the store did not remain"
+assert first.out contains "GREEN" else "lasting store did not close GREEN"
+
+let second = run ["sh" "tools/fixtures/a/aurora_stage_store_lasting.sh"]
+say second.out
+assert second.ok else "second pass refused -- ${second.err_brief}"
+assert second.out contains "added=0" else "the second pass grew a resin already held"
+assert second.out contains "held=6" else "the second pass did not hold six resins"
+assert second.out contains "files=6" else "the store does not hold six files"
+assert second.out contains "remains=yes" else "the store was removed"
+assert second.out contains "GREEN" else "second pass did not close GREEN"
+
+say "GREEN: the stage store remains, and a second pass adds nothing."
