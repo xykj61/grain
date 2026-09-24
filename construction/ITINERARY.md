@@ -56,6 +56,8 @@ the existing shape and lowering path.
 **INCENSE.** [Account shelved](archive/20260918-091343_itinerary-incense-second-cold-run-account.md)
 -- a second cold run named the same 28-red backlog plus one fresh regression, `%827` booked.
 
+**INCENSE -- THE COLD ROSTER'S 42 REDS, EACH GIVEN A HOME.** The pass at `d3ebf81b9e` held `tree_moved=no` and closed `guard_red`: 326 green, 42 red, 3 gated. [Review](../active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md): one disposition each, measured against the receipt. Receipt rows go to Patchouli, Bakery, and Diffuser. `%826`, `instrument_refusal`, and `seed_link` stay booked.
+
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/20260918-053350_itinerary-pheromone-rune-cell-account.md).
 
@@ -114,11 +116,8 @@ were not touched this lap and may carry further negative sentences past what thi
 `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
 state rather than this line.
 
-**GRASS -- THE FOUNDATIONS REVERSE-READ REACHES THE OPEN ROOM.** Read
-[`../foundations/20260628-133212_a-free-and-open-room.md`](../foundations/20260628-133212_a-free-and-open-room.md)
-against the Linengrow receipt ladder: open access and deliberate departure remain living product
-rewards. [Packet written](../active-designing/date/20260922/20260922-225114_a-reverse-read-of-a-free-and-open-room.md):
-**affirmed, no molt.** The next oldest foundation is the next walk.
+**GRASS -- THE OPEN-ROOM REVERSE-READ OF 20260922.** [Shelved
+whole](archive/20260923-233155_itinerary-grass-open-room-20260922-account.md). The later packet stays on the card.
 
 **GRASS -- backtick_path's second reverse-read account.** [Shelved
 whole](archive/20260918-074921_itinerary-grass-backtick-path-second-account.md).
@@ -353,7 +352,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b794d44fbc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `8fa9554507` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
