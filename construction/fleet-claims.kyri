@@ -83,9 +83,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-virtio-lab
-seat incense
-stamp 20260924.145041
-epoch 1790275841
-paths active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md
-what Hear the two-guest virtio lab and record it on the virtio-wire design page.
