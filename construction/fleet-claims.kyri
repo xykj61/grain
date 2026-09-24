@@ -89,3 +89,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-roster-refuse-cross
+seat incense
+stamp 20260924.133335
+epoch 1790271215
+paths tools/au/aurora_seed_freestanding_witness.rish
+what Cross-build the two broken rosters to RISC-V ELF and leave the six-stage pedestal at six.
