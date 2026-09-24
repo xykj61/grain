@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.051121 | [Closed duplicate Patchouli value-forms claim](20260924/20260924-051121_patchouli-value-forms-receipt.kyri) | Existing Mantra/Tally forms confirmed; cold roster guard-red. |
 | 20260924.061046 | [Diffuser red review and parked-work recovery](20260924/20260924-061046_diffuser-red-review.kyri) | Recovered landed work; stale roster pass refused after tree movement. |
 | 20260924.062849 | [Pheromone cold roster red](20260924/20260924-062849_pheromone-cold-roster-red.kyri) | 371 guards; 52 reds, 3 gates; tree held still. |
 | 20260924.045754 | [Pheromone cold roster and custody hold](20260924/20260924-045754_pheromone-cold-roster-hold.kyri) | 371 guards; 50 reds, 3 gates; Glow remains parked. |
