@@ -45,4 +45,7 @@ assert (named.out contains "243") else "named stage did not cross-build to a RIS
 let kumara = run ["sh" "-c" "rm -f tools/.build/aurora_kumara.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh aurora/src/kumara.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_kumara.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/aurora_kumara.elf | tr -d ' \\n'"]
 assert (kumara.out contains "243") else "kumara stage did not cross-build to a RISC-V ELF"
 
-say "GREEN: all eight Aurora boot stages cross-build freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build (seed relay wire sealed posted deciding named kumara)."
+let roster = run ["sh" "-c" "rm -f tools/.build/aurora_roster.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh aurora/src/roster.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_roster.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/aurora_roster.elf | tr -d ' \\n'"]
+assert (roster.out contains "243") else "roster stage did not cross-build to a RISC-V ELF"
+
+say "GREEN: nine Aurora sources cross-build freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build (seed relay wire sealed posted deciding named kumara roster)."
