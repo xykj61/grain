@@ -95,9 +95,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-roster-refuse-wake
-seat incense
-stamp 20260924.131115
-epoch 1790269875
-paths aurora/src/roster_refuse.rye tools/au/aurora_roster_refuse_witness.rish tools/fixtures/a/aurora_roster_refuse.sh
-what Wake a broken roster beside the good one and show a non-zero exit with no pair line.
