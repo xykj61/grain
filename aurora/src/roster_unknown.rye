@@ -1,0 +1,56 @@
+//! aurora/src/roster_unknown.rye -- a roster that names a domain it never declared.
+//!
+//! One channel names domain index 5, and the roster holds five domains, so
+//! that index was never declared. The hart writes the refusing finisher and
+//! speaks no sentence. This file stands beside the six living stages.
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+const finisher_fail: u32 = 0x0001_3333;
+
+const domain_count: u32 = 5;
+const channel_count: u32 = 1;
+const domain_names = [_][]const u8{
+    "serial_driver",
+    "serial_virt",
+    "client_a",
+    "client_b",
+    "timer_driver",
+};
+const channel_ends: [channel_count][2]u32 = .{
+    .{ 5, 0 },
+};
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    assert(domain_count <= 8);
+    assert(channel_count <= 16);
+    for (channel_ends) |ends| {
+        // invariant: a channel names two distinct domains the roster declared
+        assert(ends[0] < domain_count);
+        assert(ends[1] < domain_count);
+        assert(ends[0] != ends[1]);
+    }
+
+    say("Aurora roster: 5 domains\n");
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+fn say(line: []const u8) void {
+    assert(line.len != 0);
+    for (line) |byte| uart_tx.* = byte;
+}
+
+fn assert(ok: bool) void {
+    if (ok) return;
+    test_finisher.* = finisher_fail;
+    while (true) {}
+}

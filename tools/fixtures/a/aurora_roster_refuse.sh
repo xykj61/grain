@@ -44,5 +44,30 @@ printf '%s\n' "$bad" | grep -q "qemu exited with status 1" || {
   exit 1
 }
 
-echo "roster-refuse good=0 broken=1 sentences=none"
+set +e
+unknown=$(rishi/bin/rishi run tools/au/aurora_run.rish roster_unknown)
+unknown_status=$?
+set -e
+if [ "$unknown_status" -eq 0 ]; then
+  echo "roster-refuse unknown wake exited 0"
+  printf '%s\n' "$unknown"
+  exit 1
+fi
+if printf '%s\n' "$unknown" | grep -q "Aurora roster:"; then
+  echo "roster-refuse unknown wake spoke a sentence"
+  printf '%s\n' "$unknown"
+  exit 1
+fi
+if printf '%s\n' "$unknown" | grep -q "pair "; then
+  echo "roster-refuse unknown wake spoke a pair"
+  printf '%s\n' "$unknown"
+  exit 1
+fi
+printf '%s\n' "$unknown" | grep -q "qemu exited with status 1" || {
+  echo "roster-refuse unknown wake status was not 1"
+  printf '%s\n' "$unknown"
+  exit 1
+}
+
+echo "roster-refuse good=0 broken=1 unknown=1 sentences=none"
 echo "GREEN"

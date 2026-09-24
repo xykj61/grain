@@ -76,6 +76,7 @@ RYE_SMP=2 aurora/run.sh wire   # the fifth stage: two harts pass a value across 
 RYE_SMP=2 aurora/run.sh posted # the sixth stage: a sealed datagram posted across the wire between two harts
 aurora/run.sh roster          # beside the six: the channel roster, spoken on one hart
 aurora/run.sh roster_refuse  # beside the six: one domain named twice, exit 1, no sentence
+aurora/run.sh roster_unknown  # beside the six: a domain never declared, exit 1, no sentence
 ```
 
 `aurora/run.sh` is a thin delegate to `tools/au/aurora_run.rish` -- the interface above is unchanged. Direct invocation: `rishi/bin/rishi run tools/au/aurora_run.rish [stage]`.
@@ -147,7 +148,7 @@ Aurora roster: pair serial_virt client_b
 Aurora roster: pair client_a timer_driver
 ```
 
-and the broken roster beside it names one domain twice, speaks no sentence, and exits 1.
+and the broken roster beside it names one domain twice, speaks no sentence, and exits 1. The unknown roster names a domain the roster never declared, speaks no sentence, and exits 1.
 
 The six living stages and the good roster end with a clean exit (status 0), because each writes the
 machine's test finisher to power itself down. The script uses the vendored Zig
@@ -168,6 +169,7 @@ aurora/
     posted.rye       <- the sixth stage: a sealed datagram posted across the wire
     roster.rye       <- beside the six: the channel roster the hosted demo declares
     roster_refuse.rye <- beside the six: one domain named twice, the refusing finisher
+    roster_unknown.rye <- beside the six: a domain the roster never declared
   layout.ld          <- where a stage lives in memory (RAM base, _start first)
   run.sh             <- build a stage with rye, wake it in qemu (RYE_SMP for harts)
   .build/            <- the emitted ELFs (built on demand, untracked)
