@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.183531 | [The store lists its own resins](20260924/20260924-183531_incense-stage-store-list.kyri) | Seven names, each the hash of its bytes. |
 | 20260924.183008 | [Bakery Codex seat is gpt-6-astra](20260924/20260924-183008_incense-bakery-astra.kyri) | Bakery names Astra; the other seats keep Sol. |
 | 20260924.182218 | [Any bytes land under their resin](20260924/20260924-182218_incense-stage-store-put.kyri) | A second write adds nothing; the six stages stay held. |
 | 20260924.150621 | [Pheromone cold roster closes with known reds](20260924/20260924-150621_pheromone-cold-roster-red.kyri) | Complete cold roster, tree_moved=no; known reds remain. |

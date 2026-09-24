@@ -1,0 +1,15 @@
+# aurora_stage_store_list_witness.rish -- the store speaks its own resin names.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_list_witness.rish
+#
+# The list fixture names no stage path. Every stored file's name matches
+# the SHA3-512 of its bytes.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_list_check.sh"]
+say proof.out
+assert proof.ok else "resin list refused -- ${proof.err_brief}"
+assert proof.out contains "count=" else "the list did not count"
+assert proof.out contains "GREEN" else "resin list did not close GREEN"
+
+say "GREEN: the store listed its resins, and each name matches its bytes."
