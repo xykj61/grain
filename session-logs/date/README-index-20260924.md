@@ -20,8 +20,8 @@
 | 20260924.074637 | [Pheromone cold roster red](20260924/20260924-074637_pheromone-cold-roster-red.kyri) | 372 guards; 50 reds, 3 gates; tree held still. |
 | 20260924.062849 | [Pheromone cold roster red](20260924/20260924-062849_pheromone-cold-roster-red.kyri) | 371 guards; 52 reds, 3 gates; tree held still. |
 | 20260924.062049 | [Grass open-room claim close](20260924/20260924-062049_grass-open-room-claim-close.kyri) | Existing disposition confirmed; stale claim closed; cold roster red. |
+| 20260924.071837 | [Settled cold roster receipt after parked-work recovery](20260924/20260924-071837_diffuser-cold-roster.kyri) | 372 guards: 319 green, 50 red, 3 gated; tree still. |
 | 20260924.061046 | [Diffuser red review and parked-work recovery](20260924/20260924-061046_diffuser-red-review.kyri) | Recovered landed work; stale roster pass refused after tree movement. |
-| 20260924.051121 | [Closed duplicate Patchouli value-forms claim](20260924/20260924-051121_patchouli-value-forms-receipt.kyri) | Existing Mantra/Tally forms confirmed; cold roster guard-red. |
 | 20260924.045754 | [Pheromone cold roster and custody hold](20260924/20260924-045754_pheromone-cold-roster-hold.kyri) | 371 guards; 50 reds, 3 gates; Glow remains parked. |
 | 20260924.043346 | [Bakery rank outcome verification](20260924/20260924-043346_bakery-rank-outcome-verification.kyri) | Landed scope-map rows verified; rank outcome graded; cold roster red: 319 green, 49 red, 3 gated. |
 | 20260924.031336 | [Bakery cold roster and ranking witness](20260924/20260924-031336_bakery-roster-ranking.kyri) | 372 guards; rank graded; 50 reds, 3 gates. |
