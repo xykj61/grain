@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.134325 | [The next strand is a new list](20260924/20260924-134325_incense-what-next.kyri) | virtio-net is the next wire the door already names. |
 | 20260924.134324 | [Pheromone Glow ENOSPC hold](20260924/20260924-134324_pheromone-enospc-hold.kyri) | Landed Glow kept; cold roster stopped before verdict. |
 | 20260924.133526 | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
 | 20260924.133447 | [The broken rosters cross-build without QEMU](20260924/20260924-133447_incense-roster-refuse-cross.kyri) | Eleven sources, e_machine 243; pedestal stays six. |
