@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.150800 | [The roster pairs and the sealed sentence are one hearing](20260924/20260924-150800_incense-roster-sentence.kyri) | Four pairs, and Meet me where the rye grows. |
 | 20260924.145507 | [Aurora wakes the existing Comlink guests](20260924/20260924-145507_incense-aurora-device-door.kyri) | run.sh device, no second virtio driver. |
 | 20260924.145145 | [The two-guest virtio lab was heard](20260924/20260924-145145_incense-virtio-lab.kyri) | A pattern and a sealed datagram crossed the link. |
 | 20260924.144525 | [The hosted device wire was heard](20260924/20260924-144525_incense-virtio-hosted.kyri) | Padding-free, a whole datagram, GREEN, no QEMU. |

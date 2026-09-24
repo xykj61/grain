@@ -1,0 +1,17 @@
+# aurora_roster_sentence_witness.rish -- the roster pairs and the sealed sentence.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_roster_sentence_witness.rish
+#
+# caravan/channels.rye speaks four pairs. comlink/wire_format.rye and
+# aurora/src/posted.rye share "Meet me where the rye grows." The virtio
+# guests seal and open that sentence. No second virtio driver.
+
+let join = run ["sh" "tools/fixtures/a/aurora_roster_sentence.sh"]
+say join.out
+assert join.ok else "roster sentence join refused -- ${join.err_brief}"
+assert join.out contains "pairs=4" else "the roster did not speak four pairs"
+assert join.out contains "sentence=shared" else "the sealed sentence is not shared"
+assert join.out contains "GREEN" else "roster sentence join did not close GREEN"
+
+say "GREEN: four roster pairs, and one sealed sentence shared by posted and the virtio guests."
