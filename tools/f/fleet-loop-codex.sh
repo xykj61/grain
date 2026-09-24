@@ -86,8 +86,12 @@ done
 # different model proves nothing about the model the work runs on. GPT-6-Astra became the bundled
 # default in codex 0.153.4 and could not be reached at all from 0.150.1, which answered
 # `400 invalid_request`; the pier was rebuilt to 0.153.4 on `20260909` for exactly this.
-# Fleet default selected by Keaton on 20260924. Explicit CODEX_MODEL overrides remain supported.
-CODEX_MODEL=${CODEX_MODEL:-gpt-6-sol}
+# Fleet default selected by Keaton on 20260924. Bakery's seat default is gpt-6-astra.
+# Explicit CODEX_MODEL overrides remain supported.
+case "$seat" in
+  bakery) CODEX_MODEL=${CODEX_MODEL:-gpt-6-astra} ;;
+  *) CODEX_MODEL=${CODEX_MODEL:-gpt-6-sol} ;;
+esac
 
 # Read the final response, never the transcript that also echoes the request.
 probe_reply="loops/codex/${seat}-probe-reply.txt"

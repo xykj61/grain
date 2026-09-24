@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.183008 | [Bakery Codex seat is gpt-6-astra](20260924/20260924-183008_incense-bakery-astra.kyri) | Bakery names Astra; the other seats keep Sol. |
 | 20260924.182218 | [Any bytes land under their resin](20260924/20260924-182218_incense-stage-store-put.kyri) | A second write adds nothing; the six stages stay held. |
 | 20260924.150621 | [Pheromone cold roster closes with known reds](20260924/20260924-150621_pheromone-cold-roster-red.kyri) | Complete cold roster, tree_moved=no; known reds remain. |
 | 20260924.132938 | [Parent claim wall](20260924/20260924-132938_diffuser-parent-claim-wall.kyri) | Booked red remains a shared-hook ruling. |
