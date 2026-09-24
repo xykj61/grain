@@ -1,0 +1,35 @@
+# comlink_roster_pairs_lab.rish -- two guests carry the sealed roster pairs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comlink_roster_pairs_lab.rish
+#
+# guest_roster_tx.rye seals the four pairs. guest_roster_rx.rye opens them
+# on a second QEMU virt guest. Port 15556 stays off the device lab's 15555.
+# The sealed guests and their sentence are untouched.
+
+let zig = "vendor/zig-toolchain/zig"
+let build_dir = "comlink/.build"
+
+fn build_guest src elf: run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/${elf}"]
+fn qemu_rx cable elf: ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${cable}" "-kernel" "${build_dir}/${elf}"]
+fn qemu_tx cable elf: ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${cable}" "-kernel" "${build_dir}/${elf}"]
+
+let sock = "127.0.0.1:15556"
+let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
+assert prep.ok else "roster pairs lab mkdir failed"
+
+let build_rx = build_guest "comlink/guest_roster_rx.rye" "roster-rx.elf"
+assert build_rx.ok else "roster rx guest build failed"
+let build_tx = build_guest "comlink/guest_roster_tx.rye" "roster-tx.elf"
+assert build_tx.ok else "roster tx guest build failed"
+
+let roster_rx = spawn (qemu_rx sock "roster-rx.elf")
+let pause = run ["sleep" "1"]
+assert pause.ok else "roster pairs lab sleep failed"
+let roster_tx = run (qemu_tx sock "roster-tx.elf")
+let roster_rx_done = wait-for roster_rx
+say roster_rx_done.out
+say roster_tx.out
+assert roster_rx_done.out contains "roster pairs GREEN" else "roster pairs lap RED"
+
+say "comlink roster pairs lab: GREEN — four pairs crossed virtio-net"
