@@ -90,8 +90,12 @@ projection makes
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
 exempt from the commit-message path wall; and the seven remaining unrostered `tools/gen/chapter/` witnesses.
 
-**COPAL -- GRAD SEAL ACCOUNT SHELVED WHOLE:** [read it here](archive/20260924-061949_itinerary-copal-grad-seal-account.md).
-Its CION module half remains RED in the owning lanes; the witness stopped at that named dependency.
+**COPAL -- THE GRAD SEAL WITNESS IS ROSTERED, WITH ITS DEPENDENCY RED NAMED.** The witness proves
+the three living pins and its planted negative. Its CION module half is RED because the downstream
+scan still finds bare-ordinal drift in `lattice/README.md` and
+`tools/gen/chapter/fascia_metric_v0.rish`; those surfaces belong to their owning lanes. The cold
+roster held `tree_moved=no` at `f5cf094d68`, with 53 stashed entries, and the witness proof stopped
+at that named dependency rather than claiming GREEN.
 
 **BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
 [shelved whole](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
@@ -390,11 +394,6 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Priority:** VERY HIGH Lindy; HIGH crux.
 
-**COPAL -- THE ALMANAC BREACH CHAPTER WITNESS IS CLAIMED.** `almanac_breach_witness.rish` is
-the next unrostered chapter witness: it checks preserved bytes, living links, and dated testimony
-through the existing breach fixture. Its proof stays a roster addition; no Amphora vessel or
-custody seam changes in this lap.
-
 1. Seal the receipt fields and provenance in an existing Amphora vessel.
 2. Prove authentication, version refusal, and round-trip meaning.
 3. Prepare the portable bundle seam for Granary without opening network or identity custody.
@@ -426,11 +425,10 @@ custody seam changes in this lap.
 **Priority:** VERY HIGH Lindy; HIGH crux.
 
 1. Write the first-hour walkthrough after the public seam lands.
-2. Teach data, consent, receipts, books, and portability one idea at a time.
-3. Let a cold reader make, verify, view, and reject a synthetic receipt.
-4. Open the [citizen door](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md) beside the first hour.
+2. Teach valuable data, consent, receipt, books recognition, and portability one idea at a time.
+3. Let a cold reader create, verify, view, and reject one synthetic receipt.
 
-**Stop:** green interfaces first; no private example.
+**Stop:** prose waits for green interfaces and uses no private example.
 
 ### Bakery -- Rishi fusion-build spine
 
