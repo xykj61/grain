@@ -89,3 +89,9 @@ stamp 20260924.090630
 epoch 1790255190
 paths tools/gen/chapter/relay_resin_census_witness.rish construction/standing-equipment.kyri construction/ITINERARY.md
 what Roster the resin census chapter witness and prove its bounded beads, manifest handoff, and lexicon seam.
+claim incense-aurora-roster-wake
+seat incense
+stamp 20260924.112352
+epoch 1790263432
+paths aurora/src/roster.rye
+what Add the freestanding Aurora roster stage and wake it on qemu-system-riscv64 -machine virt.
