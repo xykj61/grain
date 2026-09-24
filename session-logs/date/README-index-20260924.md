@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.170056 | [The stages are named as values](20260924/20260924-170056_incense-tablecloth-stages.kyri) | Six stages as resins; the store stays unbuilt. |
 | 20260924.165730 | [How It Grows names the wires that already cross](20260924/20260924-165730_incense-aurora-grows.kyri) | device, roster_pairs, and deciding.rye. |
 | 20260924.165356 | [The pair-line guests cross-build without QEMU](20260924/20260924-165356_incense-roster-pairs-cross.kyri) | Two guests, e_machine 243, no emulator. |
 | 20260924.164428 | [Aurora wakes the pair-line crossing](20260924/20260924-164428_incense-aurora-roster-pairs-door.kyri) | roster_pairs beside device; four pairs opened. |
