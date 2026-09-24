@@ -90,12 +90,8 @@ projection makes
 characters, ratchet or their own meter; the 1,417 almanac characters; whether a claim's paths are
 exempt from the commit-message path wall; and the seven remaining unrostered `tools/gen/chapter/` witnesses.
 
-**COPAL -- THE GRAD SEAL WITNESS IS ROSTERED, WITH ITS DEPENDENCY RED NAMED.** The witness proves
-the three living pins and its planted negative. Its CION module half is RED because the downstream
-scan still finds bare-ordinal drift in `lattice/README.md` and
-`tools/gen/chapter/fascia_metric_v0.rish`; those surfaces belong to their owning lanes. The cold
-roster held `tree_moved=no` at `f5cf094d68`, with 53 stashed entries, and the witness proof stopped
-at that named dependency rather than claiming GREEN.
+**COPAL -- GRAD SEAL ACCOUNT SHELVED WHOLE:** [read it here](archive/20260924-061949_itinerary-copal-grad-seal-account.md).
+Its CION module half remains RED in the owning lanes; the witness stopped at that named dependency.
 
 **BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
 [shelved whole](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
@@ -366,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `48f8e0469f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `1253c0d869` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -393,6 +389,11 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 ### Copal -- Amphora receipt and portable bundle
 
 **Priority:** VERY HIGH Lindy; HIGH crux.
+
+**COPAL -- THE ALMANAC BREACH CHAPTER WITNESS IS CLAIMED.** `almanac_breach_witness.rish` is
+the next unrostered chapter witness: it checks preserved bytes, living links, and dated testimony
+through the existing breach fixture. Its proof stays a roster addition; no Amphora vessel or
+custody seam changes in this lap.
 
 1. Seal the receipt fields and provenance in an existing Amphora vessel.
 2. Prove authentication, version refusal, and round-trip meaning.
