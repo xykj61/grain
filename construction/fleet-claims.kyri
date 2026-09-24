@@ -77,9 +77,15 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim petrichor-yonder-card-link-20260924
-seat petrichor
-stamp 20260924.150026
-epoch 1790276426
-paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md construction/ITINERARY.md
-what Anchor the yonder citizen door on the Petrichor card while its fresh-reader path remains unrun.
+claim grass-free-open-room
+seat grass
+stamp 20260924.145950
+epoch 1790276390
+paths active-designing/date/20260924/20260924-145948_grass-reverse-read-of-a-free-and-open-room.md
+what Read A Free and Open Room and record one evidenced disposition for the receipt seam.
+claim incense-roster-sentence
+seat incense
+stamp 20260924.150440
+epoch 1790276680
+paths tools/fixtures/a/aurora_roster_sentence.sh tools/au/aurora_roster_sentence_witness.rish active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md
+what Join the roster pairs and the sealed sentence the virtio guests already open.
