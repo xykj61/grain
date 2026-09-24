@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20260924.150800 | [The roster pairs and the sealed sentence are one hearing](20260924/20260924-150800_incense-roster-sentence.kyri) | Four pairs, and Meet me where the rye grows. |
+| 20260924.150633 | [Shape of a Day recovery](20260924/20260924-150633_grass-shape-of-day-recovery.kyri) | Packet A/95; fresh cold roster held on no space before verdict. |
 | 20260924.145507 | [Aurora wakes the existing Comlink guests](20260924/20260924-145507_incense-aurora-device-door.kyri) | run.sh device, no second virtio driver. |
 | 20260924.145145 | [The two-guest virtio lab was heard](20260924/20260924-145145_incense-virtio-lab.kyri) | A pattern and a sealed datagram crossed the link. |
 | 20260924.144525 | [The hosted device wire was heard](20260924/20260924-144525_incense-virtio-hosted.kyri) | Padding-free, a whole datagram, GREEN, no QEMU. |
@@ -16,6 +17,7 @@
 | 20260924.133526 | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
 | 20260924.133447 | [The broken rosters cross-build without QEMU](20260924/20260924-133447_incense-roster-refuse-cross.kyri) | Eleven sources, e_machine 243; pedestal stays six. |
 | 20260924.133048 | [The design page names both broken rosters](20260924/20260924-133048_incense-roster-page-unknown.kyri) | One domain twice, and a domain never declared. |
+| 20260924.144838 | [Shape of a Day packet recovered](20260924/20260924-144838_grass-open-room-recovery.kyri) | Packet A/95; cold roster guard-red, tree held still. |
 | 20260924.132644 | [An undeclared domain writes the refusing finisher](20260924/20260924-132644_incense-roster-unknown.kyri) | Domain index 5 exits 1 and speaks nothing. |
 | 20260924.132252 | [The Aurora door names the broken roster](20260924/20260924-132252_incense-aurora-door-refuse.kyri) | roster_refuse exits 1 and speaks no sentence. |
 | 20260924.131934 | [The design page records the refusing finisher](20260924/20260924-131934_incense-roster-page-refuse.kyri) | A broken channel exits 1 and speaks no sentence. |
@@ -29,10 +31,12 @@
 | 20260924.122237 | [Yonder page graded and claim closed](20260924/20260924-122237_petrichor-yonder-grade.kyri) | Page A; cold roster held on disk-full before verdict. |
 | 20260924.120837 | [The runner prints what the hart said](20260924/20260924-120837_incense-runner-speaks.kyri) | aurora_run.rish shows the three UART lines. |
 | 20260924.120532 | [How the next list should open](20260924/20260924-120532_incense-next-list.kyri) | One strand: the runner speaks the UART the hart already spoke. |
+| 20260924.132000 | [Shape of a Day close](20260924/20260924-132000_grass-shape-of-day-close.kyri) | Packet A; cold roster guard-red, tree held still. |
 | 20260924.113055 | [Who holds the freestanding study](20260924/20260924-113055_incense-itinerary-sentence.kyri) | Incense the study, Bakery the build, Diffuser the wake. |
 | 20260924.112452 | [The roster spoken on a RISC-V hart](20260924/20260924-112452_incense-roster-wake.kyri) | QEMU virt exit 0; five domains, four channels. |
 | 20260924.110155 | [Bakery build-target recheck](20260924/20260924-110155_bakery-build-target-red-recheck.kyri) | Cold red; focused green; fixed ceiling open. |
 | 20260924.103510 | [Petrichor cold roster ended without a verdict](20260924/20260924-103510_petrichor-cold-no-verdict.kyri) | Cold roster hit disk-full failure without `run_verdict`; remote moved; no page changed. |
+| 20260924.113716 | [Recovered Shape of a Day packet](20260924/20260924-113716_grass-shape-of-day.kyri) | Packet A; cold roster 311 green, 58 red, 3 gated. |
 | 20260924.102330 | [Receipt Still order proven by host witness](20260924/20260924-102330_diffuser-receipt-still-order.kyri) | 11-field order witness green; cold roster 317 green, 52 red, 3 gated. |
 | 20260924.112016 | [Patchouli cold roster red](20260924/20260924-112016_patchouli-cold-red.kyri) | Recovered record; 314 green, 55 red, 3 gated; tree moved. |
 | 20260924.095222 | [Recovered Patchouli cold roster](20260924/20260924-095222_patchouli-cold-recovery.kyri) | Existing value forms recovered; cold roster guard-red and tree moved on a Caravan lock. |
