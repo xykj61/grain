@@ -183,7 +183,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive bakery codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-astra --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive bakery antigravity
