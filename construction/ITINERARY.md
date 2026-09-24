@@ -357,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b77efb638e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `3855eeaa40` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -368,6 +368,8 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
 
 **Stop:** product meaning, DJINN design authority, custody, or a new module seat returns to Keaton.
+
+**Freestanding study:** Incense holds the freestanding study, Bakery the fusion build, Diffuser the wake measurement.
 
 ### Patchouli -- Mantra and Tally spine
 
