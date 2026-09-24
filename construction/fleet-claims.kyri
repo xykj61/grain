@@ -77,3 +77,9 @@ stamp 20260924.164026
 epoch 1790282426
 paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
 what Grade and, if needed, raise the yonder learning-floor page to B or better.
+claim diffuser-receipt-still-order-20260924
+seat diffuser
+stamp 20260924.181738
+epoch 1790288258
+paths skate/Sources/SkateCore/ReceiptCard.swift skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift tools/fixtures/r/receipt_still_order_scan.sh
+what Prove the receipt Still frame and accessibility snapshot carry all eleven deciding fields in one order on this host.
