@@ -179,14 +179,7 @@ aurora/
 
 ## How It Grows
 
-Each stage grew from the one before, never bolted on -- and a sealed datagram now
-crosses the wire between two harts. That wire is shared memory; the next wire is a
-real device (an emulated `virtio-net` to start) carrying a sealed datagram between
-two *machines*, where Comlink fully begins. In parallel: a stage that hands the next a
-value *it chose*; and, as the other modules ripen, Tally's bounded gardens for the
-boot's own memory, Caravan's hand on what runs next, and Tablecloth describing the stages
-as values. The roster stage is that hand's first spoken line: the same pairs the hosted
-demo declares, on one hart. The roadmap that holds these steps lives in `../work-in-progress/ROADMAP.md`.
+Each stage grew from the one before. A sealed datagram crosses shared memory between two harts in `posted.rye`. The same sentence crosses virtio-net between two machines through `aurora/run.sh device`. The four roster pairs cross that same card through `aurora/run.sh roster_pairs`. Beside the six, `deciding.rye` reads the machine and names the choice of what comes next. Still ahead, as the other modules ripen: Tally's bounded gardens for the boot's own memory, and Tablecloth describing the stages as values. Bakery keeps the fusion build. Diffuser keeps the wake measurement. The six living stages stay six until the count is told to move. The roadmap that holds these steps lives in `../work-in-progress/ROADMAP.md`.
 
 ---
 
