@@ -358,6 +358,9 @@
   #   Provider config lives outside this file, at ~/.config/opencode/opencode.json
   #   and ~/.local/share/opencode/auth.json -- personal, untracked, documented
   #   in open/HARNESS_SETUP.md rather than declared here.
+  # qemu -- qemu-system-riscv64, the binary aurora_run.rish wakes with
+  #   `-machine virt`. The hosted channel-roster witness runs without it.
+  #   The freestanding wake is the install this line exists to provide.
   environment.systemPackages = with pkgs; [
     opencode
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
@@ -378,6 +381,7 @@
     s6-rc
     perl     # outer-terminal Perl -- legacy scripts pending the Rishi fold
     python3  # outer-terminal Python 3 -- absent on the pier before this (REDS memory)
+    qemu     # qemu-system-riscv64 -- Aurora freestanding wake on -machine virt
     ai-jail  # enclosure -- GitHub release, patchelf'd; not a crates.io build
     python313Packages.huggingface-hub  # `hf` CLI -- open/PROVIDER_COMPARISON.md
     (python313Packages.llm.withPlugins { llm-openrouter = true; })  # `llm` CLI + OpenRouter
