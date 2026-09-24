@@ -170,12 +170,11 @@ against the receipt contract. [Packet written](../active-designing/date/20260923
 identity outside its first whole; person-held keys belong at the witnessed portable-bundle seam.
 The next oldest foundation is the next walk.
 
-**GRASS -- A FREE AND OPEN ROOM: access remains a product promise.** [Packet](../active-designing/date/20260924/20260924-003224_grass-reverse-read-of-a-free-and-open-room.md):
-**standfasted; no molt or repair.** The receipt offers local welcome; public access and portable
-departure remain later acceptance work.
+**GRASS -- FREE AND OPEN ROOM.** [Packet](../active-designing/date/20260924/20260924-003224_grass-reverse-read-of-a-free-and-open-room.md):
+**standfasted; later access work.**
 
-**GRASS -- SHAPE OF A DAY: durable work.** [Packet](../active-designing/date/20260924/20260924.085457_grass-reverse-read-of-the-shape-of-a-day.md):
-**standfasted; no molt or repair.** Receipt keeps bounded truth and expiration; scheduling and wellbeing wait.
+**GRASS -- SHAPE OF A DAY.** [Packet](../active-designing/date/20260924/20260924.085457_grass-reverse-read-of-the-shape-of-a-day.md):
+**standfasted; receipt bounds remain; rhythm waits.**
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -360,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5230c22729` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `89a882447` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
