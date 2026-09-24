@@ -95,3 +95,9 @@ stamp 20260924.121033
 epoch 1790266233
 paths tools/au/aurora_seed_freestanding_witness.rish
 what Cross-build aurora/src/roster.rye in the freestanding witness and leave the six-stage pedestal at six.
+claim diffuser-parent-claim-wall-review-20260924
+seat diffuser
+stamp 20260924.121217
+epoch 1790266337
+paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
+what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
