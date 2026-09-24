@@ -1,0 +1,61 @@
+//! aurora/src/roster.rye -- the channel roster, spoken on a freestanding hart.
+//!
+//! The hosted witness already heard three sentences from caravan/channels.rye:
+//! five domains, four channels, and each channel naming two declared domains.
+//! This stage speaks those same three sentences on QEMU's virt machine, with
+//! the same wiring the hosted demo declares. No operating system sits beneath
+//! it, and the hosted module stays on the host: a freestanding hart carries
+//! the roster as data.
+//!
+//! Wake it with `rishi/bin/rishi run tools/au/aurora_run.rish roster`.
+
+const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
+const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
+const finisher_pass: u32 = 0x5555;
+
+/// Domains in the hosted demo: serial driver, serial virtualiser, two clients, timer.
+const domain_count: u32 = 5;
+/// Channels in the hosted demo. Each row names two domain indexes.
+const channel_count: u32 = 4;
+const channel_ends: [channel_count][2]u32 = .{
+    .{ 0, 1 },
+    .{ 1, 2 },
+    .{ 1, 3 },
+    .{ 4, 2 },
+};
+
+export fn _start() linksection(".text.init") callconv(.naked) noreturn {
+    asm volatile (
+        \\ li sp, 0x80100000
+        \\ j kmain
+    );
+}
+
+export fn kmain() callconv(.c) noreturn {
+    // invariant: the roster stays inside the ceilings channels.rye publishes
+    assert(domain_count <= 8);
+    assert(channel_count <= 16);
+    for (channel_ends) |ends| {
+        // invariant: a channel names two distinct domains the roster declared
+        assert(ends[0] < domain_count);
+        assert(ends[1] < domain_count);
+        assert(ends[0] != ends[1]);
+    }
+
+    say("Aurora roster: 5 domains\n");
+    say("Aurora roster: 4 channels\n");
+    say("Aurora roster: each channel names two declared domains\n");
+
+    test_finisher.* = finisher_pass;
+    while (true) {}
+}
+
+fn say(line: []const u8) void {
+    // invariant: a spoken sentence carries at least the newline
+    assert(line.len != 0);
+    for (line) |byte| uart_tx.* = byte;
+}
+
+fn assert(ok: bool) void {
+    if (!ok) unreachable;
+}
