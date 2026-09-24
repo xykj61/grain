@@ -359,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e900588d80` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `ffcf72fe36` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -392,10 +392,8 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 **COPAL -- THE ALMANAC BREACH CHAPTER WITNESS LANDED.** Account shelved whole at
 [`archive/20260924-105500_itinerary-copal-almanac-account.md`](archive/20260924-105500_itinerary-copal-almanac-account.md).
 
-**COPAL -- THE RESIN CENSUS CHAPTER WITNESS IS CLAIMED.** `relay_resin_census_witness.rish` is
-the next unrostered chapter witness: it keeps twelve named beads bounded, requires the manifest
-bead beyond that limb, and checks the resin and bead lexicon seam. Its proof stays a roster
-addition; no Amphora vessel or custody seam changes in this lap.
+**COPAL -- BOUNDS TYPE WITNESS CLAIMED.** `bounds_typed_witness.rish` reads the declared-bound
+scan and keeps its zero-population ratchet on the roster. [Prior account](archive/date/20260924/20260924-182321_itinerary-copal-resin-census-account.md).
 1. Seal the receipt fields and provenance in an existing Amphora vessel.
 2. Prove authentication, version refusal, and round-trip meaning.
 3. Prepare the portable bundle seam for Granary without opening network or identity custody.
