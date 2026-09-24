@@ -48,4 +48,10 @@ assert (kumara.out contains "243") else "kumara stage did not cross-build to a R
 let roster = run ["sh" "-c" "rm -f tools/.build/aurora_roster.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh aurora/src/roster.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_roster.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/aurora_roster.elf | tr -d ' \\n'"]
 assert (roster.out contains "243") else "roster stage did not cross-build to a RISC-V ELF"
 
-say "GREEN: nine Aurora sources cross-build freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build (seed relay wire sealed posted deciding named kumara roster)."
+let roster_refuse = run ["sh" "-c" "rm -f tools/.build/aurora_roster_refuse.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh aurora/src/roster_refuse.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_roster_refuse.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/aurora_roster_refuse.elf | tr -d ' \\n'"]
+assert (roster_refuse.out contains "243") else "roster_refuse stage did not cross-build to a RISC-V ELF"
+
+let roster_unknown = run ["sh" "-c" "rm -f tools/.build/aurora_roster_unknown.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh aurora/src/roster_unknown.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/aurora_roster_unknown.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/aurora_roster_unknown.elf | tr -d ' \\n'"]
+assert (roster_unknown.out contains "243") else "roster_unknown stage did not cross-build to a RISC-V ELF"
+
+say "GREEN: eleven Aurora sources cross-build freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build (seed relay wire sealed posted deciding named kumara roster roster_refuse roster_unknown)."
