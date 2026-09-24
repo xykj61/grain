@@ -1,0 +1,21 @@
+# aurora_stage_store_witness.rish -- a resin hands its stage bytes back.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_witness.rish
+#
+# Six living stages are written under their SHA3-512 resins. Asking for
+# seed returns those bytes. An unknown resin returns nothing. A second
+# write of the same bytes leaves them unchanged. The directory is removed.
+
+let stored = run ["sh" "tools/fixtures/a/aurora_stage_store.sh"]
+say stored.out
+assert stored.ok else "stage store refused -- ${stored.err_brief}"
+assert stored.out contains "wrote=6" else "the six stages were not written"
+assert stored.out contains "read=seed" else "seed was not the resin asked back"
+assert stored.out contains "same=yes" else "the bytes handed back differ"
+assert stored.out contains "missing=nothing" else "an unknown resin returned bytes"
+assert stored.out contains "second=unchanged" else "a second write changed the bytes"
+assert stored.out contains "lasting=unbuilt" else "a lasting store was treated as built"
+assert stored.out contains "GREEN" else "stage store did not close GREEN"
+
+say "GREEN: six resins written, seed handed back, lasting store unbuilt."

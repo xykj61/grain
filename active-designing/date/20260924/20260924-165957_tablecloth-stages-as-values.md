@@ -4,7 +4,7 @@
 **Stamp:** `20260924.165957`
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Living -- mixed -- the six resins print, and the store is unbuilt
+**Status:** Living -- mixed -- a resin hands its bytes back, and a lasting store is unbuilt
 **Room:** design -- the shape outlives the store that will hold it
 
 Tablecloth holds a thing by its content. The name is computed from the bytes, so the same bytes keep the same name from any room. The foundation is [`what Tablecloth is`](../../../foundations/20260823-222020_what-tablecloth-is.md).
@@ -18,5 +18,7 @@ This page names the reading and leaves the store unbuilt. A path can be renamed 
 The six files remain the living stages. Counting them counts stages. The resin is a second name beside the path. It is not a seventh stage and it is not a new boot. The store that would keep those resins, and hand one back when asked, is the part this page leaves unbuilt. Until that store exists, a reader still opens each stage by its path, and the bytes in the file are the value the resin would name.
 
 [`aurora_stage_resin_witness.rish`](../../../tools/au/aurora_stage_resin_witness.rish) prints one resin for each of those six files. The width is SHA3-512, the content address the foundation names. The print says `count=6` and `store=unbuilt`. Nothing is written into a store, and a later edit of one stage file changes only that file's resin. The other five stay put.
+
+[`aurora_stage_store_witness.rish`](../../../tools/au/aurora_stage_store_witness.rish) writes those six files under their resins, asks for seed, and receives the same bytes. An unknown resin returns nothing. Writing seed a second time leaves the stored bytes unchanged. The directory lives for that run and is removed, so a store that outlives the witness is still unbuilt.
 
 Bakery keeps the fusion build, and with it Tally's bounded gardens. Diffuser keeps the wake measurement. The six living stages stay six until the count is told to move.
