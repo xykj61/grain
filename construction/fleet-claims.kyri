@@ -95,3 +95,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-roster-unknown
+seat incense
+stamp 20260924.132440
+epoch 1790270680
+paths aurora/src/roster_unknown.rye tools/fixtures/a/aurora_roster_refuse.sh tools/au/aurora_roster_refuse_witness.rish aurora/README.md
+what Wake a roster that names a domain it never declared, and show exit 1 with no sentence.
