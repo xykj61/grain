@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.123542 | [The hart and the host speak one roster](20260924/20260924-123542_incense-roster-agrees.kyri) | Domains 5, channels 4, the same two-domain sentence. |
 | 20260924.121147 | [Roster joins the freestanding cross-build](20260924/20260924-121147_incense-roster-cross-build.kyri) | Nine sources, e_machine 243; pedestal stays at six. |
 | 20260924.120837 | [The runner prints what the hart said](20260924/20260924-120837_incense-runner-speaks.kyri) | aurora_run.rish shows the three UART lines. |
 | 20260924.120532 | [How the next list should open](20260924/20260924-120532_incense-next-list.kyri) | One strand: the runner speaks the UART the hart already spoke. |

@@ -1,0 +1,16 @@
+# aurora_roster_agrees_witness.rish -- the hart and the host speak one roster.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_roster_agrees_witness.rish
+#
+# caravan/channels.rye selftest and aurora/src/roster.rye on qemu-system-riscv64
+# must speak the same domain count, the same channel count, and the same
+# two-domain sentence. The script reads those words from the two outputs.
+
+let agree = run ["sh" "tools/fixtures/a/aurora_roster_agrees.sh"]
+say agree.out
+assert agree.ok else "roster agreement refused -- ${agree.err_brief}"
+assert agree.out contains "join=two-declared" else "the two-domain sentence did not match"
+assert agree.out contains "GREEN" else "roster agreement did not close GREEN"
+
+say "GREEN: freestanding roster and hosted selftest speak one roster."

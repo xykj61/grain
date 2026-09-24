@@ -95,9 +95,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-roster-agrees
-seat incense
-stamp 20260924.123339
-epoch 1790267619
-paths tools/au/aurora_roster_agrees_witness.rish tools/fixtures/a/aurora_roster_agrees.sh
-what Witness that the freestanding roster and the hosted channel selftest speak the same domain count, channel count, and two-domain join.
