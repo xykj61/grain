@@ -13,6 +13,15 @@ let zig_raw = env "RYE_ZIG"
 if zig_raw == "" then let zig = "vendor/zig-toolchain/zig" else let zig = zig_raw
 let stage_arg = join args ""
 if stage_arg == "" then let stage = "seed" else let stage = stage_arg
+
+# The device stage is the existing Comlink two-guest lab. Aurora keeps no
+# second virtio driver under aurora/src/.
+if stage == "device" then say "waking the existing Comlink guests (no second virtio driver) ..."
+if stage == "device" then let lab = run ["rishi/bin/rishi" "run" "tools/co/comlink_device_wire_lab.rish"]
+if stage == "device" then say lab.out
+if stage == "device" then say lab.err
+if stage == "device" then exit lab.code
+
 let src = "aurora/src/${stage}.rye"
 let elf = "aurora/.build/${stage}.elf"
 
