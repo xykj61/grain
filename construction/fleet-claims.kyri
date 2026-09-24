@@ -65,12 +65,6 @@ stamp 20260924.060730
 epoch 1790244450
 paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish tools/w/wrap_ring_witness.rish
 what Classify whole-line build prose and move the Bakery wrap-ring binary into a private pen, lowering fixed paths while leaving peer-owned shared pairs named.
-claim pheromone-glow-shape-20260924
-seat pheromone
-stamp 20260924.075428
-epoch 1790250868
-paths glow/rune_shape.rye glow/tokens.rye glow/refusal_witness.rye
-what Raise Glow shape capacity to the contract’s fifteen fields and prove fifteen admitted, sixteen refused.
 claim grass-shape-of-day
 seat grass
 stamp 20260924.085509

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.133526 | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
 | 20260924.133447 | [The broken rosters cross-build without QEMU](20260924/20260924-133447_incense-roster-refuse-cross.kyri) | Eleven sources, e_machine 243; pedestal stays six. |
 | 20260924.133048 | [The design page names both broken rosters](20260924/20260924-133048_incense-roster-page-unknown.kyri) | One domain twice, and a domain never declared. |
 | 20260924.132644 | [An undeclared domain writes the refusing finisher](20260924/20260924-132644_incense-roster-unknown.kyri) | Domain index 5 exits 1 and speaks nothing. |
