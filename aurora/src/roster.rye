@@ -17,6 +17,13 @@ const finisher_pass: u32 = 0x5555;
 const domain_count: u32 = 5;
 /// Channels in the hosted demo. Each row names two domain indexes.
 const channel_count: u32 = 4;
+const domain_names = [_][]const u8{
+    "serial_driver",
+    "serial_virt",
+    "client_a",
+    "client_b",
+    "timer_driver",
+};
 const channel_ends: [channel_count][2]u32 = .{
     .{ 0, 1 },
     .{ 1, 2 },
@@ -45,9 +52,20 @@ export fn kmain() callconv(.c) noreturn {
     say("Aurora roster: 5 domains\n");
     say("Aurora roster: 4 channels\n");
     say("Aurora roster: each channel names two declared domains\n");
+    for (channel_ends) |ends| say_pair(ends[0], ends[1]);
 
     test_finisher.* = finisher_pass;
     while (true) {}
+}
+
+fn say_pair(a: u32, b: u32) void {
+    const low = if (a < b) a else b;
+    const high = if (a < b) b else a;
+    say("Aurora roster: pair ");
+    say(domain_names[low]);
+    say(" ");
+    say(domain_names[high]);
+    say("\n");
 }
 
 fn say(line: []const u8) void {

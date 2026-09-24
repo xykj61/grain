@@ -394,6 +394,11 @@ fn run_self_test() u8 {
     print("channels: {d} domains\n", .{graph.domain_count});
     print("channels: {d} channels\n", .{graph.channel_count});
     print("channels: each channel names two declared domains\n", .{});
+    var pair_i: u32 = 0;
+    while (pair_i < graph.channel_count) : (pair_i += 1) {
+        const pair = graph.channels[pair_i];
+        print("channels: pair {s} {s}\n", .{ graph.domains[pair.low].name_slice(), graph.domains[pair.high].name_slice() });
+    }
     print("channels: {d} domains, {d} channels, boundaries asserted -- GREEN.\n", .{ graph.domain_count, graph.channel_count });
     return 0;
 }
