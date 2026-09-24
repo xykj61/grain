@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20260924.000546
+editor Codex
+provider OpenAI
+product Codex
+role repository copal amphora and kyri-resins
+modality text
+model gpt-5.6-luna
+model_status active runtime verified from session-output/copal.txt
+configured_model gpt-5.6-luna
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-5.6-luna; user instruction 2026-09-23
+voice Kyri
+host Linux workspace; America/New_York
+title Pond GUI constructive witness
+prompt Recover the claimed Pond GUI spine, prove it, and close the lap with roster evidence.
+think The live claim named one existing constructive witness. Its nested connector, Brush, and frame legs were the useful seam; live-five stayed an honest headless boundary.
+obs cold roster settled at launch head b794d44fbc; tree_moved=no; run_verdict=guard_red; 325 green, 41 red, 3 gated. Pond GUI guard green.
+obs witness GREEN: connector, Brush fixture, pond-frame redrawtest and metalsmoke; live-five remains hand.
+rota lap 6318, row 3 -- Water; tasting Brix Infuse surfaced the useful test that a declaration is made trustworthy by an idempotent second infusion.
+loom cold roster 369 guards; 4 capability skips; stash count 53.
+loom claim copal-pond-gui-spine closed with board and itinerary updates.
+file tools/gen/chapter/pond_gui_spine_witness.rish
+recommend Run the full hot roster from this committed witness, then read its verdict before the next claim.
+scope Copal Pond GUI witness and its claim closure; no new implementation was needed.
+status GREEN -- Pond GUI witness passed; cold roster guard-red is recorded, with hot roster pending after send.
