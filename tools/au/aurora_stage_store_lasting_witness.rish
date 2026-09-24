@@ -19,7 +19,7 @@ say second.out
 assert second.ok else "second pass refused -- ${second.err_brief}"
 assert second.out contains "added=0" else "the second pass grew a resin already held"
 assert second.out contains "held=6" else "the second pass did not hold six resins"
-assert second.out contains "files=6" else "the store does not hold six files"
+assert second.out contains "stages=6" else "the living stages did not stay six"
 assert second.out contains "remains=yes" else "the store was removed"
 assert second.out contains "GREEN" else "second pass did not close GREEN"
 
