@@ -1,0 +1,16 @@
+# aurora_stage_store_list_read_all_witness.rish -- every listed resin reads back.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_list_read_all_witness.rish
+#
+# Each name the store lists is read back. The bytes hash to that name.
+# No stage path is named.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_list_read_all.sh"]
+say proof.out
+assert proof.ok else "full resin read refused -- ${proof.err_brief}"
+assert proof.out contains "same=yes" else "a listed resin did not read back"
+assert proof.out contains "count=" else "the full read did not count"
+assert proof.out contains "GREEN" else "full resin read did not close GREEN"
+
+say "GREEN: every listed resin read back, with no stage path."
