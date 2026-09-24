@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.045754 | [Pheromone cold roster and custody hold](20260924/20260924-045754_pheromone-cold-roster-hold.kyri) | 371 guards; 50 reds, 3 gates; Glow remains parked. |
 | 20260924.043346 | [Bakery rank outcome verification](20260924/20260924-043346_bakery-rank-outcome-verification.kyri) | Landed scope-map rows verified; rank outcome graded; cold roster red: 319 green, 49 red, 3 gated. |
 | 20260924.031336 | [Bakery cold roster and ranking witness](20260924/20260924-031336_bakery-roster-ranking.kyri) | 372 guards; rank graded; 50 reds, 3 gates. |
 | 20260924.021432 | [Cold roster red review](20260924/20260924-021432_diffuser-cold-review.kyri) | 370 guards: 323 green, 44 red, 3 gated; tree stayed still. |
