@@ -1,10 +1,10 @@
-# tools/g/glow_shape_capacity_witness.rish -- Glow cannot write two of the product's four public
-# types, and the number that stops it was frozen before the product existed.
+# tools/g/glow_shape_capacity_witness.rish -- Glow writes the product's four public types at the
+# widened ceiling, while the sixteenth field remains refused.
 #
 # WHY THIS RUNG. This seat's own ladder rung on construction/ITINERARY.md reads *express the
 # receipt facts and Tally bounds in the smallest Glow form already owned*. The smallest form Glow
 # owns for a record is the multi-field `$:` shape, and it holds at most `max_fields` faces --
-# NINE, declared in glow/rune_shape.rye. The receipt contract Keaton accepted on `20260913`
+# FIFTEEN, declared in glow/rune_shape.rye. The receipt contract Keaton accepted on `20260913`
 # declares `ReceiptOfferFact` with FIFTEEN fields and `LinengrowReceipt` with ELEVEN. So the rung
 # as written cannot be walked, and the reason is one constant.
 #
@@ -114,11 +114,11 @@ assert scan.out contains "types_read=4" else "glow-shape-capacity: the contract 
 # THE READING, reported rather than walled. These four lines are the arithmetic the capacity
 # decision deserves in front of it, and every one of them moves the day either side moves: the
 # ceiling when a capacity pin opens, the counts when the contract grows a type.
-assert scan.out contains "shape_max_fields=9" else "glow-shape-capacity: the frozen capacity reads nine today"
+assert scan.out contains "shape_max_fields=15" else "glow-shape-capacity: the widened capacity reads fifteen today"
 assert scan.out contains "widest_type=ReceiptOfferFact" else "glow-shape-capacity: the widest public type is the receipt offer fact"
 assert scan.out contains "widest_type_fields=15" else "glow-shape-capacity: the receipt offer fact names fifteen fields"
-assert scan.out contains "types_over_capacity=2" else "glow-shape-capacity: two of the four public types stand above the capacity"
-assert scan.out contains "capacity_gap=6" else "glow-shape-capacity: the gap is six faces"
+assert scan.out contains "types_over_capacity=0" else "glow-shape-capacity: all four public types fit the capacity"
+assert scan.out contains "capacity_gap=0" else "glow-shape-capacity: the capacity gap is closed"
 
-say "glow-shape-capacity: GREEN -- capacity 9, widest public type 15, two of four inexpressible."
-say "glow-shape-capacity: the gap is reported and gated nowhere; widening the freeze is Keaton's word."
+say "glow-shape-capacity: GREEN -- capacity 15, widest public type 15, all four expressible."
+say "glow-shape-capacity: the contract's fifteen fields fit; sixteen remains the planted refusal."

@@ -2,7 +2,7 @@
 #
 # The product contract asks a refusal to name field, value, ceiling, unit and reason where a
 # ceiling applies, and field and reason where none does. glow/rune_shape.rye answered its
-# nine-face tuple ceiling and its three-face payload ceiling with the one error name
+# fifteen-face tuple ceiling and its three-face payload ceiling with the one error name
 # TooManyFields, so a caller could not tell which of the two refused. glow/refusal.rye is the
 # record that tells them apart, shaped after tally/receipt_refusal.rye, which landed this form
 # first for the receipt side.
@@ -37,7 +37,7 @@ assert selftest.out contains "short buffer refused by name -- GREEN" else "refus
 assert selftest.out contains "tuple ceiling names the face that would not fit -- GREEN" else "refusal_witness missing tuple ceiling record"
 assert selftest.out contains "one error name, two ceilings, told apart -- GREEN" else "refusal_witness missing shared-error-name leg"
 assert selftest.out contains "an unnamed refusal leaves the slot empty -- GREEN" else "refusal_witness missing empty-slot leg"
-assert selftest.out contains "parse_source unchanged, nine admitted -- GREEN" else "refusal_witness missing published-entry leg"
+assert selftest.out contains "parse_source unchanged, fifteen admitted -- GREEN" else "refusal_witness missing published-entry leg"
 assert selftest.out contains "the lexer name ceiling carries its own record -- GREEN" else "refusal_witness missing the lexer name ceiling"
 assert selftest.out contains "one scanner, two kinds, each named -- GREEN" else "refusal_witness missing the tag-versus-ident leg"
 assert selftest.out contains "the cord literal ceiling counts its interior -- GREEN" else "refusal_witness missing the cord literal ceiling"

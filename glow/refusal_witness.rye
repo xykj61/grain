@@ -24,7 +24,7 @@ comptime {
 
 const witness_version = "20260917.001500";
 
-/// A `$:` tuple carrying ten faces -- one past the nine `rune_shape.max_fields` admits.
+/// A `$:` tuple carrying sixteen faces -- one past the fifteen `rune_shape.max_fields` admits.
 const ten_face_src =
     \\+$  over-mold
     \\  $:  one=@u32
@@ -37,10 +37,16 @@ const ten_face_src =
     \\      eight=@u32
     \\      nine=@u32
     \\      ten=@u32
+    \\      eleven=@u32
+    \\      twelve=@u32
+    \\      thirteen=@u32
+    \\      fourteen=@u32
+    \\      fifteen=@u32
+    \\      sixteen=@u32
     \\  ==
 ;
 
-/// The same tuple one face shorter -- nine, which the ceiling admits.
+/// The same tuple one face shorter -- fifteen, which the ceiling admits.
 const nine_face_src =
     \\+$  nine-mold
     \\  $:  one=@u32
@@ -52,6 +58,12 @@ const nine_face_src =
     \\      seven=@u32
     \\      eight=@u32
     \\      nine=@u32
+    \\      ten=@u32
+    \\      eleven=@u32
+    \\      twelve=@u32
+    \\      thirteen=@u32
+    \\      fourteen=@u32
+    \\      fifteen=@u32
     \\  ==
 ;
 
@@ -150,24 +162,24 @@ pub fn main() !void {
     }
     print("refusal: short buffer refused by name -- GREEN\n", .{});
 
-    // 6 -- the tuple ceiling names the tenth face and counts in fields.
+    // 6 -- the tuple ceiling names the sixteenth face and counts in fields.
     var tuple_slot: refusal.Slot = null;
     if (rune_shape.parse_source_reporting(ten_face_src, &tuple_slot)) |_| {
-        return error.TenFacesAccepted;
+        return error.SixteenFacesAccepted;
     } else |err| {
         assert(err == rune_shape.ParseError.TooManyFields);
     }
     const tuple_hit = tuple_slot orelse return error.TupleSlotEmpty;
     assert(tuple_hit.reason == .too_many_fields);
-    assert(std.mem.eql(u8, tuple_hit.field, "ten"));
+    assert(std.mem.eql(u8, tuple_hit.field, "sixteen"));
     const tuple_m = tuple_hit.measure orelse return error.TupleMeasureAbsent;
-    assert(tuple_m.value == 10);
+    assert(tuple_m.value == 16);
     assert(tuple_m.ceiling == rune_shape.max_fields);
     assert(tuple_m.unit == .field);
     assert(std.mem.eql(
         u8,
         try tuple_hit.render(buf[0..]),
-        "field=ten value=10 ceiling=9 unit=field reason=too-many-fields",
+        "field=sixteen value=16 ceiling=15 unit=field reason=too-many-fields",
     ));
     print("refusal: tuple ceiling names the face that would not fit -- GREEN\n", .{});
 
@@ -202,13 +214,13 @@ pub fn main() !void {
 
     // 9 -- the published entry keeps its bytes: same refusal, same acceptance.
     if (rune_shape.parse_source(ten_face_src)) |_| {
-        return error.TenFacesAccepted;
+        return error.SixteenFacesAccepted;
     } else |err| {
         assert(err == rune_shape.ParseError.TooManyFields);
     }
     const nine = try rune_shape.parse_source(nine_face_src);
-    assert(nine.field_count == 9);
-    print("refusal: parse_source unchanged, nine admitted -- GREEN\n", .{});
+    assert(nine.field_count == 15);
+    print("refusal: parse_source unchanged, fifteen admitted -- GREEN\n", .{});
 
     // 10 -- the lexer's name ceiling carries its kind, its count and its unit.
     var toks: [tokens.max_tokens]tokens.Token = undefined;

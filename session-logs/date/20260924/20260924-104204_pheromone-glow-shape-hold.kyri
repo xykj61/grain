@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260924.104204
+editor Codex
+provider OpenAI
+product Codex
+role pheromone
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-5.6-luna
+configured_status explicit fleet CLI selection
+evidence ~/.codex/config.toml; user instruction 2026-09-21; fleet-loop-codex.sh passes -m gpt-5.6-luna
+voice Kyri
+host Linux workspace; America/New_York
+title Glow shape proof held at send gate
+prompt Recover the parked Glow shape lap and close it under the fleet baton.
+think Read the governing voice, itinerary, inner prompt, handoff, newest shelf, roster, claims, and parked stash before acting.
+think Settled HEAD after round-open, retired the stale hot pass through fleet_call, and held the tool-named cold roster until its verdict.
+obs Cold roster completed with 372 guards: 315 green, 54 red, 3 gated, 4 capability skips, tree_moved=no, run_verdict=guard_red.
+obs Restored the parked fifteen-field Glow patch; the contract scan reads ReceiptOfferFact fields=15, types_over_capacity=0, capacity_gap=0. Updated both proof witnesses, and the refusal witness reports fifteen admitted and sixteen refused.
+obs The claim/card amendment committed as a9608d91c, then xy push refused with SSH Permission denied (publickey); the amended claim remains local, so further build/send stays held.
+rota lap 6367, row 2 -- Fire - Mars; Standfast stopped the line at the cold reds, Reds First kept the remaining allocation on proven repairs, and Three Depths kept the staged witness work at molt until the send door opens.
+loom cold_roster guards=372 green=315 red=54 gated=3 skipped_capability=4 seconds=4097 tree_moved=no run_verdict=guard_red
+file session-output/standing-equipment-cold.txt -- full cold roster receipt
+file construction/fleet-claims.kyri -- amended Glow proof claim, committed locally but not pushed
+file glow/rune_shape.rye -- fifteen-field ceiling
+file glow/tokens.rye -- eighteen-line shape peek and token budget
+file glow/refusal_witness.rye -- fifteen admitted, sixteen refused
+file tools/g/glow_shape_capacity_witness.rish -- live capacity witness expectation
+file tools/g/glow_refusal_witness.rish -- live refusal witness expectation
+file session-logs/date/20260924/20260924-104204_pheromone-glow-shape-hold.kyri -- this lap's record
+recommend check-in Cursor -- restore xy SSH authority, push the amended claim, then run the hot roster and land the bounded Glow change.
+scope round-open recovery, stale-pass retirement, full cold roster, parked Glow restoration, contract count, proof witness updates, claim amendment, and send gate
+status HOLD -- product proof is locally green; xy push is gated by SSH authority, so claim publish and hot proof remain open
