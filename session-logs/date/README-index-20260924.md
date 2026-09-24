@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.181322 | [A mismatched resin returns nothing](20260924/20260924-181322_incense-stage-store-mismatch.kyri) | Changed bytes are refused; the original file is restored. |
 | 20260924.173824 | [A resin reads back with no stage path](20260924/20260924-173824_incense-stage-store-read.kyri) | Seed's hex returns seed's bytes; unknown returns nothing. |
 | 20260924.172712 | [The stage store remains and only grows](20260924/20260924-172712_incense-stage-store-lasting.kyri) | Second pass adds nothing; bytes stay off the branch. |
 | 20260924.172011 | [A resin hands its bytes back](20260924/20260924-172011_incense-stage-store.kyri) | Six resins written; seed returns; lasting store unbuilt. |

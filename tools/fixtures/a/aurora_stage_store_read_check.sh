@@ -21,5 +21,18 @@ if grep -q 'aurora/src' tools/fixtures/a/aurora_stage_store_read.sh; then
   exit 1
 fi
 
-echo "stage-store-read resin-only=yes same=yes missing=nothing"
+held="$root/aurora/.build/stage-resin-store/$resin"
+saved=$(mktemp)
+cp "$held" "$saved"
+printf 'x' >> "$held"
+if sh tools/fixtures/a/aurora_stage_store_read.sh "$resin" >/dev/null 2>&1; then
+  cp "$saved" "$held"
+  rm -f "$saved"
+  exit 1
+fi
+cp "$saved" "$held"
+rm -f "$saved"
+cmp -s "$held" aurora/src/seed.rye
+
+echo "stage-store-read resin-only=yes same=yes missing=nothing mismatch=nothing"
 echo GREEN
