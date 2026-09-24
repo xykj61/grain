@@ -1,0 +1,22 @@
+# comlink_device_wire_hosted_witness.rish -- the hosted device-wire selftest.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comlink_device_wire_hosted_witness.rish
+#
+# Records the hosted half of comlink/device_wire.rye against
+# active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md.
+# No QEMU. No Aurora virtio stage. The six living stages stay at six.
+
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build comlink/device_wire.rye -lc -femit-bin=tools/.build/comlink_device_wire_hosted"]
+assert build.ok else "hosted device wire build failed -- ${build.err_brief}"
+
+let hosted = run ["tools/.build/comlink_device_wire_hosted" "selftest"]
+say hosted.out
+say hosted.err
+assert hosted.ok else "hosted device wire selftest exited non-zero"
+assert hosted.err contains "padding-free" else "the layout proof did not run"
+assert hosted.err contains "whole sealed datagram" else "the frame proof did not run"
+assert hosted.err contains "GREEN" else "hosted device wire selftest not GREEN"
+
+say "GREEN: hosted device wire selftest heard, no QEMU, no Aurora virtio stage."
