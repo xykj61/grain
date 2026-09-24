@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.165356 | [The pair-line guests cross-build without QEMU](20260924/20260924-165356_incense-roster-pairs-cross.kyri) | Two guests, e_machine 243, no emulator. |
 | 20260924.164428 | [Aurora wakes the pair-line crossing](20260924/20260924-164428_incense-aurora-roster-pairs-door.kyri) | roster_pairs beside device; four pairs opened. |
 | 20260924.163421 | [The four pairs crossed virtio-net](20260924/20260924-163421_incense-roster-pairs-lab.kyri) | Two guests, the existing card, four pairs opened. |
 | 20260924.163309 | [Cold roster held by disk-full closure](20260924/20260924-163309_petrichor-cold-enospc.kyri) | B+ page; cold roster stopped at ENOSPC before verdict. |

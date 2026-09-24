@@ -1,0 +1,16 @@
+# comlink_roster_pairs_cross_witness.rish -- the pair-line guests cross-build.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comlink_roster_pairs_cross_witness.rish
+#
+# guest_roster_tx.rye and guest_roster_rx.rye each emit a RISC-V ELF
+# (e_machine 243). QEMU is not part of this proof. The Aurora six-stage
+# pedestal stays at six.
+
+let tx = run ["sh" "-c" "rm -f tools/.build/roster_tx.elf; mkdir -p tools/.build; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh comlink/guest_roster_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/roster_tx.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/roster_tx.elf | tr -d ' \\n'"]
+assert (tx.out contains "243") else "roster tx guest did not cross-build to a RISC-V ELF"
+
+let rx = run ["sh" "-c" "rm -f tools/.build/roster_rx.elf; env RYE_ZIG=vendor/zig-toolchain/zig sh tools/fixtures/r/rye_build.sh comlink/guest_roster_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=tools/.build/roster_rx.elf >/dev/null 2>&1 && od -An -tu1 -j18 -N1 tools/.build/roster_rx.elf | tr -d ' \\n'"]
+assert (rx.out contains "243") else "roster rx guest did not cross-build to a RISC-V ELF"
+
+say "GREEN: two roster-pair guests cross-build freestanding riscv64 — RISC-V ELF (e_machine 243), no QEMU to build."
