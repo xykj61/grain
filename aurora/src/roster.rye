@@ -12,6 +12,8 @@
 const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
 const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
 const finisher_pass: u32 = 0x5555;
+/// SiFive test fail with exit code 1 in the high half. The low half is 0x3333.
+const finisher_fail: u32 = 0x0001_3333;
 
 /// Domains in the hosted demo: serial driver, serial virtualiser, two clients, timer.
 const domain_count: u32 = 5;
@@ -75,5 +77,8 @@ fn say(line: []const u8) void {
 }
 
 fn assert(ok: bool) void {
-    if (!ok) unreachable;
+    if (ok) return;
+    // invariant: a broken ceiling refuses before any sentence is written
+    test_finisher.* = finisher_fail;
+    while (true) {}
 }

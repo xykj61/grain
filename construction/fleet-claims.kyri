@@ -95,9 +95,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-roster-refuse
-seat incense
-stamp 20260924.130206
-epoch 1790269326
-paths aurora/src/roster.rye
-what Write the refusing finisher when a roster channel breaks a ceiling, before any sentence.
