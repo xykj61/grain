@@ -357,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d919d3c8c6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `74d76e1aba` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -423,6 +423,8 @@ addition; no Amphora vessel or custody seam changes in this lap.
 ### Petrichor -- Bhakta product path
 
 **Priority:** VERY HIGH Lindy; HIGH crux.
+
+The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md). It stays a draft until a fresh reader runs its path; the tutorial shelf keeps its existing names.
 
 1. Write the first-hour walkthrough after the public seam lands.
 2. Teach valuable data, consent, receipt, books recognition, and portability one idea at a time.
