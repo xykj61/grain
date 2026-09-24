@@ -83,9 +83,9 @@ stamp 20260924.022618
 epoch 1790231178
 paths mantra/ tally/
 what Map existing bounded offer consent use value expiration and correction forms without defining a new type.
-claim bakery-build-target-20260924-pen
+claim bakery-build-target-20260924-pen2
 seat bakery
-stamp 20260924.060110
-epoch 1790244070
-paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish
-what Move the Bakery witness build into a private pen, lowering the fixed-path ratchet and one shared writer while leaving peer-owned pairs named.
+stamp 20260924.060730
+epoch 1790244450
+paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish tools/w/wrap_ring_witness.rish
+what Classify whole-line build prose and move the Bakery wrap-ring binary into a private pen, lowering fixed paths while leaving peer-owned shared pairs named.
