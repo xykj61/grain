@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.031336 | [Bakery cold roster and ranking witness](20260924/20260924-031336_bakery-roster-ranking.kyri) | 372 guards; rank graded; 50 reds, 3 gates. |
 | 20260924.011255 | [Archive filed by day and lesson](20260924/20260924-011255_incense-archive-date-fold.kyri) | Date, REDS, and shred shelves; research stays at 253. |
 | 20260924.005627 | [Settled cold roster receipt](20260924/20260924-005627_diffuser-cold-roster.kyri) | 370 guards: 324 green, 43 red, 3 gated; moved proof clean. |
 | 20260924.003106 | [Pheromone cold roster hold](20260924/20260924-003106_pheromone-cold-roster-hold.kyri) | Cold roster guard-red; Glow work remains parked behind language custody. |
