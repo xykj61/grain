@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.162620 | [The four pair lines seal and open](20260924/20260924-162620_incense-roster-pairs-seal.kyri) | A second datagram; the guests' sentence stays. |
 | 20260924.150800 | [The roster pairs and the sealed sentence are one hearing](20260924/20260924-150800_incense-roster-sentence.kyri) | Four pairs, and Meet me where the rye grows. |
 | 20260924.150820 | [Yonder citizen door anchored and graded](20260924/20260924-150820_petrichor-yonder-card.kyri) | Draft B+; cold roster held without a verdict. |
 | 20260924.150633 | [Shape of a Day recovery](20260924/20260924-150633_grass-shape-of-day-recovery.kyri) | Packet A/95; fresh cold roster held on no space before verdict. |

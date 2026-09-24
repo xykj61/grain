@@ -1,0 +1,29 @@
+//! comlink/roster_pairs_seal.rye -- the four roster pairs, sealed as their own datagram.
+//!
+//! seal_message and open_datagram are the seal the virtio guests already use.
+//! expected_message stays "Meet me where the rye grows." This file does not
+//! replace that sentence and it does not add a virtio driver.
+
+const std = @import("std");
+const wf = @import("wire_format.rye");
+
+const pairs =
+    "serial_driver serial_virt\n" ++
+    "serial_virt client_a\n" ++
+    "serial_virt client_b\n" ++
+    "client_a timer_driver";
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    var sealed: [@intCast(wf.wire_capacity)]u8 = undefined;
+    const n = try wf.seal_message(pairs, &sealed);
+    var opened: [@intCast(wf.max_message)]u8 = undefined;
+    const m = try wf.open_datagram(sealed[0..@intCast(n)], &opened);
+    if (m != pairs.len) return error.LengthMismatch;
+    if (!std.mem.eql(u8, opened[0..@intCast(m)], pairs)) return error.PairMismatch;
+    if (!std.mem.eql(u8, wf.expected_message, "Meet me where the rye grows.")) return error.SentenceMoved;
+    std.debug.print("{s}\n", .{opened[0..@intCast(m)]});
+    std.debug.print("roster-pairs-seal pairs=4 sentence=kept\n", .{});
+    std.debug.print("GREEN\n", .{});
+    return 0;
+}
