@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim bakery-build-target-20260924-pen2
-seat bakery
-stamp 20260924.060730
-epoch 1790244450
-paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish tools/w/wrap_ring_witness.rish
-what Classify whole-line build prose and move the Bakery wrap-ring binary into a private pen, lowering fixed paths while leaving peer-owned shared pairs named.
 claim diffuser-parent-claim-wall-review-20260924
 seat diffuser
 stamp 20260924.121217
