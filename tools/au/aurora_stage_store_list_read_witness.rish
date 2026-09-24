@@ -1,0 +1,15 @@
+# aurora_stage_store_list_read_witness.rish -- list a resin, then read it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_list_read_witness.rish
+#
+# The first name the store lists is read back. The bytes hash to that
+# name. No stage path is named.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_list_read.sh"]
+say proof.out
+assert proof.ok else "list-then-read refused -- ${proof.err_brief}"
+assert proof.out contains "same=yes" else "the listed resin did not read back"
+assert proof.out contains "GREEN" else "list-then-read did not close GREEN"
+
+say "GREEN: the first listed resin read back, with no stage path."
