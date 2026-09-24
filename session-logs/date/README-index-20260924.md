@@ -6,6 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.132938 | [Parent claim wall](20260924/20260924-132938_diffuser-parent-claim-wall.kyri) | Booked red remains a shared-hook ruling. |
+| 20260924.115137 | [Cold roster red](20260924/20260924-115137_diffuser-cold-roster-red.kyri) | Full cold roster closed red; no product build. |
+| 20260924.071837 | [Cold roster](20260924/20260924-071837_diffuser-cold-roster.kyri) | Parked lap log recovered; hot roster remained open. |
 | 20260924.181322 | [A mismatched resin returns nothing](20260924/20260924-181322_incense-stage-store-mismatch.kyri) | Changed bytes are refused; the original file is restored. |
 | 20260924.173824 | [A resin reads back with no stage path](20260924/20260924-173824_incense-stage-store-read.kyri) | Seed's hex returns seed's bytes; unknown returns nothing. |
 | 20260924.172712 | [The stage store remains and only grows](20260924/20260924-172712_incense-stage-store-lasting.kyri) | Second pass adds nothing; bytes stay off the branch. |
