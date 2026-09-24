@@ -93,7 +93,7 @@ FLEET_BARE=1 FLEET_CAPTAIN=1 claude --dangerously-skip-permissions --model claud
 ### fleet interactive incense codex
 
 ```sh
-FLEET_BARE=1 FLEET_CAPTAIN=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 FLEET_CAPTAIN=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive incense antigravity
@@ -123,7 +123,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive pheromone codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/pheromone_seat_prompt.txt whole before acting. You are Pheromone, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/pheromone_seat_prompt.txt whole before acting. You are Pheromone, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive pheromone antigravity
@@ -153,7 +153,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive petrichor codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/petrichor_seat_prompt.txt whole before acting. You are Petrichor, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/petrichor_seat_prompt.txt whole before acting. You are Petrichor, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive petrichor antigravity
@@ -183,7 +183,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive bakery codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive bakery antigravity
@@ -213,7 +213,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive diffuser codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/d/diffuser_seat_prompt.txt whole before acting. You are Diffuser, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/d/diffuser_seat_prompt.txt whole before acting. You are Diffuser, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive diffuser antigravity
@@ -243,7 +243,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive grass codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/g/grass_seat_prompt.txt whole before acting. You are Grass, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/g/grass_seat_prompt.txt whole before acting. You are Grass, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive grass antigravity
@@ -273,7 +273,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive copal codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/c/copal_seat_prompt.txt whole before acting. You are Copal, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/c/copal_seat_prompt.txt whole before acting. You are Copal, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive copal antigravity
@@ -303,7 +303,7 @@ FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --eff
 ### fleet interactive patchouli codex
 
 ```sh
-FLEET_BARE=1 codex -m gpt-5.6-luna --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/patchouli_seat_prompt.txt whole before acting. You are Patchouli, running bare on the pier in Codex. Begin an interactive session."
+FLEET_BARE=1 codex -m gpt-6-sol --sandbox danger-full-access --dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust "Read tools/f/fleet_baton.txt and tools/p/patchouli_seat_prompt.txt whole before acting. You are Patchouli, running bare on the pier in Codex. Begin an interactive session."
 ```
 
 ### fleet interactive patchouli antigravity
