@@ -9,6 +9,8 @@
 | 20260924.183531 | [The store lists its own resins](20260924/20260924-183531_incense-stage-store-list.kyri) | Seven names, each the hash of its bytes. |
 | 20260924.183008 | [Bakery Codex seat is gpt-6-astra](20260924/20260924-183008_incense-bakery-astra.kyri) | Bakery names Astra; the other seats keep Sol. |
 | 20260924.182218 | [Any bytes land under their resin](20260924/20260924-182218_incense-stage-store-put.kyri) | A second write adds nothing; the six stages stay held. |
+| 20260924.172518 | [Patchouli value forms cold close](20260924/20260924-172518_patchouli-value-forms-close.kyri) | Existing Mantra/Tally forms mapped; current-head cold guard-red, tree still. |
+| 20260924.153620 | [Patchouli value forms cold receipt](20260924/20260924-153620_patchouli-value-forms-cold.kyri) | Existing Mantra/Tally forms mapped; tree-still cold roster guard-red. |
 | 20260924.150621 | [Pheromone cold roster closes with known reds](20260924/20260924-150621_pheromone-cold-roster-red.kyri) | Complete cold roster, tree_moved=no; known reds remain. |
 | 20260924.132938 | [Parent claim wall](20260924/20260924-132938_diffuser-parent-claim-wall.kyri) | Booked red remains a shared-hook ruling. |
 | 20260924.115137 | [Cold roster red](20260924/20260924-115137_diffuser-cold-roster-red.kyri) | Full cold roster closed red; no product build. |
@@ -34,6 +36,7 @@
 | 20260924.145145 | [The two-guest virtio lab was heard](20260924/20260924-145145_incense-virtio-lab.kyri) | A pattern and a sealed datagram crossed the link. |
 | 20260924.144525 | [The hosted device wire was heard](20260924/20260924-144525_incense-virtio-hosted.kyri) | Padding-free, a whole datagram, GREEN, no QEMU. |
 | 20260924.143319 | [The next wire already lives in Comlink](20260924/20260924-143319_incense-virtio-wire-page.kyri) | Aurora has no virtio stage; Comlink already crosses. |
+| 20260924.141139 | [Patchouli value forms mapped](20260924/20260924-124833_patchouli-value-forms-map.kyri) | Existing Mantra/Tally receipt seams named; cold roster guard-red, tree still. |
 | 20260924.134325 | [The next strand is a new list](20260924/20260924-134325_incense-what-next.kyri) | virtio-net is the next wire the door already names. |
 | 20260924.134324 | [Pheromone Glow ENOSPC hold](20260924/20260924-134324_pheromone-enospc-hold.kyri) | Landed Glow kept; cold roster stopped before verdict. |
 | 20260924.133526 | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
