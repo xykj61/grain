@@ -29,4 +29,6 @@ The six files remain the living stages. Counting them counts stages. The resin i
 
 [`aurora_stage_store_list_witness.rish`](../../../tools/au/aurora_stage_store_list_witness.rish) asks the directory for the names it holds. Each name is the SHA3-512 of the bytes under it. The list names no stage path. On this machine the count is seven: the six stages and the extra sentence.
 
+[`aurora_stage_store_list_read_witness.rish`](../../../tools/au/aurora_stage_store_list_read_witness.rish) takes the first of those names and reads it back. The bytes hash to that same name. The step names no stage path.
+
 Bakery keeps the fusion build, and with it Tally's bounded gardens. Diffuser keeps the wake measurement. The six living stages stay six until the count is told to move.
