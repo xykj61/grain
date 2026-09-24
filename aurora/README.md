@@ -74,6 +74,7 @@ aurora/run.sh named           # the third stage: content-naming, with crypto, on
 aurora/run.sh sealed          # the fourth stage: a whole sealed message, sealed and opened on bare metal
 RYE_SMP=2 aurora/run.sh wire   # the fifth stage: two harts pass a value across shared memory
 RYE_SMP=2 aurora/run.sh posted # the sixth stage: a sealed datagram posted across the wire between two harts
+aurora/run.sh roster          # beside the six: the channel roster, spoken on one hart
 ```
 
 `aurora/run.sh` is a thin delegate to `tools/au/aurora_run.rish` -- the interface above is unchanged. Direct invocation: `rishi/bin/rishi run tools/au/aurora_run.rish [stage]`.
@@ -133,6 +134,18 @@ Aurora posted: hart 1 opened a sealed datagram from hart 0.
   name = ef825a25550a090da510a46461178d73...
 ```
 
+and the roster stage, standing beside those six, speaks the channel pairs the hosted demo declares:
+
+```
+Aurora roster: 5 domains
+Aurora roster: 4 channels
+Aurora roster: each channel names two declared domains
+Aurora roster: pair serial_driver serial_virt
+Aurora roster: pair serial_virt client_a
+Aurora roster: pair serial_virt client_b
+Aurora roster: pair client_a timer_driver
+```
+
 All end with a clean exit (status 0), because the last stage writes the
 machine's test finisher to power itself down. The script uses the vendored Zig
 0.16.0 toolchain beside the project, so it needs no extra setup; an emulator
@@ -150,6 +163,7 @@ aurora/
     sealed.rye       <- the fourth stage: a whole sealed message, freestanding
     wire.rye         <- the fifth stage: two harts pass a value across shared memory
     posted.rye       <- the sixth stage: a sealed datagram posted across the wire
+    roster.rye       <- beside the six: the channel roster the hosted demo declares
   layout.ld          <- where a stage lives in memory (RAM base, _start first)
   run.sh             <- build a stage with rye, wake it in qemu (RYE_SMP for harts)
   .build/            <- the emitted ELFs (built on demand, untracked)
@@ -163,7 +177,8 @@ real device (an emulated `virtio-net` to start) carrying a sealed datagram betwe
 two *machines*, where Comlink fully begins. In parallel: a stage that hands the next a
 value *it chose*; and, as the other modules ripen, Tally's bounded gardens for the
 boot's own memory, Caravan's hand on what runs next, and Tablecloth describing the stages
-as values. The roadmap that holds these steps lives in `../work-in-progress/ROADMAP.md`.
+as values. The roster stage is that hand's first spoken line: the same pairs the hosted
+demo declares, on one hart. The roadmap that holds these steps lives in `../work-in-progress/ROADMAP.md`.
 
 ---
 
