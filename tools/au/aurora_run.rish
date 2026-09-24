@@ -22,6 +22,14 @@ if stage == "device" then say lab.out
 if stage == "device" then say lab.err
 if stage == "device" then exit lab.code
 
+# The roster_pairs stage is the pair-line crossing. The device stage above
+# keeps the pattern and the rye sentence.
+if stage == "roster_pairs" then say "waking the roster-pair guests (no second virtio driver) ..."
+if stage == "roster_pairs" then let pairs = run ["rishi/bin/rishi" "run" "tools/co/comlink_roster_pairs_lab.rish"]
+if stage == "roster_pairs" then say pairs.out
+if stage == "roster_pairs" then say pairs.err
+if stage == "roster_pairs" then exit pairs.code
+
 let src = "aurora/src/${stage}.rye"
 let elf = "aurora/.build/${stage}.elf"
 

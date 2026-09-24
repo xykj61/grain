@@ -78,6 +78,7 @@ aurora/run.sh roster          # beside the six: the channel roster, spoken on on
 aurora/run.sh roster_refuse  # beside the six: one domain named twice, exit 1, no sentence
 aurora/run.sh roster_unknown  # beside the six: a domain never declared, exit 1, no sentence
 aurora/run.sh device         # beside the six: the existing Comlink guests, two machines
+aurora/run.sh roster_pairs   # beside the six: the four pairs, sealed, across virtio-net
 ```
 
 `aurora/run.sh` is a thin delegate to `tools/au/aurora_run.rish` -- the interface above is unchanged. Direct invocation: `rishi/bin/rishi run tools/au/aurora_run.rish [stage]`.
@@ -149,7 +150,7 @@ Aurora roster: pair serial_virt client_b
 Aurora roster: pair client_a timer_driver
 ```
 
-and the broken roster beside it names one domain twice, speaks no sentence, and exits 1. The unknown roster names a domain the roster never declared, speaks no sentence, and exits 1. `aurora/run.sh device` wakes the existing Comlink guests: a pattern and a sealed datagram cross virtio-net between two machines. Aurora adds no second virtio driver.
+and the broken roster beside it names one domain twice, speaks no sentence, and exits 1. The unknown roster names a domain the roster never declared, speaks no sentence, and exits 1. `aurora/run.sh device` wakes the existing Comlink guests: a pattern and a sealed datagram cross virtio-net between two machines. `aurora/run.sh roster_pairs` wakes the four roster pairs across that same card. Aurora adds no second virtio driver.
 
 The six living stages and the good roster end with a clean exit (status 0), because each writes the
 machine's test finisher to power itself down. The script uses the vendored Zig

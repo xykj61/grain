@@ -1,0 +1,17 @@
+# aurora_roster_pairs_wake_witness.rish -- Aurora wakes the pair-line crossing.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_roster_pairs_wake_witness.rish
+#
+# aurora/run.sh roster_pairs delegates to the two guests that carry the
+# four sealed pairs. The device stage stays on the pattern and the rye
+# sentence. No file is added under aurora/src/.
+
+let wake = run ["rishi/bin/rishi" "run" "tools/au/aurora_run.rish" "roster_pairs"]
+say wake.out
+assert wake.ok else "Aurora roster_pairs wake refused -- ${wake.err_brief}"
+assert wake.out contains "roster-pair guests" else "the door did not name the pair-line guests"
+assert wake.out contains "roster pairs GREEN" else "the receiving guest did not open the pairs"
+assert wake.out contains "comlink roster pairs lab: GREEN" else "the pair-line lab did not close green"
+
+say "GREEN: Aurora wakes the roster-pair crossing."
