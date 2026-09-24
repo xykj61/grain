@@ -1,0 +1,17 @@
+# aurora_roster_refuse_witness.rish -- a broken roster refuses before it speaks.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_roster_refuse_witness.rish
+#
+# aurora/src/roster.rye exits 0 and names a pair. aurora/src/roster_refuse.rye
+# names one domain twice, exits 1, and speaks no sentence. The six living
+# stages stay at six.
+
+let wake = run ["sh" "tools/fixtures/a/aurora_roster_refuse.sh"]
+say wake.out
+assert wake.ok else "broken roster wake refused -- ${wake.err_brief}"
+assert wake.out contains "broken=1" else "the broken roster did not exit 1"
+assert wake.out contains "sentences=none" else "the broken roster spoke"
+assert wake.out contains "GREEN" else "broken roster wake did not close GREEN"
+
+say "GREEN: a broken roster exits 1 and speaks no sentence."
