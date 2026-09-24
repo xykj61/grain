@@ -77,3 +77,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-roster-pairs-lab
+seat incense
+stamp 20260924.163244
+epoch 1790281964
+paths comlink/guest_roster_tx.rye comlink/guest_roster_rx.rye tools/co/comlink_roster_pairs_lab.rish active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md
+what Send the sealed roster pairs between two virtio guests, and leave the rye sentence in place.
