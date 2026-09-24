@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.061046 | [Diffuser red review and parked-work recovery](20260924/20260924-061046_diffuser-red-review.kyri) | Recovered landed work; stale roster pass refused after tree movement. |
 | 20260924.045754 | [Pheromone cold roster and custody hold](20260924/20260924-045754_pheromone-cold-roster-hold.kyri) | 371 guards; 50 reds, 3 gates; Glow remains parked. |
 | 20260924.043346 | [Bakery rank outcome verification](20260924/20260924-043346_bakery-rank-outcome-verification.kyri) | Landed scope-map rows verified; rank outcome graded; cold roster red: 319 green, 49 red, 3 gated. |
 | 20260924.031336 | [Bakery cold roster and ranking witness](20260924/20260924-031336_bakery-roster-ranking.kyri) | 372 guards; rank graded; 50 reds, 3 gates. |
