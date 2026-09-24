@@ -83,9 +83,3 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim incense-aurora-device-door
-seat incense
-stamp 20260924.145327
-epoch 1790276007
-paths tools/au/aurora_run.rish tools/au/aurora_device_wire_witness.rish aurora/README.md active-designing/date/20260924/20260924-143132_aurora-virtio-wire.md
-what Open an Aurora door onto the existing Comlink guests, with no second virtio driver.

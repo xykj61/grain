@@ -1,0 +1,15 @@
+# aurora_device_wire_witness.rish -- Aurora wakes the existing Comlink guests.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_device_wire_witness.rish
+#
+# aurora/run.sh device delegates to the two-guest virtio lab. No file is
+# added under aurora/src/. The six living stages stay at six.
+
+let wake = run ["rishi/bin/rishi" "run" "tools/au/aurora_run.rish" "device"]
+say wake.out
+assert wake.ok else "Aurora device wake refused -- ${wake.err_brief}"
+assert wake.out contains "no second virtio driver" else "the door did not name the existing guests"
+assert wake.out contains "comlink device wire lab: GREEN" else "the two-guest lab did not close green"
+
+say "GREEN: Aurora wakes the existing Comlink guests."
