@@ -89,3 +89,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-roster-page-unknown
+seat incense
+stamp 20260924.132922
+epoch 1790270962
+paths active-designing/date/20260924/20260924-092253_aurora-channel-roster.md
+what Name both broken rosters on the design page, one domain twice and a domain never declared.
