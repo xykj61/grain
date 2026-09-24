@@ -7930,6 +7930,13 @@ path tools/gen/chapter/fascia_metric_v0.rish
 tier lap
 seated 20260922.225159
 
+# grad_seal -- the Generator Chapter seal proves the living pins and its planted negative;
+# its composed module half stays RED while CION reports bare ordinals in lattice and fascia.
+guard grad_seal
+path tools/gen/chapter/grad_seal_witness.rish
+tier lap
+seated 20260924.012305
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse
