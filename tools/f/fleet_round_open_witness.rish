@@ -20,7 +20,7 @@
 # and 20260906 stayed on their branches while main moved on. The script now attempts the
 # re-derivation its own header already prescribes, and reaches for the park only where git refuses.
 # So the park keeps every case it was right about, and hands back the laps it was taking. The
-# whole account rests at `construction/archive/REDS-the-test-that-cannot-fail-rows-499-503.md`,
+# whole account rests at `construction/archive/REDS/REDS-the-test-that-cannot-fail-rows-499-503.md`,
 # and the legs that plant those three states are A, B and C of
 # `tools/fixtures/f/fleet_round_open_control.sh`.
 

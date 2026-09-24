@@ -88,7 +88,7 @@ fi
 # THE GLOB IS WHAT `git log` IS HANDED, rather than the resolved file list: a file this tree has
 # folded away still holds rows in HISTORY, and a pathspec naming only what exists today would read
 # past every shelf that has since been renamed.
-SPINE_GLOB=${REDS_SPINE_GLOB:-"construction/archive/REDS-*rows-*.md construction/REDS.md"}
+SPINE_GLOB=${REDS_SPINE_GLOB:-"construction/archive/REDS/REDS-*rows-*.md construction/REDS.md"}
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT INT TERM

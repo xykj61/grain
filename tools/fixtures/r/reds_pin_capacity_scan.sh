@@ -170,8 +170,8 @@ UNRECORDED_SHELVES_CEILING=${UNRECORDED_SHELVES_CEILING:-62}
 SHELF_OPEN_ROWS_CEILING=${SHELF_OPEN_ROWS_CEILING:-0}
 
 PIN=${REDS_PIN:-construction/REDS.md}
-ARCHIVE_GLOB=${REDS_ARCHIVE_GLOB:-"construction/archive/REDS-*rows-*.md"}
-RECITAL=${REDS_RECITAL:-construction/archive/REDS-fold-recital.md}
+ARCHIVE_GLOB=${REDS_ARCHIVE_GLOB:-"construction/archive/REDS/REDS-*rows-*.md"}
+RECITAL=${REDS_RECITAL:-construction/archive/REDS/REDS-fold-recital.md}
 
 [ -f "$PIN" ] || { echo "verdict=misuse detail=no_pin pin=$PIN" >&2; exit 2; }
 
@@ -339,7 +339,7 @@ if [ "$DEADLOCKED" -eq 1 ]; then
   # in one morning, each asking for a bound raise and one leaving its red cited in the card and in
   # no row at all. A meter that detects a wall and goes quiet about the doors is half a meter.
   echo "detail: pin_unheld -- $PIN_UNHELD of $PIN_OPEN open rows name no hand outside the loop; each is the fleet's own to close, and one closed row makes reds_fold.sh lawful here"
-  echo "detail: pin_deadlock_doors -- no fold is lawful while every open row reads OPEN, and the FIRST door is the fleet's own: $PIN_UNHELD of $PIN_OPEN open rows name no hand outside the loop, so a lap that proves one repair on metal and accretes that row's last bold marker to BOOKED makes a fold lawful in the same lap. Where every open row is held, the three doors of %338 stand and each is Keaton's word: raise this page's bound, split OPEN by WHO HOLDS the row, or sanction the single-row shelf birth in reds_fold.sh's contract. Born-on-a-shelf is recorded PRACTICE rather than law -- see construction/archive/REDS-fold-recital.md -- and its cost is a live red where a lap reading the pin will not see it, which shelf_open_rows counts."
+  echo "detail: pin_deadlock_doors -- no fold is lawful while every open row reads OPEN, and the FIRST door is the fleet's own: $PIN_UNHELD of $PIN_OPEN open rows name no hand outside the loop, so a lap that proves one repair on metal and accretes that row's last bold marker to BOOKED makes a fold lawful in the same lap. Where every open row is held, the three doors of %338 stand and each is Keaton's word: raise this page's bound, split OPEN by WHO HOLDS the row, or sanction the single-row shelf birth in reds_fold.sh's contract. Born-on-a-shelf is recorded PRACTICE rather than law -- see construction/archive/REDS/REDS-fold-recital.md -- and its cost is a live red where a lap reading the pin will not see it, which shelf_open_rows counts."
 fi
 
 echo "pin_bytes=$PIN_BYTES"

@@ -27,7 +27,7 @@ assert control.ok else "reds-row-present: control must exit 0"
 assert control.out contains "CONTROL_OK cases=13 refusals=6 welcomes=7" else "reds-row-present: want thirteen cases, both sides"
 
 # 2 -- the living spine, counted by the sibling scan rather than by this file.
-let spine = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md"]
+let spine = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS/REDS-*rows-*.md construction/REDS.md"]
 say spine.out
 assert spine.ok else "reds-row-present: the ledger spine must read whole"
 assert spine.out contains "gaps_or_dupes=0" else "reds-row-present: want a gapless spine"
@@ -39,7 +39,7 @@ assert spine.out contains "gaps_or_dupes=0" else "reds-row-present: want a gaple
 # end of the ledger -- 411 invocations, each re-reading the whole spine, 177 of the roster's
 # 1,510 seconds. `--all` answers from the same sed expressions over the same spine file set, so
 # the authority is unchanged and the loop is gone.
-let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); miss=$(sh tools/fixtures/r/reds_row_present.sh --all | awk -v n=$n '{seen[$1]=1} END{m=0; for(i=1;i<=n;i++) if(!(i in seen)) m++; print m}'); echo rows=$n missing=$miss; test $miss -eq 0"]
+let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); miss=$(sh tools/fixtures/r/reds_row_present.sh --all | awk -v n=$n '{seen[$1]=1} END{m=0; for(i=1;i<=n;i++) if(!(i in seen)) m++; print m}'); echo rows=$n missing=$miss; test $miss -eq 0"]
 
 # ...AND THE SINGLE-ROW PATH STAYS PROVEN, because that is the path seventeen scans call. A
 # completeness leg that only ever runs `--all` would leave the contract those scans depend on
@@ -54,7 +54,7 @@ assert agree.out contains "missing=0" else "reds-row-present: want no row the tw
 
 # 4 -- the refusal on the living tree, not only on the pen. One past the last row is absent, and
 # absent exits 1 rather than 0.
-let past = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); sh tools/fixtures/r/reds_row_present.sh $((n+1)); s=$?; echo past_end_exit=$s; test $s -eq 1"]
+let past = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); sh tools/fixtures/r/reds_row_present.sh $((n+1)); s=$?; echo past_end_exit=$s; test $s -eq 1"]
 say past.out
 assert past.ok else "reds-row-present: the row past the end must refuse"
 assert past.out contains "past_end_exit=1" else "reds-row-present: want exit 1 for an absent row"

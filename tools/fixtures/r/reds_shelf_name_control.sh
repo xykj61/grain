@@ -67,7 +67,7 @@ want() {
 # One shelf, written whole, so a case changes exactly the line it is about.
 # $1 shelf number-part for the filename, $2 H1 line, $3 Rows line (empty for none), $4 headline row
 shelf() {
-  p="$R/construction/archive/REDS-a-pen-shelf-rows-$1.md"
+  p="$R/construction/archive/REDS/REDS-a-pen-shelf-rows-$1.md"
   printf '%s\n\n' "$2" > "$p"
   [ -z "$3" ] || printf '%s\n\n' "$3" >> "$p"
   [ -z "$4" ] || printf '**REDS %%%s (`20260907.000000`) -- a pen row.** *What went wrong:* nothing. **CLOSED.**\n' "$4" >> "$p"
@@ -150,7 +150,7 @@ want wide_span_title_counted "$(read_key title_declaring)" 1
 new_repo
 shelf 100 '# REDS shelf -- a pen row' '' 100
 printf '\n**REDS %%499**, which found the same breach standing in the machinery.\n' \
-  >> "$R/construction/archive/REDS-a-pen-shelf-rows-100.md"
+  >> "$R/construction/archive/REDS/REDS-a-pen-shelf-rows-100.md"
 commit_all
 want prose_mention_welcomed "$(read_verdict)" ok
 
