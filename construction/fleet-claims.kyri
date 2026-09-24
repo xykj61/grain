@@ -95,3 +95,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-aurora-door-roster
+seat incense
+stamp 20260924.124550
+epoch 1790268350
+paths aurora/README.md
+what Name the freestanding roster stage on the Aurora door beside the six living stages.
