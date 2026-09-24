@@ -5,7 +5,7 @@
 # `tools/fixtures/a/ascii_document_scan.sh` rather than replacing it. The guard is the guard; this
 # is the experiment that prices it.
 #
-# WHY IT EXISTS. `external-research/20260910-072912_the-seconds-this-pier-actually-spends.md`
+# WHY IT EXISTS. `external-research/date/20260910/20260910-072912_the-seconds-this-pier-actually-spends.md`
 # projected that a resident reader -- one process that opens the tree once and answers many
 # questions -- would remove the KERNEL half of this pier's assurance bill rather than the whole
 # bill, and named its own falsifier: implement one representative guard as a single long-lived

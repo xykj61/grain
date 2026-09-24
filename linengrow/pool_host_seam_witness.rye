@@ -3,7 +3,7 @@
 //!   rye build linengrow/pool_host_seam_witness.rye -femit-bin=linengrow/bin/pool_host_seam_witness
 //!   linengrow/bin/pool_host_seam_witness
 //!
-//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! Per external-research/date/20260715/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung P0 and linengrow/pool_host_seam.rye. Five claims:
 //!   1. An agent GRANTED the ledger capability in Caravan's table is admitted
 //!      and its state folds from the signed log to the expected balances.

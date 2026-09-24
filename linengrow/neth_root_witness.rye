@@ -4,7 +4,7 @@
 //!   linengrow/bin/neth_root_witness
 //!
 //! Proves the one load-bearing claim Neth's whole design rests on, per
-//! external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md's
+//! external-research/date/20260714/20260714-001017_neth-mala-settlement-l1-l2-design.md's
 //! recommended minimal first lap: a hash-chained, signed, append-only log
 //! folds to a state-root that is a *reproducible pure function of the log
 //! alone* -- the same claim TigerBeetle's own ARCHITECTURE.md states as its

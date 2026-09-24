@@ -4,7 +4,7 @@
 # consulted structure) is a distinct step from root writing, so a crash in
 # the window between the two costs nothing -- the prior root stays
 # authoritative, the new one simply redone. See
-# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 # and linengrow/neth_apply_step.rye.
 #
 # Run from the repository root:

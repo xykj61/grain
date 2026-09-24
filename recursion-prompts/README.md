@@ -8,7 +8,7 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Members:** the rooms under [`./`](./) -- `seed`, `versions`, read against the rooms on disk by
 [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
-**Kin:** [`../context/baton-museum/recursion_prompt.brix`](../context/baton-museum/recursion_prompt.brix) (the shape) - [`../kyri-resins/`](../kyri-resins/) (the filled-handoff cellar this is modeled on) - [`../external-research/20260703-013412_writing-recursion-prompts.md`](../external-research/20260703-013412_writing-recursion-prompts.md) (the craft guide)
+**Kin:** [`../context/baton-museum/recursion_prompt.brix`](../context/baton-museum/recursion_prompt.brix) (the shape) - [`../kyri-resins/`](../kyri-resins/) (the filled-handoff cellar this is modeled on) - [`../external-research/date/20260703/20260703-013412_writing-recursion-prompts.md`](../external-research/date/20260703/20260703-013412_writing-recursion-prompts.md) (the craft guide)
 
 ---
 

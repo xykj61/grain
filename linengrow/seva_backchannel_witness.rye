@@ -3,7 +3,7 @@
 //!   rye build linengrow/seva_backchannel_witness.rye -femit-bin=linengrow/bin/seva_backchannel_witness
 //!   linengrow/bin/seva_backchannel_witness
 //!
-//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! Per external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B2 and linengrow/seva_session_core.rye. A broadcast is one ordered
 //! log carrying both the broadcaster's content and viewers' chat, each a
 //! signed fact from its own author, folded and verified against its own key.

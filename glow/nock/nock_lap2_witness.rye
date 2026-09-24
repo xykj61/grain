@@ -3,7 +3,7 @@
 //!   rye build nock/nock_lap2_witness.rye -femit-bin=nock/bin/nock_lap2_witness
 //!   nock/bin/nock_lap2_witness
 //!
-//! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+//! Per external-research/date/20260713/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
 //! phased plan's own stated test for lap 2: "each opcode's witness proving
 //! it reduces to the same result as its stated 0-5 expansion." Five opcodes,
 //! eleven claims -- each opcode proven natively (fast, direct, in

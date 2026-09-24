@@ -5,7 +5,7 @@
 # substrate Nock stood in for in software) and run them under QEMU user-mode
 # emulation, proving each fold reproduces byte-for-byte on RISC-V. See
 # active-reviving/20260715-213500_glow-revives-hoon-runes-targets-riscv.md
-# and external-research/20260713-215200_riscv-arm64-shared-ir-research.md.
+# and external-research/date/20260713/20260713-215200_riscv-arm64-shared-ir-research.md.
 #
 # This turns the argued claim green: Glow's primary backend is Glow -> Zig
 # 0.16.0 -> RISC-V, so the same source that runs native and on emulated aarch64

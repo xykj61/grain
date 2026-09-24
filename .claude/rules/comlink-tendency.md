@@ -2,7 +2,7 @@
 
 **Seated:** `20260808.205404` on Keaton's word - **Status:** Living - **Cites, never restates**
 
-Canon: `external-research/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement I).
+Canon: `external-research/date/20260808/20260808-204505_the-best-name-period-vanes-ancestry-and-our-own-merit.md` (Movement I).
 
 When a **new module, aspect, or concept** is named in this tree, reach first for the **clearest, most fun, safest word** -- at whatever length that word wants to be. Named after the favorite that wears it plainest (Comlink), and read from the maintainer's own list -- Comlink, Mantra, Caravan, Tally, Pond, Tablecloth, Skate, Nib, Rye, Rishi, Brushstroke, Amphora, resins, Aurora, Brix, **Kyri**, and **baton** (Kyri and baton added `20260810` on the maintainer's word) -- each of them a plain word or a clear metaphor a newcomer grasps at once, rather than a forced four-letter coinage.
 

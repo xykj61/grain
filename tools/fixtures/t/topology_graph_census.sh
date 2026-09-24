@@ -82,7 +82,7 @@
 # Instrument: `awk` alone (POSIX-granted). No temporary files, no `mktemp`.
 #
 # Read against: active-designing/date/20260906/20260906-010402_a-third-of-the-sky-has-no-road.md and the
-# errata of external-research/20260906-010402_the-ring-and-the-ladder.md, whose narrower
+# errata of external-research/date/20260906/20260906-010402_the-ring-and-the-ladder.md, whose narrower
 # falsifier the point leg`s connected reading is.
 set -eu
 

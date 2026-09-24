@@ -38,7 +38,7 @@
 //! Bounds are named at compile time and cannot be exceeded: the buffer is static, so a working
 //! set larger than `max_working_set_bytes` fails to build rather than failing at 3 a.m.
 //!
-//! Read against: external-research/20260906-042838_the-table-that-fits.md
+//! Read against: external-research/date/20260906/20260906-042838_the-table-that-fits.md
 //! Driven by:    tools/fixtures/f/footprint_latency_census.sh
 
 const std = @import("std");

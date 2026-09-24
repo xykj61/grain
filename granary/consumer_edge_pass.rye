@@ -6,7 +6,7 @@
 //!   rye build granary/consumer_edge_pass.rye -femit-bin=granary/bin/consumer-edge-pass
 //!   granary/bin/consumer-edge-pass selftest
 //!
-//! Ground: ER [`../external-research/20260712-053324_ocapn-beside-comlink.md`](../external-research/20260712-053324_ocapn-beside-comlink.md)
+//! Ground: ER [`../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md`](../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md)
 
 const std = @import("std");
 const assert = std.debug.assert;

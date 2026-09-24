@@ -3,7 +3,7 @@
 //!   rye build mantra/bolt_apply_step_witness.rye -femit-bin=mantra/bin/bolt-apply-step-witness
 //!   mantra/bin/bolt-apply-step-witness
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 3 and mantra/bolt_apply_step.rye. Five claims:
 //!   1. A written-but-unapplied leaf is invisible to the catalog's own
 //!      resolve_binding/recall -- .never, not .here, and recall refuses

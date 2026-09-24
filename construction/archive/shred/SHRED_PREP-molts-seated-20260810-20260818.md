@@ -10,7 +10,7 @@ and one pending-molt note, kept whole with every byte they wrote. Immutable once
 
 | Fossil (old stamp) | Living mutant | Seated | Notes |
 | --- | --- | --- | --- |
-| `external-research/20260714-035600_pool-p-vane-content-data-market.md` | `foundations/20260810-011514_pond-the-application-module.md` | breach `20260810.011514` | Pool → Pond application module; market surfaces (Granary·Mandi·Open Asks·MUR·Neth) now apps in Pond |
+| `external-research/date/20260714/20260714-035600_pool-p-vane-content-data-market.md` | `foundations/20260810-011514_pond-the-application-module.md` | breach `20260810.011514` | Pool → Pond application module; market surfaces (Granary·Mandi·Open Asks·MUR·Neth) now apps in Pond |
 
 Plan: `../active-designing/date/20260809/20260809-234413_loadable-topologies-and-pond-silo-brief.md`.
 

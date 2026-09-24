@@ -3,7 +3,7 @@
 //!   rye build linengrow/neth_apply_step_witness.rye -femit-bin=linengrow/bin/neth_apply_step_witness
 //!   linengrow/bin/neth_apply_step_witness
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 3 and linengrow/neth_apply_step.rye. Four claims:
 //!   1. A written-but-unapplied root is invisible to `consulted()` -- the
 //!      manifest, not the write, is the moment of truth.

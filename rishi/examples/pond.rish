@@ -3,7 +3,7 @@
 # This is the Rishi we are growing toward; today's rishi (see ../README.md)
 # runs only the small subset in tests/hello.rish. Here a sandbox policy is a
 # value rather than a scatter of stringly flags -- composed, asserted, and
-# handed to Pond whole. See external-research/20260618-180812_pond-foundation.md.
+# handed to Pond whole. See external-research/date/20260618/20260618-180812_pond-foundation.md.
 
 let here = cwd()
 

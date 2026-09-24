@@ -30,7 +30,7 @@ Four of the five form two diverse-redundant pairs: **Riyo/Reya** and **Trey/Triz
 
 ## Why Generated, Not Hand-Written
 
-The Scribble/Brix/Mantra doc-fusion ([`../../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../../external-research/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md)) is exactly the machinery that will fill this template per variant: the template is a Scribble mark, Brix declares the five fills, Mantra stores each as a desk-like namespace. Until that machinery is built, the template stands alone and the per-variant pages wait -- honestly scaffold, named for what they are rather than dressed as complete.
+The Scribble/Brix/Mantra doc-fusion ([`../../../external-research/date/20260713/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md`](../../../external-research/date/20260713/20260713-235700_glow-doc-fusion-scribble-brix-mantra.md)) is exactly the machinery that will fill this template per variant: the template is a Scribble mark, Brix declares the five fills, Mantra stores each as a desk-like namespace. Until that machinery is built, the template stands alone and the per-variant pages wait -- honestly scaffold, named for what they are rather than dressed as complete.
 
 ---
 

@@ -1,6 +1,6 @@
 //! linengrow/pool_host_seam.rye -- Pool P0: the userspace host seam.
 //!
-//! Per external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md
+//! Per external-research/date/20260715/20260715-172000_pool-keystone-revival-realidream-landscape.md
 //! rung P0: a minimal Pool that hosts one agent over Caravan's own
 //! capability table (`caravan/capabilities.rye`, imported here as the real
 //! thing, not a copy) -- the agent is admitted only if the table grants the

@@ -18,7 +18,7 @@
 //! corruption, because a truncated `mantra-weave-v1` record is a VALID PREFIX
 //! -- positions still rise, generations still stand at one or above -- so it
 //! lifts as a shorter weave and the next commit writes it back under its own
-//! honest digest. Read `../../external-research/20260908-170154_a-name-is-a-proof-computed-once.md`
+//! honest digest. Read `../../external-research/date/20260908/20260908-170154_a-name-is-a-proof-computed-once.md`
 //! for the whole finding.
 //!
 //! Both halves are closed here. `read_blob` refuses a blob past

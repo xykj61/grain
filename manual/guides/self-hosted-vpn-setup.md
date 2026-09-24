@@ -13,7 +13,7 @@
 
 ---
 
-This reifies [`external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md`](../../external-research/20260713-212900_self-hosted-vpn-cto-credential-security.md) into two real artifacts, split honestly by what each machine can actually do: this Mac is the **client**, so its half runs here, in Rish; the **server** half is a deploy artifact you bring to a VPS you control, since no VPS exists to run it on from here.
+This reifies [`external-research/date/20260713/20260713-212900_self-hosted-vpn-cto-credential-security.md`](../../external-research/date/20260713/20260713-212900_self-hosted-vpn-cto-credential-security.md) into two real artifacts, split honestly by what each machine can actually do: this Mac is the **client**, so its half runs here, in Rish; the **server** half is a deploy artifact you bring to a VPS you control, since no VPS exists to run it on from here.
 
 ## The Client Half -- Runs Here, Right Now
 

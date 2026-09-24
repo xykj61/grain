@@ -26,7 +26,7 @@ else
   echo "detail: absent elder agent_cover"
   elder_miss=$((elder_miss + 1))
 fi
-if [ -f external-research/20260703-013412_writing-recursion-prompts.md ]; then
+if [ -f external-research/date/20260703/20260703-013412_writing-recursion-prompts.md ]; then
   echo "detail: ok elder recursion_craft"
 else
   echo "detail: absent elder recursion_craft"

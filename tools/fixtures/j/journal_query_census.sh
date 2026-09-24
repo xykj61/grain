@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/j/journal_query_census.sh -- what does this tree actually ASK of its journal.
 #
-# WHY. `external-research/20260907-191657_two-shapes-one-notation.md` measured the DATA the tree
+# WHY. `external-research/date/20260907/20260907-191657_two-shapes-one-notation.md` measured the DATA the tree
 # keeps and recommended an index over content-addressed records. It named its own second falsifier
 # in plain words: count the queries the tree's own tools ask of the journal, and if nearly every
 # tool asks the newest N records while nearly none asks a field predicate, then a sorted room is

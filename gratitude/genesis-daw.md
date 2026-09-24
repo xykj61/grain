@@ -30,7 +30,7 @@ From the upstream README:
 - **No C++ dependencies in the performance path** — only Zig and C where necessary
 - **Bare-metal kin** — Aurora and RISC-V share the same horizon as a sovereign studio
 
-Kelley's CoRecursive interview and blog are the primary study surface alongside this note. The essay [`../external-research/20260630-030312_the-hot-loop-as-the-forge.md`](../external-research/20260630-030312_the-hot-loop-as-the-forge.md) draws out the lesson for Brushstroke and Lotus. **Lotus** is our own DAW name; Genesis stays in gratitude as the forge that birthed the language we build with.
+Kelley's CoRecursive interview and blog are the primary study surface alongside this note. The essay [`../external-research/date/20260630/20260630-030312_the-hot-loop-as-the-forge.md`](../external-research/date/20260630/20260630-030312_the-hot-loop-as-the-forge.md) draws out the lesson for Brushstroke and Lotus. **Lotus** is our own DAW name; Genesis stays in gratitude as the forge that birthed the language we build with.
 
 ---
 

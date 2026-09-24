@@ -4,7 +4,7 @@
 //!   linengrow/bin/seva-broadcast-delivery selftest
 //!   linengrow/bin/seva-broadcast-delivery demo
 //!
-//! Per external-research/20260715-181500_sala-broadcast-live-session-fold.md
+//! Per external-research/date/20260715/20260715-181500_sala-broadcast-live-session-fold.md
 //! rung B1: the same signed, ordered session log of Seva B0, now carried
 //! event-by-event over a genuine Comlink hop to a follower, who replays it
 //! to the identical session root. This is the live-broadcast lap the SLC

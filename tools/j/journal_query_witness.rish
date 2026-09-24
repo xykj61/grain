@@ -2,7 +2,7 @@
 #
 # Language EN -- Style Gauge, Meter -- Voice Kyri -- Lens TAME, bound every claim and say why.
 #
-# WHAT THIS BINDS. `external-research/20260907-191657_two-shapes-one-notation.md` recommended an
+# WHAT THIS BINDS. `external-research/date/20260907/20260907-191657_two-shapes-one-notation.md` recommended an
 # index over the journal and named its own second falsifier: count the queries the tree's tools
 # actually ask, and if nearly none asks a field predicate the plan shrinks to a sorted room. The
 # census answers `verdict=sorted_room`. This witness holds that verdict, so the day a tool starts
@@ -48,7 +48,7 @@ let scan = run ["sh" "tools/fixtures/j/journal_query_census.sh"]
 say scan.out
 assert scan.ok else "journal-query: the census refused -- read its own line"
 
-assert scan.out contains "verdict=sorted_room" else "journal-query: the journal is now asked field predicates -- the index recommendation in external-research/20260907-191657_two-shapes-one-notation.md has gone live; read the field_capable lines, confirm they reach the journal rather than a registry, and take it to the card"
+assert scan.out contains "verdict=sorted_room" else "journal-query: the journal is now asked field predicates -- the index recommendation in external-research/date/20260907/20260907-191657_two-shapes-one-notation.md has gone live; read the field_capable lines, confirm they reach the journal rather than a registry, and take it to the card"
 
 let control = run ["sh" "tools/fixtures/j/journal_query_control.sh"]
 say control.out

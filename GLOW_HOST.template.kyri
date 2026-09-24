@@ -8,7 +8,7 @@
 # than agent behavior.
 #
 # Read by: tools/g/glow_host_run.sh
-# See: external-research/20260714-005658_native-arm64-parity-witness-run.md
+# See: external-research/date/20260714/20260714-005658_native-arm64-parity-witness-run.md
 # (the RYE_ZIG/RYE_LIB PATH-fallback footgun this file exists to close)
 #
 # Worked hosts in this tree so far: macOS aarch64 · Linux x86_64 (Framework).

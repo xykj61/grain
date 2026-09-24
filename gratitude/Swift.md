@@ -12,6 +12,6 @@ Swift does not erase Objective-C. It inherits a house Objective-C and Cocoa help
 
 There is no endorsement claimed here, and no Apple team is asked to vouch for Grain. This is thanks for public craft studied from official sources, joined to our own independently written design and witnesses.
 
-**Cross-ref:** [`../external-research/20260826-145514_skate-native-macos-decision-tablecloth.md`](../external-research/20260826-145514_skate-native-macos-decision-tablecloth.md)
+**Cross-ref:** [`../external-research/date/20260826/20260826-145514_skate-native-macos-decision-tablecloth.md`](../external-research/date/20260826/20260826-145514_skate-native-macos-decision-tablecloth.md)
 
 *Thank you, Swift, for arriving with memory of the house. Thank you, Objective-C, Cocoa, AppKit, and C, for making the house possible.*

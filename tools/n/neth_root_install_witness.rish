@@ -4,7 +4,7 @@
 # a follower trusts the issuing monarch's own current-view root at issue
 # outright, verifies the hash-chain of any root received by repair from a
 # peer, and never truncates a committed root under either posture. See
-# external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+# external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 # and linengrow/neth_root_install.rye.
 #
 # Run from the repository root:

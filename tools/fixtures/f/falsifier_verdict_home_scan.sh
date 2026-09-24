@@ -11,7 +11,7 @@
 #
 # WHY A POSITION AND NEVER A SPELLING, which is the whole reason this instrument
 # exists and the reason it gates what it gates. On `20260909.203002`
-# external-research/20260909-203002_the-declaration-grew-in-the-door.md withdrew
+# external-research/date/20260909/20260909-203002_the-declaration-grew-in-the-door.md withdrew
 # its own proposed construction/falsifier-ledger.kyri and seated one door key in
 # its place -- `**Runs the falsifier of:** <elder> -- survived | fired |
 # unrunnable` -- with a one-command kill condition: read the next twenty papers,

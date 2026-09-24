@@ -1,5 +1,5 @@
 //! Walk EVERY degree-6 circulant on 720 points, so the coverage gap named in
-//! `external-research/20260906-152821_the-floor-you-can-stand-on.md` is closed by measurement
+//! `external-research/date/20260906/20260906-152821_the-floor-you-can-stand-on.md` is closed by measurement
 //! rather than bounded by a sweep's reach.
 //!
 //! The elder sweep fixed one generator at 1 and walked 63,903 graphs. That covers every circulant

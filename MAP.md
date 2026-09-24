@@ -132,7 +132,7 @@ When a page here says GREEN, a machine said it first.
 
 ## The Two Grains
 
-This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in `template-manifest.kyri`, and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. The plan behind the two-grains split stands in the field at `external-research/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`.
+This field is one person's grown season. The public template -- **grain-os/grain**, its own fresh history -- is *projected* from it by [`tools/s/sow.rish`](tools/s/sow.rish), which carries forward only the shareable rooms and withholds every private one. The boundary is named, path by path, in `template-manifest.kyri`, and proven clean by [`tools/s/sow_witness.rish`](tools/s/sow_witness.rish): no name, no key, no personal path ever reaches the seed. The plan behind the two-grains split stands in the field at `external-research/date/20260808/20260808-045124_two-grains-template-breach-and-code-distillation-plan.md`.
 
 ## Licenses (hold)
 

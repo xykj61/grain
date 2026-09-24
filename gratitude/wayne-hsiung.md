@@ -15,7 +15,7 @@ This silo does **not** copy briefs, trial transcripts, or campaign scripts. It d
 
 Public doors for study (unmodified, outside our prose): Wikipedia *Wayne Hsiung* · Reuters Legal (Jan 2024) · Our Hen House · *Lives Well Lived* / Peter Singer conversations · Simple Heart / DxE public pages.
 
-Vegan capital ecosystem notes (study, not affiliation): [`../external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md`](../external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md).
+Vegan capital ecosystem notes (study, not affiliation): [`../external-research/date/20260728/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md`](../external-research/date/20260728/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md).
 
 The fuller biography and journalism profile live in foundations.
 

@@ -4,7 +4,7 @@
 # independent replicas, folding the same signed log from scratch, agree
 # bit-for-bit on both the folded balances and the state-root -- and a
 # tampered log does not reproduce the same root. See
-# external-research/20260714-001017_neth-mala-settlement-l1-l2-design.md
+# external-research/date/20260714/20260714-001017_neth-mala-settlement-l1-l2-design.md
 # and linengrow/neth_root_witness.rye.
 #
 # Run from the repository root:

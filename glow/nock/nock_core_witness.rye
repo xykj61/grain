@@ -3,7 +3,7 @@
 //!   rye build nock/nock_core_witness.rye -femit-bin=nock/bin/nock_core_witness
 //!   nock/bin/nock_core_witness
 //!
-//! Per external-research/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
+//! Per external-research/date/20260713/20260713-214400_nock-interpreter-and-rye-hoon-fusion-scoping.md's
 //! phased plan, primitive core: fixture formulas, hand-derived, checked against each
 //! opcode's own stated reduction rule -- the same fixture-driven witness
 //! style this project already uses everywhere. Eleven claims:

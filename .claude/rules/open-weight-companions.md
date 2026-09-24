@@ -11,7 +11,7 @@ Rooms: reasoning a reader can check today, standing ahead of any guard that woul
 
 ## Why this page exists before anything is built
 
-Grounded in [`external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../../external-research/20260920-021139_harness-letta-open-weight-dst-alignment.md),
+Grounded in [`external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md),
 which studied dsh, OpenCode, Cline, Aider, and Letta beside four current open-weight models
 (GLM-5.3, Kimi K3, Qwen3.8, DeepSeek V4). The full rationale for each clause below is written out
 in [`open/HARNESS_RATIONALE.md`](../../open/HARNESS_RATIONALE.md); this page states the rule in

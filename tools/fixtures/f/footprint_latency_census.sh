@@ -46,7 +46,7 @@
 #   sh tools/fixtures/f/footprint_latency_census.sh --from FILE      # check a saved reading
 #   sh tools/fixtures/f/footprint_latency_census.sh --sysfs DIR      # read topology elsewhere
 #
-# Read against: external-research/20260906-042838_the-table-that-fits.md
+# Read against: external-research/date/20260906/20260906-042838_the-table-that-fits.md
 # Refusals proven by: tools/fixtures/f/footprint_latency_control.sh
 set -eu
 

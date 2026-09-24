@@ -3,7 +3,7 @@
 //!   rye build linengrow/neth_root_install_witness.rye -femit-bin=linengrow/bin/neth_root_install_witness
 //!   linengrow/bin/neth_root_install_witness
 //!
-//! Per external-research/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
+//! Per external-research/date/20260714/20260714-041542_ironbeetle-patterns-for-the-neth-ladder.md
 //! pattern 2 and linengrow/neth_root_install.rye. Five claims:
 //!   1. Two roots installed at-source in order, with no chain proof
 //!      demanded -- a follower's own current view, growing.

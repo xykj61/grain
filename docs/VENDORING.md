@@ -6,7 +6,7 @@
 **Depth:** recipe
 **Ceiling:** <=150 lines
 **Last updated:** 2026-07-12
-**Compresses:** [`20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md) - [`20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) - [`ORGANIZING.md`](../ORGANIZING.md) - [`external-research/20260620-014412_system.md`](../external-research/20260620-014412_system.md) (Gratitude Licenses)
+**Compresses:** [`20260712-204549_proven-seat-g1-claude-close.md`](../active-designing/date/20260712/20260712-204549_proven-seat-g1-claude-close.md) - [`20260712-214900_signed-kumara-monocypher-pin.md`](../active-designing/date/20260712/20260712-214900_signed-kumara-monocypher-pin.md) - [`ORGANIZING.md`](../ORGANIZING.md) - [`external-research/date/20260620/20260620-014412_system.md`](../external-research/date/20260620/20260620-014412_system.md) (Gratitude Licenses)
 
 ---
 
@@ -83,7 +83,7 @@ Seated: `vendor/genode` per [`204549`](../active-designing/date/20260712/2026071
 | **ai-jail** | `gratitude/ai-jail` + `tools/.cache/bin/ai-jail` | `tools/e/enclosure.conf.example` + host pin notes | teacher license in gratitude | Daily enclosure - binary in cache |
 | **libqrencode** | `gratitude/libqrencode` | gitlink commit | LGPL-2.1 | Key-card CLI in `tools/.build/` only |
 
-Full gratitude license matrix: [`external-research/20260620-014412_system.md`](../external-research/20260620-014412_system.md) -> Gratitude Licenses and the Clean Room.
+Full gratitude license matrix: [`external-research/date/20260620/20260620-014412_system.md`](../external-research/date/20260620/20260620-014412_system.md) -> Gratitude Licenses and the Clean Room.
 
 ---
 

@@ -13,7 +13,7 @@
 # Why this exists: rye's own build command resolves its Zig backend as
 # RYE_ZIG if set, else whatever `zig` happens to be on PATH -- which silently
 # mismatches the pinned std on any host with a different Zig installed. See
-# external-research/20260714-005658_native-arm64-parity-witness-run.md for
+# external-research/date/20260714/20260714-005658_native-arm64-parity-witness-run.md for
 # the exact failure this caused, once, on this project's own Mac.
 
 set -euo pipefail
