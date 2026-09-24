@@ -7937,6 +7937,13 @@ path tools/gen/chapter/grad_seal_witness.rish
 tier lap
 seated 20260924.012305
 
+# almanac_breach -- the Generator Chapter breach witness proves preserved bytes, living links,
+# and dated testimony on both sides of the existing archive fixture.
+guard almanac_breach
+path tools/gen/chapter/almanac_breach_witness.rish
+tier lap
+seated 20260924.072938
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse

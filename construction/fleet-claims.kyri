@@ -71,12 +71,6 @@ stamp 20260924.060730
 epoch 1790244450
 paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish tools/w/wrap_ring_witness.rish
 what Classify whole-line build prose and move the Bakery wrap-ring binary into a private pen, lowering fixed paths while leaving peer-owned shared pairs named.
-claim copal-almanac-breach
-seat copal
-stamp 20260924.061949
-epoch 1790245189
-paths tools/gen/chapter/almanac_breach_witness.rish construction/standing-equipment.kyri construction/ITINERARY.md
-what Roster the Almanac breach chapter witness and prove preserved bytes, living links, and dated testimony.
 claim petrichor-yonder-grade-20260924
 seat petrichor
 stamp 20260924.070946

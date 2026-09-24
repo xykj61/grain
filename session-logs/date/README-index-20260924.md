@@ -9,6 +9,7 @@
 | 20260924.085636 | [Toroidal wake-budget measurement](20260924/20260924-085636_diffuser-toroidal-wake-budget.kyri) | Model measured; cold roster guard-red; Bakery seam named. |
 | 20260924.085304 | [Four cloths for one code comment](20260924/20260924-085304_incense-comment-cloth.kyri) | Gauge, Bhakta, Radiant, and Twilight share one comment claim. |
 | 20260924.083642 | [Bakery cold roster hold](20260924/20260924-083642_bakery-cold-roster-hold.kyri) | Fresh cold roster held without verdict; no ranking work claimed. |
+| 20260924.085813 | [Almanac breach witness rostered](20260924/20260924-085813_copal-almanac-breach.kyri) | Almanac witness green; hot roster guard-red with 50 reds and 3 gates. |
 | 20260924.074637 | [Pheromone cold roster red](20260924/20260924-074637_pheromone-cold-roster-red.kyri) | 372 guards; 50 reds, 3 gates; tree held still. |
 | 20260924.062849 | [Pheromone cold roster red](20260924/20260924-062849_pheromone-cold-roster-red.kyri) | 371 guards; 52 reds, 3 gates; tree held still. |
 | 20260924.062049 | [Grass open-room claim close](20260924/20260924-062049_grass-open-room-claim-close.kyri) | Existing disposition confirmed; stale claim closed; cold roster red. |
