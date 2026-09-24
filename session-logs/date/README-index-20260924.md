@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.125750 | [The roster page names the stage that speaks](20260924/20260924-125750_incense-roster-page-true.kyri) | The design page points at roster.rye. |
 | 20260924.124810 | [The Aurora door names the roster stage](20260924/20260924-124810_incense-aurora-door-roster.kyri) | roster.rye stands beside the six on the door. |
 | 20260924.124246 | [The hart and the host speak the same pairs](20260924/20260924-124246_incense-roster-pairs.kyri) | Four canonical pairs match on the host and the hart. |
 | 20260924.123542 | [The hart and the host speak one roster](20260924/20260924-123542_incense-roster-agrees.kyri) | Domains 5, channels 4, the same two-domain sentence. |
