@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.131934 | [The design page records the refusing finisher](20260924/20260924-131934_incense-roster-page-refuse.kyri) | A broken channel exits 1 and speaks no sentence. |
 | 20260924.131243 | [A broken roster exits 1 and speaks nothing](20260924/20260924-131243_incense-roster-refuse-wake.kyri) | One domain twice, no sentence, pedestal stays six. |
 | 20260924.130405 | [A broken ceiling writes the refusing finisher](20260924/20260924-130405_incense-roster-refuse.kyri) | The good roster still exits 0. |
 | 20260924.125750 | [The roster page names the stage that speaks](20260924/20260924-125750_incense-roster-page-true.kyri) | The design page points at roster.rye. |
