@@ -111,6 +111,18 @@ public struct ReceiptCard: Equatable, Sendable {
     return line
   }
 
+  /// Return the complete Still frame in the same row order used by accessibility.
+  public func stillFrame() -> [[UInt8]] {
+    var lines: [[UInt8]] = []
+    lines.reserveCapacity(lineCount)
+    var row = 0
+    while row < lineCount {
+      lines.append(accessibilityLine(row: row) ?? [])
+      row += 1
+    }
+    return lines
+  }
+
   private static func validate(field: String, value: String, limit: Int) throws {
     guard !value.isEmpty else { throw CardError.emptyField(field) }
     let bytes = Array(value.utf8)

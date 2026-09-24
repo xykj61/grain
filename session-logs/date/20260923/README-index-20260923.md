@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260923.234047 | [Still receipt accessibility](20260923/20260923-234047_diffuser-receipt-accessibility.kyri) | Eleven-field snapshot staged; hot roster guard-red with 42 reds and 3 gates. |
 | 20260923.130457 | [Toroidal wake-budget study](20260923/20260923-130457_diffuser-toroidal-wake-budget.kyri) | Bound shared polling wakes; cold roster held by a stale hung witness. |
 | 20260923.073713 | [Caravan queue invariant](20260923/20260923-073713_bakery-rune-assert-queue.kyri) | Queue witness GREEN; claim closed; cold roster 41 reds and 3 gates. |
 | 20260923.104351 | [Recover phase-aware paper and prove the settled cold roster](20260923/20260923-104351_diffuser-phase-aware-cold-roster.kyri) | Cold roster guard-red; 45 reds, 3 gates, and tree movement named. |
