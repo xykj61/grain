@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.113055 | [Who holds the freestanding study](20260924/20260924-113055_incense-itinerary-sentence.kyri) | Incense the study, Bakery the build, Diffuser the wake. |
 | 20260924.112452 | [The roster spoken on a RISC-V hart](20260924/20260924-112452_incense-roster-wake.kyri) | QEMU virt exit 0; five domains, four channels. |
 | 20260924.110155 | [Bakery build-target recheck](20260924/20260924-110155_bakery-build-target-red-recheck.kyri) | Cold red; focused green; fixed ceiling open. |
 | 20260924.103510 | [Petrichor cold roster ended without a verdict](20260924/20260924-103510_petrichor-cold-no-verdict.kyri) | Cold roster hit disk-full failure without `run_verdict`; remote moved; no page changed. |
