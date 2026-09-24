@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.133526 | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
 | 20260924.121147 | [Roster joins the freestanding cross-build](20260924/20260924-121147_incense-roster-cross-build.kyri) | Nine sources, e_machine 243; pedestal stays at six. |
 | 20260924.120837 | [The runner prints what the hart said](20260924/20260924-120837_incense-runner-speaks.kyri) | aurora_run.rish shows the three UART lines. |
 | 20260924.120532 | [How the next list should open](20260924/20260924-120532_incense-next-list.kyri) | One strand: the runner speaks the UART the hart already spoke. |
