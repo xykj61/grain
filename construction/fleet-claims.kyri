@@ -53,24 +53,12 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim grass-key-you-hold
-seat grass
-stamp 20260923.152603
-epoch 1790191563
-paths active-designing/date/20260923/20260923-152603_grass-reverse-read-of-the-key-you-hold.md
-what Read The Key You Hold against the receipt identity seam and record one evidenced disposition.
 claim bakery-build-target-20260924-pen2
 seat bakery
 stamp 20260924.060730
 epoch 1790244450
 paths tools/b/build_target_witness.rish tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/fixtures/b/build_target_race_probe.sh tools/w/witness_own_build_witness.rish tools/w/wrap_ring_witness.rish
 what Classify whole-line build prose and move the Bakery wrap-ring binary into a private pen, lowering fixed paths while leaving peer-owned shared pairs named.
-claim grass-shape-of-day
-seat grass
-stamp 20260924.085509
-epoch 1790254509
-paths active-designing/date/20260924/20260924.085457_grass-reverse-read-of-the-shape-of-a-day.md
-what Read The Shape of a Day against the receipt contract and record one evidenced disposition.
 claim copal-relay-resin
 seat copal
 stamp 20260924.090630
@@ -83,3 +71,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim grass-free-open-room
+seat grass
+stamp 20260924.145950
+epoch 1790276390
+paths active-designing/date/20260924/20260924-145948_grass-reverse-read-of-a-free-and-open-room.md
+what Read A Free and Open Room and record one evidenced disposition for the receipt seam.
