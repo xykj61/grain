@@ -95,3 +95,9 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
+claim incense-roster-pairs
+seat incense
+stamp 20260924.124009
+epoch 1790268009
+paths caravan/channels.rye aurora/src/roster.rye tools/fixtures/a/aurora_roster_agrees.sh
+what Make the hosted selftest and the freestanding hart speak the same channel pairs, and require the agreement script to match them.
