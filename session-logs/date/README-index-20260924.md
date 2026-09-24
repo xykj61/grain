@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.171119 | [Six stage resins print](20260924/20260924-171119_incense-stage-resin.kyri) | SHA3-512 for six stages; the store stays unbuilt. |
 | 20260924.170646 | [Fleet Codex default is gpt-6-sol](20260924/20260924-170646_incense-codex-gpt-6-sol.kyri) | Bakery Claude is opus-5.5; seven ships clock out. |
 | 20260924.170056 | [The stages are named as values](20260924/20260924-170056_incense-tablecloth-stages.kyri) | Six stages as resins; the store stays unbuilt. |
 | 20260924.165730 | [How It Grows names the wires that already cross](20260924/20260924-165730_incense-aurora-grows.kyri) | device, roster_pairs, and deciding.rye. |

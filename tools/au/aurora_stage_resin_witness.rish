@@ -1,0 +1,23 @@
+# aurora_stage_resin_witness.rish -- one SHA3-512 resin per living stage.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_resin_witness.rish
+#
+# The six living stages are seed, relay, named, sealed, wire, and posted.
+# Each resin is the SHA3-512 of that file. The store stays unbuilt.
+
+let printed = run ["sh" "tools/fixtures/a/aurora_stage_resin.sh"]
+say printed.out
+assert printed.ok else "stage resins refused -- ${printed.err_brief}"
+assert printed.out contains "stage-resin seed " else "seed has no resin"
+assert printed.out contains "stage-resin relay " else "relay has no resin"
+assert printed.out contains "stage-resin named " else "named has no resin"
+assert printed.out contains "stage-resin sealed " else "sealed has no resin"
+assert printed.out contains "stage-resin wire " else "wire has no resin"
+assert printed.out contains "stage-resin posted " else "posted has no resin"
+assert printed.out contains "count=6" else "the living stages did not stay six"
+assert printed.out contains "width=512" else "the resin width is not SHA3-512"
+assert printed.out contains "store=unbuilt" else "the store was treated as built"
+assert printed.out contains "GREEN" else "stage resins did not close GREEN"
+
+say "GREEN: six living stages, one SHA3-512 resin each, store unbuilt."
