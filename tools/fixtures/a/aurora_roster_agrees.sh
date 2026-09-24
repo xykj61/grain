@@ -52,7 +52,26 @@ awk '
       printf "roster-agree join host=%d hart=%d\n", hj, aj
       exit 1
     }
-    printf "roster-agree domains=%s channels=%s join=two-declared\n", hd, hc
+    hp = pairs(host)
+    ap = pairs(hart)
+    if (hp == "" || hp != ap) {
+      printf "roster-agree pairs host=%s hart=%s\n", hp, ap
+      exit 1
+    }
+    n = split(hp, parts, "|")
+    printf "roster-agree domains=%s channels=%s join=two-declared pairs=%d\n", hd, hc, n
     print "GREEN"
+  }
+  function pairs(file,    line, acc, p) {
+    acc = ""
+    while ((getline line < file) > 0) {
+      p = index(line, "pair ")
+      if (p > 0) {
+        if (acc != "") acc = acc "|"
+        acc = acc substr(line, p)
+      }
+    }
+    close(file)
+    return acc
   }
 ' 
