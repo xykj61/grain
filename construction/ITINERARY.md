@@ -362,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `2cc2b64e43` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0b0d7a3cda` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -426,10 +426,11 @@ custody seam changes in this lap.
 **Priority:** VERY HIGH Lindy; HIGH crux.
 
 1. Write the first-hour walkthrough after the public seam lands.
-2. Teach valuable data, consent, receipt, books recognition, and portability one idea at a time.
-3. Let a cold reader create, verify, view, and reject one synthetic receipt.
+2. Teach data, consent, receipts, books, and portability one idea at a time.
+3. Let a cold reader make, verify, view, and reject a synthetic receipt.
+4. Open the [citizen door](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md) beside the first hour.
 
-**Stop:** prose waits for green interfaces and uses no private example.
+**Stop:** green interfaces first; no private example.
 
 ### Bakery -- Rishi fusion-build spine
 
