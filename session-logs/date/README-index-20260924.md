@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.102330 | [Receipt Still order proven by host witness](20260924/20260924-102330_diffuser-receipt-still-order.kyri) | 11-field order witness green; cold roster 317 green, 52 red, 3 gated. |
 | 20260924.095307 | [Bakery build-target red and parked repair](20260924/20260924-095307_bakery-build-target-red.kyri) | Cold roster red; focused repair green; two fixed paths remain outside claim scope. |
 | 20260924.093334 | [QEMU declared for the Aurora wake](20260924/20260924-093334_incense-nixos-qemu.kyri) | configuration.nix lists qemu; the switch stays on the pier. |
 | 20260924.092857 | [The channel roster spoken on the host](20260924/20260924-092857_incense-hosted-roster.kyri) | Five domains, four channels; qemu boot skipped. |
