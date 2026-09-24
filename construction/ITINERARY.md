@@ -158,11 +158,7 @@ lap on. **YOURS:** the ratchet roster stands at `@memcpy` migration (135), `pars
 (54), and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the
 next agent-doable pick is any one, claim-board checked first.
 
-**GRASS -- THE FOUNDATIONS REVERSE-READ REACHES THE OPEN ROOM.** Read
-[`../foundations/20260628-133212_a-free-and-open-room.md`](../foundations/20260628-133212_a-free-and-open-room.md)
-against the Linengrow receipt ladder: open access and deliberate departure remain living product
-rewards. [Packet written](../active-designing/date/20260923/20260923-033231_grass-reverse-read-of-a-free-and-open-room.md):
-**affirmed, no molt.** The next oldest foundation is the next walk.
+**GRASS -- prior open-room account shelved whole** ([archive](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)); the new packet follows below.
 
 **GRASS -- FOUR PROMISES REMAINS THE RECEIPT'S ETHIC.** Read
 [`../foundations/20260628-133212_four-promises-a-tool-can-keep.md`](../foundations/20260628-133212_four-promises-a-tool-can-keep.md)
@@ -182,6 +178,10 @@ against the receipt contract. [Packet written](../active-designing/date/20260923
 **standfasted as a product principle, no molt or repair.** The synthetic receipt keeps real
 identity outside its first whole; person-held keys belong at the witnessed portable-bundle seam.
 The next oldest foundation is the next walk.
+
+**GRASS -- A FREE AND OPEN ROOM: access remains a product promise.** [Packet](../active-designing/date/20260924/20260924-003224_grass-reverse-read-of-a-free-and-open-room.md):
+**standfasted; no molt or repair.** The receipt offers local welcome; public access and portable
+departure remain later acceptance work.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
