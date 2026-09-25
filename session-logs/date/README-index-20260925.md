@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.020430` | [Fifth hold, cold run still running](20260925/20260925-020430_fifth-hold-cold-run-still-running.kyri) | Round-open clean; same in-flight cold run advanced three more guards, still short of run_verdict. |
 | `20260925.015959` | [Fourth hold, cold run still running](20260925/20260925-015959_fourth-hold-cold-run-still-running.kyri) | Round-open clean; watched the same in-flight pass advance, still short of run_verdict. |
 | `20260925.023135` | [Third hold, cold run still running](20260925/20260925-023135_third-hold-cold-run-still-running.kyri) | Round-open clean; same in-flight cold run still short of run_verdict. |
 | `20260925.014903` | [Second hold, same cold run](20260925/20260925-014903_second-hold-for-the-same-cold-run.kyri) | Round-open clean; held for this tree's own in-flight cold run. |
