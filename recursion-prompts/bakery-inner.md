@@ -221,6 +221,16 @@ for a separate repair; its old witness structure should stay parked.
 Twelve source versions remain to review, and all 85 stashes remain preserved.
 Real enclosure proof, the named repairs, and full roster proof remain owed.
 
+The [roster recovery review](../session-logs/date/20260925/20260925-150040_bakery-roster-recovery.kyri) covers the final twelve source versions.
+Keep today's self-row handling, enclosure payload, and coverage receipt. The saved
+detach draft preserves a transcript when the lock has no readable PID; current code
+erases it before its child refuses. Carry that narrow behavior into a repair while
+keeping today's owner-path reporting. The saved seed control also leaves two failed
+stale-receipt checks outside its witness assertions. All 96 unmatched source versions
+now have a disposition, and all 85 stashes remain preserved. Repairs, other parked
+artifact classes, and full roster proof remain owed. This lap stopped its cold pass
+cleanly with exit 143 after recognizing the paired-pass estimate exceeds the lap window.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
