@@ -1,0 +1,19 @@
+# aurora_stage_store_quiet_third_witness.rish -- a third sentence stays.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_quiet_third_witness.rish
+#
+# A different sentence lands beside the first two writes. A repeat adds
+# nothing. The empty sibling stays empty.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_quiet_third.sh"]
+say proof.out
+assert proof.ok else "third sentence refused -- ${proof.err_brief}"
+assert proof.out contains "count=3" else "the quiet store does not hold three writes"
+assert proof.out contains "first=held" else "the first write was lost"
+assert proof.out contains "second=held" else "the second write was lost"
+assert proof.out contains "third=unchanged" else "the repeat changed the third write"
+assert proof.out contains "remains=yes" else "the quiet store was removed"
+assert proof.out contains "GREEN" else "third sentence did not close GREEN"
+
+say "GREEN: three sentences stay in the quiet store, and a repeat adds nothing."
