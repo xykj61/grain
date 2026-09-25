@@ -1,6 +1,6 @@
 # Gratitude Licenses -- Clean-Room Discipline
 
-**Canonical reference:** `external-research/date/20260620/20260620-014412_system.md` -> section **Gratitude Licenses and the Clean Room** (full Radiant notes per project). Mirror: `.cursor/rules/gratitude-licenses.mdc`.
+**Canonical reference:** `external-research/date/20260620/20260620-014412_system.md` -> section **Gratitude Licenses and the Clean Room** (full Radiant notes per project).
 
 `gratitude/` is a reading library rather than a dependency. We study concepts and leave the code exactly where it lives.
 
@@ -78,3 +78,5 @@ Read from each project's own authoritative text rather than from memory. Full ve
 ## The clean-room path
 
 External research (`external-research/`) studies the world with attribution. Active designing (`active-designing/`) names only our own modules. The boundary between reading and building is the boundary between `gratitude/` and `rye/`; only understanding crosses it, always in words rather than code.
+
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`../../.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).

@@ -61,7 +61,7 @@ question on the card** -- a `YOURS:` line is Keaton's and has not landed. Everyt
 account is one click away and the fold is an ordinary accrete.
 
 **On the ledger.** A row folds when it closes, to a shelf named for what it taught, with one line
-in `construction/archive/REDS-fold-recital.md`. Folding within the hour a row closes is established
+in `construction/archive/REDS/REDS-fold-recital.md`. Folding within the hour a row closes is established
 practice here rather than haste -- four shelves carry that sentence from `20260917` alone.
 
 **A lane sheds its OWN.** A peer's live narrative is theirs, however tempting it looks when a wall
