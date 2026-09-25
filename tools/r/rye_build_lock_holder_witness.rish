@@ -42,38 +42,38 @@ say "rye-build-lock-holder: Lens TAME -- safety first: the refusal is shown from
 let control = run ["sh" "tools/fixtures/r/rye_build_lock_holder_control.sh"]
 say control.out
 say control.err
-assert control.ok else "rye-build-lock-holder: the pen refused to run: ${control.out} ${control.err}"
+assert control.ok else "rye-build-lock-holder: the pen refused to run: ${control.out_brief} ${control.err_brief}"
 
 # A skip is an honest answer on a pier without a toolchain, and it must never read as a pass. The
 # verdict is asserted by name so a skipped run says so in the roster rather than going quiet.
-assert control.out contains "verdict=ok" else "rye-build-lock-holder: the pen must close ok -- a skip or a failed leg both land here: ${control.out}"
+assert control.out contains "verdict=ok" else "rye-build-lock-holder: the pen must close ok -- a skip or a failed leg both land here: ${control.out_brief}"
 
 # The leg tally is asserted as hard as the failure count. `control_fail=0` reads exactly alike over a
 # leg that passed and a leg somebody deleted, so the count is what keeps a leg from going quiet.
-assert control.out contains "control_fail=0" else "rye-build-lock-holder: a leg read the wrong way: ${control.out}"
-assert control.out contains "control_legs=28" else "rye-build-lock-holder: a leg left the pen unheard -- the tally moves with the pen, so raise it here in the same commit: ${control.out}"
+assert control.out contains "control_fail=0" else "rye-build-lock-holder: a leg read the wrong way: ${control.out_brief}"
+assert control.out contains "control_legs=28" else "rye-build-lock-holder: a leg left the pen unheard -- the tally moves with the pen, so raise it here in the same commit: ${control.out_brief}"
 
 # The five readings this guard exists for, named so none can go silent behind a green tally.
 #
 # 1 -- the elder fault, shown. A compiler built from the commit before the repair walks into the
 # anonymous lock its own protocol publishes, and clears it. That is the theft, on metal.
-assert control.out contains "leg=elder_enters_anonymous_lock want=0 got=0 ok" else "rye-build-lock-holder: the elder side must show the fault, or the repair is being compared with itself: ${control.out}"
+assert control.out contains "leg=elder_enters_anonymous_lock want=0 got=0 ok" else "rye-build-lock-holder: the elder side must show the fault, or the repair is being compared with itself: ${control.out_brief}"
 
 # 2 -- the repair, read from the observer's side rather than from the source. Through a claim held
 # open for two seconds, the lock is never once seen without a pid inside it.
-assert control.out contains "leg=stalled_never_anonymous want=0 got=0 ok" else "rye-build-lock-holder: a lock stood anonymous while a live holder was claiming it: ${control.out}"
+assert control.out contains "leg=stalled_never_anonymous want=0 got=0 ok" else "rye-build-lock-holder: a lock stood anonymous while a live holder was claiming it: ${control.out_brief}"
 
 # 3 -- and the observer was actually looking. A reading of nothing is indistinguishable from a healthy
 # one (REDS %463), so the pen proves it saw the staging directory the stall holds open.
-assert control.out contains "leg=stalled_window_observed want=yes got=yes ok" else "rye-build-lock-holder: the pen never caught the window open, so its zero above means nothing: ${control.out}"
+assert control.out contains "leg=stalled_window_observed want=yes got=yes ok" else "rye-build-lock-holder: the pen never caught the window open, so its zero above means nothing: ${control.out_brief}"
 
 # 4 -- a live holder is still waited on rather than stolen from, which is the whole subject stated
 # the plain way round.
-assert control.out contains "leg=live_holder_not_stolen want=named got=named ok" else "rye-build-lock-holder: a live holder's lock was taken: ${control.out}"
+assert control.out contains "leg=live_holder_not_stolen want=named got=named ok" else "rye-build-lock-holder: a live holder's lock was taken: ${control.out_brief}"
 
 # 5 -- the waiter's half is unchanged, asserted so a future repair cannot quietly stop clearing
 # corpses and leave every build queued behind a process that died last week.
-assert control.out contains "leg=named_corpse_reaped want=0 got=0 ok" else "rye-build-lock-holder: a corpse is no longer cleared, so a killed build now blocks the tree: ${control.out}"
-assert control.out contains "leg=repaired_also_clears_anonymous want=0 got=0 ok" else "rye-build-lock-holder: an anonymous leftover is no longer cleared: ${control.out}"
+assert control.out contains "leg=named_corpse_reaped want=0 got=0 ok" else "rye-build-lock-holder: a corpse is no longer cleared, so a killed build now blocks the tree: ${control.out_brief}"
+assert control.out contains "leg=repaired_also_clears_anonymous want=0 got=0 ok" else "rye-build-lock-holder: an anonymous leftover is no longer cleared: ${control.out_brief}"
 
 say "GREEN: rye-build-lock-holder -- the lock is published complete, a live holder keeps it, and a corpse is still cleared."

@@ -31,7 +31,7 @@ say "rye-enum-variants: Lens TAME -- three named refusals, each proven from both
 
 say "rye-enum-variants: the reader answers the enums the gate desks stand over..."
 let meaning = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "caravan/restart.rye" "Meaning"]
-assert meaning.ok else "rye-enum-variants: the reader refused on Meaning -- ${meaning.out}"
+assert meaning.ok else "rye-enum-variants: the reader refused on Meaning -- ${meaning.out_brief}"
 let meaning_variants = trim meaning.out
 # The three words a finished dependent can say, read from the enum rather than from the count.
 # gate-caravan-exit-meanings-eq-u32.glow carries the matching `law` line, so its wall and this
@@ -41,22 +41,22 @@ assert meaning_variants == "answered stopped fallen" else "rye-enum-variants: Me
 # The many-line spelling with a doc comment above each variant, which is what the tree's own
 # aurora deciding module writes. A reader stopping at the first comment answers zero here.
 let path = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "aurora/src/deciding.rye" "Path"]
-assert path.ok else "rye-enum-variants: the reader refused on Path -- ${path.out}"
+assert path.ok else "rye-enum-variants: the reader refused on Path -- ${path.out_brief}"
 let path_variants = trim path.out
 assert path_variants == "full minimal" else "rye-enum-variants: Path no longer reads full minimal -- ${path_variants}"
 
 # The tagged spelling, where the backing type is not a variant and a tag value is not a name.
 let kind = run ["sh" "tools/fixtures/r/rye_enum_variants_scan.sh" "--variants" "brushstroke/skate_input_event.rye" "InputKind"]
-assert kind.ok else "rye-enum-variants: the reader refused on InputKind -- ${kind.out}"
+assert kind.ok else "rye-enum-variants: the reader refused on InputKind -- ${kind.out_brief}"
 let kind_variants = trim kind.out
 assert kind_variants == "key_down key_up mouse_down mouse_up touch_down touch_up touch_moved touch_cancelled" else "rye-enum-variants: InputKind no longer reads its eight variants -- ${kind_variants}"
 
 say "rye-enum-variants: breaking the reader in a throwaway pen, twenty-six ways..."
 let control = run ["sh" "tools/fixtures/r/rye_enum_variants_control.sh"]
-assert control.ok else "rye-enum-variants: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out}"
-assert control.out contains "verdict=ok" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "failed=0" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "behaviors=26" else "rye-enum-variants: the control ran a different number of behaviors than this rung names -- ${control.out}"
+assert control.ok else "rye-enum-variants: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out_brief}"
+assert control.out contains "verdict=ok" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "failed=0" else "rye-enum-variants: a planted case behaved wrongly -- ${control.out_brief}"
+assert control.out contains "behaviors=26" else "rye-enum-variants: the control ran a different number of behaviors than this rung names -- ${control.out_brief}"
 
 # The pen proven innocent first, so every refusal below reads as the break speaking.
 assert control.out contains "ok    clean/count -- 3" else "rye-enum-variants: the clean pen must read its own three variants"
