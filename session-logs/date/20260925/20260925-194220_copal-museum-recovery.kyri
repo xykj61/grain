@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260925.194220
+editor Codex
+provider OpenAI
+product Codex
+role copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; user instruction 2026-09-25
+voice Kyri
+title Museum witness recovered on main
+prompt Recover parked Copal work before new work and complete the chapter witness lap.
+think Read the newest stashes and found the cold receipt already tracked on main.
+think Found the museum roster commit on a preserved diverged branch while its claim remained open on main.
+think Adopted xy/main, cherry-picked the preserved commit, and resolved only the card parent nib.
+think Ran the named museum guard on the integrated tree; its earlier planted missing-hall control and hot pass were green.
+obs The museum census roster and its claim close now stand on main; the diverged branch and stashes remain preserved.
+obs The integrated scoped cold pass ran one guard green with tree_moved=no. Full roster reds remain named on the card.
+loom museum_scoped_cold_guards=1 green=1 red=0 tree_moved=no
+rota lap 6645, row 0 -- Aether, the row that hears; the crossing keeps a checked record reachable after a branch diverges.
+file construction/standing-equipment.kyri holds the recovered museum guard row
+file construction/ITINERARY.md records the recovered proof and parent nib
+file session-logs/date/README-index-20260925.md points to this receipt
+recommend keep-going -- retain the parked stashes and run full roster proof in a lap that can hold both passes.
+scope recovered the committed museum witness onto main and verified its integrated scoped cold and staged hot paths
+status GREEN -- museum guard and missing-hall refusal are proven; full roster proof remains open
