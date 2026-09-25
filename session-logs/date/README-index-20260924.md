@@ -6,6 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260924.203309` | [Bakery records and next fruit](20260924/20260924-203309_bakery-records-and-next-fruit.kyri) | Five parked logs restored; next repair named. |
+| `20260924.124112` | [Recovered ranking record](20260924/20260924-124112_bakery-rank-outcome-scope-refresh.kyri) | Recovered unchanged from a parked lap. |
+| `20260924.123128` | [Recovered build-target record](20260924/20260924-123128_bakery-build-target-red-parked.kyri) | Recovered unchanged from a parked lap. |
+| `20260924.001951` | [Recovered cold-roster record](20260924/20260924-001951_bakery-cold-roster.kyri) | Recovered unchanged from a parked lap. |
 | 20260924.203151 | [An empty directory stays on disk](20260924/20260924-203151_incense-stage-store-quiet.kyri) | Second pass still quiet; the lasting seven stay. |
 | 20260924.200120 | [A fresh directory stays quiet](20260924/20260924-200120_incense-stage-store-fresh.kyri) | Empty lists nothing; one write, and the list speaks. |
 | 20260924.193253 | [Every listed resin reads back](20260924/20260924-193253_incense-stage-store-list-read-all.kyri) | Seven names, each read hashes to itself. |
