@@ -236,8 +236,21 @@ All 18 checks pass with an inherited wrong override cleared: Bakery and ordinary
 defaults, explicit overrides on both seats, and each call's omitted or suffixed model.
 The existing stop, failure, prompt, and lock controls still pass. Production loop source
 is unchanged. The control remains a direct check; it has no standing-roster caller.
-The unreadable-owner, dated-path, stash-bound, and other recorded repairs remain owed,
+The dated-path, stash-bound, and other recorded repairs remain owed,
 as does full cold and hot roster proof. All 85 stashes stay preserved.
+
+The detached launcher now preserves transcripts when a held lock has a missing, empty,
+malformed, or unreadable PID. Its control checks both transcript files, refusal before
+launch, owner-path reporting, and the retained lock; four bypass plants reproduce the loss.
+The existing live-owner and dead-owner checks pass. The control satisfies 359 of its 367
+assertions, including all eight new ones. Eight evidence-write assertions still fail:
+the old fixture shims `tail`, while short evidence uses `cat`; `capture_evidence` also
+returns success after a planted `cat` failure leaves zero bytes. Repair that separate
+helper fault and its control next. Full-roster proof remains owed.
+This lap's cold run ended with exit 143 after its remaining recorded cost exceeded the
+live timeout's remaining window. Its partial output certifies neither full coverage nor
+tree stability. Price the cold pass plus its cadence slice and opening overhead before
+launching; the proposed longer lap window still awaits Keaton's word.
 
 ## gates
 

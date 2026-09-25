@@ -546,15 +546,25 @@ if [ "$detach" = yes ]; then
   # transcript showing two. Truncating an ELDER file and truncating a LIVE one are two different
   # acts that one `>` was performing, and only the first was ever wanted.
   #
-  # ONLY A LIVE OWNER REFUSES. A stale lock is left exactly as it stands, for `lock_acquire` to
-  # reap the way it always has -- refusing on a dead owner would lock a later lap out of the
-  # instrument its own card opens with, which is the fault this check exists to avoid one door
-  # over. The liveness test is `kill -0`, the same one `lock_acquire` uses, so the two readings
-  # cannot disagree.
-  if [ -s "$lock/pid" ]; then
-    detach_owner=$(cat "$lock/pid" 2>/dev/null || printf '')
+  # Keep a held lock's transcript until its owner is known to have exited. An unreadable,
+  # empty, or malformed PID can be a lock mid-creation; lock_acquire also leaves it held.
+  # A confirmed dead owner still passes through for lock_acquire to reap. This preflight
+  # preserves an existing lock; simultaneous launches into a free tree remain outside
+  # the one-writer-per-checkout contract.
+  if [ -d "$lock" ]; then
+    detach_owner=''
+    if [ -s "$lock/pid" ]; then
+      detach_owner=$(cat "$lock/pid" 2>/dev/null || printf '')
+    fi
     case "$detach_owner" in
-      ''|*[!0-9]*) : ;;
+      ''|*[!0-9]*)
+        echo "run_lock=in_flight pid=unreadable"
+        run_verdict_seen=yes
+        echo "run_verdict=run_in_flight"
+        owner_transcript "$lock"
+        echo "refused: $lock has no readable owner PID -- its transcript is untouched; inspect the held lock before retrying." >&2
+        exit 1
+        ;;
       *)
         if kill -0 "$detach_owner" 2>/dev/null; then
           owner_lap_read "$detach_owner" "$lock"
