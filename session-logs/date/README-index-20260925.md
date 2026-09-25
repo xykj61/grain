@@ -14,6 +14,7 @@
 | `20260925.182643` | [Card draft batch](20260925/20260925-182643_bakery-card-batch-recovery.kyri) | Thirteen drafts reviewed; current records kept. |
 | `20260925.182111` | [Petrichor grade and roster limit](20260925/20260925-182111_petrichor-grade-and-roster-limit.kyri) | Draft B+; full cold and hot proof still owed. |
 | `20260925.181833` | [Card recovery](20260925/20260925-181833_bakery-card-recovery.kyri) | Three drafts retained as history. |
+| `20260925.180314` | [Museum census joins the roster](20260925/20260925-180314_copal-museum-census-roster.kyri) | One Chapter guard and its refusal proved; full roster remains open. |
 | `20260925.180135` | [Shelf records](20260925/20260925-180135_bakery-shelf-record-recovery.kyri) | Ten drafts already have their logs and rows. |
 | `20260925.175205` | [Generated records](20260925/20260925-175205_bakery-generated-record-recovery.kyri) | Eight historical count drafts reviewed. |
 | `20260925.174453` | [Copal census control roster](20260925/20260925-174453_copal-census-control-roster.kyri) | One guard green; full roster proof remains open. |

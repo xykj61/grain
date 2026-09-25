@@ -91,8 +91,12 @@ exemption, and the remaining unrostered chapter witnesses.
 
 **COPAL.** [Bounds-home account shelved whole](archive/date/20260925/20260925-174220_itinerary-copal-bounds-home-account.md).
 
-**COPAL -- CENSUS CONTROL ROSTERED.** The chapter witness checks three live duties and a planted
-naive-total refusal. Direct proof is green; a full cold and hot roster verdict remains owed.
+**COPAL.** [Census control account shelved whole](archive/date/20260925/20260925-180220_itinerary-copal-census-control-account.md).
+
+**COPAL -- BATON MUSEUM CENSUS ROSTERED.** Thirteen named halls and two elders are present.
+The direct witness is green; removing `cell.brix` in a seat-local pen returns `census_incomplete`
+with exit 1. The named cold roster ran one guard green with `tree_moved=no`. Full cold and hot
+roster proof remains open; the full cold pass was ended after 41 guards and reported exit 143.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -359,7 +363,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a4368c7dd0` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `88f144ecf0` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
