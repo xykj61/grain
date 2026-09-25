@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.135714` | [Shell drafts reviewed](20260925/20260925-135714_bakery-portable-recovery.kyri) | Current helpers retained. |
 | `20260925.134917` | [Ledger draft reviewed](20260925/20260925-134917_bakery-spine-recovery.kyri) | Published numbers stay fixed. |
 | `20260925.133855` | [Compiler census retained](20260925/20260925-133855_bakery-compile-recovery.kyri) | Three drafts superseded. |
 | `20260925.132920` | [Link drafts reviewed](20260925/20260925-132920_bakery-path-recovery.kyri) | Two classification counterexamples. |
