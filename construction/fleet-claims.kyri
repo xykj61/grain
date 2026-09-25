@@ -95,3 +95,9 @@ stamp 20260924.221351
 epoch 1790302431
 paths tools/p/page_evict_witness.rish tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh tools/fixtures/p/page_residency_control.sh
 what Give the page witnesses private binaries at the existing root depth and prove peer-path refusal on Bakery.
+claim petrichor-yonder-grade-20260924
+seat petrichor
+stamp 20260924.224748
+epoch 1790304468
+paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
+what Recheck the yonder learning-floor page and record its complete grade and truth reading.
