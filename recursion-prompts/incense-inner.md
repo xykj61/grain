@@ -281,3 +281,17 @@ closed row or Keaton's word on one of the three `%338` doors before its own 8 `l
 anchors can close. The remainder of the 53-red cold roster overlaps Diffuser's `20260923` table
 (`build_target`, `rye_compile_reach`, `rye_compiled_reach`, `shared_build_path`, and the rest) and
 stays theirs or the lanes already named there.
+
+**A freely-held cold run at `20260925.033558`ish closed `tree_moved=no`, `run_verdict=guard_red`**
+after this lap terminated a stale in-flight pass whose `launch_head` had fallen five commits behind
+HEAD: 375 guards, 328 green, 44 red, 3 gated. The 44 match the standing backlog from Diffuser's
+`20260923` table plus the booked `%826`/`%827` rows and the unchanged ledger deadlock. Two reds
+inside this seat's own custody -- `index_row_bound` and `dayshelf_merge`, both reading the day
+shelf -- were repaired, but the day shelf's own write contention (three separate true-divergence
+parks in one lap, `pier/diverged-20260925-033508` and `pier/diverged-20260925-033734`) meant peer
+ships' own reconciliation passes closed the identical faults before either of this lap's first two
+pushes landed. Nothing was lost; round-open's parking fallback held every attempt intact. Landed at
+`1e6fef7ce`, both remotes. The ledger deadlock (`%827` `%808` `%803` `%785` `%730`, the three
+`%338` doors) is unchanged and already named for Keaton in ITINERARY's Open Doors bullet. Next lap:
+a fresh round-open and cold run at settled HEAD; expect the day shelf to still be hot and read the
+adopted tree before re-fixing anything it already shows GREEN.
