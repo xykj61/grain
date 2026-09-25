@@ -11,7 +11,7 @@
 #
 # THE PEN LIVES INSIDE THIS TREE ON PURPOSE. `page-evict` refuses any path outside its own root,
 # by reading `/proc/self/fd/<n>` after the open rather than trusting the spelling, so a pen under
-# `/tmp` could never be evicted and the falling side could never be shown. `.lap/` is gitignored
+# `/tmp` could never be evicted and the falling side could never be shown. `session-output/` is gitignored
 # and per-ship, which is where a lap's scratch belongs.
 #
 # ONE KERNEL PROPERTY THIS CONTROL DEPENDS ON, named rather than assumed: a dirty page is not
@@ -23,16 +23,16 @@
 set -eu
 
 # The portable helper is sourced from the tree root, found by walking up to the first ancestor
-# holding rishi/bin and tools/fixtures -- git-free so pen copies outside a repository still
+# holding rishi/src and tools/fixtures -- git-free so pen copies outside a repository still
 # resolve -- bounded at 8 steps, loud past the bound. It supplies `sed_inplace`, because GNU
 # `sed -i` takes no argument and BSD `sed -i` requires a backup suffix, and the two spellings
 # have no overlap.
 _fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _fd_steps=0
-while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+while [ ! -d "$_fd_root/rishi/src" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_steps=$((_fd_steps + 1))
   if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
-    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    echo "$0: no tree root within 8 steps (needs rishi/src and tools/fixtures)" >&2
     exit 2
   fi
   _fd_root=$(dirname "$_fd_root")
@@ -42,9 +42,12 @@ done
 ROOT=$_fd_root
 cd "$ROOT"
 
-SCAN=tools/fixtures/p/page_residency_sample.sh
-CENSUS=tools/bin/page-evict
-PEN=.lap/page-residency-pen
+SCAN="$ROOT/tools/fixtures/p/page_residency_sample.sh"
+CENSUS=${PAGE_EVICT_BIN:-$ROOT/tools/bin/page-evict}
+case $CENSUS in /*) ;; *) CENSUS="$ROOT/$CENSUS" ;; esac
+export PAGE_EVICT_BIN="$CENSUS"
+PEN=$(mktemp -d "$ROOT/session-output/page_residency_control.XXXXXX")
+trap 'rm -rf "$PEN"' EXIT HUP INT TERM
 legs=0
 fails=0
 
@@ -64,7 +67,6 @@ field_of() { printf '%s\n' "$1" | tr ' ' '\n' | sed -n "s/^$2=//p" | tail -1; }
 
 [ -x "$CENSUS" ] || { echo "detail: $CENSUS unbuilt -- this control needs it"; echo "control_verdict=no_census"; exit 2; }
 
-rm -rf "$PEN"; mkdir -p "$PEN"
 # One mebibyte of incompressible bytes: large enough to hold 256 pages, small enough that warming
 # and dropping it costs a peer nothing.
 dd if=/dev/urandom of="$PEN/warm.bin" bs=4096 count=256 2>/dev/null
@@ -105,6 +107,12 @@ cold_pct=$(field_of "$cold" min_pct)
 if [ "${cold_pct:-100}" -lt 90 ]; then leg evicted_reads_below_bar yes yes; else leg evicted_reads_below_bar yes "no($cold_pct)"; fi
 
 # --- mutations, each asserted to bite ---------------------------------------------------------
+# A copied, unchanged sampler must work before a changed copy can prove a refusal.
+cp "$SCAN" "$PEN/mutant.sh"
+cat "$PEN/warm.bin" > /dev/null
+out=$(sh "$PEN/mutant.sh" "$PEN/warm.bin" --samples 1 --interval 0 2>&1 || true)
+leg copied_sampler_welcomes stays_resident "$(verdict_of "$out")"
+
 mut() {
   name=$1; sedexpr=$2; want=$3
   cp "$SCAN" "$PEN/mutant.sh"
@@ -113,22 +121,32 @@ mut() {
   cat "$PEN/warm.bin" > /dev/null
   got=$(sh "$PEN/mutant.sh" "$PEN/warm.bin" --samples 1 --interval 0 2>&1 || true)
   gv=$(verdict_of "$got")
-  if [ "$gv" = "$want" ]; then leg "$name" bitten "unbitten($gv)"; else leg "$name" bitten bitten; fi
+  leg "$name" "$want" "$gv"
 }
 # Inverting the percent makes a fully resident file read as empty.
-mut mutation_percent    's|pct=$(( res \* 100 / pages ))|pct=$(( 100 - res * 100 / pages ))|' stays_resident
+mut mutation_percent    's|pct=$(( res \* 100 / pages ))|pct=$(( 100 - res * 100 / pages ))|' falls_cold
 # Flipping the threshold calls a warm file cold.
-mut mutation_threshold  's|if \[ "$min_pct" -ge 90 \]|if [ "$min_pct" -le 90 ]|'              stays_resident
+mut mutation_threshold  's|if \[ "$min_pct" -ge 90 \]|if [ "$min_pct" -le 90 ]|'              falls_cold
 # Dropping the stderr merge returns a blank line and every field parse fails.
-mut mutation_stream     's|census "$TARGET" 2>&1|census "$TARGET" 2>/dev/null|'               stays_resident
+mut mutation_stream     's|census "$TARGET" 2>&1|census "$TARGET" 2>/dev/null|'               census_shape
 # Removing the zero-page guard lets an empty path divide by zero instead of refusing.
 cp "$SCAN" "$PEN/mutant.sh"
 sed_inplace 's|\[ "$pages" -gt 0 \] |[ "$pages" -ge 0 ] |' "$PEN/mutant.sh"
 if cmp -s "$SCAN" "$PEN/mutant.sh"; then leg mutation_zero_guard bitten "unplanted(no_change)"; else
-  got=$(sh "$PEN/mutant.sh" "$PEN/empty.bin" --samples 1 --interval 0 2>&1 || true)
-  if [ "$(verdict_of "$got")" = empty_path ]; then leg mutation_zero_guard bitten "unbitten(empty_path)"; else leg mutation_zero_guard bitten bitten; fi
+  if got=$(sh "$PEN/mutant.sh" "$PEN/empty.bin" --samples 1 --interval 0 2>&1); then
+    leg mutation_zero_guard refused accepted
+  elif printf '%s\n' "$got" | grep -Eq '(division|divide) by (zero|0)'; then
+    leg mutation_zero_guard refused refused
+  else
+    leg mutation_zero_guard arithmetic_error "$got"
+  fi
 fi
 
 rm -rf "$PEN"
 echo "legs=$legs control_failed=$fails"
-[ "$fails" -eq 0 ] && echo "control_verdict=ok" || echo "control_verdict=failed"
+if [ "$fails" -eq 0 ]; then
+  echo "control_verdict=ok"
+else
+  echo "control_verdict=failed"
+  exit 1
+fi
