@@ -18,9 +18,10 @@ A cell is one counsel printout unit. It carries shapes and rulings for the bench
 - **Measurement beats memory.** Run the witness the cell cites before appending.
 - **Accrete, never break.** Dated artifacts stay; living pins move forward.
 - **Narrow-scope** when fascia < 80 -- one keystone per round unless the cell's own shape bounds the round (e.g. tend: zero new `.rye`, one waymark).
-- **Dual editors.** Mirror any new cell rule under `.cursor/rules/cell.mdc` when seating or refreshing this law.
 - **Option 2** still governs piers: Cloud FF-merges `xy`; a `debrided` auth-refusal is named; home syncs waters.
 
 ## Why
 
 Counsel packs many seats in one paste. The cell rule keeps ANSWER measured, SHAPE seated, PROPOSE parked, and BATON honest -- so a phone paste becomes a clean bench apply without inventing homes or rewriting history.
+
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file on every seating or refresh; the whole family is archived, unmodified, at [`../../.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
