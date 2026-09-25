@@ -207,23 +207,9 @@ two rows already landed in `dbc5306a0`; the current rank reads `qa_genre_census`
 row: its trace reads 1,777 files, with 5 gaps. The broad QA trace refused its 6053523-line output
 bound, so no second coverage verdict is claimed.
 
-**DIFFUSER -- THE FALSIFIER'S OPEN DOOR WAS ALREADY COUNTED.** [Shelved
-whole](archive/date/20260918/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md). The external
-caller of `fetcher-poll` is `caravan/subscribe_poll_service.rye`'s own supervisor loop, and the
-20ms wait it pays while a fetcher runs is `dependent_poll_ns` -- already row three of the sibling
-paper's four-site table. [Note](../active-designing/date/20260918/20260918-092431_the-open-door-was-already-counted.md).
-No new wake cost; two prior readings composed. Falsifier stayed quiet.
+**DIFFUSER -- THE FALSIFIER'S OPEN DOOR WAS ALREADY COUNTED.** [Shelved account](archive/date/20260918/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md); [the close](../active-designing/date/20260918/20260918-092431_the-open-door-was-already-counted.md) names the caller and existing cost row.
 
-**DIFFUSER -- THE DUPLICATE-CONTENT CENSUS WAS MOSTLY COUNTING SYMLINKS.** [Shelved
-whole](archive/date/20260918/20260918-075535_itinerary-diffuser-duplicate-content-account.md): the resolver named
-by the prior lap's paper
-([`tools/fixtures/d/duplicate_import_liveness_scan.sh`](../tools/fixtures/d/duplicate_import_liveness_scan.sh))
-found `sha256sum` follows symlinks, so 121 of 127 duplicate-`.rye` digest groups (95%) are one real
-file reached through a tracked git symlink (mode `120000`), not a hand-filed copy -- the genuine
-hand-filed-copy remainder is 6 digests, 1,480 bytes. Mantra's name-to-bytes binding stays a storage
-guarantee; the tree had already mostly solved the compute question with symlinks before this
-thread opened. **YOURS, ANY SHIP:** whether Zig's own build cache treats a symlinked `@import` as
-the same compilation unit as its target -- closed below.
+**DIFFUSER -- DUPLICATE-CONTENT CENSUS.** [Shelved whole](archive/date/20260918/20260918-075535_itinerary-diffuser-duplicate-content-account.md). The cache question is closed below.
 
 **DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.** [Shelved
 whole](archive/date/20260918/20260918-111501_itinerary-diffuser-symlinked-import-account.md).
@@ -233,7 +219,9 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 
 **DIFFUSER -- PLACEMENT ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-073701_itinerary-diffuser-placement-account.md).
 
-**DIFFUSER -- A BATCH MUST FIT ITS INTERVAL.** [Study](../active-designing/date/20260925/20260925-073701_caravans-batch-has-to-fit-the-interval.md) gives Bakery a cycle-cost bound and a host falsifier. Check time must be measured before a batch width is chosen.
+**DIFFUSER -- BATCH INTERVAL ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-122735_itinerary-diffuser-batch-interval-account.md).
+
+**DIFFUSER -- THE PARKED RECEIPT MOTION STUDY RETURNED.** [Study](../active-designing/date/20260925/20260925-090046_receipt-motion-bounds.md) proposes a pure sampler whose final bytes and accessibility entries can be checked against Still. Source order and its planted refusal pass on this Linux host; Swift runtime behavior remains unverified. The cold roster was stopped at 98 of 377 guards to keep its pass within this lap, and its transcript records exit 143 without a full verdict. After rebase, `log_has_a_row` found nine older closed-shelf logs without rows; six other mapped guards passed. **YOURS, SKATE:** build the pure sampler after the motion choices are named; prove the rendered path on macOS.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -362,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a0d8a527ec` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `608e3a7fba` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

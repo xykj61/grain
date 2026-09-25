@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.123248` | [Two drafts reviewed](20260925/20260925-123248_bakery-two-drafts-recovery.kyri) | Newer guards retained. |
+| `20260925.122919` | [Receipt motion study recovered](20260925/20260925-122919_diffuser-motion-study-recovered.kyri) | Parked study and log restored; full roster open. |
 | `20260925.122107` | [Detach recovery](20260925/20260925-122107_bakery-detach-recovery.kyri) | Three drafts already landed. |
 | `20260925.121246` | [Freshness recovery](20260925/20260925-121246_bakery-freshness-recovery-review.kyri) | Three false-fresh cases. |
 | `20260925.120356` | [Seed-phase recovery](20260925/20260925-120356_bakery-sow-recovery-review.kyri) | Three drafts superseded. |
@@ -17,6 +18,7 @@
 | `20260925.111516` | [Bakery scope cost](20260925/20260925-111516_bakery-scope-cost.kyri) | Current map skips four prior seconds. |
 | `20260925.110451` | [Bakery proof budget](20260925/20260925-110451_bakery-proof-budget.kyri) | Prior costs estimate 164 minutes. |
 | `20260925.105055` | [Bakery cold window](20260925/20260925-105055_bakery-cold-window.kyri) | 310 guards; stopped before lap deadline. |
+| `20260925.101545` | [Receipt motion bounded by Still](20260925/20260925-101545_diffuser-receipt-motion-bounds.kyri) | Pure motion sampler proposed; cold roster held still. |
 | `20260925.095804` | [A stale pass termed, a fresh one held](20260925/20260925-095804_a-stale-pass-termed-a-fresh-one-held.kyri) | Landed 3 orphaned logs; termed a stale pass by pid. |
 | `20260925.095256` | [IFOAM wording corrected](20260925/20260925-095256_petrichor-ifoam-wording.kyri) | Citizen draft A; full roster incomplete. |
 | `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
