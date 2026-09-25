@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.152934` | [Skate index review](20260925/20260925-152934_diffuser-skate-index-repair.kyri) | Peer repair kept; focused witness green; full roster open. |
 | `20260925.151502` | [Codex calls checked](20260925/20260925-151502_bakery-model-control.kyri) | Exact model checks; four refusals. |
 | `20260925.150040` | [Roster drafts reviewed](20260925/20260925-150040_bakery-roster-recovery.kyri) | Source audit complete; lock gap retained. |
 | `20260925.145549` | [Incense sheds its own next log](20260925/20260925-145549_incense-sheds-its-own-next-log.kyri) | Two guards fixed; own pin shed under ceiling. |

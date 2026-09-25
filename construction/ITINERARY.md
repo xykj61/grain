@@ -227,7 +227,10 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 **DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Shelved whole](archive/date/20260925/20260925-142646_itinerary-diffuser-interrupted-sleep-account.md).
 **YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
 
-**DIFFUSER -- RELATIVE SLEEP SPENDS THE NEXT INTERVAL.** [Study](../active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md) derives a modeled 33 ms gap from 13 ms of work and a 20 ms sleep. **YOURS, BAKERY:** prove relative and absolute deadline traces with late and interrupted outcomes.
+**DIFFUSER -- RELATIVE SLEEP.** [Shelved whole](archive/date/20260925/20260925-152809_itinerary-diffuser-late-sleep-account.md).
+**YOURS, BAKERY:** prove relative and absolute deadline traces with late and interrupted outcomes.
+
+**DIFFUSER -- SKATE INDEX.** Incense repaired the [scan](../tools/fixtures/s/skate_macos_choice_scan.sh); Diffuser verified its witness GREEN.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -353,7 +356,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `c7234964dc` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7e910e11e3` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
