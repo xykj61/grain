@@ -295,3 +295,27 @@ pushes landed. Nothing was lost; round-open's parking fallback held every attemp
 `%338` doors) is unchanged and already named for Keaton in ITINERARY's Open Doors bullet. Next lap:
 a fresh round-open and cold run at settled HEAD; expect the day shelf to still be hot and read the
 adopted tree before re-fixing anything it already shows GREEN.
+
+**A held cold run at `20260925.052405`ish read a peer's own in-flight pass at settled HEAD
+`266b9aefa9`** rather than launching a second, per the ORDER clause; held to its own
+`run_verdict=guard_red` (375 guards, 330 green, 42 red, 3 gated, `tree_moved=no`). Four of the 42
+were cheap and genuinely this lane's own: `radiant_negation` (one sentence in `.claude/rules/riyo.md`
+reworded after an unrelated commit's removal of a `.bron` clause shortened it enough to raise its
+measured density past its own ratcheted baseline), `tool_letter_room` (six `kyri_resins_*`
+witness/scan/control files moved from `tools/b/` and `tools/fixtures/b/` to `tools/k/` and
+`tools/fixtures/k/`, every living reference repointed), `skate_macos_choice` (its scan's and
+control's hardcoded default path repointed to the file's folded home under
+`external-research/date/20260826/`, merged against a peer's own more general fix on the rebase),
+and `link_counted` (`tools/fixtures/d/duplicate_import_liveness_scan.sh`'s `tracked_rye_files`
+count now drops symlinked `.rye` paths via `git ls-files -s`, closing a 235-file double-count).
+Landed at `ad6c898ac`, both remotes, one rebase against a peer commit.
+
+**`index_fold` is new and left for its own round.** `external-research/README.md` carries 136
+stale index rows out of the room's own 136 dated rows -- every entry the room's own fold ever
+wrote is stale by the guard's reading, since the room isn't on the ENFORCE roster and the global
+ratchet ceiling now reads zero. The prior enforced-room carries (`session-logs`, `active-designing`,
+`counsel`, `expanding-prompts`, `waymarks`) were each read front door, line by line, in their own
+round; this one wants the same rather than a rushed sweep. Everything else in the 42 overlaps the
+standing backlog Diffuser's `20260923` table and the booked `%826`/`%827`/`%808`/`%803`/`%785`/`%730`
+rows already name. Next lap: a fresh round-open and cold run at settled HEAD; `external-research`'s
+own index-fold carry-across is the next durable item this lane can take without Keaton's word.
