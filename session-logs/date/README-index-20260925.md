@@ -7,12 +7,12 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
-| `20260925.054442` | [external-research's index fold, landed](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Applied a prior lap's stashed fold; 27 day shelves, ENFORCE widened, session-logs.md corrected. |
+| `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
 | `20260925.053402` | [Capped wake count](20260925/20260925-053402_diffuser-wake-count-correction.kyri) | Backoff count corrected; batch witness bounded. |
-| `20260925.052405` | [Four cheap reds off a held cold run](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Held peer's cold run; 4 reds repaired, index_fold named for its own round. |
+| `20260925.052405` | [Four reds repaired](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Cold run held; index fold assigned. |
 | `20260925.041335` | [Receipt recovery rebased](20260925/20260925-041335_diffuser-recovery-send.kyri) | Focused controls green; full hot moved and red. |
 | `20260925.040452` | [Grass stable roster close](20260925/20260925-040452_grass-stable-roster-close.kyri) | Recovered packet sent; full hot pass held still with 45 shared reds. |
-| `20260925.035524` | [Cold run launched, deadlock reviewed](20260925/20260925-035524_cold-run-launched-deadlock-reviewed.kyri) | Board and pin deadlock read; no unheld row safely closeable; fresh cold run launched. |
+| `20260925.035524` | [Cold run launched](20260925/20260925-035524_cold-run-launched-deadlock-reviewed.kyri) | Pin deadlock reviewed. |
 | `20260925.033803` | [Closed by a contended shelf](20260925/20260925-033803_a-lap-closed-by-a-contended-shelf.kyri) | Cold run guard_red, unmoved; two reds already fixed by peers. |
 | `20260925.033310` | [Petrichor draft grade](20260925/20260925-033310_petrichor-draft-grade-and-cold-hold.kyri) | Draft B+; cold verdict missing; parked log restored. |
 | `20260925.033112` | [Parked bounds roster recovered](20260925/20260925-033112_copal-parked-roster-recovered.kyri) | Witness and day shelves recovered; cold and hot owed. |
