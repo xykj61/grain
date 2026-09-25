@@ -139,3 +139,15 @@ the section stood 30,804 of 24,576 bytes -- see that shelf for every entry betwe
 overlap the standing backlog already named on that shelf and in `construction/ITINERARY.md`'s Open
 Doors bullet, and the ledger fold deadlock (`%827` `%808` `%803` `%785` `%730`, three `%338` doors)
 is unchanged and still Keaton's word to break.
+
+**This lap (`20260925.162402`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+376 guards: 338 green, 35 red, 3 gated -- three fewer reds than the prior lap's tally.** Picked
+`commit_parent_claim` off the findings: `%801`'s wall reddened a second time, `claims_after_anchor`
+grown from `%826`'s 29 to 52, every offender dated `20260918`-`20260921.115750` and none since. The
+fault was the anchor's own placement -- set at the guard's seating rather than the day the fleet's
+send habit caught up to the rule-5 fix -- so a seating-day anchor keeps accruing backlog for as long
+as the fix takes to spread across eight ships. Moved the anchor once to `418fe0f2f9`, the last
+offending commit; `claims_after_anchor=0` over the 358 commits since; witness and 43-leg control
+GREEN; booked `REDS 20260925.162402`, CLOSED, leaving `%826`'s hook-wall question OPEN. Next lap: a
+fresh round-open and cold run; the remaining 34 reds still overlap the standing backlog on the
+shelf and in ITINERARY's Open Doors bullet.
