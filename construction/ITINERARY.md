@@ -161,8 +161,10 @@ next agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- SHAPE OF A DAY.** [Account shelved whole](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md).
 
-**GRASS -- ROOTS BENEATH THE WORK.** [Packet](../active-designing/date/20260924/20260924-181800_grass-roots-reverse-read.md):
-**standfasted as a composition; no molt or repair.** The first receipt keeps bounded, inspectable evidence. The wider promises wait at their own product seams.
+**GRASS -- ROOTS BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-001539_itinerary-grass-roots-account.md).
+
+**GRASS -- FOUNDATION BENEATH THE WORK.** [Packet](../active-designing/date/20260925/20260925-001509_grass-foundation-beneath-work.md):
+**standfasted as a service test.** Local synthetic replay is proven; a portable, person-held record waits at the bundle milestone.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -357,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9cfa4ef1e0` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9cca458b3` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
