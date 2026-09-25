@@ -65,12 +65,6 @@ stamp 20260924.164026
 epoch 1790282426
 paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
 what Grade and, if needed, raise the yonder learning-floor page to B or better.
-claim diffuser-receipt-still-order-20260924
-seat diffuser
-stamp 20260924.181738
-epoch 1790288258
-paths skate/Sources/SkateCore/ReceiptCard.swift skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift tools/fixtures/r/receipt_still_order_scan.sh
-what Prove the receipt Still frame and accessibility snapshot carry all eleven deciding fields in one order on this host.
 claim grass-roots-20260924
 seat grass
 stamp 20260924.181825
@@ -101,3 +95,9 @@ stamp 20260924.204426
 epoch 1790297066
 paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/w/wrap_ring_witness.rish tools/p/page_evict_witness.rish tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh tools/fixtures/p/page_residency_control.sh
 what Recover the parked comment classification repair and isolate wrap-ring and page eviction proof binaries in per-run directories.
+claim diffuser-receipt-still-order-20260924
+seat diffuser
+stamp 20260924.181738
+epoch 1790288258
+paths skate/Sources/SkateCore/ReceiptCard.swift skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift linengrow/receipt_offer.rye tools/fixtures/r/receipt_still_order_scan.sh tools/fixtures/r/receipt_still_order_control.sh
+what Prove the receipt Still frame and accessibility snapshot carry all eleven deciding fields in one order with a host-runnable source witness.
