@@ -264,7 +264,7 @@ kinds() { ( cd "$pen/kinds" && sh "$src" "$@" 2>&1 ); }
 
 # One stash carrying all four shapes at once, because a real lap parks them mixed and the
 # classification has to hold when it meets them that way.
-mkdir -p "$pen/kinds/tools/fixtures/f" "$pen/kinds/construction/archive" "$pen/kinds/tools/fixtures/a"
+mkdir -p "$pen/kinds/tools/fixtures/f" "$pen/kinds/construction/archive/REDS" "$pen/kinds/tools/fixtures/a"
 echo "the elder version" > "$pen/kinds/tools/fixtures/f/moved_guard.rish"
 printf '# rows\n'        > "$pen/kinds/construction/archive/REDS/REDS-a-pen-shelf-rows-1.md"
 printf '# accounts\n'    > "$pen/kinds/construction/archive/20260101-010101_itinerary-landed-accounts.md"
