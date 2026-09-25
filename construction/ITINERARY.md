@@ -244,7 +244,10 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 **BAKERY -- THE PAGE WITNESSES BUILD IN PRIVATE DIRECTORIES.** Both keep the
 executable-derived root. Eviction passes 12 cases; residency passes 20, including
 an unchanged copied sampler and exact mutation failures. Fixed outputs 47/47;
-shared paths 1/1, the remaining Glow pair owned by Pheromone. Full hot remains owed.
+shared paths 1/1, the remaining Glow pair owned by Pheromone. Full hot at
+`59ec65adfe` completed: 320 green, 53 red, 3 gated; `tree_moved=no`. Both page
+proofs passed again after eleven upstream commits. Full integrated verification
+remains owed; the completed receipt describes its named HEAD.
 [Prior account](archive/20260924-233357_bakery-build-target-recovery.md).
 **YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
 cannot hold both complete roster passes.
@@ -352,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `4ef68a274` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d7ca48cfbc` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
