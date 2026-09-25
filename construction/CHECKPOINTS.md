@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260925.105055` -- walk-back nib `24de55b4d5`.** Shelve Bakery's held-roster account whole from `construction/ITINERARY.md` into `construction/archive/20260925-105055_bakery-held-roster-account.md`. The earlier cold/hot results and recovery evidence remain there; the lap-window question stays on the card.
+
 **Checkpoint `20260925.052212` -- walk-back nib `6773274dcb`.** Shelve Bakery's page-witness and recovery account whole from `construction/ITINERARY.md` into `construction/archive/20260925-052212_bakery-page-proof-account.md`. It keeps the cold/hot receipts and clock-offset finding; the lap-window question stays on the card.
 
 **Checkpoint `20260924.220258` -- walk-back nib `2c8ace0c7d`.** Shelve Bakery's two-line slot-walk assertion account from `construction/ITINERARY.md` whole in `construction/archive/20260924-220258_itinerary-bakery-assert-account.md` before the build-target recovery account arrives. The archived account preserves the named assertion and its measured ceiling.
