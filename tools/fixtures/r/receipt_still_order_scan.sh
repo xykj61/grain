@@ -33,6 +33,7 @@ rye = source("RECEIPT_RYE", "linengrow/receipt_offer.rye")
 card = source("RECEIPT_CARD", "skate/Sources/SkateCore/ReceiptCard.swift")
 snapshot = source("RECEIPT_SNAPSHOT", "skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift")
 test = source("RECEIPT_TEST", "skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift")
+card_test = source("RECEIPT_CARD_TEST", "skate/Tests/SkateCoreTests/ReceiptCardTests.swift")
 
 receipt = block(rye, "pub const LinengrowReceipt = struct {", "};", "LinengrowReceipt")
 fields = re.findall(r"^\s+([a-z_]+):", receipt, re.M)
@@ -85,8 +86,10 @@ for name, fragment in [
     ("still_semantic_source", "lines.append(accessibilityLine(row: row) ?? [])"),
     ("deciding_count", "public static let decidingFieldCount = 11"),
     ("runtime_test", "testStillAndAccessibilitySnapshotKeepAllDecidingFieldsInOneOrder"),
+    ("printable_guard", "guard bytes.allSatisfy({ $0 >= 0x20 && $0 <= 0x7e })"),
+    ("control_refusal_test", "testControlBytesRefuseBeforeTheCardIsPublished"),
 ]:
-    if fragment not in (card if name == "still_semantic_source" else test if name == "runtime_test" else snapshot):
+    if fragment not in (card if name in ("still_semantic_source", "printable_guard") else card_test if name == "control_refusal_test" else test if name == "runtime_test" else snapshot):
         failures.append(name)
 
 print(f"published_fields={len(fields)}")

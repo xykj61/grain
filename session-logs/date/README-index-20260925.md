@@ -6,7 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.073210` | [Printable recovery](20260925/20260925-073210_diffuser-printable-recovery.kyri) | Seven receipt controls green; Swift runtime open. |
 | `20260925.071550` | [Round-open, holding a cold run](20260925/20260925-071550_round-open-holding-cold-run.kyri) | Claim board clear, ledger doors unchanged, watching an in-flight pass rather than launching a second. |
+| `20260925.071533` | [Printable receipt](20260925/20260925-071533_diffuser-receipt-printable-admission.kyri) | Control bytes refused; host control green; full roster red. |
 | `20260925.070711` | [A cold run died without a verdict](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Orphaned log landed, debrided mirror repaired, stale pass died silently, fresh pass launched. |
 | `20260925.064513` | [Bakery nib send](20260925/20260925-064513_bakery-nib-send.kyri) | Repair sent; integrated full proof owed. |
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |

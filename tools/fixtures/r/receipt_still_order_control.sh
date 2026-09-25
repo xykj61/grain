@@ -13,11 +13,13 @@ copy_sources() {
   cp skate/Sources/SkateCore/ReceiptCard.swift "$work/card.swift"
   cp skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift "$work/snapshot.swift"
   cp skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift "$work/test.swift"
+  cp skate/Tests/SkateCoreTests/ReceiptCardTests.swift "$work/card_test.swift"
 }
 
 read_scan() {
   RECEIPT_RYE=$work/receipt.rye RECEIPT_CARD=$work/card.swift \
-    RECEIPT_SNAPSHOT=$work/snapshot.swift RECEIPT_TEST=$work/test.swift sh "$scan"
+    RECEIPT_SNAPSHOT=$work/snapshot.swift RECEIPT_TEST=$work/test.swift \
+    RECEIPT_CARD_TEST=$work/card_test.swift sh "$scan"
 }
 
 mutate() {
@@ -65,9 +67,15 @@ printf '%s\n' "$output" | grep -q 'drift=snapshot_entries_source'
 echo 'leg_ok: detached_entries_refused'
 
 copy_sources
+mutate "$work/card.swift" 'guard bytes.allSatisfy({ $0 >= 0x20 && $0 <= 0x7e })' 'guard bytes.allSatisfy({ $0 < 0x80 })'
+if output=$(read_scan); then echo 'leg_failed: printable_guard'; exit 1; fi
+printf '%s\n' "$output" | grep -q 'drift=printable_guard'
+echo 'leg_ok: printable_guard_refused'
+
+copy_sources
 healed=$(read_scan)
 printf '%s\n' "$healed" | grep -q 'verdict=source_order_agrees'
 echo 'leg_ok: restored_source'
-echo 'control_legs=6'
+echo 'control_legs=7'
 echo 'control_failed=0'
 echo 'control_verdict=ok'

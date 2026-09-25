@@ -57,6 +57,14 @@ final class ReceiptCardTests: XCTestCase {
     }
   }
 
+  func testControlBytesRefuseBeforeTheCardIsPublished() throws {
+    for control in ["\n", "\u{001B}", "\u{007F}"] {
+      XCTAssertThrowsError(try fixture(purpose: "habitat\(control)planning")) { error in
+        XCTAssertEqual(error as? ReceiptCard.CardError, .nonPrintableASCII("purpose"))
+      }
+    }
+  }
+
   func testComposedLineRefusesBeforePublishingAPartialCard() throws {
     XCTAssertThrowsError(
       try fixture(receiptID: String(repeating: "r", count: ReceiptCard.identifierByteLimit))
