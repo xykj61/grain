@@ -4,7 +4,7 @@
 **Status:** Archive -- historical continuity, outside Mitra and shred-prep
 **Room:** checkable -- every figure here was read by a named instrument on the lap that wrote it
 **Style:** Gauge at Meter
-**Way in:** [`README.md`](README.md) - the living card is [`../ITINERARY.md`](../../../ITINERARY.md)
+**Way in:** [`README.md`](../README.md) - the living card is [`../ITINERARY.md`](../../../ITINERARY.md)
 
 One Bakery account, moved whole off the living card so a later account has a line. Its own
 standing ask travels forward on the card rather than resting here.

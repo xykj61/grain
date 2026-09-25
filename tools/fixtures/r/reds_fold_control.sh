@@ -24,7 +24,7 @@ bad()  { fail=$((fail + 1)); note "MISS $1"; }
 # A pen holds a pin with four rows and a shelf with a header, the shapes the real ledger uses.
 build_pen() {
   rm -rf "$pen/t"
-  mkdir -p "$pen/t/construction/archive"
+  mkdir -p "$pen/t/construction/archive/REDS"
   {
     echo '# REDS'
     echo ''
@@ -136,7 +136,7 @@ out=$(run_fold construction/archive/REDS/REDS-planted-rows-1-2.md 6) && rc=0 || 
 case "$out" in *row_open*) ok "the bold-OPEN refusal names itself" ;; *) bad "the bold-OPEN refusal names itself ($out)" ;; esac
 
 build_pen
-mkdir -p "$pen/t/construction/archive"
+mkdir -p "$pen/t/construction/archive/REDS"
 cp "$shelf" "$pen/t/construction/archive/REDS/REDS-planted-row-1.md"
 out=$(run_fold construction/archive/REDS/REDS-planted-row-1.md 1) && rc=0 || rc=$?
 [ "$rc" -ne 0 ] && ok "a shelf without 'rows-' refuses" || bad "a shelf without 'rows-' refuses"

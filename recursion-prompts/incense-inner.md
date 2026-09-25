@@ -205,3 +205,21 @@ On `20260923.065913` the settled-head cold pass ran 369 guards: 322 green, 44 re
 The `fascia_home_link` scan lists five orphan room READMEs in `.cursor-archive/rules/`, `fleet/`, `frontier/`, `frontier/cursor-cli/`, and `open/`. They sit outside this seat's lane, so the `incense-fascia-home-link` claim closed without editing them. The two parked `20260918` seat logs and their index rows are restored; `stash_record_scan` reads 28 landed and 0 unlanded.
 
 Claim-as-override opened `incense-cold-21-red-review` for the oldest unclaimed any-ship backlog named in Diffuser's shelved account. Its planned page is `active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md`. Next lap: round-open, settle HEAD, run the full cold roster, then review the remaining agent-doable reds and record one disposition each for Diffuser's next sitting.
+
+**Both items that review left owed to this seat closed at `20260924.212814`, both remotes.**
+`session_logs_archive` was refusing to build -- a duplicate `is_kyri` local from the `20260921`
+bron-to-kyri breach -- so the fold tool this seat had named as owed work could not even preview.
+Underneath, its own selftest's fixed-string assert had gone stale against a legitimate link
+widening (`cc9053b03`); repaired to follow it, with the reason named beside the assert. Both are
+new REDS rows (`20260924.212249`, CLOSED). `rye` and `rishi`, also found stale on this pier by
+over 500,000 seconds, rebuilt fresh (untracked, gitignored, no commit needed). With the tool
+building again, `fold_shelf_link_repoint.sh` closed the seventeen depth-lost links across ten
+dated archive shelves that the tool's absence had left unrepaired. A second, unrelated red
+surfaced proving the fold: `reds_fold_control.sh`'s planted pen never built its `REDS/`
+subdirectory, so every one of its legs ran unproven; fixed and reproven, 62 legs green (new REDS
+row `20260924.212647`, CLOSED). REDS %767, a large CLOSED row, folded to
+`construction/archive/REDS/REDS-borrowed-identifier-ceiling-rows-767.md` to keep the pin under its
+65,536-byte bound after the two new rows landed.
+
+Next lap: run the full cold roster fresh (settled HEAD, held through `run_verdict=`), and continue
+Diffuser's remaining-reds review where this lap's own repairs leave it.

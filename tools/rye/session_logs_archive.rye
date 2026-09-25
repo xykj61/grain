@@ -136,8 +136,7 @@ fn list_flat_logs(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8) ![][]c
         // fixture in the selftest is an extension nobody has tested, so both move together.
         const is_md = std.mem.endsWith(u8, entry.name, ".md");
         const is_kyri = std.mem.endsWith(u8, entry.name, ".kyri");
-        const is_kyri = std.mem.endsWith(u8, entry.name, ".kyri");
-        if (!is_md and !is_kyri and !is_kyri) continue;
+        if (!is_md and !is_kyri) continue;
         if (day_from_log_fname(entry.name) == null) continue;
         try names.append(a, try a.dupe(u8, entry.name));
     }
@@ -652,7 +651,12 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     if (std.mem.indexOf(u8, shelf1, "\n|---|---|---|\n") == null) return error.SelftestShelfDelimiter;
     // A shelf sits one directory deeper than the pin, so a target reaching past the room reaches
     // one level further from the shelf. 62 links in session-logs did exactly this (REDS %183).
-    if (std.mem.indexOf(u8, shelf1, "](../../ORGANIZING.md)") == null) return error.SelftestShelfDepth;
+    // The fixture's own zeta row reads `../../../ORGANIZING.md` (three ups) so the row keeps
+    // resolving from its real home at `tools/fixtures/session_logs_archive/README.md` -- a
+    // stale-citation repair moved it there from the one-up form this assert once expected, and
+    // the assert follows the fixture rather than the other way around: four ups is the transform
+    // this row's real three-up target must produce, one more level than it carried before.
+    if (std.mem.indexOf(u8, shelf1, "](../../../../ORGANIZING.md)") == null) return error.SelftestShelfDepth;
     // The shelf's own header links are written FOR that depth and must stay as the tool wrote them.
     if (std.mem.indexOf(u8, shelf1, "](../CHAPTERS.md)") == null) return error.SelftestShelfHeaderDepth;
 

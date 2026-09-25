@@ -8,7 +8,7 @@
 
 The card's DIFFUSER account for the falsifier-reach lap, kept here word for word so the living
 pin holds only the round in front of it. The way in for this room is
-[`README.md`](README.md).
+[`README.md`](../README.md).
 
 **DIFFUSER -- THE RULE SEPARATING RESEARCH FROM ENTHUSIASM STOOD ON NO INSTRUMENT.** Elder
 [shelved whole](20260917-090816_itinerary-landed-accounts.md).

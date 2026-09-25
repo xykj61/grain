@@ -56,7 +56,13 @@ the existing shape and lowering path.
 **INCENSE.** [Account shelved](archive/date/20260918/20260918-091343_itinerary-incense-second-cold-run-account.md)
 -- a second cold run named the same 28-red backlog plus one fresh regression, `%827` booked.
 
-**INCENSE -- THE COLD ROSTER'S 42 REDS, EACH GIVEN A HOME.** The pass at `d3ebf81b9e` held `tree_moved=no` and closed `guard_red`: 326 green, 42 red, 3 gated. [Review](../active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md): one disposition each, measured against the receipt. Receipt rows go to Patchouli, Bakery, and Diffuser. `%826`, `instrument_refusal`, and `seed_link` stay booked.
+**INCENSE.** [Account shelved](archive/date/20260924/20260924-212814_itinerary-incense-cold-roster-42-reds-account.md)
+-- both owed items closed.
+
+**INCENSE -- THE ARCHIVE FOLD'S OWN BUILD WAS BROKEN.** `session_logs_archive` refused to
+compile (a duplicate local, `20260921` breach), selftest stale beneath. Repaired (REDS
+`20260924.212249`); `fold_shelf_link_repoint.sh` closed 17 links; `rye`/`rishi` rebuilt. A second
+red: the fold loom's control pen was unbuildable (REDS `20260924.212647`), fixed, 62 legs green.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/date/20260918/20260918-053350_itinerary-pheromone-rune-cell-account.md).
@@ -359,7 +365,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `cc98d1fa59` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `515684963b` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
