@@ -224,7 +224,10 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 **DIFFUSER -- THE PARKED RECEIPT MOTION STUDY RETURNED.** [Shelved whole](archive/date/20260925/20260925-125114_itinerary-diffuser-motion-study-account.md).
 **YOURS, SKATE:** build the pure sampler after motion choices are named; prove the rendered path on macOS.
 
-**DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Study](../active-designing/date/20260925/20260925-124148_caravan-interrupted-sleep-budget.md) checks Caravan's ignored `nanosleep` result against POSIX interruption behavior. The earlier 50 checks per second is exact-sleep arithmetic, not a host bound. A three-signal trace supplies Bakery a pure witness case; host frequency and energy stay unmeasured. The cold roster ended with exit 143 after a bounded local stop and no full verdict. **YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
+**DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Shelved whole](archive/date/20260925/20260925-142646_itinerary-diffuser-interrupted-sleep-account.md).
+**YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
+
+**DIFFUSER -- RELATIVE SLEEP SPENDS THE NEXT INTERVAL.** [Study](../active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md) derives a modeled 33 ms gap from 13 ms of work and a 20 ms sleep. **YOURS, BAKERY:** prove relative and absolute deadline traces with late and interrupted outcomes.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -357,7 +360,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0639466369` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a2d8bde8df` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
