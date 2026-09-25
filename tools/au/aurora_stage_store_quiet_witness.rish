@@ -1,0 +1,22 @@
+# aurora_stage_store_quiet_witness.rish -- an empty directory stays on disk.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_quiet_witness.rish
+#
+# aurora/.build/stage-resin-store-quiet is created and left empty.
+# The list stays quiet. A second pass finds the same empty directory.
+
+let first = run ["sh" "tools/fixtures/a/aurora_stage_store_quiet.sh"]
+say first.out
+assert first.ok else "quiet store refused -- ${first.err_brief}"
+assert first.out contains "count=0" else "the empty directory spoke"
+assert first.out contains "remains=yes" else "the empty directory was removed"
+assert first.out contains "GREEN" else "quiet store did not close GREEN"
+
+let second = run ["sh" "tools/fixtures/a/aurora_stage_store_quiet.sh"]
+say second.out
+assert second.ok else "second pass refused -- ${second.err_brief}"
+assert second.out contains "count=0" else "the second pass found bytes"
+assert second.out contains "remains=yes" else "the second pass removed the directory"
+
+say "GREEN: the empty directory stays on disk, and the list stays quiet."
