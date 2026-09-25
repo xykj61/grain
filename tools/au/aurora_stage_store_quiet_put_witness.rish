@@ -1,0 +1,17 @@
+# aurora_stage_store_quiet_put_witness.rish -- the quiet store keeps one write.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_quiet_put_witness.rish
+#
+# One sentence lands in aurora/.build/stage-resin-store-quiet.
+# A second write adds nothing. The directory stays.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_quiet_put.sh"]
+say proof.out
+assert proof.ok else "quiet put refused -- ${proof.err_brief}"
+assert proof.out contains "count=1" else "the quiet store did not keep one write"
+assert proof.out contains "second=unchanged" else "the second write changed the store"
+assert proof.out contains "remains=yes" else "the quiet store was removed"
+assert proof.out contains "GREEN" else "quiet put did not close GREEN"
+
+say "GREEN: the quiet store keeps one write, and a second write adds nothing."
