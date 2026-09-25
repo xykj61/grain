@@ -331,3 +331,15 @@ round; this one wants the same rather than a rushed sweep. Everything else in th
 standing backlog Diffuser's `20260923` table and the booked `%826`/`%827`/`%808`/`%803`/`%785`/`%730`
 rows already name. Next lap: a fresh round-open and cold run at settled HEAD; `external-research`'s
 own index-fold carry-across is the next durable item this lane can take without Keaton's word.
+
+On `20260925.070711` this lap landed an orphaned session log out of the dead-letter stash, repaired
+a mirror-first push that had forked `debrided` from `xy`'s rebased hash (fixed with
+`--force-with-lease`, content diffed identical first), and found a genuinely new class: an in-flight
+cold run (pid 4164051, `session-output/standing-equipment-cold.txt`) exited after writing its last
+guard leg with no `run_verdict` line ever appended -- the first observed silent death of that
+script rather than a clean or a stale-launch-head read. The host's root filesystem read 97 percent
+full, 5.8G free, at the time; not chased further this lap, named for whoever meets it next. A fresh
+detached pass was launched afterward (pid 2507890) and this lap's own two contended sends moved HEAD
+under it twice, so its own `tree_moved` reading will honestly read `yes`. Next lap: read that pass's
+`run_verdict`, and if the silent-death mode repeats, treat it as its own red rather than routine
+contention.
