@@ -78,6 +78,7 @@ LC_ALL=C awk -v enforce_globs="$ENFORCE_GLOBS" -v derive_globs="$DERIVE_GLOBS" -
 # --- the skip rules, transcribed from the scan -------------------------------------------------
 function skip(p,   b) {
   if (p ~ /^(gratitude|vendor|seed)\//) return 1
+  if (p ~ /^risala\//) return 1   # the ascii-first named exception -- Arabic script is the subject
   if (p ~ /(^|\/)fixtures?\//) return 1
   if (p ~ /(^|\/)(date|archive|yonder)\//) return 1
   b = p; sub(/^.*\//, "", b)
