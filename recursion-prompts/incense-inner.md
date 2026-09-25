@@ -343,3 +343,14 @@ detached pass was launched afterward (pid 2507890) and this lap's own two conten
 under it twice, so its own `tree_moved` reading will honestly read `yes`. Next lap: read that pass's
 `run_verdict`, and if the silent-death mode repeats, treat it as its own red rather than routine
 contention.
+
+**It repeated at `20260925.075903`.** Pid 2507890 was gone with no `run_verdict=` line ever
+written -- the second silent death in a row, both under the same host condition, 97 percent full,
+5.5G free. `du -sh` across the eight ships' trees reads 8.8G to 17G each, mostly gitignored build
+artifact rooms (`glow/` alone 5.1G here); no single seat's build cache is this lap's to clear
+without naming it, since another ship's cold run may be reading its own live build target while it
+runs. `construction/REDS.md` is fold-deadlocked at 10 bytes of headroom, so the finding is named on
+the card's own Open Doors bullet rather than booked as a row. Shelved the settled archive-fold
+account to make room (checkpoint `20260925.075903`, nib `6b7003d768`). Next lap: launch a fresh
+detached cold run, hold fully still through it, and if the disk stays this tight, treat headroom
+itself as the crux ahead of the standing backlog -- a pass that cannot finish measures nothing.

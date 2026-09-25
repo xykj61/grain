@@ -2083,3 +2083,11 @@ so the card could carry the next claimed chapter witness under its 40,960-byte b
 is kept whole; the live card retains its dependency-red summary and pointer.
 
 - `20260924.233357` -- Bakery shelves its build-target recovery account whole at `construction/archive/20260924-233357_bakery-build-target-recovery.md` before replacing it with the page-output repair; parent `adcd59a5f7`.
+
+**Checkpoint `20260925.075903` -- Incense shelves its archive-fold-build account before naming the
+cold run's second silent death.** **Walk-back nib:** `6b7003d768`. **Swept:** the settled
+"archive fold's own build was broken" paragraph from `construction/ITINERARY.md`, moved verbatim
+onto [`archive/date/20260925/20260925-075903_itinerary-incense-archive-fold-broken-build-account.md`](archive/date/20260925/20260925-075903_itinerary-incense-archive-fold-broken-build-account.md)
+so the card could carry the new finding under its 40,960-byte bound. *What waits there, worth
+recalling:* nothing new -- REDS `20260924.212249` and `20260924.212647` already carry the full
+account, so the fold drops no fact the ledger lacks.

@@ -59,10 +59,14 @@ the existing shape and lowering path.
 **INCENSE.** [Account shelved](archive/date/20260924/20260924-212814_itinerary-incense-cold-roster-42-reds-account.md)
 -- both owed items closed.
 
-**INCENSE -- THE ARCHIVE FOLD'S OWN BUILD WAS BROKEN.** `session_logs_archive` refused to
-compile (a duplicate local, `20260921` breach), selftest stale beneath. Repaired (REDS
-`20260924.212249`); `fold_shelf_link_repoint.sh` closed 17 links; `rye`/`rishi` rebuilt. A second
-red: the fold loom's control pen was unbuildable (REDS `20260924.212647`), fixed, 62 legs green.
+**INCENSE.** [Account shelved](archive/date/20260925/20260925-075903_itinerary-incense-archive-fold-broken-build-account.md)
+-- the archive fold's own build was broken and repaired, REDS `20260924.212249` and `20260924.212647`.
+
+**INCENSE -- THE COLD RUN'S SILENT DEATH REPEATED.** A second cold pass (pid 2507890) exited with
+no `run_verdict=` line ever written -- the same silent death this lap's log first named. The root
+filesystem read **97% full, 5.5G free** both times. `REDS.md` cannot take this row today, at 10
+bytes of headroom and `pin_deadlocked=1`. **Yours:** the pier's own disk headroom, and which
+ship's gitignored build-cache rooms (8.8G to 17G each) are safe to clear.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/date/20260918/20260918-053350_itinerary-pheromone-rune-cell-account.md).
@@ -356,7 +360,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `146f6d2cef` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6b7003d768` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
