@@ -101,3 +101,9 @@ stamp 20260925.125920
 epoch 1790355560
 paths active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md
 what Derive Caravan late-sleep phase drift from its source and hand Bakery a bounded timing falsifier.
+claim copal-bounds-home-recovery-20260925
+seat copal
+stamp 20260925.130058
+epoch 1790355658
+paths tools/gen/chapter/bounds_home_census_witness.rish tools/fixtures/b/bounds_home_census_control.sh construction/standing-equipment.kyri session-logs/date/20260925/20260925-061654_copal-bounds-home-roster.kyri
+what Recover the proven bounds home census roster, its planted refusal, and parked copal records.
