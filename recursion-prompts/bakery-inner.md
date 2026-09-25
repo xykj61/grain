@@ -196,6 +196,14 @@ already established. The draft passes 28 checks; the current witness passes all
 Twenty-nine source versions remain to review. The named test repairs and full
 roster proof remain owed.
 
+The [coverage receipt recovery review](../session-logs/date/20260925/20260925-142455_bakery-reach-recovery.kyri) covers eight
+versions from two September 6 stashes. Their checks compare projection HEAD;
+today's receipt binds manifest bytes and allowed-room classes. Both saved controls
+pass 26 checks. Current passes all 55 controls and the live coverage witness:
+113 allowed rooms, 112 shipped, one logged withholding, zero empty rooms.
+Keep current source and all 85 stashes. Twenty-one source versions remain to review.
+Content freshness, privacy, and full roster proof remain separate duties.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
