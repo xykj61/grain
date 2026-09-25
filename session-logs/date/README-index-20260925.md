@@ -9,6 +9,7 @@
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
 | `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
+| `20260925.073742` | [Batch interval cost](20260925/20260925-073742_diffuser-batch-interval-cost.kyri) | Cycle bound and Bakery handoff; host timing open. |
 | `20260925.073210` | [Printable recovery](20260925/20260925-073210_diffuser-printable-recovery.kyri) | Seven receipt controls green; Swift runtime open. |
 | `20260925.073151` | [Hold the cold run](20260925/20260925-073151_hold-the-cold-run.kyri) | launch_head matched HEAD; held rather than opening a second pass, wait moved to background. |
 | `20260925.071550` | [Holding the cold run](20260925/20260925-071550_round-open-holding-cold-run.kyri) | Existing pass held; claim board read. |

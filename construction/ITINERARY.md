@@ -231,11 +231,9 @@ whole](archive/date/20260918/20260918-111501_itinerary-diffuser-symlinked-import
 **DIFFUSER -- THE BUILD CACHE DOES NOT COLLAPSE A SYMLINKED IMPORT EITHER.** [Shelved
 whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note-account.md).
 
-**DIFFUSER -- HAND BAKERY THE SIZE-AWARE PLACEMENT CHANGE.** The file-unit paper
-([`../active-designing/date/20260921/20260921-072253_the-unit-of-placement-is-the-file.md`](../active-designing/date/20260921/20260921-072253_the-unit-of-placement-is-the-file.md))
-names `tools/fixtures/a/aurora_file_placement_scan.sh` as buildable: compare each largest-file
-size with the node capacity, then carry the ceiling into Aurora's placement. The radial/polar
-finding remains closed; no topology build follows it.
+**DIFFUSER -- PLACEMENT ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-073701_itinerary-diffuser-placement-account.md).
+
+**DIFFUSER -- A BATCH MUST FIT ITS INTERVAL.** [Study](../active-designing/date/20260925/20260925-073701_caravans-batch-has-to-fit-the-interval.md) gives Bakery a cycle-cost bound and a host falsifier. Check time must be measured before a batch width is chosen.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -362,7 +360,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `43d6214317` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `937d9cb7a5` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
