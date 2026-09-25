@@ -150,6 +150,15 @@ passes all 71 controls and its live scan. All 85 stashes remain preserved, and
 52 source versions still await review. The model-control repair and full roster
 proof remain owed.
 
+The [link recovery review](../session-logs/date/20260925/20260925-132920_bakery-path-recovery.kyri) covers six more versions.
+Three dated-path drafts are superseded. Its current control satisfies all 19
+expected literals. The full witness stops earlier: an archive path now resolves
+by index, while its assertion still expects the former home. Repair that expectation.
+The folded-link draft passes 93 controls but misclassifies two added cases: an
+ambiguous basename reads recoverable, and timestamp recovery reads lost. Keep its
+three drafts preserved for revision. Forty-six source versions await review;
+all 85 stashes remain preserved. Full roster proof and model-control repair stay owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

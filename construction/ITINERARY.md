@@ -249,6 +249,7 @@ The active timeout is 5,400 seconds.
 [Estimate and parked-source reviews](../recursion-prompts/bakery-inner.md).
 The Codex control fails today's default. With the former model supplied, all 12 checks
 pass even if either call omits its model flag. Prove each call and both seat defaults.
+The dated-path witness also expects a moved archive path; its 19 control assertions pass.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -353,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `82ec4c66a1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `00c8069a06` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
