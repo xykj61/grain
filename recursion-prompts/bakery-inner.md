@@ -165,6 +165,14 @@ misses a variable build and permits a claim that today's scan refuses. Its 35 ch
 pass; today's full witness and 87 controls pass as well. Forty-three source versions
 remain to review. All 85 stashes stay preserved, and full roster proof remains owed.
 
+The [ledger recovery review](../session-logs/date/20260925/20260925-134917_bakery-spine-recovery.kyri) covers three more versions.
+The parked arrival-order scan advises moving a published row. Today's rule keeps
+published numbers fixed and reports those doubles as a manual decision. Four Git
+pen cases confirm that distinction while both scans still refuse a new local
+collision and welcome its repair. The current witness and all 24 controls pass.
+Keep current source and all 85 stashes. Forty source versions await review;
+model-control and dated-path repairs and full roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
