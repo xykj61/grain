@@ -299,6 +299,14 @@ and one Cursor rule. The inventory names their stash trees in
 `session-output/parked-artifacts-qmdgza3u/inventory.json`. All 85 stashes remain preserved;
 the capture candidate and full cold and hot proof remain owed.
 
+The [roster-record review](../session-logs/date/20260925/20260925-172109_bakery-roster-record-recovery.kyri) covers fifteen parked roster versions.
+Keep today's rows for thirteen; retain the suffix-assertion and seed-freshness rows
+with their drafts, which still need repairs. The current roster's paths and field
+shapes pass its scan, while recorded reds keep the overall scan red. This is a
+record reading, not a fresh roster pass. The remaining queue holds 189 versions:
+176 Markdown, twelve claim-board versions, and one Cursor rule. All 85 stashes
+stay preserved; production capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
