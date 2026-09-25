@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.141528` | [Scope draft reviewed](20260925/20260925-141528_bakery-yield-recovery.kyri) | Current ranking retained. |
 | `20260925.140554` | [Stash boundary reviewed](20260925/20260925-140554_bakery-stash-bound-review.kyri) | Truncated scan reads clean. |
 | `20260925.140413` | [Parked Patchouli records restored](20260925/20260925-140413_patchouli-parked-records-restored.kyri) | Eleven logs and shelf rows recovered; focused checks green. |
 | `20260925.135714` | [Shell drafts reviewed](20260925/20260925-135714_bakery-portable-recovery.kyri) | Current helpers retained. |

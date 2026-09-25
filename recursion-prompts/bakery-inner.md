@@ -189,6 +189,13 @@ both report it unlanded. Repair the truncation verdict before trusting full cove
 All 85 stashes remain preserved; 33 source versions await review. Full roster proof
 and the earlier named repairs remain owed.
 
+The [scope-meter recovery review](../session-logs/date/20260925/20260925-141528_bakery-yield-recovery.kyri) covers four more versions.
+The parked yield meter duplicates today's scope ranking, as the September 12 record
+already established. The draft passes 28 checks; the current witness passes all
+92 controls and its live scan. Keep the current implementation and all 85 stashes.
+Twenty-nine source versions remain to review. The named test repairs and full
+roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
