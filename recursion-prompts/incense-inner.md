@@ -242,3 +242,38 @@ remotes, one rebase against two peer commits.
 the same class the prior lap's own log named -- there was no way to hold fully still behind a pass
 already running with no signal for its length. Next lap's first move: a fresh, freely-held cold
 roster, then continue Diffuser's remaining-reds review from the `20260923` account.
+
+**A fresh, freely-held cold roster ran at `20260925.003059`**, launched on settled HEAD `953f5015e`
+after terminating a stale in-flight pass from a prior lap (launch_head already moved past HEAD, so
+its own verdict was already fixed at `tree_moved`; TERM per the FLEET clause, confirmed this
+tree's own process by cwd before signaling). Held fully still through it: 374 guards, 318 green, 53
+red, 3 gated, `tree_moved=no`. Landed at five commits (`8dda2810a` through `36193d6`), all
+witnesses confirmed GREEN on metal afterward:
+
+- **`reds_citation`, `reds_shelf_name`, `stash_record`** -- three control pens each planted a
+  fixture shelf at `construction/archive/REDS/REDS-*.md` while their own `mkdir -p` stopped one
+  level short, at `construction/archive`. `stash_record_scan.sh`'s shelf-classifying regex carried
+  the identical gap. All fixed; 52, 26, and 105 legs green respectively.
+- **`tracked_link`, and `living_card_ascii` as a side effect** -- 23 tracked symlinks left dangling
+  by the `20260921` bron-to-kyri molt (14 under `mycelium/corpora/`, 8 under `pond/apps/corpora/`,
+  one `.rye` target), diagnosed and fixed for all 23 per a prior lap's own parked session log
+  (popped from the round-open's dead-letter stash and landed alongside the repair). The dangling
+  symlink was also why `living_card_ascii`'s single collected UTF-8 pass was refusing outright
+  rather than reporting a count.
+- **`ascii_document`** -- four em dashes in `frontier/cursor-cli/README.md` converted to ASCII.
+- **`ascii_resident_agree`** -- the resident probe's `skip()` function was missing the `risala/`
+  exemption its sibling scan carries in three places; added, `--agree` now reads yes.
+- **`link_text_promise`, three quarters** -- 60 living anchors read stale backtick text after a
+  fold moved the cited file's own directory deeper, across four `construction/` pins. Applying
+  `REDS.md`'s own 8 pushed that pin 66 bytes over its 65,536-byte bound, and the pin is presently
+  fold-deadlocked (all 17 rows read OPEN, so `reds_fold.sh` has nothing to move); reverted that one
+  file's hunk and named the deadlock rather than force a bound breach. `CHECKPOINTS.md`,
+  `ITINERARY.md`, and `SHRED_PREP.md`'s 52 anchors stand repaired.
+
+**Left for the next lap or its own lane:** `width_check`'s corpus ratchet reads one line over its
+own falling ceiling (1124 vs 1123) -- belongs wherever the `glow/lower_*` usize-to-u32 delegation
+chain this ceiling's own history names is still in flight. `REDS.md`'s fold deadlock wants either a
+closed row or Keaton's word on one of the three `%338` doors before its own 8 `link_text_promise`
+anchors can close. The remainder of the 53-red cold roster overlaps Diffuser's `20260923` table
+(`build_target`, `rye_compile_reach`, `rye_compiled_reach`, `shared_build_path`, and the rest) and
+stays theirs or the lanes already named there.
