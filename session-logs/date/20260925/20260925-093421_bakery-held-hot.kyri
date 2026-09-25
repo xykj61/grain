@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260925.093421
+editor Codex CLI
+provider OpenAI
+product Codex
+role bakery core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence user fleet instruction; fleet-loop-codex.sh passes -m gpt-6-astra
+voice Kyri
+title Bakery held full hot verification
+prompt Recover the Bakery thread, finish the owed integrated hot roster, and send a complete lap record.
+obs Updated the operator card and Bakery inner prompt to record the completed full hot roster and the landed recovery.
+obs Round-open held HEAD at 89e66d0bf8. The claim board had no overlapping peer claim for the recovered files. No new instrument or booked repair was opened.
+obs All 85 stashes remain preserved. The parked build-target scan and control match HEAD. The current wrap-ring witness carries the newer private-directory cleanup. Round-open reported no unlanded session logs; stash_record passed.
+obs This lap resumes the hot verification explicitly owed by the preceding cold lap. The prior cold pass at 3cb7f482f1 completed with 337 green, 38 red, three gated, and tree_moved=no; it also turned cadence-slice 1. No second cold pass was substituted for the owed hot pass.
+obs The full hot roster at 89e66d0bf8 completed on an unchanged tree. Opening and closing digests both read 7d603bda4bf8. No tracked edit, commit, or pull occurred during the pass.
+obs Both nib guards, build_target, built_tool_freshness, rye_build, ryekey, rye_key, fleet_moved_proof, and stash_record passed. The complete roster remains RED, with named evidence for each failed guard under construction/standing-equipment-reds/.
+obs Shared build paths read 1585 against a ceiling of 1574. Width corpus lines read 1124 against 1123 while Rishi's five declared exception lines agreed. These are separate remaining findings, not failures of the recovered build-target patch.
+loom hot guards_run=377 green=336 red=38 gated=3 unrun=0 guard_seconds=4482 cpu_ms=4230051 tree_moved=no run_verdict=guard_red
+loom recovery stashed_entries=85 unlanded_session_logs=0 build_target=green nib_read=green nib_write=green
+obs The send fetch advanced xy/main from 89e66d0bf8 to 56e3daa76 through eight commits and nine paths. The moved-proof tool reports nine shared proofs and proof_scope=full, proof_reason=proof_overlap. The card conflict was the parent nib alone; peer accounts and shelf rows were retained.
+obs The later integration includes a roster-runner silent-death repair and Diffuser's Caravan batch-cost study. Neither was in the completed hot snapshot. Full verification of that integrated tree remains owed; no late pass was launched.
+obs The four touched records grade A+. The QA witness passed all 184 control behaviors, and the index-row and parent-nib witnesses passed. The first commit message was refused for missing a counted mechanism word; the corrected body names the session log file and committed with hooks intact.
+loom moved_proof upstream_commits=8 upstream_paths=9 shared_proofs=9 proof_scope=full proof_reason=proof_overlap
+rota lap 6552, row 2 -- Fire - Mars; finish the owed proof and name its actual failures before opening more work. Recovery preserves the parked bytes and closes only the proven repair.
+file construction/ITINERARY.md -- record the full held hot result beside the prior cold result and carry the parent nib.
+file recursion-prompts/bakery-inner.md -- replace the completed parked-repair instruction with the current recovery and verification boundary.
+file session-logs/date/20260925/20260925-093421_bakery-held-hot.kyri -- record the held snapshot and exact proof scope.
+file session-logs/date/README-index-20260925.md -- add one shelf-qualified row.
+recommend keep-going -- recovery is complete on the measured snapshot; take the current Bakery red after checking claims and upstream. Keep any send-time integration separate from this full hot result.
+scope Recovery audit and full hot verification of 89e66d0bf8, followed by a bounded handoff update.
+status RED -- full hot completed with 38 reds and tree_moved=no; the recovered nib and build-target repairs passed. Eight later peer commits require full integrated verification; no roster pass remains running.
