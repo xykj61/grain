@@ -8,12 +8,14 @@
 |---|---|---|
 | `20260925.111516` | [Bakery scope cost](20260925/20260925-111516_bakery-scope-cost.kyri) | Current map skips four prior seconds. |
 | `20260925.110451` | [Bakery proof budget](20260925/20260925-110451_bakery-proof-budget.kyri) | Prior costs estimate 164 minutes. |
+| `20260925.110120` | [Copal integrated hot](20260925/20260925-110120_copal-integrated-hot.kyri) | Held full hot; independent rebase awaits scoped close. |
 | `20260925.105055` | [Bakery cold window](20260925/20260925-105055_bakery-cold-window.kyri) | 310 guards; stopped before lap deadline. |
 | `20260925.095804` | [A stale pass termed, a fresh one held](20260925/20260925-095804_a-stale-pass-termed-a-fresh-one-held.kyri) | Landed 3 orphaned logs; termed a stale pass by pid. |
 | `20260925.095256` | [IFOAM wording corrected](20260925/20260925-095256_petrichor-ifoam-wording.kyri) | Citizen draft A; full roster incomplete. |
 | `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
 | `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Cold run held; a stale shell default repointed. |
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
+| `20260925.093118` | [Bounds census integration](20260925/20260925-093118_copal-rebased-proof.kyri) | Peer overlap requires a new full hot proof. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
 | `20260925.080925` | [Bounds census recovered](20260925/20260925-080925_copal-bounds-census-recovered.kyri) | Restored parked witness; ten pairs pass, one drift refuses. |

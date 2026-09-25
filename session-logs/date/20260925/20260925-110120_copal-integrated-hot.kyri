@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260925.110120
+editor Codex
+provider OpenAI
+product Codex
+role copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; user instruction 2026-09-25
+voice Kyri
+title Bounds census integrated hot proof
+prompt Recover the parked copal send and finish its integrated proof.
+think The round-open parked the pending log during an older hot pass, so that pass could not answer for the settled tree. I ended only this tree's runner through fleet_call and restored the three parked files.
+think The fresh full hot pass held HEAD and the staged set still through all 377 guards. Afterward the send fetch found 17 peer commits, and fleet_moved_proof found no shared guard closure.
+think I rebased the witness commit onto the new xy/main, resolved the card nib to its new parent, and restored the pending log and index.
+obs Full hot at 1ec8287863 closed tree_moved=no, 333 green, 41 red, three custody gated. The bounds_home_census guard was green.
+obs Moved proof read local_proofs=0, upstream_proofs=14, shared_proofs=0, proof_scope=scoped. The rebase hook's generated-page and pin debts were paid.
+loom hot_guards=377 hot_seconds=4586 hot_red=41
+rota lap 6561, row 1 -- Air, the row that feels; the parked log and claim boundary were checked before restoring either.
+file construction/ITINERARY.md carries the rebased parent nib
+file session-logs/date/README-index-20260925.md points to both integration records
+recommend keep-going -- run the scoped hot closure for this independent rebase, then send xy and gp405.
+scope recovered integration log, rebased witness commit, full hot proof, moved proof, and scoped send closure
+status YELLOW -- bounds census green on held full hot; 41 shared reds remain and the mirror send awaits scoped verification
