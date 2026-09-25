@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260925.033112
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain, law and active-designing lane
+modality text
+model claude-sonnet-5
+model_status configured -- .claude/settings.local.json resolved value, not runtime-verified
+voice Kyri
+title A freely-held cold run and a tidied day shelf
+prompt Continue the incense overnight loop from its own inner prompt and the baton's rite.
+think Round-open landed clean at a19158e50f, no standing rebase; read the fleet claim board -- five open claims, none naming this seat's lane.
+think Re-read reds_pin_capacity_scan.sh: pin_deadlocked=1 still, zero foldable rows, the same five unheld rows (%827 %808 %803 %785 %730) already named for Keaton in ITINERARY's Open Doors bullet -- confirmed nothing new to add there, and the pin's 10-byte headroom forbids writing a new REDS row this lap regardless.
+think Checked the in-flight cold run this tree's own prior laps had been holding for: its launch_head 27cbb5a098 was five commits behind current HEAD, so per the runner's own reasoning its verdict was already fixed at tree_moved -- continuing to hold it would have bought nothing, matching the class the baton's ORDER clause and two prior session logs already named.
+think Confirmed the pid (4053442) resolved to this tree's own cwd via fleet_call.sh before signaling, sent TERM, waited for the lock to release (it lands only when the in-flight guard returns), then round-opened again and launched a fresh cold run at settled HEAD a19158e50f.
+think Ran the fascia doorway scan concurrently while waiting -- verdict=ok, fails=3 sitting exactly at ceiling=3, nothing over.
+think Held fully still through the fresh run -- no edits, no commits, no pulls -- for roughly 74 minutes (load average 10-12 with all eight ships running concurrently explains the slower-than-usual pace against the ~500s figure recent solo runs cited). It closed tree_moved=no, run_verdict=guard_red: 375 guards, 328 green, 44 red, 3 gated, 0 unrun.
+think Diffed the 44 reds against active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md's disposition table -- the overwhelming majority are already handed off to their owning lanes (Bakery's build census, Diffuser's design reads, Grass's citation ceilings, Petrichor's register sweep, Amphora/Dimeroll's %827 refusal legs, %826 booked for Keaton) or are the known link_text_promise/fold_shelf_link deadlock byproducts already named in ITINERARY.
+think Two reds stood outside that table and inside this lane's own custody: index_row_bound and dayshelf_merge, both reading today's own day shelf, session-logs/date/README-index-20260925.md. index_row_bound named three rows over the 192-byte bound (225, 216, 197 bytes) plus one misordered row -- all five written by this same tree's own prior five hold-laps tonight. dayshelf_merge read real_shelf_unchanged=no, which proved to be the same shelf caught mid-edit rather than a merge-driver fault.
+think Shortened the three over-bound rows to their pointing clause alone (a row points, it does not summarise, per stamp-and-name.md), and reordered the table so 20260925.023135 -- the largest stamp, mislabeled Third by whichever hand wrote it, left untouched as dated testimony -- sits above 20260925.020430 and 20260925.015959 rather than below them.
+obs Left the ordinal log titles (First/Second/Third/Fourth/Fifth) exactly as their own kyri files name them -- those are dated testimony under accrete-never-break; only the living index row order and clause text were this lap's to fix.
+obs index_row_bound_witness.rish and dayshelf_merge_witness.rish both GREEN after the fix; index_row_bound_scan.sh reads rows_over=0, rows_misordered=0, verdict=ok directly.
+obs Did not chase log_has_a_row (15 post-law logs missing a shelf row, pin_open_day drifted two days behind newest_shelf) or the remaining 42 reds -- each already belongs to a named lane or waits on Keaton, and reopening them here would duplicate work already booked.
+loom witness=index_row_bound_witness behaviors=39 faults=0
+loom witness=dayshelf_merge_witness control_verdict=ok real_shelf_unchanged=yes
+loom cold_run=standing_equipment_run guards_run=375 guards_green=328 guards_red=44 guards_gated=3 guards_seconds=4442 tree_moved=no
+rota lap 4243, row 3 -- Water, the row that tastes; this lap tasted whether a held reading was still worth holding, and found the stale pass was not.
+file session-logs/date/README-index-20260925.md -- shortened three over-bound rows and reordered the misplaced one, closing index_row_bound and dayshelf_merge on metal.
+scope one lap: terminate a stale in-flight cold pass, run a fresh freely-held one, repair two of its own reds.
+status GREEN -- index_row_bound_witness and dayshelf_merge_witness both proven GREEN on metal; the cold run itself closed tree_moved=no, run_verdict=guard_red with the remaining 42 reds already booked elsewhere.
+recommend check-in (either) -- the ledger deadlock is unchanged and already named plainly for Keaton in ITINERARY's Open Doors bullet (the three %338 doors); this lap found and closed two real reds in its own lane and confirmed the rest belongs to other hands, so either a ruling on %338 or a plain keep-going into the next lane's backlog both stand open.
