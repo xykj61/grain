@@ -223,3 +223,22 @@ row `20260924.212647`, CLOSED). REDS %767, a large CLOSED row, folded to
 
 Next lap: run the full cold roster fresh (settled HEAD, held through `run_verdict=`), and continue
 Diffuser's remaining-reds review where this lap's own repairs leave it.
+
+**A cold endurance run was already in flight at this lap's own round-open**, launched on the same
+settled HEAD (`85f5e3b8e6`) by an unnamed earlier hand; this lap held rather than launching a
+second, and read `tools/l/law_tool_citation_witness.rish` while it ran. That witness refused
+`verdict=citation_absent`: `cell.md` and `gratitude-licenses.md` each still named a live
+`.cursor/rules/<file>.mdc` mirror path past the `20260920.135100` Cursor-twin retirement, and
+`the-writer-sheds.md` and `derived-spine.md` each cited a REDS shelf one directory short of
+`construction/archive/REDS/` -- the same `fold_shelf_link` class this lap's earlier repair had just
+closed seventeen instances of. Repaired; witness GREEN. A second, unrelated drift stood in
+`construction/REDS.md`'s own head -- a garbled duplicate census line from commit `8bc3641bc1`
+tripped `duplicate_census`, and the real headline's remainder had separately drifted to `-1` where
+`827 - 20 = 807`. Both repaired; `reds_ledger_monotone_witness.rish` GREEN. Row `%820` folded to a
+new shelf to keep the pin under bound after the two new rows landed. Landed at `5e02a20c1`, both
+remotes, one rebase against two peer commits.
+
+**This lap's own edits and send necessarily moved the tree the in-flight cold run was measuring**,
+the same class the prior lap's own log named -- there was no way to hold fully still behind a pass
+already running with no signal for its length. Next lap's first move: a fresh, freely-held cold
+roster, then continue Diffuser's remaining-reds review from the `20260923` account.

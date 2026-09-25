@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260924.223151` | [Law citations and a census drift](20260924/20260924-223151_law-citation-and-census-drift.kyri) | Two stale `.cursor` mirrors and a REDS census fixed, GREEN. |
 | `20260924.220414` | [Build-target recovery](20260924/20260924-220414_bakery-build-target-recovered.kyri) | Control and wrap pass; two shared outputs remain. |
 | 20260924.213041 | [The archive-fold tool could not build](20260924/20260924-213041_incense-archive-fold-tool-was-broken.kyri) | Two pre-existing reds closed; fold repointer ran clean. |
 | 20260924.211310 | [Claude watch waits for this session to exit](20260924/20260924-211310_incense-claude-watch-armed.kyri) | Clockout gone; the watch waits for a shell. |
