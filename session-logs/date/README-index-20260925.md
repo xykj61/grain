@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.173655` | [Design records](20260925/20260925-173655_bakery-design-record-recovery.kyri) | Six parked drafts reviewed. |
 | `20260925.172800` | [Claim records](20260925/20260925-172800_bakery-claim-record-recovery.kyri) | Old claims and rule kept as history. |
 | `20260925.172238` | [Two Patchouli logs recovered](20260925/20260925-172238_patchouli-two-parked-logs-recovered.kyri) | Saved records linked; focused checks pass. |
 | `20260925.172109` | [Roster records](20260925/20260925-172109_bakery-roster-record-recovery.kyri) | Fifteen parked versions reviewed. |
