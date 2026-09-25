@@ -307,6 +307,14 @@ record reading, not a fresh roster pass. The remaining queue holds 189 versions:
 176 Markdown, twelve claim-board versions, and one Cursor rule. All 85 stashes
 stay preserved; production capture integration and full cold and hot proof remain owed.
 
+The [claim and rule recovery review](../session-logs/date/20260925/20260925-172800_bakery-claim-record-recovery.kyri) covers thirteen more records.
+Eleven claim-board versions remove eight old claims; each removal already landed.
+The remaining claim stays with the seed-freshness draft held for revision. Keep
+today's board. The Cursor rule draft would permit moving a published ledger row;
+the later rule leaves that choice to Keaton. Preserve the draft and current law.
+All 85 stashes remain preserved. The remaining record queue holds 176 Markdown
+versions; capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
