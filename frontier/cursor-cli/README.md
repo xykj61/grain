@@ -1,6 +1,6 @@
 # Cursor Agent CLI frontier
 
-**Status:** Living — terminal-only operating door for the Grain pier
+**Status:** Living -- terminal-only operating door for the Grain pier
 
 This room is the current, practical companion to the fossil material under
 `.cursor-archive/`. It is written for Cursor Agent CLI running on the NixOS pier, reached from
@@ -26,11 +26,11 @@ state, not documentation.
 Cursor CLI discovers `.cursor/rules/*.mdc` and also reads root `AGENTS.md`/`CLAUDE.md`. The live
 rules here are intentionally a small adapter to the shared canon:
 
-- [`../../.cursor/rules/00-grain-cli.mdc`](../../.cursor/rules/00-grain-cli.mdc) — CLI scope and
+- [`../../.cursor/rules/00-grain-cli.mdc`](../../.cursor/rules/00-grain-cli.mdc) -- CLI scope and
   reading order.
-- [`../../.cursor/rules/10-grain-safety.mdc`](../../.cursor/rules/10-grain-safety.mdc) — remote
+- [`../../.cursor/rules/10-grain-safety.mdc`](../../.cursor/rules/10-grain-safety.mdc) -- remote
   terminal and secret-handling boundary.
-- [`../../.cursor/rules/20-grain-touch-rules.mdc`](../../.cursor/rules/20-grain-touch-rules.mdc) —
+- [`../../.cursor/rules/20-grain-touch-rules.mdc`](../../.cursor/rules/20-grain-touch-rules.mdc) --
   TAME, docs-sync, and session-log touch points.
 
 The old per-rule `.mdc` copies remain whole as fossils. They are not loaded into the live CLI
