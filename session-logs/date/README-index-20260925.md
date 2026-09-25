@@ -6,11 +6,13 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.174453` | [Copal census control roster](20260925/20260925-174453_copal-census-control-roster.kyri) | One guard green; full roster proof remains open. |
 | `20260925.174436` | [Checkpoint records](20260925/20260925-174436_bakery-checkpoint-recovery.kyri) | Eight parked drafts reviewed. |
 | `20260925.173655` | [Design records](20260925/20260925-173655_bakery-design-record-recovery.kyri) | Six parked drafts reviewed. |
 | `20260925.172800` | [Claim records](20260925/20260925-172800_bakery-claim-record-recovery.kyri) | Old claims and rule kept as history. |
 | `20260925.172238` | [Two Patchouli logs recovered](20260925/20260925-172238_patchouli-two-parked-logs-recovered.kyri) | Saved records linked; focused checks pass. |
 | `20260925.172109` | [Roster records](20260925/20260925-172109_bakery-roster-record-recovery.kyri) | Fifteen parked versions reviewed. |
+| `20260925.171525` | [Copal full cold receipt](20260925/20260925-171525_copal-full-cold-receipt.kyri) | Bounds home green; 37 roster reds held for triage. |
 | `20260925.171417` | [Artifact recovery](20260925/20260925-171417_bakery-artifact-recovery.kyri) | Hook and copies keep current source. |
 | `20260925.170339` | [Flat row recovery](20260925/20260925-170339_patchouli-flat-row-recovery.kyri) | Parked fix recovered; row control green. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
