@@ -279,6 +279,16 @@ preserved at `session-output/capture-witness-av0ytg8_/candidate.patch` and passe
 `git apply --check`. Keep the earlier pen too. Production integration still owes
 full cold and hot proof within a sufficient lap window.
 
+
+The [complete-witness comparison](../session-logs/date/20260925/20260925-170111_bakery-capture-full-witness.kyri) runs the candidate against a full tracked-tree copy.
+Both complete candidate witnesses pass: shell-dialect checks all 79 helper cases,
+and standing-equipment satisfies all 367 control assertions. The unchanged baseline
+standing witness fails at evidence loss, with eight expected control lines absent.
+The copy has no live run card; this proves the candidate's consumers in isolation,
+not Bakery's live roster. The four source files, patch, and transcripts remain in
+`session-output/capture-full-l86qx91u`; only the disposable clone was removed.
+Production integration still owes full cold and hot proof in a sufficient lap window.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
