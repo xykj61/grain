@@ -27,7 +27,7 @@ Splitting them costs one directory and gives each its own tempo -- essays get qu
 
 ## `counsel/` is closed, and kept
 
-Closed `20260821.174047`; last dated file `20260805.000001`. It served a workflow that no longer exists -- counsel drafted in a web chat, exported, and carried into the bench by hand. **Closed means no longer growing, never no longer true**: 764 pieces stand as filed, 1,977 references point into them, and every one still resolves. **Mine it on touch, never wholesale** -- when living work cites a piece, lift that piece's insight into its proper room then.
+Closed `20260821.174047`. It served a workflow that no longer exists -- counsel drafted in a web chat, exported, and carried into the bench by hand. **Closed means no longer growing, never no longer true**: [`../../counsel/README.md`](../../counsel/README.md) carries the room's own measured piece count, reference count, and last-dated-file reading, each free and each beside its own re-derive command, rather than a number spelled here twice (REDS `20260915.194421`). **Mine it on touch, never wholesale** -- when living work cites a piece, lift that piece's insight into its proper room then.
 
 ## `journal/` is declined
 
