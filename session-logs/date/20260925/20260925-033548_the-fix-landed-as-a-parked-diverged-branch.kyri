@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260925.033548
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain, law and active-designing lane
+modality text
+model claude-sonnet-5
+model_status configured -- .claude/settings.local.json resolved value, not runtime-verified
+voice Kyri
+title The fix landed as a parked diverged branch, and the tree had already caught up
+prompt Continue the incense overnight loop from its own inner prompt and the baton's rite.
+think Round-open at a19158e50f; the fleet claim board named no work for this seat's lane; reds_pin_capacity_scan.sh still read pin_deadlocked=1 on the same five unheld rows (%827 %808 %803 %785 %730) already named for Keaton in ITINERARY -- nothing new to add, and the pin's 10-byte headroom forbids a new row regardless.
+think Found the in-flight cold run this tree's prior five laps had been holding for was stale -- launch_head 27cbb5a098 sat five commits behind HEAD, so its verdict was already fixed at tree_moved. Resolved the pid through fleet_call.sh (confirmed this tree's own working directory), sent TERM, waited for the lock, then launched a fresh run at settled HEAD a19158e50f and held fully still through it for roughly 74 minutes.
+think The fresh run closed tree_moved=no, run_verdict=guard_red: 375 guards, 328 green, 44 red, 3 gated. Diffed the 44 against active-designing/date/20260923/20260923-065712_incense-cold-roster-21-red-review.md's disposition table -- the large majority already belong to named owning lanes or the booked %826/%827 rows. Two stood outside that table and inside this seat's own custody: index_row_bound and dayshelf_merge, both reading session-logs/date/README-index-20260925.md, whose three long rows and one misordered row were this tree's own five hold-laps tonight.
+think Shortened the three over-bound rows and reordered the misplaced one, proved both witnesses GREEN on metal, wrote a session log and an index row, committed at 72c3984, and ran round-open before pushing.
+think The round-open reported true divergence -- other ships (Bakery, Copal, Grass) had been writing the same shared day-shelf file concurrently and pushed first. The re-derivation refused, so my local line was parked whole on pier/diverged-20260925-033508 and the anointed upstream order was adopted in its place, per the round-open's own designed fallback.
+think Read the adopted tree rather than re-forcing my parked commit: index_row_bound_scan.sh already reads rows_over=0 and dayshelf_merge_witness.rish already reads real_shelf_unchanged=yes, verdict=ok on the new HEAD -- the other ships' own reconciliation passes independently repaired the same two reds this lap found, so nothing here is lost, only superseded.
+obs My own repair commit (72c3984) stands intact and inspectable on pier/diverged-20260925-033508 -- accrete-never-break keeps it as a walk-back rather than silently discarding it, and no further action against it is needed since the guards it targeted are already green upstream.
+obs This is the dayshelf_merge guard's own subject playing out live -- a shared page eight ships all prepend to, under contention heavy enough (three ships' rows landed inside minutes of each other tonight) that a true divergence outran the merge driver's own reconciliation and fell to round-open's parking fallback instead.
+loom cold_run=standing_equipment_run guards_run=375 guards_green=328 guards_red=44 guards_gated=3 guards_seconds=4442 tree_moved=no
+loom witness=index_row_bound_witness behaviors=39 faults=0
+loom witness=dayshelf_merge_witness control_verdict=ok
+rota lap 4245, row 0 -- Aether, the row that hears; this lap listened for whether a repair already landed elsewhere before insisting on its own copy, and it had.
+file session-logs/date/README-index-20260925.md -- read only; the file's current state (rewritten by peer ships) already carries a clean reading.
+file pier/diverged-20260925-033508 -- the parked walk-back branch holding this lap's own superseded repair commit, kept rather than force-pushed over the anointed order.
+scope one lap: terminate a stale in-flight cold pass, run a fresh freely-held one, and confirm two of its reds were already repaired by peers before this lap's own fix could land.
+status GREEN -- the cold run closed cleanly (tree_moved=no); both reds this lap set out to fix already read GREEN on the adopted tree; nothing was lost to the divergence.
+recommend check-in (either) -- the ledger deadlock is unchanged and already named for Keaton in ITINERARY's Open Doors bullet; this lap's own findable work is done and the contested-shelf pattern (three ships writing one day-shelf file within minutes) is worth a plain word on whether it deserves more than the round-open's existing parking fallback.

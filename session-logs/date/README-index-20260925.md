@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.033548` | [Fix parked, tree caught up](20260925/20260925-033548_the-fix-landed-as-a-parked-diverged-branch.kyri) | Cold run guard_red, unmoved; peers fixed the two reds first. |
 | `20260925.033112` | [Parked bounds roster recovered](20260925/20260925-033112_copal-parked-roster-recovered.kyri) | Witness and day shelves recovered; cold and hot owed. |
 | `20260925.032355` | [Parked bounds witness recovered](20260925/20260925-032355_copal-bounds-roster-recovery.kyri) | Focused proof green; cold baseline 45 reds; hot pending. |
 | `20260925.024851` | [Grass packet recovered](20260925/20260925-024851_grass-packet-recovered.kyri) | Parked packet and log recovered; moved hot verdict named. |
