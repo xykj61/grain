@@ -252,6 +252,14 @@ live timeout's remaining window. Its partial output certifies neither full cover
 tree stability. Price the cold pass plus its cadence slice and opening overhead before
 launching; the proposed longer lap window still awaits Keaton's word.
 
+The [capture diagnosis](../session-logs/date/20260925/20260925-162709_bakery-capture-diagnosis.kyri) checks all four writes.
+The current helper reports success when cat, head, tail, or the omission marker fails.
+Checking only the outer group still misses head and marker failures. A pen-only candidate
+checks every command and refuses all four, while keeping both successful outputs identical.
+The existing portable control passes 71 checks without covering these failures. Repair its
+failure cases and the runner's short-output fixture together. Production code is unchanged;
+full cold and hot proof remains owed. The live lap timeout still reads 5,400 seconds.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
