@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
+| `20260925.053402` | [Capped wake count](20260925/20260925-053402_diffuser-wake-count-correction.kyri) | Backoff count corrected; batch witness bounded. |
 | `20260925.054442` | [external-research's index fold, landed](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Applied a prior lap's stashed fold; 27 day shelves, ENFORCE widened, session-logs.md corrected. |
 | `20260925.052405` | [Four cheap reds off a held cold run](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Held peer's cold run; 4 reds repaired, index_fold named for its own round. |
 | `20260925.041335` | [Receipt recovery rebased](20260925/20260925-041335_diffuser-recovery-send.kyri) | Focused controls green; full hot moved and red. |
