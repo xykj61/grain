@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.124758` | [Citizen door review](20260925/20260925-124758_petrichor-citizen-door-review.kyri) | Draft B+; links resolve; roster interrupted. |
+| `20260925.124641` | [A fourth cold run launched and held](20260925/20260925-124641_a-fourth-cold-run-launched-and-held.kyri) | Prior transcript's launch_head read 13 commits stale; fresh pass launched, held. |
 | `20260925.124234` | [Mutation drafts reviewed](20260925/20260925-124234_bakery-plant-recovery.kyri) | Four versions superseded. |
 | `20260925.124035` | [A clean cold run, third silent death](20260925/20260925-124035_a-clean-cold-run-after-a-third-silent-death.kyri) | 335 green, 38 red; REDS pin at 10 bytes headroom. |
 | `20260925.123248` | [Two drafts reviewed](20260925/20260925-123248_bakery-two-drafts-recovery.kyri) | Newer guards retained. |
