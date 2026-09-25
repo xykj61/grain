@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.140554` | [Stash boundary reviewed](20260925/20260925-140554_bakery-stash-bound-review.kyri) | Truncated scan reads clean. |
 | `20260925.135714` | [Shell drafts reviewed](20260925/20260925-135714_bakery-portable-recovery.kyri) | Current helpers retained. |
 | `20260925.135326` | [Grass parked money recovery sent](20260925/20260925-135326_grass-parked-money-recovery-sent.kyri) | Parked packet and six logs restored; full roster owed. |
 | `20260925.134917` | [Ledger draft reviewed](20260925/20260925-134917_bakery-spine-recovery.kyri) | Published numbers stay fixed. |

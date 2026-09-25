@@ -181,6 +181,14 @@ today's matcher reaches it. The full shell dialect witness passes. All 85 stashe
 remain preserved, and 37 source versions await review. Model-control and dated-path
 repairs and full roster proof remain owed.
 
+The [stash-reader recovery review](../session-logs/date/20260925/20260925-140554_bakery-stash-bound-review.kyri) covers four more versions.
+Their executable changes landed in `a935d0871`; keep today's source. The draft
+passes 51 controls and current passes 105. Both miss a log in the 65th fleet stash
+and report a clean verdict. Moving that same log inside the 64-stash boundary makes
+both report it unlanded. Repair the truncation verdict before trusting full coverage.
+All 85 stashes remain preserved; 33 source versions await review. Full roster proof
+and the earlier named repairs remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
