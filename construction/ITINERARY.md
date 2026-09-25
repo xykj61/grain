@@ -494,13 +494,16 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   `tools/fixtures/f/fleet_claim_form_control.sh`, two in `tools/fixtures/p/page_residency_sample.sh`,
   each an `|| echo <n>` answering for an instrument that failed. Unclaimed; the pin below is why
   none is booked.
-- **The ledger receives a row through door B, and the door has now been walked twice.**
-  `construction/REDS.md` reads 65,341 of its 65,536 bound on `20260917.172111` with **195 bytes of
-  headroom** and twenty-one rows open; `tools/fixtures/r/reds_pin_capacity_scan.sh` answers
-  `pin_deadlocked=0` on one foldable row. A row born CLOSED and folded the same lap lands without
-  touching the pin's body, which `%814` and `%816` each did today against a **median row of 2,676**.
-  The standing question is unchanged: raise the bound a second time, keep folding a row a lap, or
-  seat a rule that a row folds on a lighter test?
+- **The ledger's deadlock has closed the gap it once had.** Reread `20260925.010000`:
+  `construction/REDS.md` stands at 65,526 of its 65,536 bound, **10 bytes of headroom**, 17 rows,
+  16 open, and `tools/fixtures/r/reds_pin_capacity_scan.sh` now answers `pin_deadlocked=1` on
+  **zero** foldable rows -- every open row reads OPEN, so no fold is lawful under the ledger's own
+  law (median row 2,676 bytes; door B's single-shelf-birth trick needs a row born CLOSED, and none
+  is). Of the 16 open rows, **5 name no hand outside this fleet** -- `%827`, `%808`, `%803`, `%785`,
+  `%730` -- so closing any one of those five (a proven repair on metal, accreted to BOOKED) reopens
+  the fold on its own; each is a process- or habit-shaped finding rather than a guard-closable
+  defect, which is why none has closed itself yet. The three `%338` doors stand exactly as named:
+  raise the bound again, split OPEN by who holds the row, or sanction the single-row shelf birth.
 - **The wire ceiling** -- the ledger row (`20260916.004153`) holds the account and the three doors;
   the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
