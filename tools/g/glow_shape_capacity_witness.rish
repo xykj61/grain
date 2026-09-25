@@ -1,60 +1,55 @@
-# tools/g/glow_shape_capacity_witness.rish -- Glow cannot write two of the product's four public
-# types, and the number that stops it was frozen before the product existed.
+# tools/g/glow_shape_capacity_witness.rish -- Glow's shape ceiling holds the receipt contract's
+# widest public type, and the next field still refuses.
 #
 # WHY THIS RUNG. This seat's own ladder rung on construction/ITINERARY.md reads *express the
 # receipt facts and Tally bounds in the smallest Glow form already owned*. The smallest form Glow
 # owns for a record is the multi-field `$:` shape, and it holds at most `max_fields` faces --
-# NINE, declared in glow/rune_shape.rye. The receipt contract Keaton accepted on `20260913`
-# declares `ReceiptOfferFact` with FIFTEEN fields and `LinengrowReceipt` with ELEVEN. So the rung
-# as written cannot be walked, and the reason is one constant.
+# FIFTEEN, declared in glow/rune_shape.rye. The receipt contract Keaton accepted on `20260913`
+# declares `ReceiptOfferFact` with FIFTEEN fields and `LinengrowReceipt` with ELEVEN. The widened
+# ceiling now admits both through the existing shape path.
 #
-# WHERE THE NINE CAME FROM, read rather than guessed. It is a seated capacity freeze
+# WHERE THE NINE CAME FROM, read rather than guessed. It was the elder seated capacity freeze
 # (active-designing/date/20260720/20260720-231857_closed-field-capacity-freeze-and-framework-next.md,
 # and the row in context/TAME_GUIDANCE.md that records it), and its stated reason was sound on the
-# day it was written: the ladder had walked pair, triple, quad, penta, hexa, hepta, octa, nona,
-# each rung a copy of the last, and *another face name teaches no new nest law*. Nothing asked for
-# a tenth face. The freeze names its own escape in the same breath -- further named shapes stay
-# horizon *unless a dedicated capacity pin is opened* -- so the door was left standing.
+# day it was written: the ladder had walked pair, triple, quad, penta, hexa, hepta, octa, nona.
+# Each rung repeated the same nest law. The freeze reserved later faces for a dedicated capacity
+# pin, leaving a clear door for the receipt contract.
 #
-# WHAT THIS RUNG DOES NOT DO. It does not widen anything. The freeze reserves that for Keaton's
-# word, and this seat's stop line sends a Glow language ruling back to him. What a lap may do is
-# make the gap a measured fact rather than an impression, so the decision has arithmetic in front
-# of it.
+# WHAT THIS RUNG NOW DOES. The dedicated capacity ruling widened the existing shape path to
+# fifteen fields and kept the sixteenth refusal. The witness continues to measure both the live
+# contract and planted refusals, so the decision has arithmetic in front of it.
 #
-# WHAT IS GATED, and why each. The INSTRUMENT is gated and the GAP is not. Both halves must be
+# WHAT IS GATED, and why each. The INSTRUMENT is gated; the GAP is reported. Both halves must be
 # read from their own files -- the ceiling out of the Glow source, the types out of the contract's
-# own `## Public types` block -- and at least one type must parse, because a reader that silently
-# parses zero types prints a flawless `types_over_capacity=0` about a page it never opened. The
-# gap itself is reported: closing it is a decision no lap may take, and a gate that reds every
-# ship for a ruling nobody can make is a gate somebody turns off. That is the same shape the
+# own `## Public types` block -- and at least one type must parse. A zero-type parse produces a
+# refusal, since `types_over_capacity=0` could otherwise describe an unread page. The
+# gap itself is reported: changing a language ceiling takes a ruling. The fleet can read the gap
+# while that decision remains with its owner. This follows the
 # published-double reading takes in .claude/rules/derived-spine.md, and for the same reason.
 #
 # WHAT IS PROVEN, on metal, by tools/fixtures/g/glow_shape_capacity_control.sh -- 44 behaviors on
 # planted files in a throwaway pen, every refusal shown from both sides:
 #
-#   THE FIELD COUNT, which is the reading a careless hand gets wrong in the flattering direction:
-#     a type whose fields wrap across three lines reads as THREE to a line counter, and three is
-#     under every capacity, so the careless reading calls an inexpressible type expressible. That
-#     mutation is planted and bites.
+#   THE FIELD COUNT, whose tempting line count understates a wrapped type:
+#     fifteen fields across three lines read as THREE to a line counter. That false reading
+#     calls an over-capacity type expressible. The mutation is planted and bites.
 #   THE TWO FIELD FORMS the contract actually writes -- a comma-separated list, and a `name: Type`
 #     line whose type may itself carry a comma. The pen found this one: the first draft split on
 #     commas before trimming the colon, so `offer: map<a, b>` read as two fields. Both directions
 #     are now legs.
-#   THE BOUNDARY, proven on a type sitting at exactly nine: at-or-over rather than over would call
-#     a shape Glow holds inexpressible.
+#   THE BOUNDARY, proven on a type sitting at exactly nine: an at-or-over check would refuse
+#     a shape Glow holds.
 #   THE CAPACITY IS READ FROM THE FILE, proven by raising the planted ceiling to sixteen and
 #     watching every type become expressible and the verdict follow.
 #   FIVE REFUSALS, each planted and then lifted -- an absent Glow source, a renamed ceiling, an
 #     absent contract, a page carrying no Public types block, and a block parsing to no type.
-#   AND THE LIVE LEG, the real tree read as it stands, because a control that only ever reads its
-#     own pen proves nothing about the tree it ships in.
+#   AND THE LIVE LEG reads the real tree beside the planted pen.
 #
-# WHAT IT LEAVES TO OTHERS. Whether each field's own AURA is one Glow admits, which no reader can
-# derive from the contract because the page names field names rather than types. Read by hand on
+# AURA REVIEW belongs to the hand reading field types; the contract names fields alone. Read on
 # `20260916`: all fifteen of ReceiptOfferFact's fields map onto the four admitted auras, with
 # `value_amount` needing `@u64` because the contract's ceiling of 9,000,000,000 stands above what
-# `@u32` holds, and `product_digest` fitting `@ux` exactly at its 32 bytes. So the capacity is the
-# only thing in the way.
+# `@u32` holds, and `product_digest` fitting `@ux` exactly at its 32 bytes. The capacity gap is
+# closed today.
 #
 # Style: context/GAUGE_STYLE.md
 #
@@ -114,11 +109,11 @@ assert scan.out contains "types_read=4" else "glow-shape-capacity: the contract 
 # THE READING, reported rather than walled. These four lines are the arithmetic the capacity
 # decision deserves in front of it, and every one of them moves the day either side moves: the
 # ceiling when a capacity pin opens, the counts when the contract grows a type.
-assert scan.out contains "shape_max_fields=9" else "glow-shape-capacity: the frozen capacity reads nine today"
+assert scan.out contains "shape_max_fields=15" else "glow-shape-capacity: the live capacity reads fifteen today"
 assert scan.out contains "widest_type=ReceiptOfferFact" else "glow-shape-capacity: the widest public type is the receipt offer fact"
 assert scan.out contains "widest_type_fields=15" else "glow-shape-capacity: the receipt offer fact names fifteen fields"
-assert scan.out contains "types_over_capacity=2" else "glow-shape-capacity: two of the four public types stand above the capacity"
-assert scan.out contains "capacity_gap=6" else "glow-shape-capacity: the gap is six faces"
+assert scan.out contains "types_over_capacity=0" else "glow-shape-capacity: all four public types fit the live capacity"
+assert scan.out contains "capacity_gap=0" else "glow-shape-capacity: the capacity gap is closed"
 
-say "glow-shape-capacity: GREEN -- capacity 9, widest public type 15, two of four inexpressible."
-say "glow-shape-capacity: the gap is reported and gated nowhere; widening the freeze is Keaton's word."
+say "glow-shape-capacity: GREEN -- capacity 15, widest public type 15, all four expressible."
+say "glow-shape-capacity: the measured gap is closed; the next field remains the refusal boundary."

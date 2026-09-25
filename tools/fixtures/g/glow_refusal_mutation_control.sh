@@ -15,8 +15,8 @@
 # Nothing but the record's own leg can see it, which is what makes it the sharp plant rather than a
 # convenient one.
 #
-# THE PEN copies `glow/` and `tally/` together: `glow/tally_copy.rye` is a symlink into the second,
-# so a pen holding only the first builds a module whose import points outside it.
+# THE PEN copies Glow source and `tally/` together: `glow/tally_copy.rye` is a symlink into the
+# second. Compiled binaries are excluded before copying, so the pen fits when the disk is tight.
 #
 # USAGE
 #   sh tools/fixtures/g/glow_refusal_mutation_control.sh
@@ -37,9 +37,17 @@ fi
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM HUP
 
-cp -a glow "$pen/glow"
-cp -a tally "$pen/tally"
-rm -rf "$pen/glow/bin" "$pen/glow/.cache"
+mkdir -p "$pen/glow"
+if ! rsync -a --exclude='/bin/' --exclude='/.cache/' glow/ "$pen/glow/"; then
+  echo "detail: the Glow source could not be copied into the pen"
+  echo "verdict=pen_copy_failed"
+  exit 4
+fi
+if ! cp -a tally "$pen/tally"; then
+  echo "detail: Tally could not be copied into the pen"
+  echo "verdict=pen_copy_failed"
+  exit 4
+fi
 
 # The plant is named by the exact call site rather than by a line number, so a moved line reads as
 # found and a REMOVED kind word reads as absent -- which is the one state that must refuse loudly.

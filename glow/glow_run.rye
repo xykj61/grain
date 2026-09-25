@@ -27,14 +27,12 @@
 //!                  as a lowering fault (seated `20260911.230925`)
 //!   4  usage       glow_run was called wrong; no file argument reached it
 //!
-//! CODES 3 AND 4 WERE BOTH SPELLED BY SOMETHING ELSE until the stamp above.
-//! Each collision closed off one honest answer. An unreadable source exited 1
-//! through Zig's own `!u8` error return, so `FileNotFound`, `IsDir` and
-//! `StreamTooLong` each arrived downstream wearing the name *lowering failed* --
-//! a claim about a desk's CONTENT, for a file whose bytes went unseen. A usage
-//! slip exited 2, so *glow_run declined this file* was the answer given when no
-//! file had been named. Held by tools/g/glow_run_contract_witness.rish, which
-//! reads this table and the source's own return sites and holds them together.
+//! Codes 3 and 4 gained distinct meanings at the stamp above. An unreadable
+//! source previously exited 1 through Zig's `!u8` return. `FileNotFound`,
+//! `IsDir`, and `StreamTooLong` then reached callers as *lowering failed*.
+//! A usage slip previously exited 2 and read as *glow_run declined this file*.
+//! The contract witness reads this table beside the return sites:
+//! tools/g/glow_run_contract_witness.rish.
 
 
 const std = @import("std");
@@ -151,7 +149,7 @@ pub fn main(init: std.process.Init) !u8 {
         return 0;
     }
 
-    // STOA168: mold-only desks (<=9 `$:` faces) bypass the bare multi-line budget.
+    // STOA168: mold-only desks (<=15 `$:` faces) bypass the bare multi-line budget.
     // Named-cast already returned above when its peek is true.
     if (!sample_argv and lower_shape.looks_like_shape_only(src) and
         !lower_named_cast.looks_like_cross_desk(src))

@@ -1,45 +1,45 @@
-//! glow/refusal.rye -- the stable refusal record for one Glow parse refusal.
+//! glow/refusal.rye -- one record for a Glow parse boundary.
 //!
-//! The product contract asks a refusal to name `field`, `value`, `ceiling`, `unit` and
-//! `reason` wherever a ceiling applies, and the field and reason elsewhere. A named error
-//! alone reports which KIND of refusal happened, so `glow/rune_shape.rye` answers BOTH its
-//! nine-face tuple ceiling and its three-face payload ceiling with the one word
-//! `TooManyFields` -- two different ceilings arriving as one name. This record keeps each
-//! refusal's own field beside its own measurement.
+//! The product contract asks each record to name `field`, `value`, `ceiling`, `unit` and
+//! `reason` where a ceiling applies, and field and reason elsewhere. The error
+//! `TooManyFields` covers two boundaries in `glow/rune_shape.rye`: fifteen tuple fields and
+//! three payload faces. The field and measurement identify the boundary reached.
+//! A caller can display the record directly or keep its fields for a machine check.
 //!
 //! Shaped after `tally/receipt_refusal.rye`, which landed this form first and renders the
-//! same line. Two records rather than one, because a Glow parse refusal is not a receipt
-//! admission refusal and borrowing that vocabulary would braid the language into the
-//! product. One line, two vocabularies, each in its own lane.
-//!
-//!   field=ten value=10 ceiling=9 unit=field reason=too-many-fields
-//!   field=hex-literal value=66 ceiling=64 unit=hex-digit reason=hex-literal-too-many-digits
-//!   field=xfer-mold reason=not-a-mold
+//! same line. Glow keeps a parse record and Tally keeps a receipt admission record.
+//! Each uses its own vocabulary while sharing a readable line format.
+//! The examples below show the stable ASCII format.
 
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+// Example lines:
+//   field=sixteen value=16 ceiling=15 unit=field reason=too-many-fields
+//   field=hex-literal value=66 ceiling=64 unit=hex-digit reason=hex-literal-too-many-digits
+//   field=xfer-mold reason=not-a-mold
+
 /// The longest rendered refusal line. Derived rather than guessed: the widest field name
 /// is a Glow ident at `tokens.max_name_len` 64 bytes, the widest reason
 /// `hex-literal-too-many-digits` at 27, the widest unit `payload-face` at 12, two decimal
 /// numbers reach 20 each, and the five keys with their separators take 36. That sums to
-/// 179, and 192 leaves a reason room to grow without a re-derivation. Re-derived
+/// 179, and 192 leaves room for a longer reason. Re-derived
 /// `20260916` when the lexer's four ceilings joined the set and the widest reason grew
-/// five bytes; the ceiling itself held, which is what a derivation with room in it buys.
+/// five bytes; the reserved room kept the ceiling sound.
 /// Re-read `20260917` when `glow/zig_ident.rye`'s two joined -- `ident-char-not-allowed`
 /// at 22 bytes and `ident-empty` at 11, both under the 27 the widest still holds, so the
 /// derivation is unmoved.
 pub const max_refusal_line_bytes: u32 = 192;
 
 /// The longest field name a refusal may carry -- Glow's own ident ceiling, so a refusal can
-/// always hold the name of the thing it refused rather than truncating it into another.
+/// always hold the exact name of the thing it refused.
 pub const max_field_name_bytes: u32 = 64;
 
 pub const RenderError = error{ FieldNameTooLong, LineTooLong };
 
-/// What a refusal's number counts. A number without its unit is a rumour with a decimal
-/// point, so the unit travels beside the value rather than in prose. Each member names a
+/// What a refusal's number counts. The unit travels beside the value, making each
+/// number readable on its own. Each member names a
 /// ceiling `glow/rune_shape.rye` or `glow/tokens.rye` declares.
 pub const Unit = enum {
     field,
@@ -59,7 +59,7 @@ pub const Unit = enum {
 
 /// Why the parse refused. Each member is one refusal this module can actually build a
 /// record for; the set is closed, and a new refusal earns a member here before it is
-/// thrown. A declared refusal nothing reaches is a promise with nothing behind it.
+/// thrown. Every declared refusal has a building path.
 pub const Reason = enum {
     too_many_fields,
     too_many_payload_faces,

@@ -5,7 +5,7 @@
 //! directly to build ShapeSpec, retiring lower_multi.collect_lines and
 //! byte-level head parsing inside parse_source.
 //!
-//! `$:` tuple of admitted field auras (1-9). `$%` tagged union of cold
+//! `$:` tuple of admitted field auras (1-15). `$%` tagged union of cold
 //! atoms with unit payload `[%tag ~]` or one-to-three-face payload
 //! (2-3 tags). STOA187: payload `@t`/`@ux` parse. STOA188: payload cord/hex
 //! lower emit. STOA189: API rename. `20260724.205719`: `@u64` admitted --
@@ -26,7 +26,7 @@ const refusal = @import("refusal.rye");
 /// what decides where a name ends. Aliased rather than respelled, so this parser can
 /// never accept or refuse a name the lexer would judge differently.
 pub const max_name_len: u32 = tokens.max_name_len;
-pub const max_fields: u32 = 9;
+pub const max_fields: u32 = 15;
 pub const max_payload_faces: u32 = 3;
 
 /// Admitted `$:` / `$%` field auras -- DATA in one place (rung-1a lesson).
@@ -365,7 +365,7 @@ pub fn any_payload_bytes_field(spec: *const ShapeSpec) bool {
 }
 
 /// Parse mold source via token stream (STOA97 token->ShapeSpec).
-/// Accepts `$:` tuples (1-9 admitted field auras) and `$%` tagged unions
+/// Accepts `$:` tuples (1-15 admitted field auras) and `$%` tagged unions
 /// (2-3 arms, each `[%tag ~]` or `[%tag face=<admitted> ...]`).
 /// Same published signature as before: `parse_source(src) ParseError!ShapeSpec`. A caller
 /// wanting the five-part refusal record reaches for `parse_source_reporting` beside it.

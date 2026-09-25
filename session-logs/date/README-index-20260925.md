@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.185208` | [Glow shape recovery](20260925/20260925-185208_glow-shape-recovery.kyri) | Fifteen fields admit; one past refuses. |
 | `20260925.185025` | [Patchouli forms and claim close](20260925/20260925-185025_patchouli-forms-and-claim-close.kyri) | Standing receipt forms mapped; landed claim closed. |
 | `20260925.183759` | [Card follow-up](20260925/20260925-183759_bakery-card-followup.kyri) | Ten drafts reviewed; current records kept. |
 | `20260925.183643` | [Say-compose-bound sweep](20260925/20260925-183643_incense-say-compose-bound-sweep.kyri) | Two new witnesses swept to bounded briefs; ratchet back to zero. |
