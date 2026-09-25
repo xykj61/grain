@@ -348,6 +348,13 @@ and six use shorter recovery descriptions. All 85 stashes remain preserved.
 The remaining queue holds 144 Markdown versions. Capture integration and full
 cold and hot proof remain owed.
 
+The [shelf follow-up](../session-logs/date/20260925/20260925-221020_bakery-shelf-followup.kyri) covers ten more parked shelf versions.
+One already matches ancestor history; nine were still unreviewed. Their eleven added
+rows name eight logs, each present with one canonical row. Three parked log versions
+precede later corrections; one row has no paired log in its stash. Keep today's
+records and preserve the drafts. All 85 stashes remain; 135 Markdown versions await
+review. Capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
