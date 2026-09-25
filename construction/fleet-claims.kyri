@@ -65,12 +65,6 @@ stamp 20260925.125920
 epoch 1790355560
 paths active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md
 what Derive Caravan late-sleep phase drift from its source and hand Bakery a bounded timing falsifier.
-claim patchouli-log-row-flat-count-20260925
-seat patchouli
-stamp 20260925.141518
-epoch 1790360118
-paths tools/fixtures/l/log_has_a_row_scan.sh tools/fixtures/l/log_has_a_row_control.sh
-what Repair duplicate flat-log traversal so the existing row control counts each planted log once.
 claim pheromone-glow-shape-15-final
 seat pheromone
 stamp 20260925.144414
