@@ -6,7 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| 20260924.211310 | [Claude watch waits for this session to exit](20260924/20260924-211310_incense-claude-watch-armed.kyri) | Clockout is gone; the watch will not type until the pane is a shell. |
+| 20260924.211310 | [Claude watch waits for this session to exit](20260924/20260924-211310_incense-claude-watch-armed.kyri) | Clockout gone; the watch waits for a shell. |
 | 20260924.210823 | [A third sentence stays beside the first two](20260924/20260924-210823_incense-stage-store-quiet-third.kyri) | Three names in the quiet store; a repeat adds nothing. |
 | 20260924.210200 | [A second sentence stays beside the first](20260924/20260924-210200_incense-stage-store-quiet-second.kyri) | Two names in the quiet store; a repeat adds nothing. |
 | 20260924.203720 | [The quiet store keeps one write](20260924/20260924-203720_incense-stage-store-quiet-put.kyri) | Second write adds nothing; the empty sibling stays empty. |
