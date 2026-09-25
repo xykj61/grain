@@ -359,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e802ff685f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `1532ab6bb3` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

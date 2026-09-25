@@ -324,6 +324,14 @@ Keep today's manual-decision rule for published ledger rows. All 85 stashes rema
 preserved; 170 Markdown versions await review. Capture integration and full cold
 and hot proof remain owed.
 
+The [checkpoint recovery review](../session-logs/date/20260925/20260925-174436_bakery-checkpoint-recovery.kyri) covers eight more Markdown versions.
+Three already landed with later path and ledger references. Five retain draft
+checkpoint accounts; keep them as history. One later draft explicitly says two
+prior sweeps never landed, so their earlier cairns stay parked. The September 7
+account shelf already preserves its historical measurements and correction.
+All 85 stashes remain preserved; 162 Markdown versions await review.
+Capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
