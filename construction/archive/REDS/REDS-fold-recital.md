@@ -889,3 +889,5 @@ at a closed fold.*
 
 *Row %820 folded to [`REDS-a-directory-only-a-build-makes-rows-820.md`](REDS-a-directory-only-a-build-makes-rows-820.md) on `20260924.221637`, **CLOSED** -- a ratchet gating growth at zero still needs a hand to run it.*
 *Row %828 born CLOSED and folded to [`20260924-233357_page-control-paths.md`](20260924-233357_page-control-paths.md) on `20260924.233357` -- private page builds and mutation-specific control verdicts.*
+
+*Row %795 folded to [`REDS-a-lantern-that-fired-twice-rows-795.md`](REDS-a-lantern-that-fired-twice-rows-795.md) on `20260925.130653`, **CLOSED** -- folded to clear a deadlocked pin (10 bytes of headroom) for a fresh disk-headroom row.*

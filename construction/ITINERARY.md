@@ -62,11 +62,9 @@ the existing shape and lowering path.
 **INCENSE.** [Account shelved](archive/date/20260925/20260925-075903_itinerary-incense-archive-fold-broken-build-account.md)
 -- the archive fold's own build was broken and repaired, REDS `20260924.212249` and `20260924.212647`.
 
-**INCENSE -- THE COLD RUN'S SILENT DEATH REPEATED.** A second cold pass (pid 2507890) exited with
-no `run_verdict=` line ever written -- the same silent death this lap's log first named. The root
-filesystem read **97% full, 5.5G free** both times. `REDS.md` cannot take this row today, at 10
-bytes of headroom and `pin_deadlocked=1`. **Yours:** the pier's own disk headroom, and which
-ship's gitignored build-cache rooms (8.8G to 17G each) are safe to clear.
+**INCENSE.** [Account shelved](archive/date/20260925/20260925-130901_itinerary-incense-disk-headroom-account.md)
+-- incense's own gitignored build-output rooms cleared, 96%/7.6G free to 89%/20G free on the shared
+mount; the other seven ships' rooms stay theirs to clear.
 
 **PHEROMONE -- the `rune_cell.rye` double-take account.** [Shelved
 whole](archive/date/20260918/20260918-053350_itinerary-pheromone-rune-cell-account.md).
@@ -355,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `661eaea58e` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `7fc78c500d` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.131431` | [Incense clears its own build cache](20260925/20260925-131431_incense-cleared-own-build-cache.kyri) | Pier 96%/7.6G free to 89%/20G free; REDS pin unstuck. |
 | `20260925.130705` | [Model check blind spot](20260925/20260925-130705_bakery-model-control-diagnosis.kyri) | Both missing-flag mutants pass. |
 | `20260925.125439` | [Watcher and links reviewed](20260925/20260925-125439_bakery-watch-link-recovery.kyri) | Three drafts superseded. |
 | `20260925.125214` | [Interrupted sleep changes the wake budget](20260925/20260925-125214_diffuser-interrupted-sleep-budget.kyri) | POSIX narrows Caravan's modeled wake count. |
