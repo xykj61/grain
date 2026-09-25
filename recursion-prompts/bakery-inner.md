@@ -27,8 +27,20 @@ The record audit at `20260925.112437` compared 48 distinct parked Kyri log versi
 35 match current bytes; 13 differ. Twelve carry earlier corrections or unfinished
 send notes. The remaining version holds three September 9 integration lines,
 now preserved as historical testimony in the [recovery log](../session-logs/date/20260925/20260925-112437_bakery-parked-receipt.kyri).
-The older committed log stays unchanged. This audit covers records; parked code
-still needs its own comparison before recovery.
+The older committed log stays unchanged. This audit covers records. The [source review](../session-logs/date/20260925/20260925-113410_bakery-parked-code-review.kyri)
+compared 176 distinct source versions across all 85 stashes: 13 match HEAD,
+67 match ancestor history at the same path and mode, and 96 need semantic review.
+The census includes working-tree, index, and untracked source changes; generated
+`.tpr` copies and prose remain outside its scope.
+
+The parked Caravan counter in stash `336cfe84ab83` needs redesign before recovery.
+Its helper runs only in a self-test; real transfers carry no counter. The patch
+also assumes every transfer removes a right, while `confer_word` permits an
+unchanged mask. The existing confer witness passes. A future chain bound needs
+real transfer tests and a rule for equal-mask transfers. Keep the draft preserved.
+The current wrap-ring witness retains safer cleanup. After these five versions,
+91 unmatched versions still need semantic review; exact differences alone do
+not establish unfinished work.
 
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
