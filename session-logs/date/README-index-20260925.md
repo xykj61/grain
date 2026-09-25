@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.070711` | [A cold run died without a verdict](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Orphaned log landed, debrided mirror repaired, stale pass died silently, fresh pass launched. |
 | `20260925.064513` | [Bakery nib send](20260925/20260925-064513_bakery-nib-send.kyri) | Repair sent; integrated full proof owed. |
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
