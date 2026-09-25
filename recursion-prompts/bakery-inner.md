@@ -39,8 +39,18 @@ also assumes every transfer removes a right, while `confer_word` permits an
 unchanged mask. The existing confer witness passes. A future chain bound needs
 real transfer tests and a rule for equal-mask transfers. Keep the draft preserved.
 The current wrap-ring witness retains safer cleanup. After these five versions,
-91 unmatched versions still need semantic review; exact differences alone do
+91 unmatched versions remained after that review; exact differences alone do
 not establish unfinished work.
+
+The next six versions, in stash `d057c741dbf6`, hold a suffix assertion scan,
+its control and witness, and three witness edits. All 32 draft controls pass
+with Rishi, but they also pass without it: the missing-runtime branch reports
+three skipped runtime tests as successful. The scan also misses the first key
+when one echo statement prints two literal keys. A one-line pen reports zero
+exposed assertions; splitting the two keys across echo statements reports one.
+Keep this draft preserved until both cases have controls and repairs. The
+three assertion edits remain unapplied. The [suffix review](../session-logs/date/20260925/20260925-114256_bakery-suffix-review.kyri)
+records both counterexamples. Eighty-five source versions still need review.
 
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
