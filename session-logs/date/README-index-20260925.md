@@ -6,12 +6,13 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260925.080332` | [The cold run's silent death repeats](20260925/20260925-080332_the-silent-death-repeats.kyri) | second silent death named, disk 97% full both times, ITINERARY carries the finding, ledger deadlocked |
+| `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
+| `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
 | `20260925.073210` | [Printable recovery](20260925/20260925-073210_diffuser-printable-recovery.kyri) | Seven receipt controls green; Swift runtime open. |
 | `20260925.073151` | [Hold the cold run](20260925/20260925-073151_hold-the-cold-run.kyri) | launch_head matched HEAD; held rather than opening a second pass, wait moved to background. |
-| `20260925.071550` | [Round-open, holding a cold run](20260925/20260925-071550_round-open-holding-cold-run.kyri) | Claim board clear, ledger doors unchanged, watching an in-flight pass rather than launching a second. |
+| `20260925.071550` | [Holding the cold run](20260925/20260925-071550_round-open-holding-cold-run.kyri) | Existing pass held; claim board read. |
 | `20260925.071533` | [Printable receipt](20260925/20260925-071533_diffuser-receipt-printable-admission.kyri) | Control bytes refused; host control green; full roster red. |
-| `20260925.070711` | [A cold run died without a verdict](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Orphaned log landed, debrided mirror repaired, stale pass died silently, fresh pass launched. |
+| `20260925.070711` | [Cold run stopped](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Log and mirror recovered; fresh pass launched. |
 | `20260925.064513` | [Bakery nib send](20260925/20260925-064513_bakery-nib-send.kyri) | Repair sent; integrated full proof owed. |
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |

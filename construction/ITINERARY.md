@@ -252,7 +252,9 @@ same starting card between both write aliases, removing commit-clock differences
 from their comparison. All 41 checks pass; the forced one-second offset gives
 40/1 on the elder and 41/0 on the repair. The wrong-alias mutation still refuses.
 Full hot at `6773274dcb`: 334 green, 40 red, three gated; `tree_moved=no`.
-Nine later peer commits were rebased; their integrated full verification is owed.
+Integrated cold at `3cb7f482f1`: 337 green, 38 red, three gated; `tree_moved=no`.
+Both nib guards, build_target, and stash_record passed. Six later peer commits
+were adopted after the pass; their full hot verification remains owed.
 [Prior account](archive/20260925-052212_bakery-page-proof-account.md).
 **YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
 cannot hold both complete roster passes.
@@ -360,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `6b7003d768` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9245a3e688` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
