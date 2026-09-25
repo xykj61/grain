@@ -8,7 +8,7 @@
 
 The card's DIFFUSER account for the verdict-home lap, kept here word for word so the living
 pin holds only the round in front of it. The way in for this room is
-[`README.md`](README.md).
+[`README.md`](../README.md).
 
 ---
 

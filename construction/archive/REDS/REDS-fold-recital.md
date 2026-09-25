@@ -884,3 +884,5 @@ at a closed fold.*
 *Row %742 folded to [`REDS-a-repair-already-standing-rows-742.md`](REDS-a-repair-already-standing-rows-742.md) on `20260917.224949`, **CLOSED** -- a fix can land beside a different commit's own purpose and outlive the row that asked for it, so read metal before booking a repair.*
 
 *Row %825 folded to [`REDS-a-claim-named-the-wrong-seat-rows-825.md`](REDS-a-claim-named-the-wrong-seat-rows-825.md) on `20260918.090802`, **CLOSED** -- a claim pulled in from a peer's push and a card line written later can each read true alone and together describe a fact that never happened.*
+
+*Row %767 folded to [`REDS-borrowed-identifier-ceiling-rows-767.md`](REDS-borrowed-identifier-ceiling-rows-767.md) on `20260924.212558`, **CLOSED** -- four receipt fields borrowed a ceiling meant for identifiers, until the contract named their own.*

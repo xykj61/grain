@@ -13,4 +13,4 @@ module pays N times over at compile, codegen, *and* cache, not disk alone. Falsi
 staying at 2 after the link build) did not fire. Closes the thread opened by the duplicate-content
 census; no further open door in it.
 
-**Paper:** [`active-designing/date/20260918/20260918-111501_the-build-cache-does-not-collapse-a-symlinked-import-either.md`](../../../active-designing/date/20260918/20260918-111501_the-build-cache-does-not-collapse-a-symlinked-import-either.md)
+**Paper:** [`active-designing/date/20260918/20260918-111501_the-build-cache-does-not-collapse-a-symlinked-import-either.md`](../../../../active-designing/date/20260918/20260918-111501_the-build-cache-does-not-collapse-a-symlinked-import-either.md)

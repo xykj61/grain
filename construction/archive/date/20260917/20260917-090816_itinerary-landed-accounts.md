@@ -8,7 +8,7 @@
 
 The card's DIFFUSER account for the loom-name lap, kept here word for word so the living pin
 holds only the round in front of it. The way in for this room is
-[`README.md`](README.md).
+[`README.md`](../README.md).
 
 **DIFFUSER -- SIXTY OF SIXTY KEYS ARE NAMED SO NOBODY CAN SCOPE THEM.** Elder
 [shelved](20260917-083040_itinerary-landed-accounts.md), its ask answered here.

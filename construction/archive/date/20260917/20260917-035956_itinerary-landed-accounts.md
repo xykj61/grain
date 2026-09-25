@@ -3,7 +3,7 @@
 **Language:** EN
 **Status:** Shelf -- a landed account, immutable once written. Historical continuity outside Mitra
 and shred-prep.
-**Room:** the way in is [`README.md`](README.md)
+**Room:** the way in is [`README.md`](../README.md)
 
 The diffuser account below stood on `construction/ITINERARY.md` until the card reached 40,001 bytes
 against the 40,960 it declares, leaving no room for the account that follows it. A finished account

@@ -7,7 +7,7 @@
 **Voice:** Kyri
 **Style:** New Gauge, Meter setting
 **Where this sits:** the living card is [`../ITINERARY.md`](../../../ITINERARY.md); its shelves are
-indexed at [`README.md`](README.md)
+indexed at [`README.md`](../README.md)
 
 The account below stood under *Simple, Lovable, Complete order* on the living card until
 `20260915.232133`, when the next Petrichor lap replaced it. Its open question stands unanswered and
