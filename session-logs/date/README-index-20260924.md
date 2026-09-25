@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.200120 | [A fresh directory stays quiet](20260924/20260924-200120_incense-stage-store-fresh.kyri) | Empty lists nothing; one write, and the list speaks. |
 | 20260924.193253 | [Every listed resin reads back](20260924/20260924-193253_incense-stage-store-list-read-all.kyri) | Seven names, each read hashes to itself. |
 | 20260924.184840 | [The first listed resin reads back](20260924/20260924-184840_incense-stage-store-list-read.kyri) | The list's first name returns matching bytes. |
 | 20260924.183531 | [The store lists its own resins](20260924/20260924-183531_incense-stage-store-list.kyri) | Seven names, each the hash of its bytes. |

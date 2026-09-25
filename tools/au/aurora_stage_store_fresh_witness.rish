@@ -1,0 +1,16 @@
+# aurora_stage_store_fresh_witness.rish -- a fresh directory stays quiet.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/au/aurora_stage_store_fresh_witness.rish
+#
+# An empty directory lists nothing. One write, and the list speaks.
+# The lasting store is left at the same file count.
+
+let proof = run ["sh" "tools/fixtures/a/aurora_stage_store_fresh.sh"]
+say proof.out
+assert proof.ok else "fresh store refused -- ${proof.err_brief}"
+assert proof.out contains "empty=quiet" else "an empty directory spoke"
+assert proof.out contains "filled=1" else "a write did not let the list speak"
+assert proof.out contains "GREEN" else "fresh store did not close GREEN"
+
+say "GREEN: a fresh directory stays quiet until a write fills it."
