@@ -28,6 +28,7 @@
 | 20260923.031638 | [Close recovered yonder grade](20260923/20260923-031638_petrichor-yonder-grade-close.kyri) | Yonder page A; claim closed; hot roster tree-still with 45 reds and 3 gates. |
 | 20260923.025616 | [Glow shape custody hold](20260923/20260923-025616_pheromone-shape-custody-hold.kyri) | Full cold roster red; language ruling parked for Keaton. |
 | 20260923.025114 | [Recovered fascia metric witness](20260923/20260923-025114_copal-fascia-recovery.kyri) | Recovered and sealed the parked fascia witness; direct and refusal legs green. |
+| `20260923.014653` | [Patchouli cold roster](20260923/20260923-014653_patchouli-cold-roster.kyri) | Cold roster guard-red; tree held still at settled HEAD. |
 | 20260923.014431 | [Rank outcome hot roster close](20260923/20260923-014431_rank-outcome-hot-close.kyri) | Hot roster closed tree-still with 319 green, 44 red, and 3 gated guards. |
 | 20260923.002535 | [Patchouli closeout](20260923/20260923-002535_patchouli-closeout.kyri) | Recovered value-form receipt; shelf index and card nib closed. |
 | 20260923.001759 | [Closed Patchouli value-forms map](20260923/20260923-001759_patchouli-value-forms-close.kyri) | Hot roster guard-red; value-form map closed. |

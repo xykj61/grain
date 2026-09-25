@@ -17,6 +17,7 @@
 | 20260924.211310 | [Claude watch waits for this session to exit](20260924/20260924-211310_incense-claude-watch-armed.kyri) | Clockout gone; the watch waits for a shell. |
 | 20260924.210823 | [A third sentence stays beside the first two](20260924/20260924-210823_incense-stage-store-quiet-third.kyri) | Three names in the quiet store; a repeat adds nothing. |
 | 20260924.210200 | [A second sentence stays beside the first](20260924/20260924-210200_incense-stage-store-quiet-second.kyri) | Two names in the quiet store; a repeat adds nothing. |
+| 20260924.205941 | [Patchouli parked log recovered](20260924/20260924-205941_patchouli-parked-log-recovery.kyri) | One cold-roster record and its index row restored. |
 | 20260924.203720 | [The quiet store keeps one write](20260924/20260924-203720_incense-stage-store-quiet-put.kyri) | Second write adds nothing; the empty sibling stays empty. |
 | `20260924.203309` | [Bakery records and next fruit](20260924/20260924-203309_bakery-records-and-next-fruit.kyri) | Five parked logs restored; next repair named. |
 | `20260924.124112` | [Recovered ranking record](20260924/20260924-124112_bakery-rank-outcome-scope-refresh.kyri) | Recovered unchanged from a parked lap. |

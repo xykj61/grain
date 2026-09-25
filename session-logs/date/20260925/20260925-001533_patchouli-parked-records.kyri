@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260925.001533
+editor Codex
+provider OpenAI
+product Codex
+role patchouli
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence user Patchouli seat instruction; fleet-loop-codex.sh passes -m gpt-6-sol; active runtime unverified
+voice Kyri
+host Linux workspace; America/New_York
+title Four parked Patchouli records restored
+prompt Read the Patchouli baton, recover unfinished seat work, and close the lap with a session record.
+think Read the latest Patchouli records and confirmed the inner fruit already mapped existing Mantra and Tally value forms, so repeating that map would add no result.
+think Audited 105 stashes and found four absent logs in stash@{0}; stash@{17} held a duplicate of one of them. The absence scan fetched xy and found all four absent both here and upstream.
+think A hot roster pass launched at 20260925.000000 with eight staged paths, before round-open stashed them. Its tree changed during the pass; the checkout-bound fleet_call sent TERM to its own PID 3541177 so it could not be mistaken for a valid held-still verdict.
+obs Restored four exact Kyri records and their index rows from stash@{0}; corrected the 20260917 counts in the two session rosters and opened the 20260925 shelf.
+obs The Water rota reading favors checking an actual seam twice; the parked-record audit used exact file identity and one index row per log.
+obs The index-row-bound witness passed all 39 control behaviors. The broader session-roster witness still reports preexisting drift on older shelves, including 20260918 and 20260922.
+loom stash_audit refs=105 absent_log_entries=5 unique_absent_logs=4
+rota lap 6502, row 3 -- Water, the row that tastes; advanced by hand past the prior Patchouli Fire reading, and checked the recovered records against the shelf that will carry them.
+file session-logs/date/20260917/20260917-191232_no-task-this-turn.kyri Restored exact parked record from stash@{0}.
+file session-logs/date/20260917/20260917-191539_baton-checkin-no-directive.kyri Restored exact parked record from stash@{0}.
+file session-logs/date/20260923/20260923-014653_patchouli-cold-roster.kyri Restored exact parked record from stash@{0}.
+file session-logs/date/20260924/20260924-205941_patchouli-parked-log-recovery.kyri Restored exact parked record from stash@{0}.
+recommend check-in -- recovered records passed the index witness; broader shelf drift and full cold and hot passes remain owed.
+scope parked Patchouli log recovery, shelf rows, session roster counts, and Water rota reading; no product code changed.
+status OPEN full cold and hot roster verdicts remain owed; the inherited hot pass changed tree mid-run and was stopped.
