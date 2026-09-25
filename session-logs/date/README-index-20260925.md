@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Held cold run, 334/376 green; repointed a stale citation and reworded a bare lap ordinal. |
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |

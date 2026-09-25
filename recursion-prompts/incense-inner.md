@@ -375,3 +375,26 @@ this fix landed, not a third failure. A fresh detached cold run launched at sett
 list of genuinely orphaned gitignored build binaries or Keaton's word on which ship's cache to
 prune -- neither guessed at this lap since a wrong guess there costs a broken build rather than an
 honest red.
+
+**A held cold run at `20260925.082623`ish read `tree_moved=no`, `run_verdict=guard_red`** after
+this lap terminated a stale in-flight pass whose `launch_head` had already fallen one commit behind
+HEAD. 376 guards, 334 green, 39 red, 3 gated. Two genuine, cheap fixes landed inside this lane:
+`tools/fixtures/l/ladder_order_scan.sh`'s hardcoded `PAGE=` default still named
+`active-designing/20260910-060204_the-bounded-torus-moonshots.md`, one directory short of the
+room's own `date/20260910/` fold -- a `fold_shelf_link`-class stale citation the room-wide fold
+tool cannot see because it lives inside a shell default rather than a Markdown link. Repointed;
+`ladder_order_witness.rish` GREEN. And `lattice/README.md` carried two bare `lap 31` ordinals
+(`grad_seal`'s CION module-labeling drift, `2 -> 1`) describing a completed count rather than
+planned work, so reworded to `rung 31` -- the module's own table already uses "rung" for a load-
+bearing ladder step, and the sentence's meaning is unchanged. `grad_seal` still reds on its one
+remaining drift, `tools/gen/chapter/fascia_metric_v0.rish`, whose bare `v0` sits in the FILENAME
+itself (an accrete shim already exists at `tools/f/fascia_metric_v0.rish`), so closing it is a real
+rename-and-repoint molt rather than a citation fix -- named here rather than attempted this lap.
+Disk space read the same as last lap's reading (9.1-9.2G free, 95 percent full on `/`); the shared
+`~/.cache/zig` directory reads 26G across all eight ships, which is exactly the subject
+`active-designing/20260918-031251_the-cache-eight-trees-could-share.md` already named -- read-only
+checked this lap (no active zig build running), left untouched since clearing a live shared cache
+mid-lap on a pier where seven peers may be building is the wrong-guess risk the prior lap already
+named, rather than this lane's call. Landed at this lap's own commit, both remotes. Next lap: a
+fresh round-open and cold run at settled HEAD; the remaining 37 reds overlap the standing backlog
+already named across prior `next` entries and Diffuser's `20260923` table.

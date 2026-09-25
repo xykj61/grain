@@ -82,8 +82,8 @@ rishi/bin/rishi run tools/l/lattice_matmul_witness.rish      # the first -- matm
 rishi/bin/rishi run tools/l/lattice_suite_witness.rish # all forty, admitted and refused sides
 ```
 
-*The eight rungs above lap 31 stood on disk and undocumented until `20260827`: the table stopped at
-lap 31 while `tools/l/` carried lap witnesses through 40. A ladder counts what it has climbed
+*The eight rungs above rung 31 stood on disk and undocumented until `20260827`: the table stopped at
+rung 31 while `tools/l/` carried lap witnesses through 40. A ladder counts what it has climbed
 (`.claude/rules/stamp-and-name.md`), so the table counts forty now.*
 
 *May the numbers stay honest before the model runs.*
