@@ -84,6 +84,7 @@ EOF
 # own instruction naming the escape it recommends.
 cat > "$pen/kinds/tools/x/prose_witness.rish" <<'EOF'
 # the shape a guard drives: rye build a.rye -femit-bin=<path>
+# the literal prose mention beside it: rye build a.rye -femit-bin=bin/literal
 let out = run ["sh" "-c" "true"]
 EOF
 seat kinds fixed fixed_witness.rish
@@ -93,11 +94,11 @@ seat kinds nested nested_witness.rish
 seat kinds unknown unknown_witness.rish
 seat kinds prose prose_witness.rish
 k=$(read_scan kinds)
-leg kinds_sites 6 "$(field "$k" emit_sites)"
+leg kinds_sites 7 "$(field "$k" emit_sites)"
 leg kinds_fixed 1 "$(field "$k" emit_fixed)"
 leg kinds_pen 3 "$(field "$k" emit_pen)"
 leg kinds_unresolved 1 "$(field "$k" emit_unresolved)"
-leg kinds_prose 1 "$(field "$k" emit_prose)"
+leg kinds_prose 2 "$(field "$k" emit_prose)"
 leg kinds_guards_emitting 6 "$(field "$k" guards_emitting)"
 leg kinds_verdict ok "$(field "$k" verdict)"
 

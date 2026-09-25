@@ -116,13 +116,23 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 awk '/^guard /{n=$2} /^path /{if (n != "") print n" "$2}' "$roster" > "$pen/roster"
 guards_rostered=$(wc -l < "$pen/roster" | tr -d ' ')
 
-# EVERY EMIT SITE, ONE PER LINE: guard, source, and the raw target as written.
+# EVERY EMIT SITE, ONE PER LINE: guard, source, and the raw target as written. A whole-line
+# comment is a prose mention, not a build; keep it in the receipt as prose so the reading names
+# what it saw without turning documentation into a fixed path.
 : > "$pen/sites"
 while read -r name src; do
   [ -f "$src" ] || continue
-  grep -oE '\-femit-bin=[^" ]+' "$src" 2>/dev/null | sed 's/^-femit-bin=//' | while read -r target; do
-    printf '%s\t%s\t%s\n' "$name" "$src" "$target" >> "$pen/sites"
-  done
+  awk -v name="$name" -v src="$src" '
+    {
+      line = $0
+      line_kind = ($0 ~ /^[[:space:]]*#/) ? "prose" : "fixed"
+      while (match(line, /-femit-bin=[^" ]+/)) {
+        target = substr(line, RSTART + 11, RLENGTH - 11)
+        printf "%s\t%s\t%s\t%s\n", line_kind, name, src, target
+        line = substr(line, RSTART + RLENGTH)
+      }
+    }
+  ' "$src" >> "$pen/sites"
 done < "$pen/roster"
 
 # RESOLVE A VARIABLE TARGET, AND REFUSE TO GUESS. A target naming a variable is followed three
@@ -156,7 +166,11 @@ resolve_kind() {
 }
 
 : > "$pen/resolved"
-while IFS="$(printf '\t')" read -r name src target; do
+while IFS="$(printf '\t')" read -r line_kind name src target; do
+  if [ "$line_kind" = prose ]; then
+    printf '%s\t%s\t%s\t%s\n' prose "$name" "$src" "$target" >> "$pen/resolved"
+    continue
+  fi
   # A LITERAL MAY ITSELF HOLD A VARIABLE, so the classification iterates rather than substituting
   # once: `${elder_dir}` binds to the string `${home}/elder`, and `${home}` binds to a pen. One
   # step read ten amphora sites as fixed tree paths that reach a real pen. Bounded at four hops,
