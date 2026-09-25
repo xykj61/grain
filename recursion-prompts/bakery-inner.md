@@ -90,6 +90,13 @@ dependents successfully. Its non-repository test needs a Git search ceiling when
 TMPDIR lives inside this checkout. Keep the newer guards and all 85 stashes.
 Sixty-four source versions remain to review.
 
+The [mutation-guard recovery review](../session-logs/date/20260925/20260925-124234_bakery-plant-recovery.kyri) covers four
+versions from two September 9 stashes. Their behavior landed with stronger checks
+in `b0dd10bda`; today's witness passes all 74 controls and the live scan. It finds
+130 live mutations and 121 unresolved targets, with zero dead or failed programs.
+Keep current source, including bounded sed execution and the later diagnostic-read
+fix. All 85 stashes remain preserved; 60 source versions still await review.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
