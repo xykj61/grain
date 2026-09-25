@@ -559,6 +559,7 @@ if [ "$detach" = yes ]; then
         if kill -0 "$detach_owner" 2>/dev/null; then
           owner_lap_read "$detach_owner" "$lock"
           echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
+          run_verdict_seen=yes
           echo "run_verdict=run_in_flight"
           owner_transcript "$lock"
           echo "refused: another roster pass holds $lock (pid $detach_owner) -- its transcript is untouched; read that rather than opening a second." >&2
@@ -595,7 +596,24 @@ stamp=$(TZ=America/New_York date +%Y%m%d.%H%M%S)
 
 pen=$(mktemp -d)
 receipt_tmp="$pen/receipt.kyri"
-trap 'rm -rf "$pen"' EXIT
+
+# A SILENT DEATH IS A VERDICT THE READER HAS TO GUESS AT (`20260925`, the transcript's second
+# firing of this class). `set -eu` means any unguarded write that fails -- the known cause is a
+# full disk, the same one that already taught this file to hold `unrun` apart from `red` -- exits
+# the whole script at once, before it reaches one of the nine lines below that name a verdict. A
+# reader meeting a transcript with a guard list and no closing line cannot tell a dead runner from
+# one still working. `run_verdict_seen` is set true immediately before every one of those nine
+# lines, so a normal exit always sees it and prints nothing extra; an EXIT trap firing with it
+# still false names the death instead of leaving the transcript to trail off.
+run_verdict_seen=no
+note_death_if_silent() {
+  _dc=$?
+  if [ "$run_verdict_seen" != yes ]; then
+    echo "run_verdict=died_unexpectedly exit_code=$_dc"
+    echo "refused: the runner exited with no verdict line above -- exit_code names the shell's own reason; a disk near full has caused this before." >&2
+  fi
+}
+trap 'note_death_if_silent; rm -rf "$pen"' EXIT
 
 # The staged reading, before a single guard runs. A pen outside a repository answers 0 rather than
 # refusing, so a control can drive this runner without standing inside git.
@@ -679,7 +697,7 @@ if [ -d "$(dirname "$lock")" ]; then
     # signalled pass prints a list of green guards and NO `run_verdict` line at all, which reads
     # like a short healthy run. Measured 20260906: this pass died that way after 34 guards.
     # REDS %487; proven both directions in tools/fixtures/s/signal_trap_control.sh.
-    trap 'rm -rf "$pen"; lock_release "$lock"' EXIT
+    trap 'note_death_if_silent; rm -rf "$pen"; lock_release "$lock"' EXIT
     trap 'exit 130' INT
     trap 'exit 143' TERM
     echo "run_lock=held"
@@ -699,6 +717,7 @@ if [ -d "$(dirname "$lock")" ]; then
     [ -n "$owner" ] || owner=unknown
     owner_lap_read "$owner" "$lock"
     echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
+    run_verdict_seen=yes
     echo "run_verdict=run_in_flight"
     owner_transcript "$lock"
     echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
@@ -716,6 +735,7 @@ fi
 # %223). It refuses here, ahead of the tree digest and ahead of the first guard, because nothing
 # measured across that tree would answer the question the lap actually has.
 if [ "$staged" -gt 0 ] && [ "$hot" = no ] && [ -z "$only" ]; then
+  run_verdict_seen=yes
   echo "run_verdict=lap_unclosed"
   echo "refused: $staged paths staged and never committed -- a lap ended at 'git add'." >&2
   echo "         commit them, or pass --hot when they are this round's own work." >&2
@@ -889,6 +909,7 @@ if [ "$probe" = yes ]; then
   # A probe runs no guard and takes no close digest, so nothing can move between its open reading
   # and this line -- it writes its own row here and leaves.
   hitledger_write
+  run_verdict_seen=yes
   echo "run_verdict=receipt_probe"
   exit 0
 fi
@@ -1192,6 +1213,7 @@ if [ "$scoped" = yes ]; then
       } END { if (n > 8) printf ",+%d more", n - 8 }' "$card" 2>/dev/null || true)
     [ -n "$blocked" ] || blocked=none
     echo "scoped_basis_blocked=$blocked"
+    run_verdict_seen=yes
     echo "run_verdict=scoped_no_basis"
     if [ "$blocked" = none ]; then
       echo "refused: --scoped wants a FULL green receipt with a head to diff from -- run the full roster once" >&2
@@ -1739,6 +1761,7 @@ if [ "$red" -ne 0 ]; then
   # `scope full`, `guards 186`, `gated 3`. A comment describing a constraint its own file has
   # already lifted teaches the next reader not to look.
   [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_red"
+  run_verdict_seen=yes
   echo "run_verdict=guard_red"
   echo "refused: a rostered guard answered red -- read its own line" >&2
   exit 1
@@ -1753,6 +1776,7 @@ fi
 # question about which tree it describes.
 if [ "$unrun" -ne 0 ]; then
   [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_unrun"
+  run_verdict_seen=yes
   echo "run_verdict=guard_unrun"
   echo "refused: a guard's answer could not be kept -- the runner cannot tell a finding from a machine fault, so it claims neither" >&2
   exit 1
@@ -1761,6 +1785,7 @@ fi
 # A guard red is the louder finding, so it keeps the verdict when both are true. A moved tree comes
 # second and still refuses, since verdicts spread across two trees answer no question about either.
 if [ "$moved" = yes ]; then
+  run_verdict_seen=yes
   echo "run_verdict=tree_moved"
   echo "refused: the tree changed while this ran -- these verdicts describe neither one" >&2
   exit 1
@@ -1807,5 +1832,6 @@ else
   echo "roster_receipt_write=withheld_scope_$run_scope"
 fi
 
+run_verdict_seen=yes
 echo "run_verdict=ok"
 exit 0

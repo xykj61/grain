@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
 | `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
 | `20260925.073210` | [Printable recovery](20260925/20260925-073210_diffuser-printable-recovery.kyri) | Seven receipt controls green; Swift runtime open. |
