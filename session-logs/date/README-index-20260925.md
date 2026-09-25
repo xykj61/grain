@@ -6,8 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.172238` | [Two Patchouli logs recovered](20260925/20260925-172238_patchouli-two-parked-logs-recovered.kyri) | Saved records linked; focused checks pass. |
 | `20260925.172109` | [Roster records](20260925/20260925-172109_bakery-roster-record-recovery.kyri) | Fifteen parked versions reviewed. |
 | `20260925.171417` | [Artifact recovery](20260925/20260925-171417_bakery-artifact-recovery.kyri) | Hook and copies keep current source. |
+| `20260925.170339` | [Flat row recovery](20260925/20260925-170339_patchouli-flat-row-recovery.kyri) | Parked fix recovered; row control green. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
 | `20260925.165009` | [Capture witness](20260925/20260925-165009_bakery-capture-witness.kyri) | Candidate includes its count assertion. |
 | `20260925.164000` | [Capture runner pen](20260925/20260925-164000_bakery-capture-runner-pen.kyri) | Candidate passes both control families. |
@@ -17,6 +19,7 @@
 | `20260925.161808` | [Send record](20260925/20260925-161808_bakery-send-record.kyri) | Published repair kept; final checks recorded. |
 | `20260925.161208` | [Held transcript](20260925/20260925-161208_bakery-held-transcript.kyri) | Lock cases pass; capture fault remains. |
 | `20260925.154830` | [Copal bounds home send](20260925/20260925-154830_copal-bounds-home-send.kyri) | Parked witness recovered; full roster owed. |
+| `20260925.153312` | [Flat log row count](20260925/20260925-153312_patchouli-flat-log-row-count.kyri) | Each flat log counts once; control green. |
 | `20260925.152938` | [Copal bounds home recovered](20260925/20260925-152938_copal-bounds-home-recovered.kyri) | Ten pairs pass; planted drift refuses. |
 | `20260925.152934` | [Skate index review](20260925/20260925-152934_diffuser-skate-index-repair.kyri) | Peer repair kept; focused witness green; full roster open. |
 | `20260925.151502` | [Codex calls checked](20260925/20260925-151502_bakery-model-control.kyri) | Exact model checks; four refusals. |
