@@ -355,6 +355,12 @@ precede later corrections; one row has no paired log in its stash. Keep today's
 records and preserve the drafts. All 85 stashes remain; 135 Markdown versions await
 review. Capture integration and full cold and hot proof remain owed.
 
+The [card recovery review](../session-logs/date/20260925/20260925-181833_bakery-card-recovery.kyri) covers three more parked itinerary versions.
+Two change only historical parent hashes. The third scope-map account landed in
+`c095cd529` and remains on the card with its later archive link. Keep current text
+and all 85 stashes. The remaining queue holds 132 Markdown versions; capture
+integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
