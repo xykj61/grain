@@ -6,11 +6,13 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.024851` | [Grass packet recovered](20260925/20260925-024851_grass-packet-recovered.kyri) | Parked packet and log recovered; moved hot verdict named. |
 | `20260925.023135` | [Third hold, cold run still running](20260925/20260925-023135_third-hold-cold-run-still-running.kyri) | Cold run still in flight. |
 | `20260925.022046` | [Bakery cold recovery](20260925/20260925-022046_bakery-cold-recovery.kyri) | 330 green, 43 red; missing queue row restored. |
 | `20260925.020430` | [Fifth hold, cold run still running](20260925/20260925-020430_fifth-hold-cold-run-still-running.kyri) | Cold run still in flight. |
 | `20260925.015959` | [Fourth hold, cold run still running](20260925/20260925-015959_fourth-hold-cold-run-still-running.kyri) | Cold run still in flight. |
 | `20260925.014903` | [Second hold, same cold run](20260925/20260925-014903_second-hold-for-the-same-cold-run.kyri) | Round-open clean; held for this tree's own in-flight cold run. |
+| `20260925.013113` | [Grass foundation service test](20260925/20260925-013113_grass-foundation-service-test.kyri) | Packet A; moved hot receipt named. |
 | `20260925.011146` | [Cold run already in flight](20260925/20260925-011146_cold-run-already-in-flight.kyri) | Round-open clean; held rather than launching a second cold run. |
 | `20260925.004949` | [Bakery hot receipt](20260925/20260925-004949_bakery-hot-receipt.kyri) | 320 green, 53 red; snapshot held still. |
 | `20260925.004328` | [Ledger deadlock door refreshed](20260925/20260925-004328_ledger-deadlock-door-refreshed.kyri) | Stale REDS pin reading corrected, five unheld rows named for Keaton. |
