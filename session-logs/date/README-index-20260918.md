@@ -12,6 +12,7 @@
 | `20260918.112705` | [Round closes -- both remotes hold 0d408275a, nib pin left one rebase behind](20260918/20260918-112705_round-closes-0d408275a-nib-gap.kyri) | Six contested pushes, the last of them clean; nib amend target turned out already public, reverted rather than forced. |
 | `20260918.112548` | [Fleet shutdown prep -- clockout armed on all eight ships](20260918/20260918-112548_fleet-shutdown-prep.kyri) | .loop-clockout touched fleet-wide; four seats already ended, diffuser and petrichor still mid-lap. |
 | `20260918.112500` | [Send confirmed -- both remotes hold 9eb297e02, seven contested rebases](20260918/20260918-112500_send-confirmed-9eb297e02.kyri) | Six conflicting rebase rounds resolved by stamp order; xy and debrided confirmed at 9eb297e025. |
+| `20260918.110442` | [Grass opens with no task](20260918/20260918-110442_grass-idle-open.kyri) | Parked Grass log restored to its day shelf. |
 | `20260918.093625` | [Fascia clean, claim clear, cold run held](20260918/20260918-093625_holding-the-cold-run.kyri) | Fascia scan clean; cold run launched and held for its verdict. |
 | `20260918.112212` | [Round closes -- both remotes hold c4131393b](20260918/20260918-112212_round-closes-c4131393b.kyri) | A second contested rebase against another fresh peer commit landed clean; xy and debrided confirmed. |
 | `20260918.112135` | [Empty-open turn, fourth in a row -- state unchanged since the last check](20260918/20260918-112135_fourth-empty-open-still-gated.kyri) | Fetched, re-checked ITINERARY, claim board, REDS; nothing changed, nothing to build. |

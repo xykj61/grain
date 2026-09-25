@@ -7,10 +7,12 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.135714` | [Shell drafts reviewed](20260925/20260925-135714_bakery-portable-recovery.kyri) | Current helpers retained. |
+| `20260925.135326` | [Grass parked money recovery sent](20260925/20260925-135326_grass-parked-money-recovery-sent.kyri) | Parked packet and six logs restored; full roster owed. |
 | `20260925.134917` | [Ledger draft reviewed](20260925/20260925-134917_bakery-spine-recovery.kyri) | Published numbers stay fixed. |
 | `20260925.133855` | [Compiler census retained](20260925/20260925-133855_bakery-compile-recovery.kyri) | Three drafts superseded. |
 | `20260925.132920` | [Link drafts reviewed](20260925/20260925-132920_bakery-path-recovery.kyri) | Two classification counterexamples. |
 | `20260925.131805` | [Folded-shelf drafts reviewed](20260925/20260925-131805_bakery-crushed-recovery.kyri) | Five versions superseded. |
+| `20260925.131604` | [Grass parked money recovery](20260925/20260925-131604_grass-parked-money-recovery.kyri) | Packet and five logs restored; full roster still owed. |
 | `20260925.131431` | [Incense clears its own build cache](20260925/20260925-131431_incense-cleared-own-build-cache.kyri) | Pier 96%/7.6G free to 89%/20G free; REDS pin unstuck. |
 | `20260925.130705` | [Model check blind spot](20260925/20260925-130705_bakery-model-control-diagnosis.kyri) | Both missing-flag mutants pass. |
 | `20260925.125439` | [Watcher and links reviewed](20260925/20260925-125439_bakery-watch-link-recovery.kyri) | Three drafts superseded. |
@@ -27,16 +29,19 @@
 | `20260925.115153` | [Rye recovery review](20260925/20260925-115153_bakery-ryekey-recovery-review.kyri) | Four cache drafts superseded. |
 | `20260925.114256` | [Suffix review](20260925/20260925-114256_bakery-suffix-review.kyri) | Draft control and parser need revision. |
 | `20260925.113410` | [Parked code review](20260925/20260925-113410_bakery-parked-code-review.kyri) | Confer counter needs redesign. |
+| `20260925.113317` | [Grass parked work recovered](20260925/20260925-113317_grass-parked-work-recovered.kyri) | Packet and four logs recovered; cold held 39 reds. |
 | `20260925.112437` | [Parked receipt](20260925/20260925-112437_bakery-parked-receipt.kyri) | Three integration lines recovered. |
 | `20260925.111516` | [Bakery scope cost](20260925/20260925-111516_bakery-scope-cost.kyri) | Current map skips four prior seconds. |
 | `20260925.110451` | [Bakery proof budget](20260925/20260925-110451_bakery-proof-budget.kyri) | Prior costs estimate 164 minutes. |
 | `20260925.105055` | [Bakery cold window](20260925/20260925-105055_bakery-cold-window.kyri) | 310 guards; stopped before lap deadline. |
 | `20260925.101545` | [Receipt motion bounded by Still](20260925/20260925-101545_diffuser-receipt-motion-bounds.kyri) | Pure motion sampler proposed; cold roster held still. |
+| `20260925.100256` | [Grass parked packet restored](20260925/20260925-100256_grass-parked-packet-sent.kyri) | Packet and logs restored; cold roster held 40 reds. |
 | `20260925.095804` | [A stale pass termed, a fresh one held](20260925/20260925-095804_a-stale-pass-termed-a-fresh-one-held.kyri) | Landed 3 orphaned logs; termed a stale pass by pid. |
 | `20260925.095256` | [IFOAM wording corrected](20260925/20260925-095256_petrichor-ifoam-wording.kyri) | Citizen draft A; full roster incomplete. |
 | `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
 | `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Cold run held; a stale shell default repointed. |
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
+| `20260925.083354` | [Grass packet and logs recovered](20260925/20260925-083354_grass-packet-and-logs-recovered.kyri) | Parked packet and logs restored; cold roster held 43 reds. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
 | `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
@@ -52,6 +57,7 @@
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
 | `20260925.053402` | [Capped wake count](20260925/20260925-053402_diffuser-wake-count-correction.kyri) | Backoff count corrected; batch witness bounded. |
+| `20260925.052754` | [Grass local-money boundary](20260925/20260925-052754_grass-local-money-boundary.kyri) | Civic outcome kept beyond the synthetic receipt. |
 | `20260925.052405` | [Four reds repaired](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Cold run held; index fold assigned. |
 | `20260925.052244` | [Nib alias history](20260925/20260925-052244_bakery-nib-alias-history.kyri) | One history for both names. |
 | `20260925.041335` | [Receipt recovery rebased](20260925/20260925-041335_diffuser-recovery-send.kyri) | Focused controls green; full hot moved and red. |
