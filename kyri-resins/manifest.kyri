@@ -12,7 +12,7 @@
 # in the tree read it -- three scans name `kyri-resins/` only to skip it as testimony. A catalog
 # covering a fifth of its room reads exactly like a whole one. Fourteen entries were written from
 # each resin's OWN first header line rather than from a summary, and the catalog now has a reader:
-# `tools/b/kyri_resins_catalog_witness.rish` holds uncatalogued, orphaned, and duplicated lines at
+# `tools/k/kyri_resins_catalog_witness.rish` holds uncatalogued, orphaned, and duplicated lines at
 # zero on every lap, so this file can never quietly go stale again.
 #
 # SEALED `20260910.014500`, which is the field that refresh still lacked. Names and notes had grown
@@ -29,7 +29,7 @@
 #
 # HELD `20260916.234020`, which that sentence lacked. A hand took the reading above once and
 # nothing read it again, so the figure was free in Gauge's sense -- true when written and held by
-# nothing. `tools/b/kyri_resins_landed_witness.rish` takes it on every lap, and it is a SECOND wall
+# nothing. `tools/k/kyri_resins_landed_witness.rish` takes it on every lap, and it is a SECOND wall
 # rather than a louder one: the seal reading recomputes a digest and compares it to the line below
 # it, and both halves live in the working tree, so a resin edited together with its seal is
 # self-consistent and passes. Git's history is the copy an edit cannot reach. The catalog is
@@ -40,8 +40,8 @@ stamp 20260712.115753
 refreshed 20260921.115355
 purpose chat-printout essay resins as Kyri values at the seam
 law Kyri carries immutable values; Brix composes wholes; this folder holds Kyri only
-witness tools/b/kyri_resins_catalog_witness.rish -- uncatalogued, orphan, duplicate, unsealed, and mismatched lines at zero
-witness tools/b/kyri_resins_landed_witness.rish -- a resin whose bytes differ from its adding commit's blob at zero
+witness tools/k/kyri_resins_catalog_witness.rish -- uncatalogued, orphan, duplicate, unsealed, and mismatched lines at zero
+witness tools/k/kyri_resins_landed_witness.rish -- a resin whose bytes differ from its adding commit's blob at zero
 entry 20260712-115753_morning-fold-thoughts.kyri fuller morning summary and Rio essay as chat-printout-v1
 entry 20260712-120007_claude-combined-morning.kyri Claude handoff combining essay plus session-log Kyri migration
 entry 20260712-121719_claude-nib-seated.kyri Claude handoff -- tip renamed to nib

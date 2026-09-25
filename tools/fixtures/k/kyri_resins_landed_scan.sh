@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/b/kyri_resins_landed_scan.sh -- a resin's bytes are the bytes that landed.
+# tools/fixtures/k/kyri_resins_landed_scan.sh -- a resin's bytes are the bytes that landed.
 #
 # WHAT THIS READS. `kyri-resins/` is the resin cellar, a room of chat printouts written once on
 # `20260712` and kept as testimony. `kyri-resins/manifest.kyri` is its catalog, and the paragraph
@@ -42,7 +42,7 @@
 # rather than by a second implementation of the hash standing beside git's. Both sides honor
 # whatever clean filter a clone configures, so a filter can never make a differing file read equal.
 #
-#   sh tools/fixtures/b/kyri_resins_landed_scan.sh [<room>] [--list]
+#   sh tools/fixtures/k/kyri_resins_landed_scan.sh [<room>] [--list]
 #
 # Default room `kyri-resins`. Exit 0 when every resin stands as it landed, 1 when one has moved,
 # and 2 when the scan cannot read what it was pointed at. An absent room answers `misread`, since

@@ -103,7 +103,7 @@ done < "$work/docs.txt"
 # guard that opens a catalog and recomputes every digest in it never spells one, so the spelled
 # test is blind to exactly the strongest form of checking there is -- and it fails in the
 # dangerous direction, calling a wall a silence. `kyri-resins/manifest.kyri` seals seventeen
-# resins and `tools/b/kyri_resins_catalog_witness.rish` recomputes all seventeen every lap; the
+# resins and `tools/k/kyri_resins_catalog_witness.rish` recomputes all seventeen every lap; the
 # spelled test read that as seventeen unread seals.
 #
 # THREE CONDITIONS, none of them satisfiable by prose: the document names a `witness ` path under

@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/b/kyri_resins_catalog_scan.sh -- the cellar's catalog names every resin it holds.
+# tools/fixtures/k/kyri_resins_catalog_scan.sh -- the cellar's catalog names every resin it holds.
 #
 # WHAT THIS READS. `kyri-resins/` is the resin cellar. `kyri-resins/manifest.kyri` is its catalog,
 # carrying one `entry <basename> <note>` line per resin, so a reader learns what the cellar holds
@@ -58,7 +58,7 @@
 # same set `git ls-files` does. And a filesystem read is what lets the control point this scan at a
 # throwaway pen, which is no git repository at all.
 #
-#   sh tools/fixtures/b/kyri_resins_catalog_scan.sh [<room>]
+#   sh tools/fixtures/k/kyri_resins_catalog_scan.sh [<room>]
 #
 # Default room `kyri-resins`. Exit 0 when catalog and room agree, 1 when they part, and 2 when the
 # scan cannot read what it was pointed at. An absent room answers `misread`, since zero is the

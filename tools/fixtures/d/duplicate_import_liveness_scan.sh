@@ -120,7 +120,7 @@ INERT digest=${digest:0:12} count=$count live=$live_count extra_bytes=$extra $(p
   fi
 done
 
-echo "tracked_rye_files=$(git ls-files -- '*.rye' | wc -l | tr -d ' ')"
+echo "tracked_rye_files=$(git ls-files -s -- '*.rye' | awk '$1 != "120000"' | wc -l | tr -d ' ')"
 echo "duplicate_rye_digests=$DUP_DIGESTS"
 echo "duplicate_rye_members=$DUP_MEMBER_FILES"
 echo "resolved_import_targets=$RESOLVED_TARGETS"

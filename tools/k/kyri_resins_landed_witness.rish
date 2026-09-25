@@ -22,10 +22,10 @@
 # tomorrow is heard on the lap it lands rather than waiting for somebody to name it here.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/b/kyri_resins_landed_witness.rish
+#   rishi/bin/rishi run tools/k/kyri_resins_landed_witness.rish
 
-let control = "tools/fixtures/b/kyri_resins_landed_control.sh"
-let scan = "tools/fixtures/b/kyri_resins_landed_scan.sh"
+let control = "tools/fixtures/k/kyri_resins_landed_control.sh"
+let scan = "tools/fixtures/k/kyri_resins_landed_scan.sh"
 
 say "kyri-resins landed: the control, so a green reading below can be believed..."
 let c = run ["sh" control]

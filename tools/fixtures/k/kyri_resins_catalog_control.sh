@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/b/kyri_resins_catalog_control.sh -- prove kyri_resins_catalog_scan.sh on planted cellars.
+# tools/fixtures/k/kyri_resins_catalog_control.sh -- prove kyri_resins_catalog_scan.sh on planted cellars.
 #
 # Every refusal is shown from the failing side AND then lifted, so a reading can never be a plant
 # that planted nothing (REDS `%519`). Every welcome is asserted as hard as every refusal, because a
@@ -8,11 +8,11 @@
 # landing proven by `cmp -s` rather than assumed from a `sed` exit code.
 #
 # Run from the repository root:
-#   sh tools/fixtures/b/kyri_resins_catalog_control.sh
+#   sh tools/fixtures/k/kyri_resins_catalog_control.sh
 set -u
 
 ROOT=$(pwd)
-SCAN="$ROOT/tools/fixtures/b/kyri_resins_catalog_scan.sh"
+SCAN="$ROOT/tools/fixtures/k/kyri_resins_catalog_scan.sh"
 SHA3="$ROOT/tools/fixtures/s/sha3.sh"
 PEN=$(mktemp -d "${TMPDIR:-/tmp}/kyri_resins_catalog_control.XXXXXX") || exit 2
 trap 'rm -rf "$PEN"' EXIT

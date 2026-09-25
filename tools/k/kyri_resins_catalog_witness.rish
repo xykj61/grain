@@ -21,10 +21,10 @@
 # reads exactly like a whole one -- and `%360`'s family, a claim with no instrument listening.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/b/kyri_resins_catalog_witness.rish
+#   rishi/bin/rishi run tools/k/kyri_resins_catalog_witness.rish
 
-let control = "tools/fixtures/b/kyri_resins_catalog_control.sh"
-let scan = "tools/fixtures/b/kyri_resins_catalog_scan.sh"
+let control = "tools/fixtures/k/kyri_resins_catalog_control.sh"
+let scan = "tools/fixtures/k/kyri_resins_catalog_scan.sh"
 
 say "kyri-resins catalog: the control, so a green reading below can be believed..."
 let c = run ["sh" control]
