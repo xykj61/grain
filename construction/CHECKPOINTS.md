@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260925.145308` -- walk-back nib `00c8069a06`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260925/20260925-145308_incense-next-log-archive.md` -- the section had
+grown to 30,804 of the page's 24,576-byte ceiling. The living page keeps a pointer and its most
+recent entry; the elder entries (`20260922.143256` through `20260925.113000`) keep every word on
+the shelf, including the fusion-build arc, the disk-space crux's full history, and the ledger fold
+deadlock's naming.
+
 **Checkpoint `20260925.105055` -- walk-back nib `24de55b4d5`.** Shelve Bakery's held-roster account whole from `construction/ITINERARY.md` into `construction/archive/20260925-105055_bakery-held-roster-account.md`. The earlier cold/hot results and recovery evidence remain there; the lap-window question stays on the card.
 
 **Checkpoint `20260925.052212` -- walk-back nib `6773274dcb`.** Shelve Bakery's page-witness and recovery account whole from `construction/ITINERARY.md` into `construction/archive/20260925-052212_bakery-page-proof-account.md`. It keeps the cold/hot receipts and clock-offset finding; the lap-window question stays on the card.

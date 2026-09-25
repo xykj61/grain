@@ -79,11 +79,29 @@ gitlink_entries=skipped
 sketchbook_receipt=skipped
 swift_gratitude=skipped
 if [ "$check_index" = yes ]; then
-  # The index links to the dated shelf, so count the full path from this room.
+  # The index links to the dated shelf, so count the full path from this room. The room's own
+  # index-fold carry-across (20260925) moved every day's rows off external-research/README.md
+  # onto its own day shelf, external-research/date/README-index-<day>.md, whose own links are
+  # relative to date/ rather than to the room's root -- so a doc already folded into date/ is
+  # read there, by the path a day-shelf link actually spells, before falling back to the room's
+  # own index for an unfolded doc.
   case "$doc" in
-    external-research/*) indexed_path=${doc#external-research/} ;;
-    "$PWD"/external-research/*) indexed_path=${doc#"$PWD"/external-research/} ;;
-    *) indexed_path=$doc ;;
+    "$PWD"/external-research/*) doc_rel=${doc#"$PWD"/} ;;
+    *) doc_rel=$doc ;;
+  esac
+  case "$doc_rel" in
+    external-research/date/*/*)
+      day=$(printf '%s\n' "$doc_rel" | sed -n 's#^external-research/date/\([0-9]\{8\}\)/.*#\1#p')
+      day_shelf="external-research/date/README-index-${day}.md"
+      indexed_path=${doc_rel#external-research/date/}
+      if [ -n "$day" ] && [ -f "$day_shelf" ]; then
+        index=$day_shelf
+      else
+        indexed_path=${doc_rel#external-research/}
+      fi
+      ;;
+    external-research/*) indexed_path=${doc_rel#external-research/} ;;
+    *) indexed_path=$doc_rel ;;
   esac
   index_rows=$(grep -Fc "]($indexed_path)" "$index" || true)
   if [ "$index_rows" -ne 1 ]; then
