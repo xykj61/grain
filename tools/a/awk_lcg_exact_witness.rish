@@ -39,7 +39,11 @@ assert scan.out contains "exact_range=9007199254740992" else "the exact range mo
 
 # THE BLIND SPOT IS ASSERTED, NOT ONLY PRINTED. A reading whose unread class silently emptied
 # would look exactly like a tree that had repaired it, and the two want different answers.
-assert scan.out contains "unread=17" else "the unread population moved: ${scan.out_brief}"
+# It read 17 at seating (20260916) and 21 on 20260925: tools/fixtures/c/composite_key_control.sh,
+# born two days after seating (20260918), carries the whole delta -- four multiply-then-mod sites
+# (j * 11 % 256, i * 37 % 256 twice, j * 11 % 256 again), each bounded by a loop index rather than
+# fed-back state, so the widening is the population growing rather than a blind spot opening.
+assert scan.out contains "unread=21" else "the unread population moved: ${scan.out_brief}"
 
 # THE CONTROL IS ASSERTED BESIDE THE READING, because a wall proven only in the passing direction
 # cannot be told from a reading that counts nothing. Fifty-seven behaviors on real git
@@ -68,4 +72,4 @@ assert control.out contains "control_verdict=ok" else "awk lcg exact control ver
 assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
 assert control.out contains "legs=57" else "the control's leg tally moved: ${control.out_brief}"
 
-say "GREEN: awk-lcg-exact -- every fed-back awk generator in the tree stays inside the range a double holds exactly, 57 behaviors proven with three mutations bitten, and 17 index hashes named as the blind spot rather than guessed at."
+say "GREEN: awk-lcg-exact -- every fed-back awk generator in the tree stays inside the range a double holds exactly, 57 behaviors proven with three mutations bitten, and 21 index hashes named as the blind spot rather than guessed at."
