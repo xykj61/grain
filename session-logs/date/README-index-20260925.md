@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.123248` | [Two drafts reviewed](20260925/20260925-123248_bakery-two-drafts-recovery.kyri) | Newer guards retained. |
 | `20260925.122107` | [Detach recovery](20260925/20260925-122107_bakery-detach-recovery.kyri) | Three drafts already landed. |
 | `20260925.121246` | [Freshness recovery](20260925/20260925-121246_bakery-freshness-recovery-review.kyri) | Three false-fresh cases. |
 | `20260925.120356` | [Seed-phase recovery](20260925/20260925-120356_bakery-sow-recovery-review.kyri) | Three drafts superseded. |
