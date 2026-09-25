@@ -62,7 +62,7 @@
 # `readme_named=1`, `readme_unnamed=0`, `verdict=ok`.
 #
 # THE SIBLING ROOM IN THIS LANE ALREADY READS BOTH WAYS, which is how the asymmetry showed.
-# `tools/fixtures/b/kyri_resins_catalog_scan.sh` prints `uncatalogued` beside `orphan_entries` and
+# `tools/fixtures/k/kyri_resins_catalog_scan.sh` prints `uncatalogued` beside `orphan_entries` and
 # `unsealed` beside `orphan_seals` -- each list checked against the other. This scan carried
 # `orphan_rows` for the roster-to-file direction and had no door-to-roster twin.
 #

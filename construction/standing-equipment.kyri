@@ -5188,7 +5188,7 @@ seated 20260917.065842
 # landed plant).
 
 guard kyri_resins_catalog
-path tools/b/kyri_resins_catalog_witness.rish
+path tools/k/kyri_resins_catalog_witness.rish
 tier lap
 seated 20260907.000030
 
@@ -5229,7 +5229,7 @@ seated 20260907.000030
 # move while exiting clean, which is how a guard fails most quietly.
 
 guard kyri_resins_landed
-path tools/b/kyri_resins_landed_witness.rish
+path tools/k/kyri_resins_landed_witness.rish
 tier lap
 seated 20260916.234020
 # topology_churn -- what ONE DEPARTURE costs a table everybody shares, at 720 points.

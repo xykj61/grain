@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/b/kyri_resins_landed_control.sh -- prove kyri_resins_landed_scan.sh on real git history.
+# tools/fixtures/k/kyri_resins_landed_control.sh -- prove kyri_resins_landed_scan.sh on real git history.
 #
 # The subject is a reading taken from git, so every pen here is a REAL repository with real commits
 # rather than a directory of files. A plant built without history would prove the scan can count
@@ -13,11 +13,11 @@
 # (REDS `%794`'s family).
 #
 # Run from the repository root:
-#   sh tools/fixtures/b/kyri_resins_landed_control.sh
+#   sh tools/fixtures/k/kyri_resins_landed_control.sh
 set -u
 
 ROOT=$(pwd)
-SCAN="$ROOT/tools/fixtures/b/kyri_resins_landed_scan.sh"
+SCAN="$ROOT/tools/fixtures/k/kyri_resins_landed_scan.sh"
 PEN=$(mktemp -d "${TMPDIR:-/tmp}/kyri_resins_landed_control.XXXXXX") || exit 2
 trap 'rm -rf "$PEN"' EXIT
 
