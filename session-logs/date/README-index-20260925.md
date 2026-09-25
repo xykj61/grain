@@ -7,11 +7,12 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.033803` | [Closed by a contended shelf](20260925/20260925-033803_a-lap-closed-by-a-contended-shelf.kyri) | Cold run guard_red, unmoved; two reds already fixed by peers. |
-| 20260925.033310 | [Petrichor draft grade](20260925/20260925-033310_petrichor-draft-grade-and-cold-hold.kyri) | Draft B+; cold verdict missing; parked log restored. |
+| `20260925.033310` | [Petrichor draft grade](20260925/20260925-033310_petrichor-draft-grade-and-cold-hold.kyri) | Draft B+; cold verdict missing; parked log restored. |
 | `20260925.033112` | [Parked bounds roster recovered](20260925/20260925-033112_copal-parked-roster-recovered.kyri) | Witness and day shelves recovered; cold and hot owed. |
 | `20260925.032355` | [Parked bounds witness recovered](20260925/20260925-032355_copal-bounds-roster-recovery.kyri) | Focused proof green; cold baseline 45 reds; hot pending. |
 | `20260925.024851` | [Grass packet recovered](20260925/20260925-024851_grass-packet-recovered.kyri) | Parked packet and log recovered; moved hot verdict named. |
 | `20260925.023135` | [Third hold, cold run still running](20260925/20260925-023135_third-hold-cold-run-still-running.kyri) | Cold run still in flight. |
+| `20260925.022738` | [Bakery integrated hot](20260925/20260925-022738_bakery-integrated-hot.kyri) | Recovery verification. |
 | `20260925.022046` | [Bakery cold recovery](20260925/20260925-022046_bakery-cold-recovery.kyri) | 330 green, 43 red; missing queue row restored. |
 | `20260925.020430` | [Fifth hold, cold run still running](20260925/20260925-020430_fifth-hold-cold-run-still-running.kyri) | Cold run still in flight. |
 | `20260925.015959` | [Fourth hold, cold run still running](20260925/20260925-015959_fourth-hold-cold-run-still-running.kyri) | Cold run still in flight. |
