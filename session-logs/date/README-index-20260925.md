@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.161808` | [Send record](20260925/20260925-161808_bakery-send-record.kyri) | Published repair kept; final checks recorded. |
 | `20260925.161208` | [Held transcript](20260925/20260925-161208_bakery-held-transcript.kyri) | Lock cases pass; capture fault remains. |
 | `20260925.154830` | [Copal bounds home send](20260925/20260925-154830_copal-bounds-home-send.kyri) | Parked witness recovered; full roster owed. |
 | `20260925.152938` | [Copal bounds home recovered](20260925/20260925-152938_copal-bounds-home-recovered.kyri) | Ten pairs pass; planted drift refuses. |
