@@ -35,9 +35,19 @@ for cold and hot together. This excludes reading, edits, startup, and sending;
 future times can change. The active timeout read 5,400 seconds on `20260925`.
 The proposed 10,800-second window would leave 963 seconds at those costs.
 
-The full-green receipt does exist: its head is `fa310d296b`, an ancestor of HEAD.
-At `f15247701b`, its delta spans 10,219 paths. Read that basis before diagnosing a
-scoped refusal. An old receipt and an absent receipt call for different next steps.
+The full-green receipt exists at `fa310d296b`, an ancestor of HEAD. At
+`e4cb510247`, its delta spans 10,220 paths. Applying the runner's own
+`scope_match_any` to that delta and today's map would skip only two of the 377
+guards in the recorded `20260925.081703` hot pass: `crypto_module_roster` and
+`constel_module_roster`, two seconds each. The retained prior cost is 4,478 of
+4,482 guard-seconds. This prices the prior pass's population; it is neither a
+new scoped verdict nor a prediction of elapsed time.
+
+Of those 377 guards, 322 have no map row (3,835 prior seconds), nine declare
+DISCOVERY (84 seconds), and 44 mapped guards meet a changed path (559 seconds).
+New guards and changed host capabilities need their own accounting. The old
+receipt offers little saving with this map and delta. A new row needs a complete
+read-set proof; the absent-row cost alone does not establish safe independence.
 
 The card proposes per-guard receipts and retains the lap-window question. Both
 remain proposals. Follow the current proof rules and Bakery's priority, reds first;
