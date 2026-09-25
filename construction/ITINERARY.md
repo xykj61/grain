@@ -5,8 +5,8 @@
 **Stamp:** `20260918.063504` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at Meter
-**Molted from:** [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
-**Prior elder:** [`archive/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md).
+**Molted from:** [`archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md`](archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md). The archived card remains historical continuity outside Mitra and shred-prep.
+**Prior elder:** [`archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md).
 **Bound:** `living_pin_max_bytes[construction/ITINERARY.md] = 40960`. Raised to 49152 on `20260915` when the card stood 39 bytes under its ceiling, then **withdrawn the same lap**: the fold of the landed accounts took the card from 41,230 bytes to 20,002, so the raise was no longer earned. A bound that only falls is the one worth having.
 
 Keaton's `20260913` word accepts the first receipt contract and chooses the full eight-ship formation. The watcher may keep every live seat sailing; product and custody walls below remain unchanged.
@@ -295,7 +295,7 @@ The product cards carry the complete ladders:
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
 **Git nib:** named once above, under *Product direction* -- one fact in one place.
-**Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/20260915-180554_itinerary-landed-accounts.md`](archive/date/20260915/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
+**Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/date/20260915/20260915-180554_itinerary-landed-accounts.md`](archive/date/20260915/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
 [shelved whole](archive/date/20260916/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
@@ -521,8 +521,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 
 ## Archive and record
 
-- The immediately departing itinerary rests at [`archive/20260912-142909_itinerary-bound-before-flight.md`](archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md).
-- Its elder rests at [`archive/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md).
+- The immediately departing itinerary rests at [`archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md`](archive/date/20260912/20260912-142909_itinerary-bound-before-flight.md).
+- Its elder rests at [`archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md).
 - The prior design system rests at [`../active-designing/archive/20260826-022443_the-linengrow-design-theme.md`](../active-designing/archive/20260826-022443_the-linengrow-design-theme.md).
 - Archives are historical continuity outside Mitra and shred-prep.
 - Fleet roster, engines, and trees remain unchanged; the operational state is the full live formation from `20260913`.
