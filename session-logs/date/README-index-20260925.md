@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.144054` | [Enclosure drafts reviewed](20260925/20260925-144054_bakery-jail-recovery.kyri) | Split retained; probe difference recorded. |
+| `20260925.143429` | [Parked Petrichor records restored](20260925/20260925-143429_petrichor-parked-records-restored.kyri) | Twenty-eight parked logs recovered; roster proof open. |
 | `20260925.143230` | [Missing-tool drafts reviewed](20260925/20260925-143230_bakery-absence-recovery.kyri) | Current fixture checks retained. |
 | `20260925.142455` | [Coverage drafts reviewed](20260925/20260925-142455_bakery-reach-recovery.kyri) | Current input receipts retained. |
 | `20260925.141528` | [Scope draft reviewed](20260925/20260925-141528_bakery-yield-recovery.kyri) | Current ranking retained. |
