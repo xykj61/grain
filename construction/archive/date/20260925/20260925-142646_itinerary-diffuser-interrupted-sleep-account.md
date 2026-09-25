@@ -1,0 +1,3 @@
+# Diffuser interrupted sleep account
+
+**DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Study](../../../../active-designing/date/20260925/20260925-124148_caravan-interrupted-sleep-budget.md) checks Caravan's ignored `nanosleep` result against POSIX interruption behavior. The earlier 50 checks per second is exact-sleep arithmetic, not a host bound. A three-signal trace supplies Bakery a pure witness case; host frequency and energy stay unmeasured. The cold roster ended with exit 143 after a bounded local stop and no full verdict. **YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
