@@ -249,8 +249,8 @@ a new pass remains owed. [Prior account](archive/20260925-105055_bakery-held-ros
 9,837 seconds for both passes and one cadence guard, before lap overhead.
 The active timeout is 5,400 seconds.
 [Estimate and parked-source reviews](../recursion-prompts/bakery-inner.md).
-The Codex loop control expects the former model default and exits 1. Its 12 checks
-pass with that model explicitly supplied; current per-seat defaults still need tests.
+The Codex control fails today's default. With the former model supplied, all 12 checks
+pass even if either call omits its model flag. Prove each call and both seat defaults.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -355,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `af72dfbd3b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `661eaea58e` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
