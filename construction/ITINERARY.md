@@ -151,30 +151,18 @@ next agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- prior open-room account shelved whole** ([archive](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)); the new packet follows below.
 
-**GRASS -- FOUR PROMISES REMAINS THE RECEIPT'S ETHIC.** Read
-[`../foundations/20260628-133212_four-promises-a-tool-can-keep.md`](../foundations/20260628-133212_four-promises-a-tool-can-keep.md)
-against the first receipt contract: bounded consent, truthful signed facts, portable departure, and
-accessible use still carry do no harm, tell the truth, hold lightly, and be kind. [Packet written](../active-designing/date/20260923/20260923-073443_grass-reverse-read-of-four-promises.md):
-**affirmed, no molt.** The next oldest foundation is the next walk.
+**GRASS -- FOUR PROMISES.** [Account shelved whole](archive/date/20260924/20260924-212003_itinerary-grass-four-promises-account.md).
 
-**GRASS -- THE DEVICE THAT FORGETS KEEPS CUSTODY BY CHOICE.** Read
-[`../foundations/20260628-133212_the-device-that-forgets.md`](../foundations/20260628-133212_the-device-that-forgets.md)
-against the receipt contract. [Packet written](../active-designing/date/20260923/20260923-103832_grass-device-that-forgets-reverse-read.md):
-**standfasted as a product principle, no molt or repair.** Hardware volatility, repairable parts,
-and deletion remain future acceptance work; the next oldest foundation is the next walk.
+**GRASS -- DEVICE THAT FORGETS.** [Account shelved whole](archive/date/20260924/20260924-224108_itinerary-grass-device-that-forgets-account.md).
 
-**GRASS -- THE KEY YOU HOLD KEEPS IDENTITY WITH THE PERSON.** Read
-[`../foundations/20260628-133212_the-key-you-hold.md`](../foundations/20260628-133212_the-key-you-hold.md)
-against the receipt contract. [Packet written](../active-designing/date/20260923/20260923-195536_grass-reverse-read-of-the-key-you-hold.md):
-**standfasted as a product principle, no molt or repair.** The synthetic receipt keeps real
-identity outside its first whole; person-held keys belong at the witnessed portable-bundle seam.
-The next oldest foundation is the next walk.
+**GRASS -- KEY YOU HOLD.** [Account shelved whole](archive/date/20260924/20260924-224108_itinerary-grass-key-you-hold-account.md).
 
-**GRASS -- FREE AND OPEN ROOM.** [Packet](../active-designing/date/20260924/20260924-003224_grass-reverse-read-of-a-free-and-open-room.md):
-**standfasted; later access work.**
+**GRASS -- FREE AND OPEN ROOM.** [Account shelved whole](archive/date/20260924/20260924-211114_itinerary-grass-open-room-account.md).
 
-**GRASS -- SHAPE OF A DAY.** [Packet](../active-designing/date/20260924/20260924.085457_grass-reverse-read-of-the-shape-of-a-day.md):
-**standfasted; receipt bounds remain; rhythm waits.**
+**GRASS -- SHAPE OF A DAY.** [Account shelved whole](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md).
+
+**GRASS -- ROOTS BENEATH THE WORK.** [Packet](../active-designing/date/20260924/20260924-181800_grass-roots-reverse-read.md):
+**standfasted as a composition; no molt or repair.** The first receipt keeps bounded, inspectable evidence. The wider promises wait at their own product seams.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -361,7 +349,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `953f5015ed` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `8cb0842776` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
