@@ -5,7 +5,7 @@
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
-store="$root/aurora/.build/stage-resin-store"
+store=${STAGE_STORE:-$root/aurora/.build/stage-resin-store}
 count=0
 
 if [ -d "$store" ]; then
@@ -21,4 +21,7 @@ if [ -d "$store" ]; then
 fi
 
 echo "stage-store-list count=${count}"
+if [ "$count" -eq 0 ]; then
+  exit 1
+fi
 echo GREEN

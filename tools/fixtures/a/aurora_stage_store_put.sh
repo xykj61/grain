@@ -5,7 +5,7 @@
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
-store="$root/aurora/.build/stage-resin-store"
+store=${STAGE_STORE:-$root/aurora/.build/stage-resin-store}
 mkdir -p "$store"
 
 tmp=$(mktemp)
