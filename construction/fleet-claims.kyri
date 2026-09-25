@@ -101,3 +101,9 @@ stamp 20260925.061422
 epoch 1790331262
 paths tools/fixtures/b/bounds_home_census_control.sh
 what Add a bounded control that plants one numeric drift in the bounds home census.
+claim pheromone-glow-shape-15-send-20260925
+seat pheromone
+stamp 20260925.083219
+epoch 1790339539
+paths glow/rune_shape.rye glow/tokens.rye glow/refusal_witness.rye glow/refusal.rye glow/glow_run.rye glow/lower_named_cast.rye glow/lower_shape.rye tools/g/glow_shape_capacity_witness.rish tools/g/glow_refusal_witness.rish tools/fixtures/g/glow_refusal_mutation_control.sh active-designing/docs/glow/machine-reading.md active-designing/docs/glow/runes.md
+what Recover the approved fifteen-field Glow shape change from the saved lap and prove its acceptance and refusal.
