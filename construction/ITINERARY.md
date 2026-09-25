@@ -89,10 +89,10 @@ the board should refuse a hand editing it at all is still Keaton's word.
 **YOURS:** the resin room's landed wall, 45 written characters, 1,417 almanac characters, claim-path
 exemption, and the remaining unrostered chapter witnesses.
 
-**COPAL -- BOUNDS HOME CENSUS RESTORED.** Ten declared pairs match the living table; a planted
-one-value drift refuses with nine matched and one drift. The witness and control are rostered.
-[Prior witness accounts](archive/date/20260925/20260925-061609_itinerary-copal-witness-accounts.md)
-are shelved whole. The restored witness passed both sides on the integrated tree.
+**COPAL.** [Bounds-home account shelved whole](archive/date/20260925/20260925-174220_itinerary-copal-bounds-home-account.md).
+
+**COPAL -- CENSUS CONTROL ROSTERED.** The chapter witness checks three live duties and a planted
+naive-total refusal. Direct proof is green; a full cold and hot roster verdict remains owed.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -359,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1532ab6bb3` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `cf15bb9880` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

@@ -7972,6 +7972,13 @@ path tools/gen/chapter/bounds_home_census_witness.rish
 tier lap
 seated 20260925.061518
 
+# census_control -- the Generator Chapter census checks its three live duties,
+# then proves the naive total is refused by a planted control.
+guard census_control
+path tools/gen/chapter/census_control_witness.rish
+tier lap
+seated 20260925.174220
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse
