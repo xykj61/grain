@@ -260,6 +260,16 @@ The existing portable control passes 71 checks without covering these failures. 
 failure cases and the runner's short-output fixture together. Production code is unchanged;
 full cold and hot proof remains owed. The live lap timeout still reads 5,400 seconds.
 
+The next pen integrates the capture candidate with both control families. It checks
+all four writers before and after partial output. Current source misses all eight
+refusals; the candidate passes 79 portable checks and all 367 runner assertions.
+The corrected runner fixture fails only cat reads of its capture input, so other
+runner reads keep working. Successful short and clipped outputs remain identical.
+The patch is preserved at `session-output/capture-runner-0fys9lg8/candidate.patch`,
+with copied source and both result sets beside it. It is a local candidate, not a
+production change. Apply it only with the required cold and hot proof; the full
+roster still exceeds the current lap window. All 85 stashes remain preserved.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

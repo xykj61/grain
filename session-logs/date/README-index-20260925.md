@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.164000` | [Capture runner pen](20260925/20260925-164000_bakery-capture-runner-pen.kyri) | Candidate passes both control families. |
 | `20260925.163548` | [Anchor repair](20260925/20260925-163548_commit-parent-claim-anchor-repair.kyri) | commit-parent-claim's anchor moved once; GREEN. |
 | `20260925.162709` | [Capture diagnosis](20260925/20260925-162709_bakery-capture-diagnosis.kyri) | Four write failures read as success. |
 | `20260925.162521` | [Petrichor draft grade held](20260925/20260925-162521_petrichor-draft-grade-held.kyri) | Draft B+; full roster remains open. |
