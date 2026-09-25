@@ -143,6 +143,13 @@ Check exact model arguments on both calls, with inherited overrides cleared for
 default tests. Cover Bakery, an ordinary seat, and explicit overrides; both planted
 omissions must fail. Production source is unchanged; the repair remains owed.
 
+The [folded-shelf recovery review](../session-logs/date/20260925/20260925-131805_bakery-crushed-recovery.kyri) covers five
+crushed-index versions in the September 8 stashes. Their shallow-shelf exclusion
+landed in `465a6cacd`; keep today's scan and its later checks. The current witness
+passes all 71 controls and its live scan. All 85 stashes remain preserved, and
+52 source versions still await review. The model-control repair and full roster
+proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
