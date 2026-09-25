@@ -95,3 +95,9 @@ stamp 20260924.193506
 epoch 1790292906
 paths recursion-prompts/bakery-inner.md
 what Replace the completed scope-map assignment with an evidence-led recovery step for the parked build-target repair.
+claim incense-stage-store-quiet-put
+seat incense
+stamp 20260924.203451
+epoch 1790296491
+paths tools/fixtures/a/aurora_stage_store_quiet_put.sh tools/au/aurora_stage_store_quiet_put_witness.rish tools/fixtures/a/aurora_stage_store_quiet.sh tools/au/aurora_stage_store_quiet_witness.rish active-designing/date/20260924/20260924-165957_tablecloth-stages-as-values.md
+what Write once into the quiet stage store and leave that write on disk.
