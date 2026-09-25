@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.124234` | [Mutation drafts reviewed](20260925/20260925-124234_bakery-plant-recovery.kyri) | Four versions superseded. |
 | `20260925.124035` | [A clean cold run, third silent death](20260925/20260925-124035_a-clean-cold-run-after-a-third-silent-death.kyri) | 335 green, 38 red; REDS pin at 10 bytes headroom. |
 | `20260925.123248` | [Two drafts reviewed](20260925/20260925-123248_bakery-two-drafts-recovery.kyri) | Newer guards retained. |
 | `20260925.122919` | [Receipt motion study recovered](20260925/20260925-122919_diffuser-motion-study-recovered.kyri) | Parked study and log restored; full roster open. |
