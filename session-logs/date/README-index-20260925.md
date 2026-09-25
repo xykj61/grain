@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.054442` | [external-research's index fold, landed](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Applied a prior lap's stashed fold; 27 day shelves, ENFORCE widened, session-logs.md corrected. |
 | `20260925.052405` | [Four cheap reds off a held cold run](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Held peer's cold run; 4 reds repaired, index_fold named for its own round. |
 | `20260925.041335` | [Receipt recovery rebased](20260925/20260925-041335_diffuser-recovery-send.kyri) | Focused controls green; full hot moved and red. |
 | `20260925.040452` | [Grass stable roster close](20260925/20260925-040452_grass-stable-roster-close.kyri) | Recovered packet sent; full hot pass held still with 45 shared reds. |
