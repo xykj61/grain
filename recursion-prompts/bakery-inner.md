@@ -15,16 +15,18 @@ The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
 The separate `rank_outcome_scan.sh` grades the moonshot ranking; it answers a different question.
 
-Begin with the newest Bakery log and the parked build-target repair. Read
-[`build_target_scan.sh --list`](../tools/fixtures/b/build_target_scan.sh) to name each fixed output
-and its writers. Compare the parked patch with the current tree before restoring it. Check the
-claim board and publish the bounded repair's paths before editing. Name peer-owned sites on the
-card when they need a handoff.
+Begin with the newest Bakery log and inspect any newly parked work. The build-target
+scan and control match the parked repair; wrap-ring carries the newer private-directory
+cleanup. The held full hot pass at `89e66d0bf8` proved both nib guards, build_target,
+build freshness, compilation keys, and stash_record. All 85 stashes remain preserved;
+round-open found no unlanded session logs.
 
-Prove the repair with its control and each affected witness. Record the live scan's verdict beside
-those results, keeping any remaining ceiling overage visible. Recover unlanded session logs with
-their original bytes and shelf rows. After this recovery closes, follow the card's current Bakery
-priority. Each new lap starts from the last recorded outcome.
+The full hot roster read 336 green, 38 red, and three gated, with `tree_moved=no`.
+Read the newest log for any later send-time integration before reusing that result.
+Recovery is complete on the measured snapshot. Follow the card's Bakery priority,
+reds first; check the claim board and publish a booked repair before editing.
+The shared-build-path census remains over its ceiling, a separate reading from
+build_target. Name peer-owned sites on the card when they need a handoff.
 
 ## gates
 
