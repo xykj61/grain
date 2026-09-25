@@ -28,7 +28,8 @@ set -eu
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 RISHI="$ROOT/rishi/bin/rishi"
-pen="$(mktemp -d)"
+mkdir -p "$ROOT/session-output"
+pen="$(mktemp -d "$ROOT/session-output/nib-shape.XXXXXX")"
 trap 'rm -rf "$pen"' EXIT INT TERM
 
 pass=0
@@ -181,13 +182,15 @@ ok "'lead-in' and 'follow-up' render the same bytes" "$([ "$lead_out" = "$follow
 ok "'lead-in' withholds the rule 2 candidate" "$(! printf '%s' "$lead_out" | grep -q 'rule 2' && echo yes || echo no)"
 ok "a lead-in render leaves the card byte-identical" "$([ "$digest_before" = "$(cksum < "$pen/e/construction/ITINERARY.md")" ] && echo yes || echo no)"
 
-# and the WRITE halves agree too: one card, written by each name in turn, lands on one hash.
+# Both writes start from the same card and history. Separate repositories can have different
+# commit timestamps and hashes even when their files match, so they cannot test alias equality.
 field "$pen/j"
+cp "$pen/j/construction/ITINERARY.md" "$pen/card-before"
 drive "$pen/j" write lead-in >/dev/null
 lead_card=$( cksum < "$pen/j/construction/ITINERARY.md" )
-field "$pen/k"
-drive "$pen/k" write follow-up >/dev/null
-follow_card=$( cksum < "$pen/k/construction/ITINERARY.md" )
+cp "$pen/card-before" "$pen/j/construction/ITINERARY.md"
+drive "$pen/j" write follow-up >/dev/null
+follow_card=$( cksum < "$pen/j/construction/ITINERARY.md" )
 ok "'write lead-in' and 'write follow-up' leave the same card" "$([ "$lead_card" = "$follow_card" ] && echo yes || echo no)"
 
 # MUTATION: give the peer name the AMEND derivation, and the two names stop agreeing. A pair of
