@@ -383,6 +383,14 @@ wording, and three use later descriptions of the same logs. Keep today's records
 and all 85 stashes. The remaining queue holds 99 Markdown versions. Capture
 integration and full cold and hot proof remain owed.
 
+The [remaining shelf review](../session-logs/date/20260925/20260925-195426_bakery-shelf-remainder.kyri) covers all 21 remaining session-log record drafts.
+Eighteen day-index versions add 28 row occurrences naming 19 logs, each present
+with one canonical row. Seven occurrences precede later log corrections; keep
+those later accounts. Three roster drafts carry older counts; today's two rosters
+agree with the four affected shelves, and their witness passes all 41 controls.
+All 85 stashes remain preserved. The remaining queue holds 78 construction
+Markdown versions. Capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
