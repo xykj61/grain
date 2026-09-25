@@ -18,9 +18,21 @@
 # THE GATE IS FORWARD-ONLY, and that is the whole shape of it. History is
 # testimony and is never rewritten, so a wall over the ten would red on bodies
 # no lap may repair -- which is a wall somebody turns off. The anchor below is
-# the HEAD this guard was seated on; every commit after it is held at zero, so
+# a HEAD this guard was seated on; every commit after it is held at zero, so
 # the wall reds on the lap the eleventh arrives and welcomes every correct body
 # ever written.
+#
+# THE FIRST ANCHOR WAS SET AT THE MOMENT OF SEATING RATHER THAN AT THE MOMENT
+# THE FIX TOOK HOLD. Read this lap (`20260925.152300`): the elder anchor,
+# `0cf919699b` (20260917.15xxxx, the day this guard and the rule-5 follow-up
+# tool it depends on both landed), left `claims_after_anchor=50` standing --
+# every one of them dated `20260918` through `20260921.115750`, the days the
+# fleet's own send habit was still catching up to the fix. Nothing false has
+# landed since. The anchor is moved forward, once, to `418fe0f2f9`
+# (20260921.115750, the last offending commit itself, excluded as pre-anchor
+# testimony by the `..` range below) -- a repair to where the anchor should
+# have been read, not a loosening of what it reads for. `claims_after_anchor=0`
+# over the 358 commits since. REDS: cited by stamp per derived-spine rule 4.
 #
 # WHAT NO HOOK CAN REACH, the structural twin of REDS %803 one rule over: at
 # commit-msg time `git rev-parse HEAD` is the prospective parent for a fresh
@@ -44,8 +56,11 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
 # spelling one constant disagree the day it moves, which is the lesson
 # glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
-# three places. It is the HEAD this guard was seated on, 20260917.
-let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "0cf919699b"]
+# three places. Moved once, `20260925.152300`, from `0cf919699b` (this guard's
+# own seating commit) to `418fe0f2f9` (the last commit whose body named a false
+# parent, 20260921.115750) -- see the header above for why the elder anchor sat
+# five days too early.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "418fe0f2f9"]
 assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
 assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
 
