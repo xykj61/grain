@@ -71,12 +71,6 @@ stamp 20260924.195847
 epoch 1790294327
 paths glow/rune_shape.rye glow/tokens.rye glow/refusal_witness.rye
 what Recover the approved fifteen-field Glow shape and prove the sixteenth-field refusal.
-claim diffuser-receipt-still-order-20260924
-seat diffuser
-stamp 20260924.181738
-epoch 1790288258
-paths skate/Sources/SkateCore/ReceiptCard.swift skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift linengrow/receipt_offer.rye tools/fixtures/r/receipt_still_order_scan.sh tools/fixtures/r/receipt_still_order_control.sh
-what Prove the receipt Still frame and accessibility snapshot carry all eleven deciding fields in one order with a host-runnable source witness.
 claim petrichor-yonder-grade-20260924
 seat petrichor
 stamp 20260924.224748

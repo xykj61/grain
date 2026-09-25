@@ -5,7 +5,7 @@ set -eu
 
 root=$(pwd)
 scan=$root/tools/fixtures/s/skate_macos_choice_scan.sh
-live=$root/external-research/20260826-145514_skate-native-macos-decision-tablecloth.md
+live=$root/external-research/date/20260826/20260826-145514_skate-native-macos-decision-tablecloth.md
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
 

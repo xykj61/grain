@@ -10,6 +10,7 @@
 | `20260924.225006` | [Grass roots stash recovered](20260924/20260924-225006_grass-roots-stash-recovered.kyri) | Parked packet and logs restored; hot reds named. |
 | `20260924.224222` | [The parked bound type roster lands](20260924/20260924-224222_copal-bounds-roster-recovered.kyri) | New guard green; full hot 56 red. |
 | `20260924.224213` | [Roots recovery and full hot roster](20260924/20260924-224213_grass-roots-recovery-close.kyri) | Packet A; full hot pass held the tree still. |
+| `20260924.224207` | [Receipt Still order and parked records recovered](20260924/20260924-224207_diffuser-receipt-still-recovery.kyri) | Eleven fields agree; four drifts refuse. |
 | `20260924.223151` | [Law citations and a census drift](20260924/20260924-223151_law-citation-and-census-drift.kyri) | Two stale `.cursor` mirrors and a REDS census fixed, GREEN. |
 | `20260924.220414` | [Build-target recovery](20260924/20260924-220414_bakery-build-target-recovered.kyri) | Control and wrap pass; two shared outputs remain. |
 | `20260924.220021` | [23 broken bron symlinks diagnosed](20260924/20260924-220021_bron-symlink-diagnosis.kyri) | Fix named for all 23; held for the in-flight cold run. |
