@@ -376,6 +376,13 @@ yet its later recovery record establishes that the build was still parked then.
 Keep the landed sequence and all 85 stashes. The remaining queue holds 109
 Markdown versions. Capture integration and full cold and hot proof remain owed.
 
+The [shelf continuity review](../session-logs/date/20260925/20260925-194634_bakery-shelf-continuity.kyri) covers ten more parked shelf versions.
+Each of the ten logs stands with one canonical row. Eight logs match the saved
+bytes; two carry later recovery or proof updates. Seven rows keep their original
+wording, and three use later descriptions of the same logs. Keep today's records
+and all 85 stashes. The remaining queue holds 99 Markdown versions. Capture
+integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
