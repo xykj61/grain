@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.182643` | [Card draft batch](20260925/20260925-182643_bakery-card-batch-recovery.kyri) | Thirteen drafts reviewed; current records kept. |
 | `20260925.182111` | [Petrichor grade and roster limit](20260925/20260925-182111_petrichor-grade-and-roster-limit.kyri) | Draft B+; full cold and hot proof still owed. |
 | `20260925.181833` | [Card recovery](20260925/20260925-181833_bakery-card-recovery.kyri) | Three drafts retained as history. |
 | `20260925.180135` | [Shelf records](20260925/20260925-180135_bakery-shelf-record-recovery.kyri) | Ten drafts already have their logs and rows. |
