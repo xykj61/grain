@@ -6,6 +6,26 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260918.090500` | [idle queue check, no task given](20260918/20260918-090500_petrichor-idle-queue-check.kyri) | Recovered. |
+| `20260918.085237` | [open turn, no task named yet](20260918/20260918-085237_open-turn-awaiting-task.kyri) | Recovered. |
+| `20260918.085034` | [baton loaded, no task yet -- open and waiting](20260918/20260918-085034_baton-open-idle.kyri) | Recovered. |
+| `20260918.084818` | [docs-geode queue checked, still empty; no fresh crux this lap](20260918/20260918-084818_docs-geode-queue-checked-empty-again.kyri) | Recovered. |
+| `20260918.075514` | [quiet open, no task in this turn](20260918/20260918-075514_quiet-open-no-task.kyri) | Recovered. |
+| `20260918.075221` | [queue check -- petrichor lane reads clean, no task attached](20260918/20260918-075221_queue-check-empty.kyri) | Recovered. |
+| `20260918.074913` | [quiet open, no task handed in](20260918/20260918-074913_quiet-open-no-task.kyri) | Recovered. |
+| `20260918.073156` | [cold open with no explicit ask -- read the card, held rather than guessed](20260918/20260918-073156_cold-open-no-ask.kyri) | Recovered. |
+| `20260918.061100` | [round opens with no user task named](20260918/20260918-061100_opened-with-no-task.kyri) | Recovered. |
+| `20260918.052627` | [round opens with no user request yet -- read the card, held still](20260918/20260918-052627_orientation-no-task-yet.kyri) | Recovered. |
+| `20260918.052150` | [docs-geode shelf check -- everything reads GREEN, nothing agent-doable open in lane](20260918/20260918-052150_petrichor-shelf-check-all-green.kyri) | Recovered. |
+| `20260918.051624` | [caught the repeat pattern mid-turn, declined a further confirmation](20260918/20260918-051624_petrichor-declines-another-repeat.kyri) | Recovered. |
+| `20260918.045946` | [quiet lane check -- register wall clean, product path still stopped](20260918/20260918-045946_quiet-lane-check.kyri) | Recovered. |
+| `20260918.043920` | [lap opened with no task named; re-checked lane state against the prior confirmation](20260918/20260918-043920_petrichor-lane-check-no-task-given.kyri) | Recovered. |
+| `20260918.043713` | [turn opened with no task named](20260918/20260918-043713_awaiting-task.kyri) | Recovered. |
+| `20260918.020937` | [Petrichor lane still clear, and no task given this turn](20260918/20260918-020937_petrichor-lane-still-clear-no-task-given.kyri) | Recovered. |
+| `20260918.020704` | [petrichor opens with no task landed](20260918/20260918-020704_awaiting-task.kyri) | Recovered. |
+| `20260918.020131` | [opened with no task named](20260918/20260918-020131_opened-with-no-task.kyri) | Recovered. |
+| `20260918.003510` | [petrichor idle check, no task named this turn](20260918/20260918-003510_idle-no-task-this-turn.kyri) | Recovered. |
+| `20260918.001128` | [round opens with no task named](20260918/20260918-001128_idle-open.kyri) | Recovered. |
 | `20260918.115405` | [The morning tally molts; REDS %767 books closed](20260918/20260918-115405_morning-tally-molted.kyri) | Six gated ships' tmux logs read; three open rulings named with doors; a stale gate closed. |
 | `20260918.113200` | [Clockout armed -- this lap closes whole at 5c8764206f](20260918/20260918-113200_clockout-lap-closes-5c876420.kyri) | Finished the in-flight follow-up send through one more contested rebase, all three remotes confirmed, then stopped. |
 | `20260918.113131` | [Clockout honored -- lap finished whole, this ship stops](20260918/20260918-113131_clockout-honored-lap-finished-whole.kyri) | .loop-clockout found armed; in-flight send landed first, both remotes confirmed at b6cea0cd3, then stopped. |

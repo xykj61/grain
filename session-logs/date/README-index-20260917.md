@@ -6,6 +6,14 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.235947` | [ready on the baton, no task yet](20260917/20260917-235947_ready-on-the-baton.kyri) | Recovered. |
+| `20260917.224500` | [no explicit task this turn, scoped the law-ceiling queue instead](20260917/20260917-224500_no-task-check-scope.kyri) | Recovered. |
+| `20260917.220845` | [opening turn -- no task named yet](20260917/20260917-220845_awaiting-task.kyri) | Recovered. |
+| `20260917.220715` | [baton loaded, no task this turn](20260917/20260917-220715_baton-only-no-task.kyri) | Recovered. |
+| `20260917.201322` | [queue check -- no agent-doable petrichor item this lap](20260917/20260917-201322_petrichor-queue-check-empty.kyri) | Recovered. |
+| `20260917.192142` | [No user task this turn -- confirmed docs-geode guards GREEN, held rather than manufacturing wo](20260917/20260917-192142_petrichor-idle-status-check.kyri) | Recovered. |
+| `20260917.191559` | [opening check-in, no task yet](20260917/20260917-191559_opening-check-in.kyri) | Recovered. |
+| `20260917.190232` | [baton loaded, no task given yet](20260917/20260917-190232_baton-load-no-task.kyri) | Recovered. |
 | `20260917.235825` | [pheromone lane check -- queue clear, no claim opened](20260917/20260917-235825_pheromone-lane-clear-check.kyri) | Ladder done; no in-lane work agent-doable; board empty. |
 | `20260917.235740` | [Send -- Comlink torus-check landed](20260917/20260917-235740_comlink-check-sent.kyri) | Both remotes hold c4431def5 after three rebases. |
 | `20260917.235358` | [Send -- lower_core delegation landed on both remotes](20260917/20260917-235358_lower-core-sent.kyri) | Both remotes hold d7dfe84605 after three rebases. |
