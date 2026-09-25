@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.114256` | [Suffix review](20260925/20260925-114256_bakery-suffix-review.kyri) | Draft control and parser need revision. |
 | `20260925.113410` | [Parked code review](20260925/20260925-113410_bakery-parked-code-review.kyri) | Confer counter needs redesign. |
 | `20260925.112437` | [Parked receipt](20260925/20260925-112437_bakery-parked-receipt.kyri) | Three integration lines recovered. |
 | `20260925.111516` | [Bakery scope cost](20260925/20260925-111516_bakery-scope-cost.kyri) | Current map skips four prior seconds. |

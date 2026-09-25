@@ -257,7 +257,7 @@ a new pass remains owed. [Prior account](archive/20260925-105055_bakery-held-ros
 **YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
 9,837 seconds for both passes and one cadence guard, before lap overhead.
 The active timeout is 5,400 seconds.
-[Estimate and parked-code review](../recursion-prompts/bakery-inner.md).
+[Estimate and parked-source reviews](../recursion-prompts/bakery-inner.md).
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -362,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `6af36954d8` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `4ff324584a` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
