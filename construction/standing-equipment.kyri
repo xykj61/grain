@@ -7951,6 +7951,13 @@ path tools/gen/chapter/relay_resin_census_witness.rish
 tier lap
 seated 20260924.090630
 
+# bounds_typed -- the Generator Chapter witness keeps declared literal bounds typed,
+# with the zero-population scan and its refusal visible on each lap.
+guard bounds_typed
+path tools/gen/chapter/bounds_typed_witness.rish
+tier lap
+seated 20260924.194608
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse
