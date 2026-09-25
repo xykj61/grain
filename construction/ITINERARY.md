@@ -246,8 +246,10 @@ executable-derived root. Eviction passes 12 cases; residency passes 20, includin
 an unchanged copied sampler and exact mutation failures. Fixed outputs 47/47;
 shared paths 1/1, the remaining Glow pair owned by Pheromone. Full hot at
 `59ec65adfe` completed: 320 green, 53 red, 3 gated; `tree_moved=no`. Both page
-proofs passed again after eleven upstream commits. Full integrated verification
-remains owed; the completed receipt describes its named HEAD.
+proofs passed again after eleven upstream commits. Full cold at `7eea8c3123`
+completed: 330 green, 43 red, 3 gated; `tree_moved=no`, 4,782 seconds. The
+parked-record audit restored one missing Bakery shelf row. Seven later commits
+share seven proofs; full hot verification remains owed on the integrated tree.
 [Prior account](archive/20260924-233357_bakery-build-target-recovery.md).
 **YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
 cannot hold both complete roster passes.
@@ -355,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a19158e50f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `9cfa4ef1e0` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
