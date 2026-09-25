@@ -2079,3 +2079,5 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 `construction/ITINERARY.md` into `construction/archive/20260924-061949_itinerary-copal-grad-seal-account.md`
 so the card could carry the next claimed chapter witness under its 40,960-byte bound. The account
 is kept whole; the live card retains its dependency-red summary and pointer.
+
+- `20260924.233357` -- Bakery shelves its build-target recovery account whole at `construction/archive/20260924-233357_bakery-build-target-recovery.md` before replacing it with the page-output repair; parent `adcd59a5f7`.

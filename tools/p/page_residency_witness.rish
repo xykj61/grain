@@ -20,18 +20,18 @@
 say "page-residency: Style Gauge, Meter -- every figure below is a reading this run took."
 say "page-residency: Lens TAME -- the sample count, the interval, and the zero-page denominator are bounded at the edge."
 
-let census = "tools/bin/page-evict"
 let zig = "vendor/zig-toolchain/zig"
 
-say "page-residency: building the census from source, so the binary matches the file this witness reads..."
-let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/page_evict.rye -femit-bin=${census}"]
-assert build.ok else "page-residency: the census build refused --\n${build.out_brief}\n${build.err_brief}"
+# This depth preserves the executable-derived checkout boundary.
+let pen = run ["sh" "-c" "mktemp -d $PWD/session-output/page_residency.XXXXXX"]
+assert pen.ok else "page-residency: private build directory refused"
+let home = trim pen.out
+let census = "${home}/page-evict"
 
-let control = run ["sh" "-c" "sh tools/fixtures/p/page_residency_control.sh 2>&1"]
-# SAID BEFORE THE FIRST ASSERT ON IT: an assert stops the run, so a reader meeting a refusal
-# receives the control's own lines rather than this file's sentence.
+# Compilation, the control, and the live sample share one cleanup lifetime.
+let control = run ["sh" "-c" "trap 'rm -rf ${home}' EXIT HUP INT TERM; export PAGE_EVICT_BIN=${census}; env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/page_evict.rye -femit-bin=${census} && sh tools/fixtures/p/page_residency_control.sh 2>&1 && sh tools/fixtures/p/page_residency_sample.sh vendor/zig-toolchain/lib/std --samples 2 --interval 0 2>&1"]
 say control.out
-assert control.ok else "page-residency: the control refused --\n${control.out_brief}\n${control.err_brief}"
+assert control.ok else "page-residency: build, control, or live sample refused -- ${control.out_brief} ${control.err_brief}"
 
 # invariant: the control reached its verdict, so every leg below was actually reached.
 assert control.out contains "control_verdict=ok" else "page-residency: the control named no ok verdict"
@@ -40,7 +40,7 @@ assert control.out contains "control_verdict=ok" else "page-residency: the contr
 # reaches its last line proves only that it reached its last line -- a leg written tomorrow must
 # be heard on the lap it lands.
 assert control.out contains "control_failed=0" else "page-residency: a control leg failed"
-assert control.out contains "legs=19" else "page-residency: the control's leg count moved -- read it and move this number with it"
+assert control.out contains "legs=20" else "page-residency: the control's leg count moved -- read it and move this number with it"
 
 # invariant: both sides of the verdict are shown by real pages rather than by arithmetic alone.
 assert control.out contains "leg warm_file_stays ok" else "page-residency: the warm side went unproven"
@@ -59,14 +59,8 @@ assert control.out contains "leg mutation_threshold ok" else "page-residency: th
 assert control.out contains "leg mutation_stream ok" else "page-residency: the stderr merge is not load-bearing"
 assert control.out contains "leg mutation_zero_guard ok" else "page-residency: the zero-page guard is not load-bearing"
 
-# The live reading, taken rather than recited. Two samples with no interval cost the lap nothing
-# and prove the sampler runs against this tree's own library rather than only against a pen.
-let live = run ["sh" "-c" "sh tools/fixtures/p/page_residency_sample.sh vendor/zig-toolchain/lib/std --samples 2 --interval 0 2>&1"]
-say live.out
-assert live.ok else "page-residency: the live sample refused --\n${live.out_brief}\n${live.err_brief}"
-# invariant: the live run reaches a verdict, whichever way it falls -- this witness reports the
-# tree's residency and never gates on it, because a cache is the host's to manage and a guard that
-# reds when a peer's build evicts a page is a guard somebody turns off.
-assert live.out contains "verdict=" else "page-residency: the live sample named no verdict"
+# invariant: the live sampler completed both requested readings after the control.
+assert control.out contains "samples_taken=2" else "page-residency: the live sample did not finish"
+assert control.out contains "leg copied_sampler_welcomes ok" else "page-residency: the copied sampler baseline refused"
 
-say "page-residency: GREEN -- 19 legs, four mutations bitten, both sides shown on real pages."
+say "page-residency: GREEN -- 20 legs, four mutations bitten, both sides shown on real pages."

@@ -83,12 +83,6 @@ stamp 20260924.181738
 epoch 1790288258
 paths skate/Sources/SkateCore/ReceiptCard.swift skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift skate/Tests/SkateCoreTests/ReceiptAccessibilitySnapshotTests.swift linengrow/receipt_offer.rye tools/fixtures/r/receipt_still_order_scan.sh tools/fixtures/r/receipt_still_order_control.sh
 what Prove the receipt Still frame and accessibility snapshot carry all eleven deciding fields in one order with a host-runnable source witness.
-claim bakery-page-build-isolation
-seat bakery
-stamp 20260924.221351
-epoch 1790302431
-paths tools/p/page_evict_witness.rish tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh tools/fixtures/p/page_residency_control.sh
-what Give the page witnesses private binaries at the existing root depth and prove peer-path refusal on Bakery.
 claim petrichor-yonder-grade-20260924
 seat petrichor
 stamp 20260924.224748

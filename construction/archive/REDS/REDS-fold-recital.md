@@ -888,3 +888,4 @@ at a closed fold.*
 *Row %767 folded to [`REDS-borrowed-identifier-ceiling-rows-767.md`](REDS-borrowed-identifier-ceiling-rows-767.md) on `20260924.212558`, **CLOSED** -- four receipt fields borrowed a ceiling meant for identifiers, until the contract named their own.*
 
 *Row %820 folded to [`REDS-a-directory-only-a-build-makes-rows-820.md`](REDS-a-directory-only-a-build-makes-rows-820.md) on `20260924.221637`, **CLOSED** -- a ratchet gating growth at zero still needs a hand to run it.*
+*Row %828 born CLOSED and folded to [`20260924-233357_page-control-paths.md`](20260924-233357_page-control-paths.md) on `20260924.233357` -- private page builds and mutation-specific control verdicts.*

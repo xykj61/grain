@@ -24,16 +24,16 @@ say "page-evict: Lens TAME -- the file bound, the path bound and the page size a
 let zig = "vendor/zig-toolchain/zig"
 
 say "page-evict: building from source, so the binary matches the file this witness reads..."
-let build = run ["sh" "-c" "mkdir -p tools/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/page_evict.rye -femit-bin=tools/bin/page-evict"]
-assert build.ok else "page-evict: the build refused --\n${build.out_brief}\n${build.err_brief}"
+# Keep two directory levels below the checkout: the binary derives its root from this depth.
+let pen = run ["sh" "-c" "mktemp -d $PWD/session-output/page_evict.XXXXXX"]
+assert pen.ok else "page-evict: private build directory refused"
+let home = trim pen.out
+let bin = "${home}/page-evict"
 
-# The claim lines arrive on stderr, as every hosted Rye program in this tree prints through
-# `std.debug.print`; the redirect is what puts them where the asserts below can read them.
-let out = run ["sh" "-c" "tools/bin/page-evict selftest 2>&1"]
-# SAID BEFORE THE FIRST ASSERT ON IT: an assert stops the run, so a reader meeting a refusal
-# receives the program's own lines rather than this file's sentence.
+# One shell owns compilation, proofs, and cleanup, including compiler refusal.
+let out = run ["sh" "-c" "trap 'rm -rf ${home}' EXIT HUP INT TERM; export PAGE_EVICT_BIN=${bin}; env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh tools/rye/page_evict.rye -femit-bin=${bin} && ${bin} selftest 2>&1 && sh tools/fixtures/p/page_evict_control.sh 2>&1"]
 say out.out
-assert out.ok else "page-evict: the selftest refused --\n${out.out_brief}\n${out.err_brief}"
+assert out.ok else "page-evict: build or proof refused -- ${out.out_brief} ${out.err_brief}"
 
 # invariant: residency fell to zero on a synced file, so the advice reached the cache rather than
 # being accepted and ignored.
@@ -45,13 +45,11 @@ assert out.out contains "no peer's pages are reachable" else "page-evict: the re
 
 assert out.out contains "GREEN: page-evict" else "page-evict: the selftest reached no green line"
 
-say "page-evict: the control -- every refusal planted on a real path and required to bite..."
-let ctl = run ["sh" "tools/fixtures/p/page_evict_control.sh"]
-say ctl.out
-assert ctl.ok else "page-evict: the control refused --\n${ctl.out_brief}\n${ctl.err_brief}"
 # invariant: the control ran every case it planted and none failed. Reading the verdict alone would
 # pass a control that reached its last line having proven nothing.
-assert ctl.out contains "fail=0" else "page-evict: a control case failed -- read its own lines above"
-assert ctl.out contains "control_verdict=ok" else "page-evict: the control reached no verdict"
+assert out.out contains "fail=0" else "page-evict: a control case failed -- read its own lines above"
+assert out.out contains "control_verdict=ok" else "page-evict: the control reached no verdict"
+
+assert out.out contains "foreign_cwd_keeps_root" else "page-evict: executable-root proof was not reached"
 
 say "GREEN: page-evict -- this tree's pages drop on request, and every path outside it refuses."

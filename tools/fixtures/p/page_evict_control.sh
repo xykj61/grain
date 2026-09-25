@@ -15,14 +15,13 @@ set -u
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
 cd "$ROOT"
-BIN="$ROOT/tools/bin/page-evict"
+BIN=${PAGE_EVICT_BIN:-$ROOT/tools/bin/page-evict}
+case $BIN in /*) ;; *) BIN="$ROOT/$BIN" ;; esac
 
 cases=0
 fail=0
 
-pen="$ROOT/.lap/page_evict_control"
-rm -rf "$pen"
-mkdir -p "$pen" || { echo "control_verdict=no_pen"; exit 1; }
+pen=$(mktemp -d "$ROOT/session-output/page_evict_control.XXXXXX") || { echo "control_verdict=no_pen"; exit 1; }
 trap 'rm -rf "$pen"' EXIT INT TERM
 
 check() {
@@ -54,22 +53,23 @@ check "outside_tree_refuses" 3 $?
 check "system_path_refuses" 3 $?
 
 peer=$(dirname "$ROOT")/grain-bakery
+if [ "$peer" = "$ROOT" ]; then peer=$(dirname "$ROOT")/grain-incense; fi
 if [ -d "$peer" ]; then
   "$BIN" census "$peer" >/dev/null 2>&1
   check "peer_tree_refuses" 3 $?
 else
-  # A pier without that peer checked out still proves the class, through a sibling of its own
-  # making whose name merely begins the way this root does.
-  mkdir -p "$ROOT-control-peer" 2>/dev/null && : >"$ROOT-control-peer/x"
-  "$BIN" census "$ROOT-control-peer/x" >/dev/null 2>&1
-  check "same_prefix_sibling_refuses" 3 $?
-  rm -rf "$ROOT-control-peer"
+  # The native selftest still proves the same-prefix sibling boundary on a single checkout.
+  echo "peer_tree=unavailable"
 fi
 
 # -- the welcome, asserted as hard as the refusals ----------------------------------------------
 
 "$BIN" census "$ROOT/tools/rye/page_evict.rye" >/dev/null 2>&1
 check "own_tree_welcomed" 0 $?
+
+# Working directory changes leave the executable-derived root intact.
+(cd / && "$BIN" census "$ROOT/tools/rye/page_evict.rye") >/dev/null 2>&1
+check "foreign_cwd_keeps_root" 0 $?
 
 # A path inside the tree reached through a symbolic link is welcomed by where it LANDS. This tree
 # spells `rye/lib` as links into `vendor/`, so a checker reading the spelling would be checking a

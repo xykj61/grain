@@ -241,10 +241,13 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 (`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
-**BAKERY.** Control 34/34; wrap-ring passes. Fixed outputs 49/47, shared 2/1.
-Next: Bakery page_evict/page_residency; Pheromone glow_ident/glow_refusal.
-Full hot owed. Proposed lap: 10,800s (cold: 4,509s; limit: 5,400s).
-[Prior account](archive/20260924-220258_itinerary-bakery-assert-account.md).
+**BAKERY -- THE PAGE WITNESSES BUILD IN PRIVATE DIRECTORIES.** Both keep the
+executable-derived root. Eviction passes 12 cases; residency passes 20, including
+an unchanged copied sampler and exact mutation failures. Fixed outputs 47/47;
+shared paths 1/1, the remaining Glow pair owned by Pheromone. Full hot remains owed.
+[Prior account](archive/20260924-233357_bakery-build-target-recovery.md).
+**YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
+cannot hold both complete roster passes.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -349,7 +352,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a7bf34caa2` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `34a3b3bdc5` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
