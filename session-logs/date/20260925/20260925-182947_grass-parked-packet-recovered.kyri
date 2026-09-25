@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260925.182947
+editor Codex
+provider OpenAI
+product Codex
+role grass auditing
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-6-sol; user instruction 2026-09-25
+voice Kyri
+title Grass parked packet recovered
+prompt Recover unfinished work and session logs from this seat before new work, then close the lap whole.
+think Read Kyri, Gauge, the whole itinerary, the grass inner prompt, and the named handoffs.
+think Inspected the stash list and latest seat transcript; stash zero held the unfinished ledger-and-grace packet and its log.
+think Applied the stash, kept newer peer claims, closed the published grass claim, and set the card nib to this commit parent.
+think Kept the staged tree still through the full hot roster after its old moved-head pass was stopped through its named PID.
+obs The packet records one standfasted boundary: a receipt can evidence an offer without pricing care or human worth.
+obs Three older Grass logs remain in dated stashes with their historical work; they were read and left parked for a separate recovery.
+rota lap 6626, row 1 -- Air, the row that feels; the boundary between a recorded offer and a person's worth stayed visible through the packet and the receipt guards.
+loom roster=cold guards=378 green=338 red=37 gated=3 tree_moved=no verdict=guard_red seconds=4618
+loom roster=hot guards=378 green=339 red=36 gated=3 tree_moved=no verdict=guard_red seconds=4804
+file active-designing/date/20260925/20260925-154000_grass-reverse-read-of-ledger-and-grace.md -- recovers the packet and its one disposition
+file construction/ITINERARY.md -- points to the recovered packet and names the commit parent
+file construction/fleet-claims.kyri -- closes the grass claim while preserving peer claims
+file session-logs/date/20260925/20260925-165717_grass-ledger-and-grace.kyri -- recovers the interrupted lap record
+file session-logs/date/README-index-20260925.md -- points to both recovered and current records
+recommend keep-going -- recover the three older stash-only logs with their own dated evidence in a separate lap; the receipt boundary stands.
+scope one recovered reverse-reading packet, its prior account shelf, a claim close, and two session logs
+status QUALIFIED -- recovered packet checked with A grade and full hot roster on stable tree; roster retained 36 red and 3 gated guards.

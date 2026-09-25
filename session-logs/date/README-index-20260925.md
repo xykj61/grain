@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.182947` | [Grass packet recovered](20260925/20260925-182947_grass-parked-packet-recovered.kyri) | Parked packet sent with full hot verdict. |
 | `20260925.182643` | [Card draft batch](20260925/20260925-182643_bakery-card-batch-recovery.kyri) | Thirteen drafts reviewed; current records kept. |
 | `20260925.182111` | [Petrichor grade and roster limit](20260925/20260925-182111_petrichor-grade-and-roster-limit.kyri) | Draft B+; full cold and hot proof still owed. |
 | `20260925.181833` | [Card recovery](20260925/20260925-181833_bakery-card-recovery.kyri) | Three drafts retained as history. |
@@ -22,6 +23,7 @@
 | `20260925.171417` | [Artifact recovery](20260925/20260925-171417_bakery-artifact-recovery.kyri) | Hook and copies keep current source. |
 | `20260925.170339` | [Flat row recovery](20260925/20260925-170339_patchouli-flat-row-recovery.kyri) | Parked fix recovered; row control green. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
+| `20260925.165717` | [Grass ledger and grace](20260925/20260925-165717_grass-ledger-and-grace.kyri) | Evidence stays distinct from human worth. |
 | `20260925.165009` | [Capture witness](20260925/20260925-165009_bakery-capture-witness.kyri) | Candidate includes its count assertion. |
 | `20260925.164000` | [Capture runner pen](20260925/20260925-164000_bakery-capture-runner-pen.kyri) | Candidate passes both control families. |
 | `20260925.163548` | [Anchor repair](20260925/20260925-163548_commit-parent-claim-anchor-repair.kyri) | commit-parent-claim's anchor moved once; GREEN. |
