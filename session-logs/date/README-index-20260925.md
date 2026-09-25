@@ -21,6 +21,7 @@
 | `20260925.172109` | [Roster records](20260925/20260925-172109_bakery-roster-record-recovery.kyri) | Fifteen parked versions reviewed. |
 | `20260925.171525` | [Copal full cold receipt](20260925/20260925-171525_copal-full-cold-receipt.kyri) | Bounds home green; 37 roster reds held for triage. |
 | `20260925.171417` | [Artifact recovery](20260925/20260925-171417_bakery-artifact-recovery.kyri) | Hook and copies keep current source. |
+| `20260925.170651` | [Cold run relaunch](20260925/20260925-170651_cold-run-relaunch-after-stale-lock.kyri) | Stale pass's lock cleared via fleet_call, cold run relaunched on settled HEAD. |
 | `20260925.170339` | [Flat row recovery](20260925/20260925-170339_patchouli-flat-row-recovery.kyri) | Parked fix recovered; row control green. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
 | `20260925.165009` | [Capture witness](20260925/20260925-165009_bakery-capture-witness.kyri) | Candidate includes its count assertion. |
