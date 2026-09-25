@@ -368,6 +368,14 @@ capacity-stopped hot pass. Two detach drafts precede or match the landed launche
 account. Keep current files and all 85 stashes. The remaining queue holds 119
 Markdown versions. Capture integration and full cold and hot proof remain owed.
 
+The [card follow-up](../session-logs/date/20260925/20260925-183759_bakery-card-followup.kyri) covers ten more itinerary versions.
+The suffix account stays a draft with its two recorded refusal gaps. Nine build and
+measurement accounts have later landed implementations or records; three match
+landed text after link paths are normalized. An early cache account says LANDED,
+yet its later recovery record establishes that the build was still parked then.
+Keep the landed sequence and all 85 stashes. The remaining queue holds 109
+Markdown versions. Capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
