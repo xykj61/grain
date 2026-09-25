@@ -159,6 +159,12 @@ ambiguous basename reads recoverable, and timestamp recovery reads lost. Keep it
 three drafts preserved for revision. Forty-six source versions await review;
 all 85 stashes remain preserved. Full roster proof and model-control repair stay owed.
 
+The [compiler-reach recovery review](../session-logs/date/20260925/20260925-133855_bakery-compile-recovery.kyri) covers three more versions.
+Keep today's shared resolver and zero ceiling for unchecked claims. The parked scan
+misses a variable build and permits a claim that today's scan refuses. Its 35 checks
+pass; today's full witness and 87 controls pass as well. Forty-three source versions
+remain to review. All 85 stashes stay preserved, and full roster proof remains owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

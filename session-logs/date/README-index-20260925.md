@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.133855` | [Compiler census retained](20260925/20260925-133855_bakery-compile-recovery.kyri) | Three drafts superseded. |
 | `20260925.132920` | [Link drafts reviewed](20260925/20260925-132920_bakery-path-recovery.kyri) | Two classification counterexamples. |
 | `20260925.131805` | [Folded-shelf drafts reviewed](20260925/20260925-131805_bakery-crushed-recovery.kyri) | Five versions superseded. |
 | `20260925.131431` | [Incense clears its own build cache](20260925/20260925-131431_incense-cleared-own-build-cache.kyri) | Pier 96%/7.6G free to 89%/20G free; REDS pin unstuck. |
