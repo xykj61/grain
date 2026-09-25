@@ -75,6 +75,14 @@ excludes that basename at every depth. Hold the family for revision and add thes
 controls before reuse. The old projector also predates today's batching and input
 options. All 85 stashes remain preserved; 69 source versions still await review.
 
+The [detach recovery review](../session-logs/date/20260925/20260925-122107_bakery-detach-recovery.kyri) covers three versions
+in stash `8921f60eb950`. Their patch matches the landed `a3c7d47a9` exactly;
+today's runner keeps the same launch branches and adds later repairs. Keep current
+source. The live witness stops at the existing run card's reds before its controls.
+The direct control meets all detach checks but misses nine other asserted literals;
+the log records the pen location and limits of that reading.
+Sixty-six source versions remain to review, and all 85 stashes remain preserved.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
