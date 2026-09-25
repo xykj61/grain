@@ -199,6 +199,10 @@ When only gated work remains: `touch .loop-gates-only`, print `GATES-ONLY`, and 
 
 On `20260923.050258` a settled-head cold pass completed at `0a00eafbf2`: 369 guards ran, 322 green, 44 red, 3 gated, none unrun; `tree_moved=no`, `run_verdict=guard_red`. The ALES suite took 502 seconds. Its transcript is `session-output/standing-equipment-cold.txt`. The receipt counted 42 stashes, and its detail lines match `git stash list`; every parked entry stays preserved. Next: read current red evidence before opening a repair, claim any booked red before its cold pass, and run the full hot roster after staging.
 
+On `20260925.003059` a cold run at `953f5015e` closed seven witnesses (`reds_citation`, `reds_shelf_name`, `stash_record`, `tracked_link`, `living_card_ascii`, `ascii_document`, `ascii_resident_agree`) and left `width_check`'s corpus ratchet one line over its own falling ceiling for another lane, and eight of `link_text_promise`'s stale anchors unrepaired inside `construction/REDS.md` on a pin-bound/fold deadlock rather than a mistake.
+
+On `20260925.004328` that deadlock was named for Keaton rather than left buried in a REDS row: `tools/fixtures/r/reds_pin_capacity_scan.sh` reads `pin_deadlocked=1` on **zero** foldable rows today, and the `Open Doors for Keaton` bullet in `construction/ITINERARY.md` now carries that live reading, the five unheld rows (`%827` `%808` `%803` `%785` `%730`) whose closure would reopen the fold, and the unchanged three `%338` doors. Next: this lap opened no new work of its own; the queue is either one of those five rows closing on its own witness -- unlikely, each is process-shaped -- or Keaton's word on which `%338` door the pin takes. A fresh cold run at settled HEAD is the next mechanical move if no ruling lands first.
+
 
 On `20260923.065913` the settled-head cold pass ran 369 guards: 322 green, 44 red, 3 gated, none unrun; `tree_moved=no`, `run_verdict=guard_red`. Cadence slice 1 selected `season_leaf_choir` from `last=never`; that guard read red. Its transcript is `session-output/standing-equipment-cold.txt`.
 
