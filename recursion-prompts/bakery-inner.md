@@ -173,6 +173,14 @@ collision and welcome its repair. The current witness and all 24 controls pass.
 Keep current source and all 85 stashes. Forty source versions await review;
 model-control and dated-path repairs and full roster proof remain owed.
 
+The [shell portability recovery review](../session-logs/date/20260925/20260925-135714_bakery-portable-recovery.kyri) covers three more versions.
+Keep today's instrument helper, explicit absence-test PATH, and shared scope matcher.
+The parked control skips its absence probe on this host; current passes all 71 checks.
+The draft matcher misses a deleted file when another file expands the same glob;
+today's matcher reaches it. The full shell dialect witness passes. All 85 stashes
+remain preserved, and 37 source versions await review. Model-control and dated-path
+repairs and full roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
