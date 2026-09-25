@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.033803` | [Closed by a contended shelf](20260925/20260925-033803_a-lap-closed-by-a-contended-shelf.kyri) | Cold run guard_red, unmoved; two reds already fixed by peers. |
 | 20260925.033310 | [Petrichor draft grade](20260925/20260925-033310_petrichor-draft-grade-and-cold-hold.kyri) | Draft B+; cold verdict missing; parked log restored. |
 | `20260925.033112` | [Parked bounds roster recovered](20260925/20260925-033112_copal-parked-roster-recovered.kyri) | Witness and day shelves recovered; cold and hot owed. |
 | `20260925.032355` | [Parked bounds witness recovered](20260925/20260925-032355_copal-bounds-roster-recovery.kyri) | Focused proof green; cold baseline 45 reds; hot pending. |
