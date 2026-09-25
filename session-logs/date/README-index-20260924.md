@@ -91,6 +91,7 @@
 | `20260924.093334` | [QEMU declared for the Aurora wake](20260924/20260924-093334_incense-nixos-qemu.kyri) | configuration.nix lists qemu; the switch stays on the pier. |
 | `20260924.092857` | [The channel roster spoken on the host](20260924/20260924-092857_incense-hosted-roster.kyri) | Five domains, four channels; qemu boot skipped. |
 | `20260924.092425` | [The stage that speaks a channel roster](20260924/20260924-092425_incense-aurora-channel-roster.kyri) | Design page after posted.rye; letter A at Field. |
+| 20260924.092223 | [Cold roster ended without a verdict](20260924/20260924-092223_petrichor-cold-incomplete.kyri) | Petrichor cold pass ended without a verdict. |
 | `20260924.091449` | [Research notes filed by the day](20260924/20260924-091449_incense-research-date-fold.kyri) | 253 notes on day shelves; living fascia repointed. |
 | `20260924.090627` | [Freestanding journey on the list](20260924/20260924-090627_incense-freestanding-todos.kyri) | Design page, hosted witness, qemu boot, itinerary sentence. |
 | `20260924.090234` | [The freestanding lane beside the fleet](20260924/20260924-090234_incense-freestanding-lane.kyri) | Posted, virtio, and channels; qemu stays absent here. |
