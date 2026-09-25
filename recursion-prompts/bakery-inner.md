@@ -83,6 +83,13 @@ The direct control meets all detach checks but misses nine other asserted litera
 the log records the pen location and limits of that reading.
 Sixty-six source versions remain to review, and all 85 stashes remain preserved.
 
+The [two-draft recovery review](../session-logs/date/20260925/20260925-123248_bakery-two-drafts-recovery.kyri) covers the older build-target ceiling and Git dependency witness.
+Both changes landed in newer source. The current build-target witness passes
+34 controls; the dependency witness passes 37 controls and runs 39 optional
+dependents successfully. Its non-repository test needs a Git search ceiling when
+TMPDIR lives inside this checkout. Keep the newer guards and all 85 stashes.
+Sixty-four source versions remain to review.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
