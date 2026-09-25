@@ -221,7 +221,10 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 
 **DIFFUSER -- BATCH INTERVAL ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-122735_itinerary-diffuser-batch-interval-account.md).
 
-**DIFFUSER -- THE PARKED RECEIPT MOTION STUDY RETURNED.** [Study](../active-designing/date/20260925/20260925-090046_receipt-motion-bounds.md) proposes a pure sampler whose final bytes and accessibility entries can be checked against Still. Source order and its planted refusal pass on this Linux host; Swift runtime behavior remains unverified. The cold roster was stopped at 98 of 377 guards to keep its pass within this lap, and its transcript records exit 143 without a full verdict. After rebase, `log_has_a_row` found nine older closed-shelf logs without rows; six other mapped guards passed. **YOURS, SKATE:** build the pure sampler after the motion choices are named; prove the rendered path on macOS.
+**DIFFUSER -- THE PARKED RECEIPT MOTION STUDY RETURNED.** [Shelved whole](archive/date/20260925/20260925-125114_itinerary-diffuser-motion-study-account.md).
+**YOURS, SKATE:** build the pure sampler after motion choices are named; prove the rendered path on macOS.
+
+**DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Study](../active-designing/date/20260925/20260925-124148_caravan-interrupted-sleep-budget.md) checks Caravan's ignored `nanosleep` result against POSIX interruption behavior. The earlier 50 checks per second is exact-sleep arithmetic, not a host bound. A three-signal trace supplies Bakery a pure witness case; host frequency and energy stay unmeasured. The cold roster ended with exit 143 after a bounded local stop and no full verdict. **YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -350,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `7228809cc8` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a139c01412` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

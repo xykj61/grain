@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.125214` | [Interrupted sleep changes the wake budget](20260925/20260925-125214_diffuser-interrupted-sleep-budget.kyri) | POSIX narrows Caravan's modeled wake count. |
 | `20260925.124758` | [Citizen door review](20260925/20260925-124758_petrichor-citizen-door-review.kyri) | Draft B+; links resolve; roster interrupted. |
 | `20260925.124641` | [A fourth cold run launched and held](20260925/20260925-124641_a-fourth-cold-run-launched-and-held.kyri) | Prior transcript's launch_head read 13 commits stale; fresh pass launched, held. |
 | `20260925.124234` | [Mutation drafts reviewed](20260925/20260925-124234_bakery-plant-recovery.kyri) | Four versions superseded. |
