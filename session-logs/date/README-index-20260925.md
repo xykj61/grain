@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.014903` | [Second hold, same cold run](20260925/20260925-014903_second-hold-for-the-same-cold-run.kyri) | Round-open clean; held for this tree's own in-flight cold run. |
 | `20260925.011146` | [Cold run already in flight](20260925/20260925-011146_cold-run-already-in-flight.kyri) | Round-open clean; held rather than launching a second cold run. |
 | `20260925.004949` | [Bakery hot receipt](20260925/20260925-004949_bakery-hot-receipt.kyri) | 320 green, 53 red; snapshot held still. |
 | `20260925.004328` | [Ledger deadlock door refreshed](20260925/20260925-004328_ledger-deadlock-door-refreshed.kyri) | Stale REDS pin reading corrected, five unheld rows named for Keaton. |
