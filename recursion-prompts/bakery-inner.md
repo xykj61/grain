@@ -231,6 +231,14 @@ now have a disposition, and all 85 stashes remain preserved. Repairs, other park
 artifact classes, and full roster proof remain owed. This lap stopped its cold pass
 cleanly with exit 143 after recognizing the paired-pass estimate exceeds the lap window.
 
+The model-control repair checks exact model arguments on the probe and lap separately.
+All 18 checks pass with an inherited wrong override cleared: Bakery and ordinary-seat
+defaults, explicit overrides on both seats, and each call's omitted or suffixed model.
+The existing stop, failure, prompt, and lock controls still pass. Production loop source
+is unchanged. The control remains a direct check; it has no standing-roster caller.
+The unreadable-owner, dated-path, stash-bound, and other recorded repairs remain owed,
+as does full cold and hot roster proof. All 85 stashes stay preserved.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

@@ -239,12 +239,13 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 (`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
-**BAKERY -- PARKED SOURCE REVIEW COMPLETE.** [Prior account shelved whole](archive/20260925-150253_bakery-cold-recovery-account.md).
-All 96 unmatched source versions have a disposition; all 85 stashes remain preserved.
-The detached launcher erases its transcript when a held lock has no readable PID;
-the parked draft refuses first. Keep that check with today's owner-path reporting.
-[Recovery record and remaining repairs](../recursion-prompts/bakery-inner.md).
-This lap stopped its cold run at 38 green and seven red; full roster proof remains owed.
+**BAKERY.** [Source review shelved whole](archive/20260925-151316_bakery-source-review-account.md).
+All 85 stashes stay preserved; the detached launcher's unreadable-lock repair remains owed.
+
+**BAKERY -- CODEX CALLS CHECKED SEPARATELY.** `fleet_codex_control.sh` checks exact model
+arguments on both calls for Bakery, an ordinary seat, and explicit overrides. All 18 checks
+pass, including omitted and suffixed model refusals on each call. Production source is unchanged.
+Full cold and hot roster proof remains owed; this is a focused control result.
 **YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
 9,837 seconds for both passes and one cadence guard, before lap overhead.
 The recorded timeout is 5,400 seconds.
@@ -352,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `50be276506` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `e1844752f7` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
