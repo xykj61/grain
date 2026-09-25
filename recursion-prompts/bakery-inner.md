@@ -289,6 +289,16 @@ not Bakery's live roster. The four source files, patch, and transcripts remain i
 `session-output/capture-full-l86qx91u`; only the disposable clone was removed.
 Production integration still owes full cold and hot proof in a sufficient lap window.
 
+The [artifact recovery review](../session-logs/date/20260925/20260925-171417_bakery-artifact-recovery.kyri) inventories the classes outside the source-suffix and session-log reviews.
+All 1,196 temporary copies match current source content or their stash base, including
+12 copies through symlinks; retain today's modes and links. The extensionless hook draft
+accepts two staged target deletions that today's whole-index hook refuses. Keep current
+source. Its live link witness passes all 15 controls. Historical PID files stay parked.
+The remaining record queue holds 204 unmatched versions: 176 Markdown, 27 other Kyri,
+and one Cursor rule. The inventory names their stash trees in
+`session-output/parked-artifacts-qmdgza3u/inventory.json`. All 85 stashes remain preserved;
+the capture candidate and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
