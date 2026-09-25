@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260924.224956
+editor Codex
+provider OpenAI
+product Codex
+role diffuser -- Brushstroke and Skate product surface
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-6-sol; runtime model identity not exposed
+voice Kyri
+title Parked Receipt Still lap recovered for send
+prompt Recover this seat's stashes, finish its receipt Still lap, and send the whole work.
+think Read the standing rules, latest shelf, handoffs, and newest diffuser stash before acting.
+think Applied the parked lap against current HEAD; resolved the card nib, live claim board, and shared day index with current tree content kept.
+think The prior lap's full cold roster completed at settled HEAD with tree_moved=no before its work was parked; the source witness and both controls pass after recovery.
+think The Water rota favored checking the actual second-run behavior; the control runs a healthy source, four mutations, and the restored source.
+obs Swift is absent on this Linux host; source agreement and planted refusal are proven, while XCTest remains a macOS runtime check.
+obs The parked receipt claim was closed after focused proof, and three older parked logs regained their day rows.
+loom cold_roster guards=375 green=314 red=58 gated=3 seconds=4807 tree_moved=no verdict=guard_red from parked lap
+loom receipt_still_order fields=11 still_rows=12 accessibility_labels=11 control_legs=6 control_failed=0
+rota lap 6498, row 3 -- Water - Venus; reading the live source and rerunning its planted refusals exposed no remaining order drift.
+file skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift corrects the row for fields after value and unit
+file tools/fixtures/r/receipt_still_order_scan.sh and tools/fixtures/r/receipt_still_order_control.sh prove source order and four refusals
+file tools/r/receipt_still_order_witness.rish seats the control with the live reading
+file session-logs/date/README-index-20260924.md restores the parked lap's row and adds this recovery row
+recommend keep-going -- run the full hot roster; Swift XCTest still needs a macOS host
+scope recovered Receipt Still witness, dated Skate decision repair, three parked logs, claim close, and card account
+status RED -- parked full cold roster has 58 inherited reds and three gates; focused controls GREEN; full hot roster pending before send

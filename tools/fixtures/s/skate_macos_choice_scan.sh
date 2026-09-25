@@ -3,7 +3,7 @@
 
 set -u
 
-doc=${1:-external-research/20260826-145514_skate-native-macos-decision-tablecloth.md}
+doc=${1:-external-research/date/20260826/20260826-145514_skate-native-macos-decision-tablecloth.md}
 check_index=${2:-yes}
 index=external-research/README.md
 sketch_note=gratitude/grain-sketchbook.md
@@ -79,8 +79,13 @@ gitlink_entries=skipped
 sketchbook_receipt=skipped
 swift_gratitude=skipped
 if [ "$check_index" = yes ]; then
-  base=$(basename "$doc")
-  index_rows=$(grep -Fc "]($base)" "$index" || true)
+  # The index links to the dated shelf, so count the full path from this room.
+  case "$doc" in
+    external-research/*) indexed_path=${doc#external-research/} ;;
+    "$PWD"/external-research/*) indexed_path=${doc#"$PWD"/external-research/} ;;
+    *) indexed_path=$doc ;;
+  esac
+  index_rows=$(grep -Fc "]($indexed_path)" "$index" || true)
   if [ "$index_rows" -ne 1 ]; then
     echo "index_rows_expected_1=$index_rows"
     fail=$((fail + 1))

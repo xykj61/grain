@@ -174,7 +174,9 @@
 | `20260917.125801` | [The silence over a compilation](20260917/20260917-125801_the-silence-over-a-compilation.kyri) | build_mute named: 1,123 of 7,448; Caravan swept and walled. |
 | `20260917.122239` | [The order agreed and the size did not](20260917/20260917-122239_the-order-agreed-and-the-size-did-not.kyri) | Row 3 held: agree=yes, and size parts 6.74x. |
 | `20260917.120331` | [The room the seed carries](20260917/20260917-120331_the-room-the-seed-carries.kyri) | seed_link and vocabulary_collection green; amphora sign verb defect named. |
+| `20260917.113939` | [The build that survived its lap](20260917/20260917-113939_the-build-that-survived-its-lap.kyri) | Recovered parked Diffuser build log. |
 | `20260917.113604` | [Replay reads the whole fact](20260917/20260917-113604_replay-reads-the-whole-fact.kyri) | mantra compares all 15 published fields; the one-field reading walks free. |
+| `20260917.112708` | [The counter around a command](20260917/20260917-112708_the-counter-around-a-command.kyri) | Recovered parked Diffuser counter log. |
 | `20260917.105325` | [three doors that told the truth](20260917/20260917-105325_three-doors-that-told-the-truth.kyri) | src/ named three rooms over six. |
 | `20260917.105154` | [The refusal that can fire](20260917/20260917-105154_the-refusal-that-can-fire.kyri) | Ranking held; falsifiers did not. Second ranked page. |
 | `20260917.101905` | [The verdict that came home](20260917/20260917-101905_the-verdict-that-came-home.kyri) | The seated door key fired: 0 of 16; errata 12 of 12. |

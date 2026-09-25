@@ -38,7 +38,7 @@ public struct ReceiptAccessibilitySnapshot: Equatable, Sendable {
     var result: [Entry] = []
     result.reserveCapacity(labels.count)
     for (index, label) in labels.enumerated() {
-      let row = index < 4 ? index + 1 : index < 6 ? 5 : index + 1
+      let row = index < 4 ? index + 1 : index < 6 ? 5 : index
       guard row < lines.count else { continue }
       let text = String(decoding: lines[row], as: UTF8.self)
       let value = String(text.dropFirst(label.1.count))

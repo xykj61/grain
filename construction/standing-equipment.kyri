@@ -1412,6 +1412,13 @@ path tools/l/linengrow_receipt_offer_witness.rish
 tier lap
 seated 20260918.100854
 
+# The first receipt's Still rows and accessibility entries share the published
+# eleven-field order. The source control plants four drifts on hosts without Swift.
+guard receipt_still_order
+path tools/r/receipt_still_order_witness.rish
+tier lap
+seated 20260924.224012
+
 # The receipt contract's last mile: mantra/src/receipt_offer_snapshot.rye carries one replayed
 # ReceiptState into each product's own OfferSnapshot, through two renamed symlinks that cross
 # Zig's module boundary the same way tally_receipt_offer_bounds.rye and tally_receipt_refusal.rye

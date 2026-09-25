@@ -55,6 +55,7 @@
 | `20260916.183614` | [The hand the watcher asked for](20260916/20260916-183614_the-hand-the-watcher-asked-for.kyri) | five seats armed; watcher reset |
 | `20260916.183440` | [a build that sat in a stash](20260916/20260916-183440_the-build-that-sat-in-a-stash.kyri) | recovered %642's parked measurement, added churn_quiet, landed it whole |
 | `20260916.121935` | [measuring before caching](20260916/20260916-121935_measuring-before-caching.kyri) | the 12:15 lap's own record, landed on a later lap after its send was lost |
+| `20260916.114805` | [Deterministic and degenerate](20260916/20260916-114805_deterministic-and-degenerate.kyri) | Recovered parked Diffuser log; exact stream and guard recorded. |
 | `20260916.114636` | [A plant is a sentence that must not be true](20260916/20260916-114636_a-plant-is-a-sentence-that-must-not-be-true.kyri) | pen plants read as claims of unbound rows |
 | `20260916.113530` | [Asking without building](20260916/20260916-113530_asking-without-building.kyri) | rye key: one computation, 40 legs, a mutation that caught a false green |
 | `20260916.111611` | [No anchor names the head](20260916/20260916-111611_no-anchor-names-the-head.kyri) | claim 9 pins where an insert lands when none comes before it |
