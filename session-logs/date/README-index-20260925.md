@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.154830` | [Copal bounds home send](20260925/20260925-154830_copal-bounds-home-send.kyri) | Parked witness recovered; full roster owed. |
+| `20260925.152938` | [Copal bounds home recovered](20260925/20260925-152938_copal-bounds-home-recovered.kyri) | Ten pairs pass; planted drift refuses. |
 | `20260925.152934` | [Skate index review](20260925/20260925-152934_diffuser-skate-index-repair.kyri) | Peer repair kept; focused witness green; full roster open. |
 | `20260925.151502` | [Codex calls checked](20260925/20260925-151502_bakery-model-control.kyri) | Exact model checks; four refusals. |
 | `20260925.150040` | [Roster drafts reviewed](20260925/20260925-150040_bakery-roster-recovery.kyri) | Source audit complete; lock gap retained. |
@@ -43,6 +45,7 @@
 | `20260925.114256` | [Suffix review](20260925/20260925-114256_bakery-suffix-review.kyri) | Draft control and parser need revision. |
 | `20260925.113410` | [Parked code review](20260925/20260925-113410_bakery-parked-code-review.kyri) | Confer counter needs redesign. |
 | `20260925.113317` | [Grass parked work recovered](20260925/20260925-113317_grass-parked-work-recovered.kyri) | Packet and four logs recovered; cold held 39 reds. |
+| `20260925.112451` | [Copal send rebase](20260925/20260925-112451_copal-send-rebase.kyri) | Peer overlap called for full hot proof. |
 | `20260925.112437` | [Parked receipt](20260925/20260925-112437_bakery-parked-receipt.kyri) | Three integration lines recovered. |
 | `20260925.111516` | [Bakery scope cost](20260925/20260925-111516_bakery-scope-cost.kyri) | Current map skips four prior seconds. |
 | `20260925.110451` | [Bakery proof budget](20260925/20260925-110451_bakery-proof-budget.kyri) | Prior costs estimate 164 minutes. |
@@ -55,6 +58,7 @@
 | `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
 | `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Cold run held; a stale shell default repointed. |
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
+| `20260925.093118` | [Bounds census integration](20260925/20260925-093118_copal-rebased-proof.kyri) | Peer overlap required full hot proof. |
 | `20260925.085926` | [Patchouli parked records recovered](20260925/20260925-085926_patchouli-stash-record-recovery.kyri) | Eight logs restored; indexes and roster counts agree. |
 | `20260925.083354` | [Grass packet and logs recovered](20260925/20260925-083354_grass-packet-and-logs-recovered.kyri) | Parked packet and logs restored; cold roster held 43 reds. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
@@ -70,6 +74,7 @@
 | `20260925.071533` | [Printable receipt](20260925/20260925-071533_diffuser-receipt-printable-admission.kyri) | Control bytes refused; host control green; full roster red. |
 | `20260925.070711` | [Cold run stopped](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Log and mirror recovered; fresh pass launched. |
 | `20260925.064513` | [Bakery nib send](20260925/20260925-064513_bakery-nib-send.kyri) | Repair sent; integrated full proof owed. |
+| `20260925.061654` | [Bounds home census roster](20260925/20260925-061654_copal-bounds-home-roster.kyri) | Ten pairs pass; planted drift refuses. |
 | `20260925.060018` | [Patchouli parked records recovered](20260925/20260925-060018_patchouli-six-records-recovered.kyri) | Six logs restored; shelf counts and row order agree. |
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
