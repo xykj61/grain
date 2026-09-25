@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260923.030537
+editor Codex
+provider OpenAI
+product Codex
+role bakery
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-5.6-luna
+configured_status explicit fleet CLI selection
+evidence fleet-loop-codex.sh passes -m gpt-5.6-luna; active runtime identity not independently exposed
+voice Kyri
+host NixOS workspace; America/New_York
+title Recovered rank-outcome closeout after full cold roster
+prompt recover parked Bakery work, preserve its stash, and close the settled witness lap
+think The parked rank-outcome patch was already landed in the current history after round-open; I preserved the stash and recorded a fresh full cold receipt at the settled HEAD.
+obs The cold roster ran 366 guards: 320 green, 43 red, 3 gated, 0 unrun; tree_moved=no and run_verdict=guard_red. The rank-outcome witness remains green in the landed commit.
+loom cold_guards=366 green=320 red=43 gated=3 unrun=0 seconds=4523 cpu_ms=4177313 tree_moved=no
+loom stashed_entries=68 staged_uncommitted=0 launch_head=f96ad76e43
+rota lap 6265, row 0 -- Aether - Jupiter; hearing why the work exists surfaced the need to preserve the completed witness while keeping the roster reds named.
+file tools/r/rank_outcome_witness.rish recovered as already landed; no product edit reopened
+file construction/ITINERARY.md updated its parent git nib to f96ad76e43
+file session-output/standing-equipment-cold.txt full cold roster receipt with guard_red verdict
+file session-logs/date/20260923/20260923-030537_bakery-closeout.kyri this lap record
+recommend keep-going review the 43 agent-readable roster reds and take the oldest Bakery-owned closure before a new instrument
+scope recovered rank-outcome closeout, full cold roster, card nib, and session record; no new product build
+status guard_red -- recovered witness is complete; cold roster left 43 reds and 3 custody gates, with tree_moved=no

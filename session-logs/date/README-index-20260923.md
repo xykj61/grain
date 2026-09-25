@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260923.030537` | [Recovered Bakery closeout](20260923/20260923-030537_bakery-closeout.kyri) | Recovered unchanged from a parked lap. |
 | 20260923.233601 | [Cold roster reds each given a home](20260923/20260923-233601_incense-red-homes.kyri) | 42 reds homed; open-room shelf; archive fold remains. |
 | 20260923.221726 | [Glow shape work held by roster reds](20260923/20260923-221726_pheromone-cold-hold.kyri) | Cold roster guard-red; Glow implementation remains parked behind language custody. |
 | 20260923.212411 | [Key-you-hold reverse-read standfasted](20260923/20260923-212411_grass-key-you-hold.kyri) | Identity principle held; cold roster 42 reds and 3 gates. |

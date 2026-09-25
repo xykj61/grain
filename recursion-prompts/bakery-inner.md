@@ -11,7 +11,20 @@
 
 ## fruit
 
-The Now block's first bakery item asks where repeated work lives. This lap answers that with the measurement already on the card: paste the two ready rows from the scope-map ranking account and re-run [`../tools/fixtures/r/rank_outcome_scan.sh`](../tools/fixtures/r/rank_outcome_scan.sh). Check the claim board before editing. Leave the content-keyed cache itself for the lap that has this measurement in hand.
+The two scope-map rows landed in `dbc5306a0`. Read their current savings with
+[`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
+The separate `rank_outcome_scan.sh` grades the moonshot ranking; it answers a different question.
+
+Begin with the newest Bakery log and the parked build-target repair. Read
+[`build_target_scan.sh --list`](../tools/fixtures/b/build_target_scan.sh) to name each fixed output
+and its writers. Compare the parked patch with the current tree before restoring it. Check the
+claim board and publish the bounded repair's paths before editing. Name peer-owned sites on the
+card when they need a handoff.
+
+Prove the repair with its control and each affected witness. Record the live scan's verdict beside
+those results, keeping any remaining ceiling overage visible. Recover unlanded session logs with
+their original bytes and shelf rows. After this recovery closes, follow the card's current Bakery
+priority. Each new lap starts from the last recorded outcome.
 
 ## gates
 

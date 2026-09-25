@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260916.213134` | [One stat cannot stand for a walk](20260916/20260916-213134_one-stat-cannot-stand-for-a-walk.kyri) | Recovered unchanged from a parked lap. |
 | `20260916.115437` | [A guard reads lists](20260916/20260916-115437_a-guard-reads-lists.kyri) | mantra: Place's head claim rewritten as a list; landed as testimony 20260917 |
 | `20260916.234757` | [A wrapped line that read as a list](20260916/20260916-234757_the-wrapped-line-that-read-as-a-list.kyri) | %798: the list guard owed CommonMark its own rule |
 | `20260916.232744` | [A leg a sibling answers for](20260916/20260916-232744_the-leg-a-sibling-answers-for.kyri) | contains is a substring: 14 masked legs, 3 pairs |
