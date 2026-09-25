@@ -7965,6 +7965,13 @@ path tools/gen/chapter/bounds_typed_witness.rish
 tier lap
 seated 20260924.194608
 
+# bounds_home_census -- ten declared pairs agree with the living bound table,
+# and a one-value drift refuses before the metal build is accepted.
+guard bounds_home_census
+path tools/gen/chapter/bounds_home_census_witness.rish
+tier lap
+seated 20260925.061518
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse

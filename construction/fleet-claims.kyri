@@ -59,30 +59,12 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim copal-bounds-home-census
-seat copal
-stamp 20260925.050023
-epoch 1790326823
-paths tools/gen/chapter/bounds_home_census_witness.rish construction/standing-equipment.kyri
-what Roster the existing bounds home census witness and prove its green and planted refusal.
-claim copal-bounds-home-control
-seat copal
-stamp 20260925.061422
-epoch 1790331262
-paths tools/fixtures/b/bounds_home_census_control.sh
-what Add a bounded control that plants one numeric drift in the bounds home census.
 claim diffuser-late-sleep-phase
 seat diffuser
 stamp 20260925.125920
 epoch 1790355560
 paths active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md
 what Derive Caravan late-sleep phase drift from its source and hand Bakery a bounded timing falsifier.
-claim copal-bounds-home-recovery-20260925
-seat copal
-stamp 20260925.130058
-epoch 1790355658
-paths tools/gen/chapter/bounds_home_census_witness.rish tools/fixtures/b/bounds_home_census_control.sh construction/standing-equipment.kyri session-logs/date/20260925/20260925-061654_copal-bounds-home-roster.kyri
-what Recover the proven bounds home census roster, its planted refusal, and parked copal records.
 claim patchouli-log-row-flat-count-20260925
 seat patchouli
 stamp 20260925.141518
