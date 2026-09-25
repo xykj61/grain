@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20260925.064513
+editor Codex CLI
+provider OpenAI
+product Codex
+role bakery core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence user fleet instruction; fleet-loop-codex.sh passes -m gpt-6-astra
+voice Kyri
+title Bakery nib repair send
+prompt Finish the claimed nib alias control repair and preserve its verification record.
+obs The script repair and its original log landed on xy at 2e63be153. Both aliases write from the same file bytes and Git directory history; the wrong-alias mutation still refuses.
+obs The second fetch brought nine peer commits across 53 paths. Moved proof reports proof_scope=full and proof_reason=map_unknown for kyri-resins/manifest.kyri, with nine shared proofs. The rebase conflicted only on the card parent hash.
+obs The completed full hot receipt covers the pre-rebase tree at 6773274dcb. Full verification of the integrated tree remains owed. After rebase the owning nib writer, day-index witness, parent-hash witness, and all seven pin bounds passed.
+obs I started the push while the note-only amend was still running. The push captured the pre-amend repair commit. I preserved the unsent amendment on a pier branch, returned main to the published commit with a soft reset, and carry the integration account in this follow-up. Published history and the original log remain unchanged.
+loom hot guards=377 green=334 red=40 gated=3 unrun=0 seconds=4681 tree_moved=no verdict=guard_red
+loom moved_proof upstream_commits=9 upstream_paths=53 shared_proofs=9 proof_scope=full
+rota lap 6534, row 4 -- Earth; the receipt stays attached to its measured tree, and the published commit is preserved as the send's concrete fact.
+file construction/ITINERARY.md -- carry the parent nib and the integrated verification limit.
+file session-logs/date/README-index-20260925.md -- point to this send record.
+recommend keep-going -- run the full roster on the integrated tree before claiming a whole-tree verdict; the focused nib repair is proven.
+scope Nib repair send and truthful integration record.
+status RED -- focused repair GREEN and full hot snapshot complete; integrated full verification remains owed. No pass is left running.
