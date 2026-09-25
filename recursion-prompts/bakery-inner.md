@@ -67,6 +67,14 @@ current manifest name and the stronger checks. Seventy-eight source versions
 remain to review; the separate `6c28e72eb58a` freshness family is still pending.
 All 85 stashes remain preserved, and seed publishing stays manual.
 
+The [freshness recovery review](../session-logs/date/20260925/20260925-121246_bakery-freshness-recovery-review.kyri) covers nine versions
+in stash `6c28e72eb58a`. Its 32 control legs pass, but three added checks still
+answer `fresh`: a projected executable-bit change, an added symlink, and an added
+nested file named `.sow-content.log`. The digest reads regular-file contents and
+excludes that basename at every depth. Hold the family for revision and add these
+controls before reuse. The old projector also predates today's batching and input
+options. All 85 stashes remain preserved; 69 source versions still await review.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,

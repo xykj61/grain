@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.121246` | [Freshness recovery](20260925/20260925-121246_bakery-freshness-recovery-review.kyri) | Three false-fresh cases. |
 | `20260925.120356` | [Seed-phase recovery](20260925/20260925-120356_bakery-sow-recovery-review.kyri) | Three drafts superseded. |
 | `20260925.115153` | [Rye recovery review](20260925/20260925-115153_bakery-ryekey-recovery-review.kyri) | Four cache drafts superseded. |
 | `20260925.114256` | [Suffix review](20260925/20260925-114256_bakery-suffix-review.kyri) | Draft control and parser need revision. |
