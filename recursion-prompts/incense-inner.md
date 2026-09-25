@@ -151,3 +151,20 @@ offending commit; `claims_after_anchor=0` over the 358 commits since; witness an
 GREEN; booked `REDS 20260925.162402`, CLOSED, leaving `%826`'s hook-wall question OPEN. Next lap: a
 fresh round-open and cold run; the remaining 34 reds still overlap the standing backlog on the
 shelf and in ITINERARY's Open Doors bullet.
+
+**This lap (`20260925.183643`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+376 guards: 341 green, 35 red, 3 gated -- again three fewer reds than the prior lap's fresh-red
+count, this time by fixing rather than by anchor repair.** A new stale detached pass (pid 4010211,
+launch_head three commits behind) held the lock at this lap's launch attempt, confirmed as this
+tree's own via `tools/f/fleet_call.sh` and TERMed, then relaunched clean at settled HEAD. Picked
+`say_compose_bound` off the fresh findings: `deferred=17` against a walled ceiling of 0, every site
+inside two witnesses -- `rye_build_lock_holder_witness.rish` and `rye_enum_variants_witness.rish` --
+that landed after REDS %740's tree-wide brief-composition sweep and were never themselves swept.
+Converted all 17 `assert ... else` interpolations from the whole `.out`/`.err` capture to the
+bounded `.out_brief`/`.err_brief` field; ratchet fell to 0, both witnesses re-run GREEN on metal (28
+and 26 control legs). No REDS row booked: the ledger reads 268 bytes of headroom against its
+65,536-byte bound and stands `pin_deadlocked=1` with zero foldable rows, so a full three-field entry
+would not fit -- recorded in the commit body (`295c09fcec`) and in the session log instead. Next
+lap: a fresh round-open and cold run; the remaining 35 reds still overlap the standing backlog on
+the shelf and in ITINERARY's Open Doors bullet, and the ledger fold deadlock is unchanged and still
+Keaton's word to break.
