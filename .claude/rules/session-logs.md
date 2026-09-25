@@ -45,7 +45,7 @@ rye run tools/rye/session_logs_archive.rye index-preview   # count, change nothi
 rye run tools/rye/session_logs_archive.rye index-fold      # shelve the closed days
 ```
 
-`rishi/bin/rishi run tools/i/index_fold_witness.rish` gates this room at zero stale rows, and since `20260824.172000` it gates all five folding rooms -- the ratchet reads zero. The byte bound then follows from the fold **and the row bound together**: folding alone left this pin 5,421 over, since the rows were paragraphs (REDS %204). Shelves are listed in `session-logs/CHAPTERS.md` and are immutable once written.
+`rishi/bin/rishi run tools/i/index_fold_witness.rish` gates this room at zero stale rows, and since `20260824.172000` it gates every folding room carried across -- six from `20260925.053215`, when `external-research` joined -- the ratchet reads zero. The byte bound then follows from the fold **and the row bound together**: folding alone left this pin 5,421 over, since the rows were paragraphs (REDS %204). Shelves are listed in `session-logs/CHAPTERS.md` and are immutable once written.
 
 Batch hygiene for **archived Markdown** only: `rye run tools/rye/align_session_logs.rye`. Living Kyri logs are indexed by hand (or a future Kyri-aware aligner).
 

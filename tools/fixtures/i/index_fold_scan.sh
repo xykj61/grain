@@ -71,7 +71,10 @@ MAX_BYTES=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
 # holds the way in. waymarks followed on `20260824.172000`, 41 rows onto two
 # shelves, its pin 7,656 -> 2,283 bytes, and no claim flat today -- the one dated file still at its
 # root is a bundle manifest rather than a claim, which is why its living table is honestly empty.
-ENFORCE="session-logs active-designing counsel expanding-prompts waymarks"
+# external-research joined on `20260925.053215`, 136 rows carried onto 27 shelves and its pin
+# 36,235 -> 6,739 bytes -- the room that had grown 27 percent over its own bound and had stood
+# outside every roster above only because nobody had yet read it, front door and all.
+ENFORCE="session-logs active-designing counsel expanding-prompts waymarks external-research"
 
 # Every other room's stale rows. Measured 20260824.172000: ZERO, down from 317 when
 # active-designing, counsel, expanding-prompts, and waymarks were all among them. Allowed only to
