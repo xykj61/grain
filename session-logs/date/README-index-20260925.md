@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.180135` | [Shelf records](20260925/20260925-180135_bakery-shelf-record-recovery.kyri) | Ten drafts already have their logs and rows. |
 | `20260925.175205` | [Generated records](20260925/20260925-175205_bakery-generated-record-recovery.kyri) | Eight historical count drafts reviewed. |
 | `20260925.174453` | [Copal census control roster](20260925/20260925-174453_copal-census-control-roster.kyri) | One guard green; full roster proof remains open. |
 | `20260925.174436` | [Checkpoint records](20260925/20260925-174436_bakery-checkpoint-recovery.kyri) | Eight parked drafts reviewed. |

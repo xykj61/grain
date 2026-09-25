@@ -340,6 +340,14 @@ This reading leaves the associated source dispositions to their own reviews.
 All 85 stashes remain preserved; 154 Markdown versions await review. Capture
 integration and full cold and hot proof remain owed.
 
+The [shelf-record recovery review](../session-logs/date/20260925/20260925-180135_bakery-shelf-record-recovery.kyri) covers ten more Markdown versions.
+All ten target logs match their parked bytes, and each has one canonical shelf row.
+Keep today's shelves. Two drafts place their index one directory too deep; their
+logs already have rows at the correct depth. Four rows keep their original wording,
+and six use shorter recovery descriptions. All 85 stashes remain preserved.
+The remaining queue holds 144 Markdown versions. Capture integration and full
+cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
