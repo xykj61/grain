@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260923.073713` | [Bakery queue recovery](20260923/20260923-073713_bakery-rune-assert-queue.kyri) | Parked queue proof and claim close. |
 | `20260923.030537` | [Recovered Bakery closeout](20260923/20260923-030537_bakery-closeout.kyri) | Recovered unchanged from a parked lap. |
 | 20260923.233601 | [Cold roster reds each given a home](20260923/20260923-233601_incense-red-homes.kyri) | 42 reds homed; open-room shelf; archive fold remains. |
 | 20260923.221726 | [Glow shape work held by roster reds](20260923/20260923-221726_pheromone-cold-hold.kyri) | Cold roster guard-red; Glow implementation remains parked behind language custody. |
