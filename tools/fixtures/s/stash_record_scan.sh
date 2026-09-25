@@ -260,7 +260,7 @@ classify_orphans() {
                 if (k == 1 && m != "") { print $2, "moved:" m; next }
                 # SHELF is bound by its ROOM as well as its name: the two families the fold tools
                 # write, and only where the fold writes them.
-                if ($2 ~ /^construction\/archive\/REDS-.*\.md$/ ||
+                if ($2 ~ /^construction\/archive\/REDS\/REDS-.*\.md$/ ||
                     $2 ~ /^construction\/archive\/.*_itinerary-landed-accounts\.md$/) {
                   print $2, "shelf"; next }
                 print $2, "work" }

@@ -46,7 +46,7 @@ repos=0
 new_repo() {
   repos=$((repos + 1))
   R="$pen/r$repos"
-  mkdir -p "$R/construction/archive"
+  mkdir -p "$R/construction/archive/REDS"
   ( cd "$R" && git init -q . && git config user.email pen@example.invalid && git config user.name pen ) >/dev/null 2>&1
 }
 commit_all() { ( cd "$R" && git add -A && git commit -qm pen --no-gpg-sign ) >/dev/null 2>&1; }

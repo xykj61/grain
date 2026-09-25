@@ -68,7 +68,7 @@ want() {
 # A shelf file the plants can name, so the pen exercises the reading rather than a missing file --
 # existence is `readme_reach`'s question, and this scan asks a different one.
 shelves() {
-  mkdir -p "$R/construction/archive"
+  mkdir -p "$R/construction/archive/REDS"
   : > "$R/construction/archive/REDS/REDS-a-pen-row-rows-100.md"
   : > "$R/construction/archive/REDS/REDS-a-pen-row-rows-101.md"
   : > "$R/construction/archive/REDS/REDS-a-pen-pair-rows-110-111.md"
