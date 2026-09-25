@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.224222 | [The parked bound type roster lands](20260924/20260924-224222_copal-bounds-roster-recovered.kyri) | Recovered stash; new guard green, full hot 56 red. |
 | `20260924.223151` | [Law citations and a census drift](20260924/20260924-223151_law-citation-and-census-drift.kyri) | Two stale `.cursor` mirrors and a REDS census fixed, GREEN. |
 | `20260924.220414` | [Build-target recovery](20260924/20260924-220414_bakery-build-target-recovered.kyri) | Control and wrap pass; two shared outputs remain. |
 | 20260924.213041 | [The archive-fold tool could not build](20260924/20260924-213041_incense-archive-fold-tool-was-broken.kyri) | Two pre-existing reds closed; fold repointer ran clean. |
@@ -19,6 +20,7 @@
 | `20260924.001951` | [Recovered cold-roster record](20260924/20260924-001951_bakery-cold-roster.kyri) | Recovered unchanged from a parked lap. |
 | 20260924.203151 | [An empty directory stays on disk](20260924/20260924-203151_incense-stage-store-quiet.kyri) | Second pass still quiet; the lasting seven stay. |
 | 20260924.200120 | [A fresh directory stays quiet](20260924/20260924-200120_incense-stage-store-fresh.kyri) | Empty lists nothing; one write, and the list speaks. |
+| 20260924.194714 | [The bound type witness takes a roster seat](20260924/20260924-194714_copal-bounds-type-roster.kyri) | Clean and planted scans passed; full hot pending. |
 | 20260924.193253 | [Every listed resin reads back](20260924/20260924-193253_incense-stage-store-list-read-all.kyri) | Seven names, each read hashes to itself. |
 | 20260924.184840 | [The first listed resin reads back](20260924/20260924-184840_incense-stage-store-list-read.kyri) | The list's first name returns matching bytes. |
 | 20260924.183531 | [The store lists its own resins](20260924/20260924-183531_incense-stage-store-list.kyri) | Seven names, each the hash of its bytes. |
