@@ -361,6 +361,13 @@ Two change only historical parent hashes. The third scope-map account landed in
 and all 85 stashes. The remaining queue holds 132 Markdown versions; capture
 integration and full cold and hot proof remain owed.
 
+The [card draft batch](../session-logs/date/20260925/20260925-182643_bakery-card-batch-recovery.kyri) covers thirteen more itinerary versions.
+Eight change only old parent hashes. Three library-key drafts precede the landed
+account; their cold-order admission stays preserved, and a later log records the
+capacity-stopped hot pass. Two detach drafts precede or match the landed launcher
+account. Keep current files and all 85 stashes. The remaining queue holds 119
+Markdown versions. Capture integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
