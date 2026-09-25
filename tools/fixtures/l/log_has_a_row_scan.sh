@@ -70,7 +70,7 @@ elder_ceiling=${LOG_ROW_ELDER_CEILING:-216}
 # The flat room -- still the law for a log written flat by hand, and still gated at zero.
 flat=0
 flat_missing=0
-for f in "$root"/session-logs/*.kyri "$root"/session-logs/*.kyri; do
+for f in "$root"/session-logs/*.kyri; do
   [ -f "$f" ] || continue
   b=$(basename "$f")
   flat=$((flat + 1))
