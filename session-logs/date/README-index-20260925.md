@@ -10,6 +10,7 @@
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
 | `20260925.053402` | [Capped wake count](20260925/20260925-053402_diffuser-wake-count-correction.kyri) | Backoff count corrected; batch witness bounded. |
 | `20260925.052405` | [Four reds repaired](20260925/20260925-052405_four-cheap-reds-off-a-held-cold-run.kyri) | Cold run held; index fold assigned. |
+| `20260925.052244` | [Nib alias history](20260925/20260925-052244_bakery-nib-alias-history.kyri) | One history for both names. |
 | `20260925.041335` | [Receipt recovery rebased](20260925/20260925-041335_diffuser-recovery-send.kyri) | Focused controls green; full hot moved and red. |
 | `20260925.040452` | [Grass stable roster close](20260925/20260925-040452_grass-stable-roster-close.kyri) | Recovered packet sent; full hot pass held still with 45 shared reds. |
 | `20260925.035524` | [Cold run launched](20260925/20260925-035524_cold-run-launched-deadlock-reviewed.kyri) | Pin deadlock reviewed. |
