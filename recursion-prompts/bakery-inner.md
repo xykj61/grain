@@ -204,6 +204,14 @@ pass 26 checks. Current passes all 55 controls and the live coverage witness:
 Keep current source and all 85 stashes. Twenty-one source versions remain to review.
 Content freshness, privacy, and full roster proof remain separate duties.
 
+The [missing-tool recovery review](../session-logs/date/20260925/20260925-143230_bakery-absence-recovery.kyri) covers five more versions.
+Their repairs landed in `e8be41ead` with stronger fixture checks. The saved control
+passes 19 checks; today's control finds eight failures in the saved scan. Current
+passes all 33 checks and the live scan. Both saved and current scripts refuse this
+host's missing ripgrep by name; success with ripgrep remains untested here.
+Keep current source and all 85 stashes. Sixteen source versions remain to review;
+the named repairs and full roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
