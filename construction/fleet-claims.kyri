@@ -59,24 +59,12 @@ stamp 20260924.121217
 epoch 1790266337
 paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
 what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim petrichor-yonder-grade
-seat petrichor
-stamp 20260924.164026
-epoch 1790282426
-paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
-what Grade and, if needed, raise the yonder learning-floor page to B or better.
 claim pheromone-glow-shape-15-recovery
 seat pheromone
 stamp 20260924.195847
 epoch 1790294327
 paths glow/rune_shape.rye glow/tokens.rye glow/refusal_witness.rye
 what Recover the approved fifteen-field Glow shape and prove the sixteenth-field refusal.
-claim petrichor-yonder-grade-20260924
-seat petrichor
-stamp 20260924.224748
-epoch 1790304468
-paths docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md
-what Recheck the yonder learning-floor page and record its complete grade and truth reading.
 claim pheromone-glow-shape-15-send
 seat pheromone
 stamp 20260925.021549

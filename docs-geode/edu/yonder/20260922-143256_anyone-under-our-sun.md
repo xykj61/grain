@@ -54,7 +54,7 @@ What the choice rewards: a buyer who can see the hands, and a producer whose cer
 
 Grain's own name for the land-ethic is **Atthowe ecological**: fertility from plants, compost, green manures, and the rotation itself. Its kin in the wider world is biocyclic vegan agriculture. The place-neutral page is [Every Climate Has a Fiber](../../../foundations/20260824-003828_every-climate-has-a-fiber.md). The crop changes with the climate. The care does not.
 
-The Biocyclic Vegan Standard is a public global standard. CERES, a control body, describes it as available worldwide since November 2017 and accredited by IFOAM. The publisher's own door is [biocyclic-vegan.org](https://www.biocyclic-vegan.org/about-us/). Grain does not issue that seal.
+The Biocyclic Vegan Standard is a public global standard. [IFOAM lists it in its Family of Standards](https://directory.ifoam.bio/affiliates/842-bns-biocyclic-network-services-ltd), and the [publisher's certification scheme](https://www.biocyclic-vegan.org/wp-content/uploads/2021/03/2021-Biocyclic_Vegan_Certification_20210304.pdf) names CERES as its worldwide certifier. Grain does not issue that seal.
 
 In the United States, a coordinator site, [Biocyclic Vegan Agriculture Certification USA](https://biocyclicagricultureusa.com/farmers), describes applications for farms already working without animal inputs, and a public note in February 2026 named New York and California as the first two states. That is their announcement. A farmer checks their door and the standard's own door. A reader in another country asks the network partner for that place, or begins the practice with no seal at all. The ethic travels. The certificate is local.
 
