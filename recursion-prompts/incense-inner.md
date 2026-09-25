@@ -203,6 +203,18 @@ On `20260925.003059` a cold run at `953f5015e` closed seven witnesses (`reds_cit
 
 On `20260925.004328` that deadlock was named for Keaton rather than left buried in a REDS row: `tools/fixtures/r/reds_pin_capacity_scan.sh` reads `pin_deadlocked=1` on **zero** foldable rows today, and the `Open Doors for Keaton` bullet in `construction/ITINERARY.md` now carries that live reading, the five unheld rows (`%827` `%808` `%803` `%785` `%730`) whose closure would reopen the fold, and the unchanged three `%338` doors. Next: this lap opened no new work of its own; the queue is either one of those five rows closing on its own witness -- unlikely, each is process-shaped -- or Keaton's word on which `%338` door the pin takes. A fresh cold run at settled HEAD is the next mechanical move if no ruling lands first.
 
+**External-research's own index-fold carry-across, the item this page named as its own next
+durable move, landed at `1b679840b`, both remotes.** A prior lap had already built the fold --
+136 rows off `external-research/README.md` onto 27 day shelves at
+`external-research/date/README-index-<day>.md`, `tools/fixtures/i/index_fold_scan.sh`'s `ENFORCE`
+constant widened to six rooms -- and left it stashed unlanded at this lap's own round-open
+(`stash@{0}`, tagged `orphan:work`). This lap applied it, reran
+`tools/i/index_fold_witness.rish` (GREEN, 15/15) and `tracked_link_scan.sh` (`verdict=ok`), and
+corrected `.claude/rules/session-logs.md`'s own stale "all five folding rooms" line to six in the
+same commit. `reds_pin_capacity_scan.sh` still reads `pin_deadlocked=1` -- unchanged by this lap,
+since none of the five unheld rows it names are this lane's own to close. Next lap: a fresh
+round-open and cold run at settled HEAD.
+
 
 On `20260923.065913` the settled-head cold pass ran 369 guards: 322 green, 44 red, 3 gated, none unrun; `tree_moved=no`, `run_verdict=guard_red`. Cadence slice 1 selected `season_leaf_choir` from `last=never`; that guard read red. Its transcript is `session-output/standing-equipment-cold.txt`.
 
