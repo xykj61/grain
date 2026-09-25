@@ -7979,6 +7979,13 @@ path tools/gen/chapter/census_control_witness.rish
 tier lap
 seated 20260925.174220
 
+# baton_museum_census -- thirteen named halls and two elders must remain present;
+# the scan's missing-hall refusal was planted in a seat-local pen before roster seating.
+guard baton_museum_census
+path tools/gen/chapter/baton_museum_census_witness.rish
+tier lap
+seated 20260925.180132
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse
