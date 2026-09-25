@@ -354,3 +354,24 @@ the card's own Open Doors bullet rather than booked as a row. Shelved the settle
 account to make room (checkpoint `20260925.075903`, nib `6b7003d768`). Next lap: launch a fresh
 detached cold run, hold fully still through it, and if the disk stays this tight, treat headroom
 itself as the crux ahead of the standing backlog -- a pass that cannot finish measures nothing.
+
+**The silent death itself closed at `20260925.081743`, landed `19e41a7f9`, both remotes.** The
+runner's own header already named a full disk as the cause of a related fault (false reds citing
+evidence files a refused write never made); the newer fault -- no `run_verdict=` line at all -- is
+the same cause one door further: `set -eu` exits the whole script on any unguarded write failure,
+before execution reaches one of the nine `echo "run_verdict=..."` lines. A `run_verdict_seen` flag,
+set true immediately before each of those nine lines, and a `note_death_if_silent` function folded
+into the script's two existing EXIT traps now print `run_verdict=died_unexpectedly exit_code=$_dc`
+whenever the flag is still `no` at exit -- proven in a throwaway pen against a bare `set -eu`
+reproduction of the trap before landing. This does not repair the disk itself, which stays the open
+crux; it repairs the SYMPTOM, so the next death -- from this cause or another unguarded write --
+names its own exit code rather than leaving a reader to guess. A stale in-flight pass in this same
+tree (launch_head `6b7003d768`, five commits behind by the time it was noticed) was confirmed by
+cwd through `tools/f/fleet_call.sh` and TERMed rather than left to spend a spoiled verdict; its
+transcript ended with no `run_verdict` line, which is the predicted shape for a run launched before
+this fix landed, not a third failure. A fresh detached cold run launched at settled HEAD
+`45876194af` after the fix and the nib follow-up both pushed. Next lap: read that pass's own
+`run_verdict`, and the disk-space crux (5.4G free, 97 percent full) still wants either a confirmed
+list of genuinely orphaned gitignored build binaries or Keaton's word on which ship's cache to
+prune -- neither guessed at this lap since a wrong guess there costs a broken build rather than an
+honest red.
