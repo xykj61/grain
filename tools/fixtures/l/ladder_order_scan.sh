@@ -58,7 +58,7 @@
 # dated testimony and its words do not move, so a reading changes only when an erratum lands.
 set -u
 
-PAGE="${LADDER_PAGE:-active-designing/20260910-060204_the-bounded-torus-moonshots.md}"
+PAGE="${LADDER_PAGE:-active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md}"
 # The instrument reading needs three more populations, each overridable so the control can
 # plant one and know the right answer by construction.
 TREE="${LADDER_TREE:-.}"
