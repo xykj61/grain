@@ -23,6 +23,13 @@ stashes remain preserved. The build-target repair matches HEAD; wrap-ring carrie
 the newer private-directory cleanup. The newest stash holds 1,196 source copies:
 1,192 match current bytes and four match their original base.
 
+The record audit at `20260925.112437` compared 48 distinct parked Kyri log versions:
+35 match current bytes; 13 differ. Twelve carry earlier corrections or unfinished
+send notes. The remaining version holds three September 9 integration lines,
+now preserved as historical testimony in the [recovery log](../session-logs/date/20260925/20260925-112437_bakery-parked-receipt.kyri).
+The older committed log stays unchanged. This audit covers records; parked code
+still needs its own comparison before recovery.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
