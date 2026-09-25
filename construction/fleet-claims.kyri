@@ -101,3 +101,9 @@ stamp 20260925.050023
 epoch 1790326823
 paths tools/gen/chapter/bounds_home_census_witness.rish construction/standing-equipment.kyri
 what Roster the existing bounds home census witness and prove its green and planted refusal.
+claim copal-bounds-home-control
+seat copal
+stamp 20260925.061422
+epoch 1790331262
+paths tools/fixtures/b/bounds_home_census_control.sh
+what Add a bounded control that plants one numeric drift in the bounds home census.
