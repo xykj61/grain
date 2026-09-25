@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.143230` | [Missing-tool drafts reviewed](20260925/20260925-143230_bakery-absence-recovery.kyri) | Current fixture checks retained. |
 | `20260925.142455` | [Coverage drafts reviewed](20260925/20260925-142455_bakery-reach-recovery.kyri) | Current input receipts retained. |
 | `20260925.141528` | [Scope draft reviewed](20260925/20260925-141528_bakery-yield-recovery.kyri) | Current ranking retained. |
 | `20260925.140554` | [Stash boundary reviewed](20260925/20260925-140554_bakery-stash-bound-review.kyri) | Truncated scan reads clean. |
