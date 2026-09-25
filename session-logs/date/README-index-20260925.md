@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.130705` | [Model check blind spot](20260925/20260925-130705_bakery-model-control-diagnosis.kyri) | Both missing-flag mutants pass. |
+| `20260925.130549` | [Parked Petrichor records returned](20260925/20260925-130549_petrichor-stash-record-recovery.kyri) | 28 stash logs restored; shelf counts agree. |
 | `20260925.125439` | [Watcher and links reviewed](20260925/20260925-125439_bakery-watch-link-recovery.kyri) | Three drafts superseded. |
 | `20260925.125214` | [Interrupted sleep changes the wake budget](20260925/20260925-125214_diffuser-interrupted-sleep-budget.kyri) | POSIX narrows Caravan's modeled wake count. |
 | `20260925.124758` | [Citizen door review](20260925/20260925-124758_petrichor-citizen-door-review.kyri) | Draft B+; links resolve; roster interrupted. |

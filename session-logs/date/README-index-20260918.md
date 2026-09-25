@@ -114,13 +114,17 @@
 | `20260918.091040` | [docs-geode cold check, clean](20260918/20260918-091040_docs-geode-cold-check-clean.kyri) | Crushed index, ascii, door register, first-hour witness all green; no lane item found. |
 | `20260918.090759` | [Another turn opened with no attached task](20260918/20260918-090759_no-task-check-in.kyri) | Second empty-open turn in a row; reported readiness, recommended check-in (either). |
 | `20260918.090527` | [Send confirmed -- both remotes hold c0592b6a5](20260918/20260918-090527_send-confirmed-c0592b6a5.kyri) | Two contested pushes, both resolved by round-open's own rebase. |
+| `20260918.090500` | [idle queue check, no task given](20260918/20260918-090500_petrichor-idle-queue-check.kyri) | no ungated, agent-doable work stands in the docs-geode register queue... |
 | `20260918.090420` | [Turn opened with no attached task](20260918/20260918-090420_no-task-check-in.kyri) | No user request this turn; reported readiness, recommended check-in (either). |
 | `20260918.090407` | [Checked a worry about the scope map's costliest rows](20260918/20260918-090407_scope-map-touch-rate-check.kyri) | Measured touch rate refutes it; two ready-to-paste rows proposed for Bakery. |
 | `20260918.090146` | [lantern_core clears the zero-assert roster](20260918/20260918-090146_lantern-core-clears-zero-assert-roster.kyri) | Five genuine invariant asserts; TAME ratchet 6->5, both witnesses green. |
 | `20260918.085920` | [Link census found one apparent break; testimony held](20260918/20260918-085920_docs-geode-link-check-testimony-held.kyri) | 47-file docs-geode link walk, one stale-testimony citation confirmed correct. |
 | `20260918.085621` | [A claim survived its own closing commit across a merge](20260918/20260918-085621_stale-claim-merge-survivor.kyri) | Closed the stale board record; pushed to xy then gp405. |
 | `20260918.085406` | [Send confirmed -- both remotes hold eba5aa313](20260918/20260918-085406_send-confirmed-eba5aa313.kyri) | Two more pushes; verified via fetch on all three refs. |
+| `20260918.085237` | [open turn, no task named yet](20260918/20260918-085237_open-turn-awaiting-task.kyri) | held off starting a survey or grading pass until Keaton names the target, pe... |
+| `20260918.085034` | [baton loaded, no task yet -- open and waiting](20260918/20260918-085034_baton-open-idle.kyri) | Opening turn with only system context and no user ask; responded pl... |
 | `20260918.084831` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084831_send-confirmed-d79f8f249.kyri) | Six contested pushes; pedersen exempt landed, ratchet 8->6. |
+| `20260918.084818` | [docs-geode queue checked, still empty; no fresh](20260918/20260918-084818_docs-geode-queue-checked-empty-again.kyri) | Rather than fabricate work under claim-as-ov... |
 | `20260918.084723` | [Send confirmed -- both remotes hold d79f8f249](20260918/20260918-084723_send-confirmed-d79f8f249.kyri) | Three rounds; merge over rebase kept both forwards. |
 | `20260918.084554` | [ember_core.rye closes the zero-assert ratchet, then a push divergence gets untangled](20260918/20260918-084554_ember-core-asserts-and-a-push-divergence.kyri) | Six named asserts land; a bad regex conflict-resolve is caught and repaired before commit. |
 | `20260918.084500` | [Send confirmed -- both remotes hold d995e0f3a](20260918/20260918-084500_send-confirmed-d995e0f3a.kyri) | A genuine two-remote fork found mid-send, resolved by merge rather than rebase. |
@@ -151,7 +155,10 @@
 | `20260918.075758` | [Send confirmed -- both remotes hold 64ad7ef06](20260918/20260918-075758_send-confirmed-64ad7ef06.kyri) | Four contested pushes on the setu6-check-asserts log; nib and index rows resolved each time. |
 | `20260918.075752` | [Duplicate census was mostly symlinks](20260918/20260918-075752_import-resolver-closes-duplicate-case.kyri) | 121 of 127 groups (95%) are symlinks, not copies. |
 | `20260918.075702` | [Empty open -- no task landed this turn](20260918/20260918-075702_empty-open.kyri) | No user request this turn; reported readiness, recommended check-in. |
+| `20260918.075514` | [quiet open, no task in this turn](20260918/20260918-075514_quiet-open-no-task.kyri) | read-scope and the-baton both ask a lap to check claims and absence before bu... |
 | `20260918.075333` | [Send confirmed -- both remotes hold 2b1bdf2ee](20260918/20260918-075333_send-confirmed-2b1bdf2ee.kyri) | Two contested rebases on the puddle-convergence log; nib and index rows resolved each time. |
+| `20260918.075221` | [queue check -- petrichor lane reads clean, no ta](20260918/20260918-075221_queue-check-empty.kyri) | the one reported-only overage left is gratitude/grain-lineage/... |
+| `20260918.074913` | [quiet open, no task handed in](20260918/20260918-074913_quiet-open-no-task.kyri) | docs-geode is the lane; the right move on an empty ask is to report state and wa... |
 | `20260918.074805` | [puddle_convergence closes a fourth zero-assert file](20260918/20260918-074805_puddle-convergence-asserts.kyri) | Two named-invariant asserts landed in mycelium/puddle_convergence.rye; ratchet 11 to 10. |
 | `20260918.074750` | [Swept a stale RED claim off the card](20260918/20260918-074750_stale-readlink-f-claim-swept.kyri) | shell_dialect RED-at-8 line removed; guard reads 7/7 ok, card's own later row already agreed. |
 | `20260918.074530` | [setu6 check asserts, ratchet 11 to 10](20260918/20260918-074530_setu6-check-asserts.kyri) | Two invariant asserts on setu6_device_lab_check.rye; witness GREEN. |
@@ -166,6 +173,7 @@
 | `20260918.073430` | [Quiet open -- the YOURS list is real work outside pheromone's own lane](20260918/20260918-073430_quiet-open-yours-list-out-of-lane.kyri) | Checked claim board (empty) and ITINERARY; declined the 11-file zero-assert YOURS list, ownership unresolved. |
 | `20260918.073415` | [Send confirmed -- both remotes hold 774120b22](20260918/20260918-073415_send-confirmed-774120b22.kyri) | Two contested pushes on the second quiet cold-open log; nib and day-shelf rows resolved each rebase. |
 | `20260918.073157` | [Second quiet cold open, still no agent-doable work](20260918/20260918-073157_still-quiet.kyri) | Register, claim board, and docs-geode front doors re-checked; all unchanged and clean. |
+| `20260918.073156` | [cold open with no explicit ask -- read the card,](20260918/20260918-073156_cold-open-no-ask.kyri) | no file changed, no claim opened, no build run -- this is a sta... |
 | `20260918.073132` | [backtick_path genres written](20260918/20260918-073132_backtick-path-genres-and-two-rooms-fix.kyri) | Three genres named; a stale citation fixed; ceiling 64 to 62. |
 | `20260918.072935` | [Quiet open -- no explicit task, board and gates checked](20260918/20260918-072935_quiet-open-no-task.kyri) | No new instruction this turn; claim board empty, no gate stop; reported state, recommended check-in. |
 | `20260918.072613` | [Send confirmed -- both remotes hold 08cd35576](20260918/20260918-072613_send-confirmed-08cd35576.kyri) | REDS %825 close and its log; a git-nib follow-up dropped empty on a rebase and was rewritten fresh. |
@@ -211,6 +219,7 @@
 | `20260918.061405` | [A fourth counter -- Mantra's sync_revision](20260918/20260918-061405_mantra-revision-ceiling-proposal.kyri) | Ceiling proposal, dwell.rye's shape; QA B. |
 | `20260918.061506` | [Send confirmed -- both remotes hold e8cf8ade9](20260918/20260918-061506_send-confirmed-e8cf8ade9.kyri) | Round closes; rota row 4, Earth. |
 | `20260918.061214` | [lower_alias.rye takes rune_quad's shape, a claim race on rune_triple.rye](20260918/20260918-061214_lower-alias-asserts-and-claim-race.kyri) | Pheromone: five asserts added to lower_alias.rye; withdrew from a rune_triple.rye collision with petrichor first. |
+| `20260918.061100` | [round opens with no user task named](20260918/20260918-061100_opened-with-no-task.kyri) | no red booked, no claim opened, no file touched -- an honest empty round... |
 | `20260918.060909` | [Send confirmed -- both remotes hold 470fd6e69](20260918/20260918-060909_send-confirmed-470fd6e69.kyri) | rune_triple.rye claim-and-build round closed after seven contested pushes, two hand-resolved shelf conflicts. |
 | `20260918.060705` | [rune_mutate asserts, card shed](20260918/20260918-060705_rune-mutate-asserts-and-card-shed.kyri) | Three asserts landed after 18 rebases; twelve GRASS blocks shed to one. |
 | `20260918.060347` | [Round closes -- 9f1aca33e](20260918/20260918-060347_round-closes-9f1aca33e.kyri) | Both remotes confirmed; rota row 0, Aether. |
@@ -231,9 +240,12 @@
 | `20260918.053243` | [docs-geode lane surveyed, reads green](20260918/20260918-053243_docs-geode-lane-survey-green.kyri) | Every front door, tutorial witness GREEN; no fabricated lap taken. |
 | `20260918.052849` | [Branch-cursor ring closes the thread, and a shed](20260918/20260918-052849_branch-cursor-ring-closes-the-thread-and-a-shed.kyri) | Third wraparound idiom checked negative, ten accounts close the torus survey; caught and fixed a fabricated stamp before commit. |
 | `20260918.052747` | [Round open, no new claim, both landed guards GREEN](20260918/20260918-052747_pheromone-gate-check.kyri) | Verification lap: rune_list and rune_conditional witnesses both GREEN, board empty. |
+| `20260918.052627` | [round opens with no user request yet -- read the](20260918/20260918-052627_orientation-no-task-yet.kyri) | rather than manufacture a claim or grab a peer lane's qu... |
 | `20260918.052439` | [Send confirmed -- both remotes hold 22bb94223](20260918/20260918-052439_send-confirmed-22bb94223.kyri) | Four contested pushes on rune_list.rye's asserts; nib and day-index rows merged each time. |
 | `20260918.052434` | [Backtick triage begins, cold run in flight](20260918/20260918-052434_backtick-triage-cold-run-in-flight.kyri) | Recovered a stale roster lock, relaunched the cold run, and read the backtick_path backlog while holding still. |
+| `20260918.052150` | [docs-geode shelf check -- everything reads GREEN](20260918/20260918-052150_petrichor-shelf-check-all-green.kyri) | no red, no below-B grade, and no unclaimed agent... |
 | `20260918.051839` | [Send confirmed -- both remotes hold 8258d2bb6](20260918/20260918-051839_send-confirmed-8258d2bb6.kyri) | Five contested pushes on the six-guards-red repair; twice-pulled, never forced. |
+| `20260918.051624` | [caught the repeat pattern mid-turn, declined a f](20260918/20260918-051624_petrichor-declines-another-repeat.kyri) | the docs-geode lane's gate is unchanged: Petri... |
 | `20260918.051533` | [Round closes -- both remotes hold 14b6e883e](20260918/20260918-051533_round-closes-14b6e883e.kyri) | Five rebases total; rune_face.rye itself untouched by peers the whole round. |
 | `20260918.051453` | [Bitmask ring falsifier closes; a stamp caught late](20260918/20260918-051453_bitmask-ring-falsifier-and-a-stamp-caught-late.kyri) | Torus thread's own falsifier checked negative; a fabricated stamp caught and fixed. |
 | `20260918.051235` | [Send confirmed -- both remotes hold b2e08f4ba](20260918/20260918-051235_send-confirmed-b2e08f4ba.kyri) | Three contested pushes; nib carried forward each rebase; witness re-run GREEN. |
@@ -245,6 +257,7 @@
 | `20260918.050426` | [The fold left six guards red](20260918/20260918-050426_the-fold-left-six-guards-red.kyri) | Foundations, fold-shelf, door-home and three more closed on metal. |
 | `20260918.050255` | [rune_conditional.rye takes rune_bounded_trap's asserted shape](20260918/20260918-050255_grass-rune-conditional-asserts.kyri) | Three asserts landed, claimed and closed; three rebases, nib carried forward. |
 | `20260918.050146` | [Sixth confirmation -- same HEAD, stopping the repeat](20260918/20260918-050146_petrichor-sixth-confirmation-same-head.kyri) | Same gate, same HEAD; declined a sixth identical rerun (clock read behind the prior log's stamp). |
+| `20260918.045946` | [quiet lane check -- register wall clean, product](20260918/20260918-045946_quiet-lane-check.kyri) | no fabricated task -- reporting an empty queue plainly is the c... |
 | `20260918.045656` | [Send confirmed -- both remotes hold bb16f5a67](20260918/20260918-045656_send-confirmed-bb16f5a67.kyri) | Nib follow-up landed after six contested pushes. |
 | `20260918.045608` | [Send confirmed -- both remotes hold bd8a60f05, a real merge](20260918/20260918-045608_send-confirmed-bd8a60f05-a-real-merge.kyri) | Two rebases forked into identical-tree, different-hash histories; a merge (not another rebase) converged them. |
 | `20260918.045345` | [Send confirmed -- both remotes hold 3c76f73fe](20260918/20260918-045345_send-confirmed-3c76f73fe.kyri) | Fourteen contested pushes; two duplicate laps folded honest. |
@@ -254,7 +267,9 @@
 | `20260918.044206` | [Dimeroll's receipt intake lands](20260918/20260918-044206_dimeroll-receipt-intake-lands.kyri) | Intake type, witness, braid green; both remotes hold 7ba98e4a1. |
 | `20260918.044124` | [Gate holds, REDS rows lie elsewhere](20260918/20260918-044124_gate-still-holds-reds-open-rows-belong-elsewhere.kyri) | Fourth check: gate unmoved, no OPEN row fits. |
 | `20260918.043941` | [rune_cell.rye takes rune_call3's asserted shape](20260918/20260918-043941_grass-rune-cell-asserts.kyri) | Six asserts landed, claimed and closed; one rebase, nib carried forward. |
+| `20260918.043920` | [lap opened with no task named; re-checked lane s](20260918/20260918-043920_petrichor-lane-check-no-task-given.kyri) | nothing changed materially since the last con... |
 | `20260918.043908` | [Opening 1 closed: a closed form beats the search](20260918/20260918-043908_evenspread-closed-form-beats-search.kyri) | Run-kill 52 beats 33, by arithmetic. |
+| `20260918.043713` | [turn opened with no task named](20260918/20260918-043713_awaiting-task.kyri) | docs-geode lane is idle this turn; nothing pushed, nothing read beyond the stamp |
 | `20260918.043656` | [rune_cell.rye earns six invariant asserts](20260918/20260918-043656_rune-cell-invariants.kyri) | Duplicate lap; peer landed the same file 2m45s earlier, folds as a no-op. |
 | `20260918.043504` | [Send confirmed -- both remotes hold 394e668d4](20260918/20260918-043504_send-confirmed-394e668d4.kyri) | Two contested nib conflicts, each skipped and re-derived; twice-pulled, never forced. |
 | `20260918.043047` | [Send confirmed -- both remotes hold f4ab509b4, rune_calln lands after a real collision](20260918/20260918-043047_send-confirmed-f4ab509b4.kyri) | Four rebases; a real duplicate-lap collision on rune_call3.rye folded as a no-op. |
@@ -362,15 +377,18 @@
 | `20260918.021200` | [Kavya and ritual built](20260918/20260918-021200_shastra-kavya-and-ritual.kyri) | Original shastra/ plan stands complete. |
 | `20260918.021115` | [Send confirmed -- both remotes hold fb2f68c85, chain closed here](20260918/20260918-021115_send-confirmed-fb2f68c85.kyri) | Follow-up log landed; lap closes rather than chasing further. |
 | `20260918.021001` | [Send confirmed -- both remotes hold f0129fe92](20260918/20260918-021001_send-confirmed-f0129fe92.kyri) | Two contested pushes on the reach-grade finding log; twice-pulled, never forced. |
+| `20260918.020937` | [Petrichor lane still clear, and no task given th](20260918/20260918-020937_petrichor-lane-still-clear-no-task-given.kyri) | Reporting the empty queue once, plainly... |
 | `20260918.020922` | [Send confirmed -- 3b4ca1615](20260918/20260918-020922_shastra-bhagavatam-commentaries-send-confirmed.kyri) | Both remotes hold it. |
 | `20260918.020846` | [Send confirmed -- both remotes hold 20757ca6d](20260918/20260918-020846_send-confirmed-20757ca6d.kyri) | Three contested pushes resolved, never forced. |
 | `20260918.020832` | [Bhagavatam commentaries opened](20260918/20260918-020832_shastra-bhagavatam-commentaries.kyri) | One author-attribution gap named plainly. |
 | `20260918.020718` | [Round closes at e90a9bc9e -- Git nib left one gap short of fresh](20260918/20260918-020718_round-closes-e90a9bc9e-nib-left-stale.kyri) | Both remotes current; nib trails HEAD by a few commits, named per %803 rather than chased further. |
+| `20260918.020704` | [petrichor opens with no task landed](20260918/20260918-020704_awaiting-task.kyri) | an empty turn still owes a session log per the standing law, so one is written... |
 | `20260918.020526` | [Send confirmed -- 31f79ab6a](20260918/20260918-020526_shastra-sarva-samvadini-send-confirmed.kyri) | Full Sandarbha set complete. |
 | `20260918.020512` | [Send confirmed -- both remotes hold fb291aefe, eleven contested pushes resolved](20260918/20260918-020512_send-confirmed-fb291aefe.kyri) | Broke the retry cycle by deferring nib/page regen one round; landed clean, then carried nib forward. |
 | `20260918.020427` | [Sarva-samvadini built](20260918/20260918-020427_shastra-sarva-samvadini.kyri) | Seven-work Sandarbha set closes. |
 | `20260918.020212` | [Send confirmed -- b902f1862](20260918/20260918-020212_shastra-priti-send-confirmed.kyri) | Six-work core complete. |
 | `20260918.020200` | [Discovery room closed, no torus](20260918/20260918-020200_discovery-room-eighth-negative-sent.kyri) | Eighth read closed; DIFFUSER account shelved. |
+| `20260918.020131` | [opened with no task named](20260918/20260918-020131_opened-with-no-task.kyri) | no file touched, no claim opened, nothing to grade |
 | `20260918.020101` | [Priti Sandarbha built](20260918/20260918-020101_shastra-priti-sandarbha.kyri) | Six-work core closes the circle. |
 | `20260918.020000` | [All five sandarbha front doors read Reach-heavy](20260918/20260918-020000_sandarbha-reach-grade-finding.kyri) | Register clean on all five after the tattva sweep; reach grade 15-19 vs ceiling 9 on all five, untouched, new finding. |
 | `20260918.015734` | [Send confirmed -- f761af179](20260918/20260918-015734_shastra-bhakti-send-confirmed.kyri) | Both remotes hold it. |
@@ -435,6 +453,7 @@
 | `20260918.004102` | [Send -- sixth check landed, two repairs found along the way](20260918/20260918-004102_send-sixth-check-and-shedding-landed.kyri) | Both remotes hold 9e961a789 after two rebases; four links repointed, one account shed under bound. |
 | `20260918.003743` | [Seventh idle check -- Fire row confirms %819 resolved](20260918/20260918-003743_seventh-idle-check-fire-row-confirms-819-resolved.kyri) | Ran the register scan fresh rather than citing the card; law_ceiling=1, the-baton.md the sole named remainder, matches the account. |
 | `20260918.003514` | [Sixty-four names a family](20260918/20260918-003514_sixty-four-names-a-family.kyri) | 64 hex fits SHA3-256; SHA3-512 is 128. |
+| `20260918.003510` | [petrichor idle check, no task named this turn](20260918/20260918-003510_idle-no-task-this-turn.kyri) | the fold-the-designing-room claim already closed at 9ec2e56c... |
 | `20260918.003426` | [Round two -- three moonshots](20260918/20260918-003426_round-two-three-moonshots-grounded-in-refusals.kyri) | Offsets, a two-field key, a fleet energy-census shape. |
 | `20260918.003239` | [No new ground since the last rotation](20260918/20260918-003239_no-new-ground-since-last-rotation.kyri) | Checked rather than assumed: xy fetched level, register scan unchanged, no agent-doable OPEN row for this lane. |
 | `20260918.003125` | [Pheromone lane, sixth check, still clear](20260918/20260918-003125_pheromone-sixth-check-still-clear.kyri) | Re-checked queue, REDS, and claim board fresh; nothing agent-doable; held for Keaton's word. |
@@ -452,6 +471,7 @@
 | `20260918.001641` | [pheromone lane fifth check -- still clear](20260918/20260918-001641_pheromone-lane-fifth-check-still-clear.kyri) | Fresh round-open and claim scan re-confirm the language lane's queue is empty. |
 | `20260918.001518` | [docs-geode front doors, tasted one by one](20260918/20260918-001518_docs-geode-front-door-taste-check.kyri) | Fourteen room README pages graded; all clear Door register/reach/truth; lane queue empty. |
 | `20260918.001201` | [Send -- two door candidates landed](20260918/20260918-001201_two-door-candidates-sent.kyri) | Both remotes hold 894856d6e after two rebases. |
+| `20260918.001128` | [round opens with no task named](20260918/20260918-001128_idle-open.kyri) | docs-geode is the lane; no file was open, touched, or graded this round |
 | `20260918.001054` | [pheromone lane fourth check -- two peer commits pulled](20260918/20260918-001054_pheromone-lane-fourth-check-pulled-two-peer-commits.kyri) | Fast-forwarded past two peer commits, neither in this lane; still no new work. |
 | `20260918.000701` | [Gren teaching page swept, ceiling stays one](20260918/20260918-000701_gren-teaching-ceiling-cleared.kyri) | 35% to 21%, bound sentences kept verbatim, gen-gren witness GREEN. |
 | `20260918.000549` | [pheromone lane check -- third confirmation, tree level](20260918/20260918-000549_pheromone-lane-clear-third-check.kyri) | Zero commits behind xy; only claim is incense's, outside this lane. |

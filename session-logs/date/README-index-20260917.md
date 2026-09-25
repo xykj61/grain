@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260917.235947` | [ready on the baton, no task yet](20260917/20260917-235947_ready-on-the-baton.kyri) | Petrichor's lane is docs-geode -- tutorials, compressors, front doors, the lib... |
 | `20260917.235825` | [pheromone lane check -- queue clear, no claim opened](20260917/20260917-235825_pheromone-lane-clear-check.kyri) | Ladder done; no in-lane work agent-doable; board empty. |
 | `20260917.235740` | [Send -- Comlink torus-check landed](20260917/20260917-235740_comlink-check-sent.kyri) | Both remotes hold c4431def5 after three rebases. |
 | `20260917.235358` | [Send -- lower_core delegation landed on both remotes](20260917/20260917-235358_lower-core-sent.kyri) | Both remotes hold d7dfe84605 after three rebases. |
@@ -47,6 +48,7 @@
 | `20260917.225143` | [A front door for the two keys](20260917/20260917-225143_a-front-door-for-the-two-keys.kyri) | keys/README.md 25% to 0%, joined DOOR. |
 | `20260917.224829` | [Two rings in Caravan, a torus nobody composed](20260917/20260917-224829_two-rings-a-torus-nobody-composed.kyri) | queue.rye's slot, cycle.rye's lap: uncomposed axes. |
 | `20260917.224719` | [Cold open -- tree current, board empty, rota row read](20260917/20260917-224719_cold-open-check-in.kyri) | ABSENCE-checked, claim board empty, rota row 4 verified. |
+| `20260917.224500` | [no explicit task this turn, scoped the law-ceili](20260917/20260917-224500_no-task-check-scope.kyri) | a rewrite of this size on a dense law file wants confirmatio... |
 | `20260917.224056` | [Aurora's sealed and deciding hold no torus seam](20260917/20260917-224056_aurora-deciding-and-sealed-hold-no-torus-seam.kyri) | Checked negative: read both files whole, neither is periodic. |
 | `20260917.223843` | [plant_apply_args, a dead line removed](20260917/20260917-223843_plant-apply-args-and-a-dead-noop-line.kyri) | two glow-tend controls source plant.sh, both GREEN. |
 | `20260917.223745` | [Status check before the next moonshot](20260917/20260917-223745_status-check-before-next-moonshot.kyri) | Deferred a fourth torus-thread essay; named two clean next moves. |
@@ -66,6 +68,8 @@
 | `20260917.221332` | [Round-open pulled five new commits, lane still clean](20260917/20260917-221332_still-clean-after-round-open.kyri) | Petrichor Stop still gates the walkthrough; docs-geode doorway and register scans re-checked, no drift. |
 | `20260917.221049` | [A toy already answered twice over](20260917/20260917-221049_a-toy-already-answered-twice-over.kyri) | Row 5's toy duplicated two elder errata; withdrawn. |
 | `20260917.221013` | [git-signing.md's Gauge ceiling falls a fifth time](20260917/20260917-221013_grass-git-signing-gauge-sweep.kyri) | 55% to 7% negative sentences; law_ceiling 3 to 2; survived four true-divergence parks. |
+| `20260917.220845` | [opening turn -- no task named yet](20260917/20260917-220845_awaiting-task.kyri) | docs-geode is the lane; will grade whatever page is named next per quality-assura... |
+| `20260917.220715` | [baton loaded, no task this turn](20260917/20260917-220715_baton-only-no-task.kyri) | an empty-prompt turn is honestly different from a lap with real work; recordin... |
 | `20260917.220231` | [Spread plant.sh into two more controls](20260917/20260917-220231_plant-spread-two-controls.kyri) | %519: rye_module_door and rye_toolchain_resolve controls now source plant_write, GREEN. |
 | `20260917.220051` | [No red in the docs-geode lane this round](20260917/20260917-220051_no-red-in-lane-this-round.kyri) | Round-open, claim check, prose-ceiling and doorway scans -- all clean, no fix needed. |
 | `20260917.215853` | [The field that breaks the cycle](20260917/20260917-215853_the-field-that-breaks-the-cycle.kyri) | wrap_ring's content cycles; its full state never does. Row 3, second lens, GREEN. |
@@ -118,6 +122,7 @@
 | `20260917.202318` | [Claim-as-override checked and declined](20260917/20260917-202318_claim-as-override-checked-and-declined.kyri) | Walked all 16 OPEN REDS rows against the claim board. |
 | `20260917.202305` | [A stashed lap already landed elsewhere](20260917/20260917-202305_a-stashed-lap-already-landed-elsewhere.kyri) | Patchouli confirms a lane stash was dead duplicate. |
 | `20260917.201640` | [Holding rather than a seventh confirm](20260917/20260917-201640_holding-rather-than-a-seventh-confirm.kyri) | Declined to re-poll a six-times-confirmed empty queue. |
+| `20260917.201322` | [queue check -- no agent-doable petrichor item th](20260917/20260917-201322_petrichor-queue-check-empty.kyri) | no fabricated work opened; CLAIM-AS-OVERRIDE asks fo... |
 | `20260917.201113` | [The meter that corrected its author twice](20260917/20260917-201113_the-meter-that-corrected-its-author-twice.kyri) | Fan-out: median 232 per mille. |
 | `20260917.201035` | [capture_evidence keeps a guard's header, not only its tail](20260917/20260917-201035_evidence-tail-header.kyri) | Fixed the bare `tail -n 200` evidence capture. |
 | `20260917.200844` | [Six confirms in a row is the finding](20260917/20260917-200844_six-confirms-in-a-row-is-the-finding.kyri) | Named the repeated-poll pattern itself. |
@@ -135,7 +140,9 @@
 | `20260917.192805` | [A fourth check on an unmoved tree](20260917/20260917-192805_a-fourth-check-on-an-unmoved-tree.kyri) | Tree unchanged; confirmed via claim board, no rescan. |
 | `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS line struck; row already closed twice. |
 | `20260917.192447` | [The third empty reading in a row](20260917/20260917-192447_the-third-empty-reading-in-a-row.kyri) | Read OPEN row content, not just status; six wait on Keaton's word. |
+| `20260917.192142` | [No user task this turn -- confirmed docs-geode g](20260917/20260917-192142_petrichor-idle-status-check.kyri) | no OPEN REDS row and no open fleet claim names docs-... |
 | `20260917.191927` | [The queue still reads empty](20260917/20260917-191927_the-queue-still-reads-empty.kyri) | Re-checked the fleet and the card six minutes later; same honest empty. |
+| `20260917.191559` | [opening check-in, no task yet](20260917/20260917-191559_opening-check-in.kyri) | nothing to grade, claim, or send; holding for a task before touching any file |
 | `20260917.191410` | [The red already repaired](20260917/20260917-191410_the-red-already-repaired.kyri) | %806 read GREEN on metal; left OPEN on purpose, Keaton's word owed. |
 | `20260917.190855` | [The fold that met another fold](20260917/20260917-190855_the-fold-that-met-another-fold.kyri) | Two ships folded one row; resolved by hand. |
 | `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair. |
@@ -143,6 +150,7 @@
 | `20260917.190701` | [A third silent cap closed the list](20260917/20260917-190701_a-third-silent-cap-closed-the-list.kyri) | listing_census ceiling 11 to 10. |
 | `20260917.190537` | [Petrichor's queue checked, ledger tight](20260917/20260917-190537_petrichor-queue-checked-ledger-tight.kyri) | Account landed; corpus red no longer reproduces. |
 | `20260917.190422` | [The boundary that was a wish](20260917/20260917-190422_the-boundary-that-was-a-wish.kyri) | The claim writer validated its name and nothing else. |
+| `20260917.190232` | [baton loaded, no task given yet](20260917/20260917-190232_baton-load-no-task.kyri) | a session log this thin still earns a stamp and a row, per the session-logs la... |
 | `20260917.190033` | [The key next door](20260917/20260917-190033_the-key-next-door.kyri) | A guard passed a page on the key next door. |
 | `20260917.185646` | [The comment a width leg read as a type](20260917/20260917-185646_the-comment-a-width-leg-read-as-a-type.kyri) | The md5 pair delegated; copies 15 to 13. |
 | `20260917.185512` | [The lever behind the deny list](20260917/20260917-185512_the-lever-behind-the-deny-list.kyri) | A guard read the tracked file while an ignored one outranked it. |

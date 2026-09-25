@@ -25,3 +25,4 @@
 | `20260922.124654` | [20260922-124654_fleet-is-quiet.kyri](20260922/20260922-124654_fleet-is-quiet.kyri) | Seven ships stopped on credit; watch at a prompt |
 | `20260922.124223` | [20260922-124223_interactive-captain-open.kyri](20260922/20260922-124223_interactive-captain-open.kyri) | Captain seated; cold pass already closed |
 | `20260922.123822` | [20260922-123822_rye-readme-fascia.kyri](20260922/20260922-123822_rye-readme-fascia.kyri) | Renewed Rye's Radiant-Gauge cross-reference fascia |
+| `20260922.122627` | [Interactive Cursor captain command](20260922/20260922-122627_cursor-interactive-command.kyri) | FLEET_BARE and FLEET_CAPTAIN are launcher context variables; direct... |

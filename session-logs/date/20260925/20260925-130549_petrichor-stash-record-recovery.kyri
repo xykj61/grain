@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260925.130549
+editor Codex
+provider OpenAI
+product Codex
+role docs-geode and prose product
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; user fleet instruction 20260925
+voice Kyri
+title Parked Petrichor records returned to their shelves
+prompt Tend the docs-geode draft, recover parked seat records, and close this lap with evidence.
+think Read the voice, Gauge guide, full card, seat prompt, handoffs, newest shelf, and Water rota row.
+think The citizen draft graded B+ at Door with all 25 local paths resolving; the prior review already left it in yonder pending a fresh reader run.
+think The stash scan identified 28 unlanded Petrichor logs and zero parked work files; restored each log from its stash parent without dropping the stash.
+think Added the missing shelf rows, updated both day counts, and resolved nine older missing peer rows surfaced by the log scan.
+obs The cold roster launched at c610c1a2af with cadence slice 1; it was terminated through its recorded pid to keep recovery within this lap and recorded run_verdict=died_unexpectedly exit_code=143. No full cold verdict is claimed.
+obs stash_record reports landed=52 unlanded=0. index_row_bound reports rows_over=0. session_roster_agree reports disagree=0 stale=0.
+obs log_has_a_row field reads post_law_logs_without_a_row=0, but its planted control still fails at log_counted after rebuilding rishi; the witness as a whole remains red.
+obs The scoped hot roster read 10,270 changed paths in its saved basis, so it ran far beyond this log closure; I ended it through its recorded pid. Its transcript records run_verdict=died_unexpectedly exit_code=143, and no hot verdict is claimed.
+loom qa_citizen_register=87 qa_citizen_reach=90 qa_citizen_truth_counted=100 qa_citizen_composite=88 recovered_logs=28 restored_peer_rows=9
+rota lap 6583, row 3 -- Water - Venus; the second-run property surfaced the need to check the restored shelf from both its index and the stash reader.
+file session-logs/date/20260917 -- eight parked logs restored and indexed.
+file session-logs/date/20260918 -- twenty parked logs restored and indexed.
+file session-logs/date/README-index-20260922.md -- one missing historical row seated.
+file session-logs/date/README-index-20260923.md -- eight missing historical rows seated.
+file session-logs/date/README-index-20260925.md -- one overlong open-day row shortened and this log indexed.
+file session-logs/README.md -- restored day counts updated.
+file session-logs/CHAPTERS.md -- restored day counts updated.
+file construction/ITINERARY.md -- parent Git nib carried for this commit.
+recommend check-in -- the citizen draft stays in yonder until a fresh reader runs its path; log_has_a_row control and full roster remain open.
+scope Recovered 28 parked Petrichor logs, repaired 9 missing historical rows, and graded the citizen draft without changing it.
+status PARTIAL -- stash recovery, index bounds, and roster counts pass; log_has_a_row control remains red, and cold and scoped hot rosters were interrupted.
