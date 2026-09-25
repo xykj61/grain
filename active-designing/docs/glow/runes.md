@@ -23,7 +23,7 @@ Glow's ambient truth is Zig's: `bool`, ordinary `if`, exit `0` for success. Nock
 <a id="gd-auras"></a>
 ## Auras and Shapes, in One Breath
 
-An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` bounded cord (ceiling 1024), `@ux` hex. A **shape** is Glow's living word for stated structure -- `+$` names one, `$:` states one-to-nine fields, `$%` tags variants -- with *mold* kept as the Hoon-study word. The admitted field auras live as **data in one place** (`admitted_shape_auras`, four entries), so widening the language is a table row, never a scattered edit. Nest questions resolve in [`nest_type.rye`](../../../glow/nest_type.rye), accept and refuse both asserted.
+An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` bounded cord (ceiling 1024), `@ux` hex. A **shape** is Glow's living word for stated structure -- `+$` names one, `$:` states one-to-fifteen fields, `$%` tags variants -- with *mold* kept as the Hoon-study word. The admitted field auras live as **data in one place** (`admitted_shape_auras`, four entries), so widening the language is a table row, never a scattered edit. Nest questions resolve in [`nest_type.rye`](../../../glow/nest_type.rye), accept and refuse both asserted.
 
 ---
 
@@ -69,7 +69,7 @@ An **aura** names an atom's width and reading: `@u8` `@u16` `@u32` `@u64`, `@t` 
   ==
 ```
 
-`$:` admits one to **nine** fields (`max_fields: u32 = 9`, the capacity freeze of STOA147), each `face=aura` from the admitted table (`@u32` - `@t` - `@ux` - `@u64`). `$%` builds a tagged union of cold atoms -- unit payload `[%tag ~]` or one-to-three payload faces across two-to-three tags, per the header's own worked example, `%mint`/`%send`. STOA97 rebuilt this parser **token-first**: `tokenize` -> walk the stream -> `ShapeSpec`, retiring byte-level line surgery -- the shape system is where Glow's front end grew up. The living Grain desks lead with `*-shape` names; `*-mold` twins stay siloed Hoon study. **Ledger:** STOA74-97 - 122-126 - 134-147 - 161-176 - 187-190. **Source:** [`rune_shape.rye`](../../../glow/rune_shape.rye) (header read whole; body pass round 3) - [`lower_shape.rye`](../../../glow/lower_shape.rye).
+`$:` admits one to **fifteen** fields (`max_fields: u32 = 15`, widened for the fifteen-field receipt contract), each `face=aura` from the admitted table (`@u32` - `@t` - `@ux` - `@u64`). `$%` builds a tagged union of cold atoms -- unit payload `[%tag ~]` or one-to-three payload faces across two-to-three tags, per the header's own worked example, `%mint`/`%send`. STOA97 rebuilt this parser **token-first**: `tokenize` -> walk the stream -> `ShapeSpec`, retiring byte-level line surgery -- the shape system is where Glow's front end grew up. The living Grain desks lead with `*-shape` names; `*-mold` twins stay siloed Hoon study. **Ledger:** STOA74-97 - 122-126 - 134-147 - 161-176 - 187-190. **Source:** [`rune_shape.rye`](../../../glow/rune_shape.rye) (header read whole; body pass round 3) - [`lower_shape.rye`](../../../glow/lower_shape.rye).
 
 ## The Tests -- `?` Asks
 

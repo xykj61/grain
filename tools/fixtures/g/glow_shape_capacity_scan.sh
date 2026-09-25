@@ -1,35 +1,34 @@
 #!/bin/sh
 # tools/fixtures/g/glow_shape_capacity_scan.sh -- CAN GLOW WRITE THE PRODUCT'S OWN TYPES? Glow's
 # multi-field `$:` shape holds at most `max_fields` faces, declared in glow/rune_shape.rye. That
-# number was frozen at NINE on `20260720` by a seated capacity ruling
+# number was frozen at nine on `20260720` by a seated capacity ruling
 # (active-designing/date/20260720/20260720-231857_closed-field-capacity-freeze-and-framework-next.md),
 # on a reason that was true when it was written: the ladder had walked pair, triple, quad, penta,
-# hexa, hepta, octa, nona, and another face name taught no new nest law. Nothing asked for a tenth.
+# hexa, hepta, octa, nona. The ninth face completed that ladder's teaching.
 #
-# Something asks now. The receipt contract Keaton accepted on `20260913`
+# The later receipt contract Keaton accepted on `20260913`
 # (active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md) declares four public
 # types, and this seat's own ladder rung reads *express the receipt facts in the smallest Glow
-# form already owned*. A form that holds nine faces cannot hold a type that names fifteen.
+# form already owned*. The approved ceiling of fifteen now holds the widest type.
 #
 # So this scan reads BOTH SIDES FROM THEIR OWN FILES and reports the gap per type:
 #
 #   THE CAPACITY comes from glow/rune_shape.rye's `pub const max_fields`, and the admitted field
-#   auras from the `admitted_shape_auras` table beside it. Both are read rather than spelled here,
-#   because a reader carrying its own copy of a number answers about itself.
+#   auras from the `admitted_shape_auras` table beside it. Reading the source keeps the answer
+#   aligned with the current capacity.
 #
 #   THE DEMAND comes from the contract page's own `## Public types` block. A line at column zero
 #   inside that block names a type; the indented lines under it name its fields, comma-separated,
 #   and a field written `name: Type` counts as the one field left of the colon.
 #
 # WHAT IT GATES, AND WHAT IT ONLY REPORTS. It gates that the INSTRUMENT ANSWERED -- both files
-# read, a capacity found, and at least one type parsed -- because a scan that silently reads zero
-# types prints a perfect `types_over_capacity=0` about a page it never opened. It REPORTS the gap
-# and gates nothing about it: closing the gap means widening a ceiling the capacity freeze
-# reserves for Keaton's word, and a gate that reds every ship for a decision no lap may take is a
-# gate somebody turns off.
+# read, a capacity found, and at least one type parsed. A zero-type parse must produce a refusal;
+# otherwise `types_over_capacity=0` could describe an unread page. It REPORTS the gap
+# and gates nothing about it: the approved ceiling is fifteen today, while a later contract
+# may need another ruling. Reporting the gap keeps that decision visible across
+# the fleet.
 #
-# WHAT IT DOES NOT READ. Whether each field's own aura is one Glow admits. The contract names
-# field NAMES rather than types, so no reader can derive that from the page; it was read by hand
+# AURA REVIEW. The contract names field NAMES rather than types, so its aura fit was read by hand
 # on `20260916` and all fifteen of ReceiptOfferFact's fields map onto the four admitted auras,
 # with `value_amount` needing `@u64` because the contract's ceiling of 9,000,000,000 stands above
 # what `@u32` holds, and `product_digest` fitting `@ux` exactly at 32 bytes.

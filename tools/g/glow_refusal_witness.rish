@@ -1,23 +1,20 @@
 # glow_refusal_witness.rish -- the Glow refusal record, and its agreement with the receipt one.
 #
-# The product contract asks a refusal to name field, value, ceiling, unit and reason where a
-# ceiling applies, and field and reason where none does. glow/rune_shape.rye answered its
-# nine-face tuple ceiling and its three-face payload ceiling with the one error name
-# TooManyFields, so a caller could not tell which of the two refused. glow/refusal.rye is the
-# record that tells them apart, shaped after tally/receipt_refusal.rye, which landed this form
-# first for the receipt side.
+# The product contract asks for field and reason on every refusal record. A measured ceiling
+# adds value, ceiling, and unit. `TooManyFields` covers two limits in glow/rune_shape.rye:
+# fifteen tuple fields and three payload faces. glow/refusal.rye names which limit was reached.
+# Its line format follows tally/receipt_refusal.rye on the receipt side.
 #
 # THE LAST TWO LEGS ARE THE POINT. Two records rendering one line is one rule written twice, so
-# the format strings are compared here rather than trusted. Change either spelling alone and this
-# reds on the lap it lands.
+# this witness compares their format strings. It catches a one-sided spelling change
+# in the lap where that change lands.
 #
-# SIX LEGS JOINED ON `20260916.194500`, when the lexer every Glow parse passes through filled its
-# own four. glow/tokens.rye answers a name past max_name_len, a cord literal interior past
-# max_cord_lit_bytes, a hex literal past max_hex_lit_digits and a source past max_src_len with the
-# one word error.BadToken; tokenize_reporting hands back the record that tells them apart, while
-# tokenize keeps the signature and the bytes it always had. The fifth of the six is the one that
-# keeps the slot honest: a BadToken no record names leaves the slot null, so a caller asks the slot
-# rather than the error name. The sixth proves the published entry unmoved.
+# SIX LEGS JOINED ON `20260916.194500`. Every Glow parse passes through the lexer.
+# glow/tokens.rye checks a name, a cord literal, a hex literal, and the whole source against
+# four named limits. Each returns error.BadToken with a distinct record from
+# tokenize_reporting. The published tokenize entry keeps its signature and bytes.
+# An unnamed BadToken leaves the slot null; a caller reads that slot for the record.
+# The final leg proves the published entry still behaves the same way.
 #
 #   rishi/bin/rishi run tools/g/glow_refusal_witness.rish
 
@@ -34,10 +31,11 @@ assert selftest.out contains "two-part rendering -- GREEN" else "refusal_witness
 assert selftest.out contains "reason and unit words distinct and printable -- GREEN" else "refusal_witness missing word legs"
 assert selftest.out contains "name ceiling admitted, one past refused -- GREEN" else "refusal_witness missing name ceiling both sides"
 assert selftest.out contains "short buffer refused by name -- GREEN" else "refusal_witness missing short buffer refusal"
+assert selftest.out contains "fifteen fields dispatch and lower; eighteen-line overage reaches refusal -- GREEN" else "refusal_witness missing the widened shape-only path"
 assert selftest.out contains "tuple ceiling names the face that would not fit -- GREEN" else "refusal_witness missing tuple ceiling record"
 assert selftest.out contains "one error name, two ceilings, told apart -- GREEN" else "refusal_witness missing shared-error-name leg"
 assert selftest.out contains "an unnamed refusal leaves the slot empty -- GREEN" else "refusal_witness missing empty-slot leg"
-assert selftest.out contains "parse_source unchanged, nine admitted -- GREEN" else "refusal_witness missing published-entry leg"
+assert selftest.out contains "parse_source unchanged, fifteen admitted -- GREEN" else "refusal_witness missing published-entry leg"
 assert selftest.out contains "the lexer name ceiling carries its own record -- GREEN" else "refusal_witness missing the lexer name ceiling"
 assert selftest.out contains "one scanner, two kinds, each named -- GREEN" else "refusal_witness missing the tag-versus-ident leg"
 assert selftest.out contains "the cord literal ceiling counts its interior -- GREEN" else "refusal_witness missing the cord literal ceiling"
