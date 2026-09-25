@@ -95,3 +95,9 @@ stamp 20260924.193506
 epoch 1790292906
 paths recursion-prompts/bakery-inner.md
 what Replace the completed scope-map assignment with an evidence-led recovery step for the parked build-target repair.
+claim bakery-build-target-recovery
+seat bakery
+stamp 20260924.204426
+epoch 1790297066
+paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/w/wrap_ring_witness.rish tools/p/page_evict_witness.rish tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh tools/fixtures/p/page_residency_control.sh
+what Recover the parked comment classification repair and isolate wrap-ring and page eviction proof binaries in per-run directories.
