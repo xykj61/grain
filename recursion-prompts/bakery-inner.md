@@ -135,6 +135,14 @@ The separate Codex loop control still expects the former model default and exits
 All 12 checks pass with that former model explicitly supplied, which leaves today's
 per-seat defaults unproven. Repair those expectations before new work.
 
+The [model-control diagnosis](../session-logs/date/20260925/20260925-130705_bakery-model-control-diagnosis.kyri) adds two refusal cases to that repair.
+With the former model explicitly supplied, the existing control passes all 12 checks
+even when a copied loop omits the model flag from the probe or from the lap.
+Its shared argument log lets either invocation satisfy the other's assertion.
+Check exact model arguments on both calls, with inherited overrides cleared for
+default tests. Cover Bakery, an ordinary seat, and explicit overrides; both planted
+omissions must fail. Production source is unchanged; the repair remains owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
