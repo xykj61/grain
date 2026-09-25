@@ -59,6 +59,14 @@ in `d305dce6f`; the older control's digest plant can leave its input unchanged.
 Keep today's cache and controls. All stashes remain preserved, and 81 versions
 still await review. This is a recovery disposition, not a full-roster verdict.
 
+The [seed-phase recovery review](../session-logs/date/20260925/20260925-120356_bakery-sow-recovery-review.kyri) covers
+three older measurement versions in stash `4d23d13651b1`. Their behavior landed
+in `8da08c0fe`, with six added controls distinguishing quiet history from busy
+history with unchanged candidates. Today's witness passes all 33 legs. Keep the
+current manifest name and the stronger checks. Seventy-eight source versions
+remain to review; the separate `6c28e72eb58a` freshness family is still pending.
+All 85 stashes remain preserved, and seed publishing stays manual.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
