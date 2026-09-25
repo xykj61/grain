@@ -19,6 +19,7 @@
 | `20260924.211240` | [The Roots Beneath the Work stays a composition](20260924/20260924-211240_grass-roots-beneath-the-work.kyri) | Seven principles, one bounded receipt disposition. |
 | `20260924.210823` | [A third sentence stays beside the first two](20260924/20260924-210823_incense-stage-store-quiet-third.kyri) | Three names in the quiet store; a repeat adds nothing. |
 | `20260924.210200` | [A second sentence stays beside the first](20260924/20260924-210200_incense-stage-store-quiet-second.kyri) | Two names in the quiet store; a repeat adds nothing. |
+| `20260924.205941` | [Patchouli parked log recovered](20260924/20260924-205941_patchouli-parked-log-recovery.kyri) | One cold-roster record and its index row restored. |
 | `20260924.203720` | [The quiet store keeps one write](20260924/20260924-203720_incense-stage-store-quiet-put.kyri) | Second write adds nothing; the empty sibling stays empty. |
 | `20260924.203309` | [Bakery records and next fruit](20260924/20260924-203309_bakery-records-and-next-fruit.kyri) | Five parked logs restored; next repair named. |
 | `20260924.203151` | [An empty directory stays on disk](20260924/20260924-203151_incense-stage-store-quiet.kyri) | Second pass still quiet; the lasting seven stay. |
@@ -56,7 +57,6 @@
 | `20260924.144838` | [Shape of a Day packet recovered](20260924/20260924-144838_grass-open-room-recovery.kyri) | Packet A/95; cold roster guard-red, tree held still. |
 | `20260924.144525` | [The hosted device wire was heard](20260924/20260924-144525_incense-virtio-hosted.kyri) | Padding-free, a whole datagram, GREEN, no QEMU. |
 | `20260924.143319` | [The next wire already lives in Comlink](20260924/20260924-143319_incense-virtio-wire-page.kyri) | Aurora has no virtio stage; Comlink already crosses. |
-| `20260924.141139` | [Patchouli value forms mapped](20260924/20260924-124833_patchouli-value-forms-map.kyri) | Existing Mantra/Tally receipt seams named; cold roster guard-red, tree still. |
 | `20260924.134325` | [The next strand is a new list](20260924/20260924-134325_incense-what-next.kyri) | virtio-net is the next wire the door already names. |
 | `20260924.134324` | [Pheromone Glow ENOSPC hold](20260924/20260924-134324_pheromone-enospc-hold.kyri) | Landed Glow kept; cold roster stopped before verdict. |
 | `20260924.133526` | [Pheromone Glow claim close and cold roster hold](20260924/20260924-133526_pheromone-glow-claim-close.kyri) | Cold roster stopped at ENOSPC before verdict; Glow claim closed. |
@@ -70,6 +70,7 @@
 | `20260924.131243` | [A broken roster exits 1 and speaks nothing](20260924/20260924-131243_incense-roster-refuse-wake.kyri) | One domain twice, no sentence, pedestal stays six. |
 | `20260924.130405` | [A broken ceiling writes the refusing finisher](20260924/20260924-130405_incense-roster-refuse.kyri) | The good roster still exits 0. |
 | `20260924.125750` | [The roster page names the stage that speaks](20260924/20260924-125750_incense-roster-page-true.kyri) | The design page points at roster.rye. |
+| `20260924.124833` | [Patchouli value forms mapped](20260924/20260924-124833_patchouli-value-forms-map.kyri) | Existing Mantra/Tally receipt seams named; cold roster guard-red, tree still. |
 | `20260924.124810` | [The Aurora door names the roster stage](20260924/20260924-124810_incense-aurora-door-roster.kyri) | roster.rye stands beside the six on the door. |
 | `20260924.124246` | [The hart and the host speak the same pairs](20260924/20260924-124246_incense-roster-pairs.kyri) | Four canonical pairs match on the host and the hart. |
 | `20260924.124112` | [Recovered ranking record](20260924/20260924-124112_bakery-rank-outcome-scope-refresh.kyri) | Recovered unchanged from a parked lap. |
@@ -92,7 +93,7 @@
 | `20260924.093334` | [QEMU declared for the Aurora wake](20260924/20260924-093334_incense-nixos-qemu.kyri) | configuration.nix lists qemu; the switch stays on the pier. |
 | `20260924.092857` | [The channel roster spoken on the host](20260924/20260924-092857_incense-hosted-roster.kyri) | Five domains, four channels; qemu boot skipped. |
 | `20260924.092425` | [The stage that speaks a channel roster](20260924/20260924-092425_incense-aurora-channel-roster.kyri) | Design page after posted.rye; letter A at Field. |
-| 20260924.092223 | [Cold roster ended without a verdict](20260924/20260924-092223_petrichor-cold-incomplete.kyri) | Petrichor cold pass ended without a verdict. |
+| `20260924.092223` | [Cold roster ended without a verdict](20260924/20260924-092223_petrichor-cold-incomplete.kyri) | Petrichor cold pass ended without a verdict. |
 | `20260924.091449` | [Research notes filed by the day](20260924/20260924-091449_incense-research-date-fold.kyri) | 253 notes on day shelves; living fascia repointed. |
 | `20260924.090627` | [Freestanding journey on the list](20260924/20260924-090627_incense-freestanding-todos.kyri) | Design page, hosted witness, qemu boot, itinerary sentence. |
 | `20260924.090234` | [The freestanding lane beside the fleet](20260924/20260924-090234_incense-freestanding-lane.kyri) | Posted, virtio, and channels; qemu stays absent here. |

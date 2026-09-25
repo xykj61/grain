@@ -6,7 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| 20260922.225400 | [fascia metric witness rostered](20260922/20260922-225400_copal-fascia-witness.kyri) | Rostered one Generator Chapter witness; direct and refusal legs green. |
+| `20260922.225400` | [fascia metric witness rostered](20260922/20260922-225400_copal-fascia-witness.kyri) | Rostered one Generator Chapter witness; direct and refusal legs green. |
 | `20260922.225204` | [Mapped Patchouli value forms](20260922/20260922-225204_patchouli-value-forms.kyri) | Existing ReceiptOfferFact and Tally bounds mapped; cold roster guard-red. |
 | `20260922.224330` | [20260922-224330_pheromone-cold-hold.kyri](20260922/20260922-224330_pheromone-cold-hold.kyri) | Cold roster stopped before a verdict; no product work landed |
 | `20260922.201705` | [20260922-201705_case-4-is-the-card.kyri](20260922/20260922-201705_case-4-is-the-card.kyri) | Case 4 aimed at the existing Receipt Card |
@@ -25,3 +25,4 @@
 | `20260922.124654` | [20260922-124654_fleet-is-quiet.kyri](20260922/20260922-124654_fleet-is-quiet.kyri) | Seven ships stopped on credit; watch at a prompt |
 | `20260922.124223` | [20260922-124223_interactive-captain-open.kyri](20260922/20260922-124223_interactive-captain-open.kyri) | Captain seated; cold pass already closed |
 | `20260922.123822` | [20260922-123822_rye-readme-fascia.kyri](20260922/20260922-123822_rye-readme-fascia.kyri) | Renewed Rye's Radiant-Gauge cross-reference fascia |
+| `20260922.122627` | [Interactive Cursor command](20260922/20260922-122627_cursor-interactive-command.kyri) | Direct Cursor needs context paths in its prompt. |

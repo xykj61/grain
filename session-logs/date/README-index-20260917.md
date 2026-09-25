@@ -136,7 +136,9 @@
 | `20260917.192509` | [A third read struck the line instead](20260917/20260917-192509_a-third-read-struck-the-line-instead.kyri) | Stale YOURS line struck; row already closed twice. |
 | `20260917.192447` | [The third empty reading in a row](20260917/20260917-192447_the-third-empty-reading-in-a-row.kyri) | Read OPEN row content, not just status; six wait on Keaton's word. |
 | `20260917.191927` | [The queue still reads empty](20260917/20260917-191927_the-queue-still-reads-empty.kyri) | Re-checked the fleet and the card six minutes later; same honest empty. |
+| `20260917.191539` | [Baton check-in, no directive](20260917/20260917-191539_baton-checkin-no-directive.kyri) | Context loaded, git clean, no task given -- held for Keaton's word. |
 | `20260917.191410` | [The red already repaired](20260917/20260917-191410_the-red-already-repaired.kyri) | %806 read GREEN on metal; left OPEN on purpose, Keaton's word owed. |
+| `20260917.191232` | [No task this turn](20260917/20260917-191232_no-task-this-turn.kyri) | Baton-only turn; asked Keaton what's next. |
 | `20260917.190855` | [The fold that met another fold](20260917/20260917-190855_the-fold-that-met-another-fold.kyri) | Two ships folded one row; resolved by hand. |
 | `20260917.190852` | [vocabulary_collection already green](20260917/20260917-190852_vocabulary-collection-already-green.kyri) | Confirmed on metal: the corpus row needed no repair. |
 | `20260917.190837` | [Two folds cleared a blocked pier](20260917/20260917-190837_two-folds-to-clear-a-blocked-pier.kyri) | ITINERARY and REDS crossed bound mid-send; folded and pushed. |
