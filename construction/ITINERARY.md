@@ -250,11 +250,14 @@ completed: 282 green, 25 red, three gated. All matched the prior hot verdicts.
 Bakery sent TERM to its recorded runner PID before the lap deadline; the runner
 reported exit 143. The cadence guard and full close remain unproven.
 **PROPOSED:** reusable receipts per guard for unchanged, completely mapped inputs;
-rerun failed, unknown, and history-sensitive checks. The full-green receipt rule
-currently makes unrelated reds cost every later scoped pass. This proposal changes
+rerun failed, unknown, and history-sensitive checks. The latest full pass withheld a new receipt.
+An older full-green receipt remains valid at `fa310d296b`; its delta to
+`f15247701b` spans 10,219 paths. Its scoped cost is unmeasured. This proposal changes
 no proof policy. [Prior account](archive/20260925-105055_bakery-held-roster-account.md).
-**YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
-cannot hold both complete roster passes.
+**YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
+9,837 seconds for both passes and one cadence guard, before lap overhead.
+The active timeout is 5,400 seconds.
+[Full estimate](../recursion-prompts/bakery-inner.md).
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -359,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0f8b8b2312` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `f15247701b` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
