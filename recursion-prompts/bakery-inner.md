@@ -212,6 +212,15 @@ host's missing ripgrep by name; success with ripgrep remains untested here.
 Keep current source and all 85 stashes. Sixteen source versions remain to review;
 the named repairs and full roster proof remain owed.
 
+The [enclosure recovery review](../session-logs/date/20260925/20260925-144054_bakery-jail-recovery.kyri) covers four more versions.
+Keep today's base/enclosure roster split; the base witness passes. Four probe
+cases agree on success, known refusal, and missing bwrap, but differ on an
+unexpected failure: the draft says unknown; current says absent and skips.
+Current source documents that limitation. Preserve the draft's stricter distinction
+for a separate repair; its old witness structure should stay parked.
+Twelve source versions remain to review, and all 85 stashes remain preserved.
+Real enclosure proof, the named repairs, and full roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
