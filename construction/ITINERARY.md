@@ -243,13 +243,18 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 **BAKERY.** [Source review shelved whole](archive/20260925-151316_bakery-source-review-account.md).
 All 85 stashes stay preserved; the detached launcher's unreadable-lock repair remains owed.
 
-**BAKERY -- CODEX CALLS CHECKED SEPARATELY.** `fleet_codex_control.sh` checks exact model
-arguments on both calls for Bakery, an ordinary seat, and explicit overrides. All 18 checks
-pass, including omitted and suffixed model refusals on each call. Production source is unchanged.
-Full cold and hot roster proof remains owed; this is a focused control result.
+**BAKERY.** [Codex-control account shelved whole](archive/20260925-160542_bakery-codex-control-account.md).
+
+**BAKERY -- HELD LOCKS KEEP THEIR TRANSCRIPTS.** The detached launcher now refuses
+before truncation when a held directory has a missing, empty, malformed, or unreadable PID.
+All eight new assertions pass; 8 of 367 control assertions remain red at evidence capture.
+`capture_evidence` reports success after a planted `cat` failure leaves zero bytes; its control
+still shims `tail`. Repair that separate fault next. Full cold and hot roster proof remains owed.
+This lap's cold run was stopped with exit 143 before the live timeout;
+its partial guard results establish neither a complete baseline nor a tree-stability verdict.
 **YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
 9,837 seconds for both passes and one cadence guard, before lap overhead.
-The recorded timeout is 5,400 seconds.
+The running process confirmed the current 5,400-second timeout.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -354,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e99b5ce25` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `536369a264` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

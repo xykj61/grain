@@ -1,14 +1,14 @@
 #!/bin/sh
 # tools/fixtures/s/standing_equipment_control.sh -- prove the roster meter and its runner, both ways.
 #
-# WHY. A guard that cannot red guards nothing -- the grain seats that strand
+# WHY. A guard earns trust by catching a planted fault -- the grain seats that strand
 # (foundations/20260826-024942_the-grain-and-the-crossing.md, REDS row 59). This builds
 # throwaway rosters and run cards in a temporary directory and proves each refusal the
 # scan claims, beside rosters that pass free so every gate is known to have a green side.
 #
 # WHAT THE SCAN PROVES.
 #   A roster naming a path that is absent from disk is refused.
-#   A guard record with no path line, or with two, is refused as half-written.
+#   A complete guard record carries exactly one path; other shapes are refused.
 #   A run card naming a guard the roster never seated is refused.
 #   A run card recording a red verdict is refused -- unless the red is this scan's OWN row, which
 #     is its output rather than its evidence, and is reported instead (REDS %475).
@@ -21,8 +21,8 @@
 # runner honors it, so the runner is driven over a planted two-row roster with a stub interpreter:
 # a bare run takes the every-lap tier alone, `--tier cadence` takes exactly that tier, `--all`
 # takes both, a guard named by hand runs whatever its tier, and a pass keeps the run-card lines
-# of the guards it did not run. The pen is no git repository, which is its own case: the staged
-# reading answers 0 rather than refusing.
+# of the guards outside the selected tier. The pen runs outside Git, where the staged
+# reading correctly answers 0.
 #
 # THE THIRD VERDICT, over the same stub interpreter (REDS %747). A guard that RUNS AND REFUSES is a
 # red, announcing the evidence file a hand reads. The same guard, with a shimmed `tail` refusing
@@ -843,6 +843,64 @@ if grep -q '^run_transcript=session-output/standing-equipment-hot\.txt$' "$(deta
 # And the lock leaves with the pass, so no elder path outlives the run that wrote it.
 if [ -e "$pen/own.lock.d" ]; then
   echo "detach_lock_leaves=no"; else echo "detach_lock_leaves=yes"; fi
+
+# A held directory can precede its PID write. Exercise each unreadable-owner shape with
+# the same public launch, checking the exit, both transcripts, and the lock itself.
+check_unknown_owner() {
+  unknown_shape=$1
+  unknown_runner=$2
+  unknown_expect=$3
+  rm -rf "$pen/live.lock.d"
+  mkdir -p "$pen/live.lock.d" "$pen/session-output"
+  case "$unknown_shape" in
+    missing) : ;;
+    empty) : > "$pen/live.lock.d/pid" ;;
+    malformed) echo owner-pending > "$pen/live.lock.d/pid" ;;
+    directory) mkdir "$pen/live.lock.d/pid" ;;
+  esac
+  echo held_transcript > "$pen/unknown-owner.txt"
+  echo unknown-owner.txt > "$pen/live.lock.d/transcript"
+  echo requester_transcript > "$(detach_transcript cold)"
+  if unknown_out=$(cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+      STANDING_LOCK=live.lock.d sh "$unknown_runner" --detach 2>&1); then
+    unknown_code=0
+  else
+    unknown_code=$?
+  fi
+  unknown_ok=no
+  if [ "$unknown_expect" = held ]; then
+    if [ "$unknown_code" -eq 1 ] &&
+        printf '%s\n' "$unknown_out" | grep -qx 'run_verdict=run_in_flight' &&
+        printf '%s\n' "$unknown_out" | grep -qx 'owner_transcript=unknown-owner.txt' &&
+        ! printf '%s\n' "$unknown_out" | grep -q '^pid=' &&
+        [ "$(cat "$(detach_transcript cold)")" = requester_transcript ] &&
+        [ "$(cat "$pen/unknown-owner.txt")" = held_transcript ] &&
+        [ -d "$pen/live.lock.d" ]; then
+      unknown_ok=yes
+    fi
+  else
+    # The planted bypass must launch, erase the requester, then refuse in the dependent.
+    # Waiting for that verdict keeps cleanup behind the dependent's last write.
+    if [ "$unknown_code" -eq 0 ] && detach_wait "$(detach_transcript cold)" &&
+        ! grep -q '^requester_transcript$' "$(detach_transcript cold)" &&
+        grep -q '^run_verdict=run_in_flight$' "$(detach_transcript cold)"; then
+      unknown_ok=yes
+    fi
+  fi
+  echo "detach_unknown_${unknown_shape}_${unknown_expect}=$unknown_ok"
+  rm -rf "$pen/live.lock.d"
+}
+
+. "$(dirname "$runner")/../p/plant.sh"
+plant_write "$runner" "$pen/run-unknown-bypass.sh" \
+  's|^  if \[ -d "$lock" \]; then$|  if false; then|' unknown_owner_bypass
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh"
+# Four named shapes bound the matrix; the existing live and dead PID legs bracket it.
+for unknown_case in missing empty malformed directory; do
+  check_unknown_owner "$unknown_case" "$runner" held
+  check_unknown_owner "$unknown_case" "$pen/run-unknown-bypass.sh" bypass
+done
 
 # THE OTHER SIDE, and it is the one a careless repair breaks. A lock whose owner has EXITED is
 # reaped by `lock_acquire`, so the launch must walk past it and truncate exactly as before. A pid
