@@ -61,7 +61,7 @@ Prior pin (counsel e184): orphans **895** - health_now **41** -- delta **+26** o
 ## Class H -- SHED COMPLETE `20260827.162143`
 
 *The second mitra shed's full record -- ten fossils cut, every mutant standing -- folded to
-[`archive/SHRED_PREP-second-mitra-shed-record.md`](archive/shred/SHRED_PREP-second-mitra-shed-record.md)
+[`archive/shred/SHRED_PREP-second-mitra-shed-record.md`](archive/shred/SHRED_PREP-second-mitra-shed-record.md)
 on `20260904.193221`, because a completed shed is finished-and-historical and this pin sat 210 bytes under
 its bound. The word stays **shred RED** until the next circle.*
 
@@ -168,9 +168,9 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 ## Elder sections, folded
 
-*Four closed sections, awaiting no decision, stand whole at [`archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md) -- folded `20260823.234815`, and the recital of what moved rides on the shelf rather than on this pin (REDS %232).*
+*Four closed sections, awaiting no decision, stand whole at [`archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md`](archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md) -- folded `20260823.234815`, and the recital of what moved rides on the shelf rather than on this pin (REDS %232).*
 
-- Molts seated and sheds complete, `20260810`-`20260818` (Pool->Pond - Riyo->Kyri - root `.brix` - old-waymark logs - Kyri->Kyri pending): [`archive/SHRED_PREP-molts-seated-20260810-20260818.md`](archive/shred/SHRED_PREP-molts-seated-20260810-20260818.md)
+- Molts seated and sheds complete, `20260810`-`20260818` (Pool->Pond - Riyo->Kyri - root `.brix` - old-waymark logs - Kyri->Kyri pending): [`archive/shred/SHRED_PREP-molts-seated-20260810-20260818.md`](archive/shred/SHRED_PREP-molts-seated-20260810-20260818.md)
 
 ## Hard lines
 
@@ -191,7 +191,7 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 *Every W row -- W3's three charters, W4's census piece, W5's almanac machinery -- was measured and
 **held**, and the settled record rests on
-[`archive/20260908-180000_shred-prep-class-w-walked-and-kept.md`](archive/date/20260908/20260908-180000_shred-prep-class-w-walked-and-kept.md).
+[`archive/date/20260908/20260908-180000_shred-prep-class-w-walked-and-kept.md`](archive/date/20260908/20260908-180000_shred-prep-class-w-walked-and-kept.md).
 A walk whose verdict was KEEP is a decision already taken.*
 
 ## Completed QA queues
@@ -223,9 +223,9 @@ and its `template-manifest.kyri` rows.
 holds 51 `.md`; `rule_twin` reads 39 drifted pairs against a ceiling of 36 and has been gated at
 `%7` since `20260824.112806`. Full reading: [`../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md`](../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md).
 
-### Class M -- the vendor names (Codex, arbor, the bench scorecard) -- prepped `20260906.114734`, folded whole to [`archive/SHRED_PREP-vendor-names-class-m-20260906.md`](archive/shred/SHRED_PREP-vendor-names-class-m-20260906.md) on `20260907.023053`. Thirteen fossils bannered, three refused a banner for three different reasons, three traps named. **Cut still RED.**
+### Class M -- the vendor names (Codex, arbor, the bench scorecard) -- prepped `20260906.114734`, folded whole to [`archive/shred/SHRED_PREP-vendor-names-class-m-20260906.md`](archive/shred/SHRED_PREP-vendor-names-class-m-20260906.md) on `20260907.023053`. Thirteen fossils bannered, three refused a banner for three different reasons, three traps named. **Cut still RED.**
 
-### Class M -- CUT `20260826`, the rune renames -- folded whole to [`archive/SHRED_PREP-rune-rename-cut-20260826.md`](archive/shred/SHRED_PREP-rune-rename-cut-20260826.md) on `20260906.114734`: 19 files renamed, 46 touched, 538 substitutions, and 273 occurrences of the syllable left standing as the scope line rather than a leftover.
+### Class M -- CUT `20260826`, the rune renames -- folded whole to [`archive/shred/SHRED_PREP-rune-rename-cut-20260826.md`](archive/shred/SHRED_PREP-rune-rename-cut-20260826.md) on `20260906.114734`: 19 files renamed, 46 touched, 538 substitutions, and 273 occurrences of the syllable left standing as the scope line rather than a leftover.
 
 ### Class M -- the two syllable-named modules, as prepped
 
