@@ -356,7 +356,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3cb7f482f1` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `146f6d2cef` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -448,7 +448,7 @@ The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20
 
 **Diffuser research:** [Wake correction](../active-designing/date/20260925/20260925-053315_the-cap-is-already-the-interval.md) -- capped backoff adds a check; batching awaits a witness.
 
-1. Acceptance case 4: the 72 by 18 Receipt Card already stands in `skate/Sources/SkateCore/ReceiptCard.swift`. Prove its Still frame and accessibility snapshot carry `LinengrowReceipt`'s deciding fields in one reading order. The Consent Rail waits until a grant fact and a revoke fact exist.
+1. Acceptance case 4: the 72 by 18 Receipt Card stands in `skate/Sources/SkateCore/ReceiptCard.swift`. Its source-order witness and printable-byte refusal pass on this host; macOS XCTest remains the runtime proof. The Consent Rail waits until a grant fact and a revoke fact exist.
 2. Render Still, Settle, and Respond on the existing Skate grid and event ring.
 3. Prove reduced-motion, renderer-loss, hidden-document, settled-frame, deterministic-description, focus-order, and accessibility equivalence.
 4. Measure frame time, pulse count, event capacity, and accessibility parity before proposing richer motion.

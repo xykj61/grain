@@ -1,7 +1,7 @@
 /// The fixed product surface for the first readable Linengrow receipt.
 ///
 /// Input strings belong to the caller. The admitted card owns one 72-by-18
-/// ASCII plane, and its semantic reader walks those same bytes in row order.
+/// printable ASCII plane, and its semantic reader walks those same bytes in row order.
 @available(macOS 26.0, *)
 public struct ReceiptCard: Equatable, Sendable {
   public static let columns = 72
@@ -14,6 +14,7 @@ public struct ReceiptCard: Equatable, Sendable {
   public enum CardError: Error, Equatable, Sendable {
     case emptyField(String)
     case nonASCII(String)
+    case nonPrintableASCII(String)
     case fieldTooWide(field: String, limit: Int)
     case amountOutOfBounds(limit: UInt64)
     case cardLineTooWide(row: Int, limit: Int)
@@ -127,6 +128,10 @@ public struct ReceiptCard: Equatable, Sendable {
     guard !value.isEmpty else { throw CardError.emptyField(field) }
     let bytes = Array(value.utf8)
     guard bytes.allSatisfy({ $0 < 0x80 }) else { throw CardError.nonASCII(field) }
+    // Control bytes can move a terminal cursor outside the card's fixed rows.
+    guard bytes.allSatisfy({ $0 >= 0x20 && $0 <= 0x7e }) else {
+      throw CardError.nonPrintableASCII(field)
+    }
     guard bytes.count <= limit else {
       throw CardError.fieldTooWide(field: field, limit: limit)
     }

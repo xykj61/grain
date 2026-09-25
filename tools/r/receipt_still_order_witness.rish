@@ -8,7 +8,7 @@ say "receipt-still-order: Lens TAME -- eleven named fields, twelve bounded card 
 let control = run ["sh" "tools/fixtures/r/receipt_still_order_control.sh"]
 say control.out
 assert control.ok else "receipt-still-order: the control must finish"
-assert control.out contains "control_legs=6" else "receipt-still-order: all six legs must be heard"
+assert control.out contains "control_legs=7" else "receipt-still-order: all seven legs must be heard"
 assert control.out contains "control_failed=0" else "receipt-still-order: every planted refusal must bite"
 assert control.out contains "control_verdict=ok" else "receipt-still-order: the control must pass"
 
@@ -19,4 +19,4 @@ assert live.out contains "published_fields=11" else "receipt-still-order: the fi
 assert live.out contains "still_rows=12" else "receipt-still-order: the card has twelve occupied rows"
 assert live.out contains "accessibility_labels=11" else "receipt-still-order: every field needs a semantic label"
 assert live.out contains "verdict=source_order_agrees" else "receipt-still-order: order must agree"
-say "GREEN: receipt-still-order -- source order agrees and four planted drifts refuse."
+say "GREEN: receipt-still-order -- source order agrees and five planted drifts refuse."
