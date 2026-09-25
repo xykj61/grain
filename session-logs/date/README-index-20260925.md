@@ -6,11 +6,14 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Held cold run, 334/376 green; repointed a stale citation and reworded a bare lap ordinal. |
+| `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
+| `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Cold run held; a stale shell default repointed. |
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
 | `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
+| `20260925.075123` | [Holding a cold run for the receipt review](20260925/20260925-075123_holding-a-cold-run-for-the-receipt-review.kyri) | Held a cold run; receipt page re-verified. |
+| `20260925.074721` | [Hold a fresh cold run without spoiling it](20260925/20260925-074721_hold-a-fresh-cold-run-without-spoiling-it.kyri) | Termed a stale pass, launched a fresh held one. |
 | `20260925.073742` | [Batch interval cost](20260925/20260925-073742_diffuser-batch-interval-cost.kyri) | Cycle bound and Bakery handoff; host timing open. |
 | `20260925.073210` | [Printable recovery](20260925/20260925-073210_diffuser-printable-recovery.kyri) | Seven receipt controls green; Swift runtime open. |
 | `20260925.073151` | [Hold the cold run](20260925/20260925-073151_hold-the-cold-run.kyri) | launch_head matched HEAD; held rather than opening a second pass, wait moved to background. |
