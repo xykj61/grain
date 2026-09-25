@@ -315,6 +315,15 @@ the later rule leaves that choice to Keaton. Preserve the draft and current law.
 All 85 stashes remain preserved. The remaining record queue holds 176 Markdown
 versions; capture integration and full cold and hot proof remain owed.
 
+The [design and law recovery review](../session-logs/date/20260925/20260925-173655_bakery-design-record-recovery.kyri) covers six Markdown versions.
+Keep the landed compiler study's proof correction, the seed-timing study's
+quiet-history distinction, and the Amphora study's text. The older compiler study
+stays as draft history; its later account records the recovery. Hold the seed-freshness
+study with its implementation, which still needs three false-fresh cases repaired.
+Keep today's manual-decision rule for published ledger rows. All 85 stashes remain
+preserved; 170 Markdown versions await review. Capture integration and full cold
+and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
