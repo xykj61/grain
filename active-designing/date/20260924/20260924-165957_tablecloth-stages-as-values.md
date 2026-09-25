@@ -37,7 +37,9 @@ The six files remain the living stages. Counting them counts stages. The resin i
 
 [`aurora_stage_store_quiet_witness.rish`](../../../tools/au/aurora_stage_store_quiet_witness.rish) leaves `aurora/.build/stage-resin-store-quiet-empty` on disk with no files in it. The list stays quiet. A second pass finds the same empty directory. It is gitignored, so the quiet start stays on this machine and does not ride the branch.
 
-[`aurora_stage_store_quiet_put_witness.rish`](../../../tools/au/aurora_stage_store_quiet_put_witness.rish) writes `a quiet directory` into `aurora/.build/stage-resin-store-quiet` and leaves that file there. A second write adds nothing. The list speaks one name, and the bytes hash to it. The empty sibling stays empty.
+[`aurora_stage_store_quiet_put_witness.rish`](../../../tools/au/aurora_stage_store_quiet_put_witness.rish) writes `a quiet directory` into `aurora/.build/stage-resin-store-quiet` and leaves that file there. A second write of that same sentence adds nothing. The bytes hash to the name.
+
+[`aurora_stage_store_quiet_second_witness.rish`](../../../tools/au/aurora_stage_store_quiet_second_witness.rish) writes `a second sentence` beside that first file. The list then speaks two names. A repeat of the second sentence adds nothing. The first sentence is still there. The empty sibling stays empty.
 
 The kept write sits beside the lasting seven. Asking that resin returns the same sentence the write stored. The directory is still there after the witness finishes. The six living stages stay six. Bakery keeps the fusion build. Diffuser keeps the wake measurement.
 
