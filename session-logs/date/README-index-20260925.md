@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.115153` | [Rye recovery review](20260925/20260925-115153_bakery-ryekey-recovery-review.kyri) | Four cache drafts superseded. |
 | `20260925.114256` | [Suffix review](20260925/20260925-114256_bakery-suffix-review.kyri) | Draft control and parser need revision. |
 | `20260925.113410` | [Parked code review](20260925/20260925-113410_bakery-parked-code-review.kyri) | Confer counter needs redesign. |
 | `20260925.112437` | [Parked receipt](20260925/20260925-112437_bakery-parked-receipt.kyri) | Three integration lines recovered. |

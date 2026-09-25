@@ -52,6 +52,13 @@ Keep this draft preserved until both cases have controls and repairs. The
 three assertion edits remain unapplied. The [suffix review](../session-logs/date/20260925/20260925-114256_bakery-suffix-review.kyri)
 records both counterexamples. Eighty-five source versions still need review.
 
+The [Rye recovery review](../session-logs/date/20260925/20260925-115153_bakery-ryekey-recovery-review.kyri) covers four more versions:
+two `rye/src/main.rye` drafts and the older digest control and witness.
+Their behavior stands in newer code. One draft omits the path refusal added
+in `d305dce6f`; the older control's digest plant can leave its input unchanged.
+Keep today's cache and controls. All stashes remain preserved, and 81 versions
+still await review. This is a recovery disposition, not a full-roster verdict.
+
 The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
 282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
 the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
