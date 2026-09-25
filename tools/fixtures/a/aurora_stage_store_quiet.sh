@@ -8,7 +8,7 @@ root=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
 cd "$root"
 mkdir -p tools/.build
 
-quiet="$root/aurora/.build/stage-resin-store-quiet"
+quiet="$root/aurora/.build/stage-resin-store-quiet-empty"
 mkdir -p "$quiet"
 
 if STAGE_STORE="$quiet" sh tools/fixtures/a/aurora_stage_store_list.sh > tools/.build/stage-store-quiet.out 2>/dev/null; then

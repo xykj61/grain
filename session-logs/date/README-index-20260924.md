@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20260924.203720 | [The quiet store keeps one write](20260924/20260924-203720_incense-stage-store-quiet-put.kyri) | Second write adds nothing; the empty sibling stays empty. |
 | `20260924.203309` | [Bakery records and next fruit](20260924/20260924-203309_bakery-records-and-next-fruit.kyri) | Five parked logs restored; next repair named. |
 | `20260924.124112` | [Recovered ranking record](20260924/20260924-124112_bakery-rank-outcome-scope-refresh.kyri) | Recovered unchanged from a parked lap. |
 | `20260924.123128` | [Recovered build-target record](20260924/20260924-123128_bakery-build-target-red-parked.kyri) | Recovered unchanged from a parked lap. |

@@ -7,7 +7,8 @@ resin="${1:?name the SHA3-512 resin}"
 printf '%s\n' "$resin" | grep -Eq '^[0-9a-f]{128}$'
 
 root=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
-file="$root/aurora/.build/stage-resin-store/$resin"
+store=${STAGE_STORE:-$root/aurora/.build/stage-resin-store}
+file="$store/$resin"
 
 if [ -f "$file" ]; then
   have=$(sh "$root/tools/fixtures/s/sha3.sh" 512 "$file")
