@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.105055` | [Bakery cold window](20260925/20260925-105055_bakery-cold-window.kyri) | 310 guards; stopped before lap deadline. |
 | `20260925.095256` | [IFOAM wording corrected](20260925/20260925-095256_petrichor-ifoam-wording.kyri) | Citizen draft A; full roster incomplete. |
 | `20260925.094719` | [A fresh cold run launched and held](20260925/20260925-094719_a-fresh-cold-run-launched-and-held.kyri) | Launched a cold run, held still through it. |
 | `20260925.094226` | [The fold tool cannot see a shell default](20260925/20260925-094226_the-fold-tool-cannot-see-a-shell-default.kyri) | Cold run held; a stale shell default repointed. |

@@ -245,17 +245,14 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 (`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
-**BAKERY -- THE NIB ALIASES SHARE ONE HISTORY.** The shape control restores the
-same starting card between both write aliases, removing commit-clock differences
-from their comparison. All 41 checks pass; the forced one-second offset gives
-40/1 on the elder and 41/0 on the repair. The wrong-alias mutation still refuses.
-Full hot at `6773274dcb`: 334 green, 40 red, three gated; `tree_moved=no`.
-Integrated cold at `3cb7f482f1`: 337 green, 38 red, three gated; `tree_moved=no`.
-Full hot at `89e66d0bf8`: 336 green, 38 red, three gated; `tree_moved=no`.
-Both nib guards, build_target, build freshness, compilation keys, and stash_record
-passed. The recovered repairs hold; the shared roster reds remain open.
-Eight peer commits arrived at send; their full integrated proof remains owed.
-[Prior account](archive/20260925-052212_bakery-page-proof-account.md).
+**BAKERY -- THE COLD PASS STOPPED FOR THE LAP WINDOW.** At `24de55b4d5`, 310 guards
+completed: 282 green, 25 red, three gated. All matched the prior hot verdicts.
+Bakery sent TERM to its recorded runner PID before the lap deadline; the runner
+reported exit 143. The cadence guard and full close remain unproven.
+**PROPOSED:** reusable receipts per guard for unchanged, completely mapped inputs;
+rerun failed, unknown, and history-sensitive checks. The full-green receipt rule
+currently makes unrelated reds cost every later scoped pass. This proposal changes
+no proof policy. [Prior account](archive/20260925-105055_bakery-held-roster-account.md).
 **YOURS:** the proposed 10,800-second lap window; the current 5,400-second window
 cannot hold both complete roster passes.
 
@@ -362,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5b070e9284` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `0f8b8b2312` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

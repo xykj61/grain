@@ -15,18 +15,20 @@ The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
 The separate `rank_outcome_scan.sh` grades the moonshot ranking; it answers a different question.
 
-Begin with the newest Bakery log and inspect any newly parked work. The build-target
-scan and control match the parked repair; wrap-ring carries the newer private-directory
-cleanup. The held full hot pass at `89e66d0bf8` proved both nib guards, build_target,
-build freshness, compilation keys, and stash_record. All 85 stashes remain preserved;
-round-open found no unlanded session logs.
+Begin with the newest Bakery log and inspect any newly parked work. All 85
+stashes remain preserved. The build-target repair matches HEAD; wrap-ring carries
+the newer private-directory cleanup. The newest stash holds 1,196 source copies:
+1,192 match current bytes and four match their original base.
 
-The full hot roster read 336 green, 38 red, and three gated, with `tree_moved=no`.
-Read the newest log for any later send-time integration before reusing that result.
-Recovery is complete on the measured snapshot. Follow the card's Bakery priority,
-reds first; check the claim board and publish a booked repair before editing.
-The shared-build-path census remains over its ceiling, a separate reading from
-build_target. Name peer-owned sites on the card when they need a handoff.
+The cold run at `24de55b4d5` ended deliberately before the lap deadline: 310 guards,
+282 green, 25 red, three gated. Their verdicts match the prior hot pass. TERM to
+the recorded runner PID produced exit 143; this is an incomplete pass. Full cold,
+the selected cadence guard, and full hot remain owed. Read the newest log before
+launching another pass: the remaining measured cost exceeded the available time.
+
+The card proposes per-guard receipts and retains the lap-window question. Both
+remain proposals. Follow the current proof rules and Bakery's priority, reds first;
+check claims and publish any booked repair before editing.
 
 ## gates
 
