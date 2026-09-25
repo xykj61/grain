@@ -251,9 +251,9 @@ Bakery sent TERM to its recorded runner PID before the lap deadline; the runner
 reported exit 143. The cadence guard and full close remain unproven.
 **PROPOSED:** reusable receipts per guard for unchanged, completely mapped inputs;
 rerun failed, unknown, and history-sensitive checks. The latest full pass withheld a new receipt.
-An older full-green receipt remains valid at `fa310d296b`; its delta to
-`f15247701b` spans 10,219 paths. Its scoped cost is unmeasured. This proposal changes
-no proof policy. [Prior account](archive/20260925-105055_bakery-held-roster-account.md).
+The `fa310d296b` basis skips two of 377 prior guards across 10,220 changed paths
+at `e4cb510247`: four seconds saved, 4,478 retained. This prices prior costs;
+a new pass remains owed. [Prior account](archive/20260925-105055_bakery-held-roster-account.md).
 **YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
 9,837 seconds for both passes and one cadence guard, before lap overhead.
 The active timeout is 5,400 seconds.
@@ -362,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f15247701b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `19e081ce91` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
