@@ -332,6 +332,14 @@ account shelf already preserves its historical measurements and correction.
 All 85 stashes remain preserved; 162 Markdown versions await review.
 Capture integration and full cold and hot proof remain owed.
 
+The [generated-page recovery review](../session-logs/date/20260925/20260925-175205_bakery-generated-record-recovery.kyri) covers eight more Markdown versions.
+Each changes one generated witness count in the front door or library index.
+Keep today's derived pages and all historical drafts in their stashes. The library
+index matches a fresh render and passes all ten controls and its complete witness.
+This reading leaves the associated source dispositions to their own reviews.
+All 85 stashes remain preserved; 154 Markdown versions await review. Capture
+integration and full cold and hot proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

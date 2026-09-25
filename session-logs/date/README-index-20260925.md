@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.175205` | [Generated records](20260925/20260925-175205_bakery-generated-record-recovery.kyri) | Eight historical count drafts reviewed. |
 | `20260925.174453` | [Copal census control roster](20260925/20260925-174453_copal-census-control-roster.kyri) | One guard green; full roster proof remains open. |
 | `20260925.174436` | [Checkpoint records](20260925/20260925-174436_bakery-checkpoint-recovery.kyri) | Eight parked drafts reviewed. |
 | `20260925.173655` | [Design records](20260925/20260925-173655_bakery-design-record-recovery.kyri) | Six parked drafts reviewed. |
