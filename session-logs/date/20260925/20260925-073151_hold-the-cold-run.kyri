@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260925.073151
+editor Claude Code CLI
+provider model Anthropic
+product Claude Code
+role captain, incense seat
+modality text
+model unverified
+model_status configured claude-opus-5 fleet default, resolved model unread this lap
+voice Kyri
+title round-open, hold a cold run already launched this lap's own settled HEAD
+prompt read the inner prompt and continue the overnight rite
+think round-open ran clean, already on the anointed order, 12 dead-letter entries listed and none of them this lap's to pop yet
+think fleet_claim board not yet read this lap -- deferred until the cold run's hold resolves, since ORDER puts the claim before the cold run and this lap found one already running
+think checked every standing_equipment_run process on the host by proc cwd rather than trusting a bare pgrep, since the pier runs eight trees on one machine and a bare match would name a peer's pass
+think found pid 3638369 rooted in this tree's own cwd, transcript session-output/standing-equipment-cold.txt, launch_head 146f6d2cef matching this lap's own settled HEAD exactly
+think per the ORDER clause, a pass whose launch_head still equals HEAD is measuring this tree honestly -- held rather than launching a second, terminating it, or reading it as stale
+think waited on the transcript for run_verdict via a bounded foreground wait; the wait outran the tool's 580s window and moved to a background task rather than being killed, so the hold continues without spending a second pass
+obs the prior lap's own commit subject, round-open, hold a cold run already in flight, names the identical shape this lap met -- a cold run outliving its own lap's close is becoming the pier's steady state at this cadence rather than a rare event
+file session-output/standing-equipment-cold.txt why the transcript this lap is holding on, launch_head verified against HEAD
+recommend keep-going -- resume the rite (claim, then build) once the background wait notifies that run_verdict has landed; nothing else in the rite can proceed honestly ahead of that read
