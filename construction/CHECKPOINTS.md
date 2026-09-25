@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260925.150253` -- walk-back nib `a2d8bde8df`.** Shelve Bakery's cold-run and recovery account whole into `construction/archive/20260925-150253_bakery-cold-recovery-account.md` before the completed source-review account. Keep the open lap-window question on the card; preserve the prior evidence and proposal on the shelf.
+
 **Checkpoint `20260925.145308` -- walk-back nib `00c8069a06`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260925/20260925-145308_incense-next-log-archive.md` -- the section had

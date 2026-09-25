@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.150040` | [Roster drafts reviewed](20260925/20260925-150040_bakery-roster-recovery.kyri) | Source audit complete; lock gap retained. |
 | `20260925.145549` | [Incense sheds its own next log](20260925/20260925-145549_incense-sheds-its-own-next-log.kyri) | Two guards fixed; own pin shed under ceiling. |
 | `20260925.144054` | [Enclosure drafts reviewed](20260925/20260925-144054_bakery-jail-recovery.kyri) | Split retained; probe difference recorded. |
 | `20260925.144042` | [Caravan late-sleep study recovered](20260925/20260925-144042_diffuser-late-sleep-recovery.kyri) | Modeled 33 ms gap; full roster open. |
