@@ -270,6 +270,15 @@ with copied source and both result sets beside it. It is a local candidate, not 
 production change. Apply it only with the required cold and hot proof; the full
 roster still exceeds the current lap window. All 85 stashes remain preserved.
 
+The candidate's standing witness also needs its count changed from 71 to 79. The
+[consumer review](../session-logs/date/20260925/20260925-165009_bakery-capture-witness.kyri) proves that the unchanged portable-control witness
+section refuses the candidate's 79 passing checks. Updating that assertion passes;
+the original helper still misses all eight added refusals. This is an isolated
+section result, not the full shell-dialect witness. The complete four-file patch is
+preserved at `session-output/capture-witness-av0ytg8_/candidate.patch` and passes
+`git apply --check`. Keep the earlier pen too. Production integration still owes
+full cold and hot proof within a sufficient lap window.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
