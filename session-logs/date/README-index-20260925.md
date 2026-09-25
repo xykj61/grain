@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.141334` | [Grass prompt fruit refreshed](20260925/20260925-141334_grass-prompt-fruit-refreshed.kyri) | Living pitch named; local cold pass closed early. |
 | `20260925.140554` | [Stash boundary reviewed](20260925/20260925-140554_bakery-stash-bound-review.kyri) | Truncated scan reads clean. |
 | `20260925.140413` | [Parked Patchouli records restored](20260925/20260925-140413_patchouli-parked-records-restored.kyri) | Eleven logs and shelf rows recovered; focused checks green. |
 | `20260925.135714` | [Shell drafts reviewed](20260925/20260925-135714_bakery-portable-recovery.kyri) | Current helpers retained. |

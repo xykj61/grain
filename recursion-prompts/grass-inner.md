@@ -11,7 +11,7 @@
 
 ## fruit
 
-Read [`../foundations/20260628-133212_a-free-and-open-room.md`](../foundations/20260628-133212_a-free-and-open-room.md) and record one disposition. The card names this page as the walk's next step. The grass tree's own latest local commit already affirms the same-stamp sibling `an-open-way-to-learn`, so this lap takes the page that sibling left waiting.
+Read the living [`Mantrapod venture pitch`](../foundations/20260801-005853_mantrapod-venture-pitch.md) and record one Civic disposition. Name what its hardware, repair, and revenue choices reward, and which claims still need a measured witness. The June 29 pitch is a fossil; the card already shelves the free-and-open-room reading and records the local-money boundary.
 
 ## gates
 
