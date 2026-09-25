@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.171417` | [Artifact recovery](20260925/20260925-171417_bakery-artifact-recovery.kyri) | Hook and copies keep current source. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
 | `20260925.165009` | [Capture witness](20260925/20260925-165009_bakery-capture-witness.kyri) | Candidate includes its count assertion. |
 | `20260925.164000` | [Capture runner pen](20260925/20260925-164000_bakery-capture-runner-pen.kyri) | Candidate passes both control families. |
