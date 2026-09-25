@@ -16,6 +16,7 @@
 | `20260925.093421` | [Bakery held hot](20260925/20260925-093421_bakery-held-hot.kyri) | 336 green, 38 red; tree held still. |
 | `20260925.081743` | [A cold run with nowhere to land](20260925/20260925-081743_a-cold-run-with-nowhere-to-land.kyri) | Runner names a silent death via a flag and EXIT trap. |
 | `20260925.081029` | [Bakery held cold](20260925/20260925-081029_bakery-integrated-cold.kyri) | 337 green, 38 red; tree held still. |
+| `20260925.080925` | [Bounds census recovered](20260925/20260925-080925_copal-bounds-census-recovered.kyri) | Restored parked witness; ten pairs pass, one drift refuses. |
 | `20260925.080332` | [Cold run stopped again](20260925/20260925-080332_the-silent-death-repeats.kyri) | Second silent stop; disk reading recorded. |
 | `20260925.075123` | [Holding a cold run for the receipt review](20260925/20260925-075123_holding-a-cold-run-for-the-receipt-review.kyri) | Held a cold run; receipt page re-verified. |
 | `20260925.074721` | [Hold a fresh cold run without spoiling it](20260925/20260925-074721_hold-a-fresh-cold-run-without-spoiling-it.kyri) | Termed a stale pass, launched a fresh held one. |
@@ -26,6 +27,7 @@
 | `20260925.071533` | [Printable receipt](20260925/20260925-071533_diffuser-receipt-printable-admission.kyri) | Control bytes refused; host control green; full roster red. |
 | `20260925.070711` | [Cold run stopped](20260925/20260925-070711_a-cold-run-died-without-a-verdict.kyri) | Log and mirror recovered; fresh pass launched. |
 | `20260925.064513` | [Bakery nib send](20260925/20260925-064513_bakery-nib-send.kyri) | Repair sent; integrated full proof owed. |
+| `20260925.061654` | [Bounds home census roster](20260925/20260925-061654_copal-bounds-home-roster.kyri) | Ten pairs pass; planted drift refuses; cold roster unmoved. |
 | `20260925.055118` | [Wake correction recovered](20260925/20260925-055118_diffuser-wake-recovery.kyri) | Source and count checked; full roster still owed. |
 | `20260925.054442` | [Research fold](20260925/20260925-054442_external-research-index-fold-landed.kyri) | Parked fold landed on 27 shelves. |
 | `20260925.053402` | [Capped wake count](20260925/20260925-053402_diffuser-wake-count-correction.kyri) | Backoff count corrected; batch witness bounded. |

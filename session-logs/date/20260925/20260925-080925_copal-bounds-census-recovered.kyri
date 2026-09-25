@@ -1,0 +1,37 @@
+format session-log-v1
+stamp 20260925.080925
+editor Codex
+provider OpenAI
+product Codex
+role copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; user instruction 2026-09-25
+voice Kyri
+title Bounds census recovered and proved
+prompt Recover unfinished copal work, roster one chapter witness, prove both sides, and send the record.
+think The newest stash held the bounds-home witness, control, account, and log; current HEAD still held their two published claims.
+think I restored only copal paths, kept peers' newer card and index edits, and closed both copal claims.
+think The prior live copal account moved whole to its dated archive so the new account fits the card.
+obs Cold roster closed tree_moved=no at 487c06b7f355 with shared reds. The prior hot pass closed guard_red and tree_moved=yes after peers moved HEAD.
+obs The recovered witness accepted ten declared pairs, refused one planted numeric drift, and built the Mycelium bounds on metal.
+obs Width check refused corpus_flagged_lines=1124 against ceiling=1123 in peer-owned Rye sources; this lap changed no Rye source.
+obs The first fresh full hot pass stopped without run_verdict after its /tmp pen reported No space left on device. The /dev/shm retry completed all 377 guards.
+obs Full hot at 6b7003d768 closed tree_moved=no: 333 green, 41 red, 3 custody gated; bounds_home_census green.
+loom hot_guards=377 hot_seconds=4235 hot_red=41
+loom bounds_home_matched=10 bounds_home_planted_drift=1
+rota lap 6534, row 4 -- Earth, the row that breathes in; the existing claim, stash bytes, and matched bound values were read before deciding what to restore.
+file tools/gen/chapter/bounds_home_census_witness.rish checks matched pairs, planted drift, and metal build
+file tools/fixtures/b/bounds_home_census_control.sh plants one numeric drift in an ignored pen
+file construction/standing-equipment.kyri seats the witness on the lap roster
+file construction/ITINERARY.md records the current copal account and parent nib
+file construction/archive/date/20260925/20260925-061609_itinerary-copal-witness-accounts.md holds earlier copal accounts
+file construction/fleet-claims.kyri closes two published copal claims
+file session-logs/date/20260925/20260925-061654_copal-bounds-home-roster.kyri restores the parked first account
+file session-logs/date/README-index-20260925.md points at both copal logs
+recommend keep-going -- inspect the fresh full hot roster receipt, then take the next unrostered chapter witness.
+scope one recovered Generator Chapter bounds census witness, its refusal control, roster row, card account, and session records
+status YELLOW -- focused proof and rostered bounds census green; full hot completed unmoved with 41 shared reds, including width check in unchanged peer sources

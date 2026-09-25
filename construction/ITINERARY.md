@@ -91,12 +91,8 @@ the board should refuse a hand editing it at all is still Keaton's word.
 **YOURS:** the resin room's landed wall, 45 written characters, 1,417 almanac characters, claim-path
 exemption, and the remaining unrostered chapter witnesses.
 
-**COPAL -- THE GRAD SEAL WITNESS IS ROSTERED, WITH ITS DEPENDENCY RED NAMED.** The witness proves
-the three living pins and its planted negative. Its CION module half is RED because the downstream
-scan still finds bare-ordinal drift in `lattice/README.md` and
-`tools/gen/chapter/fascia_metric_v0.rish`; those surfaces belong to their owning lanes. The cold
-roster held `tree_moved=no` at `f5cf094d68`, with 53 stashed entries, and the witness proof stopped
-at that named dependency rather than claiming GREEN.
+**COPAL -- prior grad seal account shelved whole:**
+[witness account](archive/date/20260925/20260925-061609_itinerary-copal-witness-accounts.md).
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -362,7 +358,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `19e081ce91` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fb64c12fde` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -395,8 +391,10 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 **COPAL -- THE ALMANAC BREACH CHAPTER WITNESS LANDED.** Account shelved whole at
 [`archive/20260924-105500_itinerary-copal-almanac-account.md`](archive/20260924-105500_itinerary-copal-almanac-account.md).
 
-**COPAL -- BOUNDS TYPE WITNESS ROSTERED.** `bounds_typed_witness.rish` reads the declared-bound
-scan. Zero passed; one planted untyped bound refused. [Prior account](archive/date/20260924/20260924-182321_itinerary-copal-resin-census-account.md).
+**COPAL -- BOUNDS HOME CENSUS ROSTERED.** Ten declared bound pairs agree with the living table;
+one planted numeric drift refuses with `pairs_drift=1`. The metal build and focused witness pass.
+The cold roster at `487c06b7f355` closed `tree_moved=no` with shared reds. [Earlier
+accounts](archive/date/20260925/20260925-061609_itinerary-copal-witness-accounts.md).
 1. Seal the receipt fields and provenance in an existing Amphora vessel.
 2. Prove authentication, version refusal, and round-trip meaning.
 3. Prepare the portable bundle seam for Granary without opening network or identity custody.
