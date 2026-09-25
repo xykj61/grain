@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.040452` | [Grass stable roster close](20260925/20260925-040452_grass-stable-roster-close.kyri) | Recovered packet sent; full hot pass held still with 45 shared reds. |
 | `20260925.033803` | [Closed by a contended shelf](20260925/20260925-033803_a-lap-closed-by-a-contended-shelf.kyri) | Cold run guard_red, unmoved; two reds already fixed by peers. |
 | `20260925.033310` | [Petrichor draft grade](20260925/20260925-033310_petrichor-draft-grade-and-cold-hold.kyri) | Draft B+; cold verdict missing; parked log restored. |
 | `20260925.033112` | [Parked bounds roster recovered](20260925/20260925-033112_copal-parked-roster-recovered.kyri) | Witness and day shelves recovered; cold and hot owed. |
