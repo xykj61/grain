@@ -101,9 +101,3 @@ stamp 20260924.204426
 epoch 1790297066
 paths tools/fixtures/b/build_target_scan.sh tools/fixtures/b/build_target_control.sh tools/w/wrap_ring_witness.rish tools/p/page_evict_witness.rish tools/p/page_residency_witness.rish tools/fixtures/p/page_evict_control.sh tools/fixtures/p/page_residency_control.sh
 what Recover the parked comment classification repair and isolate wrap-ring and page eviction proof binaries in per-run directories.
-claim incense-stage-store-quiet-second
-seat incense
-stamp 20260924.205943
-epoch 1790297983
-paths tools/fixtures/a/aurora_stage_store_quiet_put.sh tools/au/aurora_stage_store_quiet_put_witness.rish tools/fixtures/a/aurora_stage_store_quiet_second.sh tools/au/aurora_stage_store_quiet_second_witness.rish active-designing/date/20260924/20260924-165957_tablecloth-stages-as-values.md
-what Land a second sentence beside the quiet store's kept write.

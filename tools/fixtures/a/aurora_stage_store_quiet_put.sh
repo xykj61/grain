@@ -24,8 +24,8 @@ cmp -s "$tmp" "$payload"
 rm -f "$tmp"
 
 STAGE_STORE="$quiet" sh tools/fixtures/a/aurora_stage_store_list.sh > tools/.build/stage-store-quiet-put-list.out
-grep -q 'count=1' tools/.build/stage-store-quiet-put-list.out
+grep -q "stage-store-list ${resin}" tools/.build/stage-store-quiet-put-list.out
 test -d "$quiet"
 
-echo "stage-store-quiet-put count=1 second=unchanged remains=yes"
+echo "stage-store-quiet-put first=held second=unchanged remains=yes"
 echo GREEN
