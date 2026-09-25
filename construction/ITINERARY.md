@@ -94,15 +94,9 @@ scan still finds bare-ordinal drift in `lattice/README.md` and
 roster held `tree_moved=no` at `f5cf094d68`, with 53 stashed entries, and the witness proof stopped
 at that named dependency rather than claiming GREEN.
 
-**BAKERY -- A READER CAPPED ITS OWN MAP AT SIXTY OF NINE THOUSAND.** Account
-[shelved whole](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md). The `readlink -f` overage
-this account once carried for Diffuser is closed -- see the row below naming the fall 9 to 7.
+**BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
-**BAKERY -- THE EVIDENCE TAIL LANDED.** Account
-[shelved whole](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md), row CLOSED, claim closed.
-**PETRICHOR -- THE LAW ROOM'S CEILING FELL A THIRD TIME.** Account
-[shelved whole](archive/date/20260918/20260918-070443_itinerary-petrichor-law-ceiling-third-fall-account.md):
-`.claude/rules/debride.md` from 5 to 4 over the Field target.
+**BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
 
 **PETRICHOR -- THE BATON ITSELF FELL, 43% TO 23%, TWENTY-FIVE MINUTES AFTER A PRIOR LAP NAMED THE
 CEILING AND PASSED IT BY.** `.claude/rules/the-baton.md` -- prepended to every ship's every lap --
@@ -259,8 +253,10 @@ already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacit
 (`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
 **YOURS:** none opened this lap.
 
-**BAKERY -- `rune_assert_sweep`'s one remaining slot-walk assertion.** Landed in the queue witness;
-the adjacent invariant sentence lowers `unnamed_assert` from 6,481 to its held ceiling of 6,480.
+**BAKERY.** Control 34/34; wrap-ring passes. Fixed outputs 49/47, shared 2/1.
+Next: Bakery page_evict/page_residency; Pheromone glow_ident/glow_refusal.
+Full hot owed. Proposed lap: 10,800s (cold: 4,509s; limit: 5,400s).
+[Prior account](archive/20260924-220258_itinerary-bakery-assert-account.md).
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -365,7 +361,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `515684963b` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `85f5e3b8e6` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 

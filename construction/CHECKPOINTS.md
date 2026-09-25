@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260924.220258` -- walk-back nib `2c8ace0c7d`.** Shelve Bakery's two-line slot-walk assertion account from `construction/ITINERARY.md` whole in `construction/archive/20260924-220258_itinerary-bakery-assert-account.md` before the build-target recovery account arrives. The archived account preserves the named assertion and its measured ceiling.
+
 **Checkpoint `20260920.135100` -- walk-back nib `efa58efff4`.** Keaton asked to archive every
 Cursor-related rule (`.cursor-archive/rules/*.mdc`, 60 files) and molt-breach every living document
 referencing Cursor, since Cursor is no longer part of the working rhythm, plus a narrower
