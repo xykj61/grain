@@ -127,6 +127,14 @@ The card proposes per-guard receipts and retains the lap-window question. Both
 remain proposals. Follow the current proof rules and Bakery's priority, reds first;
 check claims and publish any booked repair before editing.
 
+The [watcher and link recovery review](../session-logs/date/20260925/20260925-125439_bakery-watch-link-recovery.kyri) covers three more versions.
+The watcher keeps identical executable lines and mode in newer source. The current
+link witness passes all 26 cases; its control accepts today's hook diagnostic.
+Keep current files and all 85 stashes. Fifty-seven source versions await review.
+The separate Codex loop control still expects the former model default and exits 1.
+All 12 checks pass with that former model explicitly supplied, which leaves today's
+per-seat defaults unproven. Repair those expectations before new work.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
