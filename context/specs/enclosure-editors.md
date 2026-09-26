@@ -12,7 +12,7 @@
 
 *Cursor retired* `20260920.135100` on Keaton's word -- this spec once answered a two-editor
 question (Zed alongside a still-working Cursor install). Cursor is archived, unmodified, at
-[`../../.cursor-archive/rules/`](../../.cursor-archive/rules/README.md). The Zed-in-ai-jail steps
+`.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this spec ships in the seed). The Zed-in-ai-jail steps
 below stand as written and are unaffected; every remaining mention of Cursor in this page is a
 historical comparison point, read past rather than followed.
 

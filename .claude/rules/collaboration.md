@@ -8,7 +8,7 @@ Claude Code climbs the bench one keystone at a time. **End every pass with exact
 
 *Cursor retired* `20260920.135100` -- this rule once named a two-hand rhythm between a Cursor
 bench and a Claude counsel seat. Cursor is archived at
-[`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md), and the `(Cursor)` hand below
+`.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed), and the `(Cursor)` hand below
 retires with it. Dated session logs recording `check in (Cursor)` keep every word they wrote.
 
 ### Closing line law (always)

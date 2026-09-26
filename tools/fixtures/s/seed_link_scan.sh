@@ -69,7 +69,11 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # to 380 on 20260926 when the testimony reading widened to the closed-stack directory shape
 # (date/, archive/, yonder/) and 528 sites -- retired countdown-prefix research notes under
 # external-research/yonder/ that carried no one-clock stamp -- stopped being miscounted as living.
-ceiling=380   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 342 the same day, per-document, after the 38-site "Cursor twin retired" footer
+# (`.claude/rules/*.md`, CLAUDE.md, context/specs/enclosure-editors.md) named its withheld room
+# in prose -- a backticked path with no link -- rather than linking into `.cursor-archive/`, which
+# the manifest marks `personal` and never ships.
+ceiling=342   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.

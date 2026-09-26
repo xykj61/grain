@@ -21,4 +21,4 @@ In new prose, rules, session logs, seat prompts, living *Now* lines, and commit 
 
 Dated logs and commit history keep every *child* they wrote. The one exception is the sanctioned kind: the `20260828` molt-breach deep debride of the worktree-room commit message ran on Keaton's explicit word (`debride.md`), recorded in its session log and checkpoint. Living seat prompts, *Now* lines, and new writing use **dependent** from this seating forward.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
