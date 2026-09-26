@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.201815` | [Space-only purpose](20260925/20260925-201815_diffuser-space-only-purpose.kyri) | One admitted space displays no purpose value. |
 | `20260925.201120` | [Ledger drafts](20260925/20260925-201120_bakery-ledger-drafts.kyri) | Two drafts reviewed; published numbers kept. |
 | `20260925.200515` | [Grass packet recovery](20260925/20260925-200515_grass-parked-packet-recovery.kyri) | Parked packet restored; product witnesses pass. |
 | `20260925.200327` | [Account drafts](20260925/20260925-200327_bakery-account-drafts.kyri) | Four drafts reviewed; later records kept. |

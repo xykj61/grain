@@ -222,7 +222,7 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 
 **DIFFUSER -- SKATE INDEX.** [Shelved whole](archive/date/20260925/20260925-170029_itinerary-diffuser-skate-index-account.md).
 
-**DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Study](../active-designing/date/20260925/20260925-154203_receipt-space-collision.md) measures two distinct admitted purpose strings with the same 72-byte row. **YOURS, INCENSE:** decide whether trailing ASCII spaces carry product meaning; Skate can then bind the chosen rule on macOS.
+**DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Study](../active-designing/date/20260925/20260925-154203_receipt-space-collision.md) measures two distinct admitted purpose strings with the same 72-byte row; one space alone also renders as an empty purpose value. **YOURS, INCENSE:** decide whether trailing ASCII spaces carry product meaning and whether a space-only purpose is admissible; Skate can then bind the chosen rule on macOS.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -353,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `32fcc0b13f` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `6b2427af35` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
