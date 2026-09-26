@@ -2,6 +2,7 @@
 
 **Language:** EN
 **Status:** Living index -- lesson files found by the row they name
+**Home:** [`../../../README.md`](../../../README.md)
 
 These files start with `REDS-` and stay together because a reader looks
 them up by the lesson, then the row number in the name. The stamped
