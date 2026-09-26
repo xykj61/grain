@@ -14,7 +14,10 @@
 #   missing provenance, unproven equivalence, unclear license, untracked, unbooked, and an
 #   analogized mapping) -- control_cases=17, control_fail=0, control_verdict=ok.
 #   The scan itself refuses a malformed decide call: fewer than the ten policy fields exits 2.
-#   The rule files the scan names as its policy source stand on disk, both editors' twins.
+#   The rule file the scan names as its policy source stands on disk. The Cursor twin this
+#   witness once also checked retired tree-wide 20260920.135100 (.claude/rules/git-signing.md
+#   and every other rule page carry the line): archived, unmodified, at
+#   .cursor-archive/rules/README.md, no living .mdc maintained from here forward.
 #
 # WHAT IS NOT PROVEN. That any particular adaptation is wise -- the scan decides eligibility,
 # and custody, proof of equivalence, and the one-per-lap bound stay with the MIND loop itself.
@@ -39,11 +42,11 @@ let usage = run ["sh" "-c" "sh tools/fixtures/m/mind_source_adaptation_scan.sh -
 assert usage.ok else "mind-adapt: the scan must refuse a decide call missing its ten policy fields"
 say "field GREEN -- the decider refuses a call that names too little to decide"
 
-say "mind-adapt: the policy sources the scan cites stand on disk..."
+say "mind-adapt: the policy source the scan cites stands on disk..."
 let claude_rule = run ["test" "-f" ".claude/rules/mind-source-adaptation.md"]
 assert claude_rule.ok else "mind-adapt: the Claude rule the scan cites is missing"
-let cursor_rule = run ["test" "-f" ".cursor/rules/mind-source-adaptation.mdc"]
-assert cursor_rule.ok else "mind-adapt: the Cursor twin the scan cites is missing"
-say "field GREEN -- both editors' rule twins stand where the scan looks for them"
+let cursor_archived = run ["test" "-f" ".cursor-archive/rules/mind-source-adaptation.mdc"]
+assert cursor_archived.ok else "mind-adapt: the retired Cursor twin should stand archived, unmodified"
+say "field GREEN -- the living rule stands where the scan looks, and the retired Cursor twin stands archived"
 
 say "GREEN: mind_source_adaptation -- the grant's gate proven both ways, the decider refuses the malformed, and the policy it reads is on disk."

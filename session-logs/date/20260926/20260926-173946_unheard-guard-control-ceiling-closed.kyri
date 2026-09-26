@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260926.173946
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain, incense
+modality text
+model claude-sonnet-5
+model_status configured fleet default per .claude/settings.json, unverified at runtime
+voice Kyri
+title unheard_guard's control_unheard closed from 22 to 18, its ceiling; two witnesses gained real invariants
+prompt overnight loop lap; incense-inner.md rite followed from round-open
+think round-opened clean at 7479c8bce9, no overlapping claim (five stale rows), launched the cold run per ORDER and found one already in flight at this exact HEAD
+think held fully still through the whole wait -- no edits, no commits -- since the shelf's own prior lap named committing mid-flight as the likely cause of a died_unexpectedly run; monitored with Monitor rather than polling
+think the run closed cleanly at run_verdict=guard_red, tree_moved=no, 379 guards, 351 green, 25 red, 3 gated -- a trustworthy reading to triage against
+think the card and REDS.md were both nearly at their byte bound (17 and 23 bytes free respectively), so before booking anything I shed my own three landed Open-doors bullets (instrument_refusal wall, commit_parent_claim third anchor, REDS %827 refusal legs) whole to construction/archive/date/20260926/20260926-171705_itinerary-three-landed-repairs-account.md per the-writer-sheds, freeing 1,127 bytes
+think of the 25 reds, tried wiring a self-invoking control check directly into four witnesses flagged unheard by tools/fixtures/u/unheard_guard_scan.sh (crypto_vendored_parity_suite, acme_dx_witness, drey_witness, gen_linn_fund_prep) -- all four broke their OWN controls, because each control pen-copies the witness's own source into an isolated directory and runs it there, and my added run-call named a tools/fixtures/ path the isolated pen never carries
+think reverted all four rather than ship a regression; this is a real structural finding worth keeping -- a witness whose control copies the witness's own body into a pen cannot safely self-invoke that same control, unlike a meta-census witness (unheard_guard_witness.rish itself) whose control tests the SCAN's classifier rather than copying the witness
+think read the scan's diagnosis more carefully: control_unheard splits into orphan (no runner names the control at all) and unrun (a runner exists, and that runner is itself unheard -- rostering the runner closes both readings at once)
+think of five unrun-cause controls, ran each namer witness fresh: amphora_asker_reply (GREEN, 67s), equinox_e102_fascia_chase (GREEN, 20s), equinox_e103_class_a_window (GREEN, 20s), equinox_e104_hold_class_o (RED -- its own control fails, pre-existing, left alone), kumara_tilak_witness (GREEN, 2s), mind_source_adaptation_witness (RED -- asserts .cursor/rules/mind-source-adaptation.mdc exists, and the whole Cursor-twin family retired tree-wide 20260920.135100 to .cursor-archive/rules/)
+think fixed mind_source_adaptation_scan.sh and its witness to drop the stale Cursor-twin check and read the one living .claude/rules policy page, per docs-implementation-sync -- confirmed the claim was false rather than editing from memory; both GREEN after
+think rostered kumara_tilak and mind_source_adaptation at tier lap (fast, load-bearing), and equinox_e102_fascia_chase / equinox_e103_class_a_window at tier cadence (20s each, historical equinox rungs) -- named individually rather than by prefix, since standing-equipment.kyri's own buhr_choir entry warns against a prefix choir over `equinox` (144 vs the 33 that chain), a caution about globbing rather than about naming two specific paths for a narrower reason
+think left amphora_asker_reply and equinox_e104 off the roster: the first because four rostered closures already brought control_unheard to the ceiling, the second because its own control is a pre-existing red this lap did not chase
+think re-ran unheard_guard_scan.sh: control_unheard 22 -> 18, exactly at its ceiling (18), verdict=ok; a side effect surfaced -- tools/p/parity_ch01.rish (281 guards, the census's own long-cited largest silent choir) graduated out of the unnamed population, reached transitively through tools/gen/chapter/cion_module_labeling_witness.rish once the four new roster entries opened a chain to it; checked twice for stability (328/8 both runs)
+think updated unheard_guard_witness.rish's three affected exact-reading asserts (unnamed_choir_ceiling 11->8, unnamed_choirs 11->8, the named largest-choir example moved from parity_ch01.rish to parity.rish) with dated comments explaining each fall, following the file's own established convention for a reading that legitimately moves
+think ran tame_style_check (GREEN, no new bans), grepped all touched files for non-ASCII (none), re-ran law_guard_heard_witness, unheard_guard_witness, mind_source_adaptation_witness, and standing-equipment's own byte count (39,833 / 40,960) -- all clean
+obs the four-witness self-invocation attempt cost real time but caught a genuine class of hazard before it shipped: a witness whose own control pen-copies it cannot safely reference its own control's path, which is worth remembering for any future orphan-control repair of this shape
+obs REDS.md still sits at 23 bytes free (unchanged this lap) and the ledger fold deadlock is untouched -- no row was booked or closed; this was an unrostered ordinary repair
+file construction/archive/date/20260926/20260926-171705_itinerary-three-landed-repairs-account.md new -- shelved three landed Open-doors bullets to free card headroom before booking anything
+file construction/ITINERARY.md Open doors trimmed to a pointer at the shelved account
+file construction/standing-equipment.kyri four new guard entries: kumara_tilak, mind_source_adaptation, equinox_e102_fascia_chase, equinox_e103_class_a_window
+file tools/fixtures/m/mind_source_adaptation_scan.sh dropped the retired Cursor-twin check, reads the one living policy page
+file tools/m/mind_source_adaptation_witness.rish same repair, plus an assert that the retired twin stands archived rather than absent
+file tools/u/unheard_guard_witness.rish three exact-reading asserts moved to match the fall this lap's rostering caused, each with a dated comment
+file tools/fixtures/u/unheard_guard_scan.sh UNNAMED_CHOIR_CEILING 11 -> 8 with the dated comment naming the cause
+rota lap 4005, row 0 -- Aether, the row that hears -- listened for the page nobody had answered: unheard_guard's own control census had stood over its ceiling with no lap reaching for the fix, and the fix itself needed reading the scan's diagnosis rather than assuming the obvious wiring would work
+loom guard=standing_equipment_run tier=lap guards_run=379 guards_green=351 guards_red=25 guards_gated=3 seconds=3403 tree_moved=no
+loom witness=unheard_guard_witness verdict=green pass=75 fail=0
+loom witness=law_guard_heard_witness verdict=green pass=22 fail=0
+loom witness=mind_source_adaptation_witness verdict=green
+recommend keep-going -- fresh round-open, cold run held still start to finish; equinox_e104_hold_class_o's own control stays a known pre-existing red for a future lap, and the remaining ~21 reds from the clean run (width_check's th5 disagreement TAME's own ruling, standing_equipment_redleg the chapter lane's remainder, the rest untriaged) still want a look
+scope law-lane repair: one census's control-reading closed to its ceiling, two witnesses gained a real Cursor-retirement fix, four guards joined the standing roster
+status GREEN -- witness and control both GREEN on metal for every touched file, tame_style_check GREEN, ASCII clean, about to push clean fast-forward to xy then gp405

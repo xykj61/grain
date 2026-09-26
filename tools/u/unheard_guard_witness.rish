@@ -95,7 +95,7 @@ assert green.out contains "unheard_choir_ceiling=37" else "unheard-guard: the ch
 # 12 -> 11 on `20260909.214500`, lowered to meet the reading below it: the count fell to 11 when
 # `glow_choir` reached `tools/gen/chapter/glow_hygiene_pin.rish` two hops down, and a ceiling
 # carrying slack over a count that has fallen lets the next silent choir arrive unheard.
-assert green.out contains "unnamed_choir_ceiling=11" else "unheard-guard: the second reading's ceiling stands where it was measured"
+assert green.out contains "unnamed_choir_ceiling=8" else "unheard-guard: the second reading's ceiling stands where it was measured"
 # THE THIRD READING'S CEILING AND FLOOR, pinned the same way and for the same reason. The ceiling
 # opens at exactly the count measured on the round that seated it -- 18 on 20260911 -- so the
 # seating reddened no ship and the nineteenth unrun control reds on the lap it arrives. It does not
@@ -175,12 +175,20 @@ assert pop_under.out contains "verdict=under_unnamed_population_floor" else "unh
 # carried a six-guard choir into the heard set two hops down, which is the leverage the reach
 # header claims and this is a measured instance of it. Checked from both sides: the choir list
 # read at the elder tree and at this one differs by exactly that one path, and the delta is one.
-assert green.out contains "unnamed_choirs=11" else "unheard-guard: eleven silent choirs wear neither word -- ${green.out_brief}"
+# 11 -> 8 on `20260926.171705`, when kumara_tilak, mind_source_adaptation, and two named equinox
+# rungs joined the standing roster to close the control-reading's own unheard count (see
+# unheard_guard_scan.sh's own UNNAMED_CHOIR_CEILING comment for the full account).
+assert green.out contains "unnamed_choirs=8" else "unheard-guard: eight silent choirs wear neither word -- ${green.out_brief}"
 
-# THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first
-# line, builds and runs 116 Rye programs, sings 281 guards, and stands on no roster. It was
-# invisible to this census for as long as the census knew a guard by its filename.
-assert green.out contains "unnamed_choir tools/p/parity_ch01.rish sings" else "unheard-guard: the largest silent choir must be named -- ${green.out_brief}"
+# THE SHARPEST ONE NAMED HERE GRADUATED on `20260926.171705`. tools/p/parity_ch01.rish stood
+# unheard for as long as the census knew a guard by its filename, and it is named on a
+# non-comment line inside tools/gen/chapter/cion_module_labeling_witness.rish -- reachable, once
+# something on the roster reaches THAT file. Rostering kumara_tilak, mind_source_adaptation, and
+# two equinox rungs (this same lap, closing the control-reading's own unheard count above) opened
+# a chain that reaches it, and parity_ch01.rish left the unnamed population -- checked twice for
+# stability, unnamed_heard rose 323 -> 328 and unnamed_choirs fell 11 -> 8. The next-largest
+# silent choir stands in its place.
+assert green.out contains "unnamed_choir tools/p/parity.rish sings" else "unheard-guard: the largest silent choir must be named -- ${green.out_brief}"
 
 # THE READING ITSELF, proven on planted trees rather than trusted. Each leg is named here as well
 # as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
