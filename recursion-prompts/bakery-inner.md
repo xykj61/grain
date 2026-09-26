@@ -11,11 +11,11 @@
 
 ## fruit
 
-**Recovery queue, reread 20260925.210946: 37 construction Markdown versions remain.**
+**Recovery queue, reread 20260925.211704: 31 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
-identities cover 139 after this lap. Recompute that set before selecting work;
+identities cover 145 after this lap. Recompute that set before selecting work;
 the top-stamped shelf log records an earlier lap and carries an older count.
-All 85 stashes and the capture candidate stay preserved. The [two-account review](../session-logs/date/20260925/20260925-210946_bakery-two-account-shelves.kyri) names this lap's evidence.
+All 85 stashes and the capture candidate stay preserved. The [account recovery](../session-logs/date/20260925/20260925-211704_bakery-account-recovery.kyri) names this lap's evidence.
 
 The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
@@ -453,6 +453,13 @@ Both bodies match their dated shelves after relocating REDS links and removing
 one trailing blank line. Keep the published accounts and their historical proof
 limits. Thirty-seven construction Markdown versions remain; all 85 stashes stay
 preserved. Capture integration and full cold and hot proof remain owed.
+
+The [account recovery](../session-logs/date/20260925/20260925-211704_bakery-account-recovery.kyri) covers six more archive drafts.
+Five shelves preserve their saved bodies beneath recovery headers, with links
+relocated to their dated homes. The sixth keeps the account body and a later
+introduction explaining a duplicate repair's withdrawal. Keep the published
+records and all 85 stashes. Thirty-one construction Markdown versions remain.
+Capture integration and full cold and hot proof remain owed.
 
 ## gates
 
