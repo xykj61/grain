@@ -68,7 +68,7 @@ MUT="$ROOT/.lap/torus_offset_search_scan_mutant.sh"
 mkdir -p "$ROOT/.lap"
 sed 's/echo "closed_forms_hold=\$closed_ok"/closed_ok=yes; echo "closed_forms_hold=\$closed_ok"/' "$SCAN" > "$MUT"
 chmod +x "$MUT"
-cmp -s "$SCAN" "$MUT" && { echo "FAIL: mutation applied no change -- the sed pattern did not match"; fail=$((fail + 1)); } || echo "m_gate: the mutation applied"
+cmp -s "$SCAN" "$MUT" && { echo "FAIL: mutation applied no change -- the substitution did not match"; fail=$((fail + 1)); } || echo "m_gate: the mutation applied"
 legs=$((legs + 1))
 mut_out=$(sh "$MUT" --grid 3)
 [ "$(printf '%s\n' "$mut_out" | awk -F= '/^closed_forms_hold=/{print $2}')" = "yes" ]

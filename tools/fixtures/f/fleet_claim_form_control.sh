@@ -215,7 +215,7 @@ say "mutation_dropping_repeated_fields_bites=$([ "$mut_v" = "well_formed" ] && e
 clean
 sed 's|^what Seat a port census over the tree.$|what Seat a port census over the tree.claim receipt-cloth|' "$board" > "$board.t" && mv "$board.t" "$board"
 sed 's|(\^\|\[\^a-z\])claim|(^\|[ ])claim|' "$scan" > "$mut"
-mut_g=$(sh "$mut" --list "$board" 2>&1 | sed -n 's/^glued_headers=//p' || echo 1)
+mut_g=$(sh "$mut" --list "$board" 2>&1 | sed -n 's/^glued_headers=//p' || true)
 say "mutation_requiring_a_space_before_the_header_bites=$([ "${mut_g:-1}" = "0" ] && echo yes || echo no)"
 
 # 21 -- MUTATION. Restoring the content reader's own forgiving guard -- attributing an orphan field
@@ -223,7 +223,7 @@ say "mutation_requiring_a_space_before_the_header_bites=$([ "${mut_g:-1}" = "0" 
 clean
 printf 'seat ghost\n%s\n' "$(cat "$board")" > "$board.t" && mv "$board.t" "$board"
 sed 's|^  if (name == "") { note("orphan_field".*$|  if (name == "") { next }|' "$scan" > "$mut"
-mut_o=$(sh "$mut" --list "$board" 2>&1 | sed -n 's/^orphan_fields=//p' || echo 1)
+mut_o=$(sh "$mut" --list "$board" 2>&1 | sed -n 's/^orphan_fields=//p' || true)
 say "mutation_restoring_the_forgiving_guard_bites=$([ "${mut_o:-1}" = "0" ] && echo yes || echo no)"
 
 # 22 -- THE INTEGRATION THE RED ACTUALLY BOOKED. The content reader must refuse rather than answer

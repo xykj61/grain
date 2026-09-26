@@ -91,8 +91,8 @@ while [ "$n" -le "$SAMPLES" ]; do
   [ "$pages" -gt 0 ] || { echo "detail: $TARGET holds zero pages to sample"; echo "verdict=empty_path"; exit 2; }
 
   pct=$(( res * 100 / pages ))
-  free_kb=$(sed -n 's/^MemFree: *\([0-9]*\) kB/\1/p' /proc/meminfo 2>/dev/null || echo 0)
-  cached_kb=$(sed -n 's/^Cached: *\([0-9]*\) kB/\1/p' /proc/meminfo 2>/dev/null || echo 0)
+  free_kb=$(sed -n 's/^MemFree: *\([0-9]*\) kB/\1/p' /proc/meminfo 2>/dev/null || true)
+  cached_kb=$(sed -n 's/^Cached: *\([0-9]*\) kB/\1/p' /proc/meminfo 2>/dev/null || true)
   echo "sample n=$n resident_pages=$res pages=$pages pct=$pct free_kb=${free_kb:-0} cached_kb=${cached_kb:-0}"
 
   [ "$min_pct" -lt 0 ] && min_pct=$pct

@@ -80,7 +80,7 @@ MUT="$ROOT/.lap/torus_offset_generic_search_scan_mutant.sh"
 mkdir -p "$ROOT/.lap"
 sed 's/ceil5 = int((cells + 4) \/ 5)/ceil5 = int(cells * 0.9)/' "$SCAN" > "$MUT"
 chmod +x "$MUT"
-cmp -s "$SCAN" "$MUT" && { echo "FAIL: mutation applied no change -- the sed pattern did not match"; fail=$((fail + 1)); } || echo "m_gate: the mutation applied"
+cmp -s "$SCAN" "$MUT" && { echo "FAIL: mutation applied no change -- the substitution did not match"; fail=$((fail + 1)); } || echo "m_gate: the mutation applied"
 legs=$((legs + 1))
 mut_out=$(sh "$MUT" --grid 3)
 mut_ceiling=$(printf '%s\n' "$mut_out" | awk -F= '/^theoretical_ceiling=/{print $2}')
