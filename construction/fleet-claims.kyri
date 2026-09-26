@@ -83,3 +83,9 @@ stamp 20260925.211522
 epoch 1790385322
 paths tools/fixtures/b/baton_museum_census_control.sh
 what Plant a missing museum hall and require the census to refuse with one absent hall.
+claim incense-seed-link-lexicon-cursor-archive-20260926
+seat incense
+stamp 20260926.081056
+epoch 1790424656
+paths context/LEXICON.md tools/fixtures/s/seed_link_scan.sh
+what Convert .cursor-archive/ links inside context/LEXICON.md to backticked path mentions, the seed_link remainder's next-largest class.
