@@ -9,6 +9,7 @@
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
 | `20260925.205348` | [Ledger shelves](20260925/20260925-205348_bakery-ledger-shelves.kyri) | Five drafts reviewed; published records kept. |
 | `20260925.204511` | [Card history](20260925/20260925-204511_bakery-card-history.kyri) | Six drafts reviewed; 49 remain. |
+| `20260925.204143` | [Petrichor parked lap recovery](20260925/20260925-204143_petrichor-parked-lap-recovery.kyri) | Source correction recovered; full roster open. |
 | `20260925.203642` | [Queue reconciliation](20260925/20260925-203642_bakery-queue-reconciliation.kyri) | Three drafts reviewed; 55 remain. |
 | `20260925.202325` | [Fold recital review](20260925/20260925-202325_bakery-fold-recital-review.kyri) | Fourteen drafts reviewed; published records kept. |
 | `20260925.201815` | [Space-only purpose](20260925/20260925-201815_diffuser-space-only-purpose.kyri) | One admitted space displays no purpose value. |
@@ -21,6 +22,7 @@
 | `20260925.194631` | [Receipt-space study](20260925/20260925-194631_diffuser-receipt-space-study.kyri) | Two admitted purposes share one Still row. |
 | `20260925.185208` | [Glow shape recovery](20260925/20260925-185208_glow-shape-recovery.kyri) | Fifteen fields admit; one past refuses. |
 | `20260925.185025` | [Patchouli forms and claim close](20260925/20260925-185025_patchouli-forms-and-claim-close.kyri) | Standing receipt forms mapped; landed claim closed. |
+| `20260925.184719` | [Petrichor draft source correction](20260925/20260925-184719_petrichor-draft-source-correction.kyri) | Source wording corrected; full roster proof remains open. |
 | `20260925.183759` | [Card follow-up](20260925/20260925-183759_bakery-card-followup.kyri) | Ten drafts reviewed; current records kept. |
 | `20260925.183643` | [Say-compose-bound sweep](20260925/20260925-183643_incense-say-compose-bound-sweep.kyri) | Two new witnesses swept to bounded briefs; ratchet back to zero. |
 | `20260925.182643` | [Card draft batch](20260925/20260925-182643_bakery-card-batch-recovery.kyri) | Thirteen drafts reviewed; current records kept. |
