@@ -185,3 +185,30 @@ legs, ratchet back at 57. No REDS row booked -- a one-file mode repair inside an
 ratchet. Landed at `d4f7342ac`, both remotes. Next lap: a fresh round-open and cold run; the
 remaining 33 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
 bullet, and the ledger fold deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260925.221041`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A stale detached
+pass held the lock at launch (`launch_head` three commits behind HEAD); confirmed it as this tree's
+own via `tools/f/fleet_call.sh` and TERMed, waited for the lock, relaunched clean at settled HEAD
+`7e6c49d798`. Picked `grad_seal` off the findings: its cion-module sub-check flagged
+`tools/gen/chapter/fascia_metric_v0.rish`'s own doc-comment naming "Lap 2" in prose for a historical
+Amphora failure -- the bare-ordinal pattern the CION labeling law retired. Reworded to name the
+capability, "the pour-carry-cold-scrub lap (amphora_lap2)," matching the guard's own kept-handle
+convention; the same phrase recurred in `crypto/sha3_digest.rye` and
+`tools/s/sha3_file_witness.rish`, same fix. Re-running grad_seal surfaced its own second half still
+red: `vols_classify_scan.sh`'s whole-tree census caught two more classes past the guarded set --
+`tools/rye/wrap_ring.rye` and `tools/w/wrap_ring_witness.rish` carry `lap` as a genuine ring-buffer
+generation counter (a struct field, a method), not a versioned capability name, and four comment
+lines spelled "lap 0"/"lap 1" with a space where the surrounding prose already used the hyphenated
+"lap-0" form; hyphenating them exempts them by the guard's own structured-code lookaround with no
+behavior change. `tools/f/fleet_rearm_witness.rish` planted arbitrary transcript-tail strings "lap 3
+closed clean" / "lap 2 closed clean" with no format requirement behind them; reworded both and
+their one matching assert to "round closed clean". All five touched witnesses and the full
+`grad_seal_witness.rish` re-run GREEN on metal; `tame_style_check` and `ascii_comment_witness`
+clean. No REDS row booked -- the ledger read 268 bytes of headroom against its 65,536-byte bound,
+`pin_deadlocked=1`, zero foldable rows, so a three-field entry would not fit; recorded in the commit
+body and session log instead. The Git nib amend collided with a peer's push on the same line during
+the round-open rebase; took upstream's newer pin, then re-derived after the rebase settled. Landed
+at `cb9071fa8`, both remotes. Next lap: a fresh round-open and cold run; the remaining 33 reds still
+overlap the standing backlog on the shelf and in ITINERARY's Open Doors bullet, and the ledger fold
+deadlock is unchanged and still Keaton's word to break.
