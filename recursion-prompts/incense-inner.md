@@ -147,3 +147,20 @@ carries for its first anchor move. `claims_after_anchor=0` at the new anchor; wi
 headroom, `pin_deadlocked=1`, zero foldable rows. Next lap: a fresh round-open and cold run;
 `seed_link`'s 908-site ratchet remains the standing lead, and the ledger fold deadlock is unchanged
 and still Keaton's word to break.
+
+**This lap (`20260926.070952`) took `seed_link`'s 908-site ratchet, the standing lead.** Read
+`--list`: 909 sites (908 rounds to that) split 509 under `external-research/yonder/` alone, every
+one a retired countdown-prefix research note (`9911_mem_concat.md`) predating the one-clock naming
+law -- testimony by every other guard's own reading (`ascii_document_scan.sh`, `read-scope.md`'s
+closed-stack clause), yet uncounted as testimony HERE because `seed_link_scan.sh`'s own testimony
+check read only a one-clock BASENAME, never the closed-stack DIRECTORY shape. Widened `testimony`
+in `tools/fixtures/s/seed_link_scan.sh` to also read past any path carrying `date/`, `archive/`, or
+`yonder/` as a directory component, matching the exact precedent already proven in
+`ascii_document_scan.sh`. Ratchet fell **908 to 380**; ceiling lowered to match (`820` to `380`).
+Added two control legs (`closed_stack_dir_free`, `mutation_closed_stack_counted`) proving the
+welcome and its own mutation-struck refusal; `tools/fixtures/s/seed_link_control.sh` 31 to 33 legs,
+`control_failed=0`; witness updated to match, GREEN on metal. `tame_style_check` GREEN. No REDS row
+booked -- same 268 bytes of headroom, `pin_deadlocked=1`, zero foldable rows; recorded in the commit
+body and this log instead. Next lap: a fresh round-open and cold run; the 380-site remainder is a
+per-document rewrite (name the withheld room in prose) that falls on touch, and the ledger fold
+deadlock is unchanged and still Keaton's word to break.

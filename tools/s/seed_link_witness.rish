@@ -20,7 +20,7 @@
 #   Every relative link in a front-door document lands on a path the seed also ships. EIGHT
 #   documents stand in that set from 20260916, named rather than discovered, so a new root file
 #   cannot join it by accident and red on work it never agreed to cover.
-#   Thirty-one behaviors on throwaway repositories, each with its own small manifest: the
+#   Thirty-three behaviors on throwaway repositories, each with its own small manifest: the
 #   agreeing tree free and reading zero, the regression refused, counted, and named, an unshipped
 #   document free, a shipped non-front-door document counted as a ratchet rather than gated,
 #   dated testimony free and uncounted, external and anchor links free and uncounted, a
@@ -51,6 +51,14 @@
 # THE CEILING IS SPELLED ONCE. The control reads it out of the scan's own `ceiling=` line rather
 # than carrying a copy, so a lowering reaches both readers at once. It was spelled twice until
 # 20260916, which is the drift the ASCII-document family booked one instrument over.
+#
+# TESTIMONY IS ALSO A DIRECTORY SHAPE, NOT ONLY A BASENAME. On 20260926 the ratchet stood at 908,
+# 528 over its own ceiling, and 509 of those sites lived under external-research/yonder/ -- retired
+# countdown-prefix research notes (`9911_mem_concat.md`) predating the one-clock naming law, which
+# never carry the stamp the elder testimony check reads. They are testimony all the same: a closed
+# stack, the exact directory shape ascii_document_scan.sh and read-scope.md already read past. The
+# reading now excludes any path carrying date/, archive/, or yonder/ as a directory component,
+# whatever its basename, and the ratchet fell 908 to 380, ceiling lowered to match.
 #
 # WHAT IS REPORTED RATHER THAN GATED. The same reading across every other living shipped
 # document, under a ceiling that only ever falls. The repair is a rewrite per document rather
@@ -86,6 +94,8 @@ assert control.out contains "ratchet_counted=yes" else "seed-link: a shipped non
 assert control.out contains "ratchet_not_gated=yes" else "seed-link: a ratchet must never be counted against the enforced zero"
 assert control.out contains "ratchet_under_ceiling_free=yes" else "seed-link: a ratchet under its ceiling must pass free"
 assert control.out contains "dated_testimony_free=yes" else "seed-link: dated testimony keeps every reference it ever wrote"
+assert control.out contains "closed_stack_dir_free=yes" else "seed-link: a closed-stack directory (date/, archive/, yonder/) is testimony whatever its basename"
+assert control.out contains "mutation_closed_stack_counted=yes" else "seed-link: striking the closed-stack clause must count the page again"
 assert control.out contains "external_link_free=yes" else "seed-link: an external or anchor link names no path in this tree"
 assert control.out contains "external_not_counted=yes" else "seed-link: an external link must not even be counted as a relative one"
 assert control.out contains "ceiling_edge_counted=yes" else "seed-link: the count at the ceiling must be exact"
@@ -108,7 +118,7 @@ assert control.out contains "empty_room_still_counted=yes" else "seed-link: a ro
 assert control.out contains "empty_room_named=yes" else "seed-link: the ratchet must name the empty room it counted"
 assert control.out contains "mutation_carried_counted=yes" else "seed-link: striking the carried-room clause must count the room again"
 assert control.out contains "control_failed=0" else "seed-link: every leg the control runs must read yes"
-assert control.out contains "control_legs=31" else "seed-link: a leg added to the control must be heard here on the lap it lands"
+assert control.out contains "control_legs=33" else "seed-link: a leg added to the control must be heard here on the lap it lands"
 assert control.out contains "control_verdict=ok" else "seed-link: the control must agree with itself"
 say "RED and GREEN paths proven -- five refusals bitten, one clause struck out of a copy, and every honest reading left free"
 

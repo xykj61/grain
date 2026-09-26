@@ -124,6 +124,23 @@ d=$(build testimony shipped/20260101-000000_a-dated-note.md 'see [there](../with
 out=$(verdict_of "$d")
 echo "$out" | grep -q 'other_living_links_outside_seed=0' && leg dated_testimony_free yes || leg dated_testimony_free no
 
+# 5b. A closed stack is testimony BY DIRECTORY too, whatever its basename -- the same shape
+#     ascii_document_scan.sh and read-scope.md already read past, and the retired countdown-prefix
+#     research notes under external-research/yonder/ are exactly this: no one-clock stamp, still
+#     frozen. Free, and not even counted.
+d=$(build closed_stack shipped/yonder/9911_a-retired-note.md 'see [there](../../withheld/there.md)')
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'other_living_links_outside_seed=0' && leg closed_stack_dir_free yes || leg closed_stack_dir_free no
+
+# 5c. The clause proven by its absence: strike the directory reading out of a copy of the scan and
+#     the same pen counts the closed-stack page again.
+if plant_write "$scan" "$pen/mutant2.sh" 's/(date|archive|yonder)/(nonesuch-closed-stack)/' closed_stack_clause; then
+  out=$( ( cd "$d" && SEED_LINK_MANIFEST=pen-manifest.kyri sh "$pen/mutant2.sh" 2>/dev/null ) )
+  echo "$out" | grep -q 'other_living_links_outside_seed=1' && leg mutation_closed_stack_counted yes || leg mutation_closed_stack_counted no
+else
+  leg mutation_closed_stack_counted no
+fi
+
 # 6. An external link and an anchor name no path in this tree. Free.
 d=$(build external README.md 'see [web](https://example.invalid/x) and [top](#heading) and [mail](mailto:a@b.invalid)')
 out=$(verdict_of "$d")

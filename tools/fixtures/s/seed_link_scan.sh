@@ -32,8 +32,12 @@
 # so it falls on touch instead of in one sweep.
 #
 # WHAT PASSES FREE, by named rule.
-#   Dated testimony -- a file whose own basename carries a one-clock stamp keeps every reference
-#   it ever wrote (accrete-never-break). It is read past, never rewritten.
+#   Dated testimony -- a file whose own basename carries a one-clock stamp, or that stands in a
+#   closed stack (date/, archive/, yonder/, anywhere in its path), keeps every reference it ever
+#   wrote (accrete-never-break, read-scope.md). It is read past, never rewritten. Widened 20260926:
+#   528 sites stood under external-research/yonder/ alone, carried by retired countdown-prefix
+#   research notes (`9911_mem_concat.md`) that predate the one-clock law and so never matched the
+#   basename check -- ceiling fell 908 (over its own 820) to 380.
 #   Absolute links, anchors, `http`, and `mailto:`, none of which name a path in this tree.
 #   Any document the seed does not ship. It cannot break a link for a reader who never sees it.
 #   A link to a room the projection MAKES. The manifest allows files rather than directories in
@@ -61,8 +65,11 @@ MANIFEST=${SEED_LINK_MANIFEST:-template-manifest.kyri}
 FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.md ORGANIZING.md docs-geode/README.md"
 
 # The ratchet's ceiling only ever falls. Measured 20260823 after the front door was cleared at
-# 848; lowered to 820 on 20260916 when the four second-step doors were cleared and gated.
-ceiling=820   # no override exists: the control proves both sides by planting, never by a flag
+# 848; lowered to 820 on 20260916 when the four second-step doors were cleared and gated; lowered
+# to 380 on 20260926 when the testimony reading widened to the closed-stack directory shape
+# (date/, archive/, yonder/) and 528 sites -- retired countdown-prefix research notes under
+# external-research/yonder/ that carried no one-clock stamp -- stopped being miscounted as living.
+ceiling=380   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.
@@ -130,9 +137,13 @@ awk -v allowf="$work/allow" -v denyf="$work/deny" -v front="$FRONT_DOOR" -v list
     f = $0
     if (!inseed(f)) next
     shipped++
-    # Dated testimony keeps every reference it ever wrote.
+    # Dated testimony keeps every reference it ever wrote -- by its own one-clock basename, or by
+    # standing in a closed stack (date/, archive/, yonder/), the same directory shape read-scope.md
+    # and ascii_document_scan.sh already read past. A retired countdown-prefix research note under
+    # external-research/yonder/ carries no one-clock stamp and is testimony all the same.
     base = f; sub(/^.*\//, "", base)
-    testimony = (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/)
+    testimony = (base ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/) \
+      || (f ~ /(^|\/)(date|archive|yonder)\//)
     dir = f; if (dir ~ /\//) sub(/\/[^\/]*$/, "", dir); else dir = ""
     while ((getline line < f) > 0) {
       rest = line
