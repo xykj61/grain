@@ -91,7 +91,15 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # rankings.kyri, and the baton-museum/design-shapes rooms -- were rewritten the same way; three
 # sites whose display text named a directory rather than its README (`../saga/`, `../journey/`,
 # `construction/ready-to-ask-claude.md`) kept their own display text rather than the full target.
-ceiling=155   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 128 on 20260926 after docs/TUBE.md (8 sites into linengrow/ and
+# expanding-prompts/yonder/), caravan/HARNESS.md (6 sites -- session-logs/, and REDS-ledger `%N`
+# citations that had been linked into construction/REDS.md and its archive shelf, unlinked to the
+# bare `REDS %N` form the rest of the tree already uses), foundations/README.md (7 sites into
+# recursion-prompts/, context/TAME_CORE.md, expanding-prompts/, foundations' own sub_excluded
+# money-close-to-home page, counsel/, and construction/ITINERARY.md), and
+# active-designing/seam-season-hammock.md (6 sites into counsel/ and two sub_excluded
+# external-research/ pages) were each rewritten the same way.
+ceiling=128   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.
