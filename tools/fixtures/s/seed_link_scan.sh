@@ -76,7 +76,12 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # Lowered to 272 on 20260926 after context/LEXICON.md's own 55 rows, carrying 70 link occurrences
 # into `personal`-verdict counsel/, were rewritten the same way -- each `[`path`](path)` link's
 # text already named the path, so the conversion drops the brackets and keeps the backtick.
-ceiling=272   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 224 on 20260926 after every remaining link into `gratitude/` (19 files, 48 sites) was
+# rewritten the same way -- the scan treats gratitude/ and vendor/ as unverified rather than shipped
+# (line 96's exclusion), since a per-file scrub/sub_exclude split cannot be certified at this check's
+# granularity, so a link into that room counts here whether or not the specific file survives the
+# projection.
+ceiling=224   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.

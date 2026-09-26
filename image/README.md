@@ -111,7 +111,7 @@ The card that says what comes next is [`../construction/ITINERARY.md`](../constr
 
 **QOI** (Dominic Szablewski) is the teacher for the codec, studied from its public one-page spec
 alone -- that spec is the whole of what we read, and the reference C stays where it is. Thanked at
-[`../gratitude/qoi.md`](../gratitude/qoi.md).
+`gratitude/qoi.md`.
 The Photos arc honors the gestures a keeper already knows from the photo apps they have used, and
 **McMaster-Carr** is thanked for the single-sheet trick a catalog renders by. We study concepts and
 write our own code.

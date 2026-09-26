@@ -49,7 +49,7 @@ Until those rows earn metal, Glow code stays in the six-shape model; Nock formul
 
 ## Gratitude (Silo)
 
-Nock's noun law — atom and cell — is one of the cleanest small machines in computing history. We keep the teacher whole under [`gratitude/`](../../../gratitude/) and [`glow/nock/`](../../../glow/nock/), and we borrow only at a named door: convert, verify, return. Nothing from the Nock spec is reproduced here; the lineage is the thanks.
+Nock's noun law — atom and cell — is one of the cleanest small machines in computing history. We keep the teacher whole under `gratitude/` and [`glow/nock/`](../../../glow/nock/), and we borrow only at a named door: convert, verify, return. Nothing from the Nock spec is reproduced here; the lineage is the thanks.
 
 ---
 

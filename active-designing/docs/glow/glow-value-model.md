@@ -44,7 +44,7 @@ Until then, treat lowering detail as **Design**: follow the working pin, grow de
 
 ## Gratitude (Silo)
 
-Hoon and Nock taught this tree that a single data story can carry a whole OS — lineage we honor without reproducing their noun law as ours. Urbit's teachings live under [`gratitude/`](../../../gratitude/); this page silos the *idea* of one value model, then seats Grain's own six-shaped law.
+Hoon and Nock taught this tree that a single data story can carry a whole OS — lineage we honor without reproducing their noun law as ours. Urbit's teachings live under `gratitude/`; this page silos the *idea* of one value model, then seats Grain's own six-shaped law.
 
 ---
 

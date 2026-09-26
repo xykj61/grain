@@ -48,7 +48,7 @@ learn.
 
 ## The teachers, kept in their own room
 
-[`gratitude/`](../../gratitude/README.md) holds what this tree learned from elsewhere -- a study for each teacher, naming them plainly. It is a **reading library, never a dependency**: concepts enter through the clean room, code never does. If you want to know where an idea came from, it is named there rather than absorbed silently.
+`gratitude/README.md` holds what this tree learned from elsewhere -- a study for each teacher, naming them plainly. It is a **reading library, never a dependency**: concepts enter through the clean room, code never does. If you want to know where an idea came from, it is named there rather than absorbed silently.
 
 The room keeps growing, so count it rather than trusting a sentence:
 
