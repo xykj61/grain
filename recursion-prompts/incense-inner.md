@@ -164,3 +164,19 @@ booked -- same 268 bytes of headroom, `pin_deadlocked=1`, zero foldable rows; re
 body and this log instead. Next lap: a fresh round-open and cold run; the 380-site remainder is a
 per-document rewrite (name the withheld room in prose) that falls on touch, and the ledger fold
 deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260926.072420`) took the seed_link 380-site remainder's biggest single class.**
+`--list` showed 38 living files carrying the "Cursor twin retired" footer, all linking into
+`.cursor-archive/rules/`, a room the manifest marks `personal` and the seed never ships. Rewrote
+each into a backticked, unlinked path mention -- the idiom `checkpoint.md` already uses for
+`construction/CHECKPOINTS.md` -- across 35 of `.claude/rules/*.md`, `CLAUDE.md`, and
+`context/specs/enclosure-editors.md`. Ratchet fell **380 to 342**; ceiling lowered to match with
+the reason recorded in the scan's own header. Running the wider guard set surfaced a second,
+pre-existing red: `tools/l/link_text_promise_witness.rish` held seven living anchors in
+`construction/REDS.md` whose link text still named a pre-fold path after the target moved under a
+fold -- confirmed by `git stash` to predate this lap. Repaired each anchor to match its own target;
+witness reads `living=0` GREEN. `tools/s/seed_link_witness.rish`, `tools/a/ascii_document_witness.rish`,
+and `tame_style_check` all GREEN on metal. No REDS row booked -- the ledger sits 192 bytes under its
+bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead.
+Next lap: a fresh round-open and cold run; the 342-site remainder continues per-document on touch,
+and the ledger fold deadlock is unchanged and still Keaton's word to break.
