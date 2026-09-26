@@ -11,11 +11,11 @@
 
 ## fruit
 
-**Recovery queue, reread 20260925.211704: 31 construction Markdown versions remain.**
+**Recovery queue, reread 20260925.212648: 25 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
-identities cover 145 after this lap. Recompute that set before selecting work;
-the top-stamped shelf log records an earlier lap and carries an older count.
-All 85 stashes and the capture candidate stay preserved. The [account recovery](../session-logs/date/20260925/20260925-211704_bakery-account-recovery.kyri) names this lap's evidence.
+identities cover 151 after this lap. Recompute that set before selecting work;
+the top-stamped shelf log may carry an older count.
+All 85 stashes and the capture candidate stay preserved. The [early card review](../session-logs/date/20260925/20260925-212648_bakery-early-card-review.kyri) names this lap's evidence.
 
 The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
@@ -460,6 +460,15 @@ relocated to their dated homes. The sixth keeps the account body and a later
 introduction explaining a duplicate repair's withdrawal. Keep the published
 records and all 85 stashes. Thirty-one construction Markdown versions remain.
 Capture integration and full cold and hot proof remain owed.
+
+The [early card review](../session-logs/date/20260925/20260925-212648_bakery-early-card-review.kyri) covers six more parked itinerary versions.
+Two stash-reader drafts precede a later account that records peer landings and
+withdrawn duplicates. The compiler-reach draft precedes the stronger source review.
+The nib draft precedes explicit send shapes; the jail draft precedes the separate
+launch witness. The instrument-absence draft carries an earlier ledger number.
+Keep the later records and all saved drafts. Twenty-five construction Markdown
+versions remain. All 85 stashes stay preserved; capture integration and full
+cold and hot proof remain owed.
 
 ## gates
 
