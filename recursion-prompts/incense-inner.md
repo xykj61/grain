@@ -197,3 +197,30 @@ will read `tree_moved=yes` for a movement this lap itself caused, discovered onl
 was already made. Next lap: a fresh round-open and a cold run held still start to finish; the
 272-site remainder continues per-document on touch (gratitude/ at 47 is next-largest), and the
 ledger fold deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260926.083500`) round-opened clean, found no overlapping claim, then met a cold
+run already in flight at its own launch HEAD -- waited per the FLEET clause rather than starting a
+second or TERMing it.** While it ran, `sh tools/fixtures/f/fold_shelf_link_repoint.sh` (its own
+`fold_shelf_link_repoint` leg had reddened) found and fixed four `](...)` link targets one
+directory level short in two `construction/archive/` accounts; committed and pushed that repair
+alone first, `tools/f/fold_shelf_link_repoint_witness.rish` GREEN. Took gratitude/'s 47-48-site
+share of the seed_link remainder next: `seed_link_scan.sh` treats `gratitude/` (and `vendor/`) as
+unverified rather than shipped by design (line 96's exclusion), since a per-file scrub/sub_exclude
+split cannot be certified path by path. Every gratitude/ link across 19 files already used its
+target as its own display text, so each markdown link into `gratitude/` converted to a plain
+backticked path mention, the idiom `checkpoint.md` already uses for
+`CHECKPOINTS.md`; bibliography.md gained one sentence naming the convention once. Ratchet fell
+**272 to 224**; ceiling lowered to match with the reason in the scan's own header.
+`seed_link_witness`, `ascii_document_witness`, `link_text_promise_witness`, and `tame_style_check`
+all GREEN on metal. **Named honestly:** the in-flight cold run this lap waited on had already read
+this lap's own two commits by the time it finished, so its `tree_moved` reading (if any) describes
+a tree this lap itself moved -- the same shape the prior lap named, met from the waiting side this
+time. No REDS row booked -- ledger headroom unchanged, `pin_deadlocked=1`, zero foldable rows.
+Both commits pushed `xy` then `debrided` clean (fast-forward, no rebase), then a follow-up commit
+carried `construction/ITINERARY.md`'s Git nib forward to this commit's own HEAD, since the work
+was already pushed before the nib could be amended to HEAD's parent (rule 2 wants the amend before
+the push; rule 5's follow-up shape is what a lap reaches for once that window has passed). Next
+lap: a fresh round-open and a cold run held still start to finish; the 224-site remainder continues
+per-document on touch (`.cursor-archive/` links inside `context/LEXICON.md` are the next-largest
+single class, ~24 sites), and the ledger fold deadlock is unchanged and still Keaton's word to
+break.
