@@ -257,6 +257,23 @@ remaining 31 reds still overlap the standing backlog on the shelf and in ITINERA
 bullet, `seed_link`'s 908-site ratchet is still the standing lead named above, and the ledger fold
 deadlock is unchanged and still Keaton's word to break.
 
+**This lap (`20260926.023747`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+378 guards: 344 green, 31 red, 3 gated.** Round-open opened clean at settled HEAD `85b014179`; a
+live, non-stale pass already held the roster lock at that same HEAD, confirmed as this tree's own
+via `tools/f/fleet_call.sh` (`verdict=dry`) and waited for rather than TERMed, per the FLEET clause.
+Picked `nib_honesty` off the findings: the scan read `git_nib_lines=0`, `git_nib=absent`,
+`verdict=NO_NIB_FIELD` against a card that plainly names its Git nib. The classifier requires an
+exact ten-hex-character run to recognize any token at all -- the tree's own `--short=10`
+convention -- and the card's field read `e131f90ed`, nine characters, so the token was invisible to
+the classifier rather than merely misclassified. Confirmed `e131f90ed` still resolves to HEAD's
+parent and that its proper ten-character form is `e131f90ede`; corrected the one character, scan
+verdict `ok`, `nib_honesty_witness.rish` re-run GREEN on metal. No REDS row booked -- the ledger
+reads 268 bytes of headroom against its 65,536-byte bound, `pin_deadlocked=1`, zero foldable rows;
+recorded in the commit body and session log instead. Next lap: a fresh round-open and cold run; the
+remaining 30 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
+bullet, `seed_link`'s ratchet is still the standing lead named above, and the ledger fold deadlock
+is unchanged and still Keaton's word to break.
+
 **This lap (`20260925.221041`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
 378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A stale detached
 pass held the lock at launch (`launch_head` three commits behind HEAD); confirmed it as this tree's
