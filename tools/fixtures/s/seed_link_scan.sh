@@ -85,7 +85,13 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # were rewritten the same way -- each link's text already named the path, so the conversion drops
 # the brackets and keeps the backtick, matching the `.claude/rules/*.md` footer sweep two commits
 # earlier in the same remainder.
-ceiling=208   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 155 on 20260926 after context/LEXICON.md's remaining 53 sites -- into foundations/,
+# expanding-prompts/, linengrow/, construction/, saga/, external-research/, waymarks/, docs-geode/,
+# journey/, and the unshipped context/ pages QUIN.md, RIYO.md, TRYA.md, REMOTE_ROSTER.md,
+# rankings.kyri, and the baton-museum/design-shapes rooms -- were rewritten the same way; three
+# sites whose display text named a directory rather than its README (`../saga/`, `../journey/`,
+# `construction/ready-to-ask-claude.md`) kept their own display text rather than the full target.
+ceiling=155   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.
