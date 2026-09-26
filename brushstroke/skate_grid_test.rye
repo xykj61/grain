@@ -4,6 +4,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const print = std.debug.print;
 const skate = @import("skate_grid.rye");
 
 pub fn main() void {
@@ -27,5 +28,5 @@ pub fn main() void {
     const lit = grid.lit_pixel_count(pixels, stride, width, height, bg);
     assert(lit > 200);
 
-    std.debug.print("rye: skate grid raster assertions confirmed ({d} lit pixels).\n", .{lit});
+    print("rye: skate grid raster assertions confirmed ({d} lit pixels).\n", .{lit});
 }
