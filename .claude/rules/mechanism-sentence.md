@@ -52,4 +52,4 @@ The meter counts vocabulary, so it proves a floor rather than a comprehension. O
 
 Keaton read six commits of one refactoring arc and still had to ask what it did. The arc was sound, the witnesses were green, and the record described it entirely in image. A commit message is read once by its author and many times by everyone who comes after, so the mechanism belongs where the many readers are.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).

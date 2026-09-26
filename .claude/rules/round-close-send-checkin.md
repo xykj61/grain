@@ -2,7 +2,7 @@
 
 Keaton asked to **automate sends and check-ins** so **every work round ends with a check-in**. This preference stays on until he retires it by name.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
 
 ## When a round closes
 

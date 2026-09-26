@@ -32,7 +32,7 @@ Write in **Radiant Style** -- see `context/RADIANT_STYLE.md` and `.claude/rules/
 ## Editor
 
 - **Zed + Claude Agent, and Claude Code** (this thread) reads this file and `.claude/rules/*.md` -- including `gratitude-licenses.md` and `collaboration.md`.
-- **Cursor retired** `20260920.135100` on Keaton's word. This bench no longer maintains a mirrored `.cursor/rules/*.mdc` edit for every rule; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](.cursor-archive/rules/README.md).
+- **Cursor retired** `20260920.135100` on Keaton's word. This bench no longer maintains a mirrored `.cursor/rules/*.mdc` edit for every rule; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this page ships in the seed).
 - **Counsel cell** -- every counsel printout is one cell: prose head - one codeblock - recommend on the tail. Rule: [`.claude/rules/cell.md`](.claude/rules/cell.md).
 - **Canonical license table:** `external-research/date/20260620/20260620-014412_system.md` -> Gratitude Licenses and the Clean Room.
 

@@ -36,4 +36,4 @@ The correct reading is never "this is immutable, so we cannot debride it." It is
 - **Deep debride force-pushes.** After the rewrite, both remotes are force-updated; the living ITINERARY git nib and any git-nib citations are refreshed after.
 - **Fascia is the point.** debride raises **fascia health** and **reattaches fascia** -- the tree's connective references heal once the dead tissue is gone.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).

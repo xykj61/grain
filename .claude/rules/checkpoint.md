@@ -3,7 +3,7 @@
 **Seated:** `20260809.024851` on Keaton's word - **Status:** Living
 **Ledger:** `construction/CHECKPOINTS.md` (a maintainer-only room; named here rather than linked, since this law ships in the seed while that room stays in the field)
 **Kin:** [`debride.md`](debride.md) -- debride removes; a checkpoint marks the way back first.
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at [`../../.cursor-archive/rules/`](../../.cursor-archive/rules/README.md).
+*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
 
 A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card -- ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling -- record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
 
