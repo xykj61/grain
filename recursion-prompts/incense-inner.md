@@ -193,3 +193,20 @@ repair. Fetched `xy` clean, amended the Git nib to HEAD's parent, pushed `xy` th
 fast-forward. Next lap: a fresh round-open and a cold run held still start to finish;
 `equinox_e104_hold_class_o`'s own control stays a known pre-existing red, and ~21 reds from the
 clean run remain untriaged.
+
+**This lap (`20260926.185006`) round-opened clean at `e0867918f4`, found no overlapping claim (five
+standing rows all `status=stale`), then met a cold run already in flight at this exact HEAD --
+watched its transcript with Monitor and held fully still through the whole 3,271-second wait.** It
+closed clean: `tree_moved=no`, 354 green, 24 red, 3 gated, `run_verdict=guard_red` (the roster's own
+self-check row, an expected reading rather than a defect). Surveyed the 24 reds for a small fixable
+one: `index_row_bound` read `rows_over=12` in **today's own day shelf**, `session-logs/date/README-
+index-20260926.md` -- the same shelf that broke this same 192-byte bound once already at
+`20260926.013806`. Shortened each over-bound row's "What it carried" field in place, leaving every
+anchor text and link target byte-identical; a first pass left 4 rows still over on long titles, a
+second terser pass closed it. `index_row_bound_scan.sh` now reads `rows_over=0`, `verdict=ok`;
+its 39-behavior witness runs GREEN; `ascii_document_scan` and `tame_style_check` stayed clean on the
+touched file. No REDS row booked (65,513 of 65,536 bytes on the ledger, 23 free) -- an ordinary
+unrostered repair. Fetched `xy` clean (no divergence), pushed `xy` then `gp405` clean fast-forward.
+Next lap: fresh round-open, cold run held still start to finish; ~21 reds from this clean run
+(including `standing_equipment_redleg`'s chapter-lane remainder and `width_check`'s already-ruled
+th5 disagreement) remain untriaged.
