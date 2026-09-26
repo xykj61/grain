@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.125404` | [geode_libraries seed-link fix](20260926/20260926-125404_geode-libraries-seed-link-fix.kyri) | Generator now skips a link for a seed-withheld room; caught by seed_link's own wall. |
 | `20260926.114637` | [disk-reclaim tool](20260926/20260926-114637_disk-reclaim-tool.kyri) | REDS 20260925.130901's own named tool, built and rostered; 1.3G reclaimed. |
 | `20260926.112003` | [seed_link's remainder closes at zero](20260926/20260926-112003_seed-link-remainder-closes-at-zero.kyri) | seed_link ratchet 76 to 0; ceiling walled, control leg renamed to prove refusal. |
 | `20260926.105255` | [seed_link's counsel/ and construction/ share](20260926/20260926-105255_seed-link-counsel-construction-remainder.kyri) | seed_link ratchet 128 to 76, both `personal`-verdict rooms cleared. |

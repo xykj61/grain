@@ -227,3 +227,29 @@ the Git nib to HEAD's parent, then carried it forward again for the session-log 
 5; pushed `xy` then `debrided` clean fast-forward. Next lap: a fresh round-open and a cold run held
 still start to finish; the standing lead is the ledger fold deadlock, still Keaton's word to break,
 or whatever the in-flight cold run's receipt surfaces as fresh red once it lands.
+
+**This lap (`20260926.125404`) round-opened clean at `448b09727`, found no overlapping claim (five
+standing rows all `status=stale`), then met the in-flight cold run named above already at this
+lap's own launch HEAD -- held still and waited for it rather than starting a second, per ORDER.**
+While waiting, closed the incense-owed half of REDS `%735`: `design-rooms.md` and `context/LEXICON.md`
+were already repaired (commit `85f5e3b8e`, `20260924.215603`) to point at `counsel/README.md`'s own
+re-derive commands rather than spelling the stale figures; appended a closing note to the row saying
+so, keeping the remaining question -- whether a CLOSED room may keep growing -- as Keaton's word.
+The waited run closed `tree_moved=yes` (my own edit, made while the inherited run was in flight, is
+the only path it names), `run_verdict=guard_red`, 379 guards, 349 green, 27 red, 3 gated. Among the
+27, `seed_link` was a fresh regression rather than the standing baseline: `docs-geode/libraries/README.md`
+is a generated page (`tools/g/geode_libraries.rish write`, rewritten whole on every run) that links
+every room holding a `.rye` module and a README, and it re-linked `construction/` and `linengrow/` --
+both withheld from the public seed -- straight past the wall `seed_link_scan.sh`'s own ceiling closed
+to zero this morning. A hand-edit of the page would have lasted until the next regeneration reverted
+it, so the fix landed in the generator: `tools/fixtures/g/geode_libraries_scan.sh` now checks
+`template-manifest.kyri`'s `allow <room>` rows before emitting a link, printing a plain backtick
+mention for a withheld room instead. Regenerated the page; `seed_link_scan.sh` reads
+`other_living_links_outside_seed=0`, `verdict=ok`. `seed_link_witness`, `seed_link_control`,
+`geode_libraries_witness`, and `tame_style_check` all GREEN on metal; `qa_report_card.sh` on the
+regenerated page read **A**. No REDS row booked: the ledger sat 23 bytes under its 65,536-byte bound
+after the `%735` note, and the fold deadlock (unchanged, still Keaton's word) left no row to free --
+the catch and its fix are recorded in this entry and the commit body instead. Fetched `xy` clean,
+amended the Git nib to HEAD's parent, pushed `xy` then `debrided` clean fast-forward. Next lap: a fresh
+round-open and a cold run held still start to finish; the standing lead reverts to the ledger fold
+deadlock, still Keaton's word to break, or whatever the next cold-run receipt surfaces as fresh red.

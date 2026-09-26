@@ -175,7 +175,16 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 HEAD
   while read -r room n; do
     w=$(witness_count "$room")
-    printf '| [`%s/`](../../%s/README.md) | %s | %s |\n' "$room" "$room" "$n" "$w"
+    # A room this table names may be withheld from the public seed (template-manifest.kyri's
+    # personal/scrub verdicts, never an `allow` row). This page ships in the seed, so a linked
+    # room must ship too, or the reader who arrives there meets a broken door (REDS %735-class,
+    # caught live by seed_link_scan.sh 20260926 -- construction/ and linengrow/ both withheld).
+    # A plain backtick names the room without promising a door that is not there.
+    if grep -qE "^allow $room([[:space:]]|\$)" template-manifest.kyri 2>/dev/null; then
+      printf '| [`%s/`](../../%s/README.md) | %s | %s |\n' "$room" "$room" "$n" "$w"
+    else
+      printf '| `%s/` | %s | %s |\n' "$room" "$n" "$w"
+    fi
   done < "$room_census"
   cat <<'TAIL'
 
