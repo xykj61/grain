@@ -7,8 +7,9 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.200515` | [Grass packet recovery](20260925/20260925-200515_grass-parked-packet-recovery.kyri) | Parked packet restored; product witnesses pass. |
 | `20260925.200327` | [Account drafts](20260925/20260925-200327_bakery-account-drafts.kyri) | Four drafts reviewed; later records kept. |
-| `20260925.200048` | [Exec bit ratchet repair](20260925/20260925-200048_incense-exec-bit-ratchet-repair.kyri) | Held for a live cold pass, then born-with-the-bit repair on a new control fixture. |
+| `20260925.200048` | [Exec bit ratchet repair](20260925/20260925-200048_incense-exec-bit-ratchet-repair.kyri) | Control fixture carries its exec bit. |
 | `20260925.195426` | [Shelf remainder](20260925/20260925-195426_bakery-shelf-remainder.kyri) | Twenty-one drafts reviewed; current records kept. |
 | `20260925.194634` | [Shelf continuity](20260925/20260925-194634_bakery-shelf-continuity.kyri) | Ten drafts reviewed; current records kept. |
 | `20260925.194631` | [Receipt-space study](20260925/20260925-194631_diffuser-receipt-space-study.kyri) | Two admitted purposes share one Still row. |
@@ -32,6 +33,7 @@
 | `20260925.170651` | [Cold run relaunch](20260925/20260925-170651_cold-run-relaunch-after-stale-lock.kyri) | Stale pass's lock cleared via fleet_call, cold run relaunched on settled HEAD. |
 | `20260925.170339` | [Flat row recovery](20260925/20260925-170339_patchouli-flat-row-recovery.kyri) | Parked fix recovered; row control green. |
 | `20260925.170111` | [Capture full witness](20260925/20260925-170111_bakery-capture-full-witness.kyri) | Complete consumers tested in a pen. |
+| `20260925.165717` | [Grass ledger and grace](20260925/20260925-165717_grass-ledger-and-grace.kyri) | Evidence stays distinct from human worth. |
 | `20260925.165009` | [Capture witness](20260925/20260925-165009_bakery-capture-witness.kyri) | Candidate includes its count assertion. |
 | `20260925.164000` | [Capture runner pen](20260925/20260925-164000_bakery-capture-runner-pen.kyri) | Candidate passes both control families. |
 | `20260925.163548` | [Anchor repair](20260925/20260925-163548_commit-parent-claim-anchor-repair.kyri) | commit-parent-claim's anchor moved once; GREEN. |
