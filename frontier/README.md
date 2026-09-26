@@ -7,6 +7,7 @@
 terminal-only operating guide lives under [`cursor-cli/`](cursor-cli/README.md)
 **Last updated:** `20260921.152230`
 **Kin:** [`NIXOS_CLI_GUIDE.md`](NIXOS_CLI_GUIDE.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - `../nixos/configuration.nix` - [`../open/README.md`](../open/README.md) - [`../fleet/README.md`](../fleet/README.md)
+**Home:** [`../README.md`](../README.md)
 
 ---
 

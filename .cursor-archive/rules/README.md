@@ -2,6 +2,7 @@
 
 **Status:** Fossil -- **Retired:** `20260920.135100` on Keaton's word -- **Checkpoint:**
 `construction/CHECKPOINTS.md`, walk-back nib `efa58efff4`
+**Home:** [`../../README.md`](../../README.md)
 
 The 60 files in this room are every `.cursor/rules/*.mdc` this tree ever carried, moved here
 whole rather than deleted -- a **working-tree debride** per [`../../.claude/rules/debride.md`](../../.claude/rules/debride.md).

@@ -2,6 +2,7 @@
 
 **Language:** EN
 **Status:** Living index -- stamped records filed by the day in the name
+**Home:** [`../../../README.md`](../../../README.md)
 
 Each stamped file lives under `date/YYYYMMDD/`, and that day's index is
 `README-index-YYYYMMDD.md` beside this page. The lesson files that start

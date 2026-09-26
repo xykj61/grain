@@ -7,6 +7,7 @@
 **Last updated:** `20260920.141121`
 **Born from:** `../expanding-prompts/20260920-141121_open-weight-harness-companions.md`
 **Kin:** [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - siblings [`../shastra/README.md`](../shastra/README.md), [`../risala/README.md`](../risala/README.md)
+**Home:** [`../README.md`](../README.md)
 
 ---
 
