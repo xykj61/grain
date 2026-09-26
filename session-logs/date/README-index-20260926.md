@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.195536` | [fascia_home_link closes on eight rooms](20260926/20260926-195536_fascia-home-link-eight-rooms.kyri) | no_path_home 8->0, wall restored to zero. |
 | `20260926.185006` | [day shelf rows over bound, second time](20260926/20260926-185006_row-bound-second-repair.kyri) | 12 rows over 192 bytes trimmed; verdict=ok. |
 | `20260926.173946` | [unheard-guard ceiling closed](20260926/20260926-173946_unheard-guard-control-ceiling-closed.kyri) | 22->18, four guards rostered; stale Cursor check fixed |
 | `20260926.161325` | [commit_parent_claim's third anchor move](20260926/20260926-161325_commit-parent-claim-third-anchor-move.kyri) | Sentence-binding fault; anchor moved to 661bc26fc0. |
