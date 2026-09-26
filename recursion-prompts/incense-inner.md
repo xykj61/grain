@@ -277,3 +277,30 @@ a planted failing child and welcomes an all-passing one.** Twelve legs GREEN; re
 over ceiling anyway -- five fresh `tools/gen/chapter/` guards arrived unmarked, a different lane's
 shape. REDS.md had 23 bytes free, too little for a note there, so ITINERARY carries it instead.
 Pushed clean. Next: fresh round-open, cold run held still; five chapter guards open for their lane.
+
+**This lap (`20260926.143701`) round-opened clean at `4a6cb01e85`, found no overlapping claim, then
+met a cold run already in flight at this lap's own launch HEAD -- held still and waited rather than
+starting a second, per ORDER.** No OPEN REDS row (`%730`, `%785`, `%803`, `%808`, `%827`) was
+closable without Keaton's word or belonged outside this lane, and REDS.md held 10 bytes of headroom,
+so a session log recording the wait was the lap's own content: committed and pushed. **The waited
+run then died_unexpectedly (exit 1) rather than reaching a clean verdict** -- its own meta-check
+`standing_equipment` hit an uncaught assertion partway through a list of roster inconsistencies,
+plausibly because my own commit moved the tree mid-flight (the exact hazard several prior laps in
+this shelf named honestly). Rather than trust that contaminated read, round-opened again, checked
+the claim board clean, launched a FRESH cold run and this time held fully still -- no edits, no
+commits -- through its whole 3,463-second run. It closed cleanly: `tree_moved=no`, 379 guards, 350
+green, 26 red, 3 gated. Of the 26 reds, `commit_parent_claim` was worth a repair: commit `661bc26fc0`
+carries one sentence naming two hash tokens ("the anchor argument moved from `418fe0f2f9` to
+`ca0461877` ... then rewrites ... Git nib field to `6a652b237b`, this commit's own parent"), and the
+scan's sentence-scope binder pairs the word "parent" with the sentence's FIRST hash rather than the
+adjacent one, reading a true self-claim as false -- a third instance of the classifier-ambiguity class
+the witness's own header already names twice. Moved the anchor to `661bc26fc0` itself, excluding it
+as pre-anchor testimony (history stays as written); `claims_after_anchor=0` over the 29 commits
+since. Witness and its 43-leg control both GREEN on metal; `tame_style_check` GREEN; the touched
+file stays plain ASCII. No REDS row booked (10 bytes of headroom, nowhere to write one) -- recorded
+in `construction/ITINERARY.md`'s Open doors instead. The other 25 reds were left unread this lap
+(`width_check`'s th5 disagreement is already named as TAME's own ruling; `standing_equipment_redleg`
+is the chapter lane's remainder; the rest are untriaged). Next lap: a fresh round-open and a cold
+run held still start to finish; triage the remaining ~25 reds from this clean run for genuinely
+new, closable, in-lane defects, distinct from the standing OPEN REDS rows and the chapter lane's own
+shape.

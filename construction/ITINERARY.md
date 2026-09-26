@@ -350,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `4a6cb01e85` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `eb3d293d67` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -488,6 +488,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   `fleet_claim_form_control.sh` and `page_residency_sample.sh`, and two new false positives in the
   torus-offset search controls -- are repaired; `fallback_instrument_passes=0`, `verdict=ok`.
   none is booked.
+- **`commit_parent_claim`'s anchor moved a third time** (`661bc26fc0` excluded -- a sentence-binding
+  fault, not a tense one; see the witness's own header and this day's log).
 - **REDS `%827`'s four named guards took their refusal legs** (`20260926.135500`): `crypto_vendored_parity`,
   `acme_dx`, `drey`, and `gen_linn_fund_prep` each carry a new `_control.sh` proving the roster
   refuses on a planted failing child and welcomes an all-passing one, twelve legs GREEN on metal.
