@@ -8001,3 +8001,41 @@ guard disk_reclaim
 path tools/d/disk_reclaim_witness.rish
 tier lap
 seated 20260926.121500
+
+# kumara_tilak -- the load-bearing pair of Kumara identity tilaks, point and bind, proven both
+# signed and verified. tools/fixtures/u/unheard_guard_scan.sh named its own control
+# (tools/fixtures/k/kumara_tilak_bind_control.sh) unheard because this witness, the control's
+# only namer, stood off every roster -- rostering it closes both readings at once.
+guard kumara_tilak
+path tools/k/kumara_tilak_witness.rish
+tier lap
+seated 20260926.171705
+
+# mind_source_adaptation -- the MIND outer loop's one-adaptation-per-lap grant, proven both
+# directions on seventeen planted cases. Named unheard for the same reason as kumara_tilak above
+# -- its control's only namer stood off every roster. Repaired the same lap: the witness's own
+# Cursor-twin check had gone stale since that twin retired tree-wide 20260920.135100, and both
+# the scan and the witness now read the one living policy page.
+guard mind_source_adaptation
+path tools/m/mind_source_adaptation_witness.rish
+tier lap
+seated 20260926.171705
+
+# equinox_e102_fascia_chase and equinox_e103_class_a_window -- two rungs of the equinox choir,
+# rostered by exact path rather than by prefix. THE FAMILY NOT TAKEN paragraph above (buhr_choir)
+# warns against a prefix choir over `equinox`, which would overstate by globbing 144 witnesses
+# where the season choir sings only the 33 that chain each other -- these two are named
+# individually for a narrower reason: unheard_guard_scan.sh's control census named each one the
+# sole (unheard) namer of a control that otherwise proves nothing (equinox_e102_fascia_chase_control.sh,
+# equinox_e103_class_a_window_control.sh), and rostering the namer is what the census's own header
+# says closes that class. A third rung of the same shape, e104, stays off this roster: its own
+# control reads RED on metal today, a pre-existing defect this lap did not chase.
+guard equinox_e102_fascia_chase
+path tools/equinox/witness/equinox_e102_fascia_chase_witness.rish
+tier cadence
+seated 20260926.171705
+
+guard equinox_e103_class_a_window
+path tools/equinox/witness/equinox_e103_class_a_window_witness.rish
+tier cadence
+seated 20260926.171705
