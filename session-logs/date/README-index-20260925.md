@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.210946` | [Two account shelves](20260925/20260925-210946_bakery-two-account-shelves.kyri) | Two drafts reconciled; 37 remain. |
 | `20260925.210206` | [Saved addresses](20260925/20260925-210206_bakery-saved-addresses.kyri) | Five drafts reconciled; 39 remain. |
 | `20260925.205348` | [Ledger shelves](20260925/20260925-205348_bakery-ledger-shelves.kyri) | Five drafts reviewed; published records kept. |
 | `20260925.204511` | [Card history](20260925/20260925-204511_bakery-card-history.kyri) | Six drafts reviewed; 49 remain. |
