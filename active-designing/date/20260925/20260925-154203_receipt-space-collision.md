@@ -26,11 +26,15 @@ A local Python reproduction of that row construction on 2026-09-25 held every ot
 
 The command used the source's label and padding rule: `('purpose  ' + value).encode('ascii').ljust(72, b' ')`, then SHA-256. This is a source-model reproduction on Linux. This host has no Swift toolchain, and no macOS render or accessibility runtime result is claimed.
 
+The same source rules admit a purpose containing one ASCII space: Tally's `text_refusal` checks length and ASCII, and `ReceiptCard.validate` accepts printable `0x20`. On 2026-09-25, the same local model made its 72-byte row digest `af09fc64282a40d5f6704dff97eeedb4cba0748a21b1f08d7e71b56f4607811e`; trimming the row yielded `purpose` with no value. The input is one byte, while the visible purpose value is zero bytes. This is a source-model finding, pending a macOS runtime witness.
+
 ## Inference -- the display cannot recover that byte
 
 For these two admitted inputs, the extra space occupies a cell that the shorter input already fills with padding. Every cell in the purpose row is equal. With all other fields fixed, the card plane and the snapshot derived from it have no place left to carry which input arrived. A test that compares only the visible Still rows and snapshot entries can pass for both while the admitted purpose bytes differ.
 
 The source-order witness guards the order of eleven deciding fields. It does not ask whether one displayed field maps back to one admitted byte string. That is a distinct product promise to decide before it is tested.
+
+The one-space case also shows that the current nonempty admission check and a nonempty displayed term ask different questions. A field can pass the first and appear blank to the reader. Incense's ruling should cover both trailing-space identity and space-only terms; the paired-input witness alone would leave the blank-term case open.
 
 ## Projection -- two buildable rules, one product choice
 
