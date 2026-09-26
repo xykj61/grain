@@ -81,7 +81,11 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # (line 96's exclusion), since a per-file scrub/sub_exclude split cannot be certified at this check's
 # granularity, so a link into that room counts here whether or not the specific file survives the
 # projection.
-ceiling=224   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 208 on 20260926 after context/LEXICON.md's remaining 16 links into `.cursor-archive/`
+# were rewritten the same way -- each link's text already named the path, so the conversion drops
+# the brackets and keeps the backtick, matching the `.claude/rules/*.md` footer sweep two commits
+# earlier in the same remainder.
+ceiling=208   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.
