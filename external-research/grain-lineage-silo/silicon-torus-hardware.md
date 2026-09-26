@@ -4,7 +4,7 @@
 **Version:** `20260713.232506` (Pacific)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Room:** research for understanding -- an outside proposal restated in our own words, its load-bearing half named apart from its vision half.
-**Original (held whole):** [`../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md`](../../gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md)
+**Original (held whole):** `gratitude/grain-lineage/silicon_torus_hpc_hardware_proposal_whitepaper.md`
 
 ---
 

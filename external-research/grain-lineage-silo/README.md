@@ -12,7 +12,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ## What Siloing Does Here
 
-The six documents in [`gratitude/grain-lineage/`](../../gratitude/grain-lineage/README.md) carry real engineering ideas wrapped in a visionary, devotional, and aether-theoretic register. Siloing separates the two: it keeps the load-bearing, checkable engineering and restates it in secular, common English with this fork's own module names, in a form a general reader -- a colleague at Acme Corporation, a reviewer of an Urbit Galaxy PR proposal -- can weigh on its merits. The originals stay untouched in gratitude; these siloed versions are the ones any Acme-facing guide or proposal cites.
+The six documents in `gratitude/grain-lineage/` carry real engineering ideas wrapped in a visionary, devotional, and aether-theoretic register. Siloing separates the two: it keeps the load-bearing, checkable engineering and restates it in secular, common English with this fork's own module names, in a form a general reader -- a colleague at Acme Corporation, a reviewer of an Urbit Galaxy PR proposal -- can weigh on its merits. The originals stay untouched in gratitude; these siloed versions are the ones any Acme-facing guide or proposal cites.
 
 This mirrors the silo technique this fork already uses for the astrology library (placeholder names, private originals) and for the IronBeetle episode notes (own-voice understanding, restated entirely in this fork's own words). The discipline is the same: **carry the substance, leave the register at the door, name the source in gratitude.**
 

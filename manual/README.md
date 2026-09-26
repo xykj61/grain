@@ -49,7 +49,7 @@ A beginner Glow-language textbook waits on a general parser. Until then, learn R
 | [`../docs/HAWM.md`](../docs/HAWM.md) | HAWM ladder compressor | Checkable compress |
 | [`../docs/TUBE.md`](../docs/TUBE.md) | App-manifest + NativeActivity APK compressor | Checkable compress |
 | [`../docs/STOA.md`](../docs/STOA.md) | Glow language SLC compressor (STOA0-3) | Checkable compress |
-| [`../gratitude/grapheneos/`](../gratitude/grapheneos/) | Upstream GrapheneOS docs (MIT mirror) | Study library |
+| `gratitude/grapheneos/` | Upstream GrapheneOS docs (MIT mirror) | Study library |
 | [`grain-os/`](grain-os/) | Grain OS onboarding hub (variants still scaffold) | Mixed -- see Get Started for real vs proposed |
 
 Living ledger (full register): [`../context/specs/two-dev-environments-and-mobile-emulation.md`](../context/specs/two-dev-environments-and-mobile-emulation.md).

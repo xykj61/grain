@@ -93,7 +93,7 @@ dated log keeps its words, and the elder name is a peer rather than a mistake.
 | [`ember_core.rye`](ember_core.rye) | Catalog parse and query |
 | [`ember.rye`](ember.rye) | Selftest binary |
 | [`fixtures/rye_corpus.kyri`](fixtures/rye_corpus.kyri) | The pinned chunk list |
-| `ember.peal` | The forge rings once -- Opus-in-Ogg under `.peal`. Gratitude: [`OpusOggXiph`](../gratitude/OpusOggXiph.md) |
+| `ember.peal` | The forge rings once -- Opus-in-Ogg under `.peal`. Gratitude: `gratitude/OpusOggXiph.md` |
 
 ```
 rishi/bin/rishi run tools/e/ember_corpus_lap1.rish

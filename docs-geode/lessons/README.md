@@ -65,7 +65,7 @@ built. The lessons name which is which, every time, because a beginner has no wa
 the prose alone and deserves to be told.
 
 **Teachers are named.** Ideas that arrived from elsewhere say so, and the people who found them
-are named in [`gratitude/`](../../gratitude/).
+are named in `gratitude/`.
 
 ---
 

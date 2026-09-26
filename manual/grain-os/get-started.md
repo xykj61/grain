@@ -39,7 +39,7 @@ Manual index with both hubs: [`../README.md`](../README.md).
 
 ### Device path (checkable)
 
-1. **Flash GrapheneOS on a Pixel 10a** -- follow [`../guides/pixel-10a-grapheneos-setup.md`](../guides/pixel-10a-grapheneos-setup.md). Confirm the yellow boot-screen hash against GrapheneOS's published Pixel 10a value (`d8f879d1...`). Upstream wording lives in [`../../gratitude/grapheneos/`](../../gratitude/grapheneos/).
+1. **Flash GrapheneOS on a Pixel 10a** -- follow [`../guides/pixel-10a-grapheneos-setup.md`](../guides/pixel-10a-grapheneos-setup.md). Confirm the yellow boot-screen hash against GrapheneOS's published Pixel 10a value (`d8f879d1...`). Upstream wording lives in `gratitude/grapheneos/`.
 2. **Emulation ladder (HAWM0/HAWM1)** -- on a Linux host with `/dev/kvm`, boot the AVD and prove the **JABS0** Seva fold root inside it (module `seva_b0_fold` -- dated name kept): see [`../../docs/HAWM.md`](../../docs/HAWM.md) - [`../../docs/JABS.md`](../../docs/JABS.md). Waymark law: [`../../context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md`](../../context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md).
 3. **Pack a Glow NativeActivity APK (TUBE0.5)** -- host-side, no phone required for the pack itself:
 
