@@ -116,132 +116,11 @@ the lap that followed it, closing with the ledger fold deadlock (`%827` `%808` `
 repair, the nib-honesty fix, the row-bound repair, and the link-fold family's crossing, closing
 with the ledger fold deadlock unchanged and still Keaton's word to break.
 
-**This lap (`20260926.054749`) held a live, non-stale cold run (waited for it per the FLEET
-clause rather than TERMing) to `tree_moved=no`, `run_verdict=guard_red`, 378 guards: 345 green, 30
-red, 3 gated.** Picked `verdict_home` off the findings: `errata_total=0` tripped its own
-non-empty-collection assert, and the one live declaration -- a row-6 grading of the torus-moonshots
-elder -- read `elder_missing`. `falsifier_verdict_home_scan.sh`'s page discovery excluded `date/`,
-`archive/` and `yonder/` alike, so both elder pages its own header names had folded to their own
-day shelves and dropped out of the reading entirely -- the identical shape REDS `20260925.232420`
-already repaired in the sibling `falsifier_form_outcome_scan.sh`. Narrowed the exclusion from
-`/(date|archive|yonder)/` to `/(archive|yonder)/`; re-ran clean, `unanswered=0`, `errata_total=14`,
-`verdict=answered`. Moved the control's two "closed stack" legs from `date/` to `active-designing/archive/`
-so they kept testing the real exclusion, and added `dated_child_counted` and
-`rowless_dated_child_counted`, mirroring the sibling's own `dated_page_counted` leg; witness GREEN
-on metal, 76 legs (leg-count assert moved 74 to 76). No REDS row booked -- the ledger reads 268
-bytes of headroom against its 65,536-byte bound, `pin_deadlocked=1`, zero foldable rows; recorded
-in the commit body and session log instead.
-
-**This lap (`20260926.065615`) waited out an in-flight cold run already launched at this lap's own
-HEAD (`ca0461877`) rather than starting a second, per the FLEET clause -- `tree_moved=no`,
-`run_verdict=guard_red`, 379 guards: 348 green, 28 red, 3 gated.** Took `commit_parent_claim`, one
-of the two standing leads the prior lap named. `--anchor 418fe0f2f9` read `claims_after_anchor=2`,
-both segments from one commit, `d39b38b62e`, whose body says "Confirmed e131f90ed still resolves
-to HEAD's parent" -- true in the tense meant (HEAD before that commit was `85b0141790`, whose real
-parent is `e131f90ed`) and false under the guard's SELF regex, which reads any `HEAD's parent`
-phrase as a claim about the enclosing commit's own parent. History is testimony and stays as
-written, so the repair moved the anchor argument past it, from `418fe0f2f9` to `ca0461877` (this
-repair's own pre-commit HEAD), following the identical precedent the guard's own header already
-carries for its first anchor move. `claims_after_anchor=0` at the new anchor; witness and its
-43-leg control pen both GREEN; `tame_style_check` GREEN. No REDS row booked -- same 268 bytes of
-headroom, `pin_deadlocked=1`, zero foldable rows. Next lap: a fresh round-open and cold run;
-`seed_link`'s 908-site ratchet remains the standing lead, and the ledger fold deadlock is unchanged
-and still Keaton's word to break.
-
-**This lap (`20260926.070952`) took `seed_link`'s 908-site ratchet, the standing lead.** Read
-`--list`: 909 sites (908 rounds to that) split 509 under `external-research/yonder/` alone, every
-one a retired countdown-prefix research note (`9911_mem_concat.md`) predating the one-clock naming
-law -- testimony by every other guard's own reading (`ascii_document_scan.sh`, `read-scope.md`'s
-closed-stack clause), yet uncounted as testimony HERE because `seed_link_scan.sh`'s own testimony
-check read only a one-clock BASENAME, never the closed-stack DIRECTORY shape. Widened `testimony`
-in `tools/fixtures/s/seed_link_scan.sh` to also read past any path carrying `date/`, `archive/`, or
-`yonder/` as a directory component, matching the exact precedent already proven in
-`ascii_document_scan.sh`. Ratchet fell **908 to 380**; ceiling lowered to match (`820` to `380`).
-Added two control legs (`closed_stack_dir_free`, `mutation_closed_stack_counted`) proving the
-welcome and its own mutation-struck refusal; `tools/fixtures/s/seed_link_control.sh` 31 to 33 legs,
-`control_failed=0`; witness updated to match, GREEN on metal. `tame_style_check` GREEN. No REDS row
-booked -- same 268 bytes of headroom, `pin_deadlocked=1`, zero foldable rows; recorded in the commit
-body and this log instead. Next lap: a fresh round-open and cold run; the 380-site remainder is a
-per-document rewrite (name the withheld room in prose) that falls on touch, and the ledger fold
-deadlock is unchanged and still Keaton's word to break.
-
-**This lap (`20260926.072420`) took the seed_link 380-site remainder's biggest single class.**
-`--list` showed 38 living files carrying the "Cursor twin retired" footer, all linking into
-`.cursor-archive/rules/`, a room the manifest marks `personal` and the seed never ships. Rewrote
-each into a backticked, unlinked path mention -- the idiom `checkpoint.md` already uses for
-`construction/CHECKPOINTS.md` -- across 35 of `.claude/rules/*.md`, `CLAUDE.md`, and
-`context/specs/enclosure-editors.md`. Ratchet fell **380 to 342**; ceiling lowered to match with
-the reason recorded in the scan's own header. Running the wider guard set surfaced a second,
-pre-existing red: `tools/l/link_text_promise_witness.rish` held seven living anchors in
-`construction/REDS.md` whose link text still named a pre-fold path after the target moved under a
-fold -- confirmed by `git stash` to predate this lap. Repaired each anchor to match its own target;
-witness reads `living=0` GREEN. `tools/s/seed_link_witness.rish`, `tools/a/ascii_document_witness.rish`,
-and `tame_style_check` all GREEN on metal. No REDS row booked -- the ledger sits 192 bytes under its
-bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead.
-Next lap: a fresh round-open and cold run; the 342-site remainder continues per-document on touch,
-and the ledger fold deadlock is unchanged and still Keaton's word to break.
-
-**This lap (`20260926.081500`) took counsel/'s share of the seed_link remainder, the biggest
-single target room at 100 of 342 sites.** `context/LEXICON.md` alone carried 70 of those, across
-55 rows; every one already used the target path as its own link text, so
-`perl -pe 's/\[\`[^\`]*\`\]\((\.\.\/counsel\/[^)]*)\)/\`$1\`/g'` dropped the brackets and kept the
-backtick, with one shorthand-text outlier (the Kyri row) landing on its real path the same way.
-Added one sentence near the page's own top naming the convention once, rather than repeating a
-parenthetical fifty-five times. Ratchet fell **342 to 272**; ceiling lowered to match. Witnesses
-GREEN on metal: `seed_link_witness`, `ascii_document_witness`, `tame_style_check`,
-`link_text_promise_witness`. No REDS row booked -- same 192 bytes of headroom,
-`pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead.
-**Named honestly:** this lap began editing before its own cold run's transcript carried
-`run_verdict=`, breaking the ORDER clause's hold-still discipline -- the pass in flight at launch
-will read `tree_moved=yes` for a movement this lap itself caused, discovered only after the edit
-was already made. Next lap: a fresh round-open and a cold run held still start to finish; the
-272-site remainder continues per-document on touch (gratitude/ at 47 is next-largest), and the
-ledger fold deadlock is unchanged and still Keaton's word to break.
-
-**This lap (`20260926.102037`) found gratitude/ already swept by a prior lap and took the next
-four largest files instead: `docs/TUBE.md` (8 sites into `linengrow/` and
-`expanding-prompts/yonder/`), `caravan/HARNESS.md` (6 sites -- one `session-logs/` link and five
-`REDS %N` citations that had been linked into `construction/REDS.md` and its archive shelf,
-unlinked to the bare `REDS %N` form `git-signing.md` already asks for), `foundations/README.md` (7
-sites into `recursion-prompts/`, `context/TAME_CORE.md`, `expanding-prompts/`, foundations' own
-sub_excluded money-close-to-home page, `counsel/`, and `construction/ITINERARY.md`), and
-`active-designing/seam-season-hammock.md` (6 sites into `counsel/` and two sub_excluded
-`external-research/` pages). Ratchet fell **155 to 128**; ceiling lowered to match, reason
-recorded in the scan's own header. Witnesses GREEN on metal: `seed_link_witness` (33 legs,
-0 failing), `ascii_document_witness` (748 chars, under its 750 ceiling), `tame_style_check`,
-`link_text_promise_witness` (zero). No REDS row booked -- the ledger sits 192 bytes under its
-bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and this log instead.
-Held the round-open's ORDER clause this time: no cold run was launched or waited on, since this
-lap ran an ordinary per-document repair naming no new instrument and claiming no booked red.
-Next lap: a fresh round-open and cold run; the remainder continues per-document on touch, and the
-ledger fold deadlock is unchanged and still Keaton's word to break.
-
-**This lap (`20260926.083500`) round-opened clean, found no overlapping claim, then met a cold
-run already in flight at its own launch HEAD -- waited per the FLEET clause rather than starting a
-second or TERMing it.** While it ran, `sh tools/fixtures/f/fold_shelf_link_repoint.sh` (its own
-`fold_shelf_link_repoint` leg had reddened) found and fixed four `](...)` link targets one
-directory level short in two `construction/archive/` accounts; committed and pushed that repair
-alone first, `tools/f/fold_shelf_link_repoint_witness.rish` GREEN. Took gratitude/'s 47-48-site
-share of the seed_link remainder next: `seed_link_scan.sh` treats `gratitude/` (and `vendor/`) as
-unverified rather than shipped by design (line 96's exclusion), since a per-file scrub/sub_exclude
-split cannot be certified path by path. Every gratitude/ link across 19 files already used its
-target as its own display text, so each markdown link into `gratitude/` converted to a plain
-backticked path mention, the idiom `checkpoint.md` already uses for
-`CHECKPOINTS.md`; bibliography.md gained one sentence naming the convention once. Ratchet fell
-**272 to 224**; ceiling lowered to match with the reason in the scan's own header.
-`seed_link_witness`, `ascii_document_witness`, `link_text_promise_witness`, and `tame_style_check`
-all GREEN on metal. **Named honestly:** the in-flight cold run this lap waited on had already read
-this lap's own two commits by the time it finished, so its `tree_moved` reading (if any) describes
-a tree this lap itself moved -- the same shape the prior lap named, met from the waiting side this
-time. No REDS row booked -- ledger headroom unchanged, `pin_deadlocked=1`, zero foldable rows.
-Both commits pushed `xy` then `debrided` clean (fast-forward, no rebase), then a follow-up commit
-carried `construction/ITINERARY.md`'s Git nib forward to this commit's own HEAD, since the work
-was already pushed before the nib could be amended to HEAD's parent (rule 2 wants the amend before
-the push; rule 5's follow-up shape is what a lap reaches for once that window has passed). Next
-lap: a fresh round-open and a cold run held still start to finish; the 224-site remainder continues
-per-document on touch (`.cursor-archive/` links inside `context/LEXICON.md` are the next-largest
-single class, ~24 sites), and the ledger fold deadlock is unchanged and still Keaton's word to
-break.
+**Entries `20260926.054749` through `20260926.083500` shelved whole** to
+[`date/20260926/20260926-112236_incense-next-log-archive-4.md`](date/20260926/20260926-112236_incense-next-log-archive-4.md)
+(checkpoint `20260926.112236`, nib `3d7cec5e61`) -- the seed_link 908-site ratchet's opening lap and
+its 380-, 342-, 272-, and 224-site remainders, closing with the ledger fold deadlock unchanged and
+still Keaton's word to break.
 
 **This lap (`20260926.090651`) round-opened clean, opened and pushed a claim, then met an in-flight
 cold run at its own launch HEAD -- TERMed it per the runner's own advice, since its `launch_head`
@@ -304,3 +183,26 @@ two prior laps in this shelf already named from the launching side. No REDS row 
 per-document repair, ledger unchanged, `pin_deadlocked=1`, zero foldable rows. Next lap: a fresh
 round-open and a cold run held still start to finish; the 76-site remainder continues per-document
 on touch, and the ledger fold deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260926.112003`) round-opened clean, found no overlapping claim (five standing rows
+all `status=stale`), then met a cold run already in flight at this lap's own launch HEAD
+(`b8b25a6117`) -- held still and waited rather than starting a second or TERMing it, though its
+`run_verdict=` had not landed by send time.** Took the seed_link 76-site remainder, matching each
+citing file's raw markdown link token (the scan's own printed ratchet line uses the unnormalized
+token, not a resolved path) against the file's own targets, then dropping brackets and target for
+all 76 across 47 files -- no room held more than four -- keeping each display text exactly as
+written, whether backticked path, shorthand, or prose. Ratchet fell **76 to 0**; the ceiling constant
+in `seed_link_scan.sh` moved to match. That closed the ceiling into a wall the way `ascii_document_scan.sh`
+closed earlier, and `seed_link_control.sh`'s fourth leg (`ratchet_under_ceiling_free`, which asked a
+ratchet below the ceiling to pass free) could no longer hold at ceiling=0, since there is no room
+"under" zero -- renamed to `ratchet_at_zero_refused` and its plant now asserts refusal, with
+`seed_link_witness.rish`'s matching assert and a closing header note updated the same way. Both
+GREEN on metal, 33 legs, 0 failing; `ascii_document_witness`, `tame_style_check`, and
+`link_text_promise_witness` all GREEN after the 47-file edit; `qa_report_card.sh` on the three
+heaviest-touched pages read B+, B+, A. No REDS row booked -- ordinary per-document repair, ledger
+unchanged, `pin_deadlocked=1`, zero foldable rows. Fetched `xy` clean (no divergence, no rebase
+needed), amended the Git nib to HEAD's parent, pushed `xy` then `debrided` clean fast-forward. **The
+seed_link remainder that has been this shelf's standing lead for seven laps is now closed at zero.**
+Next lap: a fresh round-open and a cold run held still start to finish; the standing lead reverts
+to the ledger fold deadlock (`%827` `%808` `%803` `%785` `%730`, three `%338` doors), still Keaton's
+word to break, or whatever the next cold-run receipt surfaces as fresh red.

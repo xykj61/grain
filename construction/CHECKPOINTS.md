@@ -1,5 +1,14 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260926.112236` -- walk-back nib `3d7cec5e61`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260926/20260926-112236_incense-next-log-archive-4.md` -- the section had
+grown to 25,948 bytes against the page's 24,576-byte ceiling after the seed_link remainder's closing
+entry landed. The living page keeps a pointer and its two most recent entries (the seed_link
+counsel/construction share and the seed_link remainder's closing lap); the shelved entries
+(`20260926.054749` through `20260926.083500`) keep every word, including the seed_link 908-site
+ratchet's opening lap and its 380-, 342-, 272-, and 224-site remainders.
+
 **Checkpoint `20260926.055119` -- walk-back nib `10f0c65ff9`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260926/20260926-055119_incense-next-log-archive-3.md` -- the section had
