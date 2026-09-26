@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260926.013806
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain of the fleet, incense seat
+modality text
+model claude-sonnet-5
+model_status verified active runtime, fleet default per .claude/settings.json read 20260917
+configured_model claude-sonnet-5
+configured_status resolved via tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host Framework laptop, America/New_York
+title A day shelf's own row broke its 192-byte bound; the cold run found it
+prompt Ran the overnight rite: round-open, claim check, cold run, pick one agent-doable item off the findings.
+think Round-open opened clean at b378d79a4a, no standing rebase.
+think Checked construction/fleet-claims.kyri -- five live claims, none touching a file class I would build in; opened no claim of my own since I picked an existing ratchet repair rather than a new instrument.
+think Launched the cold run per the ORDER clause -- read HEAD once, then held still. A live pass already held the lock at the same HEAD; confirmed it as this tree's own via tools/f/fleet_call.sh (verdict=dry) and waited rather than TERMing it, per the FLEET clause.
+think Cold run closed tree_moved=no, run_verdict=guard_red, 379 guards: 344 green, 32 red, 3 gated.
+think Read the rota row for this lap -- N=6673, row 3, Water, the row that tastes -- and skimmed its cardinal, fixed, and dual seats; nothing amiss surfaced.
+think Picked index_row_bound off the findings: session-logs/date/README-index-20260926.md carried its one table row at 214 bytes against the pin's own 192-byte bound.
+think Shortened the row's "What it carried" clause from 87 to 64 characters, keeping the same three facts (dated_path, foundations_link GREEN; seed_link ratchet diagnosed), fitting the 65-character budget the row's fixed columns leave.
+think Re-ran tools/in/index_row_bound_witness.rish -- GREEN, 39 legs.
+obs No REDS row booked -- the ledger reads 268 bytes of headroom against its 65,536-byte bound and stands pin_deadlocked=1 with zero foldable rows; recorded in the commit body and here instead.
+obs Rule 2's amend carried construction/ITINERARY.md's Git nib to b378d79a4a (HEAD's parent) in the same commit before any push, since no rebase intervened.
+rota lap 6673, row 3 -- Water, the row that tastes; read the cardinal (what-brix-infuse-is), fixed (the-happy-zone-and-the-thin-edge), and dual (growing-a-language) seats; no red surfaced.
+file session-logs/date/README-index-20260926.md -- shortened the over-bound row's clause
+file construction/ITINERARY.md -- Git nib carried to b378d79a4a in the same commit
+recommend kg -- a fresh round-open and cold run next lap; the remaining 31 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors bullet, and the ledger fold deadlock is unchanged and still Keaton's word to break.
+scope one small ratchet repair, index_row_bound only; no other guard touched
+status GREEN -- witness re-run on metal, both remotes pushed, commit e131f90ed

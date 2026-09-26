@@ -243,6 +243,20 @@ site by site), the remaining reds still overlap the standing backlog on the shel
 ITINERARY's Open Doors bullet, and the ledger fold deadlock is unchanged and still Keaton's word to
 break.
 
+**This lap (`20260926.013806`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+379 guards: 344 green, 32 red, 3 gated.** Round-open opened clean; a live, non-stale pass already
+held the roster lock at the same settled HEAD, confirmed as this tree's own via
+`tools/f/fleet_call.sh` (`verdict=dry`) and waited for rather than TERMed, per the FLEET clause.
+Picked `index_row_bound` off the findings: `session-logs/date/README-index-20260926.md`'s one row
+stood at 214 bytes against the pin's own 192-byte bound. Shortened the row's "What it carried"
+clause from 87 to 64 characters, same three facts kept; `index_row_bound_witness.rish` re-run
+GREEN, 39 legs. No REDS row booked -- the ledger reads 268 bytes of headroom against its
+65,536-byte bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session
+log instead. Landed at `e131f90ed`, both remotes. Next lap: a fresh round-open and cold run; the
+remaining 31 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
+bullet, `seed_link`'s 908-site ratchet is still the standing lead named above, and the ledger fold
+deadlock is unchanged and still Keaton's word to break.
+
 **This lap (`20260925.221041`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
 378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A stale detached
 pass held the lock at launch (`launch_head` three commits behind HEAD); confirmed it as this tree's
