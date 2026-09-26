@@ -2109,3 +2109,12 @@ onto [`archive/date/20260925/20260925-075903_itinerary-incense-archive-fold-brok
 so the card could carry the new finding under its 40,960-byte bound. *What waits there, worth
 recalling:* nothing new -- REDS `20260924.212249` and `20260924.212647` already carry the full
 account, so the fold drops no fact the ledger lacks.
+
+**Checkpoint `20260926.034315` -- Incense shelves two `recursion-prompts/incense-inner.md` `next`
+entries before the lap's own account.** **Walk-back nib:** `3fc884e278`. **Swept:** the
+`20260925.130901` disk-space-clear entry and the `20260925.145308` lap account, moved verbatim onto
+[`../recursion-prompts/date/20260926/20260926-034315_incense-next-log-archive-2.md`](../recursion-prompts/date/20260926/20260926-034315_incense-next-log-archive-2.md)
+so the page could carry this lap's `opening_lines` repair under its 24,576-byte bound. *What waits
+there, worth recalling:* nothing new -- both entries are already summarized in later entries on the
+live page (the ledger fold deadlock's roster and REDS %795's fold), so the shelf drops no fact a
+later reader still needs from the live page alone.
