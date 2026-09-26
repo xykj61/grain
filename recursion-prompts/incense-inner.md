@@ -130,7 +130,20 @@ so they kept testing the real exclusion, and added `dated_child_counted` and
 `rowless_dated_child_counted`, mirroring the sibling's own `dated_page_counted` leg; witness GREEN
 on metal, 76 legs (leg-count assert moved 74 to 76). No REDS row booked -- the ledger reads 268
 bytes of headroom against its 65,536-byte bound, `pin_deadlocked=1`, zero foldable rows; recorded
-in the commit body and session log instead. Next lap: a fresh round-open and cold run; the
-remaining 29 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
-bullet, `seed_link`'s 908-site ratchet and `commit_parent_claim`'s classifier ambiguity remain the
-standing leads, and the ledger fold deadlock is unchanged and still Keaton's word to break.
+in the commit body and session log instead.
+
+**This lap (`20260926.065615`) waited out an in-flight cold run already launched at this lap's own
+HEAD (`ca0461877`) rather than starting a second, per the FLEET clause -- `tree_moved=no`,
+`run_verdict=guard_red`, 379 guards: 348 green, 28 red, 3 gated.** Took `commit_parent_claim`, one
+of the two standing leads the prior lap named. `--anchor 418fe0f2f9` read `claims_after_anchor=2`,
+both segments from one commit, `d39b38b62e`, whose body says "Confirmed e131f90ed still resolves
+to HEAD's parent" -- true in the tense meant (HEAD before that commit was `85b0141790`, whose real
+parent is `e131f90ed`) and false under the guard's SELF regex, which reads any `HEAD's parent`
+phrase as a claim about the enclosing commit's own parent. History is testimony and stays as
+written, so the repair moved the anchor argument past it, from `418fe0f2f9` to `ca0461877` (this
+repair's own pre-commit HEAD), following the identical precedent the guard's own header already
+carries for its first anchor move. `claims_after_anchor=0` at the new anchor; witness and its
+43-leg control pen both GREEN; `tame_style_check` GREEN. No REDS row booked -- same 268 bytes of
+headroom, `pin_deadlocked=1`, zero foldable rows. Next lap: a fresh round-open and cold run;
+`seed_link`'s 908-site ratchet remains the standing lead, and the ledger fold deadlock is unchanged
+and still Keaton's word to break.
