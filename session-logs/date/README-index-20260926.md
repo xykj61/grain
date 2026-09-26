@@ -6,4 +6,4 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260926.003429` | [Two folds broke three link guards](20260926/20260926-003429_two-folds-broke-three-link-guards.kyri) | dated_path and foundations_link GREEN; seed_link's front door GREEN, ratchet diagnosed. |
+| `20260926.003429` | [Two folds broke three link guards](20260926/20260926-003429_two-folds-broke-three-link-guards.kyri) | dated_path, foundations_link GREEN; seed_link ratchet diagnosed. |
