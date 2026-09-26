@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.073943` | [counsel links named-not-linked](20260926/20260926-073943_counsel-links-named-not-linked.kyri) | seed_link ratchet 342 to 272, LEXICON.md's counsel/ links converted. |
 | `20260926.072741` | [incense-inner next record](20260926/20260926-072741_incense-inner-next-record.kyri) | next section updated, nib carried forward. |
 | `20260926.072420` | [cursor-footer named-not-linked](20260926/20260926-072420_cursor-footer-named-not-linked.kyri) | seed_link ratchet 380 to 342, link_text_promise repaired GREEN. |
 | `20260926.070952` | [seed_link learns the closed-stack shape](20260926/20260926-070952_seed-link-closed-stack-testimony.kyri) | ratchet 908 to 380, witness GREEN. |
