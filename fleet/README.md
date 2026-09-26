@@ -7,6 +7,7 @@
 **Last updated:** `20260920.205200`
 **Born from:** `../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`
 **Kin:** [`EARTH_FLEET.md`](EARTH_FLEET.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/README.md`](../open/README.md) - `../construction/fleet-roster.kyri` - [`../.claude/rules/the-baton.md`](../.claude/rules/the-baton.md)
+**Home:** [`../README.md`](../README.md)
 
 ---
 
