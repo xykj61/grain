@@ -135,19 +135,10 @@ whole](archive/date/20260918/20260918-093822_itinerary-grass-hold0-account.md).
 **GRASS -- hold1 repair, and the zero-assert ratchet's close.** [Shelved
 whole](archive/date/20260918/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md).
 
-**GRASS -- THE FOUNDATIONS REVERSE-READ CONTINUES: `THE-HEART-IN-THE-WORK.MD`.** Account
-[shelved whole](archive/date/20260918/20260918-110944_itinerary-grass-heart-in-the-work-account.md). Read
-[`../foundations/20260628-121512_the-heart-in-the-work.md`](../foundations/20260628-121512_the-heart-in-the-work.md),
-the second same-stamp file named as this walk's next step; its three checkable claims (Tally's
-`garden` name, assert-at-the-door, "one clear style") all still match the live tree. [Packet
-written](../active-designing/20260918-110944_a-reverse-read-of-the-heart-in-the-work.md):
-**affirmed, no molt.** Next in the walk: `20260628-133212_a-free-and-open-room.md`. **Ed25519(1)
-checked and closed as a non-finding**: `tools/fixtures/t/tame_style_app_sites.sh`'s own header
-already names the sole remaining site (`glow/nock/nock_glow_mirror_witness.rye`'s trailing
-comment) as its documented residue, not a call to migrate -- nothing for the next agent to spend a
-lap on. **YOURS:** the ratchet roster stands at `@memcpy` migration (135), `parseInt(` migration
-(54), and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the
-next agent-doable pick is any one, claim-board checked first.
+**GRASS -- PRIOR LIVE ACCOUNTS.** [Shelved whole](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md).
+**YOURS:** the ratchet roster stands at `@memcpy` migration (135), `parseInt(` migration (54),
+and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the next
+agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- prior open-room account shelved whole** ([archive](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)); the new packet follows below.
 
@@ -165,8 +156,9 @@ next agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- FOUNDATION BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md).
 
-**GRASS -- LOCAL MONEY.** [Packet](../active-designing/date/20260925/20260925-041211_grass-money-close-home.md):
-**standfasted.** The synthetic offer proves no circulation or giving-lane policy.
+**GRASS -- LEDGER AND GRACE.** [Packet](../active-designing/date/20260925/20260925-154000_grass-reverse-read-of-ledger-and-grace.md):
+**standfasted as a product boundary.** The synthetic offer remains unrecognized in Dimeroll and
+creates zero journal entries. An evidence book does not measure care or human worth.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -361,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d4f7342ac6` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `fc43560938` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
