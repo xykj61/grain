@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.200327` | [Account drafts](20260925/20260925-200327_bakery-account-drafts.kyri) | Four drafts reviewed; later records kept. |
 | `20260925.195426` | [Shelf remainder](20260925/20260925-195426_bakery-shelf-remainder.kyri) | Twenty-one drafts reviewed; current records kept. |
 | `20260925.194634` | [Shelf continuity](20260925/20260925-194634_bakery-shelf-continuity.kyri) | Ten drafts reviewed; current records kept. |
 | `20260925.194631` | [Receipt-space study](20260925/20260925-194631_diffuser-receipt-space-study.kyri) | Two admitted purposes share one Still row. |

@@ -391,6 +391,13 @@ agree with the four affected shelves, and their witness passes all 41 controls.
 All 85 stashes remain preserved. The remaining queue holds 78 construction
 Markdown versions. Capture integration and full cold and hot proof remain owed.
 
+The [account-shelf review](../session-logs/date/20260925/20260925-200327_bakery-account-drafts.kyri) covers four parked construction drafts.
+Three account bodies match later shelves exactly. The earlier seed-timing account
+precedes the recovered measurement's quiet-history distinction and six added
+controls. Keep those later accounts and all 85 stashes. The remaining queue holds
+74 construction Markdown versions. Capture integration and full cold and hot
+proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
