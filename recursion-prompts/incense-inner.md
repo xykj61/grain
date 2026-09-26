@@ -210,3 +210,17 @@ unrostered repair. Fetched `xy` clean (no divergence), pushed `xy` then `gp405` 
 Next lap: fresh round-open, cold run held still start to finish; ~21 reds from this clean run
 (including `standing_equipment_redleg`'s chapter-lane remainder and `width_check`'s already-ruled
 th5 disagreement) remain untriaged.
+
+**This lap (`20260926.195536`) round-opened clean at `8d78cf339`, found no overlapping claim, then
+launched a fresh cold run at that HEAD and held fully still through its whole run.** It closed
+clean: `tree_moved=no`, 354 green, 24 red, 3 gated. Of the 24, `fascia_home_link` read
+`no_path_home=8` against its own zero-ceiling wall -- eight room READMEs (`.cursor-archive/rules/`,
+`construction/archive/REDS/`, `construction/archive/date/`, `construction/archive/shred/`,
+`fleet/`, `frontier/`, `frontier/cursor-cli/`, `open/`) carrying no relative link back to the root.
+Each gained one `**Home:**` line (or grew an existing `**Kin:**` line) at its own directory depth;
+the scan now reads `no_path_home=0` and the witness runs GREEN on metal, with all eight files
+staying plain ASCII. No REDS row booked -- an ordinary unrostered repair naming no ledger row and
+overlapping no claim on the board. Git nib carried forward by amend to this commit's parent. Pushed
+`xy` then `gp405` clean fast-forward. Next lap: fresh round-open, cold run held still start to
+finish; ~23 reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
+`standing_equipment_redleg`'s chapter-lane remainder still outside this lane).
