@@ -280,3 +280,26 @@ Fetched `xy` clean, amended the Git nib to HEAD's parent, pushed `xy` then `debr
 Next lap: a fresh round-open and a cold run held still start to finish; the standing lead reverts to
 the ledger fold deadlock, still Keaton's word to break, or whatever the in-flight cold run's receipt
 surfaces as fresh red once it lands.
+
+**This lap (`20260926.133807`) round-opened clean at `a7c191e119`, found no overlapping claim (five
+standing rows all `status=stale`), then met a cold run already in flight at this lap's own launch
+HEAD -- held still and waited rather than starting a second or TERMing it, though its `run_verdict=`
+had not landed by send time.** Read `construction/ITINERARY.md`'s Open doors for Keaton section and
+found a stale bullet: it still named `fallback_instrument_passes=4` from `20260917.090914` as
+unclaimed drift in `fleet_claim_form_control.sh` and `page_residency_sample.sh`, when the prior lap
+in this shelf (commit `f4972ff9a`) had already repaired both files plus two false positives in the
+torus-offset search controls. Ran `tools/fixtures/i/instrument_refusal_scan.sh` fresh --
+`fallback_instrument_passes=0`, `verdict=ok` -- and rewrote the bullet to name the closed reading and
+the repairing commit rather than the stale count, per docs-implementation-sync. Also confirmed the
+card's other open item, the th5/width-check disagreement (`tools/w/width_check_th5.rish` RED on
+metal against `tools/fixtures/w/width_check_scan.sh`'s pinned five-`usize` exemption in
+`rishi/src/main.rye`), and left it untouched -- the card names it as TAME's/Keaton's own ruling
+rather than a lap's repair. No REDS row booked -- an ordinary docs-sync fix against an already-landed
+defect. **Named honestly:** this lap edited and pushed while its own launched cold run was still in
+flight in the background, the same shape several prior laps in this shelf have named; its
+`tree_moved` reading, once it lands, may describe a tree this lap itself moved. Fetched `xy` clean
+(ahead 1, no divergence), amended the Git nib to HEAD's parent, pushed `xy` then `debrided` clean
+fast-forward. Next lap: a fresh round-open and a cold run held still start to finish; the standing
+lead reverts to the ledger fold deadlock (still Keaton's word to break) or whatever the in-flight
+cold run's receipt surfaces as fresh red once it lands, and the th5 width disagreement stays open
+and unclaimed as a ruling for TAME/Keaton.
