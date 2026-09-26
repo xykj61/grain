@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.143701` | [hold still on an inherited cold run](20260926/20260926-143701_hold-still-inherited-cold-run.kyri) | Round-opened clean, no overlap, waited on ORDER rather than editing while the inherited pass was in flight. |
 | `20260926.140041` | [redleg's four guards take their refusal legs](20260926/20260926-140041_redleg-four-refusal-legs.kyri) | Four controls close %827's named remainder. |
 | `20260926.133807` | [card bullet repaired to name the closed wall](20260926/20260926-133807_instrument-refusal-card-repair.kyri) | The Open-doors bullet still named a stale fallback_instrument_passes=4; rewritten to cite the repairing commit. |
 | `20260926.131241` | [instrument_refusal wall closed to zero](20260926/20260926-131241_instrument-refusal-wall.kyri) | Four redundant fallbacks and two sed-in-a-string false positives repaired; wall restored. |
