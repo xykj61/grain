@@ -2136,3 +2136,11 @@ so the page could carry this lap's `opening_lines` repair under its 24,576-byte 
 there, worth recalling:* nothing new -- both entries are already summarized in later entries on the
 live page (the ledger fold deadlock's roster and REDS %795's fold), so the shelf drops no fact a
 later reader still needs from the live page alone.
+
+**Checkpoint `20260926.140449` -- Incense shelves two more `incense-inner.md` `next` entries before
+the redleg-repair account.** **Walk-back nib:** `1ce0bb10e6`. **Swept:** the `20260926.090651` and
+`20260926.100522` seed_link ratchet entries, moved verbatim onto
+[`../recursion-prompts/date/20260926/20260926-140449_incense-next-log-archive-5.md`](../recursion-prompts/date/20260926/20260926-140449_incense-next-log-archive-5.md)
+so the page could carry this lap's `%827` refusal-leg account under its 24,576-byte bound. *What
+waits there, worth recalling:* nothing new -- the seed_link remainder's own count (`155`) is already
+current on the live page's later entries, so the shelf drops no fact a later reader still needs.
