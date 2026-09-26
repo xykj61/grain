@@ -180,3 +180,20 @@ and `tame_style_check` all GREEN on metal. No REDS row booked -- the ledger sits
 bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead.
 Next lap: a fresh round-open and cold run; the 342-site remainder continues per-document on touch,
 and the ledger fold deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260926.081500`) took counsel/'s share of the seed_link remainder, the biggest
+single target room at 100 of 342 sites.** `context/LEXICON.md` alone carried 70 of those, across
+55 rows; every one already used the target path as its own link text, so
+`perl -pe 's/\[\`[^\`]*\`\]\((\.\.\/counsel\/[^)]*)\)/\`$1\`/g'` dropped the brackets and kept the
+backtick, with one shorthand-text outlier (the Kyri row) landing on its real path the same way.
+Added one sentence near the page's own top naming the convention once, rather than repeating a
+parenthetical fifty-five times. Ratchet fell **342 to 272**; ceiling lowered to match. Witnesses
+GREEN on metal: `seed_link_witness`, `ascii_document_witness`, `tame_style_check`,
+`link_text_promise_witness`. No REDS row booked -- same 192 bytes of headroom,
+`pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead.
+**Named honestly:** this lap began editing before its own cold run's transcript carried
+`run_verdict=`, breaking the ORDER clause's hold-still discipline -- the pass in flight at launch
+will read `tree_moved=yes` for a movement this lap itself caused, discovered only after the edit
+was already made. Next lap: a fresh round-open and a cold run held still start to finish; the
+272-site remainder continues per-document on touch (gratitude/ at 47 is next-largest), and the
+ledger fold deadlock is unchanged and still Keaton's word to break.

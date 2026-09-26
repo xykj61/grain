@@ -73,7 +73,10 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # (`.claude/rules/*.md`, CLAUDE.md, context/specs/enclosure-editors.md) named its withheld room
 # in prose -- a backticked path with no link -- rather than linking into `.cursor-archive/`, which
 # the manifest marks `personal` and never ships.
-ceiling=342   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 272 on 20260926 after context/LEXICON.md's own 55 rows, carrying 70 link occurrences
+# into `personal`-verdict counsel/, were rewritten the same way -- each `[`path`](path)` link's
+# text already named the path, so the conversion drops the brackets and keeps the backtick.
+ceiling=272   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.
