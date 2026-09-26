@@ -11,6 +11,12 @@
 
 ## fruit
 
+**Recovery queue, reread 20260925.203642: 55 construction Markdown versions remain.**
+The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
+identities cover 121 after this lap. Recompute that set before selecting work;
+the top-stamped shelf log records an earlier lap and carries an older count.
+All 85 stashes and the capture candidate stay preserved. The [queue reconciliation](../session-logs/date/20260925/20260925-203642_bakery-queue-reconciliation.kyri) names the evidence.
+
 The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
 The separate `rank_outcome_scan.sh` grades the moonshot ranking; it answers a different question.
@@ -413,6 +419,12 @@ nine explicit recovery notes or forwarders, and four alternate published shelves
 Keep the published numbers and the notes that distinguish drafts from landings.
 All 85 stashes remain preserved; 58 construction Markdown versions await review.
 Capture integration and full cold and hot roster proof remain owed.
+
+The account-body comparison covers three more archive drafts. Two ledger rows
+match their separate published shelves exactly. Two Bakery accounts also match
+exactly; a third differs only in its relocated elder link. Keep the published
+records and preserve the drafts. Fifty-five construction Markdown versions
+remain. Capture integration and full cold and hot proof remain owed.
 
 ## gates
 
