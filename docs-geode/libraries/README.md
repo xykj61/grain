@@ -33,7 +33,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 1 |
 | [`comlink/`](../../comlink/README.md) | 77 | 20 |
 | [`constel/`](../../constel/README.md) | 32 | 42 |
-| `construction/` | 1 | 82 |
+| [`construction/`](../../construction/README.md) | 1 | 82 |
 | [`crypto/`](../../crypto/README.md) | 82 | 124 |
 | [`dimeroll/`](../../dimeroll/README.md) | 4 | 5 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
@@ -44,7 +44,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
-| `linengrow/` | 157 | 85 |
+| [`linengrow/`](../../linengrow/README.md) | 157 | 85 |
 | [`lotus/`](../../lotus/README.md) | 238 | 250 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |

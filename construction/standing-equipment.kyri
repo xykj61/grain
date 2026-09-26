@@ -7992,3 +7992,12 @@ guard pond_gui_spine
 path tools/gen/chapter/pond_gui_spine_witness.rish
 tier lap
 seated 20260923.210912
+
+# disk_reclaim -- reports which of a ship's own `*/bin/` build outputs are gitignored and
+# rebuildable, confirmed by `git check-ignore -q` before anything named; the load-bearing
+# toolchain (rye/bin, rishi/bin) stays excluded --apply or not. Answers REDS `20260925.130901`'s
+# own remaining question in report mode; `--apply` (not run by this witness) is a hand's own call.
+guard disk_reclaim
+path tools/d/disk_reclaim_witness.rish
+tier lap
+seated 20260926.121500
