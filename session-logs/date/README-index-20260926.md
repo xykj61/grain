@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.105255` | [seed_link's counsel/ and construction/ share](20260926/20260926-105255_seed-link-counsel-construction-remainder.kyri) | seed_link ratchet 128 to 76, both `personal`-verdict rooms cleared. |
 | `20260926.102037` | [seed_link's four largest remaining files](20260926/20260926-102037_seed-link-second-largest-four.kyri) | seed_link ratchet 155 to 128, TUBE.md/HARNESS.md/foundations README/hammock converted. |
 | `20260926.100522` | [LEXICON's 53-site remainder named-not-linked](20260926/20260926-100522_lexicon-53-site-remainder.kyri) | seed_link ratchet 208 to 155, LEXICON.md's remaining 53 sites converted. |
 | `20260926.090757` | [LEXICON .cursor-archive/ links named-not-linked](20260926/20260926-090757_lexicon-cursor-archive-link-sweep.kyri) | seed_link ratchet 224 to 208, LEXICON.md's last 16 cursor-archive links converted. |

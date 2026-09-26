@@ -105,7 +105,7 @@ Every line here has a witness behind it that runs green on a real machine.
 | [`PRIMITIVES.md`](PRIMITIVES.md) | color, type, video, and the shape-analysis family of Chapter G |
 
 **Chapter:** A -- Hardware & Right-to-Repair - **Waymark:** HUNK - opening journey **Open Image**.
-The card that says what comes next is [`../construction/ITINERARY.md`](../construction/ITINERARY.md).
+The card that says what comes next is `../construction/ITINERARY.md`.
 
 ## Gratitude
 

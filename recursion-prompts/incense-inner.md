@@ -282,3 +282,25 @@ and `tame_style_check` all GREEN on metal; `qa_report_card.sh context/LEXICON.md
 Next lap: a fresh round-open and a cold run held still start to finish; the 155-site remainder
 continues per-document on touch, and the ledger fold deadlock is unchanged and still Keaton's word
 to break.
+
+**This lap (`20260926.105255`) round-opened clean at `d9d14d90f9`, found no overlapping claim, and
+launched the cold run per ORDER -- finding one already in flight at this lap's own launch HEAD,
+waited for it in the background rather than starting a second or TERMing it.** Grouped the 128
+remaining `seed_link` sites by resolved target room: `counsel/` (28 sites) and `construction/` (24
+sites) are both `personal`-verdict rooms in `template-manifest.kyri`, so every link into either is
+unshippable by definition. A script dropped brackets and kept the backtick wherever a link's
+display text already equalled its target -- 30 mechanical conversions across 24 files -- and the
+remaining ~24 sites, whose display named a shorthand, a bare filename, a directory, or a path
+missing its leading `../` (`docs/COMPASS.md`'s `ITINERARY.md`, `docs-geode/libraries/README.md`'s
+`construction/`, `docs/ENCLOSURE.md`'s `counsel/20260712-090512`, four `fleet/*.md` `Kin:` pairs,
+`mycelium/README.md`'s `[ITINERARY]`, three `radiant_pool_scope.md` shorthand names), were converted
+by hand, keeping their own display text. Ratchet fell **128 to 76**; ceiling lowered to match with
+the reason in the scan's own header. `seed_link_witness`, `seed_link_control`,
+`ascii_document_witness`, `link_text_promise_witness`, and `tame_style_check` all GREEN on metal.
+**Named honestly:** this lap edited the tree while a cold run launched at its own HEAD was still in
+flight in the background -- held still on the workspace, not on read-only planning, and the waited
+run's `tree_moved` reading, once it lands, may describe a tree this lap itself moved, the same shape
+two prior laps in this shelf already named from the launching side. No REDS row booked -- ordinary
+per-document repair, ledger unchanged, `pin_deadlocked=1`, zero foldable rows. Next lap: a fresh
+round-open and a cold run held still start to finish; the 76-site remainder continues per-document
+on touch, and the ledger fold deadlock is unchanged and still Keaton's word to break.

@@ -20,7 +20,7 @@ This is where curiosity lands. The `external-research/` folder holds our explora
 
 This folder is allowed to be experimental, informal, and overgrown at times. It is open to the world: it may name other projects, draw inspiration freely, and cite its sources, with the original works kept whole in the `gratitude/` folder. That openness is its purpose, and it is exactly what sets it apart from its disciplined siblings -- `active-designing/` (our own design decisions) and `counsel/` (the bench's proposals awaiting Kaeden's word). Here we roam; there we decide; counsel proposes.
 
-**Counsel lives elsewhere.** Analysis, rulings, proposals, and recommendations on pending project decisions moved to [`../counsel/`](../counsel/README.md) (`20260707.180712` reorg). This folder keeps genuine external studies and the settlement-seat register carve-out.
+**Counsel lives elsewhere.** Analysis, rulings, proposals, and recommendations on pending project decisions moved to `counsel/` (`20260707.180712` reorg). This folder keeps genuine external studies and the settlement-seat register carve-out.
 
 This file is the foundation stone. It rests at the bottom of the stack and explains how the stack works, so that anyone who opens this folder for the first time understands the shape of it at a glance.
 

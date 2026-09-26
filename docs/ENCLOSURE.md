@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** <=300 lines
 **Last updated:** `20260910.142031` -- two sentences restated to lead with what is, every claim and path held, so the compressor shelf joins the register meter at zero over target
-**Compresses:** [`counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) - [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) - [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) - [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) - [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) - [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) - [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
+**Compresses:** `counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md` - [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) - [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) - [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) - [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) - [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) - [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
 
 ---
 
@@ -23,7 +23,7 @@ A jail with one named device lane, or a finished Pond, holds more than an enclos
 
 **What not to widen in ai-jail:** host session buses (D-Bus, systemd transient units), host `$HOME` beyond project bind, shared `/tmp`, broadened network, USB/raw disk, docker socket. Wayland/GPU pass stays as-is; KVM is **display-less by design** (`-display none` + QMP screendump).
 
-Full ruling: [`counsel/20260712-090512`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md).
+Full ruling: `counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > **FOSSIL -- Class M**, prepped `20260906.114734` for the mitra shed; the cut stays RED
 > until circled. **Living mutant:** `tools/f/fleet-loop.sh` reading `construction/fleet-roster.kyri`, with `tools/f/fleet_watch.sh` above it. The Codex supervisor family; its elder shell stays byte-for-byte on purpose.
-> Row and reasons: [`../../construction/SHRED_PREP.md`](../../construction/SHRED_PREP.md).
+> Row and reasons: `../../construction/SHRED_PREP.md`.
 
 **Status:** Living compatibility receipt
 

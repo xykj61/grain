@@ -60,4 +60,4 @@ rishi/bin/rishi run tools/m/mand_ring3_witness.rish
 Ring 3 stays test-only on purpose. A verb that destroys a key earns its reach one witness
 at a time, and the reach it has today is the reach a witness has proven.
 
-Counsel: [`../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md`](../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md) - claim [`../waymarks/date/20260725/20260725-120701_mand-home-ring3.md`](../waymarks/date/20260725/20260725-120701_mand-home-ring3.md)
+Counsel: `../counsel/date/20260725/20260725-001200_forgetting-without-breaking.md` - claim [`../waymarks/date/20260725/20260725-120701_mand-home-ring3.md`](../waymarks/date/20260725/20260725-120701_mand-home-ring3.md)

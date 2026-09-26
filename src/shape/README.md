@@ -68,7 +68,7 @@ rishi/bin/rishi run tools/co/comlink_carriage_witness.rish
 rishi/bin/rishi run tools/co/comlink_nesting_witness.rish
 ```
 
-Tend pedestal tier COMPLETE -- Aurora A1-A4 - Mantra M1-M4 - Tally/Caravan as seated - Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
+Tend pedestal tier COMPLETE -- Aurora A1-A4 - Mantra M1-M4 - Tally/Caravan as seated - Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: `../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`.
 
 
 ---

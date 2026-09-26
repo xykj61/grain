@@ -99,7 +99,22 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # money-close-to-home page, counsel/, and construction/ITINERARY.md), and
 # active-designing/seam-season-hammock.md (6 sites into counsel/ and two sub_excluded
 # external-research/ pages) were each rewritten the same way.
-ceiling=128   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 76 on 20260926 after every remaining counsel/ (28 sites, across caravan/LADDER.md,
+# context/APARIGRAHA.md, context/OPEN_QUESTIONS.md, context/RADIANT_STYLE.md, context/THREATS.md,
+# context/specs/append-only-growth-law.md, context/specs/living-vs-dated.md,
+# context/specs/redaction-stance.md, docs/ENCLOSURE.md, external-research/README.md, mand/README.md,
+# src/shape/README.md, tools/fixtures/r/radiant_pool_scope.md, tools/fixtures/sound_season/README.md,
+# active-designing/docs/glow/*, and .claude/rules/design-rooms.md) and construction/ (24 sites,
+# across active-designing/README.md, context/specs/collision-guard.md,
+# context/specs/living-vs-dated.md, context/TAME_GUIDANCE.md, docs/COMPASS.md,
+# docs-geode/libraries/README.md, docs-geode/study/README.md, docs/PROVEN_SEAT.md, fleet/*,
+# image/README.md, lantern/README.md, manual/tutorials/run-record-and-failures.md,
+# mikrophone/README.md, mycelium/README.md, tools/c/chatgpt-mind-rishi-adaptation.md) links were
+# rewritten the same way -- most sites already used the target path as their own link text, so the
+# conversion drops the brackets and keeps the backtick; sites whose display text named a shorthand,
+# a directory, or a bare filename (`ITINERARY.md`, `construction/`, `counsel/20260712-090512`, the
+# fleet-roster.kyri "Kin:" pairs missing their leading `../`) kept their own display text instead.
+ceiling=76   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.

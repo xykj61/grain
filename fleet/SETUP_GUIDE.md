@@ -19,7 +19,7 @@ connection). A ship needs both, and neither page repeats the other's own steps.
 
 ## Part 1: what makes a checkout a ship, rather than just a clone
 
-1. **A named seat**, entered in [`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) --
+1. **A named seat**, entered in `construction/fleet-roster.kyri` --
    `seat <name>` and `tree grain-<name>`, following [`EARTH_FLEET.md`](EARTH_FLEET.md)'s own
    naming test if the new ship is joining the Earth fleet, or naming a fresh element's own first
    ship if not.
