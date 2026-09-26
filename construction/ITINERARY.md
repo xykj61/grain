@@ -98,21 +98,16 @@ naive-total refusal. Direct proof is green; a full cold and hot roster verdict r
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
 
-**PETRICHOR -- THE BATON ITSELF FELL, 43% TO 23%, TWENTY-FIVE MINUTES AFTER A PRIOR LAP NAMED THE
-CEILING AND PASSED IT BY.** `.claude/rules/the-baton.md` -- prepended to every ship's every lap --
-stood at 81 of 187 negative sentences, 13 points over the Field target, when the last cold check
-found it and chose not to cut without first sizing the file. This lap sized it: 27 sentences
-restated affirmatively across the ORDER, ABSENCE, booked-red, and one-writer-per-checkout sections,
-each rewrite checked against the raw diff for the one thing that must survive untouched -- every
-`%NNN`, path, count, and stamp. All 27 do; `git diff` shows the change is register alone. `explain_negative`
-81 to 43, `explain_percent` 43 to 23, `explain_sentences` 187 to 186 (two sentences merged in the
-rewording). `law_over_field_target` 1 to 0 on the whole-tree scan; the page now clears its own
-ceiling with seven points to spare. QA `register=77 reach=80 truth=100`, all 42 cited paths
-resolving; `tools/l/living_docs_lint.rish` GREEN, no line naming this file. **YOURS:** the
-remaining sections (the tree-carries-its-own-keys and watch-and-clockout material past line 250)
-were not touched this lap and may carry further negative sentences past what this pass reached;
-`sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current
-state rather than this line.
+**PETRICHOR.** [Baton register account shelved whole](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md). **YOURS:** its remaining sections may carry further negative sentences; `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current state.
+
+**PETRICHOR -- THE CITIZEN DRAFT'S SOURCES NOW SAY ONLY WHAT THEY SHOW.** The [learning-floor
+draft](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md) no longer names a
+February 2026 state rollout that its cited application page does not establish. Its two design
+links now carry their date rather than the moving word "newest." The Door report card reads B+
+(`register=87 reach=90 truth_counted=100 service=75`), with all 25 local paths resolving; the
+whole-tree prose register guard is GREEN. A full cold roster was stopped after unrelated reds
+appeared and closes `run_verdict=died_unexpectedly exit_code=143`. Named checks and staged hot
+proof cover this document and the lap record; the full cold and hot roster remains open.
 
 **GRASS -- THE OPEN-ROOM REVERSE-READ OF 20260922.** [Shelved
 whole](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md). The later packet stays on the card.

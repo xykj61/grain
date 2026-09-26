@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260925.184242` -- walk-back nib `b751008bc8`.** Shelve Petrichor's complete baton register account in `construction/archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md` before recording the draft source correction. Keep its open question about the baton's remaining sections on the card.
+
 **Checkpoint `20260925.160542` -- walk-back nib `c7234964dc`.** Shelve Bakery's Codex-control account whole in `construction/archive/20260925-160542_bakery-codex-control-account.md` before the detached-lock repair account. Keep the lap-window question on the card. Revise the existing standing-equipment control header in place to raise its measured C+ grade while preserving its test claims.
 
 **Checkpoint `20260925.151316` -- walk-back nib `e1844752f7`.** Shelve Bakery's completed source-review account whole in `construction/archive/20260925-151316_bakery-source-review-account.md` before the model-control repair account. Keep the unreadable-lock repair and lap-window question visible.

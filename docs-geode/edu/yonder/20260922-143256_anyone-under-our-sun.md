@@ -56,13 +56,13 @@ Grain's own name for the land-ethic is **Atthowe ecological**: fertility from pl
 
 The Biocyclic Vegan Standard is a public global standard. [IFOAM lists it in its Family of Standards](https://directory.ifoam.bio/affiliates/842-bns-biocyclic-network-services-ltd), and the [publisher's certification scheme](https://www.biocyclic-vegan.org/wp-content/uploads/2021/03/2021-Biocyclic_Vegan_Certification_20210304.pdf) names CERES as its worldwide certifier. Grain does not issue that seal.
 
-In the United States, a coordinator site, [Biocyclic Vegan Agriculture Certification USA](https://biocyclicagricultureusa.com/farmers), describes applications for farms already working without animal inputs, and a public note in February 2026 named New York and California as the first two states. That is their announcement. A farmer checks their door and the standard's own door. A reader in another country asks the network partner for that place, or begins the practice with no seal at all. The ethic travels. The certificate is local.
+In the United States, [Biocyclic Vegan Agriculture Certification USA](https://biocyclicagricultureusa.com/farmers) describes applications for farms already working without animal inputs. Its page sets out inspection steps and tells farmers how to ask about current availability. A farmer checks that page and the standard's own door. A reader in another country asks the network partner for that place, or begins the practice with no seal at all. The ethic travels. The certificate is local.
 
 What the choice rewards: soil fed by what the field can return, and a receipt that can say what went into the ground. The reward is the soil and the record together. A badge alone rewards the badge.
 
 ## How a page keeps its family
 
-The newest design in this tree, on `20260921`, is two pages from the research seat:
+Two design pages dated `20260921` from the research seat show this kind of link:
 
 - [The unit of placement is the file](../../../active-designing/date/20260921/20260921-072253_the-unit-of-placement-is-the-file.md), which reads [the placement scan](../../../tools/fixtures/a/aurora_file_placement_scan.sh) and hands a small build to the infrastructure seat.
 - [Radial and polar against the cartesian default](../../../active-designing/date/20260921/20260921-055148_radial-and-polar-against-cartesian.md), which closes one direction and says so.
