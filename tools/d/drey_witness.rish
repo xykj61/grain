@@ -15,6 +15,12 @@
 # this sentence:
 #   grep -c '^let .* = run \[' tools/d/drey_witness.rish
 #
+# THE REFUSAL IS PROVEN, not merely written. `tools/fixtures/d/drey_witness_control.sh` plants a
+# failing DREY0 and watches this roster exit non-zero, then all sixteen rungs passing and watches
+# it exit zero -- both directions, one pen, so the asserts below are a demonstrated refusal rather
+# than an inherited one. That control is what keeps this roster out of the redleg scan's no-marker
+# count.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/drey_witness.rish
 

@@ -17,6 +17,12 @@
 # Kin: tools/cr/crypto_suite_witness.rish (the authored choir) - tools/cr/crypto_count_guard_witness.rish (the bijection that keeps this roster
 # separate on purpose). The vendored libraries stay unmodified parity TARGETS, never copied lines (.claude/rules/gratitude-licenses.md).
 #
+# THE REFUSAL IS PROVEN, not merely written. `tools/fixtures/cr/crypto_vendored_parity_suite_control.sh`
+# plants a failing first rung and watches this suite exit non-zero, then all six rungs passing and
+# watches it exit zero -- both directions, one pen, so the assert below is a demonstrated refusal
+# rather than an inherited one. That control is what keeps this suite out of the redleg scan's
+# no-marker count.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/cr/crypto_vendored_parity_suite.rish
 
