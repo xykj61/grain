@@ -132,7 +132,11 @@ CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-37}"
 # `parity_ch02.rish` 128 are the two largest, and neither is reachable from the roster today.
 # 12 -> 11 on `20260909.214500`: `glow_choir` gathered a shim whose two-hop chain reaches
 # `tools/gen/chapter/glow_hygiene_pin.rish`, a choir singing six, so it left this population.
-UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-11}"
+# 11 -> 8 on `20260926.171705`: `kumara_tilak`, `mind_source_adaptation`, `equinox_e102_fascia_chase`,
+# and `equinox_e103_class_a_window` joined the standing roster (each was the sole namer of a
+# control the unheard_guard control-reading had separately flagged unheard), and their own
+# non-comment `run` lines carried three previously-unnamed choirs into the heard set.
+UNNAMED_CHOIR_CEILING="${UNNAMED_CHOIR_CEILING:-8}"
 # THE SECOND READING'S POPULATION FLOOR, and why this strand wants a floor where its siblings
 # want ceilings. `unnamed_population` counts runners that carry a checkable claim while wearing
 # neither `witness` nor `suite`, so it RISES whenever any hand in the fleet writes one -- lawful

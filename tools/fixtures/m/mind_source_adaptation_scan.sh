@@ -2,8 +2,11 @@
 # tools/fixtures/m/mind_source_adaptation_scan.sh -- bound one MIND source adaptation.
 set -eu
 
+# The Cursor twin retired tree-wide 20260920.135100 on Keaton's word (.claude/rules/git-signing.md
+# and every other rule page carry the same line): the whole .cursor/rules/*.mdc family is archived,
+# unmodified, at .cursor-archive/rules/README.md, and no living .mdc page is maintained from here
+# forward. So this scan checks the one living policy page rather than a retired twin.
 CLAUDE_RULE=${MIND_ADAPT_CLAUDE_RULE:-.claude/rules/mind-source-adaptation.md}
-CURSOR_RULE=${MIND_ADAPT_CURSOR_RULE:-.cursor/rules/mind-source-adaptation.mdc}
 MIND_PROMPT=${MIND_ADAPT_PROMPT:-recursion-prompts/versions/20260826-180017_chatgpt-mind-macos-loop.md}
 
 decide() {
@@ -59,7 +62,7 @@ require_fixed() {
   fi
 }
 
-for rule in "$CLAUDE_RULE" "$CURSOR_RULE"; do
+for rule in "$CLAUDE_RULE"; do
   require_fixed 'Shell `.sh` or `.bash` may become Rishi `.rish`.' "$rule"
   require_fixed 'HTML `.html` or `.htm` may become Brushstroke `.brush`.' "$rule"
   require_fixed 'Python `.py` may become Glow `.glow` only when that semantic destination is separately booked.' "$rule"
@@ -70,7 +73,6 @@ for rule in "$CLAUDE_RULE" "$CURSOR_RULE"; do
   require_fixed 'Finish at most one conversion and one signed local commit per lap.' "$rule"
 done
 
-require_fixed 'alwaysApply: true' "$CURSOR_RULE"
 require_fixed 'A seated source-adaptation grant lets MIND consider one eligible non-Rye source per lap.' "$MIND_PROMPT"
 require_fixed 'No booking means no conversion.' "$MIND_PROMPT"
 
