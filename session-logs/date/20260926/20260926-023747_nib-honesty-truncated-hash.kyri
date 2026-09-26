@@ -25,4 +25,6 @@ obs Booked no REDS row: the ledger reads 268 bytes of headroom against its 65,53
 file construction/ITINERARY.md -- corrected the Git nib field from a nine-character hash to its proper ten-character short form, e131f90ed to e131f90ede, so tools/n/nib_honesty_witness.rish's token classifier can see the field at all.
 loom witness=nib_honesty_witness verdict=green guards_run=378 guards_green=344 guards_red_before=31 guards_red_after=30
 rota lap 5140, row 0 -- Aether, the row that hears. Read for what a guard's silence on a field it cannot even see says, rather than what it says when it sees one wrong: git_nib_lines=0 read as absence rather than as malformed, and the card had been saying its nib the whole time in a voice one character short of the shape the guard listens for.
+scope construction/ITINERARY.md, recursion-prompts/incense-inner.md, this shelf and its index row
+status GREEN -- nib_honesty_witness.rish re-run on metal, both remotes pushed at d39b38b62
 recommend kg -- witness GREEN on metal, one-file one-line change, ready to send.
