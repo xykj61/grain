@@ -284,3 +284,26 @@ pixels). No REDS row booked -- 268 bytes of ledger headroom, `pin_deadlocked=1`,
 rows; recorded in the commit body and session log. Next lap: a fresh round-open and cold run;
 `commit_parent_claim`'s classifier ambiguity and `seed_link`'s ratchet remain the standing leads,
 and the ledger fold deadlock is unchanged and still Keaton's word to break.
+
+**This lap (`20260926.044306`) held a live, non-stale cold run (waited for it per the FLEET
+clause rather than TERMing) to `tree_moved=no`, `run_verdict=guard_red`, 378 guards: 345 green, 30
+red, 3 gated.** Picked `root_finder` off the findings: `finders_bare_new=5`, five root-finder sites
+in files absent from the guard's own baseline roster. `tools/fixtures/c/composite_key_scan.sh` and
+four `torus_offset_*_{control,scan}.sh` files each walked up testing for `rishi/bin`, a
+build-output sentinel that exists only after a build, so all five read `bare_unrunnable` in a
+fresh clone. The guard's own `--doors` reading already prices the repair -- `SWEEP_TO=rishi/src`,
+`replacement_tracked=yes`, `replacement_below_root=0` -- so the fix was the scan's own named
+proposal rather than a new judgment call. Swapped both the `-d` test and the diagnostic message's
+sentinel name in all five files, mode-preserving (`sed ... > tmp && cat tmp > file`, 755 held
+throughout); ran each touched scan and control directly to confirm the sentinel still resolves the
+root before trusting the guard. `root_finder_scan.sh` now reads `finders_bare_new=0`,
+`verdict=ok`; `root_finder_witness.rish` GREEN on metal, 76 legs, six mutations biting. No REDS row
+booked -- 268 bytes of ledger headroom, `pin_deadlocked=1`, zero foldable rows; recorded in the
+commit body and session log. Pushed the work commit to `xy` before amending the Git nib, which
+made the amend a non-fast-forward rewrite of an already-shared commit; repaired by soft-resetting
+to the pushed commit and landing the nib as a follow-up commit instead, per rule 5's own shape --
+amend before the push next time, or take the follow-up door once you have not. Next lap: a fresh
+round-open and cold run; the remaining 30 reds still overlap the standing backlog on the shelf and
+in ITINERARY's Open Doors bullet, `seed_link`'s 908-site ratchet and `commit_parent_claim`'s
+classifier ambiguity remain the standing leads, and the ledger fold deadlock is unchanged and
+still Keaton's word to break.
