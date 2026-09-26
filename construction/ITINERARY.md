@@ -350,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f4972ff9a7` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `a7c191e119` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -483,10 +483,10 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
-- **A wall at zero reads four, fleet-wide** (`20260917.090914`). `instrument_refusal` holds
-  `fallback_instrument_passes` at zero and the cold run read **4** -- two in
-  `tools/fixtures/f/fleet_claim_form_control.sh`, two in `tools/fixtures/p/page_residency_sample.sh`,
-  each an `|| echo <n>` answering for an instrument that failed. Unclaimed; the pin below is why
+- **The instrument_refusal wall is closed back to zero** (`20260926.131241`, commit `f4972ff9a`).
+  The four fallback passes named at `20260917.090914` -- two genuine repeats of the elder shape in
+  `fleet_claim_form_control.sh` and `page_residency_sample.sh`, and two new false positives in the
+  torus-offset search controls -- are repaired; `fallback_instrument_passes=0`, `verdict=ok`.
   none is booked.
 - **The ledger's deadlock has closed the gap it once had.** Reread `20260925.010000`:
   `construction/REDS.md` stands at 65,526 of its 65,536 bound, **10 bytes of headroom**, 17 rows,
