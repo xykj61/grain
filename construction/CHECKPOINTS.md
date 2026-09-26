@@ -1,5 +1,14 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260926.055119` -- walk-back nib `10f0c65ff9`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260926/20260926-055119_incense-next-log-archive-3.md` -- the section had
+grown to 25,988 bytes against the page's 24,576-byte ceiling. The living page keeps a pointer and
+its most recent entry (`20260926.054749`, the verdict_home repair); the shelved entries
+(`20260925.162402` through `20260926.044306`) keep every word, including the root-finder sweep, the
+opening-lines repair, the nib-honesty fix, the row-bound repair, and the link-fold family's own
+crossing.
+
 **Checkpoint `20260925.184242` -- walk-back nib `b751008bc8`.** Shelve Petrichor's complete baton register account in `construction/archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md` before recording the draft source correction. Keep its open question about the baton's remaining sections on the card.
 
 **Checkpoint `20260925.160542` -- walk-back nib `c7234964dc`.** Shelve Bakery's Codex-control account whole in `construction/archive/20260925-160542_bakery-codex-control-account.md` before the detached-lock repair account. Keep the lap-window question on the card. Revise the existing standing-equipment control header in place to raise its measured C+ grade while preserving its test claims.

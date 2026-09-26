@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.054749` | [A shelved elder dropped out of its own gate](20260926/20260926-054749_verdict-home-date-shelf.kyri) | verdict_home repaired, witness GREEN. |
 | `20260926.044306` | [Five root-finders born unrunnable](20260926/20260926-044306_root-finder-rishi-bin-to-src.kyri) | root_finder swept rishi/bin to rishi/src, witness GREEN. |
 | `20260926.034110` | [A qualified print call rode past its ceiling](20260926/20260926-034110_opening-lines-print-bind.kyri) | opening_lines repaired, witness GREEN. |
 | `20260926.023747` | [Git nib field one char short of resolving](20260926/20260926-023747_nib-honesty-truncated-hash.kyri) | nib_honesty repaired, witness GREEN. |
