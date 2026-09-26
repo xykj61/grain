@@ -215,6 +215,34 @@ Doors bullet; `falsifier_form_outcome`'s own remaining defect is now a design qu
 rather than a guard-closable one, and the ledger fold deadlock is unchanged and still Keaton's word
 to break.
 
+**This lap (`20260926.003429`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+378 guards: 341 green, 32 red, 3 gated -- two fewer reds than the prior lap's tally.** Round-open
+opened clean, no standing lock at the cold run's launch. Picked the link-fold family off the fresh
+findings rather than one guard: `dated_path`, `foundations_link`, and part of `seed_link` all
+reddened from two of Keaton's own recent day-shelf folds -- `construction/archive/` on `20260924`
+(commit `8bc3641bc`) and `external-research/` on `20260924`-`20260925` (commits `d9808832a`,
+`99651eebe`). `dated_path_witness.rish` held two of its own seven fixture cases stale exactly the
+way its own comment already documents for a third case -- verdict two's citer-relative reference
+and the shared-basename twin both named a flat path that had folded out from under them; reworded
+both to the file's current relative spelling, same lesson as the witness's own existing precedent,
+GREEN on metal. `foundations_link_witness.rish` found 13 real broken links across 11 living
+foundations pages (dated-basename but living-by-status, per that witness's own stated exemption)
+still citing `external-research/<stamp>.md` flat; repointed both label and target to
+`external-research/date/<day>/<stamp>.md` in each, GREEN on metal. `seed_link_witness.rish`'s hard
+gate -- three front-door links in `MAP.md` pointing straight at withheld rooms (`linengrow/`,
+`construction/`, `session-logs/`) -- unlinked to backtick-only prose, matching the convention the
+same page already uses for `active-reviving/`, `expanding-prompts/`, and `counsel/`;
+`front_door_links_outside_seed` 3 to 0. That witness's wider ratchet (820 ceiling, now 908) stays
+RED: 527 of 908 sites cite files under `external-research/` itself, which the same fold likely
+raised, but confirming and repairing an 88-site "name in prose" sweep is past this lap's depth-2
+bound. No REDS row booked -- the ledger reads 268 bytes of headroom against its 65,536-byte bound,
+`pin_deadlocked=1`, zero foldable rows; recorded in the commit body and session log instead. Next
+lap: a fresh round-open and cold run; `seed_link`'s ratchet is the standing lead (measure whether
+the 88-site rise is genuinely new or a scan artifact of the external-research fold before sweeping
+site by site), the remaining reds still overlap the standing backlog on the shelf and in
+ITINERARY's Open Doors bullet, and the ledger fold deadlock is unchanged and still Keaton's word to
+break.
+
 **This lap (`20260925.221041`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
 378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A stale detached
 pass held the lock at launch (`launch_head` three commits behind HEAD); confirmed it as this tree's

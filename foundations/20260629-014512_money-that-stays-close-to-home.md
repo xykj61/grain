@@ -40,7 +40,7 @@ It keeps the four promises we ask of any tool. It does no harm, taking nothing f
 
 ## The Giving Lane -- Private Payer, Transparent Payee
 
-*Seam study 4 T0 - seated `20260712.054650` - study [`../external-research/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md)*
+*Seam study 4 T0 - seated `20260712.054650` - study [`../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md)*
 
 When a person funds a public or civic good -- a sanctuary, an open-ask stipend, a regenerative commons -- the till has two faces, and they keep different jobs:
 

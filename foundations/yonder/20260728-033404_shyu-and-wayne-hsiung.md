@@ -9,7 +9,7 @@
 **Status:** Foundations -- honor dedication seated by Keaton's word  
 **Gratitude silo:** [`../gratitude/wayne-hsiung.md`](../../gratitude/wayne-hsiung.md)  
 **Fund:** **Shyu** -- Libra - air - seat 7 - `%shyu`  
-**Venture-firm study companion:** [`../external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md`](../../external-research/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md)
+**Venture-firm study companion:** [`../external-research/date/20260728/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md`](../../external-research/date/20260728/20260728-033404_vegan-venture-firms-ahimsa-stray-dog-and-kin.md)
 
 *Written together by Keaton and Quin; the body speaks in Reya's warmth.*
 
