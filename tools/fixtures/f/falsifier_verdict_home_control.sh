@@ -19,9 +19,12 @@
 #       the live tree while this scan was being written: without the bound it read
 #       26 declarations rather than 14, named 13 elders that were never graded,
 #       and put 12 false entries in front of a gate held at zero.
-#   m3  drop the shelf exclusion, so a declaration on a dated shelf enters the
-#       gate. Accrete-never-break keeps a shelved page exactly as written, so that
-#       page can never be repaired and the gate would red forever on testimony.
+#   m3  drop the archive/yonder exclusion, so a declaration on a closed stack
+#       enters the gate. Accrete-never-break keeps a shelved page exactly as
+#       written, so that page can never be repaired and the gate would red
+#       forever on testimony. A page folded to its own date/ shelf is a
+#       different case and stays IN the reading unmutated (dated_child_counted,
+#       rowless_dated_child_counted) -- REDS 20260926.023747.
 #   m4  match an erratum line unanchored, so an elder MENTIONING `**Row 4
 #       erratum:**` mid-sentence reads as carrying one.
 #   m5  drop the `rdecl` filter on the rowless pairing loop, so every rowless
@@ -125,13 +128,26 @@ leg "$(read_key unanswered)"    0 elder_missing_never_gated
 leg "$(read_key verdict)" answered elder_missing_verdict_clear
 
 # ------------------------------------------------------------------- the closed stacks
+# archive/ and yonder/ alone -- a page folded to its own date/ shelf is NOT a
+# closed stack for this reading (REDS 20260926.023747, mirroring
+# tools/fixtures/f/falsifier_form_outcome_scan.sh's own dated_page_counted leg):
+# a graded elder's own errata accrue over days, so it is expected to fold to
+# date/ while still open to a new declaration.
+new_pen
+mkdir -p active-designing/archive
+elder_page active-designing/20260910-060204_pen-elder.md none -
+child_page active-designing/archive/20260911-195059_pen-child.md Reads 4 20260910-060204_pen-elder.md
+seal
+leg "$(read_key declarations)" 0 shelved_child_read_past
+leg "$(read_key unanswered)"   0 shelved_child_never_gated
+
+# a child folded to its own date/ shelf IS counted
 new_pen
 mkdir -p active-designing/date/20260911
 elder_page active-designing/20260910-060204_pen-elder.md none -
 child_page active-designing/date/20260911/20260911-195059_pen-child.md Reads 4 20260910-060204_pen-elder.md
 seal
-leg "$(read_key declarations)" 0 shelved_child_read_past
-leg "$(read_key unanswered)"   0 shelved_child_never_gated
+leg "$(read_key declarations)" 1 dated_child_counted
 
 # ------------------------------------------------------------------ the key census
 new_pen
@@ -210,12 +226,12 @@ leg "$(read_key unanswered)"   1 m2_mutation_reaches_the_gate
 
 # ------------------------------------------------------------- m3: shelf exclusion off
 new_pen
-mkdir -p active-designing/date/20260911
+mkdir -p active-designing/archive
 elder_page active-designing/20260910-060204_pen-elder.md none -
-child_page active-designing/date/20260911/20260911-195059_pen-child.md Reads 4 20260910-060204_pen-elder.md
+child_page active-designing/archive/20260911-195059_pen-child.md Reads 4 20260910-060204_pen-elder.md
 seal
 leg "$(read_key declarations)" 0 m3_unmutated_reads_past_shelf
-sed_inplace 's/| grep -vE .\/(date|archive|yonder)\/. //' tools/fixtures/f/falsifier_verdict_home_scan.sh
+sed_inplace 's/| grep -vE .\/(archive|yonder)\/. //' tools/fixtures/f/falsifier_verdict_home_scan.sh
 leg "$(read_key declarations)" 1 m3_mutation_bites
 leg "$(read_key unanswered)"   1 m3_mutation_reaches_the_gate
 
@@ -330,12 +346,20 @@ leg "$(read_key rowless_unanswered)"    0 rowless_elder_missing_never_opens_a_de
 
 # --------------------------------------------------- a shelved rowless declaration
 new_pen
+mkdir -p active-designing/archive
+rowless_elder active-designing/20260910-060204_pen-elder.md none -
+rowless_child active-designing/archive/20260911-195059_pen-child.md Grades 20260910-060204_pen-elder.md
+seal
+leg "$(read_key rowless_gradings)"   0 rowless_shelved_child_read_past
+leg "$(read_key rowless_unanswered)" 0 rowless_shelved_never_counted
+
+# a rowless child folded to its own date/ shelf IS counted
+new_pen
 mkdir -p active-designing/date/20260911
 rowless_elder active-designing/20260910-060204_pen-elder.md none -
 rowless_child active-designing/date/20260911/20260911-195059_pen-child.md Grades 20260910-060204_pen-elder.md
 seal
-leg "$(read_key rowless_gradings)"   0 rowless_shelved_child_read_past
-leg "$(read_key rowless_unanswered)" 0 rowless_shelved_never_counted
+leg "$(read_key rowless_gradings)" 1 rowless_dated_child_counted
 
 # ------------------------------------------------------------- m5: the rdecl filter
 new_pen

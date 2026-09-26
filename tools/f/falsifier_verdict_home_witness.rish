@@ -64,7 +64,7 @@ assert control.out contains "control_verdict=ok" else "verdict-home: every leg o
 # The pen's own tally, asserted beside the named legs. A control that reached its last line
 # proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
 assert control.out contains "control_failed=0" else "verdict-home: a leg that failed must be heard even when the control completes"
-assert control.out contains "legs=74" else "verdict-home: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+assert control.out contains "legs=76" else "verdict-home: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
 
 assert control.out contains "leg answered_counted ok" else "verdict-home: a graded row whose elder carries the erratum must read answered"
 assert control.out contains "leg unanswered_planted ok" else "verdict-home: the wall must refuse from the failing side"
@@ -72,6 +72,7 @@ assert control.out contains "leg unanswered_verdict ok" else "verdict-home: the 
 assert control.out contains "leg plant_lifted_returns ok" else "verdict-home: a refusal that survives its own repair is one nobody can act on"
 assert control.out contains "leg elder_missing_counted ok" else "verdict-home: a basename resolving to no living page must be counted apart"
 assert control.out contains "leg elder_missing_never_gated ok" else "verdict-home: a folded elder is lawful and must not reach the wall"
+assert control.out contains "leg dated_child_counted ok" else "verdict-home: a child folded to its own date/ shelf must still be counted"
 assert control.out contains "leg shelved_child_read_past ok" else "verdict-home: a declaration on a closed stack is testimony that can never be repaired"
 assert control.out contains "leg keys_listed ok" else "verdict-home: the keys a lane reaches for must be named rather than counted only"
 assert control.out contains "leg seated_key_counted ok" else "verdict-home: the withdrawn spelling must be countable from the output"
@@ -106,6 +107,7 @@ assert control.out contains "leg rowless_outside_roster_counted ok" else "verdic
 assert control.out contains "leg rowless_all_three_keys_read ok" else "verdict-home: every key in the roster must be read, or a dropped one is silent"
 assert control.out contains "leg rowless_never_enters_the_row_half ok" else "verdict-home: the two halves must stay single-stranded -- one line is one half's subject"
 assert control.out contains "leg rowless_shelved_child_read_past ok" else "verdict-home: a rowless declaration on a closed stack is testimony that can never be repaired"
+assert control.out contains "leg rowless_dated_child_counted ok" else "verdict-home: a rowless child folded to its own date/ shelf must still be counted"
 assert control.out contains "leg m5_mutation_bites ok" else "verdict-home: dropping the rdecl filter put 150 pointer lines inside a number about gradings, and it must bite"
 assert control.out contains "leg m6_mutation_bites ok" else "verdict-home: an elder discussing an addendum must never read as carrying one"
 assert control.out contains "leg m7_mutation_bites ok" else "verdict-home: a roster matched by substring widens itself in silence"

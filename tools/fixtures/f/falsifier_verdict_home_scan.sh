@@ -29,9 +29,15 @@
 # converged and the other never did.
 #
 # THE PAGES READ. Living tracked .md under external-research/ and active-designing/.
-# The date/, archive/ and yonder/ shelves are read past: .claude/rules/read-scope.md
-# names them closed stacks, and accrete-never-break keeps every word a shelved
-# page wrote, so an unanswered declaration there is testimony rather than a debt.
+# The archive/ and yonder/ shelves are read past: .claude/rules/read-scope.md names
+# them closed stacks, and accrete-never-break keeps every word a shelved page wrote,
+# so an unanswered declaration there is testimony rather than a debt. A page folded
+# to its own date/ shelf stays IN the reading -- a graded elder's own errata accrue
+# over days, so it is expected to fold there while still gradeable, the same lesson
+# tools/fixtures/f/falsifier_form_outcome_scan.sh already learned (REDS 20260925.232420)
+# when both elder pages this scan's own header names above turned out to be exactly
+# that shape: dated-basename, `Status: Proposed`, folded to date/ and still open to
+# a new declaration naming a row of them.
 #
 # THE READINGS:
 #   declarations  -- a line naming an elder basename and a row number, under any
@@ -127,7 +133,7 @@ errata=$(mktemp 2>/dev/null || echo "./.vh_errata.$$")
 trap 'rm -f "$pages" "$decl" "$errata"' EXIT INT TERM
 
 git ls-files 'external-research/*.md' 'active-designing/*.md' 2>/dev/null \
-  | grep -vE '/(date|archive|yonder)/' > "$pages" || true
+  | grep -vE '/(archive|yonder)/' > "$pages" || true
 
 living=$(wc -l < "$pages" | tr -d ' ')
 [ "$living" -gt 0 ] || { echo "verdict=no_pages_found"; exit 2; }
