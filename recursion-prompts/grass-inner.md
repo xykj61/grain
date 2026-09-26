@@ -11,7 +11,7 @@
 
 ## fruit
 
-Read [`../foundations/20260628-133212_a-free-and-open-room.md`](../foundations/20260628-133212_a-free-and-open-room.md) and record one disposition. The card names this page as the walk's next step. The grass tree's own latest local commit already affirms the same-stamp sibling `an-open-way-to-learn`, so this lap takes the page that sibling left waiting.
+Read [`../foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) and record one disposition. Its status says Amphora landed, while its body still describes a vessel without a home. Check that old premise against the current vessel and product bundle path. The prior free-room and marked-value readings are recorded on the card.
 
 ## gates
 

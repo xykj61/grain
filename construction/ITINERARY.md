@@ -151,9 +151,11 @@ agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- FOUNDATION BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md).
 
-**GRASS -- LEDGER AND GRACE.** [Packet](../active-designing/date/20260925/20260925-154000_grass-reverse-read-of-ledger-and-grace.md):
-**standfasted as a product boundary.** The synthetic offer remains unrecognized in Dimeroll and
-creates zero journal entries. An evidence book does not measure care or human worth.
+**GRASS -- LEDGER AND GRACE.** [Account shelved whole](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md).
+
+**GRASS -- MARKED VALUE.** [Packet](../active-designing/date/20260925/20260925-210440_grass-marked-value-reverse-read.md):
+**standfasted at the Amphora seam.** Two root marks and unknown-mark refusal are proven; typed
+tending across the wider map stays a proposal until a named crossing earns it.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -348,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `048ee59f39` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `d97ad83a9b` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
