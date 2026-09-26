@@ -3,6 +3,12 @@
 # Keeps the Linn entry door GREEN by affirming the retired-name Lexicon row
 # and forwarding the living prep witness to gen_bozo.
 #   rishi/bin/rishi run tools/gen/fund/gen_linn_fund_prep.rish
+#
+# THE REFUSAL IS PROVEN, not merely written. `tools/fixtures/gen/fund/gen_linn_fund_prep_control.sh`
+# plants a failing forward target and watches this shim exit non-zero, then a passing one and
+# watches it exit zero -- both directions, one pen, so the assert below is a demonstrated refusal
+# rather than an inherited one. That control is what keeps this shim out of the redleg scan's
+# no-marker count.
 
 say "gen-linn: Language EN — Linn is the retired name of Bozo (Capricorn 10)."
 say "gen-linn: Style Radiant — forward to gen-bozo; Helen dedication kept."

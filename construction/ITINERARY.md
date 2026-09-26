@@ -350,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `065986940` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `59e4c81bf0` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
@@ -488,6 +488,16 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   `fleet_claim_form_control.sh` and `page_residency_sample.sh`, and two new false positives in the
   torus-offset search controls -- are repaired; `fallback_instrument_passes=0`, `verdict=ok`.
   none is booked.
+- **REDS `%827`'s four named guards took their refusal legs** (`20260926.135500`): `crypto_vendored_parity`,
+  `acme_dx`, `drey`, and `gen_linn_fund_prep` each carry a new `_control.sh` proving the roster
+  refuses on a planted failing child and welcomes an all-passing one, twelve legs GREEN on metal.
+  `standing_equipment_redleg_scan.sh` no longer lists any of the four; the ceiling stays unmet at
+  56 against 51 because five DIFFERENT `tools/gen/chapter/` guards joined with no marker in the
+  meantime -- `almanac_breach`, `relay_resin_census`, `bounds_typed`, `brush_parse`,
+  `pond_gui_spine` -- each a standalone scan-result witness rather than an accrete shim, so the
+  same idiom does not transfer; that remainder is the chapter lane's own shape of work. The ledger
+  row itself is unedited: it sat 23 bytes under its 65,536-byte bound, too little room for the
+  note, so the fix is recorded here instead.
 - **The ledger's deadlock has closed the gap it once had.** Reread `20260925.010000`:
   `construction/REDS.md` stands at 65,526 of its 65,536 bound, **10 bytes of headroom**, 17 rows,
   16 open, and `tools/fixtures/r/reds_pin_capacity_scan.sh` now answers `pin_deadlocked=1` on

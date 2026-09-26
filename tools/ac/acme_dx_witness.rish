@@ -10,6 +10,12 @@
 #   operations   -- tools/o/operations_conformance_witness.rish (run-serve-persist-recover-observe)
 #
 #   rishi/bin/rishi run tools/ac/acme_dx_witness.rish
+#
+# THE REFUSAL IS PROVEN, not merely written. `tools/fixtures/ac/acme_dx_witness_control.sh` plants
+# a failing first witness and watches this roster exit non-zero, then all four witnesses passing
+# and watches it exit zero -- both directions, one pen, so the asserts below are a demonstrated
+# refusal rather than an inherited one. That control is what keeps this roster out of the redleg
+# scan's no-marker count.
 
 let onboard = run ["rishi/bin/rishi" "run" "tools/o/onboarding_path_witness.rish"]
 assert onboard.ok else "acme-dx: onboarding-path witness failed"
