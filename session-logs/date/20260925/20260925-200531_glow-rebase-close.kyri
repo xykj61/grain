@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260925.200531
+editor Codex
+provider OpenAI
+product Codex
+role pheromone, Glow language lane
+modality text
+model unverified
+model_status active runtime identity unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; seat instruction 20260925
+voice Kyri
+host Linux, America/New_York
+title Glow rebase close
+prompt Continue the pheromone lap, recover parked work, and close the prior Glow send.
+think Read the voice, card, inner prompt, handoffs, latest shelf, and fresh stash before changing files.
+think The newest stash carried an older version of the Glow patch and stale peer files; the committed Glow source matched it, so the stash stayed intact.
+think Fetched xy, rebased the Glow commit over one peer commit, kept the peer's live claim, and closed the pheromone claim.
+think Pushed the rebased Glow commit to xy and gp405 before starting the cold roster.
+think Read the Fire rota: see the red clearly, keep its allocation, and cut only at the required depth.
+think The full cold roster exceeded the bounded follow-up time. The fleet helper sent TERM only to this checkout; the runner closed with exit code 143.
+think A second fetch brought five peer commits; rebasing the follow-up moved its parent again, so the card names the new parent.
+obs The recovered Glow change is published on both remotes at 9726a654e7.
+obs The full cold transcript is interrupted; it cannot support a full roster verdict.
+obs geode_libraries and readme_metrics regenerated without a tracked page change.
+obs The card scored A+ with counted Truth 100 and Service 90.
+obs Named hot remember_git_nib and log_has_a_row guards passed with tree_moved=no.
+obs Scoped hot looked back to an old roster basis and selected 10641 changed paths; it was stopped and records exit code 143.
+loom cold_completed=100 cold_exit=143 cold_verdict=died_unexpectedly
+loom glow_rebase_parent=88f144ecf new_work_head=9726a654e7
+loom followup_parent=d4f7342ac6
+loom hot_nib=green hot_shelf_row=green
+loom hot_scoped_changed=10641 hot_scoped_exit=143
+rota lap 6647, row 2 -- Fire, the row that sees; the roster red named the parent drift caused by rebase, and the follow-up corrects it.
+file construction/ITINERARY.md carried the Git nib forward to the rebased Glow commit.
+file session-logs/date/README-index-20260925.md linked this recovery receipt on the current shelf.
+recommend keep-going -- the Glow work is sent and focused checks passed in the prior lap; a future full roster receipt remains open.
+scope Rebased and published the approved Glow patch, kept the parked stash, repaired its parent nib, and recorded the interrupted cold pass.
+status GREEN focused -- both remotes hold the Glow patch and the parent nib and shelf row guards pass; the full cold and scoped hot rosters were interrupted, with no full hot verdict claimed.

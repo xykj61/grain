@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.200531` | [Glow rebase close](20260925/20260925-200531_glow-rebase-close.kyri) | Rebased Glow send published; parent nib repaired. |
 | `20260925.200327` | [Account drafts](20260925/20260925-200327_bakery-account-drafts.kyri) | Four drafts reviewed; later records kept. |
 | `20260925.200048` | [Exec bit ratchet repair](20260925/20260925-200048_incense-exec-bit-ratchet-repair.kyri) | Held for a live cold pass, then born-with-the-bit repair on a new control fixture. |
 | `20260925.195426` | [Shelf remainder](20260925/20260925-195426_bakery-shelf-remainder.kyri) | Twenty-one drafts reviewed; current records kept. |
