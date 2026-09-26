@@ -43,6 +43,20 @@
 # lives in a guard rather than in tools/hooks/commit-msg, which is read here and
 # never edited.
 #
+# THE SECOND ANCHOR MOVE, `20260926`, is the classifier ambiguity this file's
+# own next-log named as a standing lead rather than a fresh %801 firing.
+# Commit `d39b38b62e` reads "Confirmed e131f90ed still resolves to HEAD's
+# parent" -- true in the tense the author meant (HEAD, read before that
+# commit landed, was `85b0141790`, and `e131f90ed` is genuinely ITS parent)
+# and false in the tense the SELF regex assumes (that `HEAD's parent` names
+# THIS commit's own parent, which is `85b0141790` itself). The sentence
+# confirms a value already sitting in a file rather than asserting this
+# commit's own lineage, and English carries both readings under one phrase.
+# History is testimony and stays as written, so the repair is the anchor,
+# not the sentence: moved once more, past `d39b38b62e`, to `ca0461877`
+# (this witness's own HEAD at the moment of repair) -- `claims_after_anchor=0`
+# over the commits since.
+#
 # Read-only: no network, no key, no funds, no commit rewritten.
 #
 # Run from the repository root:
@@ -56,11 +70,12 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
 # spelling one constant disagree the day it moves, which is the lesson
 # glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
-# three places. Moved once, `20260925.152300`, from `0cf919699b` (this guard's
+# three places. Moved twice: `20260925.152300`, from `0cf919699b` (this guard's
 # own seating commit) to `418fe0f2f9` (the last commit whose body named a false
-# parent, 20260921.115750) -- see the header above for why the elder anchor sat
-# five days too early.
-let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "418fe0f2f9"]
+# parent, 20260921.115750); and `20260926`, from `418fe0f2f9` to `ca0461877`
+# (this repair's own HEAD), past the classifier-ambiguity firing in
+# `d39b38b62e` -- see the header above for both moves.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "ca0461877"]
 assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
 assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
 
