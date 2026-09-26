@@ -168,3 +168,20 @@ would not fit -- recorded in the commit body (`295c09fcec`) and in the session l
 lap: a fresh round-open and cold run; the remaining 35 reds still overlap the standing backlog on
 the shelf and in ITINERARY's Open Doors bullet, and the ledger fold deadlock is unchanged and still
 Keaton's word to break.
+
+**This lap (`20260925.200048`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+378 guards: 341 green, 34 red, 3 gated.** A live, non-stale pass (pid 3864474, launch_head still
+HEAD) already held the roster lock at launch; confirmed it as this tree's own via
+`tools/f/fleet_call.sh` (`verdict=dry`, six peer trees answered `refused_foreign`) and waited rather
+than TERMing a pass the FLEET clause protects. Had already drafted a session log and index row
+before that check, which would have moved `tree_digest` mid-pass; `git stash push -u` on just those
+two paths restored the tree to what the pass had already snapshotted, confirmed with `git status
+--porcelain`, and popped clean once the pass closed. Picked `exec_bit` off the fresh findings:
+`plain_shebang_ratchet=58` against its own ceiling of 57. Dated every file in the ratchet list;
+`tools/fixtures/b/bounds_home_census_control.sh`, added today, was the newcomer -- born at 100644
+against exec-bit.md's own words, "born with the bit instead." `chmod +x` plus `git update-index
+--chmod=+x`, no content change, control output identical before and after; witness GREEN, sixteen
+legs, ratchet back at 57. No REDS row booked -- a one-file mode repair inside an existing named
+ratchet. Landed at `d4f7342ac`, both remotes. Next lap: a fresh round-open and cold run; the
+remaining 33 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
+bullet, and the ledger fold deadlock is unchanged and still Keaton's word to break.
