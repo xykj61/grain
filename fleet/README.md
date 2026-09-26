@@ -6,7 +6,7 @@
 **Status:** Vision -- first draft, describing a real fleet with room left for what has not been built
 **Last updated:** `20260920.205200`
 **Born from:** [`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`](../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md)
-**Kin:** [`EARTH_FLEET.md`](EARTH_FLEET.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/README.md`](../open/README.md) - [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) - [`../.claude/rules/the-baton.md`](../.claude/rules/the-baton.md)
+**Kin:** [`EARTH_FLEET.md`](EARTH_FLEET.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/README.md`](../open/README.md) - `../construction/fleet-roster.kyri` - [`../.claude/rules/the-baton.md`](../.claude/rules/the-baton.md)
 
 ---
 
@@ -25,7 +25,7 @@ Four short documents:
 
 A **fleet** is a small group of independent working trees -- each one its own git checkout, its
 own running agent session, its own named seat -- coordinating through one shared remote rather
-than through one shared process. [`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri)
+than through one shared process. `construction/fleet-roster.kyri`
 is the living roster; this room teaches the *idea* rather than duplicating the roster's own
 authority over the *facts*.
 

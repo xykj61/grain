@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- describes a real, running fleet; the description itself is a first draft
 **Last updated:** `20260920.205200`
-**Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) - [`../.claude/rules/vocabulary-aroma.md`](../.claude/rules/vocabulary-aroma.md)
+**Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - `../construction/fleet-roster.kyri` - [`../.claude/rules/vocabulary-aroma.md`](../.claude/rules/vocabulary-aroma.md)
 
 ---
 
@@ -62,7 +62,7 @@ history, eight separate rooms to work in.
 
 **This page does not describe what each ship is currently working on.** That changes by the hour,
 and the living, authoritative record of it is
-[`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri), never this page. **This
+`construction/fleet-roster.kyri`, never this page. **This
 page does not claim the eight ships are permanently fixed.** A new ship could join the Earth
 fleet under a new aroma name, following the same naming test
 ([`comlink-tendency.md`](../.claude/rules/comlink-tendency.md)) every other name in this tree

@@ -158,7 +158,7 @@ which is why the suite's bijection binds witnesses to its roster rather than mod
 
 ## Why the Exit Code Carries Three Meanings, Not Two
 
-A supervisor that only knows "zero means done, anything else means retry" stalls a poller -- an ordinary, successful cycle looks identical to a finished job, and the supervisor stops exactly when it should keep going. `supervisor_exit.rye` names the third answer: zero is *ordinary*, rather than *finished* -- restart regardless. A reserved code, `stop_requested`, alone halts the loop, and it means the same thing whether a human created a sentinel file by hand or `supervisor_signal.rye`'s handler created it from a real signal. Counsel: [`counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md`](../counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md), [`counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md`](../counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md).
+A supervisor that only knows "zero means done, anything else means retry" stalls a poller -- an ordinary, successful cycle looks identical to a finished job, and the supervisor stops exactly when it should keep going. `supervisor_exit.rye` names the third answer: zero is *ordinary*, rather than *finished* -- restart regardless. A reserved code, `stop_requested`, alone halts the loop, and it means the same thing whether a human created a sentinel file by hand or `supervisor_signal.rye`'s handler created it from a real signal. Counsel: `counsel/date/20260707/20260707-014212_claude-counsel-graceful-stop-reframed.md`, `counsel/date/20260707/20260707-021012_claude-counsel-ring4-signal-handler.md`.
 
 ## Why the Graph Is Declared, Rather Than Discovered
 

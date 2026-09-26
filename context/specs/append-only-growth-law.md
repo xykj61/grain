@@ -6,7 +6,7 @@
 **Status:** Living pin — seated  
 **Bound:** under `living_pin_max_bytes`  
 **Room:** Checkable  
-**Counsel:** [`../../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md`](../../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md)
+**Counsel:** `../../counsel/date/20260725/20260725-040247_what-the-shell-remembers.md`
 
 ---
 
@@ -26,8 +26,8 @@ Nothing is deleted. Closed seasons keep their shelf.
 |-------|------------|----------------|
 | Session logs | `session-logs/README.md` | [`session-logs/CHAPTERS.md`](../../session-logs/CHAPTERS.md) |
 | Waymarks | `waymarks/README.md` | [`waymarks/CHAPTERS.md`](../../waymarks/CHAPTERS.md) |
-| Counsel | `counsel/README.md` | [`counsel/CHAPTERS.md`](../../counsel/CHAPTERS.md) |
-| Counsel replies | `counsel/replies/README.md` | [`counsel/replies/CHAPTERS.md`](../../counsel/replies/CHAPTERS.md) |
+| Counsel | `counsel/README.md` | `counsel/CHAPTERS.md` |
+| Counsel replies | `counsel/replies/README.md` | `counsel/replies/CHAPTERS.md` |
 | Expanding prompts | `expanding-prompts/README.md` | [`expanding-prompts/CHAPTERS.md`](../../expanding-prompts/CHAPTERS.md) |
 
 Rosters seat now. Folds run when each pin nears its bound.

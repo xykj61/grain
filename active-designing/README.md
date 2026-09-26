@@ -22,7 +22,7 @@
 **Language:** EN
 **Last updated:** 2026-09-07 (`20260907.015907` -- the room at the door named: a brief here carries its two-rooms token in its Status line, where this door had stayed quiet while supplying 31 of the doorway's 44 unnamed pages; elder refresh `20260827.173952`, coverage stated honestly against a 94-document room)
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
-**Kin:** [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) (which shelf a piece belongs on) - [`../active-development/README.md`](../active-development/README.md) (its sibling room) - [`../construction/CHECKPOINTS.md`](../construction/CHECKPOINTS.md) (the walk-back) - home is [`../README.md`](../README.md)
+**Kin:** [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) (which shelf a piece belongs on) - [`../active-development/README.md`](../active-development/README.md) (its sibling room) - `../construction/CHECKPOINTS.md` (the walk-back) - home is [`../README.md`](../README.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation, mixed -- index and design-room guidance
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is

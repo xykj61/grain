@@ -44,7 +44,7 @@ learn.
 
 **Read the witness rather than the claim.** A thing here earns the word working when a program has checked it. Files whose names end in `_witness.rish` describe those checks. Run the witness for the claim you need, then read its result and any limits it reports. When a page and a witness disagree, the witness is right and the page is a red.
 
-**Read the reds.** [`construction/REDS.md`](../../construction/REDS.md) records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
+**Read the reds.** `construction/REDS.md` records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
 
 ## The teachers, kept in their own room
 

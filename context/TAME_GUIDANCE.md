@@ -218,7 +218,7 @@ law is siloed from stops and summons rather than proceeding.
 
 Canonical single home, cited rather than restated:
 [`../foundations/20260729-224828_reds-first-and-the-allocation.md`](../foundations/20260729-224828_reds-first-and-the-allocation.md).
-Ledger: [`../construction/REDS.md`](../construction/REDS.md).
+Ledger: `../construction/REDS.md`.
 
 ---
 
@@ -347,7 +347,7 @@ const max_frame_bytes: u32 = 4096;
 pos: u32, // invariant: pos <= max_frame_bytes
 ```
 
-Width audit: [`construction/20260620-212126_usize-width-baseline.md`](../construction/20260620-212126_usize-width-baseline.md). **Mantra**, **Rishi**, and **Comlink** are green under the hosted policy (TH-3 through TH-6). **`width-check.rish`** is a blocking parity witness for the hosted sources; **`aurora/*`** is scoped out and governed by the freestanding policy above.
+Width audit: `construction/20260620-212126_usize-width-baseline.md`. **Mantra**, **Rishi**, and **Comlink** are green under the hosted policy (TH-3 through TH-6). **`width-check.rish`** is a blocking parity witness for the hosted sources; **`aurora/*`** is scoped out and governed by the freestanding policy above.
 
 **Seam pattern at inherited `std` (correct, not debt):**
 
@@ -685,7 +685,7 @@ cost. Reading:
 
 At parity **196** the >70-line ledger read clear for authored `.rye` in scan dirs -- *corrected `20260906.173013` (REDS `20260906.173013`): it read clear because the instrument ended every function at its first `if` block. Repaired to a brace depth, the same roster reads **321** functions past 70 lines, so this clause records what the ledger said rather than what the tree held*; camelCase **0** through `rye/src` (`20260707.175312`); zero-assert non-exempt **0** after sync-wire and snapshot-delivery contract asserts (`20260707.183412`); **`maybe`** seated in `tally/maybe.rye` with first real caller in `no_padding` (`20260707.185612`); tools enrich safety net complete (`20260707.193712`); **`parseInt(` ratchet** closed at **0** (`20260707.213000`). **TigerBeetle alignment arc closed** (`counsel/20260707-213212`) -- no further TAME chapter lap until AST-grade rules earn a parser. Full machine canon and Claude brief: [`active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`](../active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md) - study [`external-research/date/20260707/20260707-053212_tigerbeetle-alignment-study.md`](../external-research/date/20260707/20260707-053212_tigerbeetle-alignment-study.md).
 
-**Horizon -- witness pairing (gated on Kaeden ruling):** as module seams stabilize, each earns mirrored **collaboration** and **contract** witnesses at the boundary -- see [`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`](../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md) and the first-pass census at [`construction/yonder/20260702-180812_testing-audit-first-pass.md`](../construction/yonder/20260702-180812_testing-audit-first-pass.md). Metalsmoke and parity stay the thin edge today.
+**Horizon -- witness pairing (gated on Kaeden ruling):** as module seams stabilize, each earns mirrored **collaboration** and **contract** witnesses at the boundary -- see [`foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md`](../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md) and the first-pass census at `construction/yonder/20260702-180812_testing-audit-first-pass.md`. Metalsmoke and parity stay the thin edge today.
 
 **Horizon -- wait for a Zig parser** (build when Rye's own tooling can parse, or when the need is proven; do not clone `tidy.zig` ahead of the need):
 

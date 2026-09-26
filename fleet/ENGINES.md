@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Living -- three engines, and the seven live ships besides incense read codex
 **Last updated:** `20260922.175159`
-**Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/FLEET_LOOP.md`](../open/FLEET_LOOP.md) - [`../construction/fleet-roster.kyri`](../construction/fleet-roster.kyri)
+**Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/FLEET_LOOP.md`](../open/FLEET_LOOP.md) - `../construction/fleet-roster.kyri`
 
 ---
 
@@ -14,7 +14,7 @@
 A ship is a copy of this project's source code with its own running agent session. The **engine** is
 the program that actually does the thinking and the typing inside that session -- the model and the
 harness that turn a ship's instructions into real work. A ship's engine is one field in one row of
-[`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri), and every tool that launches
+`construction/fleet-roster.kyri`, and every tool that launches
 or watches a ship reads that one field.
 
 ## The three engines
@@ -45,7 +45,7 @@ names the three engines and how a ship picks one.
 
 ## How a ship switches engines
 
-1. Open [`construction/fleet-roster.kyri`](../construction/fleet-roster.kyri) and find the ship's row.
+1. Open `construction/fleet-roster.kyri` and find the ship's row.
 2. Change the `engine` line -- `engine opencode` to `engine codex`, for example.
 3. Commit the roster change and push, the same as any other work.
 
