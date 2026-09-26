@@ -253,3 +253,30 @@ the catch and its fix are recorded in this entry and the commit body instead. Fe
 amended the Git nib to HEAD's parent, pushed `xy` then `debrided` clean fast-forward. Next lap: a fresh
 round-open and a cold run held still start to finish; the standing lead reverts to the ledger fold
 deadlock, still Keaton's word to break, or whatever the next cold-run receipt surfaces as fresh red.
+
+**This lap (`20260926.131241`) round-opened clean at `3f83c3037`, found no overlapping claim (five
+standing rows all `status=stale`), launched the cold run per ORDER, and this time reached for
+`construction/ITINERARY.md`'s own "Open doors for Keaton" section rather than the OPEN REDS rows,
+since every OPEN row still wants Keaton's word or belongs to another lane.** The card named a wall
+breach as unclaimed: `instrument_refusal_scan.sh` held `fallback_instrument_passes` at zero and had
+read **4** on `20260917.090914`. Running it fresh found **6** -- two genuine repeats of the elder
+shape in `fleet_claim_form_control.sh` and `page_residency_sample.sh`, both fixed by matching each
+file's own sibling call (`|| true` instead of `|| echo N`, since the caller already defaults the
+value with `${var:-N}`), and **two new false positives** in `torus_offset_search_control.sh` and
+`torus_offset_generic_search_control.sh`: an echo string reading "the sed pattern did not match" put
+the bare word `sed` between two spaces, which the scan's line classifier -- an awk pass with no
+string-literal awareness -- read as a sed call, then missed its own ternary exclusion because the
+true-branch sits inside a `{ }` block. Reworded to "the substitution did not match" in both files,
+touching no behavior. `instrument_refusal_scan.sh` now reads `fallback_instrument_passes=0`,
+`verdict=ok`; `instrument_refusal_witness.rish`, `tame_style_check`, and all three touched controls
+(`fleet_claim_form_control.sh` 54 legs, `torus_offset_search_control.sh` 13 legs,
+`torus_offset_generic_search_control.sh` 16 legs) all read GREEN on metal. **Named honestly:** this
+lap edited the tree while its own launched cold run was still in flight in the background, the same
+shape several prior laps in this shelf have named from the launching side; its `tree_moved` reading,
+once it lands, may describe a tree this lap itself moved. No REDS row booked -- the ledger held 23
+bytes of headroom against a 2,676-byte median row, so this reads as ordinary per-document repair,
+recorded in the commit body and the session log instead; `pin_deadlocked=1`, zero foldable rows.
+Fetched `xy` clean, amended the Git nib to HEAD's parent, pushed `xy` then `debrided` clean fast-forward.
+Next lap: a fresh round-open and a cold run held still start to finish; the standing lead reverts to
+the ledger fold deadlock, still Keaton's word to break, or whatever the in-flight cold run's receipt
+surfaces as fresh red once it lands.
