@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260925.232459` | [falsifier_form_outcome date shelf](20260925/20260925-232459_falsifier-form-outcome-date-shelf.kyri) | pages_found 0 to 2; a deeper mismatch surfaced, still RED. |
 | `20260925.221041` | [grad_seal repair](20260925/20260925-221041_grad-seal-lap-ordinal-repair.kyri) | Five bare lap-ordinal drifts closed; grad_seal GREEN. |
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
 | `20260925.213432` | [Competing shelves](20260925/20260925-213432_bakery-competing-shelves.kyri) | Two drafts reconciled; 23 remain. |

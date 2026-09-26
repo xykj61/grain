@@ -87,10 +87,17 @@ echo "max_line_bytes=$MAX_LINE_BYTES"
 [ -f "$RANK" ]  || { echo "verdict=no_rank_scan";  echo "detail: $RANK is absent -- the outcome half cannot be read"; exit 2; }
 
 # A RANKED PAGE IS DISCOVERED BY ITS OWN TEXT, never listed, so a third one joins on
-# the lap it lands. The closed stacks are read past for the reason read-scope gives.
+# the lap it lands. Archive and yonder are read past -- a page moved to archive/ is
+# superseded, and yonder/ is deferred work -- yet date/ stays IN the population: a
+# ranked page's own errata accrue over days, so it is expected to fold to its day
+# shelf while still gradeable, and both ranked pages this scan was built to cross
+# (`active-designing/date/20260910/...moonshots.md`,
+# `active-designing/date/20260917/...refusal-that-can-fire.md`) were already living
+# there on the day this scan was born. Excluding date/ here left pages_found=0 from
+# birth (20260917.134251) rather than reading the two ranked pages it was written for.
 if [ -z "$PAGES" ]; then
   PAGES=$(git grep -l '^## The ranking' -- 'active-designing/*.md' 'external-research/*.md' 2>/dev/null \
-    | grep -vE '/(date|archive|yonder)/' || true)
+    | grep -vE '/(archive|yonder)/' || true)
 fi
 
 pages_found=$(printf '%s\n' $PAGES | grep -c . || true)
