@@ -11,9 +11,9 @@
 
 ## fruit
 
-**Recovery queue, reread 20260925.203642: 55 construction Markdown versions remain.**
+**Recovery queue, reread 20260925.204511: 49 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
-identities cover 121 after this lap. Recompute that set before selecting work;
+identities cover 127 after this lap. Recompute that set before selecting work;
 the top-stamped shelf log records an earlier lap and carries an older count.
 All 85 stashes and the capture candidate stay preserved. The [queue reconciliation](../session-logs/date/20260925/20260925-203642_bakery-queue-reconciliation.kyri) names the evidence.
 
@@ -425,6 +425,14 @@ match their separate published shelves exactly. Two Bakery accounts also match
 exactly; a third differs only in its relocated elder link. Keep the published
 records and preserve the drafts. Fifty-five construction Markdown versions
 remain. Capture integration and full cold and hot proof remain owed.
+
+The [card history review](../session-logs/date/20260925/20260925-204511_bakery-card-history.kyri) covers six more parked itinerary versions.
+Their scope-ranking, optional-dependency, ledger-capacity, mutation-check, and
+transcript-protection accounts have published records. Two mutation drafts
+precede the recovered package; keep its later account and proof limits.
+The original admissions about cold-run order remain preserved. Keep current
+files and all 85 stashes. Forty-nine construction Markdown versions remain.
+Capture integration and full cold and hot proof remain owed.
 
 ## gates
 
