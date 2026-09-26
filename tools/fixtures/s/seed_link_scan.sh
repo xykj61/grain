@@ -114,7 +114,11 @@ FRONT_DOOR="README.md SECURITY.md CODE_OF_CONDUCT.md CHANGELOG.md MAP.md SOURCE.
 # conversion drops the brackets and keeps the backtick; sites whose display text named a shorthand,
 # a directory, or a bare filename (`ITINERARY.md`, `construction/`, `counsel/20260712-090512`, the
 # fleet-roster.kyri "Kin:" pairs missing their leading `../`) kept their own display text instead.
-ceiling=76   # no override exists: the control proves both sides by planting, never by a flag
+# Lowered to 0 on 20260926 after the remaining 76 sites, scattered across 47 files with no room
+# holding more than four, were each unlinked in place -- every one's display text kept exactly as
+# written, whether a backticked path, a shorthand name, or ordinary prose, and only the brackets
+# and target dropped.
+ceiling=0   # no override exists: the control proves both sides by planting, never by a flag
 
 # The ratchet named five of its sites and counted the rest, so a lane could not find its own
 # share of a debt whose whole repair model is "falls on touch". --list prints every one.

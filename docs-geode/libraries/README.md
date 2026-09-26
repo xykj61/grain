@@ -44,7 +44,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
-| [`linengrow/`](../../linengrow/README.md) | 157 | 85 |
+| `linengrow/` | 157 | 85 |
 | [`lotus/`](../../lotus/README.md) | 238 | 250 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |

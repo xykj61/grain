@@ -24,7 +24,7 @@ verify, agree a key, or seal a message: **Kumara** identity, **Vault** sealed st
 **Rye-first, the priority spine:** the mathematics lands in green-witnessed Rye, and any Glow
 surface stands on that witness rather than ahead of it.
 
-**Clean-room:** [`Monocypher`](../vendor/monocypher) (CC0/BSD-dual, vendored, unmodified) is the
+**Clean-room:** `Monocypher` (CC0/BSD-dual, vendored, unmodified) is the
 parity *target*, studied through its public API and the RFC vectors rather than copied
 ([`gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md)).
 

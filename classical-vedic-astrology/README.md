@@ -51,7 +51,7 @@ classical-vedic-astrology/
 
 | Stamp | Reading | Meaning |
 |-------|---------|---------|
-| 20260701.232912 | [Sample reading](readings/alice-sample-reading.md) | The demonstration reading, under a placeholder name. This is the one that ships. |
+| 20260701.232912 | Sample reading | The demonstration reading, under a placeholder name. This is the one that ships. |
 
 *One complete two-wheel reading of fifteen chapters stands in the maintainer's field and is withheld from the public seed, along with the superseded drafts in `yonder/`. A natal chart carries a named person's birth date, time, and place, and privacy is kept by design. **The method ships; the chart stays private.** The `readings/` and `yonder/` rooms are `sub_exclude`d in `template-manifest.kyri` (`20260823.184309`), so the boundary is a declaration a program reads rather than a habit.*
 
@@ -67,7 +67,7 @@ classical-vedic-astrology/
 
 | Stamp | Index | Meaning |
 |-------|-------|---------|
-| -- | [yonder/README.md](yonder/README.md) | Morning-cast drafts superseded by the evening recast |
+| -- | yonder/README.md | Morning-cast drafts superseded by the evening recast |
 
 - **`studies/`** -- silo library `00`-`58` and growing. Each study lives in a **topic folder** (`nakshatras/`, `planets-in-signs/`, `planet-in-house/`, ...) with a hyphenated sprig. The master index is [`studies/README.md`](studies/README.md); the composable map lives in [`templates/reading-template.md`](templates/reading-template.md).
 - **`templates/reading-template.md`** -- how a reading is made, section by section, silo by silo.

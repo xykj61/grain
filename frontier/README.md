@@ -6,7 +6,7 @@
 **Status:** Built -- the NixOS configuration carries four pinned terminal agents; Cursor CLI's
 terminal-only operating guide lives under [`cursor-cli/`](cursor-cli/README.md)
 **Last updated:** `20260921.152230`
-**Kin:** [`NIXOS_CLI_GUIDE.md`](NIXOS_CLI_GUIDE.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - [`../nixos/configuration.nix`](../nixos/configuration.nix) - [`../open/README.md`](../open/README.md) - [`../fleet/README.md`](../fleet/README.md)
+**Kin:** [`NIXOS_CLI_GUIDE.md`](NIXOS_CLI_GUIDE.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - `../nixos/configuration.nix` - [`../open/README.md`](../open/README.md) - [`../fleet/README.md`](../fleet/README.md)
 
 ---
 

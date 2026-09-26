@@ -764,4 +764,4 @@ read it.
 
 May the page you write next read like daylight on good ground.
 
-Canonical rule: [`../.claude/rules/gauge-style.md`](../.claude/rules/gauge-style.md) - Cursor twin: [`../.cursor-archive/rules/gauge-style.mdc`](../.cursor-archive/rules/gauge-style.mdc)
+Canonical rule: [`../.claude/rules/gauge-style.md`](../.claude/rules/gauge-style.md) - Cursor twin: `../.cursor-archive/rules/gauge-style.mdc`

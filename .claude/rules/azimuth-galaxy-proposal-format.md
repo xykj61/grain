@@ -12,7 +12,7 @@ There are 256 Azimuth galaxies. As of this rule's writing, there are fewer than 
 - Stars: `opensea.io/collection/urbit-id-star` -- same contract, `0x33eecbf908478c10614626a9d304bfe18b78dd73`
 - Planets: `opensea.io/collection/urbit-id-planet` -- contract `0x9ef27de616154ff8b38893c59522b69c7ba8a81c`
 
-This fork's own identity carries a real star (`~bandun`) and planet (`~pacpet-solreb`), recorded at [`../../PUBKEYS.md`](../../PUBKEYS.md) -- Kaeden is already one of these real-life owners.
+This fork's own identity carries a real star (`~bandun`) and planet (`~pacpet-solreb`), recorded at `../../PUBKEYS.md` -- Kaeden is already one of these real-life owners.
 
 ## What the Format Adds
 

@@ -36,7 +36,7 @@ rishi/bin/rishi run tools/w/waymark_derive.rish   # input_name = ...-keyboard-3
 rishi/bin/rishi run tools/d/dexter_glass_keyboard_witness.rish
 ```
 
-Layout: [`linengrow/dexter_glass_keyboard_layout.rye`](../linengrow/dexter_glass_keyboard_layout.rye).
+Layout: `linengrow/dexter_glass_keyboard_layout.rye`.
 
 ---
 

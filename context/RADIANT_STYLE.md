@@ -6,7 +6,7 @@
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear -- whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 **Room:** mixed -- the negation floor is counted; the poetry axis is judged
 
-**The voice that writes in this style is Kyri** -- the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
+**The voice that writes in this style is Kyri** -- the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at `RIYO.md`. Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane (`QUIN.md`); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 
 **Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/r/radiant_pass_ledger.txt`](../tools/fixtures/r/radiant_pass_ledger.txt).
  

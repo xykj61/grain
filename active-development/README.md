@@ -46,8 +46,8 @@ Nothing already filed. The 629 dated notes that folded out of `active-designing/
 ## Kin
 
 - [`../active-designing/README.md`](../active-designing/README.md) -- essays and durable design
-- [`../active-reviving/README.md`](../active-reviving/README.md) -- an elder thing re-grown beside itself, born with its new name
-- [`../session-logs/README.md`](../session-logs/README.md) -- what actually happened, in the voice's own notation
+- `../active-reviving/README.md` -- an elder thing re-grown beside itself, born with its new name
+- `../session-logs/README.md` -- what actually happened, in the voice's own notation
 - [`../ORGANIZING.md`](../ORGANIZING.md) -- the filing guide for the whole tree
 
 *May this room stay small and useful, and may the essays next door get the quiet they were opened for.*

@@ -18,7 +18,7 @@ Start at [`ORGANIZING.md`](ORGANIZING.md) for the shape of the whole tree -- wha
 
 Every commit follows Urbit's own inherited discipline: **atomic**, **component-prefixed**, **under 50 characters** in the subject line, in a compiling and runnable state. Work still in progress lands on a branch, and `main` holds finished commits.
 
-This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / [`.cursor-archive/rules/commit-messages.mdc`](.cursor-archive/rules/commit-messages.mdc): every commit body is written in Kyri's voice at the **Meter** setting of New Gauge Style, with a short paragraph naming what changed and why, and a `Related` section, which stays present even where the work resolves a tracked issue or stands on its own.
+This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / `.cursor-archive/rules/commit-messages.mdc`: every commit body is written in Kyri's voice at the **Meter** setting of New Gauge Style, with a short paragraph naming what changed and why, and a `Related` section, which stays present even where the work resolves a tracked issue or stands on its own.
 
 ## Pull Requests
 
@@ -137,15 +137,15 @@ reading rather than whoever wrote it.
 
 ## Pitching Beyond This Fork
 
-A commit or proposal substantial enough to matter past this repository's own tree may carry a **Galaxy Pitch** block, formatted for Urbit's real Azimuth galaxy holders -- see [`.claude/rules/azimuth-galaxy-proposal-format.md`](.claude/rules/azimuth-galaxy-proposal-format.md) / [`.cursor-archive/rules/azimuth-galaxy-proposal-format.mdc`](.cursor-archive/rules/azimuth-galaxy-proposal-format.mdc). A commit earns that block by mattering outside this tree, so most commits leave it out.
+A commit or proposal substantial enough to matter past this repository's own tree may carry a **Galaxy Pitch** block, formatted for Urbit's real Azimuth galaxy holders -- see [`.claude/rules/azimuth-galaxy-proposal-format.md`](.claude/rules/azimuth-galaxy-proposal-format.md) / `.cursor-archive/rules/azimuth-galaxy-proposal-format.mdc`. A commit earns that block by mattering outside this tree, so most commits leave it out.
 
 ## Signing
 
-Every commit is GPG-signed. This repository's own signing key is recorded at [`PUBKEYS.md`](PUBKEYS.md); `.claude/rules/git-signing.md` and `.cursor-archive/rules/git-signing.mdc` govern the discipline, and both `--no-gpg-sign` and `--no-verify` stay off the table.
+Every commit is GPG-signed. This repository's own signing key is recorded at `PUBKEYS.md`; `.claude/rules/git-signing.md` and `.cursor-archive/rules/git-signing.mdc` govern the discipline, and both `--no-gpg-sign` and `--no-verify` stay off the table.
 
 ## Voice
 
-Everything you write here -- code comments, commit messages, documentation, session logs -- speaks in **New Gauge Style**, in Kyri's voice, per [`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md) and [`context/KYRI.md`](context/KYRI.md). Its first rule comes before the others: **don't be too smart about it.** Gauge inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md). Kyri gathers what prior writing seasons (Reya 2 - Rio 3 - Quin-as-writer - Riyo) each held best; **Quin** keeps the fifth OS variant and the Q-vane ([`context/QUIN.md`](context/QUIN.md)). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee rather than a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
+Everything you write here -- code comments, commit messages, documentation, session logs -- speaks in **New Gauge Style**, in Kyri's voice, per [`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md) and [`context/KYRI.md`](context/KYRI.md). Its first rule comes before the others: **don't be too smart about it.** Gauge inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md). Kyri gathers what prior writing seasons (Reya 2 - Rio 3 - Quin-as-writer - Riyo) each held best; **Quin** keeps the fifth OS variant and the Q-vane (`context/QUIN.md`). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee rather than a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
 
 ---
 

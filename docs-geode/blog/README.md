@@ -44,7 +44,7 @@ earns the attention those three assume. Earning it is the one thing a page here 
 
 **Where the writing has otherwise gone:** most pieces worth saying find a better home. The reasoning
 goes to [`foundations/`](../../foundations/README.md), the record to
-[`session-logs/`](../../session-logs/README.md), the announcements to
+`session-logs/`, the announcements to
 [`../press/README.md`](../press/README.md), and the teaching to
 [`../edu/README.md`](../edu/README.md). Each one belongs where it lands, which is why this shelf
 stayed bare so long and why it will always stay short.

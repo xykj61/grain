@@ -30,7 +30,7 @@ Every segment above runs to 4, 5, or more letters, and never to 3. So each of th
 
 ## What This Protects
 
-- Kaeden's own real points, `~bandun` (star) and `~pacpet-solreb` (planet), recorded at [`../../PUBKEYS.md`](../../PUBKEYS.md), are **never** used as example ship names in generic documentation -- only in the identity record itself, where naming them is the whole point.
+- Kaeden's own real points, `~bandun` (star) and `~pacpet-solreb` (planet), recorded at `../../PUBKEYS.md`, are **never** used as example ship names in generic documentation -- only in the identity record itself, where naming them is the whole point.
 - A newcomer following this fork's own guides cannot accidentally run a networked command against a real address, since the example itself will fail to parse before it could ever reach the network.
 
 ## Why It Is Shaped This Way
