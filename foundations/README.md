@@ -20,7 +20,7 @@ a stamped brief says why the work means something, and a living-named constant s
 done. Measured `20260906.143614` -- 81 of 84 stamped here, and 0 of 28 stamped there.
 
 **The council rota reads fifteen of these, three a lap.** The grid in
-[`../recursion-prompts/seed/autonomous-loop.seed.md`](../recursion-prompts/seed/autonomous-loop.seed.md)
+`recursion-prompts/seed/autonomous-loop.seed.md`
 crosses five elements with three modalities, and every ship deep-reads one row per lap, so each
 seat returns to living awareness within a working day. Twelve of the fifteen seats live in this
 room; three live in [`../context/`](../context/README.md), where durable guidance is kept. The
@@ -31,7 +31,7 @@ stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/
 | Row and sense | Threshold | Cardinal -- opens | Fixed -- holds | Dual -- adapts |
 |---|---|---|---|---|
 | **Aether** hears -- why the work exists | [hears](20260826-021731_aether-the-row-that-hears.md) | [Follow our compass](20260826-024943_follow-our-compass.md) | [The Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md) | [The grain and the crossing](20260826-024942_the-grain-and-the-crossing.md) |
-| **Air** feels -- law and boundary | [feels](20260826-021732_air-the-row-that-feels.md) | [`../context/TAME_CORE.md`](../context/TAME_CORE.md) | [Single-stranded](20260823-204456_single-stranded.md) | [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) |
+| **Air** feels -- law and boundary | [feels](20260826-021732_air-the-row-that-feels.md) | `context/TAME_CORE.md` | [Single-stranded](20260823-204456_single-stranded.md) | [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) |
 | **Fire** sees -- cut and stop | [sees](20260826-021733_fire-the-row-that-sees.md) | [Standfast, the stopped line](20260816-214652_standfast-the-stopped-line.md) | [Reds first and the allocation](20260729-224828_reds-first-and-the-allocation.md) | [The three depths of removal](20260818-081438_the-three-depths-of-removal.md) |
 | **Water** tastes -- care and flow | [tastes](20260826-021734_water-the-row-that-tastes.md) | [What Brix infuse is](20260823-222019_what-brix-infuse-is.md) | [The happy zone and the thin edge](20260826-194850_the-happy-zone-and-the-thin-edge.md) | [Growing a language](20260618-184912_growing-a-language.md) |
 | **Earth** breathes in -- the concrete | [breathes in](20260826-021735_earth-the-row-that-breathes-in.md) | [The clock and the mark](20260905-154954_the-clock-and-the-mark.md) | [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) | [The marked value](20260703-202312_the-marked-value.md) |
@@ -60,15 +60,15 @@ stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/
 | `20260726.020537` | [The Breach](20260726-020537_the-breach.md) | accrete by default - breach by declaration - expiry at first outside consumer |
 | `20260726.020607` | [Output over Activity](20260726-020607_output-over-activity.md) | measure whole-pier output - leverage - counted simplification |
 
-**The long return** -- the [Lindy foundation](20260811-211431_the-lindy-effect-and-the-long-return.md) names why front doors and foundations are the highest-leverage prose we own, and it grounds the standing order [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): do the longest-lived work first, and within a tier take the *crux* -- the hardest solvable problem. The **AHOY** front-door chapter ([`../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md`](../expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md)) runs this room's weave.
+**The long return** -- the [Lindy foundation](20260811-211431_the-lindy-effect-and-the-long-return.md) names why front doors and foundations are the highest-leverage prose we own, and it grounds the standing order [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): do the longest-lived work first, and within a tier take the *crux* -- the hardest solvable problem. The **AHOY** front-door chapter (`expanding-prompts/date/20260811/20260811-211431_ahoy-front-door-season.md`) runs this room's weave.
 
 **The grain** -- the standing strands and the crossing test live in [`../foundations/20260826-024942_the-grain-and-the-crossing.md`](../foundations/20260826-024942_the-grain-and-the-crossing.md); companion to [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md). Strand briefs that silo here point back to that index; the index points to each brief.
 
 **The compass** -- the return habit (foundations -> grain -> active-designing -> ITINERARY -> witnesses) lives in [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) - **landed** `20260706.185512 UDT`. Say **follow our compass** for navigation; keep **grain strand** for structural fit.
 
-**Seam chapter (`20260712.052806`)** -- nib-430 horizon door: universality through the application seam. Wire serves the fold and sameness stay the why; studies 1-4 landed; CapTP-as-fold **declined** [`../context/specs/20260712-054650_captp-as-fold-carriage-declined.md`](../context/specs/20260712-054650_captp-as-fold-carriage-declined.md); giving-lane T0 in [`20260629-014512_money-that-stays-close-to-home.md`](20260629-014512_money-that-stays-close-to-home.md). Living hammock [`../active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) - counsel [`../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md).
+**Seam chapter (`20260712.052806`)** -- nib-430 horizon door: universality through the application seam. Wire serves the fold and sameness stay the why; studies 1-4 landed; CapTP-as-fold **declined** [`../context/specs/20260712-054650_captp-as-fold-carriage-declined.md`](../context/specs/20260712-054650_captp-as-fold-carriage-declined.md); giving-lane T0 in `20260629-014512_money-that-stays-close-to-home.md`. Living hammock [`../active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) - counsel `counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`.
 
-**Docs compression (`20260712.223300`)** -- raw beneath - compress above - keeper honest: [`../docs/`](../docs/README.md) shelf - `living_docs_lint.rish` ratchet-advisory - Karpathy pattern distillation [`../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). the compass rose's Now and Order stations: [`ITINERARY.md`](../construction/ITINERARY.md) (the elder `TASKS.md` and `ROADMAP.md` fused into it `20260823.103804`).
+**Docs compression (`20260712.223300`)** -- raw beneath - compress above - keeper honest: [`../docs/`](../docs/README.md) shelf - `living_docs_lint.rish` ratchet-advisory - Karpathy pattern distillation [`../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md`](../external-research/date/20260712/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md). the compass rose's Now and Order stations: `construction/ITINERARY.md` (the elder `TASKS.md` and `ROADMAP.md` fused into it `20260823.103804`).
 
 **Day-one compressor (`20260717.173848`)** -- when context is short, open [`../docs/COMPASS.md`](../docs/COMPASS.md) or the Kyri card [`../docs/compass_card.kyri`](../docs/compass_card.kyri). This shelf stays; compressors point and never replace. Study [`../external-research/date/20260717/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md`](../external-research/date/20260717/20260717-173848_foundations-archive-kyri-compress-for-llm-context.md).
 
@@ -112,7 +112,7 @@ stamp. Held at zero by [`../tools/f/foundations_reach_witness.rish`](../tools/f/
 
 **How the bench walks** -- workflow law for nested chapters (Nona n1):
 
-- `20260729-130535_season-driven-development.md` -- **living** Chapter-Driven Development (SDD) - Nest-Chapter Development: finishing edge - waymark - handback - dual editors - silo map. Study: [`../external-research/date/20260729/20260729-130535_season-driven-development.md`](../external-research/date/20260729/20260729-130535_season-driven-development.md) - template: [`../expanding-prompts/date/20260729/20260729-130535_season-open-template.md`](../expanding-prompts/date/20260729/20260729-130535_season-open-template.md).
+- `20260729-130535_season-driven-development.md` -- **living** Chapter-Driven Development (SDD) - Nest-Chapter Development: finishing edge - waymark - handback - dual editors - silo map. Study: [`../external-research/date/20260729/20260729-130535_season-driven-development.md`](../external-research/date/20260729/20260729-130535_season-driven-development.md) - template: `expanding-prompts/date/20260729/20260729-130535_season-open-template.md`.
 
 **Distilled essays** -- single-stranded meditations drawn from a year of notes, each self-contained and composable:
 

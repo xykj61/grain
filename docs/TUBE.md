@@ -6,7 +6,7 @@
 **Depth:** guide
 **Ceiling:** <=150 lines
 **Last updated:** 2026-07-18 (JABS living names - Mantra-rev tip wording)
-**Compresses:** [`20260716-142818_glow-application-framework-and-publishing.md`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md) - [`20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md) - [`JABS.md`](JABS.md)
+**Compresses:** `expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md` - [`20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md) - [`JABS.md`](JABS.md)
 
 ---
 
@@ -85,17 +85,17 @@ rishi/bin/rishi run tools/t/tube05_install_proof_onpath_host.rish
 
 **TUBE7 glass path GREEN `20260717.145547`:** installable APK on GrapheneOS Pixel presents admit + R2 + Mantra-rev tip + publish + sealed fetch + market acquire. JABS1 carriage joins that glass stack `20260717.170315` - Pixel-confirmed `20260717.171015`. TUBE6 (real GrapheneOS *build*) stays horizon behind HAWM2.
 
-**Resource Scope (Storage - Contact) GREEN `20260717.155846` - glass cover `20260717.161220`:** [`../linengrow/glow_storage_scope.rye`](../linengrow/glow_storage_scope.rye) -- one mold for GrapheneOS Storage Scopes and Contact Scopes. [`admit_manifest_scopes`](../linengrow/tube1_admission.rye) stacks scopes under Caravan grant; revoke refuses. Glass declares `photos` + `contacts` and Scopes cover them (`tube1_glass_gate.rye`); weaker/revoked scopes refuse. APK permission emission stays on the separate TUBE0.5 path. GrapheneOS stays the hardware root; Glow implements the parallels in Glow, never Kotlin.
+**Resource Scope (Storage - Contact) GREEN `20260717.155846` - glass cover `20260717.161220`:** `linengrow/glow_storage_scope.rye` -- one mold for GrapheneOS Storage Scopes and Contact Scopes. `admit_manifest_scopes` in `linengrow/tube1_admission.rye` stacks scopes under Caravan grant; revoke refuses. Glass declares `photos` + `contacts` and Scopes cover them (`tube1_glass_gate.rye`); weaker/revoked scopes refuse. APK permission emission stays on the separate TUBE0.5 path. GrapheneOS stays the hardware root; Glow implements the parallels in Glow, never Kotlin.
 
-**Network Grant GREEN `20260717.160607` - TUBE1 wire `20260717.160828`:** [`../linengrow/glow_network_grant.rye`](../linengrow/glow_network_grant.rye) -- clean-room Glow parallel of GrapheneOS Network permission toggle. Binary grant/revoke; refused grant **appears down**. [`admit_manifest_networked`](../linengrow/tube1_admission.rye) requires the grant only when the manifest declares `network`; glass keeps the door live without adding INTERNET to the R2 present path. Manifest emission of `network` + `right_net` -> INTERNET stays TUBE0.5.
+**Network Grant GREEN `20260717.160607` - TUBE1 wire `20260717.160828`:** `linengrow/glow_network_grant.rye` -- clean-room Glow parallel of GrapheneOS Network permission toggle. Binary grant/revoke; refused grant **appears down**. `admit_manifest_networked` in `linengrow/tube1_admission.rye` requires the grant only when the manifest declares `network`; glass keeps the door live without adding INTERNET to the R2 present path. Manifest emission of `network` + `right_net` -> INTERNET stays TUBE0.5.
 
-**Sensors Grant GREEN - TUBE1 wire `20260717.161013` - TUBE0.5 emit `20260717.161448`:** [`../linengrow/glow_sensors_grant.rye`](../linengrow/glow_sensors_grant.rye) -- GrapheneOS Sensors permission toggle parallel. Binary grant/revoke; refused grant **appears zeroed**. [`admit_manifest_gated`](../linengrow/tube1_admission.rye) stacks Network + Sensors; engages `sensors` only when declared. Glass keeps both toggle doors live on the R2 present path. TUBE0.5 closed table: `sensors` + `right_device` -> `android.permission.OTHER_SENSORS`.
+**Sensors Grant GREEN - TUBE1 wire `20260717.161013` - TUBE0.5 emit `20260717.161448`:** `linengrow/glow_sensors_grant.rye` -- GrapheneOS Sensors permission toggle parallel. Binary grant/revoke; refused grant **appears zeroed**. `admit_manifest_gated` in `linengrow/tube1_admission.rye` stacks Network + Sensors; engages `sensors` only when declared. Glass keeps both toggle doors live on the R2 present path. TUBE0.5 closed table: `sensors` + `right_device` -> `android.permission.OTHER_SENSORS`.
 
 ---
 
 ## Decision pinned
 
-No Glow->Kotlin/JVM transpiler -- [`active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md). Full ladder plan: [`expanding-prompts/yonder/20260716-142818_...`](../expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md). GrapheneOS-facing app logic stays Glow/Rye -> native.
+No Glow->Kotlin/JVM transpiler -- [`active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md`](../active-designing/date/20260717/20260717-014522_native-activity-shim-and-slc-packaging.md). Full ladder plan: `expanding-prompts/yonder/20260716-142818_glow-application-framework-and-publishing.md`. GrapheneOS-facing app logic stays Glow/Rye -> native.
 
 Device ladder this joins: [`HAWM.md`](HAWM.md).
 

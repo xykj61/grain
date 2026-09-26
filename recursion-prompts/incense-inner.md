@@ -198,6 +198,24 @@ was already made. Next lap: a fresh round-open and a cold run held still start t
 272-site remainder continues per-document on touch (gratitude/ at 47 is next-largest), and the
 ledger fold deadlock is unchanged and still Keaton's word to break.
 
+**This lap (`20260926.102037`) found gratitude/ already swept by a prior lap and took the next
+four largest files instead: `docs/TUBE.md` (8 sites into `linengrow/` and
+`expanding-prompts/yonder/`), `caravan/HARNESS.md` (6 sites -- one `session-logs/` link and five
+`REDS %N` citations that had been linked into `construction/REDS.md` and its archive shelf,
+unlinked to the bare `REDS %N` form `git-signing.md` already asks for), `foundations/README.md` (7
+sites into `recursion-prompts/`, `context/TAME_CORE.md`, `expanding-prompts/`, foundations' own
+sub_excluded money-close-to-home page, `counsel/`, and `construction/ITINERARY.md`), and
+`active-designing/seam-season-hammock.md` (6 sites into `counsel/` and two sub_excluded
+`external-research/` pages). Ratchet fell **155 to 128**; ceiling lowered to match, reason
+recorded in the scan's own header. Witnesses GREEN on metal: `seed_link_witness` (33 legs,
+0 failing), `ascii_document_witness` (748 chars, under its 750 ceiling), `tame_style_check`,
+`link_text_promise_witness` (zero). No REDS row booked -- the ledger sits 192 bytes under its
+bound, `pin_deadlocked=1`, zero foldable rows; recorded in the commit body and this log instead.
+Held the round-open's ORDER clause this time: no cold run was launched or waited on, since this
+lap ran an ordinary per-document repair naming no new instrument and claiming no booked red.
+Next lap: a fresh round-open and cold run; the remainder continues per-document on touch, and the
+ledger fold deadlock is unchanged and still Keaton's word to break.
+
 **This lap (`20260926.083500`) round-opened clean, found no overlapping claim, then met a cold
 run already in flight at its own launch HEAD -- waited per the FLEET clause rather than starting a
 second or TERMing it.** While it ran, `sh tools/fixtures/f/fold_shelf_link_repoint.sh` (its own

@@ -9,8 +9,8 @@
 **Lens:** TAME - SLC - compass - wire serves the fold - sameness is the macro
 **Status:** Living hammock -- studies 1-4 landed; CapTP-as-fold **declined** `054650`; giving-lane T0 **seated** - T1 **mapped** `054942` - T2 courtesy **choice seated** `062656` - **wire opened** `071405`; Door 3 **landed** nib **431** `063213`; component compile **landed** nib **432** `063558`; proven-seat **G0 GREEN** `071405` (GRUB milestone; full UI wants KVM); Spritely ally parked - product nib **430** - suite nib **432**
 **Room:** mixed -- the landed studies and pinned nibs are checkable; the parked rulings and named horizons are vision.
-**Counsel:** [`../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md)
-**Foundations:** [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) - [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) - [`../foundations/20260826-024940_anywhere-we-are-found.md`](../foundations/20260826-024940_anywhere-we-are-found.md) - [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md)
+**Counsel:** `counsel/date/20260712/20260712-052806_claude-counsel-three-doors-and-teacher.md`
+**Foundations:** [`../foundations/20260706-022912_the-wire-serves-the-fold.md`](../foundations/20260706-022912_the-wire-serves-the-fold.md) - [`../foundations/20260703-182612_sameness-is-the-macro.md`](../foundations/20260703-182612_sameness-is-the-macro.md) - [`../foundations/20260826-024940_anywhere-we-are-found.md`](../foundations/20260826-024940_anywhere-we-are-found.md) - `foundations/20260629-014512_money-that-stays-close-to-home.md`
 **Living law:** [`../context/specs/living-vs-dated.md`](../context/specs/living-vs-dated.md) - frozen dated original [`20260712-052806_seam-season-hammock.md`](date/20260712/20260712-052806_seam-season-hammock.md)  
 Radiant pass `20260728.052441` -- living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** - WOV retire roadmap last
 
@@ -24,10 +24,10 @@ Radiant pass `20260728.052441` -- living L1 rename-forward: **MUR** (was MALA); 
 
 | Order | Study (our words) | Opens in | Unlocks | Status |
 |-------|-------------------|----------|---------|--------|
-| **1** | Capability-protocol idiom beside Comlink's sealed datagram | `external-research/` (named teachers stay there) | Consumer-edge design note | **Landed** [`../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md`](../external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md) |
+| **1** | Capability-protocol idiom beside Comlink's sealed datagram | `external-research/` (named teachers stay there) | Consumer-edge design note | **Landed** `external-research/date/20260712/20260712-053324_ocapn-beside-comlink.md` |
 | **2** | One existing seed through a component-model target | `external-research/` (portable ABI lineage) | "Anywhere" before bare metal | **Landed** [`../external-research/date/20260712/20260712-054135_component-model-one-seed.md`](../external-research/date/20260712/20260712-054135_component-model-one-seed.md) -- pick **receipt verify-witness** |
 | **3** | Proven-seat guest for Rye userland -- Caravan stays horizon | `external-research/` (verified microkernel lineage) | Guest, never merger | **Landed** [`../external-research/date/20260712/20260712-054342_proven-seat-guest-genode-sel4.md`](../external-research/date/20260712/20260712-054342_proven-seat-guest-genode-sel4.md) |
-| **4** | Giving-asymmetric money for Linengrow's giving lane | `external-research/` beside money-close-to-home | Complements MUR / settlement seat (was MALA) | **Landed** [`../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) |
+| **4** | Giving-asymmetric money for Linengrow's giving lane | `external-research/` beside money-close-to-home | Complements MUR / settlement seat (was MALA) | **Landed** `external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md` |
 
 Logic before carriage throughout. Each study lands as understanding + a short design conclusion; none ships a new wire or renames a module.
 
@@ -52,7 +52,7 @@ Logic before carriage throughout. Each study lands as understanding + a short de
 
 ## Giving lane (T0 seated - T1 mapped)
 
-Private payer - transparent payee -- [`../foundations/20260629-014512_money-that-stays-close-to-home.md`](../foundations/20260629-014512_money-that-stays-close-to-home.md) - study [`../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md`](../external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md) - **T1 gap map** [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md).
+Private payer - transparent payee -- `foundations/20260629-014512_money-that-stays-close-to-home.md` - study `external-research/date/20260712/20260712-054521_taler-giving-lane-asymmetry.md` - **T1 gap map** [`20260712-054942_giving-lane-t1-open-asks-field-map.md`](date/20260712/20260712-054942_giving-lane-t1-open-asks-field-map.md).
 
 ## Out of scope this season
 
