@@ -407,6 +407,13 @@ Its baseline comparison proves the plant differs, independent of the comment's
 claim about impossible digests. All 85 stashes remain preserved; 72 construction
 Markdown versions await review. Capture integration and full roster proof remain owed.
 
+The [fold-recital review](../session-logs/date/20260925/20260925-202325_bakery-fold-recital-review.kyri) covers fourteen more construction versions.
+Their seventeen added entries have four exact occurrences in today's recital,
+nine explicit recovery notes or forwarders, and four alternate published shelves.
+Keep the published numbers and the notes that distinguish drafts from landings.
+All 85 stashes remain preserved; 58 construction Markdown versions await review.
+Capture integration and full cold and hot roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
