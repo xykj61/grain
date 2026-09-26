@@ -1,8 +1,9 @@
 //! crypto/sha3_digest.rye -- the SHA3-256 or SHA3-512 of a file, over this tree's own Keccak.
 //!
 //! WHY THIS EXISTS. The Amphora and Cellar fixtures pinned `openssl dgst -sha3-256` as their
-//! digest, and `openssl` is absent from this pier's PATH -- so Amphora lap 2 could not run, which in turn
-//! kept the fascia meter silent for an unknown span (REDS %112). The obvious substitution is the
+//! digest, and `openssl` is absent from this pier's PATH -- so the pour-carry-cold-scrub lap
+//! (amphora_lap2) could not run, which in turn kept the fascia meter silent for an unknown span
+//! (REDS %112). The obvious substitution is the
 //! wrong one: `sha256sum` computes SHA-2, and SHA3-256 is Keccak. They are different algorithms,
 //! not two spellings of one, and swapping them would silently change every content address in
 //! every manifest this tree has written.

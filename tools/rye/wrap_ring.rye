@@ -137,9 +137,9 @@ fn selftest() !void {
 
     // A PAGE IS STILL FRESH AFTER EXACTLY ONE LAP, and this cost the first run.
     // The selftest was written expecting a lap-0 page to be recycled once the
-    // ring had turned once, and it is not: writes during lap 0 leave `lap == 0`
+    // ring had turned once, and it is not: writes during lap-0 leave `lap == 0`
     // on the page, and `written == circumference` only means the NEXT write
-    // begins lap 1. The page at index 3 is overwritten when the ring reaches it
+    // begins lap-1. The page at index 3 is overwritten when the ring reaches it
     // again, one page into the second lap.
     //
     // The correction sharpens the claim rather than weakening it: the wrap
