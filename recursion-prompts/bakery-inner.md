@@ -398,6 +398,15 @@ controls. Keep those later accounts and all 85 stashes. The remaining queue hold
 74 construction Markdown versions. Capture integration and full cold and hot
 proof remain owed.
 
+The [ledger draft review](../session-logs/date/20260925/20260925-201120_bakery-ledger-drafts.kyri) covers two more construction versions.
+The conjunction account landed as %780 after its draft used %779. Three folded
+row bodies match their current shelves exactly. The digest-plant repair also
+landed, but its draft number %786 belongs to a different published finding.
+Preserve that draft for ledger reconciliation; keep the published allocations.
+Its baseline comparison proves the plant differs, independent of the comment's
+claim about impossible digests. All 85 stashes remain preserved; 72 construction
+Markdown versions await review. Capture integration and full roster proof remain owed.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
