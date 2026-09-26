@@ -8,7 +8,7 @@
 
 | Chapter | Range | Count | Index |
 |--------|-------|------:|-------|
-| living (current) | open | 0 | [`README.md`](README.md) living pin |
+| living (current) | open | 0 | `README.md` living pin |
 | `20260724` | 20260724 | 7 | [`date/README-index-20260724.md`](date/README-index-20260724.md) |
 | `20260725` | 20260725 | 34 | [`date/README-index-20260725.md`](date/README-index-20260725.md) |
 

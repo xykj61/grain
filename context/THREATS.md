@@ -15,7 +15,7 @@
 
 ## 1. Assets
 
-**OpenPGP master (cold).** The identity signing root. Documented at root [`PUBKEYS.md`](../PUBKEYS.md) and, for the retired identity lane, at [`PUBKEYS.md`](PUBKEYS.md) · [`../keys/`](../keys/). It certifies subordinate keys. Day-to-day commits are designed to leave it untouched — jail-local and sandbox keys exist so the master stays cold. Who reaches it: the operator on a host that holds the private half, and that operator alone; the sandbox and the forge never do.
+**OpenPGP master (cold).** The identity signing root. Documented at root `PUBKEYS.md` and, for the retired identity lane, at `PUBKEYS.md` · `../keys/`. It certifies subordinate keys. Day-to-day commits are designed to leave it untouched — jail-local and sandbox keys exist so the master stays cold. Who reaches it: the operator on a host that holds the private half, and that operator alone; the sandbox and the forge never do.
 
 **OpenPGP sandbox / jail-local key (revocable).** The key the jail and agent lanes sign with. Paths include `keys/jail_signing_linux_*.pub.asc` (current) and `keys/rye_signing_*.pub.asc` (retired lane). Who reaches it: processes inside the enclosure that hold its private half; compromise is contained by revocation and by keeping the master offline.
 
@@ -25,7 +25,7 @@
 
 **Digest roots and seated fixture bytes (integrity, not secrecy).** These prove sameness rather than guard secrets. Named today: the HAWM1 demo root `99b3ae96…e4c5fe` pinned in `linengrow/seva_b0_fold.rye` (and asserted by rename and product witnesses); the FLW word-list pin over `tools/fixtures/f/flw-four-letter.txt` (count and SHA3-512 in `tools/w/waymark_derive.rish`); seated waymark draws (HAWM · TUBE · ZETA · JABS · LULU · STOA · SETU · SEVA). Who reaches them: every clone of the pier; changing them breaks witnesses by design.
 
-**The pier across remotes.** Canonical count and names live in [`REMOTE_ROSTER.md`](REMOTE_ROSTER.md). This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote. Dated prose that says *five remotes* carries an erratum pointing at that roster — the wrong belief stays visible (Tier 2).
+**The pier across remotes.** Canonical count and names live in `REMOTE_ROSTER.md`. This cloud pier carries only `origin` today. Who reaches a remote: whoever holds forge credentials for that remote. Dated prose that says *five remotes* carries an erratum pointing at that roster — the wrong belief stays visible (Tier 2).
 
 **Mand's audit log.** In-process bounded log in `mand/mand_ring1.rye` (`AuditLog`, max eight entries). Ring-1 appends on grant; ring-2 writes retention decisions (KEEP · ELIGIBLE · HELD) onto the same log. Who reaches it: the process running Mand's API; it is not yet a durable on-disk store.
 

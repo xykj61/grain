@@ -64,6 +64,14 @@
 # document, under a ceiling that only ever falls. The repair is a rewrite per document rather
 # than a repoint, so it falls on touch instead of in one sweep that would bury the enforced zero.
 #
+# THE RATCHET REACHED ITS ENFORCED ZERO ON 20260926. The remaining 76 sites, scattered across 47
+# files with no room holding more than four, were each unlinked in place -- display text kept
+# exactly as written, only the brackets and target dropped, the same idiom every prior lap in
+# this remainder used. The ceiling fell 76 to 0, and this rung's own "under the ceiling" leg
+# retired with it: at zero there is no room under, so a stray ratchet link now REFUSES rather
+# than passing free, proven as `ratchet_at_zero_refused` alongside the ceiling-edge legs that
+# already proved the boundary from both sides.
+#
 # WHAT IS NOT PROVEN. That a link points at the RIGHT file -- tracked_link and living_docs_lint
 # own resolution in the field. This rung asks only whether a link survives the projection.
 #
@@ -92,7 +100,7 @@ assert control.out contains "front_dead_named=yes" else "seed-link: the refusal 
 assert control.out contains "unshipped_doc_free=yes" else "seed-link: a document the seed never ships cannot break a seed reader's link"
 assert control.out contains "ratchet_counted=yes" else "seed-link: a shipped non-front-door link must be counted"
 assert control.out contains "ratchet_not_gated=yes" else "seed-link: a ratchet must never be counted against the enforced zero"
-assert control.out contains "ratchet_under_ceiling_free=yes" else "seed-link: a ratchet under its ceiling must pass free"
+assert control.out contains "ratchet_at_zero_refused=yes" else "seed-link: at a zero ceiling a stray ratchet link must refuse rather than pass free"
 assert control.out contains "dated_testimony_free=yes" else "seed-link: dated testimony keeps every reference it ever wrote"
 assert control.out contains "closed_stack_dir_free=yes" else "seed-link: a closed-stack directory (date/, archive/, yonder/) is testimony whatever its basename"
 assert control.out contains "mutation_closed_stack_counted=yes" else "seed-link: striking the closed-stack clause must count the page again"

@@ -73,7 +73,7 @@ builds and verifies, and the key stays in its keeper's hand.
 
 ## Studied, never copied
 
-[`Monocypher`](../vendor/monocypher) (CC0 and BSD dual-licensed, vendored unmodified) is the parity
+`Monocypher` (CC0 and BSD dual-licensed, vendored unmodified) is the parity
 *target* we read through its public API and the RFC vectors. Every line here is ours. The
 clean-room discipline that governs this is written down at
 [`../.claude/rules/gratitude-licenses.md`](../.claude/rules/gratitude-licenses.md).

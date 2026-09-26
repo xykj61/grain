@@ -5,11 +5,11 @@
 **Voice:** Kyri  
 **Status:** Built -- the commands below describe the tracked pier  
 **Last updated:** `20260921.000000`  
-**Kin:** [`README.md`](README.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - [`../nixos/configuration.nix`](../nixos/configuration.nix)
+**Kin:** [`README.md`](README.md) - [`ANTIGRAVITY.md`](ANTIGRAVITY.md) - `../nixos/configuration.nix`
 
 ## What is installed
 
-The pier's [`nixos/configuration.nix`](../nixos/configuration.nix) installs these names:
+The pier's `nixos/configuration.nix` installs these names:
 
 | Command | Package | Pinned upstream release | Update evidence |
 |---|---|---:|---|

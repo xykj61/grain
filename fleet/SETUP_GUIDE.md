@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- a guide, proven once on one real ship, generalized for the rest
 **Last updated:** `20260920.205200`
-**Kin:** [`README.md`](README.md) - [`EARTH_FLEET.md`](EARTH_FLEET.md) - [`../open/SHIP_QUICKSTART_TEMPLATE.md`](../open/SHIP_QUICKSTART_TEMPLATE.md) - [`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`](../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md)
+**Kin:** [`README.md`](README.md) - [`EARTH_FLEET.md`](EARTH_FLEET.md) - [`../open/SHIP_QUICKSTART_TEMPLATE.md`](../open/SHIP_QUICKSTART_TEMPLATE.md) - `../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`
 
 ---
 
@@ -46,7 +46,7 @@ Everything from here is the *provider and harness* half, and it lives in
 
 ## Part 3: what one real ship's own lap looked like
 
-[`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`](../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md)
+`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`
 is `incense`'s own dated record of walking through Part 2 above for the first time on this fleet --
 kept whole, with its own two caught mistakes named plainly, as testimony rather than as a second
 copy of the template.

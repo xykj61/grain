@@ -13,10 +13,10 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Stamp | Announcement | What it says |
 |---|---|---|
-| `20260301.000000` | [The Aspiring Oregon Radiance](../../press/20260301-000000_aspiring-oregon-radiance-statewide-press-release.md) | a vision for regeneration offered to a whole state -- the civic half of this project, written for people who will never read a line of its code |
-| `20260727.141213` | [The Livermore name](../../press/20260727-141213_the-livermore-name-announcement.md) | a name announced in gentle form |
+| `20260301.000000` | The Aspiring Oregon Radiance | a vision for regeneration offered to a whole state -- the civic half of this project, written for people who will never read a line of its code |
+| `20260727.141213` | The Livermore name | a name announced in gentle form |
 | `20260823.212410` | [MOX, and the answer that holds](../../press/20260823-212410_mox-and-the-answer-that-holds.md) | a Linengrow Magazine piece on the first named Mycelium instantiation -- an essay addressed outward rather than an announcement |
-| `20260827.165527` | [Siya Fund LLC founding](../../press/20260827-165527_siya-fund-llc-founding-announcement.md) | the founding of the public-benefit fund, in its own words -- filed as a **draft**, on its own head, until the Wyoming filing is accepted and counsel has read it |
+| `20260827.165527` | Siya Fund LLC founding | the founding of the public-benefit fund, in its own words -- filed as a **draft**, on its own head, until the Wyoming filing is accepted and counsel has read it |
 | `20260907.175821` | [The Radiator and the Wire](../../press/date/20260907/20260907-175821_the-radiator-and-the-wire-public.html) | a chip question for orbit, asked before a mass driver -- the first piece filed as a public HTML projection rather than Markdown, and the first to stand on a folded `date/` shelf |
 | `20260910.054448` | [Anywhere the Vortex Finds Us](../../press/20260910-054448_anywhere-the-vortex-finds-us.md) | a Door telling of a published finite-time-blowup result and the two mathematicians who reached it first -- **mixed room**, the result observation and the aether reading vision |
 | `20260910.054448` | [The Compression the Vortex Wraps](../../press/20260910-054448_the-compression-the-vortex-wraps.md) | the Field companion to the same material, carrying the elliptic pressure law and the mechanism at length |

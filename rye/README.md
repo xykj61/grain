@@ -22,7 +22,7 @@ from the same soil.
 | Home | [`Grain README`](../README.md) | the whole tree, its invitation, and its present shape |
 | Begin | [`The first hour`](../docs-geode/tutorials/the-first-hour.md) | a guided arrival from a fresh checkout to a green result |
 | Build | [`SOURCE.md`](../SOURCE.md) | the signed, sandboxed route through the system |
-| Learn | [`Rye learning process`](../rye-learning-process/README.md) | the record of how the language became itself |
+| Learn | `Rye learning process` | the record of how the language became itself |
 | Sibling | [`Rishi`](../rishi/README.md) | the shell and witness language that grows beside Rye |
 | Higher voice | [`Glow`](../glow/README.md) | the language people write before Rye carries it to metal |
 | Bare metal | [`Aurora`](../aurora/README.md) | the first RISC-V seed that wakes below the application layer |
@@ -78,8 +78,8 @@ rye/
     rye                     <- the built command (after building)
 ```
 
-The lessons learned while building Rye live in the [`Rye learning process`](../rye-learning-process/),
-with the elder reference at [`ALMANAC.md`](../rye-learning-process/archive/ALMANAC.md) -- gate trio,
+The lessons learned while building Rye live in the `Rye learning process`,
+with the elder reference at `ALMANAC.md` -- gate trio,
 Caravan seeds, Brushstroke, strengthening, and Zig 0.16.0 I/O.
 
 Sibling modules built with `rye build` include [`Rishi`](../rishi/), [`Caravan`](../caravan/),

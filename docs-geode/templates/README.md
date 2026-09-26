@@ -34,8 +34,8 @@ right.
 
 ## Brix law (reminder)
 
-Declarative only - one field per line - single space between key and value - `#` comments name what each field *is*. Sibling baton shapes: [`../../context/baton-museum/`](../../context/baton-museum/). Chapter shapes: [`../../tools/gen/chapter/`](../../tools/gen/chapter/).
+Declarative only - one field per line - single space between key and value - `#` comments name what each field *is*. Sibling baton shapes: `../../context/baton-museum/`. Chapter shapes: [`../../tools/gen/chapter/`](../../tools/gen/chapter/).
 
 ## Baton museum (shapes, not instances)
 
-Thirteen halls under [`../../context/baton-museum/`](../../context/baton-museum/) -- including **cell** (counsel printout). Mint instances in session logs / relays; the museum holds only shapes.
+Thirteen halls under `../../context/baton-museum/` -- including **cell** (counsel printout). Mint instances in session logs / relays; the museum holds only shapes.

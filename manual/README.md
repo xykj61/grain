@@ -31,10 +31,10 @@ The lane grows by the same law as the code: reference specifications open only w
 |---------|------|----------|
 | [`tutorials/first-witness.md`](tutorials/first-witness.md) | First `.rish` witness | Checkable |
 | [`tutorials/run-record-and-failures.md`](tutorials/run-record-and-failures.md) | Run-record fields and failures | Checkable |
-| [`cursor-and-the-compass.md`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md) | Foundations - witness habitat - Cursor rules - log - send | Fossil -- retired `20260920.135100` |
+| `cursor-and-the-compass.md` | Foundations - witness habitat - Cursor rules - log - send | Fossil -- retired `20260920.135100` |
 | [`reference/rishi-language.md`](reference/rishi-language.md) | Rishi language reference (parity **142**) | Checkable |
 | [`../glow/`](../glow/) | Eight rune heads + desk generators (`glow/gen/`) | Checkable -- pin [`../glow/README.md`](../glow/README.md) |
-| Acme Glow first code | [`../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md`](../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md) | Checkable pointers + open-rune horizon |
+| Acme Glow first code | `../expanding-prompts/yonder/20260717-213242_glow-first-code-beside-glass-and-open-runes.md` | Checkable pointers + open-rune horizon |
 | Rune grammar brief | [`../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md`](../active-designing/date/20260716/20260716-033000_sameness-and-the-rune-glow-grammar-riscv.md) | Design -- full Glow textbook still horizon |
 | TAME (law) | [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) - Glow scope ER [`../external-research/date/20260713/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md`](../external-research/date/20260713/20260713-225841_glow-supplement-scoping-runes-auras-jet-state.md) | Root seated; Glow supplement still horizon |
 
@@ -64,7 +64,7 @@ Living ledger (full register): [`../context/specs/two-dev-environments-and-mobil
 - **`reference/tally-gardens.md`** -- named bounded memory regions (witnessed behavior only).
 - **`tutorials/first-witness.md`** -- run, read, write: your first `.rish` witness against the living suite.
 - **`tutorials/run-record-and-failures.md`** -- the four run-record fields and RW-4 failure paths.
-- **`cursor-and-the-compass.md`** -- retired `20260920.135100`, held whole at [`.cursor-archive/manual-tutorials/`](../.cursor-archive/manual-tutorials/cursor-and-the-compass.md); its stitched first-day shape (foundations -> witness habitat -> rules -> log -> send) may seed a future single-editor tutorial.
+- **`cursor-and-the-compass.md`** -- retired `20260920.135100`, held whole at `.cursor-archive/manual-tutorials/`; its stitched first-day shape (foundations -> witness habitat -> rules -> log -> send) may seed a future single-editor tutorial.
 - **`guides/macos-ai-jail-setup.md`** -- the macOS sandbox-exec enclosure, witnessed green.
 - **`guides/self-hosted-vpn-setup.md`** -- the self-hosted WireGuard VPN, client half witnessed here, server half a real deploy artifact for your own VPS.
 - **`guides/key-cards-setup.md`** -- making your identity key cards (SSH + GPG fingerprints as a scannable, printable image), audited end to end on macOS.

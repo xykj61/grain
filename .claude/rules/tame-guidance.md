@@ -7,7 +7,7 @@ Full checkable surface: supplement section **What We Check, and When**.
 
 ## TAME Core -- the reflexes (always, every code write)
 
-The highest points, token-dense; the full form is [`context/TAME_CORE.md`](../../context/TAME_CORE.md) (core) and `context/TAME_GUIDANCE.md` (shelf).
+The highest points, token-dense; the full form is `context/TAME_CORE.md` (core) and `context/TAME_GUIDANCE.md` (shelf).
 
 - **Safety > performance > joy** -- safety structural, performance measured, joy is clarity + saying why.
 - **Bound everything** -- every allocation/collection/loop names a max; check at the edge; fail with a **named error**. No unbounded recursion.

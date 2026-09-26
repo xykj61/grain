@@ -138,7 +138,7 @@ until then, the one-lap command is the honest ability this room proves.
 
 ## The interactive paste
 
-The block above is the one-lap print. The conversation pastes live as **fleet interactive** in [`../../context/SPELLBOOK.md`](../../context/SPELLBOOK.md). The incense cursor line is `fleet interactive incense cursor`: bare, captain, `--yolo`, and `grok-4.7-high`. The same spell seats every live ship on Claude, Codex, Antigravity, and OpenCode.
+The block above is the one-lap print. The conversation pastes live as **fleet interactive** in `../../context/SPELLBOOK.md`. The incense cursor line is `fleet interactive incense cursor`: bare, captain, `--yolo`, and `grok-4.7-high`. The same spell seats every live ship on Claude, Codex, Antigravity, and OpenCode.
 
 ## Current model note
 

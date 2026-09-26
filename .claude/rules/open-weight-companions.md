@@ -1,7 +1,7 @@
 # Open-Weight Companions -- a proposal, not yet built
 
 **Seated:** `20260920.141121` on Keaton's word -- **Status:** Vision -- proposed, not built ([`../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md))
-**Kin:** [`open-weight-harness-companions`](../../expanding-prompts/20260920-141121_open-weight-harness-companions.md) - [`../../open/README.md`](../../open/README.md) - [`../../open/HARNESS_RATIONALE.md`](../../open/HARNESS_RATIONALE.md) - [`comlink-tendency`](comlink-tendency.md) - [`gratitude-licenses`](gratitude-licenses.md) - [`session-log-provenance`](session-log-provenance.md) - [`reds-first`](reds-first.md) - [`mechanism-sentence`](mechanism-sentence.md) - [`git-signing`](git-signing.md)
+**Kin:** `open-weight-harness-companions` - [`../../open/README.md`](../../open/README.md) - [`../../open/HARNESS_RATIONALE.md`](../../open/HARNESS_RATIONALE.md) - [`comlink-tendency`](comlink-tendency.md) - [`gratitude-licenses`](gratitude-licenses.md) - [`session-log-provenance`](session-log-provenance.md) - [`reds-first`](reds-first.md) - [`mechanism-sentence`](mechanism-sentence.md) - [`git-signing`](git-signing.md)
 
 **Claude Code runs this bench today, alone.** This page names what a companion model would need
 to satisfy before this tree trusted its work the same way -- written down ahead of need, the same

@@ -15,7 +15,7 @@ After the next NixOS rebuild, start the client with:
 agy
 ```
 
-The interactive captain paste is **fleet interactive incense antigravity** in [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md).
+The interactive captain paste is **fleet interactive incense antigravity** in `../context/SPELLBOOK.md`.
 
 The package is named `antigravity-cli`, but the command is `agy`, matching Google's installer.
 The current Linux x86_64 release in the configuration is `1.2.7`. Nix installs it as an immutable

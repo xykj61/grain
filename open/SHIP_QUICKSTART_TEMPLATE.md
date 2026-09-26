@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- a template, generalized from one ship's own real run
 **Last updated:** `20260920.204600`
-**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`HARNESS_SETUP.md`](HARNESS_SETUP.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) - worked example: [`../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`](../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md)
+**Kin:** [`README.md`](README.md) - [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md) - [`HARNESS_SETUP.md`](HARNESS_SETUP.md) - [`US_DATACENTER_POLICY.md`](US_DATACENTER_POLICY.md) - worked example: `../expanding-prompts/20260920-204041_incense-deepseek-together-setup.md`
 
 ---
 

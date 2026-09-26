@@ -24,11 +24,11 @@ Nothing is deleted. Closed seasons keep their shelf.
 
 | Genre | Living pin | Chapters roster |
 |-------|------------|----------------|
-| Session logs | `session-logs/README.md` | [`session-logs/CHAPTERS.md`](../../session-logs/CHAPTERS.md) |
+| Session logs | `session-logs/README.md` | `session-logs/CHAPTERS.md` |
 | Waymarks | `waymarks/README.md` | [`waymarks/CHAPTERS.md`](../../waymarks/CHAPTERS.md) |
 | Counsel | `counsel/README.md` | `counsel/CHAPTERS.md` |
 | Counsel replies | `counsel/replies/README.md` | `counsel/replies/CHAPTERS.md` |
-| Expanding prompts | `expanding-prompts/README.md` | [`expanding-prompts/CHAPTERS.md`](../../expanding-prompts/CHAPTERS.md) |
+| Expanding prompts | `expanding-prompts/README.md` | `expanding-prompts/CHAPTERS.md` |
 
 Rosters seat now. Folds run when each pin nears its bound.
 

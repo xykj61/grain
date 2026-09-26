@@ -112,12 +112,15 @@ echo "$out" | grep -q 'gated: README.md -> withheld/there.md' && leg front_dead_
 d=$(build unshipped withheld/note.md 'see [there](there.md)')
 verdict_of "$d" | grep -q 'verdict=ok' && leg unshipped_doc_free yes || leg unshipped_doc_free no
 
-# 4. A shipped NON-front-door document counts as a ratchet rather than a gate.
+# 4. A shipped NON-front-door document counts as a ratchet rather than a gate. At the wall's
+#    zero ceiling there is no room "under" it, so a single stray link now refuses rather than
+#    passing free -- the same reading leg 7 proves at ceiling+1, read here through the ratchet
+#    path rather than the front-door gate.
 d=$(build ratchet shipped/note.md 'see [there](../withheld/there.md)')
 out=$(verdict_of "$d")
 echo "$out" | grep -q 'other_living_links_outside_seed=1' && leg ratchet_counted yes || leg ratchet_counted no
 echo "$out" | grep -q 'front_door_links_outside_seed=0' && leg ratchet_not_gated yes || leg ratchet_not_gated no
-echo "$out" | grep -q 'verdict=ok' && leg ratchet_under_ceiling_free yes || leg ratchet_under_ceiling_free no
+echo "$out" | grep -q 'verdict=link_outside_seed' && leg ratchet_at_zero_refused yes || leg ratchet_at_zero_refused no
 
 # 5. Dated testimony keeps every reference it ever wrote. Free, and not even counted.
 d=$(build testimony shipped/20260101-000000_a-dated-note.md 'see [there](../withheld/there.md)')

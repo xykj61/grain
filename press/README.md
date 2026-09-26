@@ -45,10 +45,10 @@ ordinary and technical pieces end plainly.
 
 | Piece | Subject | Status |
 |---|---|---|
-| [`20260827-165527_siya-fund-llc-founding-announcement.md`](20260827-165527_siya-fund-llc-founding-announcement.md) | Siya Fund LLC, and `siya-ww.com` | **DRAFT** -- gated on the Wyoming filing and an attorney's read |
+| `20260827-165527_siya-fund-llc-founding-announcement.md` | Siya Fund LLC, and `siya-ww.com` | **DRAFT** -- gated on the Wyoming filing and an attorney's read |
 | [`20260823-212410_mox-and-the-answer-that-holds.md`](20260823-212410_mox-and-the-answer-that-holds.md) | MOX, the first named instantiation of Mycelium | Living |
-| [`20260727-141213_the-livermore-name-announcement.md`](20260727-141213_the-livermore-name-announcement.md) | The Livermore name | **DRAFT** -- gated on a Nevada court's order and a family's reading |
-| [`20260301-000000_aspiring-oregon-radiance-statewide-press-release.md`](20260301-000000_aspiring-oregon-radiance-statewide-press-release.md) | Aspiring Oregon Radiance, statewide | PROPOSED -- release timing at Keaton's word |
+| `20260727-141213_the-livermore-name-announcement.md` | The Livermore name | **DRAFT** -- gated on a Nevada court's order and a family's reading |
+| `20260301-000000_aspiring-oregon-radiance-statewide-press-release.md` | Aspiring Oregon Radiance, statewide | PROPOSED -- release timing at Keaton's word |
 | [`20260910-054448_anywhere-the-vortex-finds-us.md`](20260910-054448_anywhere-the-vortex-finds-us.md) | The Navier-Stokes blowup result, told at the Door | Living |
 | [`20260910-054448_the-compression-the-vortex-wraps.md`](20260910-054448_the-compression-the-vortex-wraps.md) | The same material at Field depth -- its companion | Living |
 

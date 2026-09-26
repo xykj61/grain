@@ -28,7 +28,7 @@ cover for the same reason. So ask your question first and let it choose the room
 
 **"Why is it built *this way*?"** -> [`active-designing/`](../../active-designing/README.md) for the essays and [`context/specs/`](../../context/specs/) for the settled decisions. When you want the reasoning rather than the ruling, the essay is the one you want.
 
-**"What actually *happened*?"** -> [`session-logs/`](../../session-logs/README.md). Every round since the tree began, with its reasoning and its mistakes. It is long because it is complete.
+**"What actually *happened*?"** -> `session-logs/`. Every round since the tree began, with its reasoning and its mistakes. It is long because it is complete.
 
 ## The names themselves
 

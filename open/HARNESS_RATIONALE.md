@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Status:** Vision -- proposed reasoning, nothing here is witnessed
 **Last updated:** `20260920.141121`
-**Kin:** [`README.md`](README.md) - [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - [`../context/TAME_CORE.md`](../context/TAME_CORE.md) - [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md)
+**Kin:** [`README.md`](README.md) - [`../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md`](../external-research/date/20260920/20260920-021139_harness-letta-open-weight-dst-alignment.md) - [`../.claude/rules/open-weight-companions.md`](../.claude/rules/open-weight-companions.md) - `../context/TAME_CORE.md` - [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md)
 
 ---
 
