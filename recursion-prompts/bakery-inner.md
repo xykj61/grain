@@ -11,9 +11,9 @@
 
 ## fruit
 
-**Recovery queue, reread 20260925.212648: 25 construction Markdown versions remain.**
+**Recovery queue, reread 20260925.213432: 23 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
-identities cover 151 after this lap. Recompute that set before selecting work;
+identities cover 153 after this lap. Recompute that set before selecting work;
 the top-stamped shelf log may carry an older count.
 All 85 stashes and the capture candidate stay preserved. The [early card review](../session-logs/date/20260925/20260925-212648_bakery-early-card-review.kyri) names this lap's evidence.
 
@@ -469,6 +469,13 @@ launch witness. The instrument-absence draft carries an earlier ledger number.
 Keep the later records and all saved drafts. Twenty-five construction Markdown
 versions remain. All 85 stashes stay preserved; capture integration and full
 cold and hot proof remain owed.
+
+The [competing-shelf review](../session-logs/date/20260925/20260925-213432_bakery-competing-shelves.kyri) covers two more archive drafts.
+The link-wall draft precedes Incense's published index-store repair and Bakery's
+recorded withdrawal. The combined self-verdict draft precedes the published split
+between rows %475 and %479. Keep those later resolutions and preserve both drafts.
+Twenty-three construction Markdown versions remain; all 85 stashes stay preserved.
+Capture integration and full cold and hot proof remain owed.
 
 ## gates
 
