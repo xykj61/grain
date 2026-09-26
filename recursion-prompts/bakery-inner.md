@@ -11,11 +11,11 @@
 
 ## fruit
 
-**Recovery queue, reread 20260925.205348: 44 construction Markdown versions remain.**
+**Recovery queue, reread 20260925.210206: 39 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
-identities cover 132 after this lap. Recompute that set before selecting work;
+identities cover 137 after this lap. Recompute that set before selecting work;
 the top-stamped shelf log records an earlier lap and carries an older count.
-All 85 stashes and the capture candidate stay preserved. The [queue reconciliation](../session-logs/date/20260925/20260925-203642_bakery-queue-reconciliation.kyri) names the evidence.
+All 85 stashes and the capture candidate stay preserved. The [saved-address review](../session-logs/date/20260925/20260925-210206_bakery-saved-addresses.kyri) names this lap's evidence.
 
 The two scope-map rows landed in `dbc5306a0`. Read their current savings with
 [`standing_equipment_scope_rank.sh`](../tools/fixtures/s/standing_equipment_scope_rank.sh).
@@ -440,6 +440,13 @@ unpublished drafts, with headers explaining their local number collisions. The f
 landed as %624 with an erratum explaining its move from %619. Keep those published
 records and all 85 stashes. Forty-four construction Markdown versions remain.
 Capture integration and full cold and hot proof remain owed.
+
+The [saved-address review](../session-logs/date/20260925/20260925-210206_bakery-saved-addresses.kyri) covers five more ledger drafts.
+Three quoted drafts match after their links follow the recovered files. The earlier
+projection draft differs only in its proposed row number. The combined instrument
+shelf points to three exact published row bodies. Keep those addresses and their
+historical caveats. Thirty-nine construction Markdown versions remain; all 85
+stashes stay preserved. Capture integration and full cold and hot proof remain owed.
 
 ## gates
 
