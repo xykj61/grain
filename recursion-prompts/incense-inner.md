@@ -186,6 +186,35 @@ ratchet. Landed at `d4f7342ac`, both remotes. Next lap: a fresh round-open and c
 remaining 33 reds still overlap the standing backlog on the shelf and in ITINERARY's Open Doors
 bullet, and the ledger fold deadlock is unchanged and still Keaton's word to break.
 
+**This lap (`20260925.232420`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
+378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A live,
+non-stale pass held the roster lock at launch attempt; `tools/f/fleet_call.sh` read it as this
+tree's own and still HEAD, so waited for it rather than TERMing it, per the FLEET clause. Picked
+`falsifier_form_outcome` off the findings: `pages_found=0` since the guard's own birth
+(`20260917.134251`), because its ranked-page discovery excluded `date/` alongside `archive/` and
+`yonder/` -- and both ranked pages this guard was built to cross (the moonshots and
+refusal-that-can-fire pages) already lived under `date/` on the day it was born, so it could never
+once discover its own subject. Narrowed the exclusion to `archive/yonder` alone, since a ranked
+page's own errata accrue over days and it is expected to fold to its day shelf while still
+gradeable -- unlike `archive/` (superseded) and `yonder/` (deferred), which stay excluded. Added a
+control leg (`dated_page_counted`) proving a page folded to `date/` is counted where an archived
+one still is not; 37 legs, GREEN. `pages_found` moved 0 to 2, and the deeper reading it surfaced is
+real: every one of the 21 rows across both pages now reads `form=none`, because the sibling
+`falsifier_reach_scan.sh` -- itself GREEN, and deliberately, testedly excludes `date/` as
+"testimony rather than a claim this tree still makes" (its own `shelved_read_past` control leg) --
+never captures a falsifier region for either page, while `rank_outcome_scan.sh` hardcodes one of
+them as its own default subject. This is a genuine scope mismatch between two borrowed, correctly-
+designed instruments the crossing scan composes, not a copy-paste bug; whether the reach scan
+should widen its own scope for ranked pages specifically, or the crossing should read falsifier
+regions itself for a dated ranked page, is a design call past this lap's depth-2 bound. The witness
+stays RED, now for the true reason instead of a silent, undiagnosable one. No REDS row booked -- the
+ledger reads 268 bytes of headroom against its 65,536-byte bound, `pin_deadlocked=1`, zero foldable
+rows; recorded in the commit body and session log instead. Next lap: a fresh round-open and cold
+run; the remaining 34 reds still overlap the standing backlog on the shelf and in ITINERARY's Open
+Doors bullet; `falsifier_form_outcome`'s own remaining defect is now a design question for the lane
+rather than a guard-closable one, and the ledger fold deadlock is unchanged and still Keaton's word
+to break.
+
 **This lap (`20260925.221041`) held a fresh cold run to `tree_moved=no`, `run_verdict=guard_red`,
 378 guards: 341 green, 34 red, 3 gated -- unchanged from the prior lap's tally.** A stale detached
 pass held the lock at launch (`launch_head` three commits behind HEAD); confirmed it as this tree's
