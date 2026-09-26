@@ -1,8 +1,9 @@
 # tools/s/sha3_file_witness.rish -- our own SHA3-256 digest, checked against the published standard.
 #
 # WHY THIS RUNG. The Amphora and Cellar fixtures pinned `openssl dgst -sha3-256`, and openssl is
-# absent from this pier -- so Amphora lap 2 could not run, and the fascia meter stayed silent
-# behind it (REDS %112). The fix asked for was `sha256sum`, and it would have been WRONG: sha256sum
+# absent from this pier -- so the pour-carry-cold-scrub lap (amphora_lap2) could not run, and the
+# fascia meter stayed silent behind it (REDS %112). The fix asked for was `sha256sum`, and it would
+# have been WRONG: sha256sum
 # computes SHA-2 and SHA3-256 is Keccak. Different algorithms, not two spellings of one. Swapping
 # them would have silently changed every content address in every manifest this tree has written,
 # and every one would still have looked exactly like a digest.

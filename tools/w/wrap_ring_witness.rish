@@ -13,8 +13,8 @@
 # spent lap is REFUSED rather than handed somebody else's bytes.
 #
 # THE FIRST RUN FAILED, AND THE PROGRAM WAS RIGHT. The selftest expected a lap-0 page to be recycled
-# after one full lap. It is not: writes during lap 0 leave `lap == 0` on the page, and a full
-# circumference of writes only means the NEXT write begins lap 1. The page is overwritten when the
+# after one full lap. It is not: writes during lap-0 leave `lap == 0` on the page, and a full
+# circumference of writes only means the NEXT write begins lap-1. The page is overwritten when the
 # ring reaches it AGAIN. The correction sharpened the claim -- a reader holding a page is safe for
 # exactly one circumference of writes, which is the bound stated as a distance rather than a count.
 

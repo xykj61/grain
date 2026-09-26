@@ -22,7 +22,7 @@ assert mk.ok else "fleet-rearm: the pen could not be opened"
 let pen = trim mk.out
 
 say "fleet-rearm: building the pen -- one gated codex seat, one clean claude seat..."
-let build = run ["sh" "-c" "rm -rf ${pen} && mkdir -p ${pen}/grain ${pen}/grain-mind/.mind-state ${pen}/grain-silence/session-output && git init -q ${pen}/grain-mind && git init -q ${pen}/grain-silence && printf 'root refresh belongs to a hand\\n' > ${pen}/grain-mind/.mind-state/CUSTODY && printf 'lap 3 closed clean\\n' > ${pen}/grain-silence/session-output/silence.txt"]
+let build = run ["sh" "-c" "rm -rf ${pen} && mkdir -p ${pen}/grain ${pen}/grain-mind/.mind-state ${pen}/grain-silence/session-output && git init -q ${pen}/grain-mind && git init -q ${pen}/grain-silence && printf 'root refresh belongs to a hand\\n' > ${pen}/grain-mind/.mind-state/CUSTODY && printf 'round closed clean\\n' > ${pen}/grain-silence/session-output/silence.txt"]
 assert build.ok else "fleet-rearm: the pen failed to build -- read the shell's own words"
 
 say "fleet-rearm: the RED side -- a CUSTODY sentinel gates its seat..."
@@ -35,7 +35,7 @@ let no_paste = ?& [(gated.out contains "MIND_SEAT=cardinal") false]
 assert no_paste == false else "fleet-rearm: unreachable"
 assert (gated.out contains "MIND_SEAT=cardinal") == false else "fleet-rearm: a relaunch paste crossed the CUSTODY wall"
 assert gated.out contains "fleet-loop.sh silence" else "fleet-rearm: the clean claude seat earned no relaunch line"
-assert gated.out contains "lap 3 closed clean" else "fleet-rearm: the claude seat's stop reason was not read"
+assert gated.out contains "round closed clean" else "fleet-rearm: the claude seat's stop reason was not read"
 assert gated.out contains "last activity" else "fleet-rearm: the activity age went unspoken"
 assert gated.out contains "may still be RUNNING" else "fleet-rearm: fresh words earned no caution -- the pen's file is seconds old"
 assert gated.out contains "mystery -- ${pen}/grain-mystery" else "fleet-rearm: an absent seat vanished from the roster instead of being reported"
@@ -56,7 +56,7 @@ say "fleet-rearm: a LIVE seat outside the elder name list still earns its paste.
 # whole time, because every one named a seat the elder list happened to carry. So the leg is planted
 # with `copal`, a live roster seat that list never knew, and the sweep beneath it counts EMPTY pastes
 # across the whole card rather than trusting the one name.
-let newer = run ["sh" "-c" "mkdir -p ${pen}/grain-copal/session-output && git init -q ${pen}/grain-copal && printf 'lap 2 closed clean\\n' > ${pen}/grain-copal/session-output/copal.txt"]
+let newer = run ["sh" "-c" "mkdir -p ${pen}/grain-copal/session-output && git init -q ${pen}/grain-copal && printf 'round closed clean\\n' > ${pen}/grain-copal/session-output/copal.txt"]
 assert newer.ok else "fleet-rearm: the pen could not seat a newer roster ship"
 let armed = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
 assert armed.ok else "fleet-rearm: the printer refused with a newer seat in the pen"
