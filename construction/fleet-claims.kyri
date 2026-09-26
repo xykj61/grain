@@ -71,15 +71,3 @@ stamp 20260925.141518
 epoch 1790360118
 paths tools/fixtures/l/log_has_a_row_scan.sh tools/fixtures/l/log_has_a_row_control.sh
 what Repair duplicate flat-log traversal so the existing row control counts each planted log once.
-claim copal-baton-museum-roster-20260925
-seat copal
-stamp 20260925.175206
-epoch 1790373126
-paths tools/gen/chapter/baton_museum_census_witness.rish construction/standing-equipment.kyri
-what Roster the existing thirteen-hall museum census and prove its missing-hall refusal.
-claim copal-baton-museum-control-20260925
-seat copal
-stamp 20260925.211522
-epoch 1790385322
-paths tools/fixtures/b/baton_museum_census_control.sh
-what Plant a missing museum hall and require the census to refuse with one absent hall.

@@ -17,4 +17,9 @@ assert scan.ok else "baton-census: the verdict reads ok while the status fails �
 assert scan.out contains "census_breach_count=0" else "baton-census: census found a breach; spend the banked word only on Keaton's yes"
 assert scan.out contains "halls_expected=13" else "baton-census: expected thirteen halls"
 
-say "GREEN: baton-census — thirteen halls present · named elders hold · breach census zero"
+let control = run ["sh" "tools/fixtures/b/baton_museum_census_control.sh"]
+say control.out
+assert control.ok else "baton-census: planted missing hall must be recognized"
+assert control.out contains "control_verdict=ok" else "baton-census: planted missing hall must refuse with one breach"
+
+say "GREEN: baton-census — thirteen halls present · named elders hold · one missing hall refused"

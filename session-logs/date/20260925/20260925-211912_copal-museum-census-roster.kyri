@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260925.211912
+editor Codex
+provider OpenAI
+product Codex
+role copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-sol
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-sol; user instruction 2026-09-25
+voice Kyri
+title Museum census joins the roster
+prompt Take one unrostered Generator Chapter witness, claim it, roster it, and prove both sides.
+think Read the parked Copal receipt and found its log, index row, and card account already on HEAD; retained every stash.
+think Opened on the anointed head, stopped an older detached hot pass whose launch head had moved, then launched the cold roster.
+think Stopped the full cold pass within this lap after it began; its partial transcript makes no full-roster claim.
+think Published the supplemental control-path claim beside the card before writing the control script.
+think Added one planted missing hall to the existing witness and one lap-tier roster entry; closed both Copal claims in this work set.
+obs The live scan found thirteen halls and zero missing elders; the planted copy removed cell.brix and returned halls_absent=1, census_breach_count=1, verdict=census_incomplete, exit 1.
+obs The named cold and staged hot roster passes each ran one guard green with tree_moved=no and run_verdict=ok.
+obs The full cold pass ended after a requested TERM and reported exit_code=143; the full cold and hot roster verdicts remain open.
+loom museum_control_halls_absent=1 elders_missing=0 breach_count=1 exit_code=1
+loom museum_named_cold_guards=1 green=1 tree_moved=no
+loom museum_named_hot_guards=1 green=1 tree_moved=no
+rota lap 6664, row 4 -- Earth, the row that breathes in; the planted missing hall made the concrete count answer before any account of the museum.
+file tools/fixtures/b/baton_museum_census_control.sh plants one missing hall in a bounded copy
+file tools/gen/chapter/baton_museum_census_witness.rish requires the planted refusal
+file construction/standing-equipment.kyri runs the witness on the lap tier
+file construction/ITINERARY.md records the scope and its remaining full-roster proof
+file construction/fleet-claims.kyri closes the two Copal claims
+file session-logs/date/README-index-20260925.md links this record
+recommend keep-going -- take the next unrostered chapter witness; a full cold and hot roster remains owed in a long lap.
+scope claimed the control, rostered one existing museum witness, proved its welcome and refusal, and ran named cold and hot guards
+status PARTIAL -- the museum closure is green by name; full cold and hot roster verdicts remain open

@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20260925.221020` | [Shelf follow-up](20260925/20260925-221020_bakery-shelf-followup.kyri) | Nine more drafts reviewed; current records kept. |
+| `20260925.211912` | [Museum census roster](20260925/20260925-211912_copal-museum-census-roster.kyri) | One hall refusal; named cold and hot green. |
 | `20260925.211704` | [Account recovery](20260925/20260925-211704_bakery-account-recovery.kyri) | Six drafts reconciled; 31 remain. |
 | `20260925.210946` | [Two account shelves](20260925/20260925-210946_bakery-two-account-shelves.kyri) | Two drafts reconciled; 37 remain. |
 | `20260925.210659` | [Marked value](20260925/20260925-210659_grass-marked-value.kyri) | Two Amphora roots stand; later type work stays proposed. |

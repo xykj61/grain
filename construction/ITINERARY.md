@@ -93,6 +93,9 @@ exemption, and the remaining unrostered chapter witnesses.
 
 **COPAL -- CENSUS CONTROL ROSTERED.** The chapter witness checks three live duties and a planted
 naive-total refusal. Direct proof is green; a full cold and hot roster verdict remains owed.
+The museum census now joins the roster: thirteen halls and two named elders pass, and a planted
+missing hall returns one breach with a refusing status. Its named cold and hot passes are green on fixed trees;
+the full cold pass was stopped before completion, so the full roster verdict remains open.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -350,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `17d21e9861` -- this commit's parent, resolvable everywhere (%401).
+**Git nib:** `28558dd104` -- this commit's parent, resolvable everywhere (%401).
 
 ### Incense -- product captain
 
