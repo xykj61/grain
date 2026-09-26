@@ -206,3 +206,24 @@ seed_link remainder that has been this shelf's standing lead for seven laps is n
 Next lap: a fresh round-open and a cold run held still start to finish; the standing lead reverts
 to the ledger fold deadlock (`%827` `%808` `%803` `%785` `%730`, three `%338` doors), still Keaton's
 word to break, or whatever the next cold-run receipt surfaces as fresh red.
+
+**This lap (`20260926.114637`) round-opened clean at `cd89e64477`, found no overlapping claim (five
+standing rows all `status=stale`), then met a cold run already in flight at this lap's own launch
+HEAD -- held still and waited rather than starting a second, though its `run_verdict=` had not
+landed by send time.** Most OPEN REDS rows read wanted either Keaton's word on a design ruling
+(`%765`, `%756`, `%788`, `%804`, `%807`) or belonged to another lane's owned module (`%827`'s four
+un-refusaled shims). REDS `20260925.130901` -- the disk-full repair -- named its own remaining
+question as unbuilt and squarely law-lane: whether a rostered tool belongs in `tools/` so each ship
+reclaims its own rebuildable `*/bin/` output with one command rather than a typed loop. Built
+`tools/fixtures/d/disk_reclaim_scan.sh` (reads every `.gitignore` line ending `/bin/` plus
+`/tools/.build`, confirms each with `git check-ignore -q`, excludes `rye/bin` and `rishi/bin` by
+name, reports or `--apply` removes), `tools/fixtures/d/disk_reclaim_control.sh` (five legs in a
+throwaway git repository on the `pen_entry` pattern, one mutation proven to bite), and
+`tools/d/disk_reclaim_witness.rish`, rostered in `construction/standing-equipment.kyri` at tier lap.
+Ran the tool for real on this tree: reclaimed 1.3G, disk moved 92% (15G free) to 91% (16.5G free).
+`tame_style_check` GREEN, ASCII clean on all new files, no REDS row booked -- an ordinary tool build
+against a row's own named remaining question rather than a fresh defect. Fetched `xy` clean, amended
+the Git nib to HEAD's parent, then carried it forward again for the session-log follow-up per rule
+5; pushed `xy` then `debrided` clean fast-forward. Next lap: a fresh round-open and a cold run held
+still start to finish; the standing lead is the ledger fold deadlock, still Keaton's word to break,
+or whatever the in-flight cold run's receipt surfaces as fresh red once it lands.
