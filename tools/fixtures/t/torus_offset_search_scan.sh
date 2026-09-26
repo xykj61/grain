@@ -51,10 +51,10 @@ MAX_CELLS=65536                     # bounded: g*g must stay under this or the s
 
 ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _steps=0
-while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
+while [ ! -d "$ROOT/rishi/src" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
   _steps=$((_steps + 1))
   if [ "$_steps" -gt 8 ] || [ "$ROOT" = "/" ] || [ -z "$ROOT" ]; then
-    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    echo "$0: no tree root within 8 steps (needs rishi/src and tools/fixtures)" >&2
     exit 2
   fi
   ROOT=$(dirname "$ROOT")
