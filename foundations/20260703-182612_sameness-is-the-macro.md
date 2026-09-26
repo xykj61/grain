@@ -1,6 +1,6 @@
 # Sameness Is the Macro -- Compression Without Magic
 
-*A siloed distillation of a compression teaching we are grateful for: two elders argued that systems shrink when a language grows toward its problem and when a team shares public similarity -- yet our discipline distrusts private dialects and hidden control flow. This brief reconciles the goal with our instrument. The named study with full gratitude lives in [`../external-research/20260703-182612_sameness-is-the-macro.md`](../external-research/20260703-182612_sameness-is-the-macro.md); here the ideas stand on their own merit, in our own voice.*
+*A siloed distillation of a compression teaching we are grateful for: two elders argued that systems shrink when a language grows toward its problem and when a team shares public similarity -- yet our discipline distrusts private dialects and hidden control flow. This brief reconciles the goal with our instrument. The named study with full gratitude lives in [`../external-research/date/20260703/20260703-182612_sameness-is-the-macro.md`](../external-research/date/20260703/20260703-182612_sameness-is-the-macro.md); here the ideas stand on their own merit, in our own voice.*
 
 **Stamp:** `20260703.182612`
 **Language:** EN

@@ -84,7 +84,7 @@ The **module ring** is the machinery, each home with its own witnesses. Take the
 | [`mand/`](mand/README.md) | authority |
 | [`brushstroke/`](brushstroke/) | drawing |
 | [`ember/`](ember/) | the forge |
-| [`linengrow/`](linengrow/README.md) | the giving edge |
+| `linengrow/` | the giving edge |
 | [`kumara/`](kumara/README.md) | identity |
 | [`vault/`](vault/README.md) | secrets |
 | [`settlement/`](settlement/README.md) | a point becomes an address |
@@ -121,9 +121,9 @@ When a page here says GREEN, a machine said it first.
 | `active-reviving/` | Its sibling, re-growing elders into Glow beside them |
 | [`waymarks/`](waymarks/) | The claim shelf |
 | `expanding-prompts/` | The runnable plans |
-| [`construction/`](construction/README.md) | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
+| `construction/` | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
 | `counsel/` | The advice ledger |
-| [`session-logs/`](session-logs/README.md) - `kyri-resins/` | The diary and its compressions |
+| `session-logs/` - `kyri-resins/` | The diary and its compressions |
 | [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
 ### 7 - The Reading Room

@@ -63,7 +63,7 @@ Keaton's word asked for breaches to be approved automatically for the fixes. **T
 
 The teaching draws its own line precisely, and by its own internal standard: a human pulling the cord is *related to* the machine-stops-itself principle yet is **not the full form of it** -- it is the backup for where machine-level detection is not yet in place. And the cord's whole function is to **stop and summon**. The lantern lights; a person comes. The first self-halting machine did not rethread itself and resume; it halted and waited for hands.
 
-So the discipline that inspired this law is, in its own account, a stopping-and-calling discipline rather than a proceeding-autonomously one. The study and the sources are named at [`../external-research/20260729-224828_the-line-that-stops-itself.md`](../external-research/20260729-224828_the-line-that-stops-itself.md).
+So the discipline that inspired this law is, in its own account, a stopping-and-calling discipline rather than a proceeding-autonomously one. The study and the sources are named at [`../external-research/date/20260729/20260729-224828_the-line-that-stops-itself.md`](../external-research/date/20260729/20260729-224828_the-line-that-stops-itself.md).
 
 Our own laws say the same in our own vocabulary: *counsel may design a breach and may never begin one*, and *a breach is a seating word*. A breach relocates paths wholesale, and automatic approval would remove the human gate from precisely the operation that moves the most at once.
 
@@ -94,7 +94,7 @@ Named so this law can be checked rather than admired:
 
 ## Dependencies -- named on purpose
 
-The teaching this law is siloed from, its people, and its own words live in [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md); the study that read them is at [`../external-research/20260729-224828_the-line-that-stops-itself.md`](../external-research/20260729-224828_the-line-that-stops-itself.md). Naming happens there, warmly and once. This page speaks in our own voice -- a correction made at `20260729.225300` after this law's own witness advised that its body carried the teachers' names three times.
+The teaching this law is siloed from, its people, and its own words live in [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md); the study that read them is at [`../external-research/date/20260729/20260729-224828_the-line-that-stops-itself.md`](../external-research/date/20260729/20260729-224828_the-line-that-stops-itself.md). Naming happens there, warmly and once. This page speaks in our own voice -- a correction made at `20260729.225300` after this law's own witness advised that its body carried the teachers' names three times.
 
 ---
 

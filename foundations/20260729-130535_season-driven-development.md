@@ -5,7 +5,7 @@
 **Voice:** Quin  
 **Status:** **living** - house workflow law - Nest accuracy `20260729.125911` -- **Mixed room**: the silo map and templates name live paths a reader can open; the house law itself orients a rhythm.  
 **Kind:** foundations - why + going-forward template  
-**Study companion:** [`../external-research/20260729-130535_season-driven-development.md`](../external-research/20260729-130535_season-driven-development.md)  
+**Study companion:** [`../external-research/date/20260729/20260729-130535_season-driven-development.md`](../external-research/date/20260729/20260729-130535_season-driven-development.md)  
 **Counsel seat:** [`../counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md`](../counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md)
 
 *Written together by Keaton and Quin.*

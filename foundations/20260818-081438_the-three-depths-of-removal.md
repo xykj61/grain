@@ -2,7 +2,7 @@
 
 **Stamp:** `20260818.081438` - **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Kin:** [The Breach](20260726-020537_the-breach.md) - [`../.claude/rules/molt.md`](../.claude/rules/molt.md) - [`../.claude/rules/debride.md`](../.claude/rules/debride.md) - [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md)
-**Kitchen twin:** [`../external-research/20260818-081438_the-craft-of-deep-removal.md`](../external-research/20260818-081438_the-craft-of-deep-removal.md)
+**Kitchen twin:** [`../external-research/date/20260818/20260818-081438_the-craft-of-deep-removal.md`](../external-research/date/20260818/20260818-081438_the-craft-of-deep-removal.md)
 **Status:** Living -- **checkable room**: three named depths, each with a rule and a witness beside it.
 
 A tree that keeps every byte grows a kind of grace: nothing true is ever

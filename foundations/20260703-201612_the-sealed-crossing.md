@@ -7,7 +7,7 @@
 **Candidate:** Amphora (lap 1 seated at `amphora/` - `20260710.143500`)
 **Status:** Landed -- checkable-room; Amphora laps 1-3 + Kumara vessel stamp + Amber AEAD seal seated at `amphora/` (lap 1 `20260710.143500`; lap 2 `20260710.143726`; lap 3 Comlink fetch hosted `20260710.144309` + device wire `20260710.144833`; stamp `20260710.145843`; seal `20260710.153745`); vessel duty has a module home; kitchen twin remains the plain reading.
 **Last updated:** 2026-07-10
-**Companions:** kitchen twin [`../external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) - crossing metal plainly [`../external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md) - study [`../external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md)
+**Companions:** kitchen twin [`../external-research/date/20260710/20260710-002952_sealed-crossing-plainly.md`](../external-research/date/20260710/20260710-002952_sealed-crossing-plainly.md) - crossing metal plainly [`../external-research/date/20260710/20260710-145313_amphora-crossing-plainly.md`](../external-research/date/20260710/20260710-145313_amphora-crossing-plainly.md) - study [`../external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/date/20260703/20260703-201612_the-amphora-and-the-crossing.md)
 
 *Written together by Kaeden and Claude (Fable 5), in Rio 3's Radiant voice.*  
 Radiant pass `20260728.052441` -- living L1 rename-forward: **MUR** (was MALA); prefer **kg u32** - WOV retire roadmap last
