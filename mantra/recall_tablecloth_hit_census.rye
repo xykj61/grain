@@ -101,7 +101,6 @@ comptime {
 
 pub const CensusError = error{
     MaskOutOfRange,
-    ShapeUnreachable,
 } || tcq.QueryError || ns.RecallError || qw.WireError || error{NoSpaceLeft};
 
 /// What one query shape reads over one catalog.
