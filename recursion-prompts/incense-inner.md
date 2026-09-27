@@ -149,56 +149,10 @@ index-row-bound repair on the freshly opened `20260927` shelf.
 (checkpoint `20260927.092032`, nib `7ded4f2cd9`) -- the ratchet_slack case-blind compare fix, the
 error_member_reach dead-shape fix, and the crushed_index/seed_link manifest exemption.
 
-**This lap (`20260927.045618`) round-opened clean at `fd36d16e5a`, found no overlapping claim (five
-standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
-through its whole run, watched with Monitor across five re-arms.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 361 green, 18 red, 3 gated. Surveyed
-the reds for a small fixable one: `pen_release` read `never_removed=9` over its own ceiling of 8,
-naming `tools/fixtures/r/rye_key_control.sh` as the ninth -- yet that file already releases its pen
-on three signals, `trap cleanup EXIT INT TERM`. Read the scan's own awk: pass 2 learns a pen
-variable's name only from the line that assigns it via `mktemp -d`, and this file declares `PEN=""`
-and its trapped `cleanup()` well ahead of the `PEN=$(mktemp -d)` line that actually names it a pen
--- an ordinary shell idiom for a cleanup armed before its target exists. Pass 2 met the removal
-inside `cleanup()` with an empty `pen[]` and called it never_removed. Fixed it structurally: pass 1
-(the file's own first, trap-name-collecting pass) now also collects every pen variable the whole
-file will ever assign, so pass 2 sees the later-declared name from its first line rather than
-discovering it partway through. `never_removed` fell 9 to 8, `verdict=released`. Added a leg to
-`pen_release_control.sh` planting this exact ordering and proved it load-bearing by reverting the
-scan fix and watching the leg fail (`never_removed=1`, `verdict=leaking`) before restoring it;
-`pass=55` to `pass=58`, `fail=0`. Two unrelated readings in the same witness had also drifted with
-the tree's own growth -- `runtime_pens=21` to `25`, and the header's stale "Forty-six behaviors" --
-corrected both while the file was open. `pen_release_witness.rish` runs GREEN on metal;
-`tame_style_check` GREEN; all three touched files plain ASCII, modes unchanged. No REDS row booked
-(REDS.md 23 bytes free) -- an ordinary unrostered repair overlapping no claim. Next lap: fresh
-round-open, cold run held still start to finish; ~18 reds remain untriaged (`width_check`'s th5
-disagreement already TAME-ruled, `standing_equipment_redleg`'s chapter-lane remainder outside this
-lane, `rule_twin`/`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s
-`asserted_only` population, and the `shared_build_path`/`build_target` populations still want
-Keaton's word or a larger plan than one lap affords.
-
-**This lap (`20260927.060217`) round-opened clean at `ec7009729c`, found no overlapping claim (five
-standing rows all stale), launched a fresh cold run and held fully still through its whole run,
-watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 17 red (excluding the self-check),
-3 gated. Surveyed the reds: `checkable_binding` read `settled_unbound=10` against `ceiling=8` --
-listed the ten pages and found every one carried a `date/` shelf or a stamped basename per
-`stamp-and-name.md`'s own test, exactly the testimony shape `backtick_path_scan.sh` and
-`comment_path_scan.sh` already carve out and report apart, which `checkable_binding_scan.sh` had
-never learned. Added `is_testimony()` to the scan mirroring backtick_path's own awk function, split
-`settled_unbound` into a living (gated) count and a `settled_unbound_testimony` (reported) count,
-updated list mode and printed fields. Ran the scan directly first to confirm the ten pages
-reclassified before touching the control; the existing 40-leg control passed unchanged (none of its
-pen pages carry a stamped basename), then added one new leg planting a stamped-basename page and
-proving it reads `settled_unbound_testimony=1` rather than `settled_unbound=1` (42 legs, 0 failing).
-`checkable_binding_witness.rish` runs GREEN on metal, `settled_unbound` fell 10 to 0,
-`ceiling_ok=yes`. `tame_style_check` GREEN, `ascii_document_scan` `verdict=ok`, both shell scripts
-kept mode 100755. No REDS row booked (23 bytes free) -- an ordinary unrostered repair overlapping no
-claim. Pushed `xy` then `debrided` clean fast-forward. Next lap: fresh round-open, cold run held still
-start to finish; ~18 reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
-`standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
-`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
-population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
-larger plan than one lap affords.
+**Entries `20260927.045618` through `20260927.060217` shelved whole** to
+[`date/20260927/20260927-122323_incense-next-log-archive-10.md`](date/20260927/20260927-122323_incense-next-log-archive-10.md)
+(checkpoint `20260927.122323`, nib `911e7197e0`) -- the pen-release ordering fix and the
+checkable-binding testimony-split repair.
 
 **This lap (`20260927.070306`) round-opened clean at `ce801fab04`, found no overlapping claim (five
 standing rows all stale), launched a fresh cold run and held fully still through its whole run,
@@ -275,7 +229,8 @@ through its whole run, watched with Monitor across six re-arms.** It closed clea
 `run_verdict=guard_red` (the roster's own expected self-check), 363 green, 15 red, 3 gated. Surveyed
 the reds: `log_has_a_row` read `pin_count_drift=2` -- `session-logs/README.md`'s table cells for
 `20260925` and `20260926` still read `153` and `30`, while the shelves' own files
-(`session-logs/date/README-index-20260925.md`, `.../20260926.md`) carried `154` and `36` rows. The
+(`session-logs/date/README-index-20260925.md`,
+`session-logs/date/README-index-20260926.md`) carried `154` and `36` rows. The
 prior lap's stash-recovery repair had appended seven logs and their index rows onto those two
 shelves and updated each shelf's own banner text, but never touched the living pin's table cells.
 Edited both cells to `154` and `36`; ran the scan directly first (`pin_count_drift` 2 to 0,
@@ -311,3 +266,23 @@ uncompiled-body ceiling, `shared_build_path`, `falsifier_form_outcome`'s 21 fals
 rows, `shim_reason`'s unrostered-swallow ceiling, `backtick_path`, `comment_path`,
 `rune_assert_sweep`; `rule_twin`/`pond_enclosure_*` gated) -- most still want Keaton's word or a
 larger plan than one lap affords.
+
+**This lap (`20260927.122323`) round-opened clean at `911e7197e0`, found no overlapping claim (all
+five standing rows past their six-hour expiry), launched a fresh cold run and held fully still
+through its whole run, watched with Monitor across five re-arms.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 364 green, 14 red, 3 gated. Surveyed
+the reds: `backtick_path` read `living=57` against `ceiling=56`, one over, naming a stray promise
+inside this very file -- last lap's `next` entry had written `.../20260926.md` as shorthand for
+`session-logs/date/README-index-20260926.md`, and the scan reads the elided form as a broken
+citation to a file named literally `.../20260926.md`, which the tree does not carry. Spelled the
+path out in full. `living` fell 57 to 56, `ceiling_ok=yes`; `backtick_path_witness.rish` runs GREEN
+on metal, 23 legs, 0 failing. `tame_style_check` and `ascii_document_scan` both GREEN, single file
+changed, mode unchanged. No REDS row booked (an ordinary unrostered repair the cold run itself
+surfaced, overlapping no claim). Shed two elder `next` entries (`20260927.045618` through
+`20260927.060217`) to a checkpointed shelf so this account fit under the page's own bound. Next lap:
+fresh round-open, cold run held still start to finish; ~13 reds remain untriaged
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `build_target`, `rye_compiled_reach`'s uncompiled-body ceiling,
+`shared_build_path`, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling, `comment_path`, `rune_assert_sweep`; `rule_twin`/`pond_enclosure_*`
+gated) -- most still want Keaton's word or a larger plan than one lap affords.
