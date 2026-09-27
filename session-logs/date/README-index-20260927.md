@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.091828` | [Seven stashed session logs landed](20260927/20260927-091828_stash-record-seven-logs-landed.kyri) | stash_record unlanded 7->0. |
 | `20260927.081009` | [backtick_path learns .cursor-archive/ as testimony](20260927/20260927-081009_backtick-path-cursor-archive-testimony.kyri) | living 76->56. |
 | `20260927.070306` | [rye_witness_walker's one-over ceiling closes with a proven walker](20260927/20260927-070306_rye-witness-walker-receipt-refusal-chain.kyri) | unwalked 57->56. |
 | `20260927.060217` | [checkable_binding learns the testimony split](20260927/20260927-060217_checkable-binding-testimony-split.kyri) | settled_unbound 10->0. |

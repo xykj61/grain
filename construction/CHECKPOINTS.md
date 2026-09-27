@@ -2161,3 +2161,12 @@ so the page could carry this lap's `ShapeUnreachable` repair under its 24,576-by
 waits there, worth recalling:* nothing new -- every entry's own findings (the redleg refusal legs,
 the row-bound repair, the fascia-home-link repair, the path repointing) are already summarized in
 later live-page entries, so the shelf drops no fact a later reader still needs.
+
+**Checkpoint `20260927.092032` -- Incense shelves three `incense-inner.md` `next` entries before
+the stash-record repair account.** **Walk-back nib:** `7ded4f2cd9`. **Swept:** the
+`20260927.012745`, `20260927.013231`, and `20260927.034611` lap accounts, moved verbatim onto
+[`../recursion-prompts/date/20260927/20260927-092032_incense-next-log-archive-9.md`](../recursion-prompts/date/20260927/20260927-092032_incense-next-log-archive-9.md)
+so the page could carry this lap's stash_record repair account under its 24,576-byte bound. *What
+waits there, worth recalling:* nothing new -- the ratchet_slack, error_member_reach, and
+crushed_index/seed_link fixes are each already closed and their counts current on the live page's
+later entries, so the shelf drops no fact a later reader still needs.
