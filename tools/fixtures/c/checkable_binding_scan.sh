@@ -28,6 +28,14 @@
 #     delegated   no evidence here, and a link to another page in the roster. See below.
 #     none        the finding.
 #
+# TESTIMONY IS REPORTED, NEVER GATED -- the same split `backtick_path_scan.sh` already draws.
+# `stamp-and-name.md`: "a file whose own basename carries a one-clock stamp is testimony", and
+# accrete-never-break protects it from being rewritten to earn a binding it never had. All ten
+# pages the seating ceiling's first overflow named (`20260927`) carry a stamped basename or a
+# `date/`, `archive/` or `yonder/` shelf -- dated record of what was believed checkable when it was
+# written, not a live claim asking today's reader to find a witness. `settled_unbound_testimony`
+# counts them apart so the ceiling governs LIVING claims alone.
+#
 # EVERY NAMED PATH IS ASKED OF THE INDEX, NEVER THE DISK (`%457`, and the same reasoning
 # `tools/fixtures/t/tracked_link_scan.sh` gives): a filesystem answers "is this here on this
 # machine" and the repository answers "does a clone get this". Only the second is a promise.
@@ -217,12 +225,34 @@ done < "$tmp/nobinding.txt"
 
 lifecycle_of() { grep -F "$(printf '%s\t' "$1")" "$tmp/checkable.txt" 2>/dev/null | head -1 | cut -f2; }
 
-settled_unbound=0; proposed_unbound=0
+# Testimony keeps every word it wrote: a stamped basename, or any dated / archived / deferred
+# shelf. Same reading as backtick_path_scan.sh's own `testimony()`.
+is_testimony() {
+  case "$1" in
+    */date/*|*/archive/*|*/yonder/*) return 0 ;;
+  esac
+  base=$(basename "$1")
+  case "$base" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*|[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9].*) return 0 ;;
+  esac
+  return 1
+}
+
+settled_unbound=0; proposed_unbound=0; settled_unbound_testimony=0
 : > "$tmp/settled_unbound.txt"
+: > "$tmp/settled_unbound_testimony.txt"
 while IFS= read -r p; do
   [ -n "$p" ] || continue
   case "$(lifecycle_of "$p")" in
-    settled) settled_unbound=$((settled_unbound+1)); printf '%s\n' "$p" >> "$tmp/settled_unbound.txt" ;;
+    settled)
+      if is_testimony "$p"; then
+        settled_unbound_testimony=$((settled_unbound_testimony+1))
+        printf '%s\n' "$p" >> "$tmp/settled_unbound_testimony.txt"
+      else
+        settled_unbound=$((settled_unbound+1))
+        printf '%s\n' "$p" >> "$tmp/settled_unbound.txt"
+      fi
+      ;;
     *) proposed_unbound=$((proposed_unbound+1)) ;;
   esac
 done < "$tmp/unbound.txt"
@@ -245,6 +275,7 @@ unstated=$(cut -f2 "$tmp/checkable.txt" | grep -c '^unstated$' || true)
 case "$MODE" in
   list)
     while IFS= read -r p; do [ -n "$p" ] && echo "settled_unbound: $p"; done < "$tmp/settled_unbound.txt"
+    while IFS= read -r p; do [ -n "$p" ] && echo "settled_unbound_testimony: $p"; done < "$tmp/settled_unbound_testimony.txt"
     ;;
   delegated)
     while IFS= read -r line; do
@@ -260,6 +291,7 @@ echo "bound_instrument=$(wc -l < "$tmp/instrument.tracked" | tr -d ' ')"
 echo "bound_artifact=$(wc -l < "$tmp/artifact.tracked" | tr -d ' ')"
 echo "bound_record=$(wc -l < "$tmp/record.tracked" | tr -d ' ')"
 echo "settled_unbound=$settled_unbound ceiling=$CEILING"
+echo "settled_unbound_testimony=$settled_unbound_testimony"
 echo "proposed_unbound=$proposed_unbound"
 echo "settled_delegated=$settled_delegated settled_hop_dry=$settled_hop_dry"
 if [ "$settled_unbound" -le "$CEILING" ]; then

@@ -21,6 +21,12 @@
 # a DRY hop is a promise broken, and that reads 7. One step and no further, deliberately: two needs
 # a cycle guard and measures something no reader does.
 #
+# `settled_unbound_testimony` is reported the same way, for the reason `backtick_path_scan.sh`
+# already draws: a page whose own basename carries a one-clock stamp, or that sits under a `date/`,
+# `archive/` or `yonder/` shelf, is testimony -- it records what was believed checkable when it was
+# written, and accrete-never-break refuses to rewrite it to earn a binding after the fact. All ten
+# pages that first pushed `settled_unbound` from 8 to 10 (`20260927`) were exactly this shape.
+#
 # `roster_absent` is reported for a reason the pen found in this scan rather than the other way
 # round: `git ls-files` answers from the index, and one returned path the disk lacks made `awk`
 # abort the whole run, so every page after it went unread and the reading printed a clean zero.

@@ -253,6 +253,15 @@ leg absent_entry_counted 1 "$(read_key "$PEN/out.txt" roster_absent)"
 leg absent_entry_silences_nothing 1 "$(read_key "$PEN/out.txt" settled_unbound)"
 leg present_count_excludes_absent 1 "$(read_key "$PEN/out.txt" roster_present)"
 
+# --------------------------------------------------- 14: a stamped basename reads apart, never gated
+pen_init
+page q "Living -- **checkable room**: nothing named" 'No evidence.'
+mv room/q.md room/20260101-000000_q.md
+pen_commit stamped
+run
+leg stamped_basename_not_unbound 0 "$(read_key "$PEN/out.txt" settled_unbound)"
+leg stamped_basename_counted_testimony 1 "$(read_key "$PEN/out.txt" settled_unbound_testimony)"
+
 # ---------------------------------------------------------------- 13: a tree with no roster helper refuses
 pen_init
 rm -f tools/fixtures/t/two_rooms_doorway_roster.sh
