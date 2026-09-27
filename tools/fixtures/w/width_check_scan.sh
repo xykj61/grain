@@ -108,9 +108,18 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # 1,125 lines over 1,986 sources. Lowered again 20260917 when `glow/lower_core.rye`
 # delegated the same way, its own hand-rolled loop's `usize` return type and index variable
 # moving to `u32` -- the file itself stayed flagged for other seam locals, so only the line
-# count fell: 274 files and 1,123 lines over 1,986 sources.
+# count fell: 274 files and 1,123 lines over 1,986 sources. Lowered again 20260927 when
+# `linengrow/wov_core.rye` -- reached under four names, since `granary/wov_core.rye`,
+# `mandi/wov_core.rye`, `pond/apps/granary/wov_core.rye`, and `pond/apps/mandi/wov_core.rye` are
+# each a symlink to it, so one edit clears all four corpus entries at once -- earned the
+# `// seam:` comment its bare `pos: usize` and `att_pos: ?usize` locals already deserved, slice
+# offsets into an owned bundle buffer, the same pattern the mycelium `*_kyri.rye` files already
+# state. The corpus had grown past 1,123 in the meantime as new tracked sources
+# (`pond/apps/photos.rye` and its siblings, the `mycelium/*_kyri.rye` generators,
+# `tools/fixtures/t/tame_usize_audit.rye`) carried their own authored `usize`, which is the
+# reading growing with the tree exactly as designed: 270 files and 1,109 lines over 1,998 sources.
 corpus_files_ceiling=282
-corpus_lines_ceiling=1123
+corpus_lines_ceiling=1109
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye
