@@ -30,13 +30,14 @@
 #
 # WHAT IS REPORTED AND NEVER GATED: `arrival_drifted`, with each pair named. Reconciling a pair
 # means reading both sides and deciding which sentence is the law -- the drift runs in BOTH
-# directions. `.cursor/rules/reds-first.mdc` names `work-in-progress/REDS.md`, a path that moved
-# to `construction/`, so that twin is behind. `.cursor/rules/send-word.mdc` carries an `ls-remote`
-# pre-push guard and a two-remote push discipline that `.claude/rules/send-word.md` has never
-# held, so that twin is AHEAD. A bulk merge in either direction would silently delete a live
-# safety rule, so that decision is Keaton's word. Gating arrivals would therefore refuse the
-# ordinary act of writing a new rule while the only lawful repair waits on a word -- a gate on new
-# writing in a ratchet's clothes.
+# directions, read from the archived twins now that Cursor has retired and `.cursor/rules/` moved
+# whole to `.cursor-archive/rules/`, unmodified. `.cursor-archive/rules/reds-first.mdc` names
+# `work-in-progress/REDS.md`, a path that moved to `construction/`, so that twin is behind.
+# `.cursor-archive/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a two-remote
+# push discipline that `.claude/rules/send-word.md` has never held, so that twin is AHEAD. A bulk
+# merge in either direction would silently delete a live safety rule, so that decision is
+# Keaton's word. Gating arrivals would therefore refuse the ordinary act of writing a new rule
+# while the only lawful repair waits on a word -- a gate on new writing in a ratchet's clothes.
 #
 # THE SPLIT IS ALSO THE HONEST READING. 8 of the 11 pairs born since the seating arrived AGREEING,
 # against 5 of 40 among the elders. The habit changed, and one absolute could not see it.

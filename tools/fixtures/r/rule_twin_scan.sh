@@ -77,13 +77,14 @@
 # seating arrived AGREEING, against 5 of 40 among the elders. The habit changed, and one absolute
 # could not see it.
 #
-# WHY RECONCILIATION IS NOT ATTEMPTED HERE. The drift runs in BOTH directions.
-# `.cursor/rules/reds-first.mdc` names `work-in-progress/REDS.md`, a path that has since moved to
-# `construction/`, so the twin is behind. `.cursor/rules/send-word.mdc` carries an `ls-remote`
-# pre-push guard and a two-remote push discipline that `.claude/rules/send-word.md` has never
-# held, so the twin is AHEAD. A bulk merge in either direction would silently delete a live
-# safety rule. That decision is Keaton's word; this meter's job is to keep the count honest until
-# it is made.
+# WHY RECONCILIATION IS NOT ATTEMPTED HERE. The drift runs in BOTH directions, read from the
+# archived twins now that Cursor has retired and `.cursor/rules/` moved whole to
+# `.cursor-archive/rules/`, unmodified. `.cursor-archive/rules/reds-first.mdc` names
+# `work-in-progress/REDS.md`, a path that has since moved to `construction/`, so the twin is
+# behind. `.cursor-archive/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a
+# two-remote push discipline that `.claude/rules/send-word.md` has never held, so the twin is
+# AHEAD. A bulk merge in either direction would silently delete a live safety rule. That decision
+# is Keaton's word; this meter's job is to keep the count honest until it is made.
 #
 # USAGE
 #   sh tools/fixtures/r/rule_twin_scan.sh          # census -- key=value lines
