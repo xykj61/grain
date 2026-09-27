@@ -104,10 +104,16 @@ fi
 # naming a path that must fail or a name no file ever wore; a standing-equipment run receipt and a
 # local Claude settings file are real, gitignored-by-design files this tree never tracks, so
 # here() can never see them -- a fourth genre this header did not yet name, sibling to pen,
-# testimony and placeholder. Zero of the 66 were a stale citation wanting a repoint. Raised to 66
-# on that reading rather than left red for a population with nothing left to fix. Lower it in the
-# same commit as any sweep that finds a real one.
-ceiling="${COMMENT_PATH_CEILING:-66}"
+# testimony and placeholder. Zero of the 66 were a stale citation wanting a repoint.
+#
+# ROSE TO 71 ON 20260927, AND FIVE OF THE SEVEN NEW HITS WERE REAL. Cursor's retirement moved
+# `.cursor/rules/` whole to `.cursor-archive/rules/`, so `rule_twin_scan.sh`, its witness, and
+# `law_tool_citation_scan.sh` each named a twin at a door that no longer holds it -- repointed to
+# the archived home, unmodified. The other two were the mark law's own lesson landing here: an
+# ellipsis-elided path in `falsifier_form_outcome_scan.sh` read as a citation to a fragment rather
+# than prose about a file, spelled out in full. `living` fell 71 to 64 with all five repaired and
+# nothing else touched. Lower it in the same commit as any sweep that finds a real one.
+ceiling="${COMMENT_PATH_CEILING:-64}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
