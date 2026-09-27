@@ -276,6 +276,7 @@ fn run_supervisor(
         }
     }
 
+    // invariant: a witness-bounded run stops at exactly the count it was told to expect
     if (witness_stop_after) |n| assert(ordinary_seen == n);
 
     print_supervisor_success(mirror_mode);

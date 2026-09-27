@@ -104,6 +104,7 @@ fn write_dec(value: usize) void {
 
 /// A bare-metal `assert`, the same idiom as the seed: with no standard library
 /// beneath us, the stage states its own. It compiles out of a release build.
+// invariant: a failed proof halts immediately -- no path returns past unreachable
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }

@@ -76,6 +76,7 @@ fn say(line: []const u8) void {
     for (line) |byte| uart_tx.* = byte;
 }
 
+// invariant: a failed proof halts before any further sentence is written
 fn assert(ok: bool) void {
     if (ok) return;
     // invariant: a broken ceiling refuses before any sentence is written

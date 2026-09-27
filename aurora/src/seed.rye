@@ -62,6 +62,7 @@ export fn kmain() callconv(.c) noreturn {
 /// its own. It vanishes from a release build exactly as `std.debug.assert` does
 /// -- `unreachable` carries no cost there -- yet names the one fact this code
 /// leans on, in the TAME habit. (See `../../external-research/TAME_GUIDANCE.md`.)
+// invariant: a failed proof halts immediately -- no path returns past unreachable
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }

@@ -216,6 +216,7 @@ fn make_canvas(garden: std.mem.Allocator, w: u32, h: u32, fill: color.Rgba) !qoi
     assert(w >= 1);
     assert(h >= 1);
     const total: u64 = @as(u64, w) * @as(u64, h);
+    // invariant: a selftest canvas stays within the image module's named pixel ceiling.
     assert(total <= qoi.qoi_max_pixels);
     const pixels = try garden.alloc(u8, @as(usize, @intCast(total)) * 4);
     var i: usize = 0;

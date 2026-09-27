@@ -81,6 +81,7 @@ fn build_payload(ship_i: u32, out: *[payload_max]u8) u32 {
     assert(ship_i < 3);
     const name = roster[ship_i];
     const stamp = demo_stamps[ship_i];
+    // invariant: every fixture stamp fills the payload's fixed stamp field exactly.
     assert(stamp.len == stamp_len);
 
     var i: u32 = 0;
