@@ -2144,3 +2144,12 @@ the redleg-repair account.** **Walk-back nib:** `1ce0bb10e6`. **Swept:** the `20
 so the page could carry this lap's `%827` refusal-leg account under its 24,576-byte bound. *What
 waits there, worth recalling:* nothing new -- the seed_link remainder's own count (`155`) is already
 current on the live page's later entries, so the shelf drops no fact a later reader still needs.
+
+**Checkpoint `20260927.023354` -- Incense shelves seven `incense-inner.md` `next` entries before
+the error_member_reach repair account.** **Walk-back nib:** `5ae55a426f`. **Swept:** the
+`20260926.140041` through `20260926.220726` lap accounts, moved verbatim onto
+[`../recursion-prompts/date/20260927/20260927-023354_incense-next-log-archive-7.md`](../recursion-prompts/date/20260927/20260927-023354_incense-next-log-archive-7.md)
+so the page could carry this lap's `ShapeUnreachable` repair under its 24,576-byte bound. *What
+waits there, worth recalling:* nothing new -- every entry's own findings (the redleg refusal legs,
+the row-bound repair, the fascia-home-link repair, the path repointing) are already summarized in
+later live-page entries, so the shelf drops no fact a later reader still needs.

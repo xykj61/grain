@@ -16,10 +16,11 @@
 #   2. SATURATION MUST AGREE. Flip `varied_field` to vary the very field the mask names, and the
 #      shapes naming revision stop saturating -- their rows read one hit and the tally refuses. A
 #      worst case built from a catalog that fails to saturate is a smaller number wearing the name.
-#   3. THE NAME CEILINGS CARRY THE WIRE FINDING. Shrink the peer and bolt names to one byte and
-#      three hits fit the payload, so the program refuses with `ShapeUnreachable`. This is the
-#      honest boundary of the finding: the declared hit ceiling and the byte bound disagree at the
-#      DECLARED name lengths, and agree at short ones.
+#   3. THE NAME CEILINGS CARRY THE WIRE FINDING. Shrink the peer and bolt names to one byte and the
+#      worst case stops being the wire's own -- the census now asserts its own name lengths equal
+#      `qw.max_peer` and `qw.max_bolt`, so the plant trips that assert rather than a returned error.
+#      This is the honest boundary of the finding: the declared hit ceiling and the byte bound
+#      disagree at the DECLARED name lengths, and agree at short ones.
 #   4. A DRAWN QUERY FINDS ITS OWN LEAF. Point the peer field at a name no leaf carries and the
 #      non-empty-answer invariant refuses, so a shape reading zero can never pass as a small mean.
 #   5. THE SHAPE SPACE IS PARTITIONED. Start the walk at mask zero -- the query naming no field --
