@@ -59,6 +59,9 @@
 #           one file: a room standing exactly at 256 walks free with all 256 counted, and one page
 #           past it is refused by name. Every planted page carries a row, so `index_unlisted` cannot
 #           be what moves.
+#   49, 50. A member `template-manifest.kyri` marks `sub_exclude` is not owed a row -- proven from
+#           both sides: planting the exclusion clears a member with no row, and withdrawing it counts
+#           the same member again.
 #
 # WHAT IS NOT PROVEN. Whether a row says anything TRUE about the member it names. This proves the
 # counting, not the prose.
@@ -495,6 +498,22 @@ d=$(build rowundeclared)
 ( cd "$d" && printf '| [the shelf](README.md) | two pages stand |\n' > shelf/aside.md \
   && git add -A && git commit -qm 'pen: a counting row on an undeclared page' ) >/dev/null 2>&1
 check "a counting row on an undeclared page counts zero" "$(read_of "$d" row_count_claimed)" "0"
+
+# --- 49, 50. A MANIFEST sub_exclude MEMBER IS NOT OWED A ROW, PROVEN FROM BOTH SIDES ---------------
+# A member the manifest marks personal can never be honestly linked from a page the seed ships, so
+# demanding a row for it asks the page to break the very privacy the manifest keeps -- exactly what
+# `docs-geode/press/README.md` did on `20260926` before tripping `seed_link_witness` the lap after.
+d=$(build personal)
+( cd "$d" \
+  && printf '# three\n' > room/three.md \
+  && printf 'allow room\nsub_exclude room/three.md\n' > template-manifest.kyri \
+  && git add -A && git commit -qm 'pen: a personal-excluded third member, no row' ) >/dev/null 2>&1
+check "a sub_excluded member with no row is not counted" "$(read_of "$d" index_unlisted)" "0"
+check "and the verdict walks free" "$(read_of "$d" verdict)" "ok"
+( cd "$d" && printf 'allow room\n' > template-manifest.kyri \
+  && git add -A && git commit -qm 'pen: the manifest exemption withdrawn' ) >/dev/null 2>&1
+check "withdrawing the exemption counts the same member again" "$(read_of "$d" index_unlisted)" "1"
+check "and the verdict refuses again" "$(read_of "$d" verdict)" "index_disagrees"
 
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty
