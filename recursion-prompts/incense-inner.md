@@ -224,3 +224,19 @@ overlapping no claim on the board. Git nib carried forward by amend to this comm
 `xy` then `gp405` clean fast-forward. Next lap: fresh round-open, cold run held still start to
 finish; ~23 reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
 `standing_equipment_redleg`'s chapter-lane remainder still outside this lane).
+
+**This lap (`20260926.210456`) round-opened clean at `92bb4dc4b1`, found no overlapping claim, then
+met a cold run already in flight at this exact HEAD -- watched with Monitor and held fully still
+through the whole 3,349-second wait.** It closed clean: `tree_moved=no`, 357 green, 22 red, 3 gated.
+Read `backtick_path_scan.sh`'s own header, which names teacher-tree citations (a path spelled the
+way TigerBeetle's own tree spells it) as a genre its own text invites repointing to our held copy
+where one exists; found four `docs/TIGER_STYLE.md` mentions describing TigerBeetle's own naming
+pattern rather than our tree, and four `.cursor/rules/*.mdc` citations in living files naming the
+room retired `20260920.135100`. Repointed all eight across five files plus one tool-script comment
+carrying the same false-positive shape. `backtick_path` living fell 83->76, `comment_path` 72->71 --
+neither reaches its ceiling (62, 66) yet. All six touched files stayed plain ASCII; the touched
+shell script kept mode 100755; `tame_style_check`, `backtick_path_control` (22 legs) and
+`comment_path_control` (28 legs) all GREEN. No REDS row booked (REDS.md 23 bytes free). Pushed `xy`
+then `gp405` clean fast-forward. Next lap: fresh round-open, cold run held still start to finish;
+`backtick_path`/`comment_path` want more repair (the remaining broken citations skew toward
+gitlinked-submodule and forward-looking paths that want more judgment); ~20 reds untriaged.

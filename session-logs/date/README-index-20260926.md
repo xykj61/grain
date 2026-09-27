@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.210456` | [backtick_path teacher-citations repaired](20260926/20260926-210456_backtick-path-teacher-citations.kyri) | 6 files; backtick_path 83->76, comment_path 72->71. |
 | `20260926.195536` | [fascia_home_link closes on eight rooms](20260926/20260926-195536_fascia-home-link-eight-rooms.kyri) | no_path_home 8->0, wall restored to zero. |
 | `20260926.185006` | [day shelf rows over bound, second time](20260926/20260926-185006_row-bound-second-repair.kyri) | 12 rows over 192 bytes trimmed; verdict=ok. |
 | `20260926.173946` | [unheard-guard ceiling closed](20260926/20260926-173946_unheard-guard-control-ceiling-closed.kyri) | 22->18, four guards rostered; stale Cursor check fixed |
