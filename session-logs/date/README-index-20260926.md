@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260926.231239` | [crushed_index press rows learned their links](20260926/20260926-231239_crushed-index-press-row-links.kyri) | 3 title-only rows in docs-geode/press/README.md gained links; GREEN. |
 | `20260926.220726` | [compass_rose OWOG check repointed to its shelf](20260926/20260926-220726_compass-rose-owog-shelf-repoint.kyri) | Stale citation followed its row's fold; GREEN. |
 | `20260926.210456` | [backtick_path teacher-citations repaired](20260926/20260926-210456_backtick-path-teacher-citations.kyri) | 6 files; backtick_path 83->76, comment_path 72->71. |
 | `20260926.195536` | [fascia_home_link closes on eight rooms](20260926/20260926-195536_fascia-home-link-eight-rooms.kyri) | no_path_home 8->0, wall restored to zero. |
