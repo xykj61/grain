@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20260926.045858
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain of the fleet
+modality text
+model claude-sonnet-5
+model_status active runtime verified via /home/keeper/grain-incense declared_model
+voice Kyri
+title round-open clean, a live peer's cold run held the lock -- waiting rather than TERMing
+prompt autonomous overnight loop -- incense-inner.md rite
+think round-open cleared with no standing rebase, settled at HEAD 01e6709661
+think fleet_claim_scan --check wants a path; no new instrument chosen yet, so skipped until a build is picked
+think launched the cold run and it refused: another pass already holds the lock, launch_head still HEAD
+think ran fleet_call.sh --pattern standing_equipment_run -- pid 2706810 read verdict=dry, this tree's own, would_send=1
+think per the FLEET clause a live non-stale pass at settled HEAD is waited for rather than TERMed
+obs holding still per ORDER: no commit, edit, or pull until the peer transcript carries run_verdict=
+file session-output/standing-equipment-cold.txt -- the owner transcript this lap is waiting on
+rota lap 2820, row 0 -- Aether, the row that hears -- no build this lap yet, so no reading taken
+recommend kg -- resume once the held cold run's transcript reads run_verdict=, then pick a finding and build
+status waiting -- no build landed this lap; holding for the live peer's cold run per FLEET clause
