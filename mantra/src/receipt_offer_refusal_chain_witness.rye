@@ -21,6 +21,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const receipt = @import("receipt_offer.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(receipt).@"struct".decls) |decl| {
+        _ = &@field(receipt, decl.name);
+    }
+}
+
 fn fixture() receipt.ReceiptOfferFact {
     return .{
         .schema = receipt.schema_v1,

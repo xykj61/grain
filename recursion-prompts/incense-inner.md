@@ -292,3 +292,23 @@ start to finish; ~18 reds remain untriaged (`width_check`'s th5 disagreement alr
 `pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
 population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
 larger plan than one lap affords.
+
+**This lap (`20260927.070306`) round-opened clean at `ce801fab04`, found no overlapping claim (five
+standing rows all stale), launched a fresh cold run and held fully still through its whole run,
+watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 16 red, 3 gated. Surveyed the reds:
+`rye_witness_walker` read `unwalked=57` over `ceiling=56`, naming
+`mantra/src/receipt_offer_refusal_chain_witness.rye` as one of the unwalked pairs against its subject
+`receipt_offer.rye`. The sibling witness `receipt_offer_witness.rye` already carries the four-line
+comptime declaration walker for that same module, so the shape was proven safe on this exact code
+already; added the identical walker to the refusal-chain witness. Ran the module directly first
+(`rye/bin/rye run mantra/src/receipt_offer_refusal_chain_witness.rye`) and confirmed GREEN before
+touching the scan's own reading; `unwalked` fell 57 to 56, `verdict=ok`.
+`rye_witness_walker_witness.rish` runs GREEN on metal, 79 legs. `tame_style_check` GREEN, the
+touched file plain ASCII. No REDS row booked (REDS.md 23 bytes free) -- an ordinary unrostered
+repair overlapping no claim. Next lap: fresh round-open, cold run held still start to finish; ~16
+reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
+`standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
+`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
+population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
+larger plan than one lap affords.
