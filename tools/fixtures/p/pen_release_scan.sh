@@ -180,15 +180,35 @@ read_one() {
   awk -v want="$list" '
     BEGIN { JOIN=1; DERIVE=1; TRAP=1; FN=1; max_fn_lines=40
             heredoc=""; made=0; removed=0; trapped=0; fn_open=""; fn_left=0 }
-    # PASS 1 -- the bare function names a `trap` registers. The registration follows the
-    # definition in every one of the controls this tree writes, so a single pass cannot know at
-    # the removal line that this function will later be trapped.
+    # PASS 1 -- the bare function names a `trap` registers, AND every pen variable name the
+    # whole file ever assigns from `mktemp -d`. The registration follows the definition in every
+    # one of the controls this tree writes, so a single pass cannot know at the removal line that
+    # this function will later be trapped -- and tools/fixtures/r/rye_key_control.sh writes the
+    # same shape one variable earlier: `PEN=""` and its trapped `cleanup()` stand ahead of the
+    # `PEN=$(mktemp -d)` line that names it a pen at all. Pass 2 met that removal with an empty
+    # `pen[]`, called it never_removed, and the ceiling read 9 for a file that already releases on
+    # three signals. Collecting every pen name here, before pass 2 reads a single removal, makes
+    # the later-declared-pen shape as visible as the usual one.
     FNR == NR {
       if (FN && $0 ~ /^[[:space:]]*trap[[:space:]]+[A-Za-z_][A-Za-z_0-9]*[[:space:]]/ && $0 ~ /EXIT/) {
         n = $0
         sub(/^[[:space:]]*trap[[:space:]]+/, "", n)
         sub(/[[:space:]].*$/, "", n)
         trapfn[n] = 1
+      }
+      rest0 = $0
+      while (match(rest0, /[A-Za-z_][A-Za-z_0-9]*[[:space:]]*=/)) {
+        name0 = substr(rest0, RSTART, RLENGTH)
+        sub(/[[:space:]]*=$/, "", name0)
+        tail0 = substr(rest0, RSTART + RLENGTH)
+        head0 = tail0
+        sub(/;.*$/, "", head0)
+        if (head0 ~ /mktemp[[:space:]]+-d/) pen[name0] = 1
+        else if (DERIVE)
+          for (p0 in pen)
+            if (head0 ~ ("[$]" p0 "([^A-Za-z_0-9]|$)") || head0 ~ ("[$][{]" p0 "[^A-Za-z_0-9]") \
+                || head0 ~ ("(^|[^A-Za-z_0-9])" p0 "\\.out")) pen[name0] = 1
+        rest0 = tail0
       }
       next
     }
