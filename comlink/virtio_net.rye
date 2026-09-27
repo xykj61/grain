@@ -142,6 +142,7 @@ const uart_tx: *volatile u8 = @ptrFromInt(0x1000_0000);
 const test_finisher: *volatile u32 = @ptrFromInt(0x0010_0000);
 pub const finisher_pass: u32 = 0x5555;
 
+// invariant: a failed proof halts immediately -- no path returns past unreachable
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }

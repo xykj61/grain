@@ -159,53 +159,10 @@ checkable-binding testimony-split repair.
 (checkpoint `20260927.143700`, nib `842c0152f4`) -- the rye_witness_walker comptime-declaration
 walker fix and the backtick_path .cursor-archive/ testimony-shelf repair.
 
-**This lap (`20260927.091828`) round-opened clean at `7ded4f2cd9`, found no overlapping claim,
-launched a fresh cold run and held fully still through its whole run, watched with Monitor across
-seven re-arms.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's own
-expected self-check), 364 green, 14 red, 3 gated. Surveyed the reds: `stash_record` read
-`unlanded=7`, naming seven dated session logs standing only in a round-open stash and on no ref,
-worktree, or branch -- confirmed absent everywhere with `git log --oneline --all`. Extracted each
-from its stash's untracked-files parent (`stash@{N}^3`, the third parent `--include-untracked`
-creates, not the bare `stash@{N}` ref), wrote all seven files under their day's `date/` shelf, then
-added one shelf-qualified index row per log at its correct chronological slot on the 20260925 and
-20260926 shelves, raising the latter's closed-count banner 30 to 36. Left all touched stash entries
-in place rather than popping or dropping them, since several hold dozens of unrelated leftover paths
-from old round-opens. `unlanded` fell 7 to 0, `verdict=ok`; `stash_record_witness.rish` GREEN on
-metal, `ascii_document_scan` and `tame_style_check` both GREEN. No REDS row booked (REDS.md had
-room) -- an ordinary unrostered repair matching the guard's own named cure, overlapping no claim.
-Shed three elder `next` entries (`20260927.012745` through `20260927.034611`) to a checkpointed
-shelf so this account fit under the page's own bound. Next lap: fresh round-open, cold run held
-still start to finish; ~14 reds remain untriaged (`width_check`'s th5 disagreement already
-TAME-ruled, `standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
-`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
-population, `comment_path`'s `over_ceiling`, `falsifier_form_outcome`'s 21 falsifier-less ranked
-rows, `shim_reason`'s swallowing-shim census, `ignored_walk`'s tree-walks-past-git ceiling, and
-`rye_compiled_reach`'s uncompiled-body ceiling all still want Keaton's word or a larger plan than
-one lap affords.
-
-**This lap (`20260927.102139`) round-opened clean at `d59129aeaf`, found no overlapping claim (five
-standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
-through its whole run, watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 363 green, 15 red, 3 gated. Surveyed
-the reds: `log_has_a_row` read `pin_count_drift=2` -- `session-logs/README.md`'s table cells for
-`20260925` and `20260926` still read `153` and `30`, while the shelves' own files
-(`session-logs/date/README-index-20260925.md`,
-`session-logs/date/README-index-20260926.md`) carried `154` and `36` rows. The
-prior lap's stash-recovery repair had appended seven logs and their index rows onto those two
-shelves and updated each shelf's own banner text, but never touched the living pin's table cells.
-Edited both cells to `154` and `36`; ran the scan directly first (`pin_count_drift` 2 to 0,
-`verdict=ok`) before touching anything else. The existing 14-leg control passed unchanged
-(`control_verdict=ok`); `log_has_a_row_witness.rish` ran GREEN on metal, 36 legs. `ascii_document_scan`
-`verdict=ok`, single file changed. No REDS row booked (an ordinary unrostered repair matching the
-guard's own named cure, overlapping no claim). Pushed `xy` then `debrided` clean fast-forward. Next lap:
-fresh round-open, cold run held still start to finish; ~14 reds remain untriaged (`comment_path`'s
-`over_ceiling`, `rune_assert_sweep`, `width_check`'s th5 disagreement already TAME-ruled,
-`standing_equipment_redleg`'s chapter-lane remainder outside this lane, `shim_reason`'s
-swallowing-shim census, `session_roster_agree`, `query_wire_retention` (%756), `ceiling_teeth`'s
-`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `build_target`,
-`rye_compiled_reach`'s uncompiled-body ceiling, `shared_build_path`, `falsifier_form_outcome`'s 21
-falsifier-less ranked rows; `rule_twin`/`pond_enclosure_*` gated) -- most still want Keaton's word or
-a larger plan than one lap affords.
+**Entries `20260927.091828` through `20260927.102139` shelved whole** to
+[`date/20260927/20260927-153732_incense-next-log-archive-12.md`](date/20260927/20260927-153732_incense-next-log-archive-12.md)
+(checkpoint `20260927.153732`, nib `a00c1f0183`) -- the stash-recovery repair (seven dated logs
+extracted and re-shelved) and the log-has-a-row pin-count-drift repair that followed it.
 
 **This lap (`20260927.112324`) round-opened clean at `e169114fb6`, found no overlapping claim (five
 standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
@@ -277,8 +234,8 @@ second pass.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the ro
 self-check), 365 green, 13 red, 3 gated. Surveyed the reds against last lap's own untriaged list:
 `comment_path` had risen 66 to 71 since its ceiling was last hand-checked on 20260918. Diffed
 `--list` against a worktree at the ceiling-setting commit to isolate the new hits rather than
-guessing: five named `.cursor/rules/reds-first.mdc`, `send-word.mdc`, and `tame-guidance.mdc`,
-doors Cursor's retirement emptied when `.cursor/rules/` moved whole to `.cursor-archive/rules/`
+guessing: five named the elder reds-first, send-word, and tame-guidance rule-twin doors, each in
+the retired `.mdc` directory Cursor's retirement emptied when it moved whole to its archive
 (confirmed on disk: 60 `.mdc` files archived, 4 unrelated files remain). Repointed all three
 citing files -- `rule_twin_scan.sh`, its witness, `law_tool_citation_scan.sh` -- to the archived
 path. Two more hits were the mark law's own lesson landing a third time this lap-cycle:
@@ -296,3 +253,36 @@ uncompiled-body ceiling, `shared_build_path`, `falsifier_form_outcome`'s 21 fals
 rows, `shim_reason`'s unrostered-swallow ceiling, `rune_assert_sweep`'s risen unnamed-assert
 ceiling; `rule_twin`/`pond_enclosure_*` gated) -- most still want Keaton's word or a larger plan
 than one lap affords.
+
+**This lap (`20260927.153732`) round-opened clean at `a00c1f0183`, found no overlapping claim (five
+standing rows all past their six-hour expiry), launched a fresh cold run -- and then broke the
+ORDER law by reading this file's own untriaged-reds list and starting a repair while the pass was
+still running, rather than holding fully still.** `rune_assert_sweep`'s `unnamed_assert` stood 6489
+against a 6480 ceiling; nine files each held exactly one assert lacking its `// invariant:` comment
+-- five were a freestanding module's own local `fn assert(ok: bool) void {` shim (`aurora/src/`
+deciding, relay, seed, roster; `comlink/virtio_net.rye`), whose definition line matches the scan's
+own pattern and named nothing; two were ordinary asserts (`caravan/subscribe_poll_service.rye`'s
+witness-bound stop count, `comlink/rehearsal_wire.rye`'s fixture-stamp-length check); two were the
+identical selftest-canvas pixel-ceiling check in `image/blur.rye` and `image/branch.rye`. Named all
+nine; `unnamed_assert` landed exactly at `6480`, `ratchets_over_ceiling=0`. Watched the cold run to
+completion rather than kill it mid-pass: it closed `tree_moved=yes`, naming exactly those nine
+paths, `tree_moved_unnamed=0`, 366 green, 12 red, 3 gated, `run_verdict=guard_red` (the roster's own
+expected self-check) -- honestly reported as spoiled by my own edit, not claimed clean. Its reds
+showed `rune_assert_sweep` green (my repair landed inside the very pass it violated) and
+`backtick_path` back `over_ceiling` at `living=57` -- the PRIOR lap's own `next` entry above had
+quoted one of the retired rule-twin doors in backticks while narrating that exact repair, the mark
+law's "illustrate with placeholders, cite only what exists" lesson landing a fifth time in this
+file's own history. Reworded that sentence to name the doors in plain words; `living`
+fell 57 to 56, `ceiling_ok=yes`. Both `rune_assert_sweep_scan.sh` and `backtick_path_witness.rish`
+(23 legs) ran GREEN standalone after the cold run finished, over the final tree; `tame_style_check`,
+`ascii_document_scan`, `aurora_stage_store(_read_check)`, and `rye_enum_variants_witness` (which
+names `aurora/src/deciding.rye`'s own comment shape) all GREEN, all ten touched files kept their
+modes. No REDS row booked -- two ordinary unrostered repairs, overlapping no claim. **The lesson
+for the next lap is procedural rather than technical: read no untriaged list, and start no repair,
+until the cold run's own transcript carries `run_verdict=`.** Next lap: fresh round-open, cold run
+held fully still start to finish, nothing else touched until it closes; ~11 reds remain untriaged
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `build_target`, `rye_compiled_reach`'s uncompiled-body ceiling,
+`shared_build_path`, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- most still want Keaton's word
+or a larger plan than one lap affords.
