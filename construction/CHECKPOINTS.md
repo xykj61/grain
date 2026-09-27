@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260927.190500` -- walk-back nib `56fcc68598`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260927/20260927-190500_incense-next-log-archive-14.md` -- the cold-run
+survey lap's own closing entry would have pushed the section past its 24,576-byte ceiling. The
+living page keeps a pointer and its most recent entries; the shelved entries (`20260927.132645`
+through `20260927.143518`) keep every word, including the remember_git_nib follow-up-shape fix and
+the comment_path retired-rule-twin-door repoint.
+
 **Checkpoint `20260927.175529` -- walk-back nib `d4ef2a2d53`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260927/20260927-175529_incense-next-log-archive-13.md` -- the shared

@@ -169,55 +169,12 @@ extracted and re-shelved) and the log-has-a-row pin-count-drift repair that foll
 (checkpoint `20260927.175529`, nib `d4ef2a2d53`) -- the session_roster_agree CHAPTERS.md
 count-drift repair and the backtick_path elided-fragment repair.
 
-**This lap (`20260927.132645`) round-opened clean at `09f57261d`, found no overlapping claim (all
-five standing rows past their six-hour expiry), launched a fresh cold run and held fully still
-through its whole run, watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 364 green, 15 red, 3 gated. Surveyed
-the reds: `remember_git_nib` read STALE -- the prior lap's fix commit had not carried the card's Git
-nib forward, so it still named the card's own grandparent rather than HEAD or HEAD's parent. Wrote
-it in follow-up shape (`rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`), which
-pins the prior HEAD as the parent of this lap's own commit; `remember_git_nib_witness.rish` runs
-GREEN, resolving to state `head`. Also surveyed `backtick_path`, back up `56` to `58` -- the prior
-lap's own `next` entry had described its backtick_path fix using the very elided form it fixed,
-`` `.../20260926.md` ``, and the scan reads that backtick span as a fresh broken citation rather
-than as prose about one. Reworded the sentence to describe the fragment in plain words instead of
-quoting it as a path; `living` fell back to 56, `ceiling_ok=yes`. Both are the mark law's own lesson
--- `.claude/rules/stamp-and-name.md`'s "illustrate with placeholders, cite only what exists" --
-landing on a page that talks about the fix it just made. `tame_style_check` and `ascii_document_scan`
-both GREEN. No REDS row booked -- both ordinary unrostered repairs the cold run itself surfaced,
-overlapping no claim. Next lap: fresh round-open, cold run held still start to finish; ~13 reds
-remain untriaged (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
-`ignored_walk`'s tree-walks-past-git ceiling, `build_target`, `rye_compiled_reach`'s uncompiled-body
-ceiling, `shared_build_path`, `falsifier_form_outcome`'s 21 falsifier-less ranked rows,
-`shim_reason`'s unrostered-swallow ceiling, `comment_path`, `rune_assert_sweep`; `rule_twin`/
-`pond_enclosure_*` gated) -- most still want Keaton's word or a larger plan than one lap affords.
-
-**This lap (`20260927.143518`) round-opened clean at `b0dcba168a`, found no overlapping claim (all
-five standing rows past their six-hour expiry), found a cold run already in flight from this exact
-HEAD, and held fully still watching it with Monitor across five re-arms rather than opening a
-second pass.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's own expected
-self-check), 365 green, 13 red, 3 gated. Surveyed the reds against last lap's own untriaged list:
-`comment_path` had risen 66 to 71 since its ceiling was last hand-checked on 20260918. Diffed
-`--list` against a worktree at the ceiling-setting commit to isolate the new hits rather than
-guessing: five named the elder reds-first, send-word, and tame-guidance rule-twin doors, each in
-the retired `.mdc` directory Cursor's retirement emptied when it moved whole to its archive
-(confirmed on disk: 60 `.mdc` files archived, 4 unrelated files remain). Repointed all three
-citing files -- `rule_twin_scan.sh`, its witness, `law_tool_citation_scan.sh` -- to the archived
-path. Two more hits were the mark law's own lesson landing a third time this lap-cycle:
-`falsifier_form_outcome_scan.sh` quoted an ellipsis-elided fragment, `...moonshots.md`, as a
-citation rather than prose about a file; spelled both basenames out in full. `living` fell 71 to
-64; lowered the ceiling in the same commit. `comment_path_witness.rish` runs GREEN on metal, 28
-control legs, 0 failing; `tame_style_check` and `ascii_document_scan` both GREEN; all five touched
-files kept their modes. `rule_twin_scan.sh`'s own verdict stays `empty_corpus` -- a separate,
-already-gated fact (%7), since `.cursor/rules/` no longer holds its 40-pair cohort at all, and
-reconciling that is Keaton's word. No REDS row booked -- an ordinary unrostered repair the cold run
-itself surfaced, overlapping no claim. Next lap: fresh round-open, cold run held still start to
-finish; ~12 reds remain untriaged (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only`
-population, `ignored_walk`'s tree-walks-past-git ceiling, `build_target`, `rye_compiled_reach`'s
-uncompiled-body ceiling, `shared_build_path`, `falsifier_form_outcome`'s 21 falsifier-less ranked
-rows, `shim_reason`'s unrostered-swallow ceiling, `rune_assert_sweep`'s risen unnamed-assert
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- most still want Keaton's word or a larger plan
-than one lap affords.
+**Entries `20260927.132645` through `20260927.143518` shelved whole** to
+[`date/20260927/20260927-190500_incense-next-log-archive-14.md`](date/20260927/20260927-190500_incense-next-log-archive-14.md)
+(checkpoint `20260927.190500`, nib `56fcc68598`) -- the remember_git_nib follow-up-shape fix and its
+own backtick_path lesson, then the comment_path retired-rule-twin-door repoint and its second
+backtick_path lesson. **Filed under `recursion-prompts/date/` this time**, matching the elder
+thirteen shelves rather than the session-logs room a first draft misfiled it into.
 
 **This lap (`20260927.153732`) round-opened clean at `a00c1f0183`, found no overlapping claim (five
 standing rows all past their six-hour expiry), launched a fresh cold run -- and then broke the
@@ -303,3 +260,26 @@ cold run held fully still start to finish; ~7 reds remain untriaged (`query_wire
 `build_target`, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21
 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
 `pond_enclosure_*` gated) -- most still want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260927.185658`) round-opened clean at `56fcc68598`, found no overlapping claim (five
+standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
+through its whole run, across six Monitor re-arms (roughly 68 minutes), reading nothing until the
+transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the
+roster's own expected self-check), 369 green, 9 red, 3 gated. Compared the nine reds one by one
+against the prior three laps' own untriaged list and found an exact match, plus the two expected
+self-checks (`standing_equipment_redleg`, `standing_equipment`) -- nothing new surfaced. Checked
+each for a bounded single-lap ratchet the way `shared_build_path` and `width_check` were the two
+laps before: none qualified. `build_target` (`emit_fixed=48` against ceiling 47) was already named,
+in its own `20260924` seating commit, as owed a fuller hot-verification pass rather than a quick
+ceiling nudge. `ceiling_teeth` (`asserted_spread`, 7 declared-but-unenforced bound constants across
+`mantra/`/`tally/` receipt code) and `shim_reason` (`rostered_late_say`, 8 rostered bindings
+printing their target below their first assert) both ask for real bound-enforcement code changes in
+receipt paths -- correctness work past what a survey lap should force. `ignored_walk` (41 against
+27) and `rye_compiled_reach` (786 uncompiled bodies against a ceiling of 18) are hundreds-of-sites
+structural questions; `falsifier_form_outcome` (21 ranked rows) is a ledger-row-by-row task. No REDS
+row booked, nothing built, nothing claimed. Next lap: fresh round-open, cold run held fully still
+start to finish; the same ~7 reds remain untriaged (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `build_target`,
+`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
+rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still
+want Keaton's word or a larger plan than one lap affords.
