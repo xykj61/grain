@@ -18,10 +18,10 @@ say pen.out
 assert pen.ok else "backtick-path: the pen must pass"
 assert pen.out contains "control_verdict=ok" else "backtick-path: the pen must reach its own ok"
 assert pen.out contains "control_failed=0" else "backtick-path: every planted leg must pass"
-assert pen.out contains "control_legs=22" else "backtick-path: a leg written tomorrow is heard the day it lands"
+assert pen.out contains "control_legs=23" else "backtick-path: a leg written tomorrow is heard the day it lands"
 
 assert pen.out contains "leg_ok: thirteen welcome shapes and a room-relative cell stay uncounted, and one plant is read" else "backtick-path: an honest span must never be counted"
-assert pen.out contains "leg_ok: four testimony shapes are counted apart" else "backtick-path: testimony keeps every word it wrote"
+assert pen.out contains "leg_ok: five testimony shapes are counted apart" else "backtick-path: testimony keeps every word it wrote"
 assert pen.out contains "leg_ok: three placeholder shapes are counted apart" else "backtick-path: an illustration is not a citation"
 assert pen.out contains "leg_ok: the plant stands on one page" else "backtick-path: the page count must follow the hits"
 assert pen.out contains "leg_ok: --list names the page and the path it cites" else "backtick-path: a refusal a reader cannot locate is no refusal"
@@ -42,7 +42,8 @@ assert pen.out contains "leg_ok: dropping the anchor strip pulls in link_text_pr
 assert pen.out contains "leg_ok: dropping the ./ prefix hides the equals-sign page from the reading" else "backtick-path: that prefix must be proven load-bearing"
 assert pen.out contains "leg_ok: dropping the ledger exclusion counts the two append-only rows as living" else "backtick-path: a row records what was true when it was written"
 assert pen.out contains "leg_ok: dropping the placeholder test prices three illustrations as citations" else "backtick-path: the mark law asks for placeholders by name"
-assert pen.out contains "leg_ok: dropping the testimony split pulls four shelved pages into the gate" else "backtick-path: the gated class must hold living pages alone"
+assert pen.out contains "leg_ok: dropping the testimony split pulls five shelved pages into the gate" else "backtick-path: the gated class must hold living pages alone"
+assert pen.out contains "leg_ok: dropping the .cursor-archive check alone counts its one page as living" else "backtick-path: the archived-Cursor shelf must be its own proven check"
 
 let tree = run ["sh" "tools/fixtures/b/backtick_path_scan.sh"]
 say tree.out
@@ -50,4 +51,4 @@ assert tree.ok else "backtick-path: living citations stand above the ceiling -- 
 assert tree.out contains "ceiling_ok=yes" else "backtick-path: the ceiling only ever falls"
 assert tree.out contains "verdict=ok" else "backtick-path: the tree reading must reach ok"
 
-say "backtick-path: GREEN -- the pen holds 22 legs with six mutations bitten, and this tree stands under its ceiling."
+say "backtick-path: GREEN -- the pen holds 23 legs with seven mutations bitten, and this tree stands under its ceiling."

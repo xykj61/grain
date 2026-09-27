@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260927.080701` -- walk-back nib `b6c1a817e1`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260927/20260927-080701_incense-next-log-archive-8.md` -- the section had
+grown to 24,247 bytes against the page's 24,576-byte ceiling after the rye_witness_walker repair's
+closing entry landed. The living page keeps a pointer and its most recent entries; the shelved
+entries (`20260926.231239` through `20260927.001600`) keep every word, including the crushed_index
+press-link repair and the index-row-bound repair on the freshly opened `20260927` shelf.
+
 **Checkpoint `20260926.112236` -- walk-back nib `3d7cec5e61`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260926/20260926-112236_incense-next-log-archive-4.md` -- the section had
