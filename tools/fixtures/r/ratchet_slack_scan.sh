@@ -174,7 +174,14 @@ for p in $scan_list; do
     # A ceiling is compared by the shell -- `[ "$n" -gt "$ceiling" ]` -- or inside an awk program
     # the scan hands it to with `-v ceiling="$ceiling"`, where the comparison reads `maxc > ceiling`.
     # Reading only the shell form called `room_braid_census` a decoration.
-    if grep -qE -- "-(gt|ge|lt|le|eq|ne) *\"?\\$\{?$key|\\$\{?$key\}?\"? *-(gt|ge|lt|le|eq|ne)|[<>]=? *$key([^A-Za-z_]|$)|(^|[^A-Za-z_])$key *[<>]=?" "$p"; then
+    #
+    # THE MATCH IS CASE-INSENSITIVE, because a `-v` handoff routinely lowercases the shell's own
+    # uppercase name -- `awk -v ceiling="$CEILING"` -- and the comparison inside the awk body then
+    # reads the lowercase local rather than the declared `CEILING`. Reading case-sensitively called
+    # `awk_lcg_exact` uncompared while its own `if (over + 0 <= ceiling)` line does exactly the
+    # comparison this census asks after; found `20260927` when it was the only uncompared ceiling
+    # among 120.
+    if grep -qiE -- "-(gt|ge|lt|le|eq|ne) *\"?\\$\{?$key|\\$\{?$key\}?\"? *-(gt|ge|lt|le|eq|ne)|[<>]=? *$key([^A-Za-z_]|$)|(^|[^A-Za-z_])$key *[<>]=?" "$p"; then
       compared=$((compared + 1)); cmp=yes
     else
       uncompared=$((uncompared + 1)); cmp=no
