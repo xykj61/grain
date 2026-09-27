@@ -192,7 +192,9 @@ assert control.out contains "a title count with no numbered sections counts zero
 assert control.out contains "and that page reads ok -- read ok" else "crushed-index: a page outside this reading must leave the tree green"
 assert control.out contains "a trailing number over numbered sections counts zero -- read 0" else "crushed-index: a number at a title's end is an identifier rather than a census, on both count readings alike"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
-assert control.out contains "control_pass=71" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
+assert control.out contains "a sub_excluded member with no row is not counted -- read 0" else "crushed-index: a manifest sub_exclude member must not be owed a row it can never be honestly linked to fill"
+assert control.out contains "withdrawing the exemption counts the same member again -- read 1" else "crushed-index: withdrawing the manifest exemption must count the same member again, or the reading is not reading the manifest"
+assert control.out contains "control_pass=75" else "crushed-index: the pen must run every leg it holds -- control_fail reads alike over a leg that FAILED and one DELETED, so the case count is pinned beside it"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
 # The tree itself, after the pen.
