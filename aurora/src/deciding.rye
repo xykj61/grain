@@ -181,6 +181,7 @@ fn write_hex(value: u32) void {
     write_str(&buf);
 }
 
+// invariant: a failed proof halts immediately -- no path returns past unreachable
 fn assert(ok: bool) void {
     if (!ok) unreachable;
 }
