@@ -543,8 +543,8 @@ pub fn verify_bundle_matches_root(
     if (!std.mem.eql(u8, &hex, state_root_hex)) return error.VerifyFailed;
 
     // Verify attestation line
-    var att_pos: ?usize = null;
-    var pos: usize = 0;
+    var att_pos: ?usize = null; // seam: slice offset over an owned bundle buffer
+    var pos: usize = 0; // seam: slice index over an owned bundle buffer
     while (pos < bundle.len) {
         const nl = std.mem.indexOfScalarPos(u8, bundle, pos, '\n') orelse bundle.len;
         const line = bundle[pos..nl];
@@ -568,7 +568,7 @@ pub fn prove_balance(
     bundle: []const u8,
     account_hex: *const [pubkey_hex_len]u8,
 ) error{NotFound, BadBundle}!struct { balance: i64, nonce: u64 } {
-    var pos: usize = 0;
+    var pos: usize = 0; // seam: slice index over an owned bundle buffer
     var header_lines: u32 = 0;
     while (pos < bundle.len) {
         const nl = std.mem.indexOfScalarPos(u8, bundle, pos, '\n') orelse bundle.len;
