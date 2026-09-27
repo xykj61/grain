@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.165207` | [width_check seam-comment repair](20260927/20260927-165207_width-check-seam-comment.kyri) | wov_core seam comments, ceiling 1123->1109 |
 | `20260927.153732` | [rune_assert_sweep; a held-still lesson](20260927/20260927-153732_rune-assert-sweep-ceiling-and-a-held-still-lesson.kyri) | 6489->6480; backtick 57->56; tree_moved=yes |
 | `20260927.143518` | [comment_path: five .cursor/rules citations, two elided paths](20260927/20260927-143518_comment-path-cursor-archive-repoint.kyri) | living 71->64; ceiling 66->64. |
 | `20260927.132645` | [nib follow-up, backtick_path self-cite again](20260927/20260927-132645_remember-git-nib-and-backtick-path-follow-up.kyri) | nib stale->head; 58->56. |
