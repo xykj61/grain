@@ -218,3 +218,26 @@ finish; ~21 reds remain untriaged (`width_check`'s th5 disagreement already TAME
 population (largely a cross-file false negative in the scan itself, worth a repair of its own), and
 the `shared_build_path`/`build_target` populations still want Keaton's word or a larger plan than
 one lap affords.
+
+**This lap (`20260927.034611`) round-opened clean at `991a4da7e3`, found no overlapping claim (five
+standing rows all stale), launched a fresh cold run and held fully still through its whole run,
+watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`, 357 green, 19 red, 3
+gated. Surveyed the reds: `seed_link` named `docs-geode/press/README.md` linking three
+`sub_exclude`-marked (personal) press pieces from a document the seed ships -- traced to my own
+prior lap's own fix (`20260926.231239`), which added exactly those three links to satisfy
+`crushed_index`'s `index_unlisted=3`. A genuine two-guard conflict rather than a fresh fault:
+`crushed_index` demands a literal link naming every member, `seed_link` refuses a shipped page
+linking into a room the manifest withholds. Repaired the shape rather than picking a side: taught
+`crushed_index_scan.sh` the same read-past treatment `date/archive/yonder` already get, for any
+member whose full path matches a `template-manifest.kyri` `sub_exclude` line -- a member that can
+never be honestly linked from a shipped page is not owed a row. Reverted the three rows to plain
+text, kept every word, added one sentence naming why. Both scans read `verdict=ok`, both witnesses
+GREEN on metal. Proved the new exemption on metal with a two-leg control pair (plant the exclusion,
+read clear; withdraw it, read red again) -- `control_pass` rose 71 to 75, 0 failing; the witness's
+own pinned count moved with it. No REDS row booked (23 bytes free) -- an ordinary unrostered repair
+overlapping no claim. Pushed `xy` then `debrided` clean fast-forward. Next lap: fresh round-open, cold
+run held still start to finish; ~19 reds remain untriaged (`width_check`'s th5 disagreement already
+TAME-ruled, `standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
+`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
+population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
+larger plan than one lap affords.

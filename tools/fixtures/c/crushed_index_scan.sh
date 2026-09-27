@@ -55,6 +55,17 @@
 # REFUSED by name -- `index_rooms_oversize` -- rather than walked in silence, and the answer is to
 # split the index or raise the bound with a reason. Measured 20260906: docs-geode/ holds 8.
 #
+# A MEMBER THE MANIFEST MARKS `sub_exclude` IS NOT OWED A ROW EITHER, for the same reason
+# date/archive/yonder are read past above: a member this guard can never see honestly LINKED cannot
+# honestly be asked for one. `template-manifest.kyri` withholds specific personal files from the
+# public seed (three press announcements naming a person's venture, name, or fund), and
+# `docs-geode/press/README.md` -- a document the seed DOES ship -- linked all three to satisfy this
+# very guard on `20260926`. The next lap's cold run caught it: `tools/s/seed_link_witness.rish`
+# refuses a shipped page linking into a room the seed withholds, and a personal `sub_exclude` file
+# is exactly that room. Asking for a row here and refusing the only link that could fill it is a
+# guard fighting a guard, so the personal-excluded member joins the same read-past class as a dated
+# shelf -- named in the table's prose, never linked.
+#
 # WHAT IS GATED, hard, all at zero.
 #   index_unlisted        -- a member of a declared room with no row on its index
 #   index_rooms_missing   -- a declaration naming a room that is not on disk
@@ -122,6 +133,15 @@ cd "$root"
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
+
+# THE MANIFEST'S OWN PRIVACY LIST, read once. Absent manifest reads as an empty list rather than a
+# failure -- this guard runs on trees that never carry a public-seed projection at all.
+MANIFEST="${CRUSHED_MANIFEST:-template-manifest.kyri}"
+if [ -f "$MANIFEST" ]; then
+  grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' | sort -u > "$work/personal.txt"
+else
+  : > "$work/personal.txt"
+fi
 
 # THE FILE LIST REACHES `xargs` ON STDIN, never through `-a`. That flag is GNU-only and BSD `xargs`
 # has no equivalent at all, so a scan spelled with it dies on the macOS bench before it reads a
@@ -281,6 +301,21 @@ while read -r page room depth; do
     git ls-files "$room" | sed "s|^$room||" | cut -d/ -f1 | sort -u \
       | grep -vxE '(date|archive|yonder)' | grep -v '^README\.md$' > "$work/members.txt" || true
   fi
+
+  # A PERSONAL-EXCLUDED MEMBER IS READ PAST, matched by its full repository-relative path -- the
+  # same shape a manifest `sub_exclude` line names. Room-relative here, so the manifest's own
+  # room-prefixed paths are cut down to match before the comparison.
+  if [ -s "$work/personal.txt" ]; then
+    awk -v room="$room" 'index($0, room) == 1 { print substr($0, length(room) + 1) }' \
+      "$work/personal.txt" > "$work/personal_room.txt"
+  else
+    : > "$work/personal_room.txt"
+  fi
+  if [ -s "$work/personal_room.txt" ]; then
+    grep -vxF -f "$work/personal_room.txt" "$work/members.txt" > "$work/members_screened.txt" || true
+    mv "$work/members_screened.txt" "$work/members.txt"
+  fi
+
   while IFS= read -r m; do
     [ -n "$m" ] || continue
     members_total=$((members_total + 1))
