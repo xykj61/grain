@@ -288,3 +288,25 @@ start to finish; ~20 reds remain untriaged (`width_check`'s th5 disagreement alr
 `standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
 `pond_enclosure_*` gated); `query_wire_retention` (%756) and the `shared_build_path`/`build_target`
 populations still want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260927.012745`) round-opened clean at `cd2f72abc8`, found no overlapping claim,
+launched a fresh cold run and held fully still through its whole run, watched with Monitor across
+six re-arms.** It closed clean: `tree_moved=no`, 357 green, 21 red, 3 gated (`rule_twin`,
+`pond_enclosure_policy`, `pond_enclosure_ephemeral`). Surveyed the 21 for a small fixable one:
+`ratchet_slack_scan.sh` -- the census of every ceiling this tree declares -- read
+`ceilings_uncompared=1`, naming `awk_lcg_exact`'s lone `CEILING` as never compared in its own scan.
+Read that scan directly: it hands `CEILING` to awk as `-v ceiling="$CEILING"` and compares it
+lowercase inside the awk body, `if (over + 0 <= ceiling)` -- a real comparison the census's own
+compare-detection regex could not see because it matched the shell-cased key case-sensitively.
+Proved the false negative by hand before touching anything, then widened the one grep from `-qE`
+to `-qiE` with a dated why-comment; it is the only ceiling in the whole 120-strong census shaped
+this way, so nothing else could be affected. `ceilings_uncompared` fell 1 to 0, verdict `ok`;
+`ratchet_slack_control.sh`'s 50 legs and `ratchet_slack_witness.rish` both GREEN unchanged, since
+the widened match is strictly broader and every prior `compared=yes` case already matched exactly.
+`tame_style_check` GREEN, the touched file gained no non-ASCII bytes. No REDS row booked (REDS.md
+23 bytes free) -- an ordinary unrostered repair overlapping no claim. Pushed `xy` then `debrided`
+clean fast-forward. Next lap: fresh round-open, cold run held still start to finish; ~20 reds
+remain untriaged (`width_check`'s th5 disagreement already TAME-ruled, `standing_equipment_redleg`'s
+chapter-lane remainder outside this lane, `rule_twin`/`pond_enclosure_*` gated); `query_wire_retention`
+(%756) and the `shared_build_path`/`build_target` populations still want Keaton's word or a larger
+plan than one lap affords.
