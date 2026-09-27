@@ -256,3 +256,18 @@ an ordinary unrostered repair overlapping no claim). Pushed `xy` then `gp405` cl
 Next lap: fresh round-open, cold run held still start to finish; ~21 reds remain untriaged
 (`rule_twin`/`pond_enclosure_*` gated, `width_check`'s th5 disagreement already TAME-ruled,
 `standing_equipment_redleg`'s chapter-lane remainder outside this lane).
+
+**This lap (`20260926.231239`) round-opened clean at `ea736e3618`, found no overlapping claim (five
+standing rows all `status=stale`), then launched a fresh cold run and held fully still through its
+whole run, watched with Monitor across five re-arms.** It closed clean: `tree_moved=no`, 357 green,
+20 red plus the roster's own self-check, 3 gated. Surveyed the reds for a small fixable one:
+`crushed_index` read `index_unlisted=3` -- `docs-geode/press/README.md` carried plain-text, unlinked
+rows for three of its own press pieces (the Aspiring Oregon Radiance, the Livermore name, the Siya
+Fund LLC founding), so the scan's own basename-in-target check found nothing naming them. Gave each
+row the link its sibling rows already carried, no wording changed. `crushed_index_witness.rish` runs
+GREEN on metal, `ascii_document_scan` reads clean, `tame_style_check` GREEN, the page grades A. No
+REDS row booked (REDS.md 23 bytes free) -- an ordinary unrostered repair overlapping no claim. Next
+lap: fresh round-open, cold run held still start to finish; `query_wire_retention` stays REDS %756's
+own booked OPEN row waiting on Keaton's word; `rune_assert_sweep`'s `unnamed_assert` ratchet sits 9
+over its ceiling across 486+ files, too large for one lap without a plan; `shared_build_path` and
+`build_target` each carry a large fixed-vs-penned-path population; ~19 reds remain untriaged.
