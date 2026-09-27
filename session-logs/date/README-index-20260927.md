@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.112324` | [CHAPTERS roster pin repair, 20260925/20260926](20260927/20260927-112324_chapters-roster-repair.kyri) | disagree/stale 2->0. |
 | `20260927.102139` | [log_has_a_row's pin drift closed, 20260925/20260926](20260927/20260927-102139_log-has-a-row-pin-drift-repair.kyri) | pin_count_drift 2->0. |
 | `20260927.091828` | [Seven stashed session logs landed](20260927/20260927-091828_stash-record-seven-logs-landed.kyri) | stash_record unlanded 7->0. |
 | `20260927.081009` | [backtick_path learns .cursor-archive/ as testimony](20260927/20260927-081009_backtick-path-cursor-archive-testimony.kyri) | living 76->56. |
