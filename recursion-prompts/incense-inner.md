@@ -139,37 +139,10 @@ fallback-instrument false-positive repairs.
 (checkpoint `20260927.023354`, nib `5ae55a426f`) -- the redleg refusal legs, the row-bound repair,
 the fascia-home-link repair, and the backtick/comment path false-positive repointing.
 
-**This lap (`20260926.231239`) round-opened clean at `ea736e3618`, found no overlapping claim (five
-standing rows all `status=stale`), then launched a fresh cold run and held fully still through its
-whole run, watched with Monitor across five re-arms.** It closed clean: `tree_moved=no`, 357 green,
-20 red plus the roster's own self-check, 3 gated. Surveyed the reds for a small fixable one:
-`crushed_index` read `index_unlisted=3` -- `docs-geode/press/README.md` carried plain-text, unlinked
-rows for three of its own press pieces (the Aspiring Oregon Radiance, the Livermore name, the Siya
-Fund LLC founding), so the scan's own basename-in-target check found nothing naming them. Gave each
-row the link its sibling rows already carried, no wording changed. `crushed_index_witness.rish` runs
-GREEN on metal, `ascii_document_scan` reads clean, `tame_style_check` GREEN, the page grades A. No
-REDS row booked (REDS.md 23 bytes free) -- an ordinary unrostered repair overlapping no claim. Next
-lap: fresh round-open, cold run held still start to finish; `query_wire_retention` stays REDS %756's
-own booked OPEN row waiting on Keaton's word; `rune_assert_sweep`'s `unnamed_assert` ratchet sits 9
-over its ceiling across 486+ files, too large for one lap without a plan; `shared_build_path` and
-`build_target` each carry a large fixed-vs-penned-path population; ~19 reds remain untriaged.
-
-**This lap (`20260927.001600`) round-opened clean at `dadaf18aa3`, found no overlapping claim (five
-standing rows all `status=stale`), launched a fresh cold run and held fully still through its whole
-~55-minute run, watched with Monitor across five re-arms.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 21 red, 3 gated. Surveyed the reds
-for a small fixable one: `index_row_bound` read `rows_over=1` in today's own day shelf again --
-the same 192-byte bound this shelf broke and was repaired past twice before, at `20260926.013806`
-and `20260926.185006`. Shortened the one over-bound row's "what it carried" field from a full
-sentence to a plain clause, stamp and link untouched; scan now reads `verdict=ok`, witness GREEN,
-39 behaviors. Rode along: closed the `20260926` shelf (30 rows) and opened `20260927`'s, updating
-`session-logs/README.md`'s shelf table and `CHAPTERS.md`'s roster in the same commit --
-`log_has_a_row_scan` and `session_roster_agree_witness` both clean. No REDS row booked (23 bytes
-free). Pushed `xy` then `gp405` clean fast-forward. Next lap: fresh round-open, cold run held still
-start to finish; ~20 reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
-`standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
-`pond_enclosure_*` gated); `query_wire_retention` (%756) and the `shared_build_path`/`build_target`
-populations still want Keaton's word or a larger plan than one lap affords.
+**Entries `20260926.231239` through `20260927.001600` shelved whole** to
+[`date/20260927/20260927-080701_incense-next-log-archive-8.md`](date/20260927/20260927-080701_incense-next-log-archive-8.md)
+(checkpoint `20260927.080701`, nib `b6c1a817e1`) -- the crushed_index press-link repair and the
+index-row-bound repair on the freshly opened `20260927` shelf.
 
 **This lap (`20260927.012745`) round-opened clean at `cd2f72abc8`, found no overlapping claim,
 launched a fresh cold run and held fully still through its whole run, watched with Monitor across
@@ -312,3 +285,28 @@ reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
 `pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
 population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
 larger plan than one lap affords.
+
+**This lap (`20260927.080701`) round-opened clean at `b6c1a817e1`, found no overlapping claim (five
+standing rows all stale), launched a fresh cold run and held fully still through its whole run,
+watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 15 red, 3 gated. Surveyed the reds:
+`backtick_path` read `living=76` against `ceiling=62` -- 20 of the 76 named a `.cursor/rules/*.mdc`
+path from inside a `.cursor-archive/rules/*.mdc` page, every target folding away the same day
+Cursor retired and its rules moved to `.cursor-archive/`. Every rule room that names
+`.cursor-archive/` calls it "archived, unmodified," which is testimony's own promise wearing a dot
+instead of the `archive/` shelf's slash; the scan's `testimony()` function only matched a
+slash-bounded segment, so it never learned the fourth shelf. Widened `testimony()` with one line
+matching `^\.cursor-archive\/`, re-ran the scan directly first (`living` fell 76 to 56) before
+touching the control, added a plant-and-mutation leg proving the check load-bearing on its own (23
+legs, 0 failing), and lowered the ceiling to 56 in the same commit. `backtick_path_witness.rish`
+runs GREEN on metal; `tame_style_check` and `ascii_document_scan` both GREEN; all three touched
+files kept their modes. No REDS row booked (REDS.md 23 bytes free) -- an ordinary unrostered repair
+overlapping no claim. Shed two elder `next` entries (`20260926.231239` through `20260927.001600`)
+to a checkpointed shelf so this account fit under the page's own bound. Next lap: fresh round-open,
+cold run held still start to finish; ~15 reds remain untriaged (`width_check`'s th5 disagreement
+already TAME-ruled, `standing_equipment_redleg`'s chapter-lane remainder outside this lane,
+`rule_twin`/`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s
+`asserted_only` population, `comment_path`'s own `over_ceiling` (71 against 66, a different
+population -- mostly pen-illustration paths inside fixture scripts, not the `.cursor-archive`
+class), and the `shared_build_path`/`build_target` populations still want Keaton's word or a larger
+plan than one lap affords.

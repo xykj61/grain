@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.081009` | [backtick_path learns .cursor-archive/ as testimony](20260927/20260927-081009_backtick-path-cursor-archive-testimony.kyri) | living 76->56. |
 | `20260927.070306` | [rye_witness_walker's one-over ceiling closes with a proven walker](20260927/20260927-070306_rye-witness-walker-receipt-refusal-chain.kyri) | unwalked 57->56. |
 | `20260927.060217` | [checkable_binding learns the testimony split](20260927/20260927-060217_checkable-binding-testimony-split.kyri) | settled_unbound 10->0. |
 | `20260927.045618` | [pen_release caught a cleanup armed before its own mktemp](20260927/20260927-045618_pen-release-cleanup-declared-before-its-mktemp.kyri) | never_removed 9->8. |

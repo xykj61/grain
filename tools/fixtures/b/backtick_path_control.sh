@@ -102,6 +102,10 @@ MD
 cat > room/yonder/later.md <<'MD'
 A deferred shelf is testimony: `work-in-progress/ROADMAP.md`.
 MD
+mkdir -p .cursor-archive/rules
+cat > .cursor-archive/rules/archived.mdc <<'MD'
+A frozen archived-Cursor citation is testimony too: `work-in-progress/ROADMAP.md`.
+MD
 
 # --- a placeholder is an illustration, counted apart from a citation ---
 cat > room/shapes.md <<'MD'
@@ -122,7 +126,7 @@ git add -A && git commit -q -m pen
 
 out=$(BACKTICK_PATH_CEILING=99999 sh "$kit" 2>/dev/null)
 leg "thirteen welcome shapes and a room-relative cell stay uncounted, and one plant is read" "$(printf '%s\n' "$out" | read_key living)" "1"
-leg "four testimony shapes are counted apart" "$(printf '%s\n' "$out" | read_key testimony)" "4"
+leg "five testimony shapes are counted apart" "$(printf '%s\n' "$out" | read_key testimony)" "5"
 leg "three placeholder shapes are counted apart" "$(printf '%s\n' "$out" | read_key placeholder)" "3"
 leg "the plant stands on one page" "$(printf '%s\n' "$out" | read_key living_pages)" "1"
 
@@ -215,8 +219,14 @@ leg "dropping the placeholder test prices three illustrations as citations" \
 # number: without it every stamped and shelved page joins the living reading.
 swap '    print (testimony(page) ? "testimony" : "living") "\t" page "\t" s' '    print "living\t" page "\t" s'
 m6=$(BACKTICK_PATH_CEILING=99999 sh "$mut" 2>/dev/null)
-leg "dropping the testimony split pulls four shelved pages into the gate" \
-  "$([ "$(printf '%s\n' "$m6" | read_key living)" -eq "$(( $(printf '%s\n' "$eq" | read_key living) + 4 ))" ] && echo bit || echo silent)" "bit"
+leg "dropping the testimony split pulls five shelved pages into the gate" \
+  "$([ "$(printf '%s\n' "$m6" | read_key living)" -eq "$(( $(printf '%s\n' "$eq" | read_key living) + 5 ))" ] && echo bit || echo silent)" "bit"
+
+# --- the .cursor-archive/ shelf specifically: dropping only its own check must bite alone ---
+drop 'if (p ~ /^\.cursor-archive\//) return 1'
+m7=$(BACKTICK_PATH_CEILING=99999 sh "$mut" 2>/dev/null)
+leg "dropping the .cursor-archive check alone counts its one page as living" \
+  "$([ "$(printf '%s\n' "$m7" | read_key living)" -eq "$(( $(printf '%s\n' "$eq" | read_key living) + 1 ))" ] && echo bit || echo silent)" "bit"
 
 echo "control_legs=$legs"
 echo "control_failed=$failed"
