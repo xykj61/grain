@@ -240,3 +240,19 @@ shell script kept mode 100755; `tame_style_check`, `backtick_path_control` (22 l
 then `gp405` clean fast-forward. Next lap: fresh round-open, cold run held still start to finish;
 `backtick_path`/`comment_path` want more repair (the remaining broken citations skew toward
 gitlinked-submodule and forward-looking paths that want more judgment); ~20 reds untriaged.
+
+**This lap (`20260926.220726`) round-opened clean at `47731f1753`, found no overlapping claim, then
+met a cold run already in flight at this exact HEAD -- watched it with Monitor and held fully still
+through the whole 3,300-second wait.** It closed clean: `tree_moved=no`, 356 green, 22 red, 3 gated
+(`rule_twin`, `pond_enclosure_policy`, `pond_enclosure_ephemeral`). Surveyed the 22 reds and repaired
+`compass_rose.rish`'s "one-word-one-gate canon path" station: it greps `external-research/README.md`
+for a citation of `context/specs/20260704-020800_one-word-one-gate.md`, and that citation was a dated
+row in the room's Explorations table that folded onto `external-research/date/README-index-20260704.md`
+when the room's index folded to 27 day shelves -- the row survived byte-identical, only the guard's
+assumed location did not. Exactly the shape `stamp-and-name.md`'s "an index folds with the room it
+describes" law names. Repointed the one grep target to the day shelf; `compass_rose.rish` runs GREEN
+on metal, `tame_style_check` stays GREEN. No REDS row booked (23 bytes of headroom on the ledger,
+an ordinary unrostered repair overlapping no claim). Pushed `xy` then `gp405` clean fast-forward.
+Next lap: fresh round-open, cold run held still start to finish; ~21 reds remain untriaged
+(`rule_twin`/`pond_enclosure_*` gated, `width_check`'s th5 disagreement already TAME-ruled,
+`standing_equipment_redleg`'s chapter-lane remainder outside this lane).

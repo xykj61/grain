@@ -105,7 +105,7 @@ assert e.ok else "thin-edge path check failed"
 assert e.out contains "EDGE_OK" else "thin-ring stale pointer still present"
 
 say "compass rose: one-word-one-gate canon path…"
-let o = run ["sh" "-c" "test -f context/specs/20260704-020800_one-word-one-gate.md && ! test -e external-research/20260704-020800_one-word-one-gate.md && grep -q 'context/specs/20260704-020800_one-word-one-gate' external-research/README.md && echo OWOG_OK"]
+let o = run ["sh" "-c" "test -f context/specs/20260704-020800_one-word-one-gate.md && ! test -e external-research/20260704-020800_one-word-one-gate.md && grep -q 'context/specs/20260704-020800_one-word-one-gate' external-research/date/README-index-20260704.md && echo OWOG_OK"]
 assert o.ok else "one-word-one-gate path check failed"
 assert o.out contains "OWOG_OK" else "one-word-one-gate index drift"
 
