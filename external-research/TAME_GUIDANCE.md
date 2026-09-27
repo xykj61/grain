@@ -22,7 +22,7 @@ Three layers, one discipline:
 | **Voiced canon** | this document | Our radiant adaptation; Safety, Performance, DX |
 | **Operational supplement** | `../context/TAME_GUIDANCE.md` | Checkable root + Rye / Brix / Rishi rules for authors and agents |
 
-Read this document for *why* TAME feels the way it does. Read `context/TAME_GUIDANCE.md` at the keyboard for *what to check*. Landmark filenames follow TigerBeetle's `docs/TIGER_STYLE.md` pattern.
+Read this document for *why* TAME feels the way it does. Read `context/TAME_GUIDANCE.md` at the keyboard for *what to check*. Landmark filenames follow TigerBeetle's own `TIGER_STYLE.md` naming pattern.
 
 ---
 
