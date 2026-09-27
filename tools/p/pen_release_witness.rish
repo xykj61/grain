@@ -63,7 +63,7 @@ assert scan.out contains "ceiling_ok=yes" else "pen release over its ceiling: ${
 assert scan.out contains "verdict=released" else "pen release verdict missing: ${scan.out_brief}"
 
 # THE CONTROL IS ASSERTED BESIDE THE READING, because a ratchet proven only in the passing
-# direction cannot be told from a reading that counts nothing. Forty-six behaviors on real git
+# direction cannot be told from a reading that counts nothing. Fifty-eight behaviors on real git
 # repositories in a throwaway pen, every refusal planted and then lifted, the ceiling shown from
 # both sides, and three mutations -- the continuation join, the transitive pen variable, and the
 # trap reading -- each required to bite and then required to walk free unmutated.
@@ -74,8 +74,8 @@ let control = run ["sh" "tools/fixtures/p/pen_release_control.sh"]
 assert control.ok else "pen release control did not reach control_verdict=ok: ${control.out_brief}"
 assert control.out contains "control_verdict=ok" else "pen release control verdict missing: ${control.out_brief}"
 assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
-assert control.out contains "pass=55" else "the control's leg tally moved: ${control.out_brief}"
+assert control.out contains "pass=58" else "the control's leg tally moved: ${control.out_brief}"
 
-assert scan.out contains "runtime_pens=21" else "the runtime-owned pen population moved: ${scan.out_brief}"
+assert scan.out contains "runtime_pens=25" else "the runtime-owned pen population moved: ${scan.out_brief}"
 
-say "GREEN: every pen this tree makes is counted for its release -- 8 never removed under a ceiling that only falls, and 21 handed to the runtime."
+say "GREEN: every pen this tree makes is counted for its release -- 8 never removed under a ceiling that only falls, and 25 handed to the runtime."
