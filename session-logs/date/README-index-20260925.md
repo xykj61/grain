@@ -19,6 +19,7 @@
 | `20260925.204511` | [Card history](20260925/20260925-204511_bakery-card-history.kyri) | Six drafts reviewed; 49 remain. |
 | `20260925.204143` | [Petrichor parked lap recovery](20260925/20260925-204143_petrichor-parked-lap-recovery.kyri) | Source correction recovered; full roster open. |
 | `20260925.203642` | [Queue reconciliation](20260925/20260925-203642_bakery-queue-reconciliation.kyri) | Three drafts reviewed; 55 remain. |
+| `20260925.202629` | [Cold run launched](20260925/20260925-202629_cold-run-launch.kyri) | Held still for verdict; stash-recovered. |
 | `20260925.202325` | [Fold recital review](20260925/20260925-202325_bakery-fold-recital-review.kyri) | Fourteen drafts reviewed; published records kept. |
 | `20260925.201815` | [Space-only purpose](20260925/20260925-201815_diffuser-space-only-purpose.kyri) | One admitted space displays no purpose value. |
 | `20260925.201120` | [Ledger drafts](20260925/20260925-201120_bakery-ledger-drafts.kyri) | Two drafts reviewed; published numbers kept. |
