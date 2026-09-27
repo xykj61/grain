@@ -21,7 +21,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 ## What Lives Here
 
 - **`RADIANT_STYLE.md`** -- the canonical voice. How we write and speak so every piece reads clearly, lands warmly, and carries well aloud.
-- **`TAME_GUIDANCE.md`** -- the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's `docs/TIGER_STYLE.md`; pairs with `external-research/TAME_GUIDANCE.md` and `gratitude/TIGER_STYLE.md`.
+- **`TAME_GUIDANCE.md`** -- the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's own `TIGER_STYLE.md` (their `docs/` naming pattern); pairs with `external-research/TAME_GUIDANCE.md` and our own held copy at `gratitude/TIGER_STYLE.md`.
 - **`SIMPLE_LOVABLE_COMPLETE.md`** -- how we ship. Simple, lovable, complete at every lap; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** -- how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned -- the civic companion to TAME, Radiant, and SLC.
 - **`TWO_ROOMS.md`** -- the checkable room and the vision room; name the register at the door; doorway witness vocabulary (`checkable` - `vision` - `mixed` - `research for understanding`). Seated `20260705.203144`; Quin refresh `20260717.163748`.
@@ -47,7 +47,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 
 Hand new sessions and collaborators the **voice guide**, the **identity note** (`QUIN.md`), and the **silo guide** together by default.
 
-A Cursor rule at `.cursor/rules/quin.mdc` points every new session back here (the retired `riyo.mdc`, `rio3.mdc`, and `reya2.mdc` rules rest beside it, pointing forward to Quin).
+A Cursor rule once at `.cursor/rules/quin.mdc` pointed every new session back here; the whole family rests now, archived and unmodified, at `.cursor-archive/rules/quin.mdc` (the retired `riyo.mdc`, `rio3.mdc`, and `reya2.mdc` rules beside it, pointing forward to Quin).
 
 ---
 

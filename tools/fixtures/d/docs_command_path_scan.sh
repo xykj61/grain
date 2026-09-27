@@ -126,9 +126,9 @@ sort -u "$work/files" > "$work/known"
 
 # The basename lookup reads past the same three rooms the page list does, and for the same
 # reason. gratitude/ is a reading library of other people's code rather than a dependency
-# (.claude/rules/gratitude-licenses.md), so a page quoting `docs/TIGER_STYLE.md` inside a
-# commit body is naming TIGERBEETLE's path -- our tree merely happens to carry a file of that
-# basename. vendor/ is the same, and seed/ is this tree's own projection rather than the field.
+# (.claude/rules/gratitude-licenses.md), so a page quoting TigerBeetle's own docs/TIGER_STYLE.md
+# path inside a commit body is naming THEIR tree -- our tree merely happens to carry a file of
+# that basename. vendor/ is the same, and seed/ is this tree's own projection rather than the field.
 grep -vE '^(gratitude|vendor|seed)/' "$work/known" > "$work/ours" || : > "$work/ours"
 
 awk -F'\t' '
