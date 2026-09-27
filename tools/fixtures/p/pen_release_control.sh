@@ -350,6 +350,26 @@ ck "the function scope closes at its brace"      "unreleased_on_refusal=1"    "$
 ck "the function mutation bites"                 "unreleased_on_refusal=1"    "$(run trap_fn 0 "$(mutate 'FN=1' 'FN=0')")"
 ck "unmutated, the trapped function is no straight line" "unreleased_on_refusal=0" "$(run trap_fn)"
 
+# THE PEN NAMED AHEAD OF ITS OWN mktemp -d. tools/fixtures/r/rye_key_control.sh declares
+# `PEN=""`, defines a trapped `cleanup()` that reads `$PEN`, and only later runs
+# `PEN=$(mktemp -d)` -- an ordinary shell idiom for a cleanup that must be armed before the pen
+# it guards exists. Pass 2 met that removal line before `PEN` had ever been read as a pen
+# variable and called it never_removed; the ceiling read 9 for a file that already releases on
+# three signals. This leg plants that exact ordering.
+build trap_fn_before_pen
+cat > "$pen/trap_fn_before_pen/case.sh" <<'EOF'
+#!/bin/sh
+PEN=""
+cleanup() { [ -n "$PEN" ] && rm -rf "$PEN"; }
+trap cleanup EXIT INT TERM
+PEN=$(mktemp -d)
+printf 'x\n' > "$PEN/a.txt"
+EOF
+out=$(run trap_fn_before_pen)
+ck "a pen named before its own mktemp is released" "never_removed=0"          "$out"
+ck "it is no straight line either"                "unreleased_on_refusal=0"  "$out"
+ck "the ordering shape walks free"                "verdict=released"         "$out"
+
 echo "pass=$pass"
 echo "fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
