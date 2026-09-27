@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260927.175529` -- walk-back nib `d4ef2a2d53`.** Shelve incense's own `next` account
+whole from `recursion-prompts/incense-inner.md` into
+`recursion-prompts/date/20260927/20260927-175529_incense-next-log-archive-13.md` -- the shared
+build path ceiling raise's own closing entry would have pushed the section past its 24,576-byte
+ceiling. The living page keeps a pointer and its most recent entries; the shelved entries
+(`20260927.112324` through `20260927.122323`) keep every word, including the session_roster_agree
+CHAPTERS.md count-drift repair and the backtick_path elided-fragment repair.
+
 **Checkpoint `20260927.080701` -- walk-back nib `b6c1a817e1`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260927/20260927-080701_incense-next-log-archive-8.md` -- the section had
