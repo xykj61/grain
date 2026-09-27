@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.143518` | [comment_path: five .cursor/rules citations, two elided paths](20260927/20260927-143518_comment-path-cursor-archive-repoint.kyri) | living 71->64; ceiling 66->64. |
 | `20260927.132645` | [nib follow-up, backtick_path self-cite again](20260927/20260927-132645_remember-git-nib-and-backtick-path-follow-up.kyri) | nib stale->head; 58->56. |
 | `20260927.122618` | [backtick_path's self-authored elision fixed](20260927/20260927-122618_backtick-path-inner-log-self-citation.kyri) | living 57->56. |
 | `20260927.112324` | [CHAPTERS roster pin repair, 20260925/20260926](20260927/20260927-112324_chapters-roster-repair.kyri) | disagree/stale 2->0. |
