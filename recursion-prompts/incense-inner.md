@@ -268,3 +268,27 @@ disagreement already TAME-ruled, `standing_equipment_redleg`'s chapter-lane rema
 lane, `rule_twin`/`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s
 `asserted_only` population, and the `shared_build_path`/`build_target` populations still want
 Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260927.060217`) round-opened clean at `ec7009729c`, found no overlapping claim (five
+standing rows all stale), launched a fresh cold run and held fully still through its whole run,
+watched with Monitor across six re-arms.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 17 red (excluding the self-check),
+3 gated. Surveyed the reds: `checkable_binding` read `settled_unbound=10` against `ceiling=8` --
+listed the ten pages and found every one carried a `date/` shelf or a stamped basename per
+`stamp-and-name.md`'s own test, exactly the testimony shape `backtick_path_scan.sh` and
+`comment_path_scan.sh` already carve out and report apart, which `checkable_binding_scan.sh` had
+never learned. Added `is_testimony()` to the scan mirroring backtick_path's own awk function, split
+`settled_unbound` into a living (gated) count and a `settled_unbound_testimony` (reported) count,
+updated list mode and printed fields. Ran the scan directly first to confirm the ten pages
+reclassified before touching the control; the existing 40-leg control passed unchanged (none of its
+pen pages carry a stamped basename), then added one new leg planting a stamped-basename page and
+proving it reads `settled_unbound_testimony=1` rather than `settled_unbound=1` (42 legs, 0 failing).
+`checkable_binding_witness.rish` runs GREEN on metal, `settled_unbound` fell 10 to 0,
+`ceiling_ok=yes`. `tame_style_check` GREEN, `ascii_document_scan` `verdict=ok`, both shell scripts
+kept mode 100755. No REDS row booked (23 bytes free) -- an ordinary unrostered repair overlapping no
+claim. Pushed `xy` then `debrided` clean fast-forward. Next lap: fresh round-open, cold run held still
+start to finish; ~18 reds remain untriaged (`width_check`'s th5 disagreement already TAME-ruled,
+`standing_equipment_redleg`'s chapter-lane remainder outside this lane, `rule_twin`/
+`pond_enclosure_*` gated); `query_wire_retention` (%756), `ceiling_teeth`'s `asserted_only`
+population, and the `shared_build_path`/`build_target` populations still want Keaton's word or a
+larger plan than one lap affords.
