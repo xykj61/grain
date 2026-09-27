@@ -141,8 +141,12 @@ fi
 # scan was touched again; and this pass repointed context/TAME_GUIDANCE.md's own citation of
 # `context/TWO_ROOMS.md`, spelled a directory level too high (both pages sit in `context/`
 # together), to a page-relative spelling, moving 63 to 62.
+# Lowered to 56 on 20260927 (incense): testimony() learned .cursor-archive/ as a fourth shelf, so 20
+# frozen citations inside archived .mdc pages -- naming a .cursor/rules/ path that folded away the
+# day Cursor retired -- moved from living to testimony, and the reading rose from 76 (over the
+# ceiling) straight past 62 to 56.
 # Lower it in the same commit as any sweep.
-ceiling="${BACKTICK_PATH_CEILING:-62}"
+ceiling="${BACKTICK_PATH_CEILING:-56}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
@@ -191,8 +195,14 @@ function norm(p,   i, c, parts, stack, n, out) {
 }
 function here(p) { return (p != "" && ((p in tracked) || (p in dirs))) }
 # Testimony keeps every word it wrote: a stamped basename, or any dated / archived / deferred shelf.
+# .cursor-archive/ is a fourth shelf by the same rule under a different spelling: every rule room
+# that names it calls it "archived, unmodified" (git-signing.md and a dozen siblings), so a citation
+# frozen inside it -- written the day Cursor retired, pointing at a .cursor/rules/ path that folded
+# away the same day -- is the elder-room genre this scan already reads past, wearing a dot instead
+# of a slash-bounded "archive" segment.
 function testimony(p,   b) {
   if (p ~ /(^|\/)(date|archive|yonder)\//) return 1
+  if (p ~ /^\.cursor-archive\//) return 1
   b = p; sub(/^.*\//, "", b)
   return (b ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]/)
 }
