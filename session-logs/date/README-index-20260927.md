@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.185658` | [cold run survey, no new reds](20260927/20260927-185658_cold-run-survey-no-new-reds.kyri) | 369/9/3, all nine reds match the standing untriaged list |
 | `20260927.175401` | [shared_build_path ceiling raise](20260927/20260927-175401_shared-build-path-ceiling-raise.kyri) | ceiling 1574->1585, net new tracked witnesses |
 | `20260927.165207` | [width_check seam-comment repair](20260927/20260927-165207_width-check-seam-comment.kyri) | wov_core seam comments, ceiling 1123->1109 |
 | `20260927.153732` | [rune_assert_sweep; a held-still lesson](20260927/20260927-153732_rune-assert-sweep-ceiling-and-a-held-still-lesson.kyri) | 6489->6480; backtick 57->56; tree_moved=yes |
