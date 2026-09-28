@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.043027` | [cold run survey, eight reds now](20260928/20260928-043027_eleventh-clean-cold-run-survey.kyri) | 371/8/3, build_target dropped off, six items untriaged |
 | `20260928.033221` | [build_target pen-conversion closed](20260928/20260928-033221_build-target-pen-conversion.kyri) | mantra_bolt_apply_step moved off a fixed path, verdict ok |
 | `20260928.032709` | [cold run survey, no new reds](20260928/20260928-032709_tenth-clean-cold-run-survey.kyri) | 370/9/3, same 7 reds untriaged again |
 | `20260928.022859` | [cold run survey, no new reds](20260928/20260928-022859_ninth-clean-cold-run-survey.kyri) | 370/9/3, same 7 reds untriaged again |
