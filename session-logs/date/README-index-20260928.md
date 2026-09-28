@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.160333` | [cold run confirms; a fleet_call detour on the way](20260928/20260928-160333_cold-run-confirm-fleet-call-detour.kyri) | 371/8/3, standing set held; next section shed |
 | `20260928.150302` | [a missing binary, built once](20260928/20260928-150302_retired-rank-binary-build.kyri) | new red retired_rank; built tools/bin/retired-exec, GREEN, no commit |
 | `20260928.135507` | [one row, one byte over](20260928/20260928-135507_index-row-bound-one-byte-over.kyri) | new red index_row_bound; trimmed a row by 6 chars, GREEN |
 | `20260928.124655` | [cold run confirms; next page finally shed](20260928/20260928-124655_cold-run-confirm-and-next-shed.kyri) | 371/8/3, standing set held; next section folded |
