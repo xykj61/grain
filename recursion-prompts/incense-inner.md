@@ -274,3 +274,26 @@ stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` popula
 ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
 than one lap affords. Watch for `index_row_bound` recurring: a new row's meaning clause that lands
 near 191-192 characters will trip the same one-byte-over reading again.
+
+**This lap (`20260928.150302`) round-opened clean at `126a5be47a`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across seven Monitor re-arms (roughly
+70 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed `tree_moved=no`,
+`run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than the standing eight, and the
+new one was `retired_rank`: its own evidence file named the mechanism plainly -- `tools/bin/retired-exec`
+is absent, and it names its own build line. `tools/bin/` is a gitignored build-artifact directory
+(confirmed via `git check-ignore -v`) already holding a sibling binary, `tools/bin/retired-count`, so
+this read as a binary never built on this checkout rather than a code fault. Built it with
+`./rye/bin/rye build tools/rye/retired_exec.rye -femit-bin=tools/bin/retired-exec` (no PATH `rye` on
+this ship; resolved the repo-local binary directly). `retired_rank_control.sh` returned to all 19
+legs `ok`, `control_failed=0`, `control_verdict=ok`, and `retired_rank_witness.rish` ran GREEN.
+`git status --porcelain` read empty afterward since the binary is gitignored, so nothing was staged
+or committed. `fleet_claim_scan.sh --check` on the touched paths read `verdict=clear`. No REDS row
+booked -- a missing local build artifact rather than a defect. Next lap: fresh round-open, cold run
+held fully still start to finish with `--cadence-slice 1`; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords. `retired_rank` should read green from here unless a future clean checkout or
+toolchain change drops the binary again.
