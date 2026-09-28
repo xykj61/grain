@@ -263,3 +263,22 @@ unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still 
 or a larger plan than one lap affords. Watch whether `remember_git_nib` reds a third time in a row:
 if so, the fleet's follow-up-commit habit itself (rather than any one lap's carelessness) wants the
 REDS row.
+
+**This lap (`20260928.082252`) round-opened clean at `c3d6723cfd`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1` (restarting it once to add the flag -- killed the freshly-launched pid directly
+by its own number, never by pattern), then held fully still across six Monitor re-arms (roughly 65
+minutes) until the transcript carried `run_verdict=`.** It closed `tree_moved=no`,
+`run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than the prior lap, and NOT the
+`remember_git_nib` shape this time. `construction/standing-equipment-reds/index_row_bound.txt` named
+one row in `session-logs/date/README-index-20260928.md` at 200 bytes against the 192-byte bound --
+the `20260928.072419` `remember_git_nib` row. Trimmed its third cell to 183 bytes, confirmed
+`fleet_claim_scan.sh --check` clear on the path, and ran `tools/in/index_row_bound_witness.rish`
+directly GREEN (39 behaviors, 0 faults) before committing. No REDS row booked -- an ordinary
+row-bound repair overlapping no claim. Next lap: fresh round-open, cold run held fully still with
+`--cadence-slice 1`; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated). Watch whether `index_row_bound`
+reds again -- a habit of writing long row clauses, the way `remember_git_nib` recurred twice this
+fold.
