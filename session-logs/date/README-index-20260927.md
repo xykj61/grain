@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.200127` | [remember_git_nib follow-up stale](20260927/20260927-200127_remember-git-nib-follow-up-stale.kyri) | card nib two commits stale, rewritten via write follow-up |
 | `20260927.185658` | [cold run survey, no new reds](20260927/20260927-185658_cold-run-survey-no-new-reds.kyri) | 369/9/3, all nine reds match the standing untriaged list |
 | `20260927.175401` | [shared_build_path ceiling raise](20260927/20260927-175401_shared-build-path-ceiling-raise.kyri) | ceiling 1574->1585, net new tracked witnesses |
 | `20260927.165207` | [width_check seam-comment repair](20260927/20260927-165207_width-check-seam-comment.kyri) | wov_core seam comments, ceiling 1123->1109 |
