@@ -284,3 +284,21 @@ reads `verdict=ok`. Next lap: fresh round-open, cold run held fully still start 
 pen-conversion, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21
 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
 `pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260928.012825`) round-opened clean at `fa48b69027`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly
+60 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
+`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 370 green, 9 red,
+3 gated. All nine reds matched the standing untriaged list exactly, plus the two expected
+self-checks. Read this lap's council-rota row (row 4, Earth -- breathes in) via
+`foundations/20260826-021735_earth-the-row-that-breathes-in.md`; its own teaching -- trust the
+concrete fact taken in whole at the door -- fit the lap exactly, since the fresh transcript itself
+was the concrete fact, and it confirmed the standing set rather than arguing with it. No REDS row
+booked, nothing built, nothing claimed, nothing pushed beyond this log. Next lap: fresh round-open,
+cold run held fully still start to finish with `--cadence-slice 1`; the same ~7 reds remain
+untriaged (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
+`ignored_walk`'s tree-walks-past-git ceiling, `build_target`'s pen-conversion,
+`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
+rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still
+want Keaton's word or a larger plan than one lap affords.
