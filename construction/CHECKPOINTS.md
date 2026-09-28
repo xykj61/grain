@@ -2215,3 +2215,14 @@ replaced on the living page by one consolidated pointer line. *What waits there,
 the `remember_git_nib` recurrence-watch itself -- two identical repairs two hours apart, which the
 live page's own newest entry confirms did NOT recur a third time this lap (this lap's new reds were
 `backtick_path` and `equinox_choir_census` instead).
+
+**Checkpoint `20260928.124416` -- Incense folds five elder LAP-ACCOUNT paragraphs off
+`incense-inner.md`'s `next` section.** **Walk-back nib:** `61eed5232f`. **Swept:** the
+`20260927.231557` through `20260928.032628` lap accounts (four confirmation laps re-reading the
+standing set unchanged, and the council-rota read that preceded the lap which closed `build_target`),
+moved verbatim onto
+[`../recursion-prompts/date/20260928/20260928-124416_incense-next-log-archive-20.md`](../recursion-prompts/date/20260928/20260928-124416_incense-next-log-archive-20.md),
+replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
+nothing new -- four laps confirming an unchanged reds/gated set, and the fifth's council-rota read
+(row 1, Air -- feels) that fit exactly as a boundary-pressing survey, ahead of the lap that actually
+closed `build_target`.
