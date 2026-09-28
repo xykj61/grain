@@ -6,4 +6,5 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.012825` | [cold run survey, no new reds](20260928/20260928-012825_eighth-clean-confirmation-survey.kyri) | 370/9/3, same 7 reds untriaged again |
 | `20260928.002100` | [cold run survey, no new reds](20260928/20260928-002100_seventh-clean-confirmation-survey.kyri) | 370/10/3, same 7 reds untriaged again |
