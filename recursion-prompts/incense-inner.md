@@ -240,45 +240,35 @@ to finish with `--cadence-slice 1`; the untriaged set is now six (`query_wire_re
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
 
-**This lap (`20260928.072419`) round-opened clean at `4fbbac1631`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
-`--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly
-75 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
-`tree_moved=no`, `run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than the prior
-lap, and the same shape as two laps back: `remember_git_nib` itself. The card's own Git nib named
-`80b115829c`, HEAD~2, two commits past a session-log follow-up that had landed without carrying it
-forward. Ran `rishi/bin/rishi run tools/r/remember_git_nib.rish` bare, which named both candidates;
-this lap's own close is a follow-up commit, so `write follow-up` was the correct shape -- it wrote
-`4fbbac1631` and the witness confirmed GREEN against the uncommitted card before staging.
-`fleet_claim_scan.sh --check construction/ITINERARY.md` read `verdict=clear`. No REDS row booked --
-an ordinary repair matching `remember-git-nib.md` rule 5 exactly, for the second time this fold; the
-row worth naming is the recurrence, since two identical repairs on two laps two hours apart means
-some lap's send is landing a follow-up commit without carrying the nib. No REDS row booked this lap
-either, since the pattern is already named at rule 5 and a third occurrence rather than a design gap
-is what would earn one. Next lap: fresh round-open, cold run held fully still start to finish with
-`--cadence-slice 1`; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
-`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
-uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
-unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word
-or a larger plan than one lap affords. Watch whether `remember_git_nib` reds a third time in a row:
-if so, the fleet's follow-up-commit habit itself (rather than any one lap's carelessness) wants the
-REDS row.
+**Entries `20260928.072419` through `20260928.082252` shelved whole** to
+[`date/20260928/20260928-093343_incense-next-log-archive-19.md`](date/20260928/20260928-093343_incense-next-log-archive-19.md)
+(checkpoint `20260928.093343`, nib `e6e4f1a5f4`) -- two lap accounts (a second `remember_git_nib`
+follow-up recurrence, and the `index_row_bound` trim that answered it) pushed the page to 24,763
+bytes against its 24,576-byte ceiling.
 
-**This lap (`20260928.082252`) round-opened clean at `c3d6723cfd`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
-`--cadence-slice 1` (restarting it once to add the flag -- killed the freshly-launched pid directly
-by its own number, never by pattern), then held fully still across six Monitor re-arms (roughly 65
-minutes) until the transcript carried `run_verdict=`.** It closed `tree_moved=no`,
-`run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than the prior lap, and NOT the
-`remember_git_nib` shape this time. `construction/standing-equipment-reds/index_row_bound.txt` named
-one row in `session-logs/date/README-index-20260928.md` at 200 bytes against the 192-byte bound --
-the `20260928.072419` `remember_git_nib` row. Trimmed its third cell to 183 bytes, confirmed
-`fleet_claim_scan.sh --check` clear on the path, and ran `tools/in/index_row_bound_witness.rish`
-directly GREEN (39 behaviors, 0 faults) before committing. No REDS row booked -- an ordinary
-row-bound repair overlapping no claim. Next lap: fresh round-open, cold run held fully still with
-`--cadence-slice 1`; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
-`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
-uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
-unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated). Watch whether `index_row_bound`
-reds again -- a habit of writing long row clauses, the way `remember_git_nib` recurred twice this
-fold.
+**This lap (`20260928.093343`) round-opened clean at `e6e4f1a5f4`, found no overlapping claim (five
+standing rows all past their six-hour expiry), and found a cold roster pass already in flight at
+that same `HEAD` -- rather than launching a second, watched its transcript grow through six checks
+(48 to 447 lines, roughly 65 minutes) until it carried `run_verdict=`.** It closed `tree_moved=no`,
+`run_verdict=guard_red`, 369 green, 10 red, 3 gated -- two MORE reds than the standing set, both new:
+`backtick_path` (`living=57` over `ceiling=56`, by one) and `equinox_choir_census` (`red=14` over
+`red_ceiling=10`). Read each. `backtick_path`'s own `--list` named the new citation as this file's
+own prior-lap paragraph, `` `construction/standing-equipment-reds/index_row_bound.txt` `` -- an
+untracked-by-design evidence path (confirmed via `git check-ignore -v`), real on this ship and
+absent from a fresh clone, wrapped in backticks two laps ago without anyone reading it as a promise.
+De-backticked it in place (mechanical repair, prose unchanged in meaning); `backtick_path_scan.sh`
+returned to `living=56, verdict=ok` and its witness ran GREEN (23 legs, 0 failing). `equinox_choir_census`
+is a different shape entirely: its own scan header says plainly *NO REPAIR IS TAKEN HERE, on
+purpose -- these are DATED equinox guards... it wants Keaton's word*, and names the exact mechanism
+at play -- several choir witnesses are pinned to old REDS-ledger row counts that keep drifting
+further behind as the ledger grows through ordinary work, so the red count rises on its own over
+time. The REDS ledger itself has 23 bytes of headroom against its 65,536-byte ceiling, all fifteen
+rows OPEN, so no new row is lawful here either. Left both the ceiling and the guard exactly as
+found; this is an **open word**, not a lap's repair. `fleet_claim_scan.sh --check` on the touched
+path read `verdict=clear`. No REDS row booked. Next lap: fresh round-open, cold run held fully still
+with `--cadence-slice 1`; the untriaged set is now seven, adding `equinox_choir_census`'s
+ceiling-drift to the standing six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only`
+population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body
+ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still wanting Keaton's word
+or a larger plan than one lap affords.

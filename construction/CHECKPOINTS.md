@@ -2205,3 +2205,13 @@ replaced on the living page by one consolidated pointer line. *What waits there,
 nothing new -- every pointer named an archive that already stood on disk, unmoved and still
 reachable at the same paths; this fold only gathered the SIGNPOSTS, at 7,138 bytes for seventeen
 paragraphs that had grown larger than the single lap account beside them.
+
+**Checkpoint `20260928.093343` -- Incense folds two elder LAP-ACCOUNT paragraphs off
+`incense-inner.md`'s `next` section.** **Walk-back nib:** `e6e4f1a5f4`. **Swept:** the
+`20260928.072419` and `20260928.082252` lap accounts (a second `remember_git_nib` follow-up
+recurrence, and the `index_row_bound` trim that answered it), moved verbatim onto
+[`../recursion-prompts/date/20260928/20260928-093343_incense-next-log-archive-19.md`](../recursion-prompts/date/20260928/20260928-093343_incense-next-log-archive-19.md),
+replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
+the `remember_git_nib` recurrence-watch itself -- two identical repairs two hours apart, which the
+live page's own newest entry confirms did NOT recur a third time this lap (this lap's new reds were
+`backtick_path` and `equinox_choir_census` instead).
