@@ -240,6 +240,29 @@ to finish with `--cadence-slice 1`; the untriaged set is now six (`query_wire_re
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
 
+**This lap (`20260928.103502`) round-opened clean at `f737b84f81`, found no overlapping claim
+(five standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run
+with `--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms
+(roughly 60 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed
+clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green,
+8 red, 3 gated. Grepped the transcript's own red lines directly rather than trusting the summary
+count: `standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment` -- exactly the
+untriaged six plus the two expected self-checks, matching the prior lap's post-`build_target`-close
+count of eight. Gated set matched too: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
+`pond_enclosure_ephemeral(%5)`. Read this lap's council-rota row (row 4, Earth -- breathes in) via
+`foundations/20260826-021735_earth-the-row-that-breathes-in.md`; its teaching -- trust the concrete
+fact taken in at the door, checked against the witness -- fit the lap exactly, since the transcript's
+own red lines were read directly rather than assumed from the summary. No REDS row booked, nothing
+built, nothing claimed, nothing pushed beyond this log. Next lap: fresh round-open, cold run held
+fully still start to finish with `--cadence-slice 1`; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords. `equinox_choir_census` did not fire this lap (below its own drift threshold),
+consistent with the prior lap's finding that it wants Keaton's word rather than a lap repair.
+
 **Entries `20260928.072419` through `20260928.082252` shelved whole** to
 [`date/20260928/20260928-093343_incense-next-log-archive-19.md`](date/20260928/20260928-093343_incense-next-log-archive-19.md)
 (checkpoint `20260928.093343`, nib `e6e4f1a5f4`) -- two lap accounts (a second `remember_git_nib`

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.103502` | [thirteenth clean cold-run survey](20260928/20260928-103502_thirteenth-clean-cold-run-survey.kyri) | same standing eight reds, held fully still |
 | `20260928.093343` | [two new reds, one fixed, one named](20260928/20260928-093343_two-new-reds-one-repaired-one-named.kyri) | backtick_path fixed; equinox_choir_census wants his word |
 | `20260928.082252` | [index_row_bound red repaired](20260928/20260928-082252_index-row-bound-red-repaired.kyri) | a 200-byte row trimmed to 183, closing the new red |
 | `20260928.072419` | [remember_git_nib red repaired again](20260928/20260928-072419_remember-git-nib-red-repaired-again.kyri) | nib HEAD~2 stale again; fixed, watching for a third |
