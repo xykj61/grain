@@ -6,7 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260928.072419` | [remember_git_nib red repaired again](20260928/20260928-072419_remember-git-nib-red-repaired-again.kyri) | card nib was HEAD~2 stale again; fixed to HEAD, watching for a third |
+| `20260928.082252` | [index_row_bound red repaired](20260928/20260928-082252_index-row-bound-red-repaired.kyri) | a 200-byte row trimmed to 183, closing the new red |
+| `20260928.072419` | [remember_git_nib red repaired again](20260928/20260928-072419_remember-git-nib-red-repaired-again.kyri) | nib HEAD~2 stale again; fixed, watching for a third |
 | `20260928.062752` | [twelfth cold run survey, same six reds](20260928/20260928-062752_twelfth-clean-cold-run-survey.kyri) | 371/8/3, Fire row confirmed no removal wanted |
 | `20260928.052910` | [remember_git_nib red repaired](20260928/20260928-052910_remember-git-nib-red-repaired.kyri) | card nib was HEAD~2 stale; fixed to HEAD |
 | `20260928.043027` | [cold run survey, eight reds now](20260928/20260928-043027_eleventh-clean-cold-run-survey.kyri) | 371/8/3, build_target dropped off, six items untriaged |
