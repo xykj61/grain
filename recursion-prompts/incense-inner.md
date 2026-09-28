@@ -240,6 +240,25 @@ to finish with `--cadence-slice 1`; the untriaged set is now six (`query_wire_re
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
 
+**This lap (`20260928.062752`) round-opened clean at `6cd428495c`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across five Monitor re-arms (roughly
+55 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
+`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green, 8 red,
+3 gated -- unchanged from the prior lap. All eight reds matched the standing untriaged set of six
+plus the two expected self-checks (`standing_equipment`, `standing_equipment_redleg`) exactly. Read
+this lap's council-rota row (row 2, Fire -- sees) via
+`foundations/20260826-021733_fire-the-row-that-sees.md`, advanced by hand past rows 4/0/1/3 already
+read today; its teaching -- look hard at what must stop or be cut -- found no standing red asking
+for a removal, so the survey held rather than redirecting. No REDS row booked, nothing built,
+nothing claimed, nothing pushed beyond this log. Next lap: fresh round-open, cold run held fully
+still start to finish with `--cadence-slice 1`; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords.
+
 **This lap (`20260928.052910`) round-opened clean at `80b115829c`, found no overlapping claim (five
 standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
 `--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly

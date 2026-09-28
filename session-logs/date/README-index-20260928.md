@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.062752` | [twelfth cold run survey, same six reds](20260928/20260928-062752_twelfth-clean-cold-run-survey.kyri) | 371/8/3, Fire row confirmed no removal wanted |
 | `20260928.052910` | [remember_git_nib red repaired](20260928/20260928-052910_remember-git-nib-red-repaired.kyri) | card nib was HEAD~2 stale; fixed to HEAD |
 | `20260928.043027` | [cold run survey, eight reds now](20260928/20260928-043027_eleventh-clean-cold-run-survey.kyri) | 371/8/3, build_target dropped off, six items untriaged |
 | `20260928.033221` | [build_target pen-conversion closed](20260928/20260928-033221_build-target-pen-conversion.kyri) | mantra_bolt_apply_step moved off a fixed path, verdict ok |
