@@ -2186,3 +2186,12 @@ so the page could carry this lap's stash_record repair account under its 24,576-
 waits there, worth recalling:* nothing new -- the ratchet_slack, error_member_reach, and
 crushed_index/seed_link fixes are each already closed and their counts current on the live page's
 later entries, so the shelf drops no fact a later reader still needs.
+
+**Checkpoint `20260928.002729` -- Incense shelves two `incense-inner.md` `next` entries before the
+seventh clean confirmation lap.** **Walk-back nib:** `1a37e4c5da`. **Swept:** the `20260927.175401`
+and `20260927.185658` lap accounts, moved verbatim onto
+[`../recursion-prompts/date/20260928/20260928-002729_incense-next-log-archive-16.md`](../recursion-prompts/date/20260928/20260928-002729_incense-next-log-archive-16.md)
+so the page could carry this lap's account under its 24,576-byte bound. *What waits there, worth
+recalling:* nothing new -- the `shared_build_path` ceiling raise and the `build_target`/
+`ceiling_teeth`/`shim_reason` triage are each already closed or already scoped on the live page's
+later entries, so the shelf drops no fact a later reader still needs.
