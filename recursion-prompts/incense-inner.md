@@ -286,3 +286,21 @@ start to finish with `--cadence-slice 1`; the same ~7 reds remain untriaged (`qu
 `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
 ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than
 one lap affords.
+
+**This lap (`20260927.231557`) round-opened clean at `596b1d3212`, found no overlapping claim (five
+standing rows all past their six-hour expiry), launched the cold run with `--cadence-slice 1` and
+held fully still through its whole run, across five Monitor re-arms (roughly 70 minutes), reading
+nothing until the transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 370 green, 9 red, 3 gated. All nine
+matched the standing untriaged list exactly, plus the two expected self-checks; `build_target` was
+checked once more (`emit_fixed=48` against `ceiling_fixed=47`, unchanged from two laps ago, still a
+pen-conversion job rather than a ceiling nudge). Read this lap's council-rota row (row 2, Fire --
+sees) via `foundations/20260818-081438_the-three-depths-of-removal.md`; none of the standing reds
+asked for a removal, so the row confirmed the survey rather than redirecting it. No REDS row booked,
+nothing built, nothing claimed, nothing pushed beyond this log. Next lap: fresh round-open, cold run
+held fully still start to finish with `--cadence-slice 1`; the same ~7 reds remain untriaged
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `build_target`'s pen-conversion, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still want Keaton's word or
+a larger plan than one lap affords.
