@@ -187,66 +187,11 @@ mid-pass, and the width_check corpus ceiling repair that followed it.
 `build_target`/`ceiling_teeth`/`shim_reason` triage, closing with the ledger fold deadlock unchanged
 and still Keaton's word to break.
 
-**This lap (`20260927.200127`) round-opened clean at `fc73b9650b`, found no overlapping claim (five
-standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
-through its whole run, across six Monitor re-arms (roughly an hour), reading nothing until the
-transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the
-roster's own expected self-check), 368 green, 10 red, 3 gated. `remember_git_nib` was the new red:
-`construction/ITINERARY.md`'s `Git nib` field named `1cb613f559`, HEAD~2, because the prior lap's
-own session-logs commit `fc73b9650` had landed on top of `56fcc6859` without carrying the field
-forward per rule 5. Ran `tools/r/remember_git_nib.rish` bare to see both candidate writes, then
-`write follow-up` since the repair is its own fresh commit rather than an amend; the field now names
-`fc73b9650b`, and `remember_git_nib_witness` reads `state head`. The other nine reds matched the
-prior four laps' own untriaged list exactly, none qualifying as a bounded single-lap ratchet.
-Missed the baton's `--cadence-slice 1` flag on the cold-run launch; the run still completed
-correctly. No REDS row booked -- an ordinary unrostered repair the cold run itself surfaced,
-overlapping no claim. Next lap: fresh round-open, cold run held fully still start to finish with
-`--cadence-slice 1` added; the same ~7 reds remain untriaged (`query_wire_retention` %756,
-`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
-`build_target`, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21
-falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
-`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than one lap affords.
-
-**This lap (`20260927.210639`) round-opened clean at `31bddb63ab`, found no overlapping claim (five
-standing rows all past their six-hour expiry), launched the cold run with `--cadence-slice 1` and
-held fully still through its whole run, across six Monitor re-arms, reading nothing until the
-transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the
-roster's own expected self-check), 370 green, 9 red, 3 gated. All nine matched the standing
-untriaged list exactly, plus the two expected self-checks. Looked closer at `build_target`, whose
-`emit_fixed=48` sat one over its `ceiling_fixed=47` -- the closest of the seven to a bounded
-single-lap fix, since `emit_tracked=0`, `emit_unignored=0`, and `shared_paths` stood at its own
-ceiling unmoved, the harder gates untouched. Drafted a ceiling raise to 48 with the same reasoning
-`shared_build_path` earned two laps ago, ran it GREEN -- then read the witness's own comment more
-carefully and found it says the opposite: this particular ceiling is one of two designed to only
-fall, and the named escape for a new fixed-path site is a `mktemp` pen, never a raised number.
-Reverted the edit before committing anything (`git diff` reads clean on the touched file). The real
-repair -- moving six newly-landed witnesses' emit targets into pens and re-proving each against
-`build_target_race_probe.sh` -- is genuine correctness work past a survey lap's bound, which is
-exactly what the prior four laps had already concluded without this lap needing to re-derive it.
-No REDS row booked, nothing built, nothing claimed, nothing pushed beyond this log. Next lap: fresh
-round-open, cold run held fully still start to finish with `--cadence-slice 1`; the same ~7 reds
-remain untriaged, with `build_target` now understood to want a pen-conversion lap of its own rather
-than a ceiling nudge -- all still want Keaton's word or a larger plan than one lap affords.
-
-**This lap (`20260927.221152`) round-opened clean at `f34f399233`, found no overlapping claim (five
-standing rows all past their six-hour expiry), launched the cold run with `--cadence-slice 1` and
-held fully still through its whole run, across five Monitor re-arms (roughly 65 minutes), reading
-nothing until the transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`,
-`run_verdict=guard_red` (the roster's own expected self-check), 369 green, 10 red, 3 gated. Nine of
-the ten matched the standing untriaged list exactly (plus the two self-checks). The tenth,
-`index_row_bound`, was new: one row in `session-logs/date/README-index-20260927.md` stood at 202
-bytes against the pin's own 192-byte cap -- the prior lap's own row, logging the `build_target`
-ceiling raise it drafted and reverted. A bounded, single-lap repair, the same shape
-`shared_build_path` and `width_check` earned two and three laps ago: trimmed the row's link text
-and clause to 175 bytes, same meaning kept, and `index_row_bound_witness` ran GREEN on metal
-afterward (39 behaviors, 0 faults). No REDS row booked -- an ordinary unrostered repair the cold
-run itself surfaced, overlapping no claim. Next lap: fresh round-open, cold run held fully still
-start to finish with `--cadence-slice 1`; the same ~7 reds remain untriaged (`query_wire_retention`
-%756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
-`build_target`'s pen-conversion, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than
-one lap affords.
+**Entries `20260927.200127` through `20260927.221152` shelved whole** to
+[`date/20260928/20260928-033900_incense-next-log-archive-17.md`](date/20260928/20260928-033900_incense-next-log-archive-17.md)
+(checkpoint `20260928.033900`, nib `b7e9ea3ae2`) -- the `remember_git_nib` follow-up repair, the
+`build_target` ceiling-raise-then-revert, and the `index_row_bound` trim that followed it, closing
+with `build_target` named as wanting a pen-conversion lap of its own.
 
 **This lap (`20260927.231557`) round-opened clean at `596b1d3212`, found no overlapping claim (five
 standing rows all past their six-hour expiry), launched the cold run with `--cadence-slice 1` and
@@ -339,3 +284,28 @@ tree-walks-past-git ceiling, `build_target`'s pen-conversion, `rye_compiled_reac
 uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
 unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still want Keaton's word or
 a larger plan than one lap affords.
+
+**This lap (`20260928.033221`) read what `build_target`'s "wants a pen-conversion lap of its own"
+actually named, rather than re-confirming it a fifth time.** `sh tools/fixtures/b/build_target_scan.sh
+--list` showed `emit_fixed=48` over `ceiling_fixed=47` by exactly one site, and the fixed-site list
+named several single-guard, single-path Mantra witnesses with no shared writer -- so moving any one
+off its fixed path closes the breach without touching `shared_paths`. Read the already-converted
+sibling `tools/m/mantra_snapshot_hosted.rish` for the seated pen shape (`let pen = run mktemp -d`,
+`let home = trim pen.out`, build into `${home}`, `rm -rf` at the close) and confirmed via
+`build_target_scan.sh`'s own `resolve_kind` walk that this exact chain reads as `kind=pen`. Chose
+`tools/m/mantra_bolt_apply_step_witness.rish` -- one guard, one site, no other reader of its path --
+confirmed it GREEN before touching it, applied the pen shape, and confirmed it GREEN again with the
+same crash-safety and empty-apply unwelcome paths named. The scan now reads `emit_fixed=47`,
+`fixed_paths=46`, `emit_pen=10`, `verdict=ok`; the seated ceiling of 47 is left exactly where it
+stands, since the population did not fall below it. `tools/fixtures/b/build_target_control.sh` (34
+legs, 0 failing) and `rishi/bin/rishi run tools/b/build_target_witness.rish` (GREEN) both confirmed
+afterward. `fleet_round_open.sh`'s own dirty-tree stash caught the uncommitted edit mid-lap, as it
+does for any unsent work; popped it back and reran the witness GREEN to confirm nothing was lost.
+`fleet_claim_scan.sh --check` on the touched path read `verdict=clear`. No REDS row booked -- an
+ordinary repair on an item every recent lap had already scoped, overlapping no claim. Next lap:
+fresh round-open, cold run held fully still start to finish with `--cadence-slice 1`; the untriaged
+set drops to roughly six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
+`ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords.

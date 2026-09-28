@@ -10,9 +10,18 @@
 #   rishi/bin/rishi run tools/m/mantra_bolt_apply_step_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let bin = "mantra/bin/bolt_apply_step_witness"
 
-let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/bolt_apply_step_witness.rye -femit-bin=${bin}"]
+# THE BUILD LANDS IN A DIRECTORY THIS RUN MADE FOR ITSELF (tools/fixtures/b/build_target_scan.sh,
+# REDS %700). A fixed tree path is a name a concurrent reader can also open mid-write, and `rye
+# build` writes through its output file rather than atomically -- a pen costs one directory and
+# removes the sharing rather than scheduling around it, the same repair mantra_snapshot_hosted.rish
+# already carries.
+let pen = run ["sh" "-c" "mktemp -d /tmp/mantra_bolt_apply_step.XXXXXX"]
+assert pen.ok else "bolt apply step: pen must open: ${pen.err_brief}"
+let home = trim pen.out
+let bin = "${home}/bolt_apply_step_witness"
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/bolt_apply_step_witness.rye -femit-bin=${bin}"]
 
 assert build.ok else "Mantra bolt apply step witness build failed"
 
@@ -21,5 +30,8 @@ assert selftest.ok else "Mantra bolt apply step witness exited non-zero"
 assert selftest.out contains "GREEN" else "Mantra bolt apply step witness not GREEN"
 assert selftest.out contains "crash in the write-to-apply window" else "Mantra bolt apply step witness missing crash-safety unwelcome path"
 assert selftest.out contains "refused NothingPending" else "Mantra bolt apply step witness missing empty-apply unwelcome path"
+
+let sweep = run ["sh" "-c" "rm -rf ${home}"]
+assert sweep.ok else "bolt apply step: pen must close: ${sweep.err_brief}"
 
 say "GREEN: Mantra bolt apply step witness passed."
