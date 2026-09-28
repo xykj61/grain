@@ -263,6 +263,27 @@ ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's wo
 than one lap affords. `equinox_choir_census` did not fire this lap (below its own drift threshold),
 consistent with the prior lap's finding that it wants Keaton's word rather than a lap repair.
 
+**This lap (`20260928.113614`) round-opened clean at `1617e59d8b`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across seven Monitor re-arms (roughly
+65 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed
+`tree_moved=no`, `run_verdict=guard_red`, 9 red, 3 gated -- one MORE red than the prior lap's set,
+and the new one was `remember_git_nib`: the card's Git nib named `e6e4f1a5f4`, two commits behind
+HEAD, since the two session-log commits that landed after the prior lap's nib repair
+(`c3d6723cf`) each carried real content without carrying the nib forward (rule 5). Repaired it in
+place -- rewrote the pin to `1617e59d8b`, HEAD as read before this lap's own commit, the honest
+follow-up state -- and confirmed `remember_git_nib_witness.rish` reads GREEN, resolving to state
+`head`. `fleet_claim_scan.sh --check` on the touched path read `verdict=clear`. Every other red and
+all three gated matched the standing set. No REDS row booked -- an ordinary repair on a
+mechanically-documented, previously-fired seam, overlapping no claim. Next lap: fresh round-open,
+cold run held fully still start to finish with `--cadence-slice 1`; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords. Any commit landing beside a work commit should carry the nib forward per rule
+5 to keep this from recurring a third time.
+
 **Entries `20260928.072419` through `20260928.082252` shelved whole** to
 [`date/20260928/20260928-093343_incense-next-log-archive-19.md`](date/20260928/20260928-093343_incense-next-log-archive-19.md)
 (checkpoint `20260928.093343`, nib `e6e4f1a5f4`) -- two lap accounts (a second `remember_git_nib`
