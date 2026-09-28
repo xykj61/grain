@@ -2195,3 +2195,13 @@ so the page could carry this lap's account under its 24,576-byte bound. *What wa
 recalling:* nothing new -- the `shared_build_path` ceiling raise and the `build_target`/
 `ceiling_teeth`/`shim_reason` triage are each already closed or already scoped on the live page's
 later entries, so the shelf drops no fact a later reader still needs.
+
+**Checkpoint `20260928.043027` -- Incense folds seventeen elder POINTER paragraphs, not lap
+accounts, off `incense-inner.md`'s `next` section.** **Walk-back nib:** `f16de489c9`. **Swept:** the
+seventeen `**Entries ... shelved whole**` pointer paragraphs (archives 1 through 17, covering
+`20260922.143256` through `20260927.221152`), moved verbatim onto
+[`../recursion-prompts/date/20260928/20260928-043027_incense-next-log-archive-18.md`](../recursion-prompts/date/20260928/20260928-043027_incense-next-log-archive-18.md),
+replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
+nothing new -- every pointer named an archive that already stood on disk, unmoved and still
+reachable at the same paths; this fold only gathered the SIGNPOSTS, at 7,138 bytes for seventeen
+paragraphs that had grown larger than the single lap account beside them.
