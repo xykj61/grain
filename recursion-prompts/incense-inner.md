@@ -266,3 +266,23 @@ No REDS row booked, nothing built, nothing claimed, nothing pushed beyond this l
 round-open, cold run held fully still start to finish with `--cadence-slice 1`; the same ~7 reds
 remain untriaged, with `build_target` now understood to want a pen-conversion lap of its own rather
 than a ceiling nudge -- all still want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260927.221152`) round-opened clean at `f34f399233`, found no overlapping claim (five
+standing rows all past their six-hour expiry), launched the cold run with `--cadence-slice 1` and
+held fully still through its whole run, across five Monitor re-arms (roughly 65 minutes), reading
+nothing until the transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`,
+`run_verdict=guard_red` (the roster's own expected self-check), 369 green, 10 red, 3 gated. Nine of
+the ten matched the standing untriaged list exactly (plus the two self-checks). The tenth,
+`index_row_bound`, was new: one row in `session-logs/date/README-index-20260927.md` stood at 202
+bytes against the pin's own 192-byte cap -- the prior lap's own row, logging the `build_target`
+ceiling raise it drafted and reverted. A bounded, single-lap repair, the same shape
+`shared_build_path` and `width_check` earned two and three laps ago: trimmed the row's link text
+and clause to 175 bytes, same meaning kept, and `index_row_bound_witness` ran GREEN on metal
+afterward (39 behaviors, 0 faults). No REDS row booked -- an ordinary unrostered repair the cold
+run itself surfaced, overlapping no claim. Next lap: fresh round-open, cold run held fully still
+start to finish with `--cadence-slice 1`; the same ~7 reds remain untriaged (`query_wire_retention`
+%756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
+`build_target`'s pen-conversion, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than
+one lap affords.
