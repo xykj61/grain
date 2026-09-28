@@ -252,10 +252,25 @@ let go. **Also shed the `next` section**, over its 24,576-byte ceiling before th
 at 25,227 bytes: shelved the five `20260927.231557` through `20260928.032628` lap accounts to
 [`date/20260928/20260928-124416_incense-next-log-archive-20.md`](date/20260928/20260928-124416_incense-next-log-archive-20.md)
 (checkpoint `20260928.124416`, nib `61eed5232f`), leaving a consolidated pointer. No REDS row
-booked, nothing built beyond the shed, nothing claimed, nothing pushed beyond this log. Next lap:
-fresh round-open, cold run held fully still start to finish with `--cadence-slice 1`; the untriaged
-set stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
+booked, nothing built beyond the shed, nothing claimed, nothing pushed beyond this log.
+
+**This lap (`20260928.135507`) round-opened clean at `4865e76139`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across seven Monitor re-arms (roughly
+70 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed `tree_moved=no`,
+`run_verdict=guard_red`, 9 red, 3 gated -- one MORE red than the standing eight, and the new one was
+`index_row_bound`: its own scan named the fault exactly -- today's shelf row for `20260928.124655`
+measured 193 bytes (the scan counts the row's characters plus its trailing newline) against the
+192-byte ceiling, one byte over. Trimmed the row's meaning clause from "standing set held;
+over-ceiling next section folded" to "standing set held; next section folded" -- same fact, six
+fewer characters -- and confirmed `index_row_bound_scan.sh` read `rows_over=0, longest_row=187,
+verdict=ok` and its witness GREEN (39 behaviors, 0 faults). `fleet_claim_scan.sh --check` on the
+touched path read `verdict=clear`. Every other red matched the standing eight exactly. No REDS row
+booked -- an ordinary repair on a page every lap touches, overlapping no claim. Next lap: fresh
+round-open, cold run held fully still start to finish with `--cadence-slice 1`; the untriaged set
+stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
 `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
 `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
 ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
+than one lap affords. Watch for `index_row_bound` recurring: a new row's meaning clause that lands
+near 191-192 characters will trip the same one-byte-over reading again.

@@ -6,7 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260928.124655` | [cold run confirms; next page finally shed](20260928/20260928-124655_cold-run-confirm-and-next-shed.kyri) | 371/8/3, standing set held; over-ceiling next section folded |
+| `20260928.135507` | [one row, one byte over](20260928/20260928-135507_index-row-bound-one-byte-over.kyri) | new red index_row_bound; trimmed a row by 6 chars, GREEN |
+| `20260928.124655` | [cold run confirms; next page finally shed](20260928/20260928-124655_cold-run-confirm-and-next-shed.kyri) | 371/8/3, standing set held; next section folded |
 | `20260928.113614` | [git nib red recurs a third time](20260928/20260928-113614_git-nib-red-recurs-third-repair.kyri) | two commits' drift after the last fix; repaired again |
 | `20260928.103502` | [thirteenth clean cold-run survey](20260928/20260928-103502_thirteenth-clean-cold-run-survey.kyri) | same standing eight reds, held fully still |
 | `20260928.093343` | [two new reds, one fixed, one named](20260928/20260928-093343_two-new-reds-one-repaired-one-named.kyri) | backtick_path fixed; equinox_choir_census wants his word |
