@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260927.231557` | [cold run survey, no new reds](20260927/20260927-231557_cold-run-survey-no-new-reds.kyri) | 370/9/3, nine reds match the standing list again |
 | `20260927.221152` | [index_row_bound: a row ran ten bytes over](20260927/20260927-221152_index-row-bound-repair.kyri) | trimmed the prior lap's own row, 201->175 bytes |
 | `20260927.210639` | [build_target raise drafted, reverted](20260927/20260927-210639_build-target-fixed-ratchet-declined.kyri) | a raise would break its own fall-only guard |
 | `20260927.200127` | [remember_git_nib follow-up stale](20260927/20260927-200127_remember-git-nib-follow-up-stale.kyri) | card nib two commits stale, rewritten via write follow-up |
