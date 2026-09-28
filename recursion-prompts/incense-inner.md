@@ -302,3 +302,21 @@ untriaged (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` popula
 `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still
 want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260928.022859`) round-opened clean at `a85e85965c`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly
+75 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
+`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 370 green, 9 red,
+3 gated. All nine reds and all three gated matched the standing untriaged list exactly. Re-checked
+`build_target` directly (`emit_fixed=48` against `ceiling_fixed=47`, unchanged) and confirmed once
+more it wants the scoped pen-conversion rather than a ceiling nudge. Read this lap's council-rota
+row (row 0, Aether -- hears) via `foundations/20260826-021731_aether-the-row-that-hears.md`; its
+reading of why the work exists fit a lap that found nothing new to book -- the standing survey held
+rather than the reading redirecting it. No REDS row booked, nothing built, nothing claimed, nothing
+pushed beyond this log. Next lap: fresh round-open, cold run held fully still start to finish with
+`--cadence-slice 1`; the same ~7 reds remain untriaged (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `build_target`'s
+pen-conversion, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21
+falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
+`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than one lap affords.
