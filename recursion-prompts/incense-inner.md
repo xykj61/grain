@@ -283,3 +283,23 @@ start to finish; the same ~7 reds remain untriaged (`query_wire_retention` %756,
 `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- all still
 want Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260927.200127`) round-opened clean at `fc73b9650b`, found no overlapping claim (five
+standing rows all past their six-hour expiry), launched a fresh cold run and held fully still
+through its whole run, across six Monitor re-arms (roughly an hour), reading nothing until the
+transcript carried `run_verdict=`.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the
+roster's own expected self-check), 368 green, 10 red, 3 gated. `remember_git_nib` was the new red:
+`construction/ITINERARY.md`'s `Git nib` field named `1cb613f559`, HEAD~2, because the prior lap's
+own session-logs commit `fc73b9650` had landed on top of `56fcc6859` without carrying the field
+forward per rule 5. Ran `tools/r/remember_git_nib.rish` bare to see both candidate writes, then
+`write follow-up` since the repair is its own fresh commit rather than an amend; the field now names
+`fc73b9650b`, and `remember_git_nib_witness` reads `state head`. The other nine reds matched the
+prior four laps' own untriaged list exactly, none qualifying as a bounded single-lap ratchet.
+Missed the baton's `--cadence-slice 1` flag on the cold-run launch; the run still completed
+correctly. No REDS row booked -- an ordinary unrostered repair the cold run itself surfaced,
+overlapping no claim. Next lap: fresh round-open, cold run held fully still start to finish with
+`--cadence-slice 1` added; the same ~7 reds remain untriaged (`query_wire_retention` %756,
+`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
+`build_target`, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21
+falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
+`pond_enclosure_*` gated) -- all still want Keaton's word or a larger plan than one lap affords.
