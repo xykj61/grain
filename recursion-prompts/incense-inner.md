@@ -239,3 +239,24 @@ to finish with `--cadence-slice 1`; the untriaged set is now six (`query_wire_re
 `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260928.052910`) round-opened clean at `80b115829c`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly
+70 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
+`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 370 green, 10 red,
+3 gated -- one MORE red than the prior lap, and a genuinely new one: `remember_git_nib` itself, the
+guard this whole rite leans on to keep the card honest. The card's own Git nib named `b7e9ea3ae2`,
+HEAD~2, two commits past both build commits that had landed without carrying it forward. Ran
+`rishi/bin/rishi run tools/r/remember_git_nib.rish` with no argument, which named both candidates
+rather than guessing; this lap's close is a follow-up commit (a session log riding on top of HEAD,
+no amend), so `write follow-up` was the correct shape -- it wrote `80b115829c` and the witness
+confirmed GREEN against the uncommitted card before staging. `fleet_claim_scan.sh --check
+construction/ITINERARY.md` read `verdict=clear`. No REDS row booked -- an ordinary repair matching
+the pattern `remember-git-nib.md` rule 5 already names. Next lap: fresh round-open, cold run held
+fully still start to finish with `--cadence-slice 1`; the untriaged set returns to six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords.
