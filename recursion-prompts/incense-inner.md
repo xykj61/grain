@@ -240,42 +240,26 @@ to finish with `--cadence-slice 1`; the untriaged set is now six (`query_wire_re
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
 
-**This lap (`20260928.062752`) round-opened clean at `6cd428495c`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
-`--cadence-slice 1`, holding fully still through its whole run across five Monitor re-arms (roughly
-55 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
-`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green, 8 red,
-3 gated -- unchanged from the prior lap. All eight reds matched the standing untriaged set of six
-plus the two expected self-checks (`standing_equipment`, `standing_equipment_redleg`) exactly. Read
-this lap's council-rota row (row 2, Fire -- sees) via
-`foundations/20260826-021733_fire-the-row-that-sees.md`, advanced by hand past rows 4/0/1/3 already
-read today; its teaching -- look hard at what must stop or be cut -- found no standing red asking
-for a removal, so the survey held rather than redirecting. No REDS row booked, nothing built,
-nothing claimed, nothing pushed beyond this log. Next lap: fresh round-open, cold run held fully
-still start to finish with `--cadence-slice 1`; the untriaged set stays six
-(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
-tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
-
-**This lap (`20260928.052910`) round-opened clean at `80b115829c`, found no overlapping claim (five
+**This lap (`20260928.072419`) round-opened clean at `4fbbac1631`, found no overlapping claim (five
 standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
 `--cadence-slice 1`, holding fully still through its whole run across six Monitor re-arms (roughly
-70 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
-`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 370 green, 10 red,
-3 gated -- one MORE red than the prior lap, and a genuinely new one: `remember_git_nib` itself, the
-guard this whole rite leans on to keep the card honest. The card's own Git nib named `b7e9ea3ae2`,
-HEAD~2, two commits past both build commits that had landed without carrying it forward. Ran
-`rishi/bin/rishi run tools/r/remember_git_nib.rish` with no argument, which named both candidates
-rather than guessing; this lap's close is a follow-up commit (a session log riding on top of HEAD,
-no amend), so `write follow-up` was the correct shape -- it wrote `80b115829c` and the witness
-confirmed GREEN against the uncommitted card before staging. `fleet_claim_scan.sh --check
-construction/ITINERARY.md` read `verdict=clear`. No REDS row booked -- an ordinary repair matching
-the pattern `remember-git-nib.md` rule 5 already names. Next lap: fresh round-open, cold run held
-fully still start to finish with `--cadence-slice 1`; the untriaged set returns to six
-(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
-tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
+75 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
+`tree_moved=no`, `run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than the prior
+lap, and the same shape as two laps back: `remember_git_nib` itself. The card's own Git nib named
+`80b115829c`, HEAD~2, two commits past a session-log follow-up that had landed without carrying it
+forward. Ran `rishi/bin/rishi run tools/r/remember_git_nib.rish` bare, which named both candidates;
+this lap's own close is a follow-up commit, so `write follow-up` was the correct shape -- it wrote
+`4fbbac1631` and the witness confirmed GREEN against the uncommitted card before staging.
+`fleet_claim_scan.sh --check construction/ITINERARY.md` read `verdict=clear`. No REDS row booked --
+an ordinary repair matching `remember-git-nib.md` rule 5 exactly, for the second time this fold; the
+row worth naming is the recurrence, since two identical repairs on two laps two hours apart means
+some lap's send is landing a follow-up commit without carrying the nib. No REDS row booked this lap
+either, since the pattern is already named at rule 5 and a third occurrence rather than a design gap
+is what would earn one. Next lap: fresh round-open, cold run held fully still start to finish with
+`--cadence-slice 1`; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word
+or a larger plan than one lap affords. Watch whether `remember_git_nib` reds a third time in a row:
+if so, the fleet's follow-up-commit habit itself (rather than any one lap's carelessness) wants the
+REDS row.
