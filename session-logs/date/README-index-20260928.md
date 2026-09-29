@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.203154` | [remember_git_nib stale, repaired](20260928/20260928-203154_remember-git-nib-stale-repair.kyri) | 371/9/3, new red remember_git_nib; nib two commits stale, fixed |
 | `20260928.192556` | [confirmation lap, Aether row](20260928/20260928-192556_confirmation-lap-aether-row.kyri) | 371/8/3, standing set held; Aether listened, nothing new |
 | `20260928.182002` | [confirmation lap, Earth row](20260928/20260928-182002_confirmation-lap-earth-row.kyri) | 371/8/3, standing set held; reds read straight off transcript |
 | `20260928.171357` | [fifteenth clean cold-run confirmation](20260928/20260928-171357_cold-run-clean-fifteenth.kyri) | 371/8/3, standing set held; Water row confirmed by reading close |
