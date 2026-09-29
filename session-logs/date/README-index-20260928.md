@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260928.234042` | [17th clean cold-run confirm](20260928/20260928-234042_cold-run-confirmation-seventeenth.kyri) | 371/8/3, standing held; Earth row, reds grep-confirmed |
 | `20260928.224001` | [16th clean cold-run confirm](20260928/20260928-224001_cold-run-confirmation-sixteenth.kyri) | 371/8/3, standing held; Water row, grep confirmed |
 | `20260928.213856` | [confirmation lap, Fire row](20260928/20260928-213856_confirmation-lap-fire-row.kyri) | 371/8/3, standing set held; Fire looked straight at all eight, nothing new |
 | `20260928.203154` | [remember_git_nib stale, repaired](20260928/20260928-203154_remember-git-nib-stale-repair.kyri) | 371/9/3, new red remember_git_nib; nib two commits stale, fixed |
