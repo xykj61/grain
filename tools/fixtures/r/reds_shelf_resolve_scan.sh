@@ -33,14 +33,18 @@
 #                     PUBLISHED DOUBLE -- %512, %530, %675 -- which .claude/rules/derived-spine.md
 #                     states no lap may repair, since both rows reached the anointed spine and
 #                     rule 3 freezes each. The resolver refusing here is the law working.
-#   unrecoverable_missing -- no shelf carries the row. Both of these today are PEN PLANTS
-#                     written by a living witness rather than a fixture --
-#                     tools/c/convergence_tree_prove_witness.rish plants rows-999001 and
-#                     tools/r/reds_pin_capacity_witness.rish plants rows-66. The read-past below
-#                     is keyed on the tools/fixtures/ directory, and this measurement is what
+#   unrecoverable_missing -- no shelf carries the row. Three of these today are irreducible, each
+#                     for its own reason: tools/c/convergence_tree_prove_witness.rish plants
+#                     rows-999001 and tools/r/reds_pin_capacity_witness.rish plants rows-66, both
+#                     PEN PLANTS written by a living witness rather than a fixture. The read-past
+#                     below is keyed on the tools/fixtures/ directory, and this measurement is what
 #                     showed that proxy to be incomplete: a plant is a plant wherever it lives.
-#                     They are counted rather than excluded, because widening an exclusion to
-#                     make a number smaller is how a census stops measuring its subject.
+#                     The third, rows-1-2, is REDS %767's own row in construction/REDS.md, whose
+#                     prose names the fixture path a planted control once failed to write --
+#                     a dated ledger row is never edited, so the mention is permanent testimony
+#                     rather than a citation this tree could ever repoint. All three are counted
+#                     rather than excluded, because widening an exclusion to make a number smaller
+#                     is how a census stops measuring its subject.
 #   testimony_only -- of the absent, the ones cited ONLY by dated testimony, which
 #                     accrete-never-break forbids rewriting. Reported: it is the share no
 #                     repair may ever reach, and it is the reason the resolver exists.
@@ -56,7 +60,11 @@
 # refusal, so a caller never reads a broken invocation as a clean census.
 set -eu
 
-CEILING=${REDS_SHELF_UNRECOVERABLE_CEILING:-6}
+# Raised 6 -> 7 on 20260929: REDS %767's own row landed in construction/REDS.md naming
+# REDS-planted-rows-1-2.md in its prose, a permanent ledger mention rather than a repairable
+# citation (see unrecoverable_missing above). The population grew by one irreducible instance;
+# the ceiling follows it rather than gating ordinary, correct ledger growth.
+CEILING=${REDS_SHELF_UNRECOVERABLE_CEILING:-7}
 RESOLVER=${REDS_SHELF_RESOLVER:-tools/r/reds_shelf_resolve.sh}
 
 list=no
