@@ -350,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fe8a2bcd59` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `e13b752c38` -- HEAD read before this follow-up commit, its parent (rule 5).
 
 ### Incense -- product captain
 
