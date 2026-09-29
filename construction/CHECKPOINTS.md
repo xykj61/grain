@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260928.203154` -- walk-back nib `c8ce72702e`.** Shelve two lap accounts whole from
+`recursion-prompts/incense-inner.md`'s `next` section into
+`recursion-prompts/date/20260928/20260928-203154_incense-next-log-archive-22.md` -- this lap's own
+closing entry, plus the restore of a prior lap's entry accidentally overwritten mid-edit, would have
+pushed the section past its 24,576-byte ceiling. The living page keeps a pointer and its most recent
+entries; the shelved entries (`20260928.093343` and `20260928.124416`) keep every word, including
+the `backtick_path` repair and the `equinox_choir_census` open-word finding.
+
 **Checkpoint `20260928.160333` -- walk-back nib `2702bf2d19`.** Shelve incense's own `next` account
 whole from `recursion-prompts/incense-inner.md` into
 `recursion-prompts/date/20260928/20260928-160333_incense-next-log-archive-21.md` -- this lap's own
