@@ -130,42 +130,17 @@ shelf.
 ceiling after this lap's own entry landed, per the writer-sheds rule. Every fact it carried still
 lives one hop away on the archive shelf.
 
-**This lap (`20260928.203154`) round-opened clean at `c8ce72702e`, found no overlapping claim, read
-`HEAD` once and launched the cold run with `--cadence-slice 1`, holding fully still across ten
-Monitor re-arms (roughly 90 minutes) until `run_verdict=` landed.** It closed `tree_moved=no`,
-`run_verdict=guard_red`, 9 red, 3 gated -- one MORE red than the standing eight, and the new one was
-`remember_git_nib`: the card named `4e67afa081`, HEAD~2, two session-log follow-ups stale. The other
-eight matched the standing set exactly. `fleet_claim_scan.sh --check` on the card read `verdict=clear`.
-This log is itself a follow-up, so rule 5 governs: ran
-`rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`, writing HEAD `c8ce72702e` as the
-nib; `remember_git_nib_witness.rish` ran GREEN. Row 0 (Aether) already read last lap, advanced to row
-1, Air -- feels; its teaching, press each claimed boundary and see if it holds, fit exactly. No REDS
-row booked. Next lap: fresh round-open, cold run held fully still with `--cadence-slice 1`; the
-untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
-`ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
+**Entry `20260928.203154` shelved whole** to
+[`date/20260929/20260929-044341_incense-next-log-archive-28.md`](date/20260929/20260929-044341_incense-next-log-archive-28.md)
+(checkpoint `20260929.044341`, nib `09c72565eb`) -- 779 bytes of headroom against an incoming
+entry, per the writer-sheds rule. Every fact it carried still lives one hop away on the archive
+shelf.
 
-**This lap (`20260928.213856`) round-opened clean at `acc06fbec4`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
-`--cadence-slice 1`, holding fully still through its whole run across five Monitor re-arms (roughly
-50 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
-`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green, 8 red, 3
-gated. Grepped the transcript's own red lines directly: `standing_equipment_redleg`, `shim_reason`,
-`query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
-`falsifier_form_outcome`, `standing_equipment` -- the standing six plus the two expected
-self-checks, nothing new. Gated set matched: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
-`pond_enclosure_ephemeral(%5)`. `N mod 5` landed on row 1 (Air), already read last lap, advanced by
-hand to row 2, Fire -- sees; its teaching, look straight at a fault until the root is visible and
-cut once cleanly, fit the lap exactly, since all eight reds were read directly off the transcript's
-own lines and none named a new fault to cut. No REDS row booked, nothing built, nothing claimed,
-nothing pushed beyond this log. Next lap: fresh round-open, cold run held fully still start to
-finish with `--cadence-slice 1`; the untriaged set stays six (`query_wire_retention` %756,
-`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
-`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
-rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
-wanting Keaton's word or a larger plan than one lap affords.
+**Entry `20260928.213856` shelved whole** to
+[`date/20260929/20260929-044814_incense-next-log-archive-29.md`](date/20260929/20260929-044814_incense-next-log-archive-29.md)
+(checkpoint `20260929.044814`, nib `09c72565eb`) -- the card still ran 262 bytes over its
+24,576-byte ceiling after the prior fold, per the writer-sheds rule. Every fact it carried still
+lives one hop away on the archive shelf.
 
 **This lap (`20260928.224001`) round-opened clean at `12e911b088`, found no overlapping claim (five
 standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
@@ -306,3 +281,27 @@ population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
 ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
 unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's
 word or a larger plan than one lap affords.
+
+**This lap (`20260929.044341`) round-opened clean at `09c72565eb`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1` from the first try, holding fully still through its whole run across six Monitor
+re-arms (roughly 60 minutes), reading nothing until the transcript carried `run_verdict=`.** It
+closed clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371
+green, 8 red, 3 gated. Grepped the transcript's own red lines directly: `standing_equipment_redleg`,
+`shim_reason`, `query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment` -- the standing six plus the two expected
+self-checks, nothing new. Gated set matched: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
+`pond_enclosure_ephemeral(%5)`. `N mod 5` on commit count 6790 landed row 0, Aether -- hears, via
+`foundations/20260826-021731_aether-the-row-that-hears.md`; its teaching -- listen for what the tree
+sounds like this orbit before touching anything -- fit exactly, since listening to the transcript's
+own lines rather than trusting memory of the standing set is what confirmed nothing new stood. Ran
+`remember_git_nib_witness.rish` on open: card nib `7005358b32` resolved to state `parent`, GREEN.
+This lap also found the card 779 bytes short of room for its own entry and shed the oldest standing
+account to a fresh archive shelf before writing this one, per the writer-sheds rule. No REDS row
+booked, nothing built, nothing claimed beyond an ordinary read. Next lap: fresh round-open, cold run
+held fully still start to finish with `--cadence-slice 1`; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords.

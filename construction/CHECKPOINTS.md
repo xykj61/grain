@@ -2257,3 +2257,19 @@ replaced on the living page by one consolidated pointer line. *What waits there,
 nothing new -- four laps confirming an unchanged reds/gated set, and the fifth's council-rota read
 (row 1, Air -- feels) that fit exactly as a boundary-pressing survey, ahead of the lap that actually
 closed `build_target`.
+
+**Checkpoint `20260929.044341` -- Incense folds one elder LAP-ACCOUNT paragraph off
+`incense-inner.md`'s `next` section.** **Walk-back nib:** `09c72565eb`. **Swept:** the
+`20260928.203154` lap account, moved verbatim onto
+[`../recursion-prompts/date/20260929/20260929-044341_incense-next-log-archive-28.md`](../recursion-prompts/date/20260929/20260929-044341_incense-next-log-archive-28.md),
+replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
+the `remember_git_nib` recurrence this lap's own repair closed -- a follow-up commit carried the
+card's nib forward per rule 5, and the row 1 (Air) rota read that fit as a boundary-pressing check.
+
+**Checkpoint `20260929.044814` -- Incense folds a second elder LAP-ACCOUNT paragraph off
+`incense-inner.md`'s `next` section, the same lap.** **Walk-back nib:** `09c72565eb`. **Swept:** the
+`20260928.213856` lap account, moved verbatim onto
+[`../recursion-prompts/date/20260929/20260929-044814_incense-next-log-archive-29.md`](../recursion-prompts/date/20260929/20260929-044814_incense-next-log-archive-29.md),
+replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
+nothing new -- a clean confirmation lap re-reading the standing eight-red, three-gated set
+unchanged, and the row 2 (Fire) rota read that fit exactly since nothing named a new fault to cut.
