@@ -1,5 +1,14 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260928.224157` -- walk-back nib `12e911b088`.** Shelve five elder pointer
+paragraphs (archives 18 through 22) plus two lap accounts whole from
+`recursion-prompts/incense-inner.md`'s `next` section into
+`recursion-prompts/date/20260928/20260928-224157_incense-next-log-archive-23.md` -- the
+accumulated pointers and two lap accounts (`20260928.135507` through `20260928.150302`) had pushed
+the page 581 bytes over its 24,576-byte ceiling. The living page keeps a single consolidated
+pointer and its most recent entries; the shelved paragraphs keep every word, including the
+`index_row_bound` and `retired_rank` repairs.
+
 **Checkpoint `20260928.203154` -- walk-back nib `c8ce72702e`.** Shelve two lap accounts whole from
 `recursion-prompts/incense-inner.md`'s `next` section into
 `recursion-prompts/date/20260928/20260928-203154_incense-next-log-archive-22.md` -- this lap's own
