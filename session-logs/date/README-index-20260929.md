@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.105802` | [Shelf-resolve ceiling repaired](20260929/20260929-105802_shelf-resolve-ceiling-follows-a-permanent-row.kyri) | 370/9/3, reds_shelf_resolve ceiling raised 6 to 7 |
 | `20260929.094721` | [Cold run closes clean, row 0 repeats](20260929/20260929-094721_cold-run-row-0-repeat-fold.kyri) | 371/8/3 clean, card shed, Aether row 0 again |
 | `20260929.084338` | [Earth row, stale nib caught and carried forward](20260929/20260929-084338_earth-row-nib-gone-stale-carried-forward.kyri) | 370/9/3, new red remember_git_nib repaired |
 | `20260929.074502` | [Water row, cold run closes clean](20260929/20260929-074502_water-row-cold-run-clean.kyri) | 371/8/3 clean, card shed, taste up close |
