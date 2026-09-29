@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.165651` | [Earth row, cold run shed oldest twice](20260929/20260929-165651_earth-row-cold-run-shed-oldest.kyri) | 371/8/3 matched, card shed twice, Earth row 4 |
 | `20260929.154407` | [Water row, cold run shed oldest](20260929/20260929-154407_water-row-cold-run-shed-oldest.kyri) | 371/8/3 matched, card shed, Water row 3 |
 | `20260929.144010` | [Air row, in-flight cold run confirmed](20260929/20260929-144010_cold-run-row1-air-shed-oldest.kyri) | 371/8/3 matched, card shed, Air row 1 |
 | `20260929.132242` | [Aether row, cold run clean](20260929/20260929-132242_aether-row-cold-run-clean.kyri) | 371/8/3 clean, card shed, Aether row 0 |
