@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.192544` | [stash_record repaired, GREEN](20260929/20260929-192544_stash-record-repair-cold-run-red.kyri) | recovered stranded log, cold run 370/9/3, card shed |
+| `20260929.181642` | [Holding still, cold run in flight](20260929/20260929-181642_holding-still-cold-run-inflight.kyri) | recovered from round-open stash, landed |
 | `20260929.181234` | [Fire row, cold run clean, nothing new](20260929/20260929-181234_incense-cold-run-fire-row.kyri) | 371/8/3 matched, card shed, Fire row 2 |
 | `20260929.165651` | [Earth row, cold run shed oldest twice](20260929/20260929-165651_earth-row-cold-run-shed-oldest.kyri) | 371/8/3 matched, card shed twice, Earth row 4 |
 | `20260929.154407` | [Water row, cold run shed oldest](20260929/20260929-154407_water-row-cold-run-shed-oldest.kyri) | 371/8/3 matched, card shed, Water row 3 |
