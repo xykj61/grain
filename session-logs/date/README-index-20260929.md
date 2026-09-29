@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.074502` | [Water row, cold run closes clean](20260929/20260929-074502_water-row-cold-run-clean.kyri) | 371/8/3 clean, card shed, taste up close |
 | `20260929.064926` | [Fire row, watched in-flight cold run to close, shed](20260929/20260929-064926_incense-watch-cold-run-shed.kyri) | 371/8/3 clean, nib carried, card shed |
 | `20260929.055053` | [Air row, index row bound repaired](20260929/20260929-055053_index-row-bound-repaired-card-shed-twice.kyri) | 370/9/3, ledger deadlock cleared |
 | `20260929.044624` | [Aether row, cold run clean, two shelves folded](20260929/20260929-044624_cold-run-clean-two-folds.kyri) | 371/8/3 clean, card shed twice |
