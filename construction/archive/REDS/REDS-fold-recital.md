@@ -891,3 +891,5 @@ at a closed fold.*
 *Row %828 born CLOSED and folded to [`20260924-233357_page-control-paths.md`](20260924-233357_page-control-paths.md) on `20260924.233357` -- private page builds and mutation-specific control verdicts.*
 
 *Row %795 folded to [`REDS-a-lantern-that-fired-twice-rows-795.md`](REDS-a-lantern-that-fired-twice-rows-795.md) on `20260925.130653`, **CLOSED** -- folded to clear a deadlocked pin (10 bytes of headroom) for a fresh disk-headroom row.*
+
+*Rows `20260917.221030` and `20260924.215242` folded to [`REDS-a-placard-window-and-a-stale-figure-twice-stamps-20260917-20260924.md`](REDS-a-placard-window-and-a-stale-figure-twice-stamps-20260917-20260924.md) on `20260929.054252`, both **CLOSED** -- folded by hand to clear a deadlocked pin (23 bytes of headroom, all sixteen numbered rows OPEN) for a fresh index-row-bound row; a positional field reader's window and a stale figure caught twice.*

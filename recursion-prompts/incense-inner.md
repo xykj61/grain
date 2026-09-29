@@ -142,49 +142,17 @@ shelf.
 24,576-byte ceiling after the prior fold, per the writer-sheds rule. Every fact it carried still
 lives one hop away on the archive shelf.
 
-**This lap (`20260928.224001`) round-opened clean at `12e911b088`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
-`--cadence-slice 1`, holding fully still through its whole run across fourteen Monitor re-arms
-(roughly 75 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed clean:
-`tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green, 8 red, 3
-gated. Grepped the transcript's own red lines directly: `standing_equipment_redleg`, `shim_reason`,
-`query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
-`falsifier_form_outcome`, `standing_equipment` -- the standing six plus the two expected
-self-checks, nothing new. Gated set matched: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
-`pond_enclosure_ephemeral(%5)`. `N mod 5` on commit count 6782 landed row 2 (Fire), already read
-last lap, advanced by hand to row 3, Water -- the row that tastes; its teaching, taste up close and
-run the actual thing rather than trust the sentence about it, fit the lap exactly, since the reds
-were confirmed by grepping the transcript's own lines rather than by recalling the standing set from
-a prior log. No REDS row booked, nothing built, nothing claimed, nothing pushed beyond this log.
-Next lap: fresh round-open, cold run held fully still start to finish with `--cadence-slice 1`; the
-untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
-`ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
+**Entry `20260928.224001` shelved whole** to
+[`date/20260929/20260929-054703_incense-next-log-archive-30.md`](date/20260929/20260929-054703_incense-next-log-archive-30.md)
+(checkpoint `20260929.054703`, nib `83534988b9`) -- 1,122 bytes of headroom against an incoming
+~2,600-byte entry, per the writer-sheds rule. Every fact it carried still lives one hop away on the
+archive shelf.
 
-**This lap (`20260928.234042`) round-opened clean at `4971647d0e`, found no overlapping claim (five
-standing rows all past their six-hour expiry), read `HEAD` once, and on launching the cold run found
-one already in flight at that same HEAD -- launched by the prior lap -- and held fully still
-watching it rather than opening a second, across five short Monitor re-arms plus fallback wakeups
-(roughly 75 minutes), touching nothing until the transcript carried `run_verdict=`.** It closed
-clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's own expected self-check), 371 green, 8
-red, 3 gated. Grepped the transcript's own red lines directly: `standing_equipment_redleg`,
-`shim_reason`, `query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
-`falsifier_form_outcome`, `standing_equipment` -- the standing six plus the two expected
-self-checks, nothing new (confirmed the ninth raw " red " grep hit was the summary's own "refused"
-line, not a guard). Gated set matched: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
-`pond_enclosure_ephemeral(%5)`. `N mod 5` on commit count 6784 landed row 4, Earth -- breathes in,
-via `foundations/20260826-021735_earth-the-row-that-breathes-in.md`; its teaching -- trust the
-concrete reading and check it against the witness, since the fact outranks the plausible story --
-fit the lap exactly, since the reds were confirmed straight off the transcript rather than recalled
-from a prior log. No REDS row booked, nothing built, nothing claimed, nothing pushed beyond this
-log. Next lap: fresh round-open, cold run held fully still start to finish with `--cadence-slice 1`
-(and held still watching rather than doubling up if one is already in flight); the untriaged set
-stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
-tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s
-21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/
-`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan than one lap affords.
+**Entry `20260928.234042` shelved whole** to
+[`date/20260929/20260929-054703_incense-next-log-archive-31.md`](date/20260929/20260929-054703_incense-next-log-archive-31.md)
+(checkpoint `20260929.054703`, nib `83534988b9`) -- the card ran 110 bytes over its 24,576-byte
+ceiling after this lap's own entry landed, per the writer-sheds rule. Every fact it carried still
+lives one hop away on the archive shelf.
 
 **This lap (`20260929.003834`) round-opened clean at `8492c9b669`, found no overlapping claim (five
 standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
@@ -302,6 +270,36 @@ booked, nothing built, nothing claimed beyond an ordinary read. Next lap: fresh 
 held fully still start to finish with `--cadence-slice 1`; the untriaged set stays six
 (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
 tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords.
+
+**This lap (`20260929.054252`) round-opened clean at `83534988b9`, found no overlapping claim (five
+standing rows all past their six-hour expiry), read `HEAD` once and launched the cold run with
+`--cadence-slice 1` from the first try, holding fully still through its whole run across seven
+Monitor re-arms (roughly 70 minutes), reading nothing until the transcript carried `run_verdict=`.**
+It closed `tree_moved=no`, `run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one MORE red than
+the standing eight, and the new one was `index_row_bound`: today's day-index row for the
+`20260929.044624` log ran 199 bytes against its 192-byte bound, restating detail the linked log
+already carries. Repaired: the row's clause shortened to 161 bytes; `index_row_bound_witness.rish`
+GREEN afterward. Booked to the ledger by stamp (`20260929.054252`), CLOSED, since it is unshared
+(`.claude/rules/derived-spine.md` rule 4). The other eight matched the standing set exactly:
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`, `ignored_walk`,
+`rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. Gated set matched:
+`rule_twin(%7)`, `pond_enclosure_policy(%5)`, `pond_enclosure_ephemeral(%5)`. The ledger pin sat
+deadlocked at 23 bytes of headroom, all sixteen numbered rows OPEN and unfoldable, so two small
+CLOSED stamp-form rows (`20260917.221030`, `20260924.215242`) were folded by hand to a fresh shelf --
+`tools/fixtures/r/reds_fold.sh` matches only `%N` rows and could not move them -- freeing 2,563
+bytes before the new row landed; `reds_fold_witness.rish`, `reds_ledger_monotone_witness.rish`,
+`reds_citation_witness.rish`, and `reds_shelf_name_witness.rish` all GREEN after. This lap also
+shed its own oldest standing account to a fresh archive shelf before writing this one, per the
+writer-sheds rule. `N mod 5` on commit count 6791 landed row 1, Air -- feels, via
+`foundations/20260826-021732_air-the-row-that-feels.md`; its teaching -- press each claimed boundary
+and feel whether it holds -- fit the lap exactly, since the boundary in question (the index row's
+own 192-byte bound) was pressed by the guard itself and found genuinely broken. Next lap: fresh
+round-open, cold run held fully still start to finish with `--cadence-slice 1`; the untriaged set
+stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population,
+`ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
 `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
 ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
 than one lap affords.
