@@ -1,5 +1,11 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260929.013957` -- walk-back nib `d6c5a2d5f4`.** Shelve one lap account
+(`20260928.160333`) whole from `recursion-prompts/incense-inner.md`'s `next` section into
+`recursion-prompts/date/20260929/20260929-013957_incense-next-log-archive-24.md` -- the living page
+held only 1,116 bytes of headroom against its 24,576-byte ceiling with this lap's own new entry
+still to write, so the oldest standing lap account was shed first, per the writer-sheds rule.
+
 **Checkpoint `20260928.224157` -- walk-back nib `12e911b088`.** Shelve five elder pointer
 paragraphs (archives 18 through 22) plus two lap accounts whole from
 `recursion-prompts/incense-inner.md`'s `next` section into
