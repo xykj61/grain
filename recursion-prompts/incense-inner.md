@@ -191,3 +191,39 @@ lap found one, held still, and read its close rather than duplicating it); hold 
 `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each
 still wanting Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260930.033717`) round-opened clean at `74c51508fc`, found a claim board with all
+five rows past their six-hour expiry, confirmed no cold run already in flight via `fleet_call.sh`
+(candidates matched only prose/self/unknown), read `HEAD` once, and launched the cold run with
+`--cadence-slice 1`, holding fully still across roughly ten Monitor re-arms (about 90 minutes),
+reading nothing until the transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`,
+370 green, 9 red, 3 gated, `tree_moved=no` -- eight reds matched the standing untriaged set exactly
+(`standing_equipment_redleg`, `shim_reason`, `query_wire_retention` %756, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`), gated
+unchanged at `rule_twin`(%7), `pond_enclosure_policy`(%5), `pond_enclosure_ephemeral`(%5) -- and one
+was new, `commit_parent_claim`, failing 4 of 43 pen legs in
+`tools/fixtures/c/commit_parent_claim_control.sh` (`anchor_claims_total` and three
+`mutation_*_bites` checks). Reran the control eleven times -- alone and six-way parallel -- and got
+`control_verdict=ok, failures=0` every time, which named it as this tree's own flaky class rather
+than a reproducible fault: the control's `bite()` helper never checks that its `sed_inplace`
+mutation actually landed before grading the mutated run, so a transient `sed_inplace` failure under
+the cold run's load reads identically to a real assertion never firing. Booked REDS %828 rather than
+attempting a speculative fix with nothing to reproduce it against. Booking it left the pin at 65,478
+of its 65,536-byte bound; `reds_pin_capacity_scan.sh` confirms no row currently stands eligible to
+fold (`pin_foldable_rows=0`, all sixteen prior rows OPEN), so the next booking this tight will need
+Keaton's word on whether an OPEN row may fold or the bound moves again.
+`reds_ledger_monotone_scan.sh` and `reds_shelf_resolve_scan.sh` both read `verdict=ok`, unchanged.
+`N mod 5` on commit count 6815 lands row 0, Aether -- hears, read at
+`foundations/20260826-021731_aether-the-row-that-hears.md`: its own teaching -- the work's purpose
+is heard before anything else moves -- is what this lap kept in view throughout, since the point of
+naming a red honestly as flaky rather than forcing a fix onto it is exactly to keep the ledger's
+purpose (a proof, not a guess) intact. Next lap: fresh round-open; check for an in-flight pass at
+the current HEAD before launching a second; hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands; confirm `commit_parent_claim` stays clear or fires again (if it fires again
+under a clean tree with `tree_moved=no`, that reproduces the class and is worth a deeper look at
+`bite()`'s own robustness); the untriaged set stays six (`query_wire_retention` %756,
+`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
+`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
+rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
+wanting Keaton's word or a larger plan than one lap affords; and the REDS pin is now one median row
+away from deadlock, worth a look before the next booking.
