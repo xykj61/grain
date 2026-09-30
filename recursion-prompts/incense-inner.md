@@ -249,60 +249,17 @@ archive shelf.
 this lap's own entry landed, per the writer-sheds rule. Every fact it carried still lives one hop
 away on the archive shelf.
 
-**This lap (`20260929.165322`) round-opened clean at `3a956be66b`, found no overlapping claim (all
-standing rows past their six-hour expiry), confirmed no pass already in flight, read `HEAD` once and
-launched the cold run with `--cadence-slice 1` from the first try, holding fully still through its
-whole run across six Monitor re-arms (roughly 60 minutes), reading nothing until the transcript
-carried `run_verdict=`.** It closed clean: `tree_moved=no`, `run_verdict=guard_red` (the roster's
-own expected self-check), 371 green, 8 red, 3 gated -- matching the standing set exactly. Grepped
-the transcript's own red lines directly: `standing_equipment_redleg`, `shim_reason`,
-`query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
-`falsifier_form_outcome`, `standing_equipment` -- the standing six plus the two expected
-self-checks, nothing new. Gated set matched: `rule_twin(%7)`, `pond_enclosure_policy(%5)`,
-`pond_enclosure_ephemeral(%5)`. Ran `remember_git_nib_witness.rish` on open: card nib `8e08c92b16`
-resolved to state `parent`, GREEN. `N mod 5` on commit count 6804 landed row 4, Earth -- breathes
-in, via `foundations/20260826-021735_earth-the-row-that-breathes-in.md`; its teaching -- on earth
-the concrete fact outranks the plausible story every time -- fit exactly, since confirming nothing
-new stood meant grepping the transcript's own red lines directly and running the nib witness rather
-than trusting memory of the standing state. This lap also found the card lacked room for its own
-entry and shed the oldest standing account to a fresh archive shelf before writing this one, per the
-writer-sheds rule. No REDS row booked, nothing built, nothing claimed beyond an ordinary read. Next
-lap: fresh round-open; check for an in-flight pass at the current HEAD before launching a second;
-hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the untriaged set stays six
-(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
-tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords.
+**Entry `20260929.165322` shelved whole** to
+[`date/20260929/20260929-220322_incense-next-log-archive-48.md`](date/20260929/20260929-220322_incense-next-log-archive-48.md)
+(checkpoint `20260929.220322`, nib `9a338a4b8d`) -- the card lacked room for this lap's own incoming
+entry, per the writer-sheds rule. Every fact it carried still lives one hop away on the archive
+shelf.
 
-**This lap (`20260929.192158`) round-opened clean at `38b0445918`, found no overlapping claim (five
-standing rows all past their six-hour expiry), and found a cold run already in flight at the same
-HEAD (`pid 1634350`) -- held fully still watching its transcript rather than opening a second,
-across roughly 68 minutes, reading nothing until it carried `run_verdict=`.** It closed
-`run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one red past the standing eight:
-`stash_record`, whose own evidence named a session log stranded in `stash@{0}`. Reading it back with
-`git show stash@{0}^3:<path>` found the log was this very lap's own earlier turn, written at
-`20260929.181642` under the same `launch_head` and pid, never landed because a later round-open
-stashed it before it was committed. Held still through the rest of the pass -- restoring or
-committing mid-run would have moved `tree_moved` off `no` -- then, once `run_verdict=` landed,
-restored the file from the stash blob, prepended its shelf row, and re-ran
-`stash_record_witness.rish`: `unlanded=0`, GREEN. `tree_moved=no` held for the whole pass. Ran
-`remember_git_nib_witness.rish`: card nib `77f7f31c0b` resolved to state `parent`, GREEN. `N mod 5`
-on commit count 6806 landed row 1, Air -- feels, already read earlier this same day at commit 6801;
-advancing past a repeat cycled through every row already read today (0, 1, 2, 3, 4 each landed on
-some earlier lap), so the cycle is honestly exhausted for today rather than advanced further --
-noted plainly per the rota's own words, a meter rather than a ritual. Gated set matched:
-`rule_twin(%7)`, `pond_enclosure_policy(%5)`, `pond_enclosure_ephemeral(%5)`. This lap also found the
-card lacked room for its own entry and shed the oldest standing account to a fresh archive shelf
-before writing this one, per the writer-sheds rule. No REDS row booked; one genuine repair landed
-(a stranded session log recovered and its guard turned green) rather than an ordinary read. Next lap:
-fresh round-open; check for an in-flight pass at the current HEAD before launching a second; hold
-fully still with `--cadence-slice 1` until `run_verdict=` lands, and confirm `stash_record` stays
-green on the next cold run; the untriaged set stays six (`query_wire_retention` %756,
-`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
-`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
-rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
-wanting Keaton's word or a larger plan than one lap affords.
+**Entry `20260929.192158` shelved whole** to
+[`date/20260929/20260929-220322_incense-next-log-archive-49.md`](date/20260929/20260929-220322_incense-next-log-archive-49.md)
+(checkpoint `20260929.220322`, nib `9a338a4b8d`) -- the card ran over its 24,576-byte ceiling after
+this lap's own entry landed, per the writer-sheds rule. Every fact it carried still lives one hop
+away on the archive shelf.
 
 **This lap (`20260929.194259`) round-opened clean at `5dd0d7974a`, found four session logs stranded
 in the dead-letter box (`stash@{0}`-`{3}`, each titled "holding still ... same inflight run"), a
@@ -336,5 +293,37 @@ between now and then will stash it away; hold fully still with `--cadence-slice 
 run; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only`
 population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body
 ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word
+or a larger plan than one lap affords.
+
+**This lap (`20260929.215609`) round-opened clean at `9a338a4b8d`, found a claim board with five
+rows all past their six-hour expiry, confirmed no cold run already in flight (`pgrep` matched only
+itself), read `HEAD` once, and launched the cold run with `--cadence-slice 1`, holding fully still
+across seven Monitor re-arms (roughly 70 minutes), reading nothing until the transcript carried
+`run_verdict=`.** It closed `run_verdict=guard_red`, 370 green, 9 red, 3 gated -- one red past the
+standing eight: `index_row_bound`, naming two rows on today's own day shelf 7 and 3 bytes over the
+192-byte ceiling. Held still through the close (`tree_moved=no`), then trimmed both clauses,
+re-ran `index_row_bound_scan.sh` (`rows_over=0`) and its witness (GREEN, 39 legs), and booked a
+REDS row. Writing that row pushed `construction/REDS.md` 825 bytes past its own 65,536-byte bound
+with all sixteen numbered rows still OPEN and unfoldable by the automated tool (`reds_fold.sh`
+matches only `%N` rows); repaired the same way `%735`'s fold did -- hand-shelved the two closed,
+stamp-cited rows this exact class of fix had already left on the pin
+(`20260929.054252`, `20260929.105531`) to a fresh shelf, mirroring the tool's own shape, and
+appended the recital line. `reds_pin_capacity_scan.sh` reads `pin_headroom=1421`;
+`reds_ledger_monotone_scan.sh` and `reds_shelf_resolve_scan.sh` both read `verdict=ok` unchanged.
+Ran `remember_git_nib_witness.rish`: card nib `77f7f31c0b` resolved to state `parent`, GREEN. `N mod
+5` on commit count 6808 lands row 3, Water -- tastes, via
+`foundations/20260826-021734_water-the-row-that-tastes.md`; its cardinal seat's own teaching --
+taste this page by doing rather than reading, run the actual thing up close -- is exactly what
+closed this lap: re-running each guard on metal after every hand-edit rather than trusting the
+repair's own description of itself. This lap also found the card lacked room for its own entry and
+shed the oldest standing account to a fresh archive shelf before writing this one, per the
+writer-sheds rule. One REDS row booked and closed in the same lap (a fresh red found and repaired);
+one prior red folded by hand to relieve a deadlocked pin. Next lap: fresh round-open; check for an
+in-flight pass at the current HEAD before launching a second; hold fully still with
+`--cadence-slice 1` until `run_verdict=` lands, and confirm `index_row_bound` stays green on the
+next cold run; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
 unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word
 or a larger plan than one lap affords.
