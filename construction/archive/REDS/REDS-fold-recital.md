@@ -899,3 +899,5 @@ at a closed fold.*
 *Row `20260917.194613` folded to [`REDS-a-header-dropped-by-a-plain-tail-stamp-20260917-194613.md`](REDS-a-header-dropped-by-a-plain-tail-stamp-20260917-194613.md) on `20260929.234000`, **CLOSED** -- folded by hand to clear headroom for a fresh row while the pin's numbered rows sat all OPEN and unfoldable by the automated tool; a plain tail dropping a guard's own header.*
 
 *Row `20260924.212249` folded to [`REDS-a-rename-sweep-left-a-build-red-stamp-20260924-212249.md`](REDS-a-rename-sweep-left-a-build-red-stamp-20260924-212249.md) on `20260930.005500`, **CLOSED** -- folded by hand to clear headroom for a fresh row while the pin's numbered rows sat all OPEN and unfoldable by the automated tool; a rename sweep leaving a build red, its selftest untested underneath.*
+
+*Row %828 folded to [`REDS-a-mutation-that-never-landed-rows-828.md`](REDS-a-mutation-that-never-landed-rows-828.md) on `20260930.073743`, **BOOKED** -- a mutation control must prove its cut landed before grading what the cut produced.*

@@ -178,37 +178,67 @@ if sh "$SCAN" --window 99999999 >/dev/null 2>&1; then say over_max_window_refuse
 if sh "$SCAN" --wat >/dev/null 2>&1; then say unknown_flag_refuses=no; else say unknown_flag_refuses=yes; fi
 
 # --- mutations: each cut must bite, measured against the same tree -----------
+#
+# THE LANDING IS ASSERTED, NOT ASSUMED (REDS %828). `sed_inplace` can succeed --
+# exit 0, a file written -- while the pattern matched nothing, which leaves the
+# mutant byte-identical to the scan it was meant to cripple. Grading that run
+# proves nothing about the mutation; it proves only that an unmutated scan
+# still answers correctly. `bite` now checks both halves before it runs
+# anything: `sed_inplace`'s own exit code, and a `cmp` against the untouched
+# scan. Either failing prints `mutation_landed=no` as the FIRST line of stdout,
+# ahead of whatever the (unmutated or half-written) scan goes on to print, so
+# the existing `read_key` reads land past it undisturbed and a new `want`
+# assertion at each call site catches the landing itself.
 mut=$pen/mut.sh
-bite() { cp "$SCAN" "$mut"; sed_inplace "$1" "$mut"; sh "$mut" --window 200 2>/dev/null || true; }
+bite() {
+  cp "$SCAN" "$mut"
+  if sed_inplace "$1" "$mut" && ! cmp -s "$SCAN" "$mut"; then
+    printf 'mutation_landed=yes\n'
+  else
+    printf 'mutation_landed=no\n'
+  fi
+  sh "$mut" --window 200 2>/dev/null || true
+}
 
 commit m_decimal "The seed 1103515245 is the parent of every draw this generator makes."
 m=$(bite 's/if (tok !~ \/\[a-f\]\/) continue;//')
+want mutation_letter_clause_landed yes "$(read_key "$m" mutation_landed)"
 want mutation_letter_clause_bites 1 "$(read_key "$m" segments)"
 spine
 
 commit m_quoted "The commit $ELDER carries a body naming it as its own parent while another commit holds that place."
 m=$(bite 's/(quoted ? "quoted" : /(0 ? "quoted" : /')
+want mutation_quoted_landed yes "$(read_key "$m" mutation_landed)"
 want mutation_quoted_bites 1 "$(read_key "$m" false)"
 spine
 
 commit m_origin "The Git nib moves from $ELDER to HEAD's parent, so the guard passes."
 m=$(bite 's/(origin ? "origin" : /(0 ? "origin" : /')
+want mutation_origin_landed yes "$(read_key "$m" mutation_landed)"
 want mutation_origin_bites 1 "$(read_key "$m" false)"
 spine
 
 commit m_loose "Each was proven by checking out its parent $ELDER and re-running the scan there."
 m=$(bite 's/g = self ?/g = 1 ?/')
+want mutation_self_filter_landed yes "$(read_key "$m" mutation_landed)"
 want mutation_self_filter_bites 1 "$(read_key "$m" false)"
 spine
 
 commit m_sideways "The nib moves to $ASIDE, this commit's own parent, so the card lands right."
 m=$(bite 's/then v=false; else v=sideways; fi/then v=false; else v=false; fi/')
+want mutation_ancestor_landed yes "$(read_key "$m" mutation_landed)"
 want mutation_ancestor_bites 1 "$(read_key "$m" false)"
 spine
 
 commit m_anchor "The nib moves to $ELDER, this commit's own parent, so the card lands right."
 ANCHOR2=$(git rev-parse --short=10 HEAD~1)
-cp "$SCAN" "$mut"; sed_inplace 's/^  AFTER=" \$(git rev-list/  AFTER=" " #/' "$mut"
+cp "$SCAN" "$mut"
+if sed_inplace 's/^  AFTER=" \$(git rev-list/  AFTER=" " #/' "$mut" && ! cmp -s "$SCAN" "$mut"; then
+  anchor_landed=yes
+else
+  anchor_landed=no
+fi
+want mutation_anchor_window_landed yes "$anchor_landed"
 m=$(sh "$mut" --window 200 --anchor "$ANCHOR2" 2>/dev/null || true)
 want mutation_anchor_window_bites 0 "$(read_key "$m" false_after_anchor)"
 spine
