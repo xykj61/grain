@@ -227,3 +227,36 @@ under a clean tree with `tree_moved=no`, that reproduces the class and is worth 
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords; and the REDS pin is now one median row
 away from deadlock, worth a look before the next booking.
+
+**This lap (`20260930.043831`) round-opened clean at `487e75786c`, found a claim board with all
+five rows past their six-hour expiry, confirmed no cold run already in flight via `fleet_call.sh`
+(candidates matched only prose, self, and one unreadable working directory), read `HEAD` once, and
+launched the cold run with `--cadence-slice 1`, holding fully still across six Monitor re-arms
+(roughly 60 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed
+`run_verdict=guard_red`, 371 green, 8 red, 3 gated, `tree_moved=no` -- all eight reds matched the
+exact standing/untriaged set named by every prior lap (`standing_equipment_redleg`, `shim_reason`,
+`query_wire_retention` %756, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment`), gates unchanged (`rule_twin` %7,
+`pond_enclosure_policy` %5, `pond_enclosure_ephemeral` %5) -- **zero new reds**, and
+`commit_parent_claim` (booked as REDS %828, flaky) ran green this time, consistent with the prior
+lap's own reading that it is this tree's own flaky class rather than a reproducible fault. No
+booking or repair was needed for the guard set. The prior lap's warning -- "one median row away
+from deadlock" -- has come true: `reds_pin_capacity_scan.sh` now reads `pin_deadlocked=1`,
+`pin_foldable_rows=0`, `rows_that_fit=0` against a `median_row_bytes=2421`, with the pin sitting at
+65,478 of its 65,536-byte bound (all sixteen numbered rows OPEN). The reading stays reported rather
+than gated, and nothing this lap found needed booking, so the deadlock was named rather than acted
+on -- a fresh red arriving before Keaton's word lands on whether an OPEN row may fold, or the bound
+moves again, would have nowhere to write itself. `N mod 5` on commit count 6817 lands row 2, Fire --
+sees, read at `foundations/20260826-021733_fire-the-row-that-sees.md`: its own teaching -- vision is
+the discipline of seeing what is, before deciding what to do, and the lap that sees clearly cuts
+once while the lap that squints cuts twice -- is what this lap practiced by naming the deadlock
+plainly rather than forcing a symptom-level fix (raising the bound, folding an OPEN row) onto a
+question that is Keaton's word to answer. Next lap: fresh round-open; check for an in-flight pass at
+the current HEAD before launching a second; hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word
+or a larger plan than one lap affords; and the REDS pin is now genuinely deadlocked (zero foldable
+rows), so the next fresh red found anywhere in the fleet has nowhere to book until Keaton rules on
+folding an OPEN row or moving the bound.
