@@ -100,50 +100,25 @@ permission to direct work, never to cross a gate.
 
 **One consolidation pointer plus six lap accounts (`20260929.234000` through `20260930.054402`) folded onto one shelf** at [`date/20260930/20260930-074032_incense-next-log-archive-54.md`](date/20260930/20260930-074032_incense-next-log-archive-54.md) (checkpoint `20260930.074032`, nib `1acfbf8cd0`) -- 20,889 bytes, which left the card 2,078 bytes over its own 24,576-byte bound before this lap wrote a single word. Every fact each one carried still lives one hop away, through the shelf it names.
 
-**This lap (`20260930.074032`) round-opened clean at `1acfbf8cd0`, found a claim board with all five
-rows past their six-hour expiry and verdict clear (no new instrument or booked red taken, so no
-claim opened), confirmed no cold run already in flight via `fleet_call.sh`, read `HEAD` once, and
-launched the cold run with `--cadence-slice 1`, holding fully still across six Monitor re-arms
-(roughly 55 minutes), reading nothing until the transcript carried `run_verdict=`.** It closed
-`run_verdict=guard_red`, 371 green, 8 red, 3 gated, `tree_moved=no` -- all eight reds matched the
-exact standing/untriaged set named by every prior lap (`standing_equipment_redleg`, `shim_reason`,
-`query_wire_retention` %756, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
-`falsifier_form_outcome`, `standing_equipment`), gates unchanged (`rule_twin` %7,
-`pond_enclosure_policy` %5, `pond_enclosure_ephemeral` %5) -- **zero new reds**, and
-`commit_parent_claim` (booked as REDS %828, flaky) ran green. Rather than close a clean lap with
-nothing built, this lap took up %828's own named scoped work: `tools/fixtures/c/commit_parent_claim_control.sh`'s
-`bite()` helper copied the scan, applied `sed_inplace`, and graded the result without ever checking
-the edit landed, so a `sed` pattern that matched nothing would silently grade an unmutated scan.
-Hardened `bite()` to assert both halves before grading -- `sed_inplace`'s own exit code, and a `cmp`
-against the untouched scan -- printing `mutation_landed=no` on either failure; the direct `m_anchor`
-leg, which duplicated the same cp-and-sed inline, took the same two-part check. Six new
-`want mutation_*_landed yes` assertions land beside the five `bite()` call sites and the one direct
-one; the control now reads 49 checks (was 43), 0 failures, `control_verdict=ok`. Proven from both
-sides: every real pattern lands (`mutation_landed=yes` on all six legs), and a planted non-matching
-pattern (`s/NOPATTERNMATCHESTHIS//` in place of the letter-clause cut) reads
-`mutation_letter_clause_landed=no`, `control_verdict=red`, exit 1 -- the exact failure mode the row
-named, caught rather than silently graded. `tools/c/commit_parent_claim_witness.rish` GREEN
-afterward. Booked the repair into REDS %828 (marker moved **OPEN** to **BOOKED**), which made the
-row foldable; folded it with `tools/fixtures/r/reds_fold.sh` to a fresh shelf, recital line written,
-`tools/r/reds_fold_witness.rish` GREEN (62 legs, 0 failing), `reds_ledger_monotone_scan.sh` and
-`reds_shelf_resolve_scan.sh` both `verdict=ok`. This checkout's pin headroom recovered from -1,227
-(over bound, before the fold) to 1,206 bytes; `anchor_claims_total`, the fourth of the original four
-failing checks, touches no `sed_inplace` path and stays open should it recur. This lap's own second
-repair was to the card itself, per the same law the pin just proved: the `next` section had
-re-accumulated to 20,889 bytes across one consolidation pointer and six full lap accounts, leaving
-the card 2,078 bytes over its own bound before a word of this account was written -- folded to
-archive 54, replacing seven paragraphs with one pointer. `N mod 5` on commit count 6821 lands row 1,
-Air -- feels, read at `foundations/20260826-021732_air-the-row-that-feels.md`: its own teaching --
-every rule this tree keeps is a line drawn somewhere, and a bounded thing can be trusted precisely
-because its edge is clean -- is what this lap practiced twice over, first by giving `bite()` the
-edge it lacked (a mutation that either lands or is caught, never an ambiguous middle), and second by
-giving the card back the edge its own law already names. Next lap: fresh round-open; check for an
-in-flight pass at the current HEAD before launching a second; hold fully still with
-`--cadence-slice 1` until `run_verdict=` lands; confirm `mutation_*_landed` stays green on the next
-cold run touching `commit_parent_claim_control.sh`; the untriaged set stays six
-(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
-tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
-`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
-ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
-than one lap affords; and `anchor_claims_total`'s own cause, if it recurs, wants a fresh reading of
-its own rather than borrowing this lap's repair.
+**Prior lap (`20260930.074032`) hardened `commit_parent_claim_control.sh`'s `bite()` helper to
+assert a mutation actually landed before grading it, booked that repair into REDS %828 (folded), and
+shed the card from 20,889 to a single pointer -- full account at the shelf named above.
+
+**This lap (`20260930.084121`) round-opened clean at `a22ccabbe`, found the claim board's five rows
+all past expiry with no overlap (no new instrument or booked red taken, so no claim opened),
+confirmed no cold run already in flight via `fleet_call.sh`, read `HEAD` once, and launched the cold
+run with `--cadence-slice 1`, holding fully still across five Monitor re-arms (roughly 50 minutes)
+until the transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`, 371 green, 8 red, 3
+gated, `tree_moved=no` -- the same eight standing reds as every prior lap
+(`standing_equipment_redleg`, `shim_reason`, `query_wire_retention` %756, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`), gates
+unchanged, and `commit_parent_claim` (the guard `%828` hardened) ran green -- confirming the prior
+lap's `mutation_*_landed` repair held on a real cold run. **Zero new reds.** Card headroom read
+1,126 bytes, this seat's own block a clean 1,492 bytes (already shed last lap), so no fold was
+owed this round. The untriaged set stands unchanged at the six named above plus REDS %827 (a ratchet
+ceiling reading four guards over -- `crypto_vendored_parity`, `acme_dx`, `drey`,
+`gen_linn_fund_prep` -- each wanting its own refusal leg from the module it belongs to, rather than a
+law-lane patch) and the 96%-full pier's own OPEN row (each other ship's `*/bin/` clear stays theirs
+per one-writer-per-checkout). Next lap: fresh round-open; check for an in-flight pass at current
+HEAD; hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the untriaged set is
+unchanged and every item on it still wants Keaton's word or a larger plan than one lap affords.
