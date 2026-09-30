@@ -191,6 +191,22 @@ the standing eight reds matched name-for-name against the prior clean lap's own 
 `ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. Zero new
 reds, seventh lap running clean in a row. Card headroom unchanged (39,834/40,960 bytes). **Lesson
 for the next lap: nothing written to disk during the hold window, not even a session log --
-write it only after `run_verdict=` lands.** Next lap: fresh round-open; check the board and for
-an in-flight pass; hold fully still with `--cadence-slice 1`, writing nothing until
-`run_verdict=` lands. The REDS pin deadlock is still open and still Keaton's to rule on.
+write it only after `run_verdict=` lands.**
+
+**Lap `20260930.194339` round-opened clean at `2af68aa034`, checked the claim board directly
+(five rows, all September stamps, all past expiry, no overlap), confirmed no cold pass in flight
+(the standing transcript's own `launch_head` was one commit behind current HEAD and already
+carried a finished `run_verdict=`), and launched a fresh cold run with `--cadence-slice 1`.** Held
+fully still -- no writes at all -- across seven Monitor re-arms (roughly 76 minutes) until the
+transcript carried `run_verdict=guard_red`, 370 green, **9** red, 3 gated, `tree_moved=no`. Diffed
+the red-leg names against the prior clean lap's own log: the standing eight held, and
+`index_row_bound` was new -- the prior lap's own index row (`20260930.183851`) had grown to 211
+bytes against the 192-byte bound, the same class REDS booked once already today at
+`20260930.161405`. Shortened the clause from a four-part summary to a three-part one, re-ran
+`tools/in/index_row_bound_witness.rish` (GREEN, 39/0) and the narrow scan directly on metal
+(`rows_over=0`, `longest_row=192`, `verdict=ok`). Next lap: fresh round-open; check the board and
+for an in-flight pass; hold fully still with `--cadence-slice 1`, writing nothing until
+`run_verdict=` lands; **write index rows terser from the start** -- name plus the bare counts,
+no restated adjective clause -- since this is the second time in one day a lap's own closing row
+cost the next lap a diagnosis cycle. The REDS pin deadlock is still open and still Keaton's to
+rule on.
