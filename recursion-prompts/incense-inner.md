@@ -293,3 +293,34 @@ unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still 
 word or a larger plan than one lap affords; and the REDS pin stays deadlocked at 58 bytes of
 headroom with zero foldable rows, so the next fresh red found anywhere in the fleet still has
 nowhere to book until Keaton rules on folding an OPEN row or moving the bound.
+
+**This lap (`20260930.054402`) round-opened clean at `f8f765d254`, found a claim board with all
+five rows past their six-hour expiry, confirmed no cold run already in flight via `fleet_call.sh`
+(candidates matched only prose and self), read `HEAD` once, and launched the cold run with
+`--cadence-slice 1`, holding fully still across five Monitor re-arms (roughly 65 minutes), reading
+nothing until the transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`, 371
+green, 8 red, 3 gated, `tree_moved=no` -- all eight reds matched the exact standing/untriaged set
+named by every prior lap (`standing_equipment_redleg`, `shim_reason`, `query_wire_retention` %756,
+`ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`,
+`standing_equipment`), gates unchanged (`rule_twin` %7, `pond_enclosure_policy` %5,
+`pond_enclosure_ephemeral` %5) -- **zero new reds**, and `commit_parent_claim` did not fire this
+run at all, absent from the transcript entirely rather than re-firing or re-confirming, consistent
+with a flaky class that does not trigger on every pass. No booking or repair was needed for the
+guard set. The REDS pin deadlock named by the prior three laps is unchanged:
+`reds_pin_capacity_scan.sh` reads `pin_deadlocked=1`, `pin_foldable_rows=0`, `median_row_bytes=2421`,
+`rows_that_fit=0` -- still reported rather than gated, still waiting on Keaton's word to fold an
+OPEN row or move the bound; nothing this lap found needed booking. `N mod 5` on commit count 6819
+lands row 4, Earth -- breathes in, read at
+`foundations/20260826-021735_earth-the-row-that-breathes-in.md`: its own teaching -- the row exists
+to confirm what already stands true before anyone argues with it, and to keep such things small,
+hard, and checkable -- is what this lap practiced by reading the transcript's guard lines directly
+against the standing set rather than trusting the prior lap's summary of them, and by re-reading
+the deadlock's own numbers on metal rather than assuming they still held. Next lap: fresh
+round-open; check for an in-flight pass at the current HEAD before launching a second; hold fully
+still with `--cadence-slice 1` until `run_verdict=` lands; the untriaged set stays six
+(`query_wire_retention` %756, `ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s
+tree-walks-past-git ceiling, `rye_compiled_reach`'s uncompiled-body ceiling,
+`falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s unrostered-swallow
+ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's word or a larger plan
+than one lap affords; and the REDS pin stays deadlocked with zero foldable rows, so the next fresh
+red found anywhere in the fleet still has nowhere to book until Keaton rules.
