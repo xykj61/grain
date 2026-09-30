@@ -135,3 +135,17 @@ structural block the three prior laps named and left for Keaton's word. Card hea
 writing: clean. Next lap: fresh round-open; check for an in-flight pass at current HEAD; hold fully
 still with `--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and
 still Keaton's to rule on.
+
+**Lap `20260930.150328` found a cold run already in flight at launch_head `90b895c3c5` -- matching
+current HEAD -- launched by a prior turn that lost continuity, and held per ORDER across six Monitor
+re-arms (~66 minutes) rather than launching a second.** It closed `run_verdict=guard_red`, 371
+green, **9** red, 3 gated, `tree_moved=no`. Compared the red list name-for-name against the prior
+clean lap's own session log: eight matched the standing set, and one, `remember_git_nib`, was new --
+`construction/ITINERARY.md`'s own Git nib had gone stale at `47e29b2bd9` (HEAD~2, one state past the
+three the rule allows) as two commits landed under it. Repaired on metal with
+`rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`, which wrote the current HEAD
+(`90b895c3c5`) in the follow-up shape; `tools/r/remember_git_nib_witness.rish` answered GREEN after.
+Card headroom unchanged (39,834/40,960 bytes -- the hash swap kept the same length). Next lap: fresh
+round-open; check the board and for an in-flight pass; hold fully still with `--cadence-slice 1`
+until `run_verdict=` lands; the next cold run should read 8 red again, the unchanged standing set.
+The REDS pin deadlock is still open and still Keaton's to rule on.
