@@ -6,6 +6,12 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.204440` | [Held-still log caused tree_moved, repaired](20260929/20260929-204440_held-still-log-caused-tree-moved-repair.kyri) | stash_record + log_has_a_row both green, lesson recorded |
+| `20260929.201400` | [Holding still a fifth time](20260929/20260929-201400_holding-still-fifth-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
+| `20260929.194259` | [Holding still, in-flight cold run at round-open](20260929/20260929-194259_holding-still-in-flight-cold-run-at-round-open.kyri) | held still for same in-flight run, landed |
+| `20260929.193717` | [Holding still a fourth time](20260929/20260929-193717_holding-still-fourth-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
+| `20260929.193405` | [Holding still a third time](20260929/20260929-193405_holding-still-third-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
+| `20260929.193125` | [Holding still, second in-flight cold run](20260929/20260929-193125_holding-still-second-inflight-cold-run.kyri) | recovered from stash, same in-flight run, landed |
 | `20260929.192544` | [stash_record repaired, GREEN](20260929/20260929-192544_stash-record-repair-cold-run-red.kyri) | recovered stranded log, cold run 370/9/3, card shed |
 | `20260929.181642` | [Holding still, cold run in flight](20260929/20260929-181642_holding-still-cold-run-inflight.kyri) | recovered from round-open stash, landed |
 | `20260929.181234` | [Fire row, cold run clean, nothing new](20260929/20260929-181234_incense-cold-run-fire-row.kyri) | 371/8/3 matched, card shed, Fire row 2 |
