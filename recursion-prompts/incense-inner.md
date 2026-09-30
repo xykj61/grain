@@ -104,17 +104,18 @@ permission to direct work, never to cross a gate.
 run (371 green, 8 red, 3 gated, zero new), card headroom 1,126 bytes -- full account in the shelf
 named above.
 
-**This lap (`20260930.094133`) round-opened clean at `4a922073`, found the claim board's five rows
-all past expiry with no overlap (no new instrument or booked red taken, so no claim opened),
-confirmed no cold run already in flight, read `HEAD` once, and launched the cold run with
-`--cadence-slice 1`, holding fully still across six Monitor re-arms (roughly 52 minutes) until the
-transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`, 371 green, 8 red, 3 gated,
-`tree_moved=no` -- the identical eight standing reds as every prior lap
-(`standing_equipment_redleg`, `shim_reason`, `query_wire_retention` %756, `ceiling_teeth`,
-`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`), gates
-unchanged. **Zero new reds.** Card headroom 1,126 bytes, this seat's own block a clean 1,492 bytes,
-so no fold was owed this round. The untriaged set stands unchanged (the eight standing reds plus
-REDS %827's four-guard ratchet overage and the pier's own 96%-full OPEN row), and every item on it
-still wants Keaton's word or a larger plan than one lap affords. Next lap: fresh round-open; check
-for an in-flight pass at current HEAD; hold fully still with `--cadence-slice 1` until
-`run_verdict=` lands.
+**This lap (`20260930.104048`) round-opened clean at `9d11491d1`, found the claim board's five rows
+all past expiry with no overlap (no new instrument or booked red taken, so no claim opened), read
+`HEAD` once at `9d11491d12`, and launched the cold run with `--cadence-slice 1`, holding fully
+still across six Monitor re-arms (roughly 65 minutes) until the transcript carried `run_verdict=`.**
+It closed `run_verdict=guard_red`, 371 green, 8 red, 3 gated, `tree_moved=no` -- the identical eight
+standing reds as every prior lap (`standing_equipment_redleg`, `shim_reason`,
+`query_wire_retention` %756, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment`), gates unchanged. **Zero new reds.** Card headroom
+1,126 bytes, this seat's own block a clean 1,492 bytes, no fold owed. This lap also read the
+ITINERARY's agent-doable queue and the REDS row for each of the eight standing reds directly
+(rather than trusting the prior lap's summary): every one is OPEN and belongs to another lane's
+owner (Amphora's device-wire lab, Dimeroll's fund-prep generator) or waits on Keaton's word (the
+wire-protocol ceiling, a census judgment call) -- confirmed rather than assumed. Next lap: fresh
+round-open; check for an in-flight pass at current HEAD; hold fully still with `--cadence-slice 1`
+until `run_verdict=` lands.
