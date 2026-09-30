@@ -169,3 +169,13 @@ one arm with a `[_.]` class, confirmed by hand that both sprigged and sprigless 
 Next lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
 `--cadence-slice 1` until `run_verdict=` lands; the next cold run should read 8 red again, the
 unchanged standing set. The REDS pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20260930.172801` opened on HEAD `167e61fa204f`, round-opened clean, checked the claim
+board (five rows, all stale, no overlap), read `HEAD` once, and found a cold run already in
+flight at that same HEAD -- launched by a prior turn that had lost continuity.** Held per ORDER
+rather than launching a second, across roughly 78 minutes of Monitor re-arms. It closed
+`run_verdict=guard_red`, 372 green, 8 red, 3 gated, `tree_moved=no` -- the identical standing
+eight reds, byte for byte, as every prior clean lap. Zero new reds, sixth lap running clean in a
+row. Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open; check the board
+and for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands.
+The REDS pin deadlock is still open and still Keaton's to rule on.
