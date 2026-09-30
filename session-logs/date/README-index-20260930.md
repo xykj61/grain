@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.172801` | [Sixth clean cold run, held per ORDER](20260930/20260930-172801_sixth-clean-cold-run-held-per-order.kyri) | 372/8/3, held for an in-flight pass, zero new reds |
 | `20260930.161405` | [Three new reds fixed on metal](20260930/20260930-161405_three-new-reds-fixed-cold-run.kyri) | 369/11/3, index_row_bound + commit_parent_claim + dated_spelling fixed |
 | `20260930.150328` | [Git nib repaired, one new red fixed](20260930/20260930-150328_git-nib-repaired-one-new-red-fixed.kyri) | 371/9/3, remember_git_nib new -- nib repaired, GREEN after |
 | `20260930.135907` | [Fifth cold run in a row confirms clean](20260930/20260930-135907_fifth-cold-run-zero-new.kyri) | 372/8/3 zero new, standing set held, Earth-row byte-level check |
