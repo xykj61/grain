@@ -105,11 +105,23 @@ real cold run, zero new reds both times, the eight standing reds already traced 
 (Amphora's device-wire lab, Dimeroll's fund-prep generator) or to Keaton's word (the wire-protocol
 ceiling, a census judgment call) -- full accounts in the shelf named above.
 
-**This lap (`20260930.114321`) round-opened clean at `e84beca1d8`, checked the claim board (five
+**Lap `20260930.114321` round-opened clean at `e84beca1d8`, checked the claim board (five
 rows, all past expiry, no overlap), confirmed no in-flight cold pass, read `HEAD` once, and
 launched the cold run with `--cadence-slice 1`, holding fully still across five Monitor re-arms
 (roughly 55 minutes) until the transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`,
 371 green, 8 red, 3 gated, `tree_moved=no` -- the identical eight standing reds as every prior lap.
-**Zero new reds, fourth lap running clean in a row.** Card headroom 1,126 bytes, this seat's own
-block a clean 1,492 bytes, no fold owed. Next lap: fresh round-open; check for an in-flight pass at
-current HEAD; hold fully still with `--cadence-slice 1` until `run_verdict=` lands.
+Zero new reds, fourth lap running clean in a row.
+
+**Lap `20260930.114731` opened on that same clean HEAD (`47e29b2bd9`), round-opened, checked the
+board (unchanged), launched its own cold run, then lost session continuity mid-hold.** A fresh turn
+resumed, re-ran round-open (which parked the prior turn's own uncommitted log into a stash, one of
+13 dead-letter entries reported), found the cold run still in_flight at the same HEAD, and held per
+ORDER rather than launching a second. It closed `run_verdict=guard_red`, 370 green, **9** red, 3
+gated -- eight matched the standing set, and one, `stash_record`, was new: it named the stranded log
+itself as an unlanded record. Popped the stash, re-ran the narrow scan on metal (`unlanded=0`,
+`verdict=ok`), and named the full red in the closing log's own fields rather than booking a ledger
+row -- `construction/REDS.md` is deadlocked (`pin_foldable_rows=0`, all sixteen rows OPEN), the same
+structural block the three prior laps named and left for Keaton's word. Card headroom checked before
+writing: clean. Next lap: fresh round-open; check for an in-flight pass at current HEAD; hold fully
+still with `--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and
+still Keaton's to rule on.
