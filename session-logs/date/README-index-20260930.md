@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.063655` | [Cold run clean, Earth row breathes in](20260930/20260930-063655_cold-run-clean-earth-row.kyri) | 371/8/3 zero new, deadlock re-read unchanged |
 | `20260930.053404` | [Cold run in flight, watched to close](20260930/20260930-053404_cold-run-in-flight-watched-to-close.kyri) | 371/8/3 zero new, deadlock re-read unchanged at headroom=58 |
 | `20260930.043831` | [Cold run clean, REDS pin now deadlocked](20260930/20260930-043831_cold-run-clean-deadlock-named.kyri) | 371/8/3 zero new, pin_deadlocked=1 named |
 | `20260930.034212` | [Flaky guard booked as %828, not fixed](20260930/20260930-034212_flaky-guard-booked-not-fixed.kyri) | 370/9/3, commit_parent_claim booked flaky, card nib carried |
