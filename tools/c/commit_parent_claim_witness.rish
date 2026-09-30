@@ -76,6 +76,19 @@
 # the same fault reading the other way -- reported here rather than fixed,
 # since the fix is a binder change this lap did not make.
 #
+# THE FOURTH ANCHOR MOVE, `20260930`, is the same sentence-scope fault reading
+# a DIFFERENT shape: a body describing a card's STALE value rather than its own
+# parent. Commit `38a522fee4` reads "The Git nib field in construction/
+# ITINERARY.md named 47e29b2bd9, a stale value one commit past the three
+# states remember_git_nib_witness.rish accepts for that field (HEAD, HEAD's
+# pre-amend sibling, HEAD's parent)." -- one sentence naming the field's PRIOR
+# value and, in the same sentence, the word "parent" as part of an unrelated
+# list of accepted states. The hash names what the card used to hold, never
+# this commit's own lineage; the binder reads the sentence's hash and the
+# sentence's "parent" as one claim regardless. History is testimony and stays
+# as written, so the repair is again the anchor: moved once more, to
+# `38a522fee4` itself -- giving `claims_after_anchor=0` over the commits since.
+#
 # Read-only: no network, no key, no funds, no commit rewritten.
 #
 # Run from the repository root:
@@ -89,14 +102,16 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
 # spelling one constant disagree the day it moves, which is the lesson
 # glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
-# three places. Moved three times: `20260925.152300`, from `0cf919699b` (this
+# three places. Moved four times: `20260925.152300`, from `0cf919699b` (this
 # guard's own seating commit) to `418fe0f2f9` (the last commit whose body named
 # a false parent, 20260921.115750); `20260926`, from `418fe0f2f9` to
 # `ca0461877` (that repair's own HEAD), past the classifier-ambiguity firing in
-# `d39b38b62e`; and again `20260926`, from `ca0461877` to `661bc26fc0` (the
-# commit that itself carries the sentence-binding fault, excluded by naming it
-# as the anchor) -- see the header above for all three moves.
-let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "661bc26fc0"]
+# `d39b38b62e`; `20260926`, from `ca0461877` to `661bc26fc0` (the commit that
+# itself carries the sentence-binding fault, excluded by naming it as the
+# anchor); and `20260930`, from `661bc26fc0` to `38a522fee4` (the commit
+# describing the card's stale value in the same sentence as the word
+# "parent") -- see the header above for all four moves.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "38a522fee4"]
 assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
 assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
 

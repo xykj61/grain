@@ -149,3 +149,23 @@ Card headroom unchanged (39,834/40,960 bytes -- the hash swap kept the same leng
 round-open; check the board and for an in-flight pass; hold fully still with `--cadence-slice 1`
 until `run_verdict=` lands; the next cold run should read 8 red again, the unchanged standing set.
 The REDS pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20260930.161405` round-opened clean at `38a522fee4`, checked the claim board (five rows, all
+stale, no overlap, verdict=clear), read `HEAD` once, launched the cold run with `--cadence-slice 1`,
+and held fully still across six Monitor re-arms (roughly 60 minutes) until the transcript carried
+`run_verdict=`.** It closed `run_verdict=guard_red`, 369 green, **11** red, 3 gated, `tree_moved=no`
+-- three more than every recent lap's reading of 8. Compared the red list name-for-name against the
+prior lap's own session log: the standing eight held, and three names were new --
+`index_row_bound`, `commit_parent_claim`, `dated_spelling` -- each diagnosed to its root cause and
+repaired on metal with its own witness GREEN afterward. `index_row_bound`: the prior lap's own send
+had pushed an index row to 213 bytes against the 192-byte bound; shortened its clause to 188 bytes.
+`commit_parent_claim`: the prior lap's own nib-repair commit (`38a522fee4`) described the card's
+*stale* value in a sentence that also carried the word "parent" for an unrelated reason, tripping
+the same sentence-scope binding fault the witness's own header already names twice; moved the
+anchor forward a fourth time, from `661bc26fc0` to `38a522fee4`, exactly as the header's own
+established practice prescribes. `dated_spelling`: `tools/fixtures/c/checkable_binding_scan.sh:236`
+carried a two-alternative case arm whose first alternative alone required the sprig; collapsed to
+one arm with a `[_.]` class, confirmed by hand that both sprigged and sprigless names still match.
+Next lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
+`--cadence-slice 1` until `run_verdict=` lands; the next cold run should read 8 red again, the
+unchanged standing set. The REDS pin deadlock is still open and still Keaton's to rule on.
