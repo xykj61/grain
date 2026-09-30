@@ -100,25 +100,21 @@ permission to direct work, never to cross a gate.
 
 **One consolidation pointer plus six lap accounts (`20260929.234000` through `20260930.054402`) folded onto one shelf** at [`date/20260930/20260930-074032_incense-next-log-archive-54.md`](date/20260930/20260930-074032_incense-next-log-archive-54.md) (checkpoint `20260930.074032`, nib `1acfbf8cd0`) -- 20,889 bytes, which left the card 2,078 bytes over its own 24,576-byte bound before this lap wrote a single word. Every fact each one carried still lives one hop away, through the shelf it names.
 
-**Prior lap (`20260930.074032`) hardened `commit_parent_claim_control.sh`'s `bite()` helper to
-assert a mutation actually landed before grading it, booked that repair into REDS %828 (folded), and
-shed the card from 20,889 to a single pointer -- full account at the shelf named above.
+**Prior lap (`20260930.084121`) confirmed the `%828` mutation-landing repair held on a real cold
+run (371 green, 8 red, 3 gated, zero new), card headroom 1,126 bytes -- full account in the shelf
+named above.
 
-**This lap (`20260930.084121`) round-opened clean at `a22ccabbe`, found the claim board's five rows
+**This lap (`20260930.094133`) round-opened clean at `4a922073`, found the claim board's five rows
 all past expiry with no overlap (no new instrument or booked red taken, so no claim opened),
-confirmed no cold run already in flight via `fleet_call.sh`, read `HEAD` once, and launched the cold
-run with `--cadence-slice 1`, holding fully still across five Monitor re-arms (roughly 50 minutes)
-until the transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`, 371 green, 8 red, 3
-gated, `tree_moved=no` -- the same eight standing reds as every prior lap
+confirmed no cold run already in flight, read `HEAD` once, and launched the cold run with
+`--cadence-slice 1`, holding fully still across six Monitor re-arms (roughly 52 minutes) until the
+transcript carried `run_verdict=`.** It closed `run_verdict=guard_red`, 371 green, 8 red, 3 gated,
+`tree_moved=no` -- the identical eight standing reds as every prior lap
 (`standing_equipment_redleg`, `shim_reason`, `query_wire_retention` %756, `ceiling_teeth`,
 `ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`), gates
-unchanged, and `commit_parent_claim` (the guard `%828` hardened) ran green -- confirming the prior
-lap's `mutation_*_landed` repair held on a real cold run. **Zero new reds.** Card headroom read
-1,126 bytes, this seat's own block a clean 1,492 bytes (already shed last lap), so no fold was
-owed this round. The untriaged set stands unchanged at the six named above plus REDS %827 (a ratchet
-ceiling reading four guards over -- `crypto_vendored_parity`, `acme_dx`, `drey`,
-`gen_linn_fund_prep` -- each wanting its own refusal leg from the module it belongs to, rather than a
-law-lane patch) and the 96%-full pier's own OPEN row (each other ship's `*/bin/` clear stays theirs
-per one-writer-per-checkout). Next lap: fresh round-open; check for an in-flight pass at current
-HEAD; hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the untriaged set is
-unchanged and every item on it still wants Keaton's word or a larger plan than one lap affords.
+unchanged. **Zero new reds.** Card headroom 1,126 bytes, this seat's own block a clean 1,492 bytes,
+so no fold was owed this round. The untriaged set stands unchanged (the eight standing reds plus
+REDS %827's four-guard ratchet overage and the pier's own 96%-full OPEN row), and every item on it
+still wants Keaton's word or a larger plan than one lap affords. Next lap: fresh round-open; check
+for an in-flight pass at current HEAD; hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands.
