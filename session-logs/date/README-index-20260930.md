@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.114321` | [Cold run confirms clean, fourth in a row](20260930/20260930-114321_cold-run-confirms-clean-fourth.kyri) | 371/8/3 zero new, standing set held, air-row touch reading |
 | `20260930.104048` | [Cold run confirms clean, again](20260930/20260930-104048_cold-run-confirms-clean-again.kyri) | 371/8/3 zero new, standing set held, no agent-doable work outside it |
 | `20260930.094133` | [Cold run confirms clean, zero new reds](20260930/20260930-094133_cold-run-confirms-clean.kyri) | 371/8/3 zero new, standing set held, no claim opened |
 | `20260930.084121` | [Cold run confirms %828's repair holds](20260930/20260930-084121_cold-run-confirms-828-repair.kyri) | 371/8/3 zero new, commit_parent_claim green, card shed |
