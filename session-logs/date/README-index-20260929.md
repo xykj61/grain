@@ -6,9 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20260929.204440` | [Held-still log caused tree_moved, repaired](20260929/20260929-204440_held-still-log-caused-tree-moved-repair.kyri) | stash_record + log_has_a_row both green, lesson recorded |
+| `20260929.220710` | [index_row_bound repaired, pin fold by hand](20260929/20260929-220710_index-row-bound-red-and-a-pin-fold-by-hand.kyri) | 370/9/3, one new red closed |
+| `20260929.204440` | [Held-still log caused tree_moved, repaired](20260929/20260929-204440_held-still-log-caused-tree-moved-repair.kyri) | stash_record and log_has_a_row both green |
 | `20260929.201400` | [Holding still a fifth time](20260929/20260929-201400_holding-still-fifth-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
-| `20260929.194259` | [Holding still, in-flight cold run at round-open](20260929/20260929-194259_holding-still-in-flight-cold-run-at-round-open.kyri) | held still for same in-flight run, landed |
+| `20260929.194259` | [Holding still, in-flight cold run at round-open](20260929/20260929-194259_holding-still-in-flight-cold-run-at-round-open.kyri) | held still for in-flight run, landed |
 | `20260929.193717` | [Holding still a fourth time](20260929/20260929-193717_holding-still-fourth-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
 | `20260929.193405` | [Holding still a third time](20260929/20260929-193405_holding-still-third-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
 | `20260929.193125` | [Holding still, second in-flight cold run](20260929/20260929-193125_holding-still-second-inflight-cold-run.kyri) | recovered from stash, same in-flight run, landed |
