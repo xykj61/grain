@@ -1,0 +1,15 @@
+# REDS -- a mutation that never landed
+
+**Language:** EN
+**Style:** Gauge, Meter setting
+**Voice:** Kyri
+**Status:** Shelf -- one folded row, immutable once written
+**Room:** checkable -- a control's own control, proven from both sides on real git repositories
+**Folded:** `20260930.073829` from [`../REDS.md`](../../REDS.md)
+
+One row, folded to hold the pin under its bound the moment its own repair made it foldable. It
+teaches that a mutation control must prove its own cut landed before grading what the cut produced
+-- `sed` can exit 0 on a pattern that matched nothing, and a scan graded against its own
+unmutated self proves nothing about the mutation it was meant to test.
+
+**REDS %828 (`20260930.033717`) -- `commit_parent_claim` read red once under load, green eleven times isolated, matching this tree's flaky class.** *What went wrong:* the cold run's evidence showed 4 of 43 pen checks failing in `tools/fixtures/c/commit_parent_claim_control.sh` -- `anchor_claims_total` and three `mutation_*_bites` checks, each asking whether a `sed`-mutated copy of the scan gave the expected wrong answer. *What caught it:* the cold endurance run (`run_verdict=guard_red`, `tree_moved=no`); every other red matched the standing untriaged set, and this was the one new name. *What it taught:* the control's `bite()` helper copies the scan, applies `sed_inplace`, and runs the result, without ever checking the edit landed -- so a transient `sed_inplace` failure under load reads as a real refusal never firing. Reran the control eleven times, alone and six-way parallel, all green -- the class `.claude/rules/vocabulary-flaky.md` names, not a reproducible fault. *Repaired* (`20260930.073829`): `bite()` now asserts both halves before grading -- `sed_inplace`'s own exit code, and a `cmp` against the untouched scan -- printing `mutation_landed=no` as the first line of stdout on either failure, ahead of whatever the half-written or unmutated scan goes on to print. The direct `m_anchor` leg, which duplicated `bite()`'s cp-and-sed inline rather than calling it, took the same two-part check. Six new `want mutation_*_landed yes` assertions land beside the five existing `bite()` call sites and the one direct one; the control now reads **49 checks, 0 failures, `control_verdict=ok`** (was 43). Proven from both sides: the real patterns all land (`mutation_landed=yes` on every leg), and a planted non-matching pattern (`s/NOPATTERNMATCHESTHIS//` in place of the letter-clause cut) reads `mutation_letter_clause_landed=no`, `control_verdict=red`, exit 1 -- the exact failure mode this row named, caught rather than silently graded. `tools/c/commit_parent_claim_witness.rish` GREEN afterward. *What this does not reach:* `anchor_claims_total`, the fourth of the original four failing checks, which counts claims after an anchor in the unmutated scan and touches no `sed_inplace` path -- its own flakiness, if it recurs, has a different cause and wants its own reading. **BOOKED** -- the `mutation_*_bites` class this row named is repaired and proven; `anchor_claims_total`'s cause stays open should it fire again.
