@@ -176,6 +176,21 @@ flight at that same HEAD -- launched by a prior turn that had lost continuity.**
 rather than launching a second, across roughly 78 minutes of Monitor re-arms. It closed
 `run_verdict=guard_red`, 372 green, 8 red, 3 gated, `tree_moved=no` -- the identical standing
 eight reds, byte for byte, as every prior clean lap. Zero new reds, sixth lap running clean in a
-row. Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open; check the board
-and for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands.
-The REDS pin deadlock is still open and still Keaton's to rule on.
+row. Card headroom unchanged (39,834/40,960 bytes).
+
+**Lap `20260930.173231` round-opened clean at `2aacb37cff`, checked the claim board directly
+(five rows, all September stamps well past the six-hour expiry, no overlap), read `HEAD` once,
+confirmed no cold pass already in flight, and launched a fresh one with `--cadence-slice 1`.**
+Wrote an interim session log mid-hold, then caught that an untracked file written during the hold
+window itself moves `tree_digest` -- deleted it before the run's closing digest was taken,
+restoring the tree to the state the run opened on, and held the rest of the way with zero writes.
+Held fully still across six Monitor re-arms (roughly 66 minutes, `guards_seconds=3950`) until
+the transcript carried `run_verdict=guard_red`, 372 green, 8 red, 3 gated, `tree_moved=no` --
+the standing eight reds matched name-for-name against the prior clean lap's own log:
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. Zero new
+reds, seventh lap running clean in a row. Card headroom unchanged (39,834/40,960 bytes). **Lesson
+for the next lap: nothing written to disk during the hold window, not even a session log --
+write it only after `run_verdict=` lands.** Next lap: fresh round-open; check the board and for
+an in-flight pass; hold fully still with `--cadence-slice 1`, writing nothing until
+`run_verdict=` lands. The REDS pin deadlock is still open and still Keaton's to rule on.
