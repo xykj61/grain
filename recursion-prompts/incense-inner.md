@@ -321,3 +321,33 @@ in-flight pass at the current HEAD before launching a second; hold fully still w
 `rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
 rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
 wanting Keaton's word or a larger plan than one lap affords.
+
+**This lap (`20260929.234000`) round-opened clean at `b293efaf35`, found the claim board holding
+five rows all past their six-hour expiry and confirmed via `fleet_call.sh` that no cold run was
+already in flight (matches were this session's own prompt text and process, refused
+`_prose`/`_self`), read `HEAD` once, and launched the cold run with `--cadence-slice 1`, holding
+fully still across six Monitor re-arms (roughly 70 minutes), reading nothing until the transcript
+carried `run_verdict=`.** It closed `run_verdict=guard_red`, 370 green, 9 red, 3 gated,
+`tree_moved=no` -- eight of the nine matched the standing set exactly (`standing_equipment_redleg`,
+`shim_reason`, `query_wire_retention` %756, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment`), gated unchanged at `rule_twin`(%7),
+`pond_enclosure_policy`(%5), `pond_enclosure_ephemeral`(%5) -- and a ninth, new, was
+`remember_git_nib`: the card named `9a338a4b8d`, two commits stale, because the prior lap's own
+log-only follow-up commit (`b293efaf3`) never carried the nib forward per rule 5. Repaired with
+`rishi/bin/rishi run tools/r/remember_git_nib.rish write follow-up`, writing the card to `HEAD`
+before this lap's own commit; witness GREEN. Booked and closed one fresh REDS row for the nib
+fault. Booking it pushed the pin over its 65,536-byte bound with all sixteen numbered rows OPEN, so
+one closed, stamp-cited row (`20260917.194613`) was hand-folded to a fresh shelf, mirroring the
+tool's own shape, and the recital line appended; `reds_pin_capacity_scan.sh` reads
+`pin_headroom=1749`; `reds_ledger_monotone_scan.sh` and `reds_shelf_resolve_scan.sh` both read
+`verdict=ok`, unchanged. `N mod 5` on commit count 6810 lands row 0, Aether -- hears, read at
+`foundations/20260826-021731_aether-the-row-that-hears.md`: its own teaching -- purpose is heard
+before motion is felt -- is what this lap practiced, since the fix restores the card's own claim
+about itself (what round it describes) rather than any motion in the code. Next lap: fresh
+round-open; check for an in-flight pass at the current HEAD before launching a second; hold fully
+still with `--cadence-slice 1` until `run_verdict=` lands, and confirm `remember_git_nib` stays
+green on the next cold run; the untriaged set stays six (`query_wire_retention` %756,
+`ceiling_teeth`'s `asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling,
+`rye_compiled_reach`'s uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked
+rows, `shim_reason`'s unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still
+wanting Keaton's word or a larger plan than one lap affords.
