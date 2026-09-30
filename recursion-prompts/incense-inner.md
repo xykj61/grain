@@ -112,6 +112,16 @@ launched the cold run with `--cadence-slice 1`, holding fully still across five 
 371 green, 8 red, 3 gated, `tree_moved=no` -- the identical eight standing reds as every prior lap.
 Zero new reds, fourth lap running clean in a row.
 
+**Lap `20260930.135907` round-opened clean at `9fc10a9896`, checked the claim board (five rows,
+all stale, no overlap), read `HEAD` once, launched the cold run with `--cadence-slice 1`, and held
+fully still across six Monitor re-arms (roughly 66 minutes) until the transcript carried
+`run_verdict=`.** It closed `run_verdict=guard_red`, 372 green, 8 red, 3 gated, `tree_moved=no` --
+the identical eight standing reds, byte for byte, as every prior clean lap. Zero new reds, fifth lap
+running clean in a row. Card headroom checked at the byte level (`construction/ITINERARY.md`
+39,834/40,960) rather than trusted from memory. Next lap: fresh round-open; check the board; hold
+fully still with `--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open
+and still Keaton's to rule on.
+
 **Lap `20260930.114731` opened on that same clean HEAD (`47e29b2bd9`), round-opened, checked the
 board (unchanged), launched its own cold run, then lost session continuity mid-hold.** A fresh turn
 resumed, re-ran round-open (which parked the prior turn's own uncommitted log into a stash, one of

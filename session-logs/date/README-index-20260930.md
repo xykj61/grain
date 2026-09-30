@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.135907` | [Fifth cold run in a row confirms clean](20260930/20260930-135907_fifth-cold-run-zero-new.kyri) | 372/8/3 zero new, standing set held, Earth-row byte-level check |
 | `20260930.114731` | [Cold run held across a break, one new red fixed](20260930/20260930-114731_cold-run-launched-holding-still.kyri) | 370/9/3, stash_record new -- stranded log landed |
 | `20260930.114321` | [Cold run confirms clean, fourth in a row](20260930/20260930-114321_cold-run-confirms-clean-fourth.kyri) | 371/8/3 zero new, standing set held, air-row touch reading |
 | `20260930.104048` | [Cold run confirms clean, again](20260930/20260930-104048_cold-run-confirms-clean-again.kyri) | 371/8/3 zero new, standing set held, no agent-doable work outside it |
