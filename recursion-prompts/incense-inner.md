@@ -260,3 +260,36 @@ unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still 
 or a larger plan than one lap affords; and the REDS pin is now genuinely deadlocked (zero foldable
 rows), so the next fresh red found anywhere in the fleet has nowhere to book until Keaton rules on
 folding an OPEN row or moving the bound.
+
+**This lap (`20260930.053404`) round-opened clean at `0b5d351d78`, found a claim board with all
+five rows past their six-hour expiry, and found a cold run already in flight (pid 1907585, launched
+`04:41:30` at this same HEAD) via `fleet_call.sh`.** Rather than launch a second pass at the same
+HEAD, held fully still and watched the existing pass to its close -- roughly 55 minutes, five
+Monitor re-arms -- reading nothing until its transcript carried `run_verdict=`. It closed
+`run_verdict=guard_red`, 371 green, 8 red, 3 gated, `tree_moved=no` -- all eight reds matched the
+exact standing/untriaged set named by every prior lap (`standing_equipment_redleg`, `shim_reason`,
+`query_wire_retention` %756, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment`), gates unchanged (`rule_twin` %7,
+`pond_enclosure_policy` %5, `pond_enclosure_ephemeral` %5) -- **zero new reds**, and
+`commit_parent_claim` (booked as REDS %828, flaky) ran green again, a second consecutive clean
+reading consistent with its flaky-class booking rather than a reproducible fault. No booking or
+repair was needed for the guard set. The REDS pin deadlock named by the prior two laps is
+unchanged rather than worsened: `reds_pin_capacity_scan.sh` reads the same `pin_headroom=58`,
+`pin_deadlocked=1`, `pin_foldable_rows=0` against all seventeen numbered rows OPEN (one more row
+than the prior lap's sixteen, since a fresh row landed between the readings, yet the byte
+arithmetic held steady) -- still reported rather than gated, still waiting on Keaton's word.
+`N mod 5` on commit count 6818 lands row 3, Water -- tastes, read at
+`foundations/20260826-021734_water-the-row-that-tastes.md`: its own teaching -- taste only works
+up close, so read the actual file and run the actual witness rather than trusting a citation's
+stamp -- is what this lap practiced by reading the transcript's own red lines against the standing
+set line for line, and by re-checking the deadlock's arithmetic on metal rather than assuming the
+prior lap's reading still held. Next lap: fresh round-open; check for an in-flight pass at the
+current HEAD before launching a second (this lap found one twice running, held still both times,
+and read its close rather than duplicating it); hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands; the untriaged set stays six (`query_wire_retention` %756, `ceiling_teeth`'s
+`asserted_only` population, `ignored_walk`'s tree-walks-past-git ceiling, `rye_compiled_reach`'s
+uncompiled-body ceiling, `falsifier_form_outcome`'s 21 falsifier-less ranked rows, `shim_reason`'s
+unrostered-swallow ceiling; `rule_twin`/`pond_enclosure_*` gated) -- each still wanting Keaton's
+word or a larger plan than one lap affords; and the REDS pin stays deadlocked at 58 bytes of
+headroom with zero foldable rows, so the next fresh red found anywhere in the fleet still has
+nowhere to book until Keaton rules on folding an OPEN row or moving the bound.
