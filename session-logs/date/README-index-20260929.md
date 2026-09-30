@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260929.231613` | [Cold run matches the standing eight](20260929/20260929-231613_cold-run-matches-standing-eight-confirmation.kyri) | pure confirmation, no new red |
 | `20260929.220710` | [index_row_bound repaired, pin fold by hand](20260929/20260929-220710_index-row-bound-red-and-a-pin-fold-by-hand.kyri) | 370/9/3, one new red closed |
 | `20260929.204440` | [Held-still log caused tree_moved, repaired](20260929/20260929-204440_held-still-log-caused-tree-moved-repair.kyri) | stash_record and log_has_a_row both green |
 | `20260929.201400` | [Holding still a fifth time](20260929/20260929-201400_holding-still-fifth-time-same-inflight-run.kyri) | recovered from stash, same in-flight run, landed |
