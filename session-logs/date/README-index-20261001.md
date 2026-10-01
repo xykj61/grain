@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.143039` | [grass's one fruit was already delivered](20261001/20261001-143039_grass-fruit-already-delivered.kyri) | sealed-crossing fruit already shelved; fresh fruit owed next sitting |
 | `20261001.143016` | [made the upstream room](20261001/20261001-143016_made-the-upstream-room.kyri) | upstream/ created, first entry filed for the 5.5 classifier reports, MAP.md updated |
 | `20261001.142831` | [citizen's-door re-verified A, no new fruit named](20261001/20261001-142831_citizen-door-still-a-no-new-fruit.kyri) | qa_report_card.sh re-run by hand, composite 92; lane queue stays empty |
 | `20261001.142426` | [the caravan FOLD note was already answered](20261001/20261001-142426_grass-caravan-fold-already-answered.kyri) | check_suffice_runs is accumulated self-test, not an unfolded copy; card's YOURS note corrected |
