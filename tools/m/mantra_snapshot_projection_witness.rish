@@ -1,0 +1,61 @@
+# tools/m/mantra_snapshot_projection_witness.rish -- a full export costs what a
+# cold replay costs, and a reader can see how much that is.
+#
+# WHAT THIS PROVES. `active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md`
+# read `mantra/snapshot_export.rye`'s `export_catalog` and found it walks every
+# leaf a `BoltCatalog` has ever held, since `RevisionImmutable` keeps a later
+# revision of a path as a NEW leaf beside the old one rather than replacing it.
+# A full-history snapshot is therefore a re-encoding of the whole log, costing a
+# reader the same as a cold replay, where a checkpoint in most stores is cheap
+# because it carries only the live value of each key. The paper named a first
+# witness to size that gap on real bytes rather than leave it an argument about
+# the source alone: count every leaf a real export actually writes, and show a
+# read-only projected scan -- one entry per live path, regardless of revision
+# count -- answers strictly smaller whenever a path was written more than once.
+#
+# HOW THE READING IS TAKEN. `mantra/snapshot_projection.rye` builds a flat
+# catalog (two tuples, one revision each) and a layered one (three tuples, two
+# of them carrying two and three revisions). `count_exported_leaves` decodes a
+# real snapshot's own batch frames -- reading each frame's declared entry count
+# independently of the header's `leaf_count` field, which it never even reads
+# -- and sums them. `projected_leaf_count` walks the source catalog directly
+# and counts one entry per `(peer, bolt, path)` tuple. The flat catalog reads
+# the same count both ways; the layered catalog reads 6 leaves exported against
+# 3 tuples projected, proving the gap this paper asked a later lap to size.
+#
+# WHAT IT LEAVES OPEN, named rather than dressed up. This module changes no
+# line of `recall_lap1.rye`, `resin_batch.rye`, or `snapshot_export.rye`, and
+# ships no projected-snapshot FORMAT -- `projected_leaf_count` is a report, not
+# a second artifact a peer could import. The paper's own confidence line says
+# whether a real projected snapshot is wanted at all is Patchouli's call to
+# make, since it owns Mantra's replay horizon, and the product's own stated
+# promise -- "revoked use refuses while history remains visible" -- may settle
+# it firmly in favor of full history. This witness proves the cost shape is
+# real; it does not choose what Mantra does about it.
+#
+# Siblings: the batch count edge at tools/m/mantra_snapshot_batch_count_witness.rish,
+# the replay at tools/m/mantra_snapshot_replay.rish, the horizon at
+# tools/m/mantra_snapshot_horizon.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_snapshot_projection_witness.rish
+
+say "mantra-snapshot-projection: Language EN -- a snapshot that cannot shrink its history buys nothing."
+say "mantra-snapshot-projection: Style Gauge, Meter -- every claim is a count read off a built binary."
+say "mantra-snapshot-projection: Lens TAME -- a cost shape is sized on metal, not argued from the source alone."
+
+say "mantra-snapshot-projection: the study still names the module and the finding this guard checks..."
+let seat = run ["sh" "-c" "grep -q 'RevisionImmutable' mantra/recall_lap1.rye && grep -q 'pub fn export_catalog' mantra/snapshot_export.rye"]
+assert seat.ok else "mantra-snapshot-projection: the immutable-revision rule or export_catalog left its module, so this guard reads a shape that is gone"
+
+say "mantra-snapshot-projection: building the module and reading the selftest it prints..."
+let scan = run ["sh" "tools/fixtures/m/mantra_snapshot_projection_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-snapshot-projection: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-snapshot-projection: the module did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "selftest_exit=0" else "mantra-snapshot-projection: the selftest left a non-zero exit, so one of its own legs refused"
+assert scan.out contains "flat_equal=yes" else "mantra-snapshot-projection: a catalog with no repeated revisions must read the same count exported and projected, or the projection is not reading the same catalog the export reads"
+assert scan.out contains "layered_strictly_smaller=yes" else "mantra-snapshot-projection: a catalog carrying repeated revisions must project strictly smaller than it exports, or the whole finding this guard proves is absent"
+assert scan.out contains "verdict=ok" else "mantra-snapshot-projection: the scan reached its own red"
+
+say "GREEN: mantra-snapshot-projection -- a full export walks every leaf ever written, and a projected scan of the same catalog counts only the paths still live."

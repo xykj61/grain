@@ -3030,6 +3030,25 @@ path tools/m/mantra_snapshot_batch_count_witness.rish
 tier lap
 seated 20260910.140122
 
+# mantra_snapshot_projection -- what does a full export cost against a catalog's own live shape?
+# active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md found
+# `export_catalog` walks every leaf a `BoltCatalog` has ever held, since `RevisionImmutable` keeps a
+# later revision of a path as a NEW leaf beside the old one rather than replacing it -- so a
+# full-history snapshot costs exactly what a cold replay costs, opposite the usual checkpoint
+# trade-off where a checkpoint carries only the live value of each key. `mantra/snapshot_projection.rye`
+# proves the gap on real bytes: `count_exported_leaves` decodes a real snapshot's own batch frames
+# and sums their declared entry counts, independent of the header's `leaf_count` claim;
+# `projected_leaf_count` walks the source catalog read-only and counts one entry per
+# `(peer, bolt, path)` tuple. A flat catalog (no repeated revisions) reads the same count both ways;
+# a layered one (three tuples, two carrying repeated revisions) reads 6 leaves exported against 3
+# tuples projected. Neither function mutates the catalog or changes a line of `recall_lap1.rye`,
+# `resin_batch.rye`, or `snapshot_export.rye` -- this is two reports over one existing shape, sizing
+# a question the paper leaves to Patchouli's own call on Mantra's replay horizon.
+guard mantra_snapshot_projection
+path tools/m/mantra_snapshot_projection_witness.rish
+tier lap
+seated 20261001.144636
+
 # mantra_document_roundtrip -- does the store return the bytes it was handed? `split_lines` in
 # `diff.rye` drops the empty token a text ending in `\n` produces, and a text ending without one
 # produces no such token at all, so `x\ny` and `x\ny\n` split to the same two lines. `cmd_add`
