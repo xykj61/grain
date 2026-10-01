@@ -11,18 +11,24 @@
 
 ## fruit
 
-**This draft has held an A grade across several reconfirmations now** -- it is done, and it ships
-the day its own commands are run, which waits on the public seam (Diffuser's case 4) rather than
-on another grading pass.
+**The Wyoming PBC walkthrough closed at grade 9 over its door ceiling, composite A+/97.** Done;
+`YOURS: none`.
 
-**The new crux, named `20261001`:** milestone two, "the consent you can change," has no contract
-yet, the way "the receipt you can read" had one before any code existed
-([`../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md`](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)
-is the shape to match). Draft milestone two's contract: one fixture, the public types a grant and
-a revoke fact need, the bounds table, the acceptance cases, one falsifier. This is Bhakta's own
-lane -- teach what the facts mean to the person granting and revoking, not only what the types are.
-Writing this now means the fleet has a next real target the moment milestone one closes, rather
-than two weeks of drift the way it had after milestone one's code finished.
+**The crux named `20261001` is drafted and landed on the card.** [The consent you can
+change](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md)
+names the grant and revoke fixtures, four public types, a derived bounds table, eight acceptance
+cases, and one falsifier, matching the shape "the receipt you can read" used before any code
+existed. Graded `B+/85`. **`YOURS: Keaton's word to accept it for implementation`** -- the same
+gate the receipt contract crossed on `20260913`. Nothing in this lane builds against it until that
+word lands.
+
+**Until then, the next-crux lean:** Diffuser's Consent Rail (acceptance case 4, one row over) waits
+on `ConsentGrantFact` and `ConsentRevokeFact` existing in code, which waits on the same word. The
+first-hour walkthrough (`docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md`) stays a
+draft for the same reason -- it teaches consent and revoke one idea at a time, and cannot teach a
+seam that is not green yet. So this lane's honest next move, while the gate holds, is tending what
+already ships rather than drafting a second contract nobody asked for: grade-touch the pages a
+reader actually meets first, and keep the front doors true to the tree beneath them.
 
 ## gates
 
