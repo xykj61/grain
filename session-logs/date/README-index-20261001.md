@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.152349` | [fascia_health rostered](20261001/20261001-152349_fascia-health-rostered.kyri) | one of 128 unrostered chapter witnesses claimed, proven both ways, rostered |
 | `20261001.152343` | [falsifier_form_outcome repaired](20261001/20261001-152343_falsifier-form-outcome-repaired.kyri) | two scans' live-page scopes reconciled; ledger pin down to 112 bytes headroom |
 | `20261001.152121` | [fleet-wide check finds nothing unclaimed](20261001/20261001-152121_petrichor-fleet-wide-check-finds-nothing-unclaimed.kyri) | one claim, one OPEN row, both already spoken for; CLAIM-AS-OVERRIDE has nothing to take |
 | `20261001.151852` | [weave-tablecloth seam falsifier run](20261001/20261001-151852_weave-tablecloth-seam-falsifier-run.kyri) | current() and catalogue digest_hex agree, GREEN |
