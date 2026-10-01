@@ -94,21 +94,21 @@ whole](archive/date/20261001/20261001-144736_itinerary-copal-shed-census-account
 **COPAL.** [Reds_ledger account shelved
 whole](archive/date/20261001/20261001-152231_itinerary-copal-reds-ledger-account.md).
 
-**COPAL -- FASCIA_HEALTH ROSTERED.** `tools/gen/chapter/fascia_health_witness.rish` proves
-`tools/fixtures/f/fascia_health_scan.sh` both ways inside one file: the green leg reads
-`controls_honored=2`, a per-room live/dated/total breakdown, `fascia_health=41`, and `shred=RED`;
-the `prove-red` leg flips one control's presence check from `git ls-files` to a bare `test -f` and
-reads `verdict=misread`, `detail=RED_on_disk_is_not_in_the_tree`, `census=withheld`. Claimed as
-`copal-fascia-health-roster`, run direct on metal, exit 0, both legs as printed. Seated
-`20261001.152107`.
+**COPAL.** [Fascia_health and oldness_census roster accounts shelved
+whole](archive/date/20261001/20261001-182817_itinerary-copal-fascia-oldness-roster-account.md).
 
-**COPAL -- OLDNESS_CENSUS ROSTERED.** `tools/gen/chapter/oldness_census_witness.rish` now proves
-`tools/fixtures/o/oldness_census_scan.sh` both ways: the green leg reads the M3 census controls
-honored, SAFE.md's cycle-1/rows-0 empty-welcome shape, and the tracked-markdown living/dated split
-at `tier2_share=0.790`; a new `prove-red` leg plants `CYCLE=99` and reads `oldness_safe=failed`,
-`detail=want_cycle_1`, `verdict=misread`. Claimed as `copal-oldness-census-roster`, both legs run
-direct on metal, exit 0 and exit 1 as printed. Seated `20261001.181807`. **127** unrostered
-`tools/gen/chapter/` witnesses remain, measured fresh.
+**COPAL -- THING_NOT_NAME ROSTERED.** `tools/gen/chapter/thing_not_name_witness.rish` proves
+`tools/fixtures/t/thing_not_name_scan.sh` both ways, and did so already before this lap touched
+it -- the roster entry is new, the witness file is not. The green leg reads the census control
+gate honored, both tracked instruments present, a planted emitter's value found at
+`demo_meter=7` while a filename search for its own name turns up `name_hits_demo_meter=0`, and
+both fascia-health roofs emitting under `roofs=2`, `law=look_for_the_thing_not_the_name`. The
+`prove-red` leg declares the meter homeless by filename search alone and reads
+`verdict=misread`, `detail=RED_looked_for_name_not_thing`, `census=withheld`. Claimed as
+`copal-thing-not-name-roster`, both legs run direct on metal, exit 0 and exit 1 as printed.
+Seated `20261001.182817`. **135** unrostered `tools/gen/chapter/` witnesses remain of 164
+tracked, measured fresh (`ls tools/gen/chapter/*.rish | wc -l` against
+`grep -c '^path tools/gen/chapter/' construction/standing-equipment.kyri`).
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -364,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `21c17d6e40` -- HEAD's parent, read after the final rebase.
+**Git nib:** `eec1ebbb28` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

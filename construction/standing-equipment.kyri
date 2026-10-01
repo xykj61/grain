@@ -8272,3 +8272,20 @@ guard oldness_census
 path tools/gen/chapter/oldness_census_witness.rish
 tier lap
 seated 20261001.181807
+
+# thing_not_name -- proves tools/fixtures/t/thing_not_name_scan.sh both ways inside one witness
+# file. The green leg calls the scan bare, reads the census control gate honored, both
+# tracked instruments present (git ls-files rather than test -f), a planted emitter's value
+# found at demo_meter=7 while a filename search for its name turns up zero hits, and both
+# fascia-health roofs -- shed_census's shed_key=fascia_health_now and fascia_health_scan's own
+# health_key=fascia_health -- emitting under roofs=2, law=look_for_the_thing_not_the_name. The
+# prove-red leg calls the same scan with a "prove-red" argument, which declares the meter
+# homeless by filename search alone and reads verdict=misread,
+# detail=RED_looked_for_name_not_thing, census=withheld -- the refusal this guard exists to
+# prevent, proven rather than assumed. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-thing-not-name-roster before this entry landed. Runs in
+# under 1s on metal.
+guard thing_not_name
+path tools/gen/chapter/thing_not_name_witness.rish
+tier lap
+seated 20261001.182817

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.183112` | [thing-not-name rostered](20261001/20261001-183112_thing-not-name-roster.kyri) | thing_not_name_witness proven both ways, rostered at tier lap; 135 unrostered remain |
 | `20261001.183100` | [docs-geode front-door tending survey](20261001/20261001-183100_docs-geode-front-door-tending-survey.kyri) | 30 lane pages graded, zero broken citations, two register readings judged intentional |
 | `20261001.182850` | [grass-inner fruit synced](20261001/20261001-182850_sync-grass-inner-fruit.kyri) | landed unsaid_rostered reverse-read closed on the fruit field; next lean named |
 | `20261001.182313` | [grant-revoke-glow-shapes-sketched](20261001/20261001-182313_grant-revoke-glow-shapes-sketched.kyri) | GrantFact/RevokeFact sketched as Glow shapes; receipt-shape fruit shelved |
