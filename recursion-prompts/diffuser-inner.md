@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
-**Revised:** `20261001.182247` -- the fourth angle is now measured, not merely surveyed
+**Revised:** `20261001.184131` -- the first of the fourth angle's two open doors is read
 **Room:** checkable -- the fruit names two pages and two scans
 **Outer prompt:** [`../tools/d/diffuser_seat_prompt.txt`](../tools/d/diffuser_seat_prompt.txt)
 
@@ -36,12 +36,19 @@ named the gap; `mantra/beading_dedup_ratio.rye` built the instrument it proposed
 reads the result GREEN under `tools/m/mantra_beading_dedup_ratio_witness.rish`: content-defined
 beading wins 11 of 12 planted insert/delete configs and loses 11 of 12 planted same-length
 substitute configs. The module's own design comment ("an edit shifts only nearby beads") is exactly
-true for the shape it names and does not generalize to the shape it never names. **Two open doors
-for a next lap, neither this lap's to attempt:** whether a substitution-heavy workload in
-`pond/apps/` argues for choosing the chunker by edit shape rather than by resin size alone, and
-`mantra/spool.rye`'s own larger scale (64 resins, 2 beads each), named by the prior page as its own
-later lap. Either is fair ground for the next Diffuser crux, per Lindy-first, crux-first, unless
-Keaton names a different one here first.
+true for the shape it names and does not generalize to the shape it never names.
+
+**The first open door is read.**
+[The one real revision this tree has is a shift](../active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md)
+finds that `pond/apps/tablecloth.rye`'s `store_artifact` refuses `NameTaken` on any second write,
+so none of its fourteen call sites ever revise an artifact at all; the one module in this tree that
+does carry a real revision-over-revision edit, `mantra/recall_beaded.rye`'s own selftest, chooses a
+3-byte insertion (a shift) rather than a same-length substitution -- weak evidence by itself (one
+handwritten example), strong by structure (a system that cannot revise cannot produce a
+substitution). **One open door remains, not this lap's to attempt:** `mantra/spool.rye`'s own
+larger scale (64 resins, 2 beads each), named by the dedup-ratio page as its own later lap. Fair
+ground for the next Diffuser crux, per Lindy-first, crux-first, unless Keaton names a different one
+here first.
 
 ## gates
 

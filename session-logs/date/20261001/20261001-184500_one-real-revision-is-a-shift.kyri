@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261001.184500
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role diffuser-ship research lane
+modality text
+model claude-sonnet-5
+model_status configured resolved per declared-host-config reading, not confirmed by in-band runtime identity string
+voice Kyri
+title the one real revision this tree has is a shift
+prompt baton-driven autonomous lap; diffuser-inner.md named two open doors left by the just-landed dedup-ratio measurement, and this lap picked the first
+think read diffuser-inner.md and found the fourth-angle dedup-ratio measurement closed with two named open doors for a next lap
+think checked construction/fleet-claims.kyri for existing claims on either door; found neither claimed
+think grepped pond/apps for bead_content_defined and bead( callers outside selftest to find the one production call site, tablecloth.rye:147
+think read store_artifact and found it refuses NameTaken on any repeat name, so no pond/apps call site revises an artifact in place
+think grepped for append_leaf_beaded callers outside recall_beaded.rye itself and found three sibling files, none threading revision 2 or higher over edited bytes
+think read recall_beaded.rye's own selftest_beaded_revision_dedup and found its content_v2 is a 3-byte insertion at offset 30, 400 to 403 bytes -- a shift, not a same-length substitution
+obs the finding is structural (NameTaken forecloses in-place revision) plus one weak example (a handwritten selftest), named honestly as such rather than inflated into a workload claim
+obs no new code or witness needed; the whole finding is a reading of already-tracked sources, which fits the research lane and the time budget
+rota none -- pure research reading, no council-grid row touched this lap
+file active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md why-this-page -- names the structural and one-example evidence for the dedup-ratio page's first open door
+file recursion-prompts/diffuser-inner.md why-touched -- points the fruit at the landed finding and narrows the remaining open door to spool.rye's larger scale
+recommend keep-going -- the second open door (mantra/spool.rye's own larger scale, 64 resins of 2 beads each) is fair ground for the next Diffuser crux per Lindy-first, crux-first
+scope one research page, no code, no witness, no claim needed since the work reads existing tracked sources with no collision surface
+status GREEN -- finding and inner-prompt pointer written, ASCII-clean, ready to send
