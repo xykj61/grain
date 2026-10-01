@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.125059` | [the sixth lap meets the same open question](20261001/20261001-125059_sixth-lap-same-open-question.kyri) | unchanged since the fifth decline; same scope question still waits on Keaton |
 | `20261001.125024` | [second nib follow-up after a second rebase](20261001/20261001-125024_second-nib-follow-up-after-rebase.kyri) | Git nib carried forward to 97eb78a82c, same contested-send gap firing twice |
 | `20261001.124824` | [case 4 of the receipt contract was already landed](20261001/20261001-124824_case-four-already-closed.kyri) | Still-order witness runs GREEN on metal; nothing new to build |
 | `20261001.124541` | [the fifth re-check declined](20261001/20261001-124541_fifth-recheck-declined.kyri) | closed Glow-shape fruit stays closed; scope question handed to Keaton |
