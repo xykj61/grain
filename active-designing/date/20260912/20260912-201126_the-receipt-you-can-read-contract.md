@@ -6,6 +6,12 @@
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
 **Milestone:** The receipt you can read
+**Revised:** `20261001.112238` -- case 4 carries its own witness, closing the gap the
+`20260918.111200` revision named. `tools/r/receipt_still_order_witness.rish`
+(landed `20260925` in commit `18f1c3321`, read GREEN again on this host today) compares the
+field order `linengrow/receipt_offer.rye` publishes against the twelve card rows
+`skate/Sources/SkateCore/ReceiptCard.swift` writes and the eleven labels
+`skate/Sources/SkateCore/ReceiptAccessibilitySnapshot.swift` reads back, and holds `verdict=source_order_agrees` under seven planted-drift legs, every one refusing. `swift_runtime=unverified_on_this_host` names the one thing it cannot reach -- no Swift toolchain runs here, so the native `ReceiptCardTests` and `ReceiptAccessibilitySnapshotTests` remain the macOS proof -- rather than claiming a reading this host cannot take. Seven of eight acceptance cases now carry a witness; only case 8's own build-time guard stands beside it. No elder row, number, or acceptance case was removed.
 **Revised:** `20260918.111200` -- two more acceptance cases carry their own witness. Cases 6 and 7
 are proven as chain properties rather than as the admission module's own field-level refusal
 tests: `mantra/src/receipt_offer_refusal_chain_witness.rye`, run by
@@ -325,6 +331,10 @@ argument. Only case 4 remains unwitnessed, and it waits on Brushstroke and Skate
 milestone has not begun. Case 8 is the falsifier's code half, already held by the product braid
 guard. The two earlier rostered guards -- the ceiling guard and the braid guard -- hold ground no
 acceptance case names, and stay real work of a different kind from proving a case.
+
+**Superseded by the `20261001.112238` revision above.** Brushstroke and Skate are begun, and case
+4 carries `tools/r/receipt_still_order_witness.rish` -- GREEN on this host, with the native Swift
+runtime still the proof a macOS lap owes.
 
 ## Completion and review edge
 
