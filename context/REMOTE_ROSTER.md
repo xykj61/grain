@@ -19,7 +19,7 @@
 
 **Renamed `20260826.165307` on Keaton's word:** the three living remotes take the names the tree already speaks -- `origin` -> **`debrided`**, `xykj61` -> **`xy`**, `grain-os` -> **`seed`**. The forges are unchanged; only the local names moved, so a URL in any dated log still reads true. The rename broke every guard reading `refs/remotes/origin/main` and every loop recipe spelling `git pull --rebase xykj61 main`, all repointed in the same round -- references are promises, and a remote name is one.
 
-**Renamed `20260823.184309` on Keaton's word:** the GitHub organization **`autoproject96` became `debrided`**, and `origin` is repointed to `git@github.com:debrided/grain.git`. GitHub keeps a redirect from the elder name, which is why nothing broke and why the repoint could be done calmly rather than under an outage. Both names are on the seed's IDENT leak roster and both scrub to `acme-owner`, since dated testimony keeps every `autoproject96` it ever wrote. A **deep debride** of the 11 commit-message occurrences is granted and **booked as a standfast** rather than run -- see `construction/REDS.md`.
+**Renamed `20260823.184309` on Keaton's word:** the GitHub organization **`autoproject96` became `debrided`**, and `origin` is repointed to `git@github.com:debrided/grain.git`. GitHub keeps a redirect from the elder name, which is why nothing broke and why the repoint could be done calmly rather than under an outage. Both names are on the seed's IDENT leak roster and both scrub to `acme-owner`, since dated testimony keeps every `autoproject96` it ever wrote. The deep removal of those marks from history ran `20261001.172721` on Keaton's word.
 
 **Seed / public projection remote** (`20260817` -- Keaton's word: grain-os is an xykj61 organization):
 
@@ -35,7 +35,7 @@
 | Remote | Forge | Why |
 |--------|-------|-----|
 | `codeberg` | Codeberg `debrided/grain` | Codeberg Terms (July 2026) bar mostly-LLM projects and cryptocurrency-related projects; Grain pauses Codeberg until a new second forge is chosen |
-| `debrided` | GitHub `debrided/grain` | Retired `20261001` on Keaton's word. The mirror stood at parity with `xy` through `a0b1bcec0`. Living push is `xy` alone. Every pier remote is removed. The GitHub repository stays until a login with `delete_repo` removes it. |
+| `debrided` | GitHub `debrided/grain` | Retired `20261001` on Keaton's word. The mirror stood at parity with `xy` through `a0b1bcec0`. Living push is `xy` alone. Every pier remote is removed. Keaton deleted the GitHub repository `20261001.184105`. |
 
 **Legacy remotes** (history hand-off - optional - not living push):
 
