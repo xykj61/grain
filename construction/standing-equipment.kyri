@@ -8289,3 +8289,26 @@ guard thing_not_name
 path tools/gen/chapter/thing_not_name_witness.rish
 tier lap
 seated 20261001.182817
+
+# counsel_flow and counsel_flow_negative -- tools/gen/chapter/counsel_flow.brix is the Voice
+# Chapter v5 communication contract (voice, register, Acme Audience, length ceilings, prose law,
+# helpfulness law, attention law, waymark fields) written as lawful Brix: declarative only, no
+# commands or conditions, one field per line, a single space after the key. The positive leg
+# calls tools/fixtures/c/counsel_flow_scan.sh bare against the living descriptor and reads
+# fields=76, faults=0, verdict=ok. The negative leg calls the same scan against the standing
+# exempt fixture context/fixtures/counsel_flow_unlawful/unlawful.brix, which plants all four
+# faults the scan checks for -- a CamelCase key, a double space, a bare command line, and a field
+# without a value -- and reads verdict=unlawful_brix with all four detail lines present, then
+# calls the scan bare a second time in the same run to prove the living descriptor still reads
+# verdict=ok beside the refusal. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-counsel-flow-roster before this entry landed. Both
+# witnesses run in under 1s on metal.
+guard counsel_flow
+path tools/gen/chapter/counsel_flow_witness.rish
+tier lap
+seated 20261001.183722
+
+guard counsel_flow_negative
+path tools/gen/chapter/counsel_flow_negative_witness.rish
+tier lap
+seated 20261001.183722
