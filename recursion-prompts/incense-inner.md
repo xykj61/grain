@@ -197,3 +197,5 @@ following lap, once this send is on `xy`.
 **Lap `20261001.183650` held that cold run.** `run_verdict=guard_red`. `guards_run=398`, `guards_green=371`, `guards_red=24`, `guards_gated=3`, `tree_moved=no`. Incense measured `e905525e2`. Other ships kept committing onto the rewritten history during the pass. Next: read the 24 red lines before another pass.
 
 **Lap `20261001.184105` records the repository delete.** Keaton ran the `gh` hand. `gh repo view` could not resolve the retired repository. Living push stays `xy`.
+
+**Lap `20261001.191415` re-pinned the witnesses the rewrite orphaned.** Eight of the twenty-four cold-run reds read green again: `nib_honesty`, `itinerary_list`, `living_pin_fence`, `commit_parent_claim`, `waymark_rung_drift`, `rune_assert_arrival`, `fold_shelf_link`, and `fold_shelf_link_repoint`. The other sixteen still stand. Next: read those sixteen before another full pass.

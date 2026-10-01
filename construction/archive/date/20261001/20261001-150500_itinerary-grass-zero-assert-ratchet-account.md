@@ -1,7 +1,7 @@
 # Shelved account -- GRASS, the last zero-assert file took its two invariants
 
 **Status:** Archived -- shelved whole from `construction/ITINERARY.md` on `20261001.150500` under
-[`the-writer-sheds`](../../../.claude/rules/the-writer-sheds.md). Living pointer stands on the card.
+[`the-writer-sheds`](../../../../.claude/rules/the-writer-sheds.md). Living pointer stands on the card.
 
 ---
 

@@ -103,21 +103,21 @@ else
 fi
 
 # ---- 19-22. THE REAL FIRINGS, replayed out of this repository's own history --------------------
-# REDS %789 is commit 5f96df5e1 and the row of 20260916.220730 is commit 00493b3be. Each replaced item 7 of the
+# REDS %789 is commit 4006707519 and the row of 20260916.220730 is commit fb49f0b893. Each replaced item 7 of the
 # INNER LOOP with a duplicate Git nib line. The commit BEFORE each is the same page intact.
-if git -C "$ROOT" cat-file -e 00493b3be:construction/ITINERARY.md 2>/dev/null; then
+if git -C "$ROOT" cat-file -e fb49f0b893:construction/ITINERARY.md 2>/dev/null; then
   d4=$(pen_new)
   printf 'construction/ITINERARY.md\t1000\tLiving pin\tenforce\n' \
     > "$d4/tools/fixtures/l/living_pin_guard_roster.txt"
 
-  git -C "$ROOT" show 5f96df5e1:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
+  git -C "$ROOT" show 4006707519:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
   leg reds_789_firing_refused 1 "$(read_key "$d4" broken_runs)"
-  git -C "$ROOT" show 5f96df5e1~1:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
+  git -C "$ROOT" show 4006707519~1:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
   leg reds_789_parent_welcomed 0 "$(read_key "$d4" broken_runs)"
 
-  git -C "$ROOT" show 00493b3be:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
+  git -C "$ROOT" show fb49f0b893:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
   leg reds_791_firing_refused 1 "$(read_key "$d4" broken_runs)"
-  git -C "$ROOT" show 00493b3be~1:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
+  git -C "$ROOT" show fb49f0b893~1:construction/ITINERARY.md > "$d4/construction/ITINERARY.md"
   leg reds_791_parent_welcomed 0 "$(read_key "$d4" broken_runs)"
 else
   echo "note: the two firing commits are absent from this clone -- four history legs skipped"

@@ -10,10 +10,10 @@ the elder floating-claim law, and a refusal arriving through the wrong door prov
 nothing about the count. Here `gone` reads 0 and the only thing left to refuse is that
 there are two of them.
 
-**Git nib:** `5f96df5e14` -- the first firing's own commit, resolvable everywhere.
+**Git nib:** `4006707519` -- the first firing's own commit, resolvable everywhere.
 
 Between the two fields stands the shape the damage takes: a positional write does not
 merely add a line, it REPLACES the line it lands on. Both firings ate INNER LOOP item 7,
 the directive telling every lap to run the cold endurance run before work.
 
-**Git nib:** `00493b3be4` -- the second firing's own commit, resolvable everywhere.
+**Git nib:** `fb49f0b893` -- the second firing's own commit, resolvable everywhere.
