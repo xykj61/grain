@@ -60,9 +60,3 @@ epoch 1790880069
 paths mantra/snapshot_projection.rye tools/m/mantra_snapshot_projection_witness.rish tools/fixtures/m/mantra_snapshot_projection_scan.sh
 what Build the two fixtures the snapshot study names: count every leaf export_catalog writes against the catalog's own leaf_count, and a read-only projected scan keeping only the highest revision per (peer,bolt,path) tuple, proving it strictly smaller whenever a tuple carries more than one revision.
 
-claim copal-reds-ledger-witness
-seat copal
-stamp 20261001.143900
-epoch 1790879940
-paths tools/gen/chapter/reds_ledger_witness.rish tools/gen/chapter/reds_ledger_negative_witness.rish construction/standing-equipment.kyri
-what Roster tools/gen/chapter/reds_ledger_witness.rish and its negative sibling into construction/standing-equipment.kyri, the next unrostered chapter witness per copal-inner.md's fruit.
