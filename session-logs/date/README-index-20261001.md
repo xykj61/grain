@@ -10,6 +10,7 @@
 | `20261001.193200` | [Aether row read, no new work](20261001/20261001-193200_aether-row-read-no-new-work.kyri) | confirms prior lap's reading; thin queue, nothing agent-doable found in scope |
 | `20261001.192844` | [four named cold-run repairs](20261001/20261001-192844_four-named-cold-run-repairs.kyri) | seed link, unshared cites, readlink, and three root walks |
 | `20261001.192822` | [Fire row closes a stale claim](20261001/20261001-192822_fire-row-closes-a-claim-already-landed.kyri) | closed patchouli's own seam-roster claim, found already landed at 5c98181fc |
+| `20261001.192542` | [Aether row re-read, three docs clean](20261001/20261001-192542_aether-row-read-again-nothing-below-b.kyri) | follow-our-compass B+, lindy-effect B+, grain-and-crossing B; no agent-doable audit work found |
 | `20261001.192348` | [spool-scale dedup ratio measured](20261001/20261001-192348_spool-scale-dedup-ratio-measured.kyri) | fourth angle's both open doors now read; substitute 833pm, shift 0-875pm by position |
 | `20261001.192134` | [weave-tablecloth reading closes the arc](20261001/20261001-192134_weave-tablecloth-reading-closes-the-arc.kyri) | wrote the foundation unifying Mantra's two promises; the wiring landed earlier this lap |
 | `20261001.191810` | [stale comlink-witness claim closed](20261001/20261001-191810_close-stale-comlink-witness-claim.kyri) | landed work had no --close; claim closed, ITINERARY nib carried |
