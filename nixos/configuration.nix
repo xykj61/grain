@@ -61,14 +61,14 @@
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
   # claude-code: nixos-26.05's pin lags upstream.
-  # This overlay pins the latest release, 2.1.278, fetching the same native binary
+  # This overlay pins the latest release, 2.1.286, fetching the same native binary
   # the nixpkgs derivation would, from the same downloads.claude.ai release path.
   # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
   # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
   # argument -- overrideAttrs works on both the locked rev and future ones. The
   # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest,
-  # verified on metal against the downloaded binary (sha256sum == 15e2d051...fa07,
-  # 20260917.175948; the elder 2.1.235 read bfcf0ae2...d5d5, 20260819). The build
+  # verified on metal against the downloaded binary (sha256sum == fe503f65...fc73f,
+  # 20261001.125300; the elder 2.1.278 read 5c473593...47ab, 20260917). The build
   # self-checks twice: fetchurl fails loudly on any hash mismatch, and
   # versionCheckHook runs `claude --version`.
   #
@@ -110,10 +110,10 @@
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.278";
+        version = "2.1.286";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.278/linux-x64/claude";
-          sha256 = "5c4735937844e84f8a93306e841a5b0e12252909b07870f789b190468da147ab";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.286/linux-x64/claude";
+          sha256 = "fe503f65c6289d59c23e5b21ae44f03583f997dd33a2cbfc75ab4f96fb8fc73f";
         };
       });
 
