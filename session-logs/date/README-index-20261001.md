@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261001.113056` | [two contested nibs, both resolved by rule 5](20261001/20261001-113056_baton-museum-census-send.kyri) | pushed to xy and gp405 after two peer merges |
 | `20261001.113042` | [the fifteen-field ceiling ruling was already landed](20261001/20261001-113042_pheromone-ceiling-ruling-already-landed.kyri) | confirmed on metal, no new construction owed |
+| `20261001.112955` | [rune_mutate's one memcpy site migrated](20261001/20261001-112955_rune-mutate-memcpy-migration.kyri) | copy_disjoint in; ratchet 135 to 134, witness GREEN |
 | `20261001.112628` | [a third identical grade, baton YOURS item clean](20261001/20261001-112628_fruit-still-a-yours-item-clean.kyri) | fruit re-confirmed A/94, baton register ceiling checked, verdict=ok |
 | `20261001.112611` | [museum census found its own landed work on a diverged branch](20261001/20261001-112611_baton-museum-census-rostered.kyri) | rostered, control proven GREEN both legs |
 | `20261001.112435` | [case 4's contract caught up](20261001/20261001-112435_case-4-contract-caught-up-to-its-witness.kyri) | receipt contract's stale unwitnessed claim corrected |

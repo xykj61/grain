@@ -164,12 +164,14 @@ agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- MARKED VALUE.** [Account shelved whole](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md).
 
-**GRASS -- THE SEALED CROSSING.** [Packet](../active-designing/date/20261001/20261001-112153_grass-sealed-crossing-reverse-read.md):
-**archived -- the duty named `20260703` has a home.** The Sealed Crossing's own Status line
-already reads Landed; its body and benediction still narrate an open duty. Amphora's three laps,
-stamp, seal, chunked carry, and purchase delivery are landed, and Copal's receipt-bundle witness
-ran GREEN on this checkout (authentication, decision-mutation refusal, version refusal,
-byte-identical round trip). No living product or build crux changes.
+**GRASS -- THE SEALED CROSSING.** [Shelved
+whole](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md).
+
+**GRASS -- MEMCPY RATCHET, ONE SITE.** `glow/rune_mutate.rye`'s one `@memcpy` call migrated to
+`tally_copy.copy_disjoint`; `tools/r/rune_mutate_witness.rish` GREEN, `tame_style_check`'s
+`@memcpy` ratchet fell 135 to 134. **YOURS:** the ratchet still names `parseInt(` (54) and
+`functions_over_70` (694, longest `glow/lower_shop_gate_witness.rye` at 1035 lines) as further
+agent-doable picks, claim-board checked first.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,

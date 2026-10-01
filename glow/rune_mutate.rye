@@ -11,6 +11,7 @@
 
 const std = @import("std");
 const assert = std.debug.assert;
+const tally_copy = @import("tally_copy.rye");
 
 pub const max_wing_len: u32 = 96;
 
@@ -87,6 +88,6 @@ pub fn parse(line: []const u8) ParseError!MutateSpec {
     }
 
     var spec: MutateSpec = .{};
-    @memcpy(spec.wing[0..wing_text.len], wing_text);
+    tally_copy.copy_disjoint(u8, spec.wing[0..wing_text.len], wing_text);
     return spec;
 }
