@@ -364,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ff8e16ff0b` -- HEAD read before this follow-up merge commit (rule 5).
+**Git nib:** `df65c65fc8` -- HEAD read before this follow-up merge commit (rule 5).
 
 ### Incense -- product captain
 
