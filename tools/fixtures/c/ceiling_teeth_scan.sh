@@ -85,6 +85,9 @@ lead='(^|[^a-zA-Z0-9_])'
 # PATH actually named in the @import call) cleared the symlink alias and left the target's own
 # path still reading asserted_only, having found no literal `@import("receipt_offer_bounds.rye")`
 # anywhere (REDS, cited by stamp 20261001.143449's sibling finding).
+# A symlink and its target are one file. The portable resolver follows the chain,
+# so this scan does not spell a GNU-only flag.
+. "$(CDPATH= cd -- "$(dirname "$0")" && pwd)/../s/shell_portable.sh"
 seen_real=""
 for room in $rooms; do
   for f in $(git ls-files "$room/*.rye" 2>/dev/null); do
@@ -92,7 +95,7 @@ for room in $rooms; do
       *_witness.rye|*_test.rye) continue ;;
     esac
     [ -f "$f" ] || continue
-    real=$(readlink -f "$f")
+    real=$(resolve_path "$f")
     case " $seen_real " in
       *" $real "*) continue ;;
     esac
@@ -203,7 +206,7 @@ for room in $rooms; do
 
       # delegated: the ceiling is read by a shared refusal helper (tally_refusal.text_refusal or
       # .exact_length_refusal) in a DIFFERENT file, which must actually import this declaring
-      # file by name rather than merely share a constant's spelling -- REDS %833's class one
+      # file by name rather than merely share a constant's spelling -- that REDS row's class, one
       # ceiling over, found while repairing the sibling reading. Scoping to real importers is
       # what keeps tally/receipt_offer_bounds.rye's byte-identical, unimported duplicate of these
       # same three constants correctly asserted_only: nothing imports it, so no caller can ever
