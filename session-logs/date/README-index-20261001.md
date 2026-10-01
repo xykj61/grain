@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.131200` | [check-in on idleness follow-up](20261001/20261001-131200_check-in-on-idleness-followup.kyri) | mapped the fusion-build block, asked Keaton which way to spend the lap |
 | `20261001.130613` | [fleet default to sonnet-5-5](20261001/20261001-130613_fleet-default-sonnet-5-5.kyri) | tracked default set; peers still pin sonnet-5, drift ratchet 20 over 1 |
 | `20261001.130524` | [fifth-recheck-declined-check-in](20261001/20261001-130524_fifth-recheck-declined-check-in.kyri) | pheromone fruit stays closed; agent-doable queue empty; check-in (Claude) owed |
 | `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
