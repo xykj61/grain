@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.143414` | [shed_census_witness rostered](20261001/20261001-143414_shed-census-rostered.kyri) | claimed, rostered, and proven both ways; 141 unrostered chapter witnesses remain |
 | `20261001.143338` | [grass's queue stays empty, confirmed twice](20261001/20261001-143338_grass-queue-stays-empty-confirmed-twice.kyri) | sealed-crossing fruit still delivered; functions_over_70 YOURS item needs a human-scoped lap |
 | `20261001.143142` | [sixth recheck, still empty queue](20261001/20261001-143142_sixth-recheck-still-empty-queue.kyri) | fruit closed, claims board checked and clear for this lane, no re-measurement needed |
 | `20261001.143039` | [grass's one fruit was already delivered](20261001/20261001-143039_grass-fruit-already-delivered.kyri) | sealed-crossing fruit already shelved; fresh fruit owed next sitting |
