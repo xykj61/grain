@@ -121,26 +121,20 @@ Free and Open Room ([`account`](archive/date/20260924/20260924-211114_itinerary-
 Shape of a Day ([`account`](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md)),
 Roots Beneath the Work ([`account`](archive/date/20260925/20260925-001539_itinerary-grass-roots-account.md)).
 
-**GRASS -- FOUNDATION BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md).
+**GRASS -- FIVE MORE ACCOUNTS, SHELVED WHOLE** (`20260925`-`20261001`, condensed from five
+one-line pointers to one, nothing archived lost): Foundation Beneath the Work
+([account](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md)),
+Ledger and Grace ([account](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md)),
+Marked Value ([account](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md)),
+the Sealed Crossing ([account](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md)),
+two small ratchet sites, memcpy and parseInt
+([memcpy](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md),
+[parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)).
 
-**GRASS -- LEDGER AND GRACE.** [Account shelved whole](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md).
-
-**GRASS -- MARKED VALUE.** [Account shelved whole](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md).
-
-**GRASS -- THE SEALED CROSSING.** [Shelved
-whole](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md).
-
-**GRASS -- TWO SMALL RATCHET SITES, SHELVED.** One
-[memcpy](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md) and one
-[parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)
-site, each outside the ratchet's room list.
-
-**GRASS -- CORD-KNOT GRADUATES TWO PARSEINT SITES.** [Shelved
-whole](archive/date/20261001/20261001-124926_itinerary-grass-caravan-withdrawn-retting-landed-account.md).
-`mycelium/cord_knot_kyri.rye`'s `issued`/`taxed` reads moved to `parse_int.parse_int` through the
-existing symlink (14 siblings already route through it); `render` writes both via `{d}`, no
-leading zero possible. `tools/m/mycelium_cord_knot_kyri_witness.rish` GREEN. `parseInt(` fell 52
-to 50. **YOURS:** `mantra/recall_tablecloth_query_delivery.rye`'s `host` path has no witness yet;
+**GRASS -- CORD-KNOT'S PARSEINT GRADUATION, AND THE RECALL-DELIVERY WITNESS WAS ALREADY THERE.**
+[Shelved whole](archive/date/20261001/20261001-130141_itinerary-grass-cord-knot-and-delivery-witness-account.md).
+`parseInt(` fell 52 to 50; the YOURS item below about a missing delivery-module witness was stale
+-- `tools/m/mantra_recall_tablecloth_query_wire.rish` already covers it, GREEN on metal. **YOURS:**
 `caravan/` wants a FOLD; `functions_over_70` (694); claim-board.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
@@ -339,7 +333,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0a4acc1fba` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
+**Git nib:** `f1d09a7bc2` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
 
 ### Incense -- product captain
 
