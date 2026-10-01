@@ -30,6 +30,17 @@ seam that is not green yet. So this lane's honest next move, while the gate hold
 already ships rather than drafting a second contract nobody asked for: grade-touch the pages a
 reader actually meets first, and keep the front doors true to the tree beneath them.
 
+**The tending sweep has now been run three times in one day (`20261001.183100`,
+`20261001.185007`, `20261001.190735`), each confirming the same clean reading: every living page
+under `docs-geode/` clears the Door floor, the crushed-index, living-docs-lint, and two-rooms
+doorway witnesses all read GREEN, and no new repair has surfaced.** A fourth lap opening this same
+survey without first reading `session-logs/README.md`'s newest day shelf (the baton's own THREAD
+directive) repeats work already recorded twice. While the consent-contract gate holds, the honest
+move is to read the day shelf's top rows first -- if the sweep's own rows are still the newest
+thing there, the shelf is confirmed clean and the lap's time is better spent naming a *different*
+tending target (a page outside the three already-run witnesses' reach, a stale number, a citation
+this lap hasn't checked) rather than re-running the identical grade-touch a fourth time.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
