@@ -1,5 +1,10 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261001.171839` -- walk-back nib `d2cf03d9fa`.** Deep removal of the two superseded
+mirror marks from living files and from history. The leak detectors were re-spelled with a bracket
+before the rewrite, so they still catch those marks afterward. Eight pier trees were level with
+`xy` and held no uncommitted work. The walk-back is this nib.
+
 **Checkpoint `20261001.112031` -- walk-back nib `1cac83efb9`.** Shelve two archive pointers plus
 seven lap accounts (`20261001.004741` through `20261001.074025`) whole from
 `recursion-prompts/incense-inner.md`'s `next` section into
