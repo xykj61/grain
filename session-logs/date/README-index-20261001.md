@@ -14,6 +14,7 @@
 | `20261001.185504` | [seam witness rostered](20261001/20261001-185504_roster-weave-tablecloth-seam.kyri) | wrapped and rostered mantra_weave_tablecloth_seam_witness, closing the sibling's own named gap |
 | `20261001.185302` | [resurrection fired twice more mid-send](20261001/20261001-185302_resurrection-fired-twice-more-during-send.kyri) | three rebases to push the claim-close; the stale record came back once more from upstream itself |
 | `20261001.185007` | [grade-touch confirms prior survey](20261001/20261001-185007_grade-touch-front-doors.kyri) | found a near-duplicate survey; reverted the drafted card edit |
+| `20261001.184604` | [dep_crawl_bounds_negative rostered](20261001/20261001-184604_dep-crawl-bounds-roster.kyri) | bounds-bite witness proven both ways, tier lap; rota row 1 |
 | `20261001.184500` | [the one real revision this tree has is a shift](20261001/20261001-184500_one-real-revision-is-a-shift.kyri) | pond/apps can't revise in place; recall_beaded's own revision example is an insert, not a substitute |
 | `20261001.184352` | [stale comlink witness claim closed](20261001/20261001-184352_close-stale-comlink-witness-claim.kyri) | a sibling commit's rebase resurrected an already-closed pheromone claim; re-verified both witnesses GREEN and closed it |
 | `20261001.184301` | [grant-revoke desk link repaired](20261001/20261001-184301_grant-revoke-desk-link-repaired.kyri) | dead .lap/ citation found and repointed; grade C+ to B+ |
