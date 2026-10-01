@@ -2925,6 +2925,20 @@ path tools/m/mantra_weave_v1_write_witness.rish
 tier lap
 seated 20260908.123338
 
+# The seam, read. The chart at active-designing/date/20260921/20260921-071008 asked whether
+# `Weave.current()`'s output already carries a stable content address, and whether anything
+# already computes it the same way the catalogue does. `weave_tablecloth_seam_witness.rye`
+# answers yes -- an independently computed SHA3-256 over a rendered weave agrees with the
+# catalogue's own `digest_hex` for the identical bytes, on a planted document and on an edit of
+# it, never by sharing one digest function between the two readings. The Rye witness has stood
+# unregistered since it was written, carrying the whole answer with nothing to run it by name --
+# this roster entry and its tools/m/*.rish wrapper are what the wiring witness below named as the
+# pre-existing gap it did not close.
+guard mantra_weave_tablecloth_seam
+path tools/m/mantra_weave_tablecloth_seam_witness.rish
+tier lap
+seated 20261001.185337
+
 # The seam, wired. The chart at active-designing/date/20260921/20260921-071008 asked whether
 # `Weave.current()`'s output already carries a stable content address, and whether anything
 # already computes it the same way the catalogue does. `weave_tablecloth_seam_witness.rye`

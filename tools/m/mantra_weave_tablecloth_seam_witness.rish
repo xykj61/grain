@@ -1,0 +1,59 @@
+# tools/m/mantra_weave_tablecloth_seam_witness.rish -- the seam's reading, rostered.
+#
+# WHAT THIS PROVES. The seam chart
+# (active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md) asked
+# whether `Weave.current()`'s output already carries a stable content address, and whether
+# anything already computes it the same way the catalogue does. `weave_tablecloth_seam_witness.rye`
+# answers yes: a rendered weave's SHA3-256 hex digest, computed independently of the catalogue,
+# matches the catalogue's own `digest_hex` for a leaf appended under the identical bytes -- on a
+# planted three-line document, on the same document after an edit, and never by sharing one
+# digest function between the two readings. The seam was a naming exercise rather than a new
+# hash, a new store, or a new wire shape -- the wiring that followed is proven by this witness's
+# own sibling, tools/m/mantra_weave_tablecloth_witness.rish.
+#
+# WHAT THIS DOES NOT DO. It does not prove the wiring -- render_current, render_to_leaf, and the
+# refusal that crosses by name are that sibling's claims, not this one's. This witness answers
+# the chart's first question alone: does the seam already work, or does it need a new hash. The
+# answer is a leaf in `standing-equipment.kyri` only from this lap forward; the Rye witness
+# itself has stood unregistered since it was written (the wiring witness's own header named the
+# gap this wrapper closes).
+#
+# The Rye witness lives at mantra/weave_tablecloth_seam_witness.rye rather than under mantra/src/,
+# because it imports `src/weave.rye` and the same-directory `recall_lap1.rye` by relative path
+# from the mantra/ root -- both already live there, so no symlink is needed to satisfy Zig's
+# refusal of an import that escapes the root file's directory.
+#
+# Module: mantra/src/weave.rye, mantra/recall_lap1.rye. Sibling: the wiring witness at
+# tools/m/mantra_weave_tablecloth_witness.rish, which answers what this witness's own header
+# named as remaining -- the WIRING between current() and append_leaf.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_tablecloth_seam_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_tablecloth_seam_witness"
+
+say "mantra-weave-seam: Language EN -- the same bytes, the same hash, read two ways."
+say "mantra-weave-seam: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-weave-seam: Lens TAME -- one bounded render, one independently reproduced digest."
+
+say "mantra-weave-seam: the module still names current(), from_v1, and append_leaf..."
+let seat = run ["sh" "-c" "grep -q 'pub fn current' mantra/src/weave.rye && grep -q 'pub fn from_v1' mantra/src/weave.rye && grep -q 'pub fn append_leaf' mantra/recall_lap1.rye"]
+assert seat.ok else "mantra-weave-seam: current, from_v1, or append_leaf left its module"
+
+say "mantra-weave-seam: building the witness against the real modules..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/weave_tablecloth_seam_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-weave-seam: weave tablecloth seam witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-weave-seam: weave tablecloth seam witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-weave-seam: weave tablecloth seam witness not GREEN"
+assert selftest.out contains "current() renders the lifted bytes exactly" else "mantra-weave-seam: the render-is-the-inverse claim is missing"
+assert selftest.out contains "weave digest and catalogue digest agree" else "mantra-weave-seam: the two-digests-agree claim is missing -- the whole point of the seam reading"
+assert selftest.out contains "an edited weave's digest still agrees with the catalogue's" else "mantra-weave-seam: the edited-document claim is missing -- without it the match in the prior claim could be a coincidence of one document"
+
+let green = run ["sh" "-c" "${bin} 2>&1 | grep '^GREEN:'"]
+say green.out
+assert green.ok else "mantra-weave-seam: the module must print its own GREEN line"
+
+say "GREEN: the weave's current() and the catalogue's digest_hex agree on the same bytes, on a planted document and on an edit of it -- the seam the chart named is a naming exercise, not a new hash."
