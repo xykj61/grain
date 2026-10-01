@@ -225,3 +225,28 @@ subscription is cancelled, so Codex is not a sailing loop. Next: `sh tools/f/fle
 then read each worker's outer prompt and inner prompt. Clock a seat in with `--seen` only when
 its next work moves the product, a module, or the docs. A diary of cold runs stays a clock-out.
 The REDS pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20261001.054528` round-opened clean at `7e00dd6c19` (already on the anointed order, 13
+dead-letter entries reported and untouched), checked the claim board directly (five rows, all
+September stamps, all past expiry, no overlap), read `HEAD` once, and found a cold run already in
+flight -- but its `launch_head` (`7b90cee814`) sat three commits behind current HEAD, the stale-pass
+precedent the ORDER clause names.** Stopped it with `sh tools/f/fleet_call.sh --pattern
+standing_equipment_run --signal TERM` (verdict=sent, refused_foreign=0), confirmed HEAD still
+settled, and launched a fresh pass with `--cadence-slice 1`. Held fully still across four Monitor
+re-arms until `run_verdict=guard_red`, 370 green, 10 real red, 3 gated, `tree_moved=yes` -- named
+honestly as this lap's own uncommitted session-log write, made mid-hold rather than before launch
+or after close. **Lesson for the next lap: write the session log before the cold run launches or
+after it finishes, never mid-hold -- even an uncommitted untracked file moves the tree digest.**
+Compared red-leg names against the standing eight: all eight held, plus two self-inflicted --
+`log_has_a_row` (this log's index row had not yet landed) and `declared_model` (drift_candidates
+rose 1 to 7 against a ceiling of 1, from six `recursion-prompts/*-inner.md` files the prior lap's
+commits `6a50ff0d5`/`d62dffc22` gave a line naming the resolved model but never the fleet default).
+Repaired both on metal rather than raising the ceiling -- the scan's own header says the ceiling
+only ever falls -- by editing each of the six files to name both values, and by adding the index
+row. Both matching witnesses GREEN (`declared_model_witness.rish` 37 legs, `log_has_a_row_witness.rish`
+36 legs). Sent as `c444040b9`, nib carried via the amend shape to `7e00dd6c19`. Next lap: fresh
+round-open; check the board and for an in-flight pass; hold fully still with `--cadence-slice 1`
+until `run_verdict=` lands; the next cold run should read 8 red again, `declared_model` and
+`log_has_a_row` clean. Then resume the clock pass: `sh tools/f/fleet_clock.sh report`, read each
+worker's outer and inner prompt, clock in only what moves product, a module, or the docs. The REDS
+pin deadlock is still open and still Keaton's to rule on.
