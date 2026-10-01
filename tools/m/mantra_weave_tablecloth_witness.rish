@@ -17,8 +17,9 @@
 # string rather than the resolved path, so a same-directory symlink satisfies it.
 #
 # Module: mantra/src/weave_tablecloth.rye. Sibling: the seam reading at
-# tools/m/mantra_weave_tablecloth_seam_witness.rish is not yet built -- the seam witness itself
-# stands unregistered in standing-equipment.kyri, a pre-existing gap this guard does not close.
+# tools/m/mantra_weave_tablecloth_seam_witness.rish, which answers the chart's first question --
+# does the seam already work, or does it need a new hash -- and is rostered in
+# standing-equipment.kyri beside this one.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_weave_tablecloth_witness.rish
