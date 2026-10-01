@@ -71,3 +71,9 @@ stamp 20261001.153224
 epoch 1790883144
 paths mantra/src/weave_tablecloth.rye mantra/src/weave_tablecloth_witness.rye construction/standing-equipment.kyri
 what wire the seam's named gap: a small function that renders Weave.current() to document bytes and hands them to the catalogue's append_leaf in one motion, rather than the inline witness code that proved the seam agrees
+claim copal-oldness-census-roster
+seat copal
+stamp 20261001.181704
+epoch 1790893024
+paths tools/gen/chapter/oldness_census_witness.rish tools/fixtures/o/oldness_census_scan.sh construction/standing-equipment.kyri
+what Roster the unrostered tools/gen/chapter/oldness_census_witness.rish into standing-equipment.kyri, and add a prove-red leg to its backing scan (planted CYCLE misread) so the witness proves from both sides, matching the fascia_health pattern.
