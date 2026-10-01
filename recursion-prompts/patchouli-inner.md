@@ -11,15 +11,22 @@
 
 ## fruit
 
-**This fruit has held its reading unchanged across several laps** ("the six-facts map unchanged,
-no fresh work in lane") -- the mapping is done, and holding a done map does not need re-confirming.
+**The weave-meets-Tablecloth crux named `20261001` is landed, whole.** Its three movements all
+ran before this reading: the falsifier
+([`../active-designing/date/20261001/20261001-151518_the-seams-first-step-ran-a-naming-exercise.md`](../active-designing/date/20261001/20261001-151518_the-seams-first-step-ran-a-naming-exercise.md)),
+the wiring (`mantra/src/weave_tablecloth.rye`'s `render_current`/`render_to_leaf`, GREEN under
+`mantra/src/weave_tablecloth_witness.rye`), and the reading -- the one foundation naming both of
+Mantra's promises as one, now written into
+[`../foundations/20260825-211056_what-mantra-is.md`](../foundations/20260825-211056_what-mantra-is.md)'s
+new section *One promise, wearing two clothes*, with the arc's own essay closed by a matching
+erratum. The arc [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md)
+named this as its last movement, so the lane's own named work is done.
 
-**The new crux, named `20261001`:** the weave's door is no longer unchosen -- it is charted, at
-[`../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md),
-with its first step and falsifier already named. Take that first step. This is the Long Return
-infrastructure work -- the seam where Mantra's weave meets Tablecloth by content is load-bearing
-for every later milestone that stores a resin, not only this one. If the chart's first step turns
-out to need a ruling, name the question for Incense rather than re-reading the six-facts map again.
+**The next crux waits on Keaton's word, not on a fresh reading.** `mantra/src/weave.rye` carries
+two OPEN rows a lap cannot close alone: REDS `%807` (a head insert has no anchor, three doors
+named, none cheap) and REDS `%765`'s remaining 41 counted-version families awaiting the same
+molt `mantra-weave` already took. Name either as the next crux only once Keaton rules on its door;
+until then, the lane reads honestly empty and claim-as-override governs.
 
 ## gates
 
