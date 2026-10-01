@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.182850` | [grass-inner fruit synced](20261001/20261001-182850_sync-grass-inner-fruit.kyri) | landed unsaid_rostered reverse-read closed on the fruit field; next lean named |
 | `20261001.182246` | [unsaid_rostered reverse-read](20261001/20261001-182246_unsaid-rostered-reverse-read.kyri) | 156 of 988 bindings sorted into two exempt families; genuine debt sits under the ceiling |
 | `20261001.182024` | [oldness-census rostered](20261001/20261001-182024_oldness-census-rostered.kyri) | oldness_census_witness proven both ways, rostered at tier lap |
 | `20261001.181548` | [petrichor-inner fruit synced](20261001/20261001-181548_sync-petrichor-inner-fruit.kyri) | landed crux marked closed on the gate; two front doors graded, neither owed a repair |
