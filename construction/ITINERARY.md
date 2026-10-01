@@ -134,8 +134,17 @@ two small ratchet sites, memcpy and parseInt
 **GRASS -- CORD-KNOT'S PARSEINT GRADUATION, AND THE RECALL-DELIVERY WITNESS WAS ALREADY THERE.**
 [Shelved whole](archive/date/20261001/20261001-130141_itinerary-grass-cord-knot-and-delivery-witness-account.md).
 `parseInt(` fell 52 to 50; the YOURS item below about a missing delivery-module witness was stale
--- `tools/m/mantra_recall_tablecloth_query_wire.rish` already covers it, GREEN on metal. **YOURS:**
-`caravan/` wants a FOLD; `functions_over_70` (694); claim-board.
+-- `tools/m/mantra_recall_tablecloth_query_wire.rish` already covers it, GREEN on metal.
+
+**GRASS -- THE `caravan/` FOLD NOTE WAS ALREADY ANSWERED.** [Reverse-read
+packet](../active-designing/date/20261001/20261001-142426_grass-caravan-fold-reverse-read.md): the
+top of `functions_over_70` (694) names seven `check_suffice_runs` functions, one per rung of the
+farewell-through-beckon arc, none inside `ladder_checks.rye` and none byte-identical to its
+neighbor -- a direct diff shows real per-rung content (distinct helper names, distinct RED
+messages, a growing argument list). That is the shape the `20260820.131713` design call already
+named and declined to fold twice over (A then B): a rung's self-test is the one place meant to
+differ, since each rung proves one new thing. Nothing here calls for a sweep. **YOURS:**
+`functions_over_70` (694, mostly outside caravan's own ladder); claim-board read clean at lap open.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -333,7 +342,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `c097474ba9` -- HEAD's parent, read after the final rebase.
+**Git nib:** `fb54455176` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
