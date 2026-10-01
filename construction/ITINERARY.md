@@ -100,16 +100,11 @@ whole](archive/date/20261001/20261001-182817_itinerary-copal-fascia-oldness-rost
 **COPAL.** [Thing_not_name account shelved
 whole](archive/date/20261001/20261001-184233_itinerary-copal-thing-not-name-account.md).
 
-**COPAL.** Rostered `dep_crawl_bounds_negative` -- GREEN on metal, proves both of dep_crawl's
-bounds bite inside one file. **134** unrostered `tools/gen/chapter/` witnesses remain of 164.
-
-**COPAL.** Rostered `radiant_h1_fence` -- GREEN on metal, control true/naive and prove-red refusal
-both proven. A `*_witness.rish` glob now reads `unrostered=122` of `total=154` -- a narrower count
-than the elder `134 of 164` above; re-derive rather than trust either.
-
-**COPAL.** Rostered `itinerary` -- GREEN on metal, the whole-season 256-round sweep and the
-round-256 out-of-bound refusal both proven inside one witness file. `unrostered=121` of `total=154`
-by the same glob; re-derive rather than trust the number.
+**COPAL.** [Three chapter-witness rosters shelved
+whole](archive/date/20261001/20261001-195512_itinerary-copal-chapter-witness-roster-account.md) --
+`dep_crawl_bounds_negative`, `radiant_h1_fence`, `itinerary`, each GREEN on metal. **YOURS:**
+whether the ~121 unrostered `tools/gen/chapter/` witnesses that remain want individual rostering
+laps, Keaton's word.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -369,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fa9eb68853` -- HEAD's parent, read after the final rebase.
+**Git nib:** `fbe005bc16` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
