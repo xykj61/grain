@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.123645` | [Wyoming PBC walkthrough sent, two rebases](20261001/20261001-123645_wyoming-pbc-send.kyri) | pushed xy and debrided as effe0e408, nib amended twice |
 | `20261001.123424` | [audit-rotation-clean-no-build](20261001/20261001-123424_audit-rotation-clean-no-build.kyri) | mand/mandate/mandi README graded, all B or better; no build |
 | `20261001.123244` | [the Wyoming PBC walkthrough repaired past the B floor](20261001/20261001-123244_wyoming-pbc-b-floor.kyri) | C+/77 to B+/85; card shed to stay under its byte bound |
 | `20261001.123029` | [repair-sent-clean](20261001/20261001-123029_repair-sent-clean.kyri) | nib repair pushed clean with a real amend, verified 85c36c55c8 |
