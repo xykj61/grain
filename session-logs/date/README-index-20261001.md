@@ -9,6 +9,7 @@
 | `20261001.130613` | [fleet default to sonnet-5-5](20261001/20261001-130613_fleet-default-sonnet-5-5.kyri) | tracked default set; peers still pin sonnet-5, drift ratchet 20 over 1 |
 | `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
 | `20261001.130216` | [the Hilbert-order essay sent, two rebases](20261001/20261001-130216_hilbert-order-send.kyri) | pushed xy and debrided clean at f1cc4a5f3 |
+| `20261001.130142` | [Wyoming PBC list split](20261001/20261001-130142_wyoming-pbc-list-split.kyri) | split two run-ons in lines 33-41; B+/87 holds |
 | `20261001.130141` | [recall-delivery-witness-already-there](20261001/20261001-130141_recall-delivery-witness-already-there.kyri) | stale YOURS item corrected, card folded 7 GRASS blocks to 3 |
 | `20261001.125756` | [nixos-claude-code-bump-and-model-default](20261001/20261001-125756_nixos-claude-code-bump-and-model-default.kyri) | claude-code 2.1.278 to 2.1.286, fleet default model to claude-sonnet-5 |
 | `20261001.125520` | [Hilbert order beats row-major for ID-adjacent traffic](20261001/20261001-125520_hilbert-order-moonshot.kyri) | B+/85 essay; torus/mesh hop table verified by computation |
