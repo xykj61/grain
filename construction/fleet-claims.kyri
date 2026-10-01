@@ -59,9 +59,3 @@ stamp 20261001.121229
 epoch 1790871149
 paths tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh tools/m/mantra_weave_tablecloth_seam_witness.rish
 what Run the weave-meets-Tablecloth seam falsifier: does current()'s rendered document bytes already carry a resin matching an existing blob in the Mantra store, or is the gap real.
-claim wire-ceiling-grow-payload
-seat incense
-stamp 20261001.130723
-epoch 1790874443
-paths mantra/recall_tablecloth_query_wire.rye comlink/query_wire_retention_cost.rye
-what REDS %756 repair per the 20261001 ruling: grow max_wire_payload so max_wire_hits reaches 3 and query_wire_retention goes green.

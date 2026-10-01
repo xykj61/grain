@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261001.131844
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role repository role primary
+modality text
+model claude-sonnet-5-5
+model_status session banner states claude-sonnet-5-5; runtime identity otherwise unverified
+voice Kyri
+title REDS %756 repaired through the shrink door
+prompt Keaton: go with the shrink door for the wire ceiling.
+think found the grow door impossible without growing wire_capacity: max_message is 528 - 188 = 340, equal to max_wire_payload
+think set max_path in mantra/recall_tablecloth_query_wire.rye from 64 to 57, so one hit is 112 bytes and the 340-byte payload holds three
+think a shrunk constant alone would have lied, since encode_response never checked a hit path; added that check plus a comptime tie max_path <= ns.max_path
+think set measured_hit_count to 2 in comlink/query_wire_retention_cost.rye; the sweep sizes narrowed to 1 2; the census fixture now builds paths at the wire ceiling and its control expects 3 hits and 114 bytes
+obs the cost of this door is real: a Tablecloth path of 58 to 64 bytes is refused at the wire; the retention comparison now measures a two-hit answer, not four
+file mantra/recall_tablecloth_query_wire.rye why-max_path 57, hit-path check, tie
+file comlink/query_wire_retention_cost.rye why-measured count 2, comment corrected
+file tools/fixtures/m/mantra_tablecloth_hit_census_control.sh why-pinned figures 3 and 114
+loom witness=query_wire_retention green=yes hits=2 saved_per_read=92
+scope source and fixtures for %756 only; construction/REDS.md row not yet closed or folded
+status GREEN -- query_wire_retention, hit_census, query_wire, wire_lab witnesses green; ceiling_pair and tame_style clean; ledger row untouched
+recommend keep-going -- close and fold the %756 row, then take %785

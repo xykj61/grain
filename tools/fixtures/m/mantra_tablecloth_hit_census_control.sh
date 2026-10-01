@@ -123,8 +123,9 @@ check "eight shapes name a key both shapes hold unique" "$both" 8
 check "seven shapes return the whole catalog whichever way it is shaped" "$neither" 7
 # REDS %678 CLOSED 20260915: the ceiling is derived from the payload now, so a catalog filled to
 # it builds to it. This read 3 against a ceiling declared as 8 while the encoder kept only 2.
-check "the build fills the derived ceiling exactly" "$built" 2
-check "one hit at declared name lengths costs its bytes" "$one_hit" 121
+# REDS %756 20261001: the wire path ceiling is 57, so one hit is 112 bytes, two of head, and the ceiling is 3.
+check "the build fills the derived ceiling exactly" "$built" 3
+check "one hit at declared name lengths costs its bytes" "$one_hit" 114
 # The reading that proves health is the opposite of the one that proved the defect: what the build
 # admits, the encoder keeps. Asserting the elder string would demand the defect stay present.
 check "the wire encodes the answer it just built" \

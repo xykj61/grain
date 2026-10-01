@@ -59,7 +59,7 @@ const max_samples: u32 = 64;
 /// small enough that one full run stays under a second on this host.
 const reads_per_sample: u32 = 20_000;
 
-/// The answer measured, and the reason this harness currently refuses to build.
+/// The answer measured, and the floor the wire must keep for this harness to build.
 ///
 /// THE SUBJECT IS THE UNUSED TAIL. This harness compares a fixed-size cached answer against a
 /// variable-size retained one, and the whole saving is the hits the answer does not carry. So the
@@ -69,7 +69,8 @@ const reads_per_sample: u32 = 20_000;
 /// three measurement loops away: measured at one hit, each read retired 6 instructions against
 /// the 20,000 its control requires.
 ///
-/// Both together need `qw.max_wire_hits >= 3`. It reads **2**.
+/// Both together need `qw.max_wire_hits >= 3`. It reads **3** since REDS %756 (20261001): the wire's
+/// path ceiling is 57, one hit costs 112 bytes, and the measured count is 2.
 ///
 /// WHY IT READS TWO, AND WHY THAT IS THE CORRECT NUMBER. The constant was the literal 8 with
 /// `max_wire_payload` at 340 and nothing tying them, until `0d6e6829a` derived it --
@@ -82,7 +83,7 @@ const reads_per_sample: u32 = 20_000;
 /// this file must not make for itself: grow `max_wire_payload`, shrink `max_peer`/`max_bolt`/
 /// `max_path`, or retire the retention comparison. Clamping the count here would publish a green
 /// figure about a question the wire can no longer ask.
-const measured_hit_count: u32 = 4;
+const measured_hit_count: u32 = 2;
 
 comptime {
     if (qw.max_wire_hits < measured_hit_count + 1) @compileError(

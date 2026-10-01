@@ -31,7 +31,7 @@ root=$(pwd)
 pen="$root/.lap/varlen-pen"
 rye="${RYE_ZIG:-vendor/zig-toolchain/zig}"
 mode="${SWEEP_MODE:--OReleaseFast}"
-sizes="${SWEEP_SIZES:-1 2 4 8}"
+sizes="${SWEEP_SIZES:-1 2}"
 
 rm -rf "$pen"
 mkdir -p "$pen"
