@@ -10,6 +10,7 @@
 | `20261001.195128` | [close the already-landed seam-roster claim](20261001/20261001-195128_close-stale-seam-roster-claim.kyri) | stale patchouli claim closed, work already landed at 5c98181fc |
 | `20261001.195100` | [no caller wants a mutable identity](20261001/20261001-195100_no-caller-wants-a-mutable-identity.kyri) | fourth-angle crux closed: every storage name binds for life |
 | `20261001.195050` | [grass's door-page reads clean](20261001/20261001-195050_grass-door-page-reads-a-clean.kyri) | docs-geode/README.md graded A at its own Door setting; no repair owed |
+| `20261001.194927` | [roster the itinerary witness, proved on metal](20261001/20261001-194927_itinerary-witness-roster.kyri) | rostered itinerary_witness.rish, both legs GREEN; unrostered=122 to 121 of 154 |
 | `20261001.194926` | [fleet steering read](20261001/20261001-194926_fleet-steering-read.kyri) | closed fruits still sailing; bakery's cache is the live crux |
 | `20261001.194626` | [close the landed Comlink-witness-roster claim](20261001/20261001-194626_close-the-landed-comlink-witness-roster-claim.kyri) | a stale pheromone claim's repair had already landed and re-verified GREEN; closed the board entry |
 | `20261001.194547` | [Grass confirms thin queue after round-open pull](20261001/20261001-194547_grass-confirms-thin-queue-after-round-open-pull.kyri) | pulled 4 peer commits clean; functions_over_70 and dated testimony both checked and declined |
