@@ -59,3 +59,9 @@ stamp 20261001.142858
 epoch 1790879338
 paths tools/gen/chapter/shed_census_witness.rish construction/standing-equipment.kyri
 what Roster tools/gen/chapter/shed_census_witness.rish -- an already-both-sided-proven chapter witness with no roster row, the ask copal-inner.md names.
+claim patchouli-snapshot-projection
+seat patchouli
+stamp 20261001.144109
+epoch 1790880069
+paths mantra/snapshot_projection.rye tools/m/mantra_snapshot_projection_witness.rish tools/fixtures/m/mantra_snapshot_projection_scan.sh
+what Build the two fixtures the snapshot study names: count every leaf export_catalog writes against the catalog's own leaf_count, and a read-only projected scan keeping only the highest revision per (peer,bolt,path) tuple, proving it strictly smaller whenever a tuple carries more than one revision.
