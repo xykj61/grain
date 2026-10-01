@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.130613` | [fleet default to sonnet-5-5](20261001/20261001-130613_fleet-default-sonnet-5-5.kyri) | tracked default set; peers still pin sonnet-5, drift ratchet 20 over 1 |
+| `20261001.130524` | [fifth-recheck-declined-check-in](20261001/20261001-130524_fifth-recheck-declined-check-in.kyri) | pheromone fruit stays closed; agent-doable queue empty; check-in (Claude) owed |
 | `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
 | `20261001.130216` | [the Hilbert-order essay sent, two rebases](20261001/20261001-130216_hilbert-order-send.kyri) | pushed xy and debrided clean at f1cc4a5f3 |
 | `20261001.130142` | [Wyoming PBC list split](20261001/20261001-130142_wyoming-pbc-list-split.kyri) | split two run-ons in lines 33-41; B+/87 holds |
