@@ -8408,3 +8408,18 @@ guard radiant_h1_fence
 path tools/gen/chapter/radiant_h1_fence_witness.rish
 tier lap
 seated 20261001.191505
+
+# itinerary_witness -- the deterministic itinerary proven both ways inside one witness file.
+# tools/fixtures/i/itinerary_compute.sh maps every round 0..255 to a pure coord tuple
+# (season/equinox/journey/quest/round-in-quest) and a ranking slot. The green leg sweeps all 256
+# rounds and reads swept=256, bad=0, verdict=ok, checking sweep.ok agrees with the printed verdict;
+# reads round 137 by name and confirms it lands in equinox 2 (BUHR), ranking_slot=137 mod 27=2, and
+# carries a carry= field naming round 136's unfinished work. The negative leg calls round 256 --
+# one past the last round, 255 -- and asserts the call refuses (ok == false), proving the season
+# bound actually bites rather than merely being named. One of the unrostered tools/gen/chapter/
+# witnesses copal-inner.md names; claimed as copal-itinerary-witness-roster before this entry
+# landed. Runs in under 1s on metal.
+guard itinerary
+path tools/gen/chapter/itinerary_witness.rish
+tier lap
+seated 20261001.194525

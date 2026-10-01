@@ -107,6 +107,10 @@ bounds bite inside one file. **134** unrostered `tools/gen/chapter/` witnesses r
 both proven. A `*_witness.rish` glob now reads `unrostered=122` of `total=154` -- a narrower count
 than the elder `134 of 164` above; re-derive rather than trust either.
 
+**COPAL.** Rostered `itinerary` -- GREEN on metal, the whole-season 256-round sweep and the
+round-256 out-of-bound refusal both proven inside one witness file. `unrostered=121` of `total=154`
+by the same glob; re-derive rather than trust the number.
+
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
