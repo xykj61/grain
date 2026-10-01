@@ -3,8 +3,8 @@
 **Language:** EN
 **Style:** Gauge Field, Bhakta opening (assume no background), Radiant warmth
 **Voice:** Kyri
-**Status:** Living -- three engines, and the seven live ships besides incense read codex
-**Last updated:** `20260922.175159`
+**Status:** Living -- three engines, and every live seat reads claude
+**Last updated:** `20261001.052423`
 **Kin:** [`README.md`](README.md) - [`SETUP_GUIDE.md`](SETUP_GUIDE.md) - [`../open/FLEET_LOOP.md`](../open/FLEET_LOOP.md) - `../construction/fleet-roster.kyri`
 
 ---
@@ -67,9 +67,11 @@ ship's next lap will run.
 
 ## What this page does not claim
 
-**The seating is the roster.** From `20260922` the seven live ships besides incense read `codex`.
-Incense reads `claude`. The parked aether rows keep the engine they already had. This page
-describes the three engines; `construction/fleet-roster.kyri` is the word that seats one.
+**The seating is the roster.** From `20261001` every live seat reads `claude`. Bakery resolves
+`claude-opus-5-5`. The other live seats resolve `claude-sonnet-5`. Each model lives in that
+tree's gitignored settings, and the roster seats only the engine. The parked aether rows keep
+the engine they already had. This page describes the three engines;
+`construction/fleet-roster.kyri` is the word that seats one.
 
 **It does not claim the OpenCode loop has run overnight.** The script is written and syntax-checked;
 the proof that it holds a full night is a night it has actually held.
