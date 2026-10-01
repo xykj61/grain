@@ -359,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `20d918d86d` -- HEAD's parent, read after the final rebase.
+**Git nib:** `4bb221a74d` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
@@ -492,7 +492,7 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
 - Keep real personal data, valuation agreements, money, identity, and deployment behind their later gates.
-- **Three landed repairs shelved whole** (checkpoint `20260926.171705`, nib `7479c8bce9`): the
+- **Three landed repairs shelved whole** (checkpoint `20260926.171705`, nib `4af8db5fba`): the
   instrument_refusal wall closed to zero, `commit_parent_claim`'s third anchor move, and REDS
   `%827`'s four refusal legs. Read
   [`archive/date/20260926/20260926-171705_itinerary-three-landed-repairs-account.md`](archive/date/20260926/20260926-171705_itinerary-three-landed-repairs-account.md).

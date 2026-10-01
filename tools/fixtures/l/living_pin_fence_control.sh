@@ -192,13 +192,13 @@ leg bad_flag_refused "$(run_in "$d6" --nonsense | read_key verdict)" bad_flag
 leg empty_flag_welcomed "$(run_in "$d6" "" | read_key verdict)" ok
 
 # ---------------------------------------------------------------- THE FIRING, replayed from history
-# construction/ITINERARY.md at commit 99d4948e6 is the real fault: a wrapped sentence put a bare
+# construction/ITINERARY.md at commit 8f42a06bfa is the real fault: a wrapped sentence put a bare
 # triple-backtick opener at column 0 in prose. A plant proves the reader; only this proves the
 # reader would have caught the thing it was built for.
 d7=$(mk_repo firing)
 printf '# ok\n' > "$d7/OTHER.md"
-if ( cd "$root" && git cat-file -e 99d4948e6:construction/ITINERARY.md 2>/dev/null ); then
-  ( cd "$root" && git show 99d4948e6:construction/ITINERARY.md ) > "$d7/ITINERARY.md"
+if ( cd "$root" && git cat-file -e 8f42a06bfa:construction/ITINERARY.md 2>/dev/null ); then
+  ( cd "$root" && git show 8f42a06bfa:construction/ITINERARY.md ) > "$d7/ITINERARY.md"
   commit_all "$d7"
   out=$(run_in "$d7")
   leg real_firing_bites "$(printf '%s\n' "$out" | read_key verdict)" over_ceiling
@@ -209,7 +209,7 @@ if ( cd "$root" && git cat-file -e 99d4948e6:construction/ITINERARY.md 2>/dev/nu
   commit_all "$d7"
   leg repaired_card_welcomed "$(run_in "$d7" | read_key verdict)" ok
 else
-  echo "leg_skip: real_firing -- commit 99d4948e6 absent from this checkout"
+  echo "leg_skip: real_firing -- commit 8f42a06bfa absent from this checkout"
 fi
 
 # ---------------------------------------------------------------- mutations, asserted to bite

@@ -381,7 +381,7 @@ seated 20260917.034900
 
 # living_pin_fence -- every guard over a living pin reads its BYTES; none reads it as MARKDOWN.
 # `ascii_document` counts characters, `tracked_link` and `link_text_promise` read links, the pin
-# bound counts length, `nib_honesty` reads one key -- and on `20260916` commit 99d4948e6 wrapped a
+# bound counts length, `nib_honesty` reads one key -- and on `20260916` commit 8f42a06bfa wrapped a
 # sentence in construction/ITINERARY.md so a bare triple-backtick fence opener landed at column 0 in
 # prose. CommonMark runs an unclosed fence to the end of the document, so 30,791 of that card's
 # 38,970 bytes rendered as one code block for every markdown reader, GitHub included, while the

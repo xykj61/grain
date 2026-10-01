@@ -71,7 +71,7 @@ assert mapping.out contains "verdict=map" else "rune-assert-arrival: the map mus
 
 # REPLAYED ON THIS TREE'S OWN HISTORY -- the leg no pen can buy. The %752 window is two arrivals in
 # thirty-two commits, and both are mantra sources.
-let replay = run ["sh" "tools/fixtures/r/rune_assert_arrival.sh" "4c05c9d63" "cd05e9fac"]
+let replay = run ["sh" "tools/fixtures/r/rune_assert_arrival.sh" "950bcf37a7" "5abeba49cf"]
 say replay.out
 assert replay.ok else "rune-assert-arrival: the %752 replay must read"
 assert replay.out contains "commits=32 touching_rye=2" else "rune-assert-arrival: the replay window is 32 commits, 2 touching Rye"

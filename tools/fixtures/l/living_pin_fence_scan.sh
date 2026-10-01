@@ -6,7 +6,7 @@
 # `nib_honesty` reads one key. Not one of them reads the page as MARKDOWN, so a page whose markup
 # has broken renders wrongly for every reader while the whole roster stays green.
 #
-# THE FIRING, measured rather than argued. On `20260916` at 21:39 commit 99d4948e6 wrapped a
+# THE FIRING, measured rather than argued. On `20260916` at 21:39 commit 8f42a06bfa wrapped a
 # sentence in construction/ITINERARY.md so a bare triple-backtick fence opener landed at column 0 in
 # prose -- the author was naming a fence, not opening one. CommonMark reads a line beginning with
 # three backticks as an opening code fence, and states that when no closing fence is found the block
