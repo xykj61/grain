@@ -77,7 +77,7 @@ Selected lines from the full output:
 ```
 bound=256
 room=session-logs flat=0 verdict=under roster=enforce
-undated_room=construction/archive flat=1078 verdict=over roster=advise
+undated_room=construction/archive/REDS flat=546 verdict=over roster=advise
 enforced_over=0
 undated_over=1
 terminal_over=0
@@ -89,10 +89,12 @@ verdict=ok
 room reads zero. `enforce` marks a checked limit; `advise` marks a finding for review. Here the
 archive exceeds its advisory bound while every enforced room stays within its limit.
 
-That archive count climbs through the day as ledger rows fold onto shelves. It read 713 on
-September 9, 910 on September 11, and 1,078 on September 16, so read it as the day's reading
-rather than the tree's. Nothing holds the figure still; the command is what tells you today's,
-and the witness above binds the shape of the line rather than the number in it.
+That archive count climbs through the day as ledger rows fold onto shelves, and the undated room
+it folds onto has itself moved one level deeper: `construction/archive/REDS` now, rather than the
+whole `construction/archive`. It read 713 on September 9, 910 on September 11, and 1,078 on
+September 16, before the REDS shelf split out its own count; read today's command rather than
+these, since nothing holds the figure still -- the witness above binds the shape of the line
+rather than the number or the path inside it.
 
 The scan discovers rooms each time it runs. Its full output names the room beside every count,
 so you can see where a finding belongs.
