@@ -91,17 +91,18 @@ exemption, and the remaining unrostered chapter witnesses.
 
 **COPAL.** [Bounds-home account shelved whole](archive/date/20260925/20260925-174220_itinerary-copal-bounds-home-account.md).
 
-**COPAL -- CENSUS CONTROL ROSTERED.** The chapter witness checks three live duties and a planted
-naive-total refusal. Direct proof is green; a full cold and hot roster verdict remains owed.
+**COPAL -- CENSUS CONTROL ROSTERED.** Three live duties plus a planted naive-total refusal,
+direct proof green.
 
-**COPAL -- BATON MUSEUM CENSUS ROSTERED.** `baton_museum_census_witness.rish` now runs a planted
-control that removes one hall from a bounded copy of `context/baton-museum/` and requires a
-refusing status, `halls_absent=1`, `elder_miss=0`, `census_breach_count=1`,
-`verdict=census_incomplete`. The thirteen-hall census and the control both ran GREEN;
-seated `construction/standing-equipment.kyri` `20261001.112431`. 131 unrostered
-`tools/gen/chapter/` witnesses remain for a later lap, nine of them excluded by name (the
-`brushstroke-wayland-seed` build-artifact dependents). A full cold and hot roster verdict remains
-owed.
+**COPAL.** [Baton museum census account shelved
+whole](archive/date/20261001/20261001-113824_itinerary-copal-baton-museum-census-account.md) --
+thirteen halls, planted-breach control, both GREEN.
+
+**COPAL -- ZERO_VIEW ROSTERED.** `zero_view_witness.rish` proves its own law both ways: an empty
+planted view against an opened archive fixture that still holds the fall, plus a `prove-red` leg
+that must refuse the misreading. GREEN direct and by name through the runner, seated
+`20261001.113648`. **130** unrostered `tools/gen/chapter/` witnesses remain, nine excluded by
+name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roster verdict owed.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -367,7 +368,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `10a1944608` -- HEAD read before this follow-up commit (rule 5).
+**Git nib:** `8b34411960` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

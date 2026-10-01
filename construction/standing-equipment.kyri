@@ -7986,6 +7986,18 @@ path tools/gen/chapter/baton_museum_census_witness.rish
 tier lap
 seated 20261001.112431
 
+# zero_view -- one of the 131 unrostered tools/gen/chapter/ witnesses the card named
+# (20261001.112431). Proves the law from both sides in one lap: the living leg reads an
+# empty planted view (window_n=0) and still opens the planted archive fixture to find the
+# fall it holds (85), honoring the rule that a zero names the instrument's view rather than
+# the world; the prove-red leg feeds the same scan `prove-red` and requires it to refuse
+# with `verdict=misread` -- the misreading this witness exists to catch, planted and proven
+# to bite rather than assumed.
+guard zero_view
+path tools/gen/chapter/zero_view_witness.rish
+tier lap
+seated 20261001.113648
+
 # brush_parse -- the existing Brush Chapter witness proves the parser's accepted and refused
 # paths, then carries the same frame through lowering, redraw, and the headless Skate grid.
 guard brush_parse
