@@ -112,6 +112,10 @@ whole](archive/date/20261001/20261001-150500_itinerary-petrichor-wyoming-pbc-gra
 grade 12 over ceiling closed to grade 9 exactly, `composite=97 (A+)`, no statute cite, fee figure,
 or *verify* marker moved. **YOURS:** none -- the fruit is closed.
 
+**PETRICHOR -- MILESTONE TWO'S CONTRACT DRAFTED.** [The consent you can
+change](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md),
+grade `B+/85`, proposed per Two Rooms. **YOURS:** Keaton's word to accept it for implementation.
+
 **GRASS -- FOURTEEN ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261001`, condensed from
 fourteen one-line pointers to one, nothing archived lost): open-room reverse-reads
 ([`20260923`](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md),
@@ -340,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f946cd7d01` -- HEAD's parent, read after the final rebase.
+**Git nib:** `d8f7f2cb61` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
