@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.124541` | [the fifth re-check declined](20261001/20261001-124541_fifth-recheck-declined.kyri) | closed Glow-shape fruit stays closed; scope question handed to Keaton |
+| `20261001.124509` | [nib follow-up after send](20261001/20261001-124509_nib-follow-up-after-send.kyri) | Git nib carried forward to d2f5975a6e after the push had already landed |
 | `20261001.124101` | [the citizen's-door draft already clears the B floor](20261001/20261001-124101_citizen-draft-already-a-grade.kyri) | A/92 on measurement alone, all links resolve, no raise needed |
 | `20261001.124059` | [idle-lane-confirmed-again](20261001/20261001-124059_idle-lane-confirmed-again.kyri) | third idle lap; fruit closed, YOURS line unchanged, no build |
 | `20261001.123729` | [a snapshot that cannot shrink](20261001/20261001-123729_a-snapshot-that-cannot-shrink.kyri) | Mantra snapshot costs what replay costs; a real fork for Patchouli |
