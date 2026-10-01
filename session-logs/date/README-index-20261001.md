@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.113820` | [case 4's fruit was already closed](20261001/20261001-113820_case-4-fruit-already-closed.kyri) | re-ran the witness on metal, confirmed GREEN, no new work owed |
 | `20261001.113646` | [memcpy migration sent through two peer rebases](20261001/20261001-113646_rune-mutate-memcpy-send.kyri) | one real conflict on the Git nib line, resolved for the newer peer value |
 | `20261001.113528` | [the fruit re-confirmed, nothing new](20261001/20261001-113528_anyone-under-our-sun-reconfirmed.kyri) | fourth identical grade today; field A+/97, door A/94 |
 | `20261001.113056` | [two contested nibs, both resolved by rule 5](20261001/20261001-113056_baton-museum-census-send.kyri) | pushed to xy and gp405 after two peer merges |
