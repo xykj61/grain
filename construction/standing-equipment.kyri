@@ -8255,3 +8255,20 @@ guard fascia_health
 path tools/gen/chapter/fascia_health_witness.rish
 tier lap
 seated 20261001.152107
+
+# oldness_census -- M3 home land, proving tools/fixtures/o/oldness_census_scan.sh both ways.
+# The green leg reads three census-control duties honored, a living control
+# (context/specs/living-vs-dated.md) and a dated control
+# (counsel/date/20260724/.../the-workshop-and-the-warehouse.md) each read for the marker they
+# must and must not carry, SAFE.md's cycle-1/rows-0 empty-welcome shape, and the tracked-markdown
+# living/dated split at tier2_share=0.790 -- inside the "four fifths" band the law names. The
+# prove-red leg (new this lap) passes a prove-red argument that plants a misread: CYCLE is forced
+# to 99 rather than read off SAFE.md, and the scan refuses with oldness_safe=failed,
+# detail=want_cycle_1, verdict=misread -- proving the cycle-mismatch refusal fires on a real wrong
+# value rather than standing untested. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-oldness-census-roster before this entry landed. Runs in
+# under 1s on metal.
+guard oldness_census
+path tools/gen/chapter/oldness_census_witness.rish
+tier lap
+seated 20261001.181807

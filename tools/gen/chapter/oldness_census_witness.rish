@@ -24,4 +24,11 @@ assert scan.out contains "tier2_band=four_fifths" else "oldness-census: want fou
 assert scan.out contains "oldness_census=ok" else "oldness-census: want ok"
 assert scan.out contains "verdict=ok" else "oldness-census: want verdict=ok"
 
-say "GREEN: oldness-census — control proven · SAFE 0/64 · four fifths Tier 2 · living header marker"
+let red = run ["sh" "tools/fixtures/o/oldness_census_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "oldness-census: prove-red must refuse"
+assert red.out contains "oldness_safe=failed" else "oldness-census: prove-red want SAFE failed"
+assert red.out contains "detail=want_cycle_1" else "oldness-census: prove-red want cycle-1 detail"
+assert red.out contains "verdict=misread" else "oldness-census: prove-red want verdict=misread"
+
+say "GREEN: oldness-census — control proven · SAFE 0/64 · four fifths Tier 2 · living header marker · prove-red refuses"

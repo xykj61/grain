@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.182024` | [oldness-census rostered](20261001/20261001-182024_oldness-census-rostered.kyri) | oldness_census_witness proven both ways, rostered at tier lap |
 | `20261001.181548` | [petrichor-inner fruit synced](20261001/20261001-181548_sync-petrichor-inner-fruit.kyri) | landed crux marked closed on the gate; two front doors graded, neither owed a repair |
 | `20261001.172721` | [mirror marks removed](20261001/20261001-172721_mirror-marks-removed.kyri) | history rewritten; detectors stay armed |
 | `20261001.171142` | [debrided mirror retired](20261001/20261001-171142_debrided-mirror-retired.kyri) | eight pier remotes removed; GitHub repo waits on delete_repo |
