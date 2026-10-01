@@ -71,3 +71,9 @@ stamp 20261001.153224
 epoch 1790883144
 paths mantra/src/weave_tablecloth.rye mantra/src/weave_tablecloth_witness.rye construction/standing-equipment.kyri
 what wire the seam's named gap: a small function that renders Weave.current() to document bytes and hands them to the catalogue's append_leaf in one motion, rather than the inline witness code that proved the seam agrees
+claim copal-dep-crawl-bounds-roster
+seat copal
+stamp 20261001.184203
+epoch 1790894523
+paths tools/gen/chapter/dep_crawl_bounds_negative_witness.rish construction/standing-equipment.kyri
+what roster dep_crawl_bounds_negative_witness.rish, the unrostered chapter witness proving dep_crawl's node and depth bounds bite from both sides in one file
