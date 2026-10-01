@@ -159,6 +159,10 @@ whole](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet
 `comlink/roster_pairs_seal.rye` took its opening triad and two `// invariant:` asserts; `zero
 assert( files remaining` fell **1 to 0**; `tame_style_check` stays GREEN. No YOURS here.
 
+**GRASS -- UNSAID-ROSTERED, SORTED.** [Shelved
+whole](archive/date/20261001/20261001-150700_itinerary-grass-unsaid-rostered-account.md). 75/81 over
+ceiling trace to 22 new files; shims read zero. **YOURS:** ~700 debt bindings want `say var.err`.
+
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
