@@ -54,7 +54,8 @@ s/ssh-ed25519 [A-Za-z0-9+/=]\{20,\}/ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY/g
 s/ssh-rsa [A-Za-z0-9+/=]\{20,\}/ssh-rsa REPLACE_WITH_YOUR_PUBLIC_KEY/g
 s/xykj61/acme-owner/g
 s/autoproject96/acme-owner/g
-s/debrided/acme-owner/g
+s/groupproject40[5]/acme-owner/g
+s/g[p]405/acme-owner/g
 
 # STILL DELIBERATELY ABSENT: the real Azimuth ship names (bandun, pacpet-solreb).
 # Those are code literals whose value is behavior, not prose — swapping them is a
