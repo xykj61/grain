@@ -71,3 +71,9 @@ stamp 20261001.114912
 epoch 1790869752
 paths tools/fixtures/a/aurora_energy_crossover_calc.sh tools/a/aurora_energy_crossover_witness.rish tools/fixtures/a/aurora_energy_crossover_control.sh
 what Build the first-witness calculator for the Aurora torus energy-crossover rule (proposal 2, 20260918-054803): M* = L*s/((Hm-Ht)*e), reading Hm/Ht/L from aurora_placement_scan.sh and leaving e, s as named parameters.
+claim patchouli-weave-tablecloth-seam-falsifier
+seat patchouli
+stamp 20261001.121229
+epoch 1790871149
+paths tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh tools/m/mantra_weave_tablecloth_seam_witness.rish
+what Run the weave-meets-Tablecloth seam falsifier: does current()'s rendered document bytes already carry a resin matching an existing blob in the Mantra store, or is the gap real.
