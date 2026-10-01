@@ -8331,3 +8331,20 @@ guard counsel_flow_negative
 path tools/gen/chapter/counsel_flow_negative_witness.rish
 tier lap
 seated 20261001.183722
+
+# mantra_beading_dedup_ratio -- the dedup ratio nobody had measured. mantra/beading.rye's own
+# header names its reason for a second chunker: "an edit shifts only nearby beads and the rest
+# re-sync." Every existing test asks BeadReport a yes/no question of that claim; none reads the
+# ratio. mantra/beading_dedup_ratio.rye runs a synthetic 24-config revision sweep (distribution x
+# edit kind x count x size) through both chunkers, sharing one store per chunker across each
+# sequence, and reads beads_deduped / bead_count. Measured: content-defined beading loses to
+# fixed-size on same-length SUBSTITUTE edits in 11 of 12 configs (fixed-size pays zero resync cost
+# for a shape that never moves any byte offset), and wins on INSERT/DELETE in 11 of 12 (the
+# shifting shape the module's comment is actually about) -- up to 500 permille wide on a single
+# front-loaded insert. The module's own design argument holds, scoped more narrowly than its
+# silent test suite suggested. Full writeup:
+# active-designing/date/20261001/20261001-182131_the-ratio-the-comment-was-actually-about.md
+guard mantra_beading_dedup_ratio
+path tools/m/mantra_beading_dedup_ratio_witness.rish
+tier lap
+seated 20261001.182247

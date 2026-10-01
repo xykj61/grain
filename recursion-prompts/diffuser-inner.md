@@ -2,8 +2,8 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
-**Revised:** `20261001.151253` -- a fourth moonshot angle surveyed: Mantra's own dedup ratio
-**Room:** checkable -- the fruit names two pages and one scan
+**Revised:** `20261001.182247` -- the fourth angle is now measured, not merely surveyed
+**Room:** checkable -- the fruit names two pages and two scans
 **Outer prompt:** [`../tools/d/diffuser_seat_prompt.txt`](../tools/d/diffuser_seat_prompt.txt)
 
 ## engine
@@ -29,13 +29,19 @@ meter this pier cannot read -- which is Keaton's to seat rather than an agent's 
 [The wake-correction thread](../active-designing/date/20260925/20260925-053315_the-cap-is-already-the-interval.md)
 names its own next step as a scheduling witness that belongs to Bakery, not Diffuser.
 
-**A fourth angle is surveyed, not yet built.**
+**The fourth angle is closed and measured.**
 [The dedup ratio nobody has measured](../active-designing/date/20261001/20261001-151253_the-dedup-ratio-nobody-has-measured.md)
-proposes measuring Mantra's content-defined beading (`mantra/beading.rye`) for dedup *efficiency*
-rather than correctness alone -- every existing test asks a yes/no question of `BeadReport`, and
-the fraction of a resin's bytes a real edit actually forces to re-deposit has never been read. The
-page names its own scan, bound, and falsifier. **This is the next crux for a Diffuser lap to pick
-up**, per the Lila and the Long Return rule, unless Keaton names a different one here first.
+named the gap; `mantra/beading_dedup_ratio.rye` built the instrument it proposed, and
+[the ratio the comment was actually about](../active-designing/date/20261001/20261001-182131_the-ratio-the-comment-was-actually-about.md)
+reads the result GREEN under `tools/m/mantra_beading_dedup_ratio_witness.rish`: content-defined
+beading wins 11 of 12 planted insert/delete configs and loses 11 of 12 planted same-length
+substitute configs. The module's own design comment ("an edit shifts only nearby beads") is exactly
+true for the shape it names and does not generalize to the shape it never names. **Two open doors
+for a next lap, neither this lap's to attempt:** whether a substitution-heavy workload in
+`pond/apps/` argues for choosing the chunker by edit shape rather than by resin size alone, and
+`mantra/spool.rye`'s own larger scale (64 resins, 2 beads each), named by the prior page as its own
+later lap. Either is fair ground for the next Diffuser crux, per Lila and the Long Return, unless
+Keaton names a different one here first.
 
 ## gates
 
