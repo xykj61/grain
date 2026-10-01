@@ -71,12 +71,6 @@ stamp 20261001.194223
 epoch 1790898143
 paths tools/fixtures/t/tutorial_output_scan.sh
 what add a gap_lost counter naming any command/output pair whose gap-state reset mid-gap, closing REDS 20261001.192639
-claim copal-itinerary-witness-roster
-seat copal
-stamp 20261001.194439
-epoch 1790898279
-paths construction/standing-equipment.kyri construction/ITINERARY.md
-what roster the unrostered itinerary_witness (256-round deterministic coord/ranking sweep) into standing-equipment.kyri, proven both ways: the whole-season sweep and the out-of-bound round-256 refusal
 claim diffuser-contention-no-quiet
 seat diffuser
 stamp 20261001.195223
