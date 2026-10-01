@@ -1,0 +1,218 @@
+//! mantra/snapshot_projection.rye -- two readings of one catalog's own shape.
+//!
+//! active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md
+//! names two fixtures. `count_exported_leaves` answers the first: it decodes the
+//! outer header and every batch frame `snapshot_export.rye`'s `export_catalog`
+//! wrote, reading each batch's own declared entry count independently of the
+//! snapshot header's `leaf_count` field, and sums them -- so the claim "every
+//! leaf appears in the export" is checked against the frames themselves rather
+//! than against a second copy of the same number the exporter wrote once.
+//! `projected_leaf_count` answers the second: a read-only scan over the
+//! catalog that never calls `export_catalog` at all, counting one entry per
+//! distinct `(peer, bolt, path)` tuple no matter how many revisions were
+//! written for it. The gap between the two counts is the cost shape the design
+//! paper names -- a full-history export walks every leaf ever written, and a
+//! projected view walks only the paths still live.
+//!
+//! This module writes no new wire format and changes no line of
+//! `recall_lap1.rye`, `resin_batch.rye`, or `snapshot_export.rye`. Both
+//! readings stay reports: the catalog they read is never mutated.
+//!
+//!   rye build mantra/snapshot_projection.rye -femit-bin=mantra/bin/snapshot-projection
+//!   mantra/bin/snapshot-projection selftest
+//!
+//! Scope: active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const ns = @import("recall_lap1.rye");
+const se = @import("snapshot_export.rye");
+const kumara = @import("kumara.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const ProjectionError = error{
+    Overflow,
+    Truncated,
+};
+
+fn cap_u32(buf: []const u8) u32 {
+    // invariant: the length casts to u32 on the next line, so a buffer past that ceiling would
+    // wrap rather than refuse
+    assert(buf.len <= std.math.maxInt(u32));
+    return @intCast(buf.len);
+}
+
+fn get_u32(payload: []const u8, off: *u32) ProjectionError!u32 {
+    if (off.* + 4 > cap_u32(payload)) return error.Truncated;
+    const v = std.mem.readInt(u32, payload[off.*..][0..4], .little);
+    off.* += 4;
+    return v;
+}
+
+fn get_field_len(payload: []const u8, off: *u32) ProjectionError!void {
+    if (off.* + 2 > cap_u32(payload)) return error.Truncated;
+    const n = std.mem.readInt(u16, payload[off.*..][0..2], .little);
+    off.* += 2;
+    if (off.* + n > cap_u32(payload)) return error.Truncated;
+    off.* += n;
+}
+
+/// Read one batch frame's own declared entry count, independent of the
+/// snapshot header's `leaf_count` field. Walks exactly the fields
+/// `resin_batch.rye`'s `build_batch` wrote ahead of its count -- a kind byte,
+/// a peer field, a bolt field, and a revision -- and stops there.
+///
+/// Precondition:  `batch` is one frame exactly as `export_catalog` wrote it.
+/// Postcondition: the returned count is the batch's own manifest entry count,
+///   read from its bytes rather than carried forward from any caller's claim.
+fn batch_entry_count(batch: []const u8) ProjectionError!u32 {
+    var off: u32 = 0;
+    if (off + 1 > cap_u32(batch)) return error.Truncated;
+    off += 1; // kind byte -- this reading does not gate on it; apply_batch already does
+    try get_field_len(batch, &off); // peer
+    try get_field_len(batch, &off); // bolt
+    _ = try get_u32(batch, &off); // revision
+    return try get_u32(batch, &off); // count
+}
+
+/// Count every leaf a snapshot actually carries, by reading each batch frame's
+/// own entry count and summing them -- independent of the header's own
+/// `leaf_count` claim, which this function never reads at all.
+///
+/// Precondition:  `snapshot` is exactly the bytes `export_catalog` returned.
+/// Postcondition: the returned total equals the sum of every batch frame's own
+///   declared entry count.
+pub fn count_exported_leaves(snapshot: []const u8) ProjectionError!u32 {
+    var off: u32 = 0;
+    if (off + 1 > cap_u32(snapshot)) return error.Truncated;
+    off += 1; // kind byte
+    try get_field_len(snapshot, &off); // version field
+    _ = try get_u32(snapshot, &off); // header's own leaf_count claim -- read past, not trusted
+    const batch_count = try get_u32(snapshot, &off);
+
+    var total: u32 = 0;
+    var b: u32 = 0;
+    while (b < batch_count) : (b += 1) {
+        const batch_len = try get_u32(snapshot, &off);
+        if (off + batch_len > cap_u32(snapshot)) return error.Truncated;
+        total += try batch_entry_count(snapshot[off..][0..batch_len]);
+        off += batch_len;
+    }
+    // invariant: this walk consumed exactly the bytes the snapshot declares, so the
+    // total it returns describes the whole blob rather than a prefix of it
+    assert(off <= cap_u32(snapshot));
+    return total;
+}
+
+/// One `(peer, bolt, path)` identity, held apart from its revision -- the key
+/// the projection groups leaves by.
+const TupleKey = struct {
+    peer: [16]u8,
+    peer_len: u32,
+    bolt: [32]u8,
+    bolt_len: u32,
+    path: [ns.max_path]u8,
+    path_len: u32,
+
+    fn matches(self: TupleKey, peer: []const u8, bolt: []const u8, path: []const u8) bool {
+        return std.mem.eql(u8, self.peer[0..self.peer_len], peer) and
+            std.mem.eql(u8, self.bolt[0..self.bolt_len], bolt) and
+            std.mem.eql(u8, self.path[0..self.path_len], path);
+    }
+};
+
+/// A read-only scan over `cat` that counts one entry per distinct
+/// `(peer, bolt, path)` tuple, whatever number of revisions each carries. The
+/// catalog itself is never touched: this is the "projected snapshot" the
+/// design paper names, taken as a report rather than a second artifact.
+///
+/// Precondition:  `cat` holds no more than `ns.max_bindings` leaves (its own
+///   invariant, enforced at `append_leaf`).
+/// Postcondition: the returned count is at most `cat.leaf_count`, with
+///   equality exactly when no tuple in `cat` carries more than one revision.
+pub fn projected_leaf_count(cat: *const ns.BoltCatalog) u32 {
+    var keys: [ns.max_bindings]TupleKey = undefined;
+    var count: u32 = 0;
+    var i: u32 = 0;
+    while (i < cat.leaf_count) : (i += 1) {
+        const leaf = &cat.leaves[i];
+        const peer = leaf.peer[0..leaf.peer_len];
+        const bolt = leaf.bolt[0..leaf.bolt_len];
+        const path = leaf.path[0..leaf.path_len];
+        var j: u32 = 0;
+        var seen = false;
+        while (j < count) : (j += 1) {
+            if (keys[j].matches(peer, bolt, path)) {
+                seen = true;
+                break;
+            }
+        }
+        if (!seen) {
+            // invariant: a catalog never holds more distinct tuples than it holds
+            // leaves, so this array -- sized to the catalog's own leaf ceiling --
+            // never overflows
+            assert(count < ns.max_bindings);
+            var key: TupleKey = undefined;
+            key.peer_len = @intCast(peer.len);
+            tally_copy.copy_disjoint(u8, key.peer[0..peer.len], peer);
+            key.bolt_len = @intCast(bolt.len);
+            tally_copy.copy_disjoint(u8, key.bolt[0..bolt.len], bolt);
+            key.path_len = @intCast(path.len);
+            tally_copy.copy_disjoint(u8, key.path[0..path.len], path);
+            keys[count] = key;
+            count += 1;
+        }
+    }
+    return count;
+}
+
+fn run_selftest(_: std.Io) !u8 {
+    const signer_seed = [_]u8{0x61} ** kumara.seed_length;
+    const signer = kumara.keypair_from_seed(&signer_seed);
+
+    // A catalog where every tuple has exactly one revision: the export and the
+    // projection must read the same count.
+    var flat: ns.BoltCatalog = .empty();
+    try flat.append_leaf("peerA", "a", 1, "one.txt", "uno", "plain-text");
+    try flat.append_leaf("peerA", "a", 1, "two.txt", "dos", "plain-text");
+    var flat_snap: [se.max_snapshot_bytes]u8 = undefined;
+    const flat_len = try se.export_catalog(&flat, signer, &flat_snap);
+    const flat_exported = try count_exported_leaves(flat_snap[0..flat_len]);
+    const flat_projected = projected_leaf_count(&flat);
+    assert(flat_exported == flat.leaf_count);
+    assert(flat_projected == flat.leaf_count);
+    assert(flat_exported == flat_projected);
+
+    // A catalog where two of three tuples carry more than one revision: the
+    // export walks every leaf ever written; the projection keeps one per path.
+    var layered: ns.BoltCatalog = .empty();
+    try layered.append_leaf("peerB", "b", 1, "a.txt", "alpha", "plain-text");
+    try layered.append_leaf("peerB", "b", 1, "b.txt", "beta", "plain-text");
+    try layered.append_leaf("peerB", "b", 2, "b.txt", "beta-two", "plain-text");
+    try layered.append_leaf("peerB", "b", 3, "b.txt", "beta-three", "plain-text");
+    try layered.append_leaf("peerC", "c", 1, "x.txt", "ex-one", "plain-text");
+    try layered.append_leaf("peerC", "c", 2, "x.txt", "ex-two", "plain-text");
+    var layered_snap: [se.max_snapshot_bytes]u8 = undefined;
+    const layered_len = try se.export_catalog(&layered, signer, &layered_snap);
+    const layered_exported = try count_exported_leaves(layered_snap[0..layered_len]);
+    const layered_projected = projected_leaf_count(&layered);
+
+    assert(layered.leaf_count == 6);
+    assert(layered_exported == 6);
+    assert(layered_projected == 3);
+    assert(layered_exported > layered_projected);
+
+    print("snapshot-projection: flat catalog -- exported {d}, projected {d}, equal GREEN\n", .{ flat_exported, flat_projected });
+    print("snapshot-projection: layered catalog -- exported {d} leaves, projected {d} tuples GREEN\n", .{ layered_exported, layered_projected });
+    print("snapshot-projection: a snapshot with repeated revisions costs strictly more than its live paths GREEN\n", .{});
+    print("GREEN: snapshot-projection -- the export and the projection read the same catalog to two different counts.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) return run_selftest(io);
+    return run_selftest(io);
+}
