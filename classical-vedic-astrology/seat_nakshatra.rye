@@ -16,6 +16,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const topology = @import("topology.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 pub const seat_nakshatra_version = "20260823.201533";
 
@@ -95,7 +96,7 @@ fn run_point(io: std.Io, point: u32) !u8 {
 pub fn main(init: std.process.Init) !u8 {
     const args = try init.minimal.args.toSlice(init.arena.allocator());
     if (args.len >= 2) {
-        const n = std.fmt.parseInt(u32, args[1], 10) catch return run_selftest();
+        const n = tally_parse_int.parse_int(u32, args[1], .{}) catch return run_selftest();
         return run_point(init.io, n);
     }
     return run_selftest();

@@ -168,11 +168,13 @@ agent-doable pick is any one, claim-board checked first.
 **GRASS -- THE SEALED CROSSING.** [Shelved
 whole](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md).
 
-**GRASS -- MEMCPY RATCHET, ONE SITE.** `glow/rune_mutate.rye`'s one `@memcpy` call migrated to
-`tally_copy.copy_disjoint`; `tools/r/rune_mutate_witness.rish` GREEN, `tame_style_check`'s
-`@memcpy` ratchet fell 135 to 134. **YOURS:** the ratchet still names `parseInt(` (54) and
-`functions_over_70` (694, longest `glow/lower_shop_gate_witness.rye` at 1035 lines) as further
-agent-doable picks, claim-board checked first.
+**GRASS -- MEMCPY RATCHET, ONE SITE.** [Account shelved
+whole](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md).
+
+**GRASS -- ONE PARSEINT SITE.** `seat_nakshatra.rye`'s `parseInt` migrated to
+`tally_parse_int.parse_int`, proven on metal; outside the ratchet's room list, so 54 stands. Log:
+`20261001-114515_seat-nakshatra-parseint-migration.kyri`. **YOURS:** `parseInt(` (54),
+`functions_over_70` (694), claim-board.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -368,7 +370,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8f2e36cd99` -- HEAD read before this follow-up commit (rule 5).
+**Git nib:** `207bc41683` -- HEAD read before this follow-up commit (rule 5).
 
 ### Incense -- product captain
 
