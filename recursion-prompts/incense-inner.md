@@ -168,3 +168,20 @@ writing: clean (39,834/40,960 bytes). Next lap: fresh round-open; check the boar
 in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the next
 cold run should read 8 red again, `demo_output` clean until its underlying scripts' output shapes
 next drift. The REDS pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20261001.040213` round-opened clean at `5dde343fa3` (already on the anointed order, 13
+dead-letter entries reported and none touched), checked the claim board directly (five rows, all
+September stamps, all past expiry, no overlap), read `HEAD` once, confirmed no cold pass in
+flight (`sh tools/f/fleet_call.sh --pattern standing_equipment_run`, `candidates=2 would_send=0`),
+and launched a fresh one with `--cadence-slice 1`.** Held fully still across roughly 70 minutes of
+Monitor re-arms -- checking the live process once mid-run by direct read rather than acting on it
+-- until the transcript carried `run_verdict=guard_red`, 372 green, 8 real red (the scan's own
+9-count includes the word "red" inside its own refusal sentence), 3 gated, `tree_moved=no`.
+Compared the red-leg names against the standing eight: all eight held exactly --
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment` -- zero new
+reds, thirteenth lap running clean in a row. Card headroom checked before writing: ITINERARY at
+39,834/40,960 (1,126 bytes left), this page at 12,084/24,576 (plenty). Next lap: fresh round-open;
+check the board and for an in-flight pass; hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands; the next cold run should read 8 red again. The REDS pin deadlock is still
+open and still Keaton's to rule on.
