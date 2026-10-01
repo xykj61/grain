@@ -10,6 +10,7 @@
 | `20261001.195100` | [no caller wants a mutable identity](20261001/20261001-195100_no-caller-wants-a-mutable-identity.kyri) | fourth-angle crux closed: every storage name binds for life |
 | `20261001.195050` | [grass's door-page reads clean](20261001/20261001-195050_grass-door-page-reads-a-clean.kyri) | docs-geode/README.md graded A at its own Door setting; no repair owed |
 | `20261001.194926` | [fleet steering read](20261001/20261001-194926_fleet-steering-read.kyri) | closed fruits still sailing; bakery's cache is the live crux |
+| `20261001.194626` | [close the landed Comlink-witness-roster claim](20261001/20261001-194626_close-the-landed-comlink-witness-roster-claim.kyri) | a stale pheromone claim's repair had already landed and re-verified GREEN; closed the board entry |
 | `20261001.194547` | [Grass confirms thin queue after round-open pull](20261001/20261001-194547_grass-confirms-thin-queue-after-round-open-pull.kyri) | pulled 4 peer commits clean; functions_over_70 and dated testimony both checked and declined |
 | `20261001.194542` | [Grass's fifth confirm, tree unchanged since last log](20261001/20261001-194542_grass-fifth-confirm-tree-unchanged-since-last-log.kyri) | HEAD identical to prior lap's close; rota row 3 (Water) read in full, no new repair surfaced |
 | `20261001.194238` | [Air row pulls one strand](20261001/20261001-194238_air-row-pulls-one-strand-nothing-snaps.kyri) | pulled 71a9b15ab5; nib drift confirmed as existing %803, not new |
