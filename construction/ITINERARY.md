@@ -75,29 +75,10 @@ named-invariant asserts landed, `tame_style_check`'s zero-assert ratchet fell 11
 remain, all outside pheromone's own lane.
 **INCENSE.** [Accounts shelved](archive/date/20260917/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
-**COPAL -- TWO SHELVED ACCOUNTS.** [Board-readable, row
-CLOSED](archive/date/20260917/20260917-185557_itinerary-copal-board-readable-account.md). [Writer
-wish](archive/date/20260917/20260917-204619_itinerary-copal-writer-wish-account.md): claim-writer
-newline wall landed (`has_newline`, `form_gate`, 62-to-77 legs). **YOURS:** a `--cut` flag taking a
-whole record, and whether the board should refuse a hand editing it at all -- both Keaton's word.
-
-**COPAL -- SEVEN ELDER ACCOUNTS, SHELVED WHOLE:** [account](archive/20260924-104400_itinerary-copal-elder-accounts.md).
-**YOURS:** the resin room's landed wall, 45 written characters, 1,417 almanac characters, claim-path
-exemption, and the remaining unrostered chapter witnesses.
-
-**COPAL.** [Bounds-home account shelved whole](archive/date/20260925/20260925-174220_itinerary-copal-bounds-home-account.md).
-
-**COPAL -- CENSUS CONTROL ROSTERED.** Three live duties plus a planted naive-total refusal,
-direct proof green.
-
-**COPAL.** [Baton museum census account shelved
-whole](archive/date/20261001/20261001-113824_itinerary-copal-baton-museum-census-account.md) --
-thirteen halls, planted-breach control, both GREEN.
-
-**COPAL.** [Zero_view account shelved
-whole](archive/date/20261001/20261001-121928_itinerary-copal-zero-view-account.md) -- empty
-planted view against an opened archive fixture, plus a `prove-red` leg, GREEN direct and by
-name through the runner.
+**COPAL -- SIX ACCOUNTS AND ONE OPEN QUESTION SET, FOLDED WHOLE.** [account](archive/date/20261001/20261001-125524_itinerary-copal-six-pointer-fold-account.md).
+**YOURS:** a `--cut` flag taking a whole record and whether the board should refuse a hand editing
+it at all; the resin room's landed wall, 45 written characters, 1,417 almanac characters, the
+claim-path exemption, and the remaining unrostered chapter witnesses -- all Keaton's word.
 
 **COPAL.** [Voice_roster account shelved
 whole](archive/date/20261001/20261001-124523_itinerary-copal-voice-roster-account.md).
@@ -358,7 +339,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f1cc4a5f3a` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
+**Git nib:** `b2474f0b30` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
 
 ### Incense -- product captain
 
