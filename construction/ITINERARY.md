@@ -227,6 +227,8 @@ on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards
 
 **DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
+**DIFFUSER -- THE FOURTH ANGLE'S OPEN CRUX ANSWERED BY A CENSUS.** [Shelved whole](archive/date/20261001/20261001-193541_itinerary-diffuser-mutable-identity-account.md): every storage caller in this tree keeps a name bound to its first bytes for life; content-defined resin splitting has no caller yet, and the honest next crux is the caller itself. Graded B at Field.
+
 **PATCHOULI -- THREE ACCOUNTS, CONDENSED TO ONE POINTER, NOTHING ARCHIVED LOST**
 (`20260922`-`20261001`): the falsifier
 ([account](archive/date/20260922/20260922-212900_itinerary-patchouli-falsifier-account.md)),
@@ -363,7 +365,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `6a3d01e9d6` -- HEAD's parent, read after the final rebase.
+**Git nib:** `d0519aded0` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

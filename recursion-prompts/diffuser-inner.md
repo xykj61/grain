@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
-**Revised:** `20261001.190906` -- both of the fourth angle's open doors are now read
+**Revised:** `20261001.193541` -- the fourth angle's crux is answered and the ladder is quiet
 **Room:** checkable -- the fruit names two pages and two scans
 **Outer prompt:** [`../tools/d/diffuser_seat_prompt.txt`](../tools/d/diffuser_seat_prompt.txt)
 
@@ -53,10 +53,19 @@ measures `mantra/spool.rye`'s own larger scale -- a new library module,
 and finds that `spool.rye` splits resins at a fixed absolute byte offset and never calls
 `beading.bead_content_defined`, so a same-length substitute dedups at 750-875 permille regardless
 of position, while an insert or delete reads near zero when it lands early (most of the artifact
-sits downstream) and climbs toward the substitute floor the later it lands. Fair ground for the
-next Diffuser crux: whether a content-defined resin split is worth building, and what a real
-Mantra revision caller's edit traffic would actually look like, both named as open rather than
-attempted by this lap.
+sits downstream) and climbs toward the substitute floor the later it lands.
+
+**The crux that measurement left open is answered rather than built around.**
+[No caller wants a mutable identity](../active-designing/date/20261001/20261001-193541_no-caller-wants-a-mutable-identity.md)
+reads every storage caller this tree has written -- the fourteen `tablecloth.store_artifact`
+sites, the spool-backed large-artifact catalog, and Tilak's leaf-append log -- and finds each one
+keeps a name bound to the one set of bytes it was first given. Content-defined resin splitting has
+no live caller to change today; the honest next Mantra crux is the caller itself, a module with a
+real reason to keep one name's identity stable across an edit. Graded B at Field.
+
+**The torus ladder and the fourth angle both read closed.** The next Diffuser lap's own crux is a
+fresh first-principles proposal -- toroidal topology, energy-saving compute, or a radial/polar
+scheme -- rather than a further pass over either closed ladder.
 
 ## gates
 
