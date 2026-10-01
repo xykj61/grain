@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.053443` | [incense clocks the fleet](20261001/20261001-053443_incense-clocks-the-fleet.kyri) | workers stay ashore until incense reads their loops |
 | `20261001.052541` | [live seats read claude](20261001/20261001-052541_live-seats-read-claude.kyri) | bakery on Opus 5.5, other live seats on Sonnet 5 |
 | `20261001.045108` | [fourteenth clean cold run](20261001/20261001-045108_fourteenth-clean-cold-run.kyri) | 372 green, 8 red matching the standing shape, tree_moved=no |
 | `20261001.035445` | [thirteenth-clean-cold-run](20261001/20261001-035445_thirteenth-clean-cold-run.kyri) | fresh cold run, 372/8/3, caught own fabricated stamp |

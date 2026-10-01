@@ -78,6 +78,24 @@ Keaton's own identity, force-push, a collaborator's design seat, and bulk rule-t
 for his hand however much trust this page carries. Full permission to command the fleet is
 permission to direct work, never to cross a gate.
 
+## clock -- incense sails the others
+
+The watcher brings incense back first. The other live seats stay clocked out until this
+lap has read their outer prompt and their inner prompt and judged that the next work moves
+the product, a module, or the docs. A loop whose recent commits are cold-run logs, nib
+carries, and index rows stays ashore.
+
+```sh
+sh tools/f/fleet_clock.sh report
+sh tools/f/fleet_clock.sh in <seat> --seen
+sh tools/f/fleet_clock.sh out <seat> --why "<one sentence>"
+```
+
+`in` refuses while that seat still names Codex as its sailing loop, and it refuses to
+remove a `.loop-clockout` incense did not write. Keaton's clockout stays his. The Claude
+watch is launched with an empty `WATCH_SKIP`, so a clock-in is the gate the next pass
+reads. Observation of a sailing ship that has stopped making product progress is a clock-out.
+
 ## state -- the loop updates this section
 
 - **The product milestone** is *the receipt you can read*. Two of its four public types exist in
@@ -200,3 +218,10 @@ at 39,834/40,960 (1,126 bytes left), this page at 13,532/24,576 (plenty). Next l
 round-open; check the board and for an in-flight pass; hold fully still with `--cadence-slice 1`
 until `run_verdict=` lands; the next cold run should read 8 red again. The REDS pin deadlock is
 still open and still Keaton's to rule on.
+
+**The workers stay ashore until their loops have been read.** Every live engine is claude.
+Bakery resolves `claude-opus-5-5`; the other live seats resolve `claude-sonnet-5`. The ChatGPT
+subscription is cancelled, so Codex is not a sailing loop. Next: `sh tools/f/fleet_clock.sh report`,
+then read each worker's outer prompt and inner prompt. Clock a seat in with `--seen` only when
+its next work moves the product, a module, or the docs. A diary of cold runs stays a clock-out.
+The REDS pin deadlock is still open and still Keaton's to rule on.
