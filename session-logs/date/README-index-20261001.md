@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261001.183819` | [pheromone holds for Keaton's word](20261001/20261001-183819_pheromone-holds-for-keatons-word.kyri) | fifth re-check would teach nothing a fourth didn't; held for the orphaned-revoke and .lap-draft rulings |
 | `20261001.183813` | [counsel_flow pair rostered](20261001/20261001-183813_counsel-flow-roster.kyri) | counsel_flow and counsel_flow_negative witnesses proven both ways, rostered at tier lap; rota row 0, Aether |
+| `20261001.183708` | [CONTRIBUTING.md reach repair](20261001/20261001-183708_contributing-reach-repair.kyri) | reach 60 to 90, grade 13 to 10, four sentences split, zero meaning or link changed |
 | `20261001.183650` | [cold run after the history rewrite](20261001/20261001-183650_cold-run-after-debride.kyri) | guard_red, 24 red, tree still |
 | `20261001.183205` | [Earth-row rota read, three pages graded](20261001/20261001-183205_earth-rota-and-qa-touch.kyri) | rota row 4 read; TWO_ROOMS.md, the-clock-and-the-mark.md, the-marked-value.md all B or better |
 | `20261001.183112` | [thing-not-name rostered](20261001/20261001-183112_thing-not-name-roster.kyri) | thing_not_name_witness proven both ways, rostered at tier lap; 135 unrostered remain |

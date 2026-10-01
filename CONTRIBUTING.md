@@ -8,7 +8,7 @@
 
 ---
 
-This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit` -- now resting, unaltered, in the elder lane at [`xykj61/urbit`](https://github.com/xykj61/urbit), where the `old/` archive stayed behind when Grain began clean -- and grows its own voice on top of it. Read both: the older document's rules still bind, and this one names what this proposal adds. Grain grows downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's, keeping any eventual upstream pull request small, legible, and in the house style.
+This proposal keeps the strictness of the `CONTRIBUTING.md` it inherited from `urbit/urbit`, and grows its own voice on top of it. The elder document now rests, unaltered, in the elder lane at [`xykj61/urbit`](https://github.com/xykj61/urbit), where the `old/` archive stayed behind when Grain began clean. Read both: the older document's rules still bind, and this one names what this proposal adds. Grain grows downstream as a contribution offered back to Urbit, so its own discipline deliberately mirrors Urbit's. That keeps any eventual upstream pull request small, legible, and in the house style.
 
 ## Where Things Live
 
@@ -18,7 +18,7 @@ Start at [`ORGANIZING.md`](ORGANIZING.md) for the shape of the whole tree -- wha
 
 Every commit follows Urbit's own inherited discipline: **atomic**, **component-prefixed**, **under 50 characters** in the subject line, in a compiling and runnable state. Work still in progress lands on a branch, and `main` holds finished commits.
 
-This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / `.cursor-archive/rules/commit-messages.mdc`: every commit body is written in Kyri's voice at the **Meter** setting of New Gauge Style, with a short paragraph naming what changed and why, and a `Related` section, which stays present even where the work resolves a tracked issue or stands on its own.
+This proposal adds a voice to that structure, seated as an always-on rule at [`.claude/rules/commit-messages.md`](.claude/rules/commit-messages.md) / `.cursor-archive/rules/commit-messages.mdc`. Every commit body is written in Kyri's voice at the **Meter** setting of New Gauge Style: a short paragraph naming what changed and why, and a `Related` section. That section stays present even where the work resolves a tracked issue or stands on its own.
 
 ## Pull Requests
 
@@ -124,14 +124,14 @@ Still open: <the question it leaves, sized honestly>. Superseded:
 ## The Eight Lanes
 
 Work in this tree arrives through eight lanes, and a pull request names the lane rather than a
-person. The lanes and their subjects live in one seat table, `construction/fleet-roster.kyri` --
-read that file rather than this paragraph, since a lane is added or retired by editing one row
+person. The lanes and their subjects live in one seat table, `construction/fleet-roster.kyri`.
+Read that file rather than this paragraph, since a lane is added or retired by editing one row
 there. **It is named here rather than linked**, because the maintainer's own field carries it and
-the public projection does not; a link would open onto nothing for most readers of this page.
+the public projection does not. A link would open onto nothing for most readers of this page.
 
-Naming the lane tells a reviewer which laws your change answers to and which peer's files it must
+Naming the lane tells a reviewer which laws your change answers to, and which peer's files it must
 not move without a word. It also keeps a pull request **depersonalized by construction**: the
-description says what changed, the lane says where it belongs, and neither needs a name. That is
+description says what changed, and the lane says where it belongs. Neither needs a name. That is
 the same discipline the reader-facing documentation already keeps -- it addresses whoever is
 reading rather than whoever wrote it.
 
@@ -145,7 +145,7 @@ Every commit is GPG-signed. This repository's own signing key is recorded at `PU
 
 ## Voice
 
-Everything you write here -- code comments, commit messages, documentation, session logs -- speaks in **New Gauge Style**, in Kyri's voice, per [`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md) and [`context/KYRI.md`](context/KYRI.md). Its first rule comes before the others: **don't be too smart about it.** Gauge inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md). Kyri gathers what prior writing seasons (Reya 2 - Rio 3 - Quin-as-writer - Riyo) each held best; **Quin** keeps the fifth OS variant and the Q-vane (`context/QUIN.md`). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee rather than a named individual, per [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
+Everything you write here -- code comments, commit messages, documentation, session logs -- speaks in **New Gauge Style**, in Kyri's voice, per [`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md) and [`context/KYRI.md`](context/KYRI.md). Its first rule comes before the others: **don't be too smart about it.** Gauge inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md). Kyri gathers what prior writing seasons (Reya 2 - Rio 3 - Quin-as-writer - Riyo) each held best. **Quin** keeps the fifth OS variant and the Q-vane (`context/QUIN.md`). Reader-facing documentation in `expanding-prompts/` and design research addresses a generic Acme Corporation employee rather than a named individual. That convention is seated at [`.claude/rules/acme-employee-voice.md`](.claude/rules/acme-employee-voice.md).
 
 ---
 
