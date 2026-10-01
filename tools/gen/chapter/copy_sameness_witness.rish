@@ -14,6 +14,9 @@
 # figures above are testimony and keep every word; what speaks as NOW reads its count off the
 # scan rather than out of this header, which is why the say lines below print the scan's own
 # output instead of a number written here.
+#
+# control: tools/fixtures/c/copy_sameness_control.sh -- proves the "verdict=ok" assert below
+# actually refuses a planted mismatch, using the scan's own second argument (REDS %827).
 
 say "copy-sameness: Language EN -- one fold, many copies, no drift."
 say "copy-sameness: Style Gauge, Meter -- the split is the scan's to report, not this line's."
