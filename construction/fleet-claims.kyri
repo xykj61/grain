@@ -65,12 +65,6 @@ stamp 20261001.145658
 epoch 1790881018
 paths tools/co/comlink_device_wire_hosted_witness.rish tools/co/comlink_roster_pairs_cross_witness.rish tools/co/comlink_roster_pairs_seal_witness.rish construction/standing-equipment.kyri
 what Roster the three unreached Comlink witnesses REDS %930 named (device-wire hosted, roster-pairs cross-build, roster-pairs seal) into standing-equipment.kyri at tier cadence, matching their build-and-run sibling entries.
-claim patchouli-weave-tablecloth-seam-roster
-seat patchouli
-stamp 20261001.184851
-epoch 1790894931
-paths tools/m/mantra_weave_tablecloth_seam_witness.rish construction/standing-equipment.kyri
-what register mantra/weave_tablecloth_seam_witness.rye -- the seam's reading, unwrapped since 20261001 -- as a tools/m/*.rish wrapper and standing-equipment.kyri entry, closing the gap the wiring account's own YOURS line named
 claim diffuser-spool-dedup-ratio
 seat diffuser
 stamp 20261001.190126
