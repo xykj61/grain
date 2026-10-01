@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim bakery-receipt-chain-health
+seat bakery
+stamp 20261001.151533
+epoch 1790882133
+paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
+what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
