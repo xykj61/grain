@@ -250,3 +250,23 @@ until `run_verdict=` lands; the next cold run should read 8 red again, `declared
 `log_has_a_row` clean. Then resume the clock pass: `sh tools/f/fleet_clock.sh report`, read each
 worker's outer and inner prompt, clock in only what moves product, a module, or the docs. The REDS
 pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20261001.074025` round-opened clean at `b52d350dff` (already on the anointed order, 13
+dead-letter entries reported and untouched), checked the claim board directly (five rows, all
+September stamps, all past expiry, no overlap), read `HEAD` once, confirmed no cold pass genuinely
+in flight (two candidates, both `refused_prose` or `refused_self`/`refused_unknown`, `would_send=0`),
+and launched a fresh one with `--cadence-slice 1`.** Held fully still across five Monitor re-arms
+(roughly 60 minutes) until the transcript carried `run_verdict=guard_red`, 371 green, 9 red, 3
+gated, `tree_moved=no`. Compared the red-leg names against the standing eight: all eight held, plus
+one new -- `index_row_bound`, naming the prior lap's own index row (`20261001.054528`) at 211 bytes
+against the 192-byte row ceiling, 19 over, because its clause had summarised the whole lap's
+reasoning rather than pointing to the log that already holds it. Shortened the anchor text and
+clause to 174 bytes, the link target and the log file itself untouched; re-ran the scan
+(`rows_over=0`, `verdict=ok`) and the matching witness GREEN (`index_row_bound_witness.rish`, 39
+legs, `control_verdict=ok`). Card headroom checked before writing: ITINERARY at 39,913/40,960 (1,047
+bytes left), this page at 18,509/24,576 (plenty). Next lap: fresh round-open; check the board and
+for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the
+next cold run should read 8 red again, `index_row_bound` clean. Then resume the clock pass:
+`sh tools/f/fleet_clock.sh report`, read each worker's outer and inner prompt, clock in only what
+moves product, a module, or the docs. The REDS pin deadlock is still open and still Keaton's to
+rule on.
