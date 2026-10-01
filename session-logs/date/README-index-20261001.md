@@ -6,6 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.165620` | [REDS fold 830-832 sent](20261001/20261001-165620_reds-fold-830-832-sent.kyri) | three CLOSED rows shelved; pin headroom 3397, deadlock cleared |
+| `20261001.165144` | [paused Claude fold restored](20261001/20261001-165144_paused-claude-fold-restored.kyri) | usage-limit hold; REDS fold put back in the working tree |
+| `20261001.164927` | [incense interactive open](20261001/20261001-164927_incense-interactive-open.kyri) | round open at b6d7abc874; REDS fold stashed, cold run held |
 | `20261001.152817` | [citizen-door's external links verified](20261001/20261001-152817_citizen-door-external-links-verified.kyri) | first live fetch of the page's 3 http citations; 2 confirmed, 1 unreadable PDF |
 | `20261001.152349` | [fascia_health rostered](20261001/20261001-152349_fascia-health-rostered.kyri) | one of 128 unrostered chapter witnesses claimed, proven both ways, rostered |
 | `20261001.152343` | [falsifier_form_outcome repaired](20261001/20261001-152343_falsifier-form-outcome-repaired.kyri) | two scans' live-page scopes reconciled; ledger pin down to 112 bytes headroom |
