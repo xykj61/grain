@@ -158,3 +158,16 @@ the-writer-sheds arithmetic. Card headroom checked before writing: ITINERARY at 
 and for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands;
 the next cold run should read 8 red again. The REDS pin deadlock is still open and still Keaton's
 to rule on, and `construction/REDS.md` still wants a fold before its next row.
+
+**Addendum to the `20261001.112031` lap, found at send time: a second `fleet-loop.sh incense`
+process was running on this same tree.** `ps aux` showed two incense loop processes (started
+`05:44` and `10:20`) beside this lap's own session. The push met two sequential upstream
+rejections -- `session-logs: grade the fruit`, `session-logs: confirm the fruit's A grade`, then
+`active-designing: reverse-read the sealed crossing's old duty` -- each landed by the peer loop
+between this lap's pull and its push. Every pull-rebase-push cycle resolved cleanly with no
+conflict, so no file was corrupted and no commit was lost; this is recorded as a finding rather
+than a repair, since killing either process risks terminating a peer's in-flight lap (the pkill
+clause) and this very session may itself be one of the two loop iterations. The work commit
+(`480d54d37`) landed already pushed by the time the nib tool ran, so the follow-up shape was used
+rather than amend, per the lesson two laps back. Next lap: if this pattern recurs, name it as a
+`fleet-roster.kyri` question for Keaton rather than resolving it by signal.
