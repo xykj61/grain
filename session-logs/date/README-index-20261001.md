@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.150500` | [Wyoming PBC grade-9 closed](20261001/20261001-150500_wyoming-pbc-grade-9-closed.kyri) | reach split sentence by sentence, grade 12 to 9, composite A+/97 |
+| `20261001.145917` | [torus-ladder-whitepaper-falsifier](20261001/20261001-145917_torus-ladder-whitepaper-falsifier.kyri) | row 11's whitepaper closes the 12-row moonshot ladder, B+/89 |
 | `20261001.145105` | [reds_ledger witness pair rostered](20261001/20261001-145105_reds-ledger-witness-rostered.kyri) | claim, round-open, two stale-conflict resolves, roster row landed, 139 unrostered remain |
 | `20261001.145100` | [snapshot-projection fixtures proven on metal](20261001/20261001-145100_snapshot-projection-fixtures.kyri) | export vs projected leaf counts, 6 against 3, GREEN witness |
 | `20261001.145041` | [grass's fruit confirmed again, fleet loop pattern named](20261001/20261001-145041_grass-fruit-confirmed-again-fleet-loop-pattern.kyri) | sealed-crossing fruit still delivered; named the fleet's repeated-confirmation cadence rather than running a sixth copy |
