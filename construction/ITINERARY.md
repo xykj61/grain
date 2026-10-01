@@ -115,6 +115,8 @@ name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roste
 
 **PETRICHOR.** [Wyoming PBC walkthrough repaired past the B floor](archive/date/20261001/20261001-123622_itinerary-petrichor-wyoming-pbc-account.md) -- C+/77 to B+/85. **YOURS:** reach still reads grade 12 against the Door ceiling of 9.
 
+**PETRICHOR.** The citizen's-door draft already reads A/92 (door, service 90); all sixteen relative links resolve. No raise needed.
+
 **GRASS -- THE OPEN-ROOM REVERSE-READ OF 20260922.** [Shelved
 whole](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md). The later packet stays on the card.
 
