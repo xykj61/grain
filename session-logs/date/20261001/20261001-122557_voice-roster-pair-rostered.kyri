@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261001.122557
+editor Claude Code
+provider model Anthropic
+product product Claude Code
+role repository role agent lap, fleet seat copal
+modality text
+model claude-sonnet-5
+model_status configured fleet default claude-opus-5; this clone resolves claude-sonnet-5, read via tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host grain-copal tree, Linux, America/New_York
+title Roster the voice_roster witness pair, GREEN both sides
+prompt copal-inner.md's standing fruit: take one unrostered witness under tools/gen/chapter/, claim it, roster it, prove it from both sides, leave the rest for a later lap.
+think Walked tools/gen/chapter/ against construction/standing-equipment.kyri's path lines and found 130 unrostered witnesses, matching the card's own count.
+think Picked voice_roster_witness.rish and its voice_roster_negative_witness.rish sibling because the pair already proves the standing-voice guard both ways -- positive accepts the declared voice, negative refuses an undeclared one and still accepts the declared voice -- which matches the fruit's own ask without needing a second lap to build a negative leg.
+think Followed the ABSENCE/claim-first order: pulled xy to clear commits_behind=1, ran fleet_claim_scan.sh --check on the four target paths (clear), opened a fleet claim naming both files plus the scan and the roster, staged both construction/fleet-claims.kyri and construction/ITINERARY.md in the same commit, pushed before building.
+think Ran both witnesses directly with rishi/bin/rishi run (both GREEN) and again by guard name through tools/fixtures/s/standing_equipment_run.sh (both green, 56ms and 90ms CPU), then appended two guard records at tier lap to construction/standing-equipment.kyri, matching the copy_sameness pair's shape as precedent.
+think Confirmed the roster parsed correctly by diffing guards_rostered/tier_lap before and after via git stash (481/387 -> 483/389), rather than trusting the scan's printed total alone.
+obs The claim-close commit's pin carry pushed construction/ITINERARY.md 388 bytes over its own 40960-byte bound. Per the-writer-sheds, shelved the zero_view account (my own immediate predecessor live account) to a new dated archive file, and tightened two older COPAL pointer paragraphs that had grown redundant with each other's YOURS notes -- rather than inventing a new shed, since both open questions were already duplicated across the two blocks.
+obs Two remote races during send: xy/main advanced twice while this claim-then-build round was in flight (a Proposal-2 witness build, a docs-geode repair, and a linengrow graduation). Rebased twice rather than merging, resolving one real conflict (the Git nib line) by taking the freshly-pulled HEAD's hash, matching rule 2's own HEAD's-parent reading.
+rota lap 6914, row 4 -- Water, the row that tastes. Read the threshold page close up: ran the witnesses directly and again through the named runner rather than trusting one green reading, which is the row's own discipline (taste up close, run the actual thing twice).
+file tools/gen/chapter/voice_roster_witness.rish read -- the witness being rostered
+file tools/gen/chapter/voice_roster_negative_witness.rish read -- its negative sibling
+file tools/fixtures/v/voice_roster_scan.sh read -- the scan both witnesses call
+file construction/standing-equipment.kyri edited -- appended the voice_roster and voice_roster_negative guard records at tier lap
+file construction/ITINERARY.md edited -- shelved the zero_view account, tightened two COPAL pointer paragraphs, added the VOICE_ROSTER ROSTERED row, carried the Git nib forward
+file construction/fleet-claims.kyri edited -- opened and closed the copal-voice-roster-witness-roster-20261001 claim
+file construction/archive/date/20261001/20261001-121928_itinerary-copal-zero-view-account.md created -- shelved zero_view account
+loom witness=voice_roster_witness wall_ms=0 cpu_ms=56
+loom witness=voice_roster_negative_witness wall_ms=0 cpu_ms=90
+recommend kg -- 128 unrostered tools/gen/chapter/ witnesses remain; the next lap may claim another one the same way.
+scope Claimed, built, proved, and rostered the voice_roster witness pair; shed the card back under its byte bound; rebased through two upstream landings.
+status GREEN -- both witnesses proven direct and by name through the runner; pushed to xy and debrided at d3920be11.
