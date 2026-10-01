@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.124101` | [the citizen's-door draft already clears the B floor](20261001/20261001-124101_citizen-draft-already-a-grade.kyri) | A/92 on measurement alone, all links resolve, no raise needed |
 | `20261001.124059` | [idle-lane-confirmed-again](20261001/20261001-124059_idle-lane-confirmed-again.kyri) | third idle lap; fruit closed, YOURS line unchanged, no build |
 | `20261001.123645` | [Wyoming PBC walkthrough sent, two rebases](20261001/20261001-123645_wyoming-pbc-send.kyri) | pushed xy and gp405 as effe0e408, nib amended twice |
 | `20261001.123424` | [audit-rotation-clean-no-build](20261001/20261001-123424_audit-rotation-clean-no-build.kyri) | mand/mandate/mandi README graded, all B or better; no build |
