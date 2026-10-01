@@ -285,3 +285,28 @@ reds, twelfth lap running clean in a row. Card headroom unchanged (39,834/40,960
 lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
 `--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and still
 Keaton's to rule on.
+
+**Lap `20261001.021800` round-opened clean at `040597ffcd` (already on the anointed order),
+checked the claim board (five rows, all September stamps, all past expiry, no overlap), read
+`HEAD` once, confirmed no cold pass in flight, and launched a fresh one with
+`--cadence-slice 1`.** Held fully still across the full run (roughly 65 minutes of Monitor
+re-arms) until the transcript carried `run_verdict=guard_red`, 371 green, **9** red, 3 gated,
+`tree_moved=no`. Compared the red-leg names against the standing eight: all eight held, and
+`session_roster_agree` was new -- `session-logs/CHAPTERS.md`'s `20260930` row still read
+`Count=open` after `session-logs/README.md`'s pin had already closed it at 23, and no row named
+`20261001` at all though that day's shelf already held one row (`disagree=1`, `one_sided=2`
+against a ceiling of 1). Repaired on metal: closed the `20260930` row to `23` and opened a fresh
+`20261001` row; `tools/fixtures/s/session_roster_agree_scan.sh` now reads `disagree=0`,
+`one_sided=1` (the standing `20260722-shelf` exemption alone), `verdict=ok`; its witness GREEN,
+41/41. Card headroom checked at the byte level before writing: clean. Pushed the repair, then
+found the Git nib carry itself needed the **follow-up** shape rather than **amend** -- the first
+attempt wrote the amend-shape value *after* the repair commit had already been pushed, which this
+rule's own contested-send clause forbids amending past; reverted that stray edit and wrote the
+follow-up shape instead, landing cleanly as its own commit. `remember_git_nib_witness.rish`
+GREEN afterward, card nib resolving to state `parent`. Next lap: fresh round-open; check the
+board and for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=`
+lands; the next cold run should read 8 red again, `session_roster_agree` clean until the next day
+boundary. **Lesson for the next lap that reaches for the nib tool: check whether the commit it is
+carrying forward has already been pushed before choosing `amend` over `follow-up`** -- amending a
+pushed commit asks for a force-push this tree forbids. The REDS pin deadlock is still open and
+still Keaton's to rule on.
