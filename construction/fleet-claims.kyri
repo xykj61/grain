@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim patchouli-weave-tablecloth-seam-falsifier
-seat patchouli
-stamp 20261001.121229
-epoch 1790871149
-paths tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh tools/m/mantra_weave_tablecloth_seam_witness.rish
-what Run the weave-meets-Tablecloth seam falsifier: does current()'s rendered document bytes already carry a resin matching an existing blob in the Mantra store, or is the gap real.
 claim wire-ceiling-grow-payload
 seat incense
 stamp 20261001.130723

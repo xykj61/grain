@@ -1,0 +1,46 @@
+# tools/m/mantra_weave_tablecloth_seam_witness.rish -- the weave-Tablecloth seam, pressed once.
+#
+# WHAT THIS PROVES. `active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`
+# charts a seam between the weave (every line a document ever held) and Tablecloth
+# (content-addressed storage, a resin is the SHA3-256 of bytes). Its falsifier is one command:
+# render a stored weave's `current()` output, hash the document, and ask whether that resin
+# already matches a blob the store holds for the same document. This witness runs that command on
+# metal, through the tree's own built Mantra CLI, in a throwaway pen.
+#
+# THE READING, STATED PLAINLY. It does not. `mantra/src/main.rye`'s `cmd_add` writes a blob under
+# `serialize_weave`'s own record format -- a header line, a counters line, and `gen\tpos\tsite\trun\tord\ttext\n`
+# per weave line -- and that is what gets hashed and named, not the plain document text `current()`
+# would render. So the resin this scan computes over the document's own bytes names no blob the
+# store holds, by name or by content, after one clean `add`. The gap the design page asked about is
+# real and measured rather than assumed: the seam is a build, not a naming exercise.
+#
+# WHAT THIS DOES NOT PROVE. Whether the seam is worth building, and what the next concrete step
+# looks like, stay Keaton's word and a later lap's -- named on the open-doors list, not here. This
+# witness answers the one question the design page's falsifier asked, no further.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_tablecloth_seam_witness.rish
+
+say "mantra-weave-tablecloth-seam: Language EN -- does the weave's current() output already carry a resin the store recognizes?"
+say "mantra-weave-tablecloth-seam: Style Gauge, Meter -- the answer is read off the built CLI in a pen, not off the source alone."
+say "mantra-weave-tablecloth-seam: Lens TAME -- one reading, bounded to one add, no new module."
+
+say "mantra-weave-tablecloth-seam: the mechanism the scan expects still stands in the source..."
+let mech = run ["sh" "-c" "grep -q 'fn serialize_weave' mantra/src/main.rye && grep -q 'mantra-weave-20260916.101910' mantra/src/main.rye"]
+assert mech.ok else "mantra-weave-tablecloth-seam: serialize_weave or its record header left main.rye, so the mechanism this witness names is no longer there to name"
+
+say "mantra-weave-tablecloth-seam: the store still names a blob by the SHA3-256 of its own bytes..."
+let store_mech = run ["sh" "-c" "grep -q 'Sha3.hash(data, &digest' mantra/src/store.rye"]
+assert store_mech.ok else "mantra-weave-tablecloth-seam: store.rye's write_blob no longer hashes what it writes under this name -- the comparison this witness runs would no longer mean what this witness says it means"
+
+say "mantra-weave-tablecloth-seam: pressing the falsifier -- one init, one add, one resin, one lookup..."
+let scan = run ["sh" "tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-weave-tablecloth-seam: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-weave-tablecloth-seam: the CLI did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "blob_count=2" else "mantra-weave-tablecloth-seam: one clean add should write exactly two blobs, the weave blob and the commit blob -- a different count means the store's own shape moved and this witness's reading needs a fresh look"
+assert scan.out contains "resin_matches_blob_name=no" else "mantra-weave-tablecloth-seam: the document's resin now names an existing blob -- the seam may already stand, which is news worth a session log of its own rather than a quiet pass here"
+assert scan.out contains "resin_matches_blob_content=no" else "mantra-weave-tablecloth-seam: no blob is named the document's resin, yet one HOLDS the document's own bytes under a different name -- that would be a store defect, not a seam already built, and wants its own red"
+assert scan.out contains "verdict=ok" else "mantra-weave-tablecloth-seam: the scan reached its own red"
+
+say "GREEN: the weave's current() output carries no resin the store recognizes today -- the seam is a build, measured rather than assumed."

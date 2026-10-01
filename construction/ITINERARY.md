@@ -281,8 +281,8 @@ The product cards carry the complete ladders:
 [shelved whole](archive/date/20260916/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
 against a ceiling of 8, the ninth from a peer lane.
 
-**PATCHOULI -- THE FALSIFIER ACCOUNT IS SHELVED.**
-[Shelved whole](archive/date/20260922/20260922-212900_itinerary-patchouli-falsifier-account.md).
+**PATCHOULI -- THE SEAM FALSIFIER FIRES.** [Shelved
+whole](archive/date/20261001/20261001-121725_itinerary-patchouli-weave-tablecloth-seam-account.md).
 
 ## Simple, Lovable, Complete order
 

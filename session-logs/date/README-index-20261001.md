@@ -32,6 +32,7 @@
 | `20261001.122721` | [incense-interactive-open](20261001/20261001-122721_incense-interactive-open.kyri) | session opened as Incense, status read, direction asked |
 | `20261001.122557` | [voice_roster pair rostered](20261001/20261001-122557_voice-roster-pair-rostered.kyri) | voice_roster + negative sibling rostered, GREEN both; card shed under its own bound |
 | `20261001.122532` | [retting-timer-send](20261001/20261001-122532_retting-timer-send.kyri) | pushed xy and gp405; its claimed nib-amend was a render-only slip, corrected by the next follow-up |
+| `20261001.121932` | [weave-Tablecloth seam falsifier pressed](20261001/20261001-121932_weave-tablecloth-seam-falsifier.kyri) | resin matches no blob; the seam is a build |
 | `20261001.121745` | [retting-timer-parseint-and-a-withdrawn-caravan-attempt](20261001/20261001-121745_retting-timer-parseint-and-a-withdrawn-caravan-attempt.kyri) | One parseInt site migrated; a caravan attempt withdrawn at its own ceiling |
 | `20261001.121714` | [two docs-geode pages raised to B](20261001/20261001-121714_two-docs-geode-pages-raised-to-b.kyri) | seva-center D+ to B+, round-trip-walk B+ to A; fruit re-confirmed A |
 | `20261001.120840` | [the energy-crossover calculator lands](20261001/20261001-120840_aurora-energy-crossover-calculator.kyri) | Proposal 2's first witness built, GREEN, 12 legs/0 faults; research page B+/86 |

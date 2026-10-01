@@ -55,6 +55,17 @@ seam is a naming exercise rather than a build -- and the honest outcome is a pag
 its numbers, rather than a new module. The falsifier is one command: render a stored weave, hash
 the document, and compare against the catalogue's resin for the same bytes.
 
+**Pressed on metal, `20261001.121229`.** `tools/m/mantra_weave_tablecloth_seam_witness.rish` drives
+the tree's own built Mantra CLI through one `init` and one `add` in a pen, reads the SHA3-256 of the
+added document's own bytes (`current()`'s resin at that point in the history, since one clean add
+leaves no prior generation to render around), and checks it against every blob under
+`.mantra/blobs/`, by name and by content. **Neither matches.** `mantra/src/main.rye`'s
+`serialize_weave` writes a header line, a counters line, and one `gen\tpos\tsite\trun\tord\ttext\n`
+row per weave line -- that record, not the plain document text, is what the store hashes and names.
+So the seam stands measured rather than assumed: **it is a build, not a naming exercise.** The next
+step is a small function -- render `current()`, concatenate the line texts, hash that -- rather than
+a design question.
+
 ## What stays whole
 
 The catalogue stays exactly where it is. The weave grows beside it, as it has since the root

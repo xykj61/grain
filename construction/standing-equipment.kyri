@@ -2997,6 +2997,19 @@ path tools/m/mantra_idempotent_add_witness.rish
 tier lap
 seated 20260910.024500
 
+# mantra_weave_tablecloth_seam -- presses the falsifier named in
+# active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md: does the
+# weave's current() rendered document already carry a resin the Mantra store recognizes as an
+# existing blob? One init, one add, one SHA3-256 of the document's own bytes, checked by name and
+# by content against every blob under .mantra/blobs/. Read on metal: no. serialize_weave's own
+# record format (a header line, a counters line, gen/pos/site/run/ord/text rows) is what the store
+# hashes and names, not the plain document text current() would render, so the seam stands as a
+# build rather than a naming exercise today.
+guard mantra_weave_tablecloth_seam
+path tools/m/mantra_weave_tablecloth_seam_witness.rish
+tier lap
+seated 20261001.121229
+
 # mantra_record_ceiling -- a record read off disk stops at a line the reader names. `store.rye`
 # bounds a blob in BYTES (max_blob_bytes, 1 << 27) and `weave.rye` bounds a weave in LINES
 # (max_weave_lines, 1 << 20), and the conversion between the two units had never been taken: a v2
