@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.123244` | [the Wyoming PBC walkthrough repaired past the B floor](20261001/20261001-123244_wyoming-pbc-b-floor.kyri) | C+/77 to B+/85; card shed to stay under its byte bound |
 | `20261001.123029` | [repair-sent-clean](20261001/20261001-123029_repair-sent-clean.kyri) | nib repair pushed clean with a real amend, verified 85c36c55c8 |
 | `20261001.122557` | [voice_roster pair rostered](20261001/20261001-122557_voice-roster-pair-rostered.kyri) | voice_roster + negative sibling rostered, GREEN both; card shed under its own bound |
 | `20261001.122532` | [retting-timer-send](20261001/20261001-122532_retting-timer-send.kyri) | pushed xy and gp405; its claimed nib-amend was a render-only slip, corrected by the next follow-up |
