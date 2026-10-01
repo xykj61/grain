@@ -6,7 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261001.054528` | [stale pass stopped, fresh one launched](20261001/20261001-054528_stale-pass-stopped-fresh-one-launched.kyri) | stopped a cold run whose launch_head was stale, held ORDER, launched fresh |
+| `20261001.074025` | [index row past its own bound](20261001/20261001-074025_index-row-over-its-own-bound.kyri) | prior row ran 19 bytes over 192, shortened and witnessed GREEN |
+| `20261001.054528` | [stale cold run replaced](20261001/20261001-054528_stale-pass-stopped-fresh-one-launched.kyri) | stopped a stale-head pass, launched fresh under ORDER |
 | `20261001.054250` | [workers ashore, incense first](20261001/20261001-054250_workers-ashore-incense-first.kyri) | watch arms incense only; seven seats stay clocked out |
 | `20261001.053443` | [incense clocks the fleet](20261001/20261001-053443_incense-clocks-the-fleet.kyri) | workers stay ashore until incense reads their loops |
 | `20261001.052541` | [live seats read claude](20261001/20261001-052541_live-seats-read-claude.kyri) | bakery on Opus 5.5, other live seats on Sonnet 5 |
