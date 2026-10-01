@@ -2925,6 +2925,25 @@ path tools/m/mantra_weave_v1_write_witness.rish
 tier lap
 seated 20260908.123338
 
+# The seam, wired. The chart at active-designing/date/20260921/20260921-071008 asked whether
+# `Weave.current()`'s output already carries a stable content address, and whether anything
+# already computes it the same way the catalogue does. `weave_tablecloth_seam_witness.rye`
+# answered yes -- the same SHA3-256 over the same bytes -- and named the WIRING as what remained:
+# nothing called `current()`, joined its lines, and handed the result to `append_leaf` in one
+# motion. `weave_tablecloth.rye`'s `render_to_leaf` is that motion. The witness proves the carry
+# is byte-for-byte (an independently computed digest, not the module's own arithmetic about
+# itself), that the catalogue grows by exactly one leaf per call across repeated calls, and that
+# a revision the catalogue's own rule refuses crosses the wiring as its own named error rather
+# than being swallowed. The control's `separator` break found a real fault on the way to GREEN:
+# the module's own docstring had quoted a failed import attempt literally, and rye's bridge walk
+# scans raw text for the six characters that open an import rather than parsing, so the quoted
+# example was followed as a real dependency and happened to resolve by directory-math coincidence
+# in the real tree while reddening in the pen. The docstring now describes the attempt in words.
+guard mantra_weave_tablecloth
+path tools/m/mantra_weave_tablecloth_witness.rish
+tier lap
+seated 20261001.182844
+
 # The record a merged history fits in. The two guards above named this gap in their own headers
 # and neither could close it: `to_v1` refuses a second site by name, and a second site is exactly
 # and only what `merge` produces -- so Mantra could merge two histories and had nowhere to put

@@ -1,0 +1,59 @@
+# tools/m/mantra_weave_tablecloth_witness.rish -- current() to a leaf, in one motion.
+#
+# WHAT THIS PROVES. The seam chart
+# (active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md) named a
+# reading and a gap: `weave_tablecloth_seam_witness.rye` answered the reading -- the weave's
+# `current()` output and the catalogue's own `digest_hex` agree on the same bytes, under the same
+# SHA3-256 -- and named the WIRING as the next lap's crux: nothing yet called `current()`, joined
+# its lines, and handed the result to `append_leaf` in one motion. `mantra/src/weave_tablecloth.rye`
+# is that motion -- `render_current` renders, `render_to_leaf` renders and appends in one call -- and
+# this guard proves it carries bytes through untouched, grows the catalogue by exactly one leaf per
+# call, and lets a refused revision cross the wiring by name rather than being swallowed.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_tablecloth_witness.rye,
+# because Zig refuses an import that escapes the root file's directory. `mantra/src/recall_lap1.rye`
+# and `mantra/src/tally_copy.rye` are same-directory symlinks to their real homes at
+# `mantra/recall_lap1.rye` and `tally/copy.rye` -- the compiler's own refusal reads the import
+# string rather than the resolved path, so a same-directory symlink satisfies it.
+#
+# Module: mantra/src/weave_tablecloth.rye. Sibling: the seam reading at
+# tools/m/mantra_weave_tablecloth_seam_witness.rish is not yet built -- the seam witness itself
+# stands unregistered in standing-equipment.kyri, a pre-existing gap this guard does not close.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_tablecloth_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_tablecloth_witness"
+
+say "mantra-weave-tablecloth: Language EN -- current() to a leaf, in one motion."
+say "mantra-weave-tablecloth: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-weave-tablecloth: Lens TAME -- one combined error set, read at the edge, never swallowed."
+
+say "mantra-weave-tablecloth: the module still names its symlinked seam and its combined error set..."
+let seat = run ["sh" "-c" "grep -q 'pub fn render_current' mantra/src/weave_tablecloth.rye && grep -q 'pub fn render_to_leaf' mantra/src/weave_tablecloth.rye && grep -q 'pub const RenderLeafError' mantra/src/weave_tablecloth.rye"]
+assert seat.ok else "mantra-weave-tablecloth: render_current, render_to_leaf, or RenderLeafError left the module"
+
+let symlinks = run ["sh" "-c" "[ -L mantra/src/recall_lap1.rye ] && [ -L mantra/src/tally_copy.rye ]"]
+assert symlinks.ok else "mantra-weave-tablecloth: the same-directory symlinks the module's imports depend on are missing"
+
+say "mantra-weave-tablecloth: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/weave_tablecloth_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-weave-tablecloth: weave tablecloth witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-weave-tablecloth: weave tablecloth witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-weave-tablecloth: weave tablecloth witness not GREEN"
+assert selftest.out contains "render_current renders the lifted bytes exactly" else "mantra-weave-tablecloth: the inverse-of-split_lines claim is missing"
+assert selftest.out contains "render_to_leaf appends one leaf under the independently computed digest" else "mantra-weave-tablecloth: the carried-bytes claim is missing"
+assert selftest.out contains "a second wiring call grows the catalogue by one more leaf" else "mantra-weave-tablecloth: the repeated-call postcondition claim is missing"
+assert selftest.out contains "a refused revision crosses the wiring as RevisionOutOfOrder" else "mantra-weave-tablecloth: the refusal-crosses-by-name claim is missing"
+
+say "mantra-weave-tablecloth: breaking the wiring three ways in a pen, so the witness is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_tablecloth_control.sh"]
+assert control.ok else "mantra-weave-tablecloth: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-weave-tablecloth: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-weave-tablecloth: the unmutated copy must reach GREEN, or the breaks below are failing for a reason the pen invented"
+assert control.out contains "legs_expected=4" else "mantra-weave-tablecloth: the pen must declare how many legs it runs, and this witness must be edited with it -- a leg deleted here would pass with less proof than the run before it"
+
+say "GREEN: current() to a leaf, in one motion -- the wiring carries bytes through untouched, grows the catalogue by exactly one leaf per call, and lets a refused revision cross by name. Three breaks caught."

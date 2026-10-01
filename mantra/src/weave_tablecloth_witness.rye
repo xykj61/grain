@@ -1,0 +1,182 @@
+//! mantra/src/weave_tablecloth_witness.rye -- the wiring, run.
+//!
+//!   rye build mantra/src/weave_tablecloth_witness.rye -femit-bin=mantra/bin/weave_tablecloth_witness
+//!   mantra/bin/weave_tablecloth_witness
+//!
+//! The module under test is `mantra/src/weave_tablecloth.rye`, which wires
+//! `weave.Weave.current()` to `recall_lap1.BoltCatalog.append_leaf` in one
+//! call. `weave_tablecloth_seam_witness.rye` already proved the two halves
+//! agree on the same bytes under the same hash; this witness proves the
+//! WIRING itself -- that `render_to_leaf` carries the rendered bytes through
+//! untouched, grows the catalogue by exactly one leaf per call, and lets the
+//! catalogue's own named refusals pass through rather than swallowing them.
+//!
+//! The claims, listed rather than counted:
+//!   1. `render_current` renders a lifted three-line weave back to the exact
+//!      bytes it was lifted from -- the join is the inverse of `split_lines`.
+//!   2. `render_to_leaf` appends exactly one leaf, and that leaf's digest is
+//!      the SHA3-256 of the SAME bytes `render_current` would have returned,
+//!      computed independently so the check does not trust the module's own
+//!      arithmetic.
+//!   3. A second wiring call, after an edit to the weave, grows the catalogue
+//!      by exactly one leaf again, under the next revision, and the two
+//!      leaves carry different digests -- the postcondition holds across
+//!      repeated calls rather than only on the first.
+//!   4. A wiring call naming a revision the catalogue's own ordering rule
+//!      refuses raises `RevisionOutOfOrder` -- the named error crosses the
+//!      wiring untouched rather than being caught, renamed, or silenced.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+const recall_lap1 = @import("recall_lap1.rye");
+const weave_tablecloth = @import("weave_tablecloth.rye");
+
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+const witness_version = "20261001.182300";
+
+// Every declaration of each module under test, forced through semantic
+// analysis at comptime -- Zig analyses lazily, so a `pub fn` carrying a flat
+// type error in a function no claim below calls would ride through the build
+// untouched and this witness would print GREEN over it (REDS %470).
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+    for (@typeInfo(recall_lap1).@"struct".decls) |decl| {
+        _ = &@field(recall_lap1, decl.name);
+    }
+    for (@typeInfo(weave_tablecloth).@"struct".decls) |decl| {
+        _ = &@field(weave_tablecloth, decl.name);
+    }
+}
+
+/// The largest number of rows a hand-written record holds here. Named because
+/// this witness argues a law by showing every row it writes, and a proof
+/// whose input outgrows a reader stops proving anything that reader can
+/// check.
+const max_planted_rows: u32 = 8;
+
+/// A document a reader can hold in their head: three lines, no trailing
+/// newline -- the same fixture shape `weave_tablecloth_seam_witness.rye`
+/// plants, reproduced here because each witness owns its own fixture rather
+/// than importing a peer witness's private state.
+fn planted_record() [3]weave.V1Row {
+    return .{
+        .{ .text = "the first line", .gen = 1, .pos = 0 },
+        .{ .text = "the second line", .gen = 1, .pos = 1 },
+        .{ .text = "the third line", .gen = 1, .pos = 2 },
+    };
+}
+
+const planted_document = "the first line\nthe second line\nthe third line";
+
+/// SHA3-256 of `content`, lower-hex, 64 characters -- computed independently
+/// of the module under test, so claim 2 checks the wiring's OUTPUT rather
+/// than trusting the module's own arithmetic about itself.
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < Sha3_256.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn prove_render_current_renders_the_lifted_bytes(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    // invariant: a record stays inside the ceiling this witness reads it with
+    assert(rows.len <= max_planted_rows);
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+    const rendered = try weave_tablecloth.render_current(garden, &lifted);
+    // invariant: the render is the exact inverse of how the document was
+    // planted, which is what lets claim 2 trust its hash describes THIS
+    // document rather than some other rendering of it
+    assert(std.mem.eql(u8, rendered, planted_document));
+
+    print("mantra-weave-tablecloth: render_current renders the lifted bytes exactly -- {d} bytes\n", .{rendered.len});
+}
+
+fn prove_render_to_leaf_appends_one_leaf_under_an_independent_digest(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+
+    var cat: recall_lap1.BoltCatalog = .empty();
+    // invariant: the catalogue opens with no leaves, so claim 2's "exactly
+    // one" below is a reading of this call alone
+    assert(cat.leaf_count == 0);
+    try weave_tablecloth.render_to_leaf(garden, &lifted, &cat, "local", "seam-wire", 1, "doc.txt", "plain-text");
+    // invariant: one wiring call grows the catalogue by exactly one leaf
+    assert(cat.leaf_count == 1);
+
+    var expected: [64]u8 = undefined;
+    digest_hex_of(planted_document, &expected);
+    assert(std.mem.eql(u8, cat.leaves[0].digest_hex[0..64], expected[0..64]));
+
+    print("mantra-weave-tablecloth: render_to_leaf appends one leaf under the independently computed digest -- {s}\n", .{expected});
+}
+
+fn prove_a_second_call_grows_by_one_under_the_next_revision(garden: std.mem.Allocator) !void {
+    var rows = planted_record();
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try weave_tablecloth.render_to_leaf(garden, &lifted, &cat, "local", "seam-wire", 1, "doc.txt", "plain-text");
+    assert(cat.leaf_count == 1);
+    const first_digest = cat.leaves[0].digest_hex;
+
+    rows[1] = .{ .text = "the second line, revised", .gen = 1, .pos = 1 };
+    var edited = try weave.Weave.from_v1(garden, &rows);
+    try weave_tablecloth.render_to_leaf(garden, &edited, &cat, "local", "seam-wire", 2, "doc.txt", "plain-text");
+    // invariant: the second call grows the catalogue by exactly one more leaf
+    // -- the postcondition held on the first call and holds again here
+    assert(cat.leaf_count == 2);
+    const second_digest = cat.leaves[1].digest_hex;
+    // invariant: an edited weave renders different bytes, so the two leaves
+    // carry different digests rather than the second silently repeating the
+    // first
+    assert(!std.mem.eql(u8, first_digest[0..64], second_digest[0..64]));
+
+    print("mantra-weave-tablecloth: a second wiring call grows the catalogue by one more leaf, under a different digest\n", .{});
+}
+
+fn prove_a_refused_revision_crosses_the_wiring_by_name(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try weave_tablecloth.render_to_leaf(garden, &lifted, &cat, "local", "seam-wire", 1, "doc.txt", "plain-text");
+    assert(cat.leaf_count == 1);
+
+    // Revision 1 is already bound; the catalogue's own rule wants 2 next, and
+    // this call asks for 3. The refusal belongs to append_leaf; this claim
+    // checks only that render_to_leaf hands it through unchanged.
+    const outcome = weave_tablecloth.render_to_leaf(garden, &lifted, &cat, "local", "seam-wire", 3, "doc.txt", "plain-text");
+    // invariant: the wiring raises the catalogue's own named error rather
+    // than a different one, and the catalogue is left exactly as the
+    // refused call found it
+    assert(outcome == error.RevisionOutOfOrder);
+    assert(cat.leaf_count == 1);
+
+    print("mantra-weave-tablecloth: a refused revision crosses the wiring as RevisionOutOfOrder, catalogue unchanged\n", .{});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    try prove_render_current_renders_the_lifted_bytes(garden);
+    try prove_render_to_leaf_appends_one_leaf_under_an_independent_digest(garden);
+    try prove_a_second_call_grows_by_one_under_the_next_revision(garden);
+    try prove_a_refused_revision_crosses_the_wiring_by_name(garden);
+
+    print("mantra-weave-tablecloth: version {s}\n", .{witness_version});
+    print("GREEN: current() to a leaf, in one motion -- the wiring carries bytes through untouched and lets refusals cross by name.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}

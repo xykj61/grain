@@ -230,6 +230,12 @@ on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards
 
 **DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
+**PATCHOULI -- THE SEAM'S WIRING LANDED, PROVEN ON METAL.** [Shelved
+whole](archive/date/20261001/20261001-183106_itinerary-patchouli-weave-tablecloth-wiring-account.md):
+`render_to_leaf` renders a weave's `current()` to bytes and appends them to the catalogue in one
+call, four claims GREEN, a real docstring fault caught by the control along the way. **YOURS:**
+the seam witness itself stands unregistered in standing-equipment -- a pre-existing gap, untouched.
+
 **PATCHOULI -- THE SNAPSHOT-PROJECTION FIXTURES, BOTH PROVEN ON METAL.** [Shelved
 whole](archive/date/20261001/20261001-144809_itinerary-patchouli-snapshot-projection-account.md).
 **YOURS:** whether a real projected-snapshot artifact is ever built.
