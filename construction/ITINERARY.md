@@ -480,8 +480,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   the fold on its own; each is a process- or habit-shaped finding rather than a guard-closable
   defect, which is why none has closed itself yet. The three `%338` doors stand exactly as named:
   raise the bound again, split OPEN by who holds the row, or sanction the single-row shelf birth.
-- **The wire ceiling is ruled** (`20261001.124643`): grow `max_wire_payload` rather than shrink the
-  three consumer limits or retire the measurement. [The ruling](../active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md).
+- **The wire ceiling is repaired** (`20261001`, REDS %756): shrink door, `max_path` 57, three hits
+  fit; the grow door needed a larger datagram. [The ruling and erratum](../active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md).
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
   breaches the bound. Should an account live on its shelf from birth, the card holding a line a ship?
 - **The numbered-list re-grade** -- holding `1. ` and `2) ` lines out of the prose readings costs two
