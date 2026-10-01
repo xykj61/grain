@@ -531,6 +531,78 @@ case "$out" in
   *) no "M3 bitten: removing the block walk loses the refusal it was built to find"; echo "$out" ;;
 esac
 
+# delegated: a ceiling read only through tally_refusal's shared helper, by a file that actually
+# imports the declaring file by name, reads structural rather than asserted-only (REDS, cited by
+# stamp 20261001.143449's sibling finding).
+pen="$work/delegated"
+make_pen "$pen"
+cat > "$pen/room/bounds.rye" <<'EOF'
+const std = @import("std");
+pub const max_y: u32 = 5;
+EOF
+cat > "$pen/room/caller.rye" <<'EOF'
+const bounds = @import("bounds.rye");
+pub fn take(val: []const u8) ?Refusal {
+    if (tally_refusal.text_refusal("y", val, bounds.max_y)) |r| return r;
+    return null;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"structural=1"*) ok "delegated: a real importer's shared-helper call reads structural" ;;
+  *) no "delegated: a real importer's shared-helper call reads structural"; echo "$out" ;;
+esac
+case "$out" in
+  *"asserted_only=0"*) ok "delegated: the same ceiling never falls to asserted-only" ;;
+  *) no "delegated: the same ceiling never falls to asserted-only"; echo "$out" ;;
+esac
+
+# delegated refused: the same shared-helper call, with no real importer naming the declaring
+# file, still reads asserted-only -- the delegated shape needs a genuine import, not merely a
+# shared constant name.
+pen="$work/delegated_unimported"
+make_pen "$pen"
+cat > "$pen/room/bounds.rye" <<'EOF'
+const std = @import("std");
+pub const max_y: u32 = 5;
+EOF
+cat > "$pen/room/orphan_caller.rye" <<'EOF'
+pub fn take(val: []const u8) ?Refusal {
+    if (tally_refusal.text_refusal("y", val, max_y)) |r| return r;
+    return null;
+}
+EOF
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"asserted_only=1"*) ok "delegated refused: an unimported file's shared-helper mention does not count" ;;
+  *) no "delegated refused: an unimported file's shared-helper mention does not count"; echo "$out" ;;
+esac
+
+# symlink dedup: a symlink and its target are one real file, counted once rather than twice
+# (REDS, cited by stamp 20261001.143449's sibling finding -- mantra/src/tally_receipt_offer_bounds.rye
+# symlinks to tally/receipt_offer_bounds.rye, and the elder scan read both paths as declaring
+# files, doubling every asserted-only finding in the live tree).
+pen="$work/symlink_dedup"
+make_pen "$pen"
+mkdir -p "$pen/room/alt"
+cat > "$pen/room/real.rye" <<'EOF'
+const std = @import("std");
+pub const max_z: u32 = 5;
+EOF
+( cd "$pen/room/alt" && ln -s ../real.rye linked.rye )
+stage "$pen"
+out="$(read_scan "$pen")"
+case "$out" in
+  *"ceilings_declaring=1"*) ok "symlink dedup: a symlink and its target are counted as one declaring file" ;;
+  *) no "symlink dedup: a symlink and its target are counted as one declaring file"; echo "$out" ;;
+esac
+case "$out" in
+  *"asserted_only=1"*) ok "symlink dedup: the one real ceiling still reads asserted-only once" ;;
+  *) no "symlink dedup: the one real ceiling still reads asserted-only once"; echo "$out" ;;
+esac
+
 echo "control_fail=$fail"
 if [ "$fail" -eq 0 ]; then
   echo "control_verdict=ok"
