@@ -64,6 +64,22 @@ commit_all
 leg cure_lifts_unfiltered "$(read_key unfiltered)" 0
 leg cure_counts_filtered "$(read_key git_filtered)" 1
 
+# --- a walk planted in a control script is the guard's own proof, counted apart ---------------
+fresh
+cat > tools/fixtures/z/a_control.sh <<'EOF'
+#!/bin/sh
+find tools -name '*.md' | sort
+EOF
+commit_all
+leg control_walk_leaves_gate "$(read_key unfiltered)" 0
+leg control_walk_counted_planted "$(read_key planted_in_controls)" 1
+cat > tools/fixtures/z/a_scan.sh <<'EOF'
+#!/bin/sh
+find tools -name '*.md' | sort
+EOF
+commit_all
+leg scan_twin_still_counts "$(read_key unfiltered)" 1
+
 # --- a commented-out find is not a walk --------------------------------------------------------
 fresh
 cat > tools/fixtures/z/a_scan.sh <<'EOF'

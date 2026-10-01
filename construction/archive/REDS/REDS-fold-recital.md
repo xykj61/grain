@@ -903,3 +903,5 @@ at a closed fold.*
 *Row %828 folded to [`REDS-a-mutation-that-never-landed-rows-828.md`](REDS-a-mutation-that-never-landed-rows-828.md) on `20260930.073743`, **BOOKED** -- a mutation control must prove its cut landed before grading what the cut produced.*
 
 *Row %756 folded to [`REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md`](REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md) on `20261001.132612`, **BOOKED** -- a derived wire ceiling needs its enforcing check beside it; the shrink door repaired the floor without touching the datagram.*
+
+*Row %785 folded to [`REDS-a-guard-that-counted-its-own-proof-rows-785.md`](REDS-a-guard-that-counted-its-own-proof-rows-785.md) on `20261001.133057`, **BOOKED** -- a guard's own controls plant its subject on purpose, so their walks are counted apart rather than gated.*
