@@ -98,10 +98,18 @@ reads. Observation of a sailing ship that has stopped making product progress is
 
 ## state -- the loop updates this section
 
-- **The product milestone** is *the receipt you can read*. Two of its four public types exist in
-  code, two stand at zero. Three decisions that change what it admits wait for Keaton, weighed in
+- **The product milestone** is *the receipt you can read*, closer to done than this bullet said for
+  weeks: all four public types exist in code and six of eight acceptance cases carry a witness.
+  Only case 4 (Brushstroke's Receipt Card, Skate's Still frame) remains, Diffuser's own crux. Three
+  decisions that change what it admits wait for Keaton, weighed in
   [`../active-designing/20260918-000154_three-numbers-and-a-name.md`](../active-designing/20260918-000154_three-numbers-and-a-name.md).
-- **The fusion build** is bakery's number-one fleet priority, and its content-keyed receipt is green.
+- **The fleet's inner prompts were reallocated `20261001`**, Lindy-first crux-first: five of seven
+  stale or re-confirmed-closed fruits (pheromone, patchouli, grass, petrichor, bakery) were given a
+  new crux; copal and diffuser were already correctly pointed and left unchanged. See each ship's
+  own `recursion-prompts/<ship>-inner.md` and the ruling at
+  [`../active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md`](../active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md).
+- **The fusion build**'s crux is now named: share one build and one cold-run cache across all
+  eight checkouts rather than each paying the full cost alone. Bakery's own inner prompt names it.
 - **The fleet** runs Claude on every live seat from `20261001`. Bakery resolves `claude-opus-5`.
   The other live seats resolve `claude-sonnet-5`. Each ship's model comes from its own gitignored
   `.claude/settings.local.json`; read yours with
