@@ -369,7 +369,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `97eb78a82c` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `5730a88c4` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
@@ -516,8 +516,8 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
   the fold on its own; each is a process- or habit-shaped finding rather than a guard-closable
   defect, which is why none has closed itself yet. The three `%338` doors stand exactly as named:
   raise the bound again, split OPEN by who holds the row, or sanction the single-row shelf birth.
-- **The wire ceiling** -- the ledger row (`20260916.004153`) holds the account and the three doors;
-  the comparison needs `max_wire_hits >= 3` and it reads 2. No clamp in the consumer repairs it.
+- **The wire ceiling is ruled** (`20261001.124643`): grow `max_wire_payload` rather than shrink the
+  three consumer limits or retire the measurement. [The ruling](../active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md).
 - **The card's own room** -- it stood at 40,953 bytes against the 40,960 it declares, so any account
   breaches the bound. Should an account live on its shelf from birth, the card holding a line a ship?
 - **The numbered-list re-grade** -- holding `1. ` and `2) ` lines out of the prose readings costs two
