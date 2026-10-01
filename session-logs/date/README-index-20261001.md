@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.150624` | [diffuser-inner caught up to its own closed threads](20261001/20261001-150624_diffuser-inner-caught-up-to-its-own-closed-threads.kyri) | case 4 and the torus ladder both closed; fruit revised, next crux is Keaton's |
 | `20261001.150500` | [Wyoming PBC grade-9 closed](20261001/20261001-150500_wyoming-pbc-grade-9-closed.kyri) | reach split sentence by sentence, grade 12 to 9, composite A+/97 |
 | `20261001.150350` | [Comlink witness roster landed](20261001/20261001-150350_comlink-witness-roster.kyri) | three unreached Comlink witnesses rostered, REDS %930, all GREEN |
 | `20261001.150343` | [ceiling_teeth: symlink dedup repaired](20261001/20261001-150343_ceiling-teeth-symlink-dedup-repaired.kyri) | asserted_only 7 to 1; a delegated-refusal shape and symlink dedup added |
