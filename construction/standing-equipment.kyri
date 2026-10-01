@@ -2391,6 +2391,33 @@ path tools/co/comlink_nesting_witness.rish
 tier cadence
 seated 20260830.204814
 
+# comlink_device_wire_hosted, comlink_roster_pairs_cross, comlink_roster_pairs_seal -- the three
+# Comlink witnesses REDS %930 named unreached by any clock. The row's own repair declined to roster
+# them under a law-lane guess, asking instead for the builder's own judgment on cadence; Comlink is
+# this lane's own module, so the judgment is made here. All three build or cross-build a Rye module
+# through the Zig toolchain before they can answer, the same reason their siblings above sit at
+# tier cadence rather than lap: `comlink_device_wire_hosted_witness.rish` builds `device_wire.rye`
+# hosted and runs its selftest (1.2s measured here `20261001.150150`), `comlink_roster_pairs_cross_witness.rish`
+# cross-builds both `guest_roster_tx.rye` and `guest_roster_rx.rye` freestanding riscv64 and reads
+# each ELF's `e_machine` byte (3.1s), and `comlink_roster_pairs_seal_witness.rish` builds
+# `roster_pairs_seal.rye` and runs it to seal and open all four canonical pairs (0.8s). None reaches
+# QEMU or the Aurora virtio stage; the six living stages stay at six.
+
+guard comlink_device_wire_hosted
+path tools/co/comlink_device_wire_hosted_witness.rish
+tier cadence
+seated 20261001.150150
+
+guard comlink_roster_pairs_cross
+path tools/co/comlink_roster_pairs_cross_witness.rish
+tier cadence
+seated 20261001.150150
+
+guard comlink_roster_pairs_seal
+path tools/co/comlink_roster_pairs_seal_witness.rish
+tier cadence
+seated 20261001.150150
+
 # THE GUARDS OUR OWN RULES ALREADY DEMAND (REDS %360). The census that row books found 1,153
 # tracked guards this roster reaches on no lap at all, and five of them are not merely unrun --
 # each is named by a LIVING RULE that instructs a lap to run it. A rule that names a check and a
