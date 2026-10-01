@@ -65,12 +65,6 @@ stamp 20261001.145658
 epoch 1790881018
 paths tools/co/comlink_device_wire_hosted_witness.rish tools/co/comlink_roster_pairs_cross_witness.rish tools/co/comlink_roster_pairs_seal_witness.rish construction/standing-equipment.kyri
 what Roster the three unreached Comlink witnesses REDS %930 named (device-wire hosted, roster-pairs cross-build, roster-pairs seal) into standing-equipment.kyri at tier cadence, matching their build-and-run sibling entries.
-claim diffuser-spool-dedup-ratio
-seat diffuser
-stamp 20261001.190126
-epoch 1790895686
-paths mantra/spool_dedup_ratio.rye tools/m/mantra_spool_dedup_ratio_witness.rish tools/fixtures/m/mantra_spool_dedup_ratio_scan.sh
-what measure the spool-scale dedup ratio when a shift edit crosses a fixed-offset resin boundary, the fourth-angle page's own named open door
 claim copal-radiant-h1-fence-roster
 seat copal
 stamp 20261001.191333
@@ -89,3 +83,9 @@ stamp 20261001.194439
 epoch 1790898279
 paths construction/standing-equipment.kyri construction/ITINERARY.md
 what roster the unrostered itinerary_witness (256-round deterministic coord/ranking sweep) into standing-equipment.kyri, proven both ways: the whole-season sweep and the out-of-bound round-256 refusal
+claim diffuser-contention-no-quiet
+seat diffuser
+stamp 20261001.195223
+epoch 1790898743
+paths active-designing/date/20261001/20261001-195141_the-quiet-this-pier-does-not-have.md
+what a fresh first-principles moonshot: measure whether this pier's own ambient load (fleet of 8 ships, loadavg steady at 6-8.4 on 8 cores) leaves any quiet window for a load-gated cadence scheduler to wait for, and propose a throttle-not-wait alternative
