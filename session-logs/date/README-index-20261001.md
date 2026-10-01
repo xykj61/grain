@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.143922` | [eighth confirm, A holds](20261001/20261001-143922_citizen-door-eighth-confirm-a-holds.kyri) | re-ran qa_report_card.sh directly; composite 92/A, unchanged; empty lane queue |
 | `20261001.143659` | [shim_reason late-say repair](20261001/20261001-143659_shim-reason-late-say-and-booked-ceiling.kyri) | 8 bindings fixed; the 81-over unsaid ceiling booked |
 | `20261001.143618` | [seventh recheck, air boundary holds](20261001/20261001-143618_seventh-recheck-air-boundary-holds.kyri) | regraded at door and field settings, both A; empty lane queue |
 | `20261001.143556` | [shim_reason: late-say fixed, unsaid exposed](20261001/20261001-143556_shim-reason-late-say-fixed-unsaid-exposed.kyri) | 8 bindings repaired; a 984-of-903 unsaid population was hiding underneath |
