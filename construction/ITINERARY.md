@@ -153,9 +153,14 @@ agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- LEDGER AND GRACE.** [Account shelved whole](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md).
 
-**GRASS -- MARKED VALUE.** [Packet](../active-designing/date/20260925/20260925-210440_grass-marked-value-reverse-read.md):
-**standfasted at the Amphora seam.** Two root marks and unknown-mark refusal are proven; typed
-tending across the wider map stays a proposal until a named crossing earns it.
+**GRASS -- MARKED VALUE.** [Account shelved whole](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md).
+
+**GRASS -- THE SEALED CROSSING.** [Packet](../active-designing/date/20261001/20261001-112153_grass-sealed-crossing-reverse-read.md):
+**archived -- the duty named `20260703` has a home.** The Sealed Crossing's own Status line
+already reads Landed; its body and benediction still narrate an open duty. Amphora's three laps,
+stamp, seal, chunked carry, and purchase delivery are landed, and Copal's receipt-bundle witness
+ran GREEN on this checkout (authentication, decision-mutation refusal, version refusal,
+byte-identical round trip). No living product or build crux changes.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -350,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1cac83efb9` -- HEAD read before this follow-up commit (rule 5).
+**Git nib:** `2c8cc26d5` -- HEAD's parent after rebase, read before this commit (rule 2).
 
 ### Incense -- product captain
 
