@@ -53,9 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim patchouli-weave-tablecloth-seam-falsifier
-seat patchouli
-stamp 20261001.121229
-epoch 1790871149
-paths tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh tools/m/mantra_weave_tablecloth_seam_witness.rish
-what Run the weave-meets-Tablecloth seam falsifier: does current()'s rendered document bytes already carry a resin matching an existing blob in the Mantra store, or is the gap real.
+claim copal-shed-census-witness
+seat copal
+stamp 20261001.142858
+epoch 1790879338
+paths tools/gen/chapter/shed_census_witness.rish construction/standing-equipment.kyri
+what Roster tools/gen/chapter/shed_census_witness.rish -- an already-both-sided-proven chapter witness with no roster row, the ask copal-inner.md names.
