@@ -102,7 +102,7 @@ reads. Observation of a sailing ship that has stopped making product progress is
   code, two stand at zero. Three decisions that change what it admits wait for Keaton, weighed in
   [`../active-designing/20260918-000154_three-numbers-and-a-name.md`](../active-designing/20260918-000154_three-numbers-and-a-name.md).
 - **The fusion build** is bakery's number-one fleet priority, and its content-keyed receipt is green.
-- **The fleet** runs Claude on every live seat from `20261001`. Bakery resolves `claude-opus-5-5`.
+- **The fleet** runs Claude on every live seat from `20261001`. Bakery resolves `claude-opus-5`.
   The other live seats resolve `claude-sonnet-5`. Each ship's model comes from its own gitignored
   `.claude/settings.local.json`; read yours with
   `sh tools/fixtures/d/declared_model.sh resolved_model` and record it as `configured_model`. The

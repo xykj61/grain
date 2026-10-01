@@ -504,6 +504,6 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 - Its elder rests at [`archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md`](archive/date/20260912/20260912-141814_itinerary-before-lindy-crux-molt.md).
 - The prior design system rests at [`../active-designing/archive/20260826-022443_the-linengrow-design-theme.md`](../active-designing/archive/20260826-022443_the-linengrow-design-theme.md).
 - Archives are historical continuity outside Mitra and shred-prep.
-- Fleet trees remain the full live formation from `20260913`. From `20261001` every live roster engine reads `claude`. Bakery resolves `claude-opus-5-5`; the other live seats resolve `claude-sonnet-5`.
+- Fleet trees remain the full live formation from `20260913`. From `20261001` every live roster engine reads `claude`. Bakery resolves `claude-opus-5`; the other live seats resolve `claude-sonnet-5` (moved off the 5.5 family 20261001 pending Anthropic's resolution of the reported safety-classifier issue).
 
 May every valuable fact remain the person's own. May every receipt make consent and return easy to see. May the books close gently around truth that can travel.
