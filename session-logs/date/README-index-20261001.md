@@ -10,6 +10,7 @@
 | `20261001.123424` | [audit-rotation-clean-no-build](20261001/20261001-123424_audit-rotation-clean-no-build.kyri) | mand/mandate/mandi README graded, all B or better; no build |
 | `20261001.123244` | [the Wyoming PBC walkthrough repaired past the B floor](20261001/20261001-123244_wyoming-pbc-b-floor.kyri) | C+/77 to B+/85; card shed to stay under its byte bound |
 | `20261001.123029` | [repair-sent-clean](20261001/20261001-123029_repair-sent-clean.kyri) | nib repair pushed clean with a real amend, verified 85c36c55c8 |
+| `20261001.122826` | [copy_sameness earns its own refusal leg](20261001/20261001-122826_copy-sameness-refusal-leg.kyri) | REDS %827's fifth guard closed, 57 to 56; five remain |
 | `20261001.122557` | [voice_roster pair rostered](20261001/20261001-122557_voice-roster-pair-rostered.kyri) | voice_roster + negative sibling rostered, GREEN both; card shed under its own bound |
 | `20261001.122532` | [retting-timer-send](20261001/20261001-122532_retting-timer-send.kyri) | pushed xy and gp405; its claimed nib-amend was a render-only slip, corrected by the next follow-up |
 | `20261001.121745` | [retting-timer-parseint-and-a-withdrawn-caravan-attempt](20261001/20261001-121745_retting-timer-parseint-and-a-withdrawn-caravan-attempt.kyri) | One parseInt site migrated; a caravan attempt withdrawn at its own ceiling |
