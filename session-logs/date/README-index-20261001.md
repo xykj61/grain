@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.114626` | [one real link repair, in-lane](20261001/20261001-114626_example-app-plan-repoint.kyri) | repointed a folded companion link in docs-geode; fruit unchanged |
 | `20261001.114554` | [map sent, six rebases later](20261001/20261001-114554_mantra-tally-map-sent.kyri) | pushed to xy and debrided, HEAD 10a194460 |
 | `20261001.114032` | [the fruit, re-confirmed a fifth time](20261001/20261001-114032_anyone-under-our-sun-fifth-reconfirm.kyri) | same page, same A/94 at door; flagged for a new fruit |
 | `20261001.113824` | [zero_view rostered, one of 131 chapter witnesses](20261001/20261001-113824_zero-view-rostered.kyri) | GREEN both legs, reached by name through the runner |
