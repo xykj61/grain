@@ -193,3 +193,5 @@ following lap, once this send is on `xy`.
 **Lap `20261001.171142` retired the mirror.** Living push is `xy` alone. `birth_a_clone.rish` seats that one remote. All eight pier configs dropped `debrided`. The GitHub repository `debrided/grain` is still up: this `gh` login lacks the `delete_repo` scope, so the repository delete waits on a hand.
 
 **Lap `20261001.172721` removed the two superseded mirror marks from every revision.** The walk-back before the rewrite is `1ee5c36d00`. Leak detectors stay armed with a bracket. This send force-pushes `xy` main. The other seven pier trees were clean at that walk-back and are reset onto the new history in the same lap. The cold run with `--cadence-slice 1` starts once those trees are reset, and holds still until `run_verdict=`.
+
+**Lap `20261001.183650` held that cold run.** `run_verdict=guard_red`. `guards_run=398`, `guards_green=371`, `guards_red=24`, `guards_gated=3`, `tree_moved=no`. Incense measured `e905525e2`. Other ships kept committing onto the rewritten history during the pass. Next: read the 24 red lines before another pass.
