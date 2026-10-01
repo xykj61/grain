@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.193200` | [Aether row read, no new work](20261001/20261001-193200_aether-row-read-no-new-work.kyri) | confirms prior lap's reading; thin queue, nothing agent-doable found in scope |
+| `20261001.191006` | [pheromone lane still empty, second confirm](20261001/20261001-191006_pheromone-lane-still-empty-second-confirm.kyri) | no live claim or BOOKED row to override-claim; nothing agent-doable |
 | `20261001.190735` | [tending sweep landed a third time](20261001/20261001-190735_docs-geode-tending-sweep-clean.kyri) | same clean finding as 183100/185007; repaired petrichor-inner.md instead of a third card account |
 | `20261001.190447` | [close stale wiring claim](20261001/20261001-190447_close-stale-wiring-claim.kyri) | closed a fulfilled weave-tablecloth claim, confirmed both seam witnesses GREEN |
 | `20261001.190156` | [grass-inner.md graded clean](20261001/20261001-190156_grass-inner-prompt-graded.kyri) | B+/89 on the lane's own inner prompt; no frame owed, no new audit queued |
