@@ -11,13 +11,13 @@
 
 ## What you will see
 
-Five green lines, in order. First a peer describes itself inside a bound. Then a table claims and reaches. Gossip fans out under a ceiling and refuses a bad shape whole. Introduce checks identity at the kumara seam and turns a stranger away as loudly as it welcomes a friend. Last, the myc fold turns signed facts into a supply number every reader can recompute alone.
+Five green lines, in order. First a peer describes itself inside a bound. Then a table claims and reaches. Gossip fans out under a ceiling and rejects a bad shape whole. Introduce checks identity at the kumara seam and turns a stranger away as loudly as it welcomes a friend. Last, the myc fold turns signed facts into a supply number every reader can recompute alone.
 
 That composition is the **round-trip shape**: find neighbors, carry values, arrive with identity, agree by arithmetic. You run it all on one bench today.
 
 ## What this walk does not claim
 
-The elder **wire both-sides** round-trip -- two lanes across a real spawn/wait-for wire, tables converging from each side independently -- is not yet metal on this page. That lab stays queued (Build queue seat 6). This walk teaches the parts that already print GREEN. Honesty first; theater never.
+The elder **wire both-sides** round-trip -- two lanes across a real spawn/wait-for wire, tables converging from each side independently -- stays a future door on this page. That lab stays queued (Build queue seat 6). This walk teaches the parts that already print GREEN. Honesty first, every time.
 
 ## Before you start
 
@@ -56,7 +56,7 @@ env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/gossip.ry
 ```
 
 Expect: `GREEN: discovery gossip -- Check shape - fanout 8 - refuse whole - never trim`  
-Bound: fanout **8**. Malformed arrival refuses whole -- never a quiet trim.
+Bound: fanout **8**. Malformed arrival meets a whole, loud rejection rather than a quiet trim.
 
 ### 4. Introduce -- identity at the seam - negative space loud
 
@@ -65,7 +65,7 @@ env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run comlink/discovery/introduce
 ```
 
 Expect: `GREEN: discovery introduce -- Check shape - hops_max 2 - kumara seam - negative space loud`  
-Bound: hops **2**. A stranger with the wrong shape is turned away; the far table stays clean. That refuse is the walk's negative-space bite.
+Bound: hops **2**. A stranger with an unexpected shape is turned away; the far table stays clean. That turn-away is the walk's negative-space bite.
 
 ### 5. Fold -- agree on a number without trusting a holder
 
@@ -74,7 +74,7 @@ env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold.rye
 ```
 
 Expect: `GREEN: myc fold -- Check shape - supply=872 - stars=1 - purity - refuse whole`  
-Law: supply = issued - taxed at every prefix. Overdraw and unknown kinds refuse whole.
+Law: supply = issued - taxed at every prefix. Overdraw and unknown kinds meet a whole rejection.
 
 ## One-shot witness
 
