@@ -8058,3 +8058,20 @@ guard equinox_e103_class_a_window
 path tools/equinox/witness/equinox_e103_class_a_window_witness.rish
 tier cadence
 seated 20260926.171705
+
+# copy_sameness and copy_sameness_negative -- the guard that every module-local tally_copy.rye
+# matches tally/copy.rye byte for byte, proven both ways: the positive leg reads the live tree at
+# verdict=ok across 23 symlinked paths, and the negative leg plants a drifted fixture, confirms the
+# scan catches it, confirms a copy left under a gitignored path (.lap/) is read past rather than
+# counted as tree evidence, and confirms the live tree still reads clean throughout. One of the 139
+# witnesses standing under tools/gen/chapter/ with no roster row -- the ask copal-inner.md names.
+# Both run under 3s on metal, so lap tier costs nothing a lap would miss.
+guard copy_sameness
+path tools/gen/chapter/copy_sameness_witness.rish
+tier lap
+seated 20261001.115902
+
+guard copy_sameness_negative
+path tools/gen/chapter/copy_sameness_negative_witness.rish
+tier lap
+seated 20261001.115902
