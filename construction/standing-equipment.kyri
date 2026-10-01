@@ -8107,3 +8107,21 @@ guard voice_roster_negative
 path tools/gen/chapter/voice_roster_negative_witness.rish
 tier lap
 seated 20261001.121518
+
+# scan_convention and scan_convention_negative -- the scan-seam convention has one canonical home
+# (context/specs/20260729-215600_scan-seam-convention.md), and every scan cites it rather than
+# restating it, proven both ways: the positive leg reads the live roster at verdict=ok across five
+# citing scans, and the negative leg points the same checker at a standing fixture that restates
+# the convention on purpose, confirms it reads verdict=convention_not_single_homed and fails, then
+# confirms the living roster still reads verdict=ok right after. One of the 128 witnesses standing
+# under tools/gen/chapter/ with no roster row -- the ask copal-inner.md names. Both run under 1s on
+# metal, so lap tier costs nothing a lap would miss.
+guard scan_convention
+path tools/gen/chapter/scan_convention_witness.rish
+tier lap
+seated 20261001.124320
+
+guard scan_convention_negative
+path tools/gen/chapter/scan_convention_negative_witness.rish
+tier lap
+seated 20261001.124320

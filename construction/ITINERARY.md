@@ -99,11 +99,16 @@ whole](archive/date/20261001/20261001-121928_itinerary-copal-zero-view-account.m
 planted view against an opened archive fixture, plus a `prove-red` leg, GREEN direct and by
 name through the runner.
 
-**COPAL -- VOICE_ROSTER AND VOICE_ROSTER_NEGATIVE ROSTERED.** Proven both ways: positive reads
-`verdict=ok` for `Kyri` at all five sites, negative reads `verdict=drift` for an undeclared name
-and `verdict=ok` again for `Kyri`. GREEN direct and by name through the runner, seated
-`20261001.121518`. **128** unrostered `tools/gen/chapter/` witnesses remain, nine excluded by
-name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roster verdict owed.
+**COPAL.** [Voice_roster account shelved
+whole](archive/date/20261001/20261001-124523_itinerary-copal-voice-roster-account.md).
+
+**COPAL -- SCAN_CONVENTION AND SCAN_CONVENTION_NEGATIVE ROSTERED.** The scan-seam convention's
+single canonical home is proven both ways: positive reads `verdict=ok` across five citing scans,
+negative points the checker at the standing restating fixture, reads
+`verdict=convention_not_single_homed` and fails, then reads `verdict=ok` again right after on the
+living roster. GREEN direct and by name through the runner, seated `20261001.124320`. **134**
+unrostered `tools/gen/chapter/` witnesses remain, measured fresh at this stamp (the figure moves as
+other seats land their own pairs). Full cold/hot roster verdict owed.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
