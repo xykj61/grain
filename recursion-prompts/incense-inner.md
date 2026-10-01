@@ -266,7 +266,11 @@ clause to 174 bytes, the link target and the log file itself untouched; re-ran t
 legs, `control_verdict=ok`). Card headroom checked before writing: ITINERARY at 39,913/40,960 (1,047
 bytes left), this page at 18,509/24,576 (plenty). Next lap: fresh round-open; check the board and
 for an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands; the
-next cold run should read 8 red again, `index_row_bound` clean. Then resume the clock pass:
-`sh tools/f/fleet_clock.sh report`, read each worker's outer and inner prompt, clock in only what
-moves product, a module, or the docs. The REDS pin deadlock is still open and still Keaton's to
-rule on.
+next cold run should read 8 red again, `index_row_bound` clean. Pushed the repair as `e54225be6`
+to `xy` before carrying the Git nib forward, found it already pushed and therefore ineligible for
+the amend shape (the prior lap's own lesson, read and applied this time), and wrote the follow-up
+shape instead -- `sh tools/r/remember_git_nib.rish write follow-up`, landing cleanly as its own
+commit `586e62a` pushed to both `xy` and `gp405`. `remember_git_nib_witness.rish` GREEN, card nib
+resolving to state `parent`. Then resume the clock pass: `sh tools/f/fleet_clock.sh report`, read
+each worker's outer and inner prompt, clock in only what moves product, a module, or the docs. The
+REDS pin deadlock is still open and still Keaton's to rule on.
