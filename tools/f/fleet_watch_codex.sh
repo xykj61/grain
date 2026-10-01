@@ -161,6 +161,11 @@ while :; do
   for seat in $live; do
     case " $skip " in *" $seat "*) continue ;; esac
 
+    # The roster seats the engine. A Claude seat stays with the Claude watch;
+    # this watch arms only a seat whose row still reads codex.
+    engine=$(sh "$roster_scan" --engine "$seat" 2>/dev/null || true)
+    [ "$engine" = codex ] || continue
+
     # name -> window, discovered every pass. Two windows wearing one name is ambiguous, and a
     # watcher that picks one is a watcher that will one day pick wrong.
     hits=$(printf '%s\n' "$windows" | grep -cx "$seat" || true)

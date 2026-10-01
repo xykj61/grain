@@ -84,11 +84,11 @@ permission to direct work, never to cross a gate.
   code, two stand at zero. Three decisions that change what it admits wait for Keaton, weighed in
   [`../active-designing/20260918-000154_three-numbers-and-a-name.md`](../active-designing/20260918-000154_three-numbers-and-a-name.md).
 - **The fusion build** is bakery's number-one fleet priority, and its content-keyed receipt is green.
-- **The fleet** runs all eight ships on Sonnet 5 -- incense joined at `20260918.023732`, when its first
-  overnight lap on Opus 5 tripped the Opus safeguard at lap start. Each ship's model comes from its
-  own gitignored `.claude/settings.local.json`; read yours with
+- **The fleet** runs Claude on every live seat from `20261001`. Bakery resolves `claude-opus-5-5`.
+  The other live seats resolve `claude-sonnet-5`. Each ship's model comes from its own gitignored
+  `.claude/settings.local.json`; read yours with
   `sh tools/fixtures/d/declared_model.sh resolved_model` and record it as `configured_model`. The
-  watcher re-arms any stopped loop.
+  Claude watcher re-arms a stopped loop. The Codex watcher arms a seat only while its engine reads `codex`.
 
 ## open words -- decisions a lap may not take
 

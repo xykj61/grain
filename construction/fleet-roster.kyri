@@ -22,8 +22,11 @@
 # refused. The word is retired from the seat name, never from the reader's muscle memory.
 format fleet-roster-v1
 
-# ENGINE `codex` on the seven live ships besides incense, `20260922` on Keaton's word.
-# Incense stays `claude`. The parked aether rows keep the engine they already had.
+# ENGINE `claude` on every live seat, `20261001` on Keaton's word.
+# Models stay in each tree's gitignored settings: bakery `claude-opus-5-5`,
+# every other live seat `claude-sonnet-5`. The parked aether rows keep the
+# engine they already had. Codex remains a loop a seat can return to; the
+# Codex watcher arms only a seat whose engine reads `codex`.
 # -- the three Earth ships, names seated 20260904 on Keaton's word ----------------------------
 seat incense
 tree grain-incense
@@ -34,7 +37,7 @@ seated 20260904.013013
 
 seat pheromone
 tree grain-pheromone
-engine codex
+engine claude
 lane the molecular star -- the language details a rune wants
 elder furrow
 status live
@@ -42,7 +45,7 @@ seated 20260904.013013
 
 seat petrichor
 tree grain-petrichor
-engine codex
+engine claude
 lane docs-geode (tend, never rename) and prose-product
 elder harvest
 status live
@@ -57,21 +60,21 @@ seated 20260904.013013
 # followed by a `claude login` on that host, which is a hand.
 seat bakery
 tree grain-bakery
-engine codex
+engine claude
 lane core infrastructure, the Long Return and Lila -- and the fleet's own friction
 status live
 seated 20260904.214754
 
 seat diffuser
 tree grain-diffuser
-engine codex
+engine claude
 lane moonshots and whitepaper research -- toroidal, energy-saving, radial-polar; in tandem with bakery
 status live
 seated 20260904.214754
 
 seat grass
 tree grain-grass
-engine codex
+engine claude
 lane reverse-reading steward -- walk foundations, active-designing, and session logs backward for the oldest unresolved premise beneath the newest plans, and record one disposition (revived, molted, breached, archived, standfasted, yondered, or Mitra-shed) per packet
 status live
 seated 20260904.214754
@@ -103,14 +106,14 @@ lane_updated 20260918.013200 -- construction/ITINERARY.md Now block names this m
 
 seat copal
 tree grain-copal
-engine codex
+engine claude
 lane amphora and the resins -- vessels, sealing, and what a record keeps when it is put away
 status live
 seated 20260905.164639
 
 seat patchouli
 tree grain-patchouli
-engine codex
+engine claude
 lane mantra and tally -- the weave and the bounded core; the base note the rest is built over
 status live
 seated 20260905.164639
