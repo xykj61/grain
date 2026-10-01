@@ -70,7 +70,7 @@ Each heading is the spell. The line under it is the paste.
 
 Cursor reads `--yolo` and `--model`. The shell also sets `CURSOR_FORCE=1`, which the print launcher turns into `--force`. Home: [`../frontier/cursor-cli/INCENSE-FLEET.md`](../frontier/cursor-cli/INCENSE-FLEET.md).
 
-Claude Code treats a prompt as an interactive session. It reads `--dangerously-skip-permissions`. `--print` is its one-lap door. The paste names `claude-sonnet-5-5` at `--effort medium`, the resolved model on the live seats. [`.claude/settings.json`](../.claude/settings.json) still declares `claude-sonnet-5-5` as the fleet default a clone's local settings can outrank.
+Claude Code treats a prompt as an interactive session. It reads `--dangerously-skip-permissions`. `--print` is its one-lap door. The paste names `claude-sonnet-5` at `--effort medium`, the resolved model on the live seats. [`.claude/settings.json`](../.claude/settings.json) still declares `claude-sonnet-5` as the fleet default a clone's local settings can outrank.
 
 Codex forwards these flags to the interactive CLI. `codex exec` is its one-lap door. The model is the default in [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh).
 
@@ -87,7 +87,7 @@ FLEET_BARE=1 FLEET_CAPTAIN=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7
 ### fleet interactive incense claude
 
 ```sh
-FLEET_BARE=1 FLEET_CAPTAIN=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 FLEET_CAPTAIN=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/i/incense_seat_prompt.txt whole before acting. You are Incense with FLEET_CAPTAIN=1, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive incense codex
@@ -117,7 +117,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive pheromone claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/pheromone_seat_prompt.txt whole before acting. You are Pheromone, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/pheromone_seat_prompt.txt whole before acting. You are Pheromone, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive pheromone codex
@@ -147,7 +147,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive petrichor claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/petrichor_seat_prompt.txt whole before acting. You are Petrichor, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/petrichor_seat_prompt.txt whole before acting. You are Petrichor, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive petrichor codex
@@ -177,7 +177,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive bakery claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/b/bakery_seat_prompt.txt whole before acting. You are Bakery, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive bakery codex
@@ -207,7 +207,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive diffuser claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/d/diffuser_seat_prompt.txt whole before acting. You are Diffuser, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/d/diffuser_seat_prompt.txt whole before acting. You are Diffuser, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive diffuser codex
@@ -237,7 +237,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive grass claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/g/grass_seat_prompt.txt whole before acting. You are Grass, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/g/grass_seat_prompt.txt whole before acting. You are Grass, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive grass codex
@@ -267,7 +267,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive copal claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/c/copal_seat_prompt.txt whole before acting. You are Copal, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/c/copal_seat_prompt.txt whole before acting. You are Copal, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive copal codex
@@ -297,7 +297,7 @@ FLEET_BARE=1 CURSOR_FORCE=1 cursor-agent --yolo --model grok-4.7-high "Read tool
 ### fleet interactive patchouli claude
 
 ```sh
-FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/patchouli_seat_prompt.txt whole before acting. You are Patchouli, running bare on the pier in Claude Code. Begin an interactive session."
+FLEET_BARE=1 claude --dangerously-skip-permissions --model claude-sonnet-5 --effort medium "Read tools/f/fleet_baton.txt and tools/p/patchouli_seat_prompt.txt whole before acting. You are Patchouli, running bare on the pier in Claude Code. Begin an interactive session."
 ```
 
 ### fleet interactive patchouli codex

@@ -7,7 +7,7 @@
 
 ## engine
 
-**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. This tree resolves `claude-opus-5-5`.
+**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. This tree resolves `claude-opus-5` (moved off 5.5 20261001, see construction/ITINERARY.md).
 
 ## fruit
 

@@ -74,7 +74,7 @@ provider Anthropic
 product Claude Code
 role repository agent
 modality text
-model claude-sonnet-5-5
+model claude-sonnet-5
 effort max
 service_tier
 service_name

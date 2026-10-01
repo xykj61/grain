@@ -29,8 +29,9 @@ only when no guard reads red (gated is fine). The last receipt is dated `2026091
 - **The ruling:** `active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md`, with
   its erratum. Clause three stands: a guard red and unchanged for more than three laps gets a ledger
   row that same lap.
-- **The fleet default model is `claude-sonnet-5-5`** in the tracked settings. The six peer ships'
-  local pins were set to the same on Keaton's word; bakery keeps `claude-opus-5-5`.
+- **The fleet default model moved back to `claude-sonnet-5`** on `20261001`, after we reported ten
+  safety-classifier false positives on the 5.5 family to anthropics/claude-code. All eight ships,
+  including bakery (`claude-opus-5`), stay on the 5 family until those reports are resolved.
 
 ## The order of work
 
