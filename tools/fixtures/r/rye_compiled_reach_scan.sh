@@ -151,7 +151,13 @@ bodies=$(grep -c . "$work/bodies.txt" || true)
 # anything is not a caller however often it names a path -- which is the whole of %449, where four
 # guards named `weave.rye` between two and four times each and not one of them held a build verb.
 git ls-files 2>/dev/null | grep -v '\.rye$' > "$work/nonrye.txt"
-xargs_lines_batched 400 "$work/nonrye.txt" grep -lE '(rye|zig)[[:space:]"]+(build-exe|build|run|test)' \
+# `rye_build.sh` is a second named wrapper beside `build_atomic` -- the verb pattern below cannot
+# see "rye" inside "rye_build.sh" since there is no space or quote between them, and 769 of the
+# tree's 786 uncompiled bodies at the stamp this was found were named beside this one wrapper
+# (REDS, cited by stamp 20261001.150343's sibling finding). Named explicitly rather than widened
+# to a looser pattern, since a looser rule risks crediting a path merely mentioned near the word
+# "rye" with no builder behind it at all.
+xargs_lines_batched 400 "$work/nonrye.txt" grep -lE '(rye|zig)[[:space:]"]+(build-exe|build|run|test)|rye_build\.sh' \
   2>/dev/null | LC_ALL=C sort -u > "$work/builders.txt" || true
 builders=$(grep -c . "$work/builders.txt" || true)
 if [ "$builders" -eq 0 ]; then
