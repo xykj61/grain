@@ -71,9 +71,3 @@ stamp 20261001.145658
 epoch 1790881018
 paths tools/co/comlink_device_wire_hosted_witness.rish tools/co/comlink_roster_pairs_cross_witness.rish tools/co/comlink_roster_pairs_seal_witness.rish construction/standing-equipment.kyri
 what Roster the three unreached Comlink witnesses REDS %930 named (device-wire hosted, roster-pairs cross-build, roster-pairs seal) into standing-equipment.kyri at tier cadence, matching their build-and-run sibling entries.
-claim mantra-weave-tablecloth-seam
-seat patchouli
-stamp 20261001.150550
-epoch 1790881550
-paths mantra/src/weave_tablecloth_seam_witness.rye
-what Run the seam design's falsifier: render Weave.current() to document bytes, hash with the catalogue's own SHA3-256 hex scheme, and compare against a BoltCatalog leaf's digest_hex for the same bytes.
