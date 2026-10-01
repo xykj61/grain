@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.190156` | [grass-inner.md graded clean](20261001/20261001-190156_grass-inner-prompt-graded.kyri) | B+/89 on the lane's own inner prompt; no frame owed, no new audit queued |
 | `20261001.185627` | [remote-roster register repair](20261001/20261001-185627_remote-roster-register-repair.kyri) | REMOTE_ROSTER.md negation 40% to 13%, truth and reach held |
 | `20261001.185504` | [seam witness rostered](20261001/20261001-185504_roster-weave-tablecloth-seam.kyri) | wrapped and rostered mantra_weave_tablecloth_seam_witness, closing the sibling's own named gap |
 | `20261001.185302` | [resurrection fired twice more mid-send](20261001/20261001-185302_resurrection-fired-twice-more-during-send.kyri) | three rebases to push the claim-close; the stale record came back once more from upstream itself |
