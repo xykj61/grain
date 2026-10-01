@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
 | `20261001.125756` | [nixos-claude-code-bump-and-model-default](20261001/20261001-125756_nixos-claude-code-bump-and-model-default.kyri) | claude-code 2.1.278 to 2.1.286, fleet default model to claude-sonnet-5 |
+| `20261001.125520` | [Hilbert order beats row-major for ID-adjacent traffic](20261001/20261001-125520_hilbert-order-moonshot.kyri) | B+/85 essay; torus/mesh hop table verified by computation |
 | `20261001.125333` | [cord-knot's parseInt sites graduate](20261001/20261001-125333_cord-knot-parseint-graduates.kyri) | mycelium/cord_knot_kyri.rye moved to tally/parse_int, witness GREEN, parseInt( 52 to 50 |
 | `20261001.125322` | [fruit stable, seventh confirm, check-in owed](20261001/20261001-125322_fruit-stable-seventh-confirm-check-in.kyri) | same A/92 reading, eleventh confirmation; recommends retasking the fruit |
 | `20261001.125059` | [the sixth lap meets the same open question](20261001/20261001-125059_sixth-lap-same-open-question.kyri) | unchanged since the fifth decline; same scope question still waits on Keaton |
