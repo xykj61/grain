@@ -13,15 +13,10 @@
 
 set -eu
 
-_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
-_steps=0
-while [ ! -d "$_root/rishi/bin" ] || [ ! -d "$_root/tools/fixtures" ]; do
-  _steps=$((_steps + 1))
-  if [ "$_steps" -gt 8 ] || [ "$_root" = "/" ]; then
-    echo "$0: no tree root within 8 steps" >&2; exit 2
-  fi
-  _root=$(dirname "$_root")
-done
+_root=$(CDPATH= cd -- "$(dirname "$0")" && git rev-parse --show-toplevel) || {
+  echo "$0: not inside a git tree" >&2
+  exit 2
+}
 calc="$_root/tools/fixtures/a/aurora_energy_crossover_calc.sh"
 [ -f "$calc" ] || { echo "refused: no calc at $calc" >&2; exit 1; }
 . "$_root/tools/fixtures/s/shell_portable.sh"

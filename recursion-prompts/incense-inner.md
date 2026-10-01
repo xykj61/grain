@@ -199,3 +199,5 @@ following lap, once this send is on `xy`.
 **Lap `20261001.184105` records the repository delete.** Keaton ran the `gh` hand. `gh repo view` could not resolve the retired repository. Living push stays `xy`.
 
 **Lap `20261001.191415` re-pinned the witnesses the rewrite orphaned.** Eight of the twenty-four cold-run reds read green again: `nib_honesty`, `itinerary_list`, `living_pin_fence`, `commit_parent_claim`, `waymark_rung_drift`, `rune_assert_arrival`, `fold_shelf_link`, and `fold_shelf_link_repoint`. The other sixteen still stand. Next: read those sixteen before another full pass.
+
+**Lap `20261001.192844` closed four of those sixteen.** `seed_link`, `unshared_citation`, `shell_dialect`, and `root_finder` read green. `rye_witness_walker` was already green on this tree. Still standing, and remeasured: `declared_model`, `mantra_shared_bound`, `build_target`. Not remeasured this lap: `backtick_path`, `rune_assert_sweep`, `index_row_bound`, `unheard_guard`, `law_guard_heard`, `standing_equipment_redleg`, `shim_reason`, and the rollup.

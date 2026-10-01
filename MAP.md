@@ -123,7 +123,7 @@ When a page here says GREEN, a machine said it first.
 | `expanding-prompts/` | The runnable plans |
 | `construction/` | The living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it |
 | `counsel/` | The advice ledger |
-| [`upstream/`](upstream/README.md) | Reports filed outward, and when we last checked |
+| `upstream/` | Reports filed outward, and when we last checked |
 | `session-logs/` - `kyri-resins/` | The diary and its compressions |
 | [`tools/`](tools/) | Where the witnesses live -- the little judges that make every GREEN in this tree mean something |
 
