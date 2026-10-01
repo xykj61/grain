@@ -257,3 +257,18 @@ own log: the standing eight matched name-for-name -- `standing_equipment_redleg`
 Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open; check the board and for
 an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands. The REDS
 pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20260930.234833` round-opened clean at `4194315f9f` (already on the anointed order),
+checked the claim board directly (five rows, all September stamps, all past expiry, no overlap,
+verdict=clear), read `HEAD` once, and found a cold run already in flight at that same HEAD --
+launched by a prior turn that had lost continuity.** Confirmed the process was genuinely alive in
+this tree (`sh tools/f/fleet_call.sh --pattern standing_equipment_run`, `cwd=/home/keeper/grain-incense`)
+and held per ORDER rather than launching a second, across seven Monitor re-arms (roughly 75
+minutes) until the transcript carried `run_verdict=guard_red`, 372 green, 8 red, 3 gated,
+`tree_moved=no`. The red-leg names matched the standing eight exactly:
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. Zero new
+reds, eleventh lap running clean in a row. Card headroom unchanged (39,834/40,960 bytes). Next
+lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
+`--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and still
+Keaton's to rule on.

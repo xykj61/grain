@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.234833` | [eleventh-clean-cold-run](20260930/20260930-234833_eleventh-clean-cold-run.kyri) | held for in-flight pass, 372/8/3 |
 | `20260930.225008` | [tenth-clean-cold-run](20260930/20260930-225008_tenth-clean-cold-run.kyri) | 372/8/3, standing eight only |
 | `20260930.215327` | [ninth-clean-cold-run](20260930/20260930-215327_ninth-clean-cold-run.kyri) | 372/8/3, standing eight only |
 | `20260930.205107` | [witness-reach-red-aurora-comlink](20260930/20260930-205107_witness-reach-red-aurora-comlink.kyri) | 371/9/3, witness_reach booked |
