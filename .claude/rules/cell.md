@@ -18,7 +18,7 @@ A cell is one counsel printout unit. It carries shapes and rulings for the bench
 - **Measurement beats memory.** Run the witness the cell cites before appending.
 - **Accrete, never break.** Dated artifacts stay; living pins move forward.
 - **Narrow-scope** when fascia < 80 -- one keystone per round unless the cell's own shape bounds the round (e.g. tend: zero new `.rye`, one waymark).
-- **Option 2** still governs piers: Cloud FF-merges `xy`; a `debrided` auth-refusal is named; home syncs waters.
+- **Option 2** still governs piers: Cloud FF-merges `xy`; home syncs waters.
 
 ## Why
 

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.171142` | [debrided mirror retired](20261001/20261001-171142_debrided-mirror-retired.kyri) | eight pier remotes removed; GitHub repo waits on delete_repo |
 | `20261001.165620` | [REDS fold 830-832 sent](20261001/20261001-165620_reds-fold-830-832-sent.kyri) | three CLOSED rows shelved; pin headroom 3397, deadlock cleared |
 | `20261001.165144` | [paused Claude fold restored](20261001/20261001-165144_paused-claude-fold-restored.kyri) | usage-limit hold; REDS fold put back in the working tree |
 | `20261001.164927` | [incense interactive open](20261001/20261001-164927_incense-interactive-open.kyri) | round open at b6d7abc874; REDS fold stashed, cold run held |

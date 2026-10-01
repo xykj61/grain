@@ -122,7 +122,7 @@ git clone https://github.com/grain-os/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. The maintainer's field keeps the canonical remote count at `context/REMOTE_ROSTER.md`. Living Cursor sends **dual-push** both field remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. The maintainer's field keeps the canonical remote count at `context/REMOTE_ROSTER.md`. Living push is `xy` alone. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
