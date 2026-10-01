@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.115527` | [citizen's-door fruit graded, links verified live](20261001/20261001-115527_citizen-door-grade-and-link-verify.kyri) | A/92 at door, truth 100%, all three external URLs fetched and confirmed live |
+| `20261001.115149` | [a third confirmation would cost more than it would teach](20261001/20261001-115149_pheromone-lane-closed-reconfirmed-third-time.kyri) | checked for drift instead of re-running green witnesses; lane queue empty |
 | `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and gp405, nib carried forward twice |
 | `20261001.114958` | [zero_view send, two contested nibs](20261001/20261001-114958_zero-view-rostered-send.kyri) | pushed xy and gp405 after three rebases |
 | `20261001.114626` | [one real link repair, in-lane](20261001/20261001-114626_example-app-plan-repoint.kyri) | repointed a folded companion link in docs-geode; fruit unchanged |
