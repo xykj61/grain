@@ -8237,3 +8237,21 @@ guard reds_first
 path tools/gen/chapter/reds_first_witness.rish
 tier lap
 seated 20261001.150505
+
+# fascia_health -- proves tools/fixtures/f/fascia_health_scan.sh both ways inside one witness file
+# rather than a positive/negative pair. The green leg calls the scan bare and reads
+# control_gate=honored, tracked_controls=honored (two planted on-disk controls, C_live and
+# C_dated, both read present by git ls-files rather than by test -f, per context/specs/
+# living-vs-dated.md's own law that on-disk is not in-the-tree), controls_honored=2, a per-room
+# live/dated/total breakdown across every tracked room, fascia_health=41 (live_surface 8405 of
+# tracked_total 20673, dated_testimony 12268), and shred=RED -- the ratio is reported, never
+# gated, and the cut it might someday argue for stays RED until Keaton circles it. The
+# prove-red leg calls the same scan with a "prove-red" argument, which flips one control's
+# presence check from git ls-files to a bare test -f and reads verdict=misread,
+# detail=RED_on_disk_is_not_in_the_tree, census=withheld -- a planted refusal proven rather than
+# assumed. One of the unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-fascia-health-roster before this entry landed. Runs in under 1s on metal.
+guard fascia_health
+path tools/gen/chapter/fascia_health_witness.rish
+tier lap
+seated 20261001.152107

@@ -89,10 +89,16 @@ whole](archive/date/20261001/20261001-143222_itinerary-copal-scan-convention-acc
 **COPAL.** [Shed_census account shelved
 whole](archive/date/20261001/20261001-144736_itinerary-copal-shed-census-account.md).
 
-**COPAL -- REDS_LEDGER AND REDS_LEDGER_NEGATIVE ROSTERED.** Positive leg reads `verdict=ok`
-against the living `construction/REDS.md`; negative leg reads `verdict=incomplete_rows` on the
-standing fixture, then `verdict=ok` again on the living ledger. GREEN direct on metal, both legs.
-Seated `20261001.144736`. **139** unrostered `tools/gen/chapter/` witnesses remain.
+**COPAL.** [Reds_ledger account shelved
+whole](archive/date/20261001/20261001-152231_itinerary-copal-reds-ledger-account.md).
+
+**COPAL -- FASCIA_HEALTH ROSTERED.** `tools/gen/chapter/fascia_health_witness.rish` proves
+`tools/fixtures/f/fascia_health_scan.sh` both ways inside one file: the green leg reads
+`controls_honored=2`, a per-room live/dated/total breakdown, `fascia_health=41`, and `shred=RED`;
+the `prove-red` leg flips one control's presence check from `git ls-files` to a bare `test -f` and
+reads `verdict=misread`, `detail=RED_on_disk_is_not_in_the_tree`, `census=withheld`. Claimed as
+`copal-fascia-health-roster`, run direct on metal, exit 0, both legs as printed. Seated
+`20261001.152107`. **128** unrostered `tools/gen/chapter/` witnesses remain, measured fresh.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -348,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8e81557f29` -- HEAD's parent, read after the final rebase.
+**Git nib:** `db17fc301d` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
