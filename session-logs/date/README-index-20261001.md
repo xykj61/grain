@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.120840` | [the energy-crossover calculator lands](20261001/20261001-120840_aurora-energy-crossover-calculator.kyri) | Proposal 2's first witness built, GREEN, 12 legs/0 faults; research page B+/86 |
 | `20261001.120623` | [copy_sameness send, one rebase with a Git nib conflict](20261001/20261001-120623_copy-sameness-send.kyri) | pushed xy and gp405, nib carried to 76940ff939 |
 | `20261001.120540` | [sixth confirm, docs-geode swept](20261001/20261001-120540_citizen-door-fruit-sixth-confirm-docs-geode-swept.kyri) | fruit holds B+/92; six more front pages graded B+/A; MAP.md orphan check resolved as deliberate |
 | `20261001.120415` | [patchouli fruit still stands](20261001/20261001-120415_patchouli-fruit-still-stands.kyri) | six-facts map unchanged, no fresh work in lane |

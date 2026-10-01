@@ -7095,6 +7095,19 @@ path tools/a/aurora_placement_witness.rish
 tier lap
 seated 20260916.042700
 
+# aurora_energy_crossover -- the first witness Proposal 2 of the 20260918-054803 two-first-
+# principles page named and left unbuilt: a calculator for M* = L * s / ((Hm - Ht) * e), the
+# traffic volume where Aurora's torus wrap earns back its static link cost. Hm, Ht, and L are read
+# from aurora_placement's own grid readings; e and s stay named placeholder parameters, since every
+# joule-reading door this pier holds is shut. Computes, never measures -- proves the formula's own
+# arithmetic rather than a real crossover.
+#
+# 12 legs, 2 mutations bitten (a broken zero-hop-saving guard, an inverted formula), tier lap.
+guard aurora_energy_crossover
+path tools/a/aurora_energy_crossover_witness.rish
+tier lap
+seated 20261001.114903
+
 # aurora_file_placement -- the step aurora_placement's second erratum named and nobody took. That
 # reading found every assignment of MODULES to nodes overflows a node at either grid row 7 names,
 # and closed on one sentence: name which FILES sit on which node, since the coarsening is forced
