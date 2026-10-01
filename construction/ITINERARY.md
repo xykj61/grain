@@ -117,42 +117,23 @@ name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roste
 
 **PETRICHOR.** The citizen's-door draft already reads A/92 (door, service 90); all sixteen relative links resolve. No raise needed.
 
-**GRASS -- THE OPEN-ROOM REVERSE-READ OF 20260922.** [Shelved
-whole](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md). The later packet stays on the card.
-
-**GRASS -- backtick_path's second reverse-read account.** [Shelved
-whole](archive/date/20260918/20260918-074921_itinerary-grass-backtick-path-second-account.md).
-
-**GRASS -- setu6 device-lab-check account.** [Shelved
-whole](archive/date/20260918/20260918-081500_itinerary-grass-setu6-device-lab-account.md).
-
-**GRASS -- scribble_core.rye account.** [Shelved
-whole](archive/date/20260918/20260918-091253_itinerary-grass-scribble-core-account.md).
-
-**GRASS -- the pin-agreement bound account.** [Shelved
-whole](archive/date/20260918/20260918-092900_itinerary-grass-pin-agreement-account.md).
-
-**GRASS -- `linengrow/setu_desk_hold0_check.rye` account.** [Shelved
-whole](archive/date/20260918/20260918-093822_itinerary-grass-hold0-account.md).
-
-**GRASS -- hold1 repair, and the zero-assert ratchet's close.** [Shelved
-whole](archive/date/20260918/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md).
-
-**GRASS -- PRIOR LIVE ACCOUNTS.** [Shelved whole](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md); its stale ratchet figures are superseded below.
-
-**GRASS -- prior open-room account shelved whole** ([archive](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)); the new packet follows below.
-
-**GRASS -- FOUR PROMISES.** [Account shelved whole](archive/date/20260924/20260924-212003_itinerary-grass-four-promises-account.md).
-
-**GRASS -- DEVICE THAT FORGETS.** [Account shelved whole](archive/date/20260924/20260924-224108_itinerary-grass-device-that-forgets-account.md).
-
-**GRASS -- KEY YOU HOLD.** [Account shelved whole](archive/date/20260924/20260924-224108_itinerary-grass-key-you-hold-account.md).
-
-**GRASS -- FREE AND OPEN ROOM.** [Account shelved whole](archive/date/20260924/20260924-211114_itinerary-grass-open-room-account.md).
-
-**GRASS -- SHAPE OF A DAY.** [Account shelved whole](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md).
-
-**GRASS -- ROOTS BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-001539_itinerary-grass-roots-account.md).
+**GRASS -- FOURTEEN ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261001`, condensed from
+fourteen one-line pointers to one, nothing archived lost): open-room reverse-reads
+([`20260923`](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md),
+[`20260924`](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)), `backtick_path`
+([`second`](archive/date/20260918/20260918-074921_itinerary-grass-backtick-path-second-account.md)),
+`setu6` device-lab ([`check`](archive/date/20260918/20260918-081500_itinerary-grass-setu6-device-lab-account.md)),
+`scribble_core.rye` ([`account`](archive/date/20260918/20260918-091253_itinerary-grass-scribble-core-account.md)),
+pin-agreement bound ([`account`](archive/date/20260918/20260918-092900_itinerary-grass-pin-agreement-account.md)),
+`setu_desk_hold0_check.rye` ([`account`](archive/date/20260918/20260918-093822_itinerary-grass-hold0-account.md)),
+hold1 + zero-assert close ([`account`](archive/date/20260918/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md)),
+prior live accounts ([`roll-up`](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md)),
+Four Promises ([`account`](archive/date/20260924/20260924-212003_itinerary-grass-four-promises-account.md)),
+Device That Forgets ([`account`](archive/date/20260924/20260924-224108_itinerary-grass-device-that-forgets-account.md)),
+Key You Hold ([`account`](archive/date/20260924/20260924-224108_itinerary-grass-key-you-hold-account.md)),
+Free and Open Room ([`account`](archive/date/20260924/20260924-211114_itinerary-grass-open-room-account.md)),
+Shape of a Day ([`account`](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md)),
+Roots Beneath the Work ([`account`](archive/date/20260925/20260925-001539_itinerary-grass-roots-account.md)).
 
 **GRASS -- FOUNDATION BENEATH THE WORK.** [Account shelved whole](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md).
 
@@ -168,10 +149,13 @@ whole](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-acc
 [parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)
 site, each outside the ratchet's room list.
 
-**GRASS -- CARAVAN ATTEMPT WITHDRAWN, RETTING_TIMER'S SITE LANDED.** [Account shelved
-whole](archive/date/20261001/20261001-122200_itinerary-grass-caravan-withdrawn-retting-landed-account.md)
--- `parseInt(` fell 54 to 52. **YOURS:** `parseInt(` (52), `caravan/` cap-count sites await a FOLD
-rather than a per-rung migration, `functions_over_70` (694), claim-board.
+**GRASS -- CORD-KNOT GRADUATES TWO PARSEINT SITES.** [Shelved
+whole](archive/date/20261001/20261001-124926_itinerary-grass-caravan-withdrawn-retting-landed-account.md).
+`mycelium/cord_knot_kyri.rye`'s `issued`/`taxed` reads moved to `parse_int.parse_int` through the
+existing symlink (14 siblings already route through it); `render` writes both via `{d}`, no
+leading zero possible. `tools/m/mycelium_cord_knot_kyri_witness.rish` GREEN. `parseInt(` fell 52
+to 50. **YOURS:** `mantra/recall_tablecloth_query_delivery.rye`'s `host` path has no witness yet;
+`caravan/` wants a FOLD; `functions_over_70` (694); claim-board.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -369,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9328ab16b4` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
+**Git nib:** `0cc5e80113` -- HEAD read before this follow-up commit (rule 5), after the ruling push.
 
 ### Incense -- product captain
 
