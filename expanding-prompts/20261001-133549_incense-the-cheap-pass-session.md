@@ -52,7 +52,7 @@ only when no guard reads red (gated is fine). The last receipt is dated `2026091
 
 ## Hazards met this session
 
-- **Sends contest.** Eight ships push constantly. Pull-rebase, push `xy` then `debrided`, and on a Git
+- **Sends contest.** Eight ships push constantly. Pull-rebase, push `xy`, and on a Git
   nib conflict keep the newer peer value. Land the nib follow-up as its own commit.
 - **The commit-msg hook counts mechanism words:** name the file, field, constant, function or script
   changed in the body, three distinct words at least.

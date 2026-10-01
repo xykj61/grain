@@ -7,7 +7,7 @@
 #   rishi/bin/rishi run tools/b/birth_a_clone.rish /Users/<user>/grain-<body>
 #
 # What a birth does, in order: clone from the field's own objects with the anointed remotes
-# seated (xy, then debrided); point core.hooksPath at the tracked hooks so the walls travel;
+# seated (xy); point core.hooksPath at the tracked hooks so the walls travel;
 # init the four named vendor submodules over plain https with the host's global config held
 # aside (the card's own recipe -- a rewriting insteadOf cannot reach the public repos); copy
 # the vendored toolchain (403 MB, host-provisioned, untracked); bootstrap rye from source and
@@ -38,8 +38,6 @@ let rr = run ["git" "-C" dest "remote" "remove" "origin"]
 assert rr.ok else "birth-a-clone: could not remove the local origin"
 let ax = run ["git" "-C" dest "remote" "add" "xy" "git@github.com:xykj61/grain.git"]
 assert ax.ok else "birth-a-clone: could not seat remote xy"
-let ag = run ["git" "-C" dest "remote" "add" "debrided" "git@github.com:debrided/grain.git"]
-assert ag.ok else "birth-a-clone: could not seat remote debrided"
 
 # The transport: .git contents are never cloned, so the newborn takes its own copy of the
 # field's repo-local ssh config and points core.sshCommand at that copy.
@@ -175,4 +173,4 @@ let wt = run ["sh" "-c" ("cd " + dest + " && rishi/bin/rishi run tools/w/wire_la
 assert wt.ok else "birth-a-clone: the newborn's witness refused -- ${wt.out_brief}"
 assert wt.out contains "GREEN: wire-lab-fn" else "birth-a-clone: the newborn's witness must speak GREEN"
 
-say "GREEN: birth-a-clone -- ${dest} stands whole: remotes xy and debrided, tracked hooks, four submodules, its own rye and rishi, one witness GREEN inside it. A codex login and the launch paste remain a hand's."
+say "GREEN: birth-a-clone -- ${dest} stands whole: remote xy, tracked hooks, four submodules, its own rye and rishi, one witness GREEN inside it. A codex login and the launch paste remain a hand's."

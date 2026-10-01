@@ -68,7 +68,7 @@ EOF
 fi
 
 # New or renamed dated artifacts vs base (working tree + index; two-dot diff)
-BASE=${ONE_CLOCK_PROVENANCE_BASE:-debrided/main}
+BASE=${ONE_CLOCK_PROVENANCE_BASE:-xy/main}
 if git rev-parse --verify "$BASE" >/dev/null 2>&1; then
   diff_tmp=$(mktemp)
   git diff --name-status "$BASE" 2>/dev/null >"$diff_tmp" || true

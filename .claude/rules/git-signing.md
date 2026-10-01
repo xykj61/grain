@@ -52,7 +52,7 @@ ship in the private field carries it, while the public seed's share of it stays 
 before. `sow_witness` is GREEN with the
 verdict in place, which is how a privacy boundary moves: by proof rather than assertion.
 
-**Living remotes** (`20260730.030553` -- Keaton's word): always push **both** `debrided` (GitHub `debrided/grain`) and `xy` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20261001` -- Keaton's word): push **`xy`** (GitHub `xykj61/grain`). The mirror `debrided` retired the same day. Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
 

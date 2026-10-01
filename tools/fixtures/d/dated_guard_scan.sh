@@ -94,7 +94,7 @@ fi
 
 on_main() {
   path=$1
-  for ref in main debrided/main; do
+  for ref in main xy/main; do
     if git cat-file -e "${ref}:${path}" 2>/dev/null; then
       return 0
     fi
