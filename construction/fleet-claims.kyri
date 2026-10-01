@@ -71,9 +71,3 @@ stamp 20261001.121229
 epoch 1790871149
 paths tools/fixtures/m/mantra_weave_tablecloth_seam_scan.sh tools/m/mantra_weave_tablecloth_seam_witness.rish
 what Run the weave-meets-Tablecloth seam falsifier: does current()'s rendered document bytes already carry a resin matching an existing blob in the Mantra store, or is the gap real.
-claim copal-voice-roster-witness-roster-20261001
-seat copal
-stamp 20261001.121332
-epoch 1790871212
-paths tools/gen/chapter/voice_roster_witness.rish tools/gen/chapter/voice_roster_negative_witness.rish tools/fixtures/v/voice_roster_scan.sh construction/standing-equipment.kyri
-what Roster the unrostered voice_roster witness pair (positive + negative) onto standing-equipment, proving both sides GREEN.
