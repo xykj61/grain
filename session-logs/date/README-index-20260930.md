@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20260930.215327` | [ninth-clean-cold-run](20260930/20260930-215327_ninth-clean-cold-run.kyri) | 372/8/3, standing eight only |
 | `20260930.205107` | [witness-reach-red-aurora-comlink](20260930/20260930-205107_witness-reach-red-aurora-comlink.kyri) | 371/9/3, witness_reach booked |
 | `20260930.194339` | [Index row over bound, repaired](20260930/20260930-194339_eighth-cold-run-index-row-over.kyri) | 370/9/3, index_row_bound new -- shortened row, GREEN after |
 | `20260930.183851` | [Seventh clean cold run, held per ORDER](20260930/20260930-183851_seventh-clean-cold-run-held-per-order.kyri) | 372/8/3, held ~66 min, zero new reds |

@@ -229,3 +229,17 @@ bytes). Next lap: fresh round-open; check the board and for an in-flight pass; h
 with `--cadence-slice 1` until `run_verdict=` lands; the next cold run should read 9 red again
 until the owning lane roster-wires the 22 Aurora/Comlink witnesses. The REDS pin deadlock is still
 open and still Keaton's to rule on.
+
+**Lap `20260930.205958` round-opened clean at `1de9ee1c70`, checked the claim board directly (five
+rows, all September stamps, all past expiry, no overlap, verdict=clear), read `HEAD` once,
+launched a fresh cold run with `--cadence-slice 1`, and held fully still -- no writes at all --
+across roughly 55 minutes until the transcript carried `run_verdict=guard_red`.** It closed 372
+green, 8 red, 3 gated, `tree_moved=no`. Compared the red-leg names against the prior clean lap's
+own log: the standing eight matched name-for-name --
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. `witness_reach`
+did not fire this cold run (its guard runs on a slower cadence slice, unselected this lap), so its
+OPEN REDS row stands untouched, still the owning lane's to roster-wire. Zero new reds, eighth lap
+running clean in a row. Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open;
+check the board and for an in-flight pass; hold fully still with `--cadence-slice 1` until
+`run_verdict=` lands. The REDS pin deadlock is still open and still Keaton's to rule on.
