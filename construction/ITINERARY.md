@@ -86,11 +86,13 @@ whole](archive/date/20261001/20261001-124523_itinerary-copal-voice-roster-accoun
 **COPAL.** [Scan_convention account shelved
 whole](archive/date/20261001/20261001-143222_itinerary-copal-scan-convention-account.md).
 
-**COPAL -- SHED_CENSUS ROSTERED.** `tools/gen/chapter/shed_census_witness.rish` proves both ways
-inside one file rather than a positive/negative pair: the plain call reads `verdict=ok`,
-`C1=REFERENCED`, `C2=ORPHAN`, `controls_honored=2`, `shred=RED`, and the `prove-red` call reads
-`ok==false`, `detail=RED_C2-orphan`, `census=withheld`. Run direct on metal, exit 0, both legs as
-printed. Seated `20261001.142943`. **141** unrostered `tools/gen/chapter/` witnesses remain.
+**COPAL.** [Shed_census account shelved
+whole](archive/date/20261001/20261001-144736_itinerary-copal-shed-census-account.md).
+
+**COPAL -- REDS_LEDGER AND REDS_LEDGER_NEGATIVE ROSTERED.** Positive leg reads `verdict=ok`
+against the living `construction/REDS.md`; negative leg reads `verdict=incomplete_rows` on the
+standing fixture, then `verdict=ok` again on the living ledger. GREEN direct on metal, both legs.
+Seated `20261001.144736`. **139** unrostered `tools/gen/chapter/` witnesses remain.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
