@@ -1,0 +1,85 @@
+# tools/h/hilbert_order_witness.rish -- does Hilbert order beat row-major for ID-adjacent traffic?
+#
+#   rishi/bin/rishi run tools/h/hilbert_order_witness.rish
+#
+# Closes the arithmetic half of
+# active-designing/date/20261001/20261001-125213_hilbert-order-beats-row-major-for-id-adjacent-traffic.md
+# into the checkable room, as that essay's own "What Bakery could build" section names. Row 7 of
+# active-designing/date/20260910/20260910-060204_the-bounded-torus-moonshots.md fixes a topology
+# (mesh or torus); this witness keeps the topology question outside its own scope and grades a
+# SECOND, narrower question: which order module IDs should land on grid nodes in, so a module
+# numbered `i` sits near the module numbered `i+1`.
+#
+# THE FINDING. A Hilbert space-filling curve visits every cell of a k x k grid exactly once, each
+# step moving to a grid-adjacent cell by construction. So the mean hop distance between consecutive
+# integers in Hilbert order is exactly 1.0 at every power-of-two grid, on both mesh and torus.
+# Row-major order (`node(i) = (i mod k, i div k)`) carries no such guarantee: most consecutive
+# pairs sit side by side, but every k-th pair crosses a row boundary, and that crossing's cost
+# grows with grid size on mesh while a torus's own wraparound absorbs part of it. Hilbert wins at
+# every grid size checked, and wins MORE on mesh than on torus -- a torus has less left to recover.
+#
+# WHAT THIS WITNESS DOES NOT REACH. Whether module or node IDs are actually assigned in an order
+# correlated with real communication -- the essay's own working assumption, left unverified both
+# there and here. It proves the arithmetic; the traffic pattern waits on a real measurement.
+
+say "hilbert-order: Style Gauge, Meter -- two orderings, one metric, held rather than guessed."
+say "hilbert-order: Lens TAME -- the Hilbert guarantee is proven by construction and checked on metal anyway."
+
+# --- The reading -------------------------------------------------------------
+say "hilbert-order: reading row-major against Hilbert order, mesh and torus alike..."
+let scan = run ["sh" "tools/fixtures/h/hilbert_order_scan.sh"]
+say scan.out
+assert scan.ok else "hilbert-order: the scan refused -- read its own keys"
+assert scan.out contains "verdict=read" else "hilbert-order: the scan reached no verdict"
+
+# invariant: the reading names the essay it grades, so a key pasted out of context still says
+# which sentence it is about.
+assert scan.out contains "hilbert-order-beats-row-major-for-id-adjacent-traffic.md" else "hilbert-order: the reading named no page"
+
+# invariant: every grid the essay's own table names is read, and none of them silently dropped.
+assert scan.out contains "grids_graded=3" else "hilbert-order: the grid count moved off the essay's own three rows"
+assert scan.out contains "grids_over_bound=0" else "hilbert-order: a grid was dropped at the bound"
+assert scan.out contains "grids_not_power_of_two=0" else "hilbert-order: a power-of-two grid was refused"
+
+# invariant: the three rows match the essay's own table exactly -- computed here independently of
+# the essay's own scratch-file arithmetic, rather than trusting the essay's transcription of it.
+assert scan.out contains "grid k=2 pairs=3 rowmajor_mesh_mean=1.3333 rowmajor_torus_mean=1.3333 hilbert_mesh_mean=1.0000 hilbert_torus_mean=1.0000" else "hilbert-order: the k=2 row left the essay's table"
+assert scan.out contains "grid k=4 pairs=15 rowmajor_mesh_mean=1.6000 rowmajor_torus_mean=1.2000 hilbert_mesh_mean=1.0000 hilbert_torus_mean=1.0000" else "hilbert-order: the k=4 row left the essay's table"
+assert scan.out contains "grid k=8 pairs=63 rowmajor_mesh_mean=1.7778 rowmajor_torus_mean=1.1111 hilbert_mesh_mean=1.0000 hilbert_torus_mean=1.0000" else "hilbert-order: the k=8 row left the essay's table"
+
+# invariant: Hilbert order reads exactly 1.0 at every grid, on both topologies -- the construction's
+# own promise, proven rather than assumed.
+assert scan.out contains "hilbert_always_one=yes" else "hilbert-order: a grid broke the Hilbert always-adjacent guarantee"
+
+# invariant: Hilbert beats row-major everywhere this scan reads, on both mesh and torus.
+assert scan.out contains "hilbert_beats_rowmajor_mesh=yes" else "hilbert-order: row-major matched or beat Hilbert on mesh somewhere"
+assert scan.out contains "hilbert_beats_rowmajor_torus=yes" else "hilbert-order: row-major matched or beat Hilbert on torus somewhere"
+
+# invariant: the essay's second finding holds -- Hilbert's advantage is never smaller on mesh than
+# on torus, since a torus's own wraparound already recovers part of row-major's row-boundary cost.
+assert scan.out contains "mesh_advantage_ever_below_torus=no" else "hilbert-order: the mesh advantage fell below the torus advantage somewhere -- the essay's second finding moved"
+
+# --- The bounds ----------------------------------------------------------------------------------
+# invariant: the grid collection names its maximum, so a future, wider GRIDS list is refused at the
+# edge rather than read short in silence.
+assert scan.out contains "max_grids=" else "hilbert-order: the grid bound is unnamed"
+
+# --- The control: load-bearing walks proven by mutation -------------------------------------------
+say "hilbert-order: the control -- torus wraparound and Hilbert rotation, each planted and lifted..."
+let ctl = run ["sh" "tools/fixtures/h/hilbert_order_control.sh"]
+say ctl.out
+assert ctl.ok else "hilbert-order: the control refused -- read its own leg lines"
+assert ctl.out contains "control_verdict=ok" else "hilbert-order: the control reached no ok verdict"
+assert ctl.out contains "failures=0" else "hilbert-order: a planted behavior differed from what was stated"
+
+# invariant: the control tallies its own legs and this witness asserts the count, so a leg written
+# tomorrow is heard the day it lands rather than passing unread under a green verdict.
+assert ctl.out contains "legs=9" else "hilbert-order: the control's leg count moved -- read it, then raise this line"
+
+# invariant: both mutations were planted AND bit. A refusal proven only in the passing direction
+# cannot be told from a bypass.
+assert ctl.out contains "leg m1_torus_collapse_bites ok" else "hilbert-order: collapsing the torus wraparound went unfelt"
+assert ctl.out contains "leg m2_rotation_removal_bites ok" else "hilbert-order: dropping the Hilbert rotation step went unfelt"
+assert ctl.out contains "leg m3_power_of_two_guard_bites ok" else "hilbert-order: removing the power-of-two guard went unfelt"
+
+say "GREEN: hilbert-order -- Hilbert order reads exactly 1.0 at every power-of-two grid, beats row-major everywhere checked, and wins more on mesh than on torus."

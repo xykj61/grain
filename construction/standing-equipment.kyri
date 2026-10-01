@@ -8140,3 +8140,22 @@ guard shed_census
 path tools/gen/chapter/shed_census_witness.rish
 tier lap
 seated 20261001.142943
+
+# hilbert_order -- closes the arithmetic half of the 20261001-125213 essay (row 7's own
+# placement question, kept fixed, asked a second one: in what ORDER should module IDs land on
+# grid nodes). A Hilbert curve visits every cell once, each step grid-adjacent by construction,
+# so the mean hop distance between consecutive integers reads exactly 1.0 at every power-of-two
+# grid, on mesh and torus alike. Row-major (`node(i) = (i mod k, i div k)`) carries no such
+# guarantee: 1.333/1.200/1.111 torus and 1.333/1.600/1.778 mesh at k=2/4/8, against Hilbert's flat
+# 1.000. Hilbert wins at every grid checked, and wins more on mesh (25 to 44 percent) than on
+# torus (10 to 25 percent), since a torus's own wraparound already recovers part of row-major's
+# row-boundary cost. Every figure is HELD -- the scan opens no file, so nothing in the tree can
+# move it; only the traffic-weight assumption that ID-adjacency approximates real coupling stays
+# unverified, named as the essay's own falsifier.
+#
+# 9 legs, 3 mutations bitten (torus wraparound collapsed, Hilbert rotation dropped, power-of-two
+# guard removed), one throwaway pen, under 1s on metal.
+guard hilbert_order
+path tools/h/hilbert_order_witness.rish
+tier lap
+seated 20261001.142551
