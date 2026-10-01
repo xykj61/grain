@@ -1,0 +1,202 @@
+//! mantra/weave_tablecloth_seam_witness.rye -- the seam's first step, run.
+//!
+//!   rye build mantra/weave_tablecloth_seam_witness.rye -femit-bin=mantra/bin/weave_tablecloth_seam_witness
+//!   mantra/bin/weave_tablecloth_seam_witness
+//!
+//! The question is the chart's own: does `Weave.current()`'s output already
+//! carry a stable content address, and does the catalogue already compute it
+//! the same way? [`../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md)
+//! names the falsifier: render a stored weave, hash the document, and compare
+//! against the catalogue's resin for the same bytes.
+//!
+//! WHAT THIS WITNESS BUILDS, to answer that with a number rather than a
+//! reading of the two modules' prose. A `Weave` is lifted from three `V1Row`
+//! entries whose text, joined by `\n`, is byte-identical to a plain three-line
+//! document -- the same relationship `mantra/src/diff.rye`'s `split_lines`
+//! already proves runs the other direction. `current()` returns the weave's
+//! present lines in document order; this witness joins their `text` fields
+//! with `\n` and calls the join the rendered document. A `BoltCatalog` leaf is
+//! then appended under the SAME bytes, through `recall_lap1.rye`'s own
+//! `append_leaf`, which computes `digest_hex` with its private
+//! `digest_hex_of` -- SHA3-256 of the content, lower-hex, 64 characters. This
+//! witness recomputes that identical function over the rendered document and
+//! asserts the two 64-character strings are equal, character for character.
+//!
+//! THE ANSWER THE CHART ASKED FOR. They are equal, and they could not be
+//! otherwise: both paths hash the SAME bytes under the SAME algorithm
+//! (SHA3-256, lower-hex). Nothing about `current()`'s output makes it harder
+//! or easier to address than any other byte string the catalogue already
+//! takes. The seam the chart names is therefore exactly what its own
+//! falsifier predicted on the "it already works" branch -- a naming exercise
+//! rather than a new hash, a new store, or a new wire shape. What remains
+//! unbuilt is the WIRING: nothing today calls `current()`, joins its lines,
+//! and hands the result to `append_leaf` or `write_blob` in one motion. That
+//! wiring is a small function over two modules that already agree, and it is
+//! the next lap's crux rather than this one's.
+//!
+//! The claims, listed rather than counted:
+//!   1. A three-line weave's `current()` renders back the exact bytes it was
+//!      lifted from -- the join is the inverse of `split_lines`.
+//!   2. The rendered document's SHA3-256 hex digest, computed the way this
+//!      witness computes it, matches the catalogue's own `digest_hex` for a
+//!      leaf appended under the identical bytes.
+//!   3. Editing the weave after the lift (one line replaced) changes the
+//!      rendered document, and the two digests still agree on the new bytes --
+//!      the match in claim 2 was not a coincidence of the first document.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("src/weave.rye");
+const recall_lap1 = @import("recall_lap1.rye");
+
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+const witness_version = "20261001.150550";
+
+// Every declaration of each module under test, forced through semantic
+// analysis at comptime -- Zig analyses lazily, so a `pub fn` carrying a flat
+// type error in a function no claim below calls would ride through the build
+// untouched and this witness would print GREEN over it (REDS %470).
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+    for (@typeInfo(recall_lap1).@"struct".decls) |decl| {
+        _ = &@field(recall_lap1, decl.name);
+    }
+}
+
+/// The largest number of rows a hand-written record holds here. Named because
+/// this witness argues a law by showing every row it writes, and a proof
+/// whose input outgrows a reader stops proving anything that reader can
+/// check.
+const max_planted_rows: u32 = 8;
+
+/// A document a reader can hold in their head: three lines, no trailing
+/// newline, so `split_lines` would yield exactly these three tokens.
+fn planted_record() [3]weave.V1Row {
+    return .{
+        .{ .text = "the first line", .gen = 1, .pos = 0 },
+        .{ .text = "the second line", .gen = 1, .pos = 1 },
+        .{ .text = "the third line", .gen = 1, .pos = 2 },
+    };
+}
+
+/// The plain bytes `planted_record()` stands for, joined the way this tree's
+/// own `split_lines` would un-join them. Named once so claim 1 has a fixed
+/// point to compare against rather than re-deriving it from the rows.
+const planted_document = "the first line\nthe second line\nthe third line";
+
+/// Render a weave's `current()` lines into one document: `text` fields joined
+/// by `\n`, the exact inverse of `diff.split_lines`. Ceiling is
+/// `max_planted_rows`, matching the witness's own small inputs rather than
+/// `weave.max_weave_lines`, since every document this file renders is meant
+/// to be read.
+fn render_document(garden: std.mem.Allocator, lines: []const weave.Line) ![]const u8 {
+    // invariant: a rendered document stays small enough for a reader to check
+    // by eye, which is the whole value of a witness over a module
+    assert(lines.len <= max_planted_rows);
+    var texts: [max_planted_rows][]const u8 = undefined;
+    for (lines, 0..) |line, i| texts[i] = line.text;
+    const joined = try std.mem.join(garden, "\n", texts[0..lines.len]);
+    // invariant: join never drops a line, so the rendered document holds every
+    // present line the weave handed back
+    assert(std.mem.count(u8, joined, "\n") == if (lines.len == 0) 0 else lines.len - 1);
+    return joined;
+}
+
+/// SHA3-256 of `content`, lower-hex, 64 characters -- the same function
+/// `mantra/recall_lap1.rye`'s private `digest_hex_of` computes, reproduced
+/// here because that module keeps its own hashing an implementation detail
+/// rather than a public seam. Equal inputs to equal algorithms is the whole
+/// claim this witness exists to check, so the two must be read side by side
+/// rather than shared by import.
+fn digest_hex_of(content: []const u8, out: *[64]u8) void {
+    var digest: [Sha3_256.digest_length]u8 = undefined;
+    Sha3_256.hash(content, &digest, .{});
+    var i: u32 = 0;
+    while (i < Sha3_256.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{digest[i]}) catch unreachable;
+    }
+}
+
+fn prove_current_renders_the_lifted_bytes(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    // invariant: a record stays inside the ceiling this witness reads it with
+    assert(rows.len <= max_planted_rows);
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+    const lines = try lifted.current(garden);
+    // invariant: three live rows lift to three present lines, none deleted
+    assert(lines.len == 3);
+    const rendered = try render_document(garden, lines);
+    // invariant: the render is the exact inverse of how the document was
+    // planted, so a reader can trust claim 2's hash describes THIS document
+    assert(std.mem.eql(u8, rendered, planted_document));
+
+    print("mantra-seam: current() renders the lifted bytes exactly -- {d} lines, {d} bytes\n", .{ lines.len, rendered.len });
+}
+
+fn prove_the_two_digests_agree(garden: std.mem.Allocator) !void {
+    const rows = planted_record();
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+    const lines = try lifted.current(garden);
+    const rendered = try render_document(garden, lines);
+
+    var weave_digest: [64]u8 = undefined;
+    digest_hex_of(rendered, &weave_digest);
+
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try cat.append_leaf("local", "seam-witness", 1, "doc.txt", rendered, "plain-text");
+    const catalog_digest = cat.leaves[0].digest_hex;
+
+    // invariant: both digests are 64 lower-hex characters -- the shape SHA3-256
+    // hex-encoding always produces, checked before the content is compared
+    assert(weave_digest.len == 64);
+    assert(catalog_digest.len == 64);
+    // invariant: the two hashes are computed over the SAME bytes by the SAME
+    // algorithm, so a mismatch here would mean one of the two digest
+    // functions has drifted from the other rather than that the seam is hard
+    assert(std.mem.eql(u8, weave_digest[0..], catalog_digest[0..]));
+
+    print("mantra-seam: weave digest and catalogue digest agree -- {s}\n", .{weave_digest});
+}
+
+fn prove_an_edit_moves_both_digests_together(garden: std.mem.Allocator) !void {
+    var rows = planted_record();
+    rows[1] = .{ .text = "the second line, revised", .gen = 1, .pos = 1 };
+    var lifted = try weave.Weave.from_v1(garden, &rows);
+    const lines = try lifted.current(garden);
+    const rendered = try render_document(garden, lines);
+    // invariant: the edit changed the rendered bytes, so this claim exercises
+    // a document other than claim 2's rather than repeating it by accident
+    assert(!std.mem.eql(u8, rendered, planted_document));
+
+    var weave_digest: [64]u8 = undefined;
+    digest_hex_of(rendered, &weave_digest);
+
+    var cat: recall_lap1.BoltCatalog = .empty();
+    try cat.append_leaf("local", "seam-witness", 1, "doc.txt", rendered, "plain-text");
+    const catalog_digest = cat.leaves[0].digest_hex;
+
+    assert(std.mem.eql(u8, weave_digest[0..], catalog_digest[0..]));
+
+    print("mantra-seam: an edited weave's digest still agrees with the catalogue's -- {s}\n", .{weave_digest});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    try prove_current_renders_the_lifted_bytes(garden);
+    try prove_the_two_digests_agree(garden);
+    try prove_an_edit_moves_both_digests_together(garden);
+
+    print("mantra-seam: version {s}\n", .{witness_version});
+    print("GREEN: the weave's current() and the catalogue's digest_hex agree on the same bytes -- the seam is a naming exercise, not a new hash.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}
