@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.121745` | [retting-timer-parseint-and-a-withdrawn-caravan-attempt](20261001/20261001-121745_retting-timer-parseint-and-a-withdrawn-caravan-attempt.kyri) | One parseInt site migrated; a caravan attempt withdrawn at its own ceiling |
 | `20261001.121714` | [two docs-geode pages raised to B](20261001/20261001-121714_two-docs-geode-pages-raised-to-b.kyri) | seva-center D+ to B+, round-trip-walk B+ to A; fruit re-confirmed A |
 | `20261001.120840` | [the energy-crossover calculator lands](20261001/20261001-120840_aurora-energy-crossover-calculator.kyri) | Proposal 2's first witness built, GREEN, 12 legs/0 faults; research page B+/86 |
 | `20261001.120623` | [copy_sameness send, one rebase with a Git nib conflict](20261001/20261001-120623_copy-sameness-send.kyri) | pushed xy and gp405, nib carried to 76940ff939 |

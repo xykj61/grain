@@ -140,10 +140,7 @@ whole](archive/date/20260918/20260918-093822_itinerary-grass-hold0-account.md).
 **GRASS -- hold1 repair, and the zero-assert ratchet's close.** [Shelved
 whole](archive/date/20260918/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md).
 
-**GRASS -- PRIOR LIVE ACCOUNTS.** [Shelved whole](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md).
-**YOURS:** the ratchet roster stands at `@memcpy` migration (135), `parseInt(` migration (54),
-and `functions_over_70=694` headed by `glow/lower_shop_gate_witness.rye` at 1035 lines; the next
-agent-doable pick is any one, claim-board checked first.
+**GRASS -- PRIOR LIVE ACCOUNTS.** [Shelved whole](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md); its stale ratchet figures are superseded below.
 
 **GRASS -- prior open-room account shelved whole** ([archive](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)); the new packet follows below.
 
@@ -168,13 +165,15 @@ agent-doable pick is any one, claim-board checked first.
 **GRASS -- THE SEALED CROSSING.** [Shelved
 whole](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md).
 
-**GRASS -- MEMCPY RATCHET, ONE SITE.** [Account shelved
-whole](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md).
+**GRASS -- TWO SMALL RATCHET SITES, SHELVED.** One
+[memcpy](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md) and one
+[parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)
+site, each outside the ratchet's room list.
 
-**GRASS -- ONE PARSEINT SITE.** `seat_nakshatra.rye`'s `parseInt` migrated to
-`tally_parse_int.parse_int`, proven on metal; outside the ratchet's room list, so 54 stands. Log:
-`20261001-114515_seat-nakshatra-parseint-migration.kyri`. **YOURS:** `parseInt(` (54),
-`functions_over_70` (694), claim-board.
+**GRASS -- CARAVAN ATTEMPT WITHDRAWN, RETTING_TIMER'S SITE LANDED.** [Account shelved
+whole](archive/date/20261001/20261001-122200_itinerary-grass-caravan-withdrawn-retting-landed-account.md)
+-- `parseInt(` fell 54 to 52. **YOURS:** `parseInt(` (52), `caravan/` cap-count sites await a FOLD
+rather than a per-rung migration, `functions_over_70` (694), claim-board.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
