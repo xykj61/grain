@@ -160,6 +160,7 @@ exposed_root() {
 
 unfiltered=0
 filtered=0
+planted=0
 exposed=0
 unresolved=0
 offtree=0
@@ -173,6 +174,11 @@ while IFS="$(printf '\t')" read -r f ln root; do
     esac
     continue
   fi
+  # A control script plants its walks inside a pen on purpose, so they are the guard's own proof
+  # rather than a tree walk (REDS %785, ruled 20261001). Counted apart and gated by nothing.
+  case "$f" in
+    */*_control.sh) planted=$((planted + 1)); continue ;;
+  esac
   if filtered_file "$f"; then
     filtered=$((filtered + 1))
     continue
@@ -214,6 +220,7 @@ echo "exposed=$exposed"
 echo "unresolved_root=$unresolved"
 echo "cd_relocated=$relocated"
 echo "off_tree=$offtree"
+echo "planted_in_controls=$planted"
 echo "ceiling=$CEILING"
 
 if [ "$unfiltered" -gt "$CEILING" ]; then
