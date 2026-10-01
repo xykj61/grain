@@ -9,6 +9,7 @@
 | `20261001.194238` | [Air row pulls one strand](20261001/20261001-194238_air-row-pulls-one-strand-nothing-snaps.kyri) | pulled 71a9b15ab5; nib drift confirmed as existing %803, not new |
 | `20261001.193200` | [Aether row read, no new work](20261001/20261001-193200_aether-row-read-no-new-work.kyri) | confirms prior lap's reading; thin queue, nothing agent-doable found in scope |
 | `20261001.192134` | [weave-tablecloth reading closes the arc](20261001/20261001-192134_weave-tablecloth-reading-closes-the-arc.kyri) | wrote the foundation unifying Mantra's two promises; the wiring landed earlier this lap |
+| `20261001.191810` | [stale comlink-witness claim closed](20261001/20261001-191810_close-stale-comlink-witness-claim.kyri) | landed work had no --close; claim closed, ITINERARY nib carried |
 | `20261001.191415` | [eight rewrite reds re-pinned](20261001/20261001-191415_eight-rewrite-reds-repinned.kyri) | eight guards green; sixteen still stand |
 | `20261001.191218` | [Earth row grades two docs](20261001/20261001-191218_earth-row-grades-two-touched-docs-clean.kyri) | CONTRIBUTING.md, REMOTE_ROSTER.md both clean |
 | `20261001.191039` | [close resurrected seam-roster claim](20261001/20261001-191039_close-resurrected-seam-roster-claim.kyri) | a rebase resurrected the already-closed seam-roster claim; re-ran the witness GREEN and closed it again |
