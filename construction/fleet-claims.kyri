@@ -71,3 +71,9 @@ stamp 20261001.153224
 epoch 1790883144
 paths mantra/src/weave_tablecloth.rye mantra/src/weave_tablecloth_witness.rye construction/standing-equipment.kyri
 what wire the seam's named gap: a small function that renders Weave.current() to document bytes and hands them to the catalogue's append_leaf in one motion, rather than the inline witness code that proved the seam agrees
+claim copal-thing-not-name-roster
+seat copal
+stamp 20261001.182703
+epoch 1790893623
+paths tools/gen/chapter/thing_not_name_witness.rish construction/standing-equipment.kyri
+what Roster the thing-not-name witness (proves tools/fixtures/t/thing_not_name_scan.sh both ways already) into standing-equipment.kyri at tier lap, one of the 127 unrostered tools/gen/chapter/ witnesses copal-inner.md names.
