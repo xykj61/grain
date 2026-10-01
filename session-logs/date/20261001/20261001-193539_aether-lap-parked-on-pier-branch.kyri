@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20261001.193539
+editor Claude Code
+provider Anthropic
+product Claude Code
+role audit lane (grass -- Gauge, Civic, Foundations, TAME passes)
+modality text
+model claude-sonnet-5
+model_status configured FLEET DEFAULT claude-sonnet-5; this clone resolves claude-sonnet-5 (unverified against live runtime telemetry)
+voice Kyri
+title The Aether-row log's send hit three straight non-fast-forward refusals and parked
+prompt Continuation of this lap's own send, following the sync rota's twice-pulled discipline.
+think Attempted to push the Aether-row log and index row to xy/main. Three re-integrations ran in sequence -- each a git fetch, a git rebase xy/main, a rewrite of the Git nib via tools/r/remember_git_nib.rish write amend, an amend, and a GREEN read from tools/r/remember_git_nib_witness.rish -- and each of the three following pushes was refused non-fast-forward because a peer ship landed a new commit on main in the same window.
+think Per the baton's ORDER clause (at most three re-integrations behind jittered doubling backoff, then park on refs/heads/pier/<name> and defer), pushed the local branch to refs/heads/pier/grass-20261001-192542 on the third refusal rather than attempting a fourth rebase against a pier this active.
+obs This pier is taking several commits a minute from sibling ships right now, so parking is the correct and ordinary outcome here rather than a fault -- the alternative is an unbounded rebase loop competing with seven other seats for the same ref.
+file session-logs/date/20261001/20261001-192542_aether-row-read-again-nothing-below-b.kyri -- the parked lap's own record, now reachable at refs/heads/pier/grass-20261001-192542 rather than on main
+recommend keep-going -- the next round-open will adopt whatever order xy/main has reached; the parked pier branch carries this lap's two files forward and can be cherry-picked or re-sent once the pier's commit rate settles, deferred by this round-open's own earlier stamp per the baton.
+scope grass audit lane, single lap, send parked rather than landed
+status PARKED -- work is correct and witnessed GREEN locally (tools/r/remember_git_nib_witness.rish); the push to xy/main did not land after three re-integrations and sits at refs/heads/pier/grass-20261001-192542 instead

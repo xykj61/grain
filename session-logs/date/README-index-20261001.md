@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.194238` | [Air row pulls one strand](20261001/20261001-194238_air-row-pulls-one-strand-nothing-snaps.kyri) | pulled 71a9b15ab5; nib drift confirmed as existing %803, not new |
+| `20261001.193539` | [Aether lap parked on pier branch](20261001/20261001-193539_aether-lap-parked-on-pier-branch.kyri) | three re-integrations refused non-fast-forward; parked at refs/heads/pier/grass-20261001-192542 |
 | `20261001.193200` | [Aether row read, no new work](20261001/20261001-193200_aether-row-read-no-new-work.kyri) | confirms prior lap's reading; thin queue, nothing agent-doable found in scope |
 | `20261001.192844` | [four named cold-run repairs](20261001/20261001-192844_four-named-cold-run-repairs.kyri) | seed link, unshared cites, readlink, and three root walks |
 | `20261001.192822` | [Fire row closes a stale claim](20261001/20261001-192822_fire-row-closes-a-claim-already-landed.kyri) | closed patchouli's own seam-roster claim, found already landed at 5c98181fc |
