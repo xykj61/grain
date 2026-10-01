@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.142326` | [fleet moved off the 5.5 model family](20261001/20261001-142326_fleet-off-5-5-family.kyri) | all eight ships back on sonnet-5/opus-5 pending Anthropic's resolution |
+| `20261001.142239` | [receipt value-form map](20261001/20261001-142239_receipt-value-form-map.kyri) | offer/value/expiration landed in mantra+tally; consent/use ride inside them; correction has no form |
 | `20261001.141642` | [REDS %827, four of seven refusal legs added](20261001/20261001-141642_redleg-four-of-seven.kyri) | standing_equipment_redleg 58 to 54, three remain in Brushstroke/Pond/almanac-breach |
 | `20261001.140814` | [dropped a misread data point](20261001/20261001-140814_drop-misread-settings-local-point.kyri) | the settings pin precedence was expected behavior, not a mismatch; removed from all ten |
 | `20261001.140633` | [fixed the blank, then tightened, comments](20261001/20261001-140633_fix-blank-then-tighten-issue-comments.kyri) | gh api @file did not expand; wrapped as JSON, verified all ten bodies read back correct |
