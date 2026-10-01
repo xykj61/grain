@@ -103,6 +103,10 @@ whole](archive/date/20261001/20261001-184233_itinerary-copal-thing-not-name-acco
 **COPAL.** Rostered `dep_crawl_bounds_negative` -- GREEN on metal, proves both of dep_crawl's
 bounds bite inside one file. **134** unrostered `tools/gen/chapter/` witnesses remain of 164.
 
+**COPAL.** Rostered `radiant_h1_fence` -- GREEN on metal, control true/naive and prove-red refusal
+both proven. A `*_witness.rish` glob now reads `unrostered=122` of `total=154` -- a narrower count
+than the elder `134 of 164` above; re-derive rather than trust either.
+
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).

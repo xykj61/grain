@@ -8392,3 +8392,19 @@ guard mantra_spool_dedup_ratio
 path tools/m/mantra_spool_dedup_ratio_witness.rish
 tier lap
 seated 20261001.190906
+
+# radiant_h1_fence -- M4's radiant H1 fence home land, proving
+# tools/fixtures/r/radiant_h1_fence_scan.sh both ways inside one witness file. The green leg calls
+# the scan bare and reads control_h1_true=1, control_h1_naive=4, control_gate=honored (the planted
+# control proving the fence-aware count differs from a naive heading grep before any roster totals
+# are trusted), then the live roster's own h1_fence=honored, governing_template=yes naming
+# classical-vedic-astrology/templates/reading-template.md as the one offender a fence-aware reader
+# still has to flag, and radiant_h1_fence=ok, verdict=ok. The prove-red leg calls the same scan
+# with a "prove-red" argument, which forces a misread and reads verdict=misread -- the refusal
+# this guard exists to prove bites rather than merely exist. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as copal-radiant-h1-fence-roster
+# before this entry landed. Runs in under 1s on metal.
+guard radiant_h1_fence
+path tools/gen/chapter/radiant_h1_fence_witness.rish
+tier lap
+seated 20261001.191505
