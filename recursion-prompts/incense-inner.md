@@ -210,3 +210,22 @@ for an in-flight pass; hold fully still with `--cadence-slice 1`, writing nothin
 no restated adjective clause -- since this is the second time in one day a lap's own closing row
 cost the next lap a diagnosis cycle. The REDS pin deadlock is still open and still Keaton's to
 rule on.
+
+**Lap `20260930.205107` round-opened clean at `23dc5a20cc`, checked the claim board directly (five
+rows, all stale, no overlap), confirmed no cold pass in flight (the standing transcript's own
+`launch_head` sat one commit behind current HEAD with a finished `run_verdict=`), and launched a
+fresh cold run with `--cadence-slice 1`.** Held fully still -- no writes at all -- across six
+Monitor re-arms (roughly 70 minutes) until the transcript carried `run_verdict=guard_red`, 371
+green, **9** red, 3 gated, `tree_moved=no`. Compared the red-leg names against the prior clean
+lap's own log: the standing eight held, and `witness_reach` was new -- `unreached=649` against
+`ceiling=635`, named by `sh tools/fixtures/w/witness_reach_scan.sh --new` as 22 freshly-written
+witness files in `tools/au/` (Aurora's stage-store family) and `tools/co/` (Comlink's device-wire
+and roster-pairs siblings), none rostered, called, or choired yet. Traced to its root cause --
+another lane's fast, ongoing feature construction outpacing its own roster wiring, read from the
+commit history behind those files -- and booked as an **OPEN** row in `construction/REDS.md`
+rather than attempted as a law-lane guess at cadence and family, since rostering each witness
+correctly wants the builder's own judgment. Card headroom checked before writing: clean (39,834
+bytes). Next lap: fresh round-open; check the board and for an in-flight pass; hold fully still
+with `--cadence-slice 1` until `run_verdict=` lands; the next cold run should read 9 red again
+until the owning lane roster-wires the 22 Aurora/Comlink witnesses. The REDS pin deadlock is still
+open and still Keaton's to rule on.
