@@ -22,8 +22,8 @@
 
 say "process-fanout: the control, on planted spawn counts in a throwaway pen..."
 let control = run ["sh" "tools/fixtures/p/process_fanout_control.sh"]
-assert control.ok else "process-fanout: the control could not run\n${control.err_brief}"
 say control.out
+assert control.ok else "process-fanout: the control could not run\n${control.err_brief}"
 
 assert control.out contains "control_verdict=ok" else "process-fanout: a control leg failed\n${control.out_brief}"
 assert control.out contains "control_failed=0" else "process-fanout: the control's own tally names a failing leg\n${control.out_brief}"
@@ -57,8 +57,8 @@ say "process-fanout: the calibration is measured on THIS host rather than carrie
 # figure measured on one pier and baked in silently describes the wrong host the first time a ship
 # sails elsewhere, so every run times the tools on the machine it is running on and prints them.
 let calib = run ["sh" "tools/fixtures/p/process_fanout_scan.sh" "--calibrate-only"]
-assert calib.ok else "process-fanout: the calibration could not run\n${calib.err_brief}"
 say calib.out
+assert calib.ok else "process-fanout: the calibration could not run\n${calib.err_brief}"
 assert calib.out contains "verdict=calibrated" else "process-fanout: the calibration must answer for itself\n${calib.out_brief}"
 assert calib.out contains "calib_fork_us=" else "process-fanout: the bare-fork floor must be named, since it is what separates arrival from work\n${calib.out_brief}"
 assert calib.out contains "calib_blend_us=" else "process-fanout: the blend a share is derived from must be printed, never implied\n${calib.out_brief}"

@@ -12,6 +12,7 @@ let verb = ""
 if length args != 0 then let verb = args[0]
 
 let prep = run ["sh" "tools/fixtures/g/gen_bozo_fund_prep.sh" verb]
+say prep.out
 assert prep.ok else "gen-bozo REFUSE or seat door failed — see stderr"
 assert prep.out contains "GREEN: gen-bozo" else "gen-bozo missing GREEN line"
 assert prep.out contains "sign_index=9" else "gen-bozo Capricorn seat index unnamed"
@@ -20,7 +21,6 @@ assert prep.out contains "vane=%bozo" else "gen-bozo vane unnamed"
 assert prep.out contains "dedication: Helen Atthowe" else "gen-bozo Helen dedication unnamed"
 assert prep.out contains "executive: DJINN" else "gen-bozo DJINN executive unnamed"
 assert prep.out contains "bozo_fund=prep" else "gen-bozo prep flag missing"
-say prep.out
 
 let refuse = run ["sh" "tools/fixtures/g/gen_bozo_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-bozo refuse-walk broken: deploy must exit RED"
