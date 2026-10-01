@@ -1,0 +1,78 @@
+# tools/a/aurora_energy_crossover_witness.rish -- the first witness Proposal 2 of
+# active-designing/date/20260918/20260918-054803_two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md
+# named and left unbuilt.
+#
+#   rishi/bin/rishi run tools/a/aurora_energy_crossover_witness.rish
+#
+# THE PROPOSAL. Whether Aurora's torus wrap earns back its static link cost is a traffic-volume
+# threshold rather than a hop-count question alone: M* = L * s / ((Hm - Ht) * e), where Hm and Ht
+# are the mesh and torus mean hop counts, L the extra wrap links, e the per-hop energy, and s the
+# per-link static cost. Hm, Ht, and L are measured today by tools/fixtures/a/aurora_placement_scan.sh;
+# e and s stay named parameters, since every joule-reading door this pier holds is shut (row 6's own
+# two errata). This witness proves the calculator computes that formula correctly and refuses what
+# it says it refuses -- it does not and cannot prove a real crossover traffic volume, since e and s
+# carry no real unit until a pier answers back.
+#
+# WHAT THIS WITNESS DOES NOT REACH. Whether the per-hop energy model is accurate, and whether e or
+# s hold the same value across topologies -- the proposal's own falsifier names a board whose wrap
+# links are physically longer than its mesh links, which would make e itself topology-dependent and
+# this single-e model wrong. The calculator computes the stated formula; it does not validate it.
+
+say "aurora-energy-crossover: Style Gauge, Meter -- a calculator, not a measurement."
+say "aurora-energy-crossover: Lens TAME -- e and s stay named parameters until a pier can read a joule."
+
+# --- The reading -------------------------------------------------------------
+say "aurora-energy-crossover: computing the crossover at the placement scan's own grids..."
+let scan = run ["sh" "tools/fixtures/a/aurora_energy_crossover_calc.sh"]
+say scan.out
+assert scan.ok else "aurora-energy-crossover: the calc refused to run -- read its own keys"
+assert scan.out contains "verdict=computed" else "aurora-energy-crossover: the calc reached no verdict"
+
+# invariant: the reading names the proposal it is the first witness for, so a key pasted out of
+# context still says which page it answers.
+assert scan.out contains "two-first-principles-proposals-caravan-lattice-hop-aurora-energy-crossover.md" else "aurora-energy-crossover: the reading named no proposal"
+
+# invariant: the default run carries e=1.0 and s=1.0 -- placeholder units, named as such, rather
+# than a silently assumed real joule.
+assert scan.out contains "e=1.0" else "aurora-energy-crossover: the default per-hop energy moved"
+assert scan.out contains "s=1.0" else "aurora-energy-crossover: the default static-link energy moved"
+
+# invariant: the 2x2 grid adds no hop saving (the torus IS the mesh there), so the crossover is
+# named undefined rather than computed as a false zero or a divide-by-zero crash.
+assert scan.out contains "grid k=2" else "aurora-energy-crossover: the 2x2 grid went unread"
+assert scan.out contains "crossover_messages=undefined reason=no_hop_saving" else "aurora-energy-crossover: the 2x2 grid's undefined crossover moved"
+
+# invariant: the 16-core grid (k=4, the moonshots page's own headline grid) computes a positive,
+# finite crossover under the default placeholder units.
+assert scan.out contains "grid k=4" else "aurora-energy-crossover: the 16-core grid went unread"
+assert scan.out contains "L=8" else "aurora-energy-crossover: the 16-core grid's extra-link count moved"
+
+# invariant: every grid the placement scan grades is graded here too, and the bound is named.
+assert scan.out contains "max_grids=" else "aurora-energy-crossover: the grid bound is unnamed"
+assert scan.out contains "grids_graded=4" else "aurora-energy-crossover: not all four grids were graded"
+assert scan.out contains "grids_over_bound=0" else "aurora-energy-crossover: a grid was dropped at the bound"
+
+# --- The refusal path ---------------------------------------------------------
+say "aurora-energy-crossover: proving the refusal on a non-positive per-hop energy..."
+let refused = run ["sh" "tools/fixtures/a/aurora_energy_crossover_calc.sh" "--e" "0" "--s" "1"]
+assert refused.ok else "aurora-energy-crossover: the refusal path itself crashed"
+assert refused.out contains "verdict=refused_input" else "aurora-energy-crossover: a zero per-hop energy was not refused"
+
+# --- The control: hand-computed legs, two mutations proven to bite ----------
+say "aurora-energy-crossover: the control -- hand arithmetic and two planted mutations..."
+let ctl = run ["sh" "tools/fixtures/a/aurora_energy_crossover_control.sh"]
+say ctl.out
+assert ctl.ok else "aurora-energy-crossover: the control refused -- read its own leg lines"
+assert ctl.out contains "control_verdict=ok" else "aurora-energy-crossover: the control reached no ok verdict"
+assert ctl.out contains "failures=0" else "aurora-energy-crossover: a planted behavior differed from what was stated"
+
+# invariant: the control tallies its own legs and this witness asserts the count, so a leg written
+# tomorrow is heard the day it lands rather than passing unread under a green verdict.
+assert ctl.out contains "legs=12" else "aurora-energy-crossover: the control's leg count moved -- read it, then raise this line"
+
+# invariant: both mutations were planted AND bit. A refusal proven only in the passing direction
+# cannot be told from a bypass.
+assert ctl.out contains "leg m1_bites ok" else "aurora-energy-crossover: breaking the diff<=0 guard went unfelt"
+assert ctl.out contains "leg m2_bites ok" else "aurora-energy-crossover: inverting the formula went unfelt"
+
+say "GREEN: aurora-energy-crossover -- the formula computes against hand arithmetic, refuses a non-positive per-hop energy, and names its own two missing terms rather than guessing them."
