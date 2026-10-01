@@ -19,7 +19,7 @@
 
 **Renamed `20260826.165307` on Keaton's word:** the three living remotes take the names the tree already speaks -- `origin` -> **`debrided`**, `xykj61` -> **`xy`**, `grain-os` -> **`seed`**. The forges are unchanged; only the local names moved, so a URL in any dated log still reads true. The rename broke every guard reading `refs/remotes/origin/main` and every loop recipe spelling `git pull --rebase xykj61 main`, all repointed in the same round -- references are promises, and a remote name is one.
 
-**Renamed `20260823.184309` on Keaton's word:** the GitHub organization **`autoproject96` became `debrided`**, and `origin` is repointed to `git@github.com:debrided/grain.git`. GitHub keeps a redirect from the elder name, which is why nothing broke and why the repoint could be done calmly rather than under an outage. Both names are on the seed's IDENT leak roster and both scrub to `acme-owner`, since dated testimony keeps every `autoproject96` it ever wrote. The deep removal of those marks from history ran `20261001.172721` on Keaton's word.
+**Renamed `20260823.184309` on Keaton's word:** the GitHub organization **`autoproject96` became `debrided`**, and `origin` is repointed to `git@github.com:debrided/grain.git`. GitHub keeps a redirect from the elder name, so the repoint happened calmly rather than under an outage. Both names are on the seed's IDENT leak roster and both scrub to `acme-owner`, since dated testimony keeps every `autoproject96` it ever wrote. The deep removal of those marks from history ran `20261001.172721` on Keaton's word.
 
 **Seed / public projection remote** (`20260817` -- Keaton's word: grain-os is an xykj61 organization):
 
@@ -28,7 +28,7 @@
 | `seed` | GitHub `grain-os/grain` | The **public seed** (depersonalized, Option-B fresh history). **Custody gate %1** -- the seed force-push. `grain-os` is a GitHub **organization owned by `xykj61`**, so the same `xykj61` SSH key has push access (verified by dry-run `20260817`; repo exists, HEAD `26cae5b2db`). The force-push itself stays Keaton's explicit word: it force-updates a public repo and is irreversible. Projected by `tools/s/sow.rish`, proven by `tools/s/sow_witness.rish` (M1 root-classification + M2 no-personal-no-key-no-name). |
 | `ww` | GitHub `grain-ww/grain` | **The second door to the same projection** (Keaton's word `20260828`, on creating the `grain-ww` organization -- the name matches the living domain `grain-ww.com`). `publish-seed.sh` force-pushes the one crashed-wave commit to **both** doors; `ww` and `seed` are peer names for one seed, never two seeds. |
 
-**Pier write ruling -- Option 2 SEATED** (`20260730.034136` - Keaton's word - red 32 - counsel lean held): ls-remote proves existence, never authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xy` branch + PR, and **FF-merges to `xy/main` itself** (approved `20260730.034520` -- Keaton's word: merge here in the Cloud environment). **`origin` / `main` syncs from the home pier** after Keaton pulls and GPG-pushes -- no home credential leaves home. Living push is `xy` alone from `20261001`.
+**Pier write ruling -- Option 2 SEATED** (`20260730.034136` - Keaton's word - red 32 - counsel lean held): ls-remote proves existence; the push itself decides authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xy` branch + PR, and **FF-merges to `xy/main` itself** (approved `20260730.034520` -- Keaton's word: merge here in the Cloud environment). **`origin` / `main` syncs from the home pier** after Keaton pulls and GPG-pushes -- every home credential stays home. Living push is `xy` alone from `20261001`.
 
 **Retired from living push** (`20260729.141658`):
 
@@ -46,9 +46,9 @@
 | `gp36-codeberg` | Codeberg groupproject36 (retired with Codeberg living push) |
 | `gp36-github` | GitHub groupproject36 (when configured) |
 
-**Push law:** every send pushes **`xy`**. Its fast-forward refusal is the round's compare-and-set. The mirror `debrided` retired `20261001`. [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md).
+**Push law:** every send pushes **`xy`**. Its fast-forward-only rule stands as the round's compare-and-set. The mirror `debrided` retired `20261001`. [`.claude/rules/git-signing.md`](../.claude/rules/git-signing.md).
 
-**Create note:** if `xykj61/grain` is absent on GitHub, create the empty repo under the `xykj61` account (or load that account's deploy key), then `git push -u xy HEAD`. The remote URL is seated even before the empty repo exists.
+**Create note:** when `xykj61/grain` has yet to exist on GitHub, create the repo under the `xykj61` account (or load that account's deploy key), then `git push -u xy HEAD`. The remote URL is seated before GitHub holds any repo at all.
 
 ---
 

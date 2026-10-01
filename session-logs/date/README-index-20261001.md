@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.185627` | [remote-roster register repair](20261001/20261001-185627_remote-roster-register-repair.kyri) | REMOTE_ROSTER.md negation 40% to 13%, truth and reach held |
 | `20261001.185302` | [resurrection fired twice more mid-send](20261001/20261001-185302_resurrection-fired-twice-more-during-send.kyri) | three rebases to push the claim-close; the stale record came back once more from upstream itself |
 | `20261001.185007` | [grade-touch confirms prior survey](20261001/20261001-185007_grade-touch-front-doors.kyri) | found a near-duplicate survey; reverted the drafted card edit |
 | `20261001.184500` | [the one real revision this tree has is a shift](20261001/20261001-184500_one-real-revision-is-a-shift.kyri) | pond/apps can't revise in place; recall_beaded's own revision example is an insert, not a substitute |
