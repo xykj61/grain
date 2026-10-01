@@ -6,8 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
 | `20261001.125059` | [the sixth lap meets the same open question](20261001/20261001-125059_sixth-lap-same-open-question.kyri) | unchanged since the fifth decline; same scope question still waits on Keaton |
 | `20261001.125024` | [second nib follow-up after a second rebase](20261001/20261001-125024_second-nib-follow-up-after-rebase.kyri) | Git nib carried forward to 97eb78a82c, same contested-send gap firing twice |
+| `20261001.124950` | [seat-the-fusion-build-ruling](20261001/20261001-124950_seat-the-fusion-build-ruling.kyri) | wire ceiling and ignored_walk ruled, standing booking rule named, ledger room blocks the rest |
 | `20261001.124824` | [case 4 of the receipt contract was already landed](20261001/20261001-124824_case-four-already-closed.kyri) | Still-order witness runs GREEN on metal; nothing new to build |
 | `20261001.124541` | [the fifth re-check declined](20261001/20261001-124541_fifth-recheck-declined.kyri) | closed Glow-shape fruit stays closed; scope question handed to Keaton |
 | `20261001.124509` | [nib follow-up after send](20261001/20261001-124509_nib-follow-up-after-send.kyri) | Git nib carried forward to d2f5975a6e after the push had already landed |
@@ -19,6 +21,7 @@
 | `20261001.123244` | [the Wyoming PBC walkthrough repaired past the B floor](20261001/20261001-123244_wyoming-pbc-b-floor.kyri) | C+/77 to B+/85; card shed to stay under its byte bound |
 | `20261001.123029` | [repair-sent-clean](20261001/20261001-123029_repair-sent-clean.kyri) | nib repair pushed clean with a real amend, verified 85c36c55c8 |
 | `20261001.122826` | [copy_sameness earns its own refusal leg](20261001/20261001-122826_copy-sameness-refusal-leg.kyri) | REDS %827's fifth guard closed, 57 to 56; five remain |
+| `20261001.122721` | [incense-interactive-open](20261001/20261001-122721_incense-interactive-open.kyri) | session opened as Incense, status read, direction asked |
 | `20261001.122557` | [voice_roster pair rostered](20261001/20261001-122557_voice-roster-pair-rostered.kyri) | voice_roster + negative sibling rostered, GREEN both; card shed under its own bound |
 | `20261001.122532` | [retting-timer-send](20261001/20261001-122532_retting-timer-send.kyri) | pushed xy and debrided; its claimed nib-amend was a render-only slip, corrected by the next follow-up |
 | `20261001.121745` | [retting-timer-parseint-and-a-withdrawn-caravan-attempt](20261001/20261001-121745_retting-timer-parseint-and-a-withdrawn-caravan-attempt.kyri) | One parseInt site migrated; a caravan attempt withdrawn at its own ceiling |
