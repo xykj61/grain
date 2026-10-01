@@ -77,12 +77,26 @@ declaring=0
 edge='([^a-zA-Z0-9_]|$)'
 lead='(^|[^a-zA-Z0-9_])'
 
+# A symlink and its target are ONE real file read through two path aliases, the exact class
+# named elsewhere in this tree as "a symlinked @import is two compilation units, not one" --
+# here it is one declaring file counted as two. tally_receipt_offer_bounds.rye's three
+# tree-named constants were read this way: mantra/src/tally_receipt_offer_bounds.rye symlinks to
+# tally/receipt_offer_bounds.rye, so the delegated check below (which matches an importer by the
+# PATH actually named in the @import call) cleared the symlink alias and left the target's own
+# path still reading asserted_only, having found no literal `@import("receipt_offer_bounds.rye")`
+# anywhere (REDS, cited by stamp 20261001.143449's sibling finding).
+seen_real=""
 for room in $rooms; do
   for f in $(git ls-files "$room/*.rye" 2>/dev/null); do
     case "$f" in
       *_witness.rye|*_test.rye) continue ;;
     esac
     [ -f "$f" ] || continue
+    real=$(readlink -f "$f")
+    case " $seen_real " in
+      *" $real "*) continue ;;
+    esac
+    seen_real="$seen_real $real"
     for c in $(sed -n 's/^pub const \(max_[a-z0-9_]*\).*/\1/p' "$f" | sort -u); do
       declaring=$((declaring + 1))
 
@@ -184,6 +198,26 @@ for room in $rooms; do
       if sed -n "/^\(pub \)\{0,1\}const [a-zA-Z0-9_]*[ :=].*$c/p" "$f" \
         | grep -qvE "^(pub )?const $c$edge"; then
         derived=$((derived + 1))
+        continue
+      fi
+
+      # delegated: the ceiling is read by a shared refusal helper (tally_refusal.text_refusal or
+      # .exact_length_refusal) in a DIFFERENT file, which must actually import this declaring
+      # file by name rather than merely share a constant's spelling -- REDS %833's class one
+      # ceiling over, found while repairing the sibling reading. Scoping to real importers is
+      # what keeps tally/receipt_offer_bounds.rye's byte-identical, unimported duplicate of these
+      # same three constants correctly asserted_only: nothing imports it, so no caller can ever
+      # be turned away through it, which is a different fault than this one names.
+      base=$(basename "$f")
+      delegated=no
+      for importer in $(grep -rl "@import(\"$base\")" --include='*.rye' . 2>/dev/null); do
+        if grep -qE "tally_refusal\.(text_refusal|exact_length_refusal)\([^)]*\b$c\b[^)]*\)\) \|r\| return r" "$importer"; then
+          delegated=yes
+          break
+        fi
+      done
+      if [ "$delegated" = yes ]; then
+        structural=$((structural + 1))
         continue
       fi
 
