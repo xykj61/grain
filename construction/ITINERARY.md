@@ -34,15 +34,17 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- THE RECEIPT'S FIRST TYPE FITS GLOW'S SHAPE RUNE, PROVEN ON METAL
-(`20260923`).** `ReceiptOfferFact`
-([the contract](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md))
-publishes **15** fields. `glow/rune_shape.rye` now admits fifteen fields, and
-`glow/tokens.rye`'s shape-only peek carries the contract's 18-line desk through the same path.
-The planted refusal moved with the ceiling: fifteen fields are admitted and the sixteenth names
-`TooManyFields`. Both demo arrays now fill their fifteen slots, and the Glow shape-capacity,
-refusal, and contract-specific guards pass on metal. No new rune was added; the change stays inside
-the existing shape and lowering path.
+**PHEROMONE -- RECEIPT-SHAPE ACCOUNT SHELVED, GRANT/REVOKE FACTS SKETCHED AS GLOW SHAPES
+(`20261001.181632`).** [Account shelved
+whole](archive/date/20261001/20261001-181632_itinerary-pheromone-receipt-shape-fits-rune-account.md)
+-- the fifteen-field rune-capacity fruit closed GREEN. In its place: [`ConsentGrantFact` and
+`ConsentRevokeFact` sketched as Glow
+shapes](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md),
+sized against [milestone two's
+contract](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
+Both admit under `rune_shape.max_fields` as written, nine and seven faces, no ceiling raised.
+**YOURS:** whether `orphaned-revoke` earns a `Reason` member when lowering begins, and whether
+Patchouli or Incense opens it first.
 
 **INCENSE.** [Account shelved](archive/date/20260918/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
@@ -362,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `7b11e257f4` -- HEAD's parent, read after the final rebase.
+**Git nib:** `21c17d6e40` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
