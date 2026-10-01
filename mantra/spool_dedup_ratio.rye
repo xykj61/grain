@@ -1,0 +1,261 @@
+//! mantra/spool_dedup_ratio.rye -- the spool-scale dedup ratio the fourth angle named and
+//! left untouched.
+//!
+//! The fourth-angle measurement (mantra/beading_dedup_ratio.rye) found content-defined
+//! beading winning on shift edits (insert/delete) and losing on same-length substitutes,
+//! inside a single 400-byte resin. mantra/spool.rye's own header names a different scale
+//! -- 64 resins, two fixed-size beads each -- and that module never calls
+//! beading.bead_content_defined at all: spool_content always chunks at
+//! beading.max_resin_bytes-wide absolute offsets, then beads each resin with the fixed-size
+//! beading.bead alone (spool.rye:143). So the question this module measures is not "does
+//! content-defined beading help here" (it is never invoked), but a sharper one: what does
+//! a SHIFT edit cost when resin boundaries themselves are fixed at absolute byte offsets,
+//! rather than content-defined? A fixed-offset split cannot resync after an insert or
+//! delete the way a content-defined one can -- every resin whose window now starts at a
+//! different byte offset than before re-chunks into different content, win or lose at the
+//! bead level notwithstanding.
+//!
+//! This module winds a multi-resin artifact twice into one shared BeadStore -- an
+//! unedited base, then one of substitute / insert / delete at a named position -- and
+//! reads the second winding's own SpoolReport (beads_deposited, beads_deduped) exactly as
+//! spool.rye's own selftest already does for its one hand-picked case. No change to
+//! spool.rye or beading.rye; this module calls both as a library.
+//!
+//! Scope: active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md
+//!   names this scale as its own open door; active-designing/date/20261001/20261001-182131_
+//!   the-ratio-the-comment-was-actually-about.md names it the prior page's "spool-scale
+//!   behavior" this scan does not touch.
+//!
+//!   rye build mantra/spool_dedup_ratio.rye -femit-bin=mantra/bin/spool-dedup-ratio
+//!   mantra/bin/spool-dedup-ratio selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("beading.rye");
+const spool = @import("spool.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const spool_dedup_ratio_version = "20261001.201614";
+
+// Four full resins -- enough to carry an edit from the first resin through the last and
+// read whether downstream resins still dedup, far under spool.max_content_bytes (32 KB).
+const base_resins: u32 = 4;
+const base_len: u32 = base_resins * beading.max_resin_bytes; // 2048
+// The widest edit this module plants. Covers both the 40-byte scale the fourth-angle
+// measurement used and a 200-byte edit that itself spans more than one fixed bead.
+const max_edit_size: u32 = 220;
+const max_content_len: u32 = base_len + max_edit_size;
+
+const EditKind = enum { substitute, insert, delete };
+
+// Where an edit lands relative to the artifact's resins. early sits well inside resin 0,
+// so nearly the whole artifact lies downstream of it; late sits near the very end, so
+// almost nothing does; mid straddles the resin 0 / resin 1 boundary, the shape a
+// fixed-offset split can never resync regardless of edit size.
+const Position = enum { early, mid, late };
+
+fn pos_offset(pos: Position, edit_size: u32) u32 {
+    return switch (pos) {
+        .early => 50,
+        // 20 bytes before the resin-0/resin-1 boundary, so every edit_size this module
+        // plants crosses that fixed boundary rather than landing cleanly on either side.
+        .mid => beading.max_resin_bytes - 20,
+        .late => base_len - edit_size - 20,
+    };
+}
+
+fn pos_name(pos: Position) []const u8 {
+    return switch (pos) {
+        .early => "early",
+        .mid => "mid",
+        .late => "late",
+    };
+}
+
+fn kind_name(kind: EditKind) []const u8 {
+    return switch (kind) {
+        .substitute => "substitute",
+        .insert => "insert",
+        .delete => "delete",
+    };
+}
+
+// A reproducible pseudorandom stream, independent of beading's own gear_table and of
+// beading_dedup_ratio.rye's own stream, so this module's content is deterministic across
+// runs without borrowing either sibling's randomness source.
+fn next(state: *u64) u64 {
+    var x = state.*;
+    x ^= x << 13;
+    x ^= x >> 7;
+    x ^= x << 17;
+    state.* = x;
+    return x;
+}
+
+fn fill_random(buf: []u8, state: *u64) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        buf[i] = @truncate(next(state));
+    }
+}
+
+const Content = struct {
+    bytes: [max_content_len]u8 = undefined,
+    len: u32 = 0,
+};
+
+fn make_base(state: *u64) Content {
+    var c: Content = .{};
+    c.len = base_len;
+    fill_random(c.bytes[0..base_len], state);
+    return c;
+}
+
+/// Apply one edit to `base`, writing the edited revision into `out`. Mirrors
+/// mantra/beading_dedup_ratio.rye's own apply_edit at the single-resin scale; here the
+/// buffer spans several resins, so an insert or delete shifts bytes across a resin
+/// boundary rather than only within one.
+fn apply_edit(kind: EditKind, base: *const Content, pos: u32, edit_size: u32, state: *u64, out: *Content) void {
+    assert(pos + edit_size <= base.len); // invariant: an edit never reads past the base
+    var new_bytes: [max_edit_size]u8 = undefined;
+    fill_random(new_bytes[0..edit_size], state);
+    switch (kind) {
+        // same-length overwrite: every byte outside [pos, pos+edit_size) keeps its offset,
+        // so every resin boundary at or past pos is byte-identical to the base.
+        .substitute => {
+            out.len = base.len;
+            tally_copy.copy_disjoint(u8, out.bytes[0..pos], base.bytes[0..pos]);
+            tally_copy.copy_disjoint(u8, out.bytes[pos..][0..edit_size], new_bytes[0..edit_size]);
+            tally_copy.copy_disjoint(u8, out.bytes[pos + edit_size .. base.len], base.bytes[pos + edit_size .. base.len]);
+        },
+        // edit_size new bytes land at pos; every byte from pos onward shifts right by
+        // edit_size, so every resin boundary spool_content draws at or past pos now falls
+        // on a different absolute offset than it did in the base.
+        .insert => {
+            out.len = base.len + edit_size;
+            tally_copy.copy_disjoint(u8, out.bytes[0..pos], base.bytes[0..pos]);
+            tally_copy.copy_disjoint(u8, out.bytes[pos..][0..edit_size], new_bytes[0..edit_size]);
+            tally_copy.copy_disjoint(u8, out.bytes[pos + edit_size .. out.len], base.bytes[pos..base.len]);
+        },
+        // edit_size bytes at pos are removed; every byte from pos+edit_size onward shifts
+        // left by edit_size -- the same cross-boundary misalignment as insert, the other
+        // direction.
+        .delete => {
+            out.len = base.len - edit_size;
+            tally_copy.copy_disjoint(u8, out.bytes[0..pos], base.bytes[0..pos]);
+            tally_copy.copy_disjoint(u8, out.bytes[pos..out.len], base.bytes[pos + edit_size .. base.len]);
+        },
+    }
+    // invariant: the edited revision fits the buffer this module sized for it
+    assert(out.len <= max_content_len);
+}
+
+fn ratio_pm(deduped: u32, total: u32) u32 {
+    if (total == 0) return 0;
+    return deduped * 1000 / total;
+}
+
+const Config = struct { kind: EditKind, pos: Position, edit_size: u32 };
+
+// Every kind crossed with every position at the fourth-angle measurement's own 40-byte
+// scale (9 configs), plus substitute at 200 bytes -- wider than one fixed bead -- at
+// every position, to read whether a same-length edit's cost grows with its size (3 more).
+const sweep = [_]Config{
+    .{ .kind = .substitute, .pos = .early, .edit_size = 40 },
+    .{ .kind = .substitute, .pos = .mid, .edit_size = 40 },
+    .{ .kind = .substitute, .pos = .late, .edit_size = 40 },
+    .{ .kind = .insert, .pos = .early, .edit_size = 40 },
+    .{ .kind = .insert, .pos = .mid, .edit_size = 40 },
+    .{ .kind = .insert, .pos = .late, .edit_size = 40 },
+    .{ .kind = .delete, .pos = .early, .edit_size = 40 },
+    .{ .kind = .delete, .pos = .mid, .edit_size = 40 },
+    .{ .kind = .delete, .pos = .late, .edit_size = 40 },
+    .{ .kind = .substitute, .pos = .early, .edit_size = 200 },
+    .{ .kind = .substitute, .pos = .mid, .edit_size = 200 },
+    .{ .kind = .substitute, .pos = .late, .edit_size = 200 },
+};
+
+const ConfigResult = struct {
+    resin_count_1: u32,
+    resin_count_2: u32,
+    bead_count_2: u32,
+    deduped_2: u32,
+    ratio_pm: u32,
+};
+
+/// Wind base, then one edited revision, into one shared store, and read the second
+/// winding's own SpoolReport -- exactly the reading spool.rye's own selftest already
+/// takes for its one hand-picked dedup-dividend case, run here across a named sweep.
+fn run_config(cfg: Config, seed: u64) !ConfigResult {
+    var state: u64 = seed;
+    const base = make_base(&state);
+
+    var store = beading.BeadStore.empty();
+    var sp1: spool.Spool = .empty();
+    const rep1 = try spool.spool_content(&store, base.bytes[0..base.len], &sp1);
+
+    var edited: Content = .{};
+    const offset = pos_offset(cfg.pos, cfg.edit_size);
+    apply_edit(cfg.kind, &base, offset, cfg.edit_size, &state, &edited);
+
+    var sp2: spool.Spool = .empty();
+    const rep2 = try spool.spool_content(&store, edited.bytes[0..edited.len], &sp2);
+
+    return .{
+        .resin_count_1 = rep1.resin_count,
+        .resin_count_2 = rep2.resin_count,
+        .bead_count_2 = rep2.bead_count,
+        .deduped_2 = rep2.beads_deduped,
+        .ratio_pm = ratio_pm(rep2.beads_deduped, rep2.bead_count),
+    };
+}
+
+fn run_spool_dedup_ratio_scan() !u8 {
+    print("spool_dedup_ratio: base_resins={d} base_len={d} resin_bytes={d} bead_bytes={d}\n", .{
+        base_resins, base_len, beading.max_resin_bytes, beading.max_bead_bytes,
+    });
+
+    var total: u32 = 0;
+    var substitute_ratio_sum_pm: u64 = 0;
+    var substitute_total: u32 = 0;
+    var shifting_near_zero: u32 = 0; // insert/delete configs reading <= 50 permille
+    var shifting_total: u32 = 0;
+
+    for (sweep) |cfg| {
+        const seed: u64 = 0xD1B54A32D192ED03 ^ (@as(u64, cfg.edit_size) << 16) ^
+            (@as(u64, @intFromEnum(cfg.kind)) << 8) ^ @intFromEnum(cfg.pos);
+        const r = try run_config(cfg, seed);
+
+        print("config kind={s} pos={s} edit_size={d} resin_count_base={d} resin_count_edited={d} bead_count={d} deduped={d} ratio_pm={d}\n", .{
+            kind_name(cfg.kind), pos_name(cfg.pos), cfg.edit_size,
+            r.resin_count_1,     r.resin_count_2,   r.bead_count_2,
+            r.deduped_2,         r.ratio_pm,
+        });
+
+        total += 1;
+        if (cfg.kind == .substitute) {
+            substitute_total += 1;
+            substitute_ratio_sum_pm += r.ratio_pm;
+        } else {
+            shifting_total += 1;
+            if (r.ratio_pm <= 50) shifting_near_zero += 1;
+        }
+    }
+
+    const substitute_mean_pm: u32 = if (substitute_total == 0) 0 else @intCast(substitute_ratio_sum_pm / substitute_total);
+    print("substitute_mean_ratio_pm={d} of {d} configs\n", .{ substitute_mean_pm, substitute_total });
+    print("shifting_near_zero={d} of {d} configs (ratio_pm<=50)\n", .{ shifting_near_zero, shifting_total });
+    print("GREEN: spool_dedup_ratio read {d} configs, every winding reassembled and verified by spool.rye's own invariants.\n", .{total});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scan")) {
+            return run_spool_dedup_ratio_scan();
+        }
+    }
+    return run_spool_dedup_ratio_scan();
+}
