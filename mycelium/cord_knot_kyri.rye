@@ -27,6 +27,7 @@ const fold = @import("fold.rye");
 const kumara = @import("kumara.rye");
 const cord = @import("cord.rye");
 const cord_knot = @import("cord_knot.rye");
+const parse_int = @import("parse_int.rye");
 
 /// A Knot's record carries at most this many reserved stars -- a named ceiling
 /// generous for a family-scale ledger, well under the fold's own 1024 star bound.
@@ -149,9 +150,12 @@ pub fn parse(text: []const u8, out: *cord_knot.Knot) KyriError!void {
         if (n == 0) continue;
         if (n != 2) return error.BadLine;
         if (std.mem.eql(u8, tok[0], "issued")) {
-            out.state.issued = std.fmt.parseInt(u64, tok[1], 10) catch return error.BadInt;
+            // Routes to tally/parse_int at a second consumer in this directory (graduation
+            // rule). `render` writes issued and taxed through {d}, which never emits a leading
+            // zero, so the stricter read changes no observed behavior.
+            out.state.issued = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
         } else if (std.mem.eql(u8, tok[0], "taxed")) {
-            out.state.taxed = std.fmt.parseInt(u64, tok[1], 10) catch return error.BadInt;
+            out.state.taxed = parse_int.parse_int(u64, tok[1], .{}) catch return error.BadInt;
         } else if (std.mem.eql(u8, tok[0], "star")) {
             if (out.state.star_count >= max_stars_in_record) return error.TooManyStars;
             const hexlen = tok[1].len;
