@@ -14,6 +14,7 @@
 | `20261001.192822` | [Fire row closes a stale claim](20261001/20261001-192822_fire-row-closes-a-claim-already-landed.kyri) | closed patchouli's own seam-roster claim, found already landed at 5c98181fc |
 | `20261001.192819` | [tutorial-output gap silently drops a pair](20261001/20261001-192819_tutorial-output-scan-gap-silent-drop.kyri) | REDS booked, real page untouched |
 | `20261001.192348` | [spool-scale dedup ratio measured](20261001/20261001-192348_spool-scale-dedup-ratio-measured.kyri) | fourth angle's both open doors now read; substitute 833pm, shift 0-875pm by position |
+| 20261001.192213 | [radiant-h1-fence-roster](20261001/20261001-192213_radiant-h1-fence-roster.kyri) | rostered radiant_h1_fence, GREEN both ways |
 | `20261001.192134` | [weave-tablecloth reading closes the arc](20261001/20261001-192134_weave-tablecloth-reading-closes-the-arc.kyri) | wrote the foundation unifying Mantra's two promises; the wiring landed earlier this lap |
 | `20261001.191810` | [stale comlink-witness claim closed](20261001/20261001-191810_close-stale-comlink-witness-claim.kyri) | landed work had no --close; claim closed, ITINERARY nib carried |
 | `20261001.191415` | [eight rewrite reds re-pinned](20261001/20261001-191415_eight-rewrite-reds-repinned.kyri) | eight guards green; sixteen still stand |
