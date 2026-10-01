@@ -272,3 +272,16 @@ reds, eleventh lap running clean in a row. Card headroom unchanged (39,834/40,96
 lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
 `--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and still
 Keaton's to rule on.
+
+**Lap `20261001.004741` round-opened clean at `a934d58997` (already on the anointed order),
+checked the claim board (five rows, all September stamps, all past expiry, no overlap), read
+`HEAD` once, and found a cold run already in flight at that same HEAD -- launched by a prior turn
+that had lost continuity.** Held per ORDER rather than launching a second, across six Monitor
+re-arms (roughly 65 minutes) until the transcript carried `run_verdict=guard_red`, 372 green, 8
+red, 3 gated, `tree_moved=no`. The red-leg names matched the standing eight exactly:
+`standing_equipment_redleg`, `shim_reason`, `query_wire_retention`, `ceiling_teeth`,
+`ignored_walk`, `rye_compiled_reach`, `falsifier_form_outcome`, `standing_equipment`. Zero new
+reds, twelfth lap running clean in a row. Card headroom unchanged (39,834/40,960 bytes). Next
+lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
+`--cadence-slice 1` until `run_verdict=` lands. The REDS pin deadlock is still open and still
+Keaton's to rule on.
