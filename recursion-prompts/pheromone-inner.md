@@ -1,8 +1,9 @@
 # Pheromone, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
-**Status:** Living -- fruit landed `20260923`, reconfirmed four times since (`20261001`); closed, awaiting a new ruling
-**Room:** checkable -- the fruit names a measured ceiling and two options already on the card
+**Status:** Living -- the shape-rune fruit closed `20260923`; the sibling sketch named below
+closed `20261001.152500`, grade B+/85, vision per Two Rooms
+**Room:** checkable for the shape-rune fruit; vision for the grant/revoke sketch
 **Outer prompt:** [`../tools/p/pheromone_seat_prompt.txt`](../tools/p/pheromone_seat_prompt.txt)
 
 ## closed
@@ -40,13 +41,16 @@ If a fresh count of the contract's fields is not 15, stop and bring the new coun
 **This fruit closed `20260923` and has been reconfirmed GREEN five times since, most recently
 `20261001`.** The ruling above is history now, kept for the reasoning it carries, not a task.
 
-**The new crux, named `20261001`:** milestone two, "the consent you can change," needs a grant fact
-and a revoke fact expressed the same way `ReceiptOfferFact` is -- the smallest Glow form already
-owned, per the contract's own module-residence table. Sketch `GrantFact` and `RevokeFact` as Glow
-shapes (field names, ceilings, a refusal case each) in `active-designing/`, sized the way the
-receipt contract was before any code existed. Do not lower them into Mantra yet -- that is
-Patchouli's and Incense's door, named in the ITINERARY's own fleet-dependency order. If a sixth
-re-check of the old fruit looks tempting, read this paragraph again instead.
+**Closed `20261001.152500`:** [the sketch](../active-designing/date/20261001/20261001-152500_grant-and-revoke-as-glow-shapes.md)
+names `consent-grant-shape` (nine fields) and `consent-revoke-shape` (seven fields), both inside
+`glow/rune_shape.rye`'s standing fifteen-field ceiling, each with its own ceiling table drawn
+forward from the consent contract and one catch case reusing the receipt's own
+`receipt-refusal-shape`. Graded B+/85. Lowering either into a tracked `.glow` source, or into
+Mantra, stays Patchouli's and Incense's door per the fleet-dependency order -- this seat's part is
+done until a new ruling names the next move.
+
+**If a re-check of either closed fruit looks tempting, read this line instead:** both are proven
+and recorded; this seat's next move wants a new ruling from the interactive bench.
 
 ## gates
 

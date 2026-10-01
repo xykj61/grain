@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261001.152621
+editor Claude Code
+provider model Anthropic
+product product name Claude Code
+role repository role primary agent, pheromone seat
+modality text
+model claude-sonnet-5
+model_status configured default; this clone resolves claude-sonnet-5 per declared_model_scan.sh
+voice Kyri
+title grant and revoke sketched as Glow shapes, the receipt sketch's sibling task
+prompt the inner prompt (recursion-prompts/pheromone-inner.md) named the open crux: sketch GrantFact and RevokeFact as Glow shapes in active-designing/, sized the way the receipt contract was before any code existed, non-blocking against Patchouli and Incense's lowering work
+think read pheromone-inner.md; the shape-rune fruit (ReceiptOfferFact at 15 fields) was closed and reconfirmed five times, so the live crux was the sibling sketch rather than a sixth re-check
+think read active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md for ConsentGrantFact (9 fields) and ConsentRevokeFact (7 fields) field lists and byte ceilings, drafted by petrichor the same lap
+think read .lap/shape-receipt-offer.glow and .lap/shape-receipt-refusal.glow (gitignored scratch) to learn the +$/$: Glow shape syntax and the receipt-refusal-shape's five-field pattern (field, value, ceiling, unit, reason)
+think read glow/rune_shape.rye to confirm the four admitted auras (@u32, @t, @ux, @u64) and that max_fields stands at 15 -- both new shapes need only @t and fit in 9 and 7 fields, so no rune ceiling moves
+think drafted active-designing/date/20261001/20261001-152500_grant-and-revoke-as-glow-shapes.md naming consent-grant-shape and consent-revoke-shape, a ceilings table carried forward from the contract, and one catch case each reusing the receipt's own receipt-refusal-shape rather than inventing a new shape
+think first draft graded D+/66 on qa_report_card.sh (register 24, 76% negative sentences) -- rewrote nearly every sentence to affirmative framing, keeping refuse/refusal only where it names the exact mechanism, re-graded B+/85
+think shelved the elder PHEROMONE account (the closed shape-rune fruit) to construction/archive/ per the-writer-sheds rule, wrote a new live ITINERARY block naming the sketch and its B+/85 grade, with YOURS naming the Patchouli/Incense lowering step as the open door
+think updated recursion-prompts/pheromone-inner.md to record the sketch as closed and point a future lap away from a sixth re-check of either closed fruit
+obs the task was explicitly named non-blocking and vision-only (Two Rooms); no .glow source was created, no rune changed, nothing lowered into Mantra -- the deliverable is the sketch document and the card pointer alone
+obs reusing receipt-refusal-shape rather than drafting a new refusal shape keeps the smallest-Glow-form discipline the ruling named; both new facts stay well inside the nine-field ladder that stood before the receipt's own fifteen-field raise
+rota lap -- pure repair/sketch lap, no rota row read this pass
+file active-designing/date/20261001/20261001-152500_grant-and-revoke-as-glow-shapes.md the new vision sketch, graded B+/85
+file construction/ITINERARY.md shelved the elder PHEROMONE account, added the new live block naming this sketch
+file construction/archive/date/20261001/20261001-152500_itinerary-pheromone-receipt-shape-rune-account.md the shelved elder account, per the-writer-sheds
+file recursion-prompts/pheromone-inner.md closed the sibling-sketch crux, named the next move as awaiting a new ruling
+status GREEN -- qa_report_card.sh B+/85 on the new sketch; all cited paths resolve; ASCII-clean; ITINERARY stays under its 40960-byte ceiling (39945 measured after edit, before this log)
+scope pheromone's own non-blocking sibling task from the inner prompt; no Mantra, Tally, or tracked Glow source touched
+recommend check in (either) -- both pheromone fruits are closed and recorded; the next move is Keaton's word on whether to accept milestone two's contract for implementation, which also unlocks lowering this sketch
