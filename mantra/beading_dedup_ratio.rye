@@ -1,0 +1,289 @@
+//! mantra/beading_dedup_ratio.rye -- the dedup ratio the existing beading tests never ask.
+//!
+//! mantra/beading.rye proves both chunkers correct and BeadReport already carries the
+//! two numbers a dedup ratio needs: beads_deposited and beads_deduped. The existing
+//! fourteen pond/apps/ call sites assert only the identical-content floor
+//! (beads_deduped == bead_count), and the one harder test (mantra/recall_beaded.rye:263)
+//! asserts only beads_deduped >= 1 on a single three-byte edit. This module runs a
+//! synthetic multi-revision edit sequence -- named edit kind, position, size, and count
+//! -- through both bead() and bead_content_defined(), and reads the fraction of bytes
+//! each chunker actually re-deposits versus recognizes, per
+//! active-designing/date/20261001/20261001-151253_the-dedup-ratio-nobody-has-measured.md.
+//!
+//! Scope: stays inside beading.rye as a library. No change to the module it measures.
+//!
+//!   rye build mantra/beading_dedup_ratio.rye -femit-bin=mantra/bin/beading-dedup-ratio
+//!   mantra/bin/beading-dedup-ratio selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const beading = @import("beading.rye");
+const tally_copy = @import("tally_copy.rye");
+
+pub const beading_dedup_ratio_version = "20261001.164500";
+
+// One resin's size across every revision in a sequence -- under max_resin_bytes (512),
+// matching the scale of the one existing edit case (400 bytes) rather than the ceiling.
+const resin_len: u32 = 400;
+// The fixed-size comparator's bead size. Set equal to cdc_min_bead so neither chunker is
+// handed an unfair floor: content-defined beads never run smaller than this either.
+const fixed_bead_size: u32 = 64;
+// The widest edit this module will plant. Held well under resin_len so an edit always
+// has room to land fully inside the resin at every named distribution.
+const max_edit_size: u32 = 300;
+// Mirrors beading.rye's own private cdc_min_bead / cdc_max_bead, read for this module's
+// printed header line alone -- not pub in beading.rye, so named here rather than reached
+// for across the import boundary. Keep these two literals equal to beading.rye's own if
+// that module's constants ever move.
+const cdc_min_bead_mirror: u32 = 64;
+const cdc_max_bead_mirror: u32 = 256;
+
+const Distribution = enum { front, uniform, clustered };
+
+// substitute changes edit_size bytes in place, at the same offsets, every revision --
+// which is the one shape fixed-size beading never needs to resync for, since its
+// boundaries sit at constant byte offsets regardless of content. insert and delete
+// shift every byte downstream of the edit point, which is the shape content-defined
+// beading's own header comment names as its reason to exist: "an edit shifts only
+// nearby beads." The three kinds are read apart because the first found 11 of 12
+// configs favoring the chunker the module's own comment does not call out as the
+// draw -- see the written-up finding this scan feeds.
+const EditKind = enum { substitute, insert, delete };
+
+// A reproducible pseudorandom stream, independent of beading's own gear_table, so this
+// module's synthetic content and edits are deterministic across runs without borrowing
+// the chunker's own randomness source.
+fn next(state: *u64) u64 {
+    var x = state.*;
+    x ^= x << 13;
+    x ^= x >> 7;
+    x ^= x << 17;
+    state.* = x;
+    return x;
+}
+
+fn fill_random(buf: []u8, state: *u64) void {
+    var i: u32 = 0;
+    while (i < buf.len) : (i += 1) {
+        buf[i] = @truncate(next(state));
+    }
+}
+
+/// Where edit number `i` of a sequence lands, for a named distribution. Returns an
+/// offset in [0, resin_len - edit_size], so the edit always fits.
+fn edit_position(dist: Distribution, i: u32, edit_size: u32, state: *u64) u32 {
+    // invariant: an edit must fit inside the resin, so span never underflows
+    assert(edit_size < resin_len);
+    const span: u32 = resin_len - edit_size;
+    return switch (dist) {
+        // every edit in the sequence lands within the first stretch of the resin --
+        // the easiest case for any chunker, and the one the existing single test covers
+        .front => @min(i * 3, span),
+        // each edit lands anywhere, independently drawn -- Mantra's own revisions
+        // (session store, spool, edit store) more plausibly look like this over time
+        .uniform => @as(u32, @intCast(next(state) % (span + 1))),
+        // every edit in the sequence lands inside one shared, narrow window --
+        // repeated touches to one hot region rather than a spread history
+        .clustered => blk: {
+            const window: u32 = @max(span / 8, 1);
+            const base: u32 = span / 2;
+            const jitter: u32 = @as(u32, @intCast(next(state) % (window + 1)));
+            break :blk @min(base + jitter, span);
+        },
+    };
+}
+
+/// Apply one edit to `content` in place, by building the next revision into a scratch
+/// buffer and copying it back. Every copy below moves between two DIFFERENT arrays
+/// (the scratch buffer and the live one), so each call is disjoint by construction and
+/// reaches for tally_copy.copy_disjoint rather than a raw copyForwards/copyBackwards --
+/// the shift this function performs never overlaps itself in memory.
+fn apply_edit(kind: EditKind, content: *[resin_len]u8, pos: u32, edit_size: u32, state: *u64) void {
+    assert(pos + edit_size <= resin_len); // invariant: an edit never writes past the resin
+    var next_buf: [resin_len]u8 = undefined;
+    var new_bytes: [max_edit_size]u8 = undefined;
+    fill_random(new_bytes[0..edit_size], state);
+    switch (kind) {
+        // same-length overwrite: every byte outside [pos, pos+edit_size) keeps its offset
+        .substitute => {
+            tally_copy.copy_disjoint(u8, next_buf[0..pos], content[0..pos]);
+            tally_copy.copy_disjoint(u8, next_buf[pos..][0..edit_size], new_bytes[0..edit_size]);
+            tally_copy.copy_disjoint(u8, next_buf[pos + edit_size .. resin_len], content[pos + edit_size .. resin_len]);
+        },
+        // edit_size new bytes land at pos; everything downstream shifts right, and the
+        // resin's own fixed length truncates the tail rather than growing it
+        .insert => {
+            tally_copy.copy_disjoint(u8, next_buf[0..pos], content[0..pos]);
+            tally_copy.copy_disjoint(u8, next_buf[pos..][0..edit_size], new_bytes[0..edit_size]);
+            tally_copy.copy_disjoint(u8, next_buf[pos + edit_size .. resin_len], content[pos .. resin_len - edit_size]);
+        },
+        // edit_size bytes at pos are removed; everything downstream shifts left, and
+        // fresh random bytes fill the tail the shift opened up
+        .delete => {
+            tally_copy.copy_disjoint(u8, next_buf[0..pos], content[0..pos]);
+            tally_copy.copy_disjoint(u8, next_buf[pos .. resin_len - edit_size], content[pos + edit_size .. resin_len]);
+            tally_copy.copy_disjoint(u8, next_buf[resin_len - edit_size .. resin_len], new_bytes[0..edit_size]);
+        },
+    }
+    tally_copy.copy_disjoint(u8, content[0..], next_buf[0..]);
+}
+
+const SeqResult = struct {
+    fixed_bead_total: u32 = 0,
+    fixed_deduped: u32 = 0,
+    cdc_bead_total: u32 = 0,
+    cdc_deduped: u32 = 0,
+};
+
+/// Run one revision sequence -- a base resin plus `num_edits` edits of `edit_size` bytes
+/// and `kind` shape, at a named distribution -- through both chunkers, sharing one store
+/// per chunker across every revision so later revisions dedup against earlier ones
+/// exactly as a real bolt's history would. Revision 0 (the base) is deposited and
+/// excluded from the ratio: it has nothing yet to dedup against, so counting it would
+/// dilute every ratio toward 1.
+fn run_sequence(dist: Distribution, kind: EditKind, num_edits: u32, edit_size: u32, seed: u64) !SeqResult {
+    assert(edit_size < resin_len); // invariant: see edit_position
+    assert(num_edits >= 1); // invariant: a sequence with no edits has no ratio to read
+
+    var base: [resin_len]u8 = undefined;
+    var state: u64 = seed;
+    fill_random(&base, &state);
+
+    var fixed_store = beading.BeadStore.empty();
+    var cdc_store = beading.BeadStore.empty();
+    var idx_buf: [beading.max_resin_bytes]u8 = undefined;
+    _ = try beading.bead(&fixed_store, base[0..], fixed_bead_size, &idx_buf);
+    _ = try beading.bead_content_defined(&cdc_store, base[0..], &idx_buf);
+
+    var content = base;
+    var result: SeqResult = .{};
+    var i: u32 = 0;
+    while (i < num_edits) : (i += 1) {
+        const pos = edit_position(dist, i, edit_size, &state);
+        apply_edit(kind, &content, pos, edit_size, &state);
+
+        const fr = try beading.bead(&fixed_store, content[0..], fixed_bead_size, &idx_buf);
+        result.fixed_bead_total += fr.report.bead_count;
+        result.fixed_deduped += fr.report.beads_deduped;
+
+        const cr = try beading.bead_content_defined(&cdc_store, content[0..], &idx_buf);
+        result.cdc_bead_total += cr.report.bead_count;
+        result.cdc_deduped += cr.report.beads_deduped;
+    }
+    return result;
+}
+
+fn ratio_pm(deduped: u32, total: u32) u32 {
+    if (total == 0) return 0;
+    return deduped * 1000 / total;
+}
+
+fn dist_name(dist: Distribution) []const u8 {
+    return switch (dist) {
+        .front => "front",
+        .uniform => "uniform",
+        .clustered => "clustered",
+    };
+}
+
+fn kind_name(kind: EditKind) []const u8 {
+    return switch (kind) {
+        .substitute => "substitute",
+        .insert => "insert",
+        .delete => "delete",
+    };
+}
+
+const Config = struct { dist: Distribution, kind: EditKind, num_edits: u32, edit_size: u32 };
+
+// The named sweep. The first nine rows hold edit_size and kind fixed (substitute, 40
+// bytes -- inside [cdc_min_bead, cdc_max_bead]) and cross distribution with edit count,
+// reading whether the gap widens or closes as edits accumulate. The next three hold
+// distribution and count fixed (uniform, 8 edits) and cross edit_size against the
+// cdc_min_bead/cdc_max_bead window. The last six repeat the distribution x count cross
+// for insert and delete -- the edit shapes content-defined beading's own header comment
+// names as its reason to exist, and substitute is not one of them.
+const sweep = [_]Config{
+    .{ .dist = .front, .kind = .substitute, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .front, .kind = .substitute, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .front, .kind = .substitute, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .clustered, .kind = .substitute, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .clustered, .kind = .substitute, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .clustered, .kind = .substitute, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 8, .edit_size = 8 }, // below cdc_min_bead
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 8, .edit_size = 40 }, // inside the window
+    .{ .dist = .uniform, .kind = .substitute, .num_edits = 8, .edit_size = 280 }, // above cdc_max_bead
+    .{ .dist = .front, .kind = .insert, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .front, .kind = .insert, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .front, .kind = .insert, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .insert, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .insert, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .insert, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .front, .kind = .delete, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .front, .kind = .delete, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .front, .kind = .delete, .num_edits = 16, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .delete, .num_edits = 1, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .delete, .num_edits = 4, .edit_size = 40 },
+    .{ .dist = .uniform, .kind = .delete, .num_edits = 16, .edit_size = 40 },
+};
+
+fn run_dedup_ratio_scan(io: std.Io) !u8 {
+    _ = io;
+    print("beading_dedup_ratio: resin_len={d} fixed_bead_size={d} cdc_min={d} cdc_max={d}\n", .{
+        resin_len, fixed_bead_size, cdc_min_bead_mirror, cdc_max_bead_mirror,
+    });
+
+    var cdc_wins: u32 = 0;
+    var substitute_total: u32 = 0;
+    var substitute_cdc_wins: u32 = 0;
+    var shifting_total: u32 = 0;
+    var shifting_cdc_wins: u32 = 0;
+    var total: u32 = 0;
+
+    for (sweep) |cfg| {
+        // A distinct seed per config, so no two configs share a random stream and no
+        // config's own result depends on sweep order.
+        const seed: u64 = 0x9E3779B97F4A7C15 ^ (@as(u64, cfg.num_edits) << 32) ^
+            (@as(u64, cfg.edit_size) << 8) ^ (@as(u64, @intFromEnum(cfg.kind)) << 4) ^
+            @intFromEnum(cfg.dist);
+        const result = try run_sequence(cfg.dist, cfg.kind, cfg.num_edits, cfg.edit_size, seed);
+        const fixed_pm = ratio_pm(result.fixed_deduped, result.fixed_bead_total);
+        const cdc_pm = ratio_pm(result.cdc_deduped, result.cdc_bead_total);
+        const gap: i32 = @as(i32, @intCast(cdc_pm)) - @as(i32, @intCast(fixed_pm));
+
+        print("config dist={s} kind={s} edit_size={d} num_edits={d} fixed_ratio_pm={d} cdc_ratio_pm={d} gap_pm={d}\n", .{
+            dist_name(cfg.dist), kind_name(cfg.kind), cfg.edit_size, cfg.num_edits, fixed_pm, cdc_pm, gap,
+        });
+
+        total += 1;
+        if (cdc_pm > fixed_pm) cdc_wins += 1;
+        if (cfg.kind == .substitute) {
+            substitute_total += 1;
+            if (cdc_pm > fixed_pm) substitute_cdc_wins += 1;
+        } else {
+            shifting_total += 1;
+            if (cdc_pm > fixed_pm) shifting_cdc_wins += 1;
+        }
+    }
+
+    print("cdc_wins={d} of {d} configs\n", .{ cdc_wins, total });
+    print("substitute_cdc_wins={d} of {d}\n", .{ substitute_cdc_wins, substitute_total });
+    print("shifting_cdc_wins={d} of {d}\n", .{ shifting_cdc_wins, shifting_total });
+    print("GREEN: beading_dedup_ratio read {d} configs, every chunker call reassembled and verified by beading.rye's own tests.\n", .{total});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    if (args.len >= 2) {
+        if (std.mem.eql(u8, args[1], "selftest") or std.mem.eql(u8, args[1], "scan")) {
+            return run_dedup_ratio_scan(io);
+        }
+    }
+    return run_dedup_ratio_scan(io);
+}

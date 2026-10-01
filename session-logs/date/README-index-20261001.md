@@ -19,6 +19,7 @@
 | `20261001.183112` | [thing-not-name rostered](20261001/20261001-183112_thing-not-name-roster.kyri) | thing_not_name_witness proven both ways, rostered at tier lap; 135 unrostered remain |
 | `20261001.183100` | [docs-geode front-door tending survey](20261001/20261001-183100_docs-geode-front-door-tending-survey.kyri) | 30 lane pages graded, zero broken citations, two register readings judged intentional |
 | `20261001.182850` | [grass-inner fruit synced](20261001/20261001-182850_sync-grass-inner-fruit.kyri) | landed unsaid_rostered reverse-read closed on the fruit field; next lean named |
+| `20261001.182514` | [dedup ratio measured](20261001/20261001-182514_dedup-ratio-measured.kyri) | beading_dedup_ratio built; cdc wins 11/12 shift, loses 11/12 substitute |
 | `20261001.182313` | [grant-revoke-glow-shapes-sketched](20261001/20261001-182313_grant-revoke-glow-shapes-sketched.kyri) | GrantFact/RevokeFact sketched as Glow shapes; receipt-shape fruit shelved |
 | `20261001.182246` | [unsaid_rostered reverse-read](20261001/20261001-182246_unsaid-rostered-reverse-read.kyri) | 156 of 988 bindings sorted into two exempt families; genuine debt sits under the ceiling |
 | `20261001.182024` | [oldness-census rostered](20261001/20261001-182024_oldness-census-rostered.kyri) | oldness_census_witness proven both ways, rostered at tier lap |
