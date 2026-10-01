@@ -30,13 +30,21 @@ A walkthrough teaches best when its example is real enough to file and fictional
 > *a crow settles into place —*
 > *autumn's evening.*
 
-**Four — the articles, filed online.** At wyobiz.wyo.gov, choose the profit-corporation formation and the benefit-corporation election the form offers (*verify the checkbox or article text the current form uses for Chapter 31*). The articles carry: name, registered agent and signed consent, shares authorized (a simple common-stock start is typical; the attorney confirms counts and par), incorporator name and signature, and the public benefit statement. The filing fee is approximately **$100** (*verify on the fee schedule at filing*). Corporate existence begins when the Secretary of State files the articles.
+**Four — the articles, filed online.** At wyobiz.wyo.gov, choose the profit-corporation formation and the benefit-corporation election the form offers (*verify the checkbox or article text the current form uses for Chapter 31*). The articles carry:
+
+- the name
+- the registered agent and signed consent
+- shares authorized (a simple common-stock start is typical; the attorney confirms counts and par)
+- the incorporator's name and signature
+- the public benefit statement
+
+The filing fee is approximately **$100** (*verify on the fee schedule at filing*). Corporate existence begins when the Secretary of State files the articles.
 
 **Five — the first acts on paper.** The incorporator names the board. The board then adopts bylaws and appoints officers by written consent. The template consent line, filled for the real company, reads: *"RESOLVED, that Sara Livermore is appointed Chief Executive Officer and Keaton Dunsford is appointed Chief Technology Officer."* Bylaws follow a standard benefit-corporation skeleton the attorney blesses. The benefit officer or benefit-report duty Chapter 31 expects is assigned here (*verify the chapter's exact reporting cadence*).
 
 **Six — the federal minute.** An **EIN** comes from the IRS: online, free, in the founders' own hands, never through a paid intermediary. Then comes the bank account in the company's name, with the books opened from day one. The CPA's first hour is cheaper than the CPA's hundredth.
 
-**Seven — the annual rhythm.** Wyoming's **annual report**, with its license tax (minimum around **$60**, asset-scaled; *verify*), is due the first day of the anniversary month, filed online. The PBC's **benefit report** rides the cadence Chapter 31 sets. Calendar both: the day the articles come back stamped sets the clock for each.
+**Seven — the annual rhythm.** Wyoming's **annual report** is due the first day of the anniversary month, filed online. Its license tax runs a minimum around **$60**, asset-scaled (*verify*). The PBC's **benefit report** rides the cadence Chapter 31 sets. Calendar both: the day the articles come back stamped sets the clock for each.
 
 **Eight — the investment step, separately and carefully.** When Siya Fund leads Grain Energy's seed, that is a securities transaction between related parties. Instrument choice, board approvals on both sides, disclosures, and any exemption filings all belong to the **attorney's and CPA's confirmed territory**. This walkthrough stops at the door and says so in bold.
 
