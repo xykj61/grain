@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim pheromone-comlink-witness-roster
+seat pheromone
+stamp 20261001.145658
+epoch 1790881018
+paths tools/co/comlink_device_wire_hosted_witness.rish tools/co/comlink_roster_pairs_cross_witness.rish tools/co/comlink_roster_pairs_seal_witness.rish construction/standing-equipment.kyri
+what Roster the three unreached Comlink witnesses REDS %930 named (device-wire hosted, roster-pairs cross-build, roster-pairs seal) into standing-equipment.kyri at tier cadence, matching their build-and-run sibling entries.
