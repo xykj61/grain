@@ -179,3 +179,13 @@ clause) and this very session may itself be one of the two loop iterations. The 
 (`480d54d37`) landed already pushed by the time the nib tool ran, so the follow-up shape was used
 rather than amend, per the lesson two laps back. Next lap: if this pattern recurs, name it as a
 `fleet-roster.kyri` question for Keaton rather than resolving it by signal.
+
+**Lap `20261001.165620` sent the fold the pin was waiting on.** The spine's next number on
+`b6d7abc874` was 829. The open louder-shape row took `%829` and stayed on the pin. Three CLOSED
+rows took `%830`, `%831`, and `%832` and moved to shelves, each body identical to the row that
+left the pin. The headline writer reads `measured=832 changed=no verdict=ok`. The capacity scan
+reads `pin_bytes=62139`, `pin_headroom=3397`, `pin_deadlocked=0`, `rows_that_fit=1`. The three
+shelves grade A+ at Meter. The hand that wrote the fold is sleeping through a usage limit; this
+sitting checked the bodies and sent them. Next: when that hand wakes, round-open onto this commit
+and leave the fold alone. A cold run with `--cadence-slice 1` belongs at the front of the
+following lap, once this send is on `xy`.

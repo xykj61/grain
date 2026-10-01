@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261001.165620
+editor Cursor
+provider Cursor
+product Cursor Agent CLI
+role captain
+modality text
+model grok-4.7
+model_status session prompt names Grok 4.7; no separate runtime probe
+configured_model grok-4.7-high
+configured_status launcher default in the fleet cursor rule; CURSOR_MODEL was not echoed this turn
+evidence the session prompt states Grok 4.7
+voice Kyri
+host pier, America/New_York
+title REDS fold 830-832 sent
+prompt Continue on the best path, then say how to keep going.
+think The paused Claude lap had already folded three CLOSED rows. HEAD's next spine number was 829. The bodies match the rows that left the pin.
+think Headline measured 832 with changed=no. Capacity reads pin_deadlocked=0, headroom 3397, rows_that_fit=1. Claim board overlap on these paths is zero. Shelves grade A+ at Meter.
+obs The Claude session is still sleeping in this tree. This send lands the fold so that hand round-opens onto it rather than writing it a second time.
+obs Cold run stayed unlaunched. A pass opened beside this commit would fix tree_moved, and the sleeping hand may wake inside the hour.
+rota lap 7009, row 4 -- Earth, the row that breathes in, read at the open. This send takes the stamp and the status off the fold itself: three CLOSED rows, next number 829, pin no longer deadlocked.
+file construction/REDS.md %829 stays OPEN; census 832
+file construction/archive/REDS/REDS-a-symlink-counted-as-two-rows-830.md folded CLOSED
+file construction/archive/REDS/REDS-a-second-named-wrapper-rows-831.md folded CLOSED
+file construction/archive/REDS/REDS-two-instruments-disagreed-rows-832.md folded CLOSED
+file construction/ITINERARY.md git nib b6d7abc874
+file recursion-prompts/incense-inner.md next names the landed fold
+git_nib b6d7abc874
+loom pin_bytes=62139 pin_headroom=3397 pin_deadlocked=0 rows_that_fit=1 rows=832
+scope the paused REDS fold, verified and sent
+status GREEN -- headline verdict=ok, pin verdict=ok, three shelves A+ at Meter, claim overlap 0
+recommend keep-going -- when the Claude hand wakes, round-open and leave the fold; the next lap launches the cold run with --cadence-slice 1 only after this commit is on xy and that hand is not also writing

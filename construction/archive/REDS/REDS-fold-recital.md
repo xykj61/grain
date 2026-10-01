@@ -905,3 +905,9 @@ at a closed fold.*
 *Row %756 folded to [`REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md`](REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md) on `20261001.132612`, **BOOKED** -- a derived wire ceiling needs its enforcing check beside it; the shrink door repaired the floor without touching the datagram.*
 
 *Row %785 folded to [`REDS-a-guard-that-counted-its-own-proof-rows-785.md`](REDS-a-guard-that-counted-its-own-proof-rows-785.md) on `20261001.133057`, **BOOKED** -- a guard's own controls plant its subject on purpose, so their walks are counted apart rather than gated.*
+
+*Row %830 folded to [`REDS-a-symlink-counted-as-two-rows-830.md`](REDS-a-symlink-counted-as-two-rows-830.md) on `20261001.152938`, **CLOSED** -- a symlinked declaring file was counted twice, and a shared refusal helper needed a named shape.*
+
+*Row %831 folded to [`REDS-a-second-named-wrapper-rows-831.md`](REDS-a-second-named-wrapper-rows-831.md) on `20261001.152946`, **CLOSED** -- a second wrapper script hit the same unseparated-verb gap the scan's own header had already named once.*
+
+*Row %832 folded to [`REDS-two-instruments-disagreed-rows-832.md`](REDS-two-instruments-disagreed-rows-832.md) on `20261001.152946`, **CLOSED** -- two scans' live-page scopes were both correct and still left a population neither read.*
