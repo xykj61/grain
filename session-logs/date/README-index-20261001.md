@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.140633` | [fixed the blank, then tightened, comments](20261001/20261001-140633_fix-blank-then-tighten-issue-comments.kyri) | gh api @file did not expand; wrapped as JSON, verified all ten bodies read back correct |
 | `20261001.135848` | [posted 10 cross-linked GitHub issue comments](20261001/20261001-135848_posted-safety-classifier-issue-comments.kyri) | anthropics/claude-code safety-classifier reports, environment and model-attempt facts included |
 | `20261001.133700` | [cheap-pass session prompt](20261001/20261001-133700_cheap-pass-session-prompt.kyri) | handoff prompt written for a fresh session, six reds remain |
 | `20261001.133200` | [REDS %785 repaired, ignored_walk 27 of 27](20261001/20261001-133200_ignored-walk-785-repaired.kyri) | planted control walks counted apart, row folded, pin 57,906 bytes |
