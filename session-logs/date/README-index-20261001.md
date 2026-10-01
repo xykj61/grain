@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.101716` | [fifteenth clean cold run in a row](20261001/20261001-101716_fifteenth-clean-cold-run-in-a-row.kyri) | standing eight red, zero new, tree_moved=no |
 | `20261001.090904` | [a dated path's digits leaked past the stamp strip](20261001/20261001-090904_caravan-ladder-copy-stamp-strip-repaired.kyri) | caravan_suite red traced and repaired |
 | `20261001.075005` | [nib carried past a pushed commit](20261001/20261001-075005_nib-carried-past-an-already-pushed-commit.kyri) | caught the amend-vs-follow-up choice, used follow-up |
 | `20261001.074025` | [index row past its own bound](20261001/20261001-074025_index-row-over-its-own-bound.kyri) | prior row ran 19 bytes over 192, shortened and witnessed GREEN |
