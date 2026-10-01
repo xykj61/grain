@@ -10,6 +10,7 @@
 | `20261001.113042` | [the fifteen-field ceiling ruling was already landed](20261001/20261001-113042_pheromone-ceiling-ruling-already-landed.kyri) | confirmed on metal, no new construction owed |
 | `20261001.112628` | [a third identical grade, baton YOURS item clean](20261001/20261001-112628_fruit-still-a-yours-item-clean.kyri) | fruit re-confirmed A/94, baton register ceiling checked, verdict=ok |
 | `20261001.112611` | [museum census found its own landed work on a diverged branch](20261001/20261001-112611_baton-museum-census-rostered.kyri) | rostered, control proven GREEN both legs |
+| `20261001.112435` | [case 4's contract caught up](20261001/20261001-112435_case-4-contract-caught-up-to-its-witness.kyri) | receipt contract's stale unwitnessed claim corrected |
 | `20261001.112404` | [the fruit was already graded one commit ago](20261001/20261001-112404_fruit-already-graded.kyri) | re-ran the grade, matched the prior lap's A/94, no new work owed |
 | `20261001.112253` | [sixteenth clean run, all seats clocked in](20261001/20261001-112253_incense-sixteenth-clean-run-all-clocked-in.kyri) | standing eight red, zero new; clock pass |
 | `20261001.112153` | [sealed crossing's duty, reverse-read](20261001/20261001-112153_sealed-crossing-reverse-read.kyri) | duty-without-a-home archived, receipt bundle witness GREEN |
