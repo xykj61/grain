@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.141642` | [REDS %827, four of seven refusal legs added](20261001/20261001-141642_redleg-four-of-seven.kyri) | standing_equipment_redleg 58 to 54, three remain in Brushstroke/Pond/almanac-breach |
 | `20261001.140814` | [dropped a misread data point](20261001/20261001-140814_drop-misread-settings-local-point.kyri) | the settings pin precedence was expected behavior, not a mismatch; removed from all ten |
 | `20261001.140633` | [fixed the blank, then tightened, comments](20261001/20261001-140633_fix-blank-then-tighten-issue-comments.kyri) | gh api @file did not expand; wrapped as JSON, verified all ten bodies read back correct |
 | `20261001.135848` | [posted 10 cross-linked GitHub issue comments](20261001/20261001-135848_posted-safety-classifier-issue-comments.kyri) | anthropics/claude-code safety-classifier reports, environment and model-attempt facts included |
