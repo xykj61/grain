@@ -65,6 +65,18 @@ stamp 20261001.184203
 epoch 1790894523
 paths tools/gen/chapter/dep_crawl_bounds_negative_witness.rish construction/standing-equipment.kyri
 what roster dep_crawl_bounds_negative_witness.rish, the unrostered chapter witness proving dep_crawl's node and depth bounds bite from both sides in one file
+claim patchouli-weave-tablecloth-seam-roster
+seat patchouli
+stamp 20261001.184851
+epoch 1790894931
+paths tools/m/mantra_weave_tablecloth_seam_witness.rish construction/standing-equipment.kyri
+what register mantra/weave_tablecloth_seam_witness.rye -- the seam's reading, unwrapped since 20261001 -- as a tools/m/*.rish wrapper and standing-equipment.kyri entry, closing the gap the wiring account's own YOURS line named
+claim diffuser-spool-dedup-ratio
+seat diffuser
+stamp 20261001.190126
+epoch 1790895686
+paths mantra/spool_dedup_ratio.rye tools/m/mantra_spool_dedup_ratio_witness.rish tools/fixtures/m/mantra_spool_dedup_ratio_scan.sh
+what measure the spool-scale dedup ratio when a shift edit crosses a fixed-offset resin boundary, the fourth-angle page's own named open door
 claim copal-radiant-h1-fence-roster
 seat copal
 stamp 20261001.191333
