@@ -40,13 +40,22 @@ If a fresh count of the contract's fields is not 15, stop and bring the new coun
 **This fruit closed `20260923` and has been reconfirmed GREEN five times since, most recently
 `20261001`.** The ruling above is history now, kept for the reasoning it carries, not a task.
 
-**The new crux, named `20261001`:** milestone two, "the consent you can change," needs a grant fact
-and a revoke fact expressed the same way `ReceiptOfferFact` is -- the smallest Glow form already
-owned, per the contract's own module-residence table. Sketch `GrantFact` and `RevokeFact` as Glow
-shapes (field names, ceilings, a refusal case each) in `active-designing/`, sized the way the
-receipt contract was before any code existed. Do not lower them into Mantra yet -- that is
-Patchouli's and Incense's door, named in the ITINERARY's own fleet-dependency order. If a sixth
-re-check of the old fruit looks tempting, read this paragraph again instead.
+**The second crux, named `20261001.112238`, closed `20261001.181632`.** `ConsentGrantFact` and
+`ConsentRevokeFact` are sketched as Glow shapes -- field names, auras, and one refusal case each --
+at
+[`active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md),
+sized against [milestone two's product
+contract](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
+Neither shape needed `max_fields` raised -- nine and seven faces, both under the fifteen the first
+fruit seated. Nothing was lowered into Mantra; that stays Patchouli's and Incense's door. The
+elder `construction/ITINERARY.md` account was shelved in the same lap and a new one opened naming
+this sketch.
+
+**This seat's next move wants Keaton's word rather than a third self-chosen crux**: whether
+`.lap/shape-receipt-offer.glow`'s draft belongs in a tracked Glow source (scope question for
+Incense, named in the `closed` section above), and whether the sketched `orphaned-revoke` reason
+earns a member on `tally/receipt_refusal.rye`'s `Reason` enum when a lowering opens. If a re-check
+of either closed fruit looks tempting, read this paragraph again instead.
 
 ## gates
 

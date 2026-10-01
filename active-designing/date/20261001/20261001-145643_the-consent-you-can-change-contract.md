@@ -170,11 +170,12 @@ implementation, exactly as it opened milestone one on `20260913`. Until then not
 checkable, per `context/TWO_ROOMS.md` -- this is reasoning a reader can check today, not a claim
 that any code runs.
 
-A sibling task is already named for Pheromone: sketching `GrantFact` and `RevokeFact` as Glow
+A sibling task was named for Pheromone: sketching `GrantFact` and `RevokeFact` as Glow
 shapes -- field names, ceilings, one refusal case each -- sized the way milestone one's desk was
-before any code existed. That sketch and this contract describe the same two facts from two
-directions -- the prose promise here, the Glow shape there -- and each stands ready to be read on
-its own.
+before any code existed. [That sketch now
+stands](20261001-181632_grant-and-revoke-fact-glow-shapes.md), and it and this contract describe
+the same two facts from two directions -- the prose promise here, the Glow shape there -- and each
+stands ready to be read on its own.
 
 May the yes a person gives stay as plain as the no that follows it, and may both remain readable,
 side by side, in the record they share.
