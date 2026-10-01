@@ -8362,3 +8362,18 @@ guard mantra_beading_dedup_ratio
 path tools/m/mantra_beading_dedup_ratio_witness.rish
 tier lap
 seated 20261001.182247
+
+# dep_crawl_bounds_negative -- proves both ways inside one file rather than a positive/negative
+# pair. dep_crawl.rish names two bounds at e4 -- 256 nodes and 16 depth -- and this witness calls
+# tools/fixtures/d/dep_crawl_scan.sh three times against the standing fixture
+# brushstroke/east_pack_test.rye: once with maxd=1 (the fixture's real closure reaches depth 3)
+# and reads verdict=bound_depth with a failing status; once with maxn=2 (the real closure holds 5
+# nodes) and reads verdict=bound_nodes with a failing status; and once with no override, reading
+# verdict=ok at the named defaults maxn=256 and maxd=16, so the known-good path is shown closing
+# right beside the two refusals it exists to prove bite rather than merely exist. One of the
+# unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-dep-crawl-bounds-roster before this entry landed. Runs in under 1s on metal.
+guard dep_crawl_bounds_negative
+path tools/gen/chapter/dep_crawl_bounds_negative_witness.rish
+tier lap
+seated 20261001.184233
