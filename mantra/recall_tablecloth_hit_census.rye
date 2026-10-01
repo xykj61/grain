@@ -344,8 +344,8 @@ fn run_wire_disagreement() CensusError!void {
     while (i < qw.max_wire_hits) : (i += 1) {
         for (&path_buf) |*b| b.* = 'a' + @as(u8, @intCast(i));
         // invariant: the path stands at the wire's own ceiling, narrower than the Tablecloth's.
-        assert(qw.max_path <= path_buf.len);
-        try cat.append_leaf(peer, bolt, 1, path_buf[0..qw.max_path], "body", "plain-text");
+        assert(qw.max_wire_path <= path_buf.len);
+        try cat.append_leaf(peer, bolt, 1, path_buf[0..qw.max_wire_path], "body", "plain-text");
     }
     var out: [qw.max_wire_payload]u8 = undefined;
     var built: qw.QueryWireResponse = undefined;

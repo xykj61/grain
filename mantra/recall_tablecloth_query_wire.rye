@@ -30,11 +30,12 @@ pub const max_peer: u32 = 16;
 pub const max_bolt: u32 = 32;
 // The wire carries paths up to 57 bytes, narrower than the Tablecloth's own 64: at 57 one hit
 // encodes to 112 bytes and the 340-byte payload holds three, which the retention harness needs.
-pub const max_path: u32 = 57;
+// Published as max_wire_path, so the store's max_path stays one bound at one value.
+pub const max_wire_path: u32 = 57;
 
 /// One hit at maximum name lengths: a length byte before each of the three names, plus the
 /// four-byte revision between them.
-pub const max_hit_bytes: u32 = (1 + max_peer) + (1 + max_bolt) + 4 + (1 + max_path);
+pub const max_hit_bytes: u32 = (1 + max_peer) + (1 + max_bolt) + 4 + (1 + max_wire_path);
 
 /// Two bytes of response head stand before the first hit, so the room a hit may claim is what
 /// remains after them.
@@ -56,7 +57,7 @@ comptime {
     // wire nobody can answer over.
     assert(max_wire_hits >= 1);
     // invariant: the wire's path ceiling never exceeds the Tablecloth's, so it only narrows.
-    assert(max_path <= ns.max_path);
+    assert(max_wire_path <= ns.max_path);
 }
 
 
@@ -201,7 +202,7 @@ pub fn encode_response(resp: QueryWireResponse, out: []u8) WireError!u32 {
     while (i < resp.hit_count) : (i += 1) {
         const hit = resp.hits[i];
         // invariant: a hit's path fits the wire's own ceiling, so the derived hit count is true.
-        if (hit.path.len > max_path) return error.Overflow;
+        if (hit.path.len > max_wire_path) return error.Overflow;
         try write_len_bytes(out, &off, hit.peer);
         try write_len_bytes(out, &off, hit.bolt);
         if (off + 4 > out.len) return error.Overflow;
