@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.181548` | [petrichor-inner fruit synced](20261001/20261001-181548_sync-petrichor-inner-fruit.kyri) | landed crux marked closed on the gate; two front doors graded, neither owed a repair |
 | `20261001.172721` | [mirror marks removed](20261001/20261001-172721_mirror-marks-removed.kyri) | history rewritten; detectors stay armed |
 | `20261001.171142` | [debrided mirror retired](20261001/20261001-171142_debrided-mirror-retired.kyri) | eight pier remotes removed; GitHub repo waits on delete_repo |
 | `20261001.165620` | [REDS fold 830-832 sent](20261001/20261001-165620_reds-fold-830-832-sent.kyri) | three CLOSED rows shelved; pin headroom 3397, deadlock cleared |
