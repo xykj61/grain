@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20261001.132816
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role repository role primary
+modality text
+model claude-sonnet-5-5
+model_status session banner states claude-sonnet-5-5; runtime identity otherwise unverified
+voice Kyri
+title REDS %756 folded as BOOKED, ruling erratum written
+prompt Keaton: kg after the shrink door landed.
+think changed the row's last status marker to BOOKED with the repair account, wrote the shelf head, and ran tools/fixtures/r/reds_fold.sh for row 756
+think the pin fell from 65352 to 63095 bytes of 65536, which opens room for the five unbooked reds
+think appended an erratum to the ruling document rather than editing it, since a stamped basename marks testimony
+obs reds_fold_witness and reds_ledger_monotone_witness both read green after the fold
+file construction/REDS.md why-row 756 left the pin
+file construction/archive/REDS/REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md why-the shelf
+file active-designing/date/20261001/20261001-124643_the-fusion-build-ruling.md why-erratum appended
+scope ledger fold and erratum; REDS %785 and the five unbooked reds remain
+status GREEN -- both ledger witnesses green after the fold
+recommend keep-going -- take %785 next, then book the five reds into the freed room

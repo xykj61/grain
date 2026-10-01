@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.132816` | [REDS %756 folded, erratum](20261001/20261001-132816_fold-756-and-erratum.kyri) | row BOOKED to a shelf, pin 63,095 bytes, ruling erratum |
 | `20261001.131844` | [REDS %756 repaired, shrink door](20261001/20261001-131844_wire-path-shrink-756.kyri) | wire max_path 64 to 57, three hits fit, retention witness green |
 | `20261001.131500` | [idleness follow-up sent](20261001/20261001-131500_idleness-followup-send.kyri) | six contested rebases, one conflict, pushed c097474ba clean |
 | `20261001.131200` | [check-in on idleness follow-up](20261001/20261001-131200_check-in-on-idleness-followup.kyri) | mapped the fusion-build block, asked Keaton which way to spend the lap |

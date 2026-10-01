@@ -116,3 +116,11 @@ reads it rather than re-deriving it.
 
 May the cheap pass run the moment it has earned the right to, and may every lap after this one spend
 its cycles on what moved rather than on proving again what already held.
+
+## Erratum -- ruling one took the shrink door
+
+Ruling one chose to grow `max_wire_payload`. Reading the code showed that growth needs a larger
+sealed datagram too, since `wire_capacity - off_cipher` already equals the 340-byte payload. Keaton
+re-ruled the same day: shrink the wire's `max_path` from 64 to 57 and measure a two-hit answer.
+REDS `%756` is repaired on metal and folded to its shelf as BOOKED. The ledger pin then stood at
+63,095 of 65,536 bytes, so the five unbooked reds can take their rows. Rulings two and three stand.

@@ -901,3 +901,5 @@ at a closed fold.*
 *Row `20260924.212249` folded to [`REDS-a-rename-sweep-left-a-build-red-stamp-20260924-212249.md`](REDS-a-rename-sweep-left-a-build-red-stamp-20260924-212249.md) on `20260930.005500`, **CLOSED** -- folded by hand to clear headroom for a fresh row while the pin's numbered rows sat all OPEN and unfoldable by the automated tool; a rename sweep leaving a build red, its selftest untested underneath.*
 
 *Row %828 folded to [`REDS-a-mutation-that-never-landed-rows-828.md`](REDS-a-mutation-that-never-landed-rows-828.md) on `20260930.073743`, **BOOKED** -- a mutation control must prove its cut landed before grading what the cut produced.*
+
+*Row %756 folded to [`REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md`](REDS-a-wire-ceiling-the-harness-could-not-ask-rows-756.md) on `20261001.132612`, **BOOKED** -- a derived wire ceiling needs its enforcing check beside it; the shrink door repaired the floor without touching the datagram.*
