@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and debrided, nib carried forward twice |
 | `20261001.114626` | [one real link repair, in-lane](20261001/20261001-114626_example-app-plan-repoint.kyri) | repointed a folded companion link in docs-geode; fruit unchanged |
 | `20261001.114554` | [map sent, six rebases later](20261001/20261001-114554_mantra-tally-map-sent.kyri) | pushed to xy and debrided, HEAD 10a194460 |
 | `20261001.114032` | [the fruit, re-confirmed a fifth time](20261001/20261001-114032_anyone-under-our-sun-fifth-reconfirm.kyri) | same page, same A/94 at door; flagged for a new fruit |
