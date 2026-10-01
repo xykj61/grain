@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261001.152343` | [falsifier_form_outcome repaired](20261001/20261001-152343_falsifier-form-outcome-repaired.kyri) | two scans' live-page scopes reconciled; ledger pin down to 112 bytes headroom |
 | `20261001.152121` | [fleet-wide check finds nothing unclaimed](20261001/20261001-152121_petrichor-fleet-wide-check-finds-nothing-unclaimed.kyri) | one claim, one OPEN row, both already spoken for; CLAIM-AS-OVERRIDE has nothing to take |
+| `20261001.151852` | [weave-tablecloth seam falsifier run](20261001/20261001-151852_weave-tablecloth-seam-falsifier-run.kyri) | current() and catalogue digest_hex agree, GREEN |
 | `20261001.151826` | [lane blocked, air rota](20261001/20261001-151826_petrichor-lane-blocked-air-rota.kyri) | docs-geode clean at B+; milestone two and first-hour walkthrough wait on a hand |
 | `20261001.151253` | [Survey a fourth moonshot: Mantra's dedup ratio](20261001/20261001-151253_dedup-ratio-moonshot.kyri) | mantra/beading.rye's BeadReport never read for dedup efficiency; vision page names the scan |
 | `20261001.151151` | [rye_compiled_reach: 786 to 11](20261001/20261001-151151_rye-compiled-reach-786-to-11.kyri) | rye_build.sh named as a builder verb; uncompiled fell under its ceiling |
