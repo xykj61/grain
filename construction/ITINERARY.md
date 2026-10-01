@@ -159,69 +159,52 @@ assert( files remaining` fell **1 to 0**; `tame_style_check` stays GREEN. No YOU
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
 
-**DIFFUSER -- ROW 3'S SECOND READING.** [Shelved whole](archive/date/20260918/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
+**DIFFUSER -- TWENTY ACCOUNTS, CONDENSED TO ONE POINTER, NOTHING ARCHIVED LOST** (`20260918`-`20261001`):
+row 3's second reading
+([`20260918`](archive/date/20260918/20260918-030830_itinerary-diffuser-two-shelved-accounts.md)),
+two Caravan/Aurora first-principles proposals
+([`account`](archive/date/20260918/20260918-061106_itinerary-diffuser-two-first-principles-account.md)),
+the counter paper's own falsifier
+([`ran, did not fire`](archive/date/20260918/20260918-063504_itinerary-landed-accounts.md)),
+three Bakery-buildable proposals
+([`account`](archive/date/20260918/20260918-065527_itinerary-landed-accounts.md)),
+row-aligned Tally gardens energy proposal
+([`account`](archive/date/20260918/20260918-072133_itinerary-diffuser-row-alignment-account.md)),
+fixed-interval polling energy proposal
+([`account`](archive/date/20260918/20260918-105602_itinerary-diffuser-fixed-interval-polling-account.md)),
+the scope-map ranking check
+([`account`](archive/date/20260918/20260918-091243_itinerary-diffuser-scope-map-account.md)),
+the falsifier's open door
+([`account`](archive/date/20260918/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md)),
+duplicate-content census
+([`account`](archive/date/20260918/20260918-075535_itinerary-diffuser-duplicate-content-account.md)),
+a symlinked import as two compilation units
+([`account`](archive/date/20260918/20260918-111501_itinerary-diffuser-symlinked-import-account.md)),
+the build cache note
+([`account`](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note-account.md)),
+placement
+([`account`](archive/date/20260925/20260925-073701_itinerary-diffuser-placement-account.md)),
+batch interval
+([`account`](archive/date/20260925/20260925-122735_itinerary-diffuser-batch-interval-account.md)),
+the parked receipt motion study
+([`account`](archive/date/20260925/20260925-125114_itinerary-diffuser-motion-study-account.md)),
+interrupted sleep
+([`account`](archive/date/20260925/20260925-142646_itinerary-diffuser-interrupted-sleep-account.md)),
+relative sleep
+([`account`](archive/date/20260925/20260925-152809_itinerary-diffuser-late-sleep-account.md)),
+Skate index
+([`account`](archive/date/20260925/20260925-170029_itinerary-diffuser-skate-index-account.md)),
+receipt spaces colliding in the Still row
+([`account`](archive/date/20261001/20261001-123500_itinerary-diffuser-receipt-space-collision-account.md)),
+the snapshot-shrink study
+([`account`](archive/date/20261001/20261001-142551_itinerary-diffuser-snapshot-shrink-account.md)),
+and the Hilbert-order essay's arithmetic
+([`account`](archive/date/20261001/20261001-143600_itinerary-diffuser-hilbert-order-account.md)).
+**YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the receipt
+replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; PATCHOULI
+on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards.
 
-**DIFFUSER -- TWO FIRST-PRINCIPLES PROPOSALS, CARAVAN AND AURORA.** [Shelved
-whole](archive/date/20260918/20260918-061106_itinerary-diffuser-two-first-principles-account.md). **YOURS,
-BAKERY:** `evenspread` still waits on `torus_place_scan.sh`'s reading 3. **YOURS, ANY SHIP:** the
-cold run's 21 reds of 355 guards stays open, unanswered across several laps now.
-
-**DIFFUSER -- THE COUNTER PAPER'S OWN FALSIFIER RAN, AND DID NOT FIRE.** [Shelved
-whole](archive/date/20260918/20260918-063504_itinerary-landed-accounts.md).
-
-**DIFFUSER -- THREE BAKERY-BUILDABLE PROPOSALS STAND, AND NONE WAS NAMED ON THIS CARD.** [Shelved
-whole](archive/date/20260918/20260918-065527_itinerary-landed-accounts.md). **YOURS, BAKERY:** any one of the
-three proposals is agent-doable now, none dependent on the others. **YOURS, ANY SHIP:** the real
-replay-horizon number for `max_bolt_revision` still wants Mantra's own owner.
-
-**DIFFUSER -- ROW-ALIGNED TALLY GARDENS, AN ENERGY FIRST-PRINCIPLES PROPOSAL.** [Shelved
-whole](archive/date/20260918/20260918-072133_itinerary-diffuser-row-alignment-account.md). **YOURS, BAKERY:** the
-`Region.init` alignment parameter and its witness are buildable now, with no hardware dependency;
-the falsifier itself waits on RAPL or `perf` access.
-
-**DIFFUSER -- A SECOND ENERGY FIRST-PRINCIPLES PROPOSAL, FIXED-INTERVAL POLLING.** [Shelved
-whole](archive/date/20260918/20260918-105602_itinerary-diffuser-fixed-interval-polling-account.md). **YOURS,
-BAKERY:** a capped exponential backoff at `subscribe_poll_service.rye`'s
-`wait_fetcher_or_source_lost` is buildable now, no hardware dependency; the falsifier waits on
-`perf` or a context-switch counter.
-
-**DIFFUSER -- THE SCOPE-MAP RANKING CHECK.** [Shelved
-whole](archive/date/20260918/20260918-091243_itinerary-diffuser-scope-map-account.md). **YOURS, BAKERY:** the
-two rows already landed in `dbc5306a0`; the current rank reads `qa_genre_census` at 769s cost,
-0.075 touch, and 711s saving. `aurora_file_placement` is under-named by the proposed `*.rye`
-row: its trace reads 1,777 files, with 5 gaps. The broad QA trace refused its 6053523-line output
-bound, so no second coverage verdict is claimed.
-
-**DIFFUSER -- THE FALSIFIER'S OPEN DOOR WAS ALREADY COUNTED.** [Shelved account](archive/date/20260918/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md); [the close](../active-designing/date/20260918/20260918-092431_the-open-door-was-already-counted.md) names the caller and existing cost row.
-
-**DIFFUSER -- DUPLICATE-CONTENT CENSUS.** [Shelved whole](archive/date/20260918/20260918-075535_itinerary-diffuser-duplicate-content-account.md). The cache question is closed below.
-
-**DIFFUSER -- A SYMLINKED `@import` IS TWO COMPILATION UNITS, NOT ONE.** [Shelved
-whole](archive/date/20260918/20260918-111501_itinerary-diffuser-symlinked-import-account.md).
-
-**DIFFUSER -- THE BUILD CACHE DOES NOT COLLAPSE A SYMLINKED IMPORT EITHER.** [Shelved
-whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note-account.md).
-
-**DIFFUSER -- PLACEMENT ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-073701_itinerary-diffuser-placement-account.md).
-
-**DIFFUSER -- BATCH INTERVAL ACCOUNT.** [Shelved whole](archive/date/20260925/20260925-122735_itinerary-diffuser-batch-interval-account.md).
-
-**DIFFUSER -- THE PARKED RECEIPT MOTION STUDY RETURNED.** [Shelved whole](archive/date/20260925/20260925-125114_itinerary-diffuser-motion-study-account.md).
-**YOURS, SKATE:** build the pure sampler after motion choices are named; prove the rendered path on macOS.
-
-**DIFFUSER -- INTERRUPTED SLEEP CHANGES THE WAKE COUNT.** [Shelved whole](archive/date/20260925/20260925-142646_itinerary-diffuser-interrupted-sleep-account.md).
-**YOURS, BAKERY:** include interrupted and late sleeps before choosing a shared batch width.
-
-**DIFFUSER -- RELATIVE SLEEP.** [Shelved whole](archive/date/20260925/20260925-152809_itinerary-diffuser-late-sleep-account.md).
-**YOURS, BAKERY:** prove relative and absolute deadline traces with late and interrupted outcomes.
-
-**DIFFUSER -- SKATE INDEX.** [Shelved whole](archive/date/20260925/20260925-170029_itinerary-diffuser-skate-index-account.md).
-
-**DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Account shelved whole](archive/date/20261001/20261001-123500_itinerary-diffuser-receipt-space-collision-account.md). **YOURS, INCENSE:** whether trailing spaces carry product meaning.
-
-**DIFFUSER -- SNAPSHOT-SHRINK ACCOUNT.** [Shelved whole](archive/date/20261001/20261001-142551_itinerary-diffuser-snapshot-shrink-account.md).
-
-**DIFFUSER -- HILBERT-ORDER ESSAY'S ARITHMETIC CLOSED.** [Shelved whole](archive/date/20261001/20261001-143600_itinerary-diffuser-hilbert-order-account.md): new scan, control, and witness, GREEN on metal, 9 legs, 3 mutations bitten.
+**DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
 **PATCHOULI -- THE SNAPSHOT-PROJECTION FIXTURES, BOTH PROVEN ON METAL.** [Shelved
 whole](archive/date/20261001/20261001-144809_itinerary-patchouli-snapshot-projection-account.md).
@@ -357,7 +340,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9496da0dca` -- HEAD's parent, read after the final rebase.
+**Git nib:** `b62cac5476` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

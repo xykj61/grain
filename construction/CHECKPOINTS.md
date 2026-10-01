@@ -2281,3 +2281,16 @@ card's nib forward per rule 5, and the row 1 (Air) rota read that fit as a bound
 replaced on the living page by one consolidated pointer line. *What waits there, worth recalling:*
 nothing new -- a clean confirmation lap re-reading the standing eight-red, three-gated set
 unchanged, and the row 2 (Fire) rota read that fit exactly since nothing named a new fault to cut.
+
+**Checkpoint `20261001.145200` -- Diffuser condenses twenty elder DIFFUSER one-line pointer
+accounts on `construction/ITINERARY.md` into one rolled-up paragraph, to make room for a new
+account under the 40960-byte pin bound.** **Walk-back nib:** `c647324d1`. **Swept:** twenty
+already-shelved DIFFUSER pointer lines, spanning `20260918.030830` through
+`20261001.143600`, each already pointing to its own untouched archive file (nothing archived was
+edited or lost) -- rolled into one consolidated paragraph on the living card. *What waits there,
+worth recalling:* every `YOURS` line from those twenty accounts is carried forward in the new
+paragraph's own `YOURS:` line (Bakery on two energy proposals and the replay horizon, Skate on the
+motion sampler, Incense on trailing-space meaning, Patchouli on the history-dropping snapshot, any
+ship on the standing cold-run reds); nothing else was load-bearing. This made room for the new
+whitepaper-falsifier account without raising the card's bound, which the-writer-sheds already
+names as the wrong instrument.
