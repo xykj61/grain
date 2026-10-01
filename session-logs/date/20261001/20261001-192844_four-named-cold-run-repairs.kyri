@@ -22,7 +22,7 @@ rota none -- continuation
 file MAP.md the upstream room is named in prose
 file tools/fixtures/c/ceiling_teeth_scan.sh calls resolve_path
 file tools/fixtures/m/mantra_beading_dedup_ratio_scan.sh and two sibling scripts call git rev-parse
-git_nib d4e7638378
+git_nib 54df874ac2
 loom seed_link=ok unshared=0 readlink_sites=7 bare_new=0
 scope close the four cold-run reds whose repair was already named
 status HELD -- four guards green on metal; the ceiling ratchets still stand
