@@ -251,6 +251,30 @@ until `run_verdict=` lands; the next cold run should read 8 red again, `declared
 worker's outer and inner prompt, clock in only what moves product, a module, or the docs. The REDS
 pin deadlock is still open and still Keaton's to rule on.
 
+**Lap `20261001.090904` round-opened clean at `2b62634503` (already on the anointed order, 13
+dead-letter entries reported and untouched), checked the claim board directly (five rows, all
+September stamps, all past expiry, no overlap), read `HEAD` once, confirmed no cold pass genuinely
+in flight (`refused_self=1 refused_unknown=1 refused_prose=2 would_send=0`), and launched a fresh
+one with `--cadence-slice 1`.** Held fully still until `run_verdict=guard_red`, 371 green, 9 red, 3
+gated, `tree_moved=yes` -- caused by the caravan_suite rung's own `lock.d/pid` runtime file moving
+mid-run, restored rather than committed. Compared red-leg names against the standing eight: all
+eight held, plus one new -- `caravan_suite`, naming `tools/ca/caravan_ladder_copy_witness.rish`'s
+own stamp-exemption self-test. Traced to `tools/fixtures/c/caravan_ladder_prose_count_scan.sh`:
+its sed strip for a one-clock stamp handles `YYYYMMDD-HHMMSS_` and `YYYYMMDD.HHMMSS` but never the
+bare `YYYYMMDD` inside a dated path's own `date/YYYYMMDD/` day-shelf directory, so that digit run
+survived every strip and read as an unasserted count. Commit `9ec2e56c2` (`20260918`, the
+active-designing room fold) had repointed this witness's own plant line to the folded path shape,
+turning a passing self-test into a red nobody had re-run until this lap. Repaired with one sed
+clause, `s#date/[0-9]\{8\}/#date/ #g`; `caravan_ladder_copy_witness.rish` and the full
+`caravan_suite_witness.rish` (122 rungs) both GREEN afterward. Sent as `a5fccda02`, nib carried via
+the follow-up shape (the commit was already pushed, so amend was correctly ruled out). **No REDS
+row added** -- `construction/REDS.md` stands at 184 bytes of its own 65,536-byte bound and wants a
+fold before it can take another row; flagged here for the next lap that has room to fold one.
+Next lap: fresh round-open; check the board and for an in-flight pass; hold fully still with
+`--cadence-slice 1` until `run_verdict=` lands; the next cold run should read 8 red again,
+`caravan_suite` clean. Then resume the clock pass. The REDS pin deadlock is still open and still
+Keaton's to rule on, and REDS.md itself now wants a fold before its next row.
+
 **Lap `20261001.074025` round-opened clean at `b52d350dff` (already on the anointed order, 13
 dead-letter entries reported and untouched), checked the claim board directly (five rows, all
 September stamps, all past expiry, no overlap), read `HEAD` once, confirmed no cold pass genuinely
