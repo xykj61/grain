@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and debrided, nib carried forward twice |
+| `20261001.114958` | [zero_view send, two contested nibs](20261001/20261001-114958_zero-view-rostered-send.kyri) | pushed xy and debrided after three rebases |
 | `20261001.114626` | [one real link repair, in-lane](20261001/20261001-114626_example-app-plan-repoint.kyri) | repointed a folded companion link in docs-geode; fruit unchanged |
 | `20261001.114554` | [map sent, six rebases later](20261001/20261001-114554_mantra-tally-map-sent.kyri) | pushed to xy and debrided, HEAD 10a194460 |
 | `20261001.114515` | [seat-nakshatra-parseint-migration](20261001/20261001-114515_seat-nakshatra-parseint-migration.kyri) | one seat_nakshatra.rye call migrated to tally_parse_int, proven on metal |
