@@ -7,7 +7,7 @@
 
 ## engine
 
-**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. This tree resolves `claude-sonnet-5`. This lap is acceptance case 4.
+**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. The fleet default is `claude-opus-5`; this tree resolves `claude-sonnet-5`. This lap is acceptance case 4.
 
 ## fruit
 
