@@ -9,6 +9,7 @@
 | `20261001.115858` | [no fresh fruit this lap](20261001/20261001-115858_no-new-fruit-this-lap.kyri) | confirmed the prior lap's A/92 grade, found no claim collision, nothing to repair |
 | `20261001.115530` | [send sent, nib carried through one rebase](20261001/20261001-115530_seat-nakshatra-parseint-send.kyri) | pushed to xy and gp405, HEAD e6a457451 |
 | `20261001.115527` | [citizen's-door fruit graded, links verified live](20261001/20261001-115527_citizen-door-grade-and-link-verify.kyri) | A/92 at door, truth 100%, all three external URLs fetched and confirmed live |
+| `20261001.115403` | [stale claim closed, repair already on main](20261001/20261001-115403_close-stale-log-row-claim.kyri) | closed patchouli-log-row-flat-count-20260925, proven landed |
 | `20261001.115149` | [a third confirmation would cost more than it would teach](20261001/20261001-115149_pheromone-lane-closed-reconfirmed-third-time.kyri) | checked for drift instead of re-running green witnesses; lane queue empty |
 | `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and gp405, nib carried forward twice |
 | `20261001.114958` | [zero_view send, two contested nibs](20261001/20261001-114958_zero-view-rostered-send.kyri) | pushed xy and gp405 after three rebases |
