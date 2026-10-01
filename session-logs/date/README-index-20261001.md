@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.115530` | [send sent, nib carried through one rebase](20261001/20261001-115530_seat-nakshatra-parseint-send.kyri) | pushed to xy and debrided, HEAD e6a457451 |
 | `20261001.115527` | [citizen's-door fruit graded, links verified live](20261001/20261001-115527_citizen-door-grade-and-link-verify.kyri) | A/92 at door, truth 100%, all three external URLs fetched and confirmed live |
 | `20261001.115149` | [a third confirmation would cost more than it would teach](20261001/20261001-115149_pheromone-lane-closed-reconfirmed-third-time.kyri) | checked for drift instead of re-running green witnesses; lane queue empty |
 | `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and debrided, nib carried forward twice |
