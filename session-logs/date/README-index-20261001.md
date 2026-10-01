@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.144307` | [pheromone's fruit stays closed, fifth recheck declined](20261001/20261001-144307_pheromone-fruit-closed-fifth-recheck-declined.kyri) | inner prompt confirms closed; no in-lane or claimable work this lap |
+| `20261001.144135` | [zero-assert ratchet closed](20261001/20261001-144135_zero-assert-ratchet-closed.kyri) | roster_pairs_seal.rye took two invariants, ratchet file 1 to 0 |
 | `20261001.143922` | [eighth confirm, A holds](20261001/20261001-143922_citizen-door-eighth-confirm-a-holds.kyri) | re-ran qa_report_card.sh directly; composite 92/A, unchanged; empty lane queue |
 | `20261001.143659` | [shim_reason late-say repair](20261001/20261001-143659_shim-reason-late-say-and-booked-ceiling.kyri) | 8 bindings fixed; the 81-over unsaid ceiling booked |
 | `20261001.143618` | [seventh recheck, air boundary holds](20261001/20261001-143618_seventh-recheck-air-boundary-holds.kyri) | regraded at door and field settings, both A; empty lane queue |

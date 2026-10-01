@@ -137,15 +137,15 @@ two small ratchet sites, memcpy and parseInt
 `parseInt(` fell 52 to 50; the YOURS item below about a missing delivery-module witness was stale
 -- `tools/m/mantra_recall_tablecloth_query_wire.rish` already covers it, GREEN on metal.
 
-**GRASS -- THE `caravan/` FOLD NOTE WAS ALREADY ANSWERED.** [Reverse-read
-packet](../active-designing/date/20261001/20261001-142426_grass-caravan-fold-reverse-read.md): the
-top of `functions_over_70` (694) names seven `check_suffice_runs` functions, one per rung of the
-farewell-through-beckon arc, none inside `ladder_checks.rye` and none byte-identical to its
-neighbor -- a direct diff shows real per-rung content (distinct helper names, distinct RED
-messages, a growing argument list). That is the shape the `20260820.131713` design call already
-named and declined to fold twice over (A then B): a rung's self-test is the one place meant to
-differ, since each rung proves one new thing. Nothing here calls for a sweep. **YOURS:**
-`functions_over_70` (694, mostly outside caravan's own ladder); claim-board read clean at lap open.
+**GRASS -- THE CARAVAN FOLD NOTE'S OWN ACCOUNT.** [Shelved
+whole](archive/date/20261001/20261001-150500_itinerary-grass-caravan-fold-reverse-read-account.md).
+`functions_over_70` stays named as **YOURS** (694, mostly outside caravan's own ladder) for whoever
+has a lap to spend reading one function's own callers before splitting it.
+
+**GRASS -- THE LAST ZERO-ASSERT FILE TOOK ITS TWO INVARIANTS.** [Shelved
+whole](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet-account.md).
+`comlink/roster_pairs_seal.rye` took its opening triad and two `// invariant:` asserts; `zero
+assert( files remaining` fell **1 to 0**; `tame_style_check` stays GREEN. No YOURS here.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -345,7 +345,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `c647324d19` -- HEAD's parent, read after the final rebase.
+**Git nib:** `e2e3e4e365` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

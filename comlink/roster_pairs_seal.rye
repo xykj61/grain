@@ -5,6 +5,8 @@
 //! replace that sentence and it does not add a virtio driver.
 
 const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
 const wf = @import("wire_format.rye");
 
 const pairs =
@@ -15,15 +17,19 @@ const pairs =
 
 pub fn main(init: std.process.Init) !u8 {
     _ = init;
+    // invariant: the four roster pairs fit the protocol's one message bound.
+    assert(pairs.len <= @as(usize, @intCast(wf.max_message)));
     var sealed: [@intCast(wf.wire_capacity)]u8 = undefined;
     const n = try wf.seal_message(pairs, &sealed);
+    // invariant: a sealed length never exceeds the buffer it was sealed into.
+    assert(n <= sealed.len);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const m = try wf.open_datagram(sealed[0..@intCast(n)], &opened);
     if (m != pairs.len) return error.LengthMismatch;
     if (!std.mem.eql(u8, opened[0..@intCast(m)], pairs)) return error.PairMismatch;
     if (!std.mem.eql(u8, wf.expected_message, "Meet me where the rye grows.")) return error.SentenceMoved;
-    std.debug.print("{s}\n", .{opened[0..@intCast(m)]});
-    std.debug.print("roster-pairs-seal pairs=4 sentence=kept\n", .{});
-    std.debug.print("GREEN\n", .{});
+    print("{s}\n", .{opened[0..@intCast(m)]});
+    print("roster-pairs-seal pairs=4 sentence=kept\n", .{});
+    print("GREEN\n", .{});
     return 0;
 }
