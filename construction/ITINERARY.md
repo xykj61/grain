@@ -83,13 +83,14 @@ claim-path exemption, and the remaining unrostered chapter witnesses -- all Keat
 **COPAL.** [Voice_roster account shelved
 whole](archive/date/20261001/20261001-124523_itinerary-copal-voice-roster-account.md).
 
-**COPAL -- SCAN_CONVENTION AND SCAN_CONVENTION_NEGATIVE ROSTERED.** The scan-seam convention's
-single canonical home is proven both ways: positive reads `verdict=ok` across five citing scans,
-negative points the checker at the standing restating fixture, reads
-`verdict=convention_not_single_homed` and fails, then reads `verdict=ok` again right after on the
-living roster. GREEN direct and by name through the runner, seated `20261001.124320`. **134**
-unrostered `tools/gen/chapter/` witnesses remain, measured fresh at this stamp (the figure moves as
-other seats land their own pairs). Full cold/hot roster verdict owed.
+**COPAL.** [Scan_convention account shelved
+whole](archive/date/20261001/20261001-143222_itinerary-copal-scan-convention-account.md).
+
+**COPAL -- SHED_CENSUS ROSTERED.** `tools/gen/chapter/shed_census_witness.rish` proves both ways
+inside one file rather than a positive/negative pair: the plain call reads `verdict=ok`,
+`C1=REFERENCED`, `C2=ORPHAN`, `controls_honored=2`, `shred=RED`, and the `prove-red` call reads
+`ok==false`, `detail=RED_C2-orphan`, `census=withheld`. Run direct on metal, exit 0, both legs as
+printed. Seated `20261001.142943`. **141** unrostered `tools/gen/chapter/` witnesses remain.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
