@@ -111,14 +111,9 @@ name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roste
 
 **PETRICHOR.** [Baton register account shelved whole](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md). **YOURS:** its remaining sections may carry further negative sentences; `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current state.
 
-**PETRICHOR -- THE CITIZEN DRAFT'S SOURCES NOW SAY ONLY WHAT THEY SHOW.** The [learning-floor
-draft](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md) no longer names a
-February 2026 state rollout that its cited application page does not establish. Its two design
-links now carry their date rather than the moving word "newest." The Door report card reads B+
-(`register=87 reach=90 truth_counted=100 service=75`), with all 25 local paths resolving; the
-whole-tree prose register guard is GREEN. A full cold roster was stopped after unrelated reds
-appeared and closes `run_verdict=died_unexpectedly exit_code=143`. Named checks and staged hot
-proof cover this document and the lap record; the full cold and hot roster remains open.
+**PETRICHOR.** [Citizen draft sources account shelved whole](archive/date/20261001/20261001-123036_itinerary-petrichor-citizen-draft-account.md). **YOURS:** whether the full cold and hot roster still wants a fresh run against that document.
+
+**PETRICHOR.** [Wyoming PBC walkthrough repaired past the B floor](archive/date/20261001/20261001-123622_itinerary-petrichor-wyoming-pbc-account.md) -- C+/77 to B+/85. **YOURS:** reach still reads grade 12 against the Door ceiling of 9.
 
 **GRASS -- THE OPEN-ROOM REVERSE-READ OF 20260922.** [Shelved
 whole](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md). The later packet stays on the card.
@@ -370,7 +365,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `415b9becca` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `a989d6363c` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
