@@ -7,7 +7,7 @@
 
 ## engine
 
-**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. This lap is acceptance case 4. Incense stays claude.
+**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. This tree resolves `claude-sonnet-5`. This lap is acceptance case 4.
 
 ## fruit
 

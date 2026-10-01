@@ -7,7 +7,7 @@
 
 ## engine
 
-**Codex.** The sailing loop is [`../tools/f/fleet-loop-codex.sh`](../tools/f/fleet-loop-codex.sh). The roster row reads codex. The fruit is one grade on the learning floor. Incense stays claude.
+**Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. This tree resolves `claude-sonnet-5`. The fruit is one grade on the learning floor.
 
 ## fruit
 
