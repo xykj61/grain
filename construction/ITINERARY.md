@@ -75,15 +75,11 @@ named-invariant asserts landed, `tame_style_check`'s zero-assert ratchet fell 11
 remain, all outside pheromone's own lane.
 **INCENSE.** [Accounts shelved](archive/date/20260917/20260917-204936_itinerary-incense-two-landed-accounts.md).
 
-**COPAL -- A READER CALLED A BOARD READABLE WHILE THE GUARD BESIDE IT CALLED IT MALFORMED:** account
-[shelved whole](archive/date/20260917/20260917-185557_itinerary-copal-board-readable-account.md), row CLOSED. Its
-first ask is answered directly below; its second stays Keaton's word.
-
-**COPAL -- THE WRITER VALIDATED ITS NAME AND WISHED AT THE OTHER TWO FIELDS.** Account
-[shelved whole](archive/date/20260917/20260917-204619_itinerary-copal-writer-wish-account.md): the claim
-writer had no wall against a `--what`/`--paths` newline corrupting the board; two readings
-(`has_newline`, `form_gate`) refuse it now, proven on 62-to-77 control legs. **YOURS:** whether
-the board should refuse a hand editing it at all is still Keaton's word.
+**COPAL -- TWO SHELVED ACCOUNTS.** [Board-readable, row
+CLOSED](archive/date/20260917/20260917-185557_itinerary-copal-board-readable-account.md). [Writer
+wish](archive/date/20260917/20260917-204619_itinerary-copal-writer-wish-account.md): claim-writer
+newline wall landed (`has_newline`, `form_gate`, 62-to-77 legs). **YOURS:** a `--cut` flag taking a
+whole record, and whether the board should refuse a hand editing it at all -- both Keaton's word.
 
 **COPAL -- SEVEN ELDER ACCOUNTS, SHELVED WHOLE:** [account](archive/20260924-104400_itinerary-copal-elder-accounts.md).
 **YOURS:** the resin room's landed wall, 45 written characters, 1,417 almanac characters, claim-path
@@ -98,10 +94,15 @@ direct proof green.
 whole](archive/date/20261001/20261001-113824_itinerary-copal-baton-museum-census-account.md) --
 thirteen halls, planted-breach control, both GREEN.
 
-**COPAL -- ZERO_VIEW ROSTERED.** `zero_view_witness.rish` proves its own law both ways: an empty
-planted view against an opened archive fixture that still holds the fall, plus a `prove-red` leg
-that must refuse the misreading. GREEN direct and by name through the runner, seated
-`20261001.113648`. **130** unrostered `tools/gen/chapter/` witnesses remain, nine excluded by
+**COPAL.** [Zero_view account shelved
+whole](archive/date/20261001/20261001-121928_itinerary-copal-zero-view-account.md) -- empty
+planted view against an opened archive fixture, plus a `prove-red` leg, GREEN direct and by
+name through the runner.
+
+**COPAL -- VOICE_ROSTER AND VOICE_ROSTER_NEGATIVE ROSTERED.** Proven both ways: positive reads
+`verdict=ok` for `Kyri` at all five sites, negative reads `verdict=drift` for an undeclared name
+and `verdict=ok` again for `Kyri`. GREEN direct and by name through the runner, seated
+`20261001.121518`. **128** unrostered `tools/gen/chapter/` witnesses remain, nine excluded by
 name (`brushstroke-wayland-seed` build-artifact dependents). Full cold/hot roster verdict owed.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
