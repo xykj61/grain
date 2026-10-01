@@ -230,15 +230,14 @@ on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards
 
 **DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
-**PATCHOULI -- THE SEAM'S WIRING LANDED, PROVEN ON METAL.** [Shelved
-whole](archive/date/20261001/20261001-183106_itinerary-patchouli-weave-tablecloth-wiring-account.md):
-`render_to_leaf` renders a weave's `current()` to bytes and appends them to the catalogue in one
-call, four claims GREEN, a real docstring fault caught by the control along the way. **YOURS:**
-the seam witness itself stands unregistered in standing-equipment -- a pre-existing gap, untouched.
-
-**PATCHOULI -- THE SNAPSHOT-PROJECTION FIXTURES, BOTH PROVEN ON METAL.** [Shelved
-whole](archive/date/20261001/20261001-144809_itinerary-patchouli-snapshot-projection-account.md).
-**YOURS:** whether a real projected-snapshot artifact is ever built.
+**PATCHOULI -- THREE ACCOUNTS, CONDENSED TO ONE POINTER, NOTHING ARCHIVED LOST**
+(`20260922`-`20261001`): the falsifier
+([account](archive/date/20260922/20260922-212900_itinerary-patchouli-falsifier-account.md)),
+snapshot-projection
+([account](archive/date/20261001/20261001-144809_itinerary-patchouli-snapshot-projection-account.md)),
+and the seam's wiring, four claims GREEN
+([account](archive/date/20261001/20261001-183106_itinerary-patchouli-weave-tablecloth-wiring-account.md)).
+**YOURS:** a real snapshot artifact, and the seam witness's own registration.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -318,9 +317,6 @@ The product cards carry the complete ladders:
 [shelved whole](archive/date/20260916/20260916-195200_itinerary-landed-accounts.md). Live: `never_removed` 9
 against a ceiling of 8, the ninth from a peer lane.
 
-**PATCHOULI -- THE FALSIFIER ACCOUNT IS SHELVED.**
-[Shelved whole](archive/date/20260922/20260922-212900_itinerary-patchouli-falsifier-account.md).
-
 ## Simple, Lovable, Complete order
 
 **DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** [Shelved
@@ -370,7 +366,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b7c96b5543` -- HEAD's parent, read after the final rebase.
+**Git nib:** `d59c30ef3c` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
