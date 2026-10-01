@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20261001.192348
+editor Claude Code
+provider Anthropic claude-sonnet-5
+product Claude Code
+role Diffuser -- moonshots and whitepaper research, aimed at Mantra
+modality text
+model claude-sonnet-5
+model_status configured FLEET DEFAULT at medium effort; this lap ran under tools/f/fleet-loop.sh (--effort medium), runtime identity unverified beyond the system reminder naming claude-sonnet-5
+voice Kyri
+title the spool-scale dedup ratio the fourth angle named and left untouched
+prompt autonomous lap -- the inner prompt named mantra/spool.rye's larger scale (64 resins, 2 beads each) as fair ground for the next Diffuser crux, unless Keaton named a different one first; none was named this lap
+think read recursion-prompts/diffuser-inner.md -- the fourth angle's one remaining open door was spool.rye's larger scale, named by the dedup-ratio page as its own later lap
+think ran fleet_round_open, checked fleet_claim_scan for spool.rye and the new instrument's paths -- clear, opened and pushed claim diffuser-spool-dedup-ratio before writing code
+think read mantra/spool.rye's own spool_content loop first -- the concrete fact before any argument: it walks fixed beading.max_resin_bytes strides from offset 0 and calls beading.bead (fixed-size) alone, never bead_content_defined
+think built mantra/spool_dedup_ratio.rye as a library module -- no change to spool.rye or beading.rye -- winding a 4-resin, 2048-byte artifact twice per config (base, then substitute/insert/delete at an early/mid/late offset) through one shared BeadStore, reading SpoolReport.beads_deduped against bead_count
+think measured on metal: substitute dedups 750-875 permille regardless of position or size (mean 833 across 6 configs); insert/delete read 0 permille planted early, 111-125 at mid, 777-875 at late -- the cost tracks how much artifact sits downstream of the edit
+think wrote the scan and witness mirroring mantra_beading_dedup_ratio's own pattern, rostered both in standing-equipment.kyri, ran the witness GREEN
+think wrote the design essay at active-designing/date/20261001/20261001-190906_the-split-itself-never-resyncs.md, first draft graded D+ (69% negative sentences) under qa_report_card, rewrote to affirmative framing and re-measured B/80
+think closed the fleet claim, regenerated readme_metrics and geode_libraries, amended the Git nib after each of five concurrent rebases this lap needed against a very active pier
+obs the pier was unusually busy this lap -- five separate push/pull/rebase cycles, two of them with real content conflicts (fleet-claims.kyri, standing-equipment.kyri, docs-geode/libraries/README.md) alongside the routine Git-nib conflict every lap meets; all were append-only concatenations, resolved by keeping both sides' additions
+obs the fourth-angle research arc (dedup-ratio-nobody-has-measured -> the-ratio-the-comment-was-actually-about -> the-one-real-revision-this-tree-has-is-a-shift -> this page) is now closed end to end: both open doors the original measurement named are read, and the inner prompt names the next crux as open (a content-defined resin split, or real Mantra revision traffic) rather than attempted this lap, per Lindy-first crux-first and the finishing edge
+rota lap 7059, row 4 -- Earth, the row that breathes in. Read foundations/20260826-021735_earth-the-row-that-breathes-in.md: the row asks what already stands true before anyone argues with it. This lap's own method matched it directly -- spool_content's own fixed-offset loop was read first, as the concrete fact, before building any measurement or argument on top of it.
+loom witness=mantra_spool_dedup_ratio_witness configs=12 substitute_mean_ratio_pm=833 shifting_near_zero=2
+file mantra/spool_dedup_ratio.rye -- new library module measuring spool-scale dedup, no change to the modules it measures
+file tools/m/mantra_spool_dedup_ratio_witness.rish -- new witness, GREEN on metal
+file tools/fixtures/m/mantra_spool_dedup_ratio_scan.sh -- new scan the witness drives
+file construction/standing-equipment.kyri -- rostered the new guard
+file active-designing/date/20261001/20261001-190906_the-split-itself-never-resyncs.md -- the finding, graded B/80 after one register rewrite pass
+file recursion-prompts/diffuser-inner.md -- closed both of the fourth angle's open doors, named the next crux as open rather than attempted
+file construction/fleet-claims.kyri -- opened and closed claim diffuser-spool-dedup-ratio
+scope one new measurement module, witness, scan, design essay, and inner-prompt update; no production module (spool.rye, beading.rye) touched
+status GREEN -- witness mantra_spool_dedup_ratio_witness passes on metal; pushed to xy at afeac6fb32; claim closed; session log committed with the work
+recommend kg -- the next Diffuser crux (a content-defined resin split, or reading real Mantra revision traffic once pond/apps/ grows a revision path) is named as open in the inner prompt rather than this lap's to attempt; a future lap or Keaton's word picks it up
