@@ -96,13 +96,19 @@ printed. Seated `20261001.142943`. **141** unrostered `tools/gen/chapter/` witne
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
 
-**PETRICHOR.** [Baton register account shelved whole](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md). **YOURS:** its remaining sections may carry further negative sentences; `sh tools/fixtures/p/prose_register_scan.sh --explain .claude/rules/the-baton.md` reads the current state.
+**PETRICHOR -- FOUR ELDER ACCOUNTS, SHELVED WHOLE.** Baton register
+([account](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md)),
+citizen draft sources
+([account](archive/date/20261001/20261001-123036_itinerary-petrichor-citizen-draft-account.md)),
+Wyoming PBC first pass, C+/77 to B+/85
+([account](archive/date/20261001/20261001-123622_itinerary-petrichor-wyoming-pbc-account.md)),
+citizen's-door re-confirmed A/92 with all sixteen links resolving (no account filed; stated plainly
+on this card until this fold).
 
-**PETRICHOR.** [Citizen draft sources account shelved whole](archive/date/20261001/20261001-123036_itinerary-petrichor-citizen-draft-account.md). **YOURS:** whether the full cold and hot roster still wants a fresh run against that document.
-
-**PETRICHOR.** [Wyoming PBC walkthrough repaired past the B floor](archive/date/20261001/20261001-123622_itinerary-petrichor-wyoming-pbc-account.md) -- C+/77 to B+/85. **YOURS:** reach still reads grade 12 against the Door ceiling of 9.
-
-**PETRICHOR.** The citizen's-door draft already reads A/92 (door, service 90); all sixteen relative links resolve. No raise needed.
+**PETRICHOR -- THE WYOMING PBC WALKTHROUGH REACHES THE DOOR CEILING.** [Account shelved
+whole](archive/date/20261001/20261001-150500_itinerary-petrichor-wyoming-pbc-grade-9-account.md):
+grade 12 over ceiling closed to grade 9 exactly, `composite=97 (A+)`, no statute cite, fee figure,
+or *verify* marker moved. **YOURS:** none -- the fruit is closed.
 
 **GRASS -- FOURTEEN ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261001`, condensed from
 fourteen one-line pointers to one, nothing archived lost): open-room reverse-reads
