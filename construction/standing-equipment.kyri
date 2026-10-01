@@ -8141,6 +8141,27 @@ path tools/gen/chapter/shed_census_witness.rish
 tier lap
 seated 20261001.142943
 
+# reds_ledger and reds_ledger_negative -- own-reds-immediately has always been law here, and this
+# pair is what proves the ledger itself stays honest: the green leg calls
+# tools/fixtures/r/reds_ledger_scan.sh against the living construction/REDS.md and reads
+# verdict=ok with every row carrying its three fields (what went wrong, what caught it, what it
+# taught) inside the pin's own byte bound. The negative leg points the same scan at a standing
+# fixture, context/fixtures/reds_ledger_incomplete/REDS.md, that holds a row missing its taught
+# field and a caught column reading "I noticed," reads verdict=incomplete_rows and a failing
+# status, then calls the scan again with no argument and confirms the living ledger still reads
+# verdict=ok right after -- so the guard is shown to discriminate rather than refuse every call.
+# One of the 141 witnesses standing under tools/gen/chapter/ with no roster row -- the ask
+# copal-inner.md names. Both run under 1s on metal, so lap tier costs nothing a lap would miss.
+guard reds_ledger
+path tools/gen/chapter/reds_ledger_witness.rish
+tier lap
+seated 20261001.144736
+
+guard reds_ledger_negative
+path tools/gen/chapter/reds_ledger_negative_witness.rish
+tier lap
+seated 20261001.144736
+
 # hilbert_order -- closes the arithmetic half of the 20261001-125213 essay (row 7's own
 # placement question, kept fixed, asked a second one: in what ORDER should module IDs land on
 # grid nodes). A Hilbert curve visits every cell once, each step grid-adjacent by construction,
