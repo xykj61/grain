@@ -77,7 +77,7 @@ Then read expanding-prompts/20260909-003000_the-codex-fleet-molt-and-the-401.md,
 what was built for you and what was never proven. Verify tools/f/fleet-loop-codex.sh yourself
 before trusting it -- it was written by a hand that could not run it.
 
-When one lap has landed whole -- commit, session log, push xy then gp405 -- start the loop:
+When one lap has landed whole -- commit, session log, push xy -- start the loop:
   chmod +x tools/f/fleet-loop-codex.sh
   LOOP_HOURS=10 sh tools/f/fleet-loop-codex.sh incense 2>&1 | tee session-output/incense.txt
 

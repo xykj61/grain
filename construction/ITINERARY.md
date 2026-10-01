@@ -274,7 +274,7 @@ assert message; this line is here because a ship meets the red somewhere else fi
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
 7. **Prove on touch.** Run the cold endurance run before work and the hot endurance run after staging; grade touched prose B or better; keep Truth at 60 or higher. **Launch the cold run at the FRONT of the lap, after item 8's claim is pushed and HEAD has settled, and hold still until `run_verdict=`** -- anything landing mid-pass fixes the verdict ([`the-baton`](../.claude/rules/the-baton.md)).
 8. **Coordinate before build.** Read and publish `construction/fleet-claims.kyri` before implementation, **and push it before item 7's cold run opens**. One tree keeps one writer.
-9. **Fetch before booking and sending.** `xy` receives the first push, then `gp405`. A refusal leads to rebase and re-verification, never force.
+9. **Fetch before booking and sending.** `xy` receives the push. A refusal leads to rebase and re-verification, never force.
 10. **Keep scope and testimony.** Walk open shelves; enter closed stacks by named path; preserve dated records; write logs into their day shelf.
 11. **ASCII-first and American spelling.** Motion, interfaces, prose, and commit messages keep plain ASCII except in a named Unicode fixture.
 12. **Custody first.** Real people, data, keys, money, chains, provisioning, publishing, and collaborator design authority remain at their gates.
@@ -354,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b6d7abc874` -- HEAD's parent, read after the final rebase.
+**Git nib:** `a0b1bcec0e` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

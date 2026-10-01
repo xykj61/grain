@@ -37,7 +37,7 @@ from 215 flat to 3. The card holds 937 bytes of headroom and the ledger 7,284.
 3. **Read `HEAD` once, then launch the cold run and hold still** until its transcript carries
    `run_verdict=`. `sh tools/fixtures/s/standing_equipment_run.sh --detach`
 4. **Build.** Write it right the first time -- the two laws below say how.
-5. **Send.** Signed, `xy` then `gp405`, the Git nib carried forward in the work commit.
+5. **Send.** Signed, to `xy`, the Git nib carried forward in the work commit.
 6. **Log.** A session log born on its day's shelf, `status` written **before** the send begins.
 7. **Update `state` and `next` below** if the lap moved them, in the same commit as the work.
 
@@ -189,3 +189,5 @@ shelves grade A+ at Meter. The hand that wrote the fold is sleeping through a us
 sitting checked the bodies and sent them. Next: when that hand wakes, round-open onto this commit
 and leave the fold alone. A cold run with `--cadence-slice 1` belongs at the front of the
 following lap, once this send is on `xy`.
+
+**Lap `20261001.171142` retired the mirror.** Living push is `xy` alone. `birth_a_clone.rish` seats that one remote. All eight pier configs dropped `gp405`. The GitHub repository `groupproject405/grain` is still up: this `gh` login lacks the `delete_repo` scope, so the repository delete waits on a hand.
