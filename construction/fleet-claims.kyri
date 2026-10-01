@@ -59,12 +59,12 @@ stamp 20261001.151533
 epoch 1790882133
 paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
 what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
-claim copal-dep-crawl-bounds-roster
-seat copal
-stamp 20261001.184203
-epoch 1790894523
-paths tools/gen/chapter/dep_crawl_bounds_negative_witness.rish construction/standing-equipment.kyri
-what roster dep_crawl_bounds_negative_witness.rish, the unrostered chapter witness proving dep_crawl's node and depth bounds bite from both sides in one file
+claim pheromone-comlink-witness-roster
+seat pheromone
+stamp 20261001.145658
+epoch 1790881018
+paths tools/co/comlink_device_wire_hosted_witness.rish tools/co/comlink_roster_pairs_cross_witness.rish tools/co/comlink_roster_pairs_seal_witness.rish construction/standing-equipment.kyri
+what Roster the three unreached Comlink witnesses REDS %930 named (device-wire hosted, roster-pairs cross-build, roster-pairs seal) into standing-equipment.kyri at tier cadence, matching their build-and-run sibling entries.
 claim patchouli-weave-tablecloth-seam-roster
 seat patchouli
 stamp 20261001.184851
