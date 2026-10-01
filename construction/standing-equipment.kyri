@@ -8226,3 +8226,14 @@ guard hilbert_order
 path tools/h/hilbert_order_witness.rish
 tier lap
 seated 20261001.142551
+
+# reds_first_scan.sh had gone stale rather than merely unrostered: its citer list
+# named .cursor/rules/reds-first.mdc, a path Cursor's 20260920.135100 retirement
+# moved whole to .cursor-archive/rules/, so the scan read law_not_single_homed
+# on every run. Repaired by repointing the one citer path; reds_first_control.sh
+# now proves the crossing from both sides -- a clean mirrored pen reads ok, a
+# pen with one citer's citation broken reads law_not_single_homed by name.
+guard reds_first
+path tools/gen/chapter/reds_first_witness.rish
+tier lap
+seated 20261001.150505
