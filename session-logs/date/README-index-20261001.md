@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.142831` | [citizen's-door re-verified A, no new fruit named](20261001/20261001-142831_citizen-door-still-a-no-new-fruit.kyri) | qa_report_card.sh re-run by hand, composite 92; lane queue stays empty |
 | `20261001.142426` | [the caravan FOLD note was already answered](20261001/20261001-142426_grass-caravan-fold-already-answered.kyri) | check_suffice_runs is accumulated self-test, not an unfolded copy; card's YOURS note corrected |
 | `20261001.142326` | [fleet moved off the 5.5 model family](20261001/20261001-142326_fleet-off-5-5-family.kyri) | all eight ships back on sonnet-5/opus-5 pending Anthropic's resolution |
 | `20261001.142250` | [citizen's-door fruit re-confirmed A, lane queue empty](20261001/20261001-142250_citizen-door-grades-a.kyri) | 48 docs-geode pages scanned, all B or above; check-in owed to name a fresh fruit |
