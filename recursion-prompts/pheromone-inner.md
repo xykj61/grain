@@ -37,7 +37,16 @@ If a fresh count of the contract's fields is not 15, stop and bring the new coun
 
 ## fruit
 
-Confirm the contract still publishes 15 fields. When it does, apply the ruling above in one claim: the ceiling, the peek, the planted refusal, and the arrays bound to `max_fields`. Prove both sides. The nine-field refusal must still fail, one past the new ceiling.
+**This fruit closed `20260923` and has been reconfirmed GREEN five times since, most recently
+`20261001`.** The ruling above is history now, kept for the reasoning it carries, not a task.
+
+**The new crux, named `20261001`:** milestone two, "the consent you can change," needs a grant fact
+and a revoke fact expressed the same way `ReceiptOfferFact` is -- the smallest Glow form already
+owned, per the contract's own module-residence table. Sketch `GrantFact` and `RevokeFact` as Glow
+shapes (field names, ceilings, a refusal case each) in `active-designing/`, sized the way the
+receipt contract was before any code existed. Do not lower them into Mantra yet -- that is
+Patchouli's and Incense's door, named in the ITINERARY's own fleet-dependency order. If a sixth
+re-check of the old fruit looks tempting, read this paragraph again instead.
 
 ## gates
 
