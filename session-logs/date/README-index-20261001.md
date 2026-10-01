@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.151151` | [rye_compiled_reach: 786 to 11](20261001/20261001-151151_rye-compiled-reach-786-to-11.kyri) | rye_build.sh named as a builder verb; uncompiled fell under its ceiling |
 | `20261001.151133` | [unsaid-rostered reverse-read](20261001/20261001-151133_unsaid-rostered-reverse-read.kyri) | fresh crux: 984-vs-903 population walked backward, sorted three ways, B+/89 packet shelved |
 | `20261001.150624` | [diffuser-inner caught up to its own closed threads](20261001/20261001-150624_diffuser-inner-caught-up-to-its-own-closed-threads.kyri) | case 4 and the torus ladder both closed; fruit revised, next crux is Keaton's |
 | `20261001.150500` | [Wyoming PBC grade-9 closed](20261001/20261001-150500_wyoming-pbc-grade-9-closed.kyri) | reach split sentence by sentence, grade 12 to 9, composite A+/97 |

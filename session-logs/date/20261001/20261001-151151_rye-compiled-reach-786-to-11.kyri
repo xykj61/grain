@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20261001.151151
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role repository role primary
+modality text
+model claude-sonnet-5
+model_status session banner states claude-sonnet-5
+voice Kyri
+title rye_compiled_reach: uncompiled fell 786 to 11
+prompt Keaton: kg, on rye_compiled_reach, the next unbooked red.
+think ran the witness: verdict=over_ceiling, uncompiled=786 against a ceiling of 18 -- far larger than redleg, shim_reason, or ceiling_teeth
+think sampled one uncompiled file, pond/apps/skate_group.rye, and found it genuinely built through tools/fixtures/r/rye_build.sh, a wrapper the scan's own header already names as the SAME class of gap it accepted for build_atomic -- rye has no space before build in rye_build.sh, so the verb regex cannot see it
+think measured the real scope before touching anything: 769 of 786 uncompiled files are named beside rye_build.sh in some tracked script, confirming this one wrapper explains nearly the whole population rather than 786 separate dead files
+think added rye_build.sh as a second named literal verb in the same grep pattern, choosing to name it explicitly rather than loosen the pattern generally, since a looser match risks crediting a mention with no builder behind it
+think reran the scan: uncompiled fell to 11, under the ceiling of 18; ran the full witness and its own 25-leg control, both green with no regression
+file tools/fixtures/r/rye_compiled_reach_scan.sh why-rye_build.sh named as a second literal verb
+file construction/REDS.md why-booked CLOSED, cited by stamp, kept compact for ledger headroom
+loom witness=rye_compiled_reach uncompiled_before=786 uncompiled_after=11 ceiling=18
+scope one scan file and the ledger; the remaining 11 uncompiled bodies left named, within ceiling
+status GREEN -- rye_compiled_reach_witness, its control (25 legs, 0 failures), and tame_style_check all read green
+recommend keep-going -- falsifier_form_outcome next, then standing_equipment, closing the unbooked-reds list; the ledger pin is tight (909 bytes of headroom) and may need a fold soon
