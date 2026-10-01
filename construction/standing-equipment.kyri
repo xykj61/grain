@@ -8125,3 +8125,18 @@ guard scan_convention_negative
 path tools/gen/chapter/scan_convention_negative_witness.rish
 tier lap
 seated 20261001.124320
+
+# shed_census -- the commence M7 weave / e98 shed census, proven both ways inside one file rather
+# than a positive/negative pair: the green leg calls tools/fixtures/s/shed_census_scan.sh with no
+# argument and reads verdict=ok, control_gate=honored, tracked_controls=honored, C1=REFERENCED
+# (the planted cited-control file stays reachable), C2=ORPHAN (the planted orphan-control file
+# reads unreachable), controls_honored=2, and shred=RED (the cut stays RED until Keaton circles
+# it, per debride.md). The red leg calls the same script with `prove-red`, which points the
+# scan's own index at a greedy reading, and reads ok==false, detail=RED_C2-orphan,
+# census=withheld -- a planted refusal proven rather than assumed. One of the 142 witnesses
+# standing under tools/gen/chapter/ with no roster row -- the ask copal-inner.md names. Runs
+# under 1s on metal, so lap tier costs nothing a lap would miss.
+guard shed_census
+path tools/gen/chapter/shed_census_witness.rish
+tier lap
+seated 20261001.142943
