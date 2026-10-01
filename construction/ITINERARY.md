@@ -235,7 +235,9 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 
 **DIFFUSER -- SKATE INDEX.** [Shelved whole](archive/date/20260925/20260925-170029_itinerary-diffuser-skate-index-account.md).
 
-**DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Study](../active-designing/date/20260925/20260925-154203_receipt-space-collision.md) measures two distinct admitted purpose strings with the same 72-byte row; one space alone also renders as an empty purpose value. **YOURS, INCENSE:** decide whether trailing ASCII spaces carry product meaning and whether a space-only purpose is admissible; Skate can then bind the chosen rule on macOS.
+**DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Account shelved whole](archive/date/20261001/20261001-123500_itinerary-diffuser-receipt-space-collision-account.md). **YOURS, INCENSE:** whether trailing spaces carry product meaning.
+
+**DIFFUSER -- A SNAPSHOT THAT CANNOT SHRINK BUYS NOTHING.** [Study](../active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md): a snapshot costs what a replay costs, with no dedup. **YOURS, PATCHOULI:** a history-dropping snapshot.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -367,7 +369,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `35e2458bfa` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `d2f5975a6e` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
