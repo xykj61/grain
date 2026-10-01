@@ -120,6 +120,45 @@ sh "$REACH" --list 2>/dev/null \
       print path "\t" line "\t" cls
     }' > "$regions" || true
 
+# $REACH reads LIVING pages only (git ls-files, minus date/archive/yonder) -- correct for its own
+# subject, whether a page's own claim still names a falsifier. This scan's $PAGES deliberately
+# keeps dated pages, since a ranked page IS commonly dated, so $REACH's region list structurally
+# never carries a ranked page's own rows. Walked here with the same per-line test $REACH uses --
+# any line naming "falsifi", classed inline unless it opens on a heading -- scoped to exactly
+# $REACH's own exclusion (date/archive/yonder), so a page $REACH already read is never walked
+# twice: the control's own synthetic pen caught this the first draft, naming a flat page
+# double-counted once by $REACH and once here.
+for p in $PAGES; do
+  case "$p" in
+    *"/date/"*|*"/archive/"*|*"/yonder/"*) ;;
+    *) continue ;;
+  esac
+  awk -v path="$p" '
+    function flush(   cls) {
+      if (rlines == 0) return
+      cls = "narrative"
+      if (rtext ~ /tools\/|\.rish|\.rye\b|\.sh\b|rishi run|rye run|git grep|git log/) cls = "runnable"
+      else if (rtext ~ /[0-9]/) cls = "quantified"
+      print path "\t" rstart "\t" cls
+      rtext = ""; rlines = 0
+    }
+    {
+      line = $0
+      if (inregion) {
+        if (pend && line ~ /^[ \t]*$/) { flush(); inregion = 0; next }
+        if (!pend && line !~ /^[ \t]*$/) pend = 1
+        if (line !~ /^[ \t]*$/ || pend) { rtext = rtext " " line; rlines++ }
+        next
+      }
+      if (tolower(line) !~ /falsifi/) next
+      rstart = FNR; rtext = line; rlines = 1; inregion = 1
+      if (line ~ /^[ \t]*#+[ \t]/) { rtext = ""; rlines = 0; pend = 0 }
+      else pend = 1
+    }
+    END { flush() }
+  ' "$p" >> "$regions"
+done
+
 [ -s "$regions" ] || { echo "verdict=reach_walk_empty"; echo "detail: $REACH --list emitted no region lines"; exit 2; }
 
 # THE ROW TABLE. Each `### N. ` heading opens a row; the row runs to the next such
