@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.184301` | [grant-revoke desk link repaired](20261001/20261001-184301_grant-revoke-desk-link-repaired.kyri) | dead .lap/ citation found and repointed; grade C+ to B+ |
 | `20261001.184105` | [retired repository deleted](20261001/20261001-184105_retired-repository-deleted.kyri) | gh could not resolve it; roster records the delete |
 | `20261001.183819` | [pheromone holds for Keaton's word](20261001/20261001-183819_pheromone-holds-for-keatons-word.kyri) | fifth re-check would teach nothing a fourth didn't; held for the orphaned-revoke and .lap-draft rulings |
 | `20261001.183813` | [counsel_flow pair rostered](20261001/20261001-183813_counsel-flow-roster.kyri) | counsel_flow and counsel_flow_negative witnesses proven both ways, rostered at tier lap; rota row 0, Aether |
