@@ -33,6 +33,11 @@
 #   WATCH_SESSION   tmux session to read (default: this pane's session, else `pier`)
 #   WATCH_INTERVAL  seconds between passes (default 60)
 #   WATCH_SKIP      space-separated seats never armed (default `incense` -- the captain's own bench)
+#                   An empty value arms every live seat the clockout file does not hold.
+#                   Incense sails first: WATCH_SKIP= and a `set_by incense` clockout on each
+#                   other live seat. tools/f/fleet_clock.sh removes that hold after incense
+#                   has read the seat's inner and outer prompts. A clockout with any other
+#                   first line is a hand's stop and stays.
 #   WATCH_ARM_MAX   consecutive fruitless arms before a seat is reported and left alone (default 3)
 #   WATCH_SETTLE    seconds an armed loop must survive to count as taking hold (default 180)
 #   WATCH_PASSES    stop after this many passes (default 0, unbounded; --once sets 1)
