@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261001.151253
+editor Claude Code
+provider Anthropic
+product Claude Code
+role grain-diffuser (Diffuser -- moonshots and research lane)
+modality text
+model claude-sonnet-5
+model_status configured default; no runtime self-identification surface available this lap
+voice Kyri
+title Survey a fourth moonshot angle: Mantra's own dedup ratio
+prompt Baton + diffuser-inner.md: Acceptance case 4, the torus ladder, and the wake-correction thread are all closed; item 2 needs a macOS Swift toolchain this host lacks. The inner prompt asks for a survey toward a fourth moonshot angle (beyond torus, energy, and radial/polar coordinates) when no newer crux is named.
+think Read recursion-prompts/diffuser-inner.md: three threads closed, item 2 blocked on missing Swift toolchain, fourth angle wanted.
+think Checked construction/fleet-claims.kyri (empty board) and the Diffuser row in ITINERARY -- no collision, item 2 not this lap's to attempt.
+think Read the torus ladder's row 7 history (Aurora placement map) to avoid re-treading already-mined ground -- geometry, power, and coordinates are each closed; needed a fourth axis.
+think Read aurora/README.md and tally/README.md for grounding; neither fit a fresh first-principles angle without reopening row 7's placement work.
+think Read mantra/README.md and mantra/beading.rye closely: content-defined beading (FastCDC-style gear hash, ~80-byte average bead) is built and correctness-proven, and BeadReport already carries beads_deduped/beads_deposited.
+think Grepped for beads_deduped across the tree: fourteen pond/apps/ call sites assert full dedup on identical content; one test in recall_beaded.rye asserts only beads_deduped >= 1 on a three-byte edit. No test reads an efficiency ratio or compares content-defined against fixed-size on the same input.
+think That gap is the fourth angle -- dedup efficiency rather than geometry, power, or coordinates -- genuinely novel against the three closed threads and grounded in a module Bakery/Patchouli already build on.
+think Wrote the vision page naming the scan, the cdc_min_bead=64 bound, the falsifier (a near-zero gap on scattered multi-edit sequences), and an honest confidence read (moderate that the gap stays small given only 8 beads per resin).
+think Ran the QA report card: register read 51% negation against the Field 30% ceiling. Rewrote the heaviest negative sentences to affirmative form across six edits; re-ran the scan to 9%, well under ceiling. Card reads B/82 with --service 75.
+think Checked ascii_document_scan.sh and a raw non-ASCII grep on the new page and the edited inner prompt -- both clean, no ratchet hit.
+think Updated recursion-prompts/diffuser-inner.md's fruit line to point the next Diffuser lap at the new page as the open crux, per Lila and the Long Return, since it is the one surveyed and unbuilt thread.
+obs Chose a research angle grounded in an instrument the module already emits (BeadReport) rather than proposing new instrumentation from scratch -- the measurement gap was real and specific rather than invented to fill a quota.
+obs Declined to build the scan itself this lap: the fruit asked for a survey toward a fourth angle, and the page names its own falsifier and horizon for a future lap (or Keaton's word) to pick up, consistent with the vision room (context/TWO_ROOMS.md) rather than claiming a checkable result with no witness.
+obs Two unrelated remote pushes landed during this lap's round-open and send; followed the twice-pull, re-amend-nib discipline each time rather than forcing.
+file recursion-prompts/diffuser-inner.md -- revision line and fruit section updated to point at the new survey page
+file active-designing/date/20261001/20261001-151253_the-dedup-ratio-nobody-has-measured.md -- new vision proposal: measure Mantra's content-defined beading for dedup efficiency against its own correctness-proven baseline
+file construction/ITINERARY.md -- Git nib carried forward across two rebases (amend shape)
+rota lap 10101, row 0 -- Aether, the row that hears. Reading: the row asked what page nobody answered; the dedup-ratio question was exactly that -- an instrument (BeadReport) already built and already silent on the one number its own design claim depends on.
+scope one new vision page surveying a fourth Diffuser moonshot angle, grounded in mantra/beading.rye; no code built, no witness added; the inner-prompt fruit line repointed
+status GREEN -- page written, register swept under the Field ceiling (9% against 30%), QA card B/82, ascii-first clean, committed and pushed to xy and debrided after two twice-pull rebases with the nib re-amended each time
+recommend kg -- the next Diffuser lap should read the new page and, absent a newer word from Keaton, build the scan it names (tools/fixtures/m/mantra_beading_dedup_ratio_scan.sh) as its own checkable follow-on
