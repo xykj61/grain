@@ -18,4 +18,10 @@ assert scan.out contains "limb_beads=12" else "relay-resin-census: want twelve f
 assert scan.out contains "LEXICON=yes" else "relay-resin-census: want resin and bead lexicon rows"
 assert scan.out contains "MANIFEST_BEAD=yes" else "relay-resin-census: want seated manifest bead"
 
-say "GREEN: relay-resin-census — bound 12 · limb 12 · lexicon · manifest bead seated"
+let red = run ["sh" "tools/fixtures/r/relay_resin_census.sh" "context/design-shapes/relay_resin.brix" "tools/fixtures/r/relay_resin_limb_overbound.txt"]
+say red.out
+assert (red.ok == false) else "relay-resin-census: a thirteen-bead limb with no manifest mark must refuse"
+assert red.out contains "verdict=over_bound" else "relay-resin-census: prove-red wants the named verdict"
+assert red.out contains "limb_beads=13" else "relay-resin-census: prove-red wants the fixture's own count"
+
+say "GREEN: relay-resin-census — bound 12 · limb 12 · lexicon · manifest bead seated; an overbound limb refuses"

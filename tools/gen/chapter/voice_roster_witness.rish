@@ -22,4 +22,10 @@ assert scan.out contains "verdict=ok" else "voice-roster: a declaration site doe
 # old text-only verdict could pass silently.
 assert scan.ok else "voice-roster: the verdict reads ok while the status fails — they must agree"
 
-say "GREEN: voice-roster — the standing voice is declared consistently"
+let red = run ["sh" "tools/fixtures/v/voice_roster_scan.sh" "Nobody"]
+say red.out
+assert (red.ok == false) else "voice-roster: an undeclared name must refuse"
+assert red.out contains "verdict=drift" else "voice-roster: prove-red wants the named verdict"
+assert red.out contains "drift=5" else "voice-roster: prove-red wants every site to drift on a name none declares"
+
+say "GREEN: voice-roster — the standing voice is declared consistently; an undeclared name refuses"
