@@ -18,7 +18,7 @@ of the day it saved.
 
 **Where it is set, so a fresh clone inherits it:**
 
-- `.claude/settings.json` -- `"model": "claude-opus-5"` beside `"effortLevel": "medium"`, read
+- `.claude/settings.json` -- `"model": "claude-sonnet-5-5"` beside `"effortLevel": "medium"`, read
   `20260916`. This file is tracked and lives inside `~/grain`, which matters: ai-jail resets host
   `$HOME` on exit, so a setting written to `~/.claude/settings.json` leaves with the jail. **It is
   the reading**: the file that actually drives the model is what every other site agrees with, held
