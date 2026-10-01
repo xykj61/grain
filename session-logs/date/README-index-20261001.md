@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.152343` | [falsifier_form_outcome repaired](20261001/20261001-152343_falsifier-form-outcome-repaired.kyri) | two scans' live-page scopes reconciled; ledger pin down to 112 bytes headroom |
 | `20261001.152121` | [fleet-wide check finds nothing unclaimed](20261001/20261001-152121_petrichor-fleet-wide-check-finds-nothing-unclaimed.kyri) | one claim, one OPEN row, both already spoken for; CLAIM-AS-OVERRIDE has nothing to take |
 | `20261001.151826` | [lane blocked, air rota](20261001/20261001-151826_petrichor-lane-blocked-air-rota.kyri) | docs-geode clean at B+; milestone two and first-hour walkthrough wait on a hand |
 | `20261001.151253` | [Survey a fourth moonshot: Mantra's dedup ratio](20261001/20261001-151253_dedup-ratio-moonshot.kyri) | mantra/beading.rye's BeadReport never read for dedup efficiency; vision page names the scan |

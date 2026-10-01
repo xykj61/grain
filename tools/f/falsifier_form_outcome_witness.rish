@@ -70,7 +70,7 @@ assert control.out contains "control_verdict=ok" else "falsifier-form-outcome: e
 # The pen's own tally, asserted beside the named legs. A control that reached its last line
 # proves only that it reached its last line, so a leg written tomorrow is heard the day it lands.
 assert control.out contains "control_failed=0" else "falsifier-form-outcome: a leg that failed must be heard even when the control completes"
-assert control.out contains "control_legs=36" else "falsifier-form-outcome: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
+assert control.out contains "control_legs=37" else "falsifier-form-outcome: the pen's leg count is asserted, so a leg lost to an edit is heard rather than silently dropped"
 
 assert control.out contains "leg=form_runnable_seen pass" else "falsifier-form-outcome: a falsifier naming a path must read runnable inside its own row"
 assert control.out contains "leg=form_quantified_seen pass" else "falsifier-form-outcome: a falsifier naming a quantity must read quantified inside its own row"
