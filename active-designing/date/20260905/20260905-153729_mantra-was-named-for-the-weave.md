@@ -278,3 +278,21 @@ so no ship can book a red at all until the pin gets a word. The finding is here 
 **What stands unchanged.** The essay's crux -- that Mantra was named for the weave and built as a
 catalogue -- is what sent the work here, and the work arrived. The seam and the reading movements
 stand as written.
+
+---
+
+## Erratum `20261001.191956` -- the seam and the reading, both landed
+
+**The arc's last two movements stand built.** The seam chart's own falsifier ran and answered
+"it already works" --
+[`20261001-151518_the-seams-first-step-ran-a-naming-exercise.md`](../20261001/20261001-151518_the-seams-first-step-ran-a-naming-exercise.md)
+-- and the wiring it named as the remaining step landed GREEN the same day: `render_current` and
+`render_to_leaf` in `mantra/src/weave_tablecloth.rye` join a weave's `current()` output and hand it
+to `BoltCatalog.append_leaf` in one call, proven by `mantra/src/weave_tablecloth_witness.rye` on
+four claims including an exact byte round-trip and a correctly surfaced `RevisionOutOfOrder`.
+
+**The reading** -- *one foundation naming both of Mantra's promises as one promise wearing two
+clothes* -- is written into
+[`../../../foundations/20260825-211056_what-mantra-is.md`](../../../foundations/20260825-211056_what-mantra-is.md)'s
+new section *One promise, wearing two clothes*, which names the seam plainly for a first-day reader
+and closes the arc this essay charted.
