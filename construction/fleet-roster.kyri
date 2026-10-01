@@ -23,7 +23,7 @@
 format fleet-roster-v1
 
 # ENGINE `claude` on every live seat, `20261001` on Keaton's word.
-# Models stay in each tree's gitignored settings: bakery `claude-opus-5-5`,
+# Models stay in each tree's gitignored settings: bakery `claude-opus-5`,
 # every other live seat `claude-sonnet-5`. The parked aether rows keep the
 # engine they already had. Codex remains a loop a seat can return to; the
 # Codex watcher arms only a seat whose engine reads `codex`.

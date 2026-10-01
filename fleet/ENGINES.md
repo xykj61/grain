@@ -68,7 +68,7 @@ ship's next lap will run.
 ## What this page does not claim
 
 **The seating is the roster.** From `20261001` every live seat reads `claude`. Bakery resolves
-`claude-opus-5-5`. The other live seats resolve `claude-sonnet-5`. Each model lives in that
+`claude-opus-5`. The other live seats resolve `claude-sonnet-5`. Each model lives in that
 tree's gitignored settings, and the roster seats only the engine. The parked aether rows keep
 the engine they already had. This page describes the three engines;
 `construction/fleet-roster.kyri` is the word that seats one.

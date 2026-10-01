@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261001.142326
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role repository role primary
+modality text
+model claude-sonnet-5
+model_status session banner states claude-sonnet-5
+voice Kyri
+title the whole fleet moved off the 5.5 model family
+prompt Keaton: make sure the rest of our fleet is back on sonnet 5 (not 5.5) until the bugs we reported are resolved by Anthropic, which we can check in on later.
+think reverted the tracked fleet default (.claude/settings.json, GLOW_PROFILE.template.kyri, the seed's section 0, session-logs.md, session-log-provenance.md, SPELLBOOK.md, spellbook/README.md) from claude-sonnet-5-5 to claude-sonnet-5
+think reset this ship's own settings.local.json and the six peer ships' settings.local.json to claude-sonnet-5
+think bakery still pinned claude-opus-5-5, a deliberate earlier choice; asked Keaton directly since several of the ten reported issues name Opus 5.5 in the same classifier pattern, rather than silently changing or silently leaving a model he chose on purpose
+think Keaton chose to move bakery too; set its local pin to claude-opus-5 and corrected the three remaining tracked mentions (ITINERARY.md, bakery-inner.md, this session's own handoff prompt) to say so, each naming why
+obs declared_model_scan.sh reads declared_model=claude-sonnet-5 with no drift-roster disagreement; the fleet's tracked state and every local pin now agree the whole fleet sits on the 5 family
+file .claude/settings.json why-fleet default back to claude-sonnet-5
+file construction/ITINERARY.md why-bakery's resolved model corrected, reason named
+file recursion-prompts/bakery-inner.md why-same correction
+file expanding-prompts/20261001-133549_incense-the-cheap-pass-session.md why-handoff prompt corrected to match the reverted default
+scope tracked model-declaring pages and all eight ships' local settings; no peer repository content beyond its own settings.local.json touched
+status GREEN -- declared_model_scan.sh reads no disagreement; every ship's local pin verified by reading its file back
+recommend keep-going -- shim_reason next; separately, revisit the ten anthropics/claude-code reports later to see whether Anthropic has resolved the 5.5 classifier pattern, at which point the fleet can move back
