@@ -71,3 +71,9 @@ stamp 20260925.141518
 epoch 1790360118
 paths tools/fixtures/l/log_has_a_row_scan.sh tools/fixtures/l/log_has_a_row_control.sh
 what Repair duplicate flat-log traversal so the existing row control counts each planted log once.
+claim diffuser-aurora-energy-crossover-calc-20261001
+seat diffuser
+stamp 20261001.114912
+epoch 1790869752
+paths tools/fixtures/a/aurora_energy_crossover_calc.sh tools/a/aurora_energy_crossover_witness.rish tools/fixtures/a/aurora_energy_crossover_control.sh
+what Build the first-witness calculator for the Aurora torus energy-crossover rule (proposal 2, 20260918-054803): M* = L*s/((Hm-Ht)*e), reading Hm/Ht/L from aurora_placement_scan.sh and leaving e, s as named parameters.
