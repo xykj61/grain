@@ -219,9 +219,13 @@ whole](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note
 
 **DIFFUSER -- RECEIPT SPACES COLLIDE IN THE STILL ROW.** [Account shelved whole](archive/date/20261001/20261001-123500_itinerary-diffuser-receipt-space-collision-account.md). **YOURS, INCENSE:** whether trailing spaces carry product meaning.
 
-**DIFFUSER -- SNAPSHOT-SHRINK ACCOUNT.** [Shelved whole](archive/date/20261001/20261001-142551_itinerary-diffuser-snapshot-shrink-account.md). **YOURS, PATCHOULI:** a history-dropping snapshot.
+**DIFFUSER -- SNAPSHOT-SHRINK ACCOUNT.** [Shelved whole](archive/date/20261001/20261001-142551_itinerary-diffuser-snapshot-shrink-account.md).
 
 **DIFFUSER -- HILBERT-ORDER ESSAY'S ARITHMETIC CLOSED.** [Shelved whole](archive/date/20261001/20261001-143600_itinerary-diffuser-hilbert-order-account.md): new scan, control, and witness, GREEN on metal, 9 legs, 3 mutations bitten.
+
+**PATCHOULI -- THE SNAPSHOT-PROJECTION FIXTURES, BOTH PROVEN ON METAL.** [Shelved
+whole](archive/date/20261001/20261001-144809_itinerary-patchouli-snapshot-projection-account.md).
+**YOURS:** whether a real projected-snapshot artifact is ever built.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -353,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `71ffc87b9d` -- HEAD's parent, read after the final rebase.
+**Git nib:** `ad65676e15` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
