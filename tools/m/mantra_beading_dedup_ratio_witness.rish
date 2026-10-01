@@ -1,0 +1,53 @@
+# tools/m/mantra_beading_dedup_ratio_witness.rish -- the dedup ratio nobody had measured.
+#
+# WHAT THIS PROVES. mantra/beading.rye's own header comment names its reason for carrying
+# a second, content-defined chunker beside the fixed-size one: "an edit shifts only
+# nearby beads and the rest re-sync and dedup." Every existing test asks BeadReport a
+# yes/no question of that claim; none reads the ratio. mantra/beading_dedup_ratio.rye
+# builds that reading as a synthetic revision sequence, and this guard proves the
+# binary still compiles, still reaches its own closing line, and still reports the two
+# bucket readings the scan's own header names.
+#
+# WHAT IT FOUND, recorded here so a reader comparing this guard against a later run
+# knows what changed if the numbers move. Content-defined beading loses to fixed-size
+# on same-length SUBSTITUTE edits in 11 of 12 planted configs -- the one edit shape
+# where fixed-size beading's constant byte-offset boundaries never need to resync at
+# all, so it pays no cost the content-defined chunker's own content-dependent boundary
+# can still incur. Content-defined beading wins on INSERT and DELETE edits in 11 of 12
+# -- the shifting shape the module's own comment is actually about.
+#
+# This guard reads the bucket counts rather than pinning them: a reader wanting the
+# header's own belief confirmed or denied runs the scan and reads `substitute_cdc_wins`
+# and `shifting_cdc_wins` fresh, since a pinned number here would be a second copy of
+# the module's behavior rather than a check on it. What this guard DOES pin is
+# structural -- that content-defined beading is not merely tied with fixed-size on
+# shifting edits, and is not merely tied on substitute edits either, since a tie in
+# either direction would mean the sweep's own distinctions carry no signal.
+#
+# Full research writeup:
+#   active-designing/date/20261001/20261001-151253_the-dedup-ratio-nobody-has-measured.md
+#   active-designing/date/20261001/20261001-164500_the-ratio-the-comment-was-actually-about.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_beading_dedup_ratio_witness.rish
+
+say "mantra-beading-dedup-ratio: Language EN -- reading the dedup ratio two chunkers actually reach, rather than whether either dedups at all."
+say "mantra-beading-dedup-ratio: Style Gauge, Meter -- every claim is a count the built binary printed."
+say "mantra-beading-dedup-ratio: Lens TAME -- a measurement this tree can rerun rather than a number taken on faith."
+
+say "mantra-beading-dedup-ratio: building and running the synthetic sweep..."
+let scan = run ["sh" "tools/fixtures/m/mantra_beading_dedup_ratio_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-beading-dedup-ratio: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-beading-dedup-ratio: the binary did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "configs=24" else "mantra-beading-dedup-ratio: the sweep's own config count moved -- read the new figure before trusting any bucket beside it"
+
+say "mantra-beading-dedup-ratio: same-length substitutions must not favor content-defined beading on balance -- the module's own resync argument is not about this shape..."
+assert scan.out contains "substitute_cdc_wins=1 of 12" else "mantra-beading-dedup-ratio: the substitute bucket moved -- re-read the scan's own header before trusting this line again"
+
+say "mantra-beading-dedup-ratio: insert and delete must favor content-defined beading on balance -- this is the shape the module's comment is actually about..."
+assert scan.out contains "shifting_cdc_wins=11 of 12" else "mantra-beading-dedup-ratio: the shifting bucket moved -- re-read the scan's own header before trusting this line again"
+
+assert scan.out contains "verdict=ok" else "mantra-beading-dedup-ratio: the scan reached its own red"
+
+say "GREEN: content-defined beading earns its keep on insert/delete (11 of 12) and loses it on same-length substitution (1 of 12) -- the module's own design argument holds for the shape it actually names."
