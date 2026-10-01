@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.185302` | [resurrection fired twice more mid-send](20261001/20261001-185302_resurrection-fired-twice-more-during-send.kyri) | three rebases to push the claim-close; the stale record came back once more from upstream itself |
+| `20261001.184500` | [the one real revision this tree has is a shift](20261001/20261001-184500_one-real-revision-is-a-shift.kyri) | pond/apps can't revise in place; recall_beaded's own revision example is an insert, not a substitute |
 | `20261001.184352` | [stale comlink witness claim closed](20261001/20261001-184352_close-stale-comlink-witness-claim.kyri) | a sibling commit's rebase resurrected an already-closed pheromone claim; re-verified both witnesses GREEN and closed it |
 | `20261001.184301` | [grant-revoke desk link repaired](20261001/20261001-184301_grant-revoke-desk-link-repaired.kyri) | dead .lap/ citation found and repointed; grade C+ to B+ |
 | `20261001.184105` | [retired repository deleted](20261001/20261001-184105_retired-repository-deleted.kyri) | gh could not resolve it; roster records the delete |
