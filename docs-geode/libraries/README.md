@@ -49,7 +49,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
-| [`mantra/`](../../mantra/README.md) | 46 | 64 |
+| [`mantra/`](../../mantra/README.md) | 48 | 65 |
 | [`manual/`](../../manual/README.md) | 1 | 14 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
@@ -61,7 +61,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 4 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 16 | 31 |
+| [`tally/`](../../tally/README.md) | 16 | 32 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---

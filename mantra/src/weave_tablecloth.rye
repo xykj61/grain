@@ -1,0 +1,110 @@
+//! mantra/src/weave_tablecloth.rye -- the seam, wired: current() to a leaf, in one motion.
+//!
+//! The chart named the gap plainly:
+//! [`../../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md)
+//! asks whether `Weave.current()`'s output already carries a stable content
+//! address, and whether anything in the tree already computes it the same
+//! way. The seam witness beside this file,
+//! [`../weave_tablecloth_seam_witness.rye`](../weave_tablecloth_seam_witness.rye),
+//! answered yes: a rendered weave's SHA3-256 digest and the catalogue's own
+//! `digest_hex` agree on the same bytes, because both compute the identical
+//! hash over the identical content. What that witness named as still unbuilt
+//! was the WIRING -- nothing today calls `current()`, joins its lines, and
+//! hands the result to `append_leaf` in one motion.
+//!
+//! THIS MODULE IS THAT MOTION, and nothing more. `render_current` renders a
+//! weave's present lines into one document, `\n`-joined, the exact inverse of
+//! `mantra/src/diff.rye`'s `split_lines`. `render_to_leaf` renders and appends
+//! in one call, so a caller never holds the rendered bytes without a leaf to
+//! show for them, and never appends a leaf whose bytes were not freshly
+//! rendered from the weave it names.
+//!
+//! WHY THE SYMLINK BESIDE THIS FILE. `mantra/src/recall_lap1.rye` is a
+//! symlink to `../recall_lap1.rye` -- the same pattern this directory already
+//! carries for `tally_receipt_refusal.rye`, `parse_int.rye`, and the two
+//! receipt-offer modules. Zig refuses an import string that lexically escapes
+//! the root file's directory (proven on this lap against the vendored
+//! toolchain: the two-dot form fails with "import of file outside module
+//! path"), and the refusal reads the IMPORT STRING rather than the resolved
+//! path, so a same-directory symlink named for its target satisfies the
+//! compiler and the reader both.
+//!
+//! A NOTE FOR THE NEXT HAND WHO QUOTES AN IMPORT IN A COMMENT. `rye`'s own
+//! bridge walk finds a module's dependencies by scanning raw source text for
+//! the literal six characters that open an import, rather than by parsing --
+//! so it cannot tell a real import from one spelled out in a docstring for
+//! illustration. Writing that exact six-character opener inside this comment,
+//! followed by a path that does not exist beside this file, cost a build in a
+//! throwaway pen before this note did: the real tree's own directory layout
+//! happened to make the illustrated path resolve to a file that really was
+//! there, so the mistake built clean here and only reds where the two
+//! directories are not nested the same way.
+//!
+//! WHAT THIS DOES NOT DO. It does not move the catalogue's own bound --
+//! `append_leaf` still refuses a document past `max_resin_bytes`, by its own
+//! named error, and this module adds no second copy of that ceiling. It does
+//! not choose a peer, bolt, revision, or path on a caller's behalf; those are
+//! the catalogue's own naming grammar and this module only carries them
+//! through.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+const recall_lap1 = @import("recall_lap1.rye");
+
+const module_version = "20261001.182300";
+
+/// The two error families a wiring call can raise: the catalogue's own named
+/// refusals, and an allocator running out of room while rendering. No third
+/// kind exists, because `weave.Weave.current` raises only the allocator's.
+pub const RenderLeafError = recall_lap1.RecallError || std.mem.Allocator.Error;
+
+/// Render a weave's present lines into one document: `text` fields joined by
+/// `\n`, in document order, with no trailing newline. The exact inverse of
+/// `diff.split_lines`, proven byte-identical on a planted document by
+/// `weave_tablecloth_seam_witness.rye`.
+pub fn render_current(garden: std.mem.Allocator, w: *const weave.Weave) ![]const u8 {
+    const lines = try w.current(garden);
+    // invariant: current() returns no more lines than the weave's own named
+    // ceiling, so the array this function allocates is bounded by that
+    // constant rather than by whatever a caller happens to hand it
+    assert(lines.len <= weave.max_weave_lines);
+    const texts = try garden.alloc([]const u8, lines.len);
+    for (lines, 0..) |line, i| texts[i] = line.text;
+    const joined = try std.mem.join(garden, "\n", texts);
+    // invariant: the join drops no line -- the newline count names exactly
+    // the gaps BETWEEN lines, never more, never fewer, over an empty document
+    // or a full one alike
+    assert(std.mem.count(u8, joined, "\n") == if (lines.len == 0) 0 else lines.len - 1);
+    return joined;
+}
+
+/// Render a weave and hand the result to the catalogue's `append_leaf` in one
+/// call -- the motion the chart named as the seam's remaining step. `peer`,
+/// `bolt`, `revision`, `path`, and `tilak` are the catalogue's own naming
+/// grammar; this function chooses none of them.
+pub fn render_to_leaf(
+    garden: std.mem.Allocator,
+    w: *const weave.Weave,
+    catalog: *recall_lap1.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    path: []const u8,
+    tilak: []const u8,
+) RenderLeafError!void {
+    const before = catalog.leaf_count;
+    // invariant: a catalogue never holds more leaves than its own named
+    // ceiling, so this call starts from a count append_leaf has already kept
+    // inside max_bindings
+    assert(before <= recall_lap1.max_bindings);
+    const rendered = try render_current(garden, w);
+    try catalog.append_leaf(peer, bolt, revision, path, rendered, tilak);
+    // invariant: a successful call grows the catalogue by exactly the one
+    // leaf it rendered -- never more, never fewer, and never a leaf whose
+    // bytes outlived this call without one
+    assert(catalog.leaf_count == before + 1);
+}
