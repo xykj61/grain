@@ -8377,3 +8377,18 @@ guard dep_crawl_bounds_negative
 path tools/gen/chapter/dep_crawl_bounds_negative_witness.rish
 tier lap
 seated 20261001.184233
+
+# mantra_spool_dedup_ratio -- the spool-scale dedup ratio the fourth angle named and left
+# untouched. mantra/spool.rye winds a large artifact across resins split at a fixed, absolute
+# byte offset, beading each resin with fixed-size beading.bead alone -- it never calls
+# beading.bead_content_defined. mantra/spool_dedup_ratio.rye measures what an insert or delete
+# costs under that fixed split across a 4-resin, 2048-byte artifact: same-length SUBSTITUTE edits
+# dedup at 750-875 permille regardless of position or size (mean 833 across 6 configs), while
+# INSERT/DELETE collapse to 0 permille when planted early (most of the artifact lies downstream
+# of the edit) and climb back toward the substitute floor the later they land -- a shift's cost
+# at this scale tracks how much of the artifact lies downstream, not the edit's own size. Full
+# writeup: active-designing/date/20261001/20261001-190906_the-split-itself-never-resyncs.md
+guard mantra_spool_dedup_ratio
+path tools/m/mantra_spool_dedup_ratio_witness.rish
+tier lap
+seated 20261001.190906

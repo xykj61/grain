@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
-**Revised:** `20261001.184131` -- the first of the fourth angle's two open doors is read
+**Revised:** `20261001.190906` -- both of the fourth angle's open doors are now read
 **Room:** checkable -- the fruit names two pages and two scans
 **Outer prompt:** [`../tools/d/diffuser_seat_prompt.txt`](../tools/d/diffuser_seat_prompt.txt)
 
@@ -38,17 +38,25 @@ beading wins 11 of 12 planted insert/delete configs and loses 11 of 12 planted s
 substitute configs. The module's own design comment ("an edit shifts only nearby beads") is exactly
 true for the shape it names and does not generalize to the shape it never names.
 
-**The first open door is read.**
+**Both open doors are read.**
 [The one real revision this tree has is a shift](../active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md)
 finds that `pond/apps/tablecloth.rye`'s `store_artifact` refuses `NameTaken` on any second write,
 so none of its fourteen call sites ever revise an artifact at all; the one module in this tree that
 does carry a real revision-over-revision edit, `mantra/recall_beaded.rye`'s own selftest, chooses a
 3-byte insertion (a shift) rather than a same-length substitution -- weak evidence by itself (one
 handwritten example), strong by structure (a system that cannot revise cannot produce a
-substitution). **One open door remains, not this lap's to attempt:** `mantra/spool.rye`'s own
-larger scale (64 resins, 2 beads each), named by the dedup-ratio page as its own later lap. Fair
-ground for the next Diffuser crux, per Lila and the Long Return, unless Keaton names a different one
-here first.
+substitution).
+
+[The split itself never resyncs](../active-designing/date/20261001/20261001-190906_the-split-itself-never-resyncs.md)
+measures `mantra/spool.rye`'s own larger scale -- a new library module,
+`mantra/spool_dedup_ratio.rye`, GREEN under `tools/m/mantra_spool_dedup_ratio_witness.rish` --
+and finds that `spool.rye` splits resins at a fixed absolute byte offset and never calls
+`beading.bead_content_defined`, so a same-length substitute dedups at 750-875 permille regardless
+of position, while an insert or delete reads near zero when it lands early (most of the artifact
+sits downstream) and climbs toward the substitute floor the later it lands. Fair ground for the
+next Diffuser crux: whether a content-defined resin split is worth building, and what a real
+Mantra revision caller's edit traffic would actually look like, both named as open rather than
+attempted by this lap.
 
 ## gates
 

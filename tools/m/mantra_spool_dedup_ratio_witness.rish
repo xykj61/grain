@@ -1,0 +1,57 @@
+# tools/m/mantra_spool_dedup_ratio_witness.rish -- the spool-scale dedup ratio the
+# fourth angle named and left untouched.
+#
+# WHAT THIS PROVES. mantra/spool.rye winds a large artifact across ordered resins, each
+# split at a fixed, absolute byte offset (beading.max_resin_bytes), and beads every
+# resin with the fixed-size beading.bead alone -- it never calls
+# beading.bead_content_defined. mantra/spool_dedup_ratio.rye measures what an insert or
+# delete costs under that fixed-offset split: every resin boundary at or past the edit
+# now falls on different bytes than before, so a shift's cost depends on how much of
+# the artifact lies downstream of it rather than on the edit's own size. This guard
+# proves the binary still compiles, still reaches its own closing line, and still
+# reports the two bucket readings the scan's own header names.
+#
+# WHAT IT FOUND, recorded here so a reader comparing this guard against a later run
+# knows what changed if the numbers move. Same-length SUBSTITUTE edits dedup at 750-875
+# permille regardless of position or size (6 configs, mean 833 permille) -- the resin
+# split never moves, so only the touched resin's own beads cost anything. INSERT and
+# DELETE collapse to ZERO permille when planted early in the artifact (2 of 6 shifting
+# configs), where nearly everything lies downstream of the edit and every downstream
+# resin re-chunks into different bytes; the same edit shapes recover toward the
+# substitute floor the later they land, since less of the artifact remains downstream.
+#
+# This guard reads the two bucket readings rather than pinning every row: a reader
+# wanting the full position-by-position picture runs the scan and reads the twelve
+# `config ...` lines fresh. What this guard DOES pin is structural -- that the shifting
+# bucket genuinely reaches zero somewhere in the sweep, which is the reading that
+# confirms a fixed-offset split pays the cost beading.rye's own content-defined chunker
+# exists to avoid, and that the substitute bucket stays well clear of zero, which
+# confirms the position-independence a same-length edit is supposed to have.
+#
+# Full research writeup:
+#   active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md
+#   active-designing/date/20261001/20261001-182131_the-ratio-the-comment-was-actually-about.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_spool_dedup_ratio_witness.rish
+
+say "mantra-spool-dedup-ratio: Language EN -- reading what a shift costs when the resin split itself sits at a fixed byte offset."
+say "mantra-spool-dedup-ratio: Style Gauge, Meter -- every claim is a count the built binary printed."
+say "mantra-spool-dedup-ratio: Lens TAME -- a measurement this tree can rerun rather than a number taken on faith."
+
+say "mantra-spool-dedup-ratio: building and running the synthetic sweep..."
+let scan = run ["sh" "tools/fixtures/m/mantra_spool_dedup_ratio_scan.sh"]
+say scan.out
+assert scan.ok else "mantra-spool-dedup-ratio: the scan must complete"
+assert scan.out contains "built=yes" else "mantra-spool-dedup-ratio: the binary did not compile, so every reading below is a reading of nothing"
+assert scan.out contains "configs=12" else "mantra-spool-dedup-ratio: the sweep's own config count moved -- read the new figure before trusting any bucket beside it"
+
+say "mantra-spool-dedup-ratio: same-length substitutions must stay well clear of zero -- a fixed-offset split pays no cost when nothing shifts..."
+assert scan.out contains "substitute_mean_ratio_pm=833 of 6 configs" else "mantra-spool-dedup-ratio: the substitute bucket moved -- re-read the scan's own header before trusting this line again"
+
+say "mantra-spool-dedup-ratio: at least one shifting config must read near zero -- the cost a fixed-offset resin split cannot resync away..."
+assert scan.out contains "shifting_near_zero=2 of 6 configs" else "mantra-spool-dedup-ratio: the shifting bucket moved -- re-read the scan's own header before trusting this line again"
+
+assert scan.out contains "verdict=ok" else "mantra-spool-dedup-ratio: the scan reached its own red"
+
+say "GREEN: a same-length substitute costs a spool almost nothing (833 permille mean); an early insert or delete costs it everything downstream (0 permille), and the cost recovers toward the substitute floor the later the edit lands."
