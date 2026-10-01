@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.133700` | [cheap-pass session prompt](20261001/20261001-133700_cheap-pass-session-prompt.kyri) | handoff prompt written for a fresh session, six reds remain |
 | `20261001.133200` | [REDS %785 repaired, ignored_walk 27 of 27](20261001/20261001-133200_ignored-walk-785-repaired.kyri) | planted control walks counted apart, row folded, pin 57,906 bytes |
 | `20261001.132816` | [REDS %756 folded, erratum](20261001/20261001-132816_fold-756-and-erratum.kyri) | row BOOKED to a shelf, pin 63,095 bytes, ruling erratum |
 | `20261001.131844` | [REDS %756 repaired, shrink door](20261001/20261001-131844_wire-path-shrink-756.kyri) | wire max_path 64 to 57, three hits fit, retention witness green |
