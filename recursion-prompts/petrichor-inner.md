@@ -11,7 +11,18 @@
 
 ## fruit
 
-Grade [`../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md`](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md) and raise it if it reads below B. It is a draft in the learning floor, kin to the first hour, and it ships to the tutorial shelf only on the day its own commands have been run. Tend the links. Leave the tutorial shelf's names where they are.
+**This draft has held an A grade across several reconfirmations now** -- it is done, and it ships
+the day its own commands are run, which waits on the public seam (Diffuser's case 4) rather than
+on another grading pass.
+
+**The new crux, named `20261001`:** milestone two, "the consent you can change," has no contract
+yet, the way "the receipt you can read" had one before any code existed
+([`../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md`](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)
+is the shape to match). Draft milestone two's contract: one fixture, the public types a grant and
+a revoke fact need, the bounds table, the acceptance cases, one falsifier. This is Bhakta's own
+lane -- teach what the facts mean to the person granting and revoking, not only what the types are.
+Writing this now means the fleet has a next real target the moment milestone one closes, rather
+than two weeks of drift the way it had after milestone one's code finished.
 
 ## gates
 

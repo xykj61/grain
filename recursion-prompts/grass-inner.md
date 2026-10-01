@@ -11,7 +11,17 @@
 
 ## fruit
 
-Read [`../foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) and record one disposition. Its status says Amphora landed, while its body still describes a vessel without a home. Check that old premise against the current vessel and product bundle path. The prior free-room and marked-value readings are recorded on the card.
+**The sealed-crossing reverse-read closed and archived `20261001`** -- its disposition is recorded
+whole at [`../active-designing/date/20261001/20261001-112153_grass-sealed-crossing-reverse-read.md`](../active-designing/date/20261001/20261001-112153_grass-sealed-crossing-reverse-read.md).
+
+**The new crux, named `20261001`:** reverse-read the `unsaid_rostered` finding booked the same day
+in `construction/REDS.md` (cited by stamp `20261001.143449`, not yet numbered) -- 984 rostered
+guard bindings against a ceiling of 903, each printing nothing of its own run. Walk the roster
+backward from newest to oldest and name which of the over-ceiling bindings are genuine process
+debt, which are accrete shims that correctly inherit a target's own reason, and which belong to a
+family that should be exempted outright -- exactly the three-way disposition this seat already
+knows how to make, applied to a population rather than one page. Bring forward only what changes a
+living crux; hand a module's own repair to its owning ship.
 
 ## gates
 

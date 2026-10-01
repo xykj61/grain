@@ -11,6 +11,16 @@
 
 ## fruit
 
+**The crux, named `20261001`: share one build cache and one cold-run cache across all eight
+checkouts, rather than each ship paying the full Zig compile and the full ~370-guard roster on its
+own tree.** This is bakery's own #1 fleet priority finally pointed at its highest-leverage form.
+The content-keyed receipt already lands per-checkout (`construction/standing-equipment-receipt.kyri`);
+the crux is making one ship's green receipt usable as the basis for the other seven's `--scoped`
+pass, rather than each pier rebuilding and re-proving the same near-identical tree. Everything
+below this paragraph is the recovery-queue backlog that filled this file before this lap -- real
+history, left as testimony, not the next thing to work. Read it only if the crux above is blocked
+and you need the backlog's own context to know why.
+
 **Recovery queue, reread 20260925.213432: 23 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
 identities cover 153 after this lap. Recompute that set before selecting work;

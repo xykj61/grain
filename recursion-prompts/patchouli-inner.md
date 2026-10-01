@@ -11,7 +11,15 @@
 
 ## fruit
 
-The Now block's first patchouli item is bounded offer, consent, use, value, expiration, and correction facts drawn from existing value forms. This lap names those existing forms in `mantra/` and `tally/` and writes the map in the lap log. Define no new type. Choose no weave door. The twelve-to-six place-construction note on [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md) stays a check beside that map, and the door stays unchosen.
+**This fruit has held its reading unchanged across several laps** ("the six-facts map unchanged,
+no fresh work in lane") -- the mapping is done, and holding a done map does not need re-confirming.
+
+**The new crux, named `20261001`:** the weave's door is no longer unchosen -- it is charted, at
+[`../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md),
+with its first step and falsifier already named. Take that first step. This is the Long Return
+infrastructure work -- the seam where Mantra's weave meets Tablecloth by content is load-bearing
+for every later milestone that stores a resin, not only this one. If the chart's first step turns
+out to need a ruling, name the question for Incense rather than re-reading the six-facts map again.
 
 ## gates
 
