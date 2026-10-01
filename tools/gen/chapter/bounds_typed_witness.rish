@@ -37,5 +37,15 @@ assert scan.out contains "verdict=ok" else "bounds-typed: a declared bound lacks
 # old text-only verdict could pass silently.
 assert scan.ok else "bounds-typed: the verdict reads ok while the status fails — they must agree"
 
+let mkdir = run ["mkdir" "-p" ".lap/bounds-typed-pen"]
+assert mkdir.ok else "bounds-typed: pen mkdir failed"
+let write = run ["sh" "-c" "printf 'const max_widget = 5;\n' > .lap/bounds-typed-pen/untyped.rye"]
+assert write.ok else "bounds-typed: pen write failed"
+let red = run ["sh" "tools/fixtures/b/bounds_typed_scan.sh" ".lap/bounds-typed-pen"]
+say red.out
+assert (red.ok == false) else "bounds-typed: a planted untyped bound must refuse"
+assert red.out contains "verdict=untyped_bounds" else "bounds-typed: prove-red wants the named verdict"
+assert red.out contains "untyped-bound .lap/bounds-typed-pen/untyped.rye" else "bounds-typed: prove-red wants the named detail line"
+
 say "bounds-typed: advisory — a declared bound reads `const max_x: u32 = N; // why`"
-say "GREEN: bounds-typed — rule 2 has a witness; population zero, printed either way"
+say "GREEN: bounds-typed — rule 2 has a witness; population zero; a planted untyped bound refuses"

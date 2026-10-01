@@ -20,4 +20,10 @@ say scan.out
 assert scan.out contains "verdict=ok" else "scan-convention: a scan does not cite the single home"
 assert scan.ok else "scan-convention: the verdict reads ok while the status fails — they must agree"
 
-say "GREEN: scan-convention — every scan cites the spec; none restates it"
+let red = run ["sh" "tools/fixtures/s/scan_convention_scan.sh" "tools/fixtures/s/shared_bound_scan.sh"]
+say red.out
+assert (red.ok == false) else "scan-convention: a file that does not cite the spec must refuse"
+assert red.out contains "convention_not_single_homed" else "scan-convention: prove-red wants the named verdict"
+assert red.out contains "roster scan does not cite the single home -> tools/fixtures/s/shared_bound_scan.sh" else "scan-convention: prove-red wants the named detail line"
+
+say "GREEN: scan-convention — every scan cites the spec; none restates it; a non-citing file refuses"

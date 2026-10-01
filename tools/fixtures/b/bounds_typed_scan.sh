@@ -19,9 +19,11 @@
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 #   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
+# An optional first argument names one extra root to judge, used only by the
+# negative fixture so the refusal is proven on every run (REDS %827).
 roster="mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke
         rye/src glow lattice dimeroll scribble lantern cellar amphora mand
-        mandi granary"
+        mandi granary${1:+ $1}"
 n=0
 for d in $roster; do
   [ -d "$d" ] || continue
