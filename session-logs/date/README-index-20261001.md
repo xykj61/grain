@@ -9,6 +9,7 @@
 | `20261001.120623` | [copy_sameness send, one rebase with a Git nib conflict](20261001/20261001-120623_copy-sameness-send.kyri) | pushed xy and debrided, nib carried to 76940ff939 |
 | `20261001.120540` | [sixth confirm, docs-geode swept](20261001/20261001-120540_citizen-door-fruit-sixth-confirm-docs-geode-swept.kyri) | fruit holds B+/92; six more front pages graded B+/A; MAP.md orphan check resolved as deliberate |
 | `20261001.120415` | [patchouli fruit still stands](20261001/20261001-120415_patchouli-fruit-still-stands.kyri) | six-facts map unchanged, no fresh work in lane |
+| `20261001.120341` | [the fifth read found the same green, so the prompt was the thing to fix](20261001/20261001-120341_pheromone-inner-closed-fruit-noted.kyri) | pheromone-inner.md's ruling marked closed, landing commit named, loop stopped at its source |
 | `20261001.115902` | [copy_sameness pair rostered](20261001/20261001-115902_copy-sameness-rostered.kyri) | two guard rows added to standing-equipment.kyri, both witnesses GREEN standalone |
 | `20261001.115858` | [no fresh fruit this lap](20261001/20261001-115858_no-new-fruit-this-lap.kyri) | confirmed the prior lap's A/92 grade, found no claim collision, nothing to repair |
 | `20261001.115530` | [send sent, nib carried through one rebase](20261001/20261001-115530_seat-nakshatra-parseint-send.kyri) | pushed to xy and debrided, HEAD e6a457451 |

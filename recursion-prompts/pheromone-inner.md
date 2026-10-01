@@ -1,9 +1,25 @@
 # Pheromone, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
-**Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Status:** Living -- fruit landed `20260923`, reconfirmed four times since (`20261001`); closed, awaiting a new ruling
 **Room:** checkable -- the fruit names a measured ceiling and two options already on the card
 **Outer prompt:** [`../tools/p/pheromone_seat_prompt.txt`](../tools/p/pheromone_seat_prompt.txt)
+
+## closed
+
+Commit `9726a654e` ("pheromone: admit fifteen Glow shape fields") landed every move the ruling
+below names: `glow/rune_shape.rye`'s `max_fields` reads 15, `glow/tokens.rye`'s
+`looks_like_shape_only` admits 3-18 lines, the planted refusal in `glow/refusal_witness.rye` sits
+at sixteen fields, and `mantra/src/receipt_offer.rye`'s `ReceiptOfferFact` publishes fifteen
+fields (`offer_fact_fields = 15`), checked by its own comptime assert. `glow_shape_capacity_witness`
+reads `capacity_gap=0` -- the widest public type and the ceiling agree. Four laps across
+`20261001` (`112435`, `113801`, `115149`, and this one) each re-read the same GREEN state by a
+different path and found nothing moved. **A fifth re-check teaches nothing a fourth did not** --
+the ruling and fruit below are kept as the record of what was asked and closed, rather than
+rewritten, and this seat's next move wants a new ruling from the interactive bench: whether to
+carry `.lap/shape-receipt-offer.glow`'s draft fifteen-field desk into a tracked Glow source (the
+next step the ITINERARY lane names -- "express the receipt facts... in the smallest Glow form
+already owned") is a scope question for Incense, not a continuation of this closed fruit.
 
 ## engine
 
