@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.194238` | [Air row pulls one strand](20261001/20261001-194238_air-row-pulls-one-strand-nothing-snaps.kyri) | pulled 71a9b15ab5; nib drift confirmed as existing %803, not new |
+| `20261001.194030` | [wire path bound renamed](20261001/20261001-194030_wire-path-bound-renamed.kyri) | the wire path ceiling is its own name; the store stays 64 |
 | `20261001.193733` | [docs-geode queue confirmed clean, no fourth sweep](20261001/20261001-193733_docs-geode-queue-confirmed-clean-a-fourth-time-without-sweeping.kyri) | read-only; one touched file (auto-generated) needed nothing; no sweep re-run |
 | `20261001.193346` | [pheromone inner closed, awaits ruling](20261001/20261001-193346_pheromone-inner-closed-awaits-ruling.kyri) | both named fruits GREEN; next move is Keaton's word, not a third crux |
 | `20261001.193200` | [Aether row read, no new work](20261001/20261001-193200_aether-row-read-no-new-work.kyri) | confirms prior lap's reading; thin queue, nothing agent-doable found in scope |
