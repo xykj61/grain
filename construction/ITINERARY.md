@@ -317,6 +317,7 @@ against a ceiling of 8, the ninth from a peer lane.
 
 **PATCHOULI -- THE FALSIFIER ACCOUNT IS SHELVED.**
 [Shelved whole](archive/date/20260922/20260922-212900_itinerary-patchouli-falsifier-account.md).
+
 ## Simple, Lovable, Complete order
 
 **DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** [Shelved
@@ -366,7 +367,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5e435f2c82` -- HEAD read before this follow-up commit (rule 5).
+**Git nib:** `a5ec32d023` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
