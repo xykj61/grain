@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.151826` | [lane blocked, air rota](20261001/20261001-151826_petrichor-lane-blocked-air-rota.kyri) | docs-geode clean at B+; milestone two and first-hour walkthrough wait on a hand |
 | `20261001.151151` | [rye_compiled_reach: 786 to 11](20261001/20261001-151151_rye-compiled-reach-786-to-11.kyri) | rye_build.sh named as a builder verb; uncompiled fell under its ceiling |
 | `20261001.151133` | [unsaid-rostered reverse-read](20261001/20261001-151133_unsaid-rostered-reverse-read.kyri) | fresh crux: 984-vs-903 population walked backward, sorted three ways, B+/89 packet shelved |
 | `20261001.150624` | [diffuser-inner caught up to its own closed threads](20261001/20261001-150624_diffuser-inner-caught-up-to-its-own-closed-threads.kyri) | case 4 and the torus ladder both closed; fruit revised, next crux is Keaton's |
