@@ -97,8 +97,8 @@ naive-total refusal. Direct proof is green; a full cold and hot roster verdict r
 **COPAL -- BATON MUSEUM CENSUS ROSTERED.** `baton_museum_census_witness.rish` now runs a planted
 control that removes one hall from a bounded copy of `context/baton-museum/` and requires a
 refusing status, `halls_absent=1`, `elder_miss=0`, `census_breach_count=1`,
-`verdict=census_incomplete`. The thirteen-hall census and the control both ran GREEN direct;
-seated on `construction/standing-equipment.kyri` `20261001.112431`. 131 unrostered
+`verdict=census_incomplete`. The thirteen-hall census and the control both ran GREEN;
+seated `construction/standing-equipment.kyri` `20261001.112431`. 131 unrostered
 `tools/gen/chapter/` witnesses remain for a later lap, nine of them excluded by name (the
 `brushstroke-wayland-seed` build-artifact dependents). A full cold and hot roster verdict remains
 owed.
@@ -162,9 +162,14 @@ agent-doable pick is any one, claim-board checked first.
 
 **GRASS -- LEDGER AND GRACE.** [Account shelved whole](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md).
 
-**GRASS -- MARKED VALUE.** [Packet](../active-designing/date/20260925/20260925-210440_grass-marked-value-reverse-read.md):
-**standfasted at the Amphora seam.** Two root marks and unknown-mark refusal are proven; typed
-tending across the wider map stays a proposal until a named crossing earns it.
+**GRASS -- MARKED VALUE.** [Account shelved whole](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md).
+
+**GRASS -- THE SEALED CROSSING.** [Packet](../active-designing/date/20261001/20261001-112153_grass-sealed-crossing-reverse-read.md):
+**archived -- the duty named `20260703` has a home.** The Sealed Crossing's own Status line
+already reads Landed; its body and benediction still narrate an open duty. Amphora's three laps,
+stamp, seal, chunked carry, and purchase delivery are landed, and Copal's receipt-bundle witness
+ran GREEN on this checkout (authentication, decision-mutation refusal, version refusal,
+byte-identical round trip). No living product or build crux changes.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -359,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b70505bfb2` -- HEAD read before this follow-up commit (rule 5).
+**Git nib:** `17ef2e8f5d` -- HEAD read before this follow-up merge commit (rule 5).
 
 ### Incense -- product captain
 
