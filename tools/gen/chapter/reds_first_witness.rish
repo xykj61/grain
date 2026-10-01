@@ -20,4 +20,11 @@ say scan.out
 assert scan.out contains "verdict=ok" else "reds-first: the law is not single-homed or the crossing is incomplete"
 assert scan.ok else "reds-first: the verdict reads ok while the status fails — they must agree"
 
+# The control mirrors the six real files into a pen, breaks one citer's
+# citation, and proves the scan refuses by name before showing the clean leg.
+let control = run ["sh" "tools/fixtures/r/reds_first_control.sh"]
+say control.out
+assert control.ok else "reds-first: the planted-break control failed"
+assert control.out contains "control_verdict=ok" else "reds-first: the planted citer break must refuse by name"
+
 say "GREEN: reds-first — one law, three citers, teachers thanked in their own room"
