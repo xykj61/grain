@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.130500` | [product-stall-measurement](20261001/20261001-130500_product-stall-measurement.kyri) | measured 7-day commit split; near-zero product code touched |
+| `20261001.125333` | [cord-knot's parseInt sites graduate](20261001/20261001-125333_cord-knot-parseint-graduates.kyri) | mycelium/cord_knot_kyri.rye moved to tally/parse_int, witness GREEN, parseInt( 52 to 50 |
 | `20261001.125322` | [fruit stable, seventh confirm, check-in owed](20261001/20261001-125322_fruit-stable-seventh-confirm-check-in.kyri) | same A/92 reading, eleventh confirmation; recommends retasking the fruit |
 | `20261001.125059` | [the sixth lap meets the same open question](20261001/20261001-125059_sixth-lap-same-open-question.kyri) | unchanged since the fifth decline; same scope question still waits on Keaton |
 | `20261001.125024` | [second nib follow-up after a second rebase](20261001/20261001-125024_second-nib-follow-up-after-rebase.kyri) | Git nib carried forward to 97eb78a82c, same contested-send gap firing twice |
