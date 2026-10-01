@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.131844` | [REDS %756 repaired, shrink door](20261001/20261001-131844_wire-path-shrink-756.kyri) | wire max_path 64 to 57, three hits fit, retention witness green |
 | `20261001.131500` | [idleness follow-up sent](20261001/20261001-131500_idleness-followup-send.kyri) | six contested rebases, one conflict, pushed c097474ba clean |
 | `20261001.131200` | [check-in on idleness follow-up](20261001/20261001-131200_check-in-on-idleness-followup.kyri) | mapped the fusion-build block, asked Keaton which way to spend the lap |
 | `20261001.130613` | [fleet default to sonnet-5-5](20261001/20261001-130613_fleet-default-sonnet-5-5.kyri) | tracked default set; peers still pin sonnet-5, drift ratchet 20 over 1 |
