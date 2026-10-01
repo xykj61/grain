@@ -243,3 +243,17 @@ OPEN REDS row stands untouched, still the owning lane's to roster-wire. Zero new
 running clean in a row. Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open;
 check the board and for an in-flight pass; hold fully still with `--cadence-slice 1` until
 `run_verdict=` lands. The REDS pin deadlock is still open and still Keaton's to rule on.
+
+**Lap `20260930.225008` round-opened clean at `43b50c0c58` (no divergence from the anointed
+order), checked the claim board directly (five rows, all September stamps, all past the six-hour
+expiry, no overlap), confirmed no cold pass in flight (the standing transcript's own `launch_head`
+sat one commit behind current HEAD with a finished `run_verdict=`), read `HEAD` once, and launched
+a fresh cold run with `--cadence-slice 1`.** Held fully still -- no writes at all -- across five
+Monitor re-arms (roughly 55 minutes) until the transcript carried `run_verdict=guard_red`, 372
+green, 8 red, 3 gated, `tree_moved=no`. Compared the red-leg names against the prior clean lap's
+own log: the standing eight matched name-for-name -- `standing_equipment_redleg`, `shim_reason`,
+`query_wire_retention`, `ceiling_teeth`, `ignored_walk`, `rye_compiled_reach`,
+`falsifier_form_outcome`, `standing_equipment`. Zero new reds, tenth lap running clean in a row.
+Card headroom unchanged (39,834/40,960 bytes). Next lap: fresh round-open; check the board and for
+an in-flight pass; hold fully still with `--cadence-slice 1` until `run_verdict=` lands. The REDS
+pin deadlock is still open and still Keaton's to rule on.
