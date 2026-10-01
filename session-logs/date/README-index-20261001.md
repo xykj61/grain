@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.035445` | [thirteenth-clean-cold-run](20261001/20261001-035445_thirteenth-clean-cold-run.kyri) | fresh cold run, 372/8/3, caught own fabricated stamp |
 | `20261001.025125` | [demo-output-archive-room-moved](20261001/20261001-025125_demo-output-archive-room-moved.kyri) | held for in-flight pass, 371/9/3, repaired demo_output |
 | `20261001.015010` | [nib-shape-lesson-and-send](20261001/20261001-015010_nib-shape-lesson-and-send.kyri) | amend vs follow-up, pushed clean |
 | `20261001.014656` | [session-roster-close-open](20261001/20261001-014656_session-roster-close-open.kyri) | closed 20260930 chapter row, 371/9/3 |
