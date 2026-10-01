@@ -53,18 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim diffuser-parent-claim-wall-review-20260924
-seat diffuser
-stamp 20260924.121217
-epoch 1790266337
-paths tools/c/commit_parent_claim_witness.rish tools/fixtures/c/commit_parent_claim_scan.sh tools/hooks/commit-msg
-what Review parent-claim wall violations, prove the existing witness, and record whether the hook repair is authorized.
-claim diffuser-late-sleep-phase
-seat diffuser
-stamp 20260925.125920
-epoch 1790355560
-paths active-designing/date/20260925/20260925-125914_caravan-late-sleep-phase.md
-what Derive Caravan late-sleep phase drift from its source and hand Bakery a bounded timing falsifier.
 claim patchouli-weave-tablecloth-seam-falsifier
 seat patchouli
 stamp 20261001.121229
