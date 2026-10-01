@@ -98,7 +98,15 @@ whole](archive/date/20261001/20261001-152231_itinerary-copal-reds-ledger-account
 the `prove-red` leg flips one control's presence check from `git ls-files` to a bare `test -f` and
 reads `verdict=misread`, `detail=RED_on_disk_is_not_in_the_tree`, `census=withheld`. Claimed as
 `copal-fascia-health-roster`, run direct on metal, exit 0, both legs as printed. Seated
-`20261001.152107`. **128** unrostered `tools/gen/chapter/` witnesses remain, measured fresh.
+`20261001.152107`.
+
+**COPAL -- OLDNESS_CENSUS ROSTERED.** `tools/gen/chapter/oldness_census_witness.rish` now proves
+`tools/fixtures/o/oldness_census_scan.sh` both ways: the green leg reads the M3 census controls
+honored, SAFE.md's cycle-1/rows-0 empty-welcome shape, and the tracked-markdown living/dated split
+at `tier2_share=0.790`; a new `prove-red` leg plants `CYCLE=99` and reads `oldness_safe=failed`,
+`detail=want_cycle_1`, `verdict=misread`. Claimed as `copal-oldness-census-roster`, both legs run
+direct on metal, exit 0 and exit 1 as printed. Seated `20261001.181807`. **127** unrostered
+`tools/gen/chapter/` witnesses remain, measured fresh.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -354,7 +362,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e905525e2c` -- HEAD's parent, read after the final rebase.
+**Git nib:** `732e9f95a4` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

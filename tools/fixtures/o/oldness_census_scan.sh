@@ -3,12 +3,15 @@
 # Control first; then SAFE shape; then living/dated split over tracked md.
 # No backtick characters in patterns. Print only -- never mutates SAFE.
 #
-#   sh tools/fixtures/o/oldness_census_scan.sh
+#   sh tools/fixtures/o/oldness_census_scan.sh             # the living read
+#   sh tools/fixtures/o/oldness_census_scan.sh prove-red    # planted misread, refuses by name
 #
 # Law: four fifths of markdown is Tier 2 testimony; the living header
 # (born ... refreshed ...) is the relevancy marker for the plain-named remainder.
 # SAFE rows grow only by Keaton's word.
 set -eu
+
+MODE="${1:-}"
 
 CONTROL_SCAN=tools/fixtures/c/census_control_scan.sh
 SAFE=SAFE.md
@@ -78,6 +81,10 @@ CYCLE=$(rg -o 'Cycle:\*\*[[:space:]]*[0-9]+' "$SAFE" | rg -o '[0-9]+' | head -1)
 ROWS=$(rg -o 'Rows:\*\*[[:space:]]*[0-9]+ of 64' "$SAFE" | rg -o '[0-9]+' | head -1)
 CYCLE=${CYCLE:-missing}
 ROWS=${ROWS:-missing}
+if test "$MODE" = "prove-red"; then
+  # Planted misread: a real SAFE.md read wrong rather than a fixture standing in for one.
+  CYCLE=99
+fi
 if test "$CYCLE" != "1"; then
   echo "oldness_safe=failed"
   echo "verdict=misread"
