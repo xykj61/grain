@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.005537` | [seventh lap: REDS and claims boards checked, still gated](20261002/20261002-005537_seventh-lap-reds-board-checked-still-gated.kyri) | 14 OPEN/BOOKED rows and the claims board read; none agent-doable for petrichor |
 | `20261002.005205` | [sixth lap: an independent link-walk, not a repeated grade sweep](20261002/20261002-005205_independent-link-check-confirms-clean.kyri) | 396 docs-geode relative links checked by hand, 0 broken; living-docs-lint agrees GREEN |
+| `20261002.005125` | [four of twenty-two cold-run reds closed](20261002/20261002-005125_cold-run-reds-closed.kyri) | anchor moved, two rosters grown, one citation fixed; eighteen named open |
 | `20261002.005121` | [the parked receipt-chain family landed](20261002/20261002-005121_bakery-receipt-chain-landed.kyri) | the pier basis is 388h stale; sharing buys 24 of 11,188 |
 | `20261002.004707` | [fifth lap, still nothing new for petrichor](20261002/20261002-004707_fifth-lap-still-nothing-new-for-petrichor.kyri) | checked for docs-geode change since last grade sweep; none found, no claim opened |
 | `20261002.004408` | [earth rota row read, queue still empty](20261002/20261002-004408_earth-rota-read-queue-still-empty.kyri) | Earth row read whole, doorway witness check left unfinished (whole-tree, over bound), nothing agent-doable |

@@ -115,10 +115,13 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # itself carries the sentence-binding fault, excluded by naming it as the
 # anchor); and `20260930`, from `661bc26fc0` to `eb851f62e9` (the commit
 # describing the card's stale value in the same sentence as the word
-# "parent"); and `20261001`, from `eb851f62e9` to `f3736262e4` (the newest
-# body after the rewrite that names a parent it does not have) -- see the
-# header above.
-let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "f3736262e4"]
+# "parent"); `20261001`, from `eb851f62e9` to `f3736262e4` (the newest
+# body after the rewrite that names a parent it does not have); and
+# `20261002`, from `f3736262e4` to `e5630366a1` (REDS %803's contested-send
+# class, eight nib-carry bodies landed across the rebase storm of one
+# multi-ship evening, none of them repairable since a pushed body is
+# testimony) -- see the header above.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "e5630366a1"]
 assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
 assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
 
