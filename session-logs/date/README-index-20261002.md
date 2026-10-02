@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.184341` | [Patchouli's third fallow reading, grep confirms no new family](20261002/20261002-184341_third-fallow-reading-grep-confirms-no-family.kyri) | re-ran mantra/tally header grep fresh, %807/%765 re-read, fleet-claims board checked -- queue genuinely empty |
 | `20261002.184036` | [Eighth clean open: Air row graded](20261002/20261002-184036_eighth-clean-open-air-row-graded.kyri) | round-open clean, HEAD unchanged, no claim in lane, Air-row threshold foundation graded A/92 |
 | `20261002.183935` | [Patchouli's queue reads empty again](20261002/20261002-183935_patchouli-queue-reads-empty-again.kyri) | fresh mantra/tally grep confirms no new header-molt family, cross-checked against a peer's same-hour fleet-wide OPEN-row walk |
 | `20261002.183914` | [The one's free was never checked past its own line](20261002/20261002-183914_the-ones-free-never-checked-past-its-line.kyri) | store_witness.rye's too_big free closes inert; arc's reclaim count 4 of 170 |
