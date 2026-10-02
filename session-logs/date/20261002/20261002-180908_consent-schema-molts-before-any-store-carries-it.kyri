@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261002.180908
+editor Claude Code
+provider Anthropic
+product Claude Code
+role patchouli, mantra and tally lane
+modality text
+model claude-sonnet-5
+model_status configured FLEET DEFAULT claude-sonnet-5 at medium per .claude/settings.json, read 20260917; this clone's resolved_model not independently re-checked this lap
+voice Kyri
+title the consent lowering's own schema strings molt before any store ever carries them
+prompt Keaton gave no new instruction this lap; the baton and the inner prompt directed re-reading the lane's ground (ruled 20261002.142242) before assuming the queue was still empty.
+think .loop-gates-only was absent at lap open, meaning the sentinel set at the end of the prior lap was cleared -- so the ruling's own instruction stood: re-read REDS %807 and %765 fresh, re-read fleet-claims.kyri off xy, and re-run the grep for a bare -v1/-v2 header constant in mantra/ and tally/ rather than trusting the prior lap's empty reading.
+think the narrow grep (appendSlice-style header dispatch) found nothing new, matching the last three laps -- but widening the pattern to any v1/v2-suffixed string literal surfaced six hits, four of them elder (receipt_offer.rye schema_v1, predating %765's ruling by three days; mantra-weave and mantra-commit read-paths, already molted) and two freshly dated inside consent_replay.rye's grant_schema and revoke_schema, authored 20261001.201747, five days after %765 was ruled.
+think pressed on the boundary rather than assuming it: grepped mantra/ and tally/ for both schema strings and found only the module's own witness, which names the constants rather than the literal, so no dispatch line or external store depends on the elder spelling -- the one difference that makes this molt cheaper than mantra-weave's or mantra-commit's, which both kept a live elder-read path.
+obs chose to molt grant_schema and revoke_schema to the one-clock stamp read at the moment of the edit (20261002.180446), the same convention the commit-header molt used, rather than the constants' own authorship stamp -- the molt date names when the tree corrected itself, not when the mistake was made.
+obs left receipt_offer.rye's schema_v1 untouched: it predates the %765 ruling and is therefore an elder header under accrete-never-break, not a fresh violation of a rule that did not yet exist when it was written.
+rota lap 7591, row 1 -- Air, the row that feels. The reading: distinguishing an elder header (keeps its name forever) from a fresh one born after the ruling (molts now, cheaply) is exactly a boundary question -- the hand presses on "when was this written" and the edge either holds or gives. It held cleanly here: one file five days late, one file three days early, and the line between them decided the whole lap.
+loom witness=mantra_consent_replay_witness wall_ms=na refusals=13 verdict=green
+file mantra/src/consent_replay.rye -- grant_schema and revoke_schema moved from grain.consent-grant.v1/grain.consent-revoke.v1 to the 20261002.180446 stamp
+file construction/ITINERARY.md -- Patchouli's one live account replaced (the-writer-sheds), Git nib carried to the amend shape
+file construction/archive/date/20261002/20261002-180446_itinerary-patchouli-consent-schema-molt-account.md -- the elder mantra-commit account shelved, the new finding written whole
+file recursion-prompts/patchouli-inner.md -- the fruit section records the third landed family and the instruction to re-grep fresh each lap
+recommend keep-going -- thirty-nine families of REDS %765 remain outside this lane; this lane's own mantra/ and tally/ surface reads clean again until the next re-grep finds a new one
+status GREEN -- mantra_consent_replay_witness.rish ran GREEN after the edit, tame_style_check named no new red, fleet_claim_scan read clear, commit bec3d2793d made locally, push not yet attempted as this field is written
+scope one chronological-header molt in mantra/src/consent_replay.rye, the living card, and this log, all in one commit
