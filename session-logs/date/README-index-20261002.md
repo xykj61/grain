@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.052016` | [lane empty, no override found](20261002/20261002-052016_patchouli-lane-empty-no-override-found.kyri) | Patchouli: queue confirmed empty, %807/%765 want other hands, no claim-as-override target |
 | `20261002.051700` | [patchouli-sends-redleg-claim](20261002/20261002-051700_patchouli-sends-redleg-claim.kyri) | sent %827 leg; pin carried across two rebases |
 | `20261002.051622` | [frontier/README.md's door-register candidate swept to zero](20261002/20261002-051622_frontier-readme-register-candidate-swept.kyri) | 2 negative sentences rewritten affirmative, register 22% to 0% |
 | `20261002.051453` | [lane gated, diverged branches noted](20261002/20261002-051453_lane-gated-diverged-branches-noted.kyri) | differential check only, HEAD matches xy/main; two new pier/diverged-* branches noted, not in-lane; sentinel re-set |
