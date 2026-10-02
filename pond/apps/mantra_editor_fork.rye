@@ -129,6 +129,19 @@ pub fn main(init: std.process.Init) !u8 {
         print("mantra_editor_fork {s} — GREEN\n", .{mantra_editor_fork_version});
         return 0;
     }
-    print("usage: mantra-editor-fork selftest\n", .{});
+    // A planted duplicate-open, surfaced to the process boundary rather than caught
+    // inline, so an external witness can demonstrate the refusal itself (REDS %827)
+    // rather than only trusting the selftest's own internal assertion.
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "fork-dup")) {
+        var catalog = try mb.demo_catalog();
+        if (editor.open_lane(&catalog, "local", "notes", "b.txt", "dup", "leaf")) |_| {
+            print("mantra_editor_fork: fork-dup unexpectedly admitted a duplicate lane\n", .{});
+            return 1;
+        } else |err| {
+            print("mantra_editor_fork: fork-dup refused — {s}\n", .{@errorName(err)});
+            return 2;
+        }
+    }
+    print("usage: mantra-editor-fork selftest | fork-dup\n", .{});
     return 1;
 }
