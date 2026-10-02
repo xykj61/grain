@@ -293,6 +293,109 @@ else
   ok "the elder bare tail drops the header this helper restores"
 fi
 
+# capture_evidence: A FAILED COPY MUST REFUSE. Every leg below is shown from both sides -- the
+# healthy readings above assert that nothing changed for a copy that lands, and these assert that
+# a copy which does not land says so. The elder body closed on `[ -f "$dst" ]`, and a redirect
+# creates the destination before the producer runs, so the file stood and the answer was yes
+# whatever the producer did.
+#
+# THE PLANT IS A FAILING TOOL ON PATH, rather than a full-disk or a permission trick, because a
+# producer that refuses is the shape this reaches in the field -- a tool absent from a stripped
+# PATH, a binary that cannot exec -- and it is the one shape a pen can plant on any host. PATH is
+# saved and restored around each plant so no later leg runs under a broken tool.
+ce_shim="$pen/ce-shim"
+mkdir -p "$ce_shim"
+ce_path_saved=$PATH
+
+# A failing `cat` on the whole-copy branch: the destination is created by the redirect and left at
+# zero bytes. This is the exact reading measured before the repair -- `rc=0 bytes=0`.
+printf '#!/bin/sh\nexit 1\n' > "$ce_shim/cat"
+chmod +x "$ce_shim/cat"
+PATH="$ce_shim:$ce_path_saved"
+ce_rc=0
+capture_evidence "$short_src" "$pen/failed.short.txt" 200 || ce_rc=$?
+PATH=$ce_path_saved
+rm -f "$ce_shim/cat"
+[ "$ce_rc" -eq 3 ] && ok "a failed whole copy refuses with its own code" \
+  || bad "a failed whole copy refuses with its own code (rc=$ce_rc)"
+[ -e "$pen/failed.short.txt" ] \
+  && bad "a failed capture leaves no zero-byte stub behind" \
+  || ok "a failed capture leaves no zero-byte stub behind"
+
+# A failing `head` on the bounded branch: the group still writes the marker and the tail, so the
+# destination is NON-EMPTY and carries the body and the verdict line. Only the header -- the very
+# reading this helper exists to keep -- is gone. A byte-count check alone reads this as healthy,
+# which is why the producer's status is checked too.
+printf '#!/bin/sh\nexit 1\n' > "$ce_shim/head"
+chmod +x "$ce_shim/head"
+PATH="$ce_shim:$ce_path_saved"
+ce_rc=0
+capture_evidence "$long_src" "$pen/failed.long.txt" 200 || ce_rc=$?
+PATH=$ce_path_saved
+rm -f "$ce_shim/head"
+[ "$ce_rc" -eq 3 ] && ok "a bounded capture whose header producer fails refuses" \
+  || bad "a bounded capture whose header producer fails refuses (rc=$ce_rc)"
+[ -e "$pen/failed.long.txt" ] \
+  && bad "a headerless bounded capture leaves no file to be mistaken for an answer" \
+  || ok "a headerless bounded capture leaves no file to be mistaken for an answer"
+
+# AND THE TWO READINGS IN THAT BRANCH ARE MADE LOAD-BEARING SEPARATELY. Measured on this control
+# first: with the `head` plant above, dropping EITHER the producer status or the line count left
+# every leg green, because each covered for the other -- a conjunction where only one member is
+# ever proven. So each gets the shape only it can catch.
+#
+# Only the LINE COUNT catches a producer that emits short at status zero: nothing refuses, and the
+# destination carries the body and the verdict while the header is gone.
+ce_real_head=$(command -v head)
+printf '#!/bin/sh\nexit 0\n' > "$ce_shim/head"
+chmod +x "$ce_shim/head"
+PATH="$ce_shim:$ce_path_saved"
+ce_rc=0
+capture_evidence "$long_src" "$pen/silent.long.txt" 200 || ce_rc=$?
+PATH=$ce_path_saved
+rm -f "$ce_shim/head"
+[ "$ce_rc" -eq 3 ] && ok "a header producer that answers zero and emits nothing still refuses" \
+  || bad "a header producer that answers zero and emits nothing still refuses (rc=$ce_rc)"
+
+# Only the PRODUCER STATUS catches a producer that emits its whole answer and then refuses: the
+# line count is exactly what it should be, so a postcondition on the artifact reads healthy.
+printf '#!/bin/sh\n"%s" "$@"\nexit 1\n' "$ce_real_head" > "$ce_shim/head"
+chmod +x "$ce_shim/head"
+PATH="$ce_shim:$ce_path_saved"
+ce_rc=0
+capture_evidence "$long_src" "$pen/late.long.txt" 200 || ce_rc=$?
+PATH=$ce_path_saved
+rm -f "$ce_shim/head"
+[ "$ce_rc" -eq 3 ] && ok "a header producer that answers whole and then refuses still refuses" \
+  || bad "a header producer that answers whole and then refuses still refuses (rc=$ce_rc)"
+
+# THE MUTATION THAT MUST BITE: the elder reading, run here on the same plant. `[ -f "$dst" ]` over
+# a destination the redirect created answers yes, so a control that only asserted the new refusal
+# could not tell the repair from a pen where nothing ever failed.
+printf '#!/bin/sh\nexit 1\n' > "$ce_shim/cat"
+chmod +x "$ce_shim/cat"
+PATH="$ce_shim:$ce_path_saved"
+cat "$short_src" > "$pen/elder.txt" 2>/dev/null || true
+PATH=$ce_path_saved
+rm -f "$ce_shim/cat"
+if [ -f "$pen/elder.txt" ] && [ ! -s "$pen/elder.txt" ]; then
+  ok "the elder existence test reads a zero-byte destination as success"
+else
+  bad "the elder existence test reads a zero-byte destination as success"
+fi
+
+# The three refusal codes stay distinct, so a caller can tell a broken instrument from a broken
+# request. Each is asserted beside the success it is not.
+ce_rc=0; capture_evidence "" "$pen/x.txt" 200 || ce_rc=$?
+[ "$ce_rc" -eq 2 ] && ok "incomplete arguments keep their own code" \
+  || bad "incomplete arguments keep their own code (rc=$ce_rc)"
+ce_rc=0; capture_evidence "$pen/no-such-source-here.txt" "$pen/x.txt" 200 || ce_rc=$?
+[ "$ce_rc" -eq 1 ] && ok "an unreadable source keeps its own code" \
+  || bad "an unreadable source keeps its own code (rc=$ce_rc)"
+ce_rc=0; capture_evidence "$short_src" "$pen/ok.txt" 200 || ce_rc=$?
+[ "$ce_rc" -eq 0 ] && ok "a landed copy answers zero beside all three refusals" \
+  || bad "a landed copy answers zero beside all three refusals (rc=$ce_rc)"
+
 # ---------------------------------------------------------------------------------------------
 # key_value -- a bolded key's value, cut where the next key begins.
 #

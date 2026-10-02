@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.060035` | [capture_evidence refuses a copy that did not land](20261002/20261002-060035_bakery-capture-evidence-refusal.kyri) | a redirect made every failed copy read as success |
 | `20261002.055912` | [identical state, gate re-set](20261002/20261002-055912_identical-state-gate-reset.kyri) | HEAD unchanged since prior lap; no new claims or work; GATES-ONLY re-set |
 | `20261002.055619` | [grass no-network ordinary-move empty](20261002/20261002-055619_grass-no-network-ordinary-move-empty.kyri) | network dark, rishi stale/slow; no bounded repair found this lap |
 | `20261002.055509` | [identity-remake-k5-roster](20261002/20261002-055509_identity-remake-k5-roster.kyri) | Copal rosters `identity_remake_k5`, ninth chapter witness, both ways |

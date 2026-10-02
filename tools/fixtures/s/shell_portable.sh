@@ -327,6 +327,28 @@ search_text() {
 # keeps a bounded head, an explicit count of what it skips, and a bounded tail, so the kept file
 # names both ends of the run rather than one -- and a file that already fits inside the bound is
 # copied whole, byte for byte, so this changes nothing for the guards that were never truncated.
+# A COPY THAT FAILED MUST NOT READ AS A COPY THAT LANDED (`20261002`). The elder body closed on
+# `[ -f "$_ce_dst" ]`, which asks whether the destination EXISTS -- and a shell redirect creates
+# and truncates the destination BEFORE the producer runs, so every way the producer can fail
+# leaves a file standing and this helper answering yes. Proven on metal both ways in the control:
+# with `cat` absent from PATH the destination stood at zero bytes and the return was 0, and with
+# `head` failing the destination carried the body and verdict while the three header lines this
+# helper exists to keep were gone, return 0 again. The caller in
+# `tools/fixtures/s/standing_equipment_run.sh` already does the right thing with a false return --
+# it removes the file, says the answer is lost rather than read, and counts the guard `unrun` --
+# so the whole repair belongs here, in the return this helper owes it.
+#
+# Three readings hold it, because no one of them catches all three shapes. The producer's own
+# STATUS catches a tool that refuses out loud. The destination's BYTE count catches a producer
+# that wrote nothing at any status. The destination's LINE count catches a producer that ran,
+# answered 0, and emitted a short answer -- the one shape the other two read as healthy.
+#
+# AND A FAILED CAPTURE LEAVES NO FILE. A zero-byte evidence file on disk is read by the next hand
+# as a guard that answered nothing, which is a different fact from a guard whose answer was lost;
+# absence says the second honestly where a stub says the first falsely.
+#
+# Return 3 names a copy that did not land whole, apart from 1 (the source cannot be read) and
+# 2 (the arguments are incomplete), so a caller can tell a broken instrument from a broken request.
 capture_evidence() {
   _ce_src=$1
   _ce_dst=$2
@@ -336,19 +358,45 @@ capture_evidence() {
   [ -r "$_ce_src" ] || return 1
   _ce_total=$(wc -l < "$_ce_src" 2>/dev/null) || return 1
   _ce_total=${_ce_total:-0}
+  _ce_srcbytes=$(wc -c < "$_ce_src" 2>/dev/null) || return 1
+  _ce_srcbytes=${_ce_srcbytes:-0}
+  _ce_rc=0
   if [ "$_ce_total" -le "$_ce_max" ]; then
-    cat "$_ce_src" > "$_ce_dst" 2>/dev/null
+    cat "$_ce_src" > "$_ce_dst" 2>/dev/null || _ce_rc=3
+    # A whole copy is exact, so it is checked exactly: the same instrument on both sides, and any
+    # difference at all is a failure rather than a tolerance.
+    _ce_want=$_ce_srcbytes
+    _ce_got=$(wc -c < "$_ce_dst" 2>/dev/null) || _ce_rc=3
+    [ "${_ce_got:-0}" -eq "$_ce_want" ] || _ce_rc=3
   else
     _ce_tail=$((_ce_max - _ce_head - 1))
     [ "$_ce_tail" -gt 0 ] || _ce_tail=1
     _ce_omitted=$((_ce_total - _ce_head - _ce_tail))
+    # The braces keep this in the current shell, so a status recorded inside the group is readable
+    # after it -- which a subshell would swallow, exactly as the single group status already did.
     {
-      head -n "$_ce_head" "$_ce_src"
-      printf '... %d lines omitted ...\n' "$_ce_omitted"
-      tail -n "$_ce_tail" "$_ce_src"
+      head -n "$_ce_head" "$_ce_src" || _ce_rc=3
+      printf '... %d lines omitted ...\n' "$_ce_omitted" || _ce_rc=3
+      tail -n "$_ce_tail" "$_ce_src" || _ce_rc=3
     } > "$_ce_dst" 2>/dev/null
+    _ce_got=$(wc -c < "$_ce_dst" 2>/dev/null) || _ce_rc=3
+    [ "${_ce_got:-0}" -gt 0 ] || _ce_rc=3
+    # The head, the marker, and the tail, counted. A source whose last line carries no terminating
+    # newline is counted one short by `wc -l` at both ends, so one line of slack is honest here and
+    # a lost 40-line header is forty lines outside it.
+    _ce_want=$((_ce_head + 1 + _ce_tail))
+    _ce_lines=$(wc -l < "$_ce_dst" 2>/dev/null) || _ce_rc=3
+    _ce_lines=${_ce_lines:-0}
+    if [ "$_ce_lines" -ne "$_ce_want" ] && [ "$_ce_lines" -ne $((_ce_want - 1)) ]; then
+      _ce_rc=3
+    fi
   fi
-  [ -f "$_ce_dst" ]
+  if [ "$_ce_rc" -ne 0 ]; then
+    rm -f "$_ce_dst" 2>/dev/null
+    return 3
+  fi
+  [ -f "$_ce_dst" ] || return 3
+  return 0
 }
 
 

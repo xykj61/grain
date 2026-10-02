@@ -225,6 +225,17 @@ assert portable.out contains "fail=0" else "shell-dialect: no helper behavior ma
 # never ran to see the drift -- every prior red on the scan above stopped the witness first. Fixing
 # the ceiling site (`aurora_file_placement_scan.sh`) unmasked it; the count is read back here rather
 # than assumed, the same discipline the ceiling itself already applies.
-assert portable.out contains "pass=71" else "shell-dialect: want seventy-one helper behaviors proven"
+# 71 -> 81 on `20261002`: ten legs for the return `capture_evidence` owes its caller. The elder
+# body closed on `[ -f "$dst" ]`, and a shell redirect creates the destination before the producer
+# runs, so a failed copy read as a landed one -- measured on metal at `rc=0 bytes=0` with `cat`
+# absent, and at `rc=0` with the header gone when `head` refused. Four legs plant those two
+# failures and assert the refusal and the absent stub, one runs the ELDER existence test on the
+# same plant so the repair is told apart from a pen where nothing failed, and three hold the three
+# refusal codes distinct beside the success they are not. The last two were owed by a measurement
+# rather than chosen: with the header plant alone, dropping EITHER the producer status or the line
+# count left every leg green, since each covered for the other, so one leg plants a producer that
+# emits nothing at status zero (only the count sees it) and one plants a producer that emits its
+# whole answer and then refuses (only the status sees it). Each reading now bites its own mutation.
+assert portable.out contains "pass=81" else "shell-dialect: want eighty-one helper behaviors proven"
 
 say "GREEN: shell-dialect -- five gated families stand at zero and a sixth at a ratchet of seven, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every one of the six ceilings is proven from both sides on a planted tree"
