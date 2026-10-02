@@ -94,8 +94,15 @@ shelved](archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetl
 
 **COPAL -- A THIRTEENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep015_census_witness.rish`
 rostered, both legs proven on metal. Claimed as `copal-ironbeetle-ep015-census-roster`, closed.
-**YOURS:** ~73 chapter witnesses remain unrostered, measured against the `guard` rows in
-`construction/standing-equipment.kyri`.
+
+**COPAL -- A TWENTIETH UNROSTERED WITNESS.** `tigerbeetle_golden_rule_census_witness.rish`
+rostered -- the e21 TB golden-rule sibling, same decided-skip shape as `be_explicit` and
+`assert_census`: proven both legs on metal, clone moved aside exits GREEN at the clone-absent
+skip, restored it reads GREEN at `verdict=ok` with GUIDE_GOLDEN, TAME_GOLDEN, MAYBE_COMPLETES, and
+STYLE all at yes, and the `tigerbeetle_control_plane_census` elder it calls stays GREEN beside it.
+Claimed as `copal-tigerbeetle-golden-rule-roster`, closed. **YOURS:** ~72 chapter witnesses remain
+unrostered, measured against the `guard` rows in `construction/standing-equipment.kyri` rather than
+trusted from this line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -109,40 +116,10 @@ shelved](archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-acco
 -- `instrument_suite_witness.rish` reds on a fascia-health floor the tree has already dropped
 below; booked at `construction/REDS.md` (`20261001.234320`), **OPEN**.
 
-**COPAL -- A FIFTEENTH UNROSTERED WITNESS.** `pond_brushstroke_frame_witness.rish` rostered --
-both honest skip legs proven on metal (display absent, then binary absent with a fake display
-set). Claimed, closed. **YOURS:** ~99 remain.
-
-**COPAL -- A SIXTEENTH UNROSTERED WITNESS.** `tigerbeetle_assert_census_witness.rish` rostered --
-both legs proven on metal: `gratitude/tigerbeetle` uninitialised (this pier's prior state) exits
-GREEN at the clone-absent skip, and `git submodule update --init gratitude/tigerbeetle` then reads
-the real upstream census GREEN at `verdict=ok`. Claimed, closed. **YOURS:** ~99 remain.
-
-**COPAL -- A SEVENTEENTH UNROSTERED WITNESS.** `tigerbeetle_be_explicit_census_witness.rish`
-rostered -- the e39 TB "be explicit" sibling, both legs proven on metal: moved aside it exits GREEN
-at the clone-absent skip, restored it reads GREEN at `verdict=ok` with GUIDE_EXPLICIT, GUIDE_HOTLOOP,
-TAME_EXPLICIT, STYLE, and COMPACTION all at yes, and the held `tigerbeetle_batching_census` sibling
-stays GREEN beside it. Claimed, closed. **YOURS:** ~91 remain, measured by comparing
-`ls tools/gen/chapter/*_witness.rish` against the `guard` rows named in
-`construction/standing-equipment.kyri` rather than trusted from this line.
-
-**COPAL -- AN EIGHTEENTH UNROSTERED WITNESS.** `wayland_from_frame_witness.rish` rostered --
-the same decided-skip shape as `pond_brushstroke_frame`, proven both legs on metal: with
-`WAYLAND_DISPLAY` unset (this pier's own state) it exits GREEN at the display-absent skip, and
-with `WAYLAND_DISPLAY` set to a fake value it clears that skip, runs `glow_connector_seam` and
-`brush-parse grid` against the present `brush-parse` binary, then exits GREEN at the still-unbuilt
-`brushstroke-wayland-seed` binary's skip. Claimed, closed. **YOURS:** ~90 remain, same measure as
-above.
-
-**COPAL -- A NINETEENTH UNROSTERED WITNESS.** `ironbeetle_ep006_census_witness.rish` rostered --
-the fifth of the IronBeetle episode-census family alongside ep001, ep002, ep004, and ep005.
-`gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the witness
-carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
-directly. Proven on metal at `verdict=ok` (IRON=present, EP006=yes, HONORS=yes, SOURCE=yes,
-TEACH=yes, RHYME=yes, CLEAN=yes, MATKLAD_OK=yes), and proven on the roster's own structural scan
-beside it -- `guards_rostered=546`, `guards_path_missing=0`, no `unrostered:` line naming it.
-Claimed as `copal-ironbeetle-ep006-census-roster`, closed. **YOURS:** ~89 remain, same measure as
-above.
+**COPAL -- FIFTEENTH THROUGH NINETEENTH UNROSTERED WITNESSES, FOLDED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-180725_itinerary-copal-fifteenth-through-nineteenth-roster-fold.md)
+-- pond_brushstroke_frame, tigerbeetle_assert_census, tigerbeetle_be_explicit_census,
+wayland_from_frame, and ironbeetle_ep006_census, all rostered and claims closed.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -343,7 +320,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `bbdd4c9a83` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `55b63f914e` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
