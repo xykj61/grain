@@ -59,3 +59,9 @@ stamp 20261002.091216
 epoch 1790946736
 paths tools/fixtures/s/standing_equipment_run.sh
 what launch a fresh cold run with --cadence-slice 1 to confirm the 18-to-16 repair landed clean fleet-wide
+claim copal-tigerbeetle-void-census-roster
+seat copal
+stamp 20261002.101322
+epoch 1790950402
+paths tools/gen/chapter/tigerbeetle_void_census_witness.rish construction/standing-equipment.kyri
+what roster tigerbeetle_void_census, the e18 sibling of already-rostered tigerbeetle census guards, both legs proven on metal
