@@ -64,10 +64,13 @@ const mantra_version = "20260619.213800";
 // IT STOPPED BEING ALL THERE IS the moment `merge` landed, since a merge is
 // the arrival of a second site by definition, and `Weave.to_v1` refuses
 // `V1SiteNotConstant` rather than folding two lines into one row. So from
-// `20260909` this CLI WRITES `mantra-weave-v2` and reads both records, which
-// is what gives a merged history somewhere to land. `Weave.to_v2` and
-// `Weave.from_v2` carry the five fields and the two counters; `from_v1` still
-// lifts every elder blob already on disk.
+// `20260909` this CLI wrote `mantra-weave-v2`, widened again at `20260910`
+// (REDS %680) to carry a document-order key beside each row, and molted its
+// header to the chronological `mantra-weave-20260916.101910` under REDS %765
+// -- `serialize_weave` below writes that record and `deserialize_weave` reads
+// all three. `Weave.to_order_record` and `Weave.from_order_record` carry the
+// six fields and the two counters; `from_v1` and `from_v2` still lift every
+// elder blob already on disk.
 const weave = @import("weave.rye");
 
 const Line = weave.Line;
@@ -174,46 +177,53 @@ const Store = store_mod.Store;
 // Section Weave serialization
 // =========================================================================
 //
-// TWO RECORDS ARE READ AND ONE IS WRITTEN, and the header line is what tells
-// them apart. `deserialize_weave` dispatches on line 0, so a store written
-// before `20260909` keeps opening; `serialize_weave` writes the wide record
-// from here forward, because the elder one refuses `V1SiteNotConstant` the
-// moment two hands meet in a history and `merge` is exactly what makes them
-// meet. A module that can merge and cannot save the result has not finished
-// being one.
+// THREE RECORDS ARE READ AND ONE IS WRITTEN, and the header line is what
+// tells them apart. `deserialize_weave` dispatches on line 0, so a store
+// written at any point in this CLI's history keeps opening; `serialize_weave`
+// writes the stamped order record from here forward (REDS %765), because
+// each elder record refuses a history the next molt was built to carry --
+// `mantra-weave-v1` refuses two sites meeting in a merge, and
+// `mantra-weave-v2` carries no field for a line's place in the document a
+// replacement must land at. A module that can merge and cannot save the
+// result has not finished being one.
 //
 // Elder record -- read, never written from here forward:
 //   Line 0:  "mantra-weave-v1\n"
 //   Lines 1+: "{gen}\t{pos}\t{text}\n"
 //
-// Wide record -- written, and read:
+// Elder wide record -- read, never written from `20260910` forward:
 //   Line 0:  "mantra-weave-v2\n"
 //   Line 1:  "{next_pos}\t{next_run}\n"
 //   Lines 2+: "{gen}\t{pos}\t{site}\t{run}\t{text}\n"
 //
-// THE COUNTERS GET A LINE OF THEIR OWN because `V2Record` carries them as
+// Stamped order record -- written, and read:
+//   Line 0:  "mantra-weave-20260916.101910\n"
+//   Line 1:  "{next_pos}\t{next_run}\n"
+//   Lines 2+: "{gen}\t{pos}\t{site}\t{run}\t{ord}\t{text}\n"
+//
+// THE COUNTERS GET A LINE OF THEIR OWN because the record carries them as
 // fields rather than deriving them from the rows, and the reason is written at
 // that declaration: the weave declares `pos < next_pos` and `run < next_run`,
 // which are upper bounds rather than equalities. A reader deriving them off the
 // last row would bind every future reading to an equality this module never
 // promised. Two numbers cost one line and buy that independence.
 //
-// Both records use tab as the field separator, and line text must not contain
-// tabs or embedded newlines -- asserted at serialization in both writers. The
-// constraint stays one constraint on purpose: `to_v1` and `to_v2` write from
-// one line store, and narrowing it per record would make a line writable into
-// one and refused by the other. A future pass will lift it with a
-// length-prefix encoding.
+// All three records use tab as the field separator, and line text must not
+// contain tabs or embedded newlines -- asserted at serialization in every
+// writer. The constraint stays one constraint on purpose: `to_v1`, `to_v2`
+// and `to_order_record` write from one line store, and narrowing it per
+// record would make a line writable into one and refused by another. A
+// future pass will lift it with a length-prefix encoding.
 
-/// Write a weave as a `mantra-weave-v2` record.
+/// Write a weave as a `mantra-weave-20260916.101910` record.
 ///
-/// The rows and the two counters come from `Weave.to_v2`, which asks nothing of
-/// the weave the weave does not already promise -- so this writer, unlike the
-/// elder one below it, refuses nothing. That absence is the whole change. The
-/// elder writer read two questions before allocating a row, and the first of
-/// them (`V1SiteNotConstant`) is a refusal a merged history triggers by
-/// construction, since a merge is exactly the arrival of a second site. This
-/// function turns a record into bytes and stops there.
+/// The rows and the two counters come from `Weave.to_order_record`, which asks
+/// nothing of the weave the weave does not already promise -- so this writer,
+/// unlike the elder ones below it, refuses nothing. That absence is the whole
+/// change. The elder v1 writer read two questions before allocating a row, and
+/// the first of them (`V1SiteNotConstant`) is a refusal a merged history
+/// triggers by construction, since a merge is exactly the arrival of a second
+/// site. This function turns a record into bytes and stops there.
 ///
 /// Precondition:  no line's text carries a tab or a newline, the two separators
 ///   this serialization uses.
@@ -245,14 +255,17 @@ fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
     return out.toOwnedSlice(allocator);
 }
 
-/// Read a weave record back, whichever of the two records it is.
+/// Read a weave record back, whichever of the three records it is.
 ///
 /// The header line decides, and it is read before a row is allocated. A store
 /// written before `20260909` holds `mantra-weave-v1` blobs and keeps opening
-/// through `read_v1_rows`; every blob written from here forward is
-/// `mantra-weave-v2`. Neither reader trusts its bytes: both hand their rows to
-/// a lift that refuses a broken record by name, because a blob off disk is the
-/// one input this file gets that no caller vouched for.
+/// through `read_v1_rows`; one written between `20260909` and `20260910` holds
+/// `mantra-weave-v2` and keeps opening through `read_v2_record`; every blob
+/// written from `20260910` forward is the stamped `mantra-weave-20260916.101910`
+/// order record, read through `read_order_record`. None of the three readers
+/// trusts its bytes: each hands its rows to a lift that refuses a broken
+/// record by name, because a blob off disk is the one input this file gets
+/// that no caller vouched for.
 fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
