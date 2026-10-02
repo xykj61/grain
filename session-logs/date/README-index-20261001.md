@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.235511` | [send confirmed, three rebases](20261001/20261001-235511_send-confirmed-three-rebases.kyri) | three fetch-rebase-amend cycles against an active pier; HEAD matches xy, ledger GREEN |
 | `20261001.234933` | [candidate roster found a red instead](20261001/20261001-234933_candidate-roster-found-a-red-instead.kyri) | instrument_suite_witness reds on fascia floor; REDS booked, two closed rows hand-folded |
 | `20261001.234816` | [round-open pulled, still gated](20261001/20261001-234816_round-open-pulled-still-gated.kyri) | xy reachable; pulled one peer commit; consent-contract gate still holds, no new docs-geode work |
 | `20261001.234414` | [aether reading, the ladder is quiet on purpose](20261001/20261001-234414_aether-reading-the-ladder-is-quiet-on-purpose.kyri) | diffuser's fruit ladder closed A/94; awaits Keaton's word for next fruit |
