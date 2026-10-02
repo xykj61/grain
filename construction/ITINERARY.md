@@ -226,18 +226,18 @@ replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product m
 the cold run's 21 reds of 355 guards; PATCHOULI's was stale -- `snapshot_projection.rye` covers
 it, GREEN.
 
-**DIFFUSER -- FOUR ACCOUNTS, SHELVED WHOLE.** [Pointer
-fold](archive/date/20261002/20261002-005518_itinerary-diffuser-four-accounts-fold.md),
-`20261001`-`20261002`, nothing lost: the torus ladder's own whitepaper row, the fourth angle's
-crux, the quiet-pier scheduler, and the radial-split allocator. **YOURS:** Bakery or Incense on the
+**DIFFUSER -- FIVE ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-005518_itinerary-diffuser-four-accounts-fold.md)
+plus [one more](archive/date/20261002/20261002-011701_itinerary-diffuser-four-pairs-account.md),
+`20261001`-`20261002`, nothing lost: the torus whitepaper, the fourth angle's crux, the quiet-pier
+scheduler, the radial-split allocator, row 11 confirmed. **YOURS:** Bakery or Incense on the
 quiet-pier scheduler.
 
-**DIFFUSER -- THE FOUR PAIRS RIDE AS ONE STRING, NOT FOUR CHANNELS.** [Landed
-whole](../active-designing/date/20261002/20261002-004836_the-four-pairs-ride-as-one-string-not-four-channels.md):
-row 11's restated falsifier asked for a real per-channel traffic weight; Aurora's own
-`roster_pairs` stage carries all four declared pairs as one sealed string between two unlabeled
-guests, so no per-channel traffic exists yet to weigh -- sharper than row 7's "unmeasured," and
-confirming rather than reopening row 11. Graded B+ at Field. No YOURS; a reading of tracked source.
+**DIFFUSER -- THE REAL EDIT LOG WAS ALREADY IN GIT, NOT IN MANTRA.** [Landed
+whole](../active-designing/date/20261002/20261002-010921_the-real-edit-log-was-already-in-git-not-in-mantra.md):
+the fourth angle's crux wanted a name whose identity stays stable across an edit; this card's own
+`git` history already is that log, and its 10,829 hunks against two peer pins read three real edit
+shapes -- shift, substitution, a mix -- matching the dedup-ratio essays' own synthetic prediction.
+B/83. **YOURS:** none -- the open falsifier is named on the page.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -353,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5df2049968` -- HEAD's parent, read after the final rebase.
+**Git nib:** `8bb6ee323e` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

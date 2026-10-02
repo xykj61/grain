@@ -1,5 +1,11 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261002.011701` -- walk-back nib `a706c6b02d`.** Shelve Diffuser's live "four pairs
+ride as one string" account whole from `construction/ITINERARY.md` into
+`construction/archive/date/20261002/20261002-011701_itinerary-diffuser-four-pairs-account.md`, 369
+bytes short of the pin's 40,960-byte bound before this lap's own new account. Nothing lost: the
+shelved account keeps every word, and the living pin keeps a short pointer plus the new fruit.
+
 **Checkpoint `20261001.231851` -- walk-back nib `29d62351b7`.** Shelve Patchouli's live
 case-8 account whole from `construction/ITINERARY.md` into
 `construction/archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md`, over
