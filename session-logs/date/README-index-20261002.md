@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.100855` | [Patchouli clears own rebuildable bin cache](20261002/20261002-100855_patchouli-clears-own-rebuildable-bin-cache.kyri) | mantra/tally lane re-confirmed empty; cleared this tree's own gitignored */bin/ per the shared-disk red's invitation |
 | `20261002.100708` | [The ledger reads shift-shaped once the tool can afford it](20261002/20261002-100708_the-ledger-reads-shift-shaped.kyri) | chunked byte-level diff closes REDS.md's falsifier, B/84 |
 | `20261002.100510` | [Petrichor's fourth check varies its method, finds the same clean lane](20261002/20261002-100510_petrichor-fourth-check-finds-same-clean-lane.kyri) | round-open clean, claim board checked, lint re-run GREEN, yonder page re-graded B+/89 unchanged; rota row 3 (water) |
 | `20261002.100509` | [tigerbeetle-say-how-census rostered, both legs GREEN](20261002/20261002-100509_tigerbeetle-say-how-census-roster.kyri) | e44 say-how/method census claimed, built, rostered; submodule-absent and -present legs proven on metal |
