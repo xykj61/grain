@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.124534` | [The fleet is ashore](20261002/20261002-124534_the-fleet-is-ashore.kyri) | seven seats clocked out, then fast-forwarded |
 | `20261002.120213` | [Cursor rules return home](20261002/20261002-120213_cursor-rules-return-home.kyri) | sixty twins live under .cursor/rules again |
 | `20261002.114619` | [docs-geode is Bhakta](20261002/20261002-114619_docs-geode-is-bhakta.kyri) | 48 teaching pages declare Bhakta at the Door |
 | `20261002.112355` | [Lila-first, return-first](20261002/20261002-112355_lila-first-return-first.kyri) | the short name, linked from the root down to the prompt |
