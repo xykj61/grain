@@ -19,4 +19,12 @@ say scan.out
 assert scan.out contains "verdict=ok" else "reds-ledger: a row is incomplete or the pin is past bound"
 assert scan.ok else "reds-ledger: the verdict reads ok while the status fails — they must agree"
 
+# The scan carries its own prove-red leg (a planted control ledger with a thin
+# row and a vague caught-column), run here so this witness demonstrates its
+# own refusal rather than only trusting the living ledger to stay clean.
+let red = run ["sh" "tools/fixtures/r/reds_ledger_scan.sh" "prove-red"]
+say red.out
+assert (red.ok == false) else "reds-ledger: prove-red must refuse on the planted thin ledger"
+assert red.out contains "RED_reds_ledger_thin_rows_caught" else "reds-ledger: prove-red want the named refusal"
+
 say "GREEN: reds-ledger — every red carries what went wrong, what caught it, what it taught"
