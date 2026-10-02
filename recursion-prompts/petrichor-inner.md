@@ -38,7 +38,12 @@ thing there, the shelf is confirmed clean and the lap's time is better spent nam
 tending target (a page outside the three already-run witnesses' reach, a stale number, a citation
 this lap hasn't checked) rather than re-running the identical grade-touch a fourth time.
 
-**Ruled `20261002.142242`.** The next fruit is one page, `docs-geode/tutorials/the-first-hour.md`. Grade it at Door. A reading below B takes one bounded molt. A reading at B or better is recorded, and the lap stops. `mantra/` and `tally/` stay closed. The Consent Rail stays with Diffuser. No second contract, and no shelf-wide sweep.
+**Ruled `20261002.142242`, closed `20261002.144743`.** `docs-geode/tutorials/the-first-hour.md` graded
+at Door: register 87, reach 100, truth 100 (counted), service 75, composite **91, A**. Clear of the
+B floor by eleven points; no molt opened. Re-read with
+`sh tools/fixtures/q/qa_report_card.sh docs-geode/tutorials/the-first-hour.md --setting door --service 75`
+rather than trusting this line. `mantra/` and `tally/` stay closed. The Consent Rail stays with
+Diffuser. No second contract, and no shelf-wide sweep. A new fruit waits on the next word.
 
 **Landed `20261002.144620`.** The first hour grades A at Door, composite 91, register 87, truth 100. The page stands. No molt.
 
