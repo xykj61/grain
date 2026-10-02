@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.141355` | [The order is current](20261002/20261002-141355_the-order-is-current.kyri) | the captain's order names the fruits that stand |
 | `20261002.134955` | [The fleet is in](20261002/20261002-134955_the-fleet-is-in.kyri) | seven seats clocked in on the rewritten main |
 | `20261002.134003` | [History rewritten](20261002/20261002-134003_history-rewritten.kyri) | phrase witness empty; seats reset after xy |
 | `20261002.130605` | [Lila and the Long Return](20261002/20261002-130605_lila-and-the-long-return.kyri) | the living order is seated; history waits |
