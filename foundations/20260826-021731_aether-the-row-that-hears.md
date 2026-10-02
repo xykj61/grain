@@ -6,7 +6,8 @@
 **Voice:** Kyri
 **Status:** Living -- the aether row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
 **Strand-count erratum:** `20260907.062544` -- this page counted the grain at ten; the fusion of `20260802` seated three more, and the count now lives on the grain page alone
-**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) -- [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) -- [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md)
+**Fixed-seat erratum:** `20261002.180116` -- the Fixed section quoted the elder lindy-effect page's own content (Goldman, Mandelbrot, Taleb) after that page had already molted into `20261002-111449_lila-and-the-long-return.md` and become a pointer; the section now describes the living page
+**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) -- [`20261002-111449_lila-and-the-long-return.md`](20261002-111449_lila-and-the-long-return.md) (the elder path, [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md), is now a pointer) -- [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md)
 
 Aether is the Jupiter row, and its question is the first question: why does the work
 exist? The other four rows ask what the work touches, sees, tastes, and carries; this
@@ -66,22 +67,27 @@ gives a room one pitch before the playing starts. The lap listens for disagreeme
 plan against brief, enthusiasm against witness -- because the compass names disagreement
 as the exact place direction is recovered.
 
-## Fixed: The Lindy Effect and the Long Return
+## Fixed: Lila and the Long Return
 
-`foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` (seated 20260811)
-holds the long view: for a non-perishable thing -- an idea, a text, a plain-text tree --
-the longer it has already lasted, the longer it can be expected to last. The lineage is
-cited honestly: Goldman wrote it up in 1964, Mandelbrot gave it mathematics and a name in
-1982, Taleb sharpened the non-perishable condition in Antifragile in 2012. The engine is
-a power law, and the page even keeps a record of a source it declined to paraphrase
-because the fetch returned HTTP 403 -- honesty about what was actually heard.
+`foundations/20261002-111449_lila-and-the-long-return.md` (seated 20261002, molted from
+the elder `20260811-211431_the-lindy-effect-and-the-long-return.md`, now a pointer) holds
+the long view: the Long Return first, Lila within that tier. Among the ways to spend a
+round, answer the return -- the work that will still read true three years on -- before
+answering the glad keystone, the hardest move a lap can still finish. Reds come before
+either; the Long Return orders the building, reds order the repair. The study behind the
+claim -- that a non-perishable thing's age is itself evidence of how much longer it may
+last -- now lives apart, thanked by name in `gratitude/20261002-111449_the-durability-study.md`,
+so the foundation itself carries the order and the gratitude carries the teachers.
 
-This is the row's *sound* seat, and fittingly it is about what keeps sounding. The Lindy
-test is an act of listening across time: will this line still read true three years on?
-The page turns three standing disciplines into strategy -- favorite words over fashion
-words, witness before narrative, accrete never break -- and each is an ear rule. A
-fashion word goes quiet; a plain word keeps carrying. A checked claim stays audible; an
-asserted one fades into the silence the lap is trained to notice.
+This is the row's *sound* seat, and fittingly it is about what keeps sounding. The
+three-year test is an act of listening across time: will this line still read true after
+the code moves and the season turns? The molt itself is an instance of the test passing --
+the order survived its own rewrite into a warmer register, while the citation lineage
+that once argued for it (Goldman 1964, Mandelbrot 1982, Taleb's *Antifragile* 2012) moved
+to the gratitude room where thanks belong. A fashion word goes quiet; a plain word keeps
+carrying. A checked claim stays audible; an asserted one fades into the silence the lap
+is trained to notice -- which is what this very section had become before this reading
+caught it: a description of content a reader could no longer find at the path named.
 
 ## Dual: The Grain and the Crossing
 
