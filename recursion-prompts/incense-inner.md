@@ -207,3 +207,18 @@ following lap, once this send is on `xy`.
 **Lap `20261001.194030` renamed the wire path ceiling.** `mantra_shared_bound` reads `divergent_names=0`. The wire publishes `max_wire_path` at 57. The store's `max_path` stays 64. `declared_model` still has `drift_candidates=7` against a ceiling of 1, and five of those sites are archives or the testimony the ceiling already holds. `build_target` still has `fixed_paths=52` against `ceiling_fixed=47`. Next: read `backtick_path`, `rune_assert_sweep`, and `index_row_bound` before another full pass.
 
 **Lap `20261001.200053` clocked four seats ashore and credited the unsaid scan.** Pheromone, Patchouli, Petrichor, and Diffuser carry `set_by incense`. Bakery, Copal, and Grass stay in. `unsaid_rostered=862` against ceiling `903`. Do not launch a cold run.
+
+**Lap `20261001.231103` round-opened clean at `54351acf2e`, checked the claim board (three live
+claims -- bakery's receipt-chain health, patchouli's case-8 refusals, pheromone's consent shape
+pedestals -- `overlap_peer=0 overlap_mine=0 verdict=clear`), and found all seven worker seats
+reading `clock=in set_by=absent` -- a Cursor captain session (`20261001.210536`) had armed
+`FLEET_INDEFINITE=1` for the whole fleet between the `200053` clock-out and this lap, which is
+what cleared it. Read every day-shelf row since `200053` for a `captain:` rota line to rule on and
+found none -- the two Cursor logs on the shelf (`205840`, `210536`) are watch-prep and
+indefinite-mode arming, not fruit proposals. Per this page's own `next`, launched no cold run; the
+REDS pin stands exactly as last measured (`pin_bytes=65236`, `headroom=300`, `pin_deadlocked=1`,
+the same five unheld rows named `20260925`), and none of the five is closable by one lap -- each
+is a process- or habit-shaped finding, not a guard-closable defect. Next: the fleet is sailing
+under indefinite mode with a clear board; the next incense lap should re-check the claim board and
+the day shelf for a `captain:` line, and read `ITINERARY.md`'s *Open doors* before inventing new
+law-lane work, since every open question there already names Keaton as the hand it waits on.
