@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.093029` | [grass verifies the clock-and-mark page](20261002/20261002-093029_grass-earth-row-clock-and-mark-verified.kyri) | round-open plus Earth rota row; its cited meter run GREEN, both touched pages graded above B |
 | `20261002.092958` | [language lane empty, reds surveyed](20261002/20261002-092958_language-lane-empty-reds-surveyed.kyri) | claim board and OPEN reds checked before declining a cross-lane claim; Fire rota row read |
 | `20261002.092745` | [petrichor tries a fourth witness](20261002/20261002-092745_petrichor-tries-a-fourth-witness-still-clean.kyri) | ran tutorial_output_scan, outside the three already-run sweeps; still clean |
 | `20261002.092405` | [pheromone reads Earth-Cardinal, lane still empty](20261002/20261002-092405_pheromone-reads-earth-cardinal-lane-still-empty.kyri) | language lane confirmed fallow again; HEAD unmoved under it since prior check nine minutes earlier |
