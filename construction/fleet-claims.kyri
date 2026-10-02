@@ -59,9 +59,3 @@ stamp 20261002.091216
 epoch 1790946736
 paths tools/fixtures/s/standing_equipment_run.sh
 what launch a fresh cold run with --cadence-slice 1 to confirm the 18-to-16 repair landed clean fleet-wide
-claim copal-tigerbeetle-say-how-census-roster
-seat copal
-stamp 20261002.100344
-epoch 1790949824
-paths tools/gen/chapter/tigerbeetle_say_how_census_witness.rish
-what roster tigerbeetle_say_how_census as a standing-equipment guard, proven both legs on metal

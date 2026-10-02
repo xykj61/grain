@@ -8888,3 +8888,18 @@ guard tigerbeetle_say_why_census
 path tools/gen/chapter/tigerbeetle_say_why_census_witness.rish
 tier lap
 seated 20261002.095713
+
+# tigerbeetle_say_how_census -- e44 TB say-how/method census, unrostered since it was written.
+# The same decided-skip shape as its say_why and assert_census siblings two rows up: an
+# uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone rather than a
+# defect, so the witness reads `gratitude/tigerbeetle/src` and takes a GREEN skip exit instead of
+# reding every ship lacking the checkout. Proven both legs on metal in this lap: with
+# `gratitude/tigerbeetle/src` moved aside to simulate the absent clone it exits GREEN at the
+# clone-absent skip, and restored to this pier's own present checkout it exits GREEN at
+# verdict=ok, reading REV=97c7a8ef38 with GUIDE_HOW, GUIDE_METHOD, TAME_HOW, STYLE, ELDER_WHY, and
+# RADIANT all at yes. One of the unrostered tools/gen/chapter/ witnesses copal-inner.md names;
+# claimed as copal-tigerbeetle-say-how-census-roster before this entry landed.
+guard tigerbeetle_say_how_census
+path tools/gen/chapter/tigerbeetle_say_how_census_witness.rish
+tier lap
+seated 20261002.100509
