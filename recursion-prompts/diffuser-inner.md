@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.093040` -- the falsifier ran twice; the documents disagree on whether it matters
 **Revised:** `20261002.060702` -- the byte-level falsifier ran, and the line-level proxy withdraws
 **Revised:** `20261002.010921` -- the real edit log was already in git, not in Mantra
 **Revised:** `20261002.005428` -- row 11's falsifier read against Aurora's own roster-pairs code
@@ -132,6 +133,19 @@ apparent confirmation (87.7 percent near-equal), and was set aside after its own
 63 percent of its "near-equal" hunks spanning over 1,000 bytes -- a multi-region-edit artifact rather
 than a real reading. Graded B/82 at Field. No new witness, no new build; the classifying script is
 printed in the essay rather than kept as a standing tool.
+
+**Self-generated `20261002.093040`, the falsifier extended to the second document.**
+[The claims board held its shape either way](../active-designing/date/20261002/20261002-093040_the-claims-board-held-its-shape-either-way.md)
+runs the same byte-level LCS method against `fleet-claims.kyri`'s full history (826 of 830
+revisions, none excluded, the file never grows past 4.4KB) and finds the opposite outcome from the
+`ITINERARY.md` run: the byte-level reading (94.4 percent shift-shaped) agrees with the line-level
+one (97.8 percent) rather than reversing it. The reason is structural -- `fleet-claims.kyri`'s
+short, six-line claim records rarely let a small edit hide inside a long line the way
+`ITINERARY.md`'s prose does, so the two diff granularities see nearly the same shape. `REDS.md`'s
+own 46/28/27 mixed reading stays line-level only and is named as the next falsifier: its 65KB
+append-only history is too large for the pure-Python `difflib` approach both essays used, and wants
+either a faster LCS implementation or a chunked method. Graded B/80 at Field. No new witness, no
+new build; the script is the prior essay's, pointed at a second path.
 
 ## gates
 
