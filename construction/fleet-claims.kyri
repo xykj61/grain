@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-sunn11-xykj61-onboarding-roster
+seat copal
+stamp 20261002.062213
+epoch 1790936533
+paths tools/gen/chapter/sunn11_xykj61_onboarding_witness.rish construction/standing-equipment.kyri
+what Roster sunn11_xykj61_onboarding_witness, the next unrostered chapter witness in the SUNN sequence, into standing-equipment.kyri
