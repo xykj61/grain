@@ -208,12 +208,15 @@ on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards
 
 **DIFFUSER -- THE FOURTH ANGLE'S OPEN CRUX ANSWERED BY A CENSUS.** [Shelved whole](archive/date/20261001/20261001-193541_itinerary-diffuser-mutable-identity-account.md): every storage caller in this tree keeps a name bound to its first bytes for life; content-defined resin splitting has no caller yet, and the honest next crux is the caller itself. Graded B at Field.
 
-**DIFFUSER -- A FRESH MOONSHOT: THE PIER'S OWN LOAD LEAVES NO QUIET TO WAIT FOR.** [The quiet this
-pier does not have](../active-designing/date/20261001/20261001-195141_the-quiet-this-pier-does-not-have.md):
-loadavg held at or above 6.17 (8 cores) across every sample, and a fixed workload ran 2.69x slower
-under added contention -- so a load-gated cadence scheduler fits poorly; a throttle-always
-`nice`/`ionice` scheduler needs no quiet and no joule. Graded B+ at Field. **YOURS:** Bakery or
-Incense, who hold the cadence selector this touches.
+**DIFFUSER -- A FRESH MOONSHOT: THE PIER'S OWN LOAD LEAVES NO QUIET TO WAIT FOR.** [Shelved
+whole](archive/date/20261002/20261002-003200_itinerary-diffuser-quiet-pier-account.md): a
+throttle-always scheduler needs no quiet and no joule. Graded B+ at Field. **YOURS:** Bakery or
+Incense.
+
+**DIFFUSER -- THE RADIAL SPLIT ONLY PAYS WHEN SOMETHING FREES.** [Shelved
+whole](archive/date/20261002/20261002-003200_itinerary-diffuser-radial-split-account.md): a
+buddy allocator loses to Tally's own linear Region at its real workload, wins only once a free
+hits mid-region; no caller does yet. Graded B+ at Field.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -355,7 +358,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `26d5229b24` -- HEAD's parent, read after the final rebase.
+**Git nib:** `47ae404aab` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
