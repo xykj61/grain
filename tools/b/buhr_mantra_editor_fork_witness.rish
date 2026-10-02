@@ -28,6 +28,12 @@ assert selftest.out contains "the graph gained one lane, every existing lane unc
 assert selftest.out contains "the forked lane is a lane like any other" else "buhr-j4r3: the forked-lane-is-a-lane proof is missing"
 assert selftest.out contains "opening an existing lane refuses — LaneExists" else "buhr-j4r3: the duplicate-open refuse proof is missing"
 
+# A planted duplicate-open, demonstrated from outside the binary rather than trusting
+# the selftest's own internal assertion (REDS %827) -- exit 2, named by error.
+let dup = run ["sh" "-c" "${bin} fork-dup 2>&1"]
+assert dup.code == 2 else "buhr-j4r3: fork-dup must refuse an existing lane by exit 2"
+assert dup.out contains "LaneExists" else "buhr-j4r3: fork-dup refusal must name LaneExists"
+
 # Rung one (editor) stays its own green binary -- open_lane is additive beside commit.
 let editor = run ["sh" "-c" "rishi/bin/rishi run tools/b/buhr_mantra_editor_witness.rish 2>&1"]
 assert editor.ok else "buhr-j4r3: the editor (rung one) witness regressed"
