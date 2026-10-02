@@ -917,3 +917,5 @@ at a closed fold.*
 *Row `20260925.162402` folded to [`REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md`](REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md) on `20261001.234702`, **CLOSED** -- folded by hand alongside it; the wall `%801` closed reddened again because its own anchor was set too early.*
 
 *Row %829 folded to [`REDS-the-shape-masking-the-count-rows-829.md`](REDS-the-shape-masking-the-count-rows-829.md) on `20261002.003623`, **CLOSED** -- a scan's one-verdict-word answer hid a second, larger failing shape underneath it.*
+
+*Row `20261001.192639` folded to [`REDS-a-declaration-can-silently-delete-its-own-pair-20261001-192639.md`](REDS-a-declaration-can-silently-delete-its-own-pair-20261001-192639.md) on `20261002.010455`, **CLOSED** -- folded by hand to clear headroom for a new row while the pin stood over its 65,536-byte bound; a tutorial-output scan's own remediation comment could cross the gap ceiling and silently drop the pair.*
