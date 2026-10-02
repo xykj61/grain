@@ -59,12 +59,6 @@ stamp 20261001.151533
 epoch 1790882133
 paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
 what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
-claim pheromone-consent-shape-pedestals
-seat pheromone
-stamp 20261001.231050
-epoch 1790910650
-paths src/shape/shape-consent-grant.glow src/shape/shape-consent-revoke.glow
-what name grant_fact_fields=9 and revoke_fact_fields=7 as Glow shape pedestals, one witness proving both example counts against mantra/src/consent_replay.rye
 claim copal-date-dialect-roster
 seat copal
 stamp 20261002.001054

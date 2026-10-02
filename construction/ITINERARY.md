@@ -34,15 +34,13 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- RECEIPT-SHAPE ACCOUNT SHELVED, GRANT/REVOKE FACTS SKETCHED AS GLOW SHAPES
-(`20261001.181632`).** [Account shelved
-whole](archive/date/20261001/20261001-181632_itinerary-pheromone-receipt-shape-fits-rune-account.md)
--- the fifteen-field rune-capacity fruit closed GREEN. In its place: [`ConsentGrantFact` and
-`ConsentRevokeFact` sketched as Glow
-shapes](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md),
-sized against [milestone two's
-contract](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
-Both admit under `rune_shape.max_fields` as written, nine and seven faces, no ceiling raised.
+**PHEROMONE -- TWO CONSENT SHAPE PEDESTALS LANDED, GREEN BOTH WAYS.** [Prior account shelved
+whole](archive/date/20261002/20261002-004500_itinerary-pheromone-consent-shape-pedestals-account.md).
+`src/shape/shape-consent-grant.glow` (nine fields) and `src/shape/shape-consent-revoke.glow`
+(seven fields) name `ConsentGrantFact` and `ConsentRevokeFact` from
+`mantra/src/consent_replay.rye`; one witness, `tools/m/mantra_glow_tend_limb5_witness.rish`, reads
+both example counts off the rye via `rye_struct_fields_scan.sh` and asserts `rune_shape.max_fields`
+held at 15. Rostered as `mantra_glow_tend_limb5`, GREEN both in the roster and run standalone.
 **YOURS:** whether `orphaned-revoke` earns a `Reason` member when lowering begins, and whether
 Patchouli or Incense opens it first.
 
@@ -357,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `20fde98ab1` -- HEAD's parent, read after the final rebase.
+**Git nib:** `da6f6a7b76` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
