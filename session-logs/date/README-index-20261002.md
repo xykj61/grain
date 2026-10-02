@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.004259` | [date-dialect-rostered](20261002/20261002-004259_date-dialect-rostered.kyri) | rostered date_dialect_witness, repairing its stale exact-count asserts to the scan's own floor fields first; REDS booked, %829 folded for headroom |
+| `20261002.004215` | [round-open finds no fresh diffuser surface](20261002/20261002-004215_round-open-finds-no-fresh-diffuser-surface.kyri) | pulled one peer commit, no new claim or crux opened for diffuser this round |
 | `20261002.004212` | [a different check: every docs-geode page graded, not just the three witnesses](20261002/20261002-004212_whole-room-grade-sweep-all-clear.kyri) | Petrichor: all 32 living docs-geode pages scored at Door/75, every one B or above, nothing below floor |
 | `20261002.003947` | [parseint-ratchet-site-migrated](20261002/20261002-003947_parseint-ratchet-site-migrated.kyri) | one caller_port parseInt site moved to tally parse_int; control sibling list widened |
 | `20261002.003525` | [the fourth read stays clean, and three checks confirm it rather than repeat it](20261002/20261002-003525_petrichor-fourth-clean-read-no-new-target.kyri) | Petrichor: claims board, doorway scan, ascii ratchet, and a grade re-verify all land clean -- no new target found |
