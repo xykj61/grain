@@ -95,9 +95,19 @@ because each one's gap-times-sentences arithmetic stays under the free-reading t
 Stamp line, so the whole front-matter block stays one contiguous, correctly held-out unit:
 `register` reads 33% of 3 (was 66% of 2, with the giant run-on counted twice), the gated reading
 frees under the floor, and the composite rises to A/94. `gen_keeh_fund_prep.rish`'s witness and the
-`docs-geode` Bhakta-door scan both stay GREEN; no code line moved. `YOURS:` whether the other six
-fund pages should take the same one-line tidy, since each carries the identical latent fault even
-where the arithmetic currently hides it, stays Keaton's word rather than this lane's sweep.
+`docs-geode` Bhakta-door scan both stay GREEN; no code line moved.
+
+**The YOURS line closed `20261002.185550`.** Graded the six siblings with the same
+`qa_report_card.sh --setting door` reading that caught keeh: `bozo` A+/98, `gren` A/92, `linn`
+A+/98, `murr` A+/98, `shyu` A+/98, `trya` B+/88 -- every one already at or above the door floor,
+`gren` genuinely past the 8-sentence register floor and still landing A despite carrying the same
+merge. `.claude/rules/quality-assurance.md` answers its own question: the rule pushes a frame only
+when a reading comes back below B, so a latent fault that never lowers a grade owes no sweep of its
+own. `construction/ITINERARY.md`'s GRASS account carries the measurement.
+
+**The next-crux lean:** no new audit packet is queued. Continue the ordinary move -- touch a prose,
+comment, or docs surface already open for other reasons, grade it, and push one bounded molt frame
+only where the reading comes back below B.
 
 ## gates
 
