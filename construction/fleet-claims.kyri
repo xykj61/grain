@@ -65,3 +65,9 @@ stamp 20261001.203041
 epoch 1790901041
 paths mantra/src/consent_replay.rye mantra/src/consent_replay_witness.rye
 what prove case 8 -- an incomplete required field or a false signature on either the grant or the revoke fact refuses, one field at a time, in consent_replay_witness.rye
+claim pheromone-consent-shape-pedestals
+seat pheromone
+stamp 20261001.231050
+epoch 1790910650
+paths src/shape/shape-consent-grant.glow src/shape/shape-consent-revoke.glow
+what name grant_fact_fields=9 and revoke_fact_fields=7 as Glow shape pedestals, one witness proving both example counts against mantra/src/consent_replay.rye
