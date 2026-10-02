@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.060441` | [mantra/tally queue reconfirmed empty, round settled](20261002/20261002-060441_queue-still-empty.kyri) | round-open resettled HEAD, %807/%765 unchanged, GATES-ONLY set to stop the circling |
 | `20261002.060403` | [aether row listens, nothing new](20261002/20261002-060403_aether-row-listens-nothing-new.kyri) | lap 7295, row 0; network still dark, docs-geode still empty, captain line written |
 | `20261002.060153` | [patchouli no-network queue reconfirmed empty](20261002/20261002-060153_patchouli-no-network-queue-reconfirmed-empty.kyri) | fresh re-read: both mantra/tally %765 doors already molted, %807 awaits ruling, network dark |
 | `20261002.060035` | [capture_evidence refuses a copy that did not land](20261002/20261002-060035_bakery-capture-evidence-refusal.kyri) | a redirect made every failed copy read as success |
