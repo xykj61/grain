@@ -1,7 +1,7 @@
 # Demos -- five checks you can run
 
 **Language:** EN
-**Style:** Gauge, Door setting
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Voice:** Kyri
 **Written:** `20260821.190149`
 **Updated:** `20260916.211732` -- all five commands run again, and a witness now runs them every cadence lap rather than a hand doing it every few weeks

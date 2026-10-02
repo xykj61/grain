@@ -1,0 +1,17 @@
+# docs_geode_bhakta_witness.rish -- the teaching shelf declares Bhakta at the Door.
+#
+#   rishi/bin/rishi run tools/d/docs_geode_bhakta_witness.rish
+
+say "docs-geode-bhakta: Language EN -- a learner's page names the open door."
+say "docs-geode-bhakta: Style Gauge Meter -- the folder's register is counted, one line per page."
+say "docs-geode-bhakta: Lens TAME -- safety first: a declaration the next render can overwrite is fixed in the generator too."
+
+let pen = run ["sh" "tools/fixtures/d/docs_geode_bhakta_control.sh"]
+say pen.out
+assert pen.ok else "docs-geode-bhakta: the control must complete"
+assert pen.out contains "control_verdict=ok" else "docs-geode-bhakta: the planted readings must agree with the scan"
+
+let living = run ["sh" "tools/fixtures/d/docs_geode_bhakta_scan.sh"]
+say living.out
+assert living.ok else "docs-geode-bhakta: the living shelf must agree"
+assert living.out contains "verdict=ok" else "docs-geode-bhakta: every docs-geode page declares Bhakta at the Door"

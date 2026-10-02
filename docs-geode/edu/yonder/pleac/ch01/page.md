@@ -1,5 +1,8 @@
 # PLEAC 1.1 — Double It: the First Gate
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../../context/BHAKTA_STYLE.md`)
+
+
 **Language:** EN
 **Stamp:** `20260727.132111`
 **Chapter:** one — gates

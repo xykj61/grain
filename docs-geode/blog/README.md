@@ -4,7 +4,7 @@
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Written:** `20260821.190149` - **Last refreshed:** `20260911.051140` -- the count leaves the title, where nothing could read it
 **Status:** Living - **Kind:** crushed index of [`./`](./), with its entry criterion named
 

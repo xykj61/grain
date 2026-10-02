@@ -1,6 +1,6 @@
 # Lesson 7 -- Dawn, kernels, and a pocket that wakes
 
-**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`) - **Voice:** Kyri
 **Stamp:** `20260910.060225` - **Status:** Living - **Room:** mixed -- Aurora's stages run in emulation; a kernel beneath them is **design**
 **Index:** [`README.md`](README.md) - **Back:** [Lesson 6](20260910-060225_lesson-6-two-pockets.md) - **Next:** [Lesson 8](20260910-060225_lesson-8-the-painted-face.md)
 

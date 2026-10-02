@@ -1,5 +1,8 @@
 # Filing a Wyoming Public Benefit Corporation — the Bashō PBC Walkthrough
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Language:** EN
 **Stamp:** `20260727.135351`
 **Voice:** Quin

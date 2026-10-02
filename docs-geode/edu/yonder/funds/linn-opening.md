@@ -1,5 +1,8 @@
 # Linn Fund — Opening (Capricorn · earth · seat 10) — retired name
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Stamp:** `20260728.035025` (Helen dedication) · seat `20260728.034317`  
 **Living name:** **Bozo (fund)** — rename-forward `20260730.150702` · see [`bozo-opening.md`](bozo-opening.md)  
 **Voice:** Quin · nested Trya (earth seat) — historical page voice  

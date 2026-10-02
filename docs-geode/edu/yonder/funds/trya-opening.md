@@ -1,5 +1,8 @@
 # Trya Fund — Opening (Virgo · earth · seat 6)
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Stamp:** `20260728.024417`  
 **Voice:** Quin · nested Trya  
 **Kind:** fund-prep page one — grow the seat; no deploy  

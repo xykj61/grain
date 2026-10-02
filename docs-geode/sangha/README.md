@@ -4,7 +4,7 @@
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Voice:** Kyri - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Chartered:** `20260730.021218` (Voice v29 - slot 13 - radiant) -- expanding the `20260730.014817` seat
 **Home:** `docs-geode/sangha/` -- a shelf inside the prod crystal, no new root door
 **Status:** Living - **Room:** checkable -- three patterns stand here, each a proven composition rather than a proposal

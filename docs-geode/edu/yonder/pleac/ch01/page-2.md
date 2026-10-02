@@ -1,5 +1,8 @@
 # PLEAC 1.2 — The Gate That Speaks
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../../context/BHAKTA_STYLE.md`)
+
+
 **Language:** EN
 **Stamp:** `20260727.141617`
 **Chapter:** one — gates

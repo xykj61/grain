@@ -1,5 +1,8 @@
 # Murr Fund — Opening (Aries · fire · seat 1 · was Mala)
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Stamp:** `20260728.025220` · executive refresh `20260730.150702` (POLE)  
 **Voice:** Kyri (living) · Quin · nested Trya (historical open)  
 **Kind:** fund-prep page one — MUR Chapter prep; no deploy  

@@ -1,6 +1,6 @@
 # Lesson 4 -- Joy has a rank
 
-**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`) - **Voice:** Kyri
 **Stamp:** `20260910.060225` - **Status:** Living - **Room:** mixed -- the law is seated and checkable; the happy-zone shape is design
 **Index:** [`README.md`](README.md) - **Back:** [Lesson 3](20260910-060225_lesson-3-the-why.md) - **Next:** [Lesson 5](20260910-060225_lesson-5-the-order-itself.md)
 

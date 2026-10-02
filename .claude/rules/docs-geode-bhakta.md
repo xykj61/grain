@@ -1,0 +1,31 @@
+# docs-geode is Bhakta
+
+**Seated:** `20261002.114619` on Keaton's word - **Status:** Living
+**Kin:** [`bhakta-style`](bhakta-style.md) - [`radiant-style`](radiant-style.md) - [`gauge-style`](gauge-style.md)
+
+`docs-geode/` is the shelf a person reads in order to learn the product. Its register is **Bhakta**: Radiant warmth for a reader who may be meeting the work for the first time. Gauge remains the working style of the rest of the tree. Inside this folder, Gauge is the measurement dial, and the dial stays at **Door**.
+
+## What every page declares
+
+Every Markdown page under `docs-geode/`, drafts in `edu/yonder/` included, carries one style line:
+
+`**Style:** Bhakta at the Door setting, with Radiant warmth`
+
+The line points at `context/BHAKTA_STYLE.md`. It names Bhakta and Door. It does not name Gauge as the page's register.
+
+A page written by a generator declares the same line in the generator, so the next render keeps it. `tools/fixtures/g/geode_libraries_scan.sh` is the library index's source.
+
+## What the next edit of a body does
+
+Bhakta's moves govern the prose from here forward. One new idea at a time. A coined word is given in plain speech the first time it appears. Why the thing matters to a life is said once. A figure still carries its unit, its date, and its source, which is the Gauge measurement Bhakta keeps.
+
+## What holds it
+
+```
+sh tools/fixtures/d/docs_geode_bhakta_scan.sh
+rishi/bin/rishi run tools/d/docs_geode_bhakta_witness.rish
+```
+
+The scan reads every `*.md` under `docs-geode/`. A page with no style line, a style line without Bhakta, or a style line that names Gauge, is a miss. `verdict=ok` means the folder's doors agree.
+
+*Cursor twin retired* `20260920.135100` -- this rule is born after that retirement, so it has no `.cursor/rules` twin.

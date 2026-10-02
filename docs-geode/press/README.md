@@ -6,7 +6,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 *Every piece here was written once and kept exactly as filed. This page is their index and their honest scope, and the table below is the count.*
 
-**Language:** EN - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index of [`../../press/`](../../press/)
 
 ---

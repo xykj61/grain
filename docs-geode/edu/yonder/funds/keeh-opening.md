@@ -1,5 +1,8 @@
 # Keeh Fund — Opening (Aquarius · air · seat 11 · was Ketu)
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Stamp:** `20260728.032134` (sponsor accrete) · seat `20260728.030310`  
 **Voice:** Quin  
 **Kind:** fund-prep page one — Keeh Chapter; Kia honor sponsor; no deploy  

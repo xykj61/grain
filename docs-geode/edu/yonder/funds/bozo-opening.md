@@ -1,5 +1,8 @@
 # Bozo Fund — Opening (Capricorn · earth · seat 10 · was Linn)
 
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../../context/BHAKTA_STYLE.md`)
+
+
 **Stamp:** `20260730.150702` (POLE · DJINN executive) · Helen dedication `20260728.035025` · Linn seat `20260728.034317`  
 **Voice:** Kyri  
 **Kind:** fund-prep page one — grow the seat; no deploy  

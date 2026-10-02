@@ -1,6 +1,6 @@
 # Lesson 2 -- The front door
 
-**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`) - **Voice:** Kyri
 **Stamp:** `20260910.060225` - **Status:** Living - **Room:** checkable -- every page it walks exists and can be opened
 **Index:** [`README.md`](README.md) - **Back:** [Lesson 1](20260910-060225_lesson-1-the-house-from-above.md) - **Next:** [Lesson 3](20260910-060225_lesson-3-the-why.md)
 

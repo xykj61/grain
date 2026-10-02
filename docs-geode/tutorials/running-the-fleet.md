@@ -1,6 +1,6 @@
 # Running the fleet -- launch, watch, and stop the ships
 
-**Language:** EN - **Style:** Gauge, Field setting (see [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md))
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Voice:** Kyri
 **Written:** `20260907.160051`
 **Updated:** `20260917.010735` -- every command below re-run, and the signal helper's fence tagged

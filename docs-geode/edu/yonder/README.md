@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Last updated:** 2026-07-30 (`20260730.104053` -- discovery walk door 13 GREEN)
-**Style:** Gauge, Door setting (see `../../../context/GAUGE_STYLE.md`)
+**Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../context/BHAKTA_STYLE.md`)
 **Status:** Living -- the learning floor: puzzles, first steps, and worked examples
 **Where this sits:** home is [`../README.md`](../../../README.md) - a first hour in your hands is
 [`../../tutorials/the-first-hour.md`](../../../docs-geode/tutorials/the-first-hour.md) - the whole

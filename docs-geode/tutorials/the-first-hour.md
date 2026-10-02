@@ -3,7 +3,7 @@
 *From nothing to something you made work. One path, straight through. Everything else in this tree
 is a map you will want **after** this hour.*
 
-**Language:** EN - **Style:** Bhakta at the Door setting (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the maintainer's working tree) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`) - **Voice:** Kyri
 **Written:** `20260821.180613` - **Last updated:** `20260909.231456` (step 2's quoted ending read off a real fetch: `staged=` restored, the second run's shorter ending shown)
 **Status:** Living - the beginner path
 **Room:** mixed -- the six steps are counted, each quoted ending read off a real run and held by `tools/fixtures/t/tutorial_output_scan.sh` with `tools/f/first_hour_witness.rish` behind step 6; the welcome and the doors past it are judged.

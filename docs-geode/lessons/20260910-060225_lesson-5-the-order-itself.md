@@ -1,6 +1,6 @@
 # Lesson 5 -- The order itself
 
-**Language:** EN - **Style:** [Bhakta](../../context/BHAKTA_STYLE.md) with [Kyri](../../context/KYRI.md) and [Radiant](../../context/RADIANT_STYLE.md) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`) - **Voice:** Kyri
 **Stamp:** `20260910.060225` - **Status:** Living - **Room:** checkable -- the order, the bounds and the guards it names all exist today
 **Index:** [`README.md`](README.md) - **Back:** [Lesson 4](20260910-060225_lesson-4-joy-has-a-rank.md) - **Next:** [Lesson 6](20260910-060225_lesson-6-two-pockets.md)
 

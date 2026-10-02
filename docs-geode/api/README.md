@@ -1,6 +1,6 @@
 # docs-geode / api -- the professional API surface
 
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Voice:** Kyri - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Stamp:** `20260728.031722`
 **Last refreshed:** `20260916.204226` -- the door said this room stood empty while the room held the
 Rishi language reference; the room's own status is written from what is on disk

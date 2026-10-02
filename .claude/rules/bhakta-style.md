@@ -17,10 +17,10 @@ makes a reader.
 inferring it. `SOURCE.md`, `CONTRIBUTING.md`, the `manual/` room, `docs-geode/` reference pages,
 `docs/redacted/` generalisations, and any first-hour or onboarding page.
 
-**Every one of those declares Gauge today**, measured `20260908.142326`, and that is correct rather
-than a fault: Bhakta was seated hours ago and no page could have been written in it yet. A register
-governs forward, exactly as the Radiant floor does -- **a room adopts Bhakta when a hand next writes
-in it**, and until then Gauge is an honest declaration.
+`docs-geode/` declares **Bhakta** on every page, held by
+[`docs-geode-bhakta.md`](docs-geode-bhakta.md) from `20261002.114619`. The other rooms named above
+still adopt Bhakta when a hand next writes in them. Until that write, a Gauge declaration on those
+pages is an honest record of the register they were written in.
 
 
 **Specification and design reference, API documentation, the OS user manual, onboarding and

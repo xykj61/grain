@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.114619` | [docs-geode is Bhakta](20261002/20261002-114619_docs-geode-is-bhakta.kyri) | 48 teaching pages declare Bhakta at the Door |
 | `20261002.112355` | [Lila-first, return-first](20261002/20261002-112355_lila-first-return-first.kyri) | the short name, linked from the root down to the prompt |
 | `20261002.111449` | [The molt is scheduled](20261002/20261002-111449_lila-scheduled-fleet-ashore.kyri) | seven seats clocked out; the naming pass waits |
 | `20261002.110646` | [Lila and the long return](20261002/20261002-110646_lila-and-the-long-return.kyri) | joy ranks third; Lila keeps one job; names stay unseated |

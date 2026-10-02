@@ -4,7 +4,7 @@
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-**Language:** EN - **Style:** Gauge, Field setting (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
 **Written:** `20260908.081630` - **Status:** Living - **Room:** mixed -- the counts are read off
 this repository and are checkable; the conclusion is an argument
 **Kind:** blog post -- this room's first
