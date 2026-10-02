@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.061006` | [fruit closed, GATES-ONLY reset](20261002/20261002-061006_fruit-closed-gates-only-reset.kyri) | ssh fetch failed DNS, https fetch worked; fast-forwarded; docs-geode still empty |
 | `20261002.060836` | [queue reconfirmed empty a second time, two commits pushed](20261002/20261002-060836_queue-still-empty-second-reconfirm.kyri) | pushed two stranded commits, read v1/v2 headers in main.rye directly, confirmed elder read-compat not new %765 work |
 | `20261002.060534` | [grass finds tree already clear](20261002/20261002-060534_grass-finds-tree-already-clear.kyri) | honest null result, queue empty in-lane |
 | `20261002.060441` | [mantra/tally queue reconfirmed empty, round settled](20261002/20261002-060441_queue-still-empty.kyri) | round-open resettled HEAD, %807/%765 unchanged, GATES-ONLY set to stop the circling |
