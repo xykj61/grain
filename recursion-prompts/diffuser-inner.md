@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.010921` -- the real edit log was already in git, not in Mantra
 **Revised:** `20261002.005428` -- row 11's falsifier read against Aurora's own roster-pairs code
 **Revised:** `20261001.231246` -- the two consent still frames are named; the ladder is quiet
 **Revised:** `20261001.193541` -- the fourth angle's crux is answered and the ladder is quiet
@@ -100,6 +101,22 @@ string, sealed once and sent once between two unlabeled guests standing outside 
 five domain names -- so the "real traffic weight" row 11's falsifier asked for has no per-channel
 implementation yet to measure, which goes one step past row 7's "unmeasured" and names why. Graded
 B+/88 at Field. No new witness, no new build; a reading of tracked source alone.
+
+**Self-generated `20261002.010921`, the next Mantra crux answered from a source already on hand.**
+[The real edit log was already in git, not in Mantra](../active-designing/date/20261002/20261002-010921_the-real-edit-log-was-already-in-git-not-in-mantra.md)
+takes up the open half of the fourth angle's own crux -- "the honest next Mantra crux is the caller
+itself, a module with a real reason to keep one name's identity stable across an edit" -- and finds
+that caller's edit log already exists outside Mantra, in this tree's own `git` history. Classifying
+every diff hunk across `fleet-claims.kyri` (844 hunks), `REDS.md` (1,226 hunks), and `ITINERARY.md`
+(8,759 hunks) finds three distinct real edit shapes: the claims board is 94 percent shift-shaped
+(whole blocks appear and disappear), the card is 76 percent substitution-shaped (text replaced in
+place at near-equal length), and the ledger splits 46/28/27 between the two, matching its own mixed
+append-row-plus-editable-prose job. Read against the dedup-ratio essays' own synthetic finding, a
+claims-board-shaped document is exactly what content-defined splitting would serve, and a
+card-shaped document is exactly what fixed-size splitting would serve instead -- so the open crux
+sharpens into a named, undone falsifier: whether a byte-level re-reading of ITINERARY.md's own
+revisions confirms or overturns what this line-level reading suggests. Graded B/83 at Field. No new
+witness, no new build; a reading of git history, with its own classifier printed in full on the page.
 
 ## gates
 
