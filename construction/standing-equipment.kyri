@@ -9158,3 +9158,15 @@ guard wafer_thin
 path tools/gen/chapter/wafer_thin_witness.rish
 tier lap
 seated 20261002.152520
+
+# living_mutant_shred_prep -- Surface p32/p34 shred-prep witness, unrostered since it was written.
+# Its wafer-closure check and its Class H row check both greped construction/archive/ at the flat
+# path the shelf held before folding to construction/archive/shred/ on 20260904.193221 -- the
+# same stale-testimony-location fault %812, %809, and wafer_thin named this week in sibling
+# dormant witnesses, here hitting two separate grep calls in one file. Repaired by reading both
+# the live pin (and the pre-fold flat path) and the folded shelf in each grep call; GREEN on metal.
+# Claimed as patchouli-living-mutant-shred-prep-archive-path before this entry landed.
+guard living_mutant_shred_prep
+path tools/gen/chapter/living_mutant_shred_prep_witness.rish
+tier lap
+seated 20261002.160800

@@ -19,12 +19,18 @@ say "shred-prep: lexicon..."
 let lex = run ["sh" "-c" "grep -q 'living mutant' context/LEXICON.md && grep -q 'writing fossil' context/LEXICON.md && grep -q 'shred-prep list' context/LEXICON.md && grep -q 'transitive writing crawl' context/LEXICON.md && echo LEX_OK"]
 assert lex.ok else "shred-prep: lexicon scan failed"
 assert lex.out contains "LEX_OK" else "shred-prep: living mutant · writing fossil · shred-prep · transitive crawl missing"
-let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q 'Wafer closure' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q '9 nodes' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md && echo CRAWL_OK"]
+# The wafer-closure shelf folded from a flat construction/archive/ path to archive/shred/ on
+# 20260904.193221; the elder's name lives on whichever of the two paths currently holds it, so
+# both are read rather than the flat elder path alone.
+let crawl = run ["sh" "-c" "grep -q 'transitive writing crawl' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md construction/archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q 'Wafer closure' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md construction/archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md && grep -q '9 nodes' construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md construction/archive/shred/SHRED_PREP-seam-python-wafer-20260809-20260728.md && echo CRAWL_OK"]
 assert crawl.ok else "shred-prep: wafer closure scan failed"
 assert crawl.out contains "CRAWL_OK" else "shred-prep: SHRED_PREP must carry wafer closure"
 
 say "shred-prep: Class H rows..."
-let rows = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md && grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' construction/SHRED_PREP.md && grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md && echo CLASS_H"]
+# These six Class H rows folded from the live pin to construction/archive/shred/
+# SHRED_PREP-second-mitra-shed-record.md on 20260904.193221 (the same shelf wafer_thin_witness
+# already reads), so each name is read on both the live pin and the folded shelf.
+let rows = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260629-063512_lantern-lattice-anvil.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && echo CLASS_H"]
 assert rows.ok else "shred-prep: Class H scan failed"
 assert rows.out contains "CLASS_H" else "shred-prep: Class H must list Oven living + Anvil fossils"
 
