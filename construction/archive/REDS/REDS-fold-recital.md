@@ -919,3 +919,5 @@ at a closed fold.*
 *Row %829 folded to [`REDS-the-shape-masking-the-count-rows-829.md`](REDS-the-shape-masking-the-count-rows-829.md) on `20261002.003623`, **CLOSED** -- a scan's one-verdict-word answer hid a second, larger failing shape underneath it.*
 
 *Row `20261001.192639` folded to [`REDS-a-declaration-can-silently-delete-its-own-pair-20261001-192639.md`](REDS-a-declaration-can-silently-delete-its-own-pair-20261001-192639.md) on `20261002.010455`, **CLOSED** -- folded by hand to clear headroom for a new row while the pin stood over its 65,536-byte bound; a tutorial-output scan's own remediation comment could cross the gap ceiling and silently drop the pair.*
+
+*Rows `20260929.234000`, `20260929.215609`, and `20260924.221211` folded to [`REDS-three-closed-cold-run-reds-20260929-215609-20260929-234000-20260924-221211.md`](REDS-three-closed-cold-run-reds-20260929-215609-20260929-234000-20260924-221211.md) on `20261002.094209`, **CLOSED** -- folded by hand, stamp-cited and unmatched by the automated tool, to clear headroom for a fresh %827 repair; a stale nib carry, two over-bound index rows, and two stale citations in one lap's own cold-run findings.*
