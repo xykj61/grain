@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.050200` | [reds_ledger took its prove-red leg](20261002/20261002-050200_grass-reds-ledger-refusal-leg.kyri) | redleg ratchet 60 to 59; %827 addendum |
 | `20261002.042849` | [eighth confirmation, gate sentinel re-set](20261002/20261002-042849_eighth-confirmation-gate-reset.kyri) | same empty reading; .loop-gates-only re-set rather than an eighth full re-derivation |
 | `20261002.042447` | [seventh confirmation recommends a pause](20261002/20261002-042447_patchouli-seventh-confirmation-recommends-pause.kyri) | identical empty reading re-derived a seventh time; recommends check-in over an eighth repeat lap |
 | `20261002.042103` | [law-tier register ceiling cleared](20261002/20261002-042103_law-tier-register-ceiling-cleared.kyri) | swept session-log-provenance.md 33%->28%; law_ceiling 1->0; GREEN |
