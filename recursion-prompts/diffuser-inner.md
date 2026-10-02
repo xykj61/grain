@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.160924` -- nine of the garden's own 179 call sites never reach the arena
 **Revised:** `20261002.154708` -- today's own ring and chain carry no radius, only hop count
 **Revised:** `20261002.153253` -- the falsifier named a module that never reads the channel graph
 **Revised:** `20261002.145044` -- two sub-rings refuse the single-lap check; a wider ring passes it whole
@@ -289,6 +290,19 @@ only in test witnesses. No correctness defect: the std allocator declines rather
 every call is safe, and every case read here runs inside a process whose own exit is the reset.
 Graded B+/86 at Field. No new witness, no new build; a reading of tracked source and the vendored
 std seam, with its own falsifier run in the same essay.
+
+**Self-generated `20261002.160924`, the prior essay's own open-population count checked against
+the allocator each site actually binds.**
+[Nine of the 179 never reach the arena at all](../active-designing/date/20261002/20261002-160924_nine-of-the-179-never-reach-the-arena-at-all.md)
+reads the nine `pond/apps/*theme*.rye` files the prior essay left open and finds their
+`resolve_theme` function binds `garden` to `std.heap.page_allocator` rather than to anything
+traceable to `init.arena.allocator()` -- a different inherited allocator, confirmed by grep in all
+nine, where `free` genuinely unmaps the allocation in any order rather than reclaiming only the
+tail. The true open population for the arena-tail question narrows from 103 to 94, and one of the
+three remaining confirmed-arena witness files, `store_witness.rye`, is read closely and found to
+carry the same tail-only shape outside a loop: an earlier allocation (`altered`) is never freed
+while a later one (`too_big`) is, by hand rather than by loop position. Graded A-/90 at Field. No
+witness, no new module; a reading of tracked source with line citations for all nine bindings.
 
 ## gates
 

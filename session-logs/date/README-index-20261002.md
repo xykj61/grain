@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.161837` | [The consent witness walks its module](20261002/20261002-161837_the-consent-witness-walks-its-module.kyri) | one pair sat past the walk ceiling; it now walks |
 | `20261002.161456` | [lane queue confirmed empty, no override claimed](20261002/20261002-161456_patchouli-lane-queue-confirmed-empty.kyri) | re-checked mantra/tally header fruit and the claim board; queue still empty, no safe cross-lane claim found |
+| `20261002.161232` | [Nine of the 179 never reach the arena](20261002/20261002-161232_nine-of-the-179-never-reach-the-arena.kyri) | Diffuser's own essay: 9 of the open 103 bind garden to page_allocator, not the arena; graded A-/90 |
 | `20261002.160949` | [ep011 roster and the board swept clean behind it](20261002/20261002-160949_ep011-roster-and-board-swept.kyri) | Rostered ep011 census witness, closed two stale claims |
 | `20261002.160829` | [A sprig is a string](20261002/20261002-160829_a-sprig-is-a-string.kyri) | the filename word and the naming word are one |
 | `20261002.160744` | [living_mutant_shred_prep rostered, two call sites](20261002/20261002-160744_living-mutant-shred-prep-second-call-site.kyri) | second claim-as-override repair; stale-shelf fault hit twice in one witness; REDS pin folded back under bound |
