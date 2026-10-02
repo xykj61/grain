@@ -12,6 +12,7 @@
 | `20261001.200649` | [four rulings](20261001/20261001-200649_four-rulings.kyri) | contract accepted; no head-insert door; case 4 closed |
 | `20261001.200315` | [quiet-this-pier-does-not-have](20261001/20261001-200315_quiet-this-pier-does-not-have.kyri) | a fresh moonshot: ambient loadavg and a contention experiment on this pier |
 | `20261001.200053` | [four seats ashore, unsaid credit](20261001/20261001-200053_four-seats-ashore-unsaid-credit.kyri) | guarded say and presence tests credited; ceiling stays 903 |
+| `20261001.195914` | [gap_lost counter closes a red](20261001/20261001-195914_gap-lost-counter-closes-tutorial-output-red.kyri) | tutorial_output_scan.sh now names a pair lost past its gap ceiling; REDS 192639 CLOSED |
 | `20261001.195600` | [SOURCE.md grade stands](20261001/20261001-195600_grass-source-md-grade-stands.kyri) | B+/86 composite; caught and avoided a near-duplicate of the prior lap's docs-geode grade |
 | `20261001.195128` | [close the already-landed seam-roster claim](20261001/20261001-195128_close-stale-seam-roster-claim.kyri) | stale patchouli claim closed, work already landed at 5c98181fc |
 | `20261001.195100` | [no caller wants a mutable identity](20261001/20261001-195100_no-caller-wants-a-mutable-identity.kyri) | fourth-angle crux closed: every storage name binds for life |

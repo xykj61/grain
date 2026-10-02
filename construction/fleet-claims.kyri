@@ -59,9 +59,3 @@ stamp 20261001.151533
 epoch 1790882133
 paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
 what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
-claim petrichor-tutorial-gap-lost
-seat petrichor
-stamp 20261001.194223
-epoch 1790898143
-paths tools/fixtures/t/tutorial_output_scan.sh
-what add a gap_lost counter naming any command/output pair whose gap-state reset mid-gap, closing REDS 20261001.192639
