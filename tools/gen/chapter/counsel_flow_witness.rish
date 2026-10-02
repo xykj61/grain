@@ -20,4 +20,10 @@ say scan.out
 assert scan.out contains "verdict=ok" else "counsel-flow: descriptor is not lawful Brix"
 assert scan.ok else "counsel-flow: the verdict reads ok while the status fails — they must agree"
 
+let red = run ["sh" "tools/fixtures/c/counsel_flow_scan.sh" "tools/gen/chapter/counsel_flow_witness.rish"]
+say red.out
+assert (red.ok == false) else "counsel-flow: a file missing the required keys must refuse"
+assert red.out contains "verdict=unlawful_brix" else "counsel-flow: prove-red wants the named verdict"
+assert red.out contains "required key absent -> name" else "counsel-flow: prove-red wants the named detail line"
+
 say "GREEN: counsel-flow — the contract is lawful, readable by splitLines and one split"

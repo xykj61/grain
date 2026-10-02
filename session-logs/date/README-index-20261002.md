@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.055303` | [counsel-flow-refusal-leg](20261002/20261002-055303_counsel-flow-refusal-leg.kyri) | %827's counsel_flow guard takes its refusal leg; ratchet 57 to 56 |
 | `20261002.054051` | [personalize-template-roster](20261002/20261002-054051_personalize-template-roster.kyri) | Rostered personalize_template_witness, proven both ways |
 | `20261002.053600` | [vols-survey-true-roster](20261002/20261002-053600_vols-survey-true-roster.kyri) | Rostered vols_survey_true_witness, CION VOLS Journey 13 r4 closes |
 | `20261002.053123` | [round-open-diverged-lane-still-empty](20261002/20261002-053123_round-open-diverged-lane-still-empty.kyri) | round-open parked a true divergence; mantra/tally queue still empty |
