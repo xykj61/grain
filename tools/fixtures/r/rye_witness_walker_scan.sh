@@ -108,9 +108,11 @@ done
 # hiding -- a reading, rather than an assumption. The remaining 56 are `linengrow/` (51),
 # `mand/` (3), `mantra/` (1), and `tools/rye/` (1).
 # Lowered 56 -> 55 on `20261002.163401`, when `mantra/bolt_apply_step_witness.rye` walked
-# its subject and the build stayed GREEN. The remaining 55 are `linengrow/` (51), `mand/` (3),
-# and `tools/rye/` (1).
-ceiling=55
+# its subject and the build stayed GREEN. Lowered 55 -> 54 on `20261002.170032`, when
+# `tools/rye/skate_event_ring_witness.rye` walked `brushstroke/skate_event_ring.rye` -- the last
+# single `tools/rye/` pair -- and the witness stayed GREEN on metal. The remaining 54 are
+# `linengrow/` (51) and `mand/` (3).
+ceiling=54
 
 # Bounds, each named. Witnesses stood at 134 and tracked Rye at 1,943 on `20260906`; both ceilings
 # are the next power of two above, so ordinary growth passes and a tenfold jump refuses rather than

@@ -17,6 +17,14 @@ const print = std.debug.print;
 
 const ring_mod = @import("skate_event_ring.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(ring_mod).@"struct".decls) |decl| {
+        _ = &@field(ring_mod, decl.name);
+    }
+}
+
 pub fn main() !void {
     print("skate-event-ring: Language EN -- the Swift tests' refusals, asserted again in Rye.\n", .{});
     print("skate-event-ring: Style Gauge, Meter -- one bound, both sides of every wall.\n", .{});

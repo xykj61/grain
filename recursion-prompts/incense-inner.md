@@ -240,3 +240,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.163401` walked the bolt apply module.** `mantra/bolt_apply_step_witness.rye` promised its module and checked only the functions it called. The walker is in place, the build stays GREEN, and the ceiling falls from 56 to 55. The remaining pairs are linengrow, mand, and one tools witness.
 
 **Lap `20261002.165006` armed the loop on the composed session.** The outer prompt, the inner prompt, and the cellar door name `expanding-prompts/20261002-165006_incense-the-composed-session.md`. The overnight cellar stands as the plan it was. The walk ceiling stands at 55.
+
+**Lap `20261002.170554` walked the last single tools/rye pair.** `tools/rye/skate_event_ring_witness.rye` now carries a comptime declaration walker over `brushstroke/skate_event_ring.rye`, proven GREEN on metal. The ceiling fell 55 to 54. The remaining pairs are `linengrow/` (51) and `mand/` (3).
