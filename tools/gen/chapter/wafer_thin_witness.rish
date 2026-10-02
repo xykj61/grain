@@ -17,9 +17,12 @@ assert fossil.ok else "wafer-thin: the shed June elder must be gone"
 let bare = run ["sh" "-c" "grep -q '\\*\\*living mutant\\*\\*' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && grep -q 'invent held' foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md && echo BARE"]
 assert bare.ok else "wafer-thin: bare Status scan failed"
 assert bare.out contains "BARE" else "wafer-thin: living mutant · invent held missing"
-let banner = run ["sh" "-c" "grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' construction/SHRED_PREP.md && echo SHED_OK"]
+# The second-mitra shed record folded from the live pin to its own shelf on 20260904.193221
+# (construction/SHRED_PREP.md line 64 names the shelf); the elder's name lives on whichever of
+# the two files currently holds it, so both are read rather than the live pin alone.
+let banner = run ["sh" "-c" "grep -q '20260629-063512_the-wafer-and-the-sovereign-coin.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && echo SHED_OK"]
 assert banner.ok else "wafer-thin: shed record scan failed"
-assert banner.out contains "SHED_OK" else "wafer-thin: the prep pin must name the shed elder"
+assert banner.out contains "SHED_OK" else "wafer-thin: the prep pin or its folded shelf must name the shed elder"
 let ptr = run ["sh" "-c" "grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/README.md && grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/20260826-024939_the-graph-beneath-the-surface.md && grep -q '20260728-225239_the-wafer-and-the-sovereign-coin.md' foundations/20260827-025117_lantern-lattice-kiln.md && echo PTR_OK"]
 assert ptr.ok else "wafer-thin: living pointer scan failed"
 assert ptr.out contains "PTR_OK" else "wafer-thin: README - graph - Kiln must cite living wafer"

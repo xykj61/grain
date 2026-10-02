@@ -9119,3 +9119,16 @@ guard wayland_from_frame
 path tools/gen/chapter/wayland_from_frame_witness.rish
 tier lap
 seated 20261002.142500
+
+# wafer_thin -- Surface p33 wafer living-mutant witness, unrostered since it was written. Its
+# shed-record check greps construction/SHRED_PREP.md for the second-mitra elder filename, while
+# that record folded to construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md on
+# 20260904.193221 (the live pin's own line 64 names the shelf) -- the same stale-testimony-
+# location fault REDS %812 and %809 named one layer over, in a dormant witness nobody had run
+# since the fold. Repaired by reading both the live pin and its folded shelf in the one grep
+# call, so a future refold finds the elder either place; GREEN on metal for the living path.
+# Claimed as patchouli-wafer-thin-shed-shelf-reference before this entry landed.
+guard wafer_thin
+path tools/gen/chapter/wafer_thin_witness.rish
+tier lap
+seated 20261002.152520
