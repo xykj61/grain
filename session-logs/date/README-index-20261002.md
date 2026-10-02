@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.060403` | [aether row listens, nothing new](20261002/20261002-060403_aether-row-listens-nothing-new.kyri) | lap 7295, row 0; network still dark, docs-geode still empty, captain line written |
 | `20261002.060035` | [capture_evidence refuses a copy that did not land](20261002/20261002-060035_bakery-capture-evidence-refusal.kyri) | a redirect made every failed copy read as success |
 | `20261002.060030` | [grass clears three-commit backlog](20261002/20261002-060030_grass-clears-three-commit-backlog.kyri) | network reachable; pushed three signed commits a prior lap could not send |
 | `20261002.055912` | [identical state, gate re-set](20261002/20261002-055912_identical-state-gate-reset.kyri) | HEAD unchanged since prior lap; no new claims or work; GATES-ONLY re-set |
