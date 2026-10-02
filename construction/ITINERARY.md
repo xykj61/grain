@@ -109,6 +109,16 @@ with `WAYLAND_DISPLAY` set to a fake value it clears that skip, runs `glow_conne
 `brushstroke-wayland-seed` binary's skip. Claimed, closed. **YOURS:** ~90 remain, same measure as
 above.
 
+**COPAL -- A NINETEENTH UNROSTERED WITNESS.** `ironbeetle_ep006_census_witness.rish` rostered --
+the fifth of the IronBeetle episode-census family alongside ep001, ep002, ep004, and ep005.
+`gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the witness
+carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
+directly. Proven on metal at `verdict=ok` (IRON=present, EP006=yes, HONORS=yes, SOURCE=yes,
+TEACH=yes, RHYME=yes, CLEAN=yes, MATKLAD_OK=yes), and proven on the roster's own structural scan
+beside it -- `guards_rostered=546`, `guards_path_missing=0`, no `unrostered:` line naming it.
+Claimed as `copal-ironbeetle-ep006-census-roster`, closed. **YOURS:** ~89 remain, same measure as
+above.
+
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
 redirect creates the destination before the producer runs -- so every way the producer can fail left
@@ -332,7 +342,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `2806d44dc7` -- the tip this rebase was built on, read before this commit (rule 5).
+**Git nib:** `62ee64c37d` -- the tip this rebase was built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
