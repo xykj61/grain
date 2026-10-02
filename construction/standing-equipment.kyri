@@ -8826,3 +8826,19 @@ guard pole_bozo_murr_hats
 path tools/gen/chapter/pole_bozo_murr_hats_witness.rish
 tier lap
 seated 20261002.065029
+
+# sunn13_root_survey -- SUNN13 root identity survey, unrostered since it was written. Reads
+# PUBKEYS.md for the Kyri voice line, Keaton Dunsford, the xykj61/grain clone spelling, and the
+# REMOTE_ROSTER cite; reads MAP.md for the Kyri voice line, the context/KYRI.md writing cite, the
+# kept Q-vane and Licenses-hold mentions, Kaeden Reyklah named on the hold, Keaton Dunsford on the
+# PUBKEYS face, and a negative assertion refusing Quin named as the current writer; reads
+# ORGANIZING.md for the same Kyri/KYRI.md/Q-vane trio; reads LICENSE-MIT, LICENSE-APACHE, and
+# LICENSE-CC-BY for the living "Keaton Dunsford and contributors" copyright hold. Proven both ways
+# on metal: a clean run reads GREEN, and rewriting LICENSE-MIT's copyright line to a different name
+# reds the exact assertion naming it, reverted clean after with zero working-tree diff. One of the
+# unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-sunn13-root-survey-roster before this entry landed.
+guard sunn13_root_survey
+path tools/gen/chapter/sunn13_root_survey_witness.rish
+tier lap
+seated 20261002.091516

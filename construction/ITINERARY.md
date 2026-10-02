@@ -141,10 +141,10 @@ whole](archive/date/20261002/20261002-062521_itinerary-copal-sunn10-keys-grain-o
 **COPAL.** [Sunn11_xykj61_onboarding account shelved
 whole](archive/date/20261002/20261002-063838_itinerary-copal-sunn11-xykj61-onboarding-account.md).
 
-**COPAL -- A THIRTEENTH UNROSTERED WITNESS.** [Account
-shelved](archive/date/20261002/20261002-065029_itinerary-copal-sunn12-account.md). `pole_bozo_murr_hats`
-rostered, GREEN twice -- a DJINN-row mutation reds the exact assertion naming it, reverted clean.
-Claimed, closed. **YOURS:** ~101 remain.
+**COPAL -- A FOURTEENTH UNROSTERED WITNESS.** [Account
+shelved](archive/date/20261002/20261002-091516_itinerary-copal-sunn13-account.md). `sunn13_root_survey`
+rostered, GREEN twice -- rewriting LICENSE-MIT's copyright name reds the exact assertion naming it,
+reverted clean. Claimed, closed. **YOURS:** ~100 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
