@@ -2,30 +2,44 @@
 //!
 //! Rishi is the shell of the Rye ecosystem: terse for the hand, typed for
 //! safety, a sibling of Rye that shares its value model. It reads a `.rish`
-//! script and runs it directly, supporting line comments; `let` bindings of
-//! strings, integers, booleans, lists, and records; string interpolation, where
-//! `"${expr}"` composes a value into text; `say` (to standard output); comparison
-//! with `==` and `!=`; list membership with `contains`; field access with
-//! `record.field`; running a command with `run`, whose result is a record;
-//! transforming and filtering lists with `map` and `where`; `assert` as a gate
-//! that stops the script and says why when a fact does not hold; integer
-//! arithmetic (`+`, `-`, `*`, `/`) with correct operator precedence;
-//! parenthesized expressions `(expr)` for grouping; and file I/O with
-//! `read-file` (returns file contents as a string), `write-file` (writes a
-//! value to a path), and `list-dir` (returns entry names as a list of strings);
-//! `env` to read the process environment by name (empty string when unset);
-//! pre-bound exit vocabulary (`exit-ok`, `exit-temporary`, `exit-permanent`,
-//! `exit-could-not-begin`) and an `exit` statement for scripts;
-//! `lines` to split a string into a list by newline; `starts-with` and `ends-with`
-//! to check whether a string begins or ends with a given affix; `length` for strings
-//! and lists; `trim` to remove surrounding whitespace; `slice` for bounded substring;
-//! `join` to compose a list of strings with a separator; `if/then/else` for
-//! conditional execution; and `for-each` for iteration with effects. For scripts run
-//! with `rishi run`, a pre-bound `args` list (`.list` of `.string`) holds the words
-//! after the script path, readable with `.len` and `[n]` -- no new value kind.
-//! It is the shell that runs
-//! the gate trio (`tools/p/parity.rish`, `tools/p/parity-selftest.rish`,
-//! `tools/ad/additive-gate.rish`) and grows toward `examples/pond.rish`
+//! script and runs it directly, with line comments and `let` bindings of
+//! strings, integers, booleans, lists, and records.
+//!
+//! String interpolation composes a value into text: `"${expr}"` evaluates
+//! `expr` and splices the result into the surrounding string. `say` writes
+//! to standard output. `==` and `!=` compare values; `contains` checks list
+//! membership; `record.field` reads a field.
+//!
+//! `run` executes a command and returns its result as a record. `map` and
+//! `where` transform and filter lists. `assert` is a gate: it stops the
+//! script and says why when a fact does not hold. Integer arithmetic (`+`,
+//! `-`, `*`, `/`) keeps correct operator precedence, and `(expr)` groups a
+//! sub-expression.
+//!
+//! File I/O runs through three builtins: `read-file` returns a file's
+//! contents as a string, `write-file` writes a value to a path, and
+//! `list-dir` returns entry names as a list of strings. `env` reads the
+//! process environment by name, returning an empty string when the name is
+//! unset.
+//!
+//! A pre-bound exit vocabulary (`exit-ok`, `exit-temporary`, `exit-permanent`,
+//! `exit-could-not-begin`) names the outcomes a script's own `exit`
+//! statement can choose among.
+//!
+//! `lines` splits a string into a list by newline. `starts-with` and
+//! `ends-with` check whether a string begins or ends with a given affix.
+//! `length` reads the size of a string or a list. `trim` removes
+//! surrounding whitespace, `slice` takes a bounded substring, and `join`
+//! composes a list of strings with a separator.
+//!
+//! `if/then/else` runs one of two branches; `for-each` iterates a list for
+//! its effects. For a script run with `rishi run`, a pre-bound `args` list
+//! (`.list` of `.string`) holds the words after the script path, readable
+//! with `.len` and `[n]` -- no new value kind.
+//!
+//! Rishi is the shell that runs the gate trio (`tools/p/parity.rish`,
+//! `tools/p/parity-selftest.rish`, `tools/ad/additive-gate.rish`) and grows
+//! toward `examples/pond.rish`
 //! (see `active-designing/20260622-235012_what-we-mean-by-seed.md`).
 //!
 //! Rishi is implemented in Rye and built against Rye's own standard library, so

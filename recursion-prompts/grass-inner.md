@@ -57,6 +57,13 @@ already opened.
 
 **Ruled `20261002.142242`.** The page already open is the fruit. Grade it. A fresh sweep of an unopened room waits.
 
+**The eval_expr split's own file graded below B, and the lift landed `20261002.150708`.** The
+module head (`//! ...`) describing Rishi's whole surface predates the split and was never touched
+by it; `qa_report_card.sh`'s Door reading found it at register=82, reach=50 -- one 27-line run-on
+sentence naming twenty-five-plus builtins drove the grade level to 14 against a Door ceiling of 9.
+Regrouped into short paragraphs by kind, same facts, zero added or dropped: reach rose to 100,
+register to 89. No code line moved; no witness applies.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
