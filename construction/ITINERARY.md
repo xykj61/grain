@@ -135,11 +135,14 @@ whole](archive/date/20261002/20261002-055258_itinerary-copal-personalize-templat
 **COPAL.** [Identity_remake_k5 account shelved
 whole](archive/date/20261002/20261002-060957_itinerary-copal-identity-remake-k5-account.md).
 
-**COPAL -- A TENTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `sunn10_keys_grain_os` rostered, GREEN
-twice (`rishi/bin/rishi run`; a planted edit of `xykj61` inside `keys/README.md` reds the exact
-assertion naming it, removed clean after). All eight content checks read `keys/README.md` and
-`manual/grain-os/overview.md`, neither of which carries a chapter-scope pin, so it carried none of
-the drift the RED candidates hit. Claimed, closed. **YOURS:** same open question -- ~104 remain.
+**COPAL.** [Sunn10_keys_grain_os account shelved
+whole](archive/date/20261002/20261002-062521_itinerary-copal-sunn10-keys-grain-os-account.md).
+
+**COPAL -- AN ELEVENTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `sunn11_xykj61_onboarding`
+rostered, GREEN twice (`rishi/bin/rishi run`; removing every `xykj61/grain` occurrence from
+`CLAUDE.md` reds the exact assertion naming it, reverted clean after with zero diff). Seven
+onboarding doors checked for the living `xy` clone-lock and the retired `debrided` clone, none
+carrying a chapter-scope pin. Claimed, closed. **YOURS:** same open question -- ~103 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -361,7 +364,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `7b3d7555ae` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `3fd9a7da14` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 
