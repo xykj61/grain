@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.101339` -- a ring and a chain, measured on metal, not recalled from source
 **Revised:** `20261002.095659` -- the ledger's own falsifier ran, chunked, and closed the table
 **Revised:** `20261002.093040` -- the falsifier ran twice; the documents disagree on whether it matters
 **Revised:** `20261002.060702` -- the byte-level falsifier ran, and the line-level proxy withdraws
@@ -159,6 +160,21 @@ reverses the file's own line-level reading, 46.7 percent shift-shaped to 88.6 pe
 closing the three-document table: `fleet-claims.kyri`, `ITINERARY.md`, and now `REDS.md` all read
 shift-shaped at byte level despite three different jobs. Graded B/84 at Field. No new witness, no
 new build; the classifying script is printed in the essay.
+
+**Self-generated `20261002.101339`, a fresh angle on the moonshot lane's own standing theme.**
+[A ring buys verified state; a chain buys a claim](../active-designing/date/20261002/20261002-101339_a-ring-buys-verified-state-a-chain-buys-a-claim.md)
+builds and runs `caravan/cycle.rye`'s ring and `caravan/relay.rye`'s chain on this host (zig
+`0.16.0`, `vendor/zig-toolchain/zig`) rather than reading their hop counts off source comments, and
+reads what each origin domain ends up holding after one round trip: the ring's own transcript says
+alder `reads 3 regions ... between birch and cedar` (a direct, capability-checked read of the far
+domains' own state), where the chain's own transcript says the client's result is `a claim, never
+an attestation` (an unverified report carried by the middle). Normalized to "what the origin can
+trust," the ring costs 2 non-origin touches for a verified read and the chain costs 3 for an
+unverified claim -- cheaper and stronger, for the one task a ring can do at all. Named as an N=3
+artifact rather than a scaling law: the ring's relay cost grows as N-2 while the chain's middle
+stays fixed at 2, so the two cross somewhere past N=4, and that crossover is the next falsifiable
+step rather than a claim made here. Graded B+/87 at Field. No new witness, no new build; both
+binaries built under `caravan/bin/` (gitignored) from already-landed, already-GREEN modules.
 
 ## gates
 
