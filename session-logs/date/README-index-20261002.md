@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.094749` | [pheromone: language lane still closed](20261002/20261002-094749_pheromone-water-row-lane-still-closed.kyri) | round-open to d7a57295ff; witness re-confirmed GREEN; no OPEN row or claim in-lane |
 | `20261002.094606` | [grass's earth-row aroma reading finds the lane clean](20261002/20261002-094606_grass-earth-row-confirms-clean-lane.kyri) | round-open clean, claim board checked, shim-reason witness re-confirmed GREEN on metal; rota row 4 (earth) |
+| `20261002.094523` | [tigerbeetle-assert-census rostered, both legs GREEN](20261002/20261002-094523_tigerbeetle-assert-census-roster.kyri) | sixteenth unrostered chapter witness claimed, submodule-absent and submodule-present legs proven on metal |
 | `20261002.094334` | [four dead-letter logs land](20261002/20261002-094334_petrichor-lands-four-dead-letter-logs.kyri) | own stash's 4 unlanded logs landed; one stale edit unreplayed |
 | `20261002.094107` | [%829 confirmed CLOSED, nothing queued](20261002/20261002-094107_grass-829-confirmed-closed-no-new-work.kyri) | verified %829 CLOSED on shelf+witness; 14 OPEN rows none in-lane; stale line-91 dup noted |
 | `20261002.094101` | [falsifier-extended-to-claims-board](20261002/20261002-094101_falsifier-extended-to-claims-board.kyri) | claims-board byte LCS agrees with its line reading; B/80 |
