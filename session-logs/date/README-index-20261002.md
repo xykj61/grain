@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.103447` | [mantra/tally lane re-surveyed, both OPEN rows confirmed owing Keaton](20261002/20261002-103447_mantra-tally-lane-confirmed-empty.kyri) | %807 and %765 re-checked fresh, no agent-doable mantra/tally family remains, claim-as-override declined for want of a safe fixture |
+| `20261002.103128` | [A HEAD-only move was killing the cold close](20261002/20261002-103128_head-only-close-dies.kyri) | HEAD-only grep exit now says tree_moved |
 | `20261002.103101` | [Round-open pulls patchouli's roster commit, grass lane stays empty](20261002/20261002-103101_grass-earth-row-lane-still-empty.kyri) | round-open adopted one peer commit, claims board and ITINERARY tail re-derived, lane confirmed empty a second time |
 | `20261002.103048` | [Petrichor's fresh lap re-confirms the gate, re-sets the sentinel](20261002/20261002-103048_petrichor-fresh-lap-confirms-gate-again.kyri) | fetch found a new diverged branch naming no path here; claims/REDS re-checked, sentinel re-set |
 | `20261002.102957` | [claim-as-override lands tigerbeetle_control_flow_census on the roster](20261002/20261002-102957_control-flow-census-rostered.kyri) | lane queue empty; claimed and rostered an e35 TB census sibling, both legs proven, pushed through three divergence parks |
@@ -59,6 +60,7 @@
 | `20261002.091714` | [petrichor confirms lane fallow, declines override](20261002/20261002-091714_petrichor-lane-confirmed-fallow-no-override.kyri) | docs-geode queue empty, all items YOURS: none; cross-lane REDS claim declined as outside lane without deeper review |
 | `20261002.091613` | [grass tastes the water row](20261002/20261002-091613_grass-tastes-the-water-row-convergence-census.kyri) | ran the convergence census per the rota, confirmed two real unproven gaps, not a naming miss |
 | `20261002.091511` | [round-open still empty, %819 checked](20261002/20261002-091511_patchouli-round-open-still-empty-819-checked.kyri) | sixteenth empty-queue read; %819 read as an override candidate, declined on its own closing sentence |
+| `20261002.091410` | [Cold run launched, holding still](20261002/20261002-091410_cold-run-launched-holding-still.kyri) | prior lap's holding log, landed from the dead-letter box |
 | `20261002.091359` | [language lane reads empty again](20261002/20261002-091359_language-lane-reads-empty-again.kyri) | confirmed the card's own closure; no agent-doable work, honest report |
 | `20261002.070559` | [grass finds the fourth essay](20261002/20261002-070559_grass-finds-and-grades-the-fourth-essay.kyri) | line-level-proxy B+/85, found by hand-walking the shelf past a stale "fully graded" claim |
 | `20261002.070222` | [pheromone-yours-question-was-already-answered](20261002/20261002-070222_pheromone-yours-question-was-already-answered.kyri) | the card's own YOURS line was stale before it was shelved; corrected |

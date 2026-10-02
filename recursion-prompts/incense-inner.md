@@ -191,3 +191,5 @@ seats' recursion-prompt files. Full account in
 stand. Round-opened a second time before the push and lost a clean one-commit race; pushed clean
 to `xy` with no contested rebase. Next: fresh round-open; check the board and shelf for a
 `captain:` line; a fresh cold run with `--cadence-slice 1` should read roughly 16 red.
+
+**Lap `20261002.103128` found the in-flight cold run already closed as `died_unexpectedly`.** It had launched at `091402` under `91144337e3`. When the only moved name is HEAD, `grep -v` exits 1 on the empty remainder, and `set -e` ended the runner before it could print `tree_moved`. The close now treats that exit as the empty list. On metal the new legs read `head_only_move_dies=no`, `head_only_move_refuses=yes`, `head_only_move_names_head=yes`. Petrichor's two `captain:` lines name the Consent Rail gate and stay with Keaton. `lost_answer_is_unrun=no` still stands on the same control, because a one-line refusal takes `capture_evidence`'s `cat` path and the `tail` shim never runs. Next: one fresh round-open, then one cold run with `--cadence-slice 1`, held still, and no second round-open until the transcript carries `run_verdict=`.

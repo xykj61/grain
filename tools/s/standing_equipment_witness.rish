@@ -323,6 +323,11 @@ assert control.out contains "staged_still_tree_passes=yes" else "standing-equipm
 # since a clean file stands in no open listing at all, and only a leg naming the verb caught it.
 assert control.out contains "moved_tree_counts_one=yes" else "standing-equipment: a moved tree must count the paths that moved"
 assert control.out contains "moved_tree_names_path=yes" else "standing-equipment: a moved tree must name the untracked file the stub wrote"
+# A clean tree whose only movement is HEAD. `grep -v` exits 1 when that is the whole list,
+# and `set -e` was ending the runner before `tree_moved` could be said.
+assert control.out contains "head_only_move_dies=no" else "standing-equipment: a HEAD-only move must not kill the runner -- died_unexpectedly hides the tree_moved the close exists to say"
+assert control.out contains "head_only_move_refuses=yes" else "standing-equipment: a HEAD-only move must refuse under run_verdict=tree_moved"
+assert control.out contains "head_only_move_names_head=yes" else "standing-equipment: a HEAD-only move must be named changed HEAD"
 assert control.out contains "named_changed=yes" else "standing-equipment: a committed file rewritten under the run must be named changed, never appeared"
 assert control.out contains "named_changed_counts_one=yes" else "standing-equipment: one file rewritten is one path moved"
 assert control.out contains "named_vanished=yes" else "standing-equipment: a file the run removes must be named vanished"

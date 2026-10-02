@@ -1684,7 +1684,13 @@ if [ "$moved" = yes ]; then
   cut -d' ' -f2- "$pen/paths.close" | sort -u > "$pen/names.close"
   # Every path either listing names, once, minus HEAD's own row -- a moved HEAD is named by the
   # commits that moved with it and by its own line below, so it is classified apart.
-  sort -u "$pen/names.open" "$pen/names.close" | grep -v '^HEAD$' > "$pen/names.all"
+  #
+  # GREP EXITS 1 WHEN THE LIST IS ONLY HEAD. That is the ordinary close of a clean tree whose
+  # only movement is a commit landing under the pass -- a pull, a reset, a round-open -- and
+  # `set -e` was reading that exit as the runner dying. The transcript then said
+  # `died_unexpectedly` and never reached `tree_moved`. Exit 1 is the empty list; a real grep
+  # failure still ends the pass.
+  sort -u "$pen/names.open" "$pen/names.close" | grep -v '^HEAD$' > "$pen/names.all" || [ $? -eq 1 ]
   git ls-files 2>/dev/null | sort -u > "$pen/names.tracked" || : > "$pen/names.tracked"
   # ONE awk over the three listings rather than a grep per path, and the reason is the same one
   # the digest gives for its single `hash-object`: a per-path process is a cost that grows with a

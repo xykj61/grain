@@ -1009,6 +1009,30 @@ case "$out" in *"detail: moved appeared mid-run.txt"*) echo "moved_tree_names_pa
 # A still tree names nothing, because a reading nobody needs is noise on every green pass.
 case "$out2_still" in *"tree_moved_paths="*) echo "still_tree_names_nothing=no" ;; *) echo "still_tree_names_nothing=yes" ;; esac
 
+# A CLEAN TREE WHOSE ONLY MOVEMENT IS HEAD. The listing then holds one name, HEAD, and
+# `grep -v` exits 1 on the empty remainder. Under `set -e` that exit used to kill the
+# runner before it could say `tree_moved`, so a round-open landing during the close read
+# as `died_unexpectedly`. The stub commits and leaves the worktree clean, which is that
+# shape exactly: both digests name HEAD and nothing else.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+echo more >> kept.txt
+git add kept.txt
+git -c commit.gpgsign=false commit -qm "mid-run head"
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+# The earlier leg left an untracked file, and the roster, the stub, and the run card are
+# untracked too. Any one of them keeps `grep -v` from exiting 1, so the leg would pass
+# on the unrepaired runner. Commit them and drop the leftover so both listings are HEAD alone.
+rm -f "$gitpen/mid-run.txt"
+( cd "$gitpen" && git add -A && git -c commit.gpgsign=false commit -qm "clean pen for head-only" ) >/dev/null 2>&1
+out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"died_unexpectedly"*) echo "head_only_move_dies=yes" ;; *) echo "head_only_move_dies=no" ;; esac
+case "$out" in *"run_verdict=tree_moved"*) echo "head_only_move_refuses=yes" ;; *) echo "head_only_move_refuses=no" ;; esac
+case "$out" in *"detail: moved changed HEAD"*) echo "head_only_move_names_head=yes" ;; *) echo "head_only_move_names_head=no" ;; esac
+
 # A guard red is the louder finding and keeps the verdict even when the tree also moved.
 cat > "$gitpen/rishi/bin/rishi" <<'EOF'
 #!/bin/sh
