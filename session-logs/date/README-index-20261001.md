@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.233655` | [petrichor gate set, no repeat sweep](20261001/20261001-233655_petrichor-gate-set-no-repeat-sweep.kyri) | confirmed prior fleet-wide reading still holds; .loop-gates-only set |
+| `20261001.233451` | [seventh-empty-queue-reading](20261001/20261001-233451_seventh-empty-queue-reading.kyri) | network back down; gate held, no fruit yet |
 | `20261001.233300` | [network restored, gate confirmed](20261001/20261001-233300_network-restored-gate-confirmed.kyri) | fetch succeeds, HEAD matches xy/main; gate stands, GATES-ONLY set |
 | `20261001.233251` | [fire lap confirms empty queue](20261001/20261001-233251_fire-lap-confirms-empty-queue.kyri) | REDS and claim board checked fleet-wide; no docs-geode lap stands |
 | `20261001.233200` | [the fifth empty-queue reading](20261001/20261001-233200_fifth-empty-queue-reading.kyri) | unchanged gate state; this host cannot reach xy right now |
