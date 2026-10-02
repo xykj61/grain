@@ -1,0 +1,31 @@
+# tools/gen/chapter/glow_connector_seam_negative_witness.rish -- the Wayland-quiet guard bites.
+#
+#   rishi/bin/rishi run tools/gen/chapter/glow_connector_seam_negative_witness.rish
+#
+# Points tools/fixtures/g/glow_connector_seam_scan.sh at a standing fixture that holds one
+# planted reference to wayland-client.h, so the refusal is observed on every run rather than
+# proven once by hand and never repeatable from the record (the copy_sameness_negative pattern,
+# one chapter over).
+#
+# Fixture: context/fixtures/glow_connector_seam_leak/leaking.glow -- standing exempt, holding the
+# one violation the scan exists to catch. It must stay wrong.
+
+say "glow-connector-negative: Language EN — the Wayland-quiet guard is proven to bite."
+say "glow-connector-negative: Style Radiant — a fixture holds the leak, not a live Glow source."
+say "glow-connector-negative: Lens TAME — negative space beside positive."
+
+let fixture = "context/fixtures/glow_connector_seam_leak/leaking.glow"
+let have = run ["test" "-f" fixture]
+assert have.ok else "glow-connector-negative: leak fixture absent"
+
+let leaked = run ["sh" "tools/fixtures/g/glow_connector_seam_scan.sh" "context/fixtures/glow_connector_seam_leak"]
+assert leaked.out contains "verdict=leak" else "glow-connector-negative: guard missed a planted leak"
+assert leaked.ok == false else "glow-connector-negative: refusal did not set a failing status"
+assert leaked.out contains "detail: leak" else "glow-connector-negative: no leaking path was named"
+assert leaked.out contains "leak_count=1" else "glow-connector-negative: expected exactly one planted leak"
+
+let clean = run ["sh" "tools/fixtures/g/glow_connector_seam_scan.sh"]
+assert clean.ok else "glow-connector-negative: clean call did not succeed"
+assert clean.out contains "verdict=ok" else "glow-connector-negative: the live src tree no longer agrees"
+
+say "GREEN: glow-connector-negative — planted leak caught and named; live src tree stays quiet"
