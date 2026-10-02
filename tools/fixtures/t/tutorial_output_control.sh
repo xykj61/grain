@@ -464,14 +464,51 @@ gap_page() {
   git -C "$d" add -A >/dev/null 2>&1
 }
 d=$(new_pen gap_at); gap_page "$d" 12
-case "$(run_scan "$d")" in
+out=$(run_scan "$d")
+case "$out" in
   *pairs=1*) ok gap_at_bound_free ;;
   *) bad gap_at_bound_free "a block exactly at the gap bound was dropped" ;;
 esac
+case "$out" in
+  *gap_lost=0*) ok gap_at_bound_not_counted_lost ;;
+  *) bad gap_at_bound_not_counted_lost "a pair that formed fine was still counted gap_lost: $out" ;;
+esac
+
+# REDS 20261001.192639: the fault was not that this drop happens -- the gap bound is right to
+# decline pairing a bare fence that arrives too late -- it is that the drop left no counter at
+# all, so the class was invisible. Proven from both sides: the count NAMES the drop, and the
+# ceiling still STAYS a gate (not a silent raise) once told to hold at zero.
 d=$(new_pen gap_past); gap_page "$d" 13
-case "$(run_scan "$d")" in
+out=$(run_scan "$d")
+case "$out" in
   *pairs=0*) ok gap_past_bound_dropped ;;
   *) bad gap_past_bound_dropped "a block past the gap bound was paired anyway" ;;
+esac
+case "$out" in
+  *gap_lost=1*) ok gap_past_bound_counted_lost ;;
+  *) bad gap_past_bound_counted_lost "a pair dropped past the gap bound left no gap_lost count: $out" ;;
+esac
+
+# The ceiling check sits past the "no pairs at all" refusal, so a page carrying ONLY the lost
+# pair never reaches it -- the corpus has to hold at least one ordinary pair too, same as every
+# real page this scan ever reads.
+d=$(new_pen gap_lost_and_one); n=13
+{
+  printf '# a page\n\n```sh\nsh tools/fixtures/p/say_two.sh\n```\n```\none\ntwo\n```\n\n'
+  printf '```sh\nsh tools/fixtures/p/say_two.sh\n```\n'
+  i=0; while [ "$i" -lt "$n" ]; do printf '\n'; i=$((i + 1)); done
+  printf '```\none\ntwo\n```\n'
+} > "$d/docs-geode/tutorials/page.md"
+git -C "$d" add -A >/dev/null 2>&1
+out=$( cd "$d" && TUTORIAL_OUTPUT_GAP_LOST_CEILING=0 sh "$SCAN" 2>&1 )
+case "$out" in
+  *verdict=a_pair_was_lost_to_its_gap*) ok gap_lost_ceiling_bites ;;
+  *) bad gap_lost_ceiling_bites "a gap_lost count over its ceiling did not gate: $out" ;;
+esac
+out=$( cd "$d" && TUTORIAL_OUTPUT_GAP_LOST_CEILING=1 sh "$SCAN" 2>&1 )
+case "$out" in
+  *verdict=every_quoted_block_still_prints*) ok gap_lost_ceiling_met_free ;;
+  *) bad gap_lost_ceiling_met_free "a gap_lost count at its own ceiling still refused: $out" ;;
 esac
 
 # ---- 10. a command fence with no output fence promises nothing ---------------------------------

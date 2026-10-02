@@ -232,6 +232,16 @@ HELD_CEILING=${TUTORIAL_OUTPUT_HELD_CEILING:-3}
 # down is making its own claim rather than answering the one above.
 MAX_GAP_LINES=${TUTORIAL_OUTPUT_MAX_GAP_LINES:-12}
 
+# A bare fence that arrived too late: the gap had already crossed MAX_GAP_LINES before it showed
+# up, so what would have been a pair -- held, undeclared, or checked -- is dropped instead (REDS
+# 20261001.192639). One at seating: SOURCE.md:318's `cd ~/yourrepo` fence meets an unrelated SSH
+# config block 17 lines later, past an intervening section heading, and the ceiling is right to
+# decline pairing them -- yet declining silently is the same fault the first hour met at :65 and
+# :96, which still read undeclared_after_prose today because their own gap sits exactly AT the
+# ceiling rather than past it. Ratcheted like `held`: the ceiling only falls, and a page that
+# pushes a new pair past the gap stays a gate rather than a silent drop.
+GAP_LOST_CEILING=${TUTORIAL_OUTPUT_GAP_LOST_CEILING:-1}
+
 # How many declared selections may be gathered from lines that stand apart rather than quoted as
 # one unbroken run. One at seating 20260910: the announced-length pair in the demos room quotes a
 # single `met:` line and then the three summary lines, with four further `met:` lines between them.
@@ -274,20 +284,34 @@ echo "pages_considered=$pages"
 # when the page declares what the prose is doing, because prose between the two blocks is
 # load-bearing and says which of three different things the second block is -- see the header.
 : > "$work/index.txt"
+: > "$work/lost.txt"
 n=0
 while IFS= read -r page; do
   [ -f "$page" ] || continue
   n=$(awk -v pen="$work" -v page="$page" -v start="$n" -v maxgap="$MAX_GAP_LINES" '
+    # A GAP IS NOT A VERDICT UNTIL A BARE FENCE ARRIVES TO CLAIM IT. A command fence with no
+    # output nearby runs into a long stretch of ordinary prose constantly -- the whole rest of a
+    # page, sometimes -- and that is never a lost pair, since no bare fence was ever coming to
+    # answer it (the header above already says it: a command with no output fence promises
+    # nothing and is not counted). So the gap keeps counting across state 2 without judging it, and the ONE
+    # place a verdict is due is the moment a bare fence actually shows up to close the pair. If
+    # the gap had already crossed maxgap by then, THAT fence would have formed a real pair a
+    # moment too late -- the loss REDS 20261001.192639 found, where resetting state on every
+    # over-long line let such a pair vanish from every reading with no counter naming it at all.
+    function lose(reason) {
+      printf "%s\t%s\t%s\n", page, cmdline, reason >> (pen "/lost.txt")
+      state = 0
+    }
     BEGIN { n = start; state = 0; vol = ""; sel = ""; lead = ""; prose = 0; gap = 0 }
     state == 0 && ($0 == "```sh" || $0 == "```bash") { state = 1; cmd = ""; cmdline = NR; next }
     state == 1 && $0 == "```"   { state = 2; vol = ""; sel = ""; lead = ""; prose = 0; gap = 0; next }
     state == 1                  { cmd = cmd $0 "\n"; next }
-    state == 2 && $0 == ""      { gap++; if (gap > maxgap) state = 0; next }
+    state == 2 && $0 == ""      { gap++; next }
     state == 2 && $0 ~ /^<!-- volatile:.*-->$/ {
       v = $0
       sub(/^<!-- volatile:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
       if (v != "") vol = v
-      gap++; if (gap > maxgap) state = 0
+      gap++
       next
     }
     # A LEAD-IN declares that the prose above is an introduction rather than a reattribution,
@@ -297,24 +321,32 @@ while IFS= read -r page; do
       v = $0
       sub(/^<!-- lead-in:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
       if (v != "") lead = v
-      gap++; if (gap > maxgap) state = 0
+      gap++
       next
     }
     state == 2 && $0 ~ /^<!-- selected:.*-->$/ {
       v = $0
       sub(/^<!-- selected:[ \t]*/, "", v); sub(/[ \t]*-->$/, "", v)
       if (v != "") sel = v
-      gap++; if (gap > maxgap) state = 0
+      gap++
       next
     }
     # A COMMAND FENCE ARRIVING HERE OPENS ITS OWN PAIR rather than closing the dangling one.
     # The generic fence rule below reads any ``` line as the end of a pair that produced no
     # output, and a ```sh line matches it -- so a command promising no output SWALLOWED the next
     # command, whole output block and all. See the header, WHAT A DANGLING COMMAND FENCE ATE.
+    # Nothing was lost here either way: no bare fence ever stood ready to claim this gap.
     state == 2 && ($0 == "```sh" || $0 == "```bash") { state = 1; cmd = ""; cmdline = NR; next }
-    state == 2 && $0 == "```"   { state = 3; out = ""; next }
+    state == 2 && $0 == "```"   {
+      if (gap > maxgap) {
+        lose(prose > 0 ? prose " prose line(s) across a " gap "-line gap" : "a " gap "-line gap of blank or declared lines")
+      } else {
+        state = 3; out = ""
+      }
+      next
+    }
     state == 2 && $0 ~ /^```/   { state = 0; next }
-    state == 2                  { prose++; gap++; if (gap > maxgap) state = 0; next }
+    state == 2                  { prose++; gap++; next }
     state == 3 && $0 == "```"   {
       n++
       printf "%s", cmd > (pen "/pair." n ".cmd")
@@ -329,6 +361,16 @@ done < "$work/pages.txt"
 
 pairs=$n
 echo "pairs=$pairs"
+
+gap_lost=$(wc -l < "$work/lost.txt" | tr -d ' ')
+echo "gap_lost=$gap_lost"
+echo "gap_lost_ceiling=$GAP_LOST_CEILING"
+if [ "$gap_lost" -gt 0 ]; then
+  awk -F'\t' -v maxgap="$MAX_GAP_LINES" '{
+    print "gap_lost: " $1 ":" $2 " -- " $3 ", past the " maxgap "-line ceiling; the bare fence" \
+      " that would have formed this pair arrived too late and the pair was dropped"
+  }' "$work/lost.txt"
+fi
 
 # ---- classify and run --------------------------------------------------------------------------
 checked=0; exact=0; drift=0; volatile=0; held=0; selected=0; undeclared=0
@@ -542,6 +584,11 @@ fi
 if [ "$held" -gt "$HELD_CEILING" ]; then
   echo "verdict=held_above_ceiling"
   exit 5
+fi
+
+if [ "$gap_lost" -gt "$GAP_LOST_CEILING" ]; then
+  echo "verdict=a_pair_was_lost_to_its_gap"
+  exit 7
 fi
 
 if [ "$scattered" -gt "$SCATTERED_CEILING" ]; then
