@@ -64,8 +64,15 @@ no live caller to change today; the honest next Mantra crux is the caller itself
 real reason to keep one name's identity stable across an edit. Graded B at Field.
 
 **Ruled `20261001.200649`.** Case 4 is closed by the Still-frame witness on this pier. Item 2, Settle
-and Respond on the Skate grid, waits for a macOS host. This seat stays ashore. A fresh topology
-proposal is not the next fruit.
+and Respond on the Skate grid, waits for a macOS host. A fresh topology proposal is not the next fruit.
+
+**The next fruit, ruled `20261001.204655`.** The grant and the revoke now exist in
+`mantra/src/consent_replay.rye`. Write one page under `active-designing/date/20261001/` that names
+the granted still frame and the revoked still frame, read from `ConsentState`: recipient, scope,
+`granted_at`, status, and `revoked_at` when the revoke slot is set. The grant's own fields stay on
+the revoked frame. No Swift file. No macOS build. No Settle or Respond. If the page would need a
+`LinengrowConsent` type, name that the projection is unwritten and stop. Grade the page at Field
+before sending.
 
 ## gates
 
