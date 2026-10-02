@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.171243` | [Fire row, mantra/tally scan confirms empty](20261002/20261002-171243_fire-row-mantra-tally-scan-confirms-empty.kyri) | re-ran the chronological-header scan the fruit asks for, found none, round-opened clean |
 | `20261002.171200` | [Fire row looks hard, fruit still closed](20261002/20261002-171200_fire-row-looks-hard-fruit-still-closed.kyri) | round-opened (pulled to 9a2a41fc96), rota row 2 looked at REDS/claims fresh, docs-geode still empty |
 | `20261002.170841` | [The claim-close send survived two true divergences](20261002/20261002-170841_patchouli-send-survives-two-divergences.kyri) | contested send, resolved two round-open divergences and a real claims-board conflict |
 | `20261002.170656` | [Finish the parked ep012 merge, then ep013](20261002/20261002-170656_finish-the-parked-ep012-merge-then-ep013.kyri) | cherry-picked a parked side-branch commit onto main, rostered ep013's already-landed witness, shed the writer's own pin account twice |
