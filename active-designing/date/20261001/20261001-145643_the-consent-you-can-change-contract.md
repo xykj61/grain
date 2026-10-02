@@ -166,8 +166,8 @@ remain unchanged after every refusal.
 
 The milestone lands only when the same two admitted fixtures pass all eight cases on metal and the
 falsifier stays false. Keaton's `20261001.200649` word accepted this page for implementation.
-The first replay, grant then revoke with the grant left standing, is the checkable edge. The
-other cases stay proposed until their own witnesses pass.
+The first replay, grant then revoke with the grant left standing, is witnessed, and so is the
+mismatched-holder refusal. The other cases stay proposed until their own witnesses pass.
 
 A sibling task was named for Pheromone: sketching `GrantFact` and `RevokeFact` as Glow
 shapes -- field names, ceilings, one refusal case each -- sized the way milestone one's desk was

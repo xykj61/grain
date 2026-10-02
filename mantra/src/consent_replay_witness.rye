@@ -43,6 +43,20 @@ fn orphan_against_empty() void {
     assert(log.grant == null and log.revoke == null);
 }
 
+fn holder_mismatch() void {
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    var other = revoke_fixture();
+    other.holder_id = "person:sample-other";
+    const refused = log.refusal_revoke(other, true).?;
+    // invariant: the refusal names the holder field and the mismatch reason.
+    assert(std.mem.eql(u8, refused.field, "holder_id") and refused.reason == .holder_mismatch);
+    const revoked = log.append_revoke(other, true);
+    // invariant: the mismatched holder writes nothing and leaves the admitted grant.
+    assert(std.meta.isError(revoked) and revoked == consent.ConsentError.HolderMismatch and log.revoke == null and consent.grant_eql(log.grant.?, grant));
+}
+
 fn orphan_against_other_grant() void {
     var log: consent.Log = .{};
     const grant = grant_fixture();
@@ -59,6 +73,7 @@ fn orphan_against_other_grant() void {
 pub fn main() void {
     orphan_against_empty();
     orphan_against_other_grant();
+    holder_mismatch();
     var log: consent.Log = .{};
     const grant = grant_fixture();
     log.append_grant(grant, true) catch unreachable;
@@ -73,5 +88,5 @@ pub fn main() void {
     assert(revoked.status == consent.Status.revoked);
     // invariant: the grant after the revoke matches the grant before it.
     assert(consent.grant_eql(revoked.grant, grant) and revoked.revoke != null);
-    print("GREEN: consent replay -- grant, then revoke, and the grant remains.\n", .{});
+    print("GREEN: consent replay -- grant, then revoke, and a mismatched holder writes nothing.\n", .{});
 }

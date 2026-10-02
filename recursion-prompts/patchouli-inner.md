@@ -28,10 +28,9 @@ that same change. The desk is
 [`../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md).
 The contract is
 [`../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md`](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
-The first replay is landed: `mantra/src/consent_replay.rye`, witness
-`tools/m/mantra_consent_replay_witness.rish`, GREEN. A grant then its revoke reads granted, then
-revoked, and the grant fact remains. An orphaned revoke writes nothing. Next case, one lap: a
-revoke whose holder differs from the grant.
+The first replay is landed, and so is the mismatched holder: a revoke whose `holder_id` differs
+from the grant refuses with `holder-mismatch` and writes nothing. Next case, one lap: refuse an
+incomplete fact or a false signature, one required field at a time.
 
 **`%807` takes no door.** A `before` anchor has no `u32` below zero. Renumbering every `ord` is the
 merge break already refused. Reserving zero buys one head insert and the next document hits the same
