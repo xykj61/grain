@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.170623` -- the word garden names two types; only one of them ever frees
 **Revised:** `20261002.162545` -- one of the three remaining witness files was a no-op, not a tail free
 **Revised:** `20261002.160924` -- nine of the garden's own 179 call sites never reach the arena
 **Revised:** `20261002.154708` -- today's own ring and chain carry no radius, only hop count
@@ -318,6 +319,21 @@ real append through the same arena first. The three confirmed-arena witness file
 genuine tail free -- from what looked like one idiom. No correctness defect in any of the three; the
 finding is that the idiom's safety was never visible at the call site alone. Graded A-/89 at Field. No
 witness, no new module; a reading of tracked source with the called function's own bound checks cited.
+
+**Self-generated `20261002.170623`, the whole five-essay arena-free arc checked against Tally's own
+authored type rather than only the std seam it reaches through.**
+[One name covers two allocators, and only one of them frees](../active-designing/date/20261002/20261002-170623_one-name-covers-two-allocators-and-only-one-frees.md)
+reads `tally/region.rye` and `tally/gardens.rye` directly and finds neither declares a `free` method
+at all -- `Region`'s whole release surface is `clear()`, a full reset, and `Gardens` matches the same
+shape one level up with `clear_one`/`clear_all`. So the 179-site `garden.free(` population the prior
+five essays read was always the inherited std seam (`ArenaAllocator.free` through
+`std.mem.Allocator`), confirmed uniform across all 492 tracked `const garden` bindings by grep. One
+caller binds the word to Tally's own `Region` directly -- `comlink/discovery/table.rye`'s
+`PeerTable.garden` -- and its one call site, `pack_descriptors`, reaches for exactly the one release
+gesture that type offers: clear, then repack everything live from the authoritative slot array,
+the cleanest instance yet of the kin essays' "no caller frees without clearing its whole region."
+Graded B+/89 at Field. No new witness, no new module; a reading of tracked source with a one-line
+grep falsifier that returns clean.
 
 ## gates
 

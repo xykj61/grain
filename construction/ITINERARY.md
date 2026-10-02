@@ -221,17 +221,14 @@ GREEN; TAME style bans clean; `functions_over_70` fell by one. `YOURS:` none fro
 **DIFFUSER -- THE 2D-LAYOUT ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-153253_itinerary-diffuser-2d-layout-account.md)
 -- the torus-layout reading and its named composition gap, B/82, `20261002`, nothing lost.
 
-**DIFFUSER -- THE FALSIFIER NAMED THE WRONG ROSTER.**
-[Read and closed](../active-designing/date/20261002/20261002-153253_the-falsifier-named-the-wrong-roster.md):
-the branching-tree essay's own falsifier asked whether `caravan/roster.rye`'s capability checks
-accept, refuse, or flatten a declared two-level tree. `caravan/roster.rye` never imports
-`channels.rye`, so its capability table answers a region-rights question entirely apart from
-channel shape -- it holds no view of a tree to flatten. `caravan/channels.rye`'s own `Graph` is the
-module that owns channel topology, and its four-case refusal surface answers every declared shape
-the same way, ring, star, tree, or disjoint components alike; `system.rye`'s `verify()` checks only
-non-isolation, never depth. B/82. **YOURS:** none -- whether `verify()` should someday refuse a
-shape by depth is Caravan's own open design question, named in the essay and unchanged by this
-reading.
+**DIFFUSER -- THE FALSIFIER-NAMED-THE-WRONG-ROSTER ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-170623_itinerary-diffuser-falsifier-wrong-roster-account.md) -- `caravan/roster.rye` never imports `channels.rye`; the depth question stays Caravan's own, B/82, `20261002`, nothing lost.
+
+**DIFFUSER -- THE WORD GARDEN NAMES TWO TYPES, AND ONLY ONE FREES.** [Read and
+closed](../active-designing/date/20261002/20261002-170623_one-name-covers-two-allocators-and-only-one-frees.md):
+`tally/region.rye`'s `Region` declares no `free`, only a whole-region `clear()`, so the five-essay
+arena-free arc's whole 179-site `garden.free(` population always read the std seam; one real
+`Region`-named-`garden` caller (`comlink/discovery/table.rye`) uses exactly that one gesture. B+/89.
+**YOURS:** none -- whether `Region` should grow its own `free` stays Tally's own open question.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -347,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b16a489a9e` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `2fa4c57446` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
