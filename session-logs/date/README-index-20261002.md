@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.151933` | [The shorthand is seated](20261002/20261002-151933_the-shorthand-is-seated.kyri) | lexicon door says the short name is seated |
+| `20261002.151700` | [The twentieth unrostered IronBeetle witness](20261002/20261002-151700_ep009-roster-lap.kyri) | ironbeetle_ep009_census claimed, rostered, proven three ways |
 | `20261002.151654` | [Grass checks the queue, no safe next](20261002/20261002-151654_grass-queue-check-no-safe-next.kyri) | queue reviewed; two TAME candidates too large to start blind, check-in named |
 | `20261002.151433` | [Pheromone queue empty, round opened](20261002/20261002-151433_pheromone-queue-empty-round-opened.kyri) | own lane empty; round-opened to 9b1fd23a58; no override claimed |
 | `20261002.151409` | [The guards speak plainly](20261002/20261002-151409_the-guards-speak-plainly.kyri) | tool comments name the front door in plain words |
