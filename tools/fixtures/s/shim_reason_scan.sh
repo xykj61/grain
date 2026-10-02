@@ -554,7 +554,10 @@ FILENAME != cur { if (cur != "") flush(); cur = FILENAME }
 /^let [a-z_][a-z0-9_]* = run \[/ {
   bind[$2] = FNR
   # presence_credit: a presence test has no target sentence. grep/git/rye/python/awk stay unsaid.
-  if ($0 ~ /test -[fdx]|\[ -[fdx]/ && $0 !~ /grep|git |rye |python|awk /)
+  # The array-argument spelling `["test" "-f" ...]` is the same presence test as `test -f` or
+  # `[ -f ]` -- Rishi's own quoting puts a `"` between the word and the flag, so the elder regex
+  # read past it. Widened 20261002 after it undercounted 438 bindings across 190 files.
+  if ($0 ~ /test -[fdx]|\[ -[fdx]|"test" "-[fdx]"/ && $0 !~ /grep|git |rye |python|awk /)
     reported[$2] = FNR
   # presence_credit_end
   next

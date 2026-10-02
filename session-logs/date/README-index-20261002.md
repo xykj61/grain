@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.050200` | [reds_ledger took its prove-red leg](20261002/20261002-050200_grass-reds-ledger-refusal-leg.kyri) | redleg ratchet 60 to 59; %827 addendum |
 | `20261002.045843` | [lane still empty, GATES-ONLY set](20261002/20261002-045843_lane-still-empty-gates-only-set.kyri) | round-open pulled one commit; %807/%765 unchanged, both want Keaton or another ship; sentinel set to stop circling |
+| `20261002.045632` | [shim-reason, three stacked causes, closed](20261002/20261002-045632_shim-reason-three-causes.kyri) | late_say + unsaid_rostered 943 to 820 + a scan undercount; GREEN |
 | `20261002.045616` | [twentieth-plus lap confirms same gate](20261002/20261002-045616_twentieth-lap-confirms-same-gate.kyri) | network still down, fruit still closed; recommends a human look rather than lap 21 |
 | `20261002.045515` | [lane gated, differential check finds no new docs-geode work](20261002/20261002-045515_lane-gated-no-docs-geode-work.kyri) | round-open pulled 2 commits; %807/%765 still mantra-scoped OPEN; no claim overlap; sentinel re-set |
 | `20261002.045344` | [lane still empty, one new commit touched nothing here](20261002/20261002-045344_lane-still-empty-no-new-commits-touch-mantra-tally.kyri) | round-open pulled one peer confirmation; %807/%765 unchanged; no claim overlap |
