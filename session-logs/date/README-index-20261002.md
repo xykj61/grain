@@ -10,6 +10,7 @@
 | `20261002.060035` | [capture_evidence refuses a copy that did not land](20261002/20261002-060035_bakery-capture-evidence-refusal.kyri) | a redirect made every failed copy read as success |
 | `20261002.060030` | [grass clears three-commit backlog](20261002/20261002-060030_grass-clears-three-commit-backlog.kyri) | network reachable; pushed three signed commits a prior lap could not send |
 | `20261002.055912` | [identical state, gate re-set](20261002/20261002-055912_identical-state-gate-reset.kyri) | HEAD unchanged since prior lap; no new claims or work; GATES-ONLY re-set |
+| `20261002.055836` | [lane gated, twentysixth confirm](20261002/20261002-055836_twentysixth-confirm-lane-gated.kyri) | pheromone's consent-shape fruit stays closed; YOURS line waits on Keaton's word; GATES-ONLY set |
 | `20261002.055619` | [grass no-network ordinary-move empty](20261002/20261002-055619_grass-no-network-ordinary-move-empty.kyri) | network dark, rishi stale/slow; no bounded repair found this lap |
 | `20261002.055509` | [identity-remake-k5-roster](20261002/20261002-055509_identity-remake-k5-roster.kyri) | Copal rosters `identity_remake_k5`, ninth chapter witness, both ways |
 | `20261002.055400` | [network recovered, docs-geode still empty](20261002/20261002-055400_network-recovered-docs-geode-still-empty.kyri) | socket reachable again, 2 stacked confirms already landed; no agent-doable docs-geode work |
