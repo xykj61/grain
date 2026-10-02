@@ -188,6 +188,16 @@ the corrected rule is N-1, which moves the crossover from "past N=4" to a tie at
 reading cheaper from N=5. Graded B/83 at Field. No new witness, no new build; the correction is
 shown in the open rather than silently fixed.
 
+**Self-generated `20261002.141234`, the crossover's other half checked.**
+[The chain's own middle is also one instance](../active-designing/date/20261002/20261002-141234_the-chains-own-middle-is-also-one-instance.md)
+checks `caravan/relay.rye`'s "stays fixed at 2" chain-middle claim the same way the prior essay
+checked the ring's own "N-2" rule, and finds the same gap: `caravan/systems/serial_relay.kyri`
+declares exactly one three-domain chain, so the flat cost is read off one instance and never
+exercised past it. Names a falsifier -- build a four-domain chain and read its own transcript --
+rather than attempting it, since widening the declaration is Caravan's own module edit. Graded
+B/84 at Field. No new witness, no new build; a reading of tracked source and its own comptime
+bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
