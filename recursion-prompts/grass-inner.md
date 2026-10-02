@@ -80,6 +80,25 @@ candidates from the eval_expr account are now both read (one split, one declined
 honest next move stays the ordinary one -- touch a prose, comment, or docs surface already open for
 other reasons, grade it, and push one bounded molt frame if it reads below B.
 
+**A sample of `docs-geode/` found one page below B, and the lift landed `20261002`.**
+`docs-geode/edu/yonder/funds/keeh-opening.md` graded C+/77, the one outlier among the room's 48
+pages (every sibling fund page read A or B+). The register reading's own `--explain` showed why:
+its `**Style:**` line sits alone, followed by two blank lines, before the rest of the front-matter
+block (`**Stamp:**`/`**Voice:**`/`**Kind:**`/`**Generator:**`); `prose_register_scan.sh`'s head
+state closes at the first blank line following any front-matter key, so everything after that
+second blank line -- the whole Stamp/Voice/Kind/Generator block, with its literal "no deploy" --
+fell out of metadata and into counted prose, merging without a single period into one giant
+run-on sentence that also swallowed the Recommendation section's own text. Every sibling fund page
+carries the identical double-blank structure and the identical bug, and reads fine anyway only
+because each one's gap-times-sentences arithmetic stays under the free-reading threshold
+(`REDS %430`) -- keeh's didn't. The fix removes the stray blank line between the Style line and the
+Stamp line, so the whole front-matter block stays one contiguous, correctly held-out unit:
+`register` reads 33% of 3 (was 66% of 2, with the giant run-on counted twice), the gated reading
+frees under the floor, and the composite rises to A/94. `gen_keeh_fund_prep.rish`'s witness and the
+`docs-geode` Bhakta-door scan both stay GREEN; no code line moved. `YOURS:` whether the other six
+fund pages should take the same one-line tidy, since each carries the identical latent fault even
+where the arithmetic currently hides it, stays Keaton's word rather than this lane's sweep.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
