@@ -204,8 +204,11 @@ Read your share with  sh tools/fixtures/c/card_seat_weight_scan.sh  -- reported,
 Law: .claude/rules/the-writer-sheds.md
 
 CUSTODY. The gates in ITINERARY stay MANUAL -- funds and keys, provisioning and paying, the
-maintainer's own identity, and the public seed. Never run publish-seed.sh. If only gates remain,
-run  touch .loop-gates-only , print GATES-ONLY, and stop.
+maintainer's own identity, and the public seed. Never run publish-seed.sh. Under
+FLEET_INDEFINITE=1 a gate does not end the night: write `captain: <one sentence>` in the session
+log rota, leave the gated act undone, and take other work. A hand's `.loop-clockout` still ends
+the ship. When the launch is not indefinite and only gates remain, run  touch .loop-gates-only ,
+print GATES-ONLY, and stop.
 
 CLOSE. End every reply on one line: kg, or a named check in (Cursor|Claude|checkpoint|either).
 
