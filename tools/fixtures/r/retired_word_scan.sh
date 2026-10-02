@@ -19,9 +19,11 @@
 # stronger guard had already ruled every one of them lawful. Two ears on one sound, with the cruder
 # ear the loud one.
 #
-# THREE MORE BANS STAY OUT BY DESIGN. Each carries an exemption a word boundary cannot judge:
+# FOUR MORE BANS STAY OUT BY DESIGN. Each carries an exemption a word boundary cannot judge:
 #   bug   -- vocabulary-red-over-bug: debug, debugging and debugger are their own words
 #   smell -- vocabulary-aroma: ordinary English about a nose keeps its place
+#   slug  -- vocabulary-string-over-slug: the page that seats the ban names the word, and a
+#            hyphenated name in an untouched spec still carries the elder word until a lap touches it
 #   child -- vocabulary-dependent: std.process.Child keeps Zig's name. A human child in civic
 #            prose keeps its own.
 #

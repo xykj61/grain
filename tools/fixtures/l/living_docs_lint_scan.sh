@@ -51,10 +51,12 @@ echo "living-docs lint: roster ${roster_n} paths"
 #   product/suite/git tip, six spellings   .claude/rules/vocabulary-nib.md (20260713)
 #   dogfood, three forms          .claude/rules/vocabulary-first-resident.md (20260828)
 #
-# THREE BANS SEATED SINCE ARE DELIBERATELY ABSENT, each carrying an exemption a
+# FOUR BANS SEATED SINCE ARE DELIBERATELY ABSENT, each carrying an exemption a
 # word-boundary match cannot judge, so wiring one in would refuse honest prose:
 #   bug   -- vocabulary-red-over-bug: debug, debugging and debugger are different words
 #   smell -- vocabulary-aroma: ordinary English about a nose is not banned
+#   slug  -- vocabulary-string-over-slug: the seating page names the word, and an untouched
+#            spec still carries the elder word until a lap touches it
 #   child -- vocabulary-dependent: std.process.Child keeps Zig's name, and a human child
 #            in civic prose keeps its own
 # Each of those needs a reader rather than a pattern. Named here so the absence reads as

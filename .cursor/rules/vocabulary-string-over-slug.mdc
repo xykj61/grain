@@ -1,0 +1,22 @@
+---
+description: Choose string over slug for a hyphenated name -- attach when naming a ladder, a file, or a draw
+alwaysApply: false
+---
+
+# String over Slug
+
+**Canonical:** `context/GAUGE_STYLE.md`. Chosen as a standing rule `20261002.154049` on Keaton's word.
+
+In living prose, rules, commit messages, and session logs, choose **string** over **slug**. A string is the stable hyphenated name a ladder, a file, or a draw is known by.
+
+| Form | Meaning |
+|------|---------|
+| **string** | the hyphenated name itself |
+| **the Rye value type** | the same word, and it stays |
+
+## What this does not retire
+
+- **Dated testimony, commit history, teacher quotes, and vendored text** keep their words.
+- The rule names the retired word. A lap that touches an older living page speaks the new word there.
+
+Canonical Claude twin: `.claude/rules/vocabulary-string-over-slug.md`.

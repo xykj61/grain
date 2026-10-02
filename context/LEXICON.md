@@ -1,7 +1,7 @@
 # Lexicon -- Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20261002.151933` (Lila-first, return-first shorthand seated)
+**Last updated:** `20261002.154049` (string seated over the retired naming word)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Room:** checkable -- seated names, each pointing at the file that carries it
 
@@ -475,3 +475,7 @@ remaining names are still genuinely unshaped is worth a pass of its own.*
 ## Lila-first, return-first append - `20261002.111449`
 
 | **Lila-first, return-first** | The short name of the lasting-ground then glad-keystone order: the return is chosen first, and Lila is the keystone on that ground. Seated `20261002.111449`. Foundation [`../foundations/20261002-111449_lila-and-the-long-return.md`](../foundations/20261002-111449_lila-and-the-long-return.md) - rule [`../.claude/rules/lila-and-the-long-return.md`](../.claude/rules/lila-and-the-long-return.md). |
+
+## String over slug append - `20261002.154049`
+
+| **string** | The stable hyphenated name a ladder, a file, or a draw is known by. The Rye value type is the same word and stays. Seated `20261002.154049` on Keaton's word, over the retired naming word. Rule [`../.claude/rules/vocabulary-string-over-slug.md`](../.claude/rules/vocabulary-string-over-slug.md). The front-door waymark's living string is `root-readme-long-return-foundation-weave-and-seed-legitimacy`. |

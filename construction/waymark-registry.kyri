@@ -3,7 +3,7 @@ stamp 20260826.013711
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal 2213dbdc92cc3efd175a8c138fdf13eace67a4e03f77ae24173a031fd4d86ba0c87b8646762065c82b5aca9c9a84e933f7b0289c379222ae77cb8118c5b61d9c
+seal d5c5918d2aafb991752d134242affa17a87a54d0a54eea99d438a0b646e5c8c085688e00999771a780876e964f32f28d71a895ae63649302b3693bd1ca992f02
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
@@ -16,10 +16,11 @@ seal 2213dbdc92cc3efd175a8c138fdf13eace67a4e03f77ae24173a031fd4d86ba0c87b8646762
 # Re-sealed 20260827.203000: AHOY appended -- seated in the rule table since the front-door chapter and absent here,
 # so the registry that calls itself the record of EVERY mark was missing one. Derived on metal from its recorded input
 # (sha3-512 b7aa8eb8 -> index 65 of 5526 -> AHOY), which is why the row could be added rather than invented.
-# Re-sealed 20261002.153434: AHOY molted. The old slug stays on that row so the draw still re-derives.
-# The living front-door slug draws AMIR (sha3-512 7c4f9389 -> index 134 of 5526).
+# Re-sealed 20261002.153434: AHOY molted. The old string stays on that row so the draw still re-derives.
+# The living front-door string draws AMIR (sha3-512 7c4f9389 -> index 134 of 5526).
+# Re-sealed 20261002.154049: the note speaks string, the seated name for that hyphenated draw.
 # ---- sealed body ----
-mark AHOY | input root-readme-lindy-foundation-weave-and-seed-legitimacy | index 65 | status molted | note molted 20261002 to AMIR; the old slug stays so this draw still re-derives
+mark AHOY | input root-readme-lindy-foundation-weave-and-seed-legitimacy | index 65 | status molted | note molted 20261002 to AMIR; the old string stays so this draw still re-derives
 mark AMIR | input root-readme-long-return-foundation-weave-and-seed-legitimacy | index 134 | status living | note front-door chapter, molted from AHOY 20261002
 mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
 mark AYRE | input harvest-season-equinox-2-trade | index 266 | status living | note seated
