@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.041617` | [sixteenth lap: full-room grade sweep confirms clean](20261002/20261002-041617_sixteenth-lap-full-room-grade-confirms-clean.kyri) | ran qa_report_card across all 32 live docs-geode pages outside the three named witnesses; every page clears B; queue empty |
+| `20261002.041504` | [sixteenth lap: confirms the gate, sets the stop sentinel](20261002/20261002-041504_sixteenth-lap-confirms-gate-sets-sentinel.kyri) | round-open clean on 0ac5f84131; lane gated for the fourth consecutive lap; no cross-lane claim fit; `.loop-gates-only` set so the watch stops re-arming |
 | `20261002.041441` | [byte-level falsifier made to outlive the turn](20261002/20261002-041441_byte-level-falsifier-made-to-outlive-the-turn.kyri) | second death named its own cause (bare shell `&` dies with its launching call); relaunched as a harness-tracked background task, polled by a separate blocking waiter |
 | `20261002.041208` | [fresh read confirms the mantra/tally queue is still empty](20261002/20261002-041208_patchouli-fresh-read-finds-lane-still-empty.kyri) | re-grepped REDS and ITINERARY fresh; %807 and %765 still the only lane rows, both blocked; 12 fleet-wide OPEN rows checked, none agent-doable from here |
 | `20261002.024000` | [byte-level falsifier relaunched](20261002/20261002-024000_byte-level-falsifier-relaunched.kyri) | the prior lap's in-flight classifier had died with its shell; relaunched the same script, running again |
