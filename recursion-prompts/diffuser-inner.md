@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.162545` -- one of the three remaining witness files was a no-op, not a tail free
 **Revised:** `20261002.160924` -- nine of the garden's own 179 call sites never reach the arena
 **Revised:** `20261002.154708` -- today's own ring and chain carry no radius, only hop count
 **Revised:** `20261002.153253` -- the falsifier named a module that never reads the channel graph
@@ -303,6 +304,20 @@ three remaining confirmed-arena witness files, `store_witness.rye`, is read clos
 carry the same tail-only shape outside a loop: an earlier allocation (`altered`) is never freed
 while a later one (`too_big`) is, by hand rather than by loop position. Graded A-/90 at Field. No
 witness, no new module; a reading of tracked source with line citations for all nine bindings.
+
+**Self-generated `20261002.162545`, the two remaining confirmed-arena witness files closed by
+reading the function each one's single call stands beside.**
+[One defer reads identical to another, and only one reclaims](../active-designing/date/20261002/20261002-162545_one-defer-reads-identical-to-another-and-only-one-reclaims.md)
+reads `mantra/src/weave_apply_witness.rye` and `mantra/src/weave_v1_lift_witness.rye`'s own single
+`defer garden.free` call sites against what runs between each `defer` and its function's return, and
+finds the two -- identical at the call site -- land in opposite outcomes: `weave_v1_lift_witness.rye`'s
+free genuinely reclaims, because the one downstream call (`from_v1`) refuses before allocating, while
+`weave_apply_witness.rye`'s free fires as a no-op, because its own downstream `planted` call performs a
+real append through the same arena first. The three confirmed-arena witness files beyond
+`drawn_terminal.rye` and `main.rye` now read as three different outcomes -- abandoned, no-op, and
+genuine tail free -- from what looked like one idiom. No correctness defect in any of the three; the
+finding is that the idiom's safety was never visible at the call site alone. Graded A-/89 at Field. No
+witness, no new module; a reading of tracked source with the called function's own bound checks cited.
 
 ## gates
 
