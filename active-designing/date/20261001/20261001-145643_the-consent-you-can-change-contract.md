@@ -166,9 +166,9 @@ remain unchanged after every refusal.
 
 The milestone lands only when the same two admitted fixtures pass all eight cases on metal and the
 falsifier stays false. Keaton's `20261001.200649` word accepted this page for implementation.
-The first replay, grant then revoke with the grant left standing, is witnessed, and so is the
-mismatched-holder refusal. An empty `grant_id`, `receipt_id`, and `holder_id` are the first three incomplete-field witnesses.
-The other fields, and the false signature, stay proposed until their own witnesses pass.
+The first replay, the mismatched-holder refusal, and case 8 are witnessed. Every required text
+field, emptied, refuses by its own name, and a false signature on either fact refuses as well.
+Cases 2 and 4, the Linengrow readings, stay proposed until their own witnesses pass.
 
 A sibling task was named for Pheromone: sketching `GrantFact` and `RevokeFact` as Glow
 shapes -- field names, ceilings, one refusal case each -- sized the way milestone one's desk was

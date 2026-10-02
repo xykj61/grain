@@ -1,7 +1,7 @@
 # Pheromone, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
-**Status:** Living -- fruit landed `20260923`, reconfirmed four times since (`20261001`); closed, awaiting a new ruling
+**Status:** Living -- next fruit seated `20261001.204655`, two consent shape pedestals
 **Room:** checkable -- the fruit names a measured ceiling and two options already on the card
 **Outer prompt:** [`../tools/p/pheromone_seat_prompt.txt`](../tools/p/pheromone_seat_prompt.txt)
 
@@ -52,8 +52,17 @@ elder `construction/ITINERARY.md` account was shelved in the same lap and a new 
 this sketch.
 
 **Ruled `20261001.200649`.** The `.lap` Glow desk stays untracked; the sketch is the desk.
-`orphaned-revoke` earns its `Reason` member in Patchouli's lowering, not in a change of its own
-here. This seat stays ashore. A re-check of either closed fruit is not a fruit.
+`orphaned-revoke` earned its `Reason` member in the consent lowering. A re-check of either closed
+fruit is not a fruit.
+
+**The next fruit, ruled `20261001.204655`.** Two shape pedestals, in the form
+`src/shape/shape-mantra-weave-field-count.glow` already uses:
+`src/shape/shape-consent-grant.glow` with example 9, and
+`src/shape/shape-consent-revoke.glow` with example 7. Those counts are
+`grant_fact_fields` and `revoke_fact_fields` in `mantra/src/consent_replay.rye`. Name the fields
+those structs already carry. One witness proves the two example counts. Do not raise `max_fields`.
+Do not copy `.lap/shape-receipt-offer.glow` into the tree. Do not edit `mantra/src/consent_replay.rye`
+or `tally/receipt_refusal.rye`.
 
 ## gates
 
