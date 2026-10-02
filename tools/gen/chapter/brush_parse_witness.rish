@@ -101,5 +101,10 @@ let widths = run ["sh" "-c" "grep -q 'slice_len_u32' brushstroke/brush_parse.rye
 assert widths.ok else "brush-parse: width pins scan failed"
 assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
 
+say "brush-parse: planted refusal control..."
+let control = run ["sh" "tools/fixtures/g/brush_parse_control.sh"]
+assert control.ok else "brush-parse: planted refusal control failed"
+assert control.out contains "verdict=ok" else "brush-parse: planted refusal control did not reach ok"
+
 say "GREEN: brush-parse — build · selftest · refuse · lower · redraw · grid · TAME · Surface p28"
 say "GREEN: brush-parse — Skate grid live (headless); Wayland window still later."
