@@ -1,0 +1,28 @@
+# tools/gen/chapter/houseplant_glossary_negative_witness.rish -- the houseplant Lexicon-row
+# refusal, shown from both sides.
+#
+#   rishi/bin/rishi run tools/gen/chapter/houseplant_glossary_negative_witness.rish
+#
+# houseplant_glossary_witness.rish proves the live row carries its distinctions and its ladder
+# accretion; this sibling proves tools/fixtures/h/houseplant_glossary_scan.sh actually CATCHES a
+# row missing them, by pointing it at a standing fixture that drops both on purpose, then calling
+# the same scan again with no argument to confirm the live Lexicon still reads clean.
+
+say "houseplant-negative: Language EN — the scan refuses a stripped row, then clears the live one."
+say "houseplant-negative: Style Radiant — shown from both sides, planted and lifted."
+say "houseplant-negative: Lens TAME — e14 · glossary seat · refusal proof."
+
+let planted = run ["sh" "tools/fixtures/h/houseplant_glossary_scan.sh" "context/fixtures/houseplant_glossary_missing/LEXICON.md"]
+say planted.out
+assert planted.ok == false else "houseplant-negative: the stripped fixture must refuse"
+assert planted.out contains "verdict=missing" else "houseplant-negative: want verdict=missing on the fixture"
+assert planted.out contains "row missing pier distinction" else "houseplant-negative: want the pier detail named"
+assert planted.out contains "row missing verse distinction" else "houseplant-negative: want the verse detail named"
+assert planted.out contains "ladder row missing houseplant accretion" else "houseplant-negative: want the ladder detail named"
+
+let live = run ["sh" "tools/fixtures/h/houseplant_glossary_scan.sh"]
+say live.out
+assert live.ok else "houseplant-negative: the live Lexicon must still read clean"
+assert live.out contains "verdict=ok" else "houseplant-negative: want verdict=ok against the live tree"
+
+say "GREEN: houseplant-negative — fixture refused by name, live Lexicon still clear"
