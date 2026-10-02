@@ -22,11 +22,20 @@ new section *One promise, wearing two clothes*, with the arc's own essay closed 
 erratum. The arc [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md)
 named this as its last movement, so the lane's own named work is done.
 
-**The next crux waits on Keaton's word, not on a fresh reading.** `mantra/src/weave.rye` carries
-two OPEN rows a lap cannot close alone: REDS `%807` (a head insert has no anchor, three doors
-named, none cheap) and REDS `%765`'s remaining 41 counted-version families awaiting the same
-molt `mantra-weave` already took. Name either as the next crux only once Keaton rules on its door;
-until then, the lane reads honestly empty and claim-as-override governs.
+**The next crux is the consent lowering, ruled `20261001.200649`.** Lower `ConsentGrantFact` and
+`ConsentRevokeFact` beside `mantra/src/receipt_offer.rye`, and add `orphaned-revoke` to `Reason` in
+that same change. The desk is
+[`../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md).
+The contract is
+[`../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md`](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
+One replay witness: a grant then its revoke reads granted, then revoked, and the grant fact remains.
+
+**`%807` takes no door.** A `before` anchor has no `u32` below zero. Renumbering every `ord` is the
+merge break already refused. Reserving zero buys one head insert and the next document hits the same
+wall. The row stays OPEN.
+
+**`%765` is the following crux, one family a lap.** Chronological headers, the way `mantra-weave`
+already moved. Elder headers keep their names. Do not open that molt in the same lap as the lowering.
 
 ## gates
 

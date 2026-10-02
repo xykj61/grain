@@ -51,11 +51,9 @@ fruit seated. Nothing was lowered into Mantra; that stays Patchouli's and Incens
 elder `construction/ITINERARY.md` account was shelved in the same lap and a new one opened naming
 this sketch.
 
-**This seat's next move wants Keaton's word rather than a third self-chosen crux**: whether
-`.lap/shape-receipt-offer.glow`'s draft belongs in a tracked Glow source (scope question for
-Incense, named in the `closed` section above), and whether the sketched `orphaned-revoke` reason
-earns a member on `tally/receipt_refusal.rye`'s `Reason` enum when a lowering opens. If a re-check
-of either closed fruit looks tempting, read this paragraph again instead.
+**Ruled `20261001.200649`.** The `.lap` Glow desk stays untracked; the sketch is the desk.
+`orphaned-revoke` earns its `Reason` member in Patchouli's lowering, not in a change of its own
+here. This seat stays ashore. A re-check of either closed fruit is not a fruit.
 
 ## gates
 

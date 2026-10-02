@@ -63,9 +63,9 @@ keeps a name bound to the one set of bytes it was first given. Content-defined r
 no live caller to change today; the honest next Mantra crux is the caller itself, a module with a
 real reason to keep one name's identity stable across an edit. Graded B at Field.
 
-**The torus ladder and the fourth angle both read closed.** The next Diffuser lap's own crux is a
-fresh first-principles proposal -- toroidal topology, energy-saving compute, or a radial/polar
-scheme -- rather than a further pass over either closed ladder.
+**Ruled `20261001.200649`.** Case 4 is closed by the Still-frame witness on this pier. Item 2, Settle
+and Respond on the Skate grid, waits for a macOS host. This seat stays ashore. A fresh topology
+proposal is not the next fruit.
 
 ## gates
 

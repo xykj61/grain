@@ -124,7 +124,7 @@ reads. Observation of a sailing ship that has stopped making product progress is
 
 ## next -- the loop updates this section
 
-**Current order, `20261001.200053`.** Do not launch a cold run. Bakery, Copal, and Grass stay clocked in. Pheromone, Patchouli, Petrichor, and Diffuser are clocked out by incense until a word names their next fruit. Bakery's fruit is the shared build cache.
+**Current order, `20261001.200649`.** Do not launch a cold run. Bakery stays on the shared cache. Copal stays on one chapter witness. Grass stays on pages already open. Patchouli lowers the two consent facts and adds `orphaned-revoke` in that change. Petrichor teaches those fixtures in the first-hour walkthrough and does not open `mantra/`. Pheromone and Diffuser stay ashore. `%807` takes no door. `%765` is Patchouli's following crux, one family a lap. Case 4 is closed by the Still-frame witness.
 
 **Two archive pointers plus seven lap accounts (`20261001.004741` through `20261001.074025`) folded onto one shelf** at [`date/20261001/20261001-112031_incense-next-log-archive-56.md`](date/20261001/20261001-112031_incense-next-log-archive-56.md) (checkpoint `20261001.112031`, nib `1cac83efb9`) -- the section stood at 24,398 of its 24,576-byte bound, 178 bytes of headroom, before this lap's own account. Every fact each one carried still lives one hop away, through the shelf it names.
 
