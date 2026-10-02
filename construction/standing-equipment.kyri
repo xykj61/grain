@@ -8714,3 +8714,21 @@ guard vols_survey
 path tools/gen/chapter/vols_survey_witness.rish
 tier lap
 seated 20261002.051538
+
+# vols_survey_true -- CION VOLS Journey 13 r4, the closing round, unrostered since it was
+# written. r1 made the census complete, r2 classified it, r3 rendered it to the Kyri ledger
+# construction/vols-survey-ledger.kyri; r4 proves that ledger READS TRUE against an independent
+# measure. Two tools, one answer: vols_survey_render.sh renders the ledger and
+# vols_survey_truth.sh computes the same totals a second way (grep -rl traversal, basename
+# classification); vols_survey_readtrue.sh emits readtrue=agree only when the ledger's sites,
+# handles, and prose_gaps each equal the independent count, with no number hardcoded so the
+# check stays true as the tree grows. Proves this twice: once on a controlled fixture tree,
+# once on the live tree with a freshly extracted guardlist. Then proves the seated pin parses
+# as a real cion-survey-v1 ledger and is self-consistent -- the site lines it carries equal the
+# site count it declares. GREEN on metal, runs in under a minute (the live read-true walks the
+# whole tree). One of the unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed
+# as copal-vols-survey-true-roster before this entry landed.
+guard vols_survey_true
+path tools/gen/chapter/vols_survey_true_witness.rish
+tier lap
+seated 20261002.053600
