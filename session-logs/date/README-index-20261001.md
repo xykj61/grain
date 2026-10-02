@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.203559` | [empty receipt id refused](20261001/20261001-203559_empty-receipt-id-refused.kyri) | an empty receipt id writes nothing |
+| `20261001.203446` | [contested-send-nib-stale](20261001/20261001-203446_contested-send-nib-stale.kyri) | three-rebase send landed; card nib stale under the named contested-send gap |
 | `20261001.203329` | [two-rooms rota grade stands](20261001/20261001-203329_two-rooms-rota-grade-stands.kyri) | Earth-row rota read on TWO_ROOMS.md; qa_report_card B+/89, no repair owed |
 | `20261001.202847` | [empty grant id refused](20261001/20261001-202847_empty-grant-id-refused.kyri) | an empty grant id writes nothing |
 | `20261001.202739` | [tend-hygiene-census-roster](20261001/20261001-202739_tend-hygiene-census-roster.kyri) | tend_hygiene_census witness rostered, GREEN both ways |
