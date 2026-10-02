@@ -1,0 +1,77 @@
+//! mantra/src/consent_replay_witness.rye -- grant, then revoke, and the grant remains.
+//!
+//! The orphaned revoke is attempted twice: once against an empty log, and once against an
+//! admitted grant whose id it does not name. Both refuse before the revoke slot is written.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const consent = @import("consent_replay.rye");
+
+fn grant_fixture() consent.ConsentGrantFact {
+    return .{
+        .schema = consent.grant_schema,
+        .grant_id = "consent:sample-pollinator-counts:grant-1",
+        .receipt_id = "receipt:sample-pollinator-counts:20260912",
+        .holder_id = "person:sample-holder",
+        .recipient_id = "org:sample-steward",
+        .scope = "habitat-planning-read-only",
+        .granted_at = "20260912.130000-0400",
+        .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v1",
+    };
+}
+
+fn revoke_fixture() consent.ConsentRevokeFact {
+    return .{
+        .schema = consent.revoke_schema,
+        .revoke_id = "consent:sample-pollinator-counts:revoke-1",
+        .grant_id = "consent:sample-pollinator-counts:grant-1",
+        .holder_id = "person:sample-holder",
+        .revoked_at = "20260915.090000-0400",
+        .signer_id = "person:sample-holder",
+        .signature = "fixture-signature-v2",
+    };
+}
+
+fn orphan_against_empty() void {
+    var log: consent.Log = .{};
+    const revoked = log.append_revoke(revoke_fixture(), true);
+    // invariant: an empty log refuses the revoke.
+    assert(std.meta.isError(revoked) and revoked == consent.ConsentError.OrphanedRevoke);
+    // invariant: the refusal writes neither slot.
+    assert(log.grant == null and log.revoke == null);
+}
+
+fn orphan_against_other_grant() void {
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    var other = revoke_fixture();
+    other.grant_id = "consent:sample-pollinator-counts:grant-missing";
+    const revoked = log.append_revoke(other, true);
+    // invariant: a revoke naming another grant refuses.
+    assert(std.meta.isError(revoked) and revoked == consent.ConsentError.OrphanedRevoke);
+    // invariant: the admitted grant is the one the log still holds.
+    assert(log.revoke == null and consent.grant_eql(log.grant.?, grant));
+}
+
+pub fn main() void {
+    orphan_against_empty();
+    orphan_against_other_grant();
+    var log: consent.Log = .{};
+    const grant = grant_fixture();
+    log.append_grant(grant, true) catch unreachable;
+    const granted = log.replay() catch unreachable;
+    // invariant: a lone grant replays as granted.
+    assert(granted.status == consent.Status.granted and granted.revoke == null);
+    // invariant: the replayed grant matches the admitted fixture.
+    assert(consent.grant_eql(granted.grant, grant));
+    log.append_revoke(revoke_fixture(), true) catch unreachable;
+    const revoked = log.replay() catch unreachable;
+    // invariant: the revoke changes the status and leaves the grant.
+    assert(revoked.status == consent.Status.revoked);
+    // invariant: the grant after the revoke matches the grant before it.
+    assert(consent.grant_eql(revoked.grant, grant) and revoked.revoke != null);
+    print("GREEN: consent replay -- grant, then revoke, and the grant remains.\n", .{});
+}

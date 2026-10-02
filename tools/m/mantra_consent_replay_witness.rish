@@ -1,0 +1,23 @@
+# tools/m/mantra_consent_replay_witness.rish -- one grant, then its revoke, and the grant remains.
+#
+# The build lands in a pen the runtime releases. The witness prints one GREEN sentence.
+
+let zig = "vendor/zig-toolchain/zig"
+let pen = make-pen "mantra_consent_replay"
+let bin = "${pen}/consent_replay_witness"
+
+say "consent-replay: Language EN -- a revoke appends beside the grant and does not replace it."
+say "consent-replay: Style Gauge, Meter -- the orphan refuses, and the admitted grant is read again after the revoke."
+say "consent-replay: Lens TAME -- the grant slot is compared field by field, not by one identifier."
+
+let build = run ["sh" "-c" "env RYE_ZIG=${zig} sh tools/fixtures/r/rye_build.sh mantra/src/consent_replay_witness.rye -femit-bin=${bin}"]
+say build.err
+assert build.ok else "consent-replay: the Rye witness did not build -- ${build.err}"
+
+let proof = run ["sh" "-c" "${bin} 2>&1"]
+say proof.err
+assert proof.ok else "consent-replay: the Rye witness exited non-zero -- ${proof.err}"
+assert proof.out contains "GREEN: consent replay" else "consent-replay: the witness did not print its complete GREEN claim"
+say proof.out
+
+say "GREEN: consent-replay runner -- the grant remains after the revoke, and an orphan writes nothing."

@@ -1,0 +1,184 @@
+//! mantra/src/consent_replay.rye -- one grant, at most one revoke, replayed in order.
+//!
+//! The grant is appended once and never rewritten. A revoke is a second fact beside it.
+//! An orphaned revoke, one whose grant_id names nothing admitted, refuses before that write.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const refusal = @import("tally_receipt_refusal.rye");
+
+pub const grant_schema = "grain.consent-grant.v1";
+pub const revoke_schema = "grain.consent-revoke.v1";
+
+pub const max_identifier_bytes: u32 = 96;
+pub const max_scope_bytes: u32 = 80;
+pub const max_signature_bytes: u32 = 192;
+pub const max_facts: u32 = 2;
+pub const grant_fact_fields: u32 = 9;
+pub const revoke_fact_fields: u32 = 7;
+
+pub const Refusal = refusal.Refusal;
+
+pub const ConsentError = error{
+    Empty,
+    NonAscii,
+    TooLong,
+    UnknownSchema,
+    InvalidSignature,
+    TooManyFacts,
+    OrphanedRevoke,
+};
+
+pub const Status = enum { granted, revoked };
+
+pub const ConsentGrantFact = struct {
+    schema: []const u8,
+    grant_id: []const u8,
+    receipt_id: []const u8,
+    holder_id: []const u8,
+    recipient_id: []const u8,
+    scope: []const u8,
+    granted_at: []const u8,
+    signer_id: []const u8,
+    signature: []const u8,
+};
+
+pub const ConsentRevokeFact = struct {
+    schema: []const u8,
+    revoke_id: []const u8,
+    grant_id: []const u8,
+    holder_id: []const u8,
+    revoked_at: []const u8,
+    signer_id: []const u8,
+    signature: []const u8,
+};
+
+pub const ConsentState = struct {
+    grant: ConsentGrantFact,
+    revoke: ?ConsentRevokeFact,
+    status: Status,
+};
+
+pub fn grant_eql(a: ConsentGrantFact, b: ConsentGrantFact) bool {
+    // invariant: the published grant field set stays the size this comparison covers.
+    comptime assert(@typeInfo(ConsentGrantFact).@"struct".fields.len == grant_fact_fields);
+    // invariant: the grant schema name itself is a nonempty constant.
+    assert(grant_schema.len > 0);
+    inline for (@typeInfo(ConsentGrantFact).@"struct".fields) |field| {
+        if (!std.mem.eql(u8, @field(a, field.name), @field(b, field.name))) return false;
+    }
+    return true;
+}
+
+fn error_of(reason: refusal.Reason) ConsentError {
+    // invariant: this mapping names only the reasons a consent admission throws.
+    assert(@typeInfo(refusal.Reason).@"enum".fields.len >= 12);
+    // invariant: an orphaned revoke is the relationship refusal this module owns.
+    assert(refusal.Reason.orphaned_revoke.name().len > 0);
+    return switch (reason) {
+        .empty => ConsentError.Empty,
+        .non_ascii => ConsentError.NonAscii,
+        .too_long => ConsentError.TooLong,
+        .unknown_schema => ConsentError.UnknownSchema,
+        .invalid_signature => ConsentError.InvalidSignature,
+        .too_many_facts => ConsentError.TooManyFacts,
+        .orphaned_revoke => ConsentError.OrphanedRevoke,
+        .wrong_length, .amount_too_large, .invalid_expiration, .unsuitable_value_unit, .no_admitted_fact => ConsentError.UnknownSchema,
+    };
+}
+
+fn text(field: []const u8, value: []const u8, ceiling: u32) ?Refusal {
+    // invariant: every consent text ceiling is one of the three the contract names.
+    assert(ceiling == max_identifier_bytes or ceiling == max_scope_bytes or ceiling == max_signature_bytes);
+    // invariant: the field name is a nonempty contract name.
+    assert(field.len > 0);
+    return refusal.text_refusal(field, value, ceiling);
+}
+
+pub const Log = struct {
+    grant: ?ConsentGrantFact = null,
+    revoke: ?ConsentRevokeFact = null,
+
+    pub fn refusal_grant(self: *const Log, fact: ConsentGrantFact, signature_valid: bool) ?Refusal {
+        // invariant: this replay holds one grant and at most one revoke.
+        assert(max_facts == 2);
+        // invariant: the grant schema name itself is a nonempty constant.
+        assert(grant_schema.len > 0);
+        if (self.grant != null) return refusal.fact_count_refusal(max_facts + 1, max_facts);
+        if (!std.mem.eql(u8, fact.schema, grant_schema)) return .{ .field = "schema", .reason = .unknown_schema };
+        if (text("grant_id", fact.grant_id, max_identifier_bytes)) |r| return r;
+        if (text("receipt_id", fact.receipt_id, max_identifier_bytes)) |r| return r;
+        if (text("holder_id", fact.holder_id, max_identifier_bytes)) |r| return r;
+        if (text("recipient_id", fact.recipient_id, max_identifier_bytes)) |r| return r;
+        if (text("scope", fact.scope, max_scope_bytes)) |r| return r;
+        if (text("granted_at", fact.granted_at, max_identifier_bytes)) |r| return r;
+        if (text("signer_id", fact.signer_id, max_identifier_bytes)) |r| return r;
+        if (text("signature", fact.signature, max_signature_bytes)) |r| return r;
+        if (!signature_valid) return .{ .field = "signature", .reason = .invalid_signature };
+        return null;
+    }
+
+    pub fn append_grant(self: *Log, fact: ConsentGrantFact, signature_valid: bool) ConsentError!void {
+        // invariant: this replay holds one grant and at most one revoke.
+        assert(max_facts == 2);
+        // invariant: a grant admission reads the log before it writes.
+        assert(self.revoke == null or self.grant != null);
+        if (self.refusal_grant(fact, signature_valid)) |r| return error_of(r.reason);
+        self.grant = fact;
+        // invariant: a successful grant admission performs the grant write.
+        assert(self.grant != null);
+    }
+
+    pub fn refusal_revoke(self: *const Log, fact: ConsentRevokeFact, signature_valid: bool) ?Refusal {
+        // invariant: this replay holds one grant and at most one revoke.
+        assert(max_facts == 2);
+        // invariant: the revoke schema name itself is a nonempty constant.
+        assert(revoke_schema.len > 0);
+        if (self.revoke != null) return refusal.fact_count_refusal(max_facts + 1, max_facts);
+        const admitted = self.grant orelse return .{ .field = "grant_id", .reason = .orphaned_revoke };
+        if (!std.mem.eql(u8, fact.grant_id, admitted.grant_id)) return .{ .field = "grant_id", .reason = .orphaned_revoke };
+        if (!std.mem.eql(u8, fact.schema, revoke_schema)) return .{ .field = "schema", .reason = .unknown_schema };
+        if (text("revoke_id", fact.revoke_id, max_identifier_bytes)) |r| return r;
+        if (text("grant_id", fact.grant_id, max_identifier_bytes)) |r| return r;
+        if (text("holder_id", fact.holder_id, max_identifier_bytes)) |r| return r;
+        if (text("revoked_at", fact.revoked_at, max_identifier_bytes)) |r| return r;
+        if (text("signer_id", fact.signer_id, max_identifier_bytes)) |r| return r;
+        if (text("signature", fact.signature, max_signature_bytes)) |r| return r;
+        if (!signature_valid) return .{ .field = "signature", .reason = .invalid_signature };
+        return null;
+    }
+
+    pub fn append_revoke(self: *Log, fact: ConsentRevokeFact, signature_valid: bool) ConsentError!void {
+        // invariant: this replay holds one grant and at most one revoke.
+        assert(max_facts == 2);
+        // invariant: a revoke admission reads the grant before it writes.
+        assert(self.grant == null or self.grant.?.grant_id.len > 0);
+        const grant_before = self.grant;
+        if (self.refusal_revoke(fact, signature_valid)) |r| return error_of(r.reason);
+        self.revoke = fact;
+        // invariant: a revoke leaves the admitted grant standing.
+        assert(grant_eql(self.grant.?, grant_before.?));
+    }
+
+    pub fn replay(self: *const Log) ConsentError!ConsentState {
+        // invariant: this replay holds one grant and at most one revoke.
+        assert(max_facts == 2);
+        // invariant: replay reads the log and does not clear the grant.
+        assert(self.grant == null or self.grant.?.grant_id.len > 0);
+        const grant = self.grant orelse return ConsentError.OrphanedRevoke;
+        const state: ConsentState = .{
+            .grant = grant,
+            .revoke = self.revoke,
+            .status = if (self.revoke == null) .granted else .revoked,
+        };
+        // invariant: replay returns the same grant the log holds.
+        assert(grant_eql(state.grant, grant));
+        return state;
+    }
+};
+
+// Keep print referenced so the TAME opener stays live in a library build.
+comptime {
+    _ = print;
+}
