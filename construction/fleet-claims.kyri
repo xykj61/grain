@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim bakery-capture-evidence-refusal
-seat bakery
-stamp 20261002.050307
-epoch 1790931787
-paths tools/fixtures/s/shell_portable.sh tools/fixtures/s/shell_portable_control.sh
-what capture_evidence reports success when its copy fails and leaves an empty evidence file; add a refusal and prove it from both sides in the control
