@@ -92,17 +92,20 @@ shelved](archive/date/20261002/20261002-171805_itinerary-copal-eleventh-ironbeet
 shelved](archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetle-roster-account.md)
 -- ep014 rostered and that claim closed.
 
-**COPAL -- A THIRTEENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep015_census_witness.rish`
-rostered, both legs proven on metal. Claimed as `copal-ironbeetle-ep015-census-roster`, closed.
+**COPAL -- EP015 AND GOLDEN-RULE ROSTER ACCOUNTS, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-183323_itinerary-copal-ep015-and-golden-rule-roster-account.md)
+-- ep015 and the TB golden-rule sibling, both rostered and closed.
 
-**COPAL -- A TWENTIETH UNROSTERED WITNESS.** `tigerbeetle_golden_rule_census_witness.rish`
-rostered -- the e21 TB golden-rule sibling, same decided-skip shape as `be_explicit` and
-`assert_census`: proven both legs on metal, clone moved aside exits GREEN at the clone-absent
-skip, restored it reads GREEN at `verdict=ok` with GUIDE_GOLDEN, TAME_GOLDEN, MAYBE_COMPLETES, and
-STYLE all at yes, and the `tigerbeetle_control_plane_census` elder it calls stays GREEN beside it.
-Claimed as `copal-tigerbeetle-golden-rule-roster`, closed. **YOURS:** ~72 chapter witnesses remain
-unrostered, measured against the `guard` rows in `construction/standing-equipment.kyri` rather than
-trusted from this line.
+**COPAL -- A TWENTY-FIRST UNROSTERED WITNESS.** `ironbeetle_ep018_census_witness.rish` rostered --
+the fourteenth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
+ep015: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
+witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
+directly. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
+EP018=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved
+aside it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
+`copal-ironbeetle-ep018-census-roster`, closed. **YOURS:** ~71 chapter witnesses remain unrostered,
+measured against the `guard` rows in `construction/standing-equipment.kyri` rather than trusted
+from this line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -321,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `baf265b53a` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `5d59c0f2a9` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
