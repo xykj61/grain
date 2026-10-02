@@ -1,6 +1,6 @@
 # tools/r/readme_metrics_witness.rish -- the front door's numbers are generated, and still true.
 #
-# WHY THIS RUNG. A README is the most Lindy-exposed document a project owns -- its whole promise is
+# WHY THIS RUNG. A README is the page a person meets first -- its whole promise is
 # that a reader arriving three years on still finds it true. A number typed there by hand is stale
 # the following morning and wrong within a month, and it is wrong in the one document everybody
 # trusts. So the front door carries generated numbers or none.

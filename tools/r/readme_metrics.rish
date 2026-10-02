@@ -1,6 +1,6 @@
 # tools/r/readme_metrics.rish -- render the front door numbers, and splice them in on request.
 #
-# WHY. A README is the most Lindy-exposed document a project owns: its promise is that a reader
+# WHY. A README is the page a person meets first: its promise is that a reader
 # arriving three years on still finds it true. A number typed there by hand is stale the following
 # morning and wrong within a month, and it will be wrong in the one document everybody trusts. So
 # the front door carries GENERATED numbers or none: this renders the block, and `write` splices it

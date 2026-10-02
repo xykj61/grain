@@ -38,8 +38,8 @@
 # titled "What Lives Here" and never named `video-scripts/`, three newcomer video scripts; and
 # `docs/README.md`, the compression shelf, never named `docs/redacted/`. Both rooms were named only
 # from OTHER rooms -- the Bhakta register law, and `docs-geode/edu/README.md` one lane over -- so the
-# claim stood in a distant room while the room that owned it was silent. A front door is the most
-# Lindy-exposed page a project owns (`foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`),
+# claim stood in a distant room while the room that owned it was silent. A front door is the
+# page a person meets most often (`foundations/20260811-211431_the-lindy-effect-and-the-long-return.md`),
 # so a list typed there and read by nothing goes quietly wrong the first time a room lands.
 #
 # THE SAME SAFETY TEST, RUN RATHER THAN ASSUMED. `**Members:**` was grepped against every reader in

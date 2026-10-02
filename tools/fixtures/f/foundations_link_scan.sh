@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/f/foundations_link_scan.sh -- every link a reader clicks in the why-room lands.
 #
-# WHY. `foundations/` is the most Lindy-exposed room this tree owns after the front door: it is
+# WHY. `foundations/` is the room a reader meets after the front door: it is
 # read first, cited most, and meant to still read true years from now. It is also the room whose
 # files are ALL stamp-named -- and the tree's own living/dated test reads a stamp-named basename as
 # testimony, which is exactly right for a session log and exactly wrong for a living foundation.

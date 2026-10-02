@@ -1,8 +1,8 @@
 # tools/r/rye_bridge_cycle_witness.rish -- the compiler that builds everything, given a guard of its own.
 #
 # WHY THIS RUNG. Rye builds every `.rye` file in this tree -- Caravan's hundred and ten rungs, the
-# crypto ladder, Aurora's freestanding seed, and Rye itself. It is the most Lindy-exposed tool the
-# tree owns, and until this witness it carried no check on its own build bridge at all. A fault
+# crypto ladder, Aurora's freestanding seed, and Rye itself. It is the tool the rest of the
+# tree stands on, and until this witness it carried no check on its own build bridge at all. A fault
 # there is a fault under everything.
 #
 # WHAT WENT WRONG. `bridge_rye_tree` walks a root `.rye` file and every `.rye` it imports,

@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/r/readme_metrics_scan.sh -- the numbers the front door is allowed to show.
 #
-# WHY ONLY THESE FOUR. A README is the most Lindy-exposed document a project owns: its whole
+# WHY ONLY THESE FOUR. A README is the page a person meets first: its whole
 # promise is that a reader arriving three years on still finds it true. So a number typed there by
 # hand is a claim that rots, and a number that moves every commit is a claim nobody will keep
 # current. These four move only when something real changes, and each says something a reader

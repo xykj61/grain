@@ -220,3 +220,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.145510` graded the lessons door.** `docs-geode/lessons/README.md` reads A at Door, composite 91. The three newcomer doors now have a grade: the first hour A, the study door B+, the lessons door A. Each stands.
 
 **Lap `20261002.150620` seated the living names on the inner loop.** The card's queue now leads with the Long Return, and the two choosing lines read The Long Return and Lila. The work each line names is unchanged.
+
+**Lap `20261002.151409` spoke plainly in the tool comments that guard the front door.** Seven headers drop the old specialist phrase. The README is the page a person meets first. `foundations/` is the room a reader meets after it. The compiler is the tool the rest of the tree stands on. The promise in each comment is unchanged. The front-door numbers still match the tree.
