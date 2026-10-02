@@ -915,3 +915,5 @@ at a closed fold.*
 *Row `20260924.212647` folded to [`REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md`](REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md) on `20261001.234702`, **CLOSED** -- folded by hand to clear headroom for a fresh row while the pin's numbered rows sat all OPEN and unfoldable by the automated tool; the REDS fold loom's own control could not build its planted pen.*
 
 *Row `20260925.162402` folded to [`REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md`](REDS-two-closed-anchors-stamp-20260924-212647-20260925-162402.md) on `20261001.234702`, **CLOSED** -- folded by hand alongside it; the wall `%801` closed reddened again because its own anchor was set too early.*
+
+*Row %829 folded to [`REDS-the-shape-masking-the-count-rows-829.md`](REDS-the-shape-masking-the-count-rows-829.md) on `20261002.003623`, **CLOSED** -- a scan's one-verdict-word answer hid a second, larger failing shape underneath it.*

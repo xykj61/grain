@@ -4,6 +4,13 @@
 #
 # Law: a duty with no witness has no seat, and a duty with no seat never lands.
 # Planted C1 proves firing; planted C2 proves discrimination; library one_dialect.
+#
+# A FLOOR, NOT A PIN (20261002.000949, same lesson the scan's own comment already names at
+# REDS %235 one level down). This witness pinned `law_library_dated=17` and `compact=17` --
+# the exact snapshot the day it was written. context/*.md gains correctly dated files on its
+# own, so the library had grown to 27 by the time this ran: the scan's own `roster=honored`
+# and `law_library_floor=17` lines already carry the coverage-never-shrinks property; this
+# witness asserts those stable fields rather than the exact counts a growing roster outgrows.
 
 say "date-dialect: Language EN — planted controls before library totals."
 say "date-dialect: Style Radiant — carry the transformation; advance no date."
@@ -16,10 +23,11 @@ assert green.out contains "tracked_controls=honored" else "date-dialect: want tr
 assert green.out contains "OK C1-hyphenated planted hyphen counted" else "date-dialect: want C1"
 assert green.out contains "OK C2-compact planted compact not counted" else "date-dialect: want C2"
 assert green.out contains "controls_honored=2" else "date-dialect: want 2 of 2"
-assert green.out contains "law_library_dated=17" else "date-dialect: want dated 17"
 assert green.out contains "hyphenated=0" else "date-dialect: want hyphenated 0"
-assert green.out contains "compact=17" else "date-dialect: want compact 17"
 assert green.out contains "verdict=one_dialect" else "date-dialect: want one_dialect"
+assert green.out contains "roster=honored" else "date-dialect: want roster honored"
+assert green.out contains "law_library_floor=17" else "date-dialect: want floor 17"
+assert green.out contains "date_dialect=honored" else "date-dialect: want date_dialect honored"
 assert green.out contains "date_dialect_scan=ok" else "date-dialect: want scan ok"
 assert green.out contains "verdict=ok" else "date-dialect: want verdict=ok"
 
