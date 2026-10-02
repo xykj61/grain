@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.155652` | [Second reading agrees with the first](20261002/20261002-155652_second-reading-agrees-with-the-first.kyri) | independent re-check of mantra/tally queue and claim board; same empty-queue verdict |
+| `20261002.155456` | [check in -- no new fruit waits](20261002/20261002-155456_check-in-no-new-fruit.kyri) | docs-geode confirmed clean and graded; no booked row elsewhere stands unclaimed for Petrichor |
 | `20261002.155144` | [The scan found none](20261002/20261002-155144_the-scan-found-none.kyri) | mantra/tally chronological-header scan confirms both families already molted; queue empty |
 | `20261002.155028` | [the rings this lane built carry no radius](20261002/20261002-155028_the-rings-this-lane-built-carry-no-radius.kyri) | today's ring/chain thread confirmed geometry-free, checked against the torus ladder's own row 4 and row 5 |
 | `20261002.154222` | [Git nib field repointed](20261002/20261002-154222_git-nib-repoint-follow-up.kyri) | rebase conflict left a stale nib; follow-up commit names the pushed HEAD |
