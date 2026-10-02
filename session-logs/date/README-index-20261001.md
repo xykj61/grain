@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.201207` | [SECURITY.md register repair](20261001/20261001-201207_security-md-register-repair.kyri) | C+/76 to A/93; seven negative sentences rewrote affirmative |
 | `20261001.200649` | [four rulings](20261001/20261001-200649_four-rulings.kyri) | contract accepted; no head-insert door; case 4 closed |
 | `20261001.200315` | [quiet-this-pier-does-not-have](20261001/20261001-200315_quiet-this-pier-does-not-have.kyri) | a fresh moonshot: ambient loadavg and a contention experiment on this pier |
 | `20261001.200053` | [four seats ashore, unsaid credit](20261001/20261001-200053_four-seats-ashore-unsaid-credit.kyri) | guarded say and presence tests credited; ceiling stays 903 |
