@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.095659` -- the ledger's own falsifier ran, chunked, and closed the table
 **Revised:** `20261002.093040` -- the falsifier ran twice; the documents disagree on whether it matters
 **Revised:** `20261002.060702` -- the byte-level falsifier ran, and the line-level proxy withdraws
 **Revised:** `20261002.010921` -- the real edit log was already in git, not in Mantra
@@ -146,6 +147,18 @@ own 46/28/27 mixed reading stays line-level only and is named as the next falsif
 append-only history is too large for the pure-Python `difflib` approach both essays used, and wants
 either a faster LCS implementation or a chunked method. Graded B/80 at Field. No new witness, no
 new build; the script is the prior essay's, pointed at a second path.
+
+**Self-generated `20261002.095659`, the inherited falsifier closed.**
+[The ledger reads shift-shaped once the tool can afford it](../active-designing/date/20261002/20261002-095659_the-ledger-reads-shift-shaped-once-the-tool-can-afford-it.md)
+builds the chunked byte-level method the prior essay named and did not attempt: a fast line-level
+diff localizes each revision's changed line-runs (sub-millisecond even on the 65KB pairs that take
+plain byte-level `difflib` 45 seconds each), and byte-level `SequenceMatcher` refines only inside
+those runs. All 686 consecutive `REDS.md` revision pairs read in 65.3 seconds, no exclusions,
+correctness checked against brute force on 16 sampled pairs with zero mismatches. The result
+reverses the file's own line-level reading, 46.7 percent shift-shaped to 88.6 percent shift-shaped,
+closing the three-document table: `fleet-claims.kyri`, `ITINERARY.md`, and now `REDS.md` all read
+shift-shaped at byte level despite three different jobs. Graded B/84 at Field. No new witness, no
+new build; the classifying script is printed in the essay.
 
 ## gates
 
