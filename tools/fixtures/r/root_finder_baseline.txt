@@ -109,6 +109,7 @@ tools/fixtures/m/mantra_multifile_scan.sh
 tools/fixtures/m/mantra_record_ceiling_control.sh
 tools/fixtures/m/mantra_record_ceiling_scan.sh
 tools/fixtures/m/mantra_snapshot_batch_count_control.sh
+tools/fixtures/m/mantra_spool_dedup_ratio_scan.sh
 tools/fixtures/m/mantra_store_control.sh
 tools/fixtures/m/mantra_tablecloth_answer_pool_control.sh
 tools/fixtures/m/mantra_weave_annotate_control.sh

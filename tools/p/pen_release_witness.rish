@@ -76,6 +76,6 @@ assert control.out contains "control_verdict=ok" else "pen release control verdi
 assert control.out contains "fail=0" else "a planted behavior went unread: ${control.out_brief}"
 assert control.out contains "pass=58" else "the control's leg tally moved: ${control.out_brief}"
 
-assert scan.out contains "runtime_pens=25" else "the runtime-owned pen population moved: ${scan.out_brief}"
+assert scan.out contains "runtime_pens=26" else "the runtime-owned pen population moved: ${scan.out_brief}"
 
-say "GREEN: every pen this tree makes is counted for its release -- 8 never removed under a ceiling that only falls, and 25 handed to the runtime."
+say "GREEN: every pen this tree makes is counted for its release -- 8 never removed under a ceiling that only falls, and 26 handed to the runtime."

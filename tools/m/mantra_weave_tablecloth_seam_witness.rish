@@ -19,7 +19,7 @@
 # gap this wrapper closes).
 #
 # The Rye witness lives at mantra/weave_tablecloth_seam_witness.rye rather than under mantra/src/,
-# because it imports `src/weave.rye` and the same-directory `recall_lap1.rye` by relative path
+# because it imports `mantra/src/weave.rye` and the same-directory `recall_lap1.rye` by relative path
 # from the mantra/ root -- both already live there, so no symlink is needed to satisfy Zig's
 # refusal of an import that escapes the root file's directory.
 #
