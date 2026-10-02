@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.095757` | [tigerbeetle-say-why-census rostered, both legs GREEN](20261002/20261002-095757_tigerbeetle-say-why-census-roster.kyri) | seventeenth unrostered chapter witness claimed; submodule-absent and submodule-present legs proven on metal |
 | `20261002.095739` | [Patchouli: queue confirmed empty, both rows OPEN](20261002/20261002-095739_patchouli-queue-confirmed-empty.kyri) | %807 and %765 re-read OPEN; weave's max_weave_lines bound pressed and holding; rota row 1 (air) |
 | `20261002.095348` | [the board, stash, and lint agree](20261002/20261002-095348_petrichor-tastes-the-clean-board.kyri) | re-sipped claims, REDS, lint; same clean lane again |
 | `20261002.095157` | [sel4-license takes its refusal leg](20261002/20261002-095157_sel4-license-redleg-refusal-leg.kyri) | redleg %827 fixed 56->55; three stale reds folded |
