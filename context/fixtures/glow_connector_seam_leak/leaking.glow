@@ -1,0 +1,7 @@
+:: context/fixtures/glow_connector_seam_leak/leaking.glow -- standing exempt fixture.
+:: Holds one planted reference to wayland-client.h so
+:: tools/fixtures/g/glow_connector_seam_scan.sh has a real leak to count when it is pointed
+:: at this fixture root, rather than a live Glow source ever being made to hold the violation.
+:: Glow source never speaks Wayland C; this file proves the scan would catch it if one did.
+$: leak -- u32
+  wayland-client.h

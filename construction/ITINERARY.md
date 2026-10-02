@@ -112,16 +112,21 @@ GREEN both ways; the open question each carried now lives in the `fact_fold_cens
 below; booked at `construction/REDS.md` (`20261001.234320`), **OPEN**. Two small CLOSED rows
 folded by hand to clear the ledger's own bound.
 
-**COPAL.** `fact_fold_census` rostered into `construction/standing-equipment.kyri`, GREEN on
-metal both ways -- the elder witness carried one green leg and no plant; two were added (a pen
-shape naming an absent pattern page, a pen shape with one bound field drifted while the metal
-file stayed real), each refusing by name, with a welcome leg re-running the unmutated scan to
-prove the refusal both ways. This closes design-shapes' four-hall family -- bounds_home,
-tend_hygiene, relay_resin, and now fact_fold are all rostered. Claimed as
-`copal-fact-fold-census-roster` and run through `standing_equipment_run.sh` by name,
-`run_verdict=ok`. **YOURS:** whether the remaining unrostered `tools/gen/chapter/` witnesses
-outside the design-shapes family (ironbeetle, tigerbeetle, surface_season, sunn, nona, oven, and
-the rest) want individual rostering laps too, Keaton's word.
+**COPAL.** [Fact_fold_census account shelved
+whole](archive/date/20261002/20261002-011642_itinerary-copal-fact-fold-census-account.md).
+
+**COPAL -- A SECOND UNROSTERED WITNESS TAKES THE SAME TREATMENT, BOTH WAYS.**
+`glow_connector_seam` rostered into `construction/standing-equipment.kyri`, GREEN on metal both
+ways. The positive leg still proves all five hops; its own hop 5 check moved out of an inline
+`rg` call into `tools/fixtures/g/glow_connector_seam_scan.sh`, a scan taking a root argument.
+The new `glow_connector_seam_negative_witness.rish` points that scan at a standing fixture,
+`context/fixtures/glow_connector_seam_leak/`, holding one planted reference to
+`wayland-client.h`, reads `verdict=leak` and a named detail line, then calls the scan again with
+no argument and reads `verdict=ok` against the live tree -- so the refusal is shown from both
+sides. Claimed as `copal-glow-connector-seam-roster` and run through `standing_equipment_run.sh`
+by name, both `run_verdict=ok`. **YOURS:** same open question as the shelved account above --
+whether the remaining ~120 unrostered `tools/gen/chapter/` witnesses want individual rostering
+laps too, Keaton's word.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and

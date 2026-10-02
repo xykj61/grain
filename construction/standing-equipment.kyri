@@ -8503,6 +8503,32 @@ path tools/gen/chapter/fact_fold_census_witness.rish
 tier lap
 seated 20261001.231748
 
+# glow_connector_seam -- the five-hop Glow-to-Wayland connector proven, and its quiet-Glow
+# check proven to bite. The positive leg reads counsel sketch and harden pages, eighteen
+# src/shape/.glow pedestals, mantra/src/weave.rye, brushstroke/seed.rye and wayland_seed.rye,
+# brushstroke/skate_grid.rye, and brushstroke/seed-frame.brush, then calls
+# tools/fixtures/g/glow_connector_seam_scan.sh with its own default root, src, reading
+# verdict=ok. That scan was pulled out of the witness's own hop 5 check, which used to inline
+# `rg -l 'wayland-client.h' src --glob '*.glow'` with no way to prove the refusal bites short
+# of planting a leak in a live Glow source. The negative leg,
+# tools/gen/chapter/glow_connector_seam_negative_witness.rish, points the same scan at
+# context/fixtures/glow_connector_seam_leak/, a standing fixture holding one planted
+# reference to wayland-client.h, and reads verdict=leak, leak_count=1, a named detail line,
+# and a failing status, then calls the scan again with no argument and confirms the live src
+# tree still reads verdict=ok -- so the refusal is shown from both sides rather than only in
+# the failing direction. One of the unrostered tools/gen/chapter/ witnesses copal-inner.md
+# names; claimed as copal-glow-connector-seam-roster before this entry landed. Both run in
+# under 1s on metal.
+guard glow_connector_seam
+path tools/gen/chapter/glow_connector_seam_witness.rish
+tier lap
+seated 20261002.011420
+
+guard glow_connector_seam_negative
+path tools/gen/chapter/glow_connector_seam_negative_witness.rish
+tier lap
+seated 20261002.011420
+
 # mantra_glow_tend_limb5 -- the fifth and sixth Mantra structure pedestals in src/shape/, proven
 # in one witness. shape-consent-grant.glow names ConsentGrantFact's nine fields (schema -
 # grant_id - receipt_id - holder_id - recipient_id - scope - granted_at - signer_id - signature);

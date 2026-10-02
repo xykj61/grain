@@ -96,10 +96,9 @@ assert pond.ok else "glow-connector: hop5 pond frame witness missing"
 let host = run ["sh" "-c" "grep -q 'wayland-client.h' brushstroke/wayland_seed.rye && grep -q 'wl_display' brushstroke/wayland_seed.rye && echo HOST_OK"]
 assert host.ok else "glow-connector: hop5 host hop scan failed"
 assert host.out contains "HOST_OK" else "glow-connector: hop5 libwayland hop not named in seed"
-let glow_quiet = run ["sh" "-c" "rg -l 'wayland-client.h' src --glob '*.glow' 2>/dev/null | wc -l"]
-assert glow_quiet.ok else "glow-connector: hop5 Glow quiet scan failed"
-let leak_count = trim glow_quiet.out
-assert leak_count == "0" else "glow-connector: Glow src must not speak Wayland C"
+let glow_quiet = run ["sh" "tools/fixtures/g/glow_connector_seam_scan.sh"]
+assert glow_quiet.out contains "verdict=ok" else "glow-connector: Glow src must not speak Wayland C"
+assert glow_quiet.ok else "glow-connector: hop5 Glow quiet scan status and verdict disagree"
 
 say "GREEN: glow-connector — hops 1-5 pinned · sketch · harden · refuse src/web"
 say "GREEN: glow-connector — Glow never speaks Wayland; Frame is the glass contract."
