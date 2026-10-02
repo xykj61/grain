@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.091613` | [grass tastes the water row](20261002/20261002-091613_grass-tastes-the-water-row-convergence-census.kyri) | ran the convergence census per the rota, confirmed two real unproven gaps, not a naming miss |
+| `20261002.091511` | [round-open still empty, %819 checked](20261002/20261002-091511_patchouli-round-open-still-empty-819-checked.kyri) | sixteenth empty-queue read; %819 read as an override candidate, declined on its own closing sentence |
 | `20261002.091359` | [language lane reads empty again](20261002/20261002-091359_language-lane-reads-empty-again.kyri) | confirmed the card's own closure; no agent-doable work, honest report |
 | `20261002.070559` | [grass finds the fourth essay](20261002/20261002-070559_grass-finds-and-grades-the-fourth-essay.kyri) | line-level-proxy B+/85, found by hand-walking the shelf past a stale "fully graded" claim |
 | `20261002.070222` | [pheromone-yours-question-was-already-answered](20261002/20261002-070222_pheromone-yours-question-was-already-answered.kyri) | the card's own YOURS line was stale before it was shelved; corrected |
