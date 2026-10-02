@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.054051` | [personalize-template-roster](20261002/20261002-054051_personalize-template-roster.kyri) | Rostered personalize_template_witness, proven both ways |
+| `20261002.053846` | [gate holds, twenty-fourth confirm](20261002/20261002-053846_petrichor-gate-holds-twentyfourth-confirm.kyri) | network dark (github.com unresolvable); no docs-geode claim or work; GATES-ONLY re-set |
 | `20261002.053600` | [vols-survey-true-roster](20261002/20261002-053600_vols-survey-true-roster.kyri) | Rostered vols_survey_true_witness, CION VOLS Journey 13 r4 closes |
 | `20261002.053342` | [gate holds, twenty-third confirm](20261002/20261002-053342_petrichor-gate-holds-twentythird-confirm.kyri) | round-open clean at 4d77a7bb28; no docs-geode claim or red open; 4 stash dead-letter rows noted |
 | `20261002.053123` | [round-open-diverged-lane-still-empty](20261002/20261002-053123_round-open-diverged-lane-still-empty.kyri) | round-open parked a true divergence; mantra/tally queue still empty |
