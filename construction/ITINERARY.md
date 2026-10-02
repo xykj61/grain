@@ -126,9 +126,14 @@ whole](archive/date/20261002/20261002-041730_itinerary-copal-safe-list-census-ac
 **COPAL.** [Wayland_study_ledger roster account shelved
 whole](archive/date/20261002/20261002-045430_itinerary-copal-wayland-study-ledger-account.md).
 
-**COPAL -- A SEVENTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `src_first_resident` rostered, GREEN
-twice (`rishi/bin/rishi run`; `--detach`, `run_verdict=ok`, `tree_moved=no`). 19 Glow desks lower,
-build, run clean. Claimed and closed. **YOURS:** same open question -- ~110 remain.
+**COPAL.** [Src_first_resident account shelved
+whole](archive/date/20261002/20261002-053809_itinerary-copal-src-first-resident-account.md).
+
+**COPAL -- AN EIGHTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `personalize_template` rostered,
+GREEN twice (`rishi/bin/rishi run`; a planted absence of `first_season_questions.brix` reds the
+named assertion, restored clean). Four prior candidates read RED, each testing a chapter-scope
+pin the tree has since moved past; left unbooked, matching prior laps' precedent. Claimed and
+closed. **YOURS:** same open question -- ~106 remain.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
@@ -354,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3f1c9635ad` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `428b34ad61` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 

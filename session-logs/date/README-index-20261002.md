@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.054051` | [personalize-template-roster](20261002/20261002-054051_personalize-template-roster.kyri) | Rostered personalize_template_witness, proven both ways |
 | `20261002.053600` | [vols-survey-true-roster](20261002/20261002-053600_vols-survey-true-roster.kyri) | Rostered vols_survey_true_witness, CION VOLS Journey 13 r4 closes |
 | `20261002.053123` | [round-open-diverged-lane-still-empty](20261002/20261002-053123_round-open-diverged-lane-still-empty.kyri) | round-open parked a true divergence; mantra/tally queue still empty |
 | `20261002.052856` | [grass-rota-air-no-open-packet](20261002/20261002-052856_grass-rota-air-no-open-packet.kyri) | rota row 1 (Air) read; no bounded QA packet open, no change made |
