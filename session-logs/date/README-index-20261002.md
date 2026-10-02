@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.092745` | [petrichor tries a fourth witness](20261002/20261002-092745_petrichor-tries-a-fourth-witness-still-clean.kyri) | ran tutorial_output_scan, outside the three already-run sweeps; still clean |
 | `20261002.092405` | [pheromone reads Earth-Cardinal, lane still empty](20261002/20261002-092405_pheromone-reads-earth-cardinal-lane-still-empty.kyri) | language lane confirmed fallow again; HEAD unmoved under it since prior check nine minutes earlier |
 | `20261002.092213` | [grass fixes its own stale fruit paragraph](20261002/20261002-092213_grass-fixes-own-stale-fruit-paragraph.kyri) | grass-inner.md still called glow_choir_witness.rish's repair undone; repair had landed, doc corrected |
 | `20261002.092147` | [petrichor reads the Earth rota row](20261002/20261002-092147_petrichor-rota-earth-lane-still-fallow.kyri) | REDS/link checks narrower than the standard sweep, plus the rota deep-read, both clean; sixth fallow read |
