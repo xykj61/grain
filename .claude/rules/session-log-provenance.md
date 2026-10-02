@@ -6,7 +6,7 @@ Apply this rule to new `session-logs/*.kyri` records. Keep dated logs unchanged 
 
 Record `provider`, `product`, `role`, and `modality` beside `editor`. Use the product actually holding the conversation, such as Codex desktop or Claude Code. A writing voice sits beside a provider rather than standing in for one: new logs still record `voice Kyri`.
 
-The required `model` field names a verified active model identity. When the runtime exposes no authoritative identity, write `model unverified` and `model_status active runtime unverified`. Keep a preference, alias, profile value, model catalog, or configured default as configuration, apart from an active-runtime claim.
+The required `model` field names a verified active model identity. When the runtime exposes only an unverified identity, write `model unverified` and `model_status active runtime unverified`. Keep a preference, alias, profile value, model catalog, or configured default as configuration, apart from an active-runtime claim.
 
 ## Configuration stays separate
 
@@ -27,8 +27,8 @@ The scan prints `resolved_model`, `resolved_effort` and `local_override` beside 
 convention for logs written from a Codex CLI session on this pier: `configured_model
 gpt-5.6-sol`, evidenced by `~/.codex/config.toml` as the personal default and the fleet loop's
 `-m "$CODEX_MODEL"` flag defaulting to the same slug, with an explicit override logged as that
-lap's own configured choice. Keaton no longer runs Codex sessions himself, so the convention is
-retired here rather than followed. **This does not touch the fleet's own Codex loop tooling**
+lap's own configured choice. Keaton has stopped running Codex sessions himself, so the convention
+retires here rather than staying followed. **This does not touch the fleet's own Codex loop tooling**
 (`tools/f/fleet-loop-codex.sh`, `tools/f/fleet_watch_codex.sh`) -- those stay live infrastructure
 a peer ship may still run, and a Codex-authored log arriving from one still records `model`,
 `provider`, and `product` per the rule above. Only the convention naming *this pier's own* Codex
@@ -39,6 +39,6 @@ they wrote.
 
 For user-coordinated joint work, add `coordination user coordinated separate sessions`. Prefix the other hand's facts with `collaborator_`, including provider, product, role, modality, model, model status, evidence, scope, and status. Attribute each contribution to local Git evidence or to an explicit user report.
 
-Describe the work as a joint effort only at the coordination layer. Never imply a shared runtime, direct model-to-model exchange, vendor partnership, endorsement, or a contribution whose evidence is absent.
+Describe the work as a joint effort only at the coordination layer. State a shared runtime, a direct model-to-model exchange, a vendor partnership, an endorsement, or a contribution only when the evidence actually supports it.
 
 Finish with `scope` and `status` for this hand. **Write `status` before the send begins, so it is already recorded by the time the send runs.** A lap cancelled mid-send cannot write one afterwards, and without it a killed lap and a finished lap that declined to send read identically -- two different facts wanting two different repairs, wearing one appearance. That is not hypothetical: an incense loop was cancelled by hand at the moment its lap completed on `20260907`, its work stood staged and whole, its log claimed no send and so said nothing false, and only Keaton's own word established which of the two had happened. **Counted rather than gated** by `tools/fixtures/s/status_declared_scan.sh`, because a lap killed mid-send cannot write a status by definition, so a gate would red hardest on exactly the laps it exists to make visible. **Run the scan rather than reading a figure here.** At `20260907.200326`, mid-day, 95 logs read 21 both and 73 neither; the day closed at 129 logs, 41 both, 87 neither; and `20260908` reads **26 of 26 carrying both** -- 25 naming their witnesses and one honest `WITHDRAWN` (re-read `20260908.041006`). The clause was seated on `tools/f/fleet_baton.txt` on `20260907`, which is how it reaches every ship, and the adoption arc is the baton's own receipt. **Counted rather than gated stays on its structural reason**, not on that figure: a killed lap cannot write a status whatever the fleet's habit is. Plain words are welcome after every field; Kyri values are the text after the first space.

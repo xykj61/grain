@@ -528,7 +528,13 @@ done < "$work/teaching.txt"
 # stood before` for `no more than before`, `by proof rather than assertion` for `not asserted`,
 # and eight more of the same shape -- and every claim, figure, stamp, and quoted sentence held. The
 # page reads 7% now.
-law_ceiling=1
+# IT FELL 1 -> 0 ON `.claude/rules/session-log-provenance.md` AT 33% OF 39 SENTENCES, 3
+# restatements -- `exposes only an unverified identity` for `exposes no authoritative identity`,
+# `has stopped running Codex sessions himself ... retires here rather than staying followed` for
+# `no longer runs Codex sessions himself ... is retired ... rather than followed`, and `State ...
+# only when the evidence actually supports it` for `Never imply ... whose evidence is absent` --
+# and every claim, figure, stamp, and field name held. The page reads 28% now.
+law_ceiling=0
 law_documents=0
 law_readable=0
 law_over=0
