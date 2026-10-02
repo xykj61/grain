@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-glow-connector-seam-roster
+seat copal
+stamp 20261002.011148
+epoch 1790917908
+paths tools/fixtures/g/glow_connector_seam_scan.sh tools/gen/chapter/glow_connector_seam_negative_witness.rish context/fixtures/glow_connector_seam_leak construction/standing-equipment.kyri
+what roster glow_connector_seam_witness.rish, extracting its Wayland-leak check into a parameterized scan with a fixture-backed negative witness
