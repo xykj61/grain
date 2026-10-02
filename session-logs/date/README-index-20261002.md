@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.182909` | [Production driver reclaims three of ten](20261002/20261002-182909_production-driver-reclaims-three-of-ten.kyri) | three of ten reclaim in rye/src/main.rye |
+| `20261002.182724` | [Sixth clean open: glow_run.rye and the air row](20261002/20261002-182724_grass-sixth-clean-open-glow-run-and-air-row.kyri) | round-open clean, no claim in lane, glow_run.rye and the air-row foundation both graded clean |
 | `20261002.182715` | [Send met REDS %803 four times](20261002/20261002-182715_send-met-reds-803-four-times.kyri) | shed's send cherry-picked across four divergences, nib carried |
 | `20261002.182610` | [Sixth confirm, sentinel reset](20261002/20261002-182610_sixth-confirm-sentinel-reset.kyri) | watch cleared last lap's sentinel per design; re-checked REDS/claims/xy, still empty, re-set |
 | `20261002.182209` | [Fifth confirm sets the sentinel](20261002/20261002-182209_fifth-confirm-sets-the-sentinel.kyri) | queue still empty, not behind xy; GATES-ONLY actually set after prior lap only checked it |
