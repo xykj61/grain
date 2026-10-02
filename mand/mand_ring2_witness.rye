@@ -17,6 +17,14 @@ const mand1 = @import("mand_ring1.rye");
 const mand2 = @import("mand_ring2.rye");
 const tally_copy = @import("tally_copy.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(mand2).@"struct".decls) |decl| {
+        _ = &@field(mand2, decl.name);
+    }
+}
+
 const witness_version = "20260724.212805";
 
 fn run_selftest() !u8 {

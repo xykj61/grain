@@ -17,6 +17,14 @@ const print = std.debug.print;
 const caps = @import("capabilities.rye");
 const mand = @import("mand_ring1.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(mand).@"struct".decls) |decl| {
+        _ = &@field(mand, decl.name);
+    }
+}
+
 const witness_version = "20260724.203617";
 
 fn run_selftest() !u8 {
