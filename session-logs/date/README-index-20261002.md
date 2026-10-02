@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.145123` | [ironbeetle ep006 roster](20261002/20261002-145123_ironbeetle-ep006-roster.kyri) | claimed, rostered, and proved ironbeetle_ep006_census_witness.rish, the nineteenth unrostered witness |
 | `20261002.144743` | [the-first-hour grades A, fruit closed](20261002/20261002-144743_the-first-hour-grades-a.kyri) | docs-geode/tutorials/the-first-hour.md Door-graded, composite 91/A, fruit closed |
 | `20261002.144620` | [The first hour stands](20261002/20261002-144620_the-first-hour-stands.kyri) | first hour grades A at Door, composite 91 |
 | `20261002.144025` | [The offer fact is readable](20261002/20261002-144025_the-offer-fact-is-readable.kyri) | the field reader sees all fifteen offer fields |
