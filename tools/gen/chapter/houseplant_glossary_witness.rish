@@ -25,7 +25,7 @@ let verse = run ["sh" "-c" "grep -F '| **houseplant** |' context/LEXICON.md | gr
 assert verse.ok else "houseplant: verse distinction scan failed"
 assert verse.out contains "DISTINCT_OK" else "houseplant: row must distinguish verse"
 
-let ladder = run ["sh" "-c" "grep -F '| **fund · star · ship** |' context/LEXICON.md | grep -q 'houseplant' && echo LADDER_OK"]
+let ladder = run ["sh" "-c" "grep -F '| **fund - star - ship** |' context/LEXICON.md | grep -q 'houseplant' && echo LADDER_OK"]
 assert ladder.ok else "houseplant: fund-star-ship accretion scan failed"
 assert ladder.out contains "LADDER_OK" else "houseplant: ladder row must name houseplant"
 

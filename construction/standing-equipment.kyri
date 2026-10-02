@@ -8529,6 +8529,34 @@ path tools/gen/chapter/glow_connector_seam_negative_witness.rish
 tier lap
 seated 20261002.011420
 
+# houseplant_glossary -- the houseplant Lexicon row proven, and its five checks proven to bite.
+# The positive leg reads context/LEXICON.md for the row's three defining words (ship, repository,
+# project tree), its seated stamp, its pier and verse distinctions, and the fund-star-ship
+# ladder's own houseplant accretion, then calls tools/fixtures/h/houseplant_glossary_scan.sh
+# with its own default path, reading verdict=ok. That scan was pulled out of the witness's own
+# five inline grep calls, which had no way to prove a refusal short of breaking a row in the live
+# Lexicon -- and one of them already had, silently: an ASCII-first sweep had converted the
+# fund-star-ship row's middle dots to hyphens, and the witness's own ladder check still grepped
+# for the middle-dot form, reading RED the moment it was first run for this roster (REDS
+# `20261002.012602`, repaired in the same lap). The negative leg,
+# tools/gen/chapter/houseplant_glossary_negative_witness.rish, points the same scan at
+# context/fixtures/houseplant_glossary_missing/LEXICON.md, a standing fixture holding a
+# houseplant row with both distinctions and the ladder accretion stripped, and reads
+# verdict=missing with all three details named, then calls the scan again with no argument and
+# confirms the live Lexicon still reads verdict=ok -- so the refusal is shown from both sides
+# rather than only in the failing direction. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-houseplant-glossary-roster before this entry landed.
+# Both run in under 1s on metal.
+guard houseplant_glossary
+path tools/gen/chapter/houseplant_glossary_witness.rish
+tier lap
+seated 20261002.012841
+
+guard houseplant_glossary_negative
+path tools/gen/chapter/houseplant_glossary_negative_witness.rish
+tier lap
+seated 20261002.012841
+
 # mantra_glow_tend_limb5 -- the fifth and sixth Mantra structure pedestals in src/shape/, proven
 # in one witness. shape-consent-grant.glow names ConsentGrantFact's nine fields (schema -
 # grant_id - receipt_id - holder_id - recipient_id - scope - granted_at - signer_id - signature);

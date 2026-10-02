@@ -115,18 +115,19 @@ folded by hand to clear the ledger's own bound.
 **COPAL.** [Fact_fold_census account shelved
 whole](archive/date/20261002/20261002-011642_itinerary-copal-fact-fold-census-account.md).
 
-**COPAL -- A SECOND UNROSTERED WITNESS TAKES THE SAME TREATMENT, BOTH WAYS.**
-`glow_connector_seam` rostered into `construction/standing-equipment.kyri`, GREEN on metal both
-ways. The positive leg still proves all five hops; its own hop 5 check moved out of an inline
-`rg` call into `tools/fixtures/g/glow_connector_seam_scan.sh`, a scan taking a root argument.
-The new `glow_connector_seam_negative_witness.rish` points that scan at a standing fixture,
-`context/fixtures/glow_connector_seam_leak/`, holding one planted reference to
-`wayland-client.h`, reads `verdict=leak` and a named detail line, then calls the scan again with
-no argument and reads `verdict=ok` against the live tree -- so the refusal is shown from both
-sides. Claimed as `copal-glow-connector-seam-roster` and run through `standing_equipment_run.sh`
-by name, both `run_verdict=ok`. **YOURS:** same open question as the shelved account above --
-whether the remaining ~120 unrostered `tools/gen/chapter/` witnesses want individual rostering
-laps too, Keaton's word.
+**COPAL.** [Glow_connector_seam account shelved
+whole](archive/date/20261002/20261002-013013_itinerary-copal-glow-connector-seam-account.md).
+
+**COPAL -- A THIRD UNROSTERED WITNESS, AND IT WAS RED.** `houseplant_glossary` rostered into
+`construction/standing-equipment.kyri`, GREEN on metal both ways -- and first found a red: its
+ladder check still grepped the Lexicon for a middle-dot header the ASCII-first sweep had already
+converted to hyphens. Booked and repaired in the same lap, REDS `20261002.012602`, **CLOSED**. The
+new `houseplant_glossary_negative_witness.rish` points a pulled-out
+`tools/fixtures/h/houseplant_glossary_scan.sh` at a standing fixture,
+`context/fixtures/houseplant_glossary_missing/LEXICON.md`, reads `verdict=missing` with all three
+dropped-distinction details named, then reads `verdict=ok` against the live tree. Claimed as
+`copal-houseplant-glossary-roster`, both `run_verdict=ok` through `standing_equipment_run.sh`.
+**YOURS:** same open rostering question as the shelved accounts above, Keaton's word.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
@@ -353,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8bb6ee323e` -- HEAD's parent, read after the final rebase.
+**Git nib:** `f4b84e46e0` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

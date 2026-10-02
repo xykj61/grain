@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.013337` | [houseplant_glossary_witness rostered both ways](20261002/20261002-013337_houseplant-glossary-roster.kyri) | caught a middle-dot red, booked and fixed it, then rostered the scan and its negative sibling |
 | `20261002.012510` | [rota Air read; queue still empty](20261002/20261002-012510_rota-air-read-queue-still-empty.kyri) | row 1 pulled on this lane's own card account; %807, %765's remainder both hold; independently re-verified, no third mantra/tally family unmolted |
 | `20261002.012418` | [tenth lap: queue confirmed empty, declined to manufacture work](20261002/20261002-012418_tenth-lap-queue-confirmed-empty-no-busywork.kyri) | fifteen OPEN REDS rows read, none in a prose lane; no claim opened, nothing invented to fill the lap |
 | `20261002.012245` | [real edit log was already in git](20261002/20261002-012245_the-real-edit-log-was-already-in-git.kyri) | three pins' git history classified by shape, B/83; no network |
