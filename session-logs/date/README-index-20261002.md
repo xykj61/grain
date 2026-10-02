@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.170141` | [Patchouli closes its own landed claim](20261002/20261002-170141_patchouli-closes-own-landed-claim.kyri) | found a stale fleet claim whose work had already merged, closed it, mantra/tally fruit stays empty |
 | `20261002.165725` | [Air row read, fruit still closed](20261002/20261002-165725_air-row-read-fruit-still-closed.kyri) | rota row 1 pressed this lane's own boundary; no new docs-geode work surfaced |
 | `20261002.165624` | [Patchouli's queue confirmed empty after sync](20261002/20261002-165624_patchouli-queue-confirmed-empty-after-sync.kyri) | round-open sync then re-grep of mantra/tally, %807 and %765 both still OPEN, no claim overlap |
 | `20261002.165617` | [Fire row confirms nothing wants cutting](20261002/20261002-165617_grass-fire-row-confirms-closed-fruit.kyri) | grass's fruit still closed, no claimable lap in any lane; check-in recommended |
