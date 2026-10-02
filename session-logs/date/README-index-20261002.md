@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.095739` | [Patchouli: queue confirmed empty, both rows OPEN](20261002/20261002-095739_patchouli-queue-confirmed-empty.kyri) | %807 and %765 re-read OPEN; weave's max_weave_lines bound pressed and holding; rota row 1 (air) |
+| `20261002.095348` | [the board, stash, and lint agree](20261002/20261002-095348_petrichor-tastes-the-clean-board.kyri) | re-sipped claims, REDS, lint; same clean lane again |
 | `20261002.095157` | [sel4-license takes its refusal leg](20261002/20261002-095157_sel4-license-redleg-refusal-leg.kyri) | redleg %827 fixed 56->55; three stale reds folded |
 | `20261002.095056` | [grass's water-row taste finds the lane clean](20261002/20261002-095056_grass-water-row-confirms-clean-lane.kyri) | round-open pulled one commit; one fresh essay found, already self-graded B/80; rota row 3 (water) |
 | `20261002.094749` | [pheromone: language lane still closed](20261002/20261002-094749_pheromone-water-row-lane-still-closed.kyri) | round-open to d7a57295ff; witness re-confirmed GREEN; no OPEN row or claim in-lane |
