@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Bhakta, with Radiant warmth (see `../context/BHAKTA_STYLE.md`)
 **Voice:** Kyri
-**Status:** Pointer
+**Status:** Pointer, mixed -- it redirects to the living foundation, whose own Status line names the room
 **Front door:** the root [`../README.md`](../README.md) names this path where a reader comes into `foundations/`, and this page links back.
 **Home:** [`../README.md`](../README.md)
 

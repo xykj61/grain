@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260820.182533`
-**Status:** LANDED `20260820` -- fold C, taken on the ladder's own measurement; the carry fell 2,762 to 47 and 91 rungs sang GREEN from a cold tree
+**Status:** LANDED `20260820`, checkable -- fold C, taken on the ladder's own measurement; the carry fell 2,762 to 47 and 91 rungs sang GREEN from a cold tree
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Kin:** [`20260820-131713_caravan-ladder-shared-harness.md`](20260820-131713_caravan-ladder-shared-harness.md) -- folds A and B
 **Meter:** [`../tools/caravan_ladder_copy_witness.rish`](../tools/caravan_ladder_copy_witness.rish)

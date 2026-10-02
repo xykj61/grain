@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Version:** `20260820.204641`
-**Status:** LANDED `20260820.212419` -- the measurement stood GREEN on metal, and fold D ran the round after it, Option B written in Option A's seam
+**Status:** LANDED `20260820.212419`, checkable -- the measurement stood GREEN on metal, and fold D ran the round after it, Option B written in Option A's seam
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Kin:** [`20260820-131713_caravan-ladder-shared-harness.md`](20260820-131713_caravan-ladder-shared-harness.md) -- folds A and B - [`20260820-182533_caravan-ladder-the-harness-answers-for-silence.md`](20260820-182533_caravan-ladder-the-harness-answers-for-silence.md) -- fold C
 **Meter:** [`../tools/caravan_ladder_spine_witness.rish`](../tools/caravan_ladder_spine_witness.rish) over [`../tools/fixtures/caravan_ladder_spine_scan.sh`](../tools/fixtures/caravan_ladder_spine_scan.sh)

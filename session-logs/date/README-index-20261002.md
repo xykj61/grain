@@ -10,12 +10,14 @@
 | `20261002.152809` | [ep010 roster -- eighth of the remaining ironbeetle witnesses](20261002/20261002-152809_ironbeetle-ep010-roster.kyri) | ironbeetle_ep010_census rostered, proven on metal three ways |
 | `20261002.152347` | [The waymark speaks the names](20261002/20261002-152347_the-waymark-speaks-the-names.kyri) | AHOY's readable line names the pointer and the lasting rewrite |
 | `20261002.151933` | [The shorthand is seated](20261002/20261002-151933_the-shorthand-is-seated.kyri) | lexicon door says the short name is seated |
+| `20261002.151805` | [Doorway ratchet repaired, four pages named](20261002/20261002-151805_doorway-ratchet-four-pages-named-their-room.kyri) | fails=4 to 0, GREEN witness, 78/78 proven |
 | `20261002.151700` | [The twentieth unrostered IronBeetle witness](20261002/20261002-151700_ep009-roster-lap.kyri) | ironbeetle_ep009_census claimed, rostered, proven three ways |
 | `20261002.151654` | [Grass checks the queue, no safe next](20261002/20261002-151654_grass-queue-check-no-safe-next.kyri) | queue reviewed; two TAME candidates too large to start blind, check-in named |
 | `20261002.151433` | [Pheromone queue empty, round opened](20261002/20261002-151433_pheromone-queue-empty-round-opened.kyri) | own lane empty; round-opened to 9b1fd23a58; no override claimed |
 | `20261002.151409` | [The guards speak plainly](20261002/20261002-151409_the-guards-speak-plainly.kyri) | tool comments name the front door in plain words |
 | `20261002.150708` | [Rishi main head reach lift](20261002/20261002-150708_rishi-main-head-reach-lift.kyri) | rishi/src/main.rye module head Door reach lifted 50 to 100 |
 | `20261002.150620` | [The inner loop speaks the names](20261002/20261002-150620_the-inner-loop-speaks-the-names.kyri) | the card's choosing lines read the Long Return and Lila |
+| `20261002.150146` | [Lane idle, first-hour fruit closed](20261002/20261002-150146_lane-idle-first-hour-closed.kyri) | fruit queue empty, no cross-lane fit found yet |
 | `20261002.150030` | [Patchouli queue empty](20261002/20261002-150030_patchouli-queue-empty.kyri) | re-confirmed mantra/tally agent-doable queue empty; %807 and %765 unchanged |
 | `20261002.145753` | [Two sub-rings refuse the lap](20261002/20261002-145753_two-sub-rings-refuse-the-lap.kyri) | scratch metal confirms a disjoint ring refuses ring_order; a single 8-ring passes whole |
 | `20261002.145717` | [ironbeetle ep008 census roster](20261002/20261002-145717_ironbeetle-ep008-census-roster.kyri) | claimed, proved both ways, and rostered ironbeetle_ep008_census_witness.rish, sixth of the remaining unrostered set |

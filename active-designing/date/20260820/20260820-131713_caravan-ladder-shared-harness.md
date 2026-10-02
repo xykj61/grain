@@ -5,7 +5,7 @@
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Kyri
 **Lens:** TAME -- safety first, performance second, the joy of the craft third
-**Status:** Landed -- **A ran** on Keaton's word `20260820.142246`, and **B ran** on his word `20260820.162747`; see the two addenda at the foot. The body below stands exactly as it was written, before either word came.
+**Status:** Landed, checkable -- **A ran** on Keaton's word `20260820.142246`, and **B ran** on his word `20260820.162747`; see the two addenda at the foot. The body below stands exactly as it was written, before either word came.
 **Witness:** [`../tools/caravan_ladder_copy_witness.rish`](../tools/caravan_ladder_copy_witness.rish) over [`../tools/fixtures/caravan_ladder_copy_scan.sh`](../tools/fixtures/caravan_ladder_copy_scan.sh) -- GREEN on metal `20260820.131713`
 
 ---
