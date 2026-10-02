@@ -8764,3 +8764,17 @@ guard identity_remake_k5
 path tools/gen/chapter/identity_remake_k5_witness.rish
 tier lap
 seated 20261002.055258
+
+# sunn10_keys_grain_os -- SUNN10 keys/README and grain-os/overview check-in, unrostered since it
+# was written. Reads keys/README.md for Voice Kyri, Keaton Dunsford, xykj61, the SUNN waymark, the
+# dated Dunsford testimony, and the negative assertion that Dunsford no longer reads as the
+# current identity; reads manual/grain-os/overview.md for the same voice, waymark, and identity
+# facts plus Quin's "intentionally unpaired" line and both context/KYRI.md and context/QUIN.md
+# citations. Proven both ways on metal: a clean run reads GREEN, and mutating "xykj61" inside
+# keys/README.md reds the exact assertion naming it, removed clean after with zero working-tree
+# diff. One of the unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-sunn10-keys-grain-os-roster before this entry landed.
+guard sunn10_keys_grain_os
+path tools/gen/chapter/sunn10_keys_grain_os_witness.rish
+tier lap
+seated 20261002.060957

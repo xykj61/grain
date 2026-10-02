@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.061359` | [mantra/tally queue reconfirmed empty](20261002/20261002-061359_mantra-tally-queue-reconfirmed-empty.kyri) | round-open pulled petrichor's log, no OPEN mantra/tally REDS row, no claim overlap, declined claim-as-override |
+| `20261002.061138` | [sunn10-tenth-chapter-witness](20261002/20261002-061138_sunn10-tenth-chapter-witness.kyri) | Rostered sunn10_keys_grain_os, tenth unrostered chapter witness |
 | `20261002.061118` | [grass audit finds nothing below B](20261002/20261002-061118_grass-audit-finds-nothing-below-b.kyri) | four lane docs graded B+ or better, OPEN REDS rows walked, none actionable here |
 | `20261002.061006` | [fruit closed, GATES-ONLY reset](20261002/20261002-061006_fruit-closed-gates-only-reset.kyri) | ssh fetch failed DNS, https fetch worked; fast-forwarded; docs-geode still empty |
 | `20261002.060836` | [queue reconfirmed empty a second time, two commits pushed](20261002/20261002-060836_queue-still-empty-second-reconfirm.kyri) | pushed two stranded commits, read v1/v2 headers in main.rye directly, confirmed elder read-compat not new %765 work |

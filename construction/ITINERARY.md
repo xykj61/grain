@@ -132,11 +132,14 @@ whole](archive/date/20261002/20261002-053809_itinerary-copal-src-first-resident-
 **COPAL.** [Personalize_template account shelved
 whole](archive/date/20261002/20261002-055258_itinerary-copal-personalize-template-account.md).
 
-**COPAL -- A NINTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `identity_remake_k5` rostered, GREEN
-twice (`rishi/bin/rishi run`; a planted `codeberg` remote reds the exact assertion, removed
-clean after). Its three content checks read a counsel file that never changes once dated, so it
-carried none of the chapter-scope drift the RED candidates did. Claimed, closed. **YOURS:** same
-open question -- ~105 remain.
+**COPAL.** [Identity_remake_k5 account shelved
+whole](archive/date/20261002/20261002-060957_itinerary-copal-identity-remake-k5-account.md).
+
+**COPAL -- A TENTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `sunn10_keys_grain_os` rostered, GREEN
+twice (`rishi/bin/rishi run`; a planted edit of `xykj61` inside `keys/README.md` reds the exact
+assertion naming it, removed clean after). All eight content checks read `keys/README.md` and
+`manual/grain-os/overview.md`, neither of which carries a chapter-scope pin, so it carried none of
+the drift the RED candidates hit. Claimed, closed. **YOURS:** same open question -- ~104 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -358,7 +361,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `2142856310` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `9307a22638` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 
