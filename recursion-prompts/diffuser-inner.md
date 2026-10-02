@@ -226,6 +226,22 @@ answers the touch-cost question more cheaply than composing two sub-rings would,
 verification code. Both scratch declarations and drivers were built, run, and deleted; nothing
 landed in `caravan/`. Graded A/92 at Field. No new witness, no new module.
 
+**Self-generated `20261002.151621`, the Gauge paper with one falsifier the captain's ruling asked
+for, leaving Swift and `caravan/cycle.rye` untouched.**
+[The one branching tree in the whole catalog stands in Aurora, not in Caravan](../active-designing/date/20261002/20261002-151621_the-one-branching-tree-stands-in-aurora.md)
+computes cycle rank (`edges - vertices + connected_components`) over all nineteen declared
+protection-domain graphs in the research arc's reach -- Caravan's eighteen `caravan/systems/*.kyri`
+files plus the one roster Aurora shares with `caravan/channels.rye` -- and finds eight rings, eight
+pure stars, two trivial cases, and exactly one branching tree: the Aurora/`channels.rye` shared
+demo, whose `client_a` is simultaneously a leaf of `serial_virt`'s hub and a second, smaller hub of
+its own. Every topology Caravan declared on purpose stayed at depth one from its center; the one
+depth-two tree in the tree's own source arrived as a side effect of modeling real OS hardware
+rather than by design, naming an uninhabited corner beside the composition-gap essay's own finding
+one level over. Falsifier named rather than attempted: whether `caravan/roster.rye`'s own
+capability checks accept, refuse, or flatten a declared two-level tree, left for Caravan's own next
+edit. Graded B+/85 at Field. No new witness, no new module; the classifying script is printed in
+the essay.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
