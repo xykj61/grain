@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261002.190231
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository agent, Diffuser seat
+modality text
+model claude-sonnet-5
+model_status active runtime unverified -- no tool exposes a verified model id this turn
+voice Kyri
+title Seven dead-letter stashes dropped once their content was confirmed landed
+prompt Baton-driven autonomous lap: round-open, check the claim board and REDS, find or generate the next fruit for the moonshots/research lane.
+think Read recursion-prompts/diffuser-inner.md: the captain's standing order (20261002.142242) was already fulfilled by this lap's own 20261002.183518 ruling, and the fruit paragraph says the next fruit awaits the captain's ruling.
+think Checked incense-inner.md's next section: still the same 142242 order text, no fresh ruling naming a new Diffuser fruit.
+think git status clean, up to date with xy/main, fetch confirmed no divergence.
+think git stash list showed 90 entries. The newest, stash@{0} "wip: garden names two allocators essay", was not a round-open stash; diffed it and found every line already landed in commit 456f75cc88 (same essay paragraph, same diffuser-inner.md revision line, same session-log index row) -- dropped it.
+think The next six stashes matched the prior lap's own "Recovered 20261002.185031" paragraph exactly: four matched the four recovered essays it named, two matched the two log stubs it explicitly declared superseded. The prior recovery had pulled the facts out but never dropped the stash entries themselves.
+obs A recovered fact and a dropped stash are two different acts; the prior lap did the first and not the second, leaving seven stale dead letters sitting in the stash list where a later lap could mistake them for unrecovered work.
+obs Checked construction/fleet-claims.kyri and construction/REDS.md's OPEN rows for a claimable item in this lane before closing: none found. %807, %804, %803, %788, %765, %734 and the three filesystem/ratchet rows all want Keaton's word or another lane's ownership; none touches active-designing/ or research.
+rota lap 24946, row 1 -- Air, the row that feels -- pressed whether anything in the research lane's own open surface had shifted since the last reading; it had not, and the stash hygiene was the only concrete finding this lap turned up.
+file recursion-prompts/diffuser-inner.md -- recorded the stash drop and the empty-claim check
+file session-logs/date/20261002/20261002-190231_seven-dead-letter-stashes-dropped.kyri -- this log
+loom stash_entries_before=90 stash_entries_dropped=7 stash_entries_after=83
+recommend check-in (either) -- no claimable fruit stands; the next moonshot essay or a fresh captain ruling are both fine next doors.

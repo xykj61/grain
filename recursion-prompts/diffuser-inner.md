@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.185900` -- seven dead-letter stashes dropped once their content was confirmed landed
 **Revised:** `20261002.181135` -- seventy-four of seventy-five close on one script-confirmed cause
 **Revised:** `20261002.175448` -- the kin essay's own traced instance never reclaimed anything
 **Revised:** `20261002.174555` -- the one release gesture has never been exercised twice
@@ -473,6 +474,20 @@ superseded and they are not recovered. One stashed card-fold (`20261002-065637`)
 card before the fold at `20261002.185031` superseded it; both now stand in
 `construction/archive/`. The next fruit stays whatever the captain rules; this recovery adds no new
 claim to the board, since no new tracked instrument was created.
+
+**Checked `20261002.185900`, the seven stashes the prior recovery named, dropped rather than left
+standing.** Round-opened clean, tree up to date with `xy/main`. The prior lap's recovery named six
+round-open dead letters plus one further `wip:` stash (`garden names two allocators essay`) and
+pulled every live fact out of them, yet left all seven still sitting in `git stash list` -- a
+recovered fact and a dropped stash are two different acts, and only the first had happened. Checked
+each of the seven against the tree before dropping: the `wip:` stash's full diff matched content
+already landed in commit `456f75cc88` byte for byte (the same essay paragraph, the same index row);
+the six round-open stashes matched either an already-recovered essay named in the prior paragraph or
+one of the two stubs that paragraph names as superseded. None carried a fact not already on disk.
+Dropped all seven. No new claim to the board, no claimable fruit in `construction/REDS.md`'s OPEN
+rows (`%807`, `%804`, `%803`, `%788`, `%765`, `%734`, and three filesystem/ratchet rows) -- every one
+wants Keaton's word or another lane's ownership, none touches `active-designing/` or research. The
+next fruit stays whatever the captain rules.
 
 ## gates
 
