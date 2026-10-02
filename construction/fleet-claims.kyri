@@ -59,3 +59,9 @@ stamp 20261002.050307
 epoch 1790931787
 paths tools/fixtures/s/shell_portable.sh tools/fixtures/s/shell_portable_control.sh
 what capture_evidence reports success when its copy fails and leaves an empty evidence file; add a refusal and prove it from both sides in the control
+claim copal-vols-survey-roster
+seat copal
+stamp 20261002.051314
+epoch 1790932394
+paths tools/gen/chapter/vols_survey_witness.rish
+what roster the unrostered CION VOLS Journey 13 r1 survey census witness, GREEN on metal with its own prove-red testimony-boundary leg
