@@ -20,7 +20,8 @@ One page in this room is **living rather than dated**:
 [`../tools/i/incense_seat_prompt.txt`](../tools/i/incense_seat_prompt.txt), names it, and **the
 loop updates its `state` and `next` sections itself at a lap's close** -- which is the recursion in
 its name, each lap leaving the next better directed. Its plan is
-[`../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md`](../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md).
+[`../expanding-prompts/20261002-165006_incense-the-composed-session.md`](../expanding-prompts/20261002-165006_incense-the-composed-session.md).
+The overnight cellar stands as the plan it was.
 It carries no stamp in its basename because a page the loop rewrites is living by the mark law's own
 test, and `seed/` and `versions/` keep their jobs exactly as below.
 

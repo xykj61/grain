@@ -9,7 +9,7 @@ Keaton's word.
 version stamp, ground, rite, laws, state, open words, next
 **Outer prompt:** [`../tools/i/incense_seat_prompt.txt`](../tools/i/incense_seat_prompt.txt) names
 this file; the baton is prepended to both.
-**Plan:** [`../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md`](../expanding-prompts/20260918-022745_incense-the-overnight-cellar.md)
+**Plan:** [`../expanding-prompts/20261002-165006_incense-the-composed-session.md`](../expanding-prompts/20261002-165006_incense-the-composed-session.md) -- armed `20261002.165006`. The overnight cellar stands as the plan it was.
 
 ---
 
@@ -238,3 +238,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.161837` walked the consent replay module.** `mantra/src/consent_replay_witness.rye` promised its module and checked only the functions it called. The walker is in place. The census reads unwalked=56 against a ceiling of 56, and the witness prints GREEN.
 
 **Lap `20261002.163401` walked the bolt apply module.** `mantra/bolt_apply_step_witness.rye` promised its module and checked only the functions it called. The walker is in place, the build stays GREEN, and the ceiling falls from 56 to 55. The remaining pairs are linengrow, mand, and one tools witness.
+
+**Lap `20261002.165006` armed the loop on the composed session.** The outer prompt, the inner prompt, and the cellar door name `expanding-prompts/20261002-165006_incense-the-composed-session.md`. The overnight cellar stands as the plan it was. The walk ceiling stands at 55.
