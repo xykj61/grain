@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-src-first-resident-roster
+seat copal
+stamp 20261002.043522
+epoch 1790930122
+paths tools/gen/chapter/src_first_resident_witness.rish construction/standing-equipment.kyri
+what roster src_first_resident_witness.rish, the seventh unrostered chapter witness, after wayland_study_ledger
