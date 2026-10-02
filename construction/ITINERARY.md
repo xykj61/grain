@@ -141,9 +141,10 @@ whole](archive/date/20261002/20261002-062521_itinerary-copal-sunn10-keys-grain-o
 **COPAL.** [Sunn11_xykj61_onboarding account shelved
 whole](archive/date/20261002/20261002-063838_itinerary-copal-sunn11-xykj61-onboarding-account.md).
 
-**COPAL -- A TWELFTH UNROSTERED WITNESS.** `sunn12_riyo_writing_voice` rostered, GREEN twice
-(mutating RADIANT_STYLE.md's "fifth OS variant" to "fourth" reds the assertion naming it, reverted
-clean). Eighteen sites checked for the Kyri voice molt. Claimed, closed. **YOURS:** ~102 remain.
+**COPAL -- A THIRTEENTH UNROSTERED WITNESS.** [Account
+shelved](archive/date/20261002/20261002-065029_itinerary-copal-sunn12-account.md). `pole_bozo_murr_hats`
+rostered, GREEN twice -- a DJINN-row mutation reds the exact assertion naming it, reverted clean.
+Claimed, closed. **YOURS:** ~101 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -365,7 +366,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f690bc5b22` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `f940cd1781` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 
