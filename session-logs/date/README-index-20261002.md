@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.182724` | [Sixth clean open: glow_run.rye and the air row](20261002/20261002-182724_grass-sixth-clean-open-glow-run-and-air-row.kyri) | round-open clean, no claim in lane, glow_run.rye and the air-row foundation both graded clean |
 | `20261002.182209` | [Fifth confirm sets the sentinel](20261002/20261002-182209_fifth-confirm-sets-the-sentinel.kyri) | queue still empty, not behind xy; GATES-ONLY actually set after prior lap only checked it |
 | `20261002.181945` | [incense-inner sheds twelve laps](20261002/20261002-181945_incense-inner-shed-twelve-laps.kyri) | shelf 58, over-deletion repaired, graded A |
 | `20261002.181918` | [keeh-opening's register C+ traced to a merged front-matter block, lifted to A](20261002/20261002-181918_keeh-opening-register-lift.kyri) | GRASS QA sample found the outlier, traced the scanner's blind spot, fixed with one blank line |
