@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.162907` | [The language lane reads empty again](20261002/20261002-162907_language-lane-reads-empty-again.kyri) | pheromone's own fruit is closed, no cross-lane claim fit; check-in recommended |
 | `20261002.162545` | [One defer reclaims, one does not](20261002/20261002-162545_one-defer-reclaims-one-does-not.kyri) | Diffuser's own essay: the two remaining confirmed-arena witness files land one genuine, one no-op; graded A-/89 |
+| `20261002.162134` | [glow_run main split, landed](20261002/20261002-162134_glow-run-main-split-landed.kyri) | every witness GREEN incl. full 347-desk suite; card closed |
 | `20261002.161837` | [The consent witness walks its module](20261002/20261002-161837_the-consent-witness-walks-its-module.kyri) | one pair sat past the walk ceiling; it now walks |
 | `20261002.161456` | [lane queue confirmed empty, no override claimed](20261002/20261002-161456_patchouli-lane-queue-confirmed-empty.kyri) | re-checked mantra/tally header fruit and the claim board; queue still empty, no safe cross-lane claim found |
 | `20261002.161232` | [Nine of the 179 never reach the arena](20261002/20261002-161232_nine-of-the-179-never-reach-the-arena.kyri) | Diffuser's own essay: 9 of the open 103 bind garden to page_allocator, not the arena; graded A-/90 |
@@ -21,6 +22,7 @@
 | `20261002.155652` | [Second reading agrees with the first](20261002/20261002-155652_second-reading-agrees-with-the-first.kyri) | independent re-check of mantra/tally queue and claim board; same empty-queue verdict |
 | `20261002.155456` | [check in -- no new fruit waits](20261002/20261002-155456_check-in-no-new-fruit.kyri) | docs-geode confirmed clean and graded; no booked row elsewhere stands unclaimed for Petrichor |
 | `20261002.155144` | [The scan found none](20261002/20261002-155144_the-scan-found-none.kyri) | mantra/tally chronological-header scan confirms both families already molted; queue empty |
+| `20261002.155037` | [glow_run main split, verifying](20261002/20261002-155037_glow-run-main-split-verifying.kyri) | 426-line dispatcher split 20 ways; contract witness GREEN |
 | `20261002.155028` | [the rings this lane built carry no radius](20261002/20261002-155028_the-rings-this-lane-built-carry-no-radius.kyri) | today's ring/chain thread confirmed geometry-free, checked against the torus ladder's own row 4 and row 5 |
 | `20261002.154844` | [linengrow/dimeroll field pedestals](20261002/20261002-154844_linengrow-dimeroll-field-pedestals.kyri) | Mantra Tend M8/M9: both receipt-contract projection structs pedestaled and GREEN |
 | `20261002.154222` | [Git nib field repointed](20261002/20261002-154222_git-nib-repoint-follow-up.kyri) | rebase conflict left a stale nib; follow-up commit names the pushed HEAD |

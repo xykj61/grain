@@ -48,3 +48,8 @@ twenty-six account paths the card named, in full, so condensing the card cost no
 
 - shim-reason close and mycelium's `main` family declined: [`fold`](20261002-101612_itinerary-grass-shim-reason-and-mycelium-main-fold.md)
 - the two named mycelium candidates split clean: [`account`](../../../../active-designing/date/20261002/20261002-101612_grass-pledge-lapse-split-account.md)
+
+## Two more accounts (`20261002`, appended after this index first landed)
+
+- eval_expr split at its own natural seams: [`account`](../../../../active-designing/date/20261002/20261002-144246_grass-eval-expr-split-account.md), elder pointer shelved at [`../20261002-161804_itinerary-grass-eval-expr-split-account.md`](../20261002-161804_itinerary-grass-eval-expr-split-account.md)
+- `glow_run.rye`'s `main` split at its own head-dispatch seams: [`account`](../../../../active-designing/date/20261002/20261002-161804_grass-glow-run-main-split-account.md)

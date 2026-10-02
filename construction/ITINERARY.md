@@ -187,23 +187,25 @@ Four Promises, Device That Forgets, Key You Hold, Free and Open Room, Shape of a
 Beneath the Work, Foundation Beneath the Work, Ledger and Grace, Marked Value, the Sealed
 Crossing, two small ratchet sites (memcpy and parseInt), Cord-Knot's parseInt graduation, the
 Caravan fold note, the last zero-assert file, unsaid-rostered's YOURS closed, shim-reason close,
-mycelium's `main` family declined, and the two named mycelium candidates split clean. Full index
-with every path: [`archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md`](archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md).
+mycelium's `main` family declined, the two named mycelium candidates split clean, and the
+eval_expr split (folded `20261002.161804` to
+[`archive/20261002-161804_itinerary-grass-eval-expr-split-account.md`](archive/20261002-161804_itinerary-grass-eval-expr-split-account.md)).
+Full index with every path: [`archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md`](archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md).
 `functions_over_70` narrowed to 439, then 437, after mycelium's own reverse-read and the pledge/lapse split.
 
-**GRASS -- `EVAL_EXPR` SPLITS AT ITS OWN NATURAL SEAMS.** [Account
-shelved](../active-designing/date/20261002/20261002-144246_grass-eval-expr-split-account.md):
-unlike caravan's and mycelium's sequential-narrative shape (declined twice already), `rishi/src/
-main.rye`'s `eval_expr` is a flat string-prefix dispatch table with eight real seams its own
-comments already name. Split into a 20-line dispatcher and eight helpers, every line and comment
-kept verbatim; the two groups reading untrimmed `text` (comparison, the two word-op families) kept
-taking `text`, the rest kept `trimmed`. Clean rebuild; all 36 `rishi/tests/*.rish` scripts
-byte-identical in stdout, stderr, and exit code against a pre-split baseline; a dozen
-rishi-dependent witnesses GREEN; the long-function scanner confirms `eval_expr` (242 lines) is gone
-from the roster and no new entry crosses 70. One slow witness, `rishi_list_bound`, was proven to
-time out identically on the pre-split binary -- named as pre-existing and unrelated. `YOURS:` none
-from this file -- `glow/glow_run.rye: main` and `rye/src/main.rye: bridge_to_zig` remain the two
-large real candidates still unread.
+**GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLITS AT ITS OWN HEAD-DISPATCH SEAMS.** [Account
+shelved](../active-designing/date/20261002/20261002-161804_grass-glow-run-main-split-account.md):
+the other named candidate, `main` (426 lines), is a flat head-character dispatch table exactly
+like `eval_expr`, unlike `bridge_to_zig`'s sequential-narrative shape (stays declined, same reason
+caravan and mycelium were). Split into four setup/dispatch helpers and the two big chains broken
+into ten more family helpers, each returning `!?u32` the same way `eval_expr`'s split did; every
+extracted helper raises the module's own named exit-contract words (`error.Usage`/`Unreadable`/
+`Broke`/`Declined`) rather than a bare code, translated back to the literal `return N;` lines
+`tools/fixtures/g/glow_run_contract_scan.sh` depends on finding inside `main` itself. Proven: no
+function in the file reaches 70 lines; the contract witness, the full 1,133-line desk witness, the
+347-desk derived-population witness, and every rune-family witness this dispatch reaches are all
+GREEN; TAME style bans clean; `functions_over_70` fell by one. `YOURS:` none from this file --
+`bridge_to_zig` stays declined.
 
 **DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
 
@@ -339,7 +341,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `17ff7c34f7` -- the tip this rebase was built on, read before this commit (rule 5).
+**Git nib:** `9c9e3e9c79` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

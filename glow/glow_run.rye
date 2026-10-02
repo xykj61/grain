@@ -95,16 +95,25 @@ fn stem_of(path: []const u8) []const u8 {
     return base;
 }
 
-pub fn main(init: std.process.Init) !u8 {
-    const io = init.io;
-    const alloc = init.arena.allocator();
-    const cwd = std.Io.Dir.cwd();
+/// What `open_source` hands back once argv parses and the named file reads:
+/// the sample-argv flag, the path argument itself, and the bytes it named.
+const OpenedSource = struct {
+    sample_argv: bool,
+    glow_path: []const u8,
+    src: []const u8,
+};
+
+/// Parse glow_run's own argv and read the source it names -- the two steps
+/// every call completes before dispatch begins. Raises `error.Usage` -- exit
+/// 4, a caller fault -- when no file argument reached it, and
+/// `error.Unreadable` -- exit 3 -- when the named path cannot be read.
+fn open_source(init: std.process.Init, alloc: std.mem.Allocator, io: std.Io, cwd: std.Io.Dir) !OpenedSource {
     const argv = try init.minimal.args.toSlice(alloc);
     if (argv.len < 2) {
         print("usage: glow_run [--sample-argv] <file.glow>\n", .{});
         // invariant: a caller fault leaves the file question unasked, so it
         // carries its own code rather than borrowing `declined` (head table).
-        return 4;
+        return error.Usage;
     }
     var sample_argv = false;
     var path_i: usize = 1;
@@ -114,7 +123,7 @@ pub fn main(init: std.process.Init) !u8 {
         if (argv.len < 3) {
             print("usage: glow_run --sample-argv <file.glow>\n", .{});
             // invariant: same caller fault, same code -- one meaning, one number.
-            return 4;
+            return error.Usage;
         }
     }
     const glow_path = argv[path_i];
@@ -128,16 +137,33 @@ pub fn main(init: std.process.Init) !u8 {
         print("glow_run: unreadable source {s} ({s})\n", .{ glow_path, @errorName(err) });
         // invariant: the error is named, so the caller learns which of the three
         // it met rather than inferring one from an empty stdout.
-        return 3;
+        return error.Unreadable;
     };
+    return .{ .sample_argv = sample_argv, .glow_path = glow_path, .src = src };
+}
 
+/// Try glow_run's two early shortcuts -- same-desk named-cast (STOA176) and
+/// mold-only (STOA168) -- each bypassing the bare multi-line budget. Returns
+/// true once one has written its `.rye` and printed the path, so `main`
+/// returns 0 unchanged; false when neither shortcut's peek matched, so the
+/// caller continues to the ordinary line-count road. Raises `error.Broke` --
+/// exit 1, the head table's name for a lowering that broke -- exactly where
+/// the inlined code once printed and returned 1 directly.
+fn try_fast_lower(
+    io: std.Io,
+    alloc: std.mem.Allocator,
+    cwd: std.Io.Dir,
+    src: []const u8,
+    sample_argv: bool,
+    glow_path: []const u8,
+) !bool {
     // STOA176: same-desk named-cast (<=9 `$:` faces -> <=12 Glow lines) bypasses
     // the bare multi-line budget of six -- peek + lower share named_cast_parts.
     if (!sample_argv and lower_named_cast.looks_like_named_cast(src)) {
         var nc_buf: [4096]u8 = undefined;
         const nc_len = lower_named_cast.lower_source_welcome(src, &nc_buf) catch |err| {
             print("glow_run: named-cast lower failed ({s})\n", .{@errorName(err)});
-            return 1;
+            return error.Broke;
         };
         try cwd.createDirPath(io, "glow/.cache");
         const nc_stem = stem_of(glow_path);
@@ -146,7 +172,7 @@ pub fn main(init: std.process.Init) !u8 {
         const nc_out = std.Io.File.stdout();
         try nc_out.writeStreamingAll(io, nc_rye);
         try nc_out.writeStreamingAll(io, "\n");
-        return 0;
+        return true;
     }
 
     // STOA168: mold-only desks (<=15 `$:` faces) bypass the bare multi-line budget.
@@ -157,7 +183,7 @@ pub fn main(init: std.process.Init) !u8 {
         var mold_buf: [4096]u8 = undefined;
         const mold_len = lower_shape.lower_source_welcome(src, &mold_buf) catch |err| {
             print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
-            return 1;
+            return error.Broke;
         };
         try cwd.createDirPath(io, "glow/.cache");
         const mold_stem = stem_of(glow_path);
@@ -166,13 +192,30 @@ pub fn main(init: std.process.Init) !u8 {
         const mold_out = std.Io.File.stdout();
         try mold_out.writeStreamingAll(io, mold_rye);
         try mold_out.writeStreamingAll(io, "\n");
-        return 0;
+        return true;
     }
 
+    return false;
+}
+
+/// What the line-count gate decides before any lowering runs: how many Glow
+/// lines the source carries, and whether it is a shop-core (`|%` with gate
+/// bodies), which answers only through its own argv road.
+const SourceShape = struct {
+    line_count: usize,
+    is_shop_core: bool,
+};
+
+/// Classify a read source against glow_run's line-count and sample-argv rules
+/// -- the gate the shop-core argv road and the ordinary line-count road share.
+/// Raises `error.Declined` -- exit 2, the head table's name for a shape this
+/// hop knows no head for -- exactly where the inlined code once printed and
+/// returned 2 directly.
+fn classify_shape(src: []const u8, sample_argv: bool, glow_path: []const u8) !SourceShape {
     const line_count = glow_line_count(src);
     if (line_count == 0) {
         print("glow_run: no Glow line in {s}\n", .{glow_path});
-        return 2;
+        return error.Declined;
     }
     // core (20260830.224500): a `|%` source lawfully carries up to core_max_lines
     // live lines, so the six-line gate ceiling steps aside for the form alone.
@@ -187,337 +230,534 @@ pub fn main(init: std.process.Init) !u8 {
     const is_shop_core = lower_shop_core.looks_like_shop_core(src);
     if (line_count > lower_multi.max_lines and !is_shop_core) {
         print("glow_run: too many Glow lines in {s}\n", .{glow_path});
-        return 2;
+        return error.Declined;
     }
     if (is_shop_core and line_count > lower_shop_core.core_max_lines) {
         print("glow_run: too many core lines in {s}\n", .{glow_path});
-        return 2;
+        return error.Declined;
     }
     // G3 cast is one line; STOA101/114 bartis/barket argv is two live lines.
     if (sample_argv and line_count != 1 and line_count != 2 and !is_shop_core) {
         print("glow_run: --sample-argv needs one cast line or a 2-line bartis/barket in {s}\n", .{glow_path});
-        return 2;
+        return error.Declined;
     }
+    return .{ .line_count = line_count, .is_shop_core = is_shop_core };
+}
 
-    var rye_buf: [4096]u8 = undefined;
-    const rye_len: u32 = blk: {
-        // core (20260830.224500): a `|%` source whose arms carry gate bodies lowers
-        // to one module whose argv main dispatches by arm ordinal. That core speaks
-        // argv only -- its answers live per arm, so the welcome road refuses by
-        // name -- and it routes ahead of the six-line collect its arm count would
-        // overflow. A THIN core carries no arm body, wants no sample, and falls
-        // through to the `|%` welcome road below (REDS `20260906.195208`).
-        if (is_shop_core) {
-            if (!sample_argv) {
-                print("glow_run: core lower failed (CoreWantsArgv)\n", .{});
-                return 1;
-            }
-            break :blk lower_shop_core.lower_core_argv(src, &rye_buf) catch |err| {
-                print("glow_run: core argv-sample lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line_count >= 2) {
-            var lines: [lower_multi.max_lines][]const u8 = undefined;
-            const n = lower_multi.collect_lines(src, &lines) catch {
-                print("glow_run: multi-line collect failed in {s}\n", .{glow_path});
-                return 1;
-            };
-            if (lower_named_cast.looks_like_named_cast(src)) {
-                break :blk lower_named_cast.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: named-cast lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (lower_named_cast.looks_like_cross_desk(src)) {
-                const spec = lower_named_cast.parse_cross_desk(src) catch |err| {
-                    print("glow_run: cross-desk named-cast parse failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-                const cast_stem = lower_named_cast.stem_slice(&spec);
-                // invariant: the parser only yields a non-empty lowercase ident, and the
-                // letter room is that ident's own first letter -- the fold rule of
-                // stamp-and-name, a pure function of the basename (REDS %301).
-                assert(cast_stem.len >= 1);
-                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ cast_stem[0], cast_stem }) catch {
-                    print("glow_run: cross-desk mold path overflow\n", .{});
-                    return 1;
-                };
-                const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
-                    print("glow_run: cross-desk missing {s}\n", .{lib_glow});
-                    return 1;
-                };
-                _ = lower_named_cast.bind_cross_desk(&spec, lib_src) catch |err| {
-                    print("glow_run: cross-desk bind failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-                var lib_buf: [4096]u8 = undefined;
-                const lib_len = lower_shape.lower_source_library(lib_src, &lib_buf) catch |err| {
-                    print("glow_run: cross-desk mold library lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-                var zs: [lower_named_cast.max_stem_len]u8 = undefined;
-                const sn = lower_named_cast.zig_stem(&spec, &zs) catch {
-                    print("glow_run: cross-desk bad stem\n", .{});
-                    return 1;
-                };
-                try cwd.createDirPath(io, "glow/.cache");
-                const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
-                try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
-                break :blk lower_named_cast.lower_cross_desk_welcome(src, lib_src, &rye_buf) catch |err| {
-                    print("glow_run: cross-desk named-cast lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (lower_shape.looks_like_shape_only(src)) {
-                break :blk lower_shape.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '=') {
-                if (sample_argv) {
-                    break :blk lower_shop_gate.lower_source_argv_sample(src, &rye_buf) catch |err| {
-                        print("glow_run: bartis argv-sample lower failed ({s})\n", .{@errorName(err)});
-                        return 1;
-                    };
-                }
-                break :blk lower_shop_gate.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: bartis lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '^') {
-                if (sample_argv) {
-                    break :blk lower_shop_nest.lower_source_argv_sample(src, &rye_buf) catch |err| {
-                        print("glow_run: barket argv-sample lower failed ({s})\n", .{@errorName(err)});
-                        return 1;
-                    };
-                }
-                break :blk lower_shop_nest.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: barket lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (sample_argv) {
-                print("glow_run: --sample-argv multi-line only supports |= bartis or |^ barket today\n", .{});
-                return 2;
-            }
-            if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
-                break :blk lower_core.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: core lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 3 and lines[0].len >= 2 and lines[0][0] == '/' and lines[0][1] == '+') {
-                const spec = lower_compose_lib.parse_compose_lib(src) catch |err| {
-                    print("glow_run: compose-lib parse failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-                const lib_stem = lower_compose_lib.stem_slice(&spec);
-                // invariant: same letter-room rule as the cross-desk site above -- one
-                // fold law, spelled twice because two lowers resolve imports (REDS %301).
-                assert(lib_stem.len >= 1);
-                const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ lib_stem[0], lib_stem }) catch {
-                    print("glow_run: compose-lib stem path overflow\n", .{});
-                    return 1;
-                };
-                const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
-                    print("glow_run: compose-lib missing {s}\n", .{lib_glow});
-                    return 1;
-                };
-                var lib_buf: [4096]u8 = undefined;
-                const lib_len = lower_core.lower_source_library(lib_src, &lib_buf) catch |err| {
-                    print("glow_run: compose-lib library lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-                var zs: [lower_compose_lib.max_stem_len]u8 = undefined;
-                const sn = lower_compose_lib.zig_stem(&spec, &zs) catch {
-                    print("glow_run: compose-lib bad stem\n", .{});
-                    return 1;
-                };
-                try cwd.createDirPath(io, "glow/.cache");
-                const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
-                try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
-                break :blk lower_compose_lib.lower_source_welcome(src, lib_src, &rye_buf) catch |err| {
-                    print("glow_run: compose-lib lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 5 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '=' and lines[1][1] == '/' and lines[2].len >= 2 and lines[2][0] == '|' and lines[2][1] == '%') {
-                break :blk lower_compose_core_add.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose-core-add lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 5 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '|' and lines[1][1] == '%' and lines[2].len >= 2 and lines[2][0] == '=' and lines[2][1] == '/') {
-                break :blk lower_compose_core_payload.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose-core-payload lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n >= 4 and n <= 6 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '|' and lines[1][1] == '%') {
-                break :blk lower_compose_core.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose-core lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 2 and lines[1].len >= 2 and lines[1][0] == '%' and lines[1][1] == '-') {
-                break :blk lower_compose.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (n == 3 and lines[2].len >= 2 and lines[2][0] == '%' and lines[2][1] == '+') {
-                break :blk lower_compose2.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose2 lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if ((n == 2 or n == 3 or n == 4 or n == 5 or n == 6) and lower_compose_jam_cue.looks_like_jam_cue(src)) {
-                break :blk lower_compose_jam_cue.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: compose jam-cue lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            if (lower_multi_typed.line_is_typed(lines[0])) {
-                break :blk lower_multi_typed.lower_source_welcome(src, &rye_buf) catch |err| {
-                    print("glow_run: typed multi lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            break :blk lower_multi.lower_source_welcome(src, &rye_buf) catch |err| {
-                print("glow_run: multi lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        const line = first_glow_line(src) orelse {
-            print("glow_run: no Glow line in {s}\n", .{glow_path});
-            return 2;
-        };
-        if (line.len >= 2 and line[0] == '|' and line[1] == '-') {
-            break :blk lower_trap.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: trap lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '^' and line[1] == '-') {
-            if (sample_argv) {
-                break :blk lower_cast.lower_line_argv_sample(line, &rye_buf) catch |err| {
-                    print("glow_run: argv-sample cast lower failed ({s})\n", .{@errorName(err)});
-                    return 1;
-                };
-            }
-            break :blk lower_cast.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: cast lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (sample_argv) {
-            print("glow_run: --sample-argv only supports ^-  @u32, |= bartis, or |^ barket today\n", .{});
-            return 2;
-        }
-        if (line.len >= 2 and line[0] == '?' and line[1] == ':') {
-            break :blk lower_if.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: conditional lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '?' and (line[1] == '>' or line[1] == '<')) {
-            break :blk lower_assert.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: assert lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '?' and line[1] == '-') {
-            break :blk lower_sw.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: switch lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '=' and line[1] == '/') {
-            break :blk lower_face.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: face lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '=' and line[1] == '.') {
-            break :blk lower_mutate.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: mutate lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '=' and line[1] == '*') {
-            break :blk lower_alias.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: alias lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '?' and line[1] == '~') {
-            break :blk lower_null.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: null lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == ':' and line[1] == '-') {
-            break :blk lower_cell.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: cell lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == ':' and line[1] == '+') {
-            break :blk lower_triple.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: triple lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == ':' and line[1] == '^') {
-            break :blk lower_quad.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: quad lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == ':' and line[1] == '~') {
-            break :blk lower_list.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: list lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '%' and line[1] == '-') {
-            break :blk lower_call.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: call lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '%' and line[1] == '+') {
-            break :blk lower_call2.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: call2 lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '%' and line[1] == '^') {
-            break :blk lower_call3.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: call3 lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        if (line.len >= 2 and line[0] == '%' and line[1] == '*') {
-            break :blk lower_calln.lower_line_welcome(line, &rye_buf) catch |err| {
-                print("glow_run: calln lower failed ({s})\n", .{@errorName(err)});
-                return 1;
-            };
-        }
-        print("glow_run: unsupported Glow head in {s}\n", .{glow_path});
-        return 2;
+/// Lower a shop-core source via its argv-sample road -- the only road a core
+/// answers through, since its answers live per arm (REDS `20260906.195208`).
+fn lower_shop_core_argv(src: []const u8, sample_argv: bool, rye_buf: *[4096]u8) !u32 {
+    // core (20260830.224500): a `|%` source whose arms carry gate bodies lowers
+    // to one module whose argv main dispatches by arm ordinal. That core speaks
+    // argv only -- its answers live per arm, so the welcome road refuses by
+    // name -- and it routes ahead of the six-line collect its arm count would
+    // overflow. A THIN core carries no arm body, wants no sample, and falls
+    // through to the `|%` welcome road below (REDS `20260906.195208`).
+    if (!sample_argv) {
+        print("glow_run: core lower failed (CoreWantsArgv)\n", .{});
+        return error.Broke;
+    }
+    return lower_shop_core.lower_core_argv(src, rye_buf) catch |err| {
+        print("glow_run: core argv-sample lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
     };
+}
 
+/// Lower a `line_count >= 2` source through its multi-line seams -- named-cast,
+/// cross-desk, mold-only, bartis, barket, core, and the five compose shapes --
+/// falling through to the plain multi-line welcome road when none match.
+/// Lower a multi-line source via its named-cast and cross-desk roads
+/// (STOA84/85), or the shape-only mold road -- the three forms this hop
+/// recognises from `src` alone, with no line-count shape attached. Returns
+/// null when none of the three peeks matched, so the caller tries the next
+/// family.
+fn lower_multiline_named(
+    io: std.Io,
+    alloc: std.mem.Allocator,
+    cwd: std.Io.Dir,
+    src: []const u8,
+    rye_buf: *[4096]u8,
+) !?u32 {
+    if (lower_named_cast.looks_like_named_cast(src)) {
+        return lower_named_cast.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: named-cast lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (lower_named_cast.looks_like_cross_desk(src)) {
+        const spec = lower_named_cast.parse_cross_desk(src) catch |err| {
+            print("glow_run: cross-desk named-cast parse failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+        const cast_stem = lower_named_cast.stem_slice(&spec);
+        // invariant: the parser only yields a non-empty lowercase ident, and the
+        // letter room is that ident's own first letter -- the fold rule of
+        // stamp-and-name, a pure function of the basename (REDS %301).
+        assert(cast_stem.len >= 1);
+        const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ cast_stem[0], cast_stem }) catch {
+            print("glow_run: cross-desk mold path overflow\n", .{});
+            return error.Broke;
+        };
+        const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
+            print("glow_run: cross-desk missing {s}\n", .{lib_glow});
+            return error.Broke;
+        };
+        _ = lower_named_cast.bind_cross_desk(&spec, lib_src) catch |err| {
+            print("glow_run: cross-desk bind failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+        var lib_buf: [4096]u8 = undefined;
+        const lib_len = lower_shape.lower_source_library(lib_src, &lib_buf) catch |err| {
+            print("glow_run: cross-desk mold library lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+        var zs: [lower_named_cast.max_stem_len]u8 = undefined;
+        const sn = lower_named_cast.zig_stem(&spec, &zs) catch {
+            print("glow_run: cross-desk bad stem\n", .{});
+            return error.Broke;
+        };
+        try cwd.createDirPath(io, "glow/.cache");
+        const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
+        try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
+        return lower_named_cast.lower_cross_desk_welcome(src, lib_src, rye_buf) catch |err| {
+            print("glow_run: cross-desk named-cast lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (lower_shape.looks_like_shape_only(src)) {
+        return lower_shape.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: mold lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a two-line `|=` bartis or `|^` barket source, each either through
+/// its welcome road or, under `--sample-argv`, its argv-sample road. Returns
+/// null when the first line carries neither sigil.
+fn lower_multiline_shop(
+    src: []const u8,
+    sample_argv: bool,
+    lines: *const [lower_multi.max_lines][]const u8,
+    n: usize,
+    rye_buf: *[4096]u8,
+) !?u32 {
+    if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '=') {
+        if (sample_argv) {
+            return lower_shop_gate.lower_source_argv_sample(src, rye_buf) catch |err| {
+                print("glow_run: bartis argv-sample lower failed ({s})\n", .{@errorName(err)});
+                return error.Broke;
+            };
+        }
+        return lower_shop_gate.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: bartis lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (n == 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '^') {
+        if (sample_argv) {
+            return lower_shop_nest.lower_source_argv_sample(src, rye_buf) catch |err| {
+                print("glow_run: barket argv-sample lower failed ({s})\n", .{@errorName(err)});
+                return error.Broke;
+            };
+        }
+        return lower_shop_nest.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: barket lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a `/+ ` compose-lib source: parse its spec, read and lower the
+/// sibling library desk into `.cache`, then lower the composing source
+/// against it. Returns null when the first three lines carry no `/+` head.
+fn lower_multiline_compose_lib(
+    io: std.Io,
+    alloc: std.mem.Allocator,
+    cwd: std.Io.Dir,
+    src: []const u8,
+    lines: *const [lower_multi.max_lines][]const u8,
+    n: usize,
+    rye_buf: *[4096]u8,
+) !?u32 {
+    if (!(n == 3 and lines[0].len >= 2 and lines[0][0] == '/' and lines[0][1] == '+')) return null;
+    const spec = lower_compose_lib.parse_compose_lib(src) catch |err| {
+        print("glow_run: compose-lib parse failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+    const lib_stem = lower_compose_lib.stem_slice(&spec);
+    // invariant: same letter-room rule as the cross-desk site above -- one
+    // fold law, spelled twice because two lowers resolve imports (REDS %301).
+    assert(lib_stem.len >= 1);
+    const lib_glow = std.fmt.allocPrint(alloc, "glow/gen/{c}/{s}.glow", .{ lib_stem[0], lib_stem }) catch {
+        print("glow_run: compose-lib stem path overflow\n", .{});
+        return error.Broke;
+    };
+    const lib_src = cwd.readFileAlloc(io, lib_glow, alloc, .limited(64 * 1024)) catch {
+        print("glow_run: compose-lib missing {s}\n", .{lib_glow});
+        return error.Broke;
+    };
+    var lib_buf: [4096]u8 = undefined;
+    const lib_len = lower_core.lower_source_library(lib_src, &lib_buf) catch |err| {
+        print("glow_run: compose-lib library lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+    var zs: [lower_compose_lib.max_stem_len]u8 = undefined;
+    const sn = lower_compose_lib.zig_stem(&spec, &zs) catch {
+        print("glow_run: compose-lib bad stem\n", .{});
+        return error.Broke;
+    };
+    try cwd.createDirPath(io, "glow/.cache");
+    const lib_rye = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{zs[0..sn]});
+    try cwd.writeFile(io, .{ .sub_path = lib_rye, .data = lib_buf[0..lib_len] });
+    return lower_compose_lib.lower_source_welcome(src, lib_src, rye_buf) catch |err| {
+        print("glow_run: compose-lib lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+}
+
+/// Lower the three fixed-shape `=/ ... |% ...` compose-core sources: the
+/// five-line add, the five-line payload, and the four-to-six-line plain
+/// form. Returns null when the leading lines carry none of the three shapes.
+fn lower_multiline_compose_core_shapes(
+    src: []const u8,
+    lines: *const [lower_multi.max_lines][]const u8,
+    n: usize,
+    rye_buf: *[4096]u8,
+) !?u32 {
+    if (n == 5 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '=' and lines[1][1] == '/' and lines[2].len >= 2 and lines[2][0] == '|' and lines[2][1] == '%') {
+        return lower_compose_core_add.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose-core-add lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (n == 5 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '|' and lines[1][1] == '%' and lines[2].len >= 2 and lines[2][0] == '=' and lines[2][1] == '/') {
+        return lower_compose_core_payload.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose-core-payload lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (n >= 4 and n <= 6 and lines[0].len >= 2 and lines[0][0] == '=' and lines[0][1] == '/' and lines[1].len >= 2 and lines[1][0] == '|' and lines[1][1] == '%') {
+        return lower_compose_core.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose-core lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower the remaining compose shapes: the two-line `%-` compose, the
+/// three-line `%+` compose2, the jam-cue peek across two to six lines, and a
+/// typed first line. Returns null when none of the four peeks matched.
+fn lower_multiline_compose_calls(
+    src: []const u8,
+    lines: *const [lower_multi.max_lines][]const u8,
+    n: usize,
+    rye_buf: *[4096]u8,
+) !?u32 {
+    if (n == 2 and lines[1].len >= 2 and lines[1][0] == '%' and lines[1][1] == '-') {
+        return lower_compose.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (n == 3 and lines[2].len >= 2 and lines[2][0] == '%' and lines[2][1] == '+') {
+        return lower_compose2.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose2 lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if ((n == 2 or n == 3 or n == 4 or n == 5 or n == 6) and lower_compose_jam_cue.looks_like_jam_cue(src)) {
+        return lower_compose_jam_cue.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: compose jam-cue lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (lower_multi_typed.line_is_typed(lines[0])) {
+        return lower_multi_typed.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: typed multi lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a `line_count >= 2` source through its multi-line seams -- named-cast,
+/// cross-desk, mold-only, bartis, barket, core, and the five compose shapes --
+/// falling through to the plain multi-line welcome road when none match.
+fn lower_multiline(
+    io: std.Io,
+    alloc: std.mem.Allocator,
+    cwd: std.Io.Dir,
+    src: []const u8,
+    sample_argv: bool,
+    glow_path: []const u8,
+    rye_buf: *[4096]u8,
+) !u32 {
+    var lines: [lower_multi.max_lines][]const u8 = undefined;
+    const n = lower_multi.collect_lines(src, &lines) catch {
+        print("glow_run: multi-line collect failed in {s}\n", .{glow_path});
+        return error.Broke;
+    };
+    if (try lower_multiline_named(io, alloc, cwd, src, rye_buf)) |v| return v;
+    if (try lower_multiline_shop(src, sample_argv, &lines, n, rye_buf)) |v| return v;
+    if (sample_argv) {
+        print("glow_run: --sample-argv multi-line only supports |= bartis or |^ barket today\n", .{});
+        return error.Declined;
+    }
+    if (n >= 2 and lines[0].len >= 2 and lines[0][0] == '|' and lines[0][1] == '%') {
+        return lower_core.lower_source_welcome(src, rye_buf) catch |err| {
+            print("glow_run: core lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (try lower_multiline_compose_lib(io, alloc, cwd, src, &lines, n, rye_buf)) |v| return v;
+    if (try lower_multiline_compose_core_shapes(src, &lines, n, rye_buf)) |v| return v;
+    if (try lower_multiline_compose_calls(src, &lines, n, rye_buf)) |v| return v;
+    return lower_multi.lower_source_welcome(src, rye_buf) catch |err| {
+        print("glow_run: multi lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+}
+
+/// Lower a `|-` trap line. Returns null when the line carries no `|-` head.
+fn lower_single_line_pipe(line: []const u8, rye_buf: *[4096]u8) !?u32 {
+    if (!(line.len >= 2 and line[0] == '|' and line[1] == '-')) return null;
+    return lower_trap.lower_line_welcome(line, rye_buf) catch |err| {
+        print("glow_run: trap lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+}
+
+/// Lower a `^-` cast line, either through its welcome road or, under
+/// `--sample-argv`, its argv-sample road. Returns null when the line carries
+/// no `^-` head.
+fn lower_single_line_caret(line: []const u8, sample_argv: bool, rye_buf: *[4096]u8) !?u32 {
+    if (!(line.len >= 2 and line[0] == '^' and line[1] == '-')) return null;
+    if (sample_argv) {
+        return lower_cast.lower_line_argv_sample(line, rye_buf) catch |err| {
+            print("glow_run: argv-sample cast lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return lower_cast.lower_line_welcome(line, rye_buf) catch |err| {
+        print("glow_run: cast lower failed ({s})\n", .{@errorName(err)});
+        return error.Broke;
+    };
+}
+
+/// Lower a `?:` conditional, `?>`/`?<` assert, `?-` switch, or `?~` null
+/// line. Returns null when none of the four `?` heads matched.
+fn lower_single_line_query(line: []const u8, rye_buf: *[4096]u8) !?u32 {
+    if (line.len >= 2 and line[0] == '?' and line[1] == ':') {
+        return lower_if.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: conditional lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '?' and (line[1] == '>' or line[1] == '<')) {
+        return lower_assert.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: assert lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '?' and line[1] == '-') {
+        return lower_sw.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: switch lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '?' and line[1] == '~') {
+        return lower_null.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: null lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a `=/` face, `=.` mutate, or `=*` alias line. Returns null when none
+/// of the three `=` heads matched.
+fn lower_single_line_face(line: []const u8, rye_buf: *[4096]u8) !?u32 {
+    if (line.len >= 2 and line[0] == '=' and line[1] == '/') {
+        return lower_face.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: face lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '=' and line[1] == '.') {
+        return lower_mutate.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: mutate lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '=' and line[1] == '*') {
+        return lower_alias.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: alias lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a `:-` cell, `:+` triple, `:^` quad, or `:~` list line. Returns null
+/// when none of the four `:` heads matched.
+fn lower_single_line_cell(line: []const u8, rye_buf: *[4096]u8) !?u32 {
+    if (line.len >= 2 and line[0] == ':' and line[1] == '-') {
+        return lower_cell.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: cell lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == ':' and line[1] == '+') {
+        return lower_triple.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: triple lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == ':' and line[1] == '^') {
+        return lower_quad.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: quad lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == ':' and line[1] == '~') {
+        return lower_list.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: list lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a `%-` call, `%+` call2, `%^` call3, or `%*` calln line. Returns
+/// null when none of the four `%` heads matched.
+fn lower_single_line_call(line: []const u8, rye_buf: *[4096]u8) !?u32 {
+    if (line.len >= 2 and line[0] == '%' and line[1] == '-') {
+        return lower_call.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: call lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '%' and line[1] == '+') {
+        return lower_call2.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: call2 lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '%' and line[1] == '^') {
+        return lower_call3.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: call3 lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    if (line.len >= 2 and line[0] == '%' and line[1] == '*') {
+        return lower_calln.lower_line_welcome(line, rye_buf) catch |err| {
+            print("glow_run: calln lower failed ({s})\n", .{@errorName(err)});
+            return error.Broke;
+        };
+    }
+    return null;
+}
+
+/// Lower a single-line source through its head-character dispatch -- the
+/// plain welcome road a `|-`, `^-`, `?:`, `?>`/`?<`, `?-`, `=/`, `=.`, `=*`,
+/// `?~`, `:-`, `:+`, `:^`, `:~`, `%-`, `%+`, `%^`, or `%*` head answers to.
+fn lower_single_line(src: []const u8, sample_argv: bool, glow_path: []const u8, rye_buf: *[4096]u8) !u32 {
+    const line = first_glow_line(src) orelse {
+        print("glow_run: no Glow line in {s}\n", .{glow_path});
+        return error.Declined;
+    };
+    if (try lower_single_line_pipe(line, rye_buf)) |v| return v;
+    if (try lower_single_line_caret(line, sample_argv, rye_buf)) |v| return v;
+    if (sample_argv) {
+        print("glow_run: --sample-argv only supports ^-  @u32, |= bartis, or |^ barket today\n", .{});
+        return error.Declined;
+    }
+    if (try lower_single_line_query(line, rye_buf)) |v| return v;
+    if (try lower_single_line_face(line, rye_buf)) |v| return v;
+    if (try lower_single_line_cell(line, rye_buf)) |v| return v;
+    if (try lower_single_line_call(line, rye_buf)) |v| return v;
+    print("glow_run: unsupported Glow head in {s}\n", .{glow_path});
+    return error.Declined;
+}
+
+/// Write the lowered buffer to its `.cache/<stem>.rye` path and print that
+/// path on stdout for Rishi capture; diagnostics stay on stderr via print.
+fn emit_rye(io: std.Io, alloc: std.mem.Allocator, cwd: std.Io.Dir, glow_path: []const u8, rye_buf: []const u8, rye_len: u32) !void {
     try cwd.createDirPath(io, "glow/.cache");
     const stem = stem_of(glow_path);
     const rye_path = try std.fmt.allocPrint(alloc, "glow/.cache/{s}.rye", .{stem});
     try cwd.writeFile(io, .{ .sub_path = rye_path, .data = rye_buf[0..rye_len] });
-    // Path on stdout for Rishi capture; diagnostics stay on stderr via print.
     const stdout = std.Io.File.stdout();
     try stdout.writeStreamingAll(io, rye_path);
     try stdout.writeStreamingAll(io, "\n");
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const io = init.io;
+    const alloc = init.arena.allocator();
+    const cwd = std.Io.Dir.cwd();
+    const opened = open_source(init, alloc, io, cwd) catch |err| switch (err) {
+        error.Usage => {
+            return 4;
+        },
+        error.Unreadable => {
+            return 3;
+        },
+        else => |e| return e,
+    };
+    const sample_argv = opened.sample_argv;
+    const glow_path = opened.glow_path;
+    const src = opened.src;
+
+    if (try_fast_lower(io, alloc, cwd, src, sample_argv, glow_path) catch |err| switch (err) {
+        error.Broke => {
+            return 1;
+        },
+        else => |e| return e,
+    }) {
+        return 0;
+    }
+
+    const shape = classify_shape(src, sample_argv, glow_path) catch |err| switch (err) {
+        error.Declined => {
+            return 2;
+        },
+    };
+
+    var rye_buf: [4096]u8 = undefined;
+    const rye_len: u32 = blk: {
+        if (shape.is_shop_core) {
+            break :blk lower_shop_core_argv(src, sample_argv, &rye_buf) catch |err| switch (err) {
+                error.Broke => {
+                    return 1;
+                },
+            };
+        }
+        if (shape.line_count >= 2) {
+            break :blk lower_multiline(io, alloc, cwd, src, sample_argv, glow_path, &rye_buf) catch |err| switch (err) {
+                error.Broke => {
+                    return 1;
+                },
+                error.Declined => {
+                    return 2;
+                },
+                else => |e| return e,
+            };
+        }
+        break :blk lower_single_line(src, sample_argv, glow_path, &rye_buf) catch |err| switch (err) {
+            error.Broke => {
+                return 1;
+            },
+            error.Declined => {
+                return 2;
+            },
+        };
+    };
+
+    try emit_rye(io, alloc, cwd, glow_path, &rye_buf, rye_len);
     return 0;
 }

@@ -64,6 +64,22 @@ sentence naming twenty-five-plus builtins drove the grade level to 14 against a 
 Regrouped into short paragraphs by kind, same facts, zero added or dropped: reach rose to 100,
 register to 89. No code line moved; no witness applies.
 
+**`glow_run.rye`'s `main` (426 lines) split at its own head-dispatch seams, landed `20261002.161804`**
+-- [account](../active-designing/date/20261002/20261002-161804_grass-glow-run-main-split-account.md):
+a flat dispatch table like eval_expr rather than the sequential-narrative shape `bridge_to_zig`
+carries (stays declined, same reason caravan and mycelium were). Split into four setup/dispatch
+helpers plus ten family helpers inside the two big chains, every helper raising the module's own
+named exit-contract words rather than a bare code, translated back to the literal `return N;` lines
+`glow_run_contract_scan.sh` depends on finding inside `main` itself. No function in the file reaches
+70 lines; the contract witness, the 1,133-line desk witness, the 347-desk derived-population
+witness, and every rune-family witness this dispatch reaches are all GREEN. `functions_over_70`
+fell by one. `YOURS:` none -- `bridge_to_zig` stays declined, and no further named candidate waits.
+
+**The next-crux lean, re-stated:** no new audit packet is queued, and the two named TAME split
+candidates from the eval_expr account are now both read (one split, one declined). This lane's
+honest next move stays the ordinary one -- touch a prose, comment, or docs surface already open for
+other reasons, grade it, and push one bounded molt frame if it reads below B.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
