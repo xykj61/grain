@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.042103` | [law-tier register ceiling cleared](20261002/20261002-042103_law-tier-register-ceiling-cleared.kyri) | swept session-log-provenance.md 33%->28%; law_ceiling 1->0; GREEN |
 | `20261002.041657` | [sixth confirmation: lane still empty](20261002/20261002-041657_patchouli-sixth-confirmation-lane-empty.kyri) | pulled one new xy commit, re-grepped REDS/ITINERARY/fleet-claims fresh; %807 and %765 still the only lane rows, both blocked on Keaton or another ship |
 | `20261002.041617` | [sixteenth lap: full-room grade sweep confirms clean](20261002/20261002-041617_sixteenth-lap-full-room-grade-confirms-clean.kyri) | ran qa_report_card across all 32 live docs-geode pages outside the three named witnesses; every page clears B; queue empty |
 | `20261002.041504` | [sixteenth lap: confirms the gate, sets the stop sentinel](20261002/20261002-041504_sixteenth-lap-confirms-gate-sets-sentinel.kyri) | round-open clean on 0ac5f84131; lane gated for the fourth consecutive lap; no cross-lane claim fit; `.loop-gates-only` set so the watch stops re-arming |
