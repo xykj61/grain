@@ -8969,6 +8969,22 @@ path tools/gen/chapter/ironbeetle_ep001_census_witness.rish
 tier lap
 seated 20261002.104255
 
+# ironbeetle_ep004_census -- e62 IronBeetle ep004 census, third of the unrostered IronBeetle
+# episode-census witnesses sitting beside ep001 and ep002 above (ep003 is absent from
+# gratitude/ironbeetle -- no such episode file exists in the vendored shelf). Same shape as
+# ep001: gratitude/ironbeetle is presence-only vendored prose rather than a git submodule, so
+# this witness carries no clone-absent skip leg and reads gratitude/ironbeetle/ once, naming the
+# fact directly. Proven
+# on metal: `rishi/bin/rishi run tools/gen/chapter/ironbeetle_ep004_census_witness.rish` exits
+# GREEN at verdict=ok, reading IRON=present, EP004=yes, HONORS=yes, SOURCE=yes, TEACH=yes,
+# RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes. One of the unrostered tools/gen/chapter/ witnesses
+# this lane found free on the live claim board; claimed as
+# petrichor-ironbeetle-ep004-census-roster before this entry landed.
+guard ironbeetle_ep004_census
+path tools/gen/chapter/ironbeetle_ep004_census_witness.rish
+tier lap
+seated 20261002.142943
+
 # ironbeetle_ep002_census -- e61 IronBeetle ep002 census, second of 34 unrostered IronBeetle
 # episode-census witnesses. Same shape as ep001: gratitude/ironbeetle is presence-only vendored
 # prose rather than a git submodule, so this witness carries no clone-absent skip leg either --

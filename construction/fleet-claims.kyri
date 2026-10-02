@@ -59,12 +59,6 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
-claim petrichor-ironbeetle-ep004-census-roster
-seat petrichor
-stamp 20261002.142907
-epoch 1790965747
-paths tools/gen/chapter/ironbeetle_ep004_census_witness.rish construction/standing-equipment.kyri
-what Claim-as-override: roster ironbeetle_ep004_census, third of the remaining unrostered IronBeetle episode census witnesses, agent-doable the same way ep001 and ep002 landed
 claim pheromone-receipt-offer-shape-pedestal
 seat pheromone
 stamp 20261002.143725
