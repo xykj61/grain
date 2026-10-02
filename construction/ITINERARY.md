@@ -123,9 +123,29 @@ tend_hygiene, relay_resin, and now fact_fold are all rostered. Claimed as
 outside the design-shapes family (ironbeetle, tigerbeetle, surface_season, sunn, nona, oven, and
 the rest) want individual rostering laps too, Keaton's word.
 
-**BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
+**BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
+-- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
+the held-locks account, every byte kept. **YOURS:** the proposed 10,800-second lap window; prior
+guard costs estimate 9,837 seconds for both endurance runs and one cadence guard, against the
+5,400-second timeout a running process confirmed. Still owed in-lane: `capture_evidence` reports
+success after a planted `cat` failure leaves zero bytes, and its control still shims `tail`.
 
-**BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
+**BAKERY -- A PARKED INSTRUMENT FAMILY LANDED, AND IT SAYS THE SHARED BASIS IS NOT THERE.**
+`receipt_chain` rostered in `construction/standing-equipment.kyri` at tier `lap`, GREEN on metal.
+`tools/fixtures/s/receipt_chain_scan.sh` reads all eight copies of
+`construction/standing-equipment-receipt.kyri` at once and answers the lane crux's own premise:
+`seats_with_receipt=8`, newest stamp **388 hours** old, narrowest candidate basis diffing **11,164
+of 20,855** tracked files (53 percent), sharing it sparing this ship **24** files of 11,188, and
+**35** digest matches across **3,062** recorded roster opens -- one percent. `verdict=stalled`, so
+the crux belongs on what blocks the chain rather than on the sharing step. `portable_undecidable=7`
+and `portable_proven=0`: a receipt records no clean-tree field, so a peer cannot tell a
+commit-property green from a working-tree-property one. Reported, gated on nothing -- a receipt is
+withheld by a red, a custody gate, or `tree_moved`, and the third is ordinary here. `tools/fixtures/s/receipt_chain_control.sh` proves it:
+**60 legs** on a real pen pier, both bounds shown from both sides, four mutations bitten. All three
+files stood in `stash@{0}` alone, absent from every ref, and the staged wall caught one real fault
+in them: a GNU-only `date -d` that reads EMPTY on the macOS pier, now the portable `stamp_epoch`
+sourced from `tools/fixtures/s/shell_portable.sh`, with its absence refused from both sides. **YOURS:** whether the receipt earns a
+`clean_tree` field, which is the one change that would make a basis shareable at all.
 
 **PETRICHOR -- FOUR ELDER ACCOUNTS, SHELVED WHOLE.** Baton register
 ([account](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md)),
@@ -196,10 +216,6 @@ elder YOURS landed in `9b8879d432`: `unsaid_rostered` fell 984 to **869** agains
 `shim_reason_witness.rish` reads ok. No YOURS; one repair remains, `glow_choir_witness.rish`'s
 32 unguarded `rN` bindings.
 
-**BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
-[shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
-at its ceiling; Diffuser landed the last site.
-
 **DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
 replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; PATCHOULI
 on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards.
@@ -230,32 +246,6 @@ past this lane's own door.
 whole](archive/date/20261001/20261001-233015_itinerary-patchouli-commit-header-molt-account.md):
 `mantra-commit-v2` moved to `mantra-commit-20261001.233015`; the row format stands, elder headers
 keep opening. **YOURS:** forty families of `%765` remain outside this lane.
-
-**BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
-[shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
-`rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.
-
-**BAKERY -- A ROW READ OPEN AFTER ITS OWN FIX HAD ALREADY LANDED.** Account
-[shelved whole](archive/REDS/REDS-a-repair-already-standing-rows-742.md): `%742` found its own repair
-already standing, folded **CLOSED**. `reds_fold_witness.rish`, `reds_pin_capacity_scan.sh`
-(`verdict=ok`), and the ledger monotone and status-consistency witnesses all GREEN after.
-**YOURS:** none opened this lap.
-
-**BAKERY.** [Source review shelved whole](archive/20260925-151316_bakery-source-review-account.md).
-All 85 stashes stay preserved; the detached launcher's unreadable-lock repair remains owed.
-
-**BAKERY.** [Codex-control account shelved whole](archive/20260925-160542_bakery-codex-control-account.md).
-
-**BAKERY -- HELD LOCKS KEEP THEIR TRANSCRIPTS.** The detached launcher now refuses
-before truncation when a held directory has a missing, empty, malformed, or unreadable PID.
-All eight new assertions pass; 8 of 367 control assertions remain red at evidence capture.
-`capture_evidence` reports success after a planted `cat` failure leaves zero bytes; its control
-still shims `tail`. Repair that separate fault next. Full cold and hot roster proof remains owed.
-This lap's cold run was stopped with exit 143 before the live timeout;
-its partial guard results establish neither a complete baseline nor a tree-stability verdict.
-**YOURS:** the proposed 10,800-second lap window. Prior guard costs estimate
-9,837 seconds for both passes and one cadence guard, before lap overhead.
-The running process confirmed the current 5,400-second timeout.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
