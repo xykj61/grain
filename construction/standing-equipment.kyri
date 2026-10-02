@@ -8652,3 +8652,20 @@ guard cion_module_labeling
 path tools/gen/chapter/cion_module_labeling_witness.rish
 tier lap
 seated 20261002.014757
+
+# safe_list_census -- e22's SAFE list + oldness-cycle census, unrostered since it was written.
+# tools/fixtures/s/safe_list_census.sh reads two files on metal -- SAFE.md and the oldness-cycle
+# spec -- and asserts each of six readings in turn: both present, the spec's cycle math checked
+# (SPEC_OK), the list's own Seated line present (SEATED), the 64-row bound named in the file's own
+# text (BOUND_NAMED), an empty list (0 of 64) read as welcome rather than a defect (EMPTY_OK), and
+# shred left refused absent a circled yes (SHRED_RED). The witness also calls its own TigerBeetle
+# golden-rule elder (tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish, part of the
+# already-batch-rostered TigerBeetle census family) and the almanac append script for seat 28,
+# both idempotent -- a second run finds the almanac seat "already present" and changes nothing on
+# disk. GREEN on metal, zero working-tree diff after running. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as copal-safe-list-census-roster
+# before this entry landed.
+guard safe_list_census
+path tools/gen/chapter/safe_list_census_witness.rish
+tier lap
+seated 20261002.023446
