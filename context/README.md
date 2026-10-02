@@ -47,7 +47,7 @@ Everything here lives inside the persistent project directory, so it survives ev
 
 Hand new sessions and collaborators the **voice guide**, the **identity note** (`QUIN.md`), and the **silo guide** together by default.
 
-A Cursor rule once at `.cursor/rules/quin.mdc` pointed every new session back here; the whole family rests now, archived and unmodified, at `.cursor-archive/rules/quin.mdc` (the retired `riyo.mdc`, `rio3.mdc`, and `reya2.mdc` rules beside it, pointing forward to Quin).
+A Cursor rule at `.cursor/rules/quin.mdc` points every new session back here. The family returned there `20261002.115106` (`riyo.mdc`, `rio3.mdc`, and `reya2.mdc` beside it, pointing forward to Quin).
 
 ---
 

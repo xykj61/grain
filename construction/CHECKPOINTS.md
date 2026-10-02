@@ -396,7 +396,7 @@ carry this repair and the seed export discrepancy found during the cold pass.
 **Language:** EN
 **Status:** Living ledger -- append-only
 **Voice:** Kyri
-**Rule:** [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md) - [`../.cursor-archive/rules/checkpoint.mdc`](../.cursor-archive/rules/checkpoint.mdc)
+**Rule:** [`../.claude/rules/checkpoint.md`](../.claude/rules/checkpoint.md) - [`../.cursor/rules/checkpoint.mdc`](../.cursor/rules/checkpoint.mdc)
 **Kin:** **debride** removes; a **checkpoint** marks the way back before it does.
 
 ---

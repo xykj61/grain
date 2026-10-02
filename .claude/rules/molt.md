@@ -30,4 +30,4 @@ The vocabulary this rides on is already seated in `context/LEXICON.md`:
 
 A tree that grows in the open keeps re-seating its best writing at fresh stamps, and the old copies pile up honestly on disk. "molt" is one syllable for the whole tending gesture -- grow the new skin, mark the old one for shedding -- so a routine sweep readies both the living edge and the shred-prep list while the knife stays in the drawer.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
+*Cursor twin* restored `20261002.115106` -- the family lives again under [`.cursor/rules/`](../../.cursor/rules/), the path Cursor reads. The `20260920.135100` archive was the interval between. Dated testimony keeps the path it wrote.

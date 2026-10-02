@@ -40,7 +40,7 @@ disk; within a day, trust the rows. Naming law:
 **The living notation is Kyri** (`.kyri`) -- immutable key-value at the seam, with historical
 Markdown logs folded under `date/YYYYMMDD/` beside them. Rules:
 [`../.claude/rules/session-logs.md`](../.claude/rules/session-logs.md) -
-the archived twin at [`../.cursor-archive/rules/session-logs.mdc`](../.cursor-archive/rules/session-logs.mdc) (Cursor retired `20260920.135100`). Growth law:
+the Cursor twin at [`../.cursor/rules/session-logs.mdc`](../.cursor/rules/session-logs.mdc) (restored `20261002.115106`). Growth law:
 [`../context/specs/append-only-growth-law.md`](../context/specs/append-only-growth-law.md).
 
 *Erratum `20260724.203617` -- UTC window:* four logs were stamped from `Etc/UTC` and read in index

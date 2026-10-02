@@ -6,10 +6,9 @@ Full filing guide: `ORGANIZING.md`.
 
 Claude Code climbs the bench one keystone at a time. **End every pass with exactly one closing line** that is either **`kg`** or **`check in`** -- never omit it, never substitute rest as the recommended lean.
 
-*Cursor retired* `20260920.135100` -- this rule once named a two-hand rhythm between a Cursor
-bench and a Claude counsel seat. Cursor is archived at
-`.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed), and the `(Cursor)` hand below
-retires with it. Dated session logs recording `check in (Cursor)` keep every word they wrote.
+*Cursor returned* `20261002.115106`. The `(Cursor)` hand is a live closing form again. The
+`20260920.135100` retirement held it aside in the interval. Dated session logs keep every word
+they wrote.
 
 ### Closing line law (always)
 
@@ -18,13 +17,14 @@ Print one of these forms, with a short why:
 | Form | When |
 |------|------|
 | `Recommend: kg -- ...` | Next item is mechanical, single-module, policy already written |
+| `Recommend: check in (Cursor) -- ...` | Stay on this Cursor bench for the next gate or ruling |
 | `Recommend: check in (Claude) -- ...` | Pause for Claude counsel (seam, design, value model, unruled question) |
 | `Recommend: check in (checkpoint) -- ...` | A named checkpoint already pointed out in the pass -- stop and confirm before crossing |
 | `Recommend: check in (either) -- ...` | Either hand fine; Keaton picks |
 
 **`kg` means keep going** -- one syllable for the same guidance. It is not commit, push, or merge by itself; those stay under **send** (see the send-word rule). Prefer the short form `kg` in the closing line; `keep going` remains synonymous in prose.
 
-**Check-in must name the hand.** Bare `check in` without `(Claude)` / `(checkpoint)` / `(either)` is incomplete -- always clarify which.
+**Check-in must name the hand.** Bare `check in` without `(Cursor)` / `(Claude)` / `(checkpoint)` / `(either)` is incomplete -- always clarify which.
 
 **Round close (seated `20260722.134415` - rest habit `20260722.185058`):** every landed work round **auto send + check-in** -- see `round-close-send-checkin.md`. Do not wait for Keaton to type send/check-in after a GREEN lap unless he says hold. The closing line after send still names `kg` or a typed `check in (...)`.
 

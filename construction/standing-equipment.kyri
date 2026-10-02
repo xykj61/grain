@@ -8175,11 +8175,11 @@ path tools/gen/chapter/copy_sameness_negative_witness.rish
 tier lap
 seated 20261001.115902
 
-# voice_roster and voice_roster_negative -- the standing voice declared once at five sites,
+# voice_roster and voice_roster_negative -- the standing voice declared once at six sites,
 # proven both ways. The positive leg calls tools/fixtures/v/voice_roster_scan.sh with the
 # declared voice name and reads verdict=ok across CLAUDE.md, GLOW_PROFILE.template.kyri,
-# tools/gen/chapter/recursion_block.brix, context/README.md, and the living context/<VOICE>.md
-# identity note. The negative leg calls the same script with a name no site declares and reads
+# tools/gen/chapter/recursion_block.brix, context/README.md, the living context/<VOICE>.md
+# identity note, and .cursor/rules/kyri.mdc. The negative leg calls the same script with a name no site declares and reads
 # verdict=drift, then calls it again with the standing voice and reads verdict=ok, so the guard
 # is shown to discriminate rather than refuse every call. One of the 130 witnesses standing under
 # tools/gen/chapter/ with no roster row -- the ask copal-inner.md names. Both run under 1s on

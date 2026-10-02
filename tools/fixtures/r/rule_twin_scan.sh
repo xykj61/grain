@@ -77,11 +77,11 @@
 # seating arrived AGREEING, against 5 of 40 among the elders. The habit changed, and one absolute
 # could not see it.
 #
-# WHY RECONCILIATION IS NOT ATTEMPTED HERE. The drift runs in BOTH directions, read from the
-# archived twins now that Cursor has retired and `.cursor/rules/` moved whole to
-# `.cursor-archive/rules/`, unmodified. `.cursor-archive/rules/reds-first.mdc` names
+# WHY RECONCILIATION IS NOT ATTEMPTED HERE. The drift runs in BOTH directions. The family
+# returned to `.cursor/rules/` on `20261002.115106`, and the restored twins are the
+# `20260920.135100` snapshots, unmodified since. `.cursor/rules/reds-first.mdc` names
 # `work-in-progress/REDS.md`, a path that has since moved to `construction/`, so the twin is
-# behind. `.cursor-archive/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a
+# behind. `.cursor/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a
 # two-remote push discipline that `.claude/rules/send-word.md` has never held, so the twin is
 # AHEAD. A bulk merge in either direction would silently delete a live safety rule. That decision
 # is Keaton's word; this meter's job is to keep the count honest until it is made.

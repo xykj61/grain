@@ -24,4 +24,4 @@ Apply this rule when canon accepts several names for one referent.
 - `SurfFrameGrid` and `SkateFrameGrid` are direct compile-time aliases of one `FrameGrid`; neither owns a wrapper, storage, behavior, serialization, or refusal contract of its own.
 - No serialized frame format is seated yet. When one is, it belongs to the shared referent exactly once.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
+*Cursor twin* restored `20261002.115106` -- the family lives again under [`.cursor/rules/`](../../.cursor/rules/), the path Cursor reads. The `20260920.135100` archive was the interval between. Dated testimony keeps the path it wrote.

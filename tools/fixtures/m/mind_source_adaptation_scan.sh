@@ -2,10 +2,9 @@
 # tools/fixtures/m/mind_source_adaptation_scan.sh -- bound one MIND source adaptation.
 set -eu
 
-# The Cursor twin retired tree-wide 20260920.135100 on Keaton's word (.claude/rules/git-signing.md
-# and every other rule page carry the same line): the whole .cursor/rules/*.mdc family is archived,
-# unmodified, at .cursor-archive/rules/README.md, and no living .mdc page is maintained from here
-# forward. So this scan checks the one living policy page rather than a retired twin.
+# The Cursor family lives again under .cursor/rules/ from 20261002.115106. This scan still
+# checks the one living Claude policy page; the twin at .cursor/rules/mind-source-adaptation.mdc
+# is the 20260920.135100 snapshot, restored unmodified.
 CLAUDE_RULE=${MIND_ADAPT_CLAUDE_RULE:-.claude/rules/mind-source-adaptation.md}
 MIND_PROMPT=${MIND_ADAPT_PROMPT:-recursion-prompts/versions/20260826-180017_chatgpt-mind-macos-loop.md}
 

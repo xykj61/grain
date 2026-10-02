@@ -9,7 +9,7 @@
 
 say "voice-roster: Language EN — one standing voice, declared once everywhere."
 say "voice-roster: Style Radiant — name the sites; leave testimony alone."
-say "voice-roster: Lens TAME — five sites bounded and named up front."
+say "voice-roster: Lens TAME — six sites bounded and named up front."
 
 let want = "Kyri"
 if length args != 0 then let want = args[0]
@@ -26,6 +26,6 @@ let red = run ["sh" "tools/fixtures/v/voice_roster_scan.sh" "Nobody"]
 say red.out
 assert (red.ok == false) else "voice-roster: an undeclared name must refuse"
 assert red.out contains "verdict=drift" else "voice-roster: prove-red wants the named verdict"
-assert red.out contains "drift=5" else "voice-roster: prove-red wants every site to drift on a name none declares"
+assert red.out contains "drift=6" else "voice-roster: prove-red wants every site to drift on a name none declares"
 
 say "GREEN: voice-roster — the standing voice is declared consistently; an undeclared name refuses"

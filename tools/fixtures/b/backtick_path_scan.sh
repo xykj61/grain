@@ -195,11 +195,9 @@ function norm(p,   i, c, parts, stack, n, out) {
 }
 function here(p) { return (p != "" && ((p in tracked) || (p in dirs))) }
 # Testimony keeps every word it wrote: a stamped basename, or any dated / archived / deferred shelf.
-# .cursor-archive/ is a fourth shelf by the same rule under a different spelling: every rule room
-# that names it calls it "archived, unmodified" (git-signing.md and a dozen siblings), so a citation
-# frozen inside it -- written the day Cursor retired, pointing at a .cursor/rules/ path that folded
-# away the same day -- is the elder-room genre this scan already reads past, wearing a dot instead
-# of a slash-bounded "archive" segment.
+# .cursor-archive/ is a fourth shelf by the same rule under a different spelling. The family
+# returned to .cursor/rules/ on 20261002.115106; this exemption stays so a citation that still
+# names the archive path -- dated logs, and the 20260920.135100 checkpoint -- reads as testimony.
 function testimony(p,   b) {
   if (p ~ /(^|\/)(date|archive|yonder)\//) return 1
   if (p ~ /^\.cursor-archive\//) return 1

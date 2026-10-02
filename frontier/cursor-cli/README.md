@@ -3,8 +3,8 @@
 **Status:** Living -- terminal-only operating door for the Grain pier
 **Home:** [`../../README.md`](../../README.md)
 
-This room is the current, practical companion to the fossil material under
-`.cursor-archive/`. It is written for Cursor Agent CLI running on the NixOS pier, reached from
+This room is the current, practical companion to the rule family under
+`.cursor/rules/`. It is written for Cursor Agent CLI running on the NixOS pier, reached from
 the Daylight DC-1 tablet through Termux over Mosh. It deliberately excludes Cursor GUI/editor
 operations.
 

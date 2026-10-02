@@ -324,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `a7beede84e` -- parent of the docs-geode Bhakta declaration, read before the commit (rule 5).
+**Git nib:** `b986fb06e2` -- parent of the Cursor rule return, read before the commit (rule 5).
 
 ### Incense -- product captain
 

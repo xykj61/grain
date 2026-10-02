@@ -383,4 +383,4 @@ A name owes nothing to an alphabet and everything to two readers: the one meetin
 and the one typing it on their ten-thousandth. A stamp tells them when, a name tells them what, and
 between them they promise only what the work actually keeps.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
+*Cursor twin* restored `20261002.115106` -- the family lives again under [`.cursor/rules/`](../../.cursor/rules/), the path Cursor reads. The `20260920.135100` archive was the interval between. Dated testimony keeps the path it wrote.

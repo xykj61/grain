@@ -21,12 +21,10 @@ done
 [ "$faults" -eq 0 ] || { echo "verdict=crossing_incomplete"; exit 2; }
 
 # Citers must point at the law and must not carry its body. The Cursor twin
-# retired 20260920.135100 and moved whole, unmodified, to .cursor-archive/rules/
-# -- read it there rather than at the live .cursor/rules/ path it no longer
-# occupies (.claude/rules/git-signing.md names the retirement).
+# lives at .cursor/rules/reds-first.mdc again, restored 20261002.115106.
 citers="context/TAME_GUIDANCE.md
 .claude/rules/reds-first.md
-.cursor-archive/rules/reds-first.mdc"
+.cursor/rules/reds-first.mdc"
 citing=0
 restating=0
 for f in $citers; do

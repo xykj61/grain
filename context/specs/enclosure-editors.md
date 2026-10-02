@@ -10,11 +10,9 @@
 **Builds on:** `../../SOURCE.md`, `../../gratitude/ai-jail/README.md`, `../../tools/e/enclosure.conf.example`  
 **Sibling:** [`macos-ai-jail-setup.md`](../../manual/guides/macos-ai-jail-setup.md)
 
-*Cursor retired* `20260920.135100` on Keaton's word -- this spec once answered a two-editor
-question (Zed alongside a still-working Cursor install). Cursor is archived, unmodified, at
-`.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this spec ships in the seed). The Zed-in-ai-jail steps
-below stand as written and are unaffected; every remaining mention of Cursor in this page is a
-historical comparison point, read past rather than followed.
+*Cursor returned* `20261002.115106` on Keaton's word. The rule family lives again at
+`.cursor/rules/`. This spec still answers the Zed-in-ai-jail question; the steps below stand
+as written.
 
 ---
 

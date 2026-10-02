@@ -30,10 +30,10 @@
 #
 # WHAT IS REPORTED AND NEVER GATED: `arrival_drifted`, with each pair named. Reconciling a pair
 # means reading both sides and deciding which sentence is the law -- the drift runs in BOTH
-# directions, read from the archived twins now that Cursor has retired and `.cursor/rules/` moved
-# whole to `.cursor-archive/rules/`, unmodified. `.cursor-archive/rules/reds-first.mdc` names
+# directions. The family returned to `.cursor/rules/` on `20261002.115106`, and the restored
+# twins are the `20260920.135100` snapshots, unmodified since. `.cursor/rules/reds-first.mdc` names
 # `work-in-progress/REDS.md`, a path that moved to `construction/`, so that twin is behind.
-# `.cursor-archive/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a two-remote
+# `.cursor/rules/send-word.mdc` carries an `ls-remote` pre-push guard and a two-remote
 # push discipline that `.claude/rules/send-word.md` has never held, so that twin is AHEAD. A bulk
 # merge in either direction would silently delete a live safety rule, so that decision is
 # Keaton's word. Gating arrivals would therefore refuse the ordinary act of writing a new rule

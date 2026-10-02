@@ -53,4 +53,4 @@ with **biocyclic vegan ecology** as the world the software serves. A bound exist
 on a machine a small farm can afford; a key nobody can revoke is what lets a grower own their records.
 One honest sentence, where it belongs.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
+*Cursor twin* restored `20261002.115106` -- the family lives again under [`.cursor/rules/`](../../.cursor/rules/), the path Cursor reads. The `20260920.135100` archive was the interval between. Dated testimony keeps the path it wrote.

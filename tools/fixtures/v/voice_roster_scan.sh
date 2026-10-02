@@ -3,9 +3,9 @@
 # Orchestrated by tools/gen/chapter/voice_roster_witness.rish.
 #
 # First resident: the voice-variant system proven on our own tree before it is
-# claimed as a surface. Five authoritative sites declare the standing voice,
-# down from six -- the mirrored `.cursor/rules/<voice>.mdc` site retired
-# `20260920.135100` alongside the whole Cursor family. A further place -- the
+# claimed as a surface. Six authoritative sites declare the standing voice.
+# The mirrored `.cursor/rules/<voice>.mdc` site returned `20261002.115106`
+# with the rest of the family. A further place -- the
 # 400-odd dated docs carrying a **Voice:** header -- is NOT checked here on
 # purpose: those are Tier 2 testimony naming who actually wrote them, and a
 # voice change must never falsify authorship.
@@ -33,14 +33,8 @@ check "context/README.md"                      "^\*\*Voice:\*\* $want"  "context
 upper=$(echo "$want" | tr 'a-z' 'A-Z')
 check "context/$upper.md"                      "^# $want"               "living identity note"
 
-# The sixth site, a mirrored `.cursor/rules/<voice>.mdc` declaration, retired
-# `20260920.135100` on Keaton's word alongside the whole Cursor family -- see
-# `.claude/rules/collaboration.md`'s Editor section. This bench no longer
-# maintains a second declaration to keep in sync, so the site is retired from
-# the roster rather than checked against the frozen archive at
-# `.cursor-archive/rules/`, which would misreport a retired duty as a live one.
-echo "detail: ok cursor rule retired 20260920.135100, no longer a declaration site"
+check ".cursor/rules/kyri.mdc"                 "You are \*\*$want\*\*" "cursor voice rule"
 
-echo "sites=5"
+echo "sites=6"
 echo "drift=$fail"
 if [ "$fail" -eq 0 ]; then echo "verdict=ok"; exit 0; else echo "verdict=drift"; exit 1; fi

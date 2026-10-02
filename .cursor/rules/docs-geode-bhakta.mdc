@@ -1,3 +1,9 @@
+---
+description: docs-geode pages are Bhakta at the Door setting. The teaching shelf stays an open door.
+globs: docs-geode/**/*.md
+alwaysApply: false
+---
+
 # docs-geode is Bhakta
 
 **Seated:** `20261002.114619` on Keaton's word - **Status:** Living
@@ -28,4 +34,4 @@ rishi/bin/rishi run tools/d/docs_geode_bhakta_witness.rish
 
 The scan reads every `*.md` under `docs-geode/`. A page with no style line, a style line without Bhakta, or a style line that names Gauge, is a miss. `verdict=ok` means the folder's doors agree.
 
-Canonical Cursor twin: `.cursor/rules/docs-geode-bhakta.mdc`
+Canonical Claude twin: `.claude/rules/docs-geode-bhakta.md`

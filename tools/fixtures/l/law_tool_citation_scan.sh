@@ -269,8 +269,8 @@ echo "room_ignored_read_past=$room_ignored"
 echo "twin_room_cited_paths=$twin_room_cited"
 echo "twin_room_cited_untracked=$twin_room_untracked"
 # Named rather than counted, because a reader handed a bare number can act on nothing. Today's one
-# stands in `.cursor-archive/rules/tame-guidance.mdc`, unmodified since Cursor retired and
-# `.cursor/rules/` moved whole there, and its sentence marks it `when built` -- a promise about the
+# stands in `.cursor/rules/tame-guidance.mdc`, the snapshot restored 20261002.115106, and
+# its sentence marks it `when built` -- a promise about the
 # future rather than about the tree. It is printed at runtime rather than spelled here, since
 # `tools/g/geode_libraries.rish` counts a witness for a room by the room paths its text names, and
 # spelling this one enrolled the reading in that room's census on its first lap.

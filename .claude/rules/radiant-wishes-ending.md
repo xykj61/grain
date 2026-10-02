@@ -29,4 +29,4 @@ A README or foundation may carry a small **gratitude coda** -- one or two quotes
 
 The wish is where Radiant prose remembers who it is for. Keaton asked that earned prose keep ending this way -- a warm, honest close that leaves a reader glad they came.
 
-*Cursor twin retired* `20260920.135100` -- this rule once mirrored to a `.cursor/rules/*.mdc` file; the whole family is archived, unmodified, at `.cursor-archive/rules/README.md` (named here rather than linked, since `.cursor-archive/` stays in the field and this rule ships in the seed).
+*Cursor twin* restored `20261002.115106` -- the family lives again under [`.cursor/rules/`](../../.cursor/rules/), the path Cursor reads. The `20260920.135100` archive was the interval between. Dated testimony keeps the path it wrote.

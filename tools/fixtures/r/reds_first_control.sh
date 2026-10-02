@@ -18,7 +18,7 @@ mkdir -p \
   "$pen/construction" \
   "$pen/context" \
   "$pen/.claude/rules" \
-  "$pen/.cursor-archive/rules" \
+  "$pen/.cursor/rules" \
   "$pen/tools/fixtures/r"
 
 cp foundations/20260729-224828_reds-first-and-the-allocation.md "$pen/foundations/"
@@ -28,7 +28,7 @@ cp gratitude/toyota-production-system.md "$pen/gratitude/"
 cp construction/REDS.md "$pen/construction/"
 cp context/TAME_GUIDANCE.md "$pen/context/"
 cp .claude/rules/reds-first.md "$pen/.claude/rules/"
-cp .cursor-archive/rules/reds-first.mdc "$pen/.cursor-archive/rules/"
+cp .cursor/rules/reds-first.mdc "$pen/.cursor/rules/"
 cp tools/fixtures/r/reds_first_scan.sh "$pen/tools/fixtures/r/"
 
 # Leg 1 -- the real crossing, mirrored whole, reads ok.
