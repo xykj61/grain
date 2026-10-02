@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.203329` | [two-rooms rota grade stands](20261001/20261001-203329_two-rooms-rota-grade-stands.kyri) | Earth-row rota read on TWO_ROOMS.md; qa_report_card B+/89, no repair owed |
 | `20261001.202847` | [empty grant id refused](20261001/20261001-202847_empty-grant-id-refused.kyri) | an empty grant id writes nothing |
 | `20261001.202739` | [tend-hygiene-census-roster](20261001/20261001-202739_tend-hygiene-census-roster.kyri) | tend_hygiene_census witness rostered, GREEN both ways |
 | `20261001.202520` | [civic-style-and-linengrow-voice-register-repair](20261001/20261001-202520_civic-style-and-linengrow-voice-register-repair.kyri) | two below-B context/ pages repaired: LINENGROW_MAGAZINE_VOICE C+/75->A/93, CIVIC_STYLE C+/79->B+/85 |
