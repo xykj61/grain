@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.235511` | [send confirmed, three rebases](20261001/20261001-235511_send-confirmed-three-rebases.kyri) | three fetch-rebase-amend cycles against an active pier; HEAD matches xy, ledger GREEN |
+| `20261001.235501` | [opening turn, no task named yet](20261001/20261001-235501_awaiting-task.kyri) | no prompt content this turn; waiting on Keaton to name the next mantra/tally task |
 | `20261001.235427` | [stashed essay and stranded fix recovered](20261001/20261001-235427_recovered-a-stashed-essay-and-a-stranded-fix.kyri) | one lost essay landed, three stale duplicates dropped, a peer's stranded REDS close cherry-picked |
 | `20261001.234933` | [candidate roster found a red instead](20261001/20261001-234933_candidate-roster-found-a-red-instead.kyri) | instrument_suite_witness reds on fascia floor; REDS booked, two closed rows hand-folded |
 | `20261001.234816` | [round-open pulled, still gated](20261001/20261001-234816_round-open-pulled-still-gated.kyri) | xy reachable; pulled one peer commit; consent-contract gate still holds, no new docs-geode work |
@@ -52,6 +53,7 @@
 | `20261001.201711` | [consent replay landed](20261001/20261001-201711_consent-replay-landed.kyri) | grant then revoke; the grant remains; orphan writes nothing |
 | `20261001.201644` | [dated-roof-divergence-roster](20261001/20261001-201644_dated-roof-divergence-roster.kyri) | dated_roof_divergence_witness rostered, GREEN both ways |
 | `20261001.201207` | [SECURITY.md register repair](20261001/20261001-201207_security-md-register-repair.kyri) | C+/76 to A/93; seven negative sentences rewrote affirmative |
+| `20261001.200954` | [awaiting a task -- no prompt content](20261001/20261001-200954_awaiting-task.kyri) | no task named this turn; waiting on Keaton |
 | `20261001.200649` | [four rulings](20261001/20261001-200649_four-rulings.kyri) | contract accepted; no head-insert door; case 4 closed |
 | `20261001.200315` | [quiet-this-pier-does-not-have](20261001/20261001-200315_quiet-this-pier-does-not-have.kyri) | a fresh moonshot: ambient loadavg and a contention experiment on this pier |
 | `20261001.200053` | [four seats ashore, unsaid credit](20261001/20261001-200053_four-seats-ashore-unsaid-credit.kyri) | guarded say and presence tests credited; ceiling stays 903 |
@@ -116,6 +118,7 @@
 | `20261001.165144` | [paused Claude fold restored](20261001/20261001-165144_paused-claude-fold-restored.kyri) | usage-limit hold; REDS fold put back in the working tree |
 | `20261001.164927` | [incense interactive open](20261001/20261001-164927_incense-interactive-open.kyri) | round open at b6d7abc874; REDS fold stashed, cold run held |
 | `20261001.152817` | [citizen-door's external links verified](20261001/20261001-152817_citizen-door-external-links-verified.kyri) | first live fetch of the page's 3 http citations; 2 confirmed, 1 unreadable PDF |
+| `20261001.152735` | [turn opened with no user task](20261001/20261001-152735_no-task-yet.kyri) | waiting on a task before claiming work in mantra/ or tally/ |
 | `20261001.152349` | [fascia_health rostered](20261001/20261001-152349_fascia-health-rostered.kyri) | one of 128 unrostered chapter witnesses claimed, proven both ways, rostered |
 | `20261001.152343` | [falsifier_form_outcome repaired](20261001/20261001-152343_falsifier-form-outcome-repaired.kyri) | two scans' live-page scopes reconciled; ledger pin down to 112 bytes headroom |
 | `20261001.152121` | [fleet-wide check finds nothing unclaimed](20261001/20261001-152121_petrichor-fleet-wide-check-finds-nothing-unclaimed.kyri) | one claim, one OPEN row, both already spoken for; CLAIM-AS-OVERRIDE has nothing to take |
@@ -205,7 +208,9 @@
 | `20261001.115403` | [stale claim closed, repair already on main](20261001/20261001-115403_close-stale-log-row-claim.kyri) | closed patchouli-log-row-flat-count-20260925, proven landed |
 | `20261001.115149` | [a third confirmation would cost more than it would teach](20261001/20261001-115149_pheromone-lane-closed-reconfirmed-third-time.kyri) | checked for drift instead of re-running green witnesses; lane queue empty |
 | `20261001.115128` | [link repair sent, two rebases](20261001/20261001-115128_link-repoint-send.kyri) | pushed to xy and debrided, nib carried forward twice |
+| `20261001.115032` | [awaiting the next task](20261001/20261001-115032_awaiting-next-task.kyri) | no task named; mantra weave merge-and-annotate or a booked red would start one |
 | `20261001.114958` | [zero_view send, two contested nibs](20261001/20261001-114958_zero-view-rostered-send.kyri) | pushed xy and debrided after three rebases |
+| `20261001.114827` | [opened with no task named](20261001/20261001-114827_no-task-named.kyri) | no request followed the standing baton this turn |
 | `20261001.114626` | [one real link repair, in-lane](20261001/20261001-114626_example-app-plan-repoint.kyri) | repointed a folded companion link in docs-geode; fruit unchanged |
 | `20261001.114554` | [map sent, six rebases later](20261001/20261001-114554_mantra-tally-map-sent.kyri) | pushed to xy and debrided, HEAD 10a194460 |
 | `20261001.114515` | [seat-nakshatra-parseint-migration](20261001/20261001-114515_seat-nakshatra-parseint-migration.kyri) | one seat_nakshatra.rye call migrated to tally_parse_int, proven on metal |

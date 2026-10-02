@@ -67,13 +67,13 @@ REDS %385 booked. A day's number is derived by counting its shelf on the lap tha
 | Day | Rows | Shelf |
 |---|---|---|
 | `20261002` **open** | **open** | [`date/README-index-20261002.md`](date/README-index-20261002.md) |
-| `20261001` | 233 | [`date/README-index-20261001.md`](date/README-index-20261001.md) |
+| `20261001` | 238 | [`date/README-index-20261001.md`](date/README-index-20261001.md) |
 | `20260930` | 23 | [`date/README-index-20260930.md`](date/README-index-20260930.md) |
 | `20260929` | 27 | [`date/README-index-20260929.md`](date/README-index-20260929.md) |
 | `20260928` | 24 | [`date/README-index-20260928.md`](date/README-index-20260928.md) |
 | `20260927` | 22 | [`date/README-index-20260927.md`](date/README-index-20260927.md) |
 | `20260926` | 36 | [`date/README-index-20260926.md`](date/README-index-20260926.md) |
-| `20260925` | 154 | [`date/README-index-20260925.md`](date/README-index-20260925.md) |
+| `20260925` | 155 | [`date/README-index-20260925.md`](date/README-index-20260925.md) |
 | `20260924` | 109 | [`date/README-index-20260924.md`](date/README-index-20260924.md) |
 | `20260923` | 37 | [`date/README-index-20260923.md`](date/README-index-20260923.md) |
 | `20260922` | 20 | [`date/README-index-20260922.md`](date/README-index-20260922.md) |
