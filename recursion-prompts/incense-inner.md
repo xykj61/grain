@@ -232,3 +232,31 @@ two laps back, though this lap wrote nothing to it -- some other hand's commit t
 cold run launched, no work invented. Next: re-check the board and shelf as before; if the card's
 headroom keeps falling without this seat's own edit, name it as a question for Keaton rather than
 spending the last of it on a note.
+
+**Lap `20261002.005125` ran the rite in full and closed four of the cold run's twenty-two reds.**
+Round-opened clean at `46781038b8`, claim board clear (three live claims, none overlapping law-lane
+paths), no cold pass in flight, launched a fresh one with `--cadence-slice 1`, held still through
+five Monitor re-arms (~70 minutes) to `run_verdict=guard_red` (`guards_run=414 guards_green=389
+guards_red=22 guards_gated=3`). Read each red's own witness rather than trusting the transcript's
+name line: moved `commit_parent_claim_witness.rish`'s anchor to `e5630366a1`, absorbing REDS
+%803's contested-send class (eight stale nib-carry bodies from one multi-ship evening); grew
+`root_finder_baseline.txt` by one legitimate new finder site; bumped `pen_release_witness.rish`'s
+exact `runtime_pens` assertion 25 to 26 (`mantra/src/consent_replay_witness.rye` had adopted
+make-pen); fixed `mantra_weave_tablecloth_seam_witness.rish`'s own header to cite the real tracked
+path `mantra/src/weave.rye` rather than a bare `src/weave.rye`, closing one `comment_path` hit; and
+added a missing `log_has_a_row` index row for a peer's parked-commit log. Left `tame_style_check`'s
+compound-assert hits untouched since they sat inside patchouli's live claim -- a peer's own commit
+closed them independently before this lap's send landed. A round-open mid-repair found
+`commits_behind=45`; the stash-pop conflicted on two of six files because a peer had landed
+identical fixes in the interim, resolved by taking upstream's side. The send itself met REDS
+%803's own class twice in a row -- two post-amend rebases each left the nib one commit stale,
+repaired by two follow-up commits in sequence, landing clean on the third push. Eighteen reds stand
+named open (`rye_witness_walker` 57 vs ceiling 56, `shared_build_path` 1586 vs ceiling 1585,
+`index_row_bound` with ~20 rows over 192 bytes on today's shelf alone, `aurora_file_placement`'s
+drift-scatter scaling, plus `declared_model`, `build_target`, `fleet_watch`, `unheard_guard`,
+`backtick_path`, `ceiling_teeth`, `law_guard_heard`, `rune_assert_sweep`, `rye_compile_reach`,
+`standing_equipment`, `standing_equipment_redleg`) -- full reading in
+`session-logs/date/20261002/20261002-005125_cold-run-reds-closed.kyri`. `construction/REDS.md`
+still cannot take a new row (300 bytes headroom, `pin_deadlocked=1`). Next: fresh round-open; check
+the board and shelf for a `captain:` line; a fresh cold run with `--cadence-slice 1` should read
+roughly 18 red rather than 22, confirming the four repairs landed clean fleet-wide.
