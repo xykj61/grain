@@ -22,16 +22,19 @@ new section *One promise, wearing two clothes*, with the arc's own essay closed 
 erratum. The arc [`../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md`](../active-designing/date/20260905/20260905-153729_mantra-was-named-for-the-weave.md)
 named this as its last movement, so the lane's own named work is done.
 
-**The next crux is the consent lowering, ruled `20261001.200649`.** Lower `ConsentGrantFact` and
-`ConsentRevokeFact` beside `mantra/src/receipt_offer.rye`, and add `orphaned-revoke` to `Reason` in
-that same change. The desk is
+**The consent lowering, ruled `20261001.200649`, is landed, Mantra's own door of it whole.**
+`ConsentGrantFact` and `ConsentRevokeFact` stand lowered beside `mantra/src/receipt_offer.rye` in
+`mantra/src/consent_replay.rye`, and `orphaned_revoke` and `holder_mismatch` both name members of
+`tally/receipt_refusal.rye`'s `Reason`. The desk is
 [`../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md).
 The contract is
 [`../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md`](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
-The first replay, the mismatched holder, and case 8 are landed. Every required text field on either
-fact, emptied one at a time, refuses by its own name, and a changed signature refuses as
-`invalid-signature`. Linengrow's projection, cases 2 and 4, stays outside this lane. The next code
-is `%765`, one header family a lap. Elder headers keep their names.
+Acceptance cases 1, 3, 5, 6, 7, and 8 all run GREEN under `mantra/src/consent_replay_witness.rye`
+(`rishi/bin/rishi run tools/m/mantra_consent_replay_witness.rish`, re-run `20261001`): the first
+replay, the orphaned revoke against both an empty log and a named-but-missing grant, the
+mismatched holder, and every required text field on either fact emptied one at a time, each
+refusing by its own name, plus a changed signature refusing as `invalid-signature`. Linengrow's
+projection, cases 2 and 4, stays outside this lane.
 
 **`%807` takes no door.** A `before` anchor has no `u32` below zero. Renumbering every `ord` is the
 merge break already refused. Reserving zero buys one head insert and the next document hits the same
@@ -44,6 +47,12 @@ header moved to `mantra-commit-20261001.233015`, row format unchanged, elder hea
 [Account](../construction/archive/date/20261001/20261001-233015_itinerary-patchouli-commit-header-molt-account.md).
 Forty families of `%765` remain, all outside this lane -- the next one in `mantra/` or `tally/`,
 if any surfaces, is agent-doable the same way; the rest want their owning ship.
+
+**This lane's agent-doable queue reads empty `20261002`.** Both named rows above either want
+Keaton's ruling (`%807`) or another ship's own lap (`%765`'s remainder). Read
+`construction/REDS.md` and `construction/ITINERARY.md` fresh before assuming otherwise -- a row
+booked since this reading would change it -- and reach for claim-as-override if the queue still
+reads empty.
 
 ## gates
 
