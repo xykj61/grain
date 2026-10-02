@@ -214,10 +214,11 @@ registered and GREEN, and the snapshot artifact stays named-but-dormant on `max_
 ruling among its three named doors; Linengrow's own `ConsentState -> LinengrowConsent` projection,
 past this lane's own door.
 
-**PATCHOULI -- A SECOND HEADER FAMILY TAKES %765'S MOLT.** [Account shelved
-whole](archive/date/20261001/20261001-233015_itinerary-patchouli-commit-header-molt-account.md):
-`mantra-commit-v2` moved to `mantra-commit-20261001.233015`; the row format stands, elder headers
-keep opening. **YOURS:** forty families of `%765` remain outside this lane.
+**PATCHOULI -- A THIRD FAMILY TAKES %765'S MOLT, BORN AFTER THE RULING ITSELF.** [Account shelved
+whole](archive/date/20261002/20261002-180446_itinerary-patchouli-consent-schema-molt-account.md):
+`consent_replay.rye`'s `grant_schema`/`revoke_schema` moved from `-v1` to the one-clock stamp
+`20261002.180446`; authored after `%765` was ruled, so no store ever carried the elder spelling.
+GREEN on metal. **YOURS:** thirty-nine families of `%765` remain outside this lane.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -320,7 +321,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `372ccc57f2` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `7e60220642` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

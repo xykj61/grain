@@ -56,6 +56,15 @@ reads empty.
 
 **Ruled `20261002.142242`.** `%807` stays OPEN. No renumber of `ord`, and zero stays unreserved. Merge and annotate already read GREEN; the outer prompt now says so. The next fruit is one chronological header that still lives in `mantra/` or `tally/`. When that scan finds none, the lap says the queue is empty and stops.
 
+**A third family landed `20261002.180446`.** `consent_replay.rye`'s `grant_schema`/`revoke_schema`
+moved from `-v1` to the one-clock stamp, born after `%765` was ruled, so no store ever carried the
+elder spelling -- the cheapest molt this lane will meet. GREEN under
+`mantra_consent_replay_witness.rish`.
+[Account](../construction/archive/date/20261002/20261002-180446_itinerary-patchouli-consent-schema-molt-account.md).
+Thirty-nine families remain outside this lane. The queue read empty three times in a row before
+this one surfaced on re-grep -- re-run the appendSlice/schema grep fresh each lap rather than
+trusting the prior lap's reading.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
