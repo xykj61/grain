@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.101438` | [The dead consent stash cleared, lane queue still empty](20261002/20261002-101438_dead-consent-stash-cleared.kyri) | dropped a superseded consent.rye draft from stash@{4}, confirmed against the landed consent_replay.rye; %807 and %765 still take no door |
 | `20261002.101346` | [Petrichor stops circling and sets the gate sentinel](20261002/20261002-101346_petrichor-stops-circling-sets-gate.kyri) | 200+ identical confirms today; verified clean/current independently, set .loop-gates-only, recommends check-in |
 | `20261002.101202` | [pheromone -- second round-open this lap, lane still idle](20261002/20261002-101202_pheromone-second-round-open-lane-idle.kyri) | two round-opens pulled eight peer commits; language lane confirmed empty, witness re-GREEN |
 | `20261002.100858` | [round-open found a stray stash, cleaned, lane still clean](20261002/20261002-100858_petrichor-stray-stash-cleanup.kyri) | dropped a stale round-open stash popped by accident; fruit page re-graded B+/89 unchanged; no in-lane claim |
