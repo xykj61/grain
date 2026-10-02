@@ -14,6 +14,7 @@ const rc = @import("rune_call.rye");
 const lower_multi = @import("lower_multi.rye");
 const refusal = @import("refusal.rye");
 const zig_ident = @import("zig_ident.rye");
+const tally_copy = @import("tally_copy.rye");
 
 pub const LowerError = rf.ParseError || rc.ParseError || lower_multi.LowerError || error{
     Overflow,
@@ -87,7 +88,7 @@ fn fill_bare_face(line: []const u8, spec: *ComposeSpec) LowerError!void {
     if (!std.mem.startsWith(u8, after_head, face)) return error.MalformedValue;
     const after_face = std.mem.trimStart(u8, after_head[face.len..], " \t");
     const value = try parse_trailing_u32(after_face);
-    @memcpy(spec.face[0..face.len], face);
+    tally_copy.copy_disjoint(u8, spec.face[0..face.len], face);
     spec.face_len = face.len;
     spec.value = value;
 }
@@ -106,7 +107,7 @@ pub fn parse_compose(src: []const u8) LowerError!ComposeSpec {
     if (!std.mem.eql(u8, sample, face_slice(&spec))) return error.SampleMismatch;
     if (!std.mem.eql(u8, gate, "double")) return error.UnknownGate;
 
-    @memcpy(spec.gate[0..gate.len], gate);
+    tally_copy.copy_disjoint(u8, spec.gate[0..gate.len], gate);
     spec.gate_len = gate.len;
     return spec;
 }
