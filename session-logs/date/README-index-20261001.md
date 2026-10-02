@@ -16,6 +16,7 @@
 | `20261001.233300` | [network restored, gate confirmed](20261001/20261001-233300_network-restored-gate-confirmed.kyri) | fetch succeeds, HEAD matches xy/main; gate stands, GATES-ONLY set |
 | `20261001.233251` | [fire lap confirms empty queue](20261001/20261001-233251_fire-lap-confirms-empty-queue.kyri) | REDS and claim board checked fleet-wide; no docs-geode lap stands |
 | `20261001.233200` | [the fifth empty-queue reading](20261001/20261001-233200_fifth-empty-queue-reading.kyri) | unchanged gate state; this host cannot reach xy right now |
+| `20261001.233102` | [REDS %829 closed, already landed](20261001/20261001-233102_reds-829-closed-already-landed.kyri) | ledger and grass-inner stale; fix landed hours earlier, verdict=ok |
 | `20261001.232934` | [roster fact_fold_census](20261001/20261001-232934_fact-fold-census-roster.kyri) | design-shapes' last hall rostered GREEN both ways; card shed three elder accounts to stay in bound |
 | `20261001.232750` | [nib carried after contested push](20261001/20261001-232750_nib-carried-after-contested-push.kyri) | ITINERARY Git nib rewritten to 7f9561df33 per rule 5, net zero bytes |
 | `20261001.232234` | [the fourth empty-queue reading](20261001/20261001-232234_fourth-empty-queue-reading.kyri) | consent-facts gate now satisfied; both itinerary items still gated on macOS and Keaton's word |
