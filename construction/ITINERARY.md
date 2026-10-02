@@ -101,6 +101,14 @@ stays GREEN beside it. Claimed, closed. **YOURS:** ~91 remain, measured by compa
 `ls tools/gen/chapter/*_witness.rish` against the `guard` rows named in
 `construction/standing-equipment.kyri` rather than trusted from this line.
 
+**COPAL -- AN EIGHTEENTH UNROSTERED WITNESS.** `wayland_from_frame_witness.rish` rostered --
+the same decided-skip shape as `pond_brushstroke_frame`, proven both legs on metal: with
+`WAYLAND_DISPLAY` unset (this pier's own state) it exits GREEN at the display-absent skip, and
+with `WAYLAND_DISPLAY` set to a fake value it clears that skip, runs `glow_connector_seam` and
+`brush-parse grid` against the present `brush-parse` binary, then exits GREEN at the still-unbuilt
+`brushstroke-wayland-seed` binary's skip. Claimed, closed. **YOURS:** ~90 remain, same measure as
+above.
+
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
 redirect creates the destination before the producer runs -- so every way the producer can fail left
@@ -324,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fae73f1287` -- clock-in record on the rewritten main, read before the commit (rule 5).
+**Git nib:** `76132cf9be` -- clock-in record on the rewritten main, read before the commit (rule 5).
 
 ### Incense -- product captain
 

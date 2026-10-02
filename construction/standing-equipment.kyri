@@ -8984,3 +8984,18 @@ guard tigerbeetle_be_explicit_census
 path tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish
 tier lap
 seated 20261002.102809
+
+# wayland_from_frame -- Surface p50 Wayland-from-Frame hop, unrostered since it was written.
+# The witness's own comments name two decided-skip legs rather than hard asserts: an absent
+# WAYLAND_DISPLAY is a fact about a headless pier (REDS %646), and an unbuilt
+# brushstroke-wayland-seed binary is a fact about a fresh clone's build state, never a defect in
+# either case. Proven both legs on metal: with WAYLAND_DISPLAY unset (this pier's own state) it
+# exits GREEN at the display-absent skip; with WAYLAND_DISPLAY set to a fake value it clears the
+# first skip, runs glow_connector_seam and brush-parse grid against the present brush-parse
+# binary, then exits GREEN at the binary-absent skip once it reaches the still-unbuilt
+# brushstroke-wayland-seed binary. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-wayland-from-frame-roster before this entry landed.
+guard wayland_from_frame
+path tools/gen/chapter/wayland_from_frame_witness.rish
+tier lap
+seated 20261002.142500
