@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.171200` | [Fire row looks hard, fruit still closed](20261002/20261002-171200_fire-row-looks-hard-fruit-still-closed.kyri) | round-opened (pulled to 9a2a41fc96), rota row 2 looked at REDS/claims fresh, docs-geode still empty |
+| `20261002.170141` | [Patchouli closes its own landed claim](20261002/20261002-170141_patchouli-closes-own-landed-claim.kyri) | found a stale fleet claim whose work had already merged, closed it, mantra/tally fruit stays empty |
 | `20261002.170052` | [Earth foundation re-read, fruit still closed](20261002/20261002-170052_grass-earth-foundation-reread-fruit-still-closed.kyri) | graded clock-and-mark at A, no claimable lap in grass's four passes |
 | `20261002.165915` | [Air row presses the shape ceiling, still fifteen](20261002/20261002-165915_air-row-presses-shape-ceiling-still-holds.kyri) | round-opened, re-confirmed empty lane, rota row 1 pressed max_fields=15 |
 | `20261002.165725` | [Air row read, fruit still closed](20261002/20261002-165725_air-row-read-fruit-still-closed.kyri) | rota row 1 pressed this lane's own boundary; no new docs-geode work surfaced |
