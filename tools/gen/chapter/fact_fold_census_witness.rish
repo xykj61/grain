@@ -4,6 +4,14 @@
 #
 # Design-shapes wing - fact_fold. Shape points at metal and Sangha page;
 # three bound pairs match; fold.rye stays GREEN (purity - refuse whole).
+#
+# The last of design-shapes' four halls to roster, after bounds_home, tend_hygiene, and
+# relay_resin. The elder file carried one green leg and no plant, so a shape whose pattern
+# field named an absent page, or whose own bound field had drifted from the metal constant
+# it is supposed to mirror, would have read the same verdict=ok a dropped check reads. Two
+# plants prove the refusal is real: a pen copy of the shape with its pattern field repointed
+# to a path that does not exist, and a pen copy with one bound field changed while the metal
+# file stays untouched -- the script's own missing_pattern and bound_drift doors.
 
 say "fact-fold-census: Language EN — shape, page, and metal agree."
 say "fact-fold-census: Style Radiant — supply is a fold, not an authority."
@@ -24,4 +32,25 @@ assert metal.out contains "purity" else "fact-fold-census: want purity"
 assert metal.out contains "refuse whole" else "fact-fold-census: want refuse whole"
 assert metal.out contains "supply=872" else "fact-fold-census: want supply=872"
 
-say "GREEN: fact-fold-census — three pairs · pattern cites · fold GREEN · purity · refuse"
+# RED path one -- the pattern field names a page that does not exist. A pen copy of the
+# real shape with only its pattern field repointed; the metal field stays the real file.
+let missing_pattern = run ["sh" "-c" "d=$(mktemp -d); sed 's#field pattern docs-geode/sangha/02-fact-fold.md#field pattern /nonexistent-fact-fold-pattern.md#' context/design-shapes/fact_fold.brix > $d/shape.brix; sh tools/fixtures/f/fact_fold_census.sh $d/shape.brix; s=$?; rm -rf $d; exit $s"]
+assert (missing_pattern.ok == false) else "fact-fold-census: a shape naming an absent pattern page must refuse"
+assert missing_pattern.out contains "verdict=missing_pattern" else "fact-fold-census: want the absent pattern refused by its own name"
+
+# RED path two -- a bound field drifts from the metal constant it is supposed to mirror.
+# A pen copy of the real shape with one field value changed; the metal file stays real
+# and untouched, so the drift is the shape's fault rather than the metal's.
+let drifted = run ["sh" "-c" "d=$(mktemp -d); sed 's/field star_name_max_bytes 32/field star_name_max_bytes 99/' context/design-shapes/fact_fold.brix > $d/shape.brix; sh tools/fixtures/f/fact_fold_census.sh $d/shape.brix; s=$?; rm -rf $d; exit $s"]
+assert (drifted.ok == false) else "fact-fold-census: a drifted bound between shape and metal must refuse"
+assert drifted.out contains "verdict=bound_drift" else "fact-fold-census: want the drift refused by its own name"
+assert drifted.out contains "drift pair star_name_max_bytes" else "fact-fold-census: want the drifted pair named"
+
+# The welcome beside both plants -- the real shape, pattern, and metal, unmutated, still
+# read ok. A refusal proven only in the failing direction cannot be told from a scan that
+# refuses everything.
+let welcome = run ["sh" "tools/fixtures/f/fact_fold_census.sh"]
+assert welcome.ok else "fact-fold-census: the real carriers must still pass after both plants ran"
+assert welcome.out contains "verdict=ok" else "fact-fold-census: want the unmutated census welcomed by name"
+
+say "GREEN: fact-fold-census — three pairs · pattern cites · fold GREEN · purity · refuse · both plants refuse · the real carriers still pass"

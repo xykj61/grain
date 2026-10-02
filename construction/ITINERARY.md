@@ -104,23 +104,21 @@ whole](archive/date/20261001/20261001-184233_itinerary-copal-thing-not-name-acco
 whole](archive/date/20261001/20261001-195512_itinerary-copal-chapter-witness-roster-account.md) --
 `dep_crawl_bounds_negative`, `radiant_h1_fence`, `itinerary`, each GREEN on metal.
 
-**COPAL.** `dated_roof_divergence` rostered into `construction/standing-equipment.kyri`, GREEN
-on metal both ways -- the shed/fascia_health/dated_classify agreement reading and the prove-red
-roof-divergence refusal.
+**COPAL.** [Design-shapes' four-hall roster account shelved
+whole](archive/date/20261001/20261001-232108_itinerary-copal-design-shapes-four-hall-roster-account.md)
+-- `dated_roof_divergence`, `tend_hygiene_census`, and `design_shapes_census` each rostered and
+GREEN both ways; the open question each carried now lives in the `fact_fold_census` account below.
 
-**COPAL.** `tend_hygiene_census` rostered into `construction/standing-equipment.kyri`, GREEN on
-metal both ways -- the elder witness carried one green leg and no plant; two were added (a shape
-carrier stripped of its zero-new-code invariant, an absent hall carrier), each refusing by name,
-with a welcome leg re-running the unmutated scan to prove the refusal both ways. **YOURS:** whether
-the ~119 unrostered `tools/gen/chapter/` witnesses that remain want individual rostering laps,
-Keaton's word.
-
-**COPAL.** `design_shapes_census` rostered into `construction/standing-equipment.kyri`, GREEN on
-metal both ways -- the elder witness carried one green leg and no plant; two were added (an absent
-wing root, a pen copy of the wing missing two of its four halls), each refusing by name, with a
-welcome leg re-running the unmutated scan to prove the refusal both ways. Claimed as
-`copal-design-shapes-census-roster` and run through `standing_equipment_run.sh` by name,
-`run_verdict=ok`. **YOURS:** same open question, one witness narrower.
+**COPAL.** `fact_fold_census` rostered into `construction/standing-equipment.kyri`, GREEN on
+metal both ways -- the elder witness carried one green leg and no plant; two were added (a pen
+shape naming an absent pattern page, a pen shape with one bound field drifted while the metal
+file stayed real), each refusing by name, with a welcome leg re-running the unmutated scan to
+prove the refusal both ways. This closes design-shapes' four-hall family -- bounds_home,
+tend_hygiene, relay_resin, and now fact_fold are all rostered. Claimed as
+`copal-fact-fold-census-roster` and run through `standing_equipment_run.sh` by name,
+`run_verdict=ok`. **YOURS:** whether the remaining unrostered `tools/gen/chapter/` witnesses
+outside the design-shapes family (ironbeetle, tigerbeetle, surface_season, sunn, nona, oven, and
+the rest) want individual rostering laps too, Keaton's word.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -347,7 +345,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `24544803f3` -- HEAD's parent, read after the final rebase.
+**Git nib:** `7f9561df33` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

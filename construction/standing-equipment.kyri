@@ -8483,3 +8483,22 @@ guard design_shapes_census
 path tools/gen/chapter/design_shapes_census_witness.rish
 tier lap
 seated 20261001.204501
+
+# fact_fold_census -- the design-shapes wing's fourth and last hall, proven both ways. The
+# positive leg calls tools/fixtures/f/fact_fold_census.sh with its own default shape,
+# context/design-shapes/fact_fold.brix, and reads pairs_matched=3, PATTERN_CITES=yes,
+# verdict=ok, then runs mycelium/fold.rye on metal and reads GREEN, purity, refuse whole,
+# supply=872 -- measuring the shape against the metal constants and the Sangha pattern page
+# rather than reciting that all three agree. Two plants prove the refusal is real: a pen copy
+# of the shape with its pattern field repointed to a path that does not exist reads
+# verdict=missing_pattern, the script's own exit-2 door for a page it cannot open; and a pen
+# copy with one bound field changed while the metal file stays real and untouched reads
+# pairs_drift=1 and verdict=bound_drift, naming the drifted pair by field. The welcome beside
+# both plants calls the unmutated scan again and reads verdict=ok, so the refusals are shown
+# from both sides rather than only in the failing direction. The last of design-shapes' four
+# halls (bounds_home, tend_hygiene, relay_resin already rostered); claimed as
+# copal-fact-fold-census-roster before this entry landed. Runs in under 1s on metal.
+guard fact_fold_census
+path tools/gen/chapter/fact_fold_census_witness.rish
+tier lap
+seated 20261001.231748
