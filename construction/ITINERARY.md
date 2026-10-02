@@ -34,11 +34,11 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- SHAPE PEDESTALS LANDED, LANE GATED.** [Account shelved
-whole](archive/date/20261002/20261002-050744_itinerary-pheromone-shape-pedestals-landed-account.md)
--- `mantra_glow_tend_limb5` GREEN, both example counts proven against the rye. **YOURS:** whether
-`orphaned-revoke` earns a `Reason` member when lowering begins, and whether Patchouli or Incense
-opens it first.
+**PHEROMONE -- THE YOURS QUESTION WAS ALREADY ANSWERED.** [Account shelved
+whole](archive/date/20261002/20261002-070112_itinerary-pheromone-yours-question-already-answered-account.md)
+-- `orphaned_revoke` already carries a `Reason` member in `mantra/src/consent_replay.rye`, landed
+by Patchouli before this card's own prior stamp. Language lane reads empty; no fresh rune question
+stands.
 
 **INCENSE.** [Account shelved](archive/date/20260918/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
