@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.041441` | [byte-level falsifier made to outlive the turn](20261002/20261002-041441_byte-level-falsifier-made-to-outlive-the-turn.kyri) | second death named its own cause (bare shell `&` dies with its launching call); relaunched as a harness-tracked background task, polled by a separate blocking waiter |
 | `20261002.041208` | [fresh read confirms the mantra/tally queue is still empty](20261002/20261002-041208_patchouli-fresh-read-finds-lane-still-empty.kyri) | re-grepped REDS and ITINERARY fresh; %807 and %765 still the only lane rows, both blocked; 12 fleet-wide OPEN rows checked, none agent-doable from here |
 | `20261002.024000` | [byte-level falsifier relaunched](20261002/20261002-024000_byte-level-falsifier-relaunched.kyri) | the prior lap's in-flight classifier had died with its shell; relaunched the same script, running again |
 | `20261002.023930` | [safe_list_census rostered](20261002/20261002-023930_fifth-chapter-witness-safe-list-census-roster.kyri) | fifth chapter witness, claimed and GREEN both ways |
