@@ -8778,3 +8778,19 @@ guard sunn10_keys_grain_os
 path tools/gen/chapter/sunn10_keys_grain_os_witness.rish
 tier lap
 seated 20261002.060957
+
+# sunn11_xykj61_onboarding -- SUNN11 living onboarding clone-lock check, unrostered since it was
+# written. Reads SOURCE.md for the public grain-os clone line, the "xy alone" living-push
+# sentence, the REMOTE_ROSTER cite, and two negative assertions refusing dual-push and the
+# debrided clone URL; reads README.md for the SOURCE and first-hour tutorial doors; reads
+# CLAUDE.md, manual/guides/apprentice-welcome.md, context/specs/enclosure-editors.md,
+# tools/gen/chapter/personalize.template.brix, and manual/guides/first-season-personalize.md for
+# the xykj61/grain clone spelling; reads context/REMOTE_ROSTER.md for both the retired debrided
+# row and the living xy row. Proven both ways on metal: a clean run reads GREEN, and removing
+# every "xykj61/grain" occurrence from CLAUDE.md reds the exact assertion naming it, reverted
+# clean after with zero working-tree diff. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-sunn11-xykj61-onboarding-roster before this entry landed.
+guard sunn11_xykj61_onboarding
+path tools/gen/chapter/sunn11_xykj61_onboarding_witness.rish
+tier lap
+seated 20261002.062521
