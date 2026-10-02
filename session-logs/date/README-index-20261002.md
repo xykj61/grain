@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.011642` | [glow_connector_seam rostered both ways](20261002/20261002-011642_glow-connector-seam-roster.kyri) | the Wayland-leak check moved to a scan; a fixture-backed negative witness proves it bites, verdict=ok both ways |
 | `20261002.010657` | [width_check_scan stale citations](20261002/20261002-010657_width-check-scan-stale-line-citations.kyri) | fire rota: fixed stale usize-exemption line citations; %810 verdict disagreement stays Keaton's |
 | `20261002.010235` | [brush_shape rostered; pin-tidy witness booked as a stale-artifact red](20261002/20261002-010235_brush-shape-roster-and-pin-tidy-red.kyri) | copal-inner's fruit landed; remember_pin_history_tidy's three checks are each a retired artifact |
 | `20261002.010054` | [doorway census clean, zero silent](20261002/20261002-010054_doorway-census-clean-zero-silent.kyri) | whole-tree doorway scan finished: living_silent=0, living_ceiling=0, verdict=ok -- the 48-page gap from seating is fully closed |
