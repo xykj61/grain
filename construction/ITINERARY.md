@@ -106,8 +106,14 @@ whole](archive/date/20261001/20261001-195512_itinerary-copal-chapter-witness-ros
 
 **COPAL.** `dated_roof_divergence` rostered into `construction/standing-equipment.kyri`, GREEN
 on metal both ways -- the shed/fascia_health/dated_classify agreement reading and the prove-red
-roof-divergence refusal. **YOURS:** whether the ~120 unrostered `tools/gen/chapter/` witnesses
-that remain want individual rostering laps, Keaton's word.
+roof-divergence refusal.
+
+**COPAL.** `tend_hygiene_census` rostered into `construction/standing-equipment.kyri`, GREEN on
+metal both ways -- the elder witness carried one green leg and no plant; two were added (a shape
+carrier stripped of its zero-new-code invariant, an absent hall carrier), each refusing by name,
+with a welcome leg re-running the unmutated scan to prove the refusal both ways. **YOURS:** whether
+the ~119 unrostered `tools/gen/chapter/` witnesses that remain want individual rostering laps,
+Keaton's word.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 

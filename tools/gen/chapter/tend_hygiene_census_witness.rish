@@ -4,6 +4,12 @@
 #
 # Design-shapes wing - tend_hygiene. Zero new code files; fascia in and out;
 # three tend waymarks; living coords delta 0.
+#
+# One of the ~120 unrostered tools/gen/chapter/ witnesses copal-inner.md names. The elder
+# file carried one green leg and no plant, so a loosened invariant check would have read
+# the same `verdict=ok` the real tree reads today. Two plants prove the refusal is real
+# rather than assumed: a shape carrier whose invariant line is stripped, and a hall
+# carrier missing on disk entirely -- the script's own two exit-2 doors.
 
 say "tend-hygiene-census: Language EN — measure; do not invent code."
 say "tend-hygiene-census: Style Radiant — fascia speaks; the waymark yields."
@@ -19,4 +25,22 @@ assert scan.out contains "tend_waymarks=3" else "tend-hygiene-census: want three
 assert scan.out contains "delta_two=0" else "tend-hygiene-census: tend two delta must be zero"
 assert scan.out contains "delta_three=0" else "tend-hygiene-census: tend three delta must be zero"
 
-say "GREEN: tend-hygiene-census — zero-code · three waymarks · fascia deltas 0"
+# RED path one -- the shape carrier loses its "zero new code" invariant line. A pen copy
+# rather than the tracked file, so the live shape is never touched to prove this.
+let stripped = run ["sh" "-c" "d=$(mktemp -d); sed 's/zero new code//' context/design-shapes/tend_hygiene.brix > $d/shape.brix; sh tools/fixtures/t/tend_hygiene_census.sh $d/shape.brix context/baton-museum/tend_round.brix tools/gen/chapter/recursion_block.brix; s=$?; rm -rf $d; exit $s"]
+assert (stripped.ok == false) else "tend-hygiene-census: a shape missing its zero-new-code invariant must refuse"
+assert stripped.out contains "SHAPE_ZERO_CODE=no" else "tend-hygiene-census: want the stripped shape named by field"
+assert stripped.out contains "verdict=census_incomplete" else "tend-hygiene-census: want the stripped shape refused by name"
+
+# RED path two -- the hall carrier is absent from disk, the script's own missing-path door.
+let missing = run ["sh" "-c" "d=$(mktemp -d); sh tools/fixtures/t/tend_hygiene_census.sh context/design-shapes/tend_hygiene.brix $d/absent-hall.brix tools/gen/chapter/recursion_block.brix; s=$?; rm -rf $d; exit $s"]
+assert (missing.ok == false) else "tend-hygiene-census: an absent hall carrier must refuse"
+assert missing.out contains "verdict=missing_hall" else "tend-hygiene-census: want the absent hall refused by its own name"
+
+# The welcome beside both plants -- the real carriers, unmutated, still read ok. A refusal
+# proven only in the failing direction cannot be told from a scan that refuses everything.
+let welcome = run ["sh" "tools/fixtures/t/tend_hygiene_census.sh"]
+assert welcome.ok else "tend-hygiene-census: the real carriers must still pass after both plants ran"
+assert welcome.out contains "verdict=ok" else "tend-hygiene-census: want the unmutated census welcomed by name"
+
+say "GREEN: tend-hygiene-census — zero-code · three waymarks · fascia deltas 0 · both plants refuse · the real carriers still pass"

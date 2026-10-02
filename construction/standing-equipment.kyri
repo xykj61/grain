@@ -8449,3 +8449,19 @@ guard dated_roof_divergence
 path tools/gen/chapter/dated_roof_divergence_witness.rish
 tier lap
 seated 20261001.201255
+
+# tend_hygiene_census -- the design-shapes tend_hygiene wing proven both ways. The positive leg
+# calls tools/fixtures/t/tend_hygiene_census.sh with its own defaults and reads SHAPE_ZERO_CODE=yes,
+# HALL_ZERO_CODE=yes, fascia_fields=2, tend_waymarks=3, delta_two=0, delta_three=0, and verdict=ok,
+# measuring the carriers on disk rather than reciting them. Two plants prove the refusal is real:
+# a pen copy of the shape carrier with its "zero new code" invariant line stripped reads
+# SHAPE_ZERO_CODE=no and verdict=census_incomplete, and an absent hall-carrier path reads
+# verdict=missing_hall, the script's own named exit-2 door. The welcome beside both plants calls
+# the unmutated scan again and reads verdict=ok, so the refusals are shown from both sides rather
+# than only in the failing direction. One of the ~120 unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-tend-hygiene-census-roster before this entry landed.
+# Runs in under 1s on metal.
+guard tend_hygiene_census
+path tools/gen/chapter/tend_hygiene_census_witness.rish
+tier lap
+seated 20261001.202723
