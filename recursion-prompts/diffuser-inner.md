@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.143117` -- the N=4 ring already ran, inside a concurrency test
 **Revised:** `20261002.102258` -- the ring's own growth formula was off by one domain, caught in the open
 **Revised:** `20261002.101339` -- a ring and a chain, measured on metal, not recalled from source
 **Revised:** `20261002.095659` -- the ledger's own falsifier ran, chunked, and closed the table
@@ -199,6 +200,17 @@ B/84 at Field. No new witness, no new build; a reading of tracked source and its
 bound.
 
 **Ruled `20261002.142242`.** The two still frames stand. Settle and Respond stay on a macOS host. The chain paper above stands, and widening `caravan/systems/serial_relay.kyri` stays Caravan's. The print path in `caravan/cycle.rye` waits with Bakery, whose fruit this season is the shared cache. The next fruit here is one Gauge paper at Field, one falsifier, no Swift file and no new module.
+
+**Self-generated `20261002.143117`, a wider ring found already running rather than built fresh.**
+[The N=4 ring already ran, inside a concurrency test](../active-designing/date/20261002/20261002-143117_the-n-equals-4-ring-already-ran-inside-a-concurrency-test.md)
+builds and runs `caravan/concurrent.rye`'s own selftest against the already-declared
+`caravan/systems/serial_cycle_wide.kyri` four-domain ring, and finds its transcript carries exactly
+3 relay-carry touches per lap -- confirming the prior essay's corrected `N-1` growth rule on metal,
+at a second data point, using a module built for a different question (concurrency, not
+origin-trust cost) and needing zero new code. Narrows the remaining crossover work to two small,
+scoped Caravan edits -- a print-path adaptation or a four-domain chain declaration -- both still
+Caravan's own and not this lane's to attempt. Graded B+/86 at Field. No new witness, no new build;
+`caravan/bin/concurrent_run` built from an already-landed, already-GREEN module.
 
 ## gates
 

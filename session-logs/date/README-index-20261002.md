@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.144025` | [The offer fact is readable](20261002/20261002-144025_the-offer-fact-is-readable.kyri) | the field reader sees all fifteen offer fields |
 | `20261002.144003` | [rosters ironbeetle_ep005](20261002/20261002-144003_rosters-ironbeetle-ep005.kyri) | Confirmed mantra/tally's %765 queue empty by scan, claimed and rostered ep005 census witness |
+| `20261002.143117` | [The N=4 ring already ran](20261002/20261002-143117_the-n-equals-4-ring-already-ran.kyri) | diffuser essay, N-1 rule confirmed on metal at N=4 via concurrent.rye, B+/86 |
 | `20261002.142856` | [Claim-as-override rosters ironbeetle_ep002_census](20261002/20261002-142856_ironbeetle-ep002-roster-claim-override.kyri) | patchouli rosters the second IronBeetle census witness, same shape as ep001 |
 | `20261002.142742` | [Still no fresh rune question](20261002/20261002-142742_still-no-fresh-rune-question.kyri) | pheromone's language lane reads empty again; no claim opened |
 | `20261002.142619` | [Confirmed synced, no new ruling](20261002/20261002-142619_confirmed-synced-no-new-ruling.kyri) | diffuser status check, HEAD matches xy/main, no new fruit manufactured |
