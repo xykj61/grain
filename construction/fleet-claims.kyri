@@ -65,3 +65,9 @@ stamp 20261002.173603
 epoch 1790976963
 paths linengrow/
 what rye_witness_walker ratchet: all 51 remaining unwalked pairs are linengrow/ -- add the comptime declaration-walk block to a batch of linengrow witnesses, lowering the ceiling
+claim copal-tigerbeetle-golden-rule-roster
+seat copal
+stamp 20261002.180652
+epoch 1790978812
+paths construction/standing-equipment.kyri tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish
+what roster the unrostered tigerbeetle_golden_rule_census_witness.rish (73 remain), both legs proven: clone-absent skip and clone-present ok
