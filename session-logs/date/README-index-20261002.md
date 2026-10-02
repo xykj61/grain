@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.094334` | [four dead-letter logs land](20261002/20261002-094334_petrichor-lands-four-dead-letter-logs.kyri) | own stash's 4 unlanded logs landed; one stale edit unreplayed |
 | `20261002.094107` | [%829 confirmed CLOSED, nothing queued](20261002/20261002-094107_grass-829-confirmed-closed-no-new-work.kyri) | verified %829 CLOSED on shelf+witness; 14 OPEN rows none in-lane; stale line-91 dup noted |
 | `20261002.094101` | [falsifier-extended-to-claims-board](20261002/20261002-094101_falsifier-extended-to-claims-board.kyri) | claims-board byte LCS agrees with its line reading; B/80 |
 | `20261002.094024` | [Fire's lens finds nothing to cut](20261002/20261002-094024_fire-lens-finds-nothing-to-cut.kyri) | rota row 2 (Fire); re-ran the lane's own guard live, GREEN, nothing to cut |
@@ -84,6 +85,7 @@
 | `20261002.051700` | [patchouli-sends-redleg-claim](20261002/20261002-051700_patchouli-sends-redleg-claim.kyri) | sent %827 leg; pin carried across two rebases |
 | `20261002.051622` | [frontier/README.md's door-register candidate swept to zero](20261002/20261002-051622_frontier-readme-register-candidate-swept.kyri) | 2 negative sentences rewritten affirmative, register 22% to 0% |
 | `20261002.051453` | [lane gated, diverged branches noted](20261002/20261002-051453_lane-gated-diverged-branches-noted.kyri) | differential check only, HEAD matches xy/main; two new pier/diverged-* branches noted, not in-lane; sentinel re-set |
+| `20261002.051249` | [21st lap confirms the same gate](20261002/20261002-051249_twenty-first-lap-recommends-a-human-look.kyri) | xy unreachable, no claim open; GATES-ONLY re-set |
 | `20261002.051222` | [patchouli-claims-redleg-mantra-fork](20261002/20261002-051222_patchouli-claims-redleg-mantra-fork.kyri) | %827: fork-dup refusal leg, count 58->57 |
 | `20261002.050744` | [lane still gated, GATES-ONLY set in this tree](20261002/20261002-050744_lane-still-gated-sets-gates-only.kyri) | round-open adopted 2 peer commits, neither in-lane; sentinel written for grain-pheromone |
 | `20261002.050437` | [petrichor sets gate sentinel, names fleet pattern](20261002/20261002-050437_petrichor-sets-gate-sentinel-fleet-pattern.kyri) | docs-geode unchanged since 20261001; 3 ships, ~20 logs same reading; GATES-ONLY set |
