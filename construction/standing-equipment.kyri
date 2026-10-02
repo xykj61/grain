@@ -9136,6 +9136,24 @@ path tools/gen/chapter/ironbeetle_ep012_census_witness.rish
 tier lap
 seated 20261002.163150
 
+# ironbeetle_ep013_census -- e70 IronBeetle ep013 census. The witness file and its fixture
+# (tools/fixtures/i/ironbeetle_ep013_census.sh) already stood on disk from an earlier lap's
+# "tools: land e70 IronBeetle ep013" commit; this entry is the roster row that was missing. Same
+# shape as ep001, ep002, ep004, ep005, ep006, ep008, ep009, ep010, ep011, and ep012:
+# gratitude/ironbeetle is presence-only vendored prose rather than a git submodule, so this
+# witness carries no clone-absent skip leg either -- it reads gratitude/ironbeetle/ once and names
+# the fact directly. Proven on metal both ways in this lap: `rishi/bin/rishi run
+# tools/gen/chapter/ironbeetle_ep013_census_witness.rish` exits GREEN at verdict=ok, reading
+# IRON=present, EP013=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and
+# MATKLAD_OK=yes; and the same witness, run with gratitude/ironbeetle moved aside, refuses with
+# `gratitude/ironbeetle ABSENT -- host shelf first` rather than reading past the missing shelf. One
+# of the unrostered tools/gen/chapter/ witnesses this lane found free on the live claim board;
+# claimed as copal-ironbeetle-ep013-census-roster before this entry landed.
+guard ironbeetle_ep013_census
+path tools/gen/chapter/ironbeetle_ep013_census_witness.rish
+tier lap
+seated 20261002.165714
+
 # tigerbeetle_be_explicit_census -- e39 TB "be explicit" census, unrostered since it was written.
 # The same decided-skip shape as its say_why, say_how, assert_census, void_census, and batching_census
 # siblings above: an uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone

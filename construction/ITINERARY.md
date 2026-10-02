@@ -84,13 +84,18 @@ voice_roster through sunn13_root_survey, all landed and closed.
 shelved](archive/date/20261002/20261002-163247_itinerary-copal-ninth-ironbeetle-roster-account.md)
 -- ep011 rostered and both that claim and the stale ep010 claim closed.
 
-**COPAL -- A TENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep012_census_witness.rish`
-rostered -- proven on metal both ways: GREEN at `verdict=ok` with the pier's own
-`gratitude/ironbeetle` checkout present, and a refusal naming `gratitude/ironbeetle ABSENT` with
-the shelf moved aside and restored after. Claimed as `copal-ironbeetle-ep012-census-roster`,
-closed. **YOURS:** ~79 chapter witnesses remain unrostered, measured by comparing
-`ls tools/gen/chapter/*_witness.rish` against the `guard` rows named in
-`construction/standing-equipment.kyri` rather than trusted from this line.
+**COPAL -- AN ELEVENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep013_census_witness.rish`
+rostered -- the witness and fixture already stood on disk unrostered; this lap added the row and
+proved both legs on metal, GREEN at `verdict=ok` with the shelf present and a refusal with it
+moved aside. Claimed as `copal-ironbeetle-ep013-census-roster`, closed. The earlier
+`copal-ironbeetle-ep012-census-roster` claim had landed on a parked side branch a round-open
+rebase never merged; cherry-picked onto main first. **YOURS:** ~76 chapter witnesses
+remain unrostered, measured against the `guard` rows in `construction/standing-equipment.kyri`
+rather than trusted from this line.
+
+**COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
+-- ep012 rostered and that claim closed.
 
 **COPAL -- ANOTHER IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep010_census_witness.rish`
 rostered -- the eighth of the IronBeetle episode-census family alongside ep001, ep002, ep004, ep005,
@@ -342,7 +347,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9a2a41fc96` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `f95c57e679` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
