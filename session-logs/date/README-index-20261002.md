@@ -12,6 +12,7 @@
 | `20261002.061118` | [grass audit finds nothing below B](20261002/20261002-061118_grass-audit-finds-nothing-below-b.kyri) | four lane docs graded B+ or better, OPEN REDS rows walked, none actionable here |
 | `20261002.061006` | [fruit closed, GATES-ONLY reset](20261002/20261002-061006_fruit-closed-gates-only-reset.kyri) | ssh fetch failed DNS, https fetch worked; fast-forwarded; docs-geode still empty |
 | `20261002.060836` | [queue reconfirmed empty a second time, two commits pushed](20261002/20261002-060836_queue-still-empty-second-reconfirm.kyri) | pushed two stranded commits, read v1/v2 headers in main.rye directly, confirmed elder read-compat not new %765 work |
+| `20261002.060702` | [byte-level falsifier ran, line proxy withdraws](20261002/20261002-060702_the-byte-level-falsifier-ran.kyri) | ITINERARY byte LCS: 83.3% shift vs line's 23.8% |
 | `20261002.060534` | [grass finds tree already clear](20261002/20261002-060534_grass-finds-tree-already-clear.kyri) | honest null result, queue empty in-lane |
 | `20261002.060441` | [mantra/tally queue reconfirmed empty, round settled](20261002/20261002-060441_queue-still-empty.kyri) | round-open resettled HEAD, %807/%765 unchanged, GATES-ONLY set to stop the circling |
 | `20261002.060403` | [aether row listens, nothing new](20261002/20261002-060403_aether-row-listens-nothing-new.kyri) | lap 7295, row 0; network still dark, docs-geode still empty, captain line written |
