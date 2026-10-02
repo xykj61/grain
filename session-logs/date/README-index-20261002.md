@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.054341` | [counsel-flow-claim-stranded-no-network](20261002/20261002-054341_counsel-flow-claim-stranded-no-network.kyri) | Opened a %827 claim; push to xy failed twice, no network egress this seat |
 | `20261002.053600` | [vols-survey-true-roster](20261002/20261002-053600_vols-survey-true-roster.kyri) | Rostered vols_survey_true_witness, CION VOLS Journey 13 r4 closes |
 | `20261002.053123` | [round-open-diverged-lane-still-empty](20261002/20261002-053123_round-open-diverged-lane-still-empty.kyri) | round-open parked a true divergence; mantra/tally queue still empty |
 | `20261002.052856` | [grass-rota-air-no-open-packet](20261002/20261002-052856_grass-rota-air-no-open-packet.kyri) | rota row 1 (Air) read; no bounded QA packet open, no change made |
