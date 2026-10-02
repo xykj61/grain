@@ -76,75 +76,17 @@ remain, all outside pheromone's own lane.
 it at all; the resin room's landed wall, 45 written characters, 1,417 almanac characters, the
 claim-path exemption, and the remaining unrostered chapter witnesses -- all Keaton's word.
 
-**COPAL.** [Voice_roster account shelved
-whole](archive/date/20261001/20261001-124523_itinerary-copal-voice-roster-account.md).
-
-**COPAL.** [Scan_convention account shelved
-whole](archive/date/20261001/20261001-143222_itinerary-copal-scan-convention-account.md).
-
-**COPAL.** [Shed_census account shelved
-whole](archive/date/20261001/20261001-144736_itinerary-copal-shed-census-account.md).
-
-**COPAL.** [Reds_ledger account shelved
-whole](archive/date/20261001/20261001-152231_itinerary-copal-reds-ledger-account.md).
-
-**COPAL.** [Fascia_health and oldness_census roster accounts shelved
-whole](archive/date/20261001/20261001-182817_itinerary-copal-fascia-oldness-roster-account.md).
-
-**COPAL.** [Thing_not_name account shelved
-whole](archive/date/20261001/20261001-184233_itinerary-copal-thing-not-name-account.md).
-
-**COPAL.** [Three chapter-witness rosters shelved
-whole](archive/date/20261001/20261001-195512_itinerary-copal-chapter-witness-roster-account.md) --
-`dep_crawl_bounds_negative`, `radiant_h1_fence`, `itinerary`, each GREEN on metal.
-
-**COPAL.** [Design-shapes' four-hall roster account shelved
-whole](archive/date/20261001/20261001-232108_itinerary-copal-design-shapes-four-hall-roster-account.md)
--- `dated_roof_divergence`, `tend_hygiene_census`, and `design_shapes_census` each rostered and
-GREEN both ways; the open question each carried now lives in the `fact_fold_census` account below.
+**COPAL -- TWENTY ROSTER-ACCOUNT POINTERS, FOLDED WHOLE.** [Fold
+account](archive/date/20261002/20261002-092614_itinerary-copal-fifteen-roster-accounts-fold.md) --
+voice_roster through sunn13_root_survey, all landed and closed.
 
 **COPAL -- A CANDIDATE ROSTER FOUND A RED INSTEAD.** [Account](archive/date/20261001/20261001-234702_itinerary-copal-instrument-suite-fascia-floor-account.md)
 -- `instrument_suite_witness.rish` reds on a fascia-health floor the tree has already dropped
-below; booked at `construction/REDS.md` (`20261001.234320`), **OPEN**. Two small CLOSED rows
-folded by hand to clear the ledger's own bound.
+below; booked at `construction/REDS.md` (`20261001.234320`), **OPEN**.
 
-**COPAL.** [Fact_fold_census account shelved
-whole](archive/date/20261002/20261002-011642_itinerary-copal-fact-fold-census-account.md).
-
-**COPAL.** [Glow_connector_seam account shelved
-whole](archive/date/20261002/20261002-013013_itinerary-copal-glow-connector-seam-account.md).
-
-**COPAL.** [Houseplant_glossary account shelved
-whole](archive/date/20261002/20261002-014757_itinerary-copal-houseplant-glossary-account.md).
-
-**COPAL.** [Cion_module_labeling account shelved
-whole](archive/date/20261002/20261002-023653_itinerary-copal-cion-module-labeling-account.md).
-
-**COPAL.** [Safe_list_census account shelved
-whole](archive/date/20261002/20261002-041730_itinerary-copal-safe-list-census-account.md).
-
-**COPAL.** [Wayland_study_ledger roster account shelved
-whole](archive/date/20261002/20261002-045430_itinerary-copal-wayland-study-ledger-account.md).
-
-**COPAL.** [Src_first_resident account shelved
-whole](archive/date/20261002/20261002-053809_itinerary-copal-src-first-resident-account.md).
-
-**COPAL.** [Personalize_template account shelved
-whole](archive/date/20261002/20261002-055258_itinerary-copal-personalize-template-account.md).
-
-**COPAL.** [Identity_remake_k5 account shelved
-whole](archive/date/20261002/20261002-060957_itinerary-copal-identity-remake-k5-account.md).
-
-**COPAL.** [Sunn10_keys_grain_os account shelved
-whole](archive/date/20261002/20261002-062521_itinerary-copal-sunn10-keys-grain-os-account.md).
-
-**COPAL.** [Sunn11_xykj61_onboarding account shelved
-whole](archive/date/20261002/20261002-063838_itinerary-copal-sunn11-xykj61-onboarding-account.md).
-
-**COPAL -- A FOURTEENTH UNROSTERED WITNESS.** [Account
-shelved](archive/date/20261002/20261002-091516_itinerary-copal-sunn13-account.md). `sunn13_root_survey`
-rostered, GREEN twice -- rewriting LICENSE-MIT's copyright name reds the exact assertion naming it,
-reverted clean. Claimed, closed. **YOURS:** ~100 remain.
+**COPAL -- A FIFTEENTH UNROSTERED WITNESS.** `pond_brushstroke_frame_witness.rish` rostered --
+both honest skip legs proven on metal (display absent, then binary absent with a fake display
+set). Claimed, closed. **YOURS:** ~99 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -366,7 +308,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `583da42a9d` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `3ca4279299` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
