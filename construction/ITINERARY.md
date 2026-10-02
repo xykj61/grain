@@ -138,29 +138,25 @@ clean after). Its three content checks read a counsel file that never changes on
 carried none of the chapter-scope drift the RED candidates did. Claimed, closed. **YOURS:** same
 open question -- ~105 remain.
 
-**BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
--- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
-the held-locks account, every byte kept. **YOURS:** the proposed 10,800-second lap window; prior
-guard costs estimate 9,837 seconds for both endurance runs and one cadence guard, against the
-5,400-second timeout a running process confirmed. Still owed in-lane: `capture_evidence` reports
-success after a planted `cat` failure leaves zero bytes, and its control still shims `tail`.
-
-**BAKERY -- A PARKED INSTRUMENT FAMILY LANDED, AND IT SAYS THE SHARED BASIS IS NOT THERE.**
-`receipt_chain` rostered in `construction/standing-equipment.kyri` at tier `lap`, GREEN on metal.
-`tools/fixtures/r/receipt_chain_scan.sh` reads all eight copies of
-`construction/standing-equipment-receipt.kyri` at once and answers the lane crux's own premise:
-`seats_with_receipt=8`, newest stamp **388 hours** old, narrowest candidate basis diffing **11,164
-of 20,855** tracked files (53 percent), sharing it sparing this ship **24** files of 11,188, and
-**35** digest matches across **3,062** recorded roster opens -- one percent. `verdict=stalled`, so
-the crux belongs on what blocks the chain rather than on the sharing step. `portable_undecidable=7`
-and `portable_proven=0`: a receipt records no clean-tree field, so a peer cannot tell a
-commit-property green from a working-tree-property one. Reported, gated on nothing -- a receipt is
-withheld by a red, a custody gate, or `tree_moved`, and the third is ordinary here. `tools/fixtures/r/receipt_chain_control.sh` proves it:
-**60 legs** on a real pen pier, both bounds shown from both sides, four mutations bitten. All three
-files stood in `stash@{0}` alone, absent from every ref, and the staged wall caught one real fault
-in them: a GNU-only `date -d` that reads EMPTY on the macOS pier, now the portable `stamp_epoch`
-sourced from `tools/fixtures/s/shell_portable.sh`, with its absence refused from both sides. **YOURS:** whether the receipt earns a
-`clean_tree` field, which is the one change that would make a basis shareable at all.
+**BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
+`capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
+redirect creates the destination before the producer runs -- so every way the producer can fail left
+a file standing and the helper answering yes. Measured on metal before the repair: with `cat` absent
+from PATH, `rc=0 bytes=0`; with `head` refusing, `rc=0` and the three header lines this helper exists
+to keep were gone. Three readings hold it now -- the producer's own status, the destination's byte
+count, and its line count -- and a failed capture removes the stub, since absence says *the answer
+was lost* where a zero-byte file says *the guard answered nothing*. Return 3 names a copy that did
+not land, apart from 1 and 2. The caller in `standing_equipment_run.sh` is untouched: it already
+removed the file, said the answer was lost rather than read, and counted the guard `unrun`.
+`shell_portable_control.sh` stands at **81 legs**, 0 failing, five plants lifted, and the two
+bounded-branch readings were each made load-bearing by measurement -- with the header plant alone,
+dropping either left every leg green, so one leg plants a producer that emits nothing at status zero
+and one a producer that answers whole and then refuses. `shell_dialect_witness` GREEN on metal, its
+pinned count 71 to 81; `shell_dialect_touch` and `instrument_absence` GREEN beside it.
+**Two elder accounts [shelved whole](archive/date/20261002/20261002-055950_itinerary-bakery-two-accounts-fold.md).**
+**YOURS:** the proposed 10,800-second lap window, against 9,837 seconds of guard cost and a
+5,400-second timeout a running process confirmed; and whether the receipt earns a `clean_tree`
+field, which is the one change that would make a shared basis possible at all.
 
 **PETRICHOR -- FOUR ELDER ACCOUNTS, SHELVED WHOLE.** Baton register
 ([account](archive/date/20260925/20260925-184242_itinerary-petrichor-baton-register-account.md)),
@@ -362,7 +358,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `2c10485ab1` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `e25cd9130c` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 
