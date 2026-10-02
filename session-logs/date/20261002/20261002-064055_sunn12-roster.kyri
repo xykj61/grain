@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261002.064055
+editor Claude Code
+provider model Anthropic
+product Claude Code
+role repository agent
+modality text
+model claude-sonnet-5
+model_status configured resolved_model (tools/fixtures/d/declared_model.sh); runtime identity unverified
+voice Kyri
+host anonymized Linux x86_64, America/New_York
+title copal rosters sunn12_riyo_writing_voice, the twelfth unrostered chapter witness
+prompt the inner fruit: take one unrostered witness under tools/gen/chapter/, claim it, roster it, prove it both ways
+think the inner fruit continues last lap's sunn10/sunn11 arc; checked which sunn witnesses lack a direct guard entry in standing-equipment.kyri despite being invoked transitively through sunn14's choir
+think sunn12_riyo_writing_voice_witness.rish reads eighteen living sites for the Kyri writing-voice molt and was GREEN on first run, so the fruit was proving it rather than fixing it
+think opened a fleet claim naming both touched paths before editing the shared roster file, per the ABSENCE clause on the baton, since standing-equipment.kyri and ITINERARY.md are shared surfaces
+think proved the negative leg by mutating RADIANT_STYLE.md's fifth OS variant to fourth, confirmed the exact assertion reds, then reverted to a byte-identical file
+think the card stood at 40890 of its 40960 ceiling before this lap's account; writing the new account pushed it to 41049, over bound, so shelved the sunn11 account whole to construction/archive/ under the-writer-sheds and trimmed the new account's own prose to land at 40870
+obs a guard reached transitively through a choir is not the same as a guard carrying its own roster row; copal-inner.md's ask is about the latter, and ~102 such witnesses remain under tools/gen/chapter/
+file tools/gen/chapter/sunn12_riyo_writing_voice_witness.rish why proven GREEN, unchanged
+file construction/standing-equipment.kyri why added the sunn12_riyo_writing_voice guard entry, same shape as sunn10 and sunn11
+file construction/ITINERARY.md why shelved the sunn11 account to archive, wrote the sunn12 account, kept the card under its byte ceiling
+file construction/archive/date/20261002/20261002-063838_itinerary-copal-sunn11-xykj61-onboarding-account.md why the shelved sunn11 account fossil
+rota none -- pure repair, no rota this lap
+recommend kg -- the next unrostered chapter witness (sunn13_root_survey_witness.rish is the natural next pick) waits for the next lap; claim-open-roster-prove-close is now a repeatable shape

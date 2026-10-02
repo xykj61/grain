@@ -138,11 +138,12 @@ whole](archive/date/20261002/20261002-060957_itinerary-copal-identity-remake-k5-
 **COPAL.** [Sunn10_keys_grain_os account shelved
 whole](archive/date/20261002/20261002-062521_itinerary-copal-sunn10-keys-grain-os-account.md).
 
-**COPAL -- AN ELEVENTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `sunn11_xykj61_onboarding`
-rostered, GREEN twice (`rishi/bin/rishi run`; removing every `xykj61/grain` occurrence from
-`CLAUDE.md` reds the exact assertion naming it, reverted clean after with zero diff). Seven
-onboarding doors checked for the living `xy` clone-lock and the retired `debrided` clone, none
-carrying a chapter-scope pin. Claimed, closed. **YOURS:** same open question -- ~103 remain.
+**COPAL.** [Sunn11_xykj61_onboarding account shelved
+whole](archive/date/20261002/20261002-063838_itinerary-copal-sunn11-xykj61-onboarding-account.md).
+
+**COPAL -- A TWELFTH UNROSTERED WITNESS.** `sunn12_riyo_writing_voice` rostered, GREEN twice
+(mutating RADIANT_STYLE.md's "fifth OS variant" to "fourth" reds the assertion naming it, reverted
+clean). Eighteen sites checked for the Kyri voice molt. Claimed, closed. **YOURS:** ~102 remain.
 
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
@@ -364,7 +365,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `6b7d53fcf4` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `e35b9524ef` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 
