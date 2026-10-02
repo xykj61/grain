@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.102112` | [tigerbeetle-batching-census-roster](20261002/20261002-102112_tigerbeetle-batching-census-roster.kyri) | rosters tigerbeetle_batching_census_witness.rish, both legs proven on metal |
 | `20261002.101724` | [Petrichor's fresh lap confirms the gate still holds, re-sets the sentinel](20261002/20261002-101724_petrichor-resets-gate-fresh-lap.kyri) | fresh lap after watch's gate-clear; fetch/claims/REDS re-checked clean, sentinel re-set |
+| `20261002.101612` | [The two named mycelium candidates split clean](20261002/20261002-101612_mycelium-pledge-lapse-split.kyri) | fold_pledge/fold_lapse split at natural seams, fourteen witnesses GREEN, GRASS's open YOURS closed; rota row 4 (earth) |
 | `20261002.101552` | [A ring buys verified state, a chain buys a claim](20261002/20261002-101552_ring-verified-chain-claim.kyri) | built and ran caravan/cycle.rye and caravan/relay.rye on metal, read a verified-read-vs-unverified-claim finding, B+/87 |
 | `20261002.101438` | [The dead consent stash cleared, lane queue still empty](20261002/20261002-101438_dead-consent-stash-cleared.kyri) | dropped a superseded consent.rye draft from stash@{4}, confirmed against the landed consent_replay.rye; %807 and %765 still take no door |
 | `20261002.101414` | [tigerbeetle-void-census-roster](20261002/20261002-101414_tigerbeetle-void-census-roster.kyri) | rosters tigerbeetle_void_census_witness.rish, both legs proven on metal |

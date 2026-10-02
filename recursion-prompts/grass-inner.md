@@ -39,6 +39,15 @@ GRASS account ("shim-reason red on metal, three causes, all closed") carries the
 ceiling of `903`, and `tools/s/shim_reason_witness.rish` answers GREEN on metal, re-read
 `20261002.093600`. Nothing further waits on this file.
 
+**The two named mycelium candidates split clean, and the YOURS line is closed `20261002`** --
+[account](../active-designing/date/20261002/20261002-101612_grass-pledge-lapse-split-account.md):
+`fold_pledge` and `fold_lapse` were independent-case dispatch (fact kind, then tax-body tag)
+rather than caravan's declined sequential-narrative shape, so each split at its natural seam into
+`apply_pledge_open`/`apply_pledge_resolve`, every line and invariant kept verbatim. Fourteen
+witnesses GREEN after the move. `functions_over_70`'s honest remaining population narrows 439 to
+437, concentrated in the three large files already named (`glow/glow_run.rye: main`,
+`rye/src/main.rye: bridge_to_zig`, `rishi/src/main.rye: eval_expr`), unread by this packet.
+
 **The next-crux lean:** no new audit packet is queued. This lane's honest next move stays the
 ordinary one named in the baton and in `.claude/rules/quality-assurance.md` -- touch a prose,
 comment, or docs surface already open for other reasons, grade it with

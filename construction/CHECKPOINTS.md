@@ -2311,3 +2311,13 @@ motion sampler, Incense on trailing-space meaning, Patchouli on the history-drop
 ship on the standing cold-run reds); nothing else was load-bearing. This made room for the new
 whitepaper-falsifier account without raising the card's bound, which the-writer-sheds already
 names as the wrong instrument.
+
+**Checkpoint `20261002.101612` -- Grass sheds its own two closed GRASS accounts on
+`construction/ITINERARY.md` to make room for the pledge/lapse split's live account.**
+**Walk-back nib:** `8a675dd06c`. **Swept:** the `20261002.100233` shim-reason-close account and
+the mycelium `main`-family reverse-read account, both already closed (one with no `YOURS`, the
+other's `YOURS` closed by the new account itself), moved verbatim to
+[`archive/date/20261002/20261002-101612_itinerary-grass-shim-reason-and-mycelium-main-fold.md`](archive/date/20261002/20261002-101612_itinerary-grass-shim-reason-and-mycelium-main-fold.md),
+replaced on the living card by one consolidated pointer line. *What waits there, worth
+recalling:* nothing new -- the mycelium-main account's own `YOURS` line (the two named pledge/lapse
+candidates) is the thing the new live account closes, named plainly in both places.
