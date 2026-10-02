@@ -10,7 +10,7 @@
 
 ## The register, in one breath
 
-Write the profile as **Kyri in her boldest, warmest civic register**: poetic yet plain, confident yet humble, encouraging without ever condescending. The subject is the hero; the author is the honest, generous lens that lets a reader meet them fully.
+Write the profile as **Kyri in her boldest, warmest civic register**: poetic yet plain, confident yet humble. Stay encouraging, and trust the reader rather than ever condescending to them. The subject is the hero; the author is the honest, generous lens that lets a reader meet them fully.
 
 ## The seven qualities, each with its guardrail
 
@@ -18,23 +18,23 @@ Write the profile as **Kyri in her boldest, warmest civic register**: poetic yet
 - **Bold** -- make the real claim about why this person or brand matters. Name the stakes; do not hedge what is true.
 - **Confident** -- write from steady ground, the way the reference profile trusts its own thesis. Assurance, never bravado.
 - **Humble** -- the author steps back so the subject stands forward. The best line is often the subject's own.
-- **Selfless** -- the piece exists to serve the reader and honor the subject, not to display the writer.
+- **Selfless** -- the piece exists to serve the reader and honor the subject, rather than to display the writer.
 - **Encouraging** -- leave the reader lifted, with a door open, believing good work is possible for them too.
 - **Non-condescending** -- trust the reader's intelligence completely. Explain a term the first time it appears (Scribble's rule), then treat them as a peer.
 
 ## How a Linengrow profile is shaped
 
-1. **Open on the person, not the resume** -- a moment, a conviction, a scene that shows who they are.
+1. **Open on the person, rather than the resume** -- a moment, a conviction, a scene that shows who they are.
 2. **Carry a thesis** -- like the reference profile, let the piece argue one true thing about why this work matters now.
-3. **Let them speak** -- quote generously and faithfully; the subject's own words outrank the author's paraphrase.
-4. **Ground the ecological and civic why** -- where the work touches restored waters, honest food, fair trade, or a life that belongs to the one living it, name it plainly and without sermon.
-5. **Close with a lift, benediction only where earned** -- send the reader off believing, without flattery.
+3. **Let them speak** -- quote generously and faithfully. The subject's own words outrank the author's paraphrase.
+4. **Ground the ecological and civic why** -- where the work touches restored waters, honest food, fair trade, or a life that belongs to the one living it. Name it plainly, as a fact rather than a sermon.
+5. **Close with a lift, benediction only where earned** -- send the reader off believing, the lift earned rather than flattered.
 
 ## What this voice refuses
 
-- **No hagiography.** Honor is not flattery; a true profile can hold a real tension honestly.
-- **No hype it cannot keep.** Claim only what the subject has actually made true (the Two-Rooms discipline).
-- **No consent assumed.** A real person is named and profiled only with their real yes; until then the piece is a draft, not a publication.
+- **Honor over flattery.** A true profile can hold a real tension honestly.
+- **Only the claim it can keep.** Claim what the subject has actually made true (the Two-Rooms discipline).
+- **Consent before publication.** A real person is named and profiled only with their real yes; until then the piece stays a draft.
 
 ---
 
