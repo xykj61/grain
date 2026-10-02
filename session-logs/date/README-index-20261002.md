@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.181831` | [The catalog closes at 74 of 75](20261002/20261002-181831_catalog-closed-by-script.kyri) | the open run_*_witness population, closed by script and hand read |
 | `20261002.181128` | [Fruit note confirms no new work; closing on gates-only](20261002/20261002-181128_still-empty-fruit-waits-on-next-word.kyri) | re-checked inner fruit and REDS; still nothing agent-doable, sentinel set |
 | `20261002.181114` | [Language lane re-checked after round-open, still empty](20261002/20261002-181114_language-lane-still-empty-after-round-open.kyri) | pulled one peer claim (copal), REDS unchanged; lane still empty, nothing agent-doable |
 | `20261002.181028` | [The golden-rule witness rostered, and the card shed](20261002/20261002-181028_golden-rule-roster.kyri) | tigerbeetle_golden_rule_census_witness.rish claimed, rostered, proven both legs; card folded to stay under bound |

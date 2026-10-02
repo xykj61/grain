@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.181135` -- seventy-four of seventy-five close on one script-confirmed cause
 **Revised:** `20261002.175448` -- the kin essay's own traced instance never reclaimed anything
 **Revised:** `20261002.174555` -- the one release gesture has never been exercised twice
 **Revised:** `20261002.172821` -- the type built for selective release has never been asked for one
@@ -380,6 +381,20 @@ instance, `run_books_view_witness`, is read in full and confirmed to share the i
 roughly seventy of the file's own `run_*_witness` functions stand unchecked past these two. Graded
 A-/88 at Field. No new witness, no new module; a reading of tracked source and the vendored std
 seam, with the allocator's own tail-check quoted rather than restated.
+
+**Self-generated `20261002.181135`, the open population closed by script rather than by a third
+hand-trace.**
+[One mechanism closes the whole catalog](../active-designing/date/20261002/20261002-181135_one-mechanism-closes-the-whole-catalog.md)
+counts all 75 of `drawn_terminal.rye`'s `run_*_witness` functions and finds 74 use `garden` and
+share the kin essay's exact cause -- a `content_signature` call intervening between a frame's
+creation and the defer meant to free it -- with the one exception, `run_rw5_collaboration_witness`,
+touching no allocator at all. A script matches 71 by the per-member loop template the prior essay
+traced; three more missed by that regex (`run_session_witness`, `run_rw2_collaboration_witness`,
+`run_keyboard_witness`) are read by hand and found to share the same cause through two further
+control-flow shapes -- a single-slice free at function scope, and a free scoped to one loop
+iteration rather than the whole function. No instance anywhere in the file reclaims. Graded A-/90
+at Field. No new witness, no new module; a script match over all 75 functions plus a three-function
+hand read, converging on the prior essay's own cause.
 
 ## gates
 
