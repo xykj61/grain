@@ -4,8 +4,9 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; the remaining public types and acceptance cases stay proposed until their witnesses pass
+**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; case 8's build-time half stays proposed until that build lands
 **Milestone:** The receipt you can read
+**Revised:** `20261002.105438` -- the card is drawn. `skate/Sources/SkateCore/ReceiptCard.swift` holds `columns = 72` and `rows = 18`. The ceiling scan still reads `row_unenforced=2`, because those two rows are the frame and the scan reads admission sites only. On metal this hour: ceiling `verdict=agree`, braid `verdict=unbraided` over linengrow 174 files and dimeroll 5, still-order `verdict=source_order_agrees` with `swift_runtime=unverified_on_this_host`. Every elder row, number, and acceptance case stays.
 **Revised:** `20261001.112238` -- case 4 carries its own witness, closing the gap the
 `20260918.111200` revision named. `tools/r/receipt_still_order_witness.rish`
 (landed `20260925` in commit `18f1c3321`, read GREEN again on this host today) compares the
@@ -182,8 +183,11 @@ row now names its five members by hand -- `receipt_id`, `holder_id`, `recipient_
 counts a population row structurally, by whether every field leaning on it names its own row, and
 does not parse the parenthetical this table now writes -- so a future population row would meet the
 same reported (never gated) reading even when its members are written in plain English right beside
-it. `row_unenforced` still reads **2** -- `receipt-card width` and `receipt-card height`, described
-here and drawn by nothing yet.
+it. `row_unenforced` still reads **2**. Those rows are `receipt-card width` and `receipt-card height`.
+Skate draws the frame: `ReceiptCard.columns` is 72 and `ReceiptCard.rows` is 18. The scan
+keeps the count because it reads admission sites in `mantra/src/receipt_offer.rye`. A
+frame bound sits outside what admission refuses. Read on metal `20261002.105438`:
+`row_unenforced=2`, `verdict=agree`.
 
 **Proven from both sides** on a planted field in a throwaway pen: 39 behaviors, every refusal
 planted and then lifted, and three mutations asserted to bite.

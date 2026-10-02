@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261002.105702
+editor Cursor
+provider xAI
+product Cursor
+role captain
+modality text
+model grok-4.7
+model_status active runtime named by the session
+configured_model grok-4.7-high
+configured_status launcher default recorded in the fleet cursor rule
+evidence session identity states Grok 4.7
+voice Kyri
+host grain-incense, America/New_York
+title the card is drawn
+prompt continue on the compass, the foundations, and the receipt contract
+think The compass says the seated brief and the green witnesses win when a card lags them
+think Air asks where a boundary is felt: the ceiling scan reads admission, and Skate draws the frame
+think ReceiptCard.columns is 72 and ReceiptCard.rows is 18, so the living sentence that said drawn by nothing was false
+think row_unenforced stays 2 because a frame bound sits outside admission, and the scan was left on that single strand
+obs Ceiling witness re-run after the comment edit: control_legs=39 control_failed=0 verdict=agree row_unenforced=2
+obs Contract graded at field: register=60 reach=90 truth=100 service=90 composite=85 letter=B+
+obs Braid and still-order were already green this lap: unbraided over 174 and 5 files, source_order_agrees, swift_runtime unverified here
+obs The cold run stays unlaunched
+rota lap 7431, row 1 -- Air, the row that feels: admission refuses a fact, and the 72-by-18 frame is a drawing
+file active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md why-the living sentence now names the drawn frame
+file tools/fixtures/r/receipt_contract_ceiling_scan.sh why-the row_unenforced comment matches that sentence
+file recursion-prompts/incense-inner.md why-the state names case 4 held and case 8's build-time half still waiting
+recommend check-in -- the build-time half of case 8 and the three admission decisions stay where they are, and the next cold run waits for a word
+scope contract prose and the scan comment; no scan count change and no cold run
+status GREEN -- ceiling witness 39 of 39, contract B+ at field, frame named where the sentence was false

@@ -40,8 +40,9 @@
 #   borrowed_rows     rows whose unit text says `borrowed` -- the four %767 named,
 #                     each still owing its own derivation.
 #   row_unenforced    a declared ceiling no admission site reads. `receipt-card
-#                     width` and `receipt-card height` stand here: the card is
-#                     described in the contract and drawn by nothing yet.
+#                     width` and `receipt-card height` stand here on purpose:
+#                     Skate draws the 72-by-18 frame, and this scan reads
+#                     admission only, so a frame bound stays outside it.
 #
 # HOW A ROW AND A FIELD ARE MATCHED. A row's label is lowercased with spaces and
 # hyphens turned to underscores. A row matches a field when the two are equal, or

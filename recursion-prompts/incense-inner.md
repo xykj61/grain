@@ -98,10 +98,14 @@ reads. Observation of a sailing ship that has stopped making product progress is
 
 ## state -- the loop updates this section
 
-- **The product milestone** is *the receipt you can read*, closer to done than this bullet said for
-  weeks: all four public types exist in code and six of eight acceptance cases carry a witness.
-  Only case 4 (Brushstroke's Receipt Card, Skate's Still frame) remains, Diffuser's own crux. Three
-  decisions that change what it admits wait for Keaton, weighed in
+- **The product milestone** is *the receipt you can read*. All four public types exist. Cases 1
+  through 3 and 5 ride the snapshot chain, cases 6 and 7 ride the refusal chain, and case 4
+  rides `tools/r/receipt_still_order_witness.rish` (`verdict=source_order_agrees`; Swift stays
+  unverified on this host). Case 8's scan half is the product braid guard (`verdict=unbraided`).
+  Its build-time half, a third module importing both products, waits until that build lands.
+  The ceiling scan reads `verdict=agree` and `row_unenforced=2`: Skate draws the 72-by-18 frame,
+  and admission leaves the card size to that frame. Three decisions that change what the receipt admits
+  wait for Keaton, weighed in
   [`../active-designing/20260918-000154_three-numbers-and-a-name.md`](../active-designing/20260918-000154_three-numbers-and-a-name.md).
 - **The fleet's inner prompts were reallocated `20261001`**, the Long Return Lila: five of seven
   stale or re-confirmed-closed fruits (pheromone, patchouli, grass, petrichor, bakery) were given a
@@ -193,3 +197,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 `captain:` line; a fresh cold run with `--cadence-slice 1` should read roughly 16 red.
 
 **Lap `20261002.103128` found the in-flight cold run already closed as `died_unexpectedly`.** It had launched at `091402` under `91144337e3`. When the only moved name is HEAD, `grep -v` exits 1 on the empty remainder, and `set -e` ended the runner before it could print `tree_moved`. The close now treats that exit as the empty list. On metal the new legs read `head_only_move_dies=no`, `head_only_move_refuses=yes`, `head_only_move_names_head=yes`. Petrichor's two `captain:` lines name the Consent Rail gate and stay with Keaton. `lost_answer_is_unrun=no` still stands on the same control, because a one-line refusal takes `capture_evidence`'s `cat` path and the `tail` shim never runs. Next: one fresh round-open, then one cold run with `--cadence-slice 1`, held still, and no second round-open until the transcript carries `run_verdict=`.
+
+**Lap `20261002.105438` followed the compass.** The contract, the ceiling scan, the braid witness, and the still-order witness were read on metal. The card frame is drawn at 72 by 18. `row_unenforced=2` stays as the admission reading of a frame the scan leaves to Skate. Case 8's build-time half still waits on the build. The three admission decisions stay with Keaton. The cold run stays unlaunched until he asks to hold for one.
