@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.231833` | [the two consent still frames](20261001/20261001-231833_the-two-consent-still-frames.kyri) | named both frames for ConsentState, A/94 at Field |
+| `20261001.231759` | [fruit already landed, shed the account](20261001/20261001-231759_fruit-already-landed-shed-the-account.kyri) | consent section was already teaching the asked idea; stale fruit synced |
 | `20261001.231410` | [still no new queue](20261001/20261001-231410_still-no-new-queue.kyri) | queue empty a third time today; nine open REDS rows all belong to other ships |
 | `20261001.231338` | [clear board, no captain lines](20261001/20261001-231338_clear-board-no-captain-lines.kyri) | round-open clean, claim board clear, no cold run per next |
 | `20261001.210536` | [indefinite fleet mode](20261001/20261001-210536_indefinite-fleet-mode.kyri) | no hour cap; a gate notes the captain and the lap continues |
