@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20261002.001626
+editor Claude Code
+provider Anthropic
+product Claude Code
+role repository agent, petrichor lane
+modality text
+model claude-sonnet-5
+model_status configured fleet default per .claude/settings.json, runtime identity unverified
+voice Kyri
+host anonymized Linux cloud bench, America/New_York
+title shelf close carried a missing row and a row-bound overflow -- both repaired
+prompt baton-prepended seat prompt with no further user instruction this turn
+think read recursion-prompts/petrichor-inner.md and the newest 20261001 shelf rows: fruit closed, YOURS none twice over, no fourth tending sweep wanted
+think ran git fetch xy: unreachable at first (ssh could not resolve github.com), reachable moments later
+think ran sh tools/fixtures/l/log_has_a_row_scan.sh cold: verdict=shelf_row_missing -- session-logs/date/20261001/20261001-183529_dedup-ratio-parked-contested.kyri existed on its shelf with no table row pointing at it
+think checked construction/ITINERARY.md, construction/fleet-claims.kyri, and construction/REDS.md's open rows: both petrichor fruits still read YOURS -- none, four live claims name no docs-geode paths, and every open REDS row is shaped for mantra, amphora, lotus, or fleet law outside this lane
+think closed session-logs/date/README-index-20261001.md at 228 rows (after adding the missing row in stamp order between 183519 and 183650), opened session-logs/date/README-index-20261002.md, and mirrored both closes/opens into session-logs/CHAPTERS.md and session-logs/README.md; committed locally as 33af269075
+think ran sh tools/f/fleet_round_open.sh to push: it read true divergence against xy/main (which had moved to cfb237087e under three fresh grass/diffuser commits), parked the local line whole on refs/heads/pier/diverged-20261002-001158 (pushed, not lost), and reset this tree to the anointed order
+think re-ran log_has_a_row_scan.sh on the adopted tree: verdict=shelf_row_missing again -- the peer commits had grown the 20261001 shelf to 232 rows without ever adding the 183529 row, and CHAPTERS.md still read `20261001 open` against README.md's `232`, a one_sided/disagree pair session_roster_agree_scan.sh caught in the same breath
+think re-applied the missing-row fix by hand onto the adopted tree (shelf now 233 rows), synced CHAPTERS.md and README.md to 233 and to the new 20261002 open row; both scans then read verdict=ok
+think ran tools/in/index_row_bound_witness.rish: verdict=rows_over_bound -- all three rows peers had written to the fresh 20261002 shelf exceeded the 192-byte ceiling (247, 216, 202 bytes), by writing descriptive link anchors rather than short titles
+think trimmed all three anchor texts to short titles (the link target paths are unchanged, so no promise the targets made is broken) and shortened each clause; the witness now reads clean
+obs a shelf close is not a safe assumption to skip -- the peer fleet had already grown the day's own row count twice since the last reading, and both repairs (a missing row, an over-bound row) were real defects a cold scan alone would have surfaced on the next lap anyway
+obs the parked pier branch (pier/diverged-20261002-001158) keeps this lap's first attempt recoverable; nothing from it needs cherry-picking since the repair landed fresh on the adopted tree
+file session-logs/date/README-index-20261001.md why-edited to add the missing 183529 row and recount to 233
+file session-logs/date/README-index-20261002.md why-edited to trim three rows under the 192-byte ceiling
+file session-logs/CHAPTERS.md why-edited to close 20261001 at 233 and open 20261002
+file session-logs/README.md why-edited to match the same close and open
+captain: the consent contract's next fruit and milestone two still wait on Keaton's word; no gated act was attempted this lap
+rota none -- pure status check and shelf-bookkeeping repair, no rota read this lap
+status GREEN -- log_has_a_row_scan.sh, session_roster_agree_scan.sh, and index_row_bound_witness.rish all read clean after the repair; no code changed, no petrichor-lane witness owed
+scope shelf-close bookkeeping, a missing-row repair survived across a true-divergence round-open, and a row-bound overflow repair on the fresh day shelf
+recommend check in (either) -- milestone two's consent contract still waits on Keaton's word; no further petrichor tending is warranted until new work lands, the gate opens, or the next shelf close finds something new
