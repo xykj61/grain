@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.154222` | [Git nib field repointed](20261002/20261002-154222_git-nib-repoint-follow-up.kyri) | rebase conflict left a stale nib; follow-up commit names the pushed HEAD |
 | `20261002.154049` | [String over the retired word](20261002/20261002-154049_string-over-the-retired-word.kyri) | string seats as the naming word, same shelf as red over bug |
 | `20261002.153434` | [The front door draws AMIR](20261002/20261002-153434_the-front-door-draws-amir.kyri) | front-door waymark molts from AHOY to AMIR |
 | `20261002.153253` | [The falsifier named the wrong roster](20261002/20261002-153253_the-falsifier-named-the-wrong-roster.kyri) | caravan/roster.rye never reads the channel graph; channels.rye answers every shape alike |
