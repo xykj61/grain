@@ -30,7 +30,7 @@ assert ladder.ok else "houseplant: fund-star-ship accretion scan failed"
 assert ladder.out contains "LADDER_OK" else "houseplant: ladder row must name houseplant"
 
 let almanac = run ["sh" "tools/equinox/almanac/equinox_houseplant_almanac.sh"]
-assert almanac.ok else "houseplant: almanac append failed"
 say almanac.out
+assert almanac.ok else "houseplant: almanac append failed"
 
 say "GREEN: houseplant — Lexicon seated · ship owner's project tree · pier and verse kept distinct"

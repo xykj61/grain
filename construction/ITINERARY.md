@@ -205,26 +205,25 @@ two small ratchet sites, memcpy and parseInt
 ([memcpy](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md),
 [parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)).
 
-**GRASS -- CORD-KNOT'S PARSEINT GRADUATION, AND THE RECALL-DELIVERY WITNESS WAS ALREADY THERE.**
-[Shelved whole](archive/date/20261001/20261001-130141_itinerary-grass-cord-knot-and-delivery-witness-account.md).
-`parseInt(` fell 52 to 50; the YOURS item below about a missing delivery-module witness was stale
--- `tools/m/mantra_recall_tablecloth_query_wire.rish` already covers it, GREEN on metal.
+**GRASS -- FOUR MORE ACCOUNTS, SHELVED WHOLE** (`20261001`-`20261002`, condensed from four to
+one, nothing lost): Cord-Knot's parseInt graduation
+([account](archive/date/20261001/20261001-130141_itinerary-grass-cord-knot-and-delivery-witness-account.md)),
+the Caravan fold note
+([account](archive/date/20261001/20261001-150500_itinerary-grass-caravan-fold-reverse-read-account.md)),
+the last zero-assert file
+([account](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet-account.md)),
+unsaid-rostered's YOURS closed
+([account](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md)).
+`functions_over_70` stays **YOURS** (694, mostly outside caravan's own ladder).
 
-**GRASS -- THE CARAVAN FOLD NOTE'S OWN ACCOUNT.** [Shelved
-whole](archive/date/20261001/20261001-150500_itinerary-grass-caravan-fold-reverse-read-account.md).
-`functions_over_70` stays named as **YOURS** (694, mostly outside caravan's own ladder) for whoever
-has a lap to spend reading one function's own callers before splitting it.
-
-**GRASS -- THE LAST ZERO-ASSERT FILE TOOK ITS TWO INVARIANTS.** [Shelved
-whole](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet-account.md).
-`comlink/roster_pairs_seal.rye` took its opening triad and two `// invariant:` asserts; `zero
-assert( files remaining` fell **1 to 0**; `tame_style_check` stays GREEN. No YOURS here.
-
-**GRASS -- UNSAID-ROSTERED'S YOURS CLOSED.** [Shelved
-whole](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md). The
-elder YOURS landed in `9b8879d432`: `unsaid_rostered` fell 984 to **869** against 903,
-`shim_reason_witness.rish` reads ok. No YOURS; one repair remains, `glow_choir_witness.rish`'s
-32 unguarded `rN` bindings.
+**GRASS -- SHIM-REASON RED ON METAL, THREE CAUSES, ALL CLOSED.** Rostering two new almanac
+witnesses flipped a late `say` into `late_say_rostered`'s zero gate -- `say`/`assert` swapped,
+GREEN. That uncovered churn had pushed `unsaid_rostered` 869 to 943 against ceiling 903, `tier
+lap` so fleet-wide red. `glow_choir_witness.rish`'s 32 `rN` bindings (named stale above) took
+`if rN.ok == false then say rN.err`, falling it to 911. The last 8 traced to a real scan
+undercount: `["test" "-f" ...]`'s own quoting was never credited (438 bindings, 190 files).
+Widened the regex; `shim_reason_witness.rish` GREEN, `unsaid_rostered=820`, `verdict=ok`.
+**YOURS:** none here -- the 190-file population is real work for whoever's lane.
 
 **DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
 replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; ANY SHIP on
@@ -358,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b2f7ea2a24` -- HEAD's parent, read after the final rebase.
+**Git nib:** `6dea00e9fe` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
