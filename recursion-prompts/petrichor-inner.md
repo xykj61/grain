@@ -38,6 +38,8 @@ thing there, the shelf is confirmed clean and the lap's time is better spent nam
 tending target (a page outside the three already-run witnesses' reach, a stale number, a citation
 this lap hasn't checked) rather than re-running the identical grade-touch a fourth time.
 
+**Ruled `20261002.142242`.** The next fruit is one page, `docs-geode/tutorials/the-first-hour.md`. Grade it at Door. A reading below B takes one bounded molt. A reading at B or better is recorded, and the lap stops. `mantra/` and `tally/` stay closed. The Consent Rail stays with Diffuser. No second contract, and no shelf-wide sweep.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

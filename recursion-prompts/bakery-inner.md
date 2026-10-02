@@ -21,6 +21,8 @@ below this paragraph is the recovery-queue backlog that filled this file before 
 history, left as testimony, not the next thing to work. Read it only if the crux above is blocked
 and you need the backlog's own context to know why.
 
+**Ruled `20261002.142242`.** This fruit stands: one shared build cache and one cold-run cache. The ring print-path in `caravan/cycle.rye` waits until this fruit is witnessed.
+
 **Recovery queue, reread 20260925.213432: 23 construction Markdown versions remain.**
 The saved inventory has 176 unmatched Markdown versions. Recorded path-and-blob
 identities cover 153 after this lap. Recompute that set before selecting work;

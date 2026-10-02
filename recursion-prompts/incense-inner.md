@@ -104,9 +104,8 @@ reads. Observation of a sailing ship that has stopped making product progress is
   unverified on this host). Case 8's scan half is the product braid guard (`verdict=unbraided`).
   Its build-time half, a third module importing both products, waits until that build lands.
   The ceiling scan reads `verdict=agree` and `row_unenforced=2`: Skate draws the 72-by-18 frame,
-  and admission leaves the card size to that frame. Three decisions that change what the receipt admits
-  wait for Keaton, weighed in
-  [`../active-designing/20260918-000154_three-numbers-and-a-name.md`](../active-designing/20260918-000154_three-numbers-and-a-name.md).
+  and admission leaves the card size to that frame. The four ceilings, the five identifiers, and the
+  module name were granted `20260918.100854` and stand on the contract. `LinengrowReceipt` keeps its name.
 - **The fleet's inner prompts were reallocated `20261001`**, the Long Return Lila: five of seven
   stale or re-confirmed-closed fruits (pheromone, patchouli, grass, petrichor, bakery) were given a
   new crux; copal and diffuser were already correctly pointed and left unchanged. See each ship's
@@ -122,13 +121,13 @@ reads. Observation of a sailing ship that has stopped making product progress is
 
 ## open words -- decisions a lap may not take
 
-- The four borrowed ceilings, which five fields are identifiers, and the projection's name.
+- The four ceilings, the five identifiers, and the module name, granted `20260918.100854`. A lap leaves them as the contract states them. `%807` takes no door.
 - Whether a pending decision earns a ceiling, and `%795`'s status word, which is its lane's.
 - Any custody gate named in the laws above.
 
 ## next -- the loop updates this section
 
-**Current order, `20261002.141355`.** The seven workers are clocked in on `fae73f1287`. Read `captain:` lines on the newest day-shelf rows and rule the ones that are yours. A cold run stays unlaunched until Keaton asks to hold for one. Bakery's fruit is one shared build cache and one cold-run cache. Copal claims one unrostered witness under `tools/gen/chapter/`. Grass grades a page the round already opened. Case 8's scan half is witnessed, empty required fields and a false signature included; the build-time half waits until that third module's build lands. Patchouli's queue is empty for this lane: `%807` stays with Keaton, and further `%765` header families belong to the ship that owns them. Petrichor's mismatched-holder page is landed; the Consent Rail and further docs-geode prose wait on Keaton, and `mantra/` stays closed to this lane. Pheromone's two consent shape pedestals landed `20261002.004500`; the next lowering waits on a ruling. Diffuser's two consent still frames landed `20261001.231246`; the next fruit waits on Keaton's word. Case 4 stays closed by the Still-frame witness. Three receipt-admission decisions stay with Keaton.
+**Current order, `20261002.142242`.** Ruled this hour. A cold run stays unlaunched until Keaton asks to hold for one. Bakery keeps the shared cache, and the ring print-path waits. Copal finishes the merge in hand, then claims one chapter witness. Grass grades the page already open. Patchouli leaves `%807` open and takes one header still inside `mantra/` or `tally/`, or stops when the scan finds none. Petrichor grades `docs-geode/tutorials/the-first-hour.md` at Door, one page. Pheromone writes `src/shape/shape-receipt-offer.glow` from the rye field count, and `max_fields` stays 15. Diffuser finishes the paper in hand, then one Gauge paper with one falsifier, and leaves Swift and `caravan/cycle.rye` alone. Case 8's build-time half still waits on the build. The receipt numbers granted `20260918.100854` stand.
 
 **Two archive pointers plus seven lap accounts (`20261001.004741` through `20261001.074025`) folded onto one shelf** at [`date/20261001/20261001-112031_incense-next-log-archive-56.md`](date/20261001/20261001-112031_incense-next-log-archive-56.md) (checkpoint `20261001.112031`, nib `1cac83efb9`) -- the section stood at 24,398 of its 24,576-byte bound, 178 bytes of headroom, before this lap's own account. Every fact each one carried still lives one hop away, through the shelf it names.
 
@@ -211,3 +210,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.134003` finished the deep debride.** Main was rewritten and re-signed. The walk-back is the local bundle named in checkpoint `20261002.134003`, pre-rewrite tip `7b27f5a3cb`. The prompt now lives at `expanding-prompts/yonder/20261002-111449_lila-and-the-long-return.md`. The phrase witness is empty outside gratitude and that file. `xy` main is force-updated after that witness. Each clean worker tree resets onto the new main and clocks back in. The public seed was not touched.
 
 **Lap `20261002.141355` refreshed the current order.** The paragraph dated `20261001.204655` still sent the next lap to write the consent pedestals, teach the mismatched holder, and name the still frames. Those three fruits are landed. The order now names the fruit each seat holds, read from that seat's inner before the clock-in. A cold run stays unlaunched.
+
+**Lap `20261002.142242` gave the waiting seats a fruit.** The receipt numbers granted `20260918.100854` stand, and the weighing page now says so. Pheromone writes one receipt-offer pedestal. Petrichor grades the first hour. Diffuser keeps to one paper. Patchouli's outer prompt names the weave as landed, and `%807` stays open. Bakery keeps the shared cache. Grass grades the page in hand. Copal finishes its merge, then one chapter witness.

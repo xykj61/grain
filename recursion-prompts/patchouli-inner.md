@@ -54,6 +54,8 @@ Keaton's ruling (`%807`) or another ship's own lap (`%765`'s remainder). Read
 booked since this reading would change it -- and reach for claim-as-override if the queue still
 reads empty.
 
+**Ruled `20261002.142242`.** `%807` stays OPEN. No renumber of `ord`, and zero stays unreserved. Merge and annotate already read GREEN; the outer prompt now says so. The next fruit is one chronological header that still lives in `mantra/` or `tally/`. When that scan finds none, the lap says the queue is empty and stops.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

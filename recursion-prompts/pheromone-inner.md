@@ -63,10 +63,9 @@ witness, `tools/m/mantra_glow_tend_limb5_witness.rish`, proves both example coun
 via `tools/fixtures/r/rye_struct_fields_scan.sh` and asserts `rune_shape.max_fields` stayed at 15.
 Rostered into `construction/standing-equipment.kyri`, GREEN on metal both as the roster's own
 `mantra_glow_tend_limb5` guard and run standalone. `.lap/shape-receipt-offer.glow` was not copied;
-`mantra/src/consent_replay.rye` and `tally/receipt_refusal.rye` were not touched. **YOURS:** the
-next fruit -- Keaton's word on whether lowering begins (the sketch's own open question, carried
-forward from the prior account: whether `orphaned-revoke` earns a `Reason` member, and whether
-Patchouli or Incense opens it first).
+`mantra/src/consent_replay.rye` and `tally/receipt_refusal.rye` were not touched.
+
+**Ruled `20261002.142242`.** Lowering began on Patchouli's door. `orphaned-revoke` already names a `Reason` member, and the two consent facts stand in `mantra/src/consent_replay.rye`. This lane leaves `mantra/` and `tally/` closed. The next fruit is one pedestal, `src/shape/shape-receipt-offer.glow`, written fresh from `ReceiptOfferFact`'s field count in `mantra/src/receipt_offer.rye`, in the same form as `src/shape/shape-consent-grant.glow`. `rune_shape.max_fields` stays 15. The untracked `.lap` desk stays untracked. A new rune returns to Incense.
 
 ## gates
 

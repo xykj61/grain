@@ -332,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ad069b998e` -- clock-in record on the rewritten main, read before the commit (rule 5).
+**Git nib:** `e978b9c57d` -- roster claims, read before the commit (rule 5).
 
 ### Incense -- product captain
 
@@ -375,7 +375,7 @@ Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another sh
 
 ### Pheromone -- Glow product language
 
-**Priority:** HIGH Lindy; VERY HIGH crux.
+**Priority:** HIGH Long Return; VERY HIGH Lila.
 
 1. Express the receipt facts and Tally bounds in the smallest Glow form already owned.
 2. Carry them through lowering into Mantra and both projections.
@@ -420,7 +420,7 @@ The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20
 
 ### Diffuser -- Brushstroke and Skate product surface
 
-**Priority:** HIGH Lindy; VERY HIGH crux.
+**Priority:** HIGH Long Return; VERY HIGH Lila.
 
 **Diffuser research:** [Wake correction](../active-designing/date/20260925/20260925-053315_the-cap-is-already-the-interval.md) -- capped backoff adds a check; batching awaits a witness.
 

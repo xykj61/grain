@@ -55,6 +55,8 @@ comment, or docs surface already open for other reasons, grade it with
 here licenses a fresh sweep of untouched rooms; the read-scope law keeps the walk to what the round
 already opened.
 
+**Ruled `20261002.142242`.** The page already open is the fruit. Grade it. A fresh sweep of an unopened room waits.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

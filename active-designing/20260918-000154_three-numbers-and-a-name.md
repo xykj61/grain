@@ -3,7 +3,7 @@
 **Language:** EN - **Stamp:** `20260918.000154` - **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth; Gauge at the Field setting
 **Room:** mixed -- the measurements are **checkable** and every answer below is a **proposal**
-**Status:** Proposed -- three decisions, none taken. Each changes what the product admits, so each waits for Keaton's word.
+**Status:** Ruled `20260918.100854` -- mixed -- the weighing below stays as the record; the numbers stand on the receipt contract. Recorded again `20261002.142242`.
 **Kin:** [`20260912-201126_the-receipt-you-can-read-contract.md`](20260912-201126_the-receipt-you-can-read-contract.md) - [`../foundations/20260824-003828_universal-and-regenerative.md`](../foundations/20260824-003828_universal-and-regenerative.md) - [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md)
 
 ---
@@ -229,7 +229,7 @@ rishi/bin/rishi run tools/p/pending_decision_witness.rish
 The four-places reading above is a measurement, and its falsifier is one command: run
 `sh tools/fixtures/p/pending_decision_scan.sh` and read a count different from the 80 and 44 named
 here, which would mean the four places have drifted apart since this page was written. The three
-decisions themselves are proposals awaiting Keaton's word rather than projections, so they carry no
+decisions were granted `20260918.100854` and stand on the receipt contract, so they carry no
 falsifier of their own -- the one number that could kill the page's claim is the census, and it is
 re-runnable rather than trusted.
 

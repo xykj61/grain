@@ -198,6 +198,8 @@ rather than attempting it, since widening the declaration is Caravan's own modul
 B/84 at Field. No new witness, no new build; a reading of tracked source and its own comptime
 bound.
 
+**Ruled `20261002.142242`.** The two still frames stand. Settle and Respond stay on a macOS host. The chain paper above stands, and widening `caravan/systems/serial_relay.kyri` stays Caravan's. The print path in `caravan/cycle.rye` waits with Bakery, whose fruit this season is the shared cache. The next fruit here is one Gauge paper at Field, one falsifier, no Swift file and no new module.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

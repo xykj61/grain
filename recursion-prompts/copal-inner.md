@@ -13,6 +13,8 @@
 
 Take one unrostered witness under `tools/gen/chapter/`, the ask the card still leaves standing. Claim that one path, roster it, and prove it from both sides. Leave the other chapter witnesses for a later lap.
 
+**Ruled `20261002.142242`.** Finish the merge in hand, then claim that one witness. The fruit stands.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
