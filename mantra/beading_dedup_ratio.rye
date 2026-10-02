@@ -100,7 +100,8 @@ fn edit_position(dist: Distribution, i: u32, edit_size: u32, state: *u64) u32 {
 /// reaches for tally_copy.copy_disjoint rather than a raw overlap-aware bulk move --
 /// the shift this function performs never overlaps itself in memory.
 fn apply_edit(kind: EditKind, content: *[resin_len]u8, pos: u32, edit_size: u32, state: *u64) void {
-    assert(pos + edit_size <= resin_len); // invariant: an edit never writes past the resin
+    // invariant: an edit never writes past the resin
+    assert(pos + edit_size <= resin_len);
     var next_buf: [resin_len]u8 = undefined;
     var new_bytes: [max_edit_size]u8 = undefined;
     fill_random(new_bytes[0..edit_size], state);
@@ -143,8 +144,10 @@ const SeqResult = struct {
 /// excluded from the ratio: it has nothing yet to dedup against, so counting it would
 /// dilute every ratio toward 1.
 fn run_sequence(dist: Distribution, kind: EditKind, num_edits: u32, edit_size: u32, seed: u64) !SeqResult {
-    assert(edit_size < resin_len); // invariant: see edit_position
-    assert(num_edits >= 1); // invariant: a sequence with no edits has no ratio to read
+    // invariant: see edit_position
+    assert(edit_size < resin_len);
+    // invariant: a sequence with no edits has no ratio to read
+    assert(num_edits >= 1);
 
     var base: [resin_len]u8 = undefined;
     var state: u64 = seed;

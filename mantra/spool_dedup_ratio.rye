@@ -117,7 +117,8 @@ fn make_base(state: *u64) Content {
 /// buffer spans several resins, so an insert or delete shifts bytes across a resin
 /// boundary rather than only within one.
 fn apply_edit(kind: EditKind, base: *const Content, pos: u32, edit_size: u32, state: *u64, out: *Content) void {
-    assert(pos + edit_size <= base.len); // invariant: an edit never reads past the base
+    // invariant: an edit never reads past the base
+    assert(pos + edit_size <= base.len);
     var new_bytes: [max_edit_size]u8 = undefined;
     fill_random(new_bytes[0..edit_size], state);
     switch (kind) {

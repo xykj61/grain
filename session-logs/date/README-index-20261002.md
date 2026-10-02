@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.054603` | [gate holds, twenty-fifth confirm](20261002/20261002-054603_petrichor-gate-holds-twentyfifth-confirm.kyri) | network dark again (github.com unresolvable); 2 sends stacked; GATES-ONLY re-set |
+| `20261002.054543` | [rune-assert-arrival-named](20261002/20261002-054543_rune-assert-arrival-named.kyri) | ANY SHIP: unnamed_assert 6491->6480, 11 comments repositioned |
 | `20261002.054051` | [personalize-template-roster](20261002/20261002-054051_personalize-template-roster.kyri) | Rostered personalize_template_witness, proven both ways |
 | `20261002.053846` | [gate holds, twenty-fourth confirm](20261002/20261002-053846_petrichor-gate-holds-twentyfourth-confirm.kyri) | network dark (github.com unresolvable); no docs-geode claim or work; GATES-ONLY re-set |
 | `20261002.053600` | [vols-survey-true-roster](20261002/20261002-053600_vols-survey-true-roster.kyri) | Rostered vols_survey_true_witness, CION VOLS Journey 13 r4 closes |

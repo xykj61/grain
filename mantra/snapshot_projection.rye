@@ -180,6 +180,8 @@ fn run_selftest(_: std.Io) !u8 {
     const flat_len = try se.export_catalog(&flat, signer, &flat_snap);
     const flat_exported = try count_exported_leaves(flat_snap[0..flat_len]);
     const flat_projected = projected_leaf_count(&flat);
+    // invariant: a catalog with one revision per tuple makes both readings equal to the
+    // leaf count, and to each other -- the gap this module measures is zero here
     assert(flat_exported == flat.leaf_count);
     assert(flat_projected == flat.leaf_count);
     assert(flat_exported == flat_projected);
@@ -198,6 +200,9 @@ fn run_selftest(_: std.Io) !u8 {
     const layered_exported = try count_exported_leaves(layered_snap[0..layered_len]);
     const layered_projected = projected_leaf_count(&layered);
 
+    // invariant: six leaves were written, the export walks every one of them, and the
+    // projection collapses the two repeated paths to one entry each -- so the projected
+    // count must land strictly below the exported count
     assert(layered.leaf_count == 6);
     assert(layered_exported == 6);
     assert(layered_projected == 3);
