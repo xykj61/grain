@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.012418` | [tenth lap: queue confirmed empty, declined to manufacture work](20261002/20261002-012418_tenth-lap-queue-confirmed-empty-no-busywork.kyri) | fifteen OPEN REDS rows read, none in a prose lane; no claim opened, nothing invented to fill the lap |
 | `20261002.012103` | [patchouli queue confirmed empty again](20261002/20261002-012103_patchouli-queue-confirmed-empty-again.kyri) | %807, %765, mantra_glow_tend_limb5 YOURS all still want Keaton; no claim-as-override candidate on the ledger |
 | `20261002.011759` | [ninth lap: send stalled on DNS, work staged locally](20261002/20261002-011759_push-refused-dns-unreachable-work-staged-locally.kyri) | eighth lap's log and nib-carry committed; push refused three times, xy unreachable |
 | `20261002.011642` | [glow_connector_seam rostered both ways](20261002/20261002-011642_glow-connector-seam-roster.kyri) | the Wayland-leak check moved to a scan; a fixture-backed negative witness proves it bites, verdict=ok both ways |
