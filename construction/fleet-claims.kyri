@@ -59,3 +59,9 @@ stamp 20261002.070417
 epoch 1790939057
 paths tools/gen/chapter/sunn13_root_survey_witness.rish construction/standing-equipment.kyri
 what roster the unrostered sunn13_root_survey_witness chapter witness, proven both ways
+claim incense-cold-run-check-16red
+seat incense
+stamp 20261002.091216
+epoch 1790946736
+paths tools/fixtures/s/standing_equipment_run.sh
+what launch a fresh cold run with --cadence-slice 1 to confirm the 18-to-16 repair landed clean fleet-wide
