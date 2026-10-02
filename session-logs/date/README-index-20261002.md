@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.103750` | [Third round-open this lap, two more peer commits land, lane still idle](20261002/20261002-103750_pheromone-third-round-open-lane-still-idle.kyri) | round-open absorbed grass's and patchouli's commits; language lane confirmed still empty |
 | `20261002.103623` | [Council rota deep-reads row 3 (Water), B+/89, lane stays empty](20261002/20261002-103623_grass-water-row-deep-read-lane-empty.kyri) | rota deep-read of Water's three seats, threshold page graded B+/89, no fitting unclaimed red |
 | `20261002.103447` | [mantra/tally lane re-surveyed, both OPEN rows confirmed owing Keaton](20261002/20261002-103447_mantra-tally-lane-confirmed-empty.kyri) | %807 and %765 re-checked fresh, no agent-doable mantra/tally family remains, claim-as-override declined for want of a safe fixture |
 | `20261002.103128` | [A HEAD-only move was killing the cold close](20261002/20261002-103128_head-only-close-dies.kyri) | HEAD-only grep exit now says tree_moved |
