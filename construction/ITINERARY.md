@@ -179,54 +179,20 @@ ceiling trace to 22 new files; shims read zero. **YOURS:** ~700 debt bindings wa
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
 at its ceiling; Diffuser landed the last site.
 
-**DIFFUSER -- TWENTY ACCOUNTS, CONDENSED TO ONE POINTER, NOTHING ARCHIVED LOST** (`20260918`-`20261001`):
-row 3's second reading
-([`20260918`](archive/date/20260918/20260918-030830_itinerary-diffuser-two-shelved-accounts.md)),
-two Caravan/Aurora first-principles proposals
-([`account`](archive/date/20260918/20260918-061106_itinerary-diffuser-two-first-principles-account.md)),
-the counter paper's own falsifier
-([`ran, did not fire`](archive/date/20260918/20260918-063504_itinerary-landed-accounts.md)),
-three Bakery-buildable proposals
-([`account`](archive/date/20260918/20260918-065527_itinerary-landed-accounts.md)),
-row-aligned Tally gardens energy proposal
-([`account`](archive/date/20260918/20260918-072133_itinerary-diffuser-row-alignment-account.md)),
-fixed-interval polling energy proposal
-([`account`](archive/date/20260918/20260918-105602_itinerary-diffuser-fixed-interval-polling-account.md)),
-the scope-map ranking check
-([`account`](archive/date/20260918/20260918-091243_itinerary-diffuser-scope-map-account.md)),
-the falsifier's open door
-([`account`](archive/date/20260918/20260918-092431_itinerary-diffuser-wake-cost-falsifier-account.md)),
-duplicate-content census
-([`account`](archive/date/20260918/20260918-075535_itinerary-diffuser-duplicate-content-account.md)),
-a symlinked import as two compilation units
-([`account`](archive/date/20260918/20260918-111501_itinerary-diffuser-symlinked-import-account.md)),
-the build cache note
-([`account`](archive/date/20260921/20260921-055148_itinerary-diffuser-build-cache-note-account.md)),
-placement
-([`account`](archive/date/20260925/20260925-073701_itinerary-diffuser-placement-account.md)),
-batch interval
-([`account`](archive/date/20260925/20260925-122735_itinerary-diffuser-batch-interval-account.md)),
-the parked receipt motion study
-([`account`](archive/date/20260925/20260925-125114_itinerary-diffuser-motion-study-account.md)),
-interrupted sleep
-([`account`](archive/date/20260925/20260925-142646_itinerary-diffuser-interrupted-sleep-account.md)),
-relative sleep
-([`account`](archive/date/20260925/20260925-152809_itinerary-diffuser-late-sleep-account.md)),
-Skate index
-([`account`](archive/date/20260925/20260925-170029_itinerary-diffuser-skate-index-account.md)),
-receipt spaces colliding in the Still row
-([`account`](archive/date/20261001/20261001-123500_itinerary-diffuser-receipt-space-collision-account.md)),
-the snapshot-shrink study
-([`account`](archive/date/20261001/20261001-142551_itinerary-diffuser-snapshot-shrink-account.md)),
-and the Hilbert-order essay's arithmetic
-([`account`](archive/date/20261001/20261001-143600_itinerary-diffuser-hilbert-order-account.md)).
-**YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the receipt
+**DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
 replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; PATCHOULI
 on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards.
 
 **DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
 **DIFFUSER -- THE FOURTH ANGLE'S OPEN CRUX ANSWERED BY A CENSUS.** [Shelved whole](archive/date/20261001/20261001-193541_itinerary-diffuser-mutable-identity-account.md): every storage caller in this tree keeps a name bound to its first bytes for life; content-defined resin splitting has no caller yet, and the honest next crux is the caller itself. Graded B at Field.
+
+**DIFFUSER -- A FRESH MOONSHOT: THE PIER'S OWN LOAD LEAVES NO QUIET TO WAIT FOR.** [The quiet this
+pier does not have](../active-designing/date/20261001/20261001-195141_the-quiet-this-pier-does-not-have.md):
+loadavg held at or above 6.17 (8 cores) across every sample, and a fixed workload ran 2.69x slower
+under added contention -- so a load-gated cadence scheduler fits poorly; a throttle-always
+`nice`/`ionice` scheduler needs no quiet and no joule. Graded B+ at Field. **YOURS:** Bakery or
+Incense, who hold the cadence selector this touches.
 
 **PATCHOULI -- THREE ACCOUNTS, CONDENSED TO ONE POINTER, NOTHING ARCHIVED LOST**
 (`20260922`-`20261001`): the falsifier
@@ -364,7 +330,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9a81a0b810` -- HEAD's parent, read after the final rebase.
+**Git nib:** `9a61f4ad2d` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
