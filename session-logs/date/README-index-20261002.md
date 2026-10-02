@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.002701` | [tame_style_check reddened twice, both repaired](20261002/20261002-002701_tame-style-check-two-reds-repaired.kyri) | a comment's bare mention of copyForwards, and 17 compound asserts in consent_replay_witness.rye; both fixed, all three witnesses GREEN |
+| `20261002.002619` | [second quiet lap -- the same empty reading, re-measured](20261002/20261002-002619_second-quiet-lap-same-empty-reading.kyri) | Patchouli: fresh fetch, HEAD unchanged, %807/%765 still OPEN, no booked row to override |
 | `20261002.001844` | [quiet lap -- the inner prompt's empty queue read fresh and confirmed](20261002/20261002-001844_quiet-lap-queue-confirmed-empty.kyri) | Patchouli: %807/%765 re-checked OPEN, claims clear, no booked row to override, water rota read |
 | `20261002.001841` | [consent shape pedestals](20261002/20261002-001841_consent-shape-pedestals.kyri) | shape-consent-grant.glow and shape-consent-revoke.glow land, one witness, max_fields untouched |
 | `20261002.001640` | [the two touched surfaces already clear B](20261002/20261002-001640_grass-touched-surfaces-already-clear-b.kyri) | graded ITINERARY.md (A/94) and grass-inner.md (B+/89); nothing below B, no molt owed |
