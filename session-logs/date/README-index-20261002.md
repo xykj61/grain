@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.011759` | [ninth lap: send stalled on DNS, work staged locally](20261002/20261002-011759_push-refused-dns-unreachable-work-staged-locally.kyri) | eighth lap's log and nib-carry committed; push refused three times, xy unreachable |
 | `20261002.011434` | [the send crossed three contested rebases](20261002/20261002-011434_contested-send-three-rebases.kyri) | nib re-derived thrice; a clean rebase did not prove it current |
 | `20261002.011253` | [grass queue confirmed empty again](20261002/20261002-011253_grass-queue-confirmed-empty-again.kyri) | no new audit packet; agent-doable queue read empty across 6+ laps and 6 ships in two hours |
 | `20261002.010657` | [width_check_scan stale citations](20261002/20261002-010657_width-check-scan-stale-line-citations.kyri) | fire rota: fixed stale usize-exemption line citations; %810 verdict disagreement stays Keaton's |
