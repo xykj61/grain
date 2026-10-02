@@ -56,6 +56,7 @@ pub const Reason = enum {
     invalid_expiration,
     unsuitable_value_unit,
     no_admitted_fact,
+    orphaned_revoke,
 
     pub fn name(self: Reason) []const u8 {
         return switch (self) {
@@ -70,6 +71,7 @@ pub const Reason = enum {
             .invalid_expiration => "invalid-expiration",
             .unsuitable_value_unit => "unsuitable-value-unit",
             .no_admitted_fact => "no-admitted-fact",
+            .orphaned_revoke => "orphaned-revoke",
         };
     }
 };

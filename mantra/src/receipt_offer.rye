@@ -53,13 +53,14 @@ pub const Status = enum { offered, expired };
 pub const ReceiptState = struct { offer: ReceiptOfferFact, status: Status };
 pub const AdmissionError = bounds.BoundError || error{
     UnknownSchema, InvalidSignature, InvalidExpiration, UnsuitableValueUnit, NoAdmittedFact,
+    OrphanedRevoke,
 };
 
 /// The one mapping from a stated reason to this module's published error name.
 /// A reason added without a name here fails to compile, which is the point.
 pub fn error_of(reason: tally_refusal.Reason) AdmissionError {
     // invariant: the published reason set stays the size this mapping covers.
-    assert(@typeInfo(tally_refusal.Reason).@"enum".fields.len == 11);
+    assert(@typeInfo(tally_refusal.Reason).@"enum".fields.len == 12);
     return switch (reason) {
         .empty => AdmissionError.Empty,
         .non_ascii => AdmissionError.NonAscii,
@@ -72,6 +73,7 @@ pub fn error_of(reason: tally_refusal.Reason) AdmissionError {
         .invalid_expiration => AdmissionError.InvalidExpiration,
         .unsuitable_value_unit => AdmissionError.UnsuitableValueUnit,
         .no_admitted_fact => AdmissionError.NoAdmittedFact,
+        .orphaned_revoke => AdmissionError.OrphanedRevoke,
     };
 }
 

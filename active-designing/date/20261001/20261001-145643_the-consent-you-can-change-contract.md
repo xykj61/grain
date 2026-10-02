@@ -165,10 +165,9 @@ remain unchanged after every refusal.
 ## Completion and review edge
 
 The milestone lands only when the same two admitted fixtures pass all eight cases on metal and the
-falsifier stays false. This page is proposed rather than accepted: Keaton's word is what opens
-implementation, exactly as it opened milestone one on `20260913`. Until then nothing here is
-checkable, per `context/TWO_ROOMS.md` -- this is reasoning a reader can check today, not a claim
-that any code runs.
+falsifier stays false. Keaton's `20261001.200649` word accepted this page for implementation.
+The first replay, grant then revoke with the grant left standing, is the checkable edge. The
+other cases stay proposed until their own witnesses pass.
 
 A sibling task was named for Pheromone: sketching `GrantFact` and `RevokeFact` as Glow
 shapes -- field names, ceilings, one refusal case each -- sized the way milestone one's desk was
