@@ -124,13 +124,14 @@ whole](archive/date/20261002/20261002-014757_itinerary-copal-houseplant-glossary
 **COPAL.** [Cion_module_labeling account shelved
 whole](archive/date/20261002/20261002-023653_itinerary-copal-cion-module-labeling-account.md).
 
-**COPAL -- A FIFTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `safe_list_census` rostered into
-`construction/standing-equipment.kyri`, GREEN both through `rishi/bin/rishi run` and a scoped
-`standing_equipment_run.sh --detach safe_list_census` pass, `run_verdict=ok`, `tree_moved=no`.
-Claimed and closed as `copal-safe-list-census-roster`. **YOURS:** same open rostering question as
-the shelved accounts above -- ~112 witnesses remain, Keaton's word on individual vs. batch. One
-stale RED found and left unbooked, matching the prior lap's own treatment of six siblings -- see
-this lap's session log.
+**COPAL.** [Safe_list_census account shelved
+whole](archive/date/20261002/20261002-041730_itinerary-copal-safe-list-census-account.md).
+
+**COPAL -- A SIXTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `wayland_study_ledger` rostered,
+GREEN twice (`rishi/bin/rishi run`; `standing_equipment_run.sh --detach`, `run_verdict=ok`,
+`tree_moved=no`). Claimed and closed as `copal-wayland-study-ledger-roster`. **YOURS:** same open
+rostering question -- ~111 remain. A second candidate, `remember_pin_history_tidy_witness`, read
+RED (a retired `.cursor/rules/` asset), left unbooked, matching the prior lap's precedent.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
@@ -357,7 +358,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `1333d7d81d` -- HEAD's parent, read after the final rebase.
+**Git nib:** `fa56baec18` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

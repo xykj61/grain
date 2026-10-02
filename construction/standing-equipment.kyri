@@ -8669,3 +8669,17 @@ guard safe_list_census
 path tools/gen/chapter/safe_list_census_witness.rish
 tier lap
 seated 20261002.023446
+
+# wayland_study_ledger -- Surface Chapter p4's study-ledger orientation witness, unrostered since
+# it was written. Does not open a Wayland window; it asserts five on-disk pins stand present --
+# gratitude/river.md, gratitude/wayland.md, gratitude/zig-wayland.md, the p4 study-ledger counsel
+# note at counsel/date/20260728/20260728-195228_surface-season-p4-river-zig-wayland-study-ledger.md,
+# and brushstroke/wayland_seed.rye -- then prints two GREEN lines naming the clean-room boundary
+# held (GPL study only, no vendored link this fold). Read-only `test -f` checks throughout, so a
+# second run changes nothing on disk. GREEN on metal, zero working-tree diff after running. One of
+# the unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-wayland-study-ledger-roster before this entry landed.
+guard wayland_study_ledger
+path tools/gen/chapter/wayland_study_ledger_witness.rish
+tier lap
+seated 20261002.041640
