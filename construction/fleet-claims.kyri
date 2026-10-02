@@ -65,3 +65,9 @@ stamp 20261002.102120
 epoch 1790950880
 paths tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish construction/standing-equipment.kyri
 what roster tigerbeetle_control_flow_census, e35 sibling of already-rostered tigerbeetle census guards, both legs to be proven on metal
+claim copal-tigerbeetle-be-explicit-census-roster
+seat copal
+stamp 20261002.102712
+epoch 1790951232
+paths tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish construction/standing-equipment.kyri
+what roster tigerbeetle_be_explicit_census, e39 sibling of already-rostered tigerbeetle census guards, both legs to be proven on metal
