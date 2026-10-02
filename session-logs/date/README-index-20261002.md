@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.183737` | [Fallow field, same ground as the lap before it](20261002/20261002-183737_fallow-field-same-ground.kyri) | second honest no-agent-doable-work reading, claim board and ITINERARY doors unchanged, earth row rota read |
 | `20261002.183703` | [Seventh clean open: Earth row graded](20261002/20261002-183703_seventh-clean-open-earth-row-graded.kyri) | round-open clean, no claim in lane, Earth-row threshold foundation graded B+/88 |
 | `20261002.183327` | [No agent-doable queue item stands](20261002/20261002-183327_no-agent-doable-queue-clear-board.kyri) | round-opened, claim board checked and a stale claim closed, NOW queue and REDS OPEN rows read, register gate GREEN |
 | `20261002.182909` | [Production driver reclaims three of ten](20261002/20261002-182909_production-driver-reclaims-three-of-ten.kyri) | three of ten reclaim in rye/src/main.rye |

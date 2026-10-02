@@ -168,3 +168,14 @@ agent-doable queue item on `construction/ITINERARY.md`'s card is open to a lap's
 and the wire-ceiling item each want Keaton's word rather than a lap, and `%519`'s witnesses already
 read GREEN. Next: fresh round-open; check the board; read `construction/ITINERARY.md`'s NOW queue
 and this page's own `next` for a task a lap may actually take before reaching for the cold run.
+
+**Lap `20261002.183737` found the same ground a second time.** Round-opened clean at `baf265b53a`.
+Seven of eight seats sit at that same HEAD -- the prior lap's close-a-stale-claim commit -- so
+nothing landed fleet-wide in the interval. The claim board still carries only bakery's and copal's
+claims, neither in this lane. `%642`, `%519`, and the wire-ceiling door read exactly as the prior
+lap left them; `construction/REDS.md`'s only BOOKED row, `%745`, is already folded to its shelf, and
+the five self-closing OPEN rows (`%827`, `%808`, `%803`, `%785`, `%730`) are process-shaped findings
+already written into rule pages rather than a guard a lap closes by code. Tagged **fallow** on the
+earth row's own rota reading rather than forcing a harvest. Next: a human glance at those five rows,
+the `%642` scrub trade, or the wire-ceiling door is what actually opens new work here; a third
+identical reading would teach nothing past this one.
