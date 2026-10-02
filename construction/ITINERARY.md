@@ -218,6 +218,11 @@ registered and GREEN, and the snapshot artifact stays named-but-dormant on `max_
 ruling among its three named doors; Linengrow's own `ConsentState -> LinengrowConsent` projection,
 past this lane's own door.
 
+**PATCHOULI -- A SECOND HEADER FAMILY TAKES %765'S MOLT.** [Account shelved
+whole](archive/date/20261001/20261001-233015_itinerary-patchouli-commit-header-molt-account.md):
+`mantra-commit-v2` moved to `mantra-commit-20261001.233015`; the row format stands, elder headers
+keep opening. **YOURS:** forty families of `%765` remain outside this lane.
+
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
 `rishi/bin` to `rishi/src`; `%788`'s count fell 77 to 67, the remainder in other lanes.

@@ -38,7 +38,12 @@ merge break already refused. Reserving zero buys one head insert and the next do
 wall. The row stays OPEN.
 
 **`%765` is the next code, one family a lap.** Chronological headers, the way `mantra-weave`
-already moved. Elder headers keep their names. The consent lowering is witnessed, so this molt may open.
+already moved. Elder headers keep their names. The consent lowering is witnessed, so this molt may
+open. **One more family landed `20261001.233015`:** `mantra/src/main.rye`'s `mantra-commit-v2`
+header moved to `mantra-commit-20261001.233015`, row format unchanged, elder headers still open.
+[Account](../construction/archive/date/20261001/20261001-233015_itinerary-patchouli-commit-header-molt-account.md).
+Forty families of `%765` remain, all outside this lane -- the next one in `mantra/` or `tally/`,
+if any surfaces, is agent-doable the same way; the rest want their owning ship.
 
 ## gates
 

@@ -106,7 +106,7 @@ if [ "$(reading "$clean" verdict)" = "ok" ] \
   && [ "$(reading "$clean" first_clean)" = "yes" ] \
   && [ "$(reading "$clean" last_clean)" = "yes" ] \
   && [ "$(reading "$clean" brix_first_clean)" = "yes" ] \
-  && [ "$(reading "$clean" commit_header)" = "mantra-commit-v2" ] \
+  && [ "$(reading "$clean" commit_header)" = "mantra-commit-20261001.233015" ] \
   && [ "$(reading "$clean" elder_opens)" = "yes" ]; then
   clean_ok=1
 fi

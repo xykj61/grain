@@ -415,9 +415,17 @@ fn read_v1_rows(allocator: std.mem.Allocator, it: *std.mem.SplitIterator(u8, .sc
 //
 // A commit blob names the weave of every tracked file and points to its
 // parent commit. Format, tab-separated on every row:
-//   mantra-commit-v2\n
+//   mantra-commit-20261001.233015\n
 //   parent\t<64-hex|none>\n
 //   file\t<path>\t<64-hex>\n      (one row per tracked file)
+//
+// THE HEADER MOLTED FROM A COUNT TO A STAMP (REDS %765, `20261001.233015`),
+// the way `mantra-weave-v3` molted to `mantra-weave-20260916.101910` before
+// it. A record version is a compatibility contract rather than a census
+// number, so it is chronological per `context/specs/rye-versioning-style.md`
+// -- the row format carried by `mantra-commit-v2` is unchanged; only the
+// header's own name moved. `mantra-commit-v2` keeps opening forever, read
+// by the same function the new header shares, since the two name one format.
 //
 // WHY A ROW PER FILE. The elder `mantra-commit-v1` named ONE weave for a
 // whole directory, so `cmd_add` loaded that weave, diffed the next file
@@ -545,7 +553,7 @@ fn serialize_commit(allocator: std.mem.Allocator, commit: CommitRecord) ![]const
     // invariant: a commit names at most the stated maximum of files
     assert(commit.files.len <= max_commit_files);
     var out = std.ArrayListUnmanaged(u8).empty;
-    try out.appendSlice(allocator, "mantra-commit-v2\n");
+    try out.appendSlice(allocator, "mantra-commit-20261001.233015\n");
     if (commit.parent) |p| {
         // invariant: a store name is the hex of a digest, exactly two characters per byte, so
         // any other length would address a blob that was never written
@@ -572,12 +580,15 @@ fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRec
     assert(blob.len > 0);
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
+    if (std.mem.eql(u8, header, "mantra-commit-20261001.233015")) return read_commit_v2(allocator, &it);
     if (std.mem.eql(u8, header, "mantra-commit-v2")) return read_commit_v2(allocator, &it);
     if (std.mem.eql(u8, header, "mantra-commit-v1")) return read_commit_v1(allocator, &it);
     return error.InvalidFormat;
 }
 
-/// Read the rows of a `mantra-commit-v2` blob, header already consumed.
+/// Read the rows of a `mantra-commit-20261001.233015` blob, header already
+/// consumed -- the same per-file rows the elder `mantra-commit-v2` header
+/// named, since the molt renamed the header and left the row format whole.
 fn read_commit_v2(
     allocator: std.mem.Allocator,
     it: *std.mem.SplitIterator(u8, .scalar),

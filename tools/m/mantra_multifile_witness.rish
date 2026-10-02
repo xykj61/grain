@@ -62,7 +62,7 @@ assert scan.out contains "first_clean=yes" else "mantra-multifile: the FIRST fil
 assert scan.out contains "last_clean=yes" else "mantra-multifile: the LAST file added does not read clean, so the weave it was given is not the one it was written from"
 assert scan.out contains "brix_first_clean=yes" else "mantra-multifile: the .brix add-all route loses the first file, which is the route the tool advertises"
 assert scan.out contains "brix_files=2" else "mantra-multifile: the .brix route did not weave both files, so the reading above passed on a run that never happened"
-assert scan.out contains "commit_header=mantra-commit-v2" else "mantra-multifile: the newest commit is not the per-file record, so a path has nowhere to be named"
+assert scan.out contains "commit_header=mantra-commit-20261001.233015" else "mantra-multifile: the newest commit is not the per-file record, so a path has nowhere to be named"
 assert scan.out contains "elder_opens=yes" else "mantra-multifile: a store written before this change no longer opens, which is a lost history rather than a failed test"
 # The second half of that question, asked apart from `20260917`. The frozen v1
 # store reports one added line now and that line carries no text: the terminator
