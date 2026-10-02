@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.184036` | [Eighth clean open: Air row graded](20261002/20261002-184036_eighth-clean-open-air-row-graded.kyri) | round-open clean, HEAD unchanged, no claim in lane, Air-row threshold foundation graded A/92 |
 | `20261002.183935` | [Patchouli's queue reads empty again](20261002/20261002-183935_patchouli-queue-reads-empty-again.kyri) | fresh mantra/tally grep confirms no new header-molt family, cross-checked against a peer's same-hour fleet-wide OPEN-row walk |
 | `20261002.183914` | [The one's free was never checked past its own line](20261002/20261002-183914_the-ones-free-never-checked-past-its-line.kyri) | store_witness.rye's too_big free closes inert; arc's reclaim count 4 of 170 |
 | `20261002.183737` | [Fallow field, same ground as the lap before it](20261002/20261002-183737_fallow-field-same-ground.kyri) | second honest no-agent-doable-work reading, claim board and ITINERARY doors unchanged, earth row rota read |
