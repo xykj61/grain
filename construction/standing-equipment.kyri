@@ -8732,3 +8732,20 @@ guard vols_survey_true
 path tools/gen/chapter/vols_survey_true_witness.rish
 tier lap
 seated 20261002.053600
+
+# personalize_template -- SUNN5's personalize-brix family, unrostered since it was written.
+# A presence census over the template family a newcomer fills to personalize their own Grain
+# season: personalize.template.brix, first_season_journeys.brix, first_season_questions.brix,
+# first_season_answers.template.brix, the recursion template, and the manual guide. Reads
+# each file's committed body for the field names and counts a filled instance would need
+# (replace_count 12, season_rounds 256, equinox_count 4, question_count 16, journey and door
+# sequencing), then proves the root deny-all keeps a filled PERSONALIZE.brix and
+# first_season_answers.brix gitignored and untracked even when present. Proven from both sides
+# on metal: the clean read is GREEN, and planting an absence (first_season_questions.brix moved
+# aside) reds the exact assertion naming it, with the file restored and the tree left clean.
+# One of the unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-personalize-template-roster before this entry landed.
+guard personalize_template
+path tools/gen/chapter/personalize_template_witness.rish
+tier lap
+seated 20261002.053809

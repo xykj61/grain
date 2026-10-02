@@ -59,9 +59,3 @@ stamp 20261002.050307
 epoch 1790931787
 paths tools/fixtures/s/shell_portable.sh tools/fixtures/s/shell_portable_control.sh
 what capture_evidence reports success when its copy fails and leaves an empty evidence file; add a refusal and prove it from both sides in the control
-claim copal-personalize-template-roster
-seat copal
-stamp 20261002.053725
-epoch 1790933845
-paths tools/gen/chapter/personalize_template_witness.rish construction/standing-equipment.kyri
-what roster personalize_template_witness.rish, the unrostered SUNN5 presence census over the personalize brix template family, GREEN on metal
