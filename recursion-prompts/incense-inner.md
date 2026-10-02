@@ -216,3 +216,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.144620` graded the first hour.** `docs-geode/tutorials/the-first-hour.md` reads A at Door, composite 91. The page stands, and the fruit is closed.
 
 **Lap `20261002.145010` named the front door in plain words** on `docs-geode/study/README.md`, the second door a newcomer meets. One sentence. It grades B+ at Door, composite 87, and stands.
+
+**Lap `20261002.145510` graded the lessons door.** `docs-geode/lessons/README.md` reads A at Door, composite 91. The three newcomer doors now have a grade: the first hour A, the study door B+, the lessons door A. Each stands.

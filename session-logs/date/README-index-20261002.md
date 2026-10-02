@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.145510` | [The lessons door stands](20261002/20261002-145510_the-lessons-door-stands.kyri) | lessons door grades A at Door, composite 91 |
 | `20261002.145123` | [ironbeetle ep006 roster](20261002/20261002-145123_ironbeetle-ep006-roster.kyri) | claimed, rostered, and proved ironbeetle_ep006_census_witness.rish, the nineteenth unrostered witness |
 | `20261002.145010` | [The study door speaks plainly](20261002/20261002-145010_the-study-door-speaks-plainly.kyri) | second door names the front door in plain words |
 | `20261002.144931` | [weave-write comment sync](20261002/20261002-144931_weave-write-comment-sync.kyri) | main.rye's weave-serialization prose said v2; the writer has said the stamped order record since %765 |
