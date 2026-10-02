@@ -25,6 +25,16 @@
 # Kin: `.claude/rules/gratitude-licenses.md` (the seated verdict table) - external-research/20260821-041056 (the read) -
 # external-research/20260817-185851 (the arc, whose blind spot one this closes).
 #
+# THE REFUSAL IS PROVEN, not merely written. The four asserts below compare the scan's output to
+# real, fixed counts read off the vendored gitlinks, which cannot themselves be planted against
+# without mutating a submodule. `tools/fixtures/v/sel4_userlevel_license_control.sh` proves the
+# scan's own counting logic instead, in a throwaway pen that never touches real vendor/ bytes: a
+# clean pen reads the shape every assert here expects, a GPL file planted inside libsel4 flips
+# `libsel4_gpl` away from zero, a GPL file planted in Microkit outside `custom_dts/` flips
+# `microkit_gpl_outside_dts` away from zero, and removing both plants returns the clean reading --
+# both directions, one pen, so the grep this witness trusts is a demonstrated detector rather than
+# an assumed one.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/sel4_userlevel_license_witness.rish
 
