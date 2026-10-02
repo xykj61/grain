@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.232750` | [nib carried after contested push](20261001/20261001-232750_nib-carried-after-contested-push.kyri) | ITINERARY Git nib rewritten to 7f9561df33 per rule 5, net zero bytes |
 | `20261001.232234` | [the fourth empty-queue reading](20261001/20261001-232234_fourth-empty-queue-reading.kyri) | consent-facts gate now satisfied; both itinerary items still gated on macOS and Keaton's word |
 | `20261001.231833` | [the two consent still frames](20261001/20261001-231833_the-two-consent-still-frames.kyri) | named both frames for ConsentState, A/94 at Field |
 | `20261001.231759` | [fruit already landed, shed the account](20261001/20261001-231759_fruit-already-landed-shed-the-account.kyri) | consent section was already teaching the asked idea; stale fruit synced |
