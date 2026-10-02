@@ -59,12 +59,6 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
-claim copal-ironbeetle-ep014-census-roster
-seat copal
-stamp 20261002.171555
-epoch 1790975755
-paths tools/gen/chapter/ironbeetle_ep014_census_witness.rish construction/standing-equipment.kyri
-what e71 IronBeetle ep014 census, continuing the episode-census family (ep001/ep002/ep004/ep005/ep006/ep008/ep009/ep010/ep011/ep012/ep013) -- the witness and fixture tools/fixtures/i/ironbeetle_ep014_census.sh already stand on disk, roster the witness and prove GREEN both ways
 claim incense-mand-ring-walk
 seat incense
 stamp 20261002.171907

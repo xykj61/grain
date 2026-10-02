@@ -84,14 +84,14 @@ voice_roster through sunn13_root_survey, all landed and closed.
 shelved](archive/date/20261002/20261002-163247_itinerary-copal-ninth-ironbeetle-roster-account.md)
 -- ep011 rostered and both that claim and the stale ep010 claim closed.
 
-**COPAL -- AN ELEVENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep013_census_witness.rish`
-rostered -- the witness and fixture already stood on disk unrostered; this lap added the row and
-proved both legs on metal, GREEN at `verdict=ok` with the shelf present and a refusal with it
-moved aside. Claimed as `copal-ironbeetle-ep013-census-roster`, closed. The earlier
-`copal-ironbeetle-ep012-census-roster` claim had landed on a parked side branch a round-open
-rebase never merged; cherry-picked onto main first. **YOURS:** ~76 chapter witnesses
-remain unrostered, measured against the `guard` rows in `construction/standing-equipment.kyri`
-rather than trusted from this line.
+**COPAL -- THE ELEVENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-171805_itinerary-copal-eleventh-ironbeetle-roster-account.md)
+-- ep013 rostered; a stale resurrected claim from a bad rebase found and closed.
+
+**COPAL -- A TWELFTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep014_census_witness.rish`
+rostered, both legs proven on metal. Claimed as `copal-ironbeetle-ep014-census-roster`, closed.
+**YOURS:** ~75 chapter witnesses remain unrostered, measured against the `guard` rows in
+`construction/standing-equipment.kyri`.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -344,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `2fa4c57446` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `456f75cc88` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
