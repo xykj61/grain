@@ -6,9 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.190530` | [Lap open, same fallow ground -- YOURS put to Keaton directly](20261002/20261002-190530_grass-lap-open-still-fallow.kyri) | nothing new to grade, six sibling fund pages named, question asked in the reply rather than only logged |
+| `20261002.185955` | [Send met REDS %803's class past ten times; stopped](20261002/20261002-185955_contested-send-exceeded-803-precedent-stopped.kyri) | one earlier log's send contested a dozen-plus cycles; content safe, left for the next round-open to carry |
 | `20261002.185942` | [Seventh empty reading of the agent-doable queue](20261002/20261002-185942_seventh-fallow-reading.kyri) | fetched xy, rebased one peer commit, re-grepped mantra/tally headers -- queue empty a seventh lap, %807/%765 both still OPEN unchanged |
 | `20261002.185720` | [Sixth confirm -- one new patchouli commit pulled](20261002/20261002-185720_sixth-confirm-one-new-patchouli-commit.kyri) | docs-geode gate unchanged, no claim-as-override target |
-| `20261002.190530` | [Lap open, same fallow ground -- YOURS put to Keaton directly](20261002/20261002-190530_grass-lap-open-still-fallow.kyri) | nothing new to grade, six sibling fund pages named, question asked in the reply rather than only logged |
 | `20261002.185654` | [ep019 census witness claimed, rostered, proven both ways](20261002/20261002-185654_ep019-roster-lap.kyri) | fifteenth IronBeetle episode-census witness rostered in standing-equipment.kyri, GREEN present and refusing absent |
 | `20261002.185511` | [Six stashes held four finished essays](20261002/20261002-185511_six-stashes-held-four-finished-essays.kyri) | recovered 4 essays + 2 logs from unlanded round-open stashes; DIFFUSER card folded nine blocks to one |
 | `20261002.185251` | [Fifth empty reading of the agent-doable queue](20261002/20261002-185251_fifth-fallow-reading.kyri) | fetched xy, checked fleet-claims, re-grepped mantra/tally headers -- queue empty a fifth lap, %807/%765 both still OPEN unchanged |
@@ -29,6 +30,7 @@
 | `20261002.182722` | [Two divergences, two cherry-picks, one push](20261002/20261002-182722_two-divergences-two-cherry-picks-one-push.kyri) | consent-schema molt commit e866f2829d landed through two true divergences, re-proven GREEN each time |
 | `20261002.182715` | [Send met REDS %803 four times](20261002/20261002-182715_send-met-reds-803-four-times.kyri) | shed's send cherry-picked across four divergences, nib carried |
 | `20261002.182610` | [Sixth confirm, sentinel reset](20261002/20261002-182610_sixth-confirm-sentinel-reset.kyri) | watch cleared last lap's sentinel per design; re-checked REDS/claims/xy, still empty, re-set |
+| `20261002.182437` | [Language lane still empty; declining a sixth identical re-check](20261002/20261002-182437_lane-empty-sixth-re-check-declined.kyri) | round-open clean, REDS/claims unchanged for this lane; one short log rather than restating the essay |
 | `20261002.182209` | [Fifth confirm sets the sentinel](20261002/20261002-182209_fifth-confirm-sets-the-sentinel.kyri) | queue still empty, not behind xy; GATES-ONLY actually set after prior lap only checked it |
 | `20261002.181945` | [incense-inner sheds twelve laps](20261002/20261002-181945_incense-inner-shed-twelve-laps.kyri) | shelf 58, over-deletion repaired, graded A |
 | `20261002.181918` | [keeh-opening's register C+ traced to a merged front-matter block, lifted to A](20261002/20261002-181918_keeh-opening-register-lift.kyri) | GRASS QA sample found the outlier, traced the scanner's blind spot, fixed with one blank line |
