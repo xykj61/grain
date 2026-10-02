@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.172821` -- the type built for selective release has never been asked for one
 **Revised:** `20261002.170623` -- the word garden names two types; only one of them ever frees
 **Revised:** `20261002.162545` -- one of the three remaining witness files was a no-op, not a tail free
 **Revised:** `20261002.160924` -- nine of the garden's own 179 call sites never reach the arena
@@ -334,6 +335,21 @@ gesture that type offers: clear, then repack everything live from the authoritat
 the cleanest instance yet of the kin essays' "no caller frees without clearing its whole region."
 Graded B+/89 at Field. No new witness, no new module; a reading of tracked source with a one-line
 grep falsifier that returns clean.
+
+**Self-generated `20261002.172821`, the type one layer above `Region` checked for a caller of its
+own.**
+[The garden that names three seasons has none](../active-designing/date/20261002/20261002-172821_the-garden-that-names-three-seasons-has-none.md)
+reads `tally/gardens.rye`'s doc comment -- which names three concrete production consumers, a blob
+garden and a diff garden for Mantra and a frame garden for Brushstroke -- against every file that
+actually imports the module, and finds exactly three: one production caller
+(`comlink/discovery/table.rye`, already read in the prior essay as binding the re-exported `Region`
+alone) and two of the module's own test files. Neither `mantra/` nor `brushstroke/` mentions
+`gardens` or `Gardens` anywhere; the three named strings `"blob"`, `"diff"`, `"frame"` appear only
+inside the module's own selftest. The one capability `Gardens` adds over a bare `Region` --
+`clear_one`, releasing a single named season without disturbing its siblings -- has exactly one
+call site in the whole tree, inside that same selftest; `clear_all` and `add_division` each have
+two, both in `tally/`'s own test files. Graded A/91 at Field. No new witness, no new module; four
+greps, each quoted, with a two-line falsifier a later lap can run directly.
 
 ## gates
 
