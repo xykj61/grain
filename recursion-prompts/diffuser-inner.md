@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.153253` -- the falsifier named a module that never reads the channel graph
 **Revised:** `20261002.145044` -- two sub-rings refuse the single-lap check; a wider ring passes it whole
 **Revised:** `20261002.143117` -- the N=4 ring already ran, inside a concurrency test
 **Revised:** `20261002.102258` -- the ring's own growth formula was off by one domain, caught in the open
@@ -241,6 +242,20 @@ one level over. Falsifier named rather than attempted: whether `caravan/roster.r
 capability checks accept, refuse, or flatten a declared two-level tree, left for Caravan's own next
 edit. Graded B+/85 at Field. No new witness, no new module; the classifying script is printed in
 the essay.
+
+**Self-generated `20261002.153253`, the prior essay's own falsifier read and closed by its import
+list.**
+[The falsifier named the wrong roster](../active-designing/date/20261002/20261002-153253_the-falsifier-named-the-wrong-roster.md)
+reads `caravan/roster.rye`'s capability derivation against the falsifier the branching-tree essay
+closed with -- whether its checks accept, refuse, or flatten a declared two-level tree -- and finds
+the module never imports `channels.rye` at all, so its capability table answers a region-rights
+question entirely apart from channel shape. `caravan/channels.rye`'s own `Graph`, the module that
+does own channel topology, answers every declared shape through the same four-case refusal surface
+regardless of ring, star, tree, or disjoint components, and `system.rye`'s `verify()` checks only
+non-isolation, never depth. A two-level tree earns acceptance through this whole chain for the same
+reason every other declared shape does; the open design question -- whether `verify()` should
+someday refuse a shape by depth -- stays Caravan's own edit, unchanged from the prior ruling. Graded
+B/82 at Field. No new witness, no new build; a reading of tracked source with line citations.
 
 ## gates
 

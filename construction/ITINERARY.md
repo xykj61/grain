@@ -199,15 +199,20 @@ large real candidates still unread.
 **DIFFUSER -- THE RING-ARITHMETIC ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-103827_itinerary-diffuser-ring-arithmetic-account.md)
 -- the N=3 ring/chain reading and its N-1 correction, both B-graded, `20261002`, nothing lost.
 
-**DIFFUSER -- 2D LAYOUT DOES NOT SHORTEN ONE LAP.**
-[A lap costs the same whatever shape you fold it into](../active-designing/date/20261002/20261002-103827_a-lap-costs-the-same-whatever-shape-you-fold-it-into.md)
-checks whether folding `caravan/cycle.rye`'s ring into a 2D torus changes its just-landed N-1 touch
-cost. It does not: a Hamiltonian lap crosses N-1 edges whatever layout carries it, a standard graph
-fact checked against `regions.rye`'s own `max_domains: u32 = 8` ceiling. The real difference a torus
-offers is parallel sub-rings -- two 4-domain rings at 3 touches apiece instead of one 8-domain ring
-at 7 -- named as unbuilt: nothing read in `capabilities.rye`, `regions.rye`, or `cycle.rye` composes
-two separately-verified sub-rings into one verified whole. B/82. **YOURS:** none -- the open half is
-a two-declaration process-supervision build, named for whichever lane wants it.
+**DIFFUSER -- THE 2D-LAYOUT ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-153253_itinerary-diffuser-2d-layout-account.md)
+-- the torus-layout reading and its named composition gap, B/82, `20261002`, nothing lost.
+
+**DIFFUSER -- THE FALSIFIER NAMED THE WRONG ROSTER.**
+[Read and closed](../active-designing/date/20261002/20261002-153253_the-falsifier-named-the-wrong-roster.md):
+the branching-tree essay's own falsifier asked whether `caravan/roster.rye`'s capability checks
+accept, refuse, or flatten a declared two-level tree. `caravan/roster.rye` never imports
+`channels.rye`, so its capability table answers a region-rights question entirely apart from
+channel shape -- it holds no view of a tree to flatten. `caravan/channels.rye`'s own `Graph` is the
+module that owns channel topology, and its four-case refusal surface answers every declared shape
+the same way, ring, star, tree, or disjoint components alike; `system.rye`'s `verify()` checks only
+non-isolation, never depth. B/82. **YOURS:** none -- whether `verify()` should someday refuse a
+shape by depth is Caravan's own open design question, named in the essay and unchanged by this
+reading.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -323,7 +328,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `dd1e25ffb5` -- the tip this rebase was built on, read before this commit (rule 5).
+**Git nib:** `dd1e25ffb5` -- the tip this rebase was built on, read before this commit (rule 2).
 
 ### Incense -- product captain
 
