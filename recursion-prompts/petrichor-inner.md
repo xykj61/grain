@@ -40,6 +40,8 @@ this lap hasn't checked) rather than re-running the identical grade-touch a four
 
 **Ruled `20261002.142242`.** The next fruit is one page, `docs-geode/tutorials/the-first-hour.md`. Grade it at Door. A reading below B takes one bounded molt. A reading at B or better is recorded, and the lap stops. `mantra/` and `tally/` stay closed. The Consent Rail stays with Diffuser. No second contract, and no shelf-wide sweep.
 
+**Landed `20261002.144620`.** The first hour grades A at Door, composite 91, register 87, truth 100. The page stands. No molt.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
