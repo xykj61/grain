@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.064055` | [copal rosters sunn12_riyo_writing_voice](20261002/20261002-064055_sunn12-roster.kyri) | twelfth unrostered chapter witness claimed, proven both ways, rostered; sunn11 account shelved to stay under the card's byte ceiling |
 | `20261002.063920` | [grass grades the real-edit-log essay](20261002/20261002-063920_grass-grades-the-edit-log-essay.kyri) | A, composite=90; serves Diffuser's wake-measurement lane, no repair owed |
 | `20261002.063341` | [grass grades the byte-level-falsifier essay](20261002/20261002-063341_grass-grades-byte-falsifier-essay.kyri) | reach=50 (grade 16), register/truth clean; dated testimony, no repair owed |
 | `20261002.063313` | [copal rosters sunn11_xykj61_onboarding](20261002/20261002-063313_copal-rosters-sunn11.kyri) | eleventh unrostered chapter witness claimed, proven both ways, rostered; nib carried through three peer pushes |

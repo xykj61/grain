@@ -8794,3 +8794,19 @@ guard sunn11_xykj61_onboarding
 path tools/gen/chapter/sunn11_xykj61_onboarding_witness.rish
 tier lap
 seated 20261002.062521
+
+# sunn12_riyo_writing_voice -- SUNN12 living writing-voice check, unrostered since it was written.
+# Reads RADIANT_STYLE.md for the Kyri-writer line, the SUNN12 cite, the KYRI.md cite, the fifth-OS
+# variant and Q-vane names, and the negative assertion refusing Quin as the writer; reads
+# CONTRIBUTING.md, ORGANIZING.md, GLOW_PROFILE.template.kyri, and both the Cursor-archive and
+# Claude twins of radiant-style, commit-messages, and session-logs for the same Kyri-voice facts;
+# reads context/QUIN.md for the OS hat and Q-vane, and context/LEXICON.md for the Riyo handover
+# sentence and the SUNN0- waymark span. Proven both ways on metal: a clean run reads GREEN, and
+# mutating RADIANT_STYLE.md's "fifth OS variant" to "fourth OS variant" reds the exact assertion
+# naming it, reverted clean after with zero working-tree diff. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-sunn12-riyo-writing-voice-roster before this entry landed.
+guard sunn12_riyo_writing_voice
+path tools/gen/chapter/sunn12_riyo_writing_voice_witness.rish
+tier lap
+seated 20261002.063838
