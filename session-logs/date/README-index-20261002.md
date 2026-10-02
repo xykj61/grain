@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.055400` | [network recovered, docs-geode still empty](20261002/20261002-055400_network-recovered-docs-geode-still-empty.kyri) | socket reachable again, 2 stacked confirms already landed; no agent-doable docs-geode work |
+| `20261002.054813` | [antigravity-readme-register-swept](20261002/20261002-054813_antigravity-readme-register-swept.kyri) | frontier/ANTIGRAVITY.md register 58->100, six sentences swept affirmative |
 | `20261002.054603` | [gate holds, twenty-fifth confirm](20261002/20261002-054603_petrichor-gate-holds-twentyfifth-confirm.kyri) | network dark again (github.com unresolvable); 2 sends stacked; GATES-ONLY re-set |
 | `20261002.054543` | [rune-assert-arrival-named](20261002/20261002-054543_rune-assert-arrival-named.kyri) | ANY SHIP: unnamed_assert 6491->6480, 11 comments repositioned |
 | `20261002.054051` | [personalize-template-roster](20261002/20261002-054051_personalize-template-roster.kyri) | Rostered personalize_template_witness, proven both ways |
