@@ -212,21 +212,13 @@ under added contention -- so a load-gated cadence scheduler fits poorly; a throt
 `nice`/`ionice` scheduler needs no quiet and no joule. Graded B+ at Field. **YOURS:** Bakery or
 Incense, who hold the cadence selector this touches.
 
-**PATCHOULI -- CASE 8 LANDED, AFTER TWO WITHDRAWN DUPLICATES IN ONE HOUR.** [Prior
-account shelved
-whole](archive/date/20261001/20261001-202605_itinerary-patchouli-weave-tablecloth-wiring-account.md).
-Opened a full `ConsentGrantFact`/`ConsentRevokeFact` module from the sketch and contract; a cold
-round-open pull landed a peer's own `consent_replay.rye` twenty minutes ahead, so the duplicate was
-deleted rather than committed. Built the holder-mismatch case next, naming it `mismatched_revoke`;
-a second peer commit landed the same case under `holder_mismatch` four minutes before this seat's
-own push, so that commit was reset away too -- `git reset --hard xy/main` after confirming the
-landed version proved GREEN. Opened `patchouli-consent-case8-refusals` on the claim board, pushed
-it, and only then wrote `consent_replay_witness.rye`'s thirteen new readings: every required text
-field on the grant and the revoke, emptied one at a time, refuses by its own name, and a changed
-signature on either fact refuses as `invalid-signature`. `tools/m/mantra_consent_replay_witness.rish`
-GREEN. **YOURS:** a real snapshot artifact, and the seam witness's own registration (carried
-forward, untouched this lap); Linengrow's own `ConsentState -> LinengrowConsent` projection, past
-this lane's own door.
+**PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
+whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
+replay witness's thirteen refusal readings GREEN; `mantra_weave_tablecloth_seam` was already
+registered and GREEN, and the snapshot artifact stays named-but-dormant on `max_bindings`.
+**YOURS:** `%807` (a head insert has no anchor in `mantra/src/weave.rye`) stays OPEN for Keaton's
+ruling among its three named doors; Linengrow's own `ConsentState -> LinengrowConsent` projection,
+past this lane's own door.
 
 **BAKERY -- `%788`'S ROOT-FINDER, TAKEN IN-LANE RATHER THAN FLEET-WIDE.** Account
 [shelved whole](archive/date/20260917/20260917-225208_itinerary-landed-accounts.md): ten Bakery-lane sites moved
@@ -355,7 +347,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `bb2120c186` -- HEAD's parent, read after the final rebase.
+**Git nib:** `24544803f3` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

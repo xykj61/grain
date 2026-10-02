@@ -1,5 +1,11 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261001.231851` -- walk-back nib `29d62351b7`.** Shelve Patchouli's live
+case-8 account whole from `construction/ITINERARY.md` into
+`construction/archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md`, over
+the pin's 40,960-byte bound by 78 bytes before this shed. Nothing lost: the shelved account keeps
+every word, and the living pin keeps a short pointer plus the one open YOURS item, `%807`.
+
 **Checkpoint `20261001.171839` -- walk-back nib `d2cf03d9fa`.** Deep removal of the two superseded
 mirror marks from living files and from history. The leak detectors were re-spelled with a bracket
 before the rewrite, so they still catch those marks afterward. Eight pier trees were level with
