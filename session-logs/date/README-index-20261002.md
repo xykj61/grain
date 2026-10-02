@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.014412` | [thirteenth lap: pushes two unpushed logs, re-reads the ledger clean](20261002/20261002-014412_thirteenth-lap-pushes-two-logs-then-confirms-empty.kyri) | round-opened two unpushed logs onto a peer commit, pushed to d50d8399c5, re-read REDS/claims/ITINERARY fresh, confirms empty queue |
+| `20261002.014256` | [rune_cell's memcpy calls migrated](20261002/20261002-014256_rune-cell-copy-disjoint.kyri) | copy_disjoint move GREEN; ratchet 132 to 130; pheromone's own fruit still waits on Keaton |
 | `20261002.014100` | [twelfth lap: Fire reads the ledger clean](20261002/20261002-014100_twelfth-lap-fire-reads-the-ledger-clean.kyri) | walked all 14 OPEN REDS rows by hand, none in mantra/tally; one unpushed commit found, push failed on DNS; recommends check-in |
 | `20261002.014016` | [houseplant roster sent after one rebase](20261002/20261002-014016_houseplant-roster-sent-after-rebase.kyri) | resolved a Git-nib merge conflict, trimmed the card back under bound, pushed to b6ad2274c2 |
 | `20261002.013502` | [eleventh lap: still empty, Aether reads an honest silence](20261002/20261002-013502_eleventh-lap-still-empty-aether-reads-honest-silence.kyri) | fresh REDS/ITINERARY/claims re-check, same two blocked rows; recommends check-in over a twelfth confirmation |

@@ -11,6 +11,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const tokens = @import("tokens.rye");
+const tally_copy = @import("tally_copy.rye");
 
 /// Ident ceiling -- Glow's one name length, owned by the lexer (`tokens.rye`), which is
 /// what decides where a name ends. Aliased rather than respelled, so this parser can
@@ -80,8 +81,8 @@ pub fn parse(line: []const u8) ParseError!CellSpec {
     if (rest.len != 0) return error.TrailingJunk;
 
     var spec: CellSpec = .{ .left_len = left.ident.len, .right_len = right.ident.len };
-    @memcpy(spec.left[0..left.ident.len], left.ident);
-    @memcpy(spec.right[0..right.ident.len], right.ident);
+    tally_copy.copy_disjoint(u8, spec.left[0..left.ident.len], left.ident);
+    tally_copy.copy_disjoint(u8, spec.right[0..right.ident.len], right.ident);
     // invariant: a constructed spec never claims more of its fixed buffers than
     // parse_ident already proved fit inside the lexer's name ceiling.
     assert(spec.left_len <= max_name_len);
