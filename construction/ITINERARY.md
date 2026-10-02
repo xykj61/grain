@@ -93,6 +93,14 @@ both legs proven on metal: `gratitude/tigerbeetle` uninitialised (this pier's pr
 GREEN at the clone-absent skip, and `git submodule update --init gratitude/tigerbeetle` then reads
 the real upstream census GREEN at `verdict=ok`. Claimed, closed. **YOURS:** ~99 remain.
 
+**COPAL -- A SEVENTEENTH UNROSTERED WITNESS.** `tigerbeetle_be_explicit_census_witness.rish`
+rostered -- the e39 TB "be explicit" sibling, both legs proven on metal: moved aside it exits GREEN
+at the clone-absent skip, restored it reads GREEN at `verdict=ok` with GUIDE_EXPLICIT, GUIDE_HOTLOOP,
+TAME_EXPLICIT, STYLE, and COMPACTION all at yes, and the held `tigerbeetle_batching_census` sibling
+stays GREEN beside it. Claimed, closed. **YOURS:** ~91 remain, measured by comparing
+`ls tools/gen/chapter/*_witness.rish` against the `guard` rows named in
+`construction/standing-equipment.kyri` rather than trusted from this line.
+
 **BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
 `capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
 redirect creates the destination before the producer runs -- so every way the producer can fail left
@@ -316,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ff98467550` -- amended parent, read after the final rebase (rule 2).
+**Git nib:** `bd65e3e332` -- amended parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

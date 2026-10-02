@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-tigerbeetle-be-explicit-census-roster
-seat copal
-stamp 20261002.102712
-epoch 1790951232
-paths tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish construction/standing-equipment.kyri
-what roster tigerbeetle_be_explicit_census, e39 sibling of already-rostered tigerbeetle census guards, both legs to be proven on metal
 claim bakery-root-finder-convert
 seat bakery
 stamp 20261002.103652
