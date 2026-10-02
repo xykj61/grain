@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.204206` | [empty holder id refused](20261001/20261001-204206_empty-holder-id-refused.kyri) | an empty holder id writes nothing |
 | `20261001.203914` | [consent section added to citizen door](20261001/20261001-203914_consent-section-added-to-citizen-door.kyri) | grant-then-revoke taught, witness named Patchouli's; B+/89 holds |
 | `20261001.203559` | [empty receipt id refused](20261001/20261001-203559_empty-receipt-id-refused.kyri) | an empty receipt id writes nothing |
 | `20261001.203446` | [contested-send-nib-stale](20261001/20261001-203446_contested-send-nib-stale.kyri) | three-rebase send landed; card nib stale under the named contested-send gap |
