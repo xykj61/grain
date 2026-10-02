@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.092147` | [petrichor reads the Earth rota row](20261002/20261002-092147_petrichor-rota-earth-lane-still-fallow.kyri) | REDS/link checks narrower than the standard sweep, plus the rota deep-read, both clean; sixth fallow read |
 | `20261002.091928` | [copal rosters sunn13_root_survey](20261002/20261002-091928_copal-rosters-sunn13-root-survey.kyri) | fourteenth unrostered chapter witness claimed, rostered, proven both ways, closed |
 | `20261002.091714` | [petrichor confirms lane fallow, declines override](20261002/20261002-091714_petrichor-lane-confirmed-fallow-no-override.kyri) | docs-geode queue empty, all items YOURS: none; cross-lane REDS claim declined as outside lane without deeper review |
 | `20261002.091613` | [grass tastes the water row](20261002/20261002-091613_grass-tastes-the-water-row-convergence-census.kyri) | ran the convergence census per the rota, confirmed two real unproven gaps, not a naming miss |
