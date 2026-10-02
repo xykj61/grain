@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.111449` | [The molt is scheduled](20261002/20261002-111449_lila-scheduled-fleet-ashore.kyri) | seven seats clocked out; the naming pass waits |
 | `20261002.110646` | [Lila and the long return](20261002/20261002-110646_lila-and-the-long-return.kyri) | joy ranks third; Lila keeps one job; names stay unseated |
 | `20261002.105702` | [The card is drawn](20261002/20261002-105702_the-card-is-drawn.kyri) | Skate holds 72 by 18; admission still counts two |
 | `20261002.104807` | [grass-earth-row-fallow-check](20261002/20261002-104807_grass-earth-row-fallow-check.kyri) | Earth row deep-read; pressed the two-rooms doorway witness, killed by its own outer timeout, inconclusive; lane stays empty |
