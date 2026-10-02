@@ -3,7 +3,7 @@ stamp 20260826.013711
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal d9b38999995c172e43bdca483759b7bb3a129eafcc8a4da10ca6e93a81cbb900c4cbed60eac81bc0685a2a195c47043b39d33af6061b77d7c1484ed291ed1f59
+seal 2213dbdc92cc3efd175a8c138fdf13eace67a4e03f77ae24173a031fd4d86ba0c87b8646762065c82b5aca9c9a84e933f7b0289c379222ae77cb8118c5b61d9c
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
@@ -16,8 +16,11 @@ seal d9b38999995c172e43bdca483759b7bb3a129eafcc8a4da10ca6e93a81cbb900c4cbed60eac
 # Re-sealed 20260827.203000: AHOY appended -- seated in the rule table since the front-door chapter and absent here,
 # so the registry that calls itself the record of EVERY mark was missing one. Derived on metal from its recorded input
 # (sha3-512 b7aa8eb8 -> index 65 of 5526 -> AHOY), which is why the row could be added rather than invented.
+# Re-sealed 20261002.153434: AHOY molted. The old slug stays on that row so the draw still re-derives.
+# The living front-door slug draws AMIR (sha3-512 7c4f9389 -> index 134 of 5526).
 # ---- sealed body ----
-mark AHOY | input root-readme-lindy-foundation-weave-and-seed-legitimacy | index 65 | status living | note seated
+mark AHOY | input root-readme-lindy-foundation-weave-and-seed-legitimacy | index 65 | status molted | note molted 20261002 to AMIR; the old slug stays so this draw still re-derives
+mark AMIR | input root-readme-long-return-foundation-weave-and-seed-legitimacy | index 134 | status living | note front-door chapter, molted from AHOY 20261002
 mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
 mark AYRE | input harvest-season-equinox-2-trade | index 266 | status living | note seated
 mark BUHR | input realidream-surface-and-quin-inference-and-mcp-2 | index 572 | status living | note seated

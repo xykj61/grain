@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.153434` | [The front door draws AMIR](20261002/20261002-153434_the-front-door-draws-amir.kyri) | front-door waymark molts from AHOY to AMIR |
 | `20261002.153112` | [the one branching tree](20261002/20261002-153112_the-one-branching-tree.kyri) | cycle-rank census finds Aurora's shared roster the only branching tree in Caravan's catalog |
 | `20261002.152809` | [ep010 roster -- eighth of the remaining ironbeetle witnesses](20261002/20261002-152809_ironbeetle-ep010-roster.kyri) | ironbeetle_ep010_census rostered, proven on metal three ways |
 | `20261002.152347` | [The waymark speaks the names](20261002/20261002-152347_the-waymark-speaks-the-names.kyri) | AHOY's readable line names the pointer and the lasting rewrite |

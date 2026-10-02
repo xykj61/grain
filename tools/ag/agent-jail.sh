@@ -83,7 +83,7 @@ Unattended season run (resume + skip permissions):
   ./tools/ag/agent-jail.sh --resume=RESUME_SESSION_ID --dangerously-skip-permissions claude
   ./tools/ag/agent-jail.sh --continue --dangerously-skip-permissions claude
   ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude \
-    -p 'Read construction/ITINERARY.md, then continue AHOY and WADE per Lila and the Long Return. kg the next rung, send each round, recur.'
+    -p 'Read construction/ITINERARY.md, then continue AMIR and WADE per Lila and the Long Return. kg the next rung, send each round, recur.'
 
   Rish preferred entry: rishi/bin/rishi run tools/l/launch-claude-chapter.rish
 EOF

@@ -226,3 +226,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.151933` seated the shorthand on the lexicon door.** The row for Lila-first, return-first was already seated. The door line still said scheduled. It now says seated.
 
 **Lap `20261002.152347` named the AHOY chapter in the living words.** The seated slug stays. The readable line now says the rewrite was written to last, and the old foundation is a pointer.
+
+**Lap `20261002.153434` molted the front-door waymark.** The old slug stays on AHOY so that draw still re-derives. The living slug draws AMIR, index 134, and the registry is sealed again. The witness reads GREEN.
