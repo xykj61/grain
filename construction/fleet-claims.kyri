@@ -65,3 +65,9 @@ stamp 20261002.102712
 epoch 1790951232
 paths tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish construction/standing-equipment.kyri
 what roster tigerbeetle_be_explicit_census, e39 sibling of already-rostered tigerbeetle census guards, both legs to be proven on metal
+claim bakery-root-finder-convert
+seat bakery
+stamp 20261002.103652
+epoch 1790951812
+paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
+what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
