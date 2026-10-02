@@ -8601,7 +8601,7 @@ seated 20261002.010129
 
 # receipt_chain -- bakery's lane crux names one shared build cache and one shared cold-run cache
 # across the pier's eight checkouts, and that crux ASSUMED the scoped-receipt chain was advancing
-# and merely private. tools/fixtures/s/receipt_chain_scan.sh reads all eight copies of
+# and merely private. tools/fixtures/r/receipt_chain_scan.sh reads all eight copies of
 # construction/standing-equipment-receipt.kyri at once -- a file .gitignore denies, so no ship ever
 # reads another's -- and answers whether there is a live basis to share. Read on the seating lap:
 # seats_with_receipt=8, the newest stamp 388 hours old, the narrowest candidate basis diffing 11,164
@@ -8623,17 +8623,18 @@ seated 20261002.010129
 # date -j -f on BSD, and macOS ships the second, so the first spelling of this scan would have read
 # newest_age_hours=-1 on the other pier and never answered alive at all -- an unplanted miss that
 # reads exactly like a chain with no fresh basis. It sources tools/fixtures/s/shell_portable.sh from
-# its own letter room, beside the roster parser and for the same reason: a pen copying the scan to
-# its shipped path exercises the real resolution, where an upward walk for a tree root would escape
-# a pen holding no rishi/bin. The staged dialect wall is what caught it, before the first send.
-# Proven by tools/fixtures/s/receipt_chain_control.sh: 60 legs on a real pen pier in a throwaway
+# the tree root this scan already computes, since the letter-room fold moved this scan to r while
+# the helper stays in s -- a pen copying the scan to its shipped path still exercises the real
+# resolution, where an upward walk for a tree root would escape a pen holding no rishi/bin. The
+# staged dialect wall is what caught it, before the first send.
+# Proven by tools/fixtures/r/receipt_chain_control.sh: 60 legs on a real pen pier in a throwaway
 # directory, every refusal planted and then lifted, both bounds (24 hours, one tenth of the tree)
 # shown from both sides, and four mutations asserted to bite -- the full-scope test, the head-held
 # test, the saving subtraction, and a fourth verdict word. Each mutation's state is built
 # deliberately, since one planted into a state that cannot express it reads exactly like one that
 # does not bite.
 guard receipt_chain
-path tools/s/receipt_chain_witness.rish
+path tools/r/receipt_chain_witness.rish
 tier lap
 seated 20261002.004336
 

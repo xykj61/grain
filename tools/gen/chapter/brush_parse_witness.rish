@@ -102,7 +102,7 @@ assert widths.ok else "brush-parse: width pins scan failed"
 assert widths.out contains "WIDTH" else "brush-parse: named bounds / u32 seam helper missing"
 
 say "brush-parse: planted refusal control..."
-let control = run ["sh" "tools/fixtures/g/brush_parse_control.sh"]
+let control = run ["sh" "tools/fixtures/b/brush_parse_control.sh"]
 assert control.ok else "brush-parse: planted refusal control failed"
 assert control.out contains "verdict=ok" else "brush-parse: planted refusal control did not reach ok"
 

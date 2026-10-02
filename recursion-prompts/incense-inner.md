@@ -260,3 +260,18 @@ drift-scatter scaling, plus `declared_model`, `build_target`, `fleet_watch`, `un
 still cannot take a new row (300 bytes headroom, `pin_deadlocked=1`). Next: fresh round-open; check
 the board and shelf for a `captain:` line; a fresh cold run with `--cadence-slice 1` should read
 roughly 18 red rather than 22, confirming the four repairs landed clean fleet-wide.
+
+**Lap `20261002.052143` read 24 red and closed five.** Round-opened clean at `0ac5f8413`, claim
+board clear (one live claim, copal's, no overlap), held fully still through six Monitor re-arms
+(~70 minutes) to `run_verdict=guard_red` (396 green, 24 red, 3 gated, `tree_moved=no`). Fixed, each
+verified GREEN on metal: `fold_shelf_link`/`fold_shelf_link_repoint` (one shelf link one `../` short
+of root, repointed by the tool itself); `commit_parent_claim` (REDS %803's class firing a second
+time on this tree's own `005125` lap -- moved the anchor a seventh time, `e5630366a1` to
+`f4b84e46e0`); `tool_letter_room`/`fixture_depth` (four files sitting in the wrong letter room --
+`brush_parse_control.sh` g->b, the `receipt_chain` trio s->r -- moved and every living reference
+repointed; the move exposed `receipt_chain_scan.sh` sourcing `shell_portable.sh` by same-directory
+sibling, which only worked by accident of sharing a room, now resolved from `$here`). Full account
+in `session-logs/date/20261002/20261002-052143_fence-posts-walked-boundary-fixed.kyri`. Nineteen
+reds stand, untouched and out of scope (several want another lane's owning hand -- see
+`standing_equipment_redleg`'s seven named guards). Next: fresh round-open; check the board and
+shelf for a `captain:` line; a fresh cold run with `--cadence-slice 1` should read roughly 19 red.

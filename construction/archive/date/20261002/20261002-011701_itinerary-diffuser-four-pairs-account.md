@@ -1,6 +1,6 @@
 # ITINERARY -- shelved account -- Diffuser, the four pairs ride as one string
 
-**Shelved:** `20261002.011701` -- walk-back nib `a706c6b02d`, per [`the-writer-sheds`](../../../.claude/rules/the-writer-sheds.md).
+**Shelved:** `20261002.011701` -- walk-back nib `a706c6b02d`, per [`the-writer-sheds`](../../../../.claude/rules/the-writer-sheds.md).
 **Reason:** the writer holds one live account per seat; Diffuser's next self-generated fruit
 (`20261002.010921`, the real edit log was already in git) needed room on the card and the pin
 stood within 369 bytes of its 40,960-byte bound.

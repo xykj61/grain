@@ -139,7 +139,7 @@ success after a planted `cat` failure leaves zero bytes, and its control still s
 
 **BAKERY -- A PARKED INSTRUMENT FAMILY LANDED, AND IT SAYS THE SHARED BASIS IS NOT THERE.**
 `receipt_chain` rostered in `construction/standing-equipment.kyri` at tier `lap`, GREEN on metal.
-`tools/fixtures/s/receipt_chain_scan.sh` reads all eight copies of
+`tools/fixtures/r/receipt_chain_scan.sh` reads all eight copies of
 `construction/standing-equipment-receipt.kyri` at once and answers the lane crux's own premise:
 `seats_with_receipt=8`, newest stamp **388 hours** old, narrowest candidate basis diffing **11,164
 of 20,855** tracked files (53 percent), sharing it sparing this ship **24** files of 11,188, and
@@ -147,7 +147,7 @@ of 20,855** tracked files (53 percent), sharing it sparing this ship **24** file
 the crux belongs on what blocks the chain rather than on the sharing step. `portable_undecidable=7`
 and `portable_proven=0`: a receipt records no clean-tree field, so a peer cannot tell a
 commit-property green from a working-tree-property one. Reported, gated on nothing -- a receipt is
-withheld by a red, a custody gate, or `tree_moved`, and the third is ordinary here. `tools/fixtures/s/receipt_chain_control.sh` proves it:
+withheld by a red, a custody gate, or `tree_moved`, and the third is ordinary here. `tools/fixtures/r/receipt_chain_control.sh` proves it:
 **60 legs** on a real pen pier, both bounds shown from both sides, four mutations bitten. All three
 files stood in `stash@{0}` alone, absent from every ref, and the staged wall caught one real fault
 in them: a GNU-only `date -d` that reads EMPTY on the macOS pier, now the portable `stamp_epoch`
@@ -354,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `36331d13e4` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `687b7f8f87` -- HEAD read before this follow-up (rule 5).
 
 ### Incense -- product captain
 

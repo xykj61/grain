@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/s/receipt_chain_scan.sh -- is this pier's scoped-receipt chain alive?
+# tools/fixtures/r/receipt_chain_scan.sh -- is this pier's scoped-receipt chain alive?
 #
 # WHAT IT READS. `tools/fixtures/s/standing_equipment_run.sh --scoped` proves the DELTA since the
 # last fully green FULL close, and it finds that close in `construction/standing-equipment-receipt.kyri`
@@ -31,8 +31,8 @@
 # repair, which is the shape `.claude/rules/derived-spine.md` names as a gate somebody turns off.
 #
 # USAGE
-#   sh tools/fixtures/s/receipt_chain_scan.sh            # the pier reading
-#   sh tools/fixtures/s/receipt_chain_scan.sh --seats     # one line per seat, then the totals
+#   sh tools/fixtures/r/receipt_chain_scan.sh            # the pier reading
+#   sh tools/fixtures/r/receipt_chain_scan.sh --seats     # one line per seat, then the totals
 #
 # HOW A CONTROL DRIVES IT. No environment override at all: the scan resolves its own tree from the
 # script's path and the pier from that tree's parent, so a control builds a pen shaped exactly like
@@ -47,14 +47,14 @@ here=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd) || exit 1
 # the roster FILE through `FLEET_ROSTER`, which is that parser's own documented override -- one
 # parse serves every caller, which is the whole reason the roster scan exists.
 roster="$(CDPATH= cd -- "$(dirname -- "$0")/../f" && pwd)/fleet_roster_scan.sh"
-# ONE SHELL DIALECT, sourced from this script's OWN letter room rather than from the tree root. A
-# stamp reaches epoch seconds through `date -d` on GNU and `date -j -f` on BSD, and macOS ships the
-# second: left to one spelling the age reads EMPTY on the other pier, which is the shape
-# `tools/fixtures/s/shell_portable.sh` exists to close -- an unplanted zero reads exactly like a
-# healthy tree. Resolved beside the script for the same reason the roster above is: a pen copying
-# this scan to its shipped path exercises the real resolution, and an upward walk for a tree root
-# would escape a pen that holds no `rishi/bin`.
-portable="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/shell_portable.sh"
+# ONE SHELL DIALECT. A stamp reaches epoch seconds through `date -d` on GNU and `date -j -f` on
+# BSD, and macOS ships the second: left to one spelling the age reads EMPTY on the other pier,
+# which is the shape `tools/fixtures/s/shell_portable.sh` exists to close -- an unplanted zero
+# reads exactly like a healthy tree. Resolved from `$here`, the tree root this scan already
+# computes, rather than beside the script: the letter-room fold means this scan's own room need
+# not match the helper's `s`, where the roster above may stay a sibling lookup because `f` is
+# always one directory over from wherever this script's own room sits.
+portable="$here/tools/fixtures/s/shell_portable.sh"
 pier=$(dirname "$here")
 
 want_seats=no
