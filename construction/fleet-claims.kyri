@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-sunn13-root-survey-roster
-seat copal
-stamp 20261002.070417
-epoch 1790939057
-paths tools/gen/chapter/sunn13_root_survey_witness.rish construction/standing-equipment.kyri
-what roster the unrostered sunn13_root_survey_witness chapter witness, proven both ways
 claim incense-cold-run-check-16red
 seat incense
 stamp 20261002.091216
