@@ -1,0 +1,24 @@
+::  name       dimeroll intake field count
+::  shape      fields - int (@u32)
+::  invariant  a DimerollReceiptIntake carries exactly seven fields
+::             (receipt_id - source_fact - evidence_status - offered_value -
+::             value_unit - recognition_status - journal_entry_count)
+::  example    7
+::  readers    Mantra - Glow Tend - Sur museum - Patchouli weave
+::  nib        equinox-e208-mantra-tend-v0
+::
+::  Equinox e208 - Mantra M9 -- ninth Mantra structure pedestal in src/shape/.
+::  Names DimerollReceiptIntake's field count from
+::  mantra/src/dimeroll_receipt_offer.rye, the receipt contract's evidence-
+::  only projection (case 2's sibling): an offer is evidence, not a journal
+::  entry, so `recognition_status` reads `unrecognized-offer` and
+::  `journal_entry_count` reads 0 for this milestone. Pedestal only; Rye
+::  still owns the projection function and its own comptime assert.
+::
+::  Seven sits under rune_shape.max_fields (15); this pedestal does not
+::  raise it. Smaller than the eleven-field Linengrow receipt by design --
+::  evidence names a source and a status rather than restating the offer's
+::  own terms.
++$  dimeroll-intake-field-count-shape
+  $:  fields=@u32
+  ==

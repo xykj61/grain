@@ -1,0 +1,56 @@
+# tools/m/mantra_glow_tend_limb8_witness.rish -- Mantra M8 in src/shape/.
+#
+#   rishi/bin/rishi run tools/m/mantra_glow_tend_limb8_witness.rish
+
+say "mantra-tend-8: Language EN -- Mantra Glow Tend limb 8 (sur museum)."
+say "mantra-tend-8: Style Radiant -- Linengrow's own receipt, eleven fields."
+say "mantra-tend-8: Lens TAME -- Ashvini nest-only - Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-linengrow-receipt-field-count.glow"
+let elder = "mantra/src/linengrow_receipt_offer.rye"
+
+say "mantra-tend-8: placard..."
+let placard = run ["sh" "-c" "head -n 10 src/shape/shape-linengrow-receipt-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "mantra-tend-8: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "mantra-tend-8: placard missing six lines"
+
+let pex = run ["sh" "-c" "grep -q 'example    11' src/shape/shape-linengrow-receipt-field-count.glow"]
+assert pex.ok else "mantra-tend-8: example 11 missing"
+let pelder = run ["sh" "-c" "grep -q 'mantra/src/linengrow_receipt_offer.rye' src/shape/shape-linengrow-receipt-field-count.glow"]
+assert pelder.ok else "mantra-tend-8: citation missing"
+
+# The claim is the placard's own, read against the rye rather than copied a second time here --
+# the same discipline the limb5 and limb7 witnesses already carry: a guard holding its own copy
+# of a number can only ever agree with itself.
+say "mantra-tend-8: the placard's own number, read against LinengrowReceipt..."
+let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-linengrow-receipt-field-count.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert declared.ok else "mantra-tend-8: the placard's example line is unreadable"
+let want = trim declared.out
+let counted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" elder "LinengrowReceipt"]
+assert counted.ok else "mantra-tend-8: the field reader refused on LinengrowReceipt -- ${counted.out_brief}"
+let got = trim counted.out
+assert got == want else "mantra-tend-8: LinengrowReceipt declares ${got} fields where the placard says ${want}"
+let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" elder "LinengrowReceipt"]
+assert named.ok else "mantra-tend-8: the field reader refused on LinengrowReceipt fields -- ${named.out_brief}"
+let gotfields = trim named.out
+assert gotfields == "receipt_id product_id purpose recipient_id offered_value value_unit value_basis promised_return issued_at expires_at status" else "mantra-tend-8: LinengrowReceipt fields missing or reordered in the rye -- ${gotfields}"
+
+# The struct's own comptime proof, read rather than trusted by name -- receipt_fields is the
+# number from_snapshot's comptime assert ties to @typeInfo(LinengrowReceipt).fields.len, so a
+# field added without updating it fails the Rye build before this placard could ever drift.
+say "mantra-tend-8: the module's own stated field count agrees..."
+let stated = run ["sh" "-c" "grep -q 'pub const receipt_fields = 11;' mantra/src/linengrow_receipt_offer.rye"]
+assert stated.ok else "mantra-tend-8: receipt_fields moved off 11 in the rye"
+
+say "mantra-tend-8: lower and run the desk..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "mantra-tend-8: linengrow receipt shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "mantra-tend-8: linengrow receipt shape did not exit 0"
+
+say "mantra-tend-8: max_fields untouched..."
+let ceiling = run ["sh" "-c" "grep -q 'max_fields: u32 = 15' glow/rune_shape.rye"]
+assert ceiling.ok else "mantra-tend-8: rune_shape.max_fields moved off 15 -- this fruit must not raise it"
+
+say "GREEN: mantra Glow Tend limb 8 -- Linengrow's own receipt, eleven fields, in src/shape/."

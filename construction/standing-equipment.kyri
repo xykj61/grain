@@ -8582,6 +8582,32 @@ path tools/m/mantra_glow_tend_limb7_witness.rish
 tier lap
 seated 20261002.144821
 
+# mantra_glow_tend_limb8 -- the eighth Mantra structure pedestal in src/shape/.
+# shape-linengrow-receipt-field-count.glow names LinengrowReceipt's eleven fields (receipt_id -
+# product_id - purpose - recipient_id - offered_value - value_unit - value_basis -
+# promised_return - issued_at - expires_at - status), read from
+# mantra/src/linengrow_receipt_offer.rye via tools/fixtures/r/rye_struct_fields_scan.sh, the same
+# discipline limb5 and limb7 above prove. LinengrowReceipt is the receipt contract's Linengrow
+# projection -- the holder-readable view ITINERARY's Pheromone lane names as "both projections."
+# Eleven sits under glow/rune_shape.rye's max_fields (15); the witness asserts that constant
+# stayed put.
+guard mantra_glow_tend_limb8
+path tools/m/mantra_glow_tend_limb8_witness.rish
+tier lap
+seated 20261002.153600
+
+# mantra_glow_tend_limb9 -- the ninth Mantra structure pedestal in src/shape/.
+# shape-dimeroll-intake-field-count.glow names DimerollReceiptIntake's seven fields (receipt_id -
+# source_fact - evidence_status - offered_value - value_unit - recognition_status -
+# journal_entry_count), read from mantra/src/dimeroll_receipt_offer.rye via
+# tools/fixtures/r/rye_struct_fields_scan.sh, the same discipline limb8 above proves. It is the
+# receipt contract's Dimeroll projection, the second of "both projections." Seven sits under
+# glow/rune_shape.rye's max_fields (15); the witness asserts that constant stayed put.
+guard mantra_glow_tend_limb9
+path tools/m/mantra_glow_tend_limb9_witness.rish
+tier lap
+seated 20261002.153600
+
 # date_dialect -- an unrostered chapter witness, repaired before rostering (REDS `20261002.000949`).
 # It pinned exact library counts (law_library_dated=17, compact=17) from the day it was written,
 # while the scan it calls, tools/fixtures/d/date_dialect_scan.sh, already carries the floor fix for

@@ -1,7 +1,7 @@
 # shape -- Structures
 
 **Language:** EN  
-**Last updated:** `20261002.143937` (three Mantra consent/receipt pedestals added to the table they were missing from)  
+**Last updated:** `20261002.153600` (Mantra M8/M9 -- the receipt contract's two projection pedestals)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth + Spool Cloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -55,6 +55,8 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-consent-grant.glow`](shape-consent-grant.glow) | `ConsentGrantFact` nine fields (Tend M5) | `tools/m/mantra_glow_tend_limb5_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`) |
 | [`shape-consent-revoke.glow`](shape-consent-revoke.glow) | `ConsentRevokeFact` seven fields (Tend M6) | same |
 | [`shape-receipt-offer.glow`](shape-receipt-offer.glow) | `ReceiptOfferFact` fifteen fields, at `rune_shape.max_fields`'s own ceiling (Tend M7) | `tools/m/mantra_glow_tend_limb7_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`, once the struct was filed one field to a line so the scan could see it) |
+| [`shape-linengrow-receipt-field-count.glow`](shape-linengrow-receipt-field-count.glow) | `LinengrowReceipt` eleven fields -- the receipt contract's Linengrow (holder-readable) projection (Tend M8) | `tools/m/mantra_glow_tend_limb8_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`) |
+| [`shape-dimeroll-intake-field-count.glow`](shape-dimeroll-intake-field-count.glow) | `DimerollReceiptIntake` seven fields -- the receipt contract's Dimeroll (evidence-only) projection (Tend M9) | `tools/m/mantra_glow_tend_limb9_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

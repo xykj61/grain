@@ -1,0 +1,23 @@
+::  name       linengrow receipt field count
+::  shape      fields - int (@u32)
+::  invariant  a LinengrowReceipt carries exactly eleven fields (receipt_id -
+::             product_id - purpose - recipient_id - offered_value -
+::             value_unit - value_basis - promised_return - issued_at -
+::             expires_at - status)
+::  example    11
+::  readers    Mantra - Glow Tend - Sur museum - Patchouli weave
+::  nib        equinox-e208-mantra-tend-v0
+::
+::  Equinox e208 - Mantra M8 -- eighth Mantra structure pedestal in src/shape/.
+::  Names LinengrowReceipt's field count from
+::  mantra/src/linengrow_receipt_offer.rye, the receipt contract's holder-
+::  readable projection (case 2): raw product bytes stay absent from every
+::  field, and `from_snapshot` reports one of exactly two published statuses.
+::  Pedestal only; Rye still owns the projection function and its own
+::  comptime assert.
+::
+::  Eleven sits under rune_shape.max_fields (15); this pedestal does not
+::  raise it.
++$  linengrow-receipt-field-count-shape
+  $:  fields=@u32
+  ==

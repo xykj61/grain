@@ -85,6 +85,22 @@ missing while it was open -- consent grant, consent revoke, and this one -- sinc
 stood in the table before. `mantra/src/receipt_offer.rye`'s one whitespace-only reformat aside,
 `tally/` and `glow/rune_shape.rye` are untouched. A new rune returns to Incense.
 
+**The fruit ruled `20261002.152352` closed `20261002.153600`.** Two more pedestals, read from
+ITINERARY's own step 2 ("carry them through lowering into Mantra and both projections"):
+`src/shape/shape-linengrow-receipt-field-count.glow` names `LinengrowReceipt`'s eleven fields
+(the receipt contract's Linengrow projection) and `src/shape/shape-dimeroll-intake-field-count.glow`
+names `DimerollReceiptIntake`'s seven fields (the Dimeroll projection), both read from
+`mantra/src/linengrow_receipt_offer.rye` and `mantra/src/dimeroll_receipt_offer.rye` in the same
+form limb5/limb7/limb8 already use. Two witnesses,
+`tools/m/mantra_glow_tend_limb8_witness.rish` and `tools/m/mantra_glow_tend_limb9_witness.rish`,
+each prove the placard's declared count and field order against the rye via
+`tools/fixtures/r/rye_struct_fields_scan.sh`, check the struct's own comptime field-count
+constant, lower and run the desk, and assert `rune_shape.max_fields` stayed at 15. Both GREEN on
+metal. Rostered into `construction/standing-equipment.kyri` as limb8 and limb9.
+`src/shape/README.md` gained the two rows. Neither `mantra/src/receipt_offer.rye`,
+`mantra/src/consent_replay.rye`, `tally/`, nor `glow/rune_shape.rye` was touched. A new rune
+returns to Incense.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

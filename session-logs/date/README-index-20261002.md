@@ -13,6 +13,7 @@
 | `20261002.155456` | [check in -- no new fruit waits](20261002/20261002-155456_check-in-no-new-fruit.kyri) | docs-geode confirmed clean and graded; no booked row elsewhere stands unclaimed for Petrichor |
 | `20261002.155144` | [The scan found none](20261002/20261002-155144_the-scan-found-none.kyri) | mantra/tally chronological-header scan confirms both families already molted; queue empty |
 | `20261002.155028` | [the rings this lane built carry no radius](20261002/20261002-155028_the-rings-this-lane-built-carry-no-radius.kyri) | today's ring/chain thread confirmed geometry-free, checked against the torus ladder's own row 4 and row 5 |
+| `20261002.154844` | [linengrow/dimeroll field pedestals](20261002/20261002-154844_linengrow-dimeroll-field-pedestals.kyri) | Mantra Tend M8/M9: both receipt-contract projection structs pedestaled and GREEN |
 | `20261002.154222` | [Git nib field repointed](20261002/20261002-154222_git-nib-repoint-follow-up.kyri) | rebase conflict left a stale nib; follow-up commit names the pushed HEAD |
 | `20261002.154100` | [water tastes the first hour twice](20261002/20261002-154100_water-tastes-the-first-hour-twice.kyri) | re-ran the-first-hour.md's grade, confirmed A/91, no new fruit to open |
 | `20261002.154049` | [String over the retired word](20261002/20261002-154049_string-over-the-retired-word.kyri) | string seats as the naming word, same shelf as red over bug |
