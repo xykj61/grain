@@ -121,13 +121,16 @@ whole](archive/date/20261002/20261002-013013_itinerary-copal-glow-connector-seam
 **COPAL.** [Houseplant_glossary account shelved
 whole](archive/date/20261002/20261002-014757_itinerary-copal-houseplant-glossary-account.md).
 
-**COPAL -- A FOURTH UNROSTERED WITNESS, ALREADY PROVEN BOTH WAYS.** `cion_module_labeling`
-rostered into `construction/standing-equipment.kyri`, GREEN on metal both through
-`rishi/bin/rishi run` and `standing_equipment_run.sh --detach`, `tree_moved=no`. No companion
-negative file was needed: the witness already carries a planted-bad and a planted-good fixture of
-its own. Claimed and closed as `copal-cion-module-labeling-roster`. **YOURS:** same open rostering
-question as the shelved accounts above -- ~113 witnesses remain, many in batch families
-(`ironbeetle_ep*`, `tigerbeetle_*`, `surface_season_p*`), Keaton's word on individual vs. batch.
+**COPAL.** [Cion_module_labeling account shelved
+whole](archive/date/20261002/20261002-023653_itinerary-copal-cion-module-labeling-account.md).
+
+**COPAL -- A FIFTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `safe_list_census` rostered into
+`construction/standing-equipment.kyri`, GREEN both through `rishi/bin/rishi run` and a scoped
+`standing_equipment_run.sh --detach safe_list_census` pass, `run_verdict=ok`, `tree_moved=no`.
+Claimed and closed as `copal-safe-list-census-roster`. **YOURS:** same open rostering question as
+the shelved accounts above -- ~112 witnesses remain, Keaton's word on individual vs. batch. One
+stale RED found and left unbooked, matching the prior lap's own treatment of six siblings -- see
+this lap's session log.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
@@ -354,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f431779a81` -- HEAD's parent, read after the final rebase.
+**Git nib:** `443e8ade10` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
