@@ -28,6 +28,7 @@ pub const ConsentError = error{
     InvalidSignature,
     TooManyFacts,
     OrphanedRevoke,
+    HolderMismatch,
 };
 
 pub const Status = enum { granted, revoked };
@@ -73,9 +74,9 @@ pub fn grant_eql(a: ConsentGrantFact, b: ConsentGrantFact) bool {
 
 fn error_of(reason: refusal.Reason) ConsentError {
     // invariant: this mapping names only the reasons a consent admission throws.
-    assert(@typeInfo(refusal.Reason).@"enum".fields.len >= 12);
-    // invariant: an orphaned revoke is the relationship refusal this module owns.
-    assert(refusal.Reason.orphaned_revoke.name().len > 0);
+    assert(@typeInfo(refusal.Reason).@"enum".fields.len == 13);
+    // invariant: a holder mismatch is the relationship refusal this lap owns.
+    assert(refusal.Reason.holder_mismatch.name().len > 0);
     return switch (reason) {
         .empty => ConsentError.Empty,
         .non_ascii => ConsentError.NonAscii,
@@ -84,6 +85,7 @@ fn error_of(reason: refusal.Reason) ConsentError {
         .invalid_signature => ConsentError.InvalidSignature,
         .too_many_facts => ConsentError.TooManyFacts,
         .orphaned_revoke => ConsentError.OrphanedRevoke,
+        .holder_mismatch => ConsentError.HolderMismatch,
         .wrong_length, .amount_too_large, .invalid_expiration, .unsuitable_value_unit, .no_admitted_fact => ConsentError.UnknownSchema,
     };
 }
@@ -142,6 +144,7 @@ pub const Log = struct {
         if (text("revoke_id", fact.revoke_id, max_identifier_bytes)) |r| return r;
         if (text("grant_id", fact.grant_id, max_identifier_bytes)) |r| return r;
         if (text("holder_id", fact.holder_id, max_identifier_bytes)) |r| return r;
+        if (!std.mem.eql(u8, fact.holder_id, admitted.holder_id)) return .{ .field = "holder_id", .reason = .holder_mismatch };
         if (text("revoked_at", fact.revoked_at, max_identifier_bytes)) |r| return r;
         if (text("signer_id", fact.signer_id, max_identifier_bytes)) |r| return r;
         if (text("signature", fact.signature, max_signature_bytes)) |r| return r;

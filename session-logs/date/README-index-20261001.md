@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.202425` | [holder mismatch refused](20261001/20261001-202425_holder-mismatch-refused.kyri) | a different holder writes nothing; the grant remains |
 | `20261001.201711` | [consent replay landed](20261001/20261001-201711_consent-replay-landed.kyri) | grant then revoke; the grant remains; orphan writes nothing |
 | `20261001.201644` | [dated-roof-divergence-roster](20261001/20261001-201644_dated-roof-divergence-roster.kyri) | dated_roof_divergence_witness rostered, GREEN both ways |
 | `20261001.201207` | [SECURITY.md register repair](20261001/20261001-201207_security-md-register-repair.kyri) | C+/76 to A/93; seven negative sentences rewrote affirmative |
