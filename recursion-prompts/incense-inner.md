@@ -179,3 +179,12 @@ already written into rule pages rather than a guard a lap closes by code. Tagged
 earth row's own rota reading rather than forcing a harvest. Next: a human glance at those five rows,
 the `%642` scrub trade, or the wire-ceiling door is what actually opens new work here; a third
 identical reading would teach nothing past this one.
+
+**Lap `20261002.185233` closed its own claim and found a third fallow reading.** Round-opened at
+`68b4ca7190` (one new upstream commit: patchouli's mantra/tally queue reads empty too). Closed the
+stale `incense-linengrow-witness-walker` claim, since the rye_witness_walker ceiling already fell to
+zero. The ledger's OPEN set read this lap as `%827 %826 %807 %804 %788 %734` -- a different roll
+than the prior lap named, each row verified by its own last bold marker rather than any grep -- and
+every one wants either Keaton's word, another lane's ownership (Mantra's diff/weave for `%807`, the
+sow manifest for `%804`, Lotus's parallel-build race for `%734`), or is bakery's own claimed `%788`.
+No third law-lane task stands. Next: unchanged from the prior lap's own line.
