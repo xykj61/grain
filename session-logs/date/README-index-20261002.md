@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.160949` | [ep011 roster and the board swept clean behind it](20261002/20261002-160949_ep011-roster-and-board-swept.kyri) | Rostered ep011 census witness, closed two stale claims |
 | `20261002.160829` | [A sprig is a string](20261002/20261002-160829_a-sprig-is-a-string.kyri) | the filename word and the naming word are one |
 | `20261002.160744` | [living_mutant_shred_prep rostered, two call sites](20261002/20261002-160744_living-mutant-shred-prep-second-call-site.kyri) | second claim-as-override repair; stale-shelf fault hit twice in one witness; REDS pin folded back under bound |
 | `20261002.160734` | [a different check than the last five](20261002/20261002-160734_a-different-check-than-the-last-five.kyri) | ran the Bhakta and living-docs-lint witnesses and read the claims board instead of re-grading the-first-hour; both GREEN, no unclaimed lap in reach |

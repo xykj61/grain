@@ -80,6 +80,17 @@ claim-path exemption, and the remaining unrostered chapter witnesses -- all Keat
 account](archive/date/20261002/20261002-092614_itinerary-copal-fifteen-roster-accounts-fold.md) --
 voice_roster through sunn13_root_survey, all landed and closed.
 
+**COPAL -- A NINTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep011_census_witness.rish`
+rostered -- both the witness and its fixture already stood on disk from an earlier lap's claim;
+this lap proved both legs on metal rather than building fresh: GREEN at `verdict=ok` with the
+pier's own `gratitude/ironbeetle` checkout present, and a refusal naming
+`gratitude/ironbeetle ABSENT` with the shelf moved aside and restored after. The elder
+`copal-ironbeetle-ep010-census-roster` claim had landed its roster without clearing the board;
+both that claim and `copal-ironbeetle-ep011-census-roster` close in this same lap. **YOURS:** ~80
+chapter witnesses remain unrostered, measured by comparing `ls tools/gen/chapter/*_witness.rish`
+against the `guard` rows named in `construction/standing-equipment.kyri` rather than trusted from
+this line.
+
 **COPAL -- ANOTHER IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep010_census_witness.rish`
 rostered -- the eighth of the IronBeetle episode-census family alongside ep001, ep002, ep004, ep005,
 ep006, ep008, and ep009. Proven on metal three ways: GREEN at `verdict=ok` with the pier's own
@@ -328,7 +339,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `319b6af7bc` -- the tip this rebase was built on, read before this commit (rule 5).
+**Git nib:** `dc1c278de4` -- the tip this rebase was built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

@@ -9115,6 +9115,11 @@ path tools/gen/chapter/ironbeetle_ep010_census_witness.rish
 tier lap
 seated 20261002.153000
 
+guard ironbeetle_ep011_census
+path tools/gen/chapter/ironbeetle_ep011_census_witness.rish
+tier lap
+seated 20261002.160505
+
 # tigerbeetle_be_explicit_census -- e39 TB "be explicit" census, unrostered since it was written.
 # The same decided-skip shape as its say_why, say_how, assert_census, void_census, and batching_census
 # siblings above: an uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone
