@@ -8683,3 +8683,16 @@ guard wayland_study_ledger
 path tools/gen/chapter/wayland_study_ledger_witness.rish
 tier lap
 seated 20261002.041640
+
+# src_first_resident -- Surface Chapter p45's src/ first-resident witness, unrostered since it was
+# written. Lowers, builds, and runs 19 Glow desks living under src/gate and src/shape (the elder
+# src/lib and src/sur rooms folded into these two on 20260827): the double and inc gate bartises,
+# then seventeen shape pedestals each checked for its six-line placard (name, shape, invariant,
+# example, readers, nib) before its own gate run. GREEN on metal, zero working-tree diff after
+# running -- every check is a build-and-run or a read-only grep. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as copal-src-first-resident-roster
+# before this entry landed.
+guard src_first_resident
+path tools/gen/chapter/src_first_resident_witness.rish
+tier lap
+seated 20261002.045430
