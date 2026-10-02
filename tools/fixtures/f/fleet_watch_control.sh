@@ -174,7 +174,7 @@ done
 # a hand who had exported FLEET_BARE for any reason got a pen whose "no jail flag" case silently
 # carried one. A control whose answer depends on who ran it is not a control.
 run_watch() {
-  env -u FLEET_BARE WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
+  env -u FLEET_BARE -u FLEET_INDEFINITE WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
       WATCH_PASSES=1 WATCH_SKIP="$s4" \
       sh "$watch" --dry-run 2>&1
 }
@@ -218,6 +218,14 @@ check "and prints no arm for it"      no  "$(has "$out_gated" "$s3 -- WOULD ARM"
 rm -f "$pen/grain-penthree/.loop-gates-only"
 out_lifted=$(run_watch)
 check "lifting the gate returns the arm" yes "$(has "$out_lifted" "$s3 -- WOULD ARM")"
+
+# 7b) indefinite mode arms past the same gate and names the mode on the arm line
+: > "$pen/grain-penthree/.loop-gates-only"
+out_indef=$(env -u FLEET_BARE FLEET_INDEFINITE=1 WATCH_SESSION="$sess" WATCH_HOME="$pen" \
+  FLEET_ROSTER="$pen/roster.kyri" WATCH_PASSES=1 WATCH_SKIP="$s4" sh "$watch" --dry-run 2>&1)
+check "indefinite arms past a gate" yes "$(has "$out_indef" "$s3 -- WOULD ARM")"
+check "indefinite names the mode"   yes "$(has "$out_indef" 'FLEET_INDEFINITE=1 LOOP_HOURS=0 LOOP_LAPS=0')"
+rm -f "$pen/grain-penthree/.loop-gates-only"
 
 # 8-9) a custody sentinel is the same wall, by its own name
 mkdir -p "$pen/grain-penthree/.mind-state"

@@ -20,7 +20,8 @@
 # THE DEADLINE IS EPOCH ARITHMETIC: now plus LOOP_HOURS * 3600 (default 18), because
 # `date -v` is BSD-only and `date -d` GNU-only, and this fleet spans a Mac and a Linux
 # pier. LOOP_LAPS bounds the lap count when set (0, the default, means unbounded); the
-# one-round-once recipe is LOOP_LAPS=1.
+# one-round-once recipe is LOOP_LAPS=1. FLEET_INDEFINITE=1 lifts the hour deadline and
+# the lap cap, and a gates-only file records a captain note instead of ending the night.
 #
 #   sh tools/f/fleet-loop.sh incense
 #   LOOP_LAPS=1 sh tools/f/fleet-loop.sh pheromone
@@ -121,7 +122,17 @@ fi
 
 hours=${LOOP_HOURS:-18}
 max_laps=${LOOP_LAPS:-0}
-deadline=$(( $(date +%s) + hours * 3600 ))
+indefinite=0
+if [ "${FLEET_INDEFINITE:-0}" = 1 ]; then
+  indefinite=1
+  hours=0
+  max_laps=0
+fi
+if [ "$indefinite" = 1 ]; then
+  deadline=0
+else
+  deadline=$(( $(date +%s) + hours * 3600 ))
+fi
 laps=0
 quickfail=0
 lap_open=0
@@ -134,7 +145,7 @@ limit_wait_seconds=${LOOP_LIMIT_WAIT:-300}
 limit_wait_max=${LOOP_LIMIT_WAIT_MAX:-72}
 mkdir -p session-output
 
-echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded}"
+echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded} indefinite=$indefinite"
 
 
 # Print the command a lap would run. Linux Earth ships wrap in agent-jail; Darwin does not.
@@ -273,7 +284,7 @@ run_lap() {
   esac
 }
 
-while [ "$(date +%s)" -lt "$deadline" ]; do
+while [ "$indefinite" = 1 ] || [ "$(date +%s)" -lt "$deadline" ]; do
   # A DRAIN IS NEVER REMOVED BY THE LOOP. `.loop-gates-only` is the AGENT's own stop, set
   # during its lap and read at the foot of this body, so clearing it at the top is right --
   # a stale one from last night would stop tonight's first lap before it opened. `.loop-drain`
@@ -328,7 +339,7 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     # agent answered. What it answered was "not yet".
     quickfail=0
     limit_waits=$((limit_waits + 1))
-    if [ "$limit_waits" -ge "$limit_wait_max" ]; then
+    if [ "$indefinite" != 1 ] && [ "$limit_waits" -ge "$limit_wait_max" ]; then
       echo "fleet-loop: the session limit has stood for $limit_waits holds -- stopping rather than circling; a hand is needed."
       break
     fi
@@ -355,8 +366,13 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   esac
   laps=$((laps + 1))
   if [ -f .loop-gates-only ]; then
-    echo 'GATES-ONLY: loop paused'
-    break
+    if [ "$indefinite" = 1 ]; then
+      echo 'GATES-ONLY: recorded for the captain; indefinite mode continues'
+      rm -f .loop-gates-only
+    else
+      echo 'GATES-ONLY: loop paused'
+      break
+    fi
   fi
   if [ -f .loop-clockout ] || [ -f .loop-drain ]; then
     echo "CLOCKOUT: $seat stopped after lap $laps -- the lap finished whole; remove .loop-clockout to clock in again"

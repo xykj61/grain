@@ -43,6 +43,9 @@
 #   WATCH_PASSES    stop after this many passes (default 0, unbounded; --once sets 1)
 #   WATCH_HOME      the directory a seat's tree sits under (default $HOME) -- the control's pen door
 #   FLEET_BARE      1 to re-arm every seat WITHOUT the jail, matching how the fleet was launched
+#   FLEET_INDEFINITE 1 to arm with no hour deadline and no lap cap, and to arm past a
+#                   gates-only file. A hand's clockout, a drain, and a CUSTODY or
+#                   TRANSACTION sentinel still refuse. The arm passes the flag through.
 #   FLEET_ROSTER    the seat table to read (honored by fleet_roster_scan.sh) -- the control's roster
 #
 # WHAT IT REFUSES, and why each refusal is the safe direction:
@@ -81,6 +84,8 @@ watch_home=${WATCH_HOME:-$HOME}
 # Passed through to every re-armed loop; empty unless this watcher was launched with FLEET_BARE=1.
 bare_prefix=""
 [ "${FLEET_BARE:-0}" = 1 ] && bare_prefix="FLEET_BARE=1 "
+indef_prefix=""
+[ "${FLEET_INDEFINITE:-0}" = 1 ] && indef_prefix="FLEET_INDEFINITE=1 LOOP_HOURS=0 LOOP_LAPS=0 "
 dry=0
 
 for arg in "$@"; do
@@ -160,7 +165,7 @@ pane_at_prompt() {
 
 gated() {
   # The same wall fleet_rearm.sh prints instead of a paste.
-  [ -f "$1/.loop-gates-only" ] && { echo "loop-gates-only"; return 0; }
+  [ -f "$1/.loop-gates-only" ] && [ "${FLEET_INDEFINITE:-0}" != 1 ] && { echo "loop-gates-only"; return 0; }
   [ -f "$1/.loop-clockout" ] && { echo "loop-clockout"; return 0; }
   [ -f "$1/.loop-drain" ] && { echo "loop-drain"; return 0; }
   [ -f "$1/.mind-state/CUSTODY" ] && { echo "CUSTODY"; return 0; }
@@ -228,7 +233,10 @@ while :; do
     # enclosure one ship at a time, which is the worst shape a disagreement can take: nobody typed
     # it and nothing announced it. So the watch passes its OWN `FLEET_BARE` through, and a hand
     # launching the watch chooses for every re-arm it will ever make.
-    line="cd $tree && ${bare_prefix}sh tools/f/fleet-loop.sh $seat"
+    if [ "${FLEET_INDEFINITE:-0}" = 1 ] && [ -f "$tree/.loop-gates-only" ]; then
+      say "$seat -- gates-only stands; indefinite mode arms anyway"
+    fi
+    line="cd $tree && ${bare_prefix}${indef_prefix}sh tools/f/fleet-loop.sh $seat"
     if [ "$dry" = 1 ]; then
       say "$seat -- WOULD ARM: $line"
     else
