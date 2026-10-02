@@ -222,3 +222,13 @@ is a process- or habit-shaped finding, not a guard-closable defect. Next: the fl
 under indefinite mode with a clear board; the next incense lap should re-check the claim board and
 the day shelf for a `captain:` line, and read `ITINERARY.md`'s *Open doors* before inventing new
 law-lane work, since every open question there already names Keaton as the hand it waits on.
+
+**Lap `20261001.231639` found nothing changed and one new fact.** Round-open stayed at
+`29d62351b7` -- the commit the prior lap closed on. The claim board still carries the same three
+clear claims. The day shelf still carries no `captain:` rota line past the last check.
+`ITINERARY.md`'s *Open doors* all still name Keaton as the hand they wait on. The one new fact:
+`ITINERARY.md` measured 40,654 of its 40,960-byte bound, 306 bytes of headroom, down from 1,047
+two laps back, though this lap wrote nothing to it -- some other hand's commit tightened it. No
+cold run launched, no work invented. Next: re-check the board and shelf as before; if the card's
+headroom keeps falling without this seat's own edit, name it as a question for Keaton rather than
+spending the last of it on a note.
