@@ -24,7 +24,7 @@ the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reade
 undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them. One BOOKED row folded this
 lap to seat the newest under the pin's bound.
 
-**The agent-doable queue, Lindy first:**
+**The agent-doable queue, the Long Return first:**
 
 1. `%642` -- the path refusal and the **copy** both landed, `20260917.064837` and `20260917.091616`, at 8.9s to 0.11 and 28.4s to 0.77. A projection reads **24.12s** where it read 74. What remains is the **scrub**, 19.91s of that 24 and now four fifths of it; the trade is named in the copal account and wants a word rather than a lap.
 2. `%519` -- spread `plant.sh`; sourcing 40 to 42. `plant_apply_args` (variadic sed argv) unblocked
@@ -230,8 +230,8 @@ assert message; this line is here because a ship meets the red somewhere else fi
 ## INNER LOOP -- what every future lap carries
 
 1. **Reds first.** Close a red touching the selected product seam. Surface custody and policy gates.
-2. **Lindy first.** Stable product meaning, signed facts, bounded folds, portable receipts, public interfaces, and first-day teaching lead.
-3. **Crux first.** Choose the hardest solvable step that closes the current Simple, Lovable, Complete loop.
+2. **The Long Return.** Stable product meaning, signed facts, bounded folds, portable receipts, public interfaces, and first-day teaching lead.
+3. **Lila.** Choose the hardest solvable step that closes the current Simple, Lovable, Complete loop.
 4. **Product before workshop.** A new guard serves a named product acceptance condition. Nearby repository hygiene becomes a handoff.
 5. **One named milestone.** Planned work uses a plain name. The completed whole receives its actual one-clock stamp when it lands. Forecast numbers stay out of names.
 6. **Finish the loop.** One claim, one bounded change, one witness from both sides, one account, one commit.
@@ -314,7 +314,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8177fab58f` -- the tip this rebase was built on, read before this commit (rule 5).
+**Git nib:** `bd3f3e4882` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

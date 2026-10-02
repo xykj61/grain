@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.150620` | [The inner loop speaks the names](20261002/20261002-150620_the-inner-loop-speaks-the-names.kyri) | the card's choosing lines read the Long Return and Lila |
 | `20261002.150030` | [Patchouli queue empty](20261002/20261002-150030_patchouli-queue-empty.kyri) | re-confirmed mantra/tally agent-doable queue empty; %807 and %765 unchanged |
 | `20261002.145753` | [Two sub-rings refuse the lap](20261002/20261002-145753_two-sub-rings-refuse-the-lap.kyri) | scratch metal confirms a disjoint ring refuses ring_order; a single 8-ring passes whole |
 | `20261002.145717` | [ironbeetle ep008 census roster](20261002/20261002-145717_ironbeetle-ep008-census-roster.kyri) | claimed, proved both ways, and rostered ironbeetle_ep008_census_witness.rish, sixth of the remaining unrostered set |
