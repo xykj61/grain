@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.004259` | [date-dialect-rostered](20261002/20261002-004259_date-dialect-rostered.kyri) | rostered date_dialect_witness, repairing its stale exact-count asserts to the scan's own floor fields first; REDS booked, %829 folded for headroom |
 | `20261002.003947` | [parseint-ratchet-site-migrated](20261002/20261002-003947_parseint-ratchet-site-migrated.kyri) | one caller_port parseInt site moved to tally parse_int; control sibling list widened |
+| `20261002.003525` | [the fourth read stays clean, and three checks confirm it rather than repeat it](20261002/20261002-003525_petrichor-fourth-clean-read-no-new-target.kyri) | Petrichor: claims board, doorway scan, ascii ratchet, and a grade re-verify all land clean -- no new target found |
 | `20261002.003516` | [pheromone's own lane reads empty after a round-open](20261002/20261002-003516_pheromone-queue-empty-after-round-open.kyri) | fruit closed, claims clear, every OPEN REDS row wants Keaton's word -- no claim-override target |
 | `20261002.003419` | [no agent-doable surface this lap, closed clean](20261002/20261002-003419_grass-no-new-work-this-lap.kyri) | checked card, claims, gates; nothing open to grade or claim, no sweep taken |
 | `20261002.003244` | [the radial split only pays when something frees](20261002/20261002-003244_radial-split-moonshot.kyri) | self-generated moonshot, B+/89 |
