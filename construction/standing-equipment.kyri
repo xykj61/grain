@@ -8529,3 +8529,20 @@ guard date_dialect
 path tools/gen/chapter/date_dialect_witness.rish
 tier lap
 seated 20261002.002349
+
+# living_mutant_shred_prep -- an unrostered chapter witness, repaired before rostering (REDS
+# `20261002.004748`). Its "Class H rows" leg grepped six fossil filenames straight out of
+# construction/SHRED_PREP.md, naming a run["sh" "-c" "grep -q ..."] call against that one path six
+# times over. The second mitra shed those six rows described had already completed and folded whole
+# to construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md on `20260904.193221`, per the
+# pin's own "SHED COMPLETE" banner, so the live pin no longer carried the six basenames the witness
+# asserted on. A second leg, three lines above, grepped a different stale path --
+# construction/archive/SHRED_PREP-seam-python-wafer-20260809-20260728.md -- that the tools/ letter-
+# room fold had already moved one directory down to construction/archive/shred/. Repointed both
+# grep targets at construction/archive/shred/, proven GREEN on metal for the living path and by a
+# planted bad-filename leg that reds the same assert. Claimed as
+# copal-living-mutant-shred-prep-roster before this entry landed. Runs in under 1s on metal.
+guard living_mutant_shred_prep
+path tools/gen/chapter/living_mutant_shred_prep_witness.rish
+tier lap
+seated 20261002.004748
