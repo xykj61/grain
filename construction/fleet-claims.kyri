@@ -65,3 +65,9 @@ stamp 20261001.203041
 epoch 1790901041
 paths mantra/src/consent_replay.rye mantra/src/consent_replay_witness.rye
 what prove case 8 -- an incomplete required field or a false signature on either the grant or the revoke fact refuses, one field at a time, in consent_replay_witness.rye
+claim copal-design-shapes-census-roster
+seat copal
+stamp 20261001.204245
+epoch 1790901765
+paths tools/gen/chapter/design_shapes_census_witness.rish tools/fixtures/d/design_shapes_census_scan.sh construction/standing-equipment.kyri
+what roster design_shapes_census_witness.rish into standing-equipment, adding a prove-red leg (missing wing + incomplete census) so the guard proves both ways
