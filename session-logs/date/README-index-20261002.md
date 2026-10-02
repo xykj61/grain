@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.102549` | [Petrichor's round-open pulls the water row, lane stays fallow](20261002/20261002-102549_petrichor-round-open-pulls-water-row.kyri) | fetched one new peer commit, fast-forwarded clean, confirmed harmless to this lane; claims/REDS re-checked, fruit unchanged |
 | `20261002.102243` | [Water row tastes the lane again, still empty](20261002/20261002-102243_water-row-confirms-language-lane-still-empty.kyri) | rota water read; card, inner prompt, claims board re-checked fresh; GATES-ONLY re-set |
 | `20261002.102144` | [Petrichor's round-open pulls a peer essay in, lane stays fallow](20261002/20261002-102144_petrichor-round-open-pulls-ring-essay.kyri) | fetched one new peer commit, fast-forwarded clean, confirmed harmless to this lane; claims/REDS re-checked, fruit unchanged |
 | `20261002.102112` | [tigerbeetle-batching-census-roster](20261002/20261002-102112_tigerbeetle-batching-census-roster.kyri) | rosters tigerbeetle_batching_census_witness.rish, both legs proven on metal |
