@@ -6,9 +6,11 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.234933` | [candidate roster found a red instead](20261001/20261001-234933_candidate-roster-found-a-red-instead.kyri) | instrument_suite_witness reds on fascia floor; REDS booked, two closed rows hand-folded |
 | `20261001.234816` | [round-open pulled, still gated](20261001/20261001-234816_round-open-pulled-still-gated.kyri) | xy reachable; pulled one peer commit; consent-contract gate still holds, no new docs-geode work |
 | `20261001.234414` | [aether reading, the ladder is quiet on purpose](20261001/20261001-234414_aether-reading-the-ladder-is-quiet-on-purpose.kyri) | diffuser's fruit ladder closed A/94; awaits Keaton's word for next fruit |
 | `20261001.234152` | [network still unreachable, gate held](20261001/20261001-234152_network-still-unreachable-gate-held.kyri) | fresh lap, sentinel cleared then re-set; xy still unreachable, no new petrichor work |
+| `20261001.234130` | [instrument-suite claim and run](20261001/20261001-234130_instrument-suite-claim-and-run.kyri) | claim opened and pushed before the candidate roster's GREEN check |
 | `20261001.233912` | [eighth empty queue, network flapped twice](20261001/20261001-233912_eighth-empty-queue-network-flapped-twice.kyri) | network back up a third time; eight readings running, flagged for Keaton |
 | `20261001.233742` | [the mantra-commit header molts to a stamp](20261001/20261001-233742_commit-header-molts-to-a-stamp.kyri) | %765's second header family, mantra-commit-v2 to a chronological header, GREEN |
 | `20261001.233655` | [petrichor gate set, no repeat sweep](20261001/20261001-233655_petrichor-gate-set-no-repeat-sweep.kyri) | confirmed prior fleet-wide reading still holds; .loop-gates-only set |
