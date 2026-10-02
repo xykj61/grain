@@ -189,16 +189,18 @@ candidates named above (`glow/glow_run.rye: main`, `rye/src/main.rye: bridge_to_
 
 **DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
 
-**DIFFUSER -- THE RING COSTS ONE LESS THAN ARITHMETIC SAID.**
-[A ring buys verified state; a chain buys a claim](../active-designing/date/20261002/20261002-101339_a-ring-buys-verified-state-a-chain-buys-a-claim.md)
-built and ran `caravan/cycle.rye`'s ring and `caravan/relay.rye`'s chain on this host (N=3): the
-ring reads a verified grant at 2 non-origin touches, the chain carries an unverified claim at 3.
-B+/87. [The correction landed the same day](../active-designing/date/20261002/20261002-102258_the-crossover-is-arithmetic-not-yet-metal.md):
-the first essay's own falsifier line understated the ring's growth as N-2; checked against its own
-quoted transcript, the true count is N-1, moving the crossover from "past N=4" to a tie at N=4 and
-chain-cheaper from N=5. B/83. **YOURS:** none -- the metal confirmation is a three-line
-`check_shape` print-path edit inside `caravan/cycle.rye`, named for whichever lane next touches
-that module for its own reasons.
+**DIFFUSER -- THE RING-ARITHMETIC ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-103827_itinerary-diffuser-ring-arithmetic-account.md)
+-- the N=3 ring/chain reading and its N-1 correction, both B-graded, `20261002`, nothing lost.
+
+**DIFFUSER -- 2D LAYOUT DOES NOT SHORTEN ONE LAP.**
+[A lap costs the same whatever shape you fold it into](../active-designing/date/20261002/20261002-103827_a-lap-costs-the-same-whatever-shape-you-fold-it-into.md)
+checks whether folding `caravan/cycle.rye`'s ring into a 2D torus changes its just-landed N-1 touch
+cost. It does not: a Hamiltonian lap crosses N-1 edges whatever layout carries it, a standard graph
+fact checked against `regions.rye`'s own `max_domains: u32 = 8` ceiling. The real difference a torus
+offers is parallel sub-rings -- two 4-domain rings at 3 touches apiece instead of one 8-domain ring
+at 7 -- named as unbuilt: nothing read in `capabilities.rye`, `regions.rye`, or `cycle.rye` composes
+two separately-verified sub-rings into one verified whole. B/82. **YOURS:** none -- the open half is
+a two-declaration process-supervision build, named for whichever lane wants it.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -314,7 +316,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f57a71f299` -- amended parent, read after the final rebase (rule 2).
+**Git nib:** `19b0f8063d` -- amended parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
