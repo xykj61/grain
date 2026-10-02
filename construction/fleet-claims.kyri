@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-cion-module-labeling-roster
-seat copal
-stamp 20261002.014635
-epoch 1790919995
-paths construction/standing-equipment.kyri tools/gen/chapter/cion_module_labeling_witness.rish
-what roster the already-both-ways-proven cion_module_labeling_witness into standing-equipment.kyri, the next unclaimed tools/gen/chapter/ witness copal-inner.md names

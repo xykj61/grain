@@ -118,16 +118,16 @@ whole](archive/date/20261002/20261002-011642_itinerary-copal-fact-fold-census-ac
 **COPAL.** [Glow_connector_seam account shelved
 whole](archive/date/20261002/20261002-013013_itinerary-copal-glow-connector-seam-account.md).
 
-**COPAL -- A THIRD UNROSTERED WITNESS, AND IT WAS RED.** `houseplant_glossary` rostered into
-`construction/standing-equipment.kyri`, GREEN on metal both ways -- and first found a red: its
-ladder check still grepped the Lexicon for a middle-dot header the ASCII-first sweep had already
-converted to hyphens. Booked and repaired in the same lap, REDS `20261002.012602`, **CLOSED**. The
-new `houseplant_glossary_negative_witness.rish` points a pulled-out
-`tools/fixtures/h/houseplant_glossary_scan.sh` at a standing fixture,
-`context/fixtures/houseplant_glossary_missing/LEXICON.md`, reads `verdict=missing` with all three
-dropped-distinction details named, then reads `verdict=ok` against the live tree. Claimed as
-`copal-houseplant-glossary-roster`, both `run_verdict=ok` through `standing_equipment_run.sh`.
-**YOURS:** same open rostering question as the shelved accounts above, Keaton's word.
+**COPAL.** [Houseplant_glossary account shelved
+whole](archive/date/20261002/20261002-014757_itinerary-copal-houseplant-glossary-account.md).
+
+**COPAL -- A FOURTH UNROSTERED WITNESS, ALREADY PROVEN BOTH WAYS.** `cion_module_labeling`
+rostered into `construction/standing-equipment.kyri`, GREEN on metal both through
+`rishi/bin/rishi run` and `standing_equipment_run.sh --detach`, `tree_moved=no`. No companion
+negative file was needed: the witness already carries a planted-bad and a planted-good fixture of
+its own. Claimed and closed as `copal-cion-module-labeling-roster`. **YOURS:** same open rostering
+question as the shelved accounts above -- ~113 witnesses remain, many in batch families
+(`ironbeetle_ep*`, `tigerbeetle_*`, `surface_season_p*`), Keaton's word on individual vs. batch.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
@@ -354,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `66fd3de57f` -- HEAD's parent, read after the final rebase.
+**Git nib:** `6652e87785` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

@@ -8636,3 +8636,19 @@ guard receipt_chain
 path tools/s/receipt_chain_witness.rish
 tier lap
 seated 20261002.004336
+
+# cion_module_labeling -- the CION labeling law's own widened guard, unrostered since LOWE
+# Journey 14 closed it: every swept module surface (mandate - scribe - vault - pond - granary -
+# scribble - linengrow - amphora - comlink device guests - lattice - ember - lantern - mandi -
+# dimeroll - glow/nock - mantra) names a capability by semantic label + stamp rather than a bare
+# lap ordinal, and the guard proves both directions on its own: a planted bare ordinal
+# (tools/fixtures/l/labeling_module_negative.md) reads verdict=drift and refuses, while a
+# meaningful structured code and sub-lap compound (tools/fixtures/l/labeling_module_pass.md)
+# reads verdict=ok and does not false-positive. GREEN on metal both ways; no companion negative
+# file was needed since the witness already carries both fixtures. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as copal-cion-module-labeling-roster
+# before this entry landed.
+guard cion_module_labeling
+path tools/gen/chapter/cion_module_labeling_witness.rish
+tier lap
+seated 20261002.014757
