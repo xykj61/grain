@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.091714` | [petrichor confirms lane fallow, declines override](20261002/20261002-091714_petrichor-lane-confirmed-fallow-no-override.kyri) | docs-geode queue empty, all items YOURS: none; cross-lane REDS claim declined as outside lane without deeper review |
 | `20261002.091613` | [grass tastes the water row](20261002/20261002-091613_grass-tastes-the-water-row-convergence-census.kyri) | ran the convergence census per the rota, confirmed two real unproven gaps, not a naming miss |
 | `20261002.091511` | [round-open still empty, %819 checked](20261002/20261002-091511_patchouli-round-open-still-empty-819-checked.kyri) | sixteenth empty-queue read; %819 read as an override candidate, declined on its own closing sentence |
 | `20261002.091359` | [language lane reads empty again](20261002/20261002-091359_language-lane-reads-empty-again.kyri) | confirmed the card's own closure; no agent-doable work, honest report |
