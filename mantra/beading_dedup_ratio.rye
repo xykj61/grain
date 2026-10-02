@@ -97,7 +97,7 @@ fn edit_position(dist: Distribution, i: u32, edit_size: u32, state: *u64) u32 {
 /// Apply one edit to `content` in place, by building the next revision into a scratch
 /// buffer and copying it back. Every copy below moves between two DIFFERENT arrays
 /// (the scratch buffer and the live one), so each call is disjoint by construction and
-/// reaches for tally_copy.copy_disjoint rather than a raw copyForwards/copyBackwards --
+/// reaches for tally_copy.copy_disjoint rather than a raw overlap-aware bulk move --
 /// the shift this function performs never overlaps itself in memory.
 fn apply_edit(kind: EditKind, content: *[resin_len]u8, pos: u32, edit_size: u32, state: *u64) void {
     assert(pos + edit_size <= resin_len); // invariant: an edit never writes past the resin
