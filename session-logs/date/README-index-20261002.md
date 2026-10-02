@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.185955` | [Send met REDS %803's class past ten times; stopped](20261002/20261002-185955_contested-send-exceeded-803-precedent-stopped.kyri) | one earlier log's send contested a dozen-plus cycles; content safe, left for the next round-open to carry |
 | `20261002.190530` | [Lap open, same fallow ground -- YOURS put to Keaton directly](20261002/20261002-190530_grass-lap-open-still-fallow.kyri) | nothing new to grade, six sibling fund pages named, question asked in the reply rather than only logged |
 | `20261002.185251` | [Fifth empty reading of the agent-doable queue](20261002/20261002-185251_fifth-fallow-reading.kyri) | fetched xy, checked fleet-claims, re-grepped mantra/tally headers -- queue empty a fifth lap, %807/%765 both still OPEN unchanged |
 | `20261002.185233` | [Third fallow reading, claim closed](20261002/20261002-185233_third-fallow-reading-claim-closed.kyri) | closed a stale completed claim, re-derived the ledger's true OPEN rows by last-marker rather than bare grep, confirmed no agent-doable law-lane work stands |
