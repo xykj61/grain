@@ -112,11 +112,10 @@ shapes, both refusals, side by side.
 
 ## What a lowering would still need to decide
 
-This sketch names fields and auras. It leaves three questions for the lowering that follows: the
-Zig-side type names, the module each would live beside `mantra/src/receipt_offer.rye`, and
-whether `grant_id` and `revoke_id` want their own exact-length derivation the way `product_digest`
-earned one in milestone one (`20260918.100854`). Those are lowering questions. Lowering is the
-next door, named and waiting rather than opened here.
+Ruled `20261001.200649`. `orphaned-revoke` earns a `Reason` member in the same change that lowers
+these two facts, and not before that change exists. The `.lap` Glow desk stays untracked; this
+page is the desk. Patchouli lowers both facts beside `mantra/src/receipt_offer.rye`. Exact-length
+derivation for the two ids waits until a witness shows a digest the way `product_digest` did.
 
 May the shape a grant takes and the shape a revoke takes read as plainly to the hand that lowers
 them as they read to the hand that sketched them.

@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Bhakta with Gauge's Field discipline
 **Voice:** Kyri
-**Status:** Proposed -- written to the same shape [The Receipt You Can Read](../../../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md) was accepted in, before any code exists. **Vision room**: nothing below is checkable yet; it names the fixture, types, bounds, and cases a future witness would prove.
+**Status:** Accepted for bounded synthetic implementation on Keaton's `20261001.200649` word -- local and synthetic, the same bounds as the receipt contract. No money, no real identity, no network, no legal claim. **Vision room** until the first witness passes: the fixture, types, bounds, and cases below are the implementation. Patchouli lowers `ConsentGrantFact` and `ConsentRevokeFact`. Petrichor teaches the fixtures once that witness is green.
 **Milestone:** The consent you can change ([`construction/ITINERARY.md`](../../../construction/ITINERARY.md) row 2 of the growth ladder)
 **Falsifier:** If one replay of a grant and its later revoke cannot produce both "currently granted" and "currently revoked" readings from the same two admitted facts, or a revoke can erase the grant's own history, this contract is wrong.
 
