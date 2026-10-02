@@ -25,6 +25,14 @@ const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
 const view = @import("seva_view.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(view).@"struct".decls) |decl| {
+        _ = &@field(view, decl.name);
+    }
+}
+
 const witness_version = "20260715.204500";
 
 fn run_selftest() !u8 {

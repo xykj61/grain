@@ -18,6 +18,14 @@ const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
 const tube2 = @import("tube2_publish.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(tube2).@"struct".decls) |decl| {
+        _ = &@field(tube2, decl.name);
+    }
+}
+
 const witness_version = "20260717.131500";
 
 fn run_selftest() !u8 {

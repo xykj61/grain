@@ -10,6 +10,14 @@ const print = std.debug.print;
 const caps = @import("capabilities.rye");
 const scope = @import("glow_storage_scope.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(scope).@"struct".decls) |decl| {
+        _ = &@field(scope, decl.name);
+    }
+}
+
 const witness_version = "20260717.155846";
 
 fn run_selftest() !u8 {

@@ -20,6 +20,14 @@ const line = @import("glow_seva_b0_line.rye");
 const fields_mod = @import("glow_seva_b0_fields.rye");
 const bridge = @import("dexter_seva_append.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(bridge).@"struct".decls) |decl| {
+        _ = &@field(bridge, decl.name);
+    }
+}
+
 const witness_version = "20260722.151515";
 const demo_stamp = "20260722.151515";
 const demo_seq: i64 = 1;

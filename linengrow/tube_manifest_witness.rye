@@ -32,6 +32,14 @@ const print = std.debug.print;
 const caps = @import("capabilities.rye");
 const tm = @import("tube_manifest.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(tm).@"struct".decls) |decl| {
+        _ = &@field(tm, decl.name);
+    }
+}
+
 const witness_version = "20260716.143500";
 
 fn run_selftest() !u8 {

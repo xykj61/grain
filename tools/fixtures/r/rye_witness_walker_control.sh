@@ -189,6 +189,10 @@ esac
 
 d=$(new_pen ceiling) || { echo "control_verdict=pen_failed"; exit 2; }
 mkdir -p "$d/mod"
+# invariant: an anchor pair that always walks, so the "at ceiling" leg below keeps a non-empty
+# corpus even when ceiling is 0 and every planted t$i pair has been removed.
+printf '%s' "$module_body" > "$d/mod/thing.rye"
+printf '%s%s%s' "$witness_head" "$walker_block" "$witness_tail" > "$d/mod/thing_witness.rye"
 i=0
 while [ "$i" -le "$ceiling" ]; do
   printf '%s' "$module_body" > "$d/mod/t$i.rye"
@@ -202,7 +206,8 @@ expect ceiling_over_unwalked $((ceiling + 1)) "$(read_field unwalked "$over_out"
 expect ceiling_over_exit 1 "$over_exit"
 expect ceiling_over_verdict unwalked_over_ceiling "$(read_field verdict "$over_out")"
 
-# One pair removed, and the same scan on the same pen walks free.
+# One pair removed, and the same scan on the same pen walks free -- the anchor keeps the corpus
+# non-empty at any ceiling, including zero.
 rm -f "$d/mod/t0_witness.rye" "$d/mod/t0.rye"
 seal_pen "$d"
 r=$(run_pen "$d"); at_exit=$(printf '%s\n' "$r" | head -1); at_out=$(printf '%s\n' "$r" | tail -n +2)

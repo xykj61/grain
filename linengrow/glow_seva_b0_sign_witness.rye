@@ -13,6 +13,14 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_seva_b0_demo_fixture.rye");
 const sign = @import("glow_seva_b0_sign.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(sign).@"struct".decls) |decl| {
+        _ = &@field(sign, decl.name);
+    }
+}
+
 const witness_version = "20260722.141141";
 
 fn run_selftest() !u8 {

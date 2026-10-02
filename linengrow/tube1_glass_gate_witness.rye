@@ -15,6 +15,14 @@ const sens_mod = @import("glow_sensors_grant.rye");
 const tube1 = @import("tube1_admission.rye");
 const glass = @import("tube1_glass_gate.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(glass).@"struct".decls) |decl| {
+        _ = &@field(glass, decl.name);
+    }
+}
+
 const witness_version = "20260717.161823";
 const rw: u8 = caps.right_read | caps.right_write;
 

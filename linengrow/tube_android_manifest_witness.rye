@@ -15,6 +15,14 @@ const caps = @import("capabilities.rye");
 const tm = @import("tube_manifest.rye");
 const am = @import("tube_android_manifest.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(am).@"struct".decls) |decl| {
+        _ = &@field(am, decl.name);
+    }
+}
+
 const witness_version = "20260717.021800";
 
 fn run_selftest() !u8 {

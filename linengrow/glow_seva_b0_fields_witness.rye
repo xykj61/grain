@@ -10,6 +10,14 @@ const print = std.debug.print;
 const fixture = @import("glow_seva_b0_demo_fixture.rye");
 const fields = @import("glow_seva_b0_fields.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(fields).@"struct".decls) |decl| {
+        _ = &@field(fields, decl.name);
+    }
+}
+
 const witness_version = "20260722.141630";
 
 fn run_selftest() !u8 {

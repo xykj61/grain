@@ -9,6 +9,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const fixture = @import("glow_seva_b0_demo_fixture.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(fixture).@"struct".decls) |decl| {
+        _ = &@field(fixture, decl.name);
+    }
+}
+
 const witness_version = "20260722.131511";
 
 fn run_selftest(init: std.process.Init) !u8 {

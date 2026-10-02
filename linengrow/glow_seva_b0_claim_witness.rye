@@ -8,6 +8,14 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const claim = @import("glow_seva_b0_claim.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(claim).@"struct".decls) |decl| {
+        _ = &@field(claim, decl.name);
+    }
+}
 const fold = @import("seva_b0_fold.rye");
 
 const witness_version = "20260722.134831";

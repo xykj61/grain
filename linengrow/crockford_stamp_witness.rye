@@ -16,6 +16,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const cf = @import("crockford_stamp.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(cf).@"struct".decls) |decl| {
+        _ = &@field(cf, decl.name);
+    }
+}
+
 const witness_version = "20260724.205009";
 
 const Fixture = struct { value: u64, crockford: []const u8 };

@@ -10,6 +10,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const fold = @import("seva_b0_fold.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(fold).@"struct".decls) |decl| {
+        _ = &@field(fold, decl.name);
+    }
+}
+
 const witness_version = "20260717.022556";
 
 fn run_selftest() !u8 {

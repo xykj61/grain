@@ -114,7 +114,13 @@ done
 # `20261002.171907`, when `mand/mand_ring1_witness.rye`, `mand/mand_ring2_witness.rye`, and
 # `mand/mand_ring3_witness.rye` each walked their own subject and all three stayed GREEN on
 # metal. The remaining 51 are entirely `linengrow/`.
-ceiling=51
+# Lowered 51 -> 0 on `20261002.173908`, when all 51 remaining `linengrow/` pairs walked their own
+# subject in one lap -- each witness already named its claimed module under its own local name, so
+# the same comptime declaration-walk block was inserted after that one import line, no two of the
+# 51 import spellings alike. Every one built GREEN under its own header's documented build command,
+# including the one carrying `-lc` for a libc-linked socket call. The population this ratchet named
+# is now walked in full.
+ceiling=0
 
 # Bounds, each named. Witnesses stood at 134 and tracked Rye at 1,943 on `20260906`; both ceilings
 # are the next power of two above, so ordinary growth passes and a tenfold jump refuses rather than

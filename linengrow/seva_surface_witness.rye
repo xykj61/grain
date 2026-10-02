@@ -27,6 +27,14 @@ const caps = @import("capabilities.rye");
 const pool = @import("pool_host_seam.rye");
 const surface = @import("seva_surface.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(surface).@"struct".decls) |decl| {
+        _ = &@field(surface, decl.name);
+    }
+}
+
 const witness_version = "20260715.205500";
 
 fn append_send(log: *[rc.max_log_len]u8, len: *u32, amount: []const u8, from_hex: *const [mc.pubkey_hex_len]u8, to_hex: *const [mc.pubkey_hex_len]u8, signer: kumara.KeyPair) !void {

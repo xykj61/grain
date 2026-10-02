@@ -11,6 +11,14 @@ const rc = @import("receipt_core.rye");
 const fixture = @import("glow_seva_b0_demo_fixture.rye");
 const digest = @import("glow_seva_b0_digest.rye");
 const append = @import("glow_seva_b0_append.rye");
+
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(append).@"struct".decls) |decl| {
+        _ = &@field(append, decl.name);
+    }
+}
 const claim = @import("glow_seva_b0_claim.rye");
 const elder = @import("seva_b0_fold.rye");
 const line = @import("glow_seva_b0_line.rye");

@@ -8,6 +8,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const setu65 = @import("setu65_lab_tx.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(setu65).@"struct".decls) |decl| {
+        _ = &@field(setu65, decl.name);
+    }
+}
+
 const witness_version = "20260718.201601";
 
 fn run_selftest(_: std.process.Init) !u8 {

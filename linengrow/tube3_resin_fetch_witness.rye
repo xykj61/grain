@@ -19,6 +19,14 @@ const gc = @import("granary_core.rye");
 const tube2 = @import("tube2_publish.rye");
 const tube3 = @import("tube3_resin_fetch.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(tube3).@"struct".decls) |decl| {
+        _ = &@field(tube3, decl.name);
+    }
+}
+
 const witness_version = "20260717.133900";
 
 fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {

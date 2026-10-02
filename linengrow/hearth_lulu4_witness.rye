@@ -9,6 +9,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lulu4 = @import("hearth_lulu4.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(lulu4).@"struct".decls) |decl| {
+        _ = &@field(lulu4, decl.name);
+    }
+}
+
 const witness_version = "20260718.131549";
 
 fn run_selftest(_: std.process.Init) !u8 {

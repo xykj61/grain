@@ -19,6 +19,14 @@ const vfw = @import("vessel_fetch_wire.rye");
 const tube2 = @import("tube2_publish.rye");
 const tube4 = @import("tube4_market_rail.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(tube4).@"struct".decls) |decl| {
+        _ = &@field(tube4, decl.name);
+    }
+}
+
 const witness_version = "20260717.134300";
 
 fn run_selftest() !u8 {

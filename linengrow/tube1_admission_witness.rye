@@ -25,6 +25,14 @@ const net_mod = @import("glow_network_grant.rye");
 const sens_mod = @import("glow_sensors_grant.rye");
 const tube1 = @import("tube1_admission.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(tube1).@"struct".decls) |decl| {
+        _ = &@field(tube1, decl.name);
+    }
+}
+
 const witness_version = "20260717.161013";
 
 fn run_selftest() !u8 {
