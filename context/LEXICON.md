@@ -1,7 +1,7 @@
 # Lexicon -- Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20261002.111449` (Lila-first, return-first shorthand scheduled)
+**Last updated:** `20261002.151933` (Lila-first, return-first shorthand seated)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Room:** checkable -- seated names, each pointing at the file that carries it
 
