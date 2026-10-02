@@ -214,3 +214,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.142242` gave the waiting seats a fruit.** The receipt numbers granted `20260918.100854` stand, and the weighing page now says so. Pheromone writes one receipt-offer pedestal. Petrichor grades the first hour. Diffuser keeps to one paper. Patchouli's outer prompt names the weave as landed, and `%807` stays open. Bakery keeps the shared cache. Grass grades the page in hand. Copal finishes its merge, then one chapter witness.
 
 **Lap `20261002.144620` graded the first hour.** `docs-geode/tutorials/the-first-hour.md` reads A at Door, composite 91. The page stands, and the fruit is closed.
+
+**Lap `20261002.145010` named the front door in plain words** on `docs-geode/study/README.md`, the second door a newcomer meets. One sentence. It grades B+ at Door, composite 87, and stands.

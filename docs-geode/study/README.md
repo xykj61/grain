@@ -10,7 +10,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
 **Language:** EN - **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../context/BHAKTA_STYLE.md`)
-**Written:** `20260821.190149` - **Last refreshed:** `20260916.183325` (the gratitude room's typed count leaves; it read *more than two hundred* from its birth commit, when the room held 110) - **Status:** Living - **Kind:** crushed study guide
+**Written:** `20260821.190149` - **Last refreshed:** `20261002.145010` (the front door is named in plain words; the `20260916.183325` pass let the gratitude room's typed count leave, after it had read *more than two hundred* from its birth commit, when the room held 110) - **Status:** Living - **Kind:** crushed study guide
 
 ---
 
@@ -22,7 +22,7 @@ have never read a codebase before. That is a fine place to start.
 A tree this size reads beautifully by question, the way a library does, and it reads poorly cover to
 cover for the same reason. So ask your question first and let it choose the room for you.
 
-**"What is this *for*?"** -> [`foundations/`](../../foundations/README.md). The why beneath the craft -- work as offering, custody before capability, why a front door is the most Lindy-exposed thing a project owns. Each page takes one question and gives you a place to begin.
+**"What is this *for*?"** -> [`foundations/`](../../foundations/README.md). The why beneath the craft -- work as offering, custody before capability, why a front door is the page a person meets most often. Each page takes one question and gives you a place to begin.
 
 **"How do I *use* it?"** -> [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md), then [`../api/rishi-language-reference.md`](../api/rishi-language-reference.md), then [`../libraries/README.md`](../libraries/README.md). Path, reference, index -- in that order.
 
