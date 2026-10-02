@@ -8515,3 +8515,17 @@ guard mantra_glow_tend_limb5
 path tools/m/mantra_glow_tend_limb5_witness.rish
 tier lap
 seated 20261002.004500
+
+# date_dialect -- an unrostered chapter witness, repaired before rostering (REDS `20261002.000949`).
+# It pinned exact library counts (law_library_dated=17, compact=17) from the day it was written,
+# while the scan it calls, tools/fixtures/d/date_dialect_scan.sh, already carries the floor fix for
+# this exact fault at REDS %235 one layer down -- context/*.md gains correctly dated files on its
+# own, so an exact count is a refusal scheduled for whichever lap adds the next one. The library had
+# grown 17 to 27 by the time this ran. Dropped the two stale exact-count asserts and pointed the
+# witness at the scan's own stable fields instead (roster=honored, law_library_floor=17,
+# date_dialect=honored), proven GREEN on metal for the living path and for its own prove-red leg.
+# Claimed as copal-date-dialect-roster before this entry landed. Runs in under 1s on metal.
+guard date_dialect
+path tools/gen/chapter/date_dialect_witness.rish
+tier lap
+seated 20261002.002349
