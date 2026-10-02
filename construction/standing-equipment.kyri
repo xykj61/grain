@@ -8953,3 +8953,18 @@ guard tigerbeetle_control_flow_census
 path tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish
 tier lap
 seated 20261002.102302
+
+# ironbeetle_ep001_census -- e60 IronBeetle ep001 census, first of 34 unrostered IronBeetle
+# episode-census witnesses sitting beside the tigerbeetle census family above. gratitude/ironbeetle
+# is presence-only vendored prose rather than a git submodule (the "Delivered" shelf named in
+# construction/ready-to-ask-claude.md), so this witness carries no clone-absent skip leg: it reads
+# gratitude/ironbeetle/ once and names the fact directly. Proven on metal:
+# `rishi/bin/rishi run tools/gen/chapter/ironbeetle_ep001_census_witness.rish` exits GREEN at
+# verdict=ok, reading IRON=present, EP001=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes,
+# CLEAN=yes, and MATKLAD_OK=yes. One of the unrostered tools/gen/chapter/ witnesses this lane
+# found free on the live claim board; claimed as patchouli-ironbeetle-ep001-census-roster before
+# this entry landed.
+guard ironbeetle_ep001_census
+path tools/gen/chapter/ironbeetle_ep001_census_witness.rish
+tier lap
+seated 20261002.104255
