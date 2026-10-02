@@ -28,8 +28,9 @@ that same change. The desk is
 [`../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md).
 The contract is
 [`../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md`](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
-The first replay is landed, and so is the mismatched holder. An empty `grant_id` refuses by that
-field's name and writes nothing. Next field, one lap: an empty `receipt_id` on the grant.
+The first replay is landed, and so is the mismatched holder. An empty `grant_id` and an empty
+`receipt_id` each refuse by that field's name and write nothing. Next field, one lap: an empty
+`holder_id` on the grant.
 
 **`%807` takes no door.** A `before` anchor has no `u32` below zero. Renumbering every `ord` is the
 merge break already refused. Reserving zero buys one head insert and the next document hits the same
