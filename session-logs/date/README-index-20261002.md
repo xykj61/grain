@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.163502` | [Language lane still empty, Earth row deep-read](20261002/20261002-163502_language-lane-still-empty-earth-row-read.kyri) | inner prompt and card re-confirm closed fruit; council rota row 4 (Earth, the clock and the mark) read in full |
 | `20261002.163401` | [The bolt witness walks its module](20261002/20261002-163401_the-bolt-witness-walks-its-module.kyri) | the walk ceiling falls from 56 to 55 |
 | `20261002.163249` | [Petrichor's docs-geode lane reads empty this lap](20261002/20261002-163249_petrichor-lane-empty.kyri) | no unblocked work; lane gated on a green public seam |
 | `20261002.162907` | [The language lane reads empty again](20261002/20261002-162907_language-lane-reads-empty-again.kyri) | pheromone's own fruit is closed, no cross-lane claim fit; check-in recommended |
