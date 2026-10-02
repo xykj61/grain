@@ -28,9 +28,13 @@ that same change. The desk is
 [`../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md`](../active-designing/date/20261001/20261001-181632_grant-and-revoke-fact-glow-shapes.md).
 The contract is
 [`../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md`](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md).
-The first replay is landed, and so is the mismatched holder. An empty `grant_id`, `receipt_id`,
-and `holder_id` each refuse by that field's name and write nothing. Next field, one lap: an empty
-`recipient_id` on the grant.
+The first replay is landed, and so is the mismatched holder: a revoke whose `holder_id` differs
+from the grant refuses with `holder-mismatch` and writes nothing. Case 8 is landed too: every
+required text field on either fact, emptied one at a time, refuses by its own name, and a changed
+signature on either fact refuses as `invalid-signature` -- `consent_replay_witness.rye` proves all
+thirteen of those readings on metal. The admission and replay half of milestone two (the contract's
+cases 1, 3, 5, 6, 7, 8) now stands proven. What remains is Linengrow's own
+`ConsentState -> LinengrowConsent` projection (cases 2 and 4), outside this lane's own door.
 
 **`%807` takes no door.** A `before` anchor has no `u32` below zero. Renumbering every `ord` is the
 merge break already refused. Reserving zero buys one head insert and the next document hits the same
