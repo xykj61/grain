@@ -57,5 +57,5 @@ claim bakery-receipt-chain-health
 seat bakery
 stamp 20261001.151533
 epoch 1790882133
-paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
-what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
+paths tools/fixtures/s/receipt_chain_scan.sh tools/fixtures/s/receipt_chain_control.sh tools/s/receipt_chain_witness.rish construction/standing-equipment.kyri
+what land the parked receipt-chain reading family (scan, control, witness) that measured the pier's scoped-receipt chain as stalled, and roster it

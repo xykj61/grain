@@ -1,0 +1,72 @@
+# tools/s/receipt_chain_witness.rish -- the pier's scoped-receipt chain answers for itself.
+#
+#   rishi/bin/rishi run tools/s/receipt_chain_witness.rish
+#
+# WHAT IT HOLDS. `tools/fixtures/s/standing_equipment_run.sh --scoped` proves the delta since the
+# last fully green FULL close, reading that close from `construction/standing-equipment-receipt.kyri`
+# -- a file `.gitignore` denies, so every one of the eight checkouts holds its own and no ship ever
+# reads another's. Bakery's lane crux names one shared cold-run cache across those checkouts, and
+# that crux assumes the chain is advancing and merely private.
+#
+# Measured on the lap this guard was written, `20261001`: the newest receipt anywhere on the pier
+# was 379 hours old, the narrowest basis diffed 10,825 of 20,668 tracked files -- 52 percent of the
+# tree -- and sharing it would have spared this ship 24 files of 10,849. Across 3,054 roster opens
+# the fleet recorded 35 digest matches, a rate of one percent. So the chain is STALLED, and sharing
+# a stalled basis shares a rumor.
+#
+# This guard gates none of that, and the reason is structural rather than cautious: a receipt is
+# withheld by a red, by a custody gate, or by `tree_moved`, and on a pier where eight ships push all
+# day the third is ordinary -- so a gate reading `stalled` would red on every ship for a state no
+# lap can repair, the shape `.claude/rules/derived-spine.md` names as a gate somebody turns off.
+# What it DOES gate is the instrument: a reading that stops answering, loses a key, or closes its
+# own arithmetic wrongly is caught on the lap it breaks, because a meter gone quiet reads exactly
+# like a tree with nothing to report.
+
+say "receipt-chain: Language EN -- is the shared basis alive before we try to share it?"
+say "receipt-chain: Style Gauge, Meter -- every figure read from the pier, none spelled here."
+say "receipt-chain: Lens TAME -- every refusal planted in a pen and then lifted."
+
+say "receipt-chain: the control -- a real pen pier in a throwaway directory..."
+let ctl = run ["sh" "tools/fixtures/s/receipt_chain_control.sh"]
+# invariant: both streams are written out BARE, ahead of the asserts that judge them, so the report
+# cannot refuse however large the output grows.
+say ctl.out
+say ctl.err
+assert ctl.ok else "receipt-chain: the control refused -- its two streams stand above"
+assert ctl.out contains "fail=0" else "receipt-chain: a control leg failed -- its two streams stand above"
+
+say "receipt-chain: and the reading itself, on this pier..."
+let scan = run ["sh" "tools/fixtures/s/receipt_chain_scan.sh"]
+say scan.out
+assert scan.ok else "receipt-chain: the scan refused -- its reading stands above"
+
+# invariant: the instrument still names every reading a caller depends on. A key that vanishes takes
+# its finding with it, silently, and a reader cannot tell an absent key from a zero.
+assert scan.out contains "seats_live=" else "receipt-chain: the reading names no live seat count"
+assert scan.out contains "seats_with_receipt=" else "receipt-chain: the reading names no receipt count"
+assert scan.out contains "seats_basis_held_here=" else "receipt-chain: the reading names no candidate-basis count"
+assert scan.out contains "newest_age_hours=" else "receipt-chain: the reading names no basis age"
+assert scan.out contains "best_delta=" else "receipt-chain: the reading names no narrowest delta"
+assert scan.out contains "delta_saved_by_sharing=" else "receipt-chain: the reading names no sharing saving"
+assert scan.out contains "hit_rate_pct=" else "receipt-chain: the reading names no hit rate"
+assert scan.out contains "portable_proven=" else "receipt-chain: the reading names no portability count"
+assert scan.out contains "verdict=" else "receipt-chain: the reading closes on no verdict"
+
+# invariant: the verdict is one of the three this scan documents. A fourth word is a reading no
+# caller has a response for, which is worse than a refusal -- and it is what a later hand adding a
+# verdict without telling its readers would produce. The scan checks its own word and says so, so
+# this assert reads one key off the single pass above rather than walking the pier again.
+assert scan.out contains "verdict_lawful=yes" else "receipt-chain: the verdict is a word this instrument does not document -- the reading stands above"
+
+# invariant: the sharing saving equals own_delta minus best_delta, so a reader can check the
+# arithmetic the lane's crux rests on. A saving that does not close is a figure nobody should plan
+# against.
+assert scan.out contains "saving_arithmetic=ok" else "receipt-chain: the sharing saving does not equal own_delta minus best_delta -- the reading stands above"
+
+# invariant: portability is reported as UNDECIDABLE rather than guessed, for as long as the receipt
+# format carries no clean-tree field. A receipt wrongly called portable skips guards nobody ran,
+# which is the one road from evidence to rumor the receipt design exists to close. When the field
+# lands, this assert is what must be rewritten -- deliberately, rather than by drift.
+assert scan.out contains "portable_proven=0" else "receipt-chain: a basis is claimed portable while the receipt still records no clean-tree field -- read the scan's own header before loosening this"
+
+say "receipt-chain: GREEN -- the chain's state is measured, and the crux can be pointed at what actually blocks it."
