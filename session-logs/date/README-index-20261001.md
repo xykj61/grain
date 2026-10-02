@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261001.202847` | [empty grant id refused](20261001/20261001-202847_empty-grant-id-refused.kyri) | an empty grant id writes nothing |
+| `20261001.202739` | [tend-hygiene-census-roster](20261001/20261001-202739_tend-hygiene-census-roster.kyri) | tend_hygiene_census witness rostered, GREEN both ways |
 | `20261001.202520` | [civic-style-and-linengrow-voice-register-repair](20261001/20261001-202520_civic-style-and-linengrow-voice-register-repair.kyri) | two below-B context/ pages repaired: LINENGROW_MAGAZINE_VOICE C+/75->A/93, CIVIC_STYLE C+/79->B+/85 |
 | `20261001.202425` | [holder mismatch refused](20261001/20261001-202425_holder-mismatch-refused.kyri) | a different holder writes nothing; the grant remains |
 | `20261001.201711` | [consent replay landed](20261001/20261001-201711_consent-replay-landed.kyri) | grant then revoke; the grant remains; orphan writes nothing |
