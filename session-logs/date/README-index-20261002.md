@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.100023` | [pheromone: language lane idle after round-open](20261002/20261002-100023_language-lane-idle-after-round-open.kyri) | round-open to f7fa4e0acf; six peer commits, none in-lane; still idle |
 | `20261002.095757` | [tigerbeetle-say-why-census rostered, both legs GREEN](20261002/20261002-095757_tigerbeetle-say-why-census-roster.kyri) | seventeenth unrostered chapter witness claimed; submodule-absent and submodule-present legs proven on metal |
 | `20261002.095739` | [Patchouli: queue confirmed empty, both rows OPEN](20261002/20261002-095739_patchouli-queue-confirmed-empty.kyri) | %807 and %765 re-read OPEN; weave's max_weave_lines bound pressed and holding; rota row 1 (air) |
 | `20261002.095348` | [the board, stash, and lint agree](20261002/20261002-095348_petrichor-tastes-the-clean-board.kyri) | re-sipped claims, REDS, lint; same clean lane again |
