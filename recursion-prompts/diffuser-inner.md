@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261001.231246` -- the two consent still frames are named; the ladder is quiet
 **Revised:** `20261001.193541` -- the fourth angle's crux is answered and the ladder is quiet
 **Room:** checkable -- the fruit names two pages and two scans
 **Outer prompt:** [`../tools/d/diffuser_seat_prompt.txt`](../tools/d/diffuser_seat_prompt.txt)
@@ -73,6 +74,14 @@ the granted still frame and the revoked still frame, read from `ConsentState`: r
 the revoked frame. No Swift file. No macOS build. No Settle or Respond. If the page would need a
 `LinengrowConsent` type, name that the projection is unwritten and stop. Grade the page at Field
 before sending.
+
+**Landed `20261001.231246`.**
+[The revoked frame is the granted frame plus one line](../active-designing/date/20261001/20261001-231246_the-revoked-frame-is-the-granted-frame-plus-one-line.md)
+names both frames -- recipient, scope, `granted_at`, status, and `revoked_at` on the revoked frame
+alone -- and finds the one thing worth writing down: the revoked frame is the granted frame with
+one row appended and one word changed, which is `grant_eql` made visible rather than a coincidence
+of the fixture. No `LinengrowConsent` type, no Swift file, no Settle or Respond; the gap is named
+and left for a macOS-capable lap. Graded A/94 at Field. Awaits Keaton's word for the next fruit.
 
 ## gates
 
