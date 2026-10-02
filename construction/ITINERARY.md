@@ -381,7 +381,9 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **First proof:** identical facts replay to identical product projections; first-over-bound refuses unchanged.
 
-**The weave's next movement is charted** at [`active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md`](../active-designing/date/20260921/20260921-071008_the-weave-meets-tablecloth-by-content.md) -- the seam, where the weave meets Tablecloth by content, with its first step and falsifier named.
+**Both named cruxes landed `20261001`, whole** -- weave-meets-Tablecloth and the consent lowering.
+[Account](archive/date/20261002/20261002-000200_itinerary-patchouli-two-cruxes-already-landed-account.md).
+Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another ship.
 
 ### Copal -- Amphora receipt and portable bundle
 
