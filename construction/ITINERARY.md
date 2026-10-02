@@ -192,9 +192,11 @@ whole](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet
 `comlink/roster_pairs_seal.rye` took its opening triad and two `// invariant:` asserts; `zero
 assert( files remaining` fell **1 to 0**; `tame_style_check` stays GREEN. No YOURS here.
 
-**GRASS -- UNSAID-ROSTERED, SORTED.** [Shelved
-whole](archive/date/20261001/20261001-150700_itinerary-grass-unsaid-rostered-account.md). 75/81 over
-ceiling trace to 22 new files; shims read zero. **YOURS:** ~700 debt bindings want `say var.err`.
+**GRASS -- UNSAID-ROSTERED'S YOURS CLOSED.** [Shelved
+whole](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md). The
+elder YOURS landed in `9b8879d432`: `unsaid_rostered` fell 984 to **869** against 903,
+`shim_reason_witness.rish` reads ok. No YOURS; one repair remains, `glow_choir_witness.rish`'s
+32 unguarded `rN` bindings.
 
 **BAKERY -- THE NEWEST DOOR GUARD CARRIED ITS OWN OVERAGE.** Account
 [shelved whole](archive/date/20260917/20260917-225154_itinerary-landed-accounts.md): `shell_dialect` fell 9 to 7,
@@ -355,7 +357,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `cfb237087e` -- HEAD's parent, read after the final rebase.
+**Git nib:** `263ce8a24c` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
