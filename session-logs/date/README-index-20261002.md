@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.041208` | [fresh read confirms the mantra/tally queue is still empty](20261002/20261002-041208_patchouli-fresh-read-finds-lane-still-empty.kyri) | re-grepped REDS and ITINERARY fresh; %807 and %765 still the only lane rows, both blocked; 12 fleet-wide OPEN rows checked, none agent-doable from here |
 | `20261002.024000` | [byte-level falsifier relaunched](20261002/20261002-024000_byte-level-falsifier-relaunched.kyri) | the prior lap's in-flight classifier had died with its shell; relaunched the same script, running again |
 | `20261002.023905` | [petrichor lap: fruit re-verified, still waits on Keaton](20261002/20261002-023905_petrichor-fruit-re-verified-still-waits-on-keaton.kyri) | re-graded the citizen door B+/89 unchanged, crushed-index and living-docs-lint GREEN, no in-lane OPEN row or claim |
 | `20261002.023819` | [fifteenth lap: round-open pulls, finds the lane still blocked](20261002/20261002-023819_fifteenth-lap-finds-lane-blocked-on-ruling.kyri) | ran fleet_round_open before any cold run; HEAD now f431779a81; surveyed OPEN REDS rows for a claim-as-override lap, none fit without crossing an owner's door or a custody gate |
