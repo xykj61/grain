@@ -8530,6 +8530,21 @@ path tools/gen/chapter/date_dialect_witness.rish
 tier lap
 seated 20261002.002349
 
+# brush_shape -- Surface Chapter p12/p23's Brushstroke fixture and parser-begun pedestal, standalone
+# and unclaimed by any family exclusion. Reads brushstroke/seed-frame.brush for its six-line
+# placard (name/shape/invariant/example/readers/nib), its four named pins (at-nib, present Frame,
+# Parser begun, Never JS), confirms brushstroke/brush_parse.rye and the css-sail-glob gratitude
+# silo exist, confirms both p12 and p23 counsel seats are on disk, and refuses if a web-twin file
+# (seed-frame.css/.html/.json) has crept in beside the .brush source -- the one invariant this
+# witness actually guards against drift, since every other check reads a file that cannot silently
+# regress. GREEN on metal; no dependency on the ironbeetle/tigerbeetle/surface_season/sunn/nona/oven
+# families the card still holds for Keaton's word. Claimed as copal-brush-shape-roster before this
+# entry landed. Runs in under 1s on metal.
+guard brush_shape
+path tools/gen/chapter/brush_shape_witness.rish
+tier lap
+seated 20261002.010129
+
 # receipt_chain -- bakery's lane crux names one shared build cache and one shared cold-run cache
 # across the pier's eight checkouts, and that crux ASSUMED the scoped-receipt chain was advancing
 # and merely private. tools/fixtures/s/receipt_chain_scan.sh reads all eight copies of
