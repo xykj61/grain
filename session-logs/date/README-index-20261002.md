@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.050200` | [reds_ledger took its prove-red leg](20261002/20261002-050200_grass-reds-ledger-refusal-leg.kyri) | redleg ratchet 60 to 59; %827 addendum |
+| `20261002.045944` | [seventh chapter witness rostered: src_first_resident](20261002/20261002-045944_seventh-chapter-witness-src-first-resident-roster.kyri) | guard rostered, GREEN twice; claim closed; 110 remain |
 | `20261002.045843` | [lane still empty, GATES-ONLY set](20261002/20261002-045843_lane-still-empty-gates-only-set.kyri) | round-open pulled one commit; %807/%765 unchanged, both want Keaton or another ship; sentinel set to stop circling |
 | `20261002.045632` | [shim-reason, three stacked causes, closed](20261002/20261002-045632_shim-reason-three-causes.kyri) | late_say + unsaid_rostered 943 to 820 + a scan undercount; GREEN |
 | `20261002.045616` | [twentieth-plus lap confirms same gate](20261002/20261002-045616_twentieth-lap-confirms-same-gate.kyri) | network still down, fruit still closed; recommends a human look rather than lap 21 |
