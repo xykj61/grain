@@ -37,7 +37,7 @@ assert lwords.ok else "horizon-thin: kiln lean scan failed"
 assert lwords.out contains "LANTERN_LEAN" else "horizon-thin: Kiln living lean missing"
 
 say "horizon-thin: the shed elders are recorded..."
-let gf = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md && grep -q '20260629-063512_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md && grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md && echo GF_OK"]
+let gf = run ["sh" "-c" "grep -q '20260629-063512_the-graph-beneath-the-surface.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260629-063512_lantern-lattice-anvil.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && echo GF_OK"]
 assert gf.ok else "horizon-thin: shed record scan failed"
 assert gf.out contains "GF_OK" else "horizon-thin: the prep pin must name every shed elder"
 

@@ -9175,3 +9175,26 @@ guard living_mutant_shred_prep
 path tools/gen/chapter/living_mutant_shred_prep_witness.rish
 tier lap
 seated 20261002.160800
+
+# horizon_stack_thin, oven_seat, realidream_mutant -- three more Surface-chapter witnesses
+# unrostered since written, all sharing the same stale-shelf fault as wafer_thin and
+# living_mutant_shred_prep above: each greps one or more shed-elder filenames against
+# construction/SHRED_PREP.md alone, and every named filename folded off that pin onto
+# construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md on 20260904.193221.
+# Found together in one pass rather than one at a time, once the class was named. Repaired by
+# widening every grep call to read the live pin and the folded shelf together; GREEN on metal for
+# all three. Claimed as patchouli-chapter-witness-shed-shelf-fold before these entries landed.
+guard horizon_stack_thin
+path tools/gen/chapter/horizon_stack_thin_witness.rish
+tier lap
+seated 20261002.162856
+
+guard oven_seat
+path tools/gen/chapter/oven_seat_witness.rish
+tier lap
+seated 20261002.162856
+
+guard realidream_mutant
+path tools/gen/chapter/realidream_mutant_witness.rish
+tier lap
+seated 20261002.162856

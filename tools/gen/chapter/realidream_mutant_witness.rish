@@ -26,7 +26,7 @@ assert lean.ok else "realidream-mutant: lean scan failed"
 assert lean.out contains "LEAN_OK" else "realidream-mutant: Skate/Pond lean words missing"
 
 say "realidream-mutant: shed record..."
-let shed = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md && echo SHED_OK"]
+let shed = run ["sh" "-c" "grep -q '20260629-063512_realidream.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && echo SHED_OK"]
 assert shed.ok else "realidream-mutant: shed record scan failed"
 assert shed.out contains "SHED_OK" else "realidream-mutant: the prep pin must name the shed elder"
 

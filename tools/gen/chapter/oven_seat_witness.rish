@@ -18,7 +18,7 @@ let mid = run ["test" "!" "-f" "foundations/20260728-221253_lantern-lattice-anvi
 assert mid.ok else "oven-seat: the shed Anvil elder must be gone"
 let oven_elder = run ["test" "!" "-f" "foundations/20260826-024944_lantern-lattice-oven.md"]
 assert oven_elder.ok else "oven-seat: the shed Oven elder must be gone"
-let recorded = run ["sh" "-c" "grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md && echo SHED_OK"]
+let recorded = run ["sh" "-c" "grep -q '20260826-024944_lantern-lattice-oven.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && grep -q '20260728-221253_lantern-lattice-anvil.md' construction/SHRED_PREP.md construction/archive/shred/SHRED_PREP-second-mitra-shed-record.md && echo SHED_OK"]
 assert recorded.ok else "oven-seat: shed record scan failed"
 assert recorded.out contains "SHED_OK" else "oven-seat: the prep pin must name both shed elders"
 
