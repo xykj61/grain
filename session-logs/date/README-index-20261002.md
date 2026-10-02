@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.011434` | [the send crossed three contested rebases](20261002/20261002-011434_contested-send-three-rebases.kyri) | nib re-derived thrice; a clean rebase did not prove it current |
 | `20261002.011253` | [grass queue confirmed empty again](20261002/20261002-011253_grass-queue-confirmed-empty-again.kyri) | no new audit packet; agent-doable queue read empty across 6+ laps and 6 ships in two hours |
 | `20261002.010657` | [width_check_scan stale citations](20261002/20261002-010657_width-check-scan-stale-line-citations.kyri) | fire rota: fixed stale usize-exemption line citations; %810 verdict disagreement stays Keaton's |
 | `20261002.010235` | [brush_shape rostered; pin-tidy witness booked as a stale-artifact red](20261002/20261002-010235_brush-shape-roster-and-pin-tidy-red.kyri) | copal-inner's fruit landed; remember_pin_history_tidy's three checks are each a retired artifact |
