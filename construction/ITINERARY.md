@@ -34,15 +34,11 @@ lap to seat the newest under the pin's bound.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
-**PHEROMONE -- TWO CONSENT SHAPE PEDESTALS LANDED, GREEN BOTH WAYS.** [Prior account shelved
-whole](archive/date/20261002/20261002-004500_itinerary-pheromone-consent-shape-pedestals-account.md).
-`src/shape/shape-consent-grant.glow` (nine fields) and `src/shape/shape-consent-revoke.glow`
-(seven fields) name `ConsentGrantFact` and `ConsentRevokeFact` from
-`mantra/src/consent_replay.rye`; one witness, `tools/m/mantra_glow_tend_limb5_witness.rish`, reads
-both example counts off the rye via `rye_struct_fields_scan.sh` and asserts `rune_shape.max_fields`
-held at 15. Rostered as `mantra_glow_tend_limb5`, GREEN both in the roster and run standalone.
-**YOURS:** whether `orphaned-revoke` earns a `Reason` member when lowering begins, and whether
-Patchouli or Incense opens it first.
+**PHEROMONE -- SHAPE PEDESTALS LANDED, LANE GATED.** [Account shelved
+whole](archive/date/20261002/20261002-050744_itinerary-pheromone-shape-pedestals-landed-account.md)
+-- `mantra_glow_tend_limb5` GREEN, both example counts proven against the rye. **YOURS:** whether
+`orphaned-revoke` earns a `Reason` member when lowering begins, and whether Patchouli or Incense
+opens it first.
 
 **INCENSE.** [Account shelved](archive/date/20260918/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
@@ -358,7 +354,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5d4f2e8df4` -- HEAD read before this follow-up (rule 5).
+**Git nib:** `f14916123d` -- HEAD read before this follow-up commit, which becomes its parent.
 
 ### Incense -- product captain
 
