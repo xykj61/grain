@@ -9220,6 +9220,20 @@ path tools/gen/chapter/ironbeetle_ep019_census_witness.rish
 tier lap
 seated 20261002.185654
 
+# ironbeetle_ep020_census -- e75 IronBeetle ep020 census, unrostered since it was written. Same
+# shape as ep001 through ep019: gratitude/ironbeetle is presence-only vendored prose rather than a
+# git submodule, so this witness carries no clone-absent skip leg either -- it reads
+# gratitude/ironbeetle/ once and names the fact directly. Proven on metal both ways in this lap:
+# `rishi/bin/rishi run tools/gen/chapter/ironbeetle_ep020_census_witness.rish` exits GREEN at
+# verdict=ok, reading IRON=present, EP020=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes,
+# CLEAN=yes, and MATKLAD_OK=yes; and the same witness, run with gratitude/ironbeetle moved aside,
+# refuses with `gratitude/ironbeetle ABSENT -- host shelf first` rather than reading past the
+# missing shelf. Claimed as copal-ironbeetle-ep020-census-roster before this entry landed.
+guard ironbeetle_ep020_census
+path tools/gen/chapter/ironbeetle_ep020_census_witness.rish
+tier lap
+seated 20261002.190334
+
 # tigerbeetle_be_explicit_census -- e39 TB "be explicit" census, unrostered since it was written.
 # The same decided-skip shape as its say_why, say_how, assert_census, void_census, and batching_census
 # siblings above: an uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone

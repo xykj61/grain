@@ -120,6 +120,19 @@ SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside it 
 measured against the `guard` rows in `construction/standing-equipment.kyri` rather than trusted
 from this line.
 
+**COPAL -- A TWENTY-THIRD UNROSTERED WITNESS.** `ironbeetle_ep020_census_witness.rish` rostered --
+the sixteenth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
+ep019: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
+witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
+directly. The witness and its `tools/fixtures/i/ironbeetle_ep020_census.sh` fixture already stood
+written and unclaimed before this lap; the roster entry was the only thing missing. Proven on metal
+both ways -- present it reads GREEN at `verdict=ok` with IRON=present, EP020=yes, HONORS=yes,
+SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside it refuses with
+`gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
+`copal-ironbeetle-ep020-census-roster`, closed. **YOURS:** ~69 chapter witnesses remain unrostered,
+measured against the `guard` rows in `construction/standing-equipment.kyri` rather than trusted
+from this line.
+
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
 -- ep012 rostered and that claim closed.
@@ -318,7 +331,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `570757a61a` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `806f4f022b` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
