@@ -176,6 +176,25 @@ brief_reported_witness() {
     'let probe = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
     'assert probe.ok else "pen: the probe refused -- ${probe.err_brief}"'
 }
+guarded_say_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "tools/fixtures/p/pen_scan.sh"]' \
+    'if probe.ok == false then say probe.err' \
+    'assert probe.ok else "pen: the probe refused"'
+}
+presence_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "-c" "test -f tools/fixtures/p/pen_scan.sh"]' \
+    'assert probe.ok else "pen: the probe is missing"'
+}
+mixed_presence_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let probe = run ["sh" "-c" "grep -q pen tools/fixtures/p/pen_scan.sh && test -f tools/fixtures/p/pen_scan.sh"]' \
+    'assert probe.ok else "pen: the probe is missing"'
+}
 
 seal() { ( cd "$pen/$1" && git add -A && git commit -q -m "pen: seed" ); }
 
@@ -780,6 +799,45 @@ case "$out" in *"reason_lost_rostered=1"*) r "reason_brief_lose_counted=yes" ;; 
 narrow_scan reason_brief_lose
 out=$(run_narrow reason_brief_lose)
 case "$out" in *"reason_lost_rostered=0"*) r "reason_brief_lose_narrow_blind=yes" ;; *) r "reason_brief_lose_narrow_blind=no" ;; esac
+
+# --- guarded say and presence, the two credits the fourth shape was blind to -----------------
+# A one-line `if v.ok == false then say v.err` reports the capture. Stripping that credit from
+# the instrument counts the same file, so the credit is load-bearing. A presence `test -f` has
+# no target sentence; a command that also greps stays unsaid.
+new_repo guarded_say
+forwarding_shim > "$pen/guarded_say/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/guarded_say/tools/fixtures/p/pen_scan.sh"
+guarded_say_witness > "$pen/guarded_say/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/guarded_say/construction/standing-equipment.kyri"
+seal guarded_say
+out=$(run_scan guarded_say 99 99 99 0); code=$(run_code guarded_say 99 99 99 0)
+r "guarded_say_exit=$code"
+case "$out" in *"unsaid_rostered=0"*) r "guarded_say_credited=yes" ;; *) r "guarded_say_credited=no" ;; esac
+case "$out" in *"verdict=ok"*) r "guarded_say_free=yes" ;; *) r "guarded_say_free=no" ;; esac
+sed '/guarded_say_credit/,/guarded_say_credit_end/d' \
+  "$pen/guarded_say/tools/fixtures/s/shim_reason_scan.sh" > "$pen/guarded_say/narrow_scan.sh"
+out=$( set +e; cd "$pen/guarded_say" || exit 0; CEILING=99 REASON_CEILING=99 SCAN_ORDER_CEILING=99 UNSAID_ROSTERED_CEILING=0 UNSAID_CEILING=99 sh ./narrow_scan.sh 2>/dev/null; exit 0 )
+case "$out" in *"unsaid_rostered=1"*) r "guarded_say_narrow_blind=yes" ;; *) r "guarded_say_narrow_blind=no" ;; esac
+
+new_repo presence
+forwarding_shim > "$pen/presence/tools/x/a.rish"
+printf '#!/bin/sh\necho pen\n' > "$pen/presence/tools/fixtures/p/pen_scan.sh"
+presence_witness > "$pen/presence/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/presence/construction/standing-equipment.kyri"
+seal presence
+out=$(run_scan presence 99 99 99 0); code=$(run_code presence 99 99 99 0)
+r "presence_exit=$code"
+case "$out" in *"unsaid_rostered=0"*) r "presence_credited=yes" ;; *) r "presence_credited=no" ;; esac
+case "$out" in *"verdict=ok"*) r "presence_free=yes" ;; *) r "presence_free=no" ;; esac
+sed '/presence_credit/,/presence_credit_end/d' \
+  "$pen/presence/tools/fixtures/s/shim_reason_scan.sh" > "$pen/presence/narrow_scan.sh"
+out=$( set +e; cd "$pen/presence" || exit 0; CEILING=99 REASON_CEILING=99 SCAN_ORDER_CEILING=99 UNSAID_ROSTERED_CEILING=0 UNSAID_CEILING=99 sh ./narrow_scan.sh 2>/dev/null; exit 0 )
+case "$out" in *"unsaid_rostered=1"*) r "presence_narrow_blind=yes" ;; *) r "presence_narrow_blind=no" ;; esac
+
+mixed_presence_witness > "$pen/presence/tools/x/pen_witness.rish"
+out=$(run_scan presence 99 99 99 0); code=$(run_code presence 99 99 99 0)
+r "presence_mixed_exit=$code"
+case "$out" in *"unsaid_rostered=1"*) r "presence_mixed_still_unsaid=yes" ;; *) r "presence_mixed_still_unsaid=no" ;; esac
 
 echo "cases=$readings"
 echo "repos=$repos"
