@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.065415` | [pheromone's earth row confirms fallow](20261002/20261002-065415_pheromone-earth-row-confirms-fallow.kyri) | rota row 4 (Earth) properly read; concrete facts (closed banner, empty claim board, matching remote) confirmed, field tagged fallow rather than forced |
 | `20261002.065103` | [grass's second clean open](20261002/20261002-065103_grass-second-clean-open.kyri) | round-opened, board empty, whole four-pass rotation already closed this morning; no new work found |
 | `20261002.064920` | [pheromone reconfirms lane gated](20261002/20261002-064920_pheromone-lane-gated-no-fresh-work.kyri) | both Glow shape fruits stand closed; next step is Keaton's word on consent lowering, no agent-doable work this lap |
 | `20261002.064529` | [grass opens clean, no new work](20261002/20261002-064529_grass-opens-clean-no-new-work.kyri) | fresh lap, clean tree, nothing open for other reasons; one candidate graded below B, left as testimony |
