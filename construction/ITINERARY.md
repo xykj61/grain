@@ -187,12 +187,13 @@ plus [one more](archive/date/20261002/20261002-011701_itinerary-diffuser-four-pa
 scheduler, the radial-split allocator, row 11 confirmed. **YOURS:** Bakery or Incense on the
 quiet-pier scheduler.
 
-**DIFFUSER -- THE REAL EDIT LOG WAS ALREADY IN GIT, NOT IN MANTRA.** [Landed
-whole](../active-designing/date/20261002/20261002-010921_the-real-edit-log-was-already-in-git-not-in-mantra.md):
-the fourth angle's crux wanted a name whose identity stays stable across an edit; this card's own
-`git` history already is that log, and its 10,829 hunks against two peer pins read three real edit
-shapes -- shift, substitution, a mix -- matching the dedup-ratio essays' own synthetic prediction.
-B/83. **YOURS:** none -- the open falsifier is named on the page.
+**DIFFUSER -- THE FALSIFIER RAN TWICE; THE DOCUMENTS DISAGREE.** [Shelved
+whole](archive/date/20261002/20261002-091710_itinerary-diffuser-edit-log-account.md). [Landed,
+reversed](../active-designing/date/20261002/20261002-055959_the-line-level-proxy-was-misleading.md):
+`ITINERARY.md` byte LCS reads 83.3 percent shift vs the line reading's 23.8. [Landed,
+confirmed](../active-designing/date/20261002/20261002-093040_the-claims-board-held-its-shape-either-way.md):
+`fleet-claims.kyri` byte LCS reads 94.4 vs 97.8 -- short records hide no edit in a long line.
+B/82, B/80. **YOURS:** none; `REDS.md` stays line-level only.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -308,7 +309,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3ca4279299` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `d7a57295ff` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

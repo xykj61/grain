@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.094107` | [%829 confirmed CLOSED, nothing queued](20261002/20261002-094107_grass-829-confirmed-closed-no-new-work.kyri) | verified %829 CLOSED on shelf+witness; 14 OPEN rows none in-lane; stale line-91 dup noted |
+| `20261002.094101` | [falsifier-extended-to-claims-board](20261002/20261002-094101_falsifier-extended-to-claims-board.kyri) | claims-board byte LCS agrees with its line reading; B/80 |
 | `20261002.094024` | [Fire's lens finds nothing to cut](20261002/20261002-094024_fire-lens-finds-nothing-to-cut.kyri) | rota row 2 (Fire); re-ran the lane's own guard live, GREEN, nothing to cut |
 | `20261002.093544` | [grass round-open, nothing queued](20261002/20261002-093544_grass-round-open-clean-nothing-queued.kyri) | claims/REDS checked, one spot grade (A); no touch owed |
 | `20261002.093543` | [language lane still empty, no new state](20261002/20261002-093543_language-lane-still-empty-no-new-state.kyri) | repeat confirmation; nothing changed since prior check six minutes earlier |
