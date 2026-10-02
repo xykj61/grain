@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/g/brush_parse_control.sh -- prove brush-parse refuses a planted malformed .brush.
+# tools/fixtures/b/brush_parse_control.sh -- prove brush-parse refuses a planted malformed .brush.
 #
 # WHAT THIS DOES. tools/gen/chapter/brush_parse_witness.rish asserts brush-parse's own selftest
 # banners and the seed fixture's happy path; it never plants a bad .brush file from outside and
@@ -13,7 +13,7 @@
 # neither plant is ever staged.
 #
 # USAGE
-#   sh tools/fixtures/g/brush_parse_control.sh
+#   sh tools/fixtures/b/brush_parse_control.sh
 #
 # Run from the repository root, after brushstroke/bin/brush-parse is built.
 set -eu

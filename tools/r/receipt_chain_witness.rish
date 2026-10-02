@@ -1,6 +1,6 @@
-# tools/s/receipt_chain_witness.rish -- the pier's scoped-receipt chain answers for itself.
+# tools/r/receipt_chain_witness.rish -- the pier's scoped-receipt chain answers for itself.
 #
-#   rishi/bin/rishi run tools/s/receipt_chain_witness.rish
+#   rishi/bin/rishi run tools/r/receipt_chain_witness.rish
 #
 # WHAT IT HOLDS. `tools/fixtures/s/standing_equipment_run.sh --scoped` proves the delta since the
 # last fully green FULL close, reading that close from `construction/standing-equipment-receipt.kyri`
@@ -27,7 +27,7 @@ say "receipt-chain: Style Gauge, Meter -- every figure read from the pier, none 
 say "receipt-chain: Lens TAME -- every refusal planted in a pen and then lifted."
 
 say "receipt-chain: the control -- a real pen pier in a throwaway directory..."
-let ctl = run ["sh" "tools/fixtures/s/receipt_chain_control.sh"]
+let ctl = run ["sh" "tools/fixtures/r/receipt_chain_control.sh"]
 # invariant: both streams are written out BARE, ahead of the asserts that judge them, so the report
 # cannot refuse however large the output grows.
 say ctl.out
@@ -36,7 +36,7 @@ assert ctl.ok else "receipt-chain: the control refused -- its two streams stand 
 assert ctl.out contains "fail=0" else "receipt-chain: a control leg failed -- its two streams stand above"
 
 say "receipt-chain: and the reading itself, on this pier..."
-let scan = run ["sh" "tools/fixtures/s/receipt_chain_scan.sh"]
+let scan = run ["sh" "tools/fixtures/r/receipt_chain_scan.sh"]
 say scan.out
 assert scan.ok else "receipt-chain: the scan refused -- its reading stands above"
 

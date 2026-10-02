@@ -1,7 +1,7 @@
 #!/bin/sh
-# tools/fixtures/s/receipt_chain_control.sh -- proves tools/fixtures/s/receipt_chain_scan.sh.
+# tools/fixtures/r/receipt_chain_control.sh -- proves tools/fixtures/r/receipt_chain_scan.sh.
 #
-#   sh tools/fixtures/s/receipt_chain_control.sh
+#   sh tools/fixtures/r/receipt_chain_control.sh
 #
 # Builds a real pen pier in a throwaway directory: a root holding seat trees, one of them a real git
 # repository carrying a copy of the scan and the roster reader at their shipped paths, so the scan's
@@ -39,11 +39,11 @@ trap 'rm -rf "$pen"' EXIT
 # `pier/field` is the ship running the scan; `pier/peer-one` and `pier/peer-two` are its peers.
 pier="$pen/pier"
 field="$pier/field"
-mkdir -p "$field/tools/fixtures/s" "$field/tools/fixtures/f" "$field/construction"
-cp "$src/tools/fixtures/s/receipt_chain_scan.sh" "$field/tools/fixtures/s/"
+mkdir -p "$field/tools/fixtures/r" "$field/tools/fixtures/s" "$field/tools/fixtures/f" "$field/construction"
+cp "$src/tools/fixtures/r/receipt_chain_scan.sh" "$field/tools/fixtures/r/"
 cp "$src/tools/fixtures/s/shell_portable.sh" "$field/tools/fixtures/s/"
 cp "$src/tools/fixtures/f/fleet_roster_scan.sh" "$field/tools/fixtures/f/"
-scan="$field/tools/fixtures/s/receipt_chain_scan.sh"
+scan="$field/tools/fixtures/r/receipt_chain_scan.sh"
 
 cat > "$field/construction/fleet-roster.kyri" <<'ROSTER'
 format fleet-roster-v1
