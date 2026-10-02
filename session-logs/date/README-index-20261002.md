@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.044649` | [petrichor lane gate reconfirmed, no drift](20261002/20261002-044649_petrichor-lane-gate-reconfirmed-no-drift.kyri) | differential check only; HEAD matches xy/main; REDS rows unchanged; sentinel re-set |
 | `20261002.050200` | [reds_ledger took its prove-red leg](20261002/20261002-050200_grass-reds-ledger-refusal-leg.kyri) | redleg ratchet 60 to 59; %827 addendum |
 | `20261002.044341` | [petrichor lane confirmed gated, no new work](20261002/20261002-044341_petrichor-lane-confirmed-gated-no-new-work.kyri) | fruit closed twice over, three sweeps already clean; no claim fits; stop sentinel set |
 | `20261002.043934` | [gate still held, sentinel restored](20261002/20261002-043934_gate-still-held-sentinel-restored.kyri) | watch cleared .loop-gates-only at lap open; %807/%765 still OPEN, no new docs-geode work; sentinel restored |
