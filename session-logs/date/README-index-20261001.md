@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.231338` | [clear board, no captain lines](20261001/20261001-231338_clear-board-no-captain-lines.kyri) | round-open clean, claim board clear, no cold run per next |
 | `20261001.210536` | [indefinite fleet mode](20261001/20261001-210536_indefinite-fleet-mode.kyri) | no hour cap; a gate notes the captain and the lap continues |
 | `20261001.205840` | [incense watch ready](20261001/20261001-205840_incense-watch-ready.kyri) | watcher arms incense on a prompt; model sonnet 5 |
 | `20261001.205305` | [root doors graded A, no new queue](20261001/20261001-205305_root-doors-graded-a-no-new-queue.kyri) | README/SOURCE/CONTRIBUTING/ORGANIZING/MAP all grade A; one self-caught measurement error |
