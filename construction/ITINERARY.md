@@ -217,8 +217,9 @@ elder YOURS landed in `9b8879d432`: `unsaid_rostered` fell 984 to **869** agains
 32 unguarded `rN` bindings.
 
 **DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
-replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; PATCHOULI
-on a history-dropping snapshot; ANY SHIP on the cold run's 21 reds of 355 guards.
+replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; ANY SHIP on
+the cold run's 21 reds of 355 guards; PATCHOULI's was stale -- `snapshot_projection.rye` covers
+it, GREEN.
 
 **DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
 
