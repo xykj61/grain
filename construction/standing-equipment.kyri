@@ -8935,3 +8935,21 @@ guard tigerbeetle_batching_census
 path tools/gen/chapter/tigerbeetle_batching_census_witness.rish
 tier lap
 seated 20261002.102044
+
+# tigerbeetle_control_flow_census -- e35 TB control-flow census, unrostered since it was written.
+# The same decided-skip shape as its say_why, say_how, void, and batching siblings above: an
+# uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone rather than a
+# defect, so the witness reads `gratitude/tigerbeetle/src` and takes a GREEN skip exit instead of
+# reding every ship lacking the checkout. This ship's own clone WAS absent at the start of this
+# lap, so the skip leg is proven on the pier's own natural state rather than a simulated move:
+# `rishi/bin/rishi run tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish` exited GREEN
+# at the clone-absent skip before the submodule was ever touched. `git submodule update --init
+# gratitude/tigerbeetle` then brought the clone to its present leg, and the same command exited
+# GREEN at verdict=ok, reading REV=97c7a8ef38 with GUIDE_FLOW, GUIDE_NASA, GUIDE_LIMIT, TAME_FLOW,
+# SUPPLEMENT_FLOW, and STYLE all at yes. One of the unrostered tools/gen/chapter/ witnesses this
+# lane found free on the live claim board; claimed as
+# patchouli-tigerbeetle-control-flow-census-roster before this entry landed.
+guard tigerbeetle_control_flow_census
+path tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish
+tier lap
+seated 20261002.102302
