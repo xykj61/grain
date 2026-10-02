@@ -7,8 +7,9 @@
 **Status:** Scheduled -- written, not run
 **Room:** the plan lives here; the foundation and the rule are seated only when this prompt runs
 **Git nib:** read `git rev-parse --short=10 HEAD` at the moment of the run, and write that parent into `construction/ITINERARY.md` before the commit
+**Where this sits:** home is [`../README.md`](../README.md). The foundations door is [`../foundations/README.md`](../foundations/README.md). The short name is in [`../context/LEXICON.md`](../context/LEXICON.md), spoken in [`../context/KYRI.md`](../context/KYRI.md), and listed among the kin in [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md).
 
-This prompt is the door. It is not a second room. A `scheduled/` folder, and a symlink beside it, would give one plan two addresses. The living row on [`README.md`](README.md) is the address.
+This prompt is the door. A `scheduled/` folder, and a symlink beside it, would give one plan two addresses. The living row on [`README.md`](README.md) is the address.
 
 ## When this may run
 
@@ -30,6 +31,8 @@ The order stays. The names change.
 - **Lila**, within that tier, is the one glad keystone: the hardest move that can still be finished, done as play and as offering. Joy keeps the rank Lesson 4 already gave it. Safety first, performance second, joy third. Lila is that third vote. It is the move that opens the rest. It is the practice of making the true thing with a light hand.
 - **Reds still come first of all.** A booked red preempts this order.
 - One keystone per round. The finishing edge still holds.
+
+The short name is **Lila-first, return-first**. Lila is the glad keystone. The return is the ground that lasts. The name leads with the play. The choosing answers the return first, and then answers Lila on that ground. The phrase map leaves this shorthand as it is.
 
 Bare English stays bare. This pass replaces the rule's own phrases. It leaves the lone word for a hard passage where that word is ordinary speech, and it leaves a person's name, a deli, and a book title for the gratitude page to carry.
 
@@ -63,7 +66,14 @@ Write `foundations/20261002-111449_lila-and-the-long-return.md` with this body.
 **Style:** Bhakta, with Radiant warmth (see `../context/BHAKTA_STYLE.md` and `../context/RADIANT_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living foundation -- the order for what we do next
-**Kin:** [`reds-first`](../.claude/rules/reds-first.md) - [`align`](../.claude/rules/align.md) - Lesson 4, joy has a rank
+**Where this sits:** home is [`../README.md`](../README.md). This room's door is [`README.md`](README.md). The short name lives in [`../context/LEXICON.md`](../context/LEXICON.md).
+**Kin:** [`reds-first`](../.claude/rules/reds-first.md) - [`align`](../.claude/rules/align.md) - [Lesson 4](../docs-geode/lessons/20260910-060225_lesson-4-joy-has-a-rank.md) - [`../context/KYRI.md`](../context/KYRI.md) - [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md) - [`the fascia`](20260826-181401_the-fascia-and-the-way-home.md)
+
+## The short name
+
+**Lila-first, return-first.**
+
+Lila is the glad keystone. The return is the ground that lasts. The name leads with the play. When you choose, you answer the return first, and then you answer Lila on that ground.
 
 ## The order, in plain words
 
@@ -95,9 +105,9 @@ A line about this week's status wears a status mark. A clever word yields to a p
 
 Point the Aether fixed cell in `foundations/README.md` at this page. The cell's name becomes **Lila and the Long Return**.
 
-Write `.claude/rules/lila-and-the-long-return.md` as the living rule, in the same voice, citing this foundation and keeping the composition paragraphs the old rule carries: reds first, the finishing edge, one keystone, align, the fours. Retire `.claude/rules/lila-and-the-long-return.md` by replacing its body with a short pointer to the new rule and the new foundation. The pointer uses the new names.
+Write `.claude/rules/lila-and-the-long-return.md` as the living rule, in the same voice, citing this foundation and keeping the composition paragraphs the old rule carries: reds first, the finishing edge, one keystone, align, the fours. The rule's first line after the title names the shorthand **Lila-first, return-first** and points home to [`../README.md`](../README.md) and down to this foundation. Retire `.claude/rules/lila-and-the-long-return.md` by replacing its body with a short pointer to the new rule and the new foundation. The pointer uses the new names.
 
-In `context/LEXICON.md`, the row for the ordering rule takes the new name and the new meaning. The row that defines the hardest solvable move stays, and it gains one sentence: under this order that move is called Lila when it is the round's keystone.
+The lexicon row **Lila-first, return-first** is already seated. On this run, point it at the new foundation and the new rule, and leave it one clause, a date, and that pointer. The elder ordering row takes the new name in the same pass. The row that defines the hardest solvable move stays, and it gains one sentence: under this order that move is called Lila when it is the round's keystone. The Kyri note and the spellbook kin line already speak the shorthand. On this run, point them at the seated foundation.
 
 ## Move the credits
 

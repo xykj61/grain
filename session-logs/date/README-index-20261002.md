@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.112355` | [Lila-first, return-first](20261002/20261002-112355_lila-first-return-first.kyri) | the short name, linked from the root down to the prompt |
 | `20261002.111449` | [The molt is scheduled](20261002/20261002-111449_lila-scheduled-fleet-ashore.kyri) | seven seats clocked out; the naming pass waits |
 | `20261002.110646` | [Lila and the long return](20261002/20261002-110646_lila-and-the-long-return.kyri) | joy ranks third; Lila keeps one job; names stay unseated |
 | `20261002.105702` | [The card is drawn](20261002/20261002-105702_the-card-is-drawn.kyri) | Skate holds 72 by 18; admission still counts two |

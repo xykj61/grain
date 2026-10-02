@@ -324,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0ddac584cf` -- parent of the scheduled molt, read before the commit (rule 5).
+**Git nib:** `4fc7d9ce16` -- parent of the shorthand links, read before the commit (rule 5).
 
 ### Incense -- product captain
 
