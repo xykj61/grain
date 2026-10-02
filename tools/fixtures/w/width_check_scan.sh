@@ -22,8 +22,10 @@
 #   reading that refuses.
 #
 # THE ONE NAMED EXEMPTION, pinned rather than waived.
-#   `rishi/src/main.rye` carries five `usize` locals -- `gi` and `start` at lines 1886 and 1887,
-#   `i` at 1920, `total` at 1937, `pos` at 1945. Every one of them indexes a Zig slice or holds a
+#   `rishi/src/main.rye` carries five `usize` locals -- `gi` and `start` at lines 2540 and 2541,
+#   `i` at 2574, `total` at 2591, `pos` at 2599 (re-read `20261002`; the file has grown since the
+#   pin was written and the line numbers below moved with it -- the PIN is the exempt count, five,
+#   held by the scan's own `exempt_pinned` field, never these line citations). Every one of them indexes a Zig slice or holds a
 #   length against `.len`, and the line above the first reads `const size: usize = @intCast(size_i)`
 #   -- the seam cast the filter already welcomes. They are the seam value carried onward, and the
 #   filter is line-scoped, so it cannot see where a local came from. Converting them to `u32` would
