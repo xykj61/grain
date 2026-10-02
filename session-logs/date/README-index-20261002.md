@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.173243` | [Fresh lap, gate cleared as promised, ground unchanged](20261002/20261002-173243_queue-still-empty-after-gate-cleared.kyri) | sentinel cleared at lap-open exactly as the baton describes; re-read claims and REDS, nothing changed, reset the gate |
 | `20261002.172445` | [Queue still empty, stopping rather than circling](20261002/20261002-172445_queue-still-empty-stopping-rather-than-circling.kyri) | confirmed mantra/tally queue and REDS OPEN rows one more time, found nothing agent-doable, set .loop-gates-only |
 | `20261002.172242` | [Water tastes both cited grades, both read sweet](20261002/20261002-172242_water-tastes-both-cited-grades-sweet.kyri) | rota row 3 (Water); re-ran both cited qa_report_card numbers on metal, both matched the card exactly, queue stays empty |
 | `20261002.172151` | [Mand ring walk, ceiling 54 to 51](20261002/20261002-172151_mand-ring-walk-ceiling-54-to-51.kyri) | walked all three mand/ witness-module pairs; walk ratchet's rest is entirely linengrow/ |
