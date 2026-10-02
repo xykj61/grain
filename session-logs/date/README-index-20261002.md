@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.163731` | [Petrichor's fruit stays closed; no new work this lap](20261002/20261002-163731_petrichor-fruit-still-closed.kyri) | checked claims and OPEN reds, none fit docs-geode; check-in recommended |
 | `20261002.163653` | [No open surface this lap](20261002/20261002-163653_grass-no-open-surface-this-lap.kyri) | grass's own fruit is closed, no claimable lap in any lane; check-in recommended |
 | `20261002.163502` | [Language lane still empty, Earth row deep-read](20261002/20261002-163502_language-lane-still-empty-earth-row-read.kyri) | inner prompt and card re-confirm closed fruit; council rota row 4 (Earth, the clock and the mark) read in full |
 | `20261002.163401` | [The bolt witness walks its module](20261002/20261002-163401_the-bolt-witness-walks-its-module.kyri) | the walk ceiling falls from 56 to 55 |
