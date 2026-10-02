@@ -159,59 +159,31 @@ the contract accepted, and the citizen door's new "A yes you can change" section
 revoke, and the one refusal proven today -- a mismatched holder. Door/B+, composite 89.
 **YOURS:** none -- Consent Rail and the rest wait past this lane.
 
-**GRASS -- FOURTEEN ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261001`, condensed from
-fourteen one-line pointers to one, nothing archived lost): open-room reverse-reads
-([`20260923`](archive/date/20260923/20260923-233155_itinerary-grass-open-room-20260922-account.md),
-[`20260924`](archive/20260924-033649_itinerary-grass-open-room-20260923-account.md)), `backtick_path`
-([`second`](archive/date/20260918/20260918-074921_itinerary-grass-backtick-path-second-account.md)),
-`setu6` device-lab ([`check`](archive/date/20260918/20260918-081500_itinerary-grass-setu6-device-lab-account.md)),
-`scribble_core.rye` ([`account`](archive/date/20260918/20260918-091253_itinerary-grass-scribble-core-account.md)),
-pin-agreement bound ([`account`](archive/date/20260918/20260918-092900_itinerary-grass-pin-agreement-account.md)),
-`setu_desk_hold0_check.rye` ([`account`](archive/date/20260918/20260918-093822_itinerary-grass-hold0-account.md)),
-hold1 + zero-assert close ([`account`](archive/date/20260918/20260918-103223_itinerary-grass-hold1-and-zero-assert-close-account.md)),
-prior live accounts ([`roll-up`](archive/date/20260925/20260925-165606_itinerary-grass-prior-live-accounts.md)),
-Four Promises ([`account`](archive/date/20260924/20260924-212003_itinerary-grass-four-promises-account.md)),
-Device That Forgets ([`account`](archive/date/20260924/20260924-224108_itinerary-grass-device-that-forgets-account.md)),
-Key You Hold ([`account`](archive/date/20260924/20260924-224108_itinerary-grass-key-you-hold-account.md)),
-Free and Open Room ([`account`](archive/date/20260924/20260924-211114_itinerary-grass-open-room-account.md)),
-Shape of a Day ([`account`](archive/date/20260924/20260924-211114_itinerary-grass-shape-of-day-account.md)),
-Roots Beneath the Work ([`account`](archive/date/20260925/20260925-001539_itinerary-grass-roots-account.md)).
+**GRASS -- TWENTY-SIX ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261002`, condensed from
+four pointer blocks to one, nothing archived lost -- every account below still opens at its own
+path): open-room reverse-reads, `backtick_path`, `setu6` device-lab, `scribble_core.rye`,
+pin-agreement bound, `setu_desk_hold0_check.rye`, hold1 + zero-assert close, prior live accounts,
+Four Promises, Device That Forgets, Key You Hold, Free and Open Room, Shape of a Day, Roots
+Beneath the Work, Foundation Beneath the Work, Ledger and Grace, Marked Value, the Sealed
+Crossing, two small ratchet sites (memcpy and parseInt), Cord-Knot's parseInt graduation, the
+Caravan fold note, the last zero-assert file, unsaid-rostered's YOURS closed, shim-reason close,
+mycelium's `main` family declined, and the two named mycelium candidates split clean. Full index
+with every path: [`archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md`](archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md).
+`functions_over_70` narrowed to 439, then 437, after mycelium's own reverse-read and the pledge/lapse split.
 
-**GRASS -- FIVE MORE ACCOUNTS, SHELVED WHOLE** (`20260925`-`20261001`, condensed from five
-one-line pointers to one, nothing archived lost): Foundation Beneath the Work
-([account](archive/date/20260925/20260925-041211_itinerary-grass-foundation-service-account.md)),
-Ledger and Grace ([account](archive/date/20260925/20260925-210440_itinerary-grass-ledger-and-grace-account.md)),
-Marked Value ([account](archive/date/20261001/20261001-112153_itinerary-grass-marked-value-account.md)),
-the Sealed Crossing ([account](archive/date/20261001/20261001-112955_itinerary-grass-sealed-crossing-account.md)),
-two small ratchet sites, memcpy and parseInt
-([memcpy](archive/date/20261001/20261001-114515_itinerary-grass-memcpy-ratchet-account.md),
-[parseInt](archive/date/20261001/20261001-121020_itinerary-grass-parseint-caravan-account.md)).
-
-**GRASS -- FOUR MORE ACCOUNTS, SHELVED WHOLE** (`20261001`-`20261002`, condensed from four to
-one, nothing lost): Cord-Knot's parseInt graduation
-([account](archive/date/20261001/20261001-130141_itinerary-grass-cord-knot-and-delivery-witness-account.md)),
-the Caravan fold note
-([account](archive/date/20261001/20261001-150500_itinerary-grass-caravan-fold-reverse-read-account.md)),
-the last zero-assert file
-([account](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet-account.md)),
-unsaid-rostered's YOURS closed
-([account](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md)).
-`functions_over_70` narrowed to 439 below, after mycelium's own reverse-read.
-
-**GRASS -- TWO ACCOUNTS, SHELVED WHOLE** (`20261002`, condensed from two to one, nothing lost):
-shim-reason close, mycelium's `main` family read and declined
-([fold](archive/date/20261002/20261002-101612_itinerary-grass-shim-reason-and-mycelium-main-fold.md)).
-
-**GRASS -- THE TWO NAMED MYCELIUM CANDIDATES SPLIT CLEAN.** [Account
-shelved](../active-designing/date/20261002/20261002-101612_grass-pledge-lapse-split-account.md):
-both functions were independent-case dispatch (fact kind, then tax-body tag) rather than
-caravan's sequential-narrative shape, so each split at its natural seam into `apply_pledge_open`
-and `apply_pledge_resolve` -- every line, comment, and invariant kept verbatim. `fold_pledge` 89
-to 31 lines, `fold_lapse` 97 to 34. Fourteen witnesses GREEN after the move, including the two
-files' own byte-level app==awk true-reads and round-trip kyri renders. `functions_over_70`'s
-honest remaining population narrows **439 to 437**. **YOURS:** none -- the three large real
-candidates named above (`glow/glow_run.rye: main`, `rye/src/main.rye: bridge_to_zig`,
-`rishi/src/main.rye: eval_expr`) remain unread by this packet.
+**GRASS -- `EVAL_EXPR` SPLITS AT ITS OWN NATURAL SEAMS.** [Account
+shelved](../active-designing/date/20261002/20261002-144246_grass-eval-expr-split-account.md):
+unlike caravan's and mycelium's sequential-narrative shape (declined twice already), `rishi/src/
+main.rye`'s `eval_expr` is a flat string-prefix dispatch table with eight real seams its own
+comments already name. Split into a 20-line dispatcher and eight helpers, every line and comment
+kept verbatim; the two groups reading untrimmed `text` (comparison, the two word-op families) kept
+taking `text`, the rest kept `trimmed`. Clean rebuild; all 36 `rishi/tests/*.rish` scripts
+byte-identical in stdout, stderr, and exit code against a pre-split baseline; a dozen
+rishi-dependent witnesses GREEN; the long-function scanner confirms `eval_expr` (242 lines) is gone
+from the roster and no new entry crosses 70. One slow witness, `rishi_list_bound`, was proven to
+time out identically on the pre-split binary -- named as pre-existing and unrelated. `YOURS:` none
+from this file -- `glow/glow_run.rye: main` and `rye/src/main.rye: bridge_to_zig` remain the two
+large real candidates still unread.
 
 **DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
 

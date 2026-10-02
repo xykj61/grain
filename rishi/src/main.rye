@@ -1133,82 +1133,126 @@ const EvalError = error{
 /// An operator is found outside any quoted string, so one woven into `"text"`
 /// stays text.
 fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!Value {
-    // `run <list>` executes a command and hands back its result as a record.
     const trimmed = std.mem.trim(u8, text, " \t");
+    if (try eval_expr_process(allocator, io, env, trimmed)) |v| return v;
+    if (try eval_expr_file_io(allocator, io, env, trimmed)) |v| return v;
+    if (try eval_expr_runes(allocator, io, env, trimmed)) |v| return v;
+    if (try eval_expr_pipeline(allocator, io, env, trimmed)) |v| return v;
+    if (try eval_expr_comparison(allocator, io, env, text)) |v| return v;
+    if (try eval_expr_word_predicates(allocator, io, env, text)) |v| return v;
+    if (try eval_expr_word_search(allocator, io, env, text)) |v| return v;
+    if (try eval_expr_string_builtins(allocator, io, env, trimmed)) |v| return v;
+    // A user-function call `name arg...` -- recognised only when no top-level
+    // arithmetic operator is present, so a call inside arithmetic wears
+    // parentheses and is reached through eval_operand's grouping instead.
+    if (find_last_arith_add(text) == null and find_last_arith_mul(text) == null) {
+        const first_end = std.mem.indexOfAny(u8, trimmed, " \t") orelse trimmed.len;
+        if (env.lookup_func(trimmed[0..first_end])) |func| {
+            return call_func(allocator, io, env, func, trimmed[first_end..]);
+        }
+    }
+    return eval_add_sub(allocator, io, env, text);
+}
+
+/// Process and pen builtins -- `spawn`, `wait-for`, `run-bounded`, `run`, `env`,
+/// `make-pen`. Returns null when `trimmed` names none of them.
+fn eval_expr_process(allocator: std.mem.Allocator, io: std.Io, env: *Env, trimmed: []const u8) EvalError!?Value {
+    // `run <list>` executes a command and hands back its result as a record.
     if (std.mem.startsWith(u8, trimmed, "spawn ")) {
-        return do_spawn(allocator, io, env, trimmed[6..]);
+        return try do_spawn(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "wait-for ")) {
-        return do_wait_for(allocator, io, env, trimmed[9..]);
+        return try do_wait_for(allocator, io, env, trimmed[9..]);
     }
     if (std.mem.startsWith(u8, trimmed, "run-bounded ")) {
-        return do_run_bounded(allocator, io, env, trimmed[12..]);
+        return try do_run_bounded(allocator, io, env, trimmed[12..]);
     }
     if (std.mem.startsWith(u8, trimmed, "run ")) {
-        return do_run(allocator, io, env, trimmed[4..]);
+        return try do_run(allocator, io, env, trimmed[4..]);
     }
     if (std.mem.startsWith(u8, trimmed, "env ")) {
-        return do_env(allocator, io, env, trimmed[4..]);
+        return try do_env(allocator, io, env, trimmed[4..]);
     }
     // `make-pen <label>` makes one runtime-owned temporary directory and returns its
     // path; the runtime releases it recursively at exit, on refusal, and on a signal.
     if (std.mem.startsWith(u8, trimmed, "make-pen ")) {
-        return do_make_pen(allocator, io, env, trimmed[9..]);
+        return try do_make_pen(allocator, io, env, trimmed[9..]);
     }
-    // File I/O expressions -- each evaluates a path and returns a value.
+    return null;
+}
+
+/// File I/O builtins -- each evaluates a path and returns a value. Returns null
+/// when `trimmed` names none of them.
+fn eval_expr_file_io(allocator: std.mem.Allocator, io: std.Io, env: *Env, trimmed: []const u8) EvalError!?Value {
     if (std.mem.startsWith(u8, trimmed, "read-file ")) {
-        return do_read_file(allocator, io, env, trimmed[10..]);
+        return try do_read_file(allocator, io, env, trimmed[10..]);
     }
     if (std.mem.startsWith(u8, trimmed, "list-dir ")) {
-        return do_list_dir(allocator, io, env, trimmed[9..]);
+        return try do_list_dir(allocator, io, env, trimmed[9..]);
     }
     if (std.mem.startsWith(u8, trimmed, "fold ")) {
-        return do_fold(allocator, io, env, trimmed[5..]);
+        return try do_fold(allocator, io, env, trimmed[5..]);
     }
     if (std.mem.startsWith(u8, trimmed, "lines-bounded ")) {
-        return do_lines_bounded(allocator, io, env, trimmed[14..]);
+        return try do_lines_bounded(allocator, io, env, trimmed[14..]);
     }
+    return null;
+}
+
+/// The Glow rune heads Rishi speaks -- `^-`, `?!`, `?&`, `?|`, `?:`. Returns null
+/// when `trimmed` opens with none of them.
+fn eval_expr_runes(allocator: std.mem.Allocator, io: std.Io, env: *Env, trimmed: []const u8) EvalError!?Value {
     // `^- <mold> <expr>` -- the cast rune (kethep), the first Glow rune Rishi speaks.
     // It evaluates the body, then gates it against the mold's type and named width;
     // the value passes through unchanged when it fits, and refuses otherwise.
     if (std.mem.startsWith(u8, trimmed, "^- ")) {
-        return do_cast(allocator, io, env, trimmed[3..]);
+        return try do_cast(allocator, io, env, trimmed[3..]);
     }
     // `?! <expr>` -- the logical-not rune (wutzap), the second Glow rune Rishi speaks.
     // It evaluates the body, requires a boolean, and hands back its negation. Placed
     // before the comparison scan so `?! (a == b)` keeps the whole predicate as its body.
     if (std.mem.startsWith(u8, trimmed, "?! ")) {
-        return do_not(allocator, io, env, trimmed[3..]);
+        return try do_not(allocator, io, env, trimmed[3..]);
     }
     // `?& <list>` / `?| <list>` -- the logical-and (wutpam) and logical-or (wutbar)
     // rune heads. Each evaluates a list of booleans and folds it: `?&` holds only when
     // every element is true, `?|` when any is. Both sit before the comparison scan so a
     // `(a == b)` element keeps its predicate whole.
     if (std.mem.startsWith(u8, trimmed, "?& ")) {
-        return do_and(allocator, io, env, trimmed[3..]);
+        return try do_and(allocator, io, env, trimmed[3..]);
     }
     if (std.mem.startsWith(u8, trimmed, "?| ")) {
-        return do_or(allocator, io, env, trimmed[3..]);
+        return try do_or(allocator, io, env, trimmed[3..]);
     }
     // `?: <cond> <then> <else>` -- the conditional rune (wutcol). It returns a value,
     // not an effect, so it fits where a statement `if` cannot: inside a record field,
     // a fold body, any expression. Only the taken branch is evaluated. Operands are
     // three whitespace-separated tokens, so a compound branch wears parentheses.
     if (std.mem.startsWith(u8, trimmed, "?: ")) {
-        return do_cond(allocator, io, env, trimmed[3..]);
+        return try do_cond(allocator, io, env, trimmed[3..]);
     }
-    // `map <list> as <name>: <expr>` transforms each element; `where ... ` keeps the
-    // elements whose predicate holds. Checked before the operators below, so a
-    // comparison in the body stays part of the body.
+    return null;
+}
+
+/// `map <list> as <name>: <expr>` transforms each element; `where ...` keeps the
+/// elements whose predicate holds. Checked before the operators below, so a
+/// comparison in the body stays part of the body. Returns null otherwise.
+fn eval_expr_pipeline(allocator: std.mem.Allocator, io: std.Io, env: *Env, trimmed: []const u8) EvalError!?Value {
     if (std.mem.startsWith(u8, trimmed, "map ")) {
-        return do_pipeline(allocator, io, env, trimmed[4..], .transform);
+        return try do_pipeline(allocator, io, env, trimmed[4..], .transform);
     }
     if (std.mem.startsWith(u8, trimmed, "where ")) {
-        return do_pipeline(allocator, io, env, trimmed[6..], .filter);
+        return try do_pipeline(allocator, io, env, trimmed[6..], .filter);
     }
-    // Top-level `==` / `!=` before infix word operators, so a needle never
-    // absorbs the comparison. Each arm recurses through eval_expr so infix
-    // builtins, prefix builtins, and arithmetic all parse on the same arm.
+    return null;
+}
+
+/// Top-level `==` / `!=` / `>` / `<` / `>=` / `<=` before infix word operators, so
+/// a needle never absorbs the comparison. Each arm recurses through eval_expr so
+/// infix builtins, prefix builtins, and arithmetic all parse on the same arm.
+/// Reads the untrimmed `text` (`find_comparison` needs the original slice offsets).
+/// Returns null when no comparison operator is found.
+fn eval_expr_comparison(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!?Value {
     if (find_comparison(text)) |cmp| {
         const left = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.left, " \t"));
         const right = try eval_expr(allocator, io, env, std.mem.trim(u8, cmp.right, " \t"));
@@ -1227,6 +1271,13 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
             } },
         };
     }
+    return null;
+}
+
+/// `starts-with` / `ends-with` / `matches` -- string predicate infix operators.
+/// Reads the untrimmed `text` (`find_word_op` needs the original slice offsets).
+/// Returns null when none of the three operators appears.
+fn eval_expr_word_predicates(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!?Value {
     // `<string> starts-with <prefix>` checks whether a string begins with a prefix.
     if (find_word_op(text, " starts-with ")) |idx| {
         const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
@@ -1272,6 +1323,13 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
         const hit = rishi_match.matches(pattern, str) catch return error.MatchBadPattern;
         return .{ .boolean = hit };
     }
+    return null;
+}
+
+/// `index-of` / `contains` -- search infix operators. Reads the untrimmed `text`
+/// (`find_word_op` needs the original slice offsets). Returns null when neither
+/// operator appears.
+fn eval_expr_word_search(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const u8) EvalError!?Value {
     // `<string> index-of <needle>` -- first byte index, or -1 when absent.
     if (find_word_op(text, " index-of ")) |idx| {
         const haystack = try eval_expr(allocator, io, env, text[0..@intCast(idx)]);
@@ -1308,71 +1366,67 @@ fn eval_expr(allocator: std.mem.Allocator, io: std.Io, env: *Env, text: []const 
             else => error.ContainsNeedsListOrString,
         };
     }
-    // Unary string builtins -- after comparison and infix ops.
+    return null;
+}
+
+/// Unary string builtins -- checked after comparison and infix ops, as the
+/// original ordering requires. Returns null when `trimmed` names none of them.
+fn eval_expr_string_builtins(allocator: std.mem.Allocator, io: std.Io, env: *Env, trimmed: []const u8) EvalError!?Value {
     if (std.mem.startsWith(u8, trimmed, "lines ")) {
-        return do_lines(allocator, io, env, trimmed[6..]);
+        return try do_lines(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "length ")) {
-        return do_length(allocator, io, env, trimmed[7..]);
+        return try do_length(allocator, io, env, trimmed[7..]);
     }
     if (std.mem.startsWith(u8, trimmed, "flag ")) {
-        return do_flag(allocator, io, env, trimmed[5..]);
+        return try do_flag(allocator, io, env, trimmed[5..]);
     }
     if (std.mem.startsWith(u8, trimmed, "trim ")) {
-        return do_trim(allocator, io, env, trimmed[5..]);
+        return try do_trim(allocator, io, env, trimmed[5..]);
     }
     if (std.mem.startsWith(u8, trimmed, "lower ")) {
-        return do_lower(allocator, io, env, trimmed[6..]);
+        return try do_lower(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "upper ")) {
-        return do_upper(allocator, io, env, trimmed[6..]);
+        return try do_upper(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "sort ")) {
-        return do_sort(allocator, io, env, trimmed[5..]);
+        return try do_sort(allocator, io, env, trimmed[5..]);
     }
     if (std.mem.startsWith(u8, trimmed, "unique ")) {
-        return do_unique(allocator, io, env, trimmed[7..]);
+        return try do_unique(allocator, io, env, trimmed[7..]);
     }
     if (std.mem.startsWith(u8, trimmed, "clamp ")) {
-        return do_clamp(allocator, io, env, trimmed[6..]);
+        return try do_clamp(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "chunk ")) {
-        return do_chunk(allocator, io, env, trimmed[6..]);
+        return try do_chunk(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "window ")) {
-        return do_window(allocator, io, env, trimmed[7..]);
+        return try do_window(allocator, io, env, trimmed[7..]);
     }
     if (std.mem.startsWith(u8, trimmed, "flatten ")) {
-        return do_flatten(allocator, io, env, trimmed[8..]);
+        return try do_flatten(allocator, io, env, trimmed[8..]);
     }
     if (std.mem.startsWith(u8, trimmed, "parse ")) {
-        return do_parse(allocator, io, env, trimmed[6..]);
+        return try do_parse(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "str ")) {
-        return do_str(allocator, io, env, trimmed[4..]);
+        return try do_str(allocator, io, env, trimmed[4..]);
     }
     if (std.mem.startsWith(u8, trimmed, "slice ")) {
-        return do_slice(allocator, io, env, trimmed[6..]);
+        return try do_slice(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "join ")) {
-        return do_join(allocator, io, env, trimmed[5..]);
+        return try do_join(allocator, io, env, trimmed[5..]);
     }
     if (std.mem.startsWith(u8, trimmed, "split ")) {
-        return do_split(allocator, io, env, trimmed[6..]);
+        return try do_split(allocator, io, env, trimmed[6..]);
     }
     if (std.mem.startsWith(u8, trimmed, "find ")) {
-        return do_find(allocator, io, env, trimmed[5..]);
+        return try do_find(allocator, io, env, trimmed[5..]);
     }
-    // A user-function call `name arg...` -- recognised only when no top-level
-    // arithmetic operator is present, so a call inside arithmetic wears
-    // parentheses and is reached through eval_operand's grouping instead.
-    if (find_last_arith_add(text) == null and find_last_arith_mul(text) == null) {
-        const first_end = std.mem.indexOfAny(u8, trimmed, " \t") orelse trimmed.len;
-        if (env.lookup_func(trimmed[0..first_end])) |func| {
-            return call_func(allocator, io, env, func, trimmed[first_end..]);
-        }
-    }
-    return eval_add_sub(allocator, io, env, text);
+    return null;
 }
 
 /// True when `c` is an ASCII letter -- used to distinguish word hyphens from `-`.
