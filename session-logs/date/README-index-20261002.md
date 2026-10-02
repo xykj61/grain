@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.100708` | [The ledger reads shift-shaped once the tool can afford it](20261002/20261002-100708_the-ledger-reads-shift-shaped.kyri) | chunked byte-level diff closes REDS.md's falsifier, B/84 |
 | `20261002.100510` | [Petrichor's fourth check varies its method, finds the same clean lane](20261002/20261002-100510_petrichor-fourth-check-finds-same-clean-lane.kyri) | round-open clean, claim board checked, lint re-run GREEN, yonder page re-graded B+/89 unchanged; rota row 3 (water) |
 | `20261002.100233` | [grass -- mycelium's main family is the caravan scene pattern](20261002/20261002-100233_grass-mycelium-main-reverse-read.kyri) | 49 of 51 mycelium functions_over_70 entries are declined demo mains; ratchet narrowed 694 to 439 |
 | `20261002.100128` | [Patchouli: eleventh confirmation, lane still empty](20261002/20261002-100128_patchouli-eleventh-confirmation-still-empty.kyri) | fetched xy, HEAD current; %807 and %765's remainder both still scoped elsewhere; no claim target; rota row 0 (aether) |
