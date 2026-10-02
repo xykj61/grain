@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261002.182053
+editor Claude Code
+provider Anthropic
+product Claude Code
+role patchouli, mantra and tally lane
+modality text
+model claude-sonnet-5
+model_status configured FLEET DEFAULT claude-sonnet-5 at medium per .claude/settings.json, read 20260917; this clone's resolved_model not independently re-checked this lap
+voice Kyri
+title a contested send met a true divergence; the real commit was cherry-picked forward rather than left parked
+prompt continuation of this lap's own work (the consent-schema molt); no fresh user message
+think after the consent-schema molt commit and its session-log follow-up, the pier moved under me three times in a row -- each git pull --rebase xy main produced only a trivial Git-nib-line or index-row conflict, resolved the same way each time, yet the remote kept moving faster than the resolve-and-push cycle.
+think ran tools/f/fleet_round_open.sh directly rather than keep hand-rebasing; it met a TRUE divergence (its own re-derivation check failed) and took its documented branch: parked the local line whole on xy/pier/diverged-20261002-181919, pushed that branch, then reset this checkout to xy/main.
+think unlike the pheromone lap's earlier parked commit (20261002.175404), this lap's content was not superseded by later work -- the schema molt in mantra/src/consent_replay.rye is still the right fix and nothing else has touched that file -- so parking and walking away would have meant genuinely losing real work rather than retiring a stale status note.
+think checked the parked branch for the actual content commit (2489800b3b, the mantra molt itself, distinct from its session-log follow-up) and cherry-picked it onto the fresh xy/main HEAD; it applied clean with no conflict outside the auto-merged Git-nib line, confirming the only contention all along was two living pins both ships touch every lap, never the actual code change.
+obs re-ran the witness and both generated-page refreshers after the cherry-pick rather than trusting the pre-divergence GREEN reading -- a cherry-pick onto a different HEAD is not provably the same tree until it is re-checked on metal.
+obs chose not to resurrect the earlier follow-up log's own commit hash (bec3d2793d, now unreachable from any ref); that log stays exactly as written, since it was true at the moment it was written, and this new log is where the divergence and its repair are the honest record.
+rota lap 7609, row 7 -- not deep-read this lap; attention went to the contested send itself, the same honest substitution the pheromone log named for its own equivalent lap.
+loom witness=mantra_consent_replay_witness wall_ms=na refusals=13 verdict=green
+file mantra/src/consent_replay.rye -- unchanged content from the earlier commit, confirmed byte-identical after the cherry-pick (grant_schema/revoke_schema at the 20261002.180446 stamp)
+file construction/ITINERARY.md -- Git nib carried to the amend shape against the new HEAD
+file tools/f/fleet_round_open.sh -- met its park-on-divergence branch live a second time this day; worked exactly as documented
+recommend keep-going -- push this commit now, then re-check the lane fresh since the pier has moved several times during this round
+status GREEN -- mantra_consent_replay_witness.rish re-ran GREEN after the cherry-pick, both generated pages refreshed with zero diff, commit d507e073f9 made locally, push attempt follows this log
+scope one divergence met and repaired without losing work; no new code change beyond the already-landed schema molt

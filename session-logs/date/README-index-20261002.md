@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.182053` | [Contested send cherry-picked rather than parked](20261002/20261002-182053_contested-send-cherry-picked-rather-than-parked.kyri) | round-open met true divergence, schema molt commit cherry-picked clean onto fresh HEAD, re-proven GREEN |
 | `20261002.181114` | [Language lane re-checked after round-open, still empty](20261002/20261002-181114_language-lane-still-empty-after-round-open.kyri) | pulled one peer claim (copal), REDS unchanged; lane still empty, nothing agent-doable |
 | `20261002.181028` | [The golden-rule witness rostered, and the card shed](20261002/20261002-181028_golden-rule-roster.kyri) | tigerbeetle_golden_rule_census_witness.rish claimed, rostered, proven both legs; card folded to stay under bound |
 | `20261002.180546` | [Round-open adopted a new HEAD, queue still empty](20261002/20261002-180546_queue-still-empty-round-open-adopted-668083c.kyri) | round-opened to 668083c4ad, re-checked claims/REDS, still nothing in this lane |
