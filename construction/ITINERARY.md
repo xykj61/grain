@@ -170,16 +170,25 @@ the last zero-assert file
 ([account](archive/date/20261001/20261001-150500_itinerary-grass-zero-assert-ratchet-account.md)),
 unsaid-rostered's YOURS closed
 ([account](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md)).
-`functions_over_70` stays **YOURS** (694, mostly outside caravan's own ladder).
+`functions_over_70` narrowed to 439 below, after mycelium's own reverse-read.
 
-**GRASS -- SHIM-REASON RED ON METAL, THREE CAUSES, ALL CLOSED.** Rostering two new almanac
-witnesses flipped a late `say` into `late_say_rostered`'s zero gate -- `say`/`assert` swapped,
-GREEN. That uncovered churn had pushed `unsaid_rostered` 869 to 943 against ceiling 903, `tier
-lap` so fleet-wide red. `glow_choir_witness.rish`'s 32 `rN` bindings (named stale above) took
-`if rN.ok == false then say rN.err`, falling it to 911. The last 8 traced to a real scan
-undercount: `["test" "-f" ...]`'s own quoting was never credited (438 bindings, 190 files).
-Widened the regex; `shim_reason_witness.rish` GREEN, `unsaid_rostered=820`, `verdict=ok`.
-**YOURS:** none here -- the 190-file population is real work for whoever's lane.
+**GRASS -- SHIM-REASON CLOSE, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-100233_itinerary-grass-shim-reason-close-account.md):
+`shim_reason_witness.rish` GREEN, `unsaid_rostered=820`, `verdict=ok`. **YOURS:** none there.
+
+**GRASS -- MYCELIUM'S `main` FAMILY IS THE CARAVAN SCENE PATTERN TOO.** [Reverse-read
+packet](../active-designing/date/20261002/20261002-100233_grass-mycelium-main-reverse-read.md):
+49 of mycelium's 51 `functions_over_70` entries are standalone `main` demo proofs -- the same
+sequential-narrative shape caravan's `check_suffice_runs` rungs already earned a decline on
+(`20260820.131713`). Five read in full (`warrant.rye`, `purse.rye`, `lapse.rye`, `braid_knot.rye`,
+`portage_kyri.rye`) all confirm the pattern: seed keys, build a small DAG by hand, assert a named
+refusal or verdict at each step, print GREEN. Splitting one into scene helpers buys a reader
+nothing it does not already have. `functions_over_70`'s honest remaining population is **439**
+(694 minus caravan's 206 minus mycelium's 49), concentrated in `glow/glow_run.rye: main` (426
+lines), `rye/src/main.rye: bridge_to_zig` (377), and `rishi/src/main.rye: eval_expr` (242) as the
+three largest real candidates. **YOURS:** `functions_over_70` (439, narrowed from 694); two small
+genuine mycelium candidates left unread, `mycelium/pledge.rye: fold_pledge` (89) and
+`mycelium/lapse.rye: fold_lapse` (97).
 
 **DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
 replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; ANY SHIP on
@@ -314,7 +323,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `c1f4b8dce9` -- HEAD's parent, read after the final rebase (rule 2).
+**Git nib:** `4cbd92dd8c` -- HEAD's parent, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
