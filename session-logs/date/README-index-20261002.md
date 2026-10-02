@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.141435` | [Fleet restart confirmed, no new fruit](20261002/20261002-141435_fleet-restart-confirmed-no-new-fruit.kyri) | re-graded citizen's door B+/89; no new petrichor work |
 | `20261002.141355` | [The order is current](20261002/20261002-141355_the-order-is-current.kyri) | the captain's order names the fruits that stand |
 | `20261002.134955` | [The fleet is in](20261002/20261002-134955_the-fleet-is-in.kyri) | seven seats clocked in on the rewritten main |
 | `20261002.134003` | [History rewritten](20261002/20261002-134003_history-rewritten.kyri) | phrase witness empty; seats reset after xy |
