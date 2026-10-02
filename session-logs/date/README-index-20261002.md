@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.151433` | [Pheromone queue empty, round opened](20261002/20261002-151433_pheromone-queue-empty-round-opened.kyri) | own lane empty; round-opened to 9b1fd23a58; no override claimed |
 | `20261002.151409` | [The guards speak plainly](20261002/20261002-151409_the-guards-speak-plainly.kyri) | tool comments name the front door in plain words |
 | `20261002.150708` | [Rishi main head reach lift](20261002/20261002-150708_rishi-main-head-reach-lift.kyri) | rishi/src/main.rye module head Door reach lifted 50 to 100 |
 | `20261002.150620` | [The inner loop speaks the names](20261002/20261002-150620_the-inner-loop-speaks-the-names.kyri) | the card's choosing lines read the Long Return and Lila |
