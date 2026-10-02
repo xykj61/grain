@@ -103,6 +103,17 @@
 # anchor moves from `e5630366a1` to `f4b84e46e0`, the newest of the four, and
 # the reading returns to `claims_after_anchor=0`.
 #
+# THE EIGHTH ANCHOR MOVE, `20261002.063340`, is the ordinary ongoing case the
+# class names on every lap that carries the nib: `1bc98a7762` (patchouli's
+# sixth same-day confirmation) names its own parent's parent as the nib's new
+# value, since remember-git-nib's own rule reads HEAD's parent at commit time
+# and the value is always one commit stale by the time a LATER lap's scan
+# walks past it; `f14916123d` (petrichor's gate sentinel) does the same one
+# commit later. Both are ordinary nib carries, correctly written when written,
+# and both become "false" only because the anchor had not yet walked past
+# them. The anchor moves from `f4b84e46e0` to `f14916123d`, the newer of the
+# two, and the reading returns to `claims_after_anchor=0`.
+#
 # Read-only: no network, no key, no funds, no commit rewritten.
 #
 # Run from the repository root:
@@ -116,7 +127,7 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # THE ANCHOR is spelled ONCE, here, and handed to the scan as a flag. Two files
 # spelling one constant disagree the day it moves, which is the lesson
 # glow_ident_duplication_control paid for on 20260917 with a ceiling standing in
-# three places. Moved five times: `20260925.152300`, from `0cf919699b` (this
+# three places. Moved eight times: `20260925.152300`, from `0cf919699b` (this
 # guard's own seating commit) to `418fe0f2f9` (the last commit whose body named
 # a false parent, 20260921.115750); `20260926`, from `418fe0f2f9` to
 # `ca0461877` (that repair's own HEAD), past the classifier-ambiguity firing in
@@ -130,8 +141,10 @@ say "commit-parent-claim: Lens TAME -- measurement beats memory. The anchor is f
 # nib-carry bodies landed across the rebase storm of one multi-ship evening,
 # none of them repairable since a pushed body is testimony); and `20261002`
 # again, from `e5630366a1` to `f4b84e46e0` (the same %803 class firing a
-# second time on one tree's own send) -- see the header above.
-let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "f4b84e46e0"]
+# second time on one tree's own send); and `20261002.063340`, from
+# `f4b84e46e0` to `f14916123d` (two ordinary nib carries the anchor had not
+# yet walked past) -- see the header above.
+let read = run ["sh" "tools/fixtures/c/commit_parent_claim_scan.sh" "--window" "4000" "--anchor" "f14916123d"]
 assert read.ok else "commit-parent-claim: the reading must exit 0 -- ${read.out_brief}"
 assert read.out contains "verdict=read" else "commit-parent-claim: want the reading to reach its own last line"
 

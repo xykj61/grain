@@ -113,7 +113,14 @@ fi
 # ellipsis-elided path in `falsifier_form_outcome_scan.sh` read as a citation to a fragment rather
 # than prose about a file, spelled out in full. `living` fell 71 to 64 with all five repaired and
 # nothing else touched. Lower it in the same commit as any sweep that finds a real one.
-ceiling="${COMMENT_PATH_CEILING:-64}"
+#
+# ROSE TO 66 ON 20261002, BOTH NEW HITS THE FOURTH GENRE AGAIN. `receipt_chain_scan.sh` and
+# `receipt_chain_witness.rish` -- a tool rostered this same day -- each cite the standing-equipment
+# run receipt in their own header comment, the same real, gitignored-by-design file four other
+# living tools already cite inside the prior ceiling. Checked by hand against the tree: the file
+# exists on disk, is named at line 387 of .gitignore, and is never a stale citation wanting a
+# repoint. Raised to meet real hits of an already-accepted genre, never to excuse a new one.
+ceiling="${COMMENT_PATH_CEILING:-66}"
 list=no
 case "${1:-}" in
   --list) list=yes ;;
