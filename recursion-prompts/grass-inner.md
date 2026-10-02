@@ -29,12 +29,15 @@ families this reverse-read named -- the guarded `if v.ok == false then say v.err
 bare presence test -- before this lane reached for the repair itself, per the lane's own rule of
 handing a module's own repair to its owning ship. `unsaid_rostered` now reads **869** against the
 unchanged ceiling of **903**, and `tools/s/shim_reason_witness.rish` answers `verdict=ok` on
-metal. `construction/REDS.md` row `%829` carries the closing addendum. The one named example that
-stood ready for that lap -- `tools/g/glow_choir_witness.rish`'s 32 `rN` bindings reporting only
-`"glow-choir: <name> RED"` and dropping the sub-witness's own stderr -- is unaffected: `sh
-tools/fixtures/s/shim_reason_scan.sh list` still reads all 32 as `unsaid rostered`, since neither
-new credit applies (the `run` carries no `if ... then say` guard and no bare presence test). It
-stays the first real repair for whichever ship next opens `tools/g/glow_choir_witness.rish`.
+metal. `construction/REDS.md` row `%829` carries the closing addendum.
+
+**The named example was taken up, and the repair landed `20261002`.** `tools/g/glow_choir_witness.rish`'s
+32 `rN` bindings (named stale above) took `if rN.ok == false then say rN.err` before each assert,
+closing the one real repair the prior reverse-read left ready -- `construction/ITINERARY.md`'s own
+GRASS account ("shim-reason red on metal, three causes, all closed") carries the measurement.
+`sh tools/fixtures/s/shim_reason_scan.sh` now reads `unsaid_rostered=893` against the unchanged
+ceiling of `903`, and `tools/s/shim_reason_witness.rish` answers GREEN on metal, re-read
+`20261002.093600`. Nothing further waits on this file.
 
 **The next-crux lean:** no new audit packet is queued. This lane's honest next move stays the
 ordinary one named in the baton and in `.claude/rules/quality-assurance.md` -- touch a prose,
