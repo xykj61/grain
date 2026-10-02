@@ -20,4 +20,8 @@ say scan.out
 assert scan.out contains "verdict=ok" else "counsel-flow: descriptor is not lawful Brix"
 assert scan.ok else "counsel-flow: the verdict reads ok while the status fails — they must agree"
 
+let bad = run ["sh" "tools/fixtures/c/counsel_flow_scan.sh" "context/fixtures/counsel_flow_unlawful/unlawful.brix"]
+assert (bad.ok == false) else "counsel-flow: an unlawful Brix fixture must refuse"
+assert bad.out contains "verdict=unlawful_brix" else "counsel-flow: refusal wants the named verdict"
+
 say "GREEN: counsel-flow — the contract is lawful, readable by splitLines and one split"
