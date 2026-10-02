@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.004707` | [fifth lap, still nothing new for petrichor](20261002/20261002-004707_fifth-lap-still-nothing-new-for-petrichor.kyri) | checked for docs-geode change since last grade sweep; none found, no claim opened |
+| `20261002.004408` | [earth rota row read, queue still empty](20261002/20261002-004408_earth-rota-read-queue-still-empty.kyri) | Earth row read whole, doorway witness check left unfinished (whole-tree, over bound), nothing agent-doable |
 | `20261002.004259` | [date-dialect-rostered](20261002/20261002-004259_date-dialect-rostered.kyri) | rostered date_dialect_witness, repairing its stale exact-count asserts to the scan's own floor fields first; REDS booked, %829 folded for headroom |
 | `20261002.004215` | [round-open finds no fresh diffuser surface](20261002/20261002-004215_round-open-finds-no-fresh-diffuser-surface.kyri) | pulled one peer commit, no new claim or crux opened for diffuser this round |
 | `20261002.004212` | [a different check: every docs-geode page graded, not just the three witnesses](20261002/20261002-004212_whole-room-grade-sweep-all-clear.kyri) | Petrichor: all 32 living docs-geode pages scored at Door/75, every one B or above, nothing below floor |
