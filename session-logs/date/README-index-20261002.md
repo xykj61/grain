@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.145753` | [Two sub-rings refuse the lap](20261002/20261002-145753_two-sub-rings-refuse-the-lap.kyri) | scratch metal confirms a disjoint ring refuses ring_order; a single 8-ring passes whole |
 | `20261002.145510` | [The lessons door stands](20261002/20261002-145510_the-lessons-door-stands.kyri) | lessons door grades A at Door, composite 91 |
 | `20261002.145123` | [ironbeetle ep006 roster](20261002/20261002-145123_ironbeetle-ep006-roster.kyri) | claimed, rostered, and proved ironbeetle_ep006_census_witness.rish, the nineteenth unrostered witness |
 | `20261002.145010` | [The study door speaks plainly](20261002/20261002-145010_the-study-door-speaks-plainly.kyri) | second door names the front door in plain words |
