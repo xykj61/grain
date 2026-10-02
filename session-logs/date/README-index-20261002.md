@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.182209` | [Fifth confirm sets the sentinel](20261002/20261002-182209_fifth-confirm-sets-the-sentinel.kyri) | queue still empty, not behind xy; GATES-ONLY actually set after prior lap only checked it |
 | `20261002.181918` | [keeh-opening's register C+ traced to a merged front-matter block, lifted to A](20261002/20261002-181918_keeh-opening-register-lift.kyri) | GRASS QA sample found the outlier, traced the scanner's blind spot, fixed with one blank line |
 | `20261002.181831` | [The catalog closes at 74 of 75](20261002/20261002-181831_catalog-closed-by-script.kyri) | the open run_*_witness population, closed by script and hand read |
 | `20261002.181128` | [Fruit note confirms no new work; closing on gates-only](20261002/20261002-181128_still-empty-fruit-waits-on-next-word.kyri) | re-checked inner fruit and REDS; still nothing agent-doable, sentinel set |
