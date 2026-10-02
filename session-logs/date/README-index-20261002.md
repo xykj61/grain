@@ -10,6 +10,7 @@
 | `20261002.064210` | [cold run reads 18 red, closes two on metal](20261002/20261002-064210_cold-run-closes-two-reds-18-to-16.kyri) | moved commit_parent_claim's anchor an eighth time; raised comment_path's ceiling 64 to 66 for a real fourth-genre hit |
 | `20261002.064055` | [copal rosters sunn12_riyo_writing_voice](20261002/20261002-064055_sunn12-roster.kyri) | twelfth unrostered chapter witness claimed, proven both ways, rostered; sunn11 account shelved to stay under the card's byte ceiling |
 | `20261002.063920` | [grass grades the real-edit-log essay](20261002/20261002-063920_grass-grades-the-edit-log-essay.kyri) | A, composite=90; serves Diffuser's wake-measurement lane, no repair owed |
+| `20261002.063512` | [petrichor checks a different angle](20261002/20261002-063512_petrichor-checks-a-different-angle.kyri) | tracked-link scan + 4 tutorial grades, all clean |
 | `20261002.063341` | [grass grades the byte-level-falsifier essay](20261002/20261002-063341_grass-grades-byte-falsifier-essay.kyri) | reach=50 (grade 16), register/truth clean; dated testimony, no repair owed |
 | `20261002.063313` | [copal rosters sunn11_xykj61_onboarding](20261002/20261002-063313_copal-rosters-sunn11.kyri) | eleventh unrostered chapter witness claimed, proven both ways, rostered; nib carried through three peer pushes |
 | `20261002.063233` | [Patchouli rechecks the queue, four minutes on](20261002/20261002-063233_patchouli-recheck-empty-queue-gates-only.kyri) | second independent fresh-evidence pass, same verdict; GATES-ONLY set again |
