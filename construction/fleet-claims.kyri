@@ -59,21 +59,15 @@ stamp 20261001.151533
 epoch 1790882133
 paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
 what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
-claim copal-radiant-h1-fence-roster
-seat copal
-stamp 20261001.191333
-epoch 1790896413
-paths tools/gen/chapter/radiant_h1_fence_witness.rish construction/standing-equipment.kyri
-what roster the unrostered radiant_h1_fence witness (M4 H1 fence home land) into standing-equipment.kyri, proven both ways: control true/naive plus the prove-red misread refusal
 claim petrichor-tutorial-gap-lost
 seat petrichor
 stamp 20261001.194223
 epoch 1790898143
 paths tools/fixtures/t/tutorial_output_scan.sh
 what add a gap_lost counter naming any command/output pair whose gap-state reset mid-gap, closing REDS 20261001.192639
-claim copal-itinerary-witness-roster
+claim copal-dated-roof-divergence-roster
 seat copal
-stamp 20261001.194439
-epoch 1790898279
-paths construction/standing-equipment.kyri construction/ITINERARY.md
-what roster the unrostered itinerary_witness (256-round deterministic coord/ranking sweep) into standing-equipment.kyri, proven both ways: the whole-season sweep and the out-of-bound round-256 refusal
+stamp 20261001.201221
+epoch 1790899941
+paths tools/gen/chapter/dated_roof_divergence_witness.rish construction/standing-equipment.kyri
+what roster the unrostered dated_roof_divergence witness (fascia_health vs fascia_health_now dated_testimony agreement) into standing-equipment.kyri, proven both ways: the pattern-shared agreement reading and the prove-red roof-divergence misread refusal
