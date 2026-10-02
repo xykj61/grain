@@ -236,3 +236,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.160829` seated the sprig as a string.** The lexicon had said a sprig replaced a sprig. The words after the stamp are the sprig, and that sprig is the string the naming rule seats. The clock law says so beside its pattern.
 
 **Lap `20261002.161837` walked the consent replay module.** `mantra/src/consent_replay_witness.rye` promised its module and checked only the functions it called. The walker is in place. The census reads unwalked=56 against a ceiling of 56, and the witness prints GREEN.
+
+**Lap `20261002.163401` walked the bolt apply module.** `mantra/bolt_apply_step_witness.rye` promised its module and checked only the functions it called. The walker is in place, the build stays GREEN, and the ceiling falls from 56 to 55. The remaining pairs are linengrow, mand, and one tools witness.

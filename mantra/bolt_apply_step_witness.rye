@@ -24,6 +24,14 @@ const print = std.debug.print;
 const ns = @import("recall_lap1.rye");
 const step = @import("bolt_apply_step.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(step).@"struct".decls) |decl| {
+        _ = &@field(step, decl.name);
+    }
+}
+
 const witness_version = "20260715.074500";
 
 fn run_selftest() !u8 {
