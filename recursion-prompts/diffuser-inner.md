@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.145044` -- two sub-rings refuse the single-lap check; a wider ring passes it whole
 **Revised:** `20261002.143117` -- the N=4 ring already ran, inside a concurrency test
 **Revised:** `20261002.102258` -- the ring's own growth formula was off by one domain, caught in the open
 **Revised:** `20261002.101339` -- a ring and a chain, measured on metal, not recalled from source
@@ -211,6 +212,19 @@ origin-trust cost) and needing zero new code. Narrows the remaining crossover wo
 scoped Caravan edits -- a print-path adaptation or a four-domain chain declaration -- both still
 Caravan's own and not this lane's to attempt. Graded B+/86 at Field. No new witness, no new build;
 `caravan/bin/concurrent_run` built from an already-landed, already-GREEN module.
+
+**Self-generated `20261002.145044`, the composition gap run on scratch metal.**
+[Two sub-rings refuse the single-lap check; a wider ring passes it whole](../active-designing/date/20261002/20261002-145044_two-sub-rings-refuse-the-single-lap-a-wider-ring-does-not.md)
+builds two throwaway declarations against `caravan/cycle.rye`'s landed `ring_order` and
+`relay.flows_of` -- a single connected eight-domain ring, and two disjoint four-domain rings in one
+system -- and finds both fit every one of Caravan's bound-table ceilings identically (8 of 8
+`max_domains`, 8 of 16 `max_channels`, 8 of 12 `max_regions`, 16 of 24 `max_grants`), while only the
+connected shape closes `ring_order`'s single-lap search; the disjoint shape returns `null`, the same
+refusal a reversed edge already earns. Narrows the kin essay's "no composing function" finding to a
+missing second success path beside an already-working safety check, and finds a single eight-ring
+answers the touch-cost question more cheaply than composing two sub-rings would, with no new
+verification code. Both scratch declarations and drivers were built, run, and deleted; nothing
+landed in `caravan/`. Graded A/92 at Field. No new witness, no new module.
 
 ## gates
 
