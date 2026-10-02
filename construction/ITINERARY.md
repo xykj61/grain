@@ -109,6 +109,11 @@ whole](archive/date/20261001/20261001-232108_itinerary-copal-design-shapes-four-
 -- `dated_roof_divergence`, `tend_hygiene_census`, and `design_shapes_census` each rostered and
 GREEN both ways; the open question each carried now lives in the `fact_fold_census` account below.
 
+**COPAL -- A CANDIDATE ROSTER FOUND A RED INSTEAD.** [Account](archive/date/20261001/20261001-234702_itinerary-copal-instrument-suite-fascia-floor-account.md)
+-- `instrument_suite_witness.rish` reds on a fascia-health floor the tree has already dropped
+below; booked at `construction/REDS.md` (`20261001.234320`), **OPEN**. Two small CLOSED rows
+folded by hand to clear the ledger's own bound.
+
 **COPAL.** `fact_fold_census` rostered into `construction/standing-equipment.kyri`, GREEN on
 metal both ways -- the elder witness carried one green leg and no plant; two were added (a pen
 shape naming an absent pattern page, a pen shape with one bound field drifted while the metal
@@ -350,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f50140f47e` -- HEAD's parent, read after the final rebase.
+**Git nib:** `39d39b7f25` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
