@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.180000` | [Cold check clean, README graded A](20261002/20261002-180000_grass-cold-check-foundations-readme-clean.kyri) | foundations/README.md Door/A after its own repair; no frame, no claim |
 | `20261002.175738` | [Release-gesture essay's grade never ran the meter](20261002/20261002-175738_release-gesture-essay-register-finding.kyri) | register=41 against Field's 30% ceiling, essay's own "A/90" self-grade unmeasured; named for diffuser's next touch |
+| `20261002.175537` | [ep015 rostered, the card shed](20261002/20261002-175537_ep015-roster-and-the-card-shed.kyri) | stale ep014 claim closed, ep015 witness rostered, card shed under bound |
 | `20261002.175404` | [A contested send parked the gate-set log rather than losing it](20261002/20261002-175404_contested-send-parked-rather-than-lost.kyri) | round-open's park-on-divergence branch fired for real, kept the commit whole on pier/diverged-20261002-174209; lane still empty |
 | `20261002.175257` | [Queue empty, no sweep, no claim](20261002/20261002-175257_queue-empty-no-sweep-no-claim.kyri) | Petrichor's lane empty, all 14 OPEN REDS rows want Keaton's word or are claimed, no sweep repeated |
 | `20261002.174958` | [The one release gesture has never been exercised twice](20261002/20261002-174958_release-gesture-never-exercised-twice.kyri) | five genuine Region.clear() sites all fire once, terminal to their caller; pack_descriptors corrected |
