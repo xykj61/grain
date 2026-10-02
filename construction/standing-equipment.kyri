@@ -8430,3 +8430,22 @@ guard itinerary
 path tools/gen/chapter/itinerary_witness.rish
 tier lap
 seated 20261001.194525
+
+# dated_roof_divergence -- two roofs read the same name and must agree what it means.
+# tools/fixtures/d/dated_roof_divergence_scan.sh gates its own control first (census_control_scan),
+# then proves four roofs present on disk (shed_census_scan.sh, fascia_health_scan.sh,
+# dated_pattern_scan.sh, dated_classify.rish) and the shared dated_pattern scan GREEN, before
+# reading `dated_testimony=` from three independent readers of the same count: shed_census_scan.sh,
+# fascia_health_scan.sh, and dated_classify.rish's `census` mode. The green leg asserts all three
+# agree, reads roofs_agree=honored, dated_testimony=,
+# verdict=ok, and shred=RED (the law stays an open question rather than a closed one). The
+# prove-red leg hands the scan a "prove-red" argument, which forces fabricated readings
+# (shed=9999, health=1, shared=1) and asserts the scan refuses (ok == false) reading
+# detail=RED_roofs_diverge and census=withheld -- proving the agreement check actually bites
+# rather than merely being printed. One of the unrostered tools/gen/chapter/ witnesses
+# copal-inner.md names; claimed as copal-dated-roof-divergence-roster before this entry landed.
+# Runs in under 2s on metal.
+guard dated_roof_divergence
+path tools/gen/chapter/dated_roof_divergence_witness.rish
+tier lap
+seated 20261001.201255

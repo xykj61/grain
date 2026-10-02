@@ -102,9 +102,12 @@ whole](archive/date/20261001/20261001-184233_itinerary-copal-thing-not-name-acco
 
 **COPAL.** [Three chapter-witness rosters shelved
 whole](archive/date/20261001/20261001-195512_itinerary-copal-chapter-witness-roster-account.md) --
-`dep_crawl_bounds_negative`, `radiant_h1_fence`, `itinerary`, each GREEN on metal. **YOURS:**
-whether the ~121 unrostered `tools/gen/chapter/` witnesses that remain want individual rostering
-laps, Keaton's word.
+`dep_crawl_bounds_negative`, `radiant_h1_fence`, `itinerary`, each GREEN on metal.
+
+**COPAL.** `dated_roof_divergence` rostered into `construction/standing-equipment.kyri`, GREEN
+on metal both ways -- the shed/fascia_health/dated_classify agreement reading and the prove-red
+roof-divergence refusal. **YOURS:** whether the ~120 unrostered `tools/gen/chapter/` witnesses
+that remain want individual rostering laps, Keaton's word.
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
@@ -330,7 +333,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `688ccbf70b` -- HEAD's parent, read after the final rebase.
+**Git nib:** `9330012773` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
