@@ -129,11 +129,14 @@ whole](archive/date/20261002/20261002-045430_itinerary-copal-wayland-study-ledge
 **COPAL.** [Src_first_resident account shelved
 whole](archive/date/20261002/20261002-053809_itinerary-copal-src-first-resident-account.md).
 
-**COPAL -- AN EIGHTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `personalize_template` rostered,
-GREEN twice (`rishi/bin/rishi run`; a planted absence of `first_season_questions.brix` reds the
-named assertion, restored clean). Four prior candidates read RED, each testing a chapter-scope
-pin the tree has since moved past; left unbooked, matching prior laps' precedent. Claimed and
-closed. **YOURS:** same open question -- ~106 remain.
+**COPAL.** [Personalize_template account shelved
+whole](archive/date/20261002/20261002-055258_itinerary-copal-personalize-template-account.md).
+
+**COPAL -- A NINTH UNROSTERED WITNESS, PROVEN BOTH WAYS.** `identity_remake_k5` rostered, GREEN
+twice (`rishi/bin/rishi run`; a planted `codeberg` remote reds the exact assertion, removed
+clean after). Its three content checks read a counsel file that never changes once dated, so it
+carried none of the chapter-scope drift the RED candidates did. Claimed, closed. **YOURS:** same
+open question -- ~105 remain.
 
 **BAKERY -- EIGHT ELDER ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-004336_itinerary-bakery-eight-accounts-fold.md)
 -- the door-guard overage, `%788`'s root-finder, `%742`, the source and Codex-control reviews, and
