@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.051700` | [patchouli-sends-redleg-claim](20261002/20261002-051700_patchouli-sends-redleg-claim.kyri) | sent %827 leg; pin carried across two rebases |
+| `20261002.051622` | [frontier/README.md's door-register candidate swept to zero](20261002/20261002-051622_frontier-readme-register-candidate-swept.kyri) | 2 negative sentences rewritten affirmative, register 22% to 0% |
 | `20261002.051453` | [lane gated, diverged branches noted](20261002/20261002-051453_lane-gated-diverged-branches-noted.kyri) | differential check only, HEAD matches xy/main; two new pier/diverged-* branches noted, not in-lane; sentinel re-set |
 | `20261002.051222` | [patchouli-claims-redleg-mantra-fork](20261002/20261002-051222_patchouli-claims-redleg-mantra-fork.kyri) | %827: fork-dup refusal leg, count 58->57 |
 | `20261002.050744` | [lane still gated, GATES-ONLY set in this tree](20261002/20261002-050744_lane-still-gated-sets-gates-only.kyri) | round-open adopted 2 peer commits, neither in-lane; sentinel written for grain-pheromone |

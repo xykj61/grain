@@ -39,9 +39,9 @@ native Linux tarball because the upstream installer is a mutable per-user bootst
 
 ## What this room does not hold
 
-It does not hold API keys, OAuth tokens, or user session state. It does not decide which agent
-should take a fleet lap. [`open/`](../open/README.md) carries provider and harness choices;
-[`fleet/`](../fleet/README.md) carries ships and their coordination.
+Credentials and fleet-lap decisions live in their own rooms: [`open/`](../open/README.md) carries
+provider and harness choices, API keys, OAuth tokens, and user session state, while
+[`fleet/`](../fleet/README.md) carries ships, their coordination, and which agent takes a lap.
 
 May the binaries stay pinned enough to be trusted, and loose enough to be renewed when their
 makers move the door.
