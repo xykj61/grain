@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.174112` | [Grass's inner fruit graded B+, no frame](20261002/20261002-174112_grass-inner-fruit-graded-clean-no-frame.kyri) | graded recursion-prompts/grass-inner.md itself; rota row 2 (Fire) confirmed already repaired |
 | `20261002.173900` | [Fresh lap, gate cleared again, ground still unchanged](20261002/20261002-173900_queue-still-empty-second-recheck.kyri) | re-ran claims, REDS, and a direct %765 grep over mantra/tally; all agree with the prior reading, gate reset |
+| `20261002.173807` | [Crushed-index red closed](20261002/20261002-173807_crushed-index-red-closed.kyri) | row 1 (Air); a foundations/README.md row repaired, booked, pin shed to bound |
 | `20261002.173802` | [Garden names three seasons has none](20261002/20261002-173802_garden-names-three-seasons-has-none.kyri) | Gardens' 3 named consumers: zero production callers |
 | `20261002.173243` | [Fresh lap, gate cleared as promised, ground unchanged](20261002/20261002-173243_queue-still-empty-after-gate-cleared.kyri) | sentinel cleared at lap-open exactly as the baton describes; re-read claims and REDS, nothing changed, reset the gate |
 | `20261002.172859` | [ep014 roster](20261002/20261002-172859_ep014-roster-and-a-resurrected-stale-claim.kyri) | rostered ironbeetle_ep014_census; closed a rebase-resurrected stale claim |
