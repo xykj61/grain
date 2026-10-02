@@ -8,8 +8,8 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const refusal = @import("tally_receipt_refusal.rye");
 
-pub const grant_schema = "grain.consent-grant.v1";
-pub const revoke_schema = "grain.consent-revoke.v1";
+pub const grant_schema = "grain.consent-grant.20261002.180446";
+pub const revoke_schema = "grain.consent-revoke.20261002.180446";
 
 pub const max_identifier_bytes: u32 = 96;
 pub const max_scope_bytes: u32 = 80;
