@@ -13,13 +13,13 @@
 ## What this room holds
 
 A fault found here sometimes belongs to someone else: a provider's model, a tool's own release, a
-vendor's service. We cannot fix those ourselves. What we can do is report them clearly, keep one
-record of what we said and where, and check back later without having to reconstruct the whole
-story from memory.
+vendor's service. The fix for that kind of fault rests with its owner rather than with us. What we
+can do is report it clearly, keep one record of what we said and where, and check back later with
+that record already in hand.
 
-**This room is not the REDS ledger.** `construction/REDS.md` holds what we got wrong, the fix
-always ours to make. Upstream holds what someone else's system got wrong, reported outward, with
-the fix waiting on their hand rather than ours.
+**This room stands beside the REDS ledger, rather than inside it.** `construction/REDS.md` holds
+the fault that was ours, the fix ours to make. Upstream holds the fault that belongs to someone
+else's system, reported outward, with the fix resting on their hand rather than ours.
 
 ## The shape
 
@@ -38,8 +38,8 @@ REDS row's own repair cites the row it closes.
 ## When to write an entry
 
 When a fault is reported to a provider outside this tree, and again whenever that report is
-checked. Not every passing mention of a provider earns a room here -- only a report we filed and
-intend to revisit.
+checked. A report earns a room here once we have filed it and intend to revisit it, a narrower bar
+than a passing mention of a provider.
 
 ## Discipline this room keeps
 

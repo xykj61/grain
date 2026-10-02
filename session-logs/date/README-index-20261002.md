@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.052330` | [upstream/README.md's door-register candidate swept to zero](20261002/20261002-052330_upstream-readme-register-swept.kyri) | 6 negative sentences rewritten affirmative, register 54% to 0% |
 | `20261002.051922` | [gate holds, twenty-first confirm](20261002/20261002-051922_petrichor-gate-holds-twentyfirst-confirm.kyri) | round-open found nothing new; GATES-ONLY re-set rather than a fourth sweep |
 | `20261002.051842` | [vols-survey-roster](20261002/20261002-051842_vols-survey-roster.kyri) | Rostered vols_survey_witness, CION VOLS Journey 13 r1 |
 | `20261002.051700` | [patchouli-sends-redleg-claim](20261002/20261002-051700_patchouli-sends-redleg-claim.kyri) | sent %827 leg; pin carried across two rebases |
