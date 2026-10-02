@@ -2325,3 +2325,13 @@ other's `YOURS` closed by the new account itself), moved verbatim to
 replaced on the living card by one consolidated pointer line. *What waits there, worth
 recalling:* nothing new -- the mycelium-main account's own `YOURS` line (the two named pledge/lapse
 candidates) is the thing the new live account closes, named plainly in both places.
+
+**Checkpoint `20261002.175052` -- Copal sheds its own two closed COPAL accounts on
+`construction/ITINERARY.md` to make room for the ep015 roster account.**
+**Walk-back nib:** `ab2a58e14c`. **Swept:** the ep014 roster account and the ep010 roster
+account, both already closed with no open `YOURS` question, moved verbatim to
+[`archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetle-roster-account.md`](archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetle-roster-account.md)
+and
+[`archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-account.md`](archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-account.md),
+replaced on the living card by two one-line pointers. *What waits there, worth recalling:*
+nothing new -- each account's own closed claim name is repeated on the pointer line.

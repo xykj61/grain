@@ -88,23 +88,22 @@ shelved](archive/date/20261002/20261002-163247_itinerary-copal-ninth-ironbeetle-
 shelved](archive/date/20261002/20261002-171805_itinerary-copal-eleventh-ironbeetle-roster-account.md)
 -- ep013 rostered; a stale resurrected claim from a bad rebase found and closed.
 
-**COPAL -- A TWELFTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep014_census_witness.rish`
-rostered, both legs proven on metal. Claimed as `copal-ironbeetle-ep014-census-roster`, closed.
-**YOURS:** ~75 chapter witnesses remain unrostered, measured against the `guard` rows in
+**COPAL -- THE TWELFTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetle-roster-account.md)
+-- ep014 rostered and that claim closed.
+
+**COPAL -- A THIRTEENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep015_census_witness.rish`
+rostered, both legs proven on metal. Claimed as `copal-ironbeetle-ep015-census-roster`, closed.
+**YOURS:** ~73 chapter witnesses remain unrostered, measured against the `guard` rows in
 `construction/standing-equipment.kyri`.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
 -- ep012 rostered and that claim closed.
 
-**COPAL -- ANOTHER IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep010_census_witness.rish`
-rostered -- the eighth of the IronBeetle episode-census family alongside ep001, ep002, ep004, ep005,
-ep006, ep008, and ep009. Proven on metal three ways: GREEN at `verdict=ok` with the pier's own
-`gratitude/ironbeetle` checkout present, a refusal naming `gratitude/ironbeetle ABSENT` with the
-shelf moved aside, and `verdict=thin` from the fixture against a stub ep010 file missing every
-heading. Claimed as `copal-ironbeetle-ep010-census-roster`, closed. **YOURS:** ~84 chapter
-witnesses remain unrostered, measured by comparing `ls tools/gen/chapter/*_witness.rish` against
-the `guard` rows named in `construction/standing-equipment.kyri` rather than trusted from this line.
+**COPAL -- THE EP010 IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-account.md)
+-- ep010 rostered and that claim closed.
 
 **COPAL -- A CANDIDATE ROSTER FOUND A RED INSTEAD.** [Account](archive/date/20261001/20261001-234702_itinerary-copal-instrument-suite-fascia-floor-account.md)
 -- `instrument_suite_witness.rish` reds on a fascia-health floor the tree has already dropped
@@ -344,7 +343,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `33fbce244c` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `a27140ca45` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
