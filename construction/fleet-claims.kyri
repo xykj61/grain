@@ -65,3 +65,9 @@ stamp 20261002.053725
 epoch 1790933845
 paths tools/gen/chapter/personalize_template_witness.rish construction/standing-equipment.kyri
 what roster personalize_template_witness.rish, the unrostered SUNN5 presence census over the personalize brix template family, GREEN on metal
+claim patchouli-counsel-flow-refusal-leg
+seat patchouli
+stamp 20261002.054206
+epoch 1790934126
+paths tools/gen/chapter/counsel_flow_witness.rish
+what counsel_flow_witness.rish has no refusal marker of its own (REDS %827's roster); add a planted-fixture refusal leg directly into it, mirroring the pattern already landed for voice_roster/scan_convention/bounds_typed
