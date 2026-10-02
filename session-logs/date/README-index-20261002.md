@@ -9,6 +9,7 @@
 | `20261002.104807` | [grass-earth-row-fallow-check](20261002/20261002-104807_grass-earth-row-fallow-check.kyri) | Earth row deep-read; pressed the two-rooms doorway witness, killed by its own outer timeout, inconclusive; lane stays empty |
 | `20261002.104628` | [patchouli-ironbeetle-ep001-census-roster](20261002/20261002-104628_patchouli-ironbeetle-ep001-census-roster.kyri) | Claim-as-override: rostered ironbeetle_ep001_census, first of 34 unrostered IronBeetle witnesses |
 | `20261002.104545` | [What a cold run is](20261002/20261002-104545_what-a-cold-run-is.kyri) | the roster at a still open, and the line that closes it |
+| `20261002.104514` | [A fresh lap confirms the lane is still fallow, without a fifth sweep](20261002/20261002-104514_petrichor-fallow-confirmed-again.kyri) | fetch matched xy/main, claims/REDS/card re-read fresh, no new docs-geode target, gate not re-run |
 | `20261002.104452` | [Air row deep-read pulls the glow-tend strand, language lane still idle](20261002/20261002-104452_pheromone-air-row-strand-pulled-lane-idle.kyri) | rota row 1 (Air) pressed TAME_CORE against mantra_glow_tend_limb5_witness, GREEN; no agent-doable language work found |
 | `20261002.104320` | [a torus lap costs the same as a ring](20261002/20261002-104320_a-torus-lap-costs-the-same-as-a-ring.kyri) | N-1 is the walk's cost, not the layout's; B/82 |
 | `20261002.104211` | [grass-air-row-presses-819-ratchet](20261002/20261002-104211_grass-air-row-presses-819-ratchet.kyri) | Air row pressed REDS %819's ratchet claim fresh; held at zero, lane stays empty |
