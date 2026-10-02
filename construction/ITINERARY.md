@@ -140,9 +140,11 @@ whole](archive/date/20261001/20261001-150500_itinerary-petrichor-wyoming-pbc-gra
 grade 12 over ceiling closed to grade 9 exactly, `composite=97 (A+)`, no statute cite, fee figure,
 or *verify* marker moved. **YOURS:** none -- the fruit is closed.
 
-**PETRICHOR -- MILESTONE TWO'S CONTRACT DRAFTED.** [The consent you can
-change](../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md),
-grade `B+/85`, proposed per Two Rooms. **YOURS:** Keaton's word to accept it for implementation.
+**PETRICHOR -- THE CITIZEN DOOR TEACHES A YES THAT CAN CHANGE.** [Account shelved
+whole](archive/date/20261001/20261001-231541_itinerary-petrichor-consent-contract-account.md):
+the contract accepted, and the citizen door's new "A yes you can change" section names grant,
+revoke, and the one refusal proven today -- a mismatched holder. Door/B+, composite 89.
+**YOURS:** none -- Consent Rail and the rest wait past this lane.
 
 **GRASS -- FOURTEEN ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261001`, condensed from
 fourteen one-line pointers to one, nothing archived lost): open-room reverse-reads
@@ -353,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `7cfb30fb9b` -- HEAD's parent, read after the final rebase.
+**Git nib:** `bb2120c186` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 

@@ -19,9 +19,13 @@ change](../active-designing/date/20261001/20261001-145643_the-consent-you-can-ch
 is the implementation. Patchouli lowers the two facts and the first replay witness. This lane does
 not open `mantra/` or `tally/`.
 
-**The fruit now:** the first-hour section stands, and the replay witness is green. The next section,
-one idea, teaches that a revoke whose holder differs is refused and the grant remains. Still do not
-open `mantra/` or `tally/`. No second contract. No further tending sweep of `docs-geode/`.
+**The fruit named next is already landed.** `docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md`'s
+"A yes you can change" section (committed `20261001.204039`, before this fruit note's own last edit)
+already names the one idea asked for: a revoke whose holder differs is refused, and the grant
+stays standing exactly as it read before. Graded Door/B+, composite 89 -- re-read with
+`sh tools/fixtures/q/qa_report_card.sh docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md --setting door --service 75`
+rather than trusting this line. Still do not open `mantra/` or `tally/`. No second contract. No
+further tending sweep of `docs-geode/`.
 
 **The tending sweep has now been run three times in one day (`20261001.183100`,
 `20261001.185007`, `20261001.190735`), each confirming the same clean reading: every living page
