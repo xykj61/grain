@@ -34,6 +34,10 @@ think Checked REDS %807 and %765 for remaining agent-doable work in mantra/ or t
 think Found a live self-claim, patchouli-consent-case8-refusals, already landed by the commit
  above -- closed it with sh tools/f/fleet_claim.sh --close, which carried construction/ITINERARY.md's
  Git nib forward to the commit that closing itself produced (card_nib=cc97000072).
+think The first card edit pushed construction/ITINERARY.md over its 40960-byte bound by 1117
+ bytes and the pre-commit hook refused the commit. Shed the own account per the-writer-sheds:
+ moved the full account to construction/archive/date/20261002/, left a two-line pointer on the
+ card, and the pin landed at 40788, under bound.
 obs Two directive surfaces -- the inner prompt and the living card -- were both describing landed
  work as open, which is exactly the class the-baton's ABSENCE clause and docs-implementation-sync
  both warn against: a stale directive costs the next lap a re-derivation or a duplicate build.
@@ -44,7 +48,8 @@ obs Did not open a new crux. Both %807 (a design ruling) and %765's remainder (a
 rota lap 7154, row 4 -- Earth, breathes in. The reading this lap actually performed was taking in
  the concrete fact at the door (the witness's own GREEN, the git log's own distance) before
  trusting the directive surface's own claim about what was still open.
-file construction/ITINERARY.md -- correct Patchouli's row: both named cruxes landed, lane queue empty
+file construction/ITINERARY.md -- correct Patchouli's row to a short pointer, both cruxes landed
+file construction/archive/date/20261002/20261002-000200_itinerary-patchouli-two-cruxes-already-landed-account.md -- the shed account the pointer names
 file recursion-prompts/patchouli-inner.md -- correct the fruit section to match the landed state
 file construction/fleet-claims.kyri -- close the already-landed patchouli-consent-case8-refusals claim
 loom witness=mantra_consent_replay_witness wall_s=negligible cases=8 verdict=GREEN
