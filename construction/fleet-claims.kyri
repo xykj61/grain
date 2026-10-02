@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-houseplant-glossary-roster
+seat copal
+stamp 20261002.012426
+epoch 1790918666
+paths tools/fixtures/h/houseplant_glossary_scan.sh tools/gen/chapter/houseplant_glossary_negative_witness.rish context/fixtures/houseplant_glossary_missing/LEXICON.md construction/standing-equipment.kyri
+what roster houseplant_glossary_witness both ways: pull its Lexicon-row grep checks into a scan, prove the refusal bites against a fixture lacking the row
