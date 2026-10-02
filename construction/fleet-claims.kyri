@@ -59,9 +59,9 @@ stamp 20261001.151533
 epoch 1790882133
 paths tools/fixtures/s/receipt_chain_scan.sh tools/s/receipt_chain_witness.rish tools/fixtures/s/receipt_chain_control.sh
 what measure whether the pier's scoped-receipt chain is alive before sharing a basis across the eight checkouts -- all eight receipts are 16+ days stale and the fleet-wide hit rate is 35 of 3054 opens
-claim copal-design-shapes-census-roster
-seat copal
-stamp 20261001.204245
-epoch 1790901765
-paths tools/gen/chapter/design_shapes_census_witness.rish tools/fixtures/d/design_shapes_census_scan.sh construction/standing-equipment.kyri
-what roster design_shapes_census_witness.rish into standing-equipment, adding a prove-red leg (missing wing + incomplete census) so the guard proves both ways
+claim patchouli-consent-case8-refusals
+seat patchouli
+stamp 20261001.203041
+epoch 1790901041
+paths mantra/src/consent_replay.rye mantra/src/consent_replay_witness.rye
+what prove case 8 -- an incomplete required field or a false signature on either the grant or the revoke fact refuses, one field at a time, in consent_replay_witness.rye

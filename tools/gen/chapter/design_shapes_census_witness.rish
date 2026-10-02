@@ -4,6 +4,12 @@
 #
 # Sibling wing to baton-museum. Seated `20260730.041319`. Builds inherit; they do not invent.
 # Meter name: design-hall census. Breach stays census_breach_count.
+#
+# One of the ~120 unrostered tools/gen/chapter/ witnesses copal-inner.md names. The elder
+# file carried one green leg and no plant, so a scan that always printed verdict=ok would
+# have read the same green the real wing reads today. Two plants prove the refusal is real:
+# a wing root that does not exist on disk, and a pen copy of the wing with two of its four
+# halls removed -- the script's own missing_wing and census_incomplete doors.
 
 say "design-shapes-census: Language EN — four halls, counted once."
 say "design-shapes-census: Style Radiant — name absences; keep breach banked when zero."
@@ -16,4 +22,22 @@ assert scan.ok else "design-shapes-census: the verdict reads ok while the status
 assert scan.out contains "census_breach_count=0" else "design-shapes-census: census found a breach; spend the banked word only on Keaton's yes"
 assert scan.out contains "halls_expected=4" else "design-shapes-census: expected four halls"
 
-say "GREEN: design-shapes-census — four halls present · named elders hold · breach census zero"
+# RED path one -- the wing root does not exist at all, the script's own exit-2 missing_wing door.
+let absent = run ["sh" "-c" "d=$(mktemp -u)/no-such-wing; sh tools/fixtures/d/design_shapes_census_scan.sh $d"]
+assert (absent.ok == false) else "design-shapes-census: an absent wing root must refuse"
+assert absent.out contains "verdict=missing_wing" else "design-shapes-census: want the absent wing refused by name"
+
+# RED path two -- a pen copy of the wing with two of its four halls removed. A pen rather
+# than the tracked wing, so the live halls are never touched to prove this.
+let incomplete = run ["sh" "-c" "d=$(mktemp -d); cp context/design-shapes/README.md context/design-shapes/bounds_home.brix context/design-shapes/tend_hygiene.brix $d/; sh tools/fixtures/d/design_shapes_census_scan.sh $d; s=$?; rm -rf $d; exit $s"]
+assert (incomplete.ok == false) else "design-shapes-census: a wing missing two halls must refuse"
+assert incomplete.out contains "verdict=census_incomplete" else "design-shapes-census: want the thin wing refused by name"
+assert incomplete.out contains "halls_absent=2" else "design-shapes-census: want the two missing halls counted"
+
+# The welcome beside both plants -- the real wing, unmutated, still reads ok. A refusal
+# proven only in the failing direction cannot be told from a scan that refuses everything.
+let welcome = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh"]
+assert welcome.ok else "design-shapes-census: the real wing must still pass after both plants ran"
+assert welcome.out contains "verdict=ok" else "design-shapes-census: want the unmutated census welcomed by name"
+
+say "GREEN: design-shapes-census — four halls present · named elders hold · breach census zero · both plants refuse · the real wing still passes"

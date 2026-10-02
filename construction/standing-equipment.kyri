@@ -8465,3 +8465,21 @@ guard tend_hygiene_census
 path tools/gen/chapter/tend_hygiene_census_witness.rish
 tier lap
 seated 20261001.202723
+
+# design_shapes_census -- the design-shapes wing's own four-hall census proven both ways. The
+# positive leg calls tools/fixtures/d/design_shapes_census_scan.sh with its own default root,
+# context/design-shapes, and reads halls_expected=4, halls_absent=0, elder_miss=0,
+# census_breach_count=0, verdict=ok -- measuring bounds_home.brix, tend_hygiene.brix,
+# relay_resin.brix, and fact_fold.brix on disk, plus the two named elder consumers
+# (tools/gen/chapter/recursion_block.brix, context/baton-museum/tend_round.brix), rather than
+# reciting that all six are present. Two plants prove the refusal is real: a wing root that does
+# not exist on disk reads verdict=missing_wing, the script's own exit-2 door for a root it cannot
+# open at all; and a pen copy of the wing holding only two of its four halls reads halls_absent=2
+# and verdict=census_incomplete. The welcome beside both plants calls the unmutated scan again and
+# reads verdict=ok, so the refusals are shown from both sides rather than only in the failing
+# direction. One of the ~120 unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed
+# as copal-design-shapes-census-roster before this entry landed. Runs in under 1s on metal.
+guard design_shapes_census
+path tools/gen/chapter/design_shapes_census_witness.rish
+tier lap
+seated 20261001.204501

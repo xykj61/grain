@@ -115,6 +115,13 @@ with a welcome leg re-running the unmutated scan to prove the refusal both ways.
 the ~119 unrostered `tools/gen/chapter/` witnesses that remain want individual rostering laps,
 Keaton's word.
 
+**COPAL.** `design_shapes_census` rostered into `construction/standing-equipment.kyri`, GREEN on
+metal both ways -- the elder witness carried one green leg and no plant; two were added (an absent
+wing root, a pen copy of the wing missing two of its four halls), each refusing by name, with a
+welcome leg re-running the unmutated scan to prove the refusal both ways. Claimed as
+`copal-design-shapes-census-roster` and run through `standing_equipment_run.sh` by name,
+`run_verdict=ok`. **YOURS:** same open question, one witness narrower.
+
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201558_itinerary-landed-accounts.md).
 
 **BAKERY.** [Prior account](archive/date/20260917/20260917-201428_itinerary-landed-accounts.md).
