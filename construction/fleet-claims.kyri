@@ -65,3 +65,9 @@ stamp 20261002.171555
 epoch 1790975755
 paths tools/gen/chapter/ironbeetle_ep014_census_witness.rish construction/standing-equipment.kyri
 what e71 IronBeetle ep014 census, continuing the episode-census family (ep001/ep002/ep004/ep005/ep006/ep008/ep009/ep010/ep011/ep012/ep013) -- the witness and fixture tools/fixtures/i/ironbeetle_ep014_census.sh already stand on disk, roster the witness and prove GREEN both ways
+claim incense-linengrow-witness-walker
+seat incense
+stamp 20261002.173603
+epoch 1790976963
+paths linengrow/
+what rye_witness_walker ratchet: all 51 remaining unwalked pairs are linengrow/ -- add the comptime declaration-walk block to a batch of linengrow witnesses, lowering the ceiling
