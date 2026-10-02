@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.012510` | [rota Air read; queue still empty](20261002/20261002-012510_rota-air-read-queue-still-empty.kyri) | row 1 pulled on this lane's own card account; %807, %765's remainder both hold; independently re-verified, no third mantra/tally family unmolted |
 | `20261002.012418` | [tenth lap: queue confirmed empty, declined to manufacture work](20261002/20261002-012418_tenth-lap-queue-confirmed-empty-no-busywork.kyri) | fifteen OPEN REDS rows read, none in a prose lane; no claim opened, nothing invented to fill the lap |
 | `20261002.012103` | [patchouli queue confirmed empty again](20261002/20261002-012103_patchouli-queue-confirmed-empty-again.kyri) | %807, %765, mantra_glow_tend_limb5 YOURS all still want Keaton; no claim-as-override candidate on the ledger |
 | `20261002.011759` | [ninth lap: send stalled on DNS, work staged locally](20261002/20261002-011759_push-refused-dns-unreachable-work-staged-locally.kyri) | eighth lap's log and nib-carry committed; push refused three times, xy unreachable |
