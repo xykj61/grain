@@ -64,7 +64,7 @@ zig="$root/vendor/zig-toolchain/zig"
 rye="$root/rye/bin/rye"
 delivery="$root/mantra/recall_tablecloth_query_delivery.rye"
 siblings="recall_tablecloth_query_wire.rye recall_tablecloth_query.rye recall_lap1.rye
-wire_format.rye tally_copy.rye kumara.rye recall_by_mark.rye"
+wire_format.rye tally_copy.rye kumara.rye recall_by_mark.rye parse_int.rye"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 

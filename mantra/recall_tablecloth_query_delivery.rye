@@ -13,6 +13,7 @@ const c = std.c;
 const ns = @import("recall_lap1.rye");
 const qw = @import("recall_tablecloth_query_wire.rye");
 const wf = @import("wire_format.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 const nqw_version = "20260710.140500";
 
@@ -661,7 +662,7 @@ pub fn main(init: std.process.Init) !u8 {
         // The caller's port arrives in argv because a dependent cannot read the socket its parent
         // bound. A host invoked without it has nowhere to announce itself, so it refuses by name.
         if (args.len < 3) return error.CallerPortMissing;
-        const caller_port = try std.fmt.parseInt(u16, args[2], 10);
+        const caller_port = try tally_parse_int.parse_int(u16, args[2], .{});
         return run_host(caller_port);
     }
     return run_selftest(garden, io, args[0]);
