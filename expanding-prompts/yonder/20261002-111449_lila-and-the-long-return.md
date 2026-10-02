@@ -4,12 +4,12 @@
 **Stamp:** `20261002.111449` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta, with Radiant warmth
-**Status:** Working-tree pass run `20261002.125743`. The deep debride waits for the sentence **run the deep debride**.
-**Room:** the plan lives here; the foundation and the rule are seated; this file stays until the deep debride moves it to yonder
+**Status:** Working-tree pass run `20261002.125743`. Deep debride witnessed `20261002.134003`. This file is the consumed record.
+**Room:** consumed; the foundation and the rule stay seated; this file lives in yonder
 **Git nib:** read `git rev-parse --short=10 HEAD` at the moment of the run, and write that parent into `construction/ITINERARY.md` before the commit
-**Where this sits:** home is [`../README.md`](../README.md). The foundations door is [`../foundations/README.md`](../foundations/README.md). The short name is in [`../context/LEXICON.md`](../context/LEXICON.md), spoken in [`../context/KYRI.md`](../context/KYRI.md), and listed among the kin in [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md).
+**Where this sits:** home is [`../../README.md`](../../README.md). The foundations door is [`../../foundations/README.md`](../../foundations/README.md). The short name is in [`../../context/LEXICON.md`](../../context/LEXICON.md), spoken in [`../../context/KYRI.md`](../../context/KYRI.md), and listed among the kin in [`../../context/SPELLBOOK.md`](../../context/SPELLBOOK.md).
 
-This prompt is the door. A `scheduled/` folder, and a symlink beside it, would give one plan two addresses. The living row on [`README.md`](README.md) is the address.
+This prompt is the door. A `scheduled/` folder, and a symlink beside it, would give one plan two addresses. The living row on [`README.md`](../README.md) is the address.
 
 ## When this may run
 
@@ -27,7 +27,7 @@ A lap already in flight finishes whole. This prompt does not kill a process, and
 
 The order stays. The names change.
 
-- **The Long Return** leads. Do the work that will still be true years on: front doors, foundations, names, witnesses, the reference weave. This is the work the old rule called the Long Return.
+- **The Long Return** leads. Do the work that will still be true years on: front doors, foundations, names, witnesses, the reference weave. This is the work the old rule called Lindy-first.
 - **Lila**, within that tier, is the one glad keystone: the hardest move that can still be finished, done as play and as offering. Joy keeps the rank Lesson 4 already gave it. Safety first, performance second, joy third. Lila is that third vote. It is the move that opens the rest. It is the practice of making the true thing with a light hand.
 - **Reds still come first of all.** A booked red preempts this order.
 - One keystone per round. The finishing edge still holds.
@@ -42,15 +42,15 @@ Replace longer phrases before shorter ones.
 
 | Find | Seat as |
 |---|---|
-| `Lila and the Long Return` | `Lila and the Long Return` |
-| `the Long Return` | `the Long Return` |
-| `lila-and-the-long-return` | `lila-and-the-long-return` |
-| `Lila` | `Lila` |
-| `long-return` | `long-return` |
-| `the Long Return` | `the Long Return` |
-| `Long Return` | `Long Return` |
+| `Lindy-first, crux-first` | `Lila and the Long Return` |
+| `Lindy-first` | `the Long Return` |
+| `lindy-first-crux` | `lila-and-the-long-return` |
+| `crux-first` | `Lila` |
+| `Lindy-boosting` | `long-return` |
+| `the Lindy effect` | `the Long Return` |
+| `Lindy effect` | `Long Return` |
 
-After the mechanical pass, read every changed sentence aloud. Repair the ones that stopped speaking. `the long return's Lila` wants `the long return's Lila`. A filename changes only when the map names that filename.
+After the mechanical pass, read every changed sentence aloud. Repair the ones that stopped speaking. `highest-Lindy crux` wants `the long return's Lila`. A filename changes only when the map names that filename.
 
 Leave these untouched by the map: the lone word for a hard passage, `Lindy's` the deli, and any quote kept whole inside `gratitude/` after the thanks page is written.
 
@@ -105,7 +105,7 @@ A line about this week's status wears a status mark. A clever word yields to a p
 
 Point the Aether fixed cell in `foundations/README.md` at this page. The cell's name becomes **Lila and the Long Return**.
 
-Write `.claude/rules/lila-and-the-long-return.md` as the living rule, in the same voice, citing this foundation and keeping the composition paragraphs the old rule carries: reds first, the finishing edge, one keystone, align, the fours. The rule's first line after the title names the shorthand **Lila-first, return-first** and points home to [`../README.md`](../README.md) and down to this foundation. Retire `.claude/rules/lila-and-the-long-return.md` by replacing its body with a short pointer to the new rule and the new foundation. The pointer uses the new names.
+Write `.claude/rules/lila-and-the-long-return.md` as the living rule, in the same voice, citing this foundation and keeping the composition paragraphs the old rule carries: reds first, the finishing edge, one keystone, align, the fours. The rule's first line after the title names the shorthand **Lila-first, return-first** and points home to [`../README.md`](../README.md) and down to this foundation. Retire `.claude/rules/lindy-first-crux.md` by replacing its body with a short pointer to the new rule and the new foundation. The pointer uses the new names.
 
 The lexicon row **Lila-first, return-first** is already seated. On this run, point it at the new foundation and the new rule, and leave it one clause, a date, and that pointer. The elder ordering row takes the new name in the same pass. The row that defines the hardest solvable move stays, and it gains one sentence: under this order that move is called Lila when it is the round's keystone. The Kyri note and the spellbook kin line already speak the shorthand. On this run, point them at the seated foundation.
 
@@ -124,8 +124,8 @@ The old foundation `foundations/20260811-211431_the-lindy-effect-and-the-long-re
 5. Witness. From the repo root, the named phrases are gone outside the gratitude page and this prompt:
 
 ```sh
-rg -n --glob '!gratitude/**' --glob '!expanding-prompts/20261002-111449_lila-and-the-long-return.md' \
-  'the Long Return|the Long Return|Lila|long-return|Long Return|lila-and-the-long-return'
+rg -n --glob '!gratitude/**' --glob '!expanding-prompts/yonder/20261002-111449_lila-and-the-long-return.md' \
+  'Lindy-first|lindy-first|crux-first|Lindy-boosting|Lindy effect|lindy-first-crux'
 ```
 
 The witness prints nothing. A hit is a miss, and the pass is not done.
@@ -142,7 +142,9 @@ When Keaton has said **run the deep debride**, and the working-tree witness is a
 3. The gratitude page and this prompt are commits on top of the rewritten history if the replace would cut them. Read them after the rewrite. Heal any sentence the replace broke.
 4. Force-update both remotes. Refresh the Git nib after the hashes move.
 5. Tell every seat: the old hashes are gone. A clean tree resets onto the new `xy/main`. A dirty tree is a lap that was not finished, and it waits for the hand who owns it.
-6. Move this prompt to `expanding-prompts/yonder/` as a consumed record, and point the living index row at that home. The witness above, re-run, is the completion mark.
+6. Move this prompt to `expanding-prompts/yonder/` as a consumed record, and point the living index row at that home. The witness above, re-run, is the completion mark. Its exclusion names this file's yonder path.
+
+Witnessed `20261002.134003`. The only configured remote was `xy`, and that `main` is the ref this lap force-updates. The public seed was not configured here and was not touched.
 
 ## What this prompt refuses
 

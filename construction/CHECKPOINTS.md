@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261002.134003` -- walk-back bundle `/home/keeper/lila-debride-keep/pre-lila-deep-debride-7b27f5a3cb.bundle`, pre-rewrite tip `7b27f5a3cb`.** Deep debride of the old ordering names. Rewritten signed main before this record is `a8e0115a54`. Only `xy` `main` is force-updated. The public seed stays. Local backup branches were left on the earlier history and were not pushed.
+
 **Checkpoint `20261002.125743` -- walk-back nib `580f03aa3f`.** Working-tree pass of Lila and the Long Return. The seven worker trees were clean, clocked out, and level with `xy` before this commit. The history rewrite waits for the sentence **run the deep debride**. This nib is the walk-back.
 
 **Checkpoint `20261002.011701` -- walk-back nib `a706c6b02d`.** Shelve Diffuser's live "four pairs

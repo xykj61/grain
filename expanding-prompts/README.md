@@ -110,7 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20261002.111449` | [Lila and the Long Return](20261002-111449_lila-and-the-long-return.md) | Working-tree pass run `20261002.125743`. The deep debride waits for its own sentence. |
+| `20261002.111449` | [Lila and the Long Return](yonder/20261002-111449_lila-and-the-long-return.md) | Consumed `20261002.134003`. The phrase map stays in that file. The living order is seated. |
 | `20260903.231727` | [Earth ships -- Cursor sitting](20260903-231727_earth-ships-cursor-sitting.md) | Incense Furrow Harvest outer loop; paste for the next chat. |
 | `20260823.124407` | [The Ranked Remainder](20260823-124407_the-ranked-remainder.md) | The whole outstanding vision ordered the Long Return and Lila, each item carrying its cost, gate, and falsifier. |
 | `20260823.045448` | [The Gauge Standfast](20260823-045448_the-gauge-standfast.md) | Name the register, measure it, then sweep on a word -- the pass that seated Gauge Style. |

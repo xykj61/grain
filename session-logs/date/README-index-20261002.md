@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.134003` | [History rewritten](20261002/20261002-134003_history-rewritten.kyri) | phrase witness empty; seats reset after xy |
 | `20261002.130605` | [Lila and the Long Return](20261002/20261002-130605_lila-and-the-long-return.kyri) | the living order is seated; history waits |
 | `20261002.124534` | [The fleet is ashore](20261002/20261002-124534_the-fleet-is-ashore.kyri) | seven seats clocked out, then fast-forwarded |
 | `20261002.120213` | [Cursor rules return home](20261002/20261002-120213_cursor-rules-return-home.kyri) | sixty twins live under .cursor/rules again |

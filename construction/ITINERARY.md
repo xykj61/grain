@@ -324,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `580f03aa3f` -- parent of the Lila working-tree pass, read before the commit (rule 5).
+**Git nib:** `a8e0115a54` -- rewritten main before the yonder record, read before the commit (rule 5).
 
 ### Incense -- product captain
 
