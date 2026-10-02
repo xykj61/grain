@@ -12,6 +12,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const consent = @import("consent_replay.rye");
 
+// Force every declaration in the claimed module through semantic analysis. Rye
+// otherwise checks only the functions this witness happens to call.
+comptime {
+    for (@typeInfo(consent).@"struct".decls) |decl| {
+        _ = &@field(consent, decl.name);
+    }
+}
+
 fn grant_fixture() consent.ConsentGrantFact {
     return .{
         .schema = consent.grant_schema,
