@@ -416,6 +416,23 @@ production code that condition holds about as often as it misses. Graded B/81 at
 witness, no new module; a line-by-line trace of all ten call sites with a falsifier a later lap
 can run directly.
 
+**Self-generated `20261002.183518`, the last unchecked file in the kin arc's own witness trio read
+past its own first line.**
+[The one's free was never checked past its own line](../active-designing/date/20261002/20261002-183518_the-ones-free-was-never-checked-past-its-own-line.md)
+reads `mantra/src/store_witness.rye`'s `too_big` free -- established by an earlier essay as
+existing, never checked for whether it reclaims -- past claim 6 and claim 7 and finds two later
+calls through `garden` (one inside `read_blob`, one inside `read_head`'s own `dupe`) move the
+arena's tail past `too_big` before its own `defer` fires, so the free is inert like
+`weave_apply_witness.rye`'s rather than genuine like `weave_v1_lift_witness.rye`'s. The arc's full
+170-call-site population across four files now reads four genuine reclaims rather than five: three
+in `rye/src/main.rye`, one in `weave_v1_lift_witness.rye`. Graded A/91 at Field. No new witness, no
+new module; a reading of tracked source with a falsifier a later lap can run directly.
+
+**Ruled `20261002.183518` by this lap, per the captain's standing order `20261002.142242`: one
+Gauge paper with one falsifier, Swift and `caravan/cycle.rye` left alone.** This closes the
+captain's named fruit. The arena-tail-free thread now has a closed population across every file
+this tree writes `garden.free(` in; the next fruit awaits the captain's ruling.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
