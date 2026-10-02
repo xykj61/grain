@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.051700` | [patchouli-sends-redleg-claim](20261002/20261002-051700_patchouli-sends-redleg-claim.kyri) | sent %827 leg; pin carried across two rebases |
 | `20261002.051222` | [patchouli-claims-redleg-mantra-fork](20261002/20261002-051222_patchouli-claims-redleg-mantra-fork.kyri) | %827: fork-dup refusal leg, count 58->57 |
 | `20261002.050744` | [lane still gated, GATES-ONLY set in this tree](20261002/20261002-050744_lane-still-gated-sets-gates-only.kyri) | round-open adopted 2 peer commits, neither in-lane; sentinel written for grain-pheromone |
 | `20261002.050437` | [petrichor sets gate sentinel, names fleet pattern](20261002/20261002-050437_petrichor-sets-gate-sentinel-fleet-pattern.kyri) | docs-geode unchanged since 20261001; 3 ships, ~20 logs same reading; GATES-ONLY set |
