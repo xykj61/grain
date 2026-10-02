@@ -172,23 +172,20 @@ unsaid-rostered's YOURS closed
 ([account](archive/date/20261002/20261002-000524_itinerary-grass-unsaid-rostered-account.md)).
 `functions_over_70` narrowed to 439 below, after mycelium's own reverse-read.
 
-**GRASS -- SHIM-REASON CLOSE, SHELVED WHOLE.** [Account
-shelved](archive/date/20261002/20261002-100233_itinerary-grass-shim-reason-close-account.md):
-`shim_reason_witness.rish` GREEN, `unsaid_rostered=820`, `verdict=ok`. **YOURS:** none there.
+**GRASS -- TWO ACCOUNTS, SHELVED WHOLE** (`20261002`, condensed from two to one, nothing lost):
+shim-reason close, mycelium's `main` family read and declined
+([fold](archive/date/20261002/20261002-101612_itinerary-grass-shim-reason-and-mycelium-main-fold.md)).
 
-**GRASS -- MYCELIUM'S `main` FAMILY IS THE CARAVAN SCENE PATTERN TOO.** [Reverse-read
-packet](../active-designing/date/20261002/20261002-100233_grass-mycelium-main-reverse-read.md):
-49 of mycelium's 51 `functions_over_70` entries are standalone `main` demo proofs -- the same
-sequential-narrative shape caravan's `check_suffice_runs` rungs already earned a decline on
-(`20260820.131713`). Five read in full (`warrant.rye`, `purse.rye`, `lapse.rye`, `braid_knot.rye`,
-`portage_kyri.rye`) all confirm the pattern: seed keys, build a small DAG by hand, assert a named
-refusal or verdict at each step, print GREEN. Splitting one into scene helpers buys a reader
-nothing it does not already have. `functions_over_70`'s honest remaining population is **439**
-(694 minus caravan's 206 minus mycelium's 49), concentrated in `glow/glow_run.rye: main` (426
-lines), `rye/src/main.rye: bridge_to_zig` (377), and `rishi/src/main.rye: eval_expr` (242) as the
-three largest real candidates. **YOURS:** `functions_over_70` (439, narrowed from 694); two small
-genuine mycelium candidates left unread, `mycelium/pledge.rye: fold_pledge` (89) and
-`mycelium/lapse.rye: fold_lapse` (97).
+**GRASS -- THE TWO NAMED MYCELIUM CANDIDATES SPLIT CLEAN.** [Account
+shelved](../active-designing/date/20261002/20261002-101612_grass-pledge-lapse-split-account.md):
+both functions were independent-case dispatch (fact kind, then tax-body tag) rather than
+caravan's sequential-narrative shape, so each split at its natural seam into `apply_pledge_open`
+and `apply_pledge_resolve` -- every line, comment, and invariant kept verbatim. `fold_pledge` 89
+to 31 lines, `fold_lapse` 97 to 34. Fourteen witnesses GREEN after the move, including the two
+files' own byte-level app==awk true-reads and round-trip kyri renders. `functions_over_70`'s
+honest remaining population narrows **439 to 437**. **YOURS:** none -- the three large real
+candidates named above (`glow/glow_run.rye: main`, `rye/src/main.rye: bridge_to_zig`,
+`rishi/src/main.rye: eval_expr`) remain unread by this packet.
 
 **DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
 replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; ANY SHIP on

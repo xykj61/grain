@@ -375,72 +375,76 @@ pub fn fold_lapse(l: *Ledger, fact: *const fold.Fact, pos: u32) FoldError!void {
     const tag = body[0];
     const from = fact.signer_pk[0..];
 
-    if (tag == tag_pledge) {
-        // invariant: a pledge body is exactly tag - id - deadline - recipient.
-        if (body.len != 1 + id_len + deadline_len + pk_len) return error.Malformed;
-        const id = body[1 .. 1 + id_len];
-        const deadline = read_deadline(body[1 + id_len .. 1 + id_len + deadline_len]);
-        const to = try valid_key(body[1 + id_len + deadline_len ..]);
-        // A reservation must name a future -- a deadline at or before its own position is
-        // expired at birth, and refuses the whole resolution.
-        if (deadline <= pos) return error.BadDeadline;
-        if (pledge_index(l, id) != null) return error.PledgeExists;
-
-        const si = account_index(l, from);
-        const received_here = if (si) |k| l.accounts[k].received else 0;
-        const balance_here = if (si) |k| l.accounts[k].balance else 0;
-
-        // Never-could-pay: more than the holder ever received refuses whole.
-        if (fact.amount > received_here) return error.NeverPaid;
-        if (fact.amount > balance_here) {
-            // Lost a race: an earlier winning phase already spent these coins -- a lawful
-            // no-op (the coins were in this purse once), folding continues.
-            return;
-        }
-        // Accepted: coins move balance -> reserved (conserved), an open pledge is seated.
-        const sidx = try ensure_account(l, from);
-        // invariant: an accepted pledge never reserves more than the sender can spend.
-        assert(fact.amount <= l.accounts[sidx].balance);
-        l.accounts[sidx].balance -= fact.amount;
-        const nr = l.accounts[sidx].reserved +% fact.amount;
-        if (nr < l.accounts[sidx].reserved) return error.Overdraw; // wrap refuse
-        l.accounts[sidx].reserved = nr;
-        try open_pledge(l, id, from, to, fact.amount, deadline, pos);
-        return;
-    }
-
-    if (tag == tag_post or tag == tag_void) {
-        // invariant: a resolution body is exactly tag - id.
-        if (body.len != 1 + id_len) return error.Malformed;
-        const id = body[1..];
-        const pi = pledge_index(l, id) orelse return error.UnknownPledge;
-        const pl = &l.pledges[pi];
-        // Only the pledger settles their own pledge, and the signed amount must equal it --
-        // the signature binds phase, id, and sum together.
-        if (!std.mem.eql(u8, pl.from[0..], from)) return error.WrongSigner;
-        if (fact.amount != pl.amount) return error.AmountMismatch;
-        // Already posted, voided, or lapsed -- the order (or its clock) already decided.
-        if (pl.state != state_open) return; // a lawful no-op
-
-        const ki = account_index(l, from) orelse return error.UnknownPledge;
-        // invariant: an open pledge's reserve is still held by its pledger.
-        assert(l.accounts[ki].reserved >= pl.amount);
-        l.accounts[ki].reserved -= pl.amount;
-        if (tag == tag_post) {
-            // Honor: reserved -> recipient (conserved).
-            try credit(l, pl.to[0..], pl.amount);
-            pl.state = state_posted;
-        } else {
-            // Release: reserved -> pledger's own balance (conserved).
-            const nb = l.accounts[ki].balance +% pl.amount;
-            if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
-            l.accounts[ki].balance = nb;
-            pl.state = state_voided;
-        }
-        return;
-    }
-
+    if (tag == tag_pledge) return apply_pledge_open(l, fact, pos, body, from);
+    if (tag == tag_post or tag == tag_void) return apply_pledge_resolve(l, fact, body, from, tag);
     return error.Malformed;
+}
+
+/// Open a new pledge under a deadline from a signed `tag_pledge` body -- coins move
+/// balance -> reserved (conserved) and an open pledge is seated under its id.
+fn apply_pledge_open(l: *Ledger, fact: *const fold.Fact, pos: u32, body: []const u8, from: []const u8) FoldError!void {
+    // invariant: a pledge body is exactly tag - id - deadline - recipient.
+    if (body.len != 1 + id_len + deadline_len + pk_len) return error.Malformed;
+    const id = body[1 .. 1 + id_len];
+    const deadline = read_deadline(body[1 + id_len .. 1 + id_len + deadline_len]);
+    const to = try valid_key(body[1 + id_len + deadline_len ..]);
+    // A reservation must name a future -- a deadline at or before its own position is
+    // expired at birth, and refuses the whole resolution.
+    if (deadline <= pos) return error.BadDeadline;
+    if (pledge_index(l, id) != null) return error.PledgeExists;
+
+    const si = account_index(l, from);
+    const received_here = if (si) |k| l.accounts[k].received else 0;
+    const balance_here = if (si) |k| l.accounts[k].balance else 0;
+
+    // Never-could-pay: more than the holder ever received refuses whole.
+    if (fact.amount > received_here) return error.NeverPaid;
+    if (fact.amount > balance_here) {
+        // Lost a race: an earlier winning phase already spent these coins -- a lawful
+        // no-op (the coins were in this purse once), folding continues.
+        return;
+    }
+    // Accepted: coins move balance -> reserved (conserved), an open pledge is seated.
+    const sidx = try ensure_account(l, from);
+    // invariant: an accepted pledge never reserves more than the sender can spend.
+    assert(fact.amount <= l.accounts[sidx].balance);
+    l.accounts[sidx].balance -= fact.amount;
+    const nr = l.accounts[sidx].reserved +% fact.amount;
+    if (nr < l.accounts[sidx].reserved) return error.Overdraw; // wrap refuse
+    l.accounts[sidx].reserved = nr;
+    try open_pledge(l, id, from, to, fact.amount, deadline, pos);
+}
+
+/// Settle an open pledge from a signed `tag_post`/`tag_void` body -- honor moves
+/// reserved -> recipient, release moves reserved -> pledger (both conserved).
+fn apply_pledge_resolve(l: *Ledger, fact: *const fold.Fact, body: []const u8, from: []const u8, tag: u8) FoldError!void {
+    // invariant: a resolution body is exactly tag - id.
+    if (body.len != 1 + id_len) return error.Malformed;
+    const id = body[1..];
+    const pi = pledge_index(l, id) orelse return error.UnknownPledge;
+    const pl = &l.pledges[pi];
+    // Only the pledger settles their own pledge, and the signed amount must equal it --
+    // the signature binds phase, id, and sum together.
+    if (!std.mem.eql(u8, pl.from[0..], from)) return error.WrongSigner;
+    if (fact.amount != pl.amount) return error.AmountMismatch;
+    // Already posted, voided, or lapsed -- the order (or its clock) already decided.
+    if (pl.state != state_open) return; // a lawful no-op
+
+    const ki = account_index(l, from) orelse return error.UnknownPledge;
+    // invariant: an open pledge's reserve is still held by its pledger.
+    assert(l.accounts[ki].reserved >= pl.amount);
+    l.accounts[ki].reserved -= pl.amount;
+    if (tag == tag_post) {
+        // Honor: reserved -> recipient (conserved).
+        try credit(l, pl.to[0..], pl.amount);
+        pl.state = state_posted;
+    } else {
+        // Release: reserved -> pledger's own balance (conserved).
+        const nb = l.accounts[ki].balance +% pl.amount;
+        if (nb < l.accounts[ki].balance) return error.Overdraw; // wrap refuse
+        l.accounts[ki].balance = nb;
+        pl.state = state_voided;
+    }
 }
 
 /// Resolve a committed Dag into a two-phase Ledger under the deadline clock -- the verdict of
