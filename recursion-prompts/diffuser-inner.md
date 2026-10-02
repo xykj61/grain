@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.060702` -- the byte-level falsifier ran, and the line-level proxy withdraws
 **Revised:** `20261002.010921` -- the real edit log was already in git, not in Mantra
 **Revised:** `20261002.005428` -- row 11's falsifier read against Aurora's own roster-pairs code
 **Revised:** `20261001.231246` -- the two consent still frames are named; the ladder is quiet
@@ -117,6 +118,20 @@ card-shaped document is exactly what fixed-size splitting would serve instead --
 sharpens into a named, undone falsifier: whether a byte-level re-reading of ITINERARY.md's own
 revisions confirms or overturns what this line-level reading suggests. Graded B/83 at Field. No new
 witness, no new build; a reading of git history, with its own classifier printed in full on the page.
+
+**Self-generated `20261002.060702`, the falsifier run rather than named.**
+[The line-level proxy was misleading](../active-designing/date/20261002/20261002-055959_the-line-level-proxy-was-misleading.md)
+runs the byte-level re-read the prior essay named and did not attempt: a true longest-common-
+subsequence diff of every `ITINERARY.md` revision pair under 50KB (3,881 of 4,887, the one
+560-585KB growth era excluded and counted), classified by the same hunk-grouping rule the line-level
+reading used. The result reverses the line-level claim rather than merely softening it -- 16.7
+percent substitution-shaped and 83.3 percent shift-shaped, against the line-level reading's 76.2 and
+23.8 -- landing close to `fleet-claims.kyri`'s own shift-shaped reading, exactly the withdrawal
+condition the prior essay named. A faster prefix/suffix-stripped method was tried first, produced an
+apparent confirmation (87.7 percent near-equal), and was set aside after its own distribution showed
+63 percent of its "near-equal" hunks spanning over 1,000 bytes -- a multi-region-edit artifact rather
+than a real reading. Graded B/82 at Field. No new witness, no new build; the classifying script is
+printed in the essay rather than kept as a standing tool.
 
 ## gates
 
