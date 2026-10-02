@@ -396,6 +396,26 @@ iteration rather than the whole function. No instance anywhere in the file recla
 at Field. No new witness, no new module; a script match over all 75 functions plus a three-function
 hand read, converging on the prior essay's own cause.
 
+**Self-generated `20261002.182541`, the kin arc's own one production file read in full for the
+first time.**
+[The production driver reclaims three of ten](../active-designing/date/20261002/20261002-182541_the-production-driver-reclaims-three-of-ten.md)
+reads all ten `garden.free(` sites in `rye/src/main.rye` and finds three genuine reclaims beside
+seven inert ones -- the first confirmed reclaims this whole arc has found. `build_lock_claim`
+allocates `staging` then `staged_pid` and frees them in LIFO order with nothing else touching
+`garden` in between, so both reclaim cleanly; `bridge_rye_tree`'s embed-file scan frees
+`embed_bytes` through a direct call right beside its own allocation, reclaiming every iteration.
+The seven inert sites split into the catalog essay's own template (`record_family_evict`, one
+genuine population member) and a sharper shape found here for the first time: three loop sites
+(`bridge_to_zig` twice, `hash_library_into`, `bridge_rye_tree`'s `import_paths`) where further
+allocation lands after the list's last item and before its own defer, so not even the last item
+reclaims; and two single-value sites (`resolve_self_exe`, `resolve_rye_lib`) sharing the flagship
+`drawn_terminal.rye` shape exactly, where the return expression's own second allocation moves the
+tail first. The mechanism reads as symmetric rather than one-sided: a free reclaims exactly when
+nothing else reaches the allocator between a buffer's birth and its release, and in hand-written
+production code that condition holds about as often as it misses. Graded B/81 at Field. No new
+witness, no new module; a line-by-line trace of all ten call sites with a falsifier a later lap
+can run directly.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
