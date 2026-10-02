@@ -221,19 +221,18 @@ replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product m
 the cold run's 21 reds of 355 guards; PATCHOULI's was stale -- `snapshot_projection.rye` covers
 it, GREEN.
 
-**DIFFUSER -- THE TORUS LADDER'S OWN WHITEPAPER ROW ANSWERED.** [Shelved whole](archive/date/20261001/20261001-145200_itinerary-diffuser-whitepaper-falsifier-account.md): row 11's named falsifier fired across the ladder's twelve errata; closing synthesis graded B+ at Field.
+**DIFFUSER -- FOUR ACCOUNTS, SHELVED WHOLE.** [Pointer
+fold](archive/date/20261002/20261002-005518_itinerary-diffuser-four-accounts-fold.md),
+`20261001`-`20261002`, nothing lost: the torus ladder's own whitepaper row, the fourth angle's
+crux, the quiet-pier scheduler, and the radial-split allocator. **YOURS:** Bakery or Incense on the
+quiet-pier scheduler.
 
-**DIFFUSER -- THE FOURTH ANGLE'S OPEN CRUX ANSWERED BY A CENSUS.** [Shelved whole](archive/date/20261001/20261001-193541_itinerary-diffuser-mutable-identity-account.md): every storage caller in this tree keeps a name bound to its first bytes for life; content-defined resin splitting has no caller yet, and the honest next crux is the caller itself. Graded B at Field.
-
-**DIFFUSER -- A FRESH MOONSHOT: THE PIER'S OWN LOAD LEAVES NO QUIET TO WAIT FOR.** [Shelved
-whole](archive/date/20261002/20261002-003200_itinerary-diffuser-quiet-pier-account.md): a
-throttle-always scheduler needs no quiet and no joule. Graded B+ at Field. **YOURS:** Bakery or
-Incense.
-
-**DIFFUSER -- THE RADIAL SPLIT ONLY PAYS WHEN SOMETHING FREES.** [Shelved
-whole](archive/date/20261002/20261002-003200_itinerary-diffuser-radial-split-account.md): a
-buddy allocator loses to Tally's own linear Region at its real workload, wins only once a free
-hits mid-region; no caller does yet. Graded B+ at Field.
+**DIFFUSER -- THE FOUR PAIRS RIDE AS ONE STRING, NOT FOUR CHANNELS.** [Landed
+whole](../active-designing/date/20261002/20261002-004836_the-four-pairs-ride-as-one-string-not-four-channels.md):
+row 11's restated falsifier asked for a real per-channel traffic weight; Aurora's own
+`roster_pairs` stage carries all four declared pairs as one sealed string between two unlabeled
+guests, so no per-channel traffic exists yet to weigh -- sharper than row 7's "unmeasured," and
+confirming rather than reopening row 11. Graded B+ at Field. No YOURS; a reading of tracked source.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -349,7 +348,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `797a3f74fd` -- HEAD's parent, read after the final rebase.
+**Git nib:** `0846195852` -- HEAD's parent, read after the final rebase.
 
 ### Incense -- product captain
 
