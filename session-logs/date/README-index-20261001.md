@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261001.205840` | [incense watch ready](20261001/20261001-205840_incense-watch-ready.kyri) | watcher arms incense on a prompt; model sonnet 5 |
 | `20261001.205305` | [root doors graded A, no new queue](20261001/20261001-205305_root-doors-graded-a-no-new-queue.kyri) | README/SOURCE/CONTRIBUTING/ORGANIZING/MAP all grade A; one self-caught measurement error |
 | `20261001.204934` | [four rebases, one merged superset](20261001/20261001-204934_four-rebases-one-merged-superset.kyri) | merged rather than withdrawn, GREEN, pushed |
 | `20261001.204826` | [empty recipient and two seats](20261001/20261001-204826_empty-recipient-and-two-seats.kyri) | empty recipient id; pheromone and diffuser pointed |
