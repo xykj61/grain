@@ -4,10 +4,15 @@
 **Room:** checkable -- every field named below is read from the tracked source it names,
 with the line numbers current as of this stamp. The projection itself is named as
 unwritten in the last section, rather than proposed as a new type.
-**Status:** Landed -- answers `recursion-prompts/diffuser-inner.md`'s named next fruit:
-describe the granted and revoked still frames read from `ConsentState`, with no Swift
-file, no macOS build, no `Settle` or `Respond`, and no `LinengrowConsent` type invented
-to carry them.
+**Status:** Checkable, superseded -- an earlier independent reading of the same question
+`recursion-prompts/diffuser-inner.md` later named as the next fruit. The page a reader
+should treat as the landed answer is
+[the revoked frame is the granted frame plus one line](20261001-231246_the-revoked-frame-is-the-granted-frame-plus-one-line.md),
+ruled A/94 and recorded as landing that fruit at `20261001.231246`, after this page was
+written and before it was recovered from a stash. This page stays because it reads the
+same struct correctly and from a different angle (the fixture values, rather than the
+`grant_eql` postcondition); it does not supersede, and is not superseded by, anything
+other than the page named above.
 **Lane:** Diffuser -- moonshots and whitepaper research, aimed at Mantra and Linengrow
 **Style:** Gauge at the Field setting
 **Voice:** Kyri
