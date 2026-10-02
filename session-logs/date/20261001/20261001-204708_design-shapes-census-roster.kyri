@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261001.204708
+editor Claude Code
+provider Anthropic
+product Claude Code
+role agent
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+title design_shapes_census rostered, proven both ways
+prompt copal-inner.md fruit -- take one unrostered tools/gen/chapter/ witness, claim its path, roster it, and prove it from both sides
+think read copal-inner.md: fruit is one unrostered tools/gen/chapter/ witness, claimed and proven both ways
+think diffed all *_witness.rish under tools/gen/chapter/ against guard paths already in construction/standing-equipment.kyri -- 116 unrostered
+think tried date_dialect_witness.rish first; it already fails on metal (law_library_dated hardcoded at 17, the tree now reads 27) -- not a clean roster candidate, left alone rather than patched inside this lap's scope
+think ran a handful of candidates cold to find one GREEN today: design_shapes_census_witness.rish and fact_fold_census_witness.rish both passed; design_shapes_census chosen since its underlying scan (tools/fixtures/d/design_shapes_census_scan.sh) already names two exit-2 refusal doors (missing_wing, census_incomplete) that the witness never exercised
+think per ABSENCE clause, checked fleet_claim_scan --check, found commits_behind=1, ran fleet_round_open.sh to catch HEAD up before claiming
+think opened claim copal-design-shapes-census-roster naming the witness, scan, and standing-equipment.kyri; staged both files, pushed before building
+think added two RED legs to the witness: a nonexistent wing-root argument to the scan (verdict=missing_wing), and a mktemp pen copy of context/design-shapes/ holding only 2 of 4 tracked hall files (verdict=census_incomplete, halls_absent=2); a welcome leg re-runs the unmutated scan to confirm verdict=ok, matching the tend_hygiene_census pattern already seated
+think ran the witness standalone (GREEN, both plants refuse, welcome passes) then through tools/fixtures/s/standing_equipment_run.sh design_shapes_census by name -- run_verdict=ok, tree_moved=no
+think closed the claim (card_carried=yes), added the COPAL account line to ITINERARY beside the tend_hygiene_census sibling, committed all four files in one commit, mechanism-sentence hook refused twice (word count, then a mistyped path) before landing
+rota lap 7114, row 4 -- Earth, the row that breathes in. Read foundations/20260826-021735_earth-the-row-that-breathes-in.md: the row's question is what already stands true before anyone argues with it, read whole at the door (aroma) rather than interpreted. The lap's own work fits the row directly -- a concrete refusal proven on metal (missing_wing, census_incomplete) outranks the plausible claim that the witness already covered its scan's refusal doors, and the new guard names its room at the door (guard/path/tier/seated) the way the row's own Two Rooms thread asks.
+obs date_dialect_witness.rish is quietly RED on metal right now (stale hardcoded count 17 vs the tree's current 27) -- left unbooked this lap since the fruit named one witness and this was not it; worth a REDS row on a future lap
+obs chose a witness whose scan already had unexercised refusal doors over one needing new scan logic, matching the lindy-first/crux-first order (smallest hard move that still proves something real)
+file tools/gen/chapter/design_shapes_census_witness.rish why two RED legs and a welcome leg added, proving the census refuses on a missing wing root and an incomplete hall set
+file construction/standing-equipment.kyri why new guard design_shapes_census block registered, tier lap
+file construction/fleet-claims.kyri why claim copal-design-shapes-census-roster opened then closed
+file construction/ITINERARY.md why COPAL account line added naming the rostered witness and the still-open question about the remaining ~119
+scope roster one unrostered tools/gen/chapter/ witness per copal-inner.md's fruit; claim opened and closed; nothing else touched
+status GREEN -- design_shapes_census_witness.rish passes standalone and through standing_equipment_run.sh (run_verdict=ok, tree_moved=no); commit 79c8f10faa landed; push to xy still pending this log's own commit
+recommend kg -- the fruit is a repeating lap (one witness per pass); the next unrostered candidate is fact_fold_census_witness.rish, already confirmed GREEN cold and lacking a RED leg of its own
