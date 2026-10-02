@@ -22,6 +22,7 @@
 | `20260925.202629` | [Cold run launched](20260925/20260925-202629_cold-run-launch.kyri) | Held still for verdict; stash-recovered. |
 | `20260925.202325` | [Fold recital review](20260925/20260925-202325_bakery-fold-recital-review.kyri) | Fourteen drafts reviewed; published records kept. |
 | `20260925.201815` | [Space-only purpose](20260925/20260925-201815_diffuser-space-only-purpose.kyri) | One admitted space displays no purpose value. |
+| `20260925.201543` | [Patchouli roster close](20260925/20260925-201543_patchouli-roster-close.kyri) | Parked work audit closed; consent/use/return meaning still owed. |
 | `20260925.201120` | [Ledger drafts](20260925/20260925-201120_bakery-ledger-drafts.kyri) | Two drafts reviewed; published numbers kept. |
 | `20260925.200515` | [Grass packet recovery](20260925/20260925-200515_grass-parked-packet-recovery.kyri) | Parked packet restored; product witnesses pass. |
 | `20260925.200327` | [Account drafts](20260925/20260925-200327_bakery-account-drafts.kyri) | Four drafts reviewed; later records kept. |
