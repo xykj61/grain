@@ -192,22 +192,14 @@ function in the file reaches 70 lines; the contract witness, the full 1,133-line
 GREEN; TAME style bans clean; `functions_over_70` fell by one. `YOURS:` none from this file --
 `bridge_to_zig` stays declined.
 
-**DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
-
-**DIFFUSER -- THE RING-ARITHMETIC ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-103827_itinerary-diffuser-ring-arithmetic-account.md)
--- the N=3 ring/chain reading and its N-1 correction, both B-graded, `20261002`, nothing lost.
-
-**DIFFUSER -- THE 2D-LAYOUT ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-153253_itinerary-diffuser-2d-layout-account.md)
--- the torus-layout reading and its named composition gap, B/82, `20261002`, nothing lost.
-
-**DIFFUSER -- THE FALSIFIER-NAMED-THE-WRONG-ROSTER ACCOUNT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-170623_itinerary-diffuser-falsifier-wrong-roster-account.md) -- `caravan/roster.rye` never imports `channels.rye`; the depth question stays Caravan's own, B/82, `20261002`, nothing lost.
-
-**DIFFUSER -- THE WORD GARDEN NAMES TWO TYPES, AND ONLY ONE FREES.** [Read and
-closed](../active-designing/date/20261002/20261002-170623_one-name-covers-two-allocators-and-only-one-frees.md):
-`tally/region.rye`'s `Region` declares no `free`, only a whole-region `clear()`, so the five-essay
-arena-free arc's whole 179-site `garden.free(` population always read the std seam; one real
-`Region`-named-`garden` caller (`comlink/discovery/table.rye`) uses exactly that one gesture. B+/89.
-**YOURS:** none -- whether `Region` should grow its own `free` stays Tally's own open question.
+**DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
+account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
+arc's close, the ring-arithmetic and 2D-layout readings, the wrong-roster falsifier, and three
+elder pointers, `20260918`-`20261002`, nothing lost. The same send recovers four self-generated
+essays and two session logs that six successive round-opens stashed and never landed -- the bead/CDC
+falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_allocator timing (B+/86),
+and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
+**YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -277,22 +269,9 @@ against a ceiling of 8, the ninth from a peer lane.
 
 ## Simple, Lovable, Complete order
 
-**DIFFUSER -- THE DISCOVERY ROOM'S LAST TWO LEFTOVERS CLOSED, EIGHT FOR EIGHT.** [Shelved
-whole](archive/date/20260918/20260918-030830_itinerary-diffuser-two-shelved-accounts.md).
-
-**DIFFUSER -- A DRAFT DUPLICATED A PEER'S OWN LANDED CLOSE, AND ONE FILE SURVIVED THE WITHDRAWAL.**
-[Shelved whole](archive/date/20260918/20260918-034727_itinerary-landed-accounts.md).
-**YOURS:** the cold endurance run's 21 reds of 355 guards, `tree_moved=no`, still stands unrepeated
-from two laps back, held there rather than repeated here.
-
-**DIFFUSER -- THE MAX_* SURVEY, FIVE MORE MODULES.** [Shelved
-whole](archive/date/20260918/20260918-043752_itinerary-diffuser-declustering-caravan-account.md). **YOURS:**
-whether the day Comlink or the settlement ledger moves from one owning process to a real quorum is
-the moment to revisit declustering, or whether it stays filed for that day.
-
-**DIFFUSER -- OPENING 1 CLOSED: A CLOSED FORM BEATS THE SEARCH IT PROPOSED, 52 AGAINST 33.**
-[Shelved whole](archive/date/20260918/20260918-052643_itinerary-diffuser-bitmask-and-opening1-shelved.md) beside
-the bitmask-ring account above.
+**DIFFUSER's elder discovery-room, max_* survey, and opening-1 accounts** ride forward inside the
+[nine-block fold](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md)
+named above, nothing lost.
 
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
@@ -324,7 +303,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `381a2de566` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `c188e1f79f` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

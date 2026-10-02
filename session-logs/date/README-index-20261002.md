@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.185720` | [Sixth confirm -- one new patchouli commit pulled](20261002/20261002-185720_sixth-confirm-one-new-patchouli-commit.kyri) | docs-geode gate unchanged, no claim-as-override target |
 | `20261002.190530` | [Lap open, same fallow ground -- YOURS put to Keaton directly](20261002/20261002-190530_grass-lap-open-still-fallow.kyri) | nothing new to grade, six sibling fund pages named, question asked in the reply rather than only logged |
+| `20261002.185511` | [Six stashes held four finished essays](20261002/20261002-185511_six-stashes-held-four-finished-essays.kyri) | recovered 4 essays + 2 logs from unlanded round-open stashes; DIFFUSER card folded nine blocks to one |
 | `20261002.185251` | [Fifth empty reading of the agent-doable queue](20261002/20261002-185251_fifth-fallow-reading.kyri) | fetched xy, checked fleet-claims, re-grepped mantra/tally headers -- queue empty a fifth lap, %807/%765 both still OPEN unchanged |
 | `20261002.185233` | [Third fallow reading, claim closed](20261002/20261002-185233_third-fallow-reading-claim-closed.kyri) | closed a stale completed claim, re-derived the ledger's true OPEN rows by last-marker rather than bare grep, confirmed no agent-doable law-lane work stands |
 | `20261002.184748` | [Fourth empty reading of the agent-doable queue](20261002/20261002-184748_fourth-empty-queue-reading.kyri) | fetched xy, checked fleet-claims, re-grepped mantra/tally headers -- queue empty a fourth lap, no safe claim-as-override target found |
@@ -69,6 +70,7 @@
 | `20261002.170141` | [Patchouli closes its own landed claim](20261002/20261002-170141_patchouli-closes-own-landed-claim.kyri) | found a stale fleet claim whose work had already merged, closed it, mantra/tally fruit stays empty |
 | `20261002.170052` | [Earth foundation re-read, fruit still closed](20261002/20261002-170052_grass-earth-foundation-reread-fruit-still-closed.kyri) | graded clock-and-mark at A, no claimable lap in grass's four passes |
 | `20261002.165915` | [Air row presses the shape ceiling, still fifteen](20261002/20261002-165915_air-row-presses-shape-ceiling-still-holds.kyri) | round-opened, re-confirmed empty lane, rota row 1 pressed max_fields=15 |
+| `20261002.165735` | [A misaligned window still resyncs](20261002/20261002-165735_a-misaligned-window-still-resyncs.kyri) | Diffuser's own essay, recovered: swapping in content-defined inner beading recovers dedup for an early/mid-landing edit; graded A/96 |
 | `20261002.165725` | [Air row read, fruit still closed](20261002/20261002-165725_air-row-read-fruit-still-closed.kyri) | rota row 1 pressed this lane's own boundary; no new docs-geode work surfaced |
 | `20261002.165624` | [Patchouli's queue confirmed empty after sync](20261002/20261002-165624_patchouli-queue-confirmed-empty-after-sync.kyri) | round-open sync then re-grep of mantra/tally, %807 and %765 both still OPEN, no claim overlap |
 | `20261002.165617` | [Fire row confirms nothing wants cutting](20261002/20261002-165617_grass-fire-row-confirms-closed-fruit.kyri) | grass's fruit still closed, no claimable lap in any lane; check-in recommended |
@@ -226,6 +228,7 @@
 | `20261002.070559` | [grass finds the fourth essay](20261002/20261002-070559_grass-finds-and-grades-the-fourth-essay.kyri) | line-level-proxy B+/85, found by hand-walking the shelf past a stale "fully graded" claim |
 | `20261002.070222` | [pheromone-yours-question-was-already-answered](20261002/20261002-070222_pheromone-yours-question-was-already-answered.kyri) | the card's own YOURS line was stale before it was shelved; corrected |
 | `20261002.070144` | [grass grades the Diffuser pair](20261002/20261002-070144_grass-grades-the-diffuser-pair.kyri) | radial-split B+/89, four-pairs B+/88; both clear the floor, no repair owed |
+| `20261002.070040` | [The bead is coarser than the edit](20261002/20261002-070040_the-bead-is-coarser-than-the-edit.kyri) | Diffuser's own essay, recovered: CDC chunker reads a true small shift as a substitution, falsifier stays open; graded B/84 |
 | `20261002.065803` | [grass's third clean open](20261002/20261002-065803_grass-third-clean-open.kyri) | re-checked all four lanes; one prior essay already graded, nothing else new; honest no-op |
 | `20261002.065427` | [copal rosters pole_bozo_murr_hats](20261002/20261002-065427_copal-roster-pole-bozo-murr-hats.kyri) | thirteenth unrostered chapter witness claimed, proven both ways, rostered; sunn12 account shelved to stay under the card's byte ceiling |
 | `20261002.065424` | [patchouli's fourth recheck finds a dead stash](20261002/20261002-065424_patchouli-fourth-recheck-found-dead-stash.kyri) | round-open surfaced stash@{4}'s consent draft; superseded by landed consent_replay.rye, not a claim target; GATES-ONLY reset |

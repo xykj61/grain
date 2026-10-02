@@ -433,6 +433,47 @@ Gauge paper with one falsifier, Swift and `caravan/cycle.rye` left alone.** This
 captain's named fruit. The arena-tail-free thread now has a closed population across every file
 this tree writes `garden.free(` in; the next fruit awaits the captain's ruling.
 
+**Recovered `20261002.185031`.** A round-open at `20261002.072145` stashed a finished essay and
+five further round-opens, across the same morning and afternoon, stashed three more -- six
+separate dead-letter entries, none ever reaching a commit. All four are genuine, complete,
+already-graded essays, recovered now at their own original stamps:
+
+- [The bead is coarser than the edit](../active-designing/date/20261002/20261002-065248_the-bead-is-coarser-than-the-edit.md)
+  (`20261002.065248`) runs the byte-level essay's own named falsifier on the 1,006 excluded large
+  revision pairs using `mantra/beading.rye`'s own content-defined chunker as a cheap stand-in for
+  a full byte-level LCS, reads 73.8 percent substitution-shaped, then fails that reading against
+  its own synthetic control: a true 10-byte insertion reads as a substitution 100 percent of 200
+  trials, because the chunker compares whole engulfing beads (64-256 bytes) rather than true edit
+  spans. The falsifier stays open; the finding is the hazard itself, relevant to any future caller
+  of `beading.rye`'s own boundaries. Graded B/84 at Field.
+- [The star is not a cheaper ring](../active-designing/date/20261002/20261002-150621_the-star-is-not-a-cheaper-ring-flows-of-refuses-it-outright.md)
+  (`20261002.150621`) reads `caravan/systems/wide_roster.kyri`'s five-domain star against the
+  ring/chain touch-cost arc and finds its own declared shape already refuses on metal
+  (`TooManyDomains`, one domain past `caravan/roster.rye`'s own bound), then builds three scratch
+  probes to ask whether a star's zero relay touches is a genuine point on the ring/chain curve or a
+  different problem -- `flows_of` answers before the falsifier's named collision is ever reached.
+  Graded B/84 at Field.
+- [The bump costs five times less than the free list](../active-designing/date/20261002/20261002-163731_the-bump-costs-five-times-less-than-the-free-list.md)
+  (`20261002.163731`) measures `tally/region.rye`'s `Region.alloc` against
+  `std.heap.smp_allocator` on this host, one million sixteen-byte allocations each way: the region
+  bump runs 4.3 to 5.0 times faster across three runs, the first direct cycle-cost evidence this
+  lane's own "energy- and electricity-saving compute" angle has produced. Graded B+/86 at Field.
+- [A misaligned window still resyncs, if the cutter reads content](../active-designing/date/20261002/20261002-165735_a-misaligned-window-still-resyncs-if-the-cutter-reads-content.md)
+  (`20261002.165735`) builds the smaller half of a kin essay's own named falsifier -- swapping
+  `mantra/spool.rye`'s fixed-offset inner split for `beading.rye`'s content-defined one, resin
+  boundaries held fixed -- and finds dedup recovers for an early- or mid-landing 40-byte edit where
+  the fixed-offset baseline reads exactly zero. Graded A/96 at Field.
+
+All four are scratch-only: no tracked module or witness changed, every scratch file deleted before
+this recovery. Two companion session logs recovered the same way, at `20261002-070040` and
+`20261002-165735`, with rows restored to the day's own index at their correct chronological
+position. Two further stashed log stubs (`20261002-062636`, `20261002-091130`) named work that
+later completed and landed as the already-published `20261002.095659` essay; their content is
+superseded and they are not recovered. One stashed card-fold (`20261002-065637`) never reached the
+card before the fold at `20261002.185031` superseded it; both now stand in
+`construction/archive/`. The next fruit stays whatever the captain rules; this recovery adds no new
+claim to the board, since no new tracked instrument was created.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
