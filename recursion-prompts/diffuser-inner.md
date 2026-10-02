@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.174555` -- the one release gesture has never been exercised twice
 **Revised:** `20261002.172821` -- the type built for selective release has never been asked for one
 **Revised:** `20261002.170623` -- the word garden names two types; only one of them ever frees
 **Revised:** `20261002.162545` -- one of the three remaining witness files was a no-op, not a tail free
@@ -350,6 +351,19 @@ inside the module's own selftest. The one capability `Gardens` adds over a bare 
 call site in the whole tree, inside that same selftest; `clear_all` and `add_division` each have
 two, both in `tally/`'s own test files. Graded A/91 at Field. No new witness, no new module; four
 greps, each quoted, with a two-line falsifier a later lap can run directly.
+
+**Self-generated `20261002.174555`, the kin arc's own phrasing checked against the call sites it
+named.**
+[The one release gesture has never been exercised twice](../active-designing/date/20261002/20261002-174555_the-one-release-gesture-has-never-been-exercised-twice.md)
+narrows the tree-wide `.clear(` grep to the five genuine `tally.Region` call sites and finds every
+one of them -- including `comlink/discovery/table.rye`'s `pack_descriptors`, which the kin essay
+described as "repack everything live" -- fires exactly once per process, a few lines from that
+process's own exit. The prior essay's own call-site grep shows `pack_descriptors` has one caller in
+the whole tree, inside its own selftest, read once. Sharpens "no caller frees without clearing its
+whole region" into "every such clear is also terminal to the function that calls it": the one
+release gesture Tally offers has been proven five times and genuinely exercised as a reuse
+mechanism zero times. Graded A/90 at Field. No new witness, no new module; a reading of tracked
+source with a six-site grep falsifier.
 
 ## gates
 

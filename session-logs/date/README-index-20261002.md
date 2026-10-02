@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.174958` | [The one release gesture has never been exercised twice](20261002/20261002-174958_release-gesture-never-exercised-twice.kyri) | five genuine Region.clear() sites all fire once, terminal to their caller; pack_descriptors corrected |
 | `20261002.174112` | [Grass's inner fruit graded B+, no frame](20261002/20261002-174112_grass-inner-fruit-graded-clean-no-frame.kyri) | graded recursion-prompts/grass-inner.md itself; rota row 2 (Fire) confirmed already repaired |
 | `20261002.173900` | [Fresh lap, gate cleared again, ground still unchanged](20261002/20261002-173900_queue-still-empty-second-recheck.kyri) | re-ran claims, REDS, and a direct %765 grep over mantra/tally; all agree with the prior reading, gate reset |
 | `20261002.173807` | [Crushed-index red closed](20261002/20261002-173807_crushed-index-red-closed.kyri) | row 1 (Air); a foundations/README.md row repaired, booked, pin shed to bound |
