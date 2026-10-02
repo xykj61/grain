@@ -1,0 +1,21 @@
+::  name       consent revoke field count
+::  shape      fields - int (@u32)
+::  invariant  a ConsentRevokeFact carries exactly seven fields (schema -
+::             revoke_id - grant_id - holder_id - revoked_at - signer_id -
+::             signature)
+::  example    7
+::  readers    Mantra - Glow Tend - Sur museum - Patchouli weave
+::  nib        equinox-e208-mantra-tend-v0
+::
+::  Equinox e208 - Mantra M6 -- sixth Mantra structure pedestal in src/shape/.
+::  Names ConsentRevokeFact's field count from mantra/src/consent_replay.rye,
+::  the second growth milestone's revoke side: a revoke names the grant it
+::  closes rather than restating its terms. Pedestal only; Rye still owns
+::  refusal_grant's sibling revoke path and the orphaned-revoke refusal.
+::
+::  Seven sits under rune_shape.max_fields (15); this pedestal does not raise
+::  it. Smaller than the nine-field grant by design -- a revoke identifies and
+::  signs, and carries nothing of the grant's own terms forward.
++$  consent-revoke-field-count-shape
+  $:  fields=@u32
+  ==

@@ -8502,3 +8502,16 @@ guard fact_fold_census
 path tools/gen/chapter/fact_fold_census_witness.rish
 tier lap
 seated 20261001.231748
+
+# mantra_glow_tend_limb5 -- the fifth and sixth Mantra structure pedestals in src/shape/, proven
+# in one witness. shape-consent-grant.glow names ConsentGrantFact's nine fields (schema -
+# grant_id - receipt_id - holder_id - recipient_id - scope - granted_at - signer_id - signature);
+# shape-consent-revoke.glow names ConsentRevokeFact's seven (schema - revoke_id - grant_id -
+# holder_id - revoked_at - signer_id - signature). Both counts are read from
+# mantra/src/consent_replay.rye via tools/fixtures/r/rye_struct_fields_scan.sh rather than copied a
+# second time, the same discipline REDS %500 proved for the Weave ladder. Neither desk raises
+# glow/rune_shape.rye's max_fields past 15; the witness asserts that constant stayed put.
+guard mantra_glow_tend_limb5
+path tools/m/mantra_glow_tend_limb5_witness.rish
+tier lap
+seated 20261002.004500

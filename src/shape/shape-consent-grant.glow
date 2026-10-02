@@ -1,0 +1,20 @@
+::  name       consent grant field count
+::  shape      fields - int (@u32)
+::  invariant  a ConsentGrantFact carries exactly nine fields (schema - grant_id -
+::             receipt_id - holder_id - recipient_id - scope - granted_at -
+::             signer_id - signature)
+::  example    9
+::  readers    Mantra - Glow Tend - Sur museum - Patchouli weave
+::  nib        equinox-e207-mantra-tend-v0
+::
+::  Equinox e207 - Mantra M5 -- fifth Mantra structure pedestal in src/shape/.
+::  Names ConsentGrantFact's field count from mantra/src/consent_replay.rye,
+::  the second growth milestone's bound-use fact: one purpose, one holder, one
+::  recipient, one scope, signed. Pedestal only; Rye still owns refusal_grant,
+::  grant_eql, and the replay Log.
+::
+::  Nine sits under rune_shape.max_fields (15); this pedestal does not raise
+::  it, and a tenth field here would still refuse at the rune's own ceiling.
++$  consent-grant-field-count-shape
+  $:  fields=@u32
+  ==

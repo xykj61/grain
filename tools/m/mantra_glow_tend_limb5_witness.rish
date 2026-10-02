@@ -1,0 +1,78 @@
+# tools/m/mantra_glow_tend_limb5_witness.rish -- Mantra M5/M6 in src/shape/.
+#
+#   rishi/bin/rishi run tools/m/mantra_glow_tend_limb5_witness.rish
+
+say "mantra-tend-5: Language EN -- Mantra Glow Tend limb 5 (sur museum)."
+say "mantra-tend-5: Style Radiant -- consent grant nine fields, revoke seven; Rye still owns replay."
+say "mantra-tend-5: Lens TAME -- Ashvini nest-only - Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let grant_desk = "src/shape/shape-consent-grant.glow"
+let revoke_desk = "src/shape/shape-consent-revoke.glow"
+let elder = "mantra/src/consent_replay.rye"
+
+say "mantra-tend-5: grant placard..."
+let gplacard = run ["sh" "-c" "head -n 8 src/shape/shape-consent-grant.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert gplacard.ok else "mantra-tend-5: grant placard scan failed"
+let gpcount = trim gplacard.out
+assert gpcount == "6" else "mantra-tend-5: grant placard missing six lines"
+
+let gex = run ["sh" "-c" "grep -q 'example    9' src/shape/shape-consent-grant.glow"]
+assert gex.ok else "mantra-tend-5: grant example 9 missing"
+let gelder = run ["sh" "-c" "grep -q 'mantra/src/consent_replay.rye' src/shape/shape-consent-grant.glow"]
+assert gelder.ok else "mantra-tend-5: grant citation missing"
+
+say "mantra-tend-5: revoke placard..."
+let rplacard = run ["sh" "-c" "head -n 8 src/shape/shape-consent-revoke.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert rplacard.ok else "mantra-tend-5: revoke placard scan failed"
+let rpcount = trim rplacard.out
+assert rpcount == "6" else "mantra-tend-5: revoke placard missing six lines"
+
+let rex = run ["sh" "-c" "grep -q 'example    7' src/shape/shape-consent-revoke.glow"]
+assert rex.ok else "mantra-tend-5: revoke example 7 missing"
+let relder = run ["sh" "-c" "grep -q 'mantra/src/consent_replay.rye' src/shape/shape-consent-revoke.glow"]
+assert relder.ok else "mantra-tend-5: revoke citation missing"
+
+# The claim is each placard's own, read against the rye rather than copied a second time here --
+# the same discipline REDS %500 proved for the Weave ladder: a guard carrying its own copy of a
+# number can only ever agree with itself.
+say "mantra-tend-5: the grant placard's own number, read against ConsentGrantFact..."
+let gdeclared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-consent-grant.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert gdeclared.ok else "mantra-tend-5: the grant placard's example line is unreadable"
+let gwant = trim gdeclared.out
+let gcounted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" elder "ConsentGrantFact"]
+assert gcounted.ok else "mantra-tend-5: the field reader refused on ConsentGrantFact -- ${gcounted.out_brief}"
+let ggot = trim gcounted.out
+assert ggot == gwant else "mantra-tend-5: ConsentGrantFact declares ${ggot} fields where the placard says ${gwant}"
+let gnamed = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" elder "ConsentGrantFact"]
+assert gnamed.ok else "mantra-tend-5: the field reader refused on ConsentGrantFact fields -- ${gnamed.out_brief}"
+let ggotfields = trim gnamed.out
+assert ggotfields == "schema grant_id receipt_id holder_id recipient_id scope granted_at signer_id signature" else "mantra-tend-5: ConsentGrantFact fields missing or reordered in the rye -- ${ggotfields}"
+
+say "mantra-tend-5: the revoke placard's own number, read against ConsentRevokeFact..."
+let rdeclared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-consent-revoke.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert rdeclared.ok else "mantra-tend-5: the revoke placard's example line is unreadable"
+let rwant = trim rdeclared.out
+let rcounted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" elder "ConsentRevokeFact"]
+assert rcounted.ok else "mantra-tend-5: the field reader refused on ConsentRevokeFact -- ${rcounted.out_brief}"
+let rgot = trim rcounted.out
+assert rgot == rwant else "mantra-tend-5: ConsentRevokeFact declares ${rgot} fields where the placard says ${rwant}"
+let rnamed = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" elder "ConsentRevokeFact"]
+assert rnamed.ok else "mantra-tend-5: the field reader refused on ConsentRevokeFact fields -- ${rnamed.out_brief}"
+let rgotfields = trim rnamed.out
+assert rgotfields == "schema revoke_id grant_id holder_id revoked_at signer_id signature" else "mantra-tend-5: ConsentRevokeFact fields missing or reordered in the rye -- ${rgotfields}"
+
+say "mantra-tend-5: lower and run both desks..."
+let ggate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" grant_desk]
+assert ggate.ok else "mantra-tend-5: grant shape lower/build/run failed"
+assert ggate.out contains "EXIT:0" else "mantra-tend-5: grant shape did not exit 0"
+
+let rgate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" revoke_desk]
+assert rgate.ok else "mantra-tend-5: revoke shape lower/build/run failed"
+assert rgate.out contains "EXIT:0" else "mantra-tend-5: revoke shape did not exit 0"
+
+say "mantra-tend-5: max_fields untouched..."
+let ceiling = run ["sh" "-c" "grep -q 'max_fields: u32 = 15' glow/rune_shape.rye"]
+assert ceiling.ok else "mantra-tend-5: rune_shape.max_fields moved off 15 -- this fruit must not raise it"
+
+say "GREEN: mantra Glow Tend limb 5 -- consent grant nine fields, revoke seven, in src/shape/."

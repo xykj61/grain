@@ -1,7 +1,7 @@
 # Pheromone, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
-**Status:** Living -- next fruit seated `20261001.204655`, two consent shape pedestals
+**Status:** Living -- two consent shape pedestals landed `20261002`, next ruling awaited
 **Room:** checkable -- the fruit names a measured ceiling and two options already on the card
 **Outer prompt:** [`../tools/p/pheromone_seat_prompt.txt`](../tools/p/pheromone_seat_prompt.txt)
 
@@ -55,14 +55,18 @@ this sketch.
 `orphaned-revoke` earned its `Reason` member in the consent lowering. A re-check of either closed
 fruit is not a fruit.
 
-**The next fruit, ruled `20261001.204655`.** Two shape pedestals, in the form
-`src/shape/shape-mantra-weave-field-count.glow` already uses:
-`src/shape/shape-consent-grant.glow` with example 9, and
-`src/shape/shape-consent-revoke.glow` with example 7. Those counts are
-`grant_fact_fields` and `revoke_fact_fields` in `mantra/src/consent_replay.rye`. Name the fields
-those structs already carry. One witness proves the two example counts. Do not raise `max_fields`.
-Do not copy `.lap/shape-receipt-offer.glow` into the tree. Do not edit `mantra/src/consent_replay.rye`
-or `tally/receipt_refusal.rye`.
+**The fruit ruled `20261001.204655` closed `20261002.004500`.** Two shape pedestals landed in the
+form `src/shape/shape-mantra-weave-field-count.glow` already uses: `src/shape/shape-consent-grant.glow`
+(example 9) and `src/shape/shape-consent-revoke.glow` (example 7), naming the nine and seven fields
+`ConsentGrantFact` and `ConsentRevokeFact` already carry in `mantra/src/consent_replay.rye`. One
+witness, `tools/m/mantra_glow_tend_limb5_witness.rish`, proves both example counts against the rye
+via `tools/fixtures/r/rye_struct_fields_scan.sh` and asserts `rune_shape.max_fields` stayed at 15.
+Rostered into `construction/standing-equipment.kyri`, GREEN on metal both as the roster's own
+`mantra_glow_tend_limb5` guard and run standalone. `.lap/shape-receipt-offer.glow` was not copied;
+`mantra/src/consent_replay.rye` and `tally/receipt_refusal.rye` were not touched. **YOURS:** the
+next fruit -- Keaton's word on whether lowering begins (the sketch's own open question, carried
+forward from the prior account: whether `orphaned-revoke` earns a `Reason` member, and whether
+Patchouli or Incense opens it first).
 
 ## gates
 
