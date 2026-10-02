@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.175448` -- the kin essay's own traced instance never reclaimed anything
 **Revised:** `20261002.174555` -- the one release gesture has never been exercised twice
 **Revised:** `20261002.172821` -- the type built for selective release has never been asked for one
 **Revised:** `20261002.170623` -- the word garden names two types; only one of them ever frees
@@ -364,6 +365,21 @@ whole region" into "every such clear is also terminal to the function that calls
 release gesture Tally offers has been proven five times and genuinely exercised as a reuse
 mechanism zero times. Graded A/90 at Field. No new witness, no new module; a reading of tracked
 source with a six-site grep falsifier.
+
+**Self-generated `20261002.175448`, the kin arc's own flagship traced instance re-checked against
+the full function body rather than the five lines quoted.**
+[The signature call moved the tail before the defer fired](../active-designing/date/20261002/20261002-175448_the-signature-call-moved-the-tail-before-the-defer-fired.md)
+reads `pond/apps/drawn_terminal.rye`'s `run_thin_view_witness` past where the kin essay's own
+trace stopped and finds `content_signature(garden, frame)` runs between `compose_thin_view_lines`
+returning and the registered `defer` firing, allocating a `skate.Grid` and a full pixel buffer
+through the same `garden` -- which moves the arena's tail past `frame`'s own six allocations
+before any of the loop's frees run. Quoting `ArenaAllocator.free`'s own tail check
+(`vendor/zig-toolchain/lib/std/heap/ArenaAllocator.zig:608-623`), none of the six frees in this
+instance reclaims anything, where the kin essay's trace had credited the last one. A second
+instance, `run_books_view_witness`, is read in full and confirmed to share the identical shape;
+roughly seventy of the file's own `run_*_witness` functions stand unchecked past these two. Graded
+A-/88 at Field. No new witness, no new module; a reading of tracked source and the vendored std
+seam, with the allocator's own tail-check quoted rather than restated.
 
 ## gates
 
