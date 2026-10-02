@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.062334` | [patchouli fast-forwards diffuser, queue still empty](20261002/20261002-062334_patchouli-fast-forwards-diffuser-queue-still-empty.kyri) | flaky DNS, https retry worked; pulled two diffuser commits, redleg ratchet names no mantra/tally guard |
 | `20261002.062110` | [witnesses reconfirm clean, fourth reading](20261002/20261002-062110_witnesses-reconfirm-clean-fourth-reading.kyri) | re-ran crushed-index, two-rooms-doorway, living-docs-lint independently; all GREEN, nothing new |
+| `20261002.062048` | [grass grades the mand* front doors](20261002/20261002-062048_grass-mand-qa-sweep.kyri) | mand/mandate/mandi READMEs graded A/B/B+, nothing below B |
 | `20261002.061833` | [patchouli reconfirms queue still empty, sets GATES-ONLY](20261002/20261002-061833_patchouli-queue-still-empty.kyri) | same %807/%765 blockers as six prior laps this hour; stopped the circling rather than writing a seventh identical confirmation |
 | `20261002.061359` | [mantra/tally queue reconfirmed empty](20261002/20261002-061359_mantra-tally-queue-reconfirmed-empty.kyri) | round-open pulled petrichor's log, no OPEN mantra/tally REDS row, no claim overlap, declined claim-as-override |
 | `20261002.061138` | [sunn10-tenth-chapter-witness](20261002/20261002-061138_sunn10-tenth-chapter-witness.kyri) | Rostered sunn10_keys_grain_os, tenth unrostered chapter witness |
