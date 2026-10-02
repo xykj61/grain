@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.172445` | [Queue still empty, stopping rather than circling](20261002/20261002-172445_queue-still-empty-stopping-rather-than-circling.kyri) | confirmed mantra/tally queue and REDS OPEN rows one more time, found nothing agent-doable, set .loop-gates-only |
 | `20261002.172242` | [Water tastes both cited grades, both read sweet](20261002/20261002-172242_water-tastes-both-cited-grades-sweet.kyri) | rota row 3 (Water); re-ran both cited qa_report_card numbers on metal, both matched the card exactly, queue stays empty |
 | `20261002.171927` | [Closed the stale chapter-witness claim](20261002/20261002-171927_closed-the-stale-chapter-witness-claim.kyri) | round-opened, found a fleet claim whose work had already landed, closed it, nib carried forward |
 | 20261002.171650 | [garden names two allocators](20261002/20261002-171650_garden-names-two-allocators.kyri) | Region/Gardens declare no free; the arc reads the std seam |
