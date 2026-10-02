@@ -65,7 +65,7 @@ Rostered into `construction/standing-equipment.kyri`, GREEN on metal both as the
 `mantra_glow_tend_limb5` guard and run standalone. `.lap/shape-receipt-offer.glow` was not copied;
 `mantra/src/consent_replay.rye` and `tally/receipt_refusal.rye` were not touched.
 
-**Ruled `20261002.142242`.** Lowering began on Patchouli's door. `orphaned-revoke` already names a `Reason` member, and the two consent facts stand in `mantra/src/consent_replay.rye`. This lane leaves `mantra/` and `tally/` closed. The next fruit is one pedestal, `src/shape/shape-receipt-offer.glow`, written fresh from `ReceiptOfferFact`'s field count in `mantra/src/receipt_offer.rye`, in the same form as `src/shape/shape-consent-grant.glow`. `rune_shape.max_fields` stays 15. The untracked `.lap` desk stays untracked. A new rune returns to Incense.
+**Ruled `20261002.142242`.** `ReceiptOfferFact` stands one field to a line, so the field reader can see all fifteen. Lowering began on Patchouli's door. `orphaned-revoke` already names a `Reason` member, and the two consent facts stand in `mantra/src/consent_replay.rye`. This lane leaves `mantra/` and `tally/` closed. The next fruit is one pedestal, `src/shape/shape-receipt-offer.glow`, written fresh from `ReceiptOfferFact`'s field count in `mantra/src/receipt_offer.rye`, in the same form as `src/shape/shape-consent-grant.glow`. `rune_shape.max_fields` stays 15. The untracked `.lap` desk stays untracked. A new rune returns to Incense.
 
 ## gates
 

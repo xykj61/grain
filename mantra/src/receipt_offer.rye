@@ -17,11 +17,21 @@ pub const Refusal = tally_refusal.Refusal;
 pub const Reason = tally_refusal.Reason;
 
 pub const ReceiptOfferFact = struct {
-    schema: []const u8, receipt_id: []const u8, holder_id: []const u8,
-    recipient_id: []const u8, product_id: []const u8, product_digest: []const u8,
-    purpose: []const u8, value_amount: u64, value_unit: []const u8,
-    value_basis: []const u8, return_kind: []const u8, issued_at: u64,
-    expires_at: u64, signer_id: []const u8, signature: []const u8,
+    schema: []const u8,
+    receipt_id: []const u8,
+    holder_id: []const u8,
+    recipient_id: []const u8,
+    product_id: []const u8,
+    product_digest: []const u8,
+    purpose: []const u8,
+    value_amount: u64,
+    value_unit: []const u8,
+    value_basis: []const u8,
+    return_kind: []const u8,
+    issued_at: u64,
+    expires_at: u64,
+    signer_id: []const u8,
+    signature: []const u8,
 };
 
 
