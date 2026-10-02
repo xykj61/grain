@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.171927` | [Closed the stale chapter-witness claim](20261002/20261002-171927_closed-the-stale-chapter-witness-claim.kyri) | round-opened, found a fleet claim whose work had already landed, closed it, nib carried forward |
 | `20261002.171359` | [Round opens on 57a8c1496f, docs-geode fruit stays closed](20261002/20261002-171359_round-opens-queue-still-empty.kyri) | round-opened, rota row 0 (Aether) read, no lane-appropriate OPEN red found, fruit stays closed |
 | `20261002.171243` | [Fire row, mantra/tally scan confirms empty](20261002/20261002-171243_fire-row-mantra-tally-scan-confirms-empty.kyri) | re-ran the chronological-header scan the fruit asks for, found none, round-opened clean |
 | `20261002.171200` | [Fire row looks hard, fruit still closed](20261002/20261002-171200_fire-row-looks-hard-fruit-still-closed.kyri) | round-opened (pulled to 9a2a41fc96), rota row 2 looked at REDS/claims fresh, docs-geode still empty |
