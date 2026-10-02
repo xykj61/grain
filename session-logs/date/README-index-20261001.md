@@ -9,6 +9,7 @@
 | `20261001.205305` | [root doors graded A, no new queue](20261001/20261001-205305_root-doors-graded-a-no-new-queue.kyri) | README/SOURCE/CONTRIBUTING/ORGANIZING/MAP all grade A; one self-caught measurement error |
 | `20261001.204934` | [four rebases, one merged superset](20261001/20261001-204934_four-rebases-one-merged-superset.kyri) | merged rather than withdrawn, GREEN, pushed |
 | `20261001.204826` | [empty recipient and two seats](20261001/20261001-204826_empty-recipient-and-two-seats.kyri) | empty recipient id; pheromone and diffuser pointed |
+| `20261001.204708` | [design-shapes-census-roster](20261001/20261001-204708_design-shapes-census-roster.kyri) | design_shapes_census witness rostered, GREEN both ways |
 | `20261001.204646` | [grass lap opens to no queued work](20261001/20261001-204646_grass-lap-opens-to-no-queued-work.kyri) | clean tree, no open audit item this session; reported rather than invented |
 | `20261001.204245` | [fruit already landed, no repeat sweep](20261001/20261001-204245_fruit-already-landed-no-repeat-sweep.kyri) | read the day shelf first; the fruit was already landed at HEAD, so no fourth sweep was run |
 | `20261001.204206` | [empty holder id refused](20261001/20261001-204206_empty-holder-id-refused.kyri) | an empty holder id writes nothing |
