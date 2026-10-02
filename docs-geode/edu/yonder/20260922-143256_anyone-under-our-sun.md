@@ -42,6 +42,26 @@ Civic style asks what that rewards. A small finished thing rewards the person wh
 
 The two meet on purpose and stay apart on purpose. One source of facts. Two meanings. A person in Kenya and a person in Kansas read the same card, because the card is about consent and value, and the local law of money stays in that person's own country.
 
+## A yes you can change
+
+The receipt already says what a holder offered. A separate pair of facts says whether that offer
+is still good to act on right now: a **grant**, naming who may use the receipt and for what narrow
+purpose, and a **revoke**, naming that the same grant no longer holds. [The consent you can
+change](../../../active-designing/date/20261001/20261001-145643_the-consent-you-can-change-contract.md)
+is where both are drawn in full, fixture and all.
+
+A grant and a revoke are never written into the receipt itself -- a receipt that could quietly
+change what it said has already stopped being trustworthy. So the record keeps all three facts side
+by side: the receipt, the grant, and -- once it arrives -- the revoke. Revoking never erases the
+grant. A reader who replays the record after a revoke still sees the grant exactly as it stood on
+the day it was given, now carrying one more fact beside it: when, and by whom, the yes became a no.
+
+This page names no new command, because the Consent Rail that would let a citizen see this on
+screen is not yet built. What a reader can check today on metal is one replay -- a grant, then its
+revoke, with the grant left standing -- and one refusal, a revoke naming a holder who does not match
+the grant it names. Both belong to Patchouli's own witness. The remaining acceptance cases stay
+honestly named **proposed** until each earns a witness of its own.
+
 ## Fair trade, in this tree and in the world
 
 On the [front door](../../../README.md), **Fair Trade** means the hands and the land behind a thing are treated as well as the thing itself. That is Grain's own sentence, and it is adoptable anywhere the sentence is true.
