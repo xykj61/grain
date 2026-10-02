@@ -273,6 +273,23 @@ other, and this essay closes the risk of the two threads reading as one. Graded 
 witness, no new build; a reading of tracked source confirmed by grep, against two already-landed
 moonshot-ladder measurements.
 
+**Self-generated `20261002.155732`, the allocator-model thread widened past Tally's own two
+modules to the inherited seam beneath them.**
+[The garden's free reaches the tail, and nothing behind it](../active-designing/date/20261002/20261002-155732_the-gardens-free-reaches-the-tail-and-nothing-behind-it.md)
+reads `tally/region.rye`, `tally/gardens.rye`, and `vendor/zig-toolchain/lib/std/heap/ArenaAllocator.zig`'s
+own `free` body together and finds all three share one release shape -- clear the whole region, or
+roll back the single most recent allocation -- which turns the kin essay's finding about callers
+("no caller frees without clearing its whole region") into a finding about the model itself. Reading
+all 179 tracked `garden.free(` call sites finds 157 in one file, 71 of those in an identical
+forward-order loop shape that a direct, exhaustive grep confirms never runs in reverse anywhere in
+this tree -- so each such loop reclaims its last-allocated member alone, by measurement rather than
+assertion, traced through one instance (`compose_thin_view_lines` / `run_thin_view_witness`) line by
+line. `rye/src/main.rye`'s own build driver carries the identical pattern in production code, not
+only in test witnesses. No correctness defect: the std allocator declines rather than guesses, so
+every call is safe, and every case read here runs inside a process whose own exit is the reset.
+Graded B+/86 at Field. No new witness, no new build; a reading of tracked source and the vendored
+std seam, with its own falsifier run in the same essay.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
