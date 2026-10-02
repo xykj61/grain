@@ -8696,3 +8696,20 @@ guard src_first_resident
 path tools/gen/chapter/src_first_resident_witness.rish
 tier lap
 seated 20261002.045430
+
+# vols_survey -- CION VOLS Journey 13 r1, unrostered since it was written. Proves
+# tools/fixtures/v/vols_survey_scan.sh is complete by construction: the scan DERIVES its input
+# from a fixture tree rather than reading a hand-listed set, so a capability born tomorrow
+# appears without anyone editing the tool. Counts the one living site naming a capability by a
+# bare "lap <N>" ordinal, confirms the permitted schemes ("lap 4b", "sub-lap 2") stay uncounted,
+# and cross-checks the hit count against an independent grep -r traversal -- two tools, one
+# answer. The testimony boundary is proven from both sides in the same run: a bare ordinal
+# planted INSIDE a dated session-log fixture is confirmed present by a direct grep, then the
+# census is shown still reporting exactly one site, proving the excluded log never counted.
+# Reports the live source-tree census informationally for LOWE to relabel against. GREEN on
+# metal, runs in under 2s. One of the unrostered tools/gen/chapter/ witnesses copal-inner.md
+# names; claimed as copal-vols-survey-roster before this entry landed.
+guard vols_survey
+path tools/gen/chapter/vols_survey_witness.rish
+tier lap
+seated 20261002.051538
