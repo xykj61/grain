@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.154708` -- today's own ring and chain carry no radius, only hop count
 **Revised:** `20261002.153253` -- the falsifier named a module that never reads the channel graph
 **Revised:** `20261002.145044` -- two sub-rings refuse the single-lap check; a wider ring passes it whole
 **Revised:** `20261002.143117` -- the N=4 ring already ran, inside a concurrency test
@@ -256,6 +257,21 @@ non-isolation, never depth. A two-level tree earns acceptance through this whole
 reason every other declared shape does; the open design question -- whether `verify()` should
 someday refuse a shape by depth -- stays Caravan's own edit, unchanged from the prior ruling. Graded
 B/82 at Field. No new witness, no new build; a reading of tracked source with line citations.
+
+**Self-generated `20261002.154708`, the day's own ring/chain thread checked against the lane's
+standing geometric frame.**
+[The rings this lane built carry no radius](../active-designing/date/20261002/20261002-154708_the-rings-this-lane-built-carry-no-radius.md)
+reads `caravan/cycle.rye`, `caravan/relay.rye`, `caravan/channels.rye`, and `caravan/system.rye`
+against the torus moonshot ladder's own row 4 and row 5 findings and confirms by grep that none of
+the four carries a floating-point type, an angle, a radius, or a distance -- every number is a
+`u32` index or a count, so today's ring and chain join torus row 4's own 288-of-345 reading of
+guards carrying a coordinate on zero axes. The torus ladder's question is geometric (a space with
+distance, and where to place work on it); today's thread's question is a trust count (`N-1` hands)
+with no distance in it at all. The two converged on one vocabulary -- ring, wraparound, hop -- from
+two separate roads, geometry on one side and the ring buffer's wraparound-without-space on the
+other, and this essay closes the risk of the two threads reading as one. Graded B+ at Field. No new
+witness, no new build; a reading of tracked source confirmed by grep, against two already-landed
+moonshot-ladder measurements.
 
 ## gates
 
