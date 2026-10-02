@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.003516` | [pheromone's own lane reads empty after a round-open](20261002/20261002-003516_pheromone-queue-empty-after-round-open.kyri) | fruit closed, claims clear, every OPEN REDS row wants Keaton's word -- no claim-override target |
 | `20261002.003033` | [third quiet lap -- the queue still reads empty](20261002/20261002-003033_third-quiet-lap-queue-still-empty.kyri) | Patchouli: fresh re-read agrees again, claim-as-override weighed against two cross-lane rows and declined |
 | `20261002.002701` | [tame_style_check reddened twice, both repaired](20261002/20261002-002701_tame-style-check-two-reds-repaired.kyri) | a comment's bare mention of copyForwards, and 17 compound asserts in consent_replay_witness.rye; both fixed, all three witnesses GREEN |
 | `20261002.002619` | [second quiet lap -- the same empty reading, re-measured](20261002/20261002-002619_second-quiet-lap-same-empty-reading.kyri) | Patchouli: fresh fetch, HEAD unchanged, %807/%765 still OPEN, no booked row to override |
