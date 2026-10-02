@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.152347` | [The waymark speaks the names](20261002/20261002-152347_the-waymark-speaks-the-names.kyri) | AHOY's readable line names the pointer and the lasting rewrite |
 | `20261002.151933` | [The shorthand is seated](20261002/20261002-151933_the-shorthand-is-seated.kyri) | lexicon door says the short name is seated |
 | `20261002.151700` | [The twentieth unrostered IronBeetle witness](20261002/20261002-151700_ep009-roster-lap.kyri) | ironbeetle_ep009_census claimed, rostered, proven three ways |
 | `20261002.151654` | [Grass checks the queue, no safe next](20261002/20261002-151654_grass-queue-check-no-safe-next.kyri) | queue reviewed; two TAME candidates too large to start blind, check-in named |

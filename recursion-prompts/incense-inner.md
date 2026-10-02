@@ -224,3 +224,5 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 **Lap `20261002.151409` spoke plainly in the tool comments that guard the front door.** Seven headers drop the old specialist phrase. The README is the page a person meets first. `foundations/` is the room a reader meets after it. The compiler is the tool the rest of the tree stands on. The promise in each comment is unchanged. The front-door numbers still match the tree.
 
 **Lap `20261002.151933` seated the shorthand on the lexicon door.** The row for Lila-first, return-first was already seated. The door line still said scheduled. It now says seated.
+
+**Lap `20261002.152347` named the AHOY chapter in the living words.** The seated slug stays. The readable line now says the rewrite was written to last, and the old foundation is a pointer.
