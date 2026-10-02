@@ -59,9 +59,3 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
-claim pheromone-receipt-offer-shape-pedestal
-seat pheromone
-stamp 20261002.143725
-epoch 1790966245
-paths src/shape/shape-receipt-offer.glow tools/m/mantra_glow_tend_limb5_witness.rish src/shape/README.md
-what Write src/shape/shape-receipt-offer.glow, fresh from ReceiptOfferFact's 15 published fields in mantra/src/receipt_offer.rye, in the same placard form as shape-consent-grant.glow, per the pheromone-inner.md ruling 20261002.142242

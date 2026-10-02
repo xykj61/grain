@@ -8570,6 +8570,18 @@ path tools/m/mantra_glow_tend_limb5_witness.rish
 tier lap
 seated 20261002.004500
 
+# mantra_glow_tend_limb7 -- the seventh Mantra structure pedestal in src/shape/.
+# shape-receipt-offer.glow names ReceiptOfferFact's fifteen fields (schema - receipt_id -
+# holder_id - recipient_id - product_id - product_digest - purpose - value_amount - value_unit -
+# value_basis - return_kind - issued_at - expires_at - signer_id - signature), read from
+# mantra/src/receipt_offer.rye via tools/fixtures/r/rye_struct_fields_scan.sh, the same discipline
+# limb5 above proves for the two consent pedestals. Fifteen SITS AT glow/rune_shape.rye's
+# max_fields ceiling rather than under it; the witness asserts that constant stayed at 15.
+guard mantra_glow_tend_limb7
+path tools/m/mantra_glow_tend_limb7_witness.rish
+tier lap
+seated 20261002.144821
+
 # date_dialect -- an unrostered chapter witness, repaired before rostering (REDS `20261002.000949`).
 # It pinned exact library counts (law_library_dated=17, compact=17) from the day it was written,
 # while the scan it calls, tools/fixtures/d/date_dialect_scan.sh, already carries the floor fix for

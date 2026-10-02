@@ -67,6 +67,24 @@ Rostered into `construction/standing-equipment.kyri`, GREEN on metal both as the
 
 **Ruled `20261002.142242`.** `ReceiptOfferFact` stands one field to a line, so the field reader can see all fifteen. Lowering began on Patchouli's door. `orphaned-revoke` already names a `Reason` member, and the two consent facts stand in `mantra/src/consent_replay.rye`. This lane leaves `mantra/` and `tally/` closed. The next fruit is one pedestal, `src/shape/shape-receipt-offer.glow`, written fresh from `ReceiptOfferFact`'s field count in `mantra/src/receipt_offer.rye`, in the same form as `src/shape/shape-consent-grant.glow`. `rune_shape.max_fields` stays 15. The untracked `.lap` desk stays untracked. A new rune returns to Incense.
 
+**This fruit closed `20261002.144821`.** `src/shape/shape-receipt-offer.glow` names `ReceiptOfferFact`'s
+fifteen fields -- schema, receipt_id, holder_id, recipient_id, product_id, product_digest, purpose,
+value_amount, value_unit, value_basis, return_kind, issued_at, expires_at, signer_id, signature --
+read in order from the struct in `mantra/src/receipt_offer.rye`, the same form as
+`shape-consent-grant.glow`. Fifteen sits AT `rune_shape.max_fields`'s own ceiling rather than under
+it, the widest fact this room has named. `rye_struct_fields_scan.sh` assumes one field per line, and
+`ReceiptOfferFact` first stood several to a line, so this lane's own first pass read the placard's
+number against the struct by hand and against `offer_fact_fields`'s comptime assert alone -- then
+Keaton's own commit (`6061691fbe`, co-authored with Cursor) filed the struct one field to a line,
+touching no field, no type, and no order, so the scan could see all fifteen. On that reformat,
+`tools/m/mantra_glow_tend_limb7_witness.rish` lands the same way limb5 proves the two consent
+pedestals -- the placard's declared count and field order read straight out of the rye, the
+comptime assert checked too, the desk lowered, built, and run. Rostered into
+`construction/standing-equipment.kyri`. `src/shape/README.md` gained the three rows this lap found
+missing while it was open -- consent grant, consent revoke, and this one -- since none of the three
+stood in the table before. `mantra/src/receipt_offer.rye`'s one whitespace-only reformat aside,
+`tally/` and `glow/rune_shape.rye` are untouched. A new rune returns to Incense.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

@@ -16,6 +16,7 @@
 | `20261002.144743` | [the-first-hour grades A, fruit closed](20261002/20261002-144743_the-first-hour-grades-a.kyri) | docs-geode/tutorials/the-first-hour.md Door-graded, composite 91/A, fruit closed |
 | `20261002.144620` | [The first hour stands](20261002/20261002-144620_the-first-hour-stands.kyri) | first hour grades A at Door, composite 91 |
 | `20261002.144246` | [eval_expr splits at its own seams](20261002/20261002-144246_eval-expr-single-stranded-split.kyri) | rishi main.rye, 242 lines to 8 helpers, 36/36 tests clean |
+| `20261002.144200` | [The seventh Mantra structure pedestal](20261002/20261002-144200_receipt-offer-shape-pedestal.kyri) | pheromone pedestals ReceiptOfferFact's fifteen fields, at rune_shape.max_fields's own ceiling |
 | `20261002.144025` | [The offer fact is readable](20261002/20261002-144025_the-offer-fact-is-readable.kyri) | the field reader sees all fifteen offer fields |
 | `20261002.144003` | [rosters ironbeetle_ep005](20261002/20261002-144003_rosters-ironbeetle-ep005.kyri) | Confirmed mantra/tally's %765 queue empty by scan, claimed and rostered ep005 census witness |
 | `20261002.143200` | [Claim-as-override lands the ep004 roster row](20261002/20261002-143200_claim-override-ironbeetle-ep004-roster.kyri) | petrichor's own lane idle; claimed and rostered ironbeetle_ep004_census from the fleet's shared board |

@@ -1,7 +1,7 @@
 # shape -- Structures
 
 **Language:** EN  
-**Last updated:** `20260910.152558` (the tilak pedestal tied to the engine it describes -- the first of this room's thirteen literal-checked desks to be compared against its own source)  
+**Last updated:** `20261002.143937` (three Mantra consent/receipt pedestals added to the table they were missing from)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth + Spool Cloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -52,6 +52,9 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-comlink-link-frame-nesting.glow`](shape-comlink-link-frame-nesting.glow) | Comlink `max_frame=554` -- the relation `container >= header + payload`, across the two layers that nest, one derived and one spelled | `tools/co/comlink_nesting_witness.rish` (scan, 16 control cases, and six comptime askings on metal) |
 | [`shape-spool-cloth-name-bound.glow`](shape-spool-cloth-name-bound.glow) | Spool Cloth `max_name=48` -- a length read at BOTH call sites, with the alphabet its manifest wall removes beside it | `tools/p/pond_spool_cloth_glow_tend_witness.rish` (scan of eleven readings, 47 control cases with thirteen named readings, and both desks run on metal) |
 | [`shape-spool-cloth-catalog-capacity.glow`](shape-spool-cloth-catalog-capacity.glow) | Spool Cloth `max_large_artifacts=4` -- four seats beside the two ceiling artifacts its shared store can pay for, a guarantee derived two levels deep across two modules | `tools/p/pond_spool_cloth_glow_tend_witness.rish` (same guard; the derivation recomputed rather than copied, and the bound read where it crosses into `spool_keyed.rye`) |
+| [`shape-consent-grant.glow`](shape-consent-grant.glow) | `ConsentGrantFact` nine fields (Tend M5) | `tools/m/mantra_glow_tend_limb5_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`) |
+| [`shape-consent-revoke.glow`](shape-consent-revoke.glow) | `ConsentRevokeFact` seven fields (Tend M6) | same |
+| [`shape-receipt-offer.glow`](shape-receipt-offer.glow) | `ReceiptOfferFact` fifteen fields, at `rune_shape.max_fields`'s own ceiling (Tend M7) | `tools/m/mantra_glow_tend_limb7_witness.rish` (placard's own number read against the rye via `rye_struct_fields_scan.sh`, once the struct was filed one field to a line so the scan could see it) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

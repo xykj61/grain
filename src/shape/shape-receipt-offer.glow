@@ -1,0 +1,26 @@
+::  name       receipt offer field count
+::  shape      fields - int (@u32)
+::  invariant  a ReceiptOfferFact carries exactly fifteen fields (schema -
+::             receipt_id - holder_id - recipient_id - product_id -
+::             product_digest - purpose - value_amount - value_unit -
+::             value_basis - return_kind - issued_at - expires_at -
+::             signer_id - signature)
+::  example    15
+::  readers    Mantra - Glow Tend - Sur museum - Patchouli weave
+::  nib        equinox-e209-mantra-tend-v0
+::
+::  Equinox e209 - Mantra M7 -- seventh Mantra structure pedestal in src/shape/.
+::  Names ReceiptOfferFact's field count from mantra/src/receipt_offer.rye,
+::  the fact one admitted receipt offer publishes: who holds it, who receives
+::  it, what it is for, what it is worth, when it was issued, when it expires,
+::  and who signed it. Pedestal only; Rye still owns fact_refusal, fact_eql,
+::  and the admission Log.
+::
+::  Fifteen SITS AT rune_shape.max_fields (15), rather than under it -- this is
+::  the widest fact this room has named. A sixteenth field here would refuse
+::  at the rune's own ceiling; `offer_fact_fields`'s own comptime assert in
+::  mantra/src/receipt_offer.rye already stops the Rye from compiling if its
+::  struct and its stated count ever disagree.
++$  receipt-offer-field-count-shape
+  $:  fields=@u32
+  ==
