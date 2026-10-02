@@ -324,11 +324,11 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8208ea8364` -- parent of the fleet ashore check, read before the commit (rule 5).
+**Git nib:** `580f03aa3f` -- parent of the Lila working-tree pass, read before the commit (rule 5).
 
 ### Incense -- product captain
 
-**Priority:** VERY HIGH Lindy; VERY HIGH crux.
+**Priority:** VERY HIGH Long Return; VERY HIGH Lila.
 
 1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
 2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation; the `20260913` review accepts this boundary.
@@ -340,7 +340,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ### Patchouli -- Mantra and Tally spine
 
-**Priority:** VERY HIGH Lindy; VERY HIGH crux.
+**Priority:** VERY HIGH Long Return; VERY HIGH Lila.
 
 1. Define bounded offer, consent, use, value, expiration, and correction facts from existing value forms.
 2. Append and replay them deterministically through Mantra.
@@ -354,7 +354,7 @@ Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another sh
 
 ### Copal -- Amphora receipt and portable bundle
 
-**Priority:** VERY HIGH Lindy; HIGH crux.
+**Priority:** VERY HIGH Long Return; HIGH Lila.
 
 **COPAL -- THE ALMANAC BREACH CHAPTER WITNESS LANDED.** Account shelved whole at
 [`archive/20260924-105500_itinerary-copal-almanac-account.md`](archive/20260924-105500_itinerary-copal-almanac-account.md).
@@ -377,7 +377,7 @@ Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another sh
 
 ### Grass -- reverse-reading steward
 
-**Priority:** VERY HIGH Lindy; VERY HIGH crux.
+**Priority:** VERY HIGH Long Return; VERY HIGH Lila.
 
 1. Walk foundations, active-designing, and session logs backward to find the oldest unresolved premise beneath the newest plans; navigate newest-to-oldest, then judge evidence oldest-to-newest.
 2. Ask of each recovered matter whether it should be **revived, molted, breached, archived, standfasted, yondered, or prepared for a Mitra shed**, and record exactly one disposition with its evidence.
@@ -387,7 +387,7 @@ Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another sh
 
 ### Petrichor -- Bhakta product path
 
-**Priority:** VERY HIGH Lindy; HIGH crux.
+**Priority:** VERY HIGH Long Return; HIGH Lila.
 
 The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20260922-143256_anyone-under-our-sun.md). It stays a draft until a fresh reader runs its path; the tutorial shelf keeps its existing names.
 
@@ -399,7 +399,7 @@ The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20
 
 ### Bakery -- Rishi fusion-build spine
 
-**Priority:** #1 FLEET PRIORITY; VERY HIGH Lindy; VERY HIGH crux.
+**Priority:** #1 FLEET PRIORITY; VERY HIGH Long Return; VERY HIGH Lila.
 
 1. Instrument Rishi's discovery, dependency closure, Rye/Zig compilation, proof execution, and receipt writing; measure where repeated work actually lives.
 2. Land content-keyed compilation first: identical declared inputs may reuse a binary, while every owed proof still executes and every changed source, flag, overlay, compiler, executable bit, or toolchain pin forces a miss.

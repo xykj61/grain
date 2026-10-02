@@ -4,8 +4,8 @@
 **Stamp:** `20261002.111449` (EDT)
 **Voice:** Kyri
 **Style:** Bhakta, with Radiant warmth
-**Status:** Scheduled -- written, not run
-**Room:** the plan lives here; the foundation and the rule are seated only when this prompt runs
+**Status:** Working-tree pass run `20261002.125743`. The deep debride waits for the sentence **run the deep debride**.
+**Room:** the plan lives here; the foundation and the rule are seated; this file stays until the deep debride moves it to yonder
 **Git nib:** read `git rev-parse --short=10 HEAD` at the moment of the run, and write that parent into `construction/ITINERARY.md` before the commit
 **Where this sits:** home is [`../README.md`](../README.md). The foundations door is [`../foundations/README.md`](../foundations/README.md). The short name is in [`../context/LEXICON.md`](../context/LEXICON.md), spoken in [`../context/KYRI.md`](../context/KYRI.md), and listed among the kin in [`../context/SPELLBOOK.md`](../context/SPELLBOOK.md).
 

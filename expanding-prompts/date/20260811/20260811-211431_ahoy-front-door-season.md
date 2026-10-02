@@ -44,7 +44,7 @@ Read against that order, the rungs below already sort correctly: **AHOY0 (the fr
 
 ## The season, as AHOY rungs
 
-Power-of-two calendar: a season is four equinoxes; each rung below is a journey's worth of work, landing one keystone at a time, witness before narrative — **each division leading with its own the long return's Lila**.
+Power-of-two calendar: a season is four equinoxes; each rung below is a journey's worth of work, landing one keystone at a time, witness before narrative — **each division leading with its own long return, and the Lila inside it**.
 
 - **AHOY0 — The Front Door** *(opens with this expansion)*: the Lindy foundation, the logo, the two standing seats, and the root README rewrite. This is the standalone lap the seed asked to run now.
 - **AHOY1 — The Weave**: molt-with-double-seat the referenced foundations and active-designing hubs (The Grain and the Crossing, Follow Our Compass, The Referential Namespace, the SLC spine), expanding and repointing cross-references wiki-style; grow the [`karpathy`](../gratitude/karpathy/README.md) wiki-linting gratitude and run [`tools/living_docs_lint.rish`](../tools/living_docs_lint.rish) as the fascia gate; name more gratitude inspirations with links; refresh each touched doc's `Last updated` chronologically.

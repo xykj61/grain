@@ -63,6 +63,10 @@ Full table: [`context/LEXICON.md`](../context/LEXICON.md), the Cursor loop secti
 | [`../manual/grain-os/get-started.md`](../manual/grain-os/get-started.md) | Language + device doors |
 | Markup pipeline silo | Scribble -> Brix -> Kyri -> Mantra -> Seva |
 
+## How the compass chooses
+
+The rose says where to look. [Lila and the Long Return](../foundations/20261002-111449_lila-and-the-long-return.md) says what to do next. Answer the return first, then the one glad keystone. Reds come before either. Appended `20261002.125743`.
+
 ## What this page refuses
 
 - Archiving foundations into `archive/` for token budget.

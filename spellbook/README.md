@@ -452,7 +452,7 @@ sh tools/f/fleet_watch_opencode.sh
 - **loom** -- where a lantern that fires twice becomes a standing pattern (`.claude/rules/reds-first.md`).
 - **grain** -- the whole: the personal OS this all serves.
 - **compass** -- the return habit; **council** -- the odd-quorum topology of named galaxies (`context/council-names.kyri`).
-- **Lila-first, return-first** -- the short name of the order. The return is the ground that lasts, and Lila is the glad keystone on it. Defined in [`../context/LEXICON.md`](../context/LEXICON.md), written in [`../expanding-prompts/20261002-111449_lila-and-the-long-return.md`](../expanding-prompts/20261002-111449_lila-and-the-long-return.md), spoken in [`../context/KYRI.md`](../context/KYRI.md). The rule file that holds the order today is [`../.claude/rules/lila-and-the-long-return.md`](../.claude/rules/lila-and-the-long-return.md).
+- **Lila-first, return-first** -- the short name of the order. The return is the ground that lasts, and Lila is the glad keystone on it. Defined in [`../context/LEXICON.md`](../context/LEXICON.md), seated in [`../foundations/20261002-111449_lila-and-the-long-return.md`](../foundations/20261002-111449_lila-and-the-long-return.md), spoken in [`../context/KYRI.md`](../context/KYRI.md). The rule is [`../.claude/rules/lila-and-the-long-return.md`](../.claude/rules/lila-and-the-long-return.md).
 
 ## Discipline the spellbook keeps
 

@@ -87,6 +87,10 @@ If the card disagrees with a seated brief, **the brief and green witnesses win**
 - Meet **Radiant** on the day-one rose (`docs/COMPASS.md` Voice step - `context/RADIANT_STYLE.md`) -- how dated pages speak; lint and pass ledger keep the surface honest.
 - Loop words **kg** - **check-in** - **checkpoint** - **bookmark** - **send** - **remember** - **align** live in [`context/LEXICON.md`](../context/LEXICON.md); closing lines always name `kg` or a typed `check in (...)` per collaboration rhythm.
 
+## How the compass chooses
+
+The rose says where to look. The order says what to do next. That order is [Lila and the Long Return](20261002-111449_lila-and-the-long-return.md). Answer the return first: the work that will still be true years on. Then answer Lila: the one glad keystone on that ground, the hardest move you can still finish. Reds come before either. A wrong thing is repaired before new lasting work begins. Appended `20261002.125743`.
+
 ## Kin in the weave
 
 The compass is one of two canonical hubs every leaf foundation routes through; naming its neighbours keeps the tree wiki-connected rather than star-shaped.
@@ -94,7 +98,7 @@ The compass is one of two canonical hubs every leaf foundation routes through; n
 - **The front door** -- the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit; the `**Front door:**` key at the head of this page declares that promise so [`../tools/f/front_door_claim_witness.rish`](../tools/f/front_door_claim_witness.rish) can hold it.
 - **The room** -- the [`foundations/README.md`](README.md) indexes the *why*; this brief is its navigation habit.
 - **The sibling hub** -- [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md) defines the strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
-- **The order of the read** -- the newest-first walk now follows [**Lila and the Long Return**](../.claude/rules/lila-and-the-long-return.md): among what direction offers, take the longest-lived work first, and within a tier the *crux* -- the hardest solvable problem. Grounded in [the Long Return](20260811-211431_the-lindy-effect-and-the-long-return.md).
+- **The order of the read** -- the newest-first walk now follows [**Lila and the Long Return**](20261002-111449_lila-and-the-long-return.md): among what direction offers, take the longest-lived work first, and within that work the glad keystone. The older path remains a [pointer](20260811-211431_the-lindy-effect-and-the-long-return.md).
 
 ---
 

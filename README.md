@@ -390,9 +390,9 @@ The reasons beneath them live in [`foundations/`](foundations/README.md), among 
 and [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md). Two of them
 say how to read the rest: [follow our compass](foundations/20260826-024943_follow-our-compass.md) is
 the walk back to direction when it frays, and
-[the long return](foundations/20260811-211431_the-lindy-effect-and-the-long-return.md) is why a
-front door earns more care than any other page here. The short name scheduled for that order is
-[Lila-first, return-first](expanding-prompts/20261002-111449_lila-and-the-long-return.md).
+[Lila and the Long Return](foundations/20261002-111449_lila-and-the-long-return.md) is why a
+front door earns more care than any other page here. The short name is
+[Lila-first, return-first](foundations/20261002-111449_lila-and-the-long-return.md).
 
 **Standing on shoulders.** Grain is built in gratitude to the makers who came before. We study
 their ideas in a clean room and write our own code beneath our own names. We owe the

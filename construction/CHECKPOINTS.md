@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261002.125743` -- walk-back nib `580f03aa3f`.** Working-tree pass of Lila and the Long Return. The seven worker trees were clean, clocked out, and level with `xy` before this commit. The history rewrite waits for the sentence **run the deep debride**. This nib is the walk-back.
+
 **Checkpoint `20261002.011701` -- walk-back nib `a706c6b02d`.** Shelve Diffuser's live "four pairs
 ride as one string" account whole from `construction/ITINERARY.md` into
 `construction/archive/date/20261002/20261002-011701_itinerary-diffuser-four-pairs-account.md`, 369
