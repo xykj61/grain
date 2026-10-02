@@ -10,6 +10,7 @@
 | `20261001.234414` | [aether reading, the ladder is quiet on purpose](20261001/20261001-234414_aether-reading-the-ladder-is-quiet-on-purpose.kyri) | diffuser's fruit ladder closed A/94; awaits Keaton's word for next fruit |
 | `20261001.234152` | [network still unreachable, gate held](20261001/20261001-234152_network-still-unreachable-gate-held.kyri) | fresh lap, sentinel cleared then re-set; xy still unreachable, no new petrichor work |
 | `20261001.233912` | [eighth empty queue, network flapped twice](20261001/20261001-233912_eighth-empty-queue-network-flapped-twice.kyri) | network back up a third time; eight readings running, flagged for Keaton |
+| `20261001.233742` | [the mantra-commit header molts to a stamp](20261001/20261001-233742_commit-header-molts-to-a-stamp.kyri) | %765's second header family, mantra-commit-v2 to a chronological header, GREEN |
 | `20261001.233655` | [petrichor gate set, no repeat sweep](20261001/20261001-233655_petrichor-gate-set-no-repeat-sweep.kyri) | confirmed prior fleet-wide reading still holds; .loop-gates-only set |
 | `20261001.233451` | [seventh-empty-queue-reading](20261001/20261001-233451_seventh-empty-queue-reading.kyri) | network back down; gate held, no fruit yet |
 | `20261001.233300` | [network restored, gate confirmed](20261001/20261001-233300_network-restored-gate-confirmed.kyri) | fetch succeeds, HEAD matches xy/main; gate stands, GATES-ONLY set |
