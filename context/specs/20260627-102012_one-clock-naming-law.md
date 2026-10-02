@@ -10,6 +10,8 @@ Radiant pass `20260725.035645`
 
 Radiant pass `20260727.224156` -- path re-point only; claims unchanged
 
+The filename shape speaks **string**, `20261002.155352`. The pattern is `YYYYMMDD-HHMMSS_short-string.md`.
+
 ---
 
 ## What We Are Solving
@@ -59,7 +61,7 @@ Not every file is a dated event. Two kinds live in each folder, and the scheme h
 
 **Living documents** are revised in place and meant to hold steady -- the foundation, the standing strategy, the roadmap, the lexicon. These carry no stamp at all. They take plain, spoken names: `README.md` for the foundation and its reverse-chronological index, `STRATEGY.md` for the standing charter, `ROADMAP.md`, `LEXICON.md`. This alone retires the `999` collision, since there is no more `999` -- there is a `README.md` in each folder, which is exactly the file the forge renders when you arrive.
 
-**Dated artifacts** are the append-only stream -- design briefs, research notes, expanded prompts, session logs, strengthening passes. These take the stamp: `YYYYMMDD-HHMMSS_short-slug.md`, ascending, unique, self-dating.
+**Dated artifacts** are the append-only stream -- design briefs, research notes, expanded prompts, session logs, strengthening passes. These take the stamp: `YYYYMMDD-HHMMSS_short-string.md`, ascending, unique, self-dating.
 
 The rule of thumb is one axis per level. The **folder** says *what kind of thing this is*. The **stamp** says *when it was written*. If you ever feel the urge to group by kind *within* a folder, that is the folder asking to become two folders.
 

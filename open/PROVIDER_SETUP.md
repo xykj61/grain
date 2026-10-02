@@ -78,10 +78,10 @@ every other wall to. Together AI's own keys carry no fixed public prefix the way
 does, so a Together key would not match that pattern today; the placeholder above (three literal
 dots) stays honestly short of any pattern regardless.
 
-**Look up exact model slugs rather than typing a guess.** Together AI model identifiers follow the
-shape `vendor/ModelName`, and the exact slug for a given model changes as providers version their
+**Look up exact model strings rather than typing a guess.** Together AI model identifiers follow the
+shape `vendor/ModelName`, and the exact string for a given model changes as providers version their
 own releases -- `deepseek-ai/DeepSeek-V4-Pro-0813` carries its own release date in its own name.
-Ask the API directly rather than trusting a slug written down somewhere else:
+Ask the API directly rather than trusting a string written down somewhere else:
 
 ```sh
 curl -s https://api.together.ai/v1/models -H "Authorization: Bearer $TOGETHER_API_KEY" \
@@ -104,14 +104,14 @@ this round, since it needs a non-Nix host to try honestly.
 ## Part 4: similar, but a little different -- the other providers
 
 Every provider in this room follows the same three-step shape -- sign up, get a key, call an
-endpoint -- and each one changes exactly three things: the base URL, the model-slug format, and
+endpoint -- and each one changes exactly three things: the base URL, the model-string format, and
 the environment-variable name. Once one provider is set up, reading the other three takes minutes
 rather than a fresh start.
 
-| Provider | Base URL | Env var | Model slug shape |
+| Provider | Base URL | Env var | Model string shape |
 |---|---|---|---|
 | **Together AI** (this page's demo) | `https://api.together.ai/v1` | `TOGETHER_API_KEY` | `vendor/ModelName`, e.g. `deepseek-ai/DeepSeek-V4-Pro-0813` |
-| **OpenRouter** | `https://openrouter.ai/api/v1` | `OPENROUTER_API_KEY` | `author/slug`, e.g. `openai/gpt-4o` |
+| **OpenRouter** | `https://openrouter.ai/api/v1` | `OPENROUTER_API_KEY` | `author/string`, e.g. `openai/gpt-4o` |
 | **Hugging Face, Inference Providers** | routes through `huggingface.co`'s own router -- see [`PROVIDER_COMPARISON.md`](PROVIDER_COMPARISON.md) | `HF_TOKEN` | `org/model-name`, matching the model's own Hub repository name |
 | **Hugging Face, Inference Endpoints** | one URL per deployed endpoint, chosen at deploy time | `HF_TOKEN` | not applicable -- one endpoint serves one deployed model |
 
@@ -145,8 +145,8 @@ Every claim above was checked against a live source before landing on this page,
 [`docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md)'s own discipline --
 assert it, don't assume it. The same habit applies to whatever a reader does next: run the `curl`
 call in Part 3 before writing a single line of integration code, and re-run the model-lookup call
-before trusting any slug this page or any other page names, since a provider's own catalog is the
-one place a slug is guaranteed current.
+before trusting any string this page or any other page names, since a provider's own catalog is the
+one place a string is guaranteed current.
 
 **Nothing on this page is wired into this tree.** No fleet-loop script calls Together AI, or any
 other provider named here, today. This page is exactly what

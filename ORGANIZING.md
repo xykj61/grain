@@ -114,7 +114,7 @@ The placements for any given chapter are recorded in `session-logs/` -- what mov
 
 Every dated artifact names itself `YYYYMMDD-HHMMSS_short-sprig.md`. Later is always larger. Living documents (`README.md`, `ROADMAP.md`, `TASKS.md`, the discipline files) carry **Last updated** and evolve in place. Full law: `context/specs/20260627-102012_one-clock-naming-law.md`.
 
-This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_sprig` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision -- the `session-logs/date/20260619/` pattern every fold matches, never slugged or counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
+This one stamp is Glow's **warm-aura date atom**, and it renders exactly three ways: a version string `YYYYMMDD.HHMMSS` (dot), a filename stamp `YYYYMMDD-HHMMSS_sprig` (hyphen), and a **dated folder bare `YYYYMMDD`** (day precision -- the `session-logs/date/20260619/` pattern every fold matches, never one with a name after the day, and never counted). Naming and TAME framing: `context/specs/20260714-024800_warm-aura-date-atom-naming.md`.
 
 ---
 

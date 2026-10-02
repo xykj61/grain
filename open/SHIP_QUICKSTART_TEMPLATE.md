@@ -28,7 +28,7 @@ this fleet (or a stranger reading the public seed) can run it fresh.
    ```sh
    curl -X POST "<provider base URL>/chat/completions" \
      -H "Authorization: Bearer $PROVIDER_API_KEY" -H "Content-Type: application/json" \
-     -d '{"model":"<model-slug>","messages":[{"role":"user","content":"hi"}]}'
+     -d '{"model":"<model-string>","messages":[{"role":"user","content":"hi"}]}'
    ```
    A `choices` array means the key and the path both work.
 4. **Declare CLI tooling in your host's own configuration, never in an ad-hoc install, once
@@ -55,7 +55,7 @@ this fleet (or a stranger reading the public seed) can run it fresh.
 
 ## What stays specific, and has to be filled in
 
-- The provider's own base URL, key-page location, and model-slug format.
+- The provider's own base URL, key-page location, and model-string format.
 - The exact model chosen, and why -- see [`HARNESS_SETUP.md`](HARNESS_SETUP.md) Part 5 for one
   worked reasoning (a coding-benchmark leader, MIT-licensed).
 - The harness chosen, and its own config-file paths and credential schema.

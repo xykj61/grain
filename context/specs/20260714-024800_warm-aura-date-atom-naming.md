@@ -1,7 +1,7 @@
 # The Warm-Aura Date Atom -- One Stamp Format, Everywhere, TAME-Guided
 
 **Language:** EN
-**Version:** `20260714.024800` (Pacific)
+**Version:** `20261002.155352` (Pacific) -- the filename shape says string; the stamp anyone already wrote stays
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- names the canonical date-atom format the whole tree already reaches for, ties it to the warm-aura versioning design, and settles how dated folders are named. Extends `20260627-102012_one-clock-naming-law.md`; does not supersede it.
 **Room:** checkable -- it names the stamp the tree already writes, and chrono_version_scan reads it
@@ -12,7 +12,7 @@ Radiant pass `20260725.040728`
 
 ## What This Names
 
-The tree already keeps one clock (`20260627-102012_one-clock-naming-law.md`): every dated artifact is `YYYYMMDD-HHMMSS_slug`, every version string is `YYYYMMDD.HHMMSS`, later is always larger. This document does one small, unifying thing: it gives that stamp its **Glow name** -- the **warm-aura date atom** -- and settles the one place the one-clock law left implicit, **how dated *folders* are named**, so the archiving/reviving sweep has a single rule to align to.
+The tree already keeps one clock (`20260627-102012_one-clock-naming-law.md`): every dated artifact is `YYYYMMDD-HHMMSS_string`, every version string is `YYYYMMDD.HHMMSS`, later is always larger. This document does one small, unifying thing: it gives that stamp its **Glow name** -- the **warm-aura date atom** -- and settles the one place the one-clock law left implicit, **how dated *folders* are named**, so the archiving/reviving sweep has a single rule to align to.
 
 Nothing here changes the stamp anyone already writes. It names what we were already doing, so a reader meets the reason.
 
@@ -31,10 +31,10 @@ The same warm-aura date atom renders three ways, by context, and only these thre
 | Rendering | Form | Where | Example |
 |---|---|---|---|
 | **Version string** | `YYYYMMDD.HHMMSS` (dot) | document headers, `.brix` versions, `stamp` fields, commit-body stamps | `20260714.024800` |
-| **Filename stamp** | `YYYYMMDD-HHMMSS_slug` (hyphen) | every dated artifact's filename | `20260714-024800_warm-aura-date-atom-naming.md` |
+| **Filename stamp** | `YYYYMMDD-HHMMSS_string` (hyphen) | every dated artifact's filename | `20260714-024800_warm-aura-date-atom-naming.md` |
 | **Dated folder** | `YYYYMMDD` (day precision) | archive/fold folders that group a closed day | `session-logs/archive/20260714/` |
 
-The dot belongs to the version string (a colon has no place in a filename; the dot stays for the version). The hyphen belongs to the filename. The **folder is the same atom truncated to day precision** -- this is the one thing the one-clock law left implicit and this spec makes explicit: **a dated folder is `YYYYMMDD`, nothing else** -- no slug, no prefix, no count. `session-logs/archive/20260619/` is the model the whole tree matches.
+The dot belongs to the version string (a colon has no place in a filename; the dot stays for the version). The hyphen belongs to the filename. The **folder is the same atom truncated to day precision** -- this is the one thing the one-clock law left implicit and this spec makes explicit: **a dated folder is `YYYYMMDD`, nothing else** -- no name after the day, no prefix, no count. `session-logs/archive/20260619/` is the model the whole tree matches.
 
 ## TAME-Guided, Because a Stamp Is an Asserted Invariant
 
@@ -52,14 +52,14 @@ The archive process was already settled ([`../../work-in-progress/20260713-21580
 The sweep, then, is a **naming-alignment** pass, not a file-move pass:
 
 1. Any dated folder that already exists uses bare `YYYYMMDD` (session-logs `archive/` is the reference; confirm the rest match or note the exception).
-2. Any *new* fold a directory makes on a closed day creates a `YYYYMMDD` folder, never a slugged or counted one.
+2. Any *new* fold a directory makes on a closed day creates a `YYYYMMDD` folder, never one with a name after the day, and never a counted one.
 3. Reviving keeps its own naming discipline unchanged (`active-reviving/`): a revival is born with its Glow name and its own stamp; the elder keeps its name and stamp. Nothing about reviving conflicts with this atom -- it *uses* it.
 
 ## Sweep Status -- Where We Stand (`20260714.044428`)
 
 The date-format sweep is **not an open pile of work; it is a confirmed state with two compliant conventions**, named here so no reader has to wonder again:
 
-- **Dated artifacts** (session logs, dated specs, design briefs, prompts) carry the warm-aura stamp in filename (`YYYYMMDD-HHMMSS_slug`) and header (`stamp`/`Version YYYYMMDD.HHMMSS`). This has been the one-clock law for weeks; compliance is the norm, and `chrono_version_scan` is the existing witness.
+- **Dated artifacts** (session logs, dated specs, design briefs, prompts) carry the warm-aura stamp in filename (`YYYYMMDD-HHMMSS_string`) and header (`stamp`/`Version YYYYMMDD.HHMMSS`). This has been the one-clock law for weeks; compliance is the norm, and `chrono_version_scan` is the existing witness.
 - **Living documents** (`README.md`, `ROADMAP.md`, `TASKS.md`, `LEXICON.md`, the discipline files) carry **`Last updated: YYYY-MM-DD` prose**, not a stamp -- this is the one-clock law's own deliberate two-tier rule (living docs evolve in place; only dated artifacts take the stamp). An ISO `Last updated` line is therefore **correct, not a miss** -- it is not the same field as a dated artifact's stamp.
 - **Living-doc `Version` stamps** (the few living guides that carry a `Version`, like `SOURCE.md`) use the dot form `YYYYMMDD.HHMMSS`. `SOURCE.md` was the one such stamp left stale after an on-touch edit; it is now bumped to `20260714.044428`. No other living-doc `Version` drift is known.
 - **Dated folders** are bare `YYYYMMDD` (confirmed on metal: `session-logs/archive/` is the reference; `work-in-progress/archive/` holds flat dated files -- both valid).

@@ -38,9 +38,9 @@ own discipline, before treating either as clear for commercial hosting.
 ## Part 2: what a router does and does not guarantee
 
 **OpenRouter has no literal country filter.** Its `provider` request field takes `only` (an
-allowlist of provider slugs), `order` (a priority list), and `allow_fallbacks` (set `false` to
+allowlist of provider strings), `order` (a priority list), and `allow_fallbacks` (set `false` to
 refuse every provider outside that list) -- but nothing in that shape accepts `"country": "US"`
-directly. Enforcing US-only through OpenRouter means naming specific provider slugs you have
+directly. Enforcing US-only through OpenRouter means naming specific provider strings you have
 already verified are US-incorporated and US-datacenter, then locking `allow_fallbacks` to
 `false` so a request never silently reaches an unverified provider when the named ones are busy.
 

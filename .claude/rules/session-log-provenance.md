@@ -12,7 +12,7 @@ The required `model` field names a verified active model identity. When the runt
 
 Use `configured_model`, `configured_reasoning`, `configured_service_tier`, and `configured_service_name` only for settings supported by named evidence. Add `configured_status` and `evidence` so a reader can tell a configured default from runtime telemetry. A clone's `GLOW_PROFILE.kyri`, a tracked product settings file, or a user-confirmed host config may prove configuration; each remains weaker than active-runtime evidence.
 
-Keep identifiers in their own fields. For OpenAI Codex, `gpt-5.6-sol` is the user-selected default model slug (seated `20260912`), `ultra` is a Codex reasoning setting, and `priority` is the service-tier id whose user-facing name is Fast. For Claude Code, `.claude/settings.json` proves the FLEET DEFAULT `claude-sonnet-5` at `medium`, read `20260917`; it proves configuration alone rather than a running session's use of either value, and the effort a lap runs at depends on its launch path -- `tools/f/fleet_lap.sh` execs `--effort max` inside the enclosure while `tools/f/fleet-loop.sh` execs `--effort medium` bare, which this pier runs.
+Keep identifiers in their own fields. For OpenAI Codex, `gpt-5.6-sol` is the user-selected default model string (seated `20260912`), `ultra` is a Codex reasoning setting, and `priority` is the service-tier id whose user-facing name is Fast. For Claude Code, `.claude/settings.json` proves the FLEET DEFAULT `claude-sonnet-5` at `medium`, read `20260917`; it proves configuration alone rather than a running session's use of either value, and the effort a lap runs at depends on its launch path -- `tools/f/fleet_lap.sh` execs `--effort max` inside the enclosure while `tools/f/fleet-loop.sh` execs `--effort medium` bare, which this pier runs.
 
 **A CLONE MAY RUN A MODEL NO TRACKED BYTE NAMES, so `configured_model` follows the RESOLVED value rather than the tracked file** (seated `20260917.184231`). `.claude/settings.local.json` outranks `.claude/settings.json` per key, exactly as Claude Code resolves them, and `.gitignore` line 146 denies it -- so it reaches no guard reading tracked bytes and no peer's checkout carries another ship's copy. On `20260917.180039` seven of the eight ships took `claude-sonnet-5` that way on Keaton's word while all eight continued to DECLARE `claude-opus-5`, and `tools/fixtures/d/declared_model_scan.sh` read `verdict=ok` on every one of them -- right about one ship and green about all eight. Read the pair rather than the file:
 
@@ -26,7 +26,7 @@ The scan prints `resolved_model`, `resolved_effort` and `local_override` beside 
 *Codex provenance retired* `20260920.135100` on Keaton's word -- this section once recorded a
 convention for logs written from a Codex CLI session on this pier: `configured_model
 gpt-5.6-sol`, evidenced by `~/.codex/config.toml` as the personal default and the fleet loop's
-`-m "$CODEX_MODEL"` flag defaulting to the same slug, with an explicit override logged as that
+`-m "$CODEX_MODEL"` flag defaulting to the same string, with an explicit override logged as that
 lap's own configured choice. Keaton has stopped running Codex sessions himself, so the convention
 retires here rather than staying followed. **This does not touch the fleet's own Codex loop tooling**
 (`tools/f/fleet-loop-codex.sh`, `tools/f/fleet_watch_codex.sh`) -- those stay live infrastructure

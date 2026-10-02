@@ -22,7 +22,7 @@ The public seed is `6b45db6` on both public doors. Harvest answered a `cursor-ag
 
 ## How this CLI spends effort
 
-Cursor Agent CLI carries effort in the model slug. A sitting with Keaton present uses high. An unattended loop uses `cursor-grok-4.6-xhigh`. Print mode passes the prompt as an argv word, as in `cursor-agent -p --force --trust --sandbox disabled pong`.
+Cursor Agent CLI carries effort in the model string. A sitting with Keaton present uses high. An unattended loop uses `cursor-grok-4.6-xhigh`. Print mode passes the prompt as an argv word, as in `cursor-agent -p --force --trust --sandbox disabled pong`.
 
 ## Read first, in this order
 
