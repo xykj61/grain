@@ -187,24 +187,18 @@ honest remaining population narrows **439 to 437**. **YOURS:** none -- the three
 candidates named above (`glow/glow_run.rye: main`, `rye/src/main.rye: bridge_to_zig`,
 `rishi/src/main.rye: eval_expr`) remain unread by this packet.
 
-**DIFFUSER -- TWENTY ACCOUNTS, SHELVED WHOLE.** [Pointer fold](archive/date/20261001/20261001-200240_itinerary-diffuser-twenty-accounts-fold.md), `20260918`-`20261001`, nothing lost. **YOURS:** BAKERY on the two energy proposals (RAPL/`perf` access still pending) and the
-replay horizon; SKATE on the motion sampler; INCENSE on trailing-space product meaning; ANY SHIP on
-the cold run's 21 reds of 355 guards; PATCHOULI's was stale -- `snapshot_projection.rye` covers
-it, GREEN.
+**DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
 
-**DIFFUSER -- FIVE ACCOUNTS, SHELVED WHOLE.** [Fold](archive/date/20261002/20261002-005518_itinerary-diffuser-four-accounts-fold.md)
-plus [one more](archive/date/20261002/20261002-011701_itinerary-diffuser-four-pairs-account.md),
-`20261001`-`20261002`, nothing lost: the torus whitepaper, the fourth angle's crux, the quiet-pier
-scheduler, the radial-split allocator, row 11 confirmed. **YOURS:** Bakery or Incense on the
-quiet-pier scheduler.
-
-**DIFFUSER -- THE FALSIFIER RAN TWICE; THE DOCUMENTS DISAGREE.** [Shelved
-whole](archive/date/20261002/20261002-091710_itinerary-diffuser-edit-log-account.md). [Landed,
-reversed](../active-designing/date/20261002/20261002-055959_the-line-level-proxy-was-misleading.md):
-`ITINERARY.md` byte LCS reads 83.3 percent shift vs the line reading's 23.8. [Landed,
-confirmed](../active-designing/date/20261002/20261002-093040_the-claims-board-held-its-shape-either-way.md):
-`fleet-claims.kyri` byte LCS reads 94.4 vs 97.8 -- short records hide no edit in a long line.
-B/82, B/80. **YOURS:** none; `REDS.md` stays line-level only.
+**DIFFUSER -- THE RING COSTS ONE LESS THAN ARITHMETIC SAID.**
+[A ring buys verified state; a chain buys a claim](../active-designing/date/20261002/20261002-101339_a-ring-buys-verified-state-a-chain-buys-a-claim.md)
+built and ran `caravan/cycle.rye`'s ring and `caravan/relay.rye`'s chain on this host (N=3): the
+ring reads a verified grant at 2 non-origin touches, the chain carries an unverified claim at 3.
+B+/87. [The correction landed the same day](../active-designing/date/20261002/20261002-102258_the-crossover-is-arithmetic-not-yet-metal.md):
+the first essay's own falsifier line understated the ring's growth as N-2; checked against its own
+quoted transcript, the true count is N-1, moving the crossover from "past N=4" to a tie at N=4 and
+chain-cheaper from N=5. B/83. **YOURS:** none -- the metal confirmation is a three-line
+`check_shape` print-path edit inside `caravan/cycle.rye`, named for whichever lane next touches
+that module for its own reasons.
 
 **PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
 whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
@@ -320,7 +314,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8c25610e52` -- follow-up carry, read before this commit (rule 5).
+**Git nib:** `3a6ce195be` -- follow-up carry, read before this commit (rule 5).
 
 ### Incense -- product captain
 

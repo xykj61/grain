@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.102258` -- the ring's own growth formula was off by one domain, caught in the open
 **Revised:** `20261002.101339` -- a ring and a chain, measured on metal, not recalled from source
 **Revised:** `20261002.095659` -- the ledger's own falsifier ran, chunked, and closed the table
 **Revised:** `20261002.093040` -- the falsifier ran twice; the documents disagree on whether it matters
@@ -175,6 +176,17 @@ artifact rather than a scaling law: the ring's relay cost grows as N-2 while the
 stays fixed at 2, so the two cross somewhere past N=4, and that crossover is the next falsifiable
 step rather than a claim made here. Graded B+/87 at Field. No new witness, no new build; both
 binaries built under `caravan/bin/` (gitignored) from already-landed, already-GREEN modules.
+
+**Self-generated `20261002.102258`, the prior falsifier's own arithmetic checked and corrected.**
+[The crossover is arithmetic, not yet metal](../active-designing/date/20261002/20261002-102258_the-crossover-is-arithmetic-not-yet-metal.md)
+finds `caravan/cycle.rye`'s `check_shape` prints exactly three fixed domain names by position, so
+confirming the ring/chain crossover past N=3 on metal needs a real edit to that landed module's
+print path rather than a new declaration file -- a job for whichever lane next extends Caravan's
+own ring. Checking the prior essay's falsifier line against its own quoted N=3 transcript (2
+touches, not the stated N-2=1) finds the ring's growth rule understates by one domain at every N;
+the corrected rule is N-1, which moves the crossover from "past N=4" to a tie at N=4 and the chain
+reading cheaper from N=5. Graded B/83 at Field. No new witness, no new build; the correction is
+shown in the open rather than silently fixed.
 
 ## gates
 
