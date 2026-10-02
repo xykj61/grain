@@ -178,19 +178,21 @@ eval_expr split (folded `20261002.161804` to
 Full index with every path: [`archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md`](archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md).
 `functions_over_70` narrowed to 439, then 437, after mycelium's own reverse-read and the pledge/lapse split.
 
-**GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLITS AT ITS OWN HEAD-DISPATCH SEAMS.** [Account
-shelved](../active-designing/date/20261002/20261002-161804_grass-glow-run-main-split-account.md):
-the other named candidate, `main` (426 lines), is a flat head-character dispatch table exactly
-like `eval_expr`, unlike `bridge_to_zig`'s sequential-narrative shape (stays declined, same reason
-caravan and mycelium were). Split into four setup/dispatch helpers and the two big chains broken
-into ten more family helpers, each returning `!?u32` the same way `eval_expr`'s split did; every
-extracted helper raises the module's own named exit-contract words (`error.Usage`/`Unreadable`/
-`Broke`/`Declined`) rather than a bare code, translated back to the literal `return N;` lines
-`tools/fixtures/g/glow_run_contract_scan.sh` depends on finding inside `main` itself. Proven: no
-function in the file reaches 70 lines; the contract witness, the full 1,133-line desk witness, the
-347-desk derived-population witness, and every rune-family witness this dispatch reaches are all
-GREEN; TAME style bans clean; `functions_over_70` fell by one. `YOURS:` none from this file --
-`bridge_to_zig` stays declined.
+**GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLIT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-185550_itinerary-grass-glow-run-main-account.md)
+-- the flat head-dispatch split, `functions_over_70` fell by one, `20261002`, nothing lost.
+
+**GRASS -- THE SIX SIBLING FUND PAGES ALREADY GRADE B OR BETTER; THE YOURS LINE CLOSES.**
+`keeh-opening.md` graded C+/77 on a double-blank front-matter fault that merged its whole
+Stamp/Voice/Kind/Generator block into counted prose (`20261002`, landed `ab2653e6d9`). The prior
+account left open whether the six siblings -- `bozo`, `gren`, `linn`, `murr`, `shyu`, `trya` --
+carry the identical latent fault and should take the same one-line tidy pre-emptively. Graded with
+`qa_report_card.sh --setting door`: `bozo` A+/98, `gren` A/92 (28 sentences, genuinely above the
+register floor, the fault's merge still landing inside it), `linn` A+/98, `murr` A+/98, `shyu`
+A+/98, `trya` B+/88 -- every one already at or above the door's B floor. `quality-assurance.md`'s
+own rule is grade-driven rather than fault-driven ("grade, then decide" -- a frame opens only below
+B), so the law that raised keeh already answers this one: no molt frame is owed where the grade
+already clears the door. **YOURS:** none -- a latent fault below the floor stays a ratchet to sweep
+on the next hand that opens one of these six pages for another reason, never a sweep of its own.
 
 **DIFFUSER -- THREE ELDER POINTERS, FOLDED WHOLE.** [Fold account](archive/date/20261002/20261002-102258_itinerary-diffuser-three-pointer-fold.md) -- twenty accounts, five accounts, and the twice-run falsifier, `20260918`-`20261002`, nothing lost.
 
