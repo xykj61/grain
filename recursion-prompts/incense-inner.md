@@ -124,6 +124,8 @@ reads. Observation of a sailing ship that has stopped making product progress is
 
 ## next -- the loop updates this section
 
+**Current order, `20261001.200053`.** Do not launch a cold run. Bakery, Copal, and Grass stay clocked in. Pheromone, Patchouli, Petrichor, and Diffuser are clocked out by incense until a word names their next fruit. Bakery's fruit is the shared build cache.
+
 **Two archive pointers plus seven lap accounts (`20261001.004741` through `20261001.074025`) folded onto one shelf** at [`date/20261001/20261001-112031_incense-next-log-archive-56.md`](date/20261001/20261001-112031_incense-next-log-archive-56.md) (checkpoint `20261001.112031`, nib `1cac83efb9`) -- the section stood at 24,398 of its 24,576-byte bound, 178 bytes of headroom, before this lap's own account. Every fact each one carried still lives one hop away, through the shelf it names.
 
 
@@ -203,3 +205,5 @@ following lap, once this send is on `xy`.
 **Lap `20261001.192844` closed four of those sixteen.** `seed_link`, `unshared_citation`, `shell_dialect`, and `root_finder` read green. `rye_witness_walker` was already green on this tree. Still standing, and remeasured: `declared_model`, `mantra_shared_bound`, `build_target`. Not remeasured this lap: `backtick_path`, `rune_assert_sweep`, `index_row_bound`, `unheard_guard`, `law_guard_heard`, `standing_equipment_redleg`, `shim_reason`, and the rollup.
 
 **Lap `20261001.194030` renamed the wire path ceiling.** `mantra_shared_bound` reads `divergent_names=0`. The wire publishes `max_wire_path` at 57. The store's `max_path` stays 64. `declared_model` still has `drift_candidates=7` against a ceiling of 1, and five of those sites are archives or the testimony the ceiling already holds. `build_target` still has `fixed_paths=52` against `ceiling_fixed=47`. Next: read `backtick_path`, `rune_assert_sweep`, and `index_row_bound` before another full pass.
+
+**Lap `20261001.200053` clocked four seats ashore and credited the unsaid scan.** Pheromone, Patchouli, Petrichor, and Diffuser carry `set_by incense`. Bakery, Copal, and Grass stay in. `unsaid_rostered=862` against ceiling `903`. Do not launch a cold run.

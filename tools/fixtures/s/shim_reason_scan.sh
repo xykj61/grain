@@ -530,10 +530,15 @@ late_say_unrostered=$(awk '$1 == "unrostered"' "$work/order_rows" | grep -c . ||
 # a tree nobody can repair in one, which is a gate somebody turns off; a ceiling that only falls
 # pays the same debt one witness at a time, on touch.
 #
-# WHAT THIS READING DOES NOT REACH. A capture forwarded through some other spelling -- a say inside
-# a conditional, an interpolation into a `run` argument -- reads as unsaid here. The forms it
-# credits are an anchored `say var.out`/`say var.err` line and a `${var.out}`/`${var.err}`
-# interpolation anywhere outside a comment, which are the two this tree writes.
+# WHAT THIS READING DOES NOT REACH. An interpolation of the capture into a `run` argument still
+# reads as unsaid. The forms it credits are an anchored `say var.out`/`say var.err` line and a
+# `${var.out}`/`${var.err}` interpolation anywhere outside a comment.
+#
+# TWO FURTHER CREDITS (`20261001`). A guarded `if <v>.ok == false then say <v>.err` of the same
+# binding reports the capture on the line the assert stops at. A `run` whose command is only
+# `test -f`/`-d`/`-x` (or the `[ -f ]` spelling), optionally chained and followed by `echo`, has
+# no target sentence to forward; the assert's own else string is the reason. A command that also
+# greps, or names git, rye, python, or awk, stays unsaid. The ceiling stays where it was.
 
 cat > "$work/unsaid.awk" <<'AWK'
 function flush(  v) {
@@ -546,8 +551,29 @@ function flush(  v) {
 }
 FILENAME != cur { if (cur != "") flush(); cur = FILENAME }
 /^[[:space:]]*#/ { next }
-/^let [a-z_][a-z0-9_]* = run \[/ { bind[$2] = FNR; next }
+/^let [a-z_][a-z0-9_]* = run \[/ {
+  bind[$2] = FNR
+  # presence_credit: a presence test has no target sentence. grep/git/rye/python/awk stay unsaid.
+  if ($0 ~ /test -[fdx]|\[ -[fdx]/ && $0 !~ /grep|git |rye |python|awk /)
+    reported[$2] = FNR
+  # presence_credit_end
+  next
+}
 /^[[:space:]]*say[[:space:]]+[a-z_][a-z0-9_]*\.(out|err)/ { v = $2; sub(/[.].*/, "", v); reported[v] = FNR }
+# guarded_say_credit: `if v.ok == false then say v.err` reports on the line assert would stop at.
+/ then say[[:space:]]+[a-z_][a-z0-9_]*\.(out|err)/ {
+  line = $0
+  if (match(line, /if[[:space:]]+[a-z_][a-z0-9_]*\.ok[[:space:]]*==[[:space:]]*false[[:space:]]+then[[:space:]]+say[[:space:]]+[a-z_][a-z0-9_]*\.(out|err)/)) {
+    tok = substr(line, RSTART, RLENGTH)
+    sub(/.*then[[:space:]]+say[[:space:]]+/, "", tok)
+    sub(/\.(out|err).*/, "", tok)
+    who = substr(line, RSTART, RLENGTH)
+    sub(/^if[[:space:]]+/, "", who)
+    sub(/\.ok.*/, "", who)
+    if (who == tok) reported[tok] = FNR
+  }
+}
+# guarded_say_credit_end
 /\$\{[a-z_][a-z0-9_]*\.(out|err)(_brief)?\}/ {
   rest = $0
   while (match(rest, /\$\{[a-z_][a-z0-9_]*\.(out|err)(_brief)?\}/)) {
