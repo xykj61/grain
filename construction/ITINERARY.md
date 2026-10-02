@@ -80,16 +80,17 @@ claim-path exemption, and the remaining unrostered chapter witnesses -- all Keat
 account](archive/date/20261002/20261002-092614_itinerary-copal-fifteen-roster-accounts-fold.md) --
 voice_roster through sunn13_root_survey, all landed and closed.
 
-**COPAL -- A NINTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep011_census_witness.rish`
-rostered -- both the witness and its fixture already stood on disk from an earlier lap's claim;
-this lap proved both legs on metal rather than building fresh: GREEN at `verdict=ok` with the
-pier's own `gratitude/ironbeetle` checkout present, and a refusal naming
-`gratitude/ironbeetle ABSENT` with the shelf moved aside and restored after. The elder
-`copal-ironbeetle-ep010-census-roster` claim had landed its roster without clearing the board;
-both that claim and `copal-ironbeetle-ep011-census-roster` close in this same lap. **YOURS:** ~80
-chapter witnesses remain unrostered, measured by comparing `ls tools/gen/chapter/*_witness.rish`
-against the `guard` rows named in `construction/standing-equipment.kyri` rather than trusted from
-this line.
+**COPAL -- THE NINTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-163247_itinerary-copal-ninth-ironbeetle-roster-account.md)
+-- ep011 rostered and both that claim and the stale ep010 claim closed.
+
+**COPAL -- A TENTH IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep012_census_witness.rish`
+rostered -- proven on metal both ways: GREEN at `verdict=ok` with the pier's own
+`gratitude/ironbeetle` checkout present, and a refusal naming `gratitude/ironbeetle ABSENT` with
+the shelf moved aside and restored after. Claimed as `copal-ironbeetle-ep012-census-roster`,
+closed. **YOURS:** ~79 chapter witnesses remain unrostered, measured by comparing
+`ls tools/gen/chapter/*_witness.rish` against the `guard` rows named in
+`construction/standing-equipment.kyri` rather than trusted from this line.
 
 **COPAL -- ANOTHER IRONBEETLE EPISODE-CENSUS WITNESS ROSTERED.** `ironbeetle_ep010_census_witness.rish`
 rostered -- the eighth of the IronBeetle episode-census family alongside ep001, ep002, ep004, ep005,
