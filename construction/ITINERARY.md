@@ -332,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `cbfd95e95f` -- clock-in record on the rewritten main, read before the commit (rule 5).
+**Git nib:** `29065499a1` -- clock-in record on the rewritten main, read before the commit (rule 5).
 
 ### Incense -- product captain
 
