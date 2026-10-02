@@ -20,4 +20,4 @@ assert proof.ok else "consent-replay: the Rye witness exited non-zero -- ${proof
 assert proof.out contains "GREEN: consent replay" else "consent-replay: the witness did not print its complete GREEN claim"
 say proof.out
 
-say "GREEN: consent-replay runner -- an empty grant id writes nothing."
+say "GREEN: consent-replay runner -- an empty receipt id writes nothing."
