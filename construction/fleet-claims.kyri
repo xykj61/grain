@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-sunn10-keys-grain-os-roster
+seat copal
+stamp 20261002.060715
+epoch 1790935635
+paths tools/gen/chapter/sunn10_keys_grain_os_witness.rish construction/standing-equipment.kyri
+what Roster sunn10_keys_grain_os_witness, the tenth unrostered chapter witness, proven both ways on metal
