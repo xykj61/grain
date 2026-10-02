@@ -33,6 +33,7 @@
 | `20261001.231338` | [clear board, no captain lines](20261001/20261001-231338_clear-board-no-captain-lines.kyri) | round-open clean, claim board clear, no cold run per next |
 | `20261001.210536` | [indefinite fleet mode](20261001/20261001-210536_indefinite-fleet-mode.kyri) | no hour cap; a gate notes the captain and the lap continues |
 | `20261001.205840` | [incense watch ready](20261001/20261001-205840_incense-watch-ready.kyri) | watcher arms incense on a prompt; model sonnet 5 |
+| `20261001.205749` | [grading seven ungraded pages, clean](20261001/20261001-205749_second-sweep-of-ungraded-pages-clean.kyri) | qa_report_card on seven docs-geode pages, all B+ or better |
 | `20261001.205305` | [root doors graded A, no new queue](20261001/20261001-205305_root-doors-graded-a-no-new-queue.kyri) | README/SOURCE/CONTRIBUTING/ORGANIZING/MAP all grade A; one self-caught measurement error |
 | `20261001.204934` | [four rebases, one merged superset](20261001/20261001-204934_four-rebases-one-merged-superset.kyri) | merged rather than withdrawn, GREEN, pushed |
 | `20261001.204826` | [empty recipient and two seats](20261001/20261001-204826_empty-recipient-and-two-seats.kyri) | empty recipient id; pheromone and diffuser pointed |
@@ -46,6 +47,7 @@
 | `20261001.203446` | [contested-send-nib-stale](20261001/20261001-203446_contested-send-nib-stale.kyri) | three-rebase send landed; card nib stale under the named contested-send gap |
 | `20261001.203443` | [case eight after two withdrawn duplicates](20261001/20261001-203443_case-eight-after-two-withdrawn-duplicates.kyri) | thirteen field/signature refusals proven |
 | `20261001.203329` | [two-rooms rota grade stands](20261001/20261001-203329_two-rooms-rota-grade-stands.kyri) | Earth-row rota read on TWO_ROOMS.md; qa_report_card B+/89, no repair owed |
+| `20261001.203016` | [consent draft, superseded by .203914](20261001/20261001-203016_consent-teaches-the-first-hour.kyri) | A/94 draft section; a later lap wrote the one that landed |
 | `20261001.202847` | [empty grant id refused](20261001/20261001-202847_empty-grant-id-refused.kyri) | an empty grant id writes nothing |
 | `20261001.202739` | [tend-hygiene-census-roster](20261001/20261001-202739_tend-hygiene-census-roster.kyri) | tend_hygiene_census witness rostered, GREEN both ways |
 | `20261001.202520` | [civic-style-and-linengrow-voice-register-repair](20261001/20261001-202520_civic-style-and-linengrow-voice-register-repair.kyri) | two below-B context/ pages repaired: LINENGROW_MAGAZINE_VOICE C+/75->A/93, CIVIC_STYLE C+/79->B+/85 |
@@ -124,6 +126,7 @@
 | `20261001.152121` | [fleet-wide check finds nothing unclaimed](20261001/20261001-152121_petrichor-fleet-wide-check-finds-nothing-unclaimed.kyri) | one claim, one OPEN row, both already spoken for; CLAIM-AS-OVERRIDE has nothing to take |
 | `20261001.151852` | [weave-tablecloth seam falsifier run](20261001/20261001-151852_weave-tablecloth-seam-falsifier-run.kyri) | current() and catalogue digest_hex agree, GREEN |
 | `20261001.151826` | [lane blocked, air rota](20261001/20261001-151826_petrichor-lane-blocked-air-rota.kyri) | docs-geode clean at B+; milestone two and first-hour walkthrough wait on a hand |
+| `20261001.151318` | [lap open: fruit done and gated](20261001/20261001-151318_petrichor-lap-open-status-check.kyri) | contract landed B+/85; no stray work claimed |
 | `20261001.151253` | [Survey a fourth moonshot: Mantra's dedup ratio](20261001/20261001-151253_dedup-ratio-moonshot.kyri) | mantra/beading.rye's BeadReport never read for dedup efficiency; vision page names the scan |
 | `20261001.151151` | [rye_compiled_reach: 786 to 11](20261001/20261001-151151_rye-compiled-reach-786-to-11.kyri) | rye_build.sh named as a builder verb; uncompiled fell under its ceiling |
 | `20261001.151133` | [unsaid-rostered reverse-read](20261001/20261001-151133_unsaid-rostered-reverse-read.kyri) | fresh crux: 984-vs-903 population walked backward, sorted three ways, B+/89 packet shelved |
