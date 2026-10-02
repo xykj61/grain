@@ -18,7 +18,7 @@ think Admission already refuses an empty text field by that field's name. This l
 obs Green: consent_replay_witness, the empty grant id included.
 rota patchouli's next field is an empty receipt_id
 file mantra/src/consent_replay_witness.rye the empty grant id
-git_nib cd3f85b400
+git_nib 568facaece
 loom consent_replay=green
 scope witness the first incomplete grant field
 status HELD -- grant_id witnessed; the remaining required fields and the false signature stay open
