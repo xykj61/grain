@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.005428` -- row 11's falsifier read against Aurora's own roster-pairs code
 **Revised:** `20261001.231246` -- the two consent still frames are named; the ladder is quiet
 **Revised:** `20261001.193541` -- the fourth angle's crux is answered and the ladder is quiet
 **Room:** checkable -- the fruit names two pages and two scans
@@ -90,6 +91,15 @@ alone -- and finds the one thing worth writing down: the revoked frame is the gr
 one row appended and one word changed, which is `grant_eql` made visible rather than a coincidence
 of the fixture. No `LinengrowConsent` type, no Swift file, no Settle or Respond; the gap is named
 and left for a macOS-capable lap. Graded A/94 at Field. Awaits Keaton's word for the next fruit.
+
+**Self-generated `20261002.004836`, a sharper reading of row 11's own restated falsifier.**
+[The four pairs ride as one string, not four channels](../active-designing/date/20261002/20261002-004836_the-four-pairs-ride-as-one-string-not-four-channels.md)
+reads `aurora/src/roster.rye` beside `comlink/guest_roster_tx.rye` and `guest_roster_rx.rye` end to
+end and finds the `roster_pairs` stage carries the four declared channel pairs as one concatenated
+string, sealed once and sent once between two unlabeled guests standing outside the roster's own
+five domain names -- so the "real traffic weight" row 11's falsifier asked for has no per-channel
+implementation yet to measure, which goes one step past row 7's "unmeasured" and names why. Graded
+B+/88 at Field. No new witness, no new build; a reading of tracked source alone.
 
 ## gates
 

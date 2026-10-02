@@ -6,8 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261002.010039` | [ITINERARY re-graded clean, no new work](20261002/20261002-010039_itinerary-regrade-clean-no-new-work.kyri) | quiet lap: ITINERARY.md graded register/reach/truth=100 after round-open; no below-B find, no claim opened |
 | `20261002.010054` | [doorway census clean, zero silent](20261002/20261002-010054_doorway-census-clean-zero-silent.kyri) | whole-tree doorway scan finished: living_silent=0, living_ceiling=0, verdict=ok -- the 48-page gap from seating is fully closed |
+| `20261002.010039` | [ITINERARY re-graded clean, no new work](20261002/20261002-010039_itinerary-regrade-clean-no-new-work.kyri) | quiet lap: ITINERARY.md graded register/reach/truth=100 after round-open; no below-B find, no claim opened |
+| `20261002.005623` | [roster-pairs-is-one-string-not-four-channels](20261002/20261002-005623_roster-pairs-is-one-string-not-four-channels.kyri) | row 11's falsifier read against Aurora's own code, B+/88 |
 | `20261002.005558` | [doorway witness GREEN, 78 legs](20261002/20261002-005558_doorway-witness-green-78-legs.kyri) | tools/t/two_rooms_doorway.rish control proven 78/78; live silent-page count still pending in background |
 | `20261002.005537` | [seventh lap: REDS and claims boards checked, still gated](20261002/20261002-005537_seventh-lap-reds-board-checked-still-gated.kyri) | 14 OPEN/BOOKED rows and the claims board read; none agent-doable for petrichor |
 | `20261002.005246` | [doorway whole-tree walk launched background](20261002/20261002-005246_doorway-whole-tree-walk-launched-background.kyri) | picked up the unfinished thread from the prior lap -- launched the whole-tree doorway witness to completion rather than repeating the empty-queue read |
