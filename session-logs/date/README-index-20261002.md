@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.190351` | [patchouli eighth fallow reading](20261002/20261002-190351_patchouli-eighth-fallow-reading.kyri) | mantra/tally queue empty an eighth time, %807/%765 unchanged |
 | `20261002.190043` | [Round-open pulls diffuser's essays, lane stays fallow](20261002/20261002-190043_petrichor-pulled-diffuser-essays-lane-fallow.kyri) | pulled da60ad3b45, no path in docs-geode/, both graded pages re-confirmed A/91 and B+/89 |
 | `20261002.185942` | [Seventh empty reading of the agent-doable queue](20261002/20261002-185942_seventh-fallow-reading.kyri) | fetched xy, rebased one peer commit, re-grepped mantra/tally headers -- queue empty a seventh lap, %807/%765 both still OPEN unchanged |
 | `20261002.185720` | [Sixth confirm -- one new patchouli commit pulled](20261002/20261002-185720_sixth-confirm-one-new-patchouli-commit.kyri) | docs-geode gate unchanged, no claim-as-override target |
