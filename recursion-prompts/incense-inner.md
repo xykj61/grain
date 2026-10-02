@@ -188,3 +188,18 @@ than the prior lap named, each row verified by its own last bold marker rather t
 every one wants either Keaton's word, another lane's ownership (Mantra's diff/weave for `%807`, the
 sow manifest for `%804`, Lotus's parallel-build race for `%734`), or is bakery's own claimed `%788`.
 No third law-lane task stands. Next: unchanged from the prior lap's own line.
+
+**Lap `20261002.185301` found a fourth fallow reading, by the ledger's own last marker on every
+row.** Round-opened clean at `78c9081670`. The claim board carries one live claim,
+`bakery-root-finder-convert`, already stale and clear of this lane. A careful re-read of
+`construction/REDS.md` -- taking each row's LAST `**OPEN**`/`**BOOKED**` marker rather than its
+first, since several rows carry one of each inside their own prose -- holds fourteen OPEN rows and
+zero BOOKED: `%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456`. Every one
+already names, in its own words, which hand or whose word it waits on; none is a law-lane task a
+lap can take unclaimed. `fleet_clock.sh report` shows all eight seats clocked in, and six of eight
+ships' last commits were themselves fallow-reading logs -- this is the fleet's own ground right now,
+not a stall in one seat. Aether's reading (row 0, lap 7620): the page nobody has answered is the
+`%642` scrub-trade sentence on this card's own agent-doable queue, sitting unclaimed across four
+laps running, fenced by the open-words section for exactly the reason a lap cannot take it. Next:
+unchanged -- a human glance at the fourteen OPEN rows, the `%642` trade, or the wire-ceiling door is
+what actually opens new law-lane work; a fifth identical reading would teach nothing past this one.
