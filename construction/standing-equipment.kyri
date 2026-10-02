@@ -8842,3 +8842,18 @@ guard sunn13_root_survey
 path tools/gen/chapter/sunn13_root_survey_witness.rish
 tier lap
 seated 20261002.091516
+
+# pond_brushstroke_frame -- Surface p6 Pond-framed frame, unrostered since it was written. The
+# witness's own two REDS %646 comments name why: an absent WAYLAND_DISPLAY and an unbuilt
+# brushstroke-wayland-seed binary are facts about a headless pier and a fresh clone, never
+# defects, so each is a decided skip rather than a hard assert that would red every ship lacking
+# a live Wayland session. Proven both legs on metal: with WAYLAND_DISPLAY unset (this pier's own
+# state) it exits GREEN at the display-absent skip; with WAYLAND_DISPLAY set to a value and the
+# binary still absent it exits GREEN at the binary-absent skip instead -- the same witness taking
+# a different honest exit for a different honest fact. One of the unrostered
+# tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-pond-brushstroke-frame-roster before this entry landed.
+guard pond_brushstroke_frame
+path tools/gen/chapter/pond_brushstroke_frame_witness.rish
+tier lap
+seated 20261002.092435
