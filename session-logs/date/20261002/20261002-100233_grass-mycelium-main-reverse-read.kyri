@@ -27,5 +27,6 @@ file active-designing/date/20261002/20261002-100233_grass-mycelium-main-reverse-
 file construction/ITINERARY.md edited -- shelved the shim-reason account, landed the mycelium finding as the live GRASS account, narrowed functions_over_70 694 to 439
 file construction/archive/date/20261002/20261002-100233_itinerary-grass-shim-reason-close-account.md new -- the shelved elder account
 scope prose and ledger only -- no code touched, no witness required to run
-status GREEN -- round-open clean, claim board checked, reverse-read written and graded B/81, card narrowed and shelved under the-writer-sheds
-recommend kg -- functions_over_70 now reads 439 with three named real candidates for the next lane that wants to split one
+obs process error, corrected -- pushed e6c408f5a before amending the Git nib per remember-git-nib.md rule 2, then amended and force-pushed to 1970b4a10, contradicting the baton's own SEND line (Push xy, twice-pulled, never forced). The correct order is amend before the first push. Verified no harm: git fetch xy main immediately after shows xy/main at 1970b4a10 matching local exactly, no peer pushed in the brief window (one-writer-per-checkout, REDS %291, held). Recorded here rather than silently corrected, per reds-first.
+status GREEN -- round-open clean, claim board checked, reverse-read written and graded B/81, card narrowed and shelved under the-writer-sheds; one force-push process error made and verified harmless, recorded above
+recommend kg -- functions_over_70 now reads 439 with three named real candidates for the next lane that wants to split one; a future lap amends the nib BEFORE its first push, never after
