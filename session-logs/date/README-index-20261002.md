@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.171200` | [Fire row looks hard, fruit still closed](20261002/20261002-171200_fire-row-looks-hard-fruit-still-closed.kyri) | round-opened (pulled to 9a2a41fc96), rota row 2 looked at REDS/claims fresh, docs-geode still empty |
 | `20261002.170841` | [The claim-close send survived two true divergences](20261002/20261002-170841_patchouli-send-survives-two-divergences.kyri) | contested send, resolved two round-open divergences and a real claims-board conflict |
+| `20261002.170656` | [Finish the parked ep012 merge, then ep013](20261002/20261002-170656_finish-the-parked-ep012-merge-then-ep013.kyri) | cherry-picked a parked side-branch commit onto main, rostered ep013's already-landed witness, shed the writer's own pin account twice |
 | `20261002.170601` | [Petrichor opens, fruit stays closed, no new word yet](20261002/20261002-170601_petrichor-opens-empty-queue.kyri) | session open, re-confirmed the-first-hour A at Door, no new fruit named |
 | `20261002.170141` | [Patchouli closes its own landed claim](20261002/20261002-170141_patchouli-closes-own-landed-claim.kyri) | found a stale fleet claim whose work had already merged, closed it, mantra/tally fruit stays empty |
 | `20261002.170052` | [Earth foundation re-read, fruit still closed](20261002/20261002-170052_grass-earth-foundation-reread-fruit-still-closed.kyri) | graded clock-and-mark at A, no claimable lap in grass's four passes |
