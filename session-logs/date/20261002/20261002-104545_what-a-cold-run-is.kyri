@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261002.104545
+editor Cursor
+provider xAI
+product Cursor
+role captain
+modality text
+model grok-4.7
+model_status active runtime named by the session
+configured_model grok-4.7-high
+configured_status launcher default recorded in the fleet cursor rule
+evidence session identity states Grok 4.7
+voice Kyri
+host grain-incense, America/New_York
+title what a cold run is
+prompt explain why the cold runs happen so often, and what a run verdict means
+think The runner header names the default pass as the cold open, tier lap, and --hot as the pass after git add
+think A run_verdict line is the pass's one conclusion; died_unexpectedly is the script ending before any of those conclusions
+obs Recent incense laps used the cold run as the work itself, reading reds and running again to watch the count fall
+obs This reply launches none
+rota none -- this reply explains the cold run; the council row was read at the session open
+file tools/fixtures/s/standing_equipment_run.sh why-its header is the account this reply follows
+recommend check-in -- the next cold run stays unlaunched until Keaton asks to hold for one
+scope explanation only; no guard run and no repair
+status GREEN -- explanation only, no repair made
