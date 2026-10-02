@@ -10,7 +10,7 @@ Radiant pass `20260725.035645`
 
 Radiant pass `20260727.224156` -- path re-point only; claims unchanged
 
-The filename shape speaks **string**, `20261002.155352`. The pattern is `YYYYMMDD-HHMMSS_short-string.md`.
+The filename shape speaks **string**, `20261002.155352`. The pattern is `YYYYMMDD-HHMMSS_short-string.md`. The words after the stamp are the sprig.
 
 ---
 

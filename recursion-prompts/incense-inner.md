@@ -231,4 +231,6 @@ to `xy` with no contested rebase. Next: fresh round-open; check the board and sh
 
 **Lap `20261002.154049` seated string over the retired naming word.** The lexicon and the rule name the choice, on the same shelf as red over bug. The crude word scan leaves the word out, because the page that seats the ban has to name it.
 
+**Lap `20261002.160829` seated the sprig as a string.** The lexicon had said a sprig replaced a sprig. The words after the stamp are the sprig, and that sprig is the string the naming rule seats. The clock law says so beside its pattern.
+
 **Lap `20261002.160143` molted the living pages onto that word.** The clock law, the warm-aura atom, the organizing door, the provenance rule, the open setup pages, the resin manifest, and the session-log aligner now say string. Dated logs stay as they were written. The pages that seat the ban still name the retired word.
