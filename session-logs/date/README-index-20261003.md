@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.084548` | [the eleventh sweep, read through the row that hears](20261003/20261003-084548_eleventh-sweep-rota-aether.kyri) | mantra/tally queue re-checked, all 10 OPEN REDS rows ruled out; rota row 0, Aether |
 | `20261003.084423` | [thirty-eighth decline, plus a card shed](20261003/20261003-084423_thirty-eighth-decline-plus-shed.kyri) | %642/%519 unchanged; shed six lap accounts off incense-inner |
 | `20261003.084102` | [the tenth sweep finds the language lane still empty, air row read](20261003/20261003-084102_tenth-sweep-rota-air.kyri) | round-open clean at 55280ecee6; rota row 1, Air, read; no agent-doable work, declined a blind cross-lane claim |
 | `20261003.083420` | [send diverged on a peer commit, rebased, pushed clean](20261003/20261003-083420_pushed-after-rebase-onto-diverged-peer.kyri) | copal's nona-season-n2 claim landed mid-send; rebased and pushed to cc90af9c36 |

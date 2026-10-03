@@ -122,6 +122,20 @@ constant. The pier's own disk read 86% full, 24G free on this check -- healthy, 
 names `mantra/` or `tally/` as agent-doable beyond the two already-OPEN rows this fruit tracks.
 `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own lane.
 
+**The queue reads empty an eleventh way, `20261003`.** The same two grep nets, run fresh again,
+answer identically: no new candidate past fixture-local `fixture-signature-v1`/`-v2` constants,
+two-way-sync test literals, `recall_beaded.rye`'s own local revision variables (`rep_v1`,
+`rep_v2`, `r_v2` -- loop counters, never persisted headers), and the elder
+`mantra-weave-v1`/`-v2` and `mantra-commit-v1`/`-v2` read-compat strings this law keeps forever.
+This lap also widened the search past the lane's own queue: `construction/REDS.md`'s ten
+currently OPEN rows (`%827`, `%826` twice, `%819`, `%807`, `%804`, `%803`, `%788`, `%765`,
+`%734`, `%456`) were each read whole for a claim-as-override candidate, and every one names
+Keaton's ruling, a named owning lane outside `mantra/`-`tally/` (Amphora's device-wire lab,
+Dimeroll's fund-prep generator, the shared `commit-msg` hook's owner, a compiler-bridge
+decision, custody gate 3), or an already-claimed path (`%788`, bakery). None is agent-doable
+here. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
+lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
