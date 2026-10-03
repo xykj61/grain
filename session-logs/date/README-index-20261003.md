@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.030505 | [Diffuser: the near-miss is exact across both skies](20261003/20261003-030505_near-miss-exact-both-skies.kyri) | swap-the-call falsifier run exhaustively on scratch metal, zero divergence, mutation-tested |
 | 20261003.030326 | [Petrichor's seventeenth fallow reading](20261003/20261003-030326_petrichor-seventeenth-fallow-reading-aether.kyri) | one peer commit pulled; rota read Aether |
 | `20261003.030257` | [Three over-bound index rows trimmed](20261003/20261003-030257_three-index-rows-trimmed-to-bound.kyri) | a live row-bound red found and closed on this shelf |
 | 20261003.030113 | [Pheromone's eighth reading, limb9 tasted](20261003/20261003-030113_pheromone-eighth-reading-limb9-tasted.kyri) | round-open to ad11d13413; lane still empty; limb9 witness re-run GREEN on metal rather than cited from memory |

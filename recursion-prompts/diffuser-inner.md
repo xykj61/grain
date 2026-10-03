@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.030505` -- the near-miss is exact across both seated skies
 **Revised:** `20261003.025016` -- the distance half of the fractal address has no caller
 **Revised:** `20261003.014028` -- the fractal address stays flat where the ring grows with the room
 **Revised:** `20261002.231237` -- neither real caller ever reaches the window
@@ -583,6 +584,20 @@ Names a one-line falsifier (swap the call, re-run the selftest) rather than maki
 composite 80, letter B, per `tools/fixtures/q/qa_report_card.sh` (register 100, reach 60, truth
 100, service 70 judged). No new witness, no new module; a reading of tracked source confirmed by
 three greps.
+
+**Self-generated `20261003.030505`, the prior essay's own named falsifier run on scratch metal
+rather than left for a later lap.**
+[The near-miss is exact across both seated skies](../active-designing/date/20261003/20261003-030505_the-near-miss-is-exact-across-both-seated-skies.md)
+runs the swap-the-call falsifier the fractal-address essay named: a scratch probe (built, run,
+deleted) walks every point in both seated skies -- 720 in `compass_sky`, 405 in `council_sky` --
+comparing `Point.seat`'s hand-built default parent against `Sky.sponsor_of`'s own answer, and finds
+zero divergence across all 1,125 points. A planted `+1` mutation on the `sponsor_of` side fails at
+the first point checked, proving the comparison was load-bearing rather than vacuous, before the
+clean probe was restored and re-run to the same `verdict=ok`. Turns the prior essay's read-only
+"non-divergent" judgment into a run falsifier, closed on both seated skies this tree has declared.
+Graded composite 80, letter B, per `tools/fixtures/q/qa_report_card.sh --setting field --service
+90` (register 58, reach 70, truth 100, service 90 judged). No new witness, no new module; the probe
+and its binary are deleted before this lap ends.
 
 ## gates
 
