@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; case 8's build-time half stays proposed until that build lands
+**Revised:** `20261003.161601` -- a fresh reading, additive. `ReceiptOfferFact` and `ReceiptState` each stand in 5 tracked rye sources. `linengrow/` and `dimeroll/` together hold 179 tracked rye sources, 174 and 5. Ceiling `verdict=agree`, braid `verdict=unbraided` with `cross_mention=2` and `peer_word=0`, still-order `verdict=source_order_agrees`, `swift_runtime=unverified_on_this_host`. `zig` is absent on this host, so case 8's build-time half stays proposed. No elder row, number, or acceptance case was removed.
 **Milestone:** The receipt you can read
 **Revised:** `20261002.105438` -- the card is drawn. `skate/Sources/SkateCore/ReceiptCard.swift` holds `columns = 72` and `rows = 18`. The ceiling scan still reads `row_unenforced=2`, because those two rows are the frame and the scan reads admission sites only. On metal this hour: ceiling `verdict=agree`, braid `verdict=unbraided` over linengrow 174 files and dimeroll 5, still-order `verdict=source_order_agrees` with `swift_runtime=unverified_on_this_host`. Every elder row, number, and acceptance case stays.
 **Revised:** `20261001.112238` -- case 4 carries its own witness, closing the gap the
@@ -339,6 +340,26 @@ acceptance case names, and stay real work of a different kind from proving a cas
 **Superseded by the `20261001.112238` revision above.** Brushstroke and Skate are begun, and case
 4 carries `tools/r/receipt_still_order_witness.rish` -- GREEN on this host, with the native Swift
 runtime still the proof a macOS lap owes.
+
+**Reviewed `20261003.161601` by running the section's own command.** The word-presence counts
+now read:
+
+| Public type | Declared in tracked Rye |
+|---|---:|
+| `ReceiptOfferFact` | **5** sources |
+| `ReceiptState` | **5** sources |
+| `LinengrowReceipt` | **2** sources |
+| `DimerollReceiptIntake` | **2** sources |
+
+The fifth source for both `ReceiptOfferFact` and `ReceiptState` is
+`mantra/src/receipt_offer_refusal_chain_witness.rye`. The table above this paragraph, dated
+`20260918.105100`, keeps its **4**. `linengrow/` holds 174 tracked rye files and `dimeroll/`
+holds 5, together 179, where the braid paragraph's **175** was the reading of `20260917`.
+`cross_mention=2` names the module-head comments in `linengrow/receipt_offer.rye` and
+`dimeroll/receipt_offer.rye`. `cross_type` stays 0. The ceiling scan reads `verdict=agree`
+with `borrowed_rows=0` and `row_unenforced=2`. The still-order witness reads
+`verdict=source_order_agrees` and `swift_runtime=unverified_on_this_host`. This host has no
+`zig` binary, so case 8's build-time half stays the proposed half the status line names.
 
 ## Completion and review edge
 

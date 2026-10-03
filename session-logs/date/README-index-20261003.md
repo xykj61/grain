@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.161743` | [receipt contract reread](20261003/20261003-161743_receipt-contract-reread.kyri) | Fresh counts; case 8 build half still proposed |
 | `20261003.161257` | [publish seed in rishi](20261003/20261003-161257_publish-seed-in-rishi.kyri) | Steps in rishi; shell stays the launch edge |
 | `20261003.155847` | [xy send landed](20261003/20261003-155847_xy-send-landed.kyri) | Merged five commits and pushed xy |
 | `20261003.155007` | [xy and ww](20261003/20261003-155007_xy-and-ww.kyri) | Personal remote is xy; seed door is ww |
