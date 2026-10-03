@@ -3,48 +3,57 @@
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-070923_mycelium-purse-per-account-balances-exploration.md
 //!
-//! A purse is where one holder's own coins sit -- one purse per account, distinct
-//! from the Till's single shared drawer. The truest double-spend a value ledger
-//! carries is one holder spending the same coins twice: Alice, holding a hundred,
-//! signs one transfer of a hundred to Bob and another hundred to Carol at the same
-//! round -- each affordable against her balance alone, together twice what she holds.
-//! The Cord already derives one total order from the mesh regardless of arrival, and
-//! the Purse reads that order as each account's verdict: the first of Alice's two
-//! transfers the order places moves her coins, the second finds her purse already
-//! empty and comes up short as a lawful no-op, and every honest node names the same
-//! winner.
+//! A purse is where one holder's own coins sit -- one purse per account,
+//! distinct from the Till's single shared drawer. The truest double-spend a
+//! value ledger carries is one holder spending the same coins twice. Alice,
+//! holding a hundred, signs one transfer of a hundred to Bob and another
+//! hundred to Carol at the same round. Each transfer is affordable against
+//! her balance alone, together twice what she holds. The Cord already
+//! derives one total order from the mesh regardless of arrival, and the
+//! Purse reads that order as each account's verdict. The first of Alice's
+//! two transfers the order places moves her coins. The second meets a purse
+//! already spent and stands idle as a lawful rest. Every honest node names
+//! the same winner.
 //!
-//! The honest distinction is the twin of the Till's, carried from one shared drawer
-//! to many private purses. There the measure was `issued-so-far` (the treasury's
-//! global high-water mark); here it is `received-so-far[holder]` -- the cumulative
-//! coins that holder ever took in (by genesis credit or incoming transfer) up to the
-//! losing transfer's position. Inflow only adds, so it is monotonic and position-
-//! respecting. A transfer that overdraws the holder's CURRENT balance yet asks for no
-//! more than received-so-far LOST A RACE (the coins were in that purse once) -- a
-//! lawful no-op spent-out loss, folding continues. A transfer for more than the
-//! holder ever received NEVER COULD PAY -- no ordering fixes that -- and refuses the
-//! whole resolution. Across every accepted move the ledger CONSERVES: no coin is made
-//! or destroyed by a transfer, so the balances always sum to exactly what genesis
-//! issued.
+//! The honest distinction is the twin of the Till's, carried from one shared
+//! drawer to many private purses. There the measure was `issued-so-far` (the
+//! treasury's global high-water mark). Here it is `received-so-far[holder]`
+//! -- the cumulative coins that holder ever took in, by genesis credit or
+//! incoming transfer, up to the position of the transfer that comes up
+//! short. Inflow only adds, so the measure is monotonic and
+//! position-respecting. A transfer
+//! that overdraws the holder's CURRENT balance yet stays within
+//! received-so-far arrived second in a race already won -- the coins were
+//! in that purse once. That is a lawful rest, spent-out, and folding
+//! continues. A transfer asking more than the holder ever received stays
+//! unpayable under every possible order. The whole resolution halts there.
+//! Across every accepted move the ledger CONSERVES: every coin stays
+//! exactly accounted for through a transfer, so the balances always sum to
+//! exactly what genesis issued.
 //!
-//! A transfer rides the Cord without editing an elder: the SENDER is the fact's own
-//! signer_pk, the AMOUNT its amount, and the RECIPIENT rides in the fact's signed
-//! 256-byte body -- bound to the sender's signature, so it cannot be redirected
-//! without breaking it. A genesis credit is a kind_issue whose body names the account
-//! to fund; a transfer is a kind_tax whose body names the recipient. The Purse reuses
-//! fold's signed-fact machinery for verification (the additive `fold.verify_fact`,
-//! same shape as `cord.verify_block`) and folds its OWN per-account law over the
-//! agreed order rather than fold's global supply. A kind_star_reserve is the Tenure's
-//! / fold's resource, not the Purse's, so it refuses the whole resolution here (honest
-//! to its own resource, as the Till refuses a StarTaken).
+//! A transfer rides the Cord leaving every elder untouched. The SENDER is
+//! the fact's own signer_pk, the AMOUNT its amount, and the RECIPIENT rides
+//! in the fact's signed 256-byte body. That body is bound to the sender's
+//! signature, so redirecting it voids the signature outright. A genesis
+//! credit is a kind_issue whose body names the account to fund; a transfer
+//! is a kind_tax whose body names the recipient. The Purse reuses fold's
+//! signed-fact machinery for verification (the additive `fold.verify_fact`,
+//! same shape as `cord.verify_block`). It folds its OWN per-account law over
+//! the agreed order, rather than fold's global supply. A kind_star_reserve
+//! belongs to the Tenure's / fold's resource rather than the Purse's. So
+//! this fold halts there too, honest to its own resource, exactly as the
+//! Till halts at a StarTaken.
 //!
-//! Grown beside cord.rye, fold.rye, and till.rye -- editing none, composing cord +
-//! fold + kumara public API only. Siloed, dev-only, demo seeds -- no real key, no
-//! funds, no network, no custody.
+//! Grown beside cord.rye, fold.rye, and till.rye -- composing only cord +
+//! fold + kumara public API, every sibling file left exactly as it stood.
+//! Siloed, dev-only, and demo-seeded throughout: every key is a demo key,
+//! every balance a sandbox balance, and the whole surface stays off any
+//! real network or custody.
 //!
-//! Named horizon (not this arc): real mint authority (a genesis credit here is
-//! authorized by a demo funder key, not a treasury policy); transfer fees; account
-//! expiry; a Purse served to another node reaches the Comlink-served gate.
+//! Named horizon (a later arc): real mint authority (a genesis credit here
+//! is authorized by a demo funder key rather than a treasury policy);
+//! transfer fees; account expiry; a Purse served to another node reaches
+//! the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/purse.rye
 

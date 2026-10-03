@@ -12,6 +12,7 @@
 | `20261003.093651` | [twenty-eighth reading, witness-side check](20261003/20261003-093651_petrichor-twentyeighth-reading-witness-health-check.kyri) | living-docs-lint GREEN, crushed-index verdict=ok; lane still fallow |
 | `20261003.093607` | [fortieth decline, thirteen open rows](20261003/20261003-093607_fortieth-decline-thirteen-open-rows.kyri) | no ledger motion; OPEN-row count corrected eight to thirteen, all five new ones closed to this lane |
 | `20261003.093600` | [glow tend sibling survey already landed](20261003/20261003-093600_glow-tend-sibling-survey-closes.kyri) | same falsifier run independently; found Diffuser's lane had already landed it; withdrawn |
+| `20261003.093541` | [purse.rye's head lifts C+ to A](20261003/20261003-093541_purse-head-lift.kyri) | GRASS: register 48 to 100, composite 75 to 93, four witnesses GREEN |
 | `20261003.092834` | [twenty-seventh reading, fallow confirmed](20261003/20261003-092834_petrichor-twentyseventh-reading-fallow-confirmed.kyri) | no fourth sweep; checked fleet-claims directly, bakery's %788 claim not in this lane |
 | `20261003.092550` | [patchouli's seventeenth confirming sweep](20261003/20261003-092550_seventeenth-sweep-empty.kyri) | Patchouli: fresh greps, claim board, REDS rows all re-read; still nothing agent-doable |
 | `20261003.092548` | [thirty-ninth decline, eight open rows](20261003/20261003-092548_thirty-ninth-decline-eight-open-rows.kyri) | no ledger motion; OPEN-row count corrected six to eight |

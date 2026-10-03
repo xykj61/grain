@@ -177,9 +177,21 @@ them back short, holding register. Register rose from 36 (64% negative of 14) to
 of 18), composite from below B to A/90. `mycelium_muster_witness.rish` re-runs GREEN; no code line
 moved. [Account](../active-designing/date/20261003/20261003-091351_grass-muster-module-head-account.md).
 
-**The next-crux lean:** seven more files from the same sample read below B -- `purse.rye`,
-`statement.rye`, `tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait
-for the same lift, one file at a time, per this lane's usual depth-2 bound.
+**`purse.rye`'s head lifts C+ to A, landed `20261003`.** Thirteen negative sentences across five
+paragraphs -- `comes up short`, `LOST A RACE`, `a lawful no-op`, `NEVER COULD PAY -- no ordering
+fixes that -- and refuses`, `no coin is made or destroyed`, `without editing an elder`, `cannot be
+redirected without breaking it`, `not the Purse's, so it refuses`, `editing none`, `no real key, no
+funds, no network, no custody`, `not this arc`, `not a treasury policy` -- rewrote into affirmative
+sentences holding the same facts, and the five paragraphs split into shorter sentences to bring the
+reach grade down. Register rose from 48 (52% negative of 19) to 100 (0% negative of 31), composite
+from 75 to 93, A. All four touching witnesses -- `mycelium_purse_witness`,
+`mycelium_purse_true_witness`, `mycelium_purse_knot_witness`, `mycelium_purse_kyri_witness` --
+re-run GREEN; no code line moved.
+[Account](../active-designing/date/20261003/20261003-093328_grass-purse-module-head-account.md).
+
+**The next-crux lean:** six more files from the same sample read below B -- `statement.rye`,
+`tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same
+lift, one file at a time, per this lane's usual depth-2 bound.
 
 ## gates
 
