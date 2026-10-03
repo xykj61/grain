@@ -167,6 +167,20 @@ touching witness, `mycelium_pledge_witness.rish`, re-runs GREEN unchanged; no co
 `rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's usual depth-2
 bound.
 
+**`muster.rye`'s head lifts C+ to A, landed `20261003`.** Fourteen negative sentences across three
+paragraphs -- `nothing said`, `cannot prove`, `never told`, `blind spot`, `not because`, `never
+stored ... cannot lower`, `never counts`, `refused whole, never silently trimmed`, `not yet
+believed`, `REFUSES`, `never enrolled`, `editing none`, the closing `no real ... no funds, no
+network, no custody` -- rewrote into affirmative sentences holding the same facts; a first pass
+raised the reach grade level above the Door ceiling by compounding sentences, and a second split
+them back short, holding register. Register rose from 36 (64% negative of 14) to 89 (11% negative
+of 18), composite from below B to A/90. `mycelium_muster_witness.rish` re-runs GREEN; no code line
+moved. [Account](../active-designing/date/20261003/20261003-091351_grass-muster-module-head-account.md).
+
+**The next-crux lean:** seven more files from the same sample read below B -- `purse.rye`,
+`statement.rye`, `tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait
+for the same lift, one file at a time, per this lane's usual depth-2 bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

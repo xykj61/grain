@@ -219,36 +219,28 @@ the contract accepted, and the citizen door's new "A yes you can change" section
 revoke, and the one refusal proven today -- a mismatched holder. Door/B+, composite 89.
 **YOURS:** none -- Consent Rail and the rest wait past this lane.
 
-**GRASS -- FIVE ELDER ACCOUNTS, SHELVED WHOLE.** [Fold
-account](archive/date/20261003/20261003-034124_itinerary-grass-five-elder-accounts-fold.md) --
-the twenty-six-account fold, the pleac reach fix, the diffuser-inner find, and the
-spool-dedup/snapshot-projection/three-named-heads module-head lifts; nothing lost, every path
-still opens.
+**GRASS -- SIX ELDER ACCOUNTS, SHELVED WHOLE.** Pointers only, nothing lost, every path still
+opens: [five-account
+fold](archive/date/20261003/20261003-034124_itinerary-grass-five-elder-accounts-fold.md) (the
+twenty-six-account fold, the pleac reach fix, the diffuser-inner find, and three module-head
+lifts), [four-lift
+fold](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md) (portage,
+braid, cord_byzantine, a five-head sample), [testament
+lift](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md), [freight
+lift](archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md), [fold.rye
+lift](archive/date/20261003/20261003-091351_itinerary-grass-fold-shelve.md).
 
-**GRASS -- FOUR MORE MODULE-HEAD LIFTS, SHELVED WHOLE.** [Fold
-account](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md) --
-portage, braid, cord_byzantine, and the chorus/cord/constel/cord_batch five-head sample; nothing
-lost, every path still opens.
-
-**GRASS -- A WIDER MYCELIUM SAMPLE NAMES TEN BELOW-B HEADS; `TESTAMENT.RYE` LIFTS FIRST (shelved
-whole)](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md)** -- nothing
-lost, every path still opens.
-
-**GRASS -- `FREIGHT.RYE`'S HEAD LIFTS C+ TO A (shelved
-whole)](archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md)** -- nothing
-lost, every path still opens.
-
-**GRASS -- `FOLD.RYE`'S HEAD LIFTS C+ TO A.** [Account
-shelved whole](../active-designing/date/20261003/20261003-090430_grass-fold-module-head-account.md):
-a missing period at the end of the bounds list merged two paragraphs into one 34-word run-on
-carrying `refuses`; closing it un-merged the sentence on its own. The remaining two true
-negatives -- `Unknown kinds refuse whole` and `it does not invent release or expiry` -- rewrote
-into affirmative sentences holding the same facts, every bound name and citation held exactly.
-Register rose from 63 (37% negative of 8) to 100 (0% negative of 9), composite from 78 to 93. The
-module's own selftest and a touching witness, `mycelium_pledge_witness.rish`, re-run GREEN; no
-code line moved. **YOURS:** `muster.rye` (72), `purse.rye` (72), `statement.rye` (74),
-`tenure.rye` (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), and `rehearsal.rye`
-(75) all stay below B and wait for the same lift, one file at a time.
+**GRASS -- `MUSTER.RYE`'S HEAD LIFTS C+ TO A.** [Account](../active-designing/date/20261003/20261003-091351_grass-muster-module-head-account.md):
+fourteen negative sentences across three paragraphs -- `nothing said`, `cannot prove`, `never
+told`, `blind spot`, `not because`, `never stored ... cannot lower`, `never counts`, `refused
+whole, never silently trimmed`, `not yet believed`, `REFUSES`, `never enrolled`, `editing none`,
+the closing `no real ... no funds, no network, no custody` -- rewrote into affirmative sentences
+holding the same facts; a first pass raised the reach grade level above the Door ceiling by
+compounding sentences, and a second split them back short, holding register. Register rose from
+36 (64% negative of 14) to 89 (11% negative of 18), composite from below B to A/90.
+`mycelium_muster_witness.rish` re-runs GREEN; no code line moved. **YOURS:** `purse.rye` (72),
+`statement.rye` (74), `tenure.rye` (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71),
+and `rehearsal.rye` (75) all stay below B and wait for the same lift, one file at a time.
 
 **DIFFUSER -- THE WITNESS READS OK AT EVERY BOUNDARY IT NAMES.** Elder account
 [shelved](archive/date/20261003/20261003-082538_itinerary-diffuser-one-live-site-account.md).
@@ -359,7 +351,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `19f59bf032` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `1de1158a8d` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
