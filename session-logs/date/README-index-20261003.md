@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.042931 | [Petrichor's twenty-ninth reading, lesson 4 checked](20261003/20261003-042931_petrichor-twentyninth-reading-lesson-four-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 92; lane still clean |
 | 20261003.042346 | [vols-survey-kyri-rostered](20261003/20261003-042346_vols-survey-kyri-rostered.kyri) | Rosters vols_survey_kyri_witness (CION VOLS r3), the Journey 13 family complete; card folded back under bound |
 | 20261003.042314 | [Petrichor's twenty-eighth reading, lesson 3 checked](20261003/20261003-042314_petrichor-twentyeighth-reading-lesson-three-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 92; lane still clean |
 | 20261003.041719 | [cord_byzantine head negation and grade](20261003/20261003-041719_cord-byzantine-head-negation-and-grade.kyri) | module head D/below-B to A/93; register 46 to 100, zero code moved |
