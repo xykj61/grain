@@ -235,3 +235,23 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.040917` declined a thirty-sixth, and met a true divergence on its own first send.**
+Round-opened clean, then re-opened twice more as peer pushes (petrichor's doorway log, Fire's own
+empty-queue row) landed mid-lap; claim board stayed clear of this lane throughout
+(`bakery-root-finder-convert` stale, `copal-vols-classify-roster` building, no overlap). `git log
+8c898eafb7..HEAD -- construction/REDS.md` read empty at every recheck, so the settled twenty-OPEN
+count from `20261003.025522` stands unread rather than re-derived. Wrote the usual decline account
+and its session log, committed, and the first `git push xy main` was rejected -- a peer had pushed
+between this lap's own round-open and its commit. `fleet_round_open.sh` answered `true divergence`,
+parked the two local commits whole on `pier/diverged-20261003-040725` (pushed, nothing lost), and
+reset main to the anointed order. Re-checked the board and the REDS diff fresh against the new
+HEAD before writing this account a second time, rather than trusting the parked commit's own
+reasoning past the moment it was taken. `fleet_clock.sh report` named two peer HEADs
+(`8011c2de1e`, `644cedb2b6`) this tree could not resolve as ancestors -- read correctly as those
+seats' own unpushed local work on their own trees, not a missed pull, once a third round-open
+confirmed `xy/main` already held everything this tree could fetch. Cold run held unlaunched, per
+the inner prompt's own current order. Next: unchanged -- the law lane waits on a human word at
+`%642` or `%519`, or a fresh look at any of the twenty OPEN REDS rows; a rejected push on a quiet
+lane is ordinary peer traffic rather than a fault, and the right answer is round-open again, re-
+check the board and the diff fresh, and rewrite the account against the HEAD that actually ships.
