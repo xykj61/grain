@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.232943 | [Grass's twenty-first reading, label essay clean](20261002/20261002-232943_grass-twenty-first-reading-label-essay-clean.kyri) | one fresh diffuser essay graded A/93, no frame opened |
 | 20261002.232632 | [Grass's nineteenth reading, three diffuser essays clean](20261002/20261002-232632_grass-nineteenth-reading-three-diffuser-essays-clean.kyri) | three fresh arena-window essays graded B+/A, none below B, no frame |
 | 20261002.232556 | [Petrichor's twenty-third reading, still fallow](20261002/20261002-232556_petrichor-twenty-third-reading-still-fallow.kyri) | second consecutive fallow lap; fruit landed A/91, no new target, no re-run witness |
 | 20261002.231716 | [Petrichor's twenty-second reading, the lane still fallow](20261002/20261002-231716_petrichor-twenty-second-reading-queue-fallow.kyri) | round-opened clean, no claim or OPEN REDS row for this lane, doorway witness run fresh GREEN |
