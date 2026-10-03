@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.043245 | [the contested send %803 names, met and carried](20261003/20261003-043245_contested-send-nib-carried.kyri) | round-open's rebase moved HEAD's parent after the nib was written; follow-up shape carries it to 832f733578 |
 | 20261003.042847 | [the thirty-sixth decline, priced rather than counted](20261003/20261003-042847_thirty-sixth-decline-priced.kyri) | six numbered OPEN REDS rows priced, each waits on a named hand; %642/%519 unchanged |
 | 20261003.042346 | [vols-survey-kyri-rostered](20261003/20261003-042346_vols-survey-kyri-rostered.kyri) | Rosters vols_survey_kyri_witness (CION VOLS r3), the Journey 13 family complete; card folded back under bound |
 | 20261003.042314 | [Petrichor's twenty-eighth reading, lesson 3 checked](20261003/20261003-042314_petrichor-twentyeighth-reading-lesson-three-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 92; lane still clean |
