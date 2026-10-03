@@ -1,0 +1,21 @@
+# landed_line_witness.rish -- a finished design names a shipping page that exists.
+#
+# The control reds an absent path and a line with two paths. The live roster is
+# the three design pages that carry Landed lines. Unmarked pages are not a failure.
+#
+#   rishi/bin/rishi run tools/l/landed_line_witness.rish
+
+let control = run ["sh" "tools/fixtures/l/landed_line_control.sh"]
+assert control.ok else "landed-line control failed"
+assert (control.out contains "behaviors=4") else "landed-line control changed its behavior count"
+assert (control.out contains "failed=0") else "landed-line control reported a failure"
+assert (control.out contains "verdict=ok") else "landed-line control did not answer ok"
+
+let scan = run ["sh" "tools/fixtures/l/landed_line_scan.sh"]
+assert scan.ok else "landed-line scan failed"
+assert (scan.out contains "verdict=ok") else "landed-line scan did not answer ok"
+assert (scan.out contains "missing=0") else "a landed line names a path the tree lacks"
+assert (scan.out contains "bad=0") else "a landed line is not one path"
+assert (scan.out contains "landed=4") else "the opted-in pages changed their landed lines"
+
+say "GREEN: landed line -- four shipping paths resolve, and an absent path reds."

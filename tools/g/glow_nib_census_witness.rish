@@ -1,0 +1,23 @@
+# glow_nib_census_witness.rish -- count glow nibs that end in -v0.
+#
+# The nib strings stay. Comlink is the family read by hand: two -v0 records,
+# beside a -v2 record the census does not count. The pin is the count on
+# 20261003. A new -v0 nib moves this pin in the same commit that adds it.
+#
+#   rishi/bin/rishi run tools/g/glow_nib_census_witness.rish
+
+let control = run ["sh" "tools/fixtures/g/glow_nib_census_control.sh"]
+assert control.ok else "glow-nib census control failed"
+assert (control.out contains "behaviors=5") else "glow-nib census control changed its behavior count"
+assert (control.out contains "failed=0") else "glow-nib census control reported a failure"
+assert (control.out contains "verdict=ok") else "glow-nib census control did not answer ok"
+
+let scan = run ["sh" "tools/fixtures/g/glow_nib_census_scan.sh"]
+assert scan.ok else "glow-nib census failed"
+assert (scan.out contains "verdict=ok") else "glow-nib census did not answer ok"
+assert (scan.out contains "files_v0=76") else "glow-nib file pin moved"
+assert (scan.out contains "nibs_v0=76") else "glow-nib pin moved"
+assert (scan.out contains "family_comlink=2") else "the comlink family count moved"
+assert (scan.out contains "family_named=comlink") else "the census lost the comlink family"
+
+say "GREEN: glow nib census -- 76 waymark nibs end in -v0, and the strings stay."

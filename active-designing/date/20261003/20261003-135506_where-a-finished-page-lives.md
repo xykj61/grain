@@ -31,7 +31,7 @@ The voice stays the voice of the shelf. Bhakta at the Door is the product shelf,
 
 [`../../../.claude/rules/design-rooms.md`](../../../.claude/rules/design-rooms.md) keeps an essay in `active-designing/` when the essay would still be worth reading if the code were deleted. A bound, a name, and a reason still meet that test after a witness goes green. The essay stays.
 
-What changes is the door. When the witness is green and the surface is steady, the design gains one landed line. The line names the shipping page. The shipping page is crushed onto the shelf that matches the visitor:
+What changes is the door. When the witness is green and the surface is steady, the design gains one landed line. The line begins with Landed: and names one shipping path, relative to the repo root. The scan at tools/fixtures/l/landed_line_scan.sh checks that the path is a file. The shipping page is crushed onto the shelf that matches the visitor:
 
 - a lookup goes to `docs-geode/api/` or `manual/reference/`
 - a first run goes to `docs-geode/tutorials/` or `manual/tutorials/`
@@ -42,8 +42,10 @@ The crush copies what already runs, behavior the witness has shown. Dated pages 
 
 ## The health face
 
-[`../../../sundial/README.md`](../../../sundial/README.md) is the health of the day, already landed. Its `emit` writes a baton a reader can check, and fascia is one field on that baton. A finer fascia face, once witnessed, updates that emit and may crush a short reference note. The design of the bound lives beside this page, at [`20261003-135506_the-fascia-face.md`](20261003-135506_the-fascia-face.md). Until that witness is green, Sundial's whole-number field is the face a reader can trust.
+[`../../../sundial/README.md`](../../../sundial/README.md) is the health of the day, already landed. Its `emit` writes a baton a reader can check. The fascia percent stays, and the finer face is the second field. The design of the bound lives beside this page, at [`20261003-135506_the-fascia-face.md`](20261003-135506_the-fascia-face.md).
 
 ## What this page does not do
 
 `manual/` stays at the root. The voices already seated stay the voices. A quiet module whose witness is already green keeps its words. Sundial's quiet months are the quiet of a landed face.
+
+Landed: manual/README.md

@@ -1,0 +1,21 @@
+# receipt_crawl_witness.rish -- one day of receipts, printed, with no cut.
+#
+# The control proves oldest-first order, here=yes, here=no, a file left in place,
+# a bound, and a non-directory refusal. The live pass reads one day shelf.
+#
+#   rishi/bin/rishi run tools/r/receipt_crawl_witness.rish
+
+let control = run ["sh" "tools/fixtures/r/receipt_crawl_control.sh"]
+assert control.ok else "receipt-crawl control failed"
+assert (control.out contains "behaviors=6") else "receipt-crawl control changed its behavior count"
+assert (control.out contains "failed=0") else "receipt-crawl control reported a failure"
+assert (control.out contains "verdict=ok") else "receipt-crawl control did not answer ok"
+
+let scan = run ["sh" "tools/fixtures/r/receipt_crawl_scan.sh" "session-logs/date/20261003"]
+assert scan.ok else "receipt-crawl scan failed"
+assert (scan.out contains "verdict=ok") else "receipt-crawl scan did not answer ok"
+assert (scan.out contains "receipts=") else "receipt-crawl scan did not count receipts"
+assert (scan.out contains "paths=") else "receipt-crawl scan did not count paths"
+assert (scan.out contains "refused=0") else "a file line named a path outside the root"
+
+say "GREEN: receipt crawl -- one day printed, oldest stamp first, and nothing was cut."

@@ -481,3 +481,9 @@ remaining names are still genuinely unshaped is worth a pass of its own.*
 ## String over slug append - `20261002.154049`
 
 | **string** | The stable hyphenated name a ladder, a file, or a draw is known by. The Rye value type is the same word and stays. Seated `20261002.154049` on Keaton's word, over the retired naming word. Rule [`../.claude/rules/vocabulary-string-over-slug.md`](../.claude/rules/vocabulary-string-over-slug.md). The front-door waymark's living string is `root-readme-long-return-foundation-weave-and-seed-legitimacy`. |
+
+## Receipt crawl append - `20261003.150138`
+
+| **receipt crawl** | A reading of session logs from the oldest stamp toward the newest. It collects each `file` path and prints whether that path is still a file. It opens no cut. Seated `20261003.150138`. Scanner: `tools/fixtures/r/receipt_crawl_scan.sh`. Design: `active-designing/date/20261003/20261003-112527_the-receipt-crawl.md`. |
+| **glean** | The peer name of the receipt crawl. The link-walk keeps the word crawl. Glean is this walk. Same scanner, same refusal to cut. Seated `20261003.150138`. |
+| **private trail** | A later room for an explorer on a shared stream. It sees new facts arrive on the parent, and its own writes stay off the parent until a hand promotes them. No module is born. Seated `20261003.150138` as a name. |
