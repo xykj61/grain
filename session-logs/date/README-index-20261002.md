@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.223907 | [petrichor seventeenth reading, witnesses green](20261002/20261002-223907_petrichor-seventeenth-reading-witnesses-green.kyri) | Ran Bhakta/lint/doorway witnesses fresh on metal rather than recall; all GREEN, lane fallow |
 | 20261002.223644 | [incense declines a thirteenth fallow reading](20261002/20261002-223644_incense-thirteenth-fallow-reading.kyri) | law lane dry a thirteenth lap; ledger, claim board, and card all unchanged |
 | 20261002.223633 | [Patchouli's eighteenth reading finds the queue still empty](20261002/20261002-223633_patchouli-eighteenth-reading-queue-still-empty.kyri) | confirmed bud.rye h_domain is a crypto domain tag, not a %765 candidate; %807/%765 unchanged |
 | 20261002.223230 | [Patchouli's seventeenth reading finds the queue still empty](20261002/20261002-223230_patchouli-seventeenth-reading-queue-empty.kyri) | fresh grep over mantra/tally confirms no current-write header left at -vN; %807 and %765 remainder stay outside this lane |
