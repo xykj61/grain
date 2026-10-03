@@ -266,3 +266,12 @@ on the card's agent-doable queue are unchanged, each still naming a human word. 
 a human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of the sixteen OPEN rows
 reopens law-lane work; incense holds rather than re-deriving the same unmoved ground a
 twenty-second time.
+
+**Lap `20261003.000106` declined a twenty-second.** Round-opened clean, open on `545d0a140a`, no
+new upstream commit since the prior lap's own push -- every live seat but copal reads that same
+HEAD. Claim board carries `bakery-root-finder-convert` (stale) and
+`copal-ironbeetle-ep034-census-roster` (building), neither in this lane. `%642` and `%519` on the
+card's agent-doable queue are byte-for-byte unchanged, each still naming a human word rather than a
+lap. Next: unchanged -- a human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of
+the sixteen OPEN REDS rows reopens law-lane work; incense holds rather than re-deriving the same
+unmoved ground a twenty-third time.
