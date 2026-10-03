@@ -235,3 +235,16 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.040917` declined a thirty-sixth into the hottest pier traffic this lane has met --
+three true divergences and one lost-race rebase on a single send, every one carrying the same
+zero-impact record.** The claim board stayed clear of this lane across sixteen intervening commits
+(`bakery-root-finder-convert` stale; a `copal-vols-survey-kyri-roster` claim building with no
+overlap); `git log 8c898eafb7..HEAD -- construction/REDS.md` read empty at every one of four
+rechecks, so the settled twenty-OPEN count from `20261003.025522` stands unread. Each rejected push
+was answered by `fleet_round_open.sh` exactly as designed -- park whole onto a named
+`pier/diverged-*` branch (already pushed, nothing lost) or rebase cleanly when the lines did not
+cross, recheck fresh, rewrite, retry. Cold run held unlaunched, per the inner prompt's own current
+order. Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh look
+at any of the twenty OPEN REDS rows; a hot pier costs this lane retries rather than correctness, and
+a trivial decline record is exactly the lap to absorb that cost rather than a lap carrying real work.
