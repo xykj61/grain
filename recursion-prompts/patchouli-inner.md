@@ -65,6 +65,17 @@ Thirty-nine families remain outside this lane. The queue read empty three times 
 this one surfaced on re-grep -- re-run the appendSlice/schema grep fresh each lap rather than
 trusting the prior lap's reading.
 
+**The queue reads empty a fourth way, `20261002.231406`.** This lap tried a different net than
+the prior lap's added-files-since-ruling diff: a bare pattern grep for `-v[0-9]` suffixed
+literals and assignments across the whole of `mantra/` and `tally/`, rather than only files born
+after `%765`'s ruling stamp. It still catches nothing new -- the weave's and the commit log's
+elder `v1`/`v2` read-compat headers, `receipt_offer.rye`'s already-ruled `schema_v1`, and
+`tally/bud.rye`'s `h_domain`, a cryptographic domain-separator string its own file banner pins as
+never-changes, a Tier 1 constant that was never a record-version header and so never a `%765`
+family at all. Two different search methods now agree. This lap also found and closed a standing
+debt: two live PATCHOULI blocks had sat unshed on the card for two laps running, against
+the-writer-sheds' one-live-account rule -- folded to one in the same commit as this finding.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

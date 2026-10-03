@@ -238,26 +238,19 @@ falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_alloc
 and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
 **YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
 
-**PATCHOULI -- CASE 8 LANDED, TWO ELDER YOURS ITEMS FOUND ALREADY CLOSED.** [Shelved
-whole](archive/date/20261001/20261001-231557_itinerary-patchouli-case8-account.md): the consent
-replay witness's thirteen refusal readings GREEN; `mantra_weave_tablecloth_seam` was already
-registered and GREEN, and the snapshot artifact stays named-but-dormant on `max_bindings`.
-**YOURS:** `%807` (a head insert has no anchor in `mantra/src/weave.rye`) stays OPEN for Keaton's
-ruling among its three named doors; Linengrow's own `ConsentState -> LinengrowConsent` projection,
-past this lane's own door.
-
-**PATCHOULI -- THE QUEUE READS EMPTY AGAIN, AND `RECEIPT_OFFER.RYE`'S `SCHEMA_V1` IS RULED OUT BY
-NAME.** [Shelved whole](archive/date/20261002/20261002-225629_itinerary-patchouli-consent-schema-molt-shed.md):
-the prior account (the consent-schema molt) stands and is recorded there. This lap re-walked
-`mantra/` and `tally/` fresh for a `%765` family born after the ruling (`20260916.064510`):
-`git diff-tree --diff-filter=A` on every commit dated on or after that stamp lists sixteen new
-files in the two rooms, and none carries a counted-suffix schema string. `mantra/src/receipt_offer.rye`'s
-`schema_v1 = "grain.receipt-offer.v1"` is the only remaining counted constant in this lane, and the
-prior account already names why it stays untouched: committed `20260913.161728`, before `%765`'s
-ruling, so it is an elder header under accrete-never-break. Confirmed again this lap: no file
-outside `mantra/src/`'s own witnesses references the literal string, and `dimeroll/receipt_offer.rye`
-/ `linengrow/receipt_offer.rye` (the only cross-lane files sharing the name) hold neither the
-constant nor the literal, so there is nothing here even a willing hand could safely move.
+**PATCHOULI -- TWO ELDER ACCOUNTS SHELVED TO ONE, AND THE QUEUE READS EMPTY A FOURTH WAY.** Two
+live blocks had stood on this card unshed for two laps -- case 8
+([shelved](archive/date/20261002/20261002-231406_itinerary-patchouli-case8-shed.md)) and the
+receipt_offer ruling ([shelved](archive/date/20261002/20261002-231406_itinerary-patchouli-queue-empty-receipt-offer-shed.md))
+-- and this lap folds both to one, per the-writer-sheds. This lap also re-walked `mantra/` and
+`tally/` fresh, by a different method than the prior lap's added-files-since-ruling grep: a bare
+`grep -rnE '"[a-zA-Z0-9._-]+-v[0-9]+"|-v[0-9]+ =|schema_v[0-9]'` over both rooms. It surfaces
+nothing new: the `mantra-weave-v1`/`v2` and `mantra-commit-v1`/`v2` headers are elder readers kept
+open forever by design; `mantra/src/receipt_offer.rye`'s `schema_v1` is the already-ruled elder
+header; and `tally/bud.rye`'s `h_domain = "...pedersen-H/v1"` is a cryptographic domain-separator
+string whose own file banner states it **pinned, never changes** -- a Tier 1 constant outside
+`%765`'s reach entirely, never a record-version header. `tally/gardens.rye`'s "Tally v1" is prose
+naming the module's design stage, not a stored header.
 **YOURS:** thirty-nine families of `%765` remain outside this lane; `%807` stays OPEN for Keaton's
 ruling.
 
@@ -349,7 +342,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `abe69b9cac` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `dd1897adfc` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
