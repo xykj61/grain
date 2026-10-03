@@ -1,0 +1,95 @@
+# publish-seed.rish -- project the public seed, prove it clean, and publish ww.
+#
+# Launch from the field root through the POSIX edge:
+#   sh publish-seed.sh
+#   sh publish-seed.sh --push
+#
+# The bare form stops before the push. Custody gate %1 is the force-push, and
+# --push is the maintainer's own word. Every command below is a bounded run.
+
+assert length args < 2 else "publish-seed: one argument at most"
+let pushing = "no"
+if length args == 1 then let pushing = args[0]
+if pushing == "--push" then let pushing = "yes"
+if pushing != "yes" then if pushing != "no" then let pushing = "bad"
+assert pushing != "bad" else "publish-seed: unknown argument (want --push, or nothing)"
+
+let root_run = run ["pwd"]
+assert root_run.ok else "publish-seed: pwd refused"
+let root = trim root_run.out
+let card = run ["test" "-f" "construction/ITINERARY.md"]
+assert card.ok else "publish-seed: this directory is not the field root"
+
+# The .git is wiped first, so a prior publish is outside the witness.
+let wiped = run ["rm" "-rf" "seed/.git"]
+assert wiped.ok else "publish-seed: could not clear seed/.git"
+
+say "publish-seed: projecting the seed from template-manifest.kyri ..."
+let projected = run ["rishi/bin/rishi" "run" "tools/s/sow.rish"]
+assert projected.ok else "publish-seed: the projection refused -- nothing published"
+
+say "publish-seed: proving the seed clean ..."
+let proved = run ["rishi/bin/rishi" "run" "tools/s/sow_witness.rish"]
+assert proved.ok else "publish-seed: THE SEED IS NOT PROVABLY CLEAN -- nothing published, nothing initialised"
+
+let inited = run ["git" "init" "-q" "-b" "main" "seed"]
+if inited.ok == false then let fallback = run ["git" "init" "-q" "seed"] else let fallback = run ["true"]
+assert fallback.ok else "publish-seed: git init refused"
+if inited.ok == false then let renamed = run ["git" "-C" "seed" "symbolic-ref" "HEAD" "refs/heads/main"] else let renamed = run ["true"]
+assert renamed.ok else "publish-seed: could not name the branch main"
+
+# The arming line tools/fixtures/c/commit_message_guard_scan.sh reads.
+let arm = run ["git" "-C" "seed" "config" "core.hooksPath" (root + "/tools/hooks")]
+assert arm.ok else "publish-seed: could not arm core.hooksPath"
+let unsigned = run ["git" "-C" "seed" "config" "commit.gpgsign" "false"]
+assert unsigned.ok else "publish-seed: could not leave the seed unsigned"
+let named = run ["git" "-C" "seed" "config" "user.name" "grain-ww"]
+assert named.ok else "publish-seed: could not set the seed author name"
+let mailed = run ["git" "-C" "seed" "config" "user.email" "grain-ww@users.noreply.github.com"]
+assert mailed.ok else "publish-seed: could not set the seed author email"
+let remote = run ["git" "-C" "seed" "remote" "add" "ww" "git@github.com:grain-ww/grain.git"]
+assert remote.ok else "publish-seed: could not add remote ww"
+
+let staged = run ["git" "-C" "seed" "add" "-A"]
+assert staged.ok else "publish-seed: git add refused"
+let shipped_subject = "crashed-wave"
+let committed = run ["git" "-C" "seed" "commit" "-q" "-m" shipped_subject]
+assert committed.ok else "publish-seed: the seed commit refused"
+
+let head_run = run ["git" "-C" "seed" "rev-parse" "HEAD"]
+assert head_run.ok else "publish-seed: could not read the seed HEAD"
+let head = trim head_run.out
+let signed_run = run ["git" "-C" "seed" "log" "-1" "--format=%G?"]
+assert signed_run.ok else "publish-seed: could not read the signature flag"
+let signed = trim signed_run.out
+let author_run = run ["git" "-C" "seed" "log" "-1" "--format=%an <%ae>"]
+assert author_run.ok else "publish-seed: could not read the seed author"
+let author = trim author_run.out
+let parent_probe = run ["git" "-C" "seed" "rev-parse" "--verify" "HEAD^"]
+assert parent_probe.ok == false else "publish-seed: the seed commit has a parent"
+assert signed == "N" else "publish-seed: the seed commit is signed"
+assert author == "grain-ww <grain-ww@users.noreply.github.com>" else "publish-seed: the seed author is not grain-ww"
+
+say "publish-seed: committed ${head}"
+say "publish-seed: signed=${signed} parents=0"
+say "publish-seed: author=${author}"
+
+let jail = root + "/.git/ssh_config_jail"
+let urbit = root + "/.git/ssh_config_urbit"
+let jail_there = run ["test" "-f" jail]
+let ssh_conf = jail
+if jail_there.ok == false then let ssh_conf = urbit
+if pushing == "yes" then let ssh_there = run ["test" "-f" ssh_conf] else let ssh_there = run ["true"]
+assert ssh_there.ok else "publish-seed: no repo-local ssh config -- the push would use the host's"
+
+if pushing != "yes" then say "publish-seed: STOPPING BEFORE THE PUSH -- custody gate %1, the maintainer's own hand."
+if pushing != "yes" then say "publish-seed: the seed is projected, proven clean, and committed. To publish ww:"
+if pushing != "yes" then say "  sh publish-seed.sh --push"
+if pushing != "yes" then say "publish-seed: or by hand, dry-run first:"
+if pushing != "yes" then say "  GIT_SSH_COMMAND='ssh -F ${ssh_conf}' git -C seed push --dry-run --force ww HEAD:main"
+if pushing != "yes" then say "  GIT_SSH_COMMAND='ssh -F ${ssh_conf}' git -C seed push --force ww HEAD:main"
+
+if pushing == "yes" then say "publish-seed: force-pushing ww ..."
+if pushing == "yes" then let pushed = run ["git" "-C" "seed" "push" "--force" "ww" "HEAD:main"] else let pushed = run ["true"]
+assert pushed.ok else "publish-seed: the ww push refused"
+if pushing == "yes" then say "publish-seed: published ${head} to grain-ww/grain"

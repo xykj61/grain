@@ -353,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e104b9d497` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `fd847c2900` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
@@ -480,7 +480,7 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 
 ## Custody gates -- an autonomous agent STOPS here and surfaces
 
-1. **Public seed publishing.** An agent may prove a projection; it must never run `publish-seed.sh` or perform its push.
+1. **Public seed publishing.** An agent may prove a projection; it must never run `publish-seed.sh`, `publish-seed.rish`, or perform its push.
 2. **Provisioning and payment** for clouds, hardware, subscriptions, domains, services, or outside work.
 3. **Real data, money, keys, wallets, custody, and payment rails.** Synthetic fixtures and simulated settlement remain agent-doable.
 4. **Keaton's real Kumara instance** and every derivation from his keeper.

@@ -213,7 +213,8 @@ template  PUBKEYS.template.md              # the withheld-fill-in template itsel
 # there is nothing here for a scrub to catch on the way out. Excluded with `sub_exclude`, which is
 # how this manifest withholds a file inside an allowed room -- the same form `context/keys` takes.
 sub_exclude nixos/local.kyri
-personal  publish-seed.sh                  # the field's own projector -- the seed is its OUTPUT, never its carrier (REDS %444)
+personal  publish-seed.sh                  # the POSIX launch edge; the seed is its OUTPUT, never its carrier (REDS %444)
+personal  publish-seed.rish                # the publisher steps; same verdict, the seed stays the output
 template  publish-seed.template.sh        # the same five steps with the five literals as stubs;
                                         # verbatim, since it names nobody and no host by construction
 personal  PUBKEYS.md                       # real SSH + OpenPGP fingerprints

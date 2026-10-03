@@ -141,6 +141,7 @@
 # costing every one of them a full cold roster pass every lap. It stays OUT of the public seed by
 # the `personal` verdict in template-manifest.kyri, which is a decision rather than an accident.
 !/publish-seed.sh
+!/publish-seed.rish
 !/publish-seed.template.sh
 !/.claude/
 # STOA elder trees vere/ · old/ — untracked `20260725` (Framework ritual).

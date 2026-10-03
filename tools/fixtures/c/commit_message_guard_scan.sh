@@ -128,11 +128,11 @@ else
 fi
 
 # --- the seed projection arms the same wall, proven end to end ---------------------
-# publish-seed.sh deletes and re-creates seed/.git on every publish, so a hooksPath set by
-# hand would be wiped on the next run. That the script sets it is checked here by reading
-# the script -- and that setting it actually stops a commit is checked by doing it, in a
+# publish-seed.rish deletes and re-creates seed/.git on every publish, so a hooksPath set by
+# hand would be wiped on the next run. That the rishi sets it is checked here by reading
+# the arming argv -- and that setting it actually stops a commit is checked by doing it, in a
 # throwaway repo armed exactly the way the publisher arms the seed.
-if grep -q 'git -C seed config core.hooksPath' publish-seed.sh; then
+if grep -q '\["git" "-C" "seed" "config" "core.hooksPath"' publish-seed.rish; then
   echo "SEED_PUBLISHER_ARMS 1"
 else
   echo "SEED_PUBLISHER_ARMS 0"
@@ -163,7 +163,7 @@ else
 fi
 
 # The message the publisher actually ships must pass the wall it now arms.
-shipped=$(grep -oE '^  -m "[^"]*"' publish-seed.sh | sed -E 's/^  -m "//; s/"$//')
+shipped=$(sed -n 's/^let shipped_subject = "\([^"]*\)"$/\1/p' publish-seed.rish)
 printf '%s\n' "$shipped" > "$WORK/shipped"
 if sh "$HOOK" "$WORK/shipped" >/dev/null 2>&1; then
   echo "SEED_SHIPPED_MESSAGE_PASSES 1"

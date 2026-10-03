@@ -54,10 +54,10 @@ assert scan.out contains "GUARD_MESSAGE_KEPT 1" else "commit-guard: the hook alt
 # has to live in the script, and it is proven by doing rather than by reading: a throwaway
 # repo armed exactly the way the publisher arms the seed refuses a forbidden message and
 # welcomes a clean one, and the message the publisher actually ships is fed to the hook.
-assert scan.out contains "SEED_PUBLISHER_ARMS 1" else "commit-guard: publish-seed.sh no longer arms the seed repo -- a fresh seed/.git would publish unguarded"
+assert scan.out contains "SEED_PUBLISHER_ARMS 1" else "commit-guard: publish-seed.rish no longer arms the seed repo -- a fresh seed/.git would publish unguarded"
 assert scan.out contains "SEED_ARMED_REFUSES 1" else "commit-guard: a repo armed the way the publisher arms the seed let a forbidden message through"
 assert scan.out contains "SEED_ARMED_WELCOMES 1" else "commit-guard: a repo armed the seed's way refused a clean message -- the wall would block every publish"
-assert scan.out contains "SEED_SHIPPED_MESSAGE_PASSES 1" else "commit-guard: the message publish-seed.sh actually ships does not pass the wall it arms"
+assert scan.out contains "SEED_SHIPPED_MESSAGE_PASSES 1" else "commit-guard: the message publish-seed.rish actually ships does not pass the wall it arms"
 
 # The wall must be standing here, not merely shippable. A fresh clone lands RED with a one-line fix.
 assert scan.out contains "GUARD_ARMED 1" else "commit-guard: this clone is not armed -- run `rishi/bin/rishi run tools/i/install_hooks.rish` to point core.hooksPath at tools/hooks"
