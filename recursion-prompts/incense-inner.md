@@ -262,3 +262,12 @@ door, or the fourteen OPEN rows reopen law-lane work.
 upstream commit. Claim board clear of this lane (`bakery-root-finder-convert`, stale). REDS OPEN
 roll unchanged at fourteen, re-verified by each row's own last marker. `%642` and the wire-ceiling
 door unchanged. Next: unchanged.
+
+**Lap `20261002.224210` declined a fourteenth.** Round-opened clean, open on `2412050245`, no new
+upstream commit. Claim board clear of this lane (`bakery-root-finder-convert` stale,
+`copal-ironbeetle-ep030-census-roster` building). REDS OPEN roll unchanged at fourteen -- `%827
+%826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456` -- re-verified with a corrected
+reading script after the first pass mis-split on a non-REDS `*Row %745 ...` paragraph. `%642`'s
+scrub trade, `%519`'s ratchet, and the wire-ceiling door read exactly as the prior lap left them.
+Next: unchanged -- a human glance at `%642`'s scrub trade, the wire-ceiling door, or the fourteen
+OPEN rows reopens law-lane work; incense holds rather than re-deriving unmoved ground.
