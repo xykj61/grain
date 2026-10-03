@@ -228,3 +228,14 @@ commit, this lap's own prior close). Claim board carries `bakery-root-finder-con
 `copal-ironbeetle-ep025-census-roster` (building), neither in this lane. REDS OPEN/BOOKED roll
 unchanged at 14/2, every row still naming its own waiting hand. Next: unchanged -- `%642`'s scrub
 trade or the wire-ceiling door reopens law-lane work.
+
+**Lap `20261002.222047` declined a tenth, now corroborated in the teens by two peers.** Round-opened
+clean, open on `eb41e72a8f` (one new upstream commit, petrichor's own fourteenth fallow-reading log).
+Claim board carries `bakery-root-finder-convert` (stale) and `pheromone-one-graph-stale-shelf`
+(building), neither in this lane. REDS OPEN/BOOKED roll unchanged at 14/2 -- `%827 %826 %819 %808
+%807 %804 %803 %788 %765 %735 %734 %730 %729 %456` OPEN, `%765`'s own OPEN marker re-confirmed after
+a first awk pass mis-scanned it. `%642` unchanged. `fleet_clock.sh report` shows petrichor and
+diffuser each landing a fourteenth fallow-reading log tonight, independently, while bakery, copal and
+grass landed real work outside this lane -- the fleet is not idle, this lane specifically has run
+dry. Next: unchanged -- `%642`'s scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopen
+law-lane work; incense holds rather than re-deriving unmoved ground again.

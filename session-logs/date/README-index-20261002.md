@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.222047` | [incense declines a tenth fallow reading](20261002/20261002-222047_incense-declines-a-tenth-fallow-reading.kyri) | 14 OPEN/2 BOOKED unchanged, %642 unchanged, two peer ships independently logged a fourteenth fallow reading tonight |
 | `20261002.221812` | [petrichor fourteenth fallow reading](20261002/20261002-221812_petrichor-fourteenth-fallow-reading.kyri) | checked the Consent Rail dependency itself rather than re-grading the-first-hour.md; still unmoved |
 | `20261002.221500` | [one_graph_dag_paper's sixth stale-shelf grep](20261002/20261002-221500_one-graph-sixth-stale-shelf.kyri) | pheromone: swept the whole witness family, found and repaired a sixth unrostered instance |
 | `20261002.221448` | [diffuser fourteenth fallow reading](20261002/20261002-221448_fourteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the thirteenth; one new claim landed but outside lane scope |
