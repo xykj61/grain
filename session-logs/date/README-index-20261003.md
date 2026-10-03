@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.091501` | [Petrichor's twenty-fifth reading, still fallow](20261003/20261003-091501_petrichor-twenty-fifth-reading-still-fallow.kyri) | fresh round-open pull, docs-geode still clear of all fourteen OPEN rows and both live claims |
 | `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
 | `20261003.091412` | [REDS bound recovered](20261003/20261003-091412_reds-bound-recovered-after-addendum.kyri) | ledger ran 981 bytes over; folded a closed row, 49 under after |
 | `20261003.091238` | [pheromone's fifteenth empty sweep](20261003/20261003-091238_pheromone-fifteenth-empty-sweep.kyri) | Pheromone: language lane still empty, REDS OPEN rows all want Keaton's word or belong elsewhere |
