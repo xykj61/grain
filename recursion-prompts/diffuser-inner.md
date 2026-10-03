@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.095727` -- the keep-alive workload un-reverses it
 **Revised:** `20261003.093803` -- the five-times gap reverses under -OReleaseFast
 **Revised:** `20261003.092417` -- the survey finds no population to survey
 **Revised:** `20261003.042550` -- the one live site cannot see its own drift
@@ -758,6 +759,22 @@ variable that decides which allocator wins. Falsifier named rather than attempte
 once, rather than this probe's own write-then-free pattern. Graded A/95 at Field (register 94,
 reach 100, truth 100 counted, service 85 judged). No new witness, no new module; the probe file
 and its binary are deleted before the lap that wrote it ends.
+
+**Self-generated `20261003.095727`, the prior essay's own named falsifier run across workload
+shape rather than size or build mode alone.**
+[The keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md)
+runs the kin essay's own open falsifier -- does the ReleaseFast reversal survive a workload that
+keeps many objects alive at once, rather than write-then-free -- across the same seven sizes,
+two sweeps each, three full runs under `-OReleaseFast`. `Region.alloc` wins or ties in 20 of 21
+size/sweep cells, with the one exception (4,096 bytes, warm sweep) reading noisy rather than a
+clean loss; `smp_allocator`'s own warm-cache win from the prior essay is gone, because the
+keep-alive shape never hands it a block to reuse. Reframes the kin essay's "roughly a fifth of
+the cost" as surviving ReleaseFast after all, for the batch-allocate-then-clear shape every real
+caller in this tree already uses, narrowing the prior essay's own Debug-only caveat back down to
+the write-then-free shape specifically. Names the next falsifier: a mixed-lifetime workload where
+some objects outlive others inside one region's run. Graded A/94 at Field (register 92, reach
+100, truth 100 counted, service 85 judged). No new witness, no new module; the probe file is
+deleted before this lap ends.
 
 ## gates
 

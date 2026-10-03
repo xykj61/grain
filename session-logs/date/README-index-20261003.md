@@ -10,6 +10,7 @@
 | `20261003.100821` | [twentieth empty-queue sweep](20261003/20261003-100821_twentieth-empty-sweep-confirms-nineteenth.kyri) | Both `%765` grep nets and `rye_spoken_ascii_witness` re-run fresh; still nothing in this lane's custody |
 | `20261003.100600` | [eighteenth-empty-sweep-pattern-named](20261003/20261003-100600_eighteenth-empty-sweep-pattern-named.kyri) | Same empty lane; the repetition count itself named as the one new fact |
 | `20261003.100355` | [no-fruit-no-claim](20261003/20261003-100355_petrichor-no-fruit-no-claim.kyri) | docs-geode fruit closed, peer's fleet-wide claim check already stood -- reported rather than duplicated |
+| `20261003.100323` | [keepalive un-reverses release-fast](20261003/20261003-100323_keepalive-workload-un-reverses-release-fast.kyri) | Diffuser: keep-alive shape restores Region's edge |
 | `20261003.100119` | [nineteenth-sweep-found-the-breach-not-mine](20261003/20261003-100119_nineteenth-sweep-found-the-breach-not-mine.kyri) | written-ascii clean; spoken-ascii ratchet RED tree-wide, 0 hits in mantra/-tally/, named for whoever touches it next |
 | 20261003.100054 | [dependencies-census-sent-after-seven-rebases](20261003/20261003-100054_dependencies-census-sent-after-seven-rebases.kyri) | Pushed clean to ba80958aaa after seven round-open rebases, five conflicts resolved |
 | `20261003.100033` | [statement.rye's module head lifts from C+ to A](20261003/20261003-100033_statement-rye-head-lifts-c-plus-to-a.kyri) | register 54 to 96, reach 50 to 70, composite 92/A, four witnesses GREEN |

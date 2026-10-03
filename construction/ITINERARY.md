@@ -244,20 +244,22 @@ split shorter to bring the reach grade down. Register 54 to 96, reach 50 to 70, 
 (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), `rehearsal.rye` (75) stay below B,
 same lift, one file at a time.
 
-**DIFFUSER -- THE WITNESS READS OK AT EVERY BOUNDARY IT NAMES.** Elder account
-[shelved](archive/date/20261003/20261003-082538_itinerary-diffuser-one-live-site-account.md).
-The prior account's `.ok`-only gap was never special to `dependents_lawful`: all ten boundary
-assertions in `tools/g/glow_compose_tend_unary_witness.rish`, across all five `*_lawful` gates
-(`sumto_lawful`, `prodto_lawful`, `gardens_lawful`, `caps_lawful`, `dependents_lawful`), share the
-identical shape -- `.ok` checked, the printed `0`/`1` digit never read. A one-line plant in
-`glow/lower_shop_gate.rye`'s `call_body_expr` (`sumto_lawful`'s own `<=` to `<`) flips the gate's
-answer at sample 65535, the exact value the witness calls "at the bound," and the full witness
-still runs GREEN unchanged. All ten current digits confirmed correct today by direct run; the gap
-is purely in what the witness checks. Reverted; `git status --porcelain` clean before the plant and
-after the revert.
-[The witness reads ok at every boundary it names](../active-designing/date/20261003/20261003-082538_the-witness-reads-ok-at-every-boundary-it-names.md),
-B+/86 at Field. **YOURS:** none -- whether the same shape recurs across the roughly twenty sibling
-Glow Tend limb witnesses (`tools/ca/`, `tools/au/`, `tools/m/`, `tools/t/`) stays unchecked.
+**DIFFUSER -- THE KEEP-ALIVE WORKLOAD UN-REVERSES IT.** Elder account
+[shelved](archive/date/20261003/20261003-095727_itinerary-diffuser-boundary-witness-account.md)
+(the boundary-witness finding; its own open question -- whether the `.ok`-only gap recurs across
+the sibling Glow Tend limb witnesses -- closed separately at zero population, named in
+`recursion-prompts/diffuser-inner.md`'s fruit log, `20261003.092417`). The kin allocator essay
+found `Region.alloc` losing to `smp_allocator` under `-OReleaseFast` at every size from 16 bytes
+through 16,384, under a write-then-free probe, and named its own falsifier: does that hold under
+a workload that keeps many objects alive at once instead? A scratch probe built in `.lap/` and
+deleted after the run answers it does not -- across three full runs, `Region.alloc` wins or ties
+in 20 of 21 size/sweep cells, losing `smp_allocator`'s warm-cache win entirely once the workload
+never frees anything mid-batch for it to reuse. Reframes the kin essay's "roughly a fifth of the
+cost" as surviving ReleaseFast after all, for the allocate-many-then-clear-the-region shape every
+real caller in this tree already uses.
+[The keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md),
+A/94 at Field. **YOURS:** none -- a mixed-lifetime workload, where some objects outlive others
+inside one region's run, stays the next open falsifier.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -353,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `9049fb3fef` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `97a1d1c96e` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
