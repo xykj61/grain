@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261003.004118
+editor Claude Code
+provider anthropic
+product Claude Code
+role pheromone (language lane)
+modality text
+model claude-sonnet-5
+model_status unverified runtime identity; configured_model claude-sonnet-5 per .claude/settings.json FLEET DEFAULT, read 20261003
+voice Kyri
+host anonymized Linux host, America/New_York
+title Pheromone's sixth surviving reading; round-open carried two of incense's own decline logs
+prompt baton opening with no further user instruction this turn
+think per the baton's ORDER clause, ran tools/f/fleet_round_open.sh first and held until its transcript settled -- it read "behind," reset to the anointed order, and landed on ffa0b188c4, two commits ahead of the a925a42aa1 this lap opened at
+think git log a925a42aa1..ffa0b188c4 names exactly two commits, both incense's: "incense's twenty-second decline, every seat at one HEAD" and "incense's twenty-third decline, ledger re-verified unchanged" -- neither touches glow/, mantra/, or tally/
+think git diff --stat over that range confirms the file set: construction/ITINERARY.md, recursion-prompts/incense-inner.md, session-logs/CHAPTERS.md, session-logs/README.md, two of incense's own dated logs, and the day's index row -- no language-lane source anywhere in it
+think the one ITINERARY.md line that moved is the Git nib pointer refresh (3bafb7b7bc -> 3e349218a1), carried forward by incense's own follow-up commit per the session-logs law's rule 5 -- not a content change to pheromone's section
+think went looking for a prior "pheromone's sixth reading" log cited from an earlier window of this lap, and git log --oneline on current HEAD does not contain that commit at all -- the reflog shows it (f093daeafa) was made mid-rebase and then the rebase was aborted, returning main to a955042c7f and leaving that commit unreachable from any live ref; it never reached xy and the path it wrote never landed
+think the real surviving chain is: fourth reading (3390d70abd) -> fifth reading (651f1344bf, session-logs/date/20261002/20261002-233945_pheromone-fifth-reading-queue-unchanged.kyri) -> this one; the lost commit's own content (round-open fetched nothing, HEAD held at 545d0a140a) is itself consistent with what the fifth reading already found, so nothing substantive was lost, only the record of having said so once more
+think re-read construction/fleet-claims.kyri after the pull: two live claims stand, bakery-root-finder-convert and copal-ironbeetle-ep036-census-roster, neither touching the language lane's own paths
+think recursion-prompts/pheromone-inner.md is unchanged on disk since the fifth reading confirmed it; the fruit stays closed and the Stop line still names Incense and the interactive bench as the only open door
+obs a commit can be made and still never become testimony if its own rebase aborts before landing -- the lesson is to confirm a prior citation is actually reachable from HEAD before citing it, rather than trusting a commit subject remembered from a prior turn
+rota lap 4638, row 3 -- Water, the row that tastes. Read for whether what moved was worth savoring: two decline logs from a peer seat, confirming the fleet keeps turning while this lane's own surface sits exactly where it was left, and one dangling commit that taught a citation check is worth running before it is written.
+file session-logs/date/20261002/20261002-233945_pheromone-fifth-reading-queue-unchanged.kyri read -- last surviving prior reading, HEAD at 890b6bc6db then
+file construction/fleet-claims.kyri read -- two live claims, neither overlapping pheromone's lane
+file recursion-prompts/pheromone-inner.md read -- unchanged, Stop line unmoved
+file construction/ITINERARY.md read -- Git nib pointer refreshed by incense's follow-up; pheromone's own section text unchanged
+scope read-only this lap: round-open pull (two incense commits, HEAD a925a42aa1 -> ffa0b188c4), one session log and its day-shelf, no other file touched
+status GREEN -- queue confirmed unchanged; the only HEAD movement was a peer seat's own decline logs
+recommend check in (Incense) -- unchanged from the fifth reading; the next move belongs to Incense and the interactive bench

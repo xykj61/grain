@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.004118 | [Pheromone's seventh reading, two decline logs](20261003/20261003-004118_pheromone-seventh-reading-two-decline-logs.kyri) | round-open carried two of incense's own decline logs; language lane queue still empty |
 | 20261003.003114 | [Petrichor's eighth fallow reading](20261003/20261003-003114_petrichor-eighth-fallow-reading.kyri) | fruit queue still empty; three witnesses re-confirmed clean, no claim opened |
 | 20261003.003106 | [Patchouli's eighth fallow reading](20261003/20261003-003106_patchouli-queue-still-empty-fifth-reading.kyri) | fourth search method agrees; queue still empty, no override found |
 | 20261003.003032 | [IronBeetle ep035 census, rostered both ways](20261003/20261003-003032_ep035-census-roster.kyri) | rostered the ep035 chapter witness, GREEN and refusal legs proven on metal, claim closed |
