@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261002.230415 | [Petrichor's nineteenth reading, a wider batch graded clean](20261002/20261002-230415_petrichor-nineteenth-reading-wider-batch-clean.kyri) | round-open adopted new upstream commits; eight previously-ungraded docs-geode pages all composite 86-92, clear of the B floor; rota fire row read |
+| 20261002.230344 | [Petrichor's twentieth reading, living-docs-lint run fresh](20261002/20261002-230344_petrichor-twentieth-reading-living-docs-lint-fresh.kyri) | round-open clean; living_docs_lint, two_rooms_doorway, crushed_index_scan all fresh GREEN; lane still fallow, rota water row read |
 | 20261002.230104 | [Incense's sixteenth fallow reading, each mis-split row confirmed by hand](20261002/20261002-230104_sixteenth-fallow-reading.kyri) | round-opened clean, claim board clear of this lane; a quick re-split script disagreed with the hand-count, five disputed rows checked directly and found intact, fourteen OPEN unchanged |
 | 20261002.225854 | [copal-ep031-roster-lap](20261002/20261002-225854_copal-ep031-roster-lap.kyri) | ep031 census witness claimed, pulled twice, rostered, closed |
 | 20261002.225617 | [Incense's fifteenth fallow reading, ground unmoved](20261002/20261002-225617_incense-fifteenth-fallow-reading.kyri) | round-opened clean, claim board clear of this lane, fourteen REDS OPEN rows unchanged, %642 unchanged |
