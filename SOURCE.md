@@ -118,11 +118,11 @@ Run these in an **ordinary outer terminal** -- outside Cursor, outside ai-jail.
 ### C2 -- Clone Grain
 
 ```bash
-git clone https://github.com/grain-os/grain.git ~/grain
+git clone https://github.com/grain-ww/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. The maintainer's field keeps the canonical remote count at `context/REMOTE_ROSTER.md`. Living push is `xy` alone. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. The public seed is **`grain-ww/grain`**. `grain-os/grain` is a pointer at that seed. This pier's working field is a private clone; a newcomer starts at the seed. The maintainer's field keeps the canonical remote count at `context/REMOTE_ROSTER.md`. Living push is `xy` alone. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
@@ -223,7 +223,7 @@ ssh-keygen -lf ~/.ssh/id_ed25519_github.pub
 # SHA256:EXAMPLEgithubFINGERPRINTexampleEXAMPLEexample0000
 ```
 
-If this pier later carries a **second GitHub remote** (for example `debrided/grain` beside `xykj61/grain`), make a **second** SSH pair with its own filename and comment so each remote can rotate alone -- same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push.
+If this pier later carries a second GitHub remote, make a second SSH pair with its own filename and comment so each remote can rotate alone -- same shape, second file. Do **not** mint a Codeberg key for Part Two while Codeberg stays retired from living push. The living personal remote is `xy` (`xykj61/grain`). The public seed door is `ww` (`grain-ww/grain`).
 
 ---
 

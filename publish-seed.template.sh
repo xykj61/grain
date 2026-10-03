@@ -24,7 +24,7 @@ set -eu
 #
 # SEED_REMOTE_PRIMARY / SEED_REMOTE_SECOND -- the public door or doors your seed is pushed to.
 #   Profile fields: seed_remote_primary, seed_remote_second. Leave SECOND empty for one door.
-#   This tree publishes two peer names for a single projection, never two seeds.
+#   This tree publishes one door, ww. Leave SECOND empty.
 SEED_REMOTE_PRIMARY='FILL_ME:git@github.com:your-handle/your-seed.git'
 SEED_REMOTE_SECOND=''
 

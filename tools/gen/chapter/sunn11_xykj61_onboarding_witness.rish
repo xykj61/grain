@@ -5,15 +5,14 @@
 # APPLY.md is root-ignored (pier-local CREATE packs) -- never assert it here.
 
 say "sunn11: Language EN — living onboarding clones name xykj61."
-say "sunn11: Style Radiant — beginner xykj61 · origin lane debrided kept."
+say "sunn11: Style Radiant — beginner xykj61, public seed ww."
 say "sunn11: Lens TAME — SUNN11 · clone lock · xy living push · roster truth."
 
 let s = read-file "SOURCE.md"
 # THE ASSERTION FOLLOWS THE LAW IT GUARDS (`20260908.183744`, Keaton's grant). SOURCE teaches the
-# PUBLIC clone now -- `grain-os/grain` -- because `7191a938b` made one README serve both
-# repositories and the onboarding path followed it. The elder line named the private remote, which
-# a newcomer cannot reach. Nothing ran this witness, so it stood red instead of saying so (`20260908.183635`).
-assert s contains "git clone https://github.com/grain-os/grain.git ~/grain" else "sunn11: SOURCE want the public grain-os clone line"
+# PUBLIC clone is grain-ww/grain. grain-os/grain is a pointer. The elder line named the
+# private remote, which a newcomer cannot reach.
+assert s contains "git clone https://github.com/grain-ww/grain.git ~/grain" else "sunn11: SOURCE want the public grain-ww clone line"
 assert s contains "Living push is `xy` alone" else "sunn11: SOURCE want xy as the living push"
 assert (s contains "dual-push") == false else "sunn11: SOURCE still names dual-push"
 assert s contains "REMOTE_ROSTER" else "sunn11: SOURCE want REMOTE_ROSTER cite"
@@ -38,17 +37,18 @@ assert e contains "https://github.com/xykj61/grain.git" else "sunn11: enclosure 
 
 let p = read-file "tools/gen/chapter/personalize.template.brix"
 assert p contains "source_pier_clone https://github.com/xykj61/grain.git" else "sunn11: personalize want xykj61 clone"
-assert p contains "source_pier_agent_lane debrided" else "sunn11: personalize want agent lane kept"
+assert p contains "source_pier_agent_lane xy" else "sunn11: personalize want the xy lane"
 
 let f = read-file "manual/guides/first-season-personalize.md"
 assert f contains "xykj61/grain" else "sunn11: first-season-personalize want xykj61/grain"
 
 let roster = read-file "context/REMOTE_ROSTER.md"
-# `debrided` retired from living push `20261001`. The row stays findable by the same
-# forge spelling, now in the retired table.
-assert roster contains "`debrided` | GitHub `debrided/grain`" else "sunn11: roster want the retired debrided row"
+# A GitHub account named debrided is not ours. The roster says so, and it does not
+# ask a ship to configure that remote.
+assert roster contains "A GitHub username `debrided` is not ours" else "sunn11: roster want the username correction"
+assert (roster contains "GitHub `debrided/grain`") == false else "sunn11: roster must not name a debrided forge"
 # Same rename: `xykj61` -> `xy`, the anointed ordering remote whose name is the spelling this tree
 # actually types.
 assert roster contains "`xy` | GitHub `xykj61/grain`" else "sunn11: roster want xykj61 remote"
 
-say "GREEN: sunn11 — living onboarding clones xykj61 · xy is the living push · debrided retired"
+say "GREEN: sunn11 — living onboarding clones xykj61, xy is the living push, ww is the seed."

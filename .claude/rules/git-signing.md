@@ -8,9 +8,9 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
-## The one exception -- the depersonalized public seed (`seed/` -> `grain-os/grain`)
+## The one exception -- the depersonalized public seed (`seed/` -> `grain-ww/grain`)
 
-The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; identity renamed `20260828`, and root subject molted to `crashed-wave` `20260912`, both on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
+The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-ww/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; identity renamed `20260828`, and root subject molted to `crashed-wave` `20260912`, both on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
 
 That identity **carries a public key alone, on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** -- defeating the whole point of depersonalization (`tools/s/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit stays **unsigned**, by design, on Keaton's word (`20260817`).
 
@@ -21,7 +21,7 @@ cd ~/grain/seed
 git config commit.gpgsign false          # local to seed/ only
 git add -A
 git commit --amend -m "crashed-wave"
-git push --force origin main             # origin here IS grain-os/grain
+git push --force ww main                 # ww here IS grain-ww/grain
 ```
 
 This is the **only** place `commit.gpgsign` is false anywhere in the tree, and it stands as a privacy safeguard rather than a lapse.
@@ -52,7 +52,7 @@ ship in the private field carries it, while the public seed's share of it stays 
 before. `sow_witness` is GREEN with the
 verdict in place, which is how a privacy boundary moves: by proof rather than assertion.
 
-**Living remotes** (`20261001` -- Keaton's word): push **`xy`** (GitHub `xykj61/grain`). The mirror `debrided` retired the same day. Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20261003.153853` -- Keaton's word): push **`xy`** (GitHub `xykj61/grain`). There is no second personal remote. The public seed door is `ww` (`grain-ww/grain`). `grain-os/grain` is a pointer at that door, and this field does not carry a remote for it. Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
 

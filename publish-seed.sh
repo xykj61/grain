@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# publish-seed.sh -- project the public seed, prove it clean, and publish it to both doors.
+# publish-seed.sh -- project the public seed, prove it clean, and publish it to ww.
 #
 # UNTRACKED AT THE ROOT BY DESIGN. `.gitignore` blanket-ignores `/*` and un-ignores named files, so
 # this script never enters the field's history. When a clone lacks it, it is reconstructed from
@@ -8,10 +8,10 @@
 # proves the reconstruction before it ships, and it is the authority on the one line that matters.
 #
 #   sh publish-seed.sh            # project, prove, commit -- and STOP, printing the push
-#   sh publish-seed.sh --push     # the same, then force-push both doors
+#   sh publish-seed.sh --push     # the same, then force-push ww
 #
 # THE BARE FORM CANNOT PUBLISH, and that is deliberate. The seed force-push is **custody gate %1**:
-# it force-updates two public repositories and is irreversible. `construction/ITINERARY.md` says an
+# it force-updates the public seed and is irreversible. `construction/ITINERARY.md` says an
 # autonomous agent stops there and surfaces, never crosses. A script whose bare invocation cannot
 # cross a custody gate is the shape that law asks for; `--push` is the maintainer's explicit word,
 # typed once, at the moment they mean it.
@@ -76,10 +76,9 @@ git -C seed config commit.gpgsign false
 git -C seed config user.name  'grain-ww'
 git -C seed config user.email 'grain-ww@users.noreply.github.com'
 
-# Two doors, one seed. `grain-os/grain` and `grain-ww/grain` are peer names for a single projection,
-# never two seeds, so both are force-updated from the same commit in the same run.
-git -C seed remote add seed git@github.com:grain-os/grain.git 2>/dev/null || true
-git -C seed remote add ww   git@github.com:grain-ww/grain.git   2>/dev/null || true
+# One door. grain-ww/grain is the public seed. grain-os/grain is a pointer repository
+# and this script does not push it.
+git -C seed remote add ww git@github.com:grain-ww/grain.git 2>/dev/null || true
 
 # --- 4. the single Option-B root commit ----------------------------------------------------
 #
@@ -114,21 +113,19 @@ SSH_CONF="$ROOT/.git/ssh_config_jail"
 if [ "$DO_PUSH" != yes ]; then
   echo ""
   echo "publish-seed: STOPPING BEFORE THE PUSH -- custody gate %1, the maintainer's own hand."
-  echo "publish-seed: the seed is projected, proven clean, and committed. To publish both doors:"
+  echo "publish-seed: the seed is projected, proven clean, and committed. To publish ww:"
   echo ""
   echo "  sh publish-seed.sh --push"
   echo ""
   echo "publish-seed: or by hand, dry-run first:"
   echo "  cd $ROOT/seed"
-  echo "  GIT_SSH_COMMAND='ssh -F $SSH_CONF' git push --dry-run --force seed HEAD:main"
-  echo "  GIT_SSH_COMMAND='ssh -F $SSH_CONF' git push --force seed HEAD:main"
-  echo "  GIT_SSH_COMMAND='ssh -F $SSH_CONF' git push --force ww main"
+  echo "  GIT_SSH_COMMAND='ssh -F $SSH_CONF' git push --dry-run --force ww HEAD:main"
+  echo "  GIT_SSH_COMMAND='ssh -F $SSH_CONF' git push --force ww HEAD:main"
   exit 0
 fi
 
 [ -f "$SSH_CONF" ] || { echo "publish-seed: no repo-local ssh config at $SSH_CONF -- the push would use the host's" >&2; exit 1; }
 
-echo "publish-seed: force-pushing both doors ..."
-GIT_SSH_COMMAND="ssh -F $SSH_CONF" git -C seed push --force seed HEAD:main
-GIT_SSH_COMMAND="ssh -F $SSH_CONF" git -C seed push --force ww   HEAD:main
-echo "publish-seed: published $HEAD_SHA to grain-os/grain and grain-ww/grain"
+echo "publish-seed: force-pushing ww ..."
+GIT_SSH_COMMAND="ssh -F $SSH_CONF" git -C seed push --force ww HEAD:main
+echo "publish-seed: published $HEAD_SHA to grain-ww/grain"

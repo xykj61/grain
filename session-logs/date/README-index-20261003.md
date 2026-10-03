@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.155007` | [xy and ww](20261003/20261003-155007_xy-and-ww.kyri) | Personal remote is xy; seed door is ww |
 | `20261003.150930` | [three quiet instruments](20261003/20261003-150930_three-quiet-instruments.kyri) | Landed line, crawl, and nib census |
 | `20261003.144656` | [sundial fascia face](20261003/20261003-144656_sundial-fascia-face.kyri) | Units sit beside the percent |
 | `20261003.143749` | [readme shows the fascia face](20261003/20261003-143749_readme-shows-the-fascia-face.kyri) | Front door shows 58.0000 / 100 |

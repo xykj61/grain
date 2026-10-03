@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20261003.155007
+editor Cursor
+provider xAI
+product Cursor
+role captain, incense, interactive session
+modality text
+model grok-4.7
+model_status the session names Grok 4.7; no separate runtime telemetry was read
+configured_model grok-4.7-high
+configured_status launcher default in the composed-session plan and the fleet cursor rule
+evidence expanding-prompts/20261002-165006_incense-the-composed-session.md
+voice Kyri
+host grain-incense
+timezone America/New_York
+title xy and ww
+prompt Correct the living remote law: xy is the only personal remote, ww is the seed door, and grain-os is a pointer.
+think a GitHub username debrided is not ours, so living law stops telling a ship to configure it
+think dated logs, checkpoints, and the debride verb stay as written
+think a history rewrite would change every hash, so this correction stays in the working tree
+think grain-os/grain now holds one unsigned pointer commit, and ww still holds the seed
+think publish-seed.sh pushes ww only and stays shell, because the commit-msg witness reads that file
+obs sunn11 exited 0 after the roster assert and the personalize lane moved to xy
+obs fleet checkouts already name xy, and petrichor stays mid-conflict
+file context/REMOTE_ROSTER.md -- personal push is xy; seed door is ww
+file publish-seed.sh -- force-push adds remote ww and leaves grain-os unpushed
+file tools/gen/chapter/sunn11_xykj61_onboarding_witness.rish -- roster assert matches the correction
+file tools/gen/chapter/personalize.template.brix -- source_pier_agent_lane field is xy
+file context/LEXICON.md -- send to fleet names xy and ww
+file construction/ITINERARY.md -- git nib names the parent commit
+file session-logs/date/20261003/20261003-155007_xy-and-ww.kyri -- this record
+file session-logs/date/README-index-20261003.md -- prepended this log's row
+recommend kg -- merge the five xy commits and push xy
+status GREEN -- sunn11 exited 0
+scope living remote law, the pointer commit, publish-seed.sh, and this log

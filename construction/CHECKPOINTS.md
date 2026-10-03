@@ -1,5 +1,12 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261003.153853` -- walk-back nib `afb6ef04f1`.** The living remote
+roster stops naming a GitHub remote called debrided. Personal push is xy.
+The public seed door is ww. grain-os/grain is a one-commit pointer. Dated
+logs keep the words they already wrote. This is a working-tree correction.
+A history rewrite would change every hash and force every ship to re-clone,
+and the fleet checkouts are being left in place.
+
 **Checkpoint `20261003.091019` -- walk-back nib `e63f94e248`.** Fold REDS row
 `20261003.030257` (three session-log index rows over bound, CLOSED) whole from
 `construction/REDS.md` into
