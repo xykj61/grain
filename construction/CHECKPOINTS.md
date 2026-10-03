@@ -1,5 +1,14 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261002.231457` -- walk-back nib `04258f7e60`.** Shelve nine lap accounts
+(`20261002.152347` through `20261002.215135`) whole from `recursion-prompts/incense-inner.md`'s
+`next` section into
+`recursion-prompts/date/20261002/20261002-231457_incense-next-log-archive-59.md` -- the living page
+had grown to 26,487 bytes, over its 24,576-byte bound by 1,911, carrying six module-walker laps
+that closed the `rye_witness_walker` ratchet, one shed-before-write account, and the first three
+fallow-ground readings. Nothing lost: the shelved paragraphs keep every word, and the living page
+keeps a single consolidated pointer plus every reading from the eighth fallow attempt forward.
+
 **Checkpoint `20261002.134003` -- walk-back bundle `/home/keeper/lila-debride-keep/pre-lila-deep-debride-7b27f5a3cb.bundle`, pre-rewrite tip `7b27f5a3cb`.** Deep debride of the old ordering names. Rewritten signed main before this record is `a8e0115a54`. Only `xy` `main` is force-updated. The public seed stays. Local backup branches were left on the earlier history and were not pushed.
 
 **Checkpoint `20261002.125743` -- walk-back nib `580f03aa3f`.** Working-tree pass of Lila and the Long Return. The seven worker trees were clean, clocked out, and level with `xy` before this commit. The history rewrite waits for the sentence **run the deep debride**. This nib is the walk-back.
