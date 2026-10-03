@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.035611 | [Incense declines a 35th, grass owns the grading queue](20261003/20261003-035611_incense-thirty-fifth-decline-grass-owns-grading.kyri) | confirmed grass's own grading sweep covers active-designing; no duplicate work opened |
 | 20261003.035458 | [Language lane still empty, no new rune](20261003/20261003-035458_language-lane-still-empty.kyri) | rota Aether; closed fruit awaits an Incense ruling, nothing agent-doable |
 | `20261003.035346` | [grass-earth-row-head-matches-remote-nothing-new](20261003/20261003-035346_grass-earth-row-head-matches-remote-nothing-new.kyri) | Earth row applied: HEAD equals xy/main exactly, nothing new to grade |
 | 20261003.035151 | [Patchouli's flat-service near-miss](20261003/20261003-035151_patchouli-flat-service-near-miss.kyri) | sixth empty queue; caught a flat --service grading pass |
