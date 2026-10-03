@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.225028` -- a growing node's own slack dwarfs what a correct free order would recover
 **Revised:** `20261002.222020` -- the label costs 752 overhead bytes; the three joining bytes it replaces cost nothing like that
 **Revised:** `20261002.181135` -- seventy-four of seventy-five close on one script-confirmed cause
 **Revised:** `20261002.175448` -- the kin essay's own traced instance never reclaimed anything
@@ -493,6 +494,24 @@ pair each cost 838 wire bytes (86 payload, 752 overhead) -- 3.02 times the bytes
 a falsifier against Comlink's own deferred batched-frame hardening. No module, no witness, no
 Swift file; the probe is deleted and nothing lands beyond this page. Graded A/95 at Field
 (register 96, reach 100, truth 100).
+
+**Self-generated `20261002.225028`, the kin arc's own existence-finding given a magnitude.**
+[The slack a growing node pays for dwarfs what a free would recover](../active-designing/date/20261002/20261002-225028_the-slack-a-growing-node-pays-for-dwarfs-what-a-free-would-recover.md)
+asks what the closed arena-tail-free arc never asked: what would a correct free order actually
+buy back, in bytes, at production scale? A scratch probe against the vendored
+`std.heap.ArenaAllocator`, built and deleted on this host, finds forward-order and LIFO-order
+frees landing on byte-identical `queryCapacity` across every trailing allocation size tried from
+1,000 to 100,000 bytes, at `n=550, s=48` -- close to this tree's own `rye/src/std` file count and
+average path length. Traced to the vendored source: a new node's own birth size tracks the
+*previous* node's size rather than present need (`ArenaAllocator.zig:435-438`), so each growth
+event bakes in slack an order of magnitude past anything one function's own free discipline could
+recover -- the final node measured here holds 2,880 bytes of real content inside a 52,982-byte
+commitment. The reorder the kin arc named as the available fix is real and correctly described;
+its payoff disappears into a larger, separate, structural cost this codebase pays regardless of
+free order. Falsifier named rather than attempted: a function allocating near the 4,096-file
+ceiling in one pass should push items across more than one node and make the two free orders
+diverge again. Graded B+/87 at Field. No new witness, no new module; a scratch probe checked
+against the vendored allocator's own source.
 
 ## gates
 
