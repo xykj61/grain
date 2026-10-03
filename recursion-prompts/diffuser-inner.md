@@ -599,6 +599,22 @@ Graded composite 80, letter B, per `tools/fixtures/q/qa_report_card.sh --setting
 90` (register 58, reach 70, truth 100, service 90 judged). No new witness, no new module; the probe
 and its binary are deleted before this lap ends.
 
+**Self-generated `20261003.031833`, the next fruit after the swap-the-call falsifier closed, read
+from the open half the 2D-layout essay named and never built.**
+[The declarable ring is twice the livable one](../active-designing/date/20261003/20261003-031833_the-declarable-ring-is-twice-the-livable-one.md)
+reads `caravan/regions.rye`'s `max_domains=8` beside `caravan/capabilities.rye`'s `max_dependents=4`
+and finds `caravan/roster.rye`'s own `from_system` gates every live ring on the second number
+alone, never the first -- a census of every tracked `caravan/systems/` declaration finds none
+past domain_count=5, and that one exists solely to be refused. A scratch 8-domain ring (built, run,
+deleted) passes `relay.flows_of` and `cycle.ring_order` cleanly at the full declared width, with a
+planted mutation shown to bite, while the same file refuses `TooManyDomains` through
+`roster.from_system` -- proving the ring's own graph arithmetic holds at 8 and the ceiling that
+actually stops a live ring at 4 belongs to a different module's own cap. Reframes the kin essay's
+unbuilt "two sub-rings" proposal as the only path past four domains today, rather than an
+efficiency option. Graded composite 81, letter B, per `tools/fixtures/q/qa_report_card.sh` (register
+83, reach 60, truth 100, service 80 judged). No new witness, no new module; the scratch declaration
+and both drivers are deleted before this lap ends.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
