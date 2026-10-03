@@ -5,12 +5,15 @@
 //! Bounds from tools/gen/chapter/recursion_block.brix (v27 - myc opening):
 //!   myc_fact_max_bytes 256
 //!   star_name_max_bytes 32
-//!   myc_log_max_facts 1024  (named here: one journey-of-journeys of facts)
+//!   myc_log_max_facts 1024  (named here: one journey-of-journeys of facts).
 //!
-//! supply = Σ issued - Σ taxed at every prefix - non-negative - tax overdraw
-//! refuses whole. Facts kumara-sealed. Unknown kinds refuse whole. Star
-//! reservation unique per name. Policy numbers (genesis - price - ceiling)
-//! stay parked -- this file folds; it does not invent release or expiry.
+//! Supply equals issued minus taxed at every prefix and stays non-negative;
+//! a tax draw is honored only up to the supply that already stands, taken
+//! whole in a single fact. Facts kumara-sealed. Only the three named kinds
+//! fold; every other kind stops the whole fact as one unit. Star
+//! reservation stays unique per name. Policy numbers (genesis - price -
+//! ceiling) stay parked for a later file to set; this file folds only,
+//! leaving release and expiry to that future work.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig \
 //!     rye/bin/rye run mycelium/fold.rye

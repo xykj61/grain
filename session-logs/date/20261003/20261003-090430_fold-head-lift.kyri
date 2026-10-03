@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261003.090430
+editor Claude Code CLI
+provider anthropic
+product Claude Code
+role grass -- auditing lane
+modality text
+model claude-sonnet-5
+model_status configured default; no runtime self-report evidence in this session
+voice Kyri
+host pier (Linux), America/New_York
+title fold.rye's head lifts C+ to A; eight more named
+prompt the baton's own INNER PROMPT instruction -- read recursion-prompts/grass-inner.md at the top of every lap
+think read recursion-prompts/grass-inner.md whole; the next-crux lean named fold.rye first of the nine remaining below-B mycelium module heads, right after freight.rye's own lift
+think graded mycelium/fold.rye with qa_report_card.sh --service 90: register=63 (37% negative of 8 sentences), reach=60 (grade 13 against a Door ceiling of 9), composite=78, letter C+
+think rather than guessing which prose lines the card actually scores, extracted the exact program-head.txt text qa_report_card.sh builds (the awk block that strips //! and drops blanks) into a temp file and ran prose_register_scan.sh --explain against that exact text, matching the card's own 8-sentence count precisely rather than the whole-file 41-sentence reading
+think the explain output named one 34-word merged sentence (the bounds list's closing line carried no terminal period, so a blank line failed to break it from the next paragraph, fusing two ideas into one run-on carrying "refuses") plus two true negatives: "Unknown kinds refuse whole" and "it does not invent release or expiry"
+think closed the missing period first, which split the merged sentence on its own without any rewording; then rewrote the two true negatives into affirmative sentences holding the same facts, checking each draft against the scan's own negative-word list (not/no/never/none/cannot/without/refuses/etc from measure() in tools/fixtures/p/prose_register_scan.sh) before committing it
+obs preserved every bound name (myc_fact_max_bytes, star_name_max_bytes, myc_log_max_facts), the counsel citation, and the env usage line unchanged; only the //! head moved, no function, struct field, constant, or import touched
+obs re-ran the card after the edit: register=100 (0% of 9), reach=80, composite=93, letter A -- then ran the module's own selftest (env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/fold.rye), which answered GREEN on metal, and a touching witness one room over (tools/m/mycelium_pledge_witness.rish, which imports fold.rye's public API) re-ran GREEN unchanged
+rota lap 7906, row 2 -- Fire, the row that sees; advanced past row 1 (Air), already read twice today by this lane's own prior lap. Fire's question is what must be cut, once the cause is actually seen -- this lap found the missing period was the real cause of the merged sentence rather than treating all three flagged sentences as equally in need of a rewrite, and cut exactly that one thing before rewording anything else.
+file mycelium/fold.rye -- closed a missing period in the bounds list and rewrote the //! head's two true negative sentences affirmatively, zero code lines touched
+file active-designing/date/20261003/20261003-090430_grass-fold-module-head-account.md -- the full before/after account, naming the merge-causing punctuation gap and both rewritten clauses
+file construction/ITINERARY.md -- shelved the prior GRASS live account (freight.rye) per the-writer-sheds, wrote the new fold.rye account as the lane's one live line, named the eight remaining below-B heads
+file construction/archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md -- the shelved predecessor account, pointer kept
+file recursion-prompts/grass-inner.md -- appended the fold.rye lift and renamed the next-crux lean to the eight remaining files
+loom qa_report_card fold_before=78 fold_after=93 register_before=63 register_after=100
+recommend keep-going -- muster.rye is next in the named queue; the same grade-rewrite-reverify shape applies, kg

@@ -153,6 +153,20 @@ Register rose from 31 (69% negative of 13) to 93 (7% negative), composite from 7
 `rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's usual depth-2
 bound.
 
+**`fold.rye`'s head lifts C+ to A, landed `20261003`.** A missing period at the end of the bounds
+list merged two paragraphs into one 34-word run-on carrying `refuses`; closing it un-merged the
+sentence on its own. The remaining two true negatives -- `Unknown kinds refuse whole` and `it does
+not invent release or expiry` -- rewrote into affirmative sentences holding the same facts, every
+bound name and citation held exactly. Register rose from 63 (37% negative of 8) to 100 (0%
+negative of 9), composite from 78 to 93. The module's own selftest re-runs GREEN on metal; a
+touching witness, `mycelium_pledge_witness.rish`, re-runs GREEN unchanged; no code line moved.
+[Account](../active-designing/date/20261003/20261003-090430_grass-fold-module-head-account.md).
+
+**The next-crux lean:** eight more files from the same sample read below B -- `muster.rye`,
+`purse.rye`, `statement.rye`, `tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`,
+`rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's usual depth-2
+bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

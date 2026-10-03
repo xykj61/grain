@@ -232,16 +232,21 @@ lost, every path still opens.
 whole)](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md)** -- nothing
 lost, every path still opens.
 
-**GRASS -- `FREIGHT.RYE`'S HEAD LIFTS C+ TO A.** [Account
-shelved whole](../active-designing/date/20261003/20261003-085552_grass-freight-module-head-account.md):
-nine negative sentences across three paragraphs -- `never carried`, `worthless without`, `takes no
-host`, `not a no-op`, `disagrees ... and refuses`, `editing none`, the closing `no ... no ... no
-... no` -- rewrote into affirmative sentences holding the same facts, every backticked identifier
-and citation held exactly. Register rose from 31 (69% negative of 13) to 93 (7% negative),
-composite from 75 to 91. `mycelium_freight_witness.rish` re-runs GREEN; no code line moved.
-**YOURS:** `fold.rye` (78), `muster.rye` (72), `purse.rye` (72), `statement.rye` (74), `tenure.rye`
-(77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), and `rehearsal.rye` (75) all stay
-below B and wait for the same lift, one file at a time.
+**GRASS -- `FREIGHT.RYE`'S HEAD LIFTS C+ TO A (shelved
+whole)](archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md)** -- nothing
+lost, every path still opens.
+
+**GRASS -- `FOLD.RYE`'S HEAD LIFTS C+ TO A.** [Account
+shelved whole](../active-designing/date/20261003/20261003-090430_grass-fold-module-head-account.md):
+a missing period at the end of the bounds list merged two paragraphs into one 34-word run-on
+carrying `refuses`; closing it un-merged the sentence on its own. The remaining two true
+negatives -- `Unknown kinds refuse whole` and `it does not invent release or expiry` -- rewrote
+into affirmative sentences holding the same facts, every bound name and citation held exactly.
+Register rose from 63 (37% negative of 8) to 100 (0% negative of 9), composite from 78 to 93. The
+module's own selftest and a touching witness, `mycelium_pledge_witness.rish`, re-run GREEN; no
+code line moved. **YOURS:** `muster.rye` (72), `purse.rye` (72), `statement.rye` (74),
+`tenure.rye` (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), and `rehearsal.rye`
+(75) all stay below B and wait for the same lift, one file at a time.
 
 **DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
 [shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
@@ -351,7 +356,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f822b29c39` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `312dd042f2` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
