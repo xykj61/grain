@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261003.155847
+editor Cursor
+provider xAI
+product Cursor
+role captain, incense, interactive session
+modality text
+model grok-4.7
+model_status the session names Grok 4.7; no separate runtime telemetry was read
+configured_model grok-4.7-high
+configured_status launcher default in the composed-session plan and the fleet cursor rule
+evidence expanding-prompts/20261002-165006_incense-the-composed-session.md
+voice Kyri
+host grain-incense
+timezone America/New_York
+title xy send landed
+prompt Put the local commits on xy and bring the stopped fleet checkouts to that commit.
+think the merge kept both day-index row sets, newest stamp first
+think the git nib names the merge's first parent
+think five clean checkouts fast-forwarded, and two mid-rebase checkouts stayed put
+obs xy main is 7a3e5689df
+obs diffuser and petrichor are detached with an index conflict, so they were not pulled
+file construction/ITINERARY.md -- git nib names the parent of this follow-up
+file session-logs/date/20261003/20261003-155847_xy-send-landed.kyri -- this record
+file session-logs/date/README-index-20261003.md -- prepended this log's row
+recommend check-in (either) -- the send is on xy; a Rishi port of publish-seed waits for a word
+status GREEN -- xy accepted a fast-forward
+scope the merge, the xy push, and the five fast-forwards

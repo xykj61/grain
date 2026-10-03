@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.155847` | [xy send landed](20261003/20261003-155847_xy-send-landed.kyri) | Merged five commits and pushed xy |
 | `20261003.155007` | [xy and ww](20261003/20261003-155007_xy-and-ww.kyri) | Personal remote is xy; seed door is ww |
 | `20261003.150930` | [three quiet instruments](20261003/20261003-150930_three-quiet-instruments.kyri) | Landed line, crawl, and nib census |
 | `20261003.144656` | [sundial fascia face](20261003/20261003-144656_sundial-fascia-face.kyri) | Units sit beside the percent |
