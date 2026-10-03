@@ -193,6 +193,23 @@ re-run GREEN; no code line moved.
 `tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same
 lift, one file at a time, per this lane's usual depth-2 bound.
 
+**`statement.rye`'s head lifts C+ to A, landed `20261003`.** Eight negative sentences --
+`not an answer to the plainest question`, `failed either check would be a voice drifting`,
+`no matter the order`, `invents nothing`, `never appeared ... no lines ... not a refusal`,
+`editing none`, the closing `no real key, no funds, no network, no custody` -- rewrote into
+affirmative sentences holding the same facts, and the five paragraphs split shorter to bring the
+reach grade down, each long compound sentence broken at its own natural seam. Register rose from
+54 (46% negative of 15) to 96 (4% negative of 22), reach from 50 (grade 14) to 70 (grade 12, over
+the Door ceiling on technical vocabulary no further splitting moves), composite from 74 to 92, A.
+All four touching witnesses -- `mycelium_statement_witness`, `mycelium_statement_true_witness`,
+`mycelium_statement_knot_witness`, `mycelium_statement_kyri_witness` -- re-run GREEN; no code
+line moved.
+[Account](../active-designing/date/20261003/20261003-100033_grass-statement-module-head-account.md).
+
+**The next-crux lean:** five more files from the same sample read below B -- `tenure.rye`,
+`till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file
+at a time, per this lane's usual depth-2 bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

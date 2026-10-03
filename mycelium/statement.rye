@@ -5,30 +5,34 @@
 //!
 //! The ledger's primitives each decide something about the agreed order -- who holds what, which
 //! pledge honored, which the clock let expire. Yet a holder who opens the ledger meets a stream of
-//! facts, not an answer to the plainest question they ever ask: WHERE DO I STAND? The Statement is
-//! that answer, read as a pure, bounded projection of one account out of a resolved `lapse.Ledger`:
-//! the account's balance (spendable), reserved (held in open pledges), received (cumulative lawful
-//! inflow), and a bounded list of pledge lines -- each made or received, naming a counterparty, an
-//! amount, and a settlement state (open - posted - voided - lapsed).
+//! facts, and still wants the plainest question answered: WHERE DO I STAND? The Statement is that
+//! answer. It reads as a pure, bounded projection of one account out of a resolved `lapse.Ledger`.
+//! Four things make it up: the account's balance (spendable), reserved (held in open pledges),
+//! received (cumulative lawful inflow), and a bounded list of pledge lines. Each line is made or
+//! received, naming a counterparty, an amount, and a settlement state (open - posted - voided -
+//! lapsed).
 //!
-//! The crux is A STATEMENT RECONCILES: the account's reported `reserved` equals exactly the sum of
-//! the amounts of its own still-OPEN OUTBOUND pledges, because an open pledge is precisely what holds
-//! coins in reserve -- a posted, voided, or lapsed pledge has already spent or returned them. And
-//! across every account the statements CONSERVE: balances + reserved sums to what genesis issued,
-//! unwidened from the Pledge's own law. A statement that failed either check would be a voice drifting
-//! from the ledger it claims to read; here that drift is forbidden by assertion.
+//! The crux is A STATEMENT RECONCILES. The account's reported `reserved` equals exactly the sum of
+//! the amounts of its own still-OPEN OUTBOUND pledges, because an open pledge is precisely what
+//! holds coins in reserve -- a posted, voided, or lapsed pledge has already spent or returned them.
+//! And across every account the statements CONSERVE: balances plus reserved sum to what genesis
+//! issued, unwidened from the Pledge's own law. Assertion holds both checks, so every statement
+//! speaks exactly for the ledger it reads.
 //!
-//! Because the resolved ledger is itself arrival-independent (every permutation resolves to one
-//! identical ledger, as the Pledge and Lapse proved), the Statement inherits that guarantee for free --
-//! the same ledger yields the same statement no matter the order facts arrived.
+//! Because the resolved ledger is itself arrival-independent -- every permutation resolves to one
+//! identical ledger, as the Pledge and Lapse proved -- the Statement inherits that guarantee for
+//! free. The same ledger yields the same statement, whatever order the facts arrived in.
 //!
-//! The voice invents nothing: every field is read straight from `lapse.Ledger`'s public surface. An
-//! account that never appeared reads a true zero statement with no lines -- silence about a stranger is
-//! honest, not a refusal.
+//! The voice reads only what the ledger already holds. Every field comes straight from
+//! `lapse.Ledger`'s public surface. An account the ledger has yet to see reads a true zero
+//! statement, its line list empty. Silence about a stranger is honest plainness, standing on its
+//! own.
 //!
-//! Grown beside cord.rye, fold.rye, lapse.rye -- editing none, composing cord + fold + lapse + kumara
-//! public API only. Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody. A
-//! SERVED statement (a holder fetching their own line over Comlink) reaches the Comlink-served gate.
+//! Grown beside cord.rye, fold.rye, and lapse.rye, the Statement composes only cord, fold, lapse,
+//! and kumara public API, leaving every sibling file exactly as it stood. It stays siloed,
+//! dev-only, and demo-seeded throughout: every key is a demo key, every balance a sandbox balance,
+//! and the whole surface stays off any real network or custody. A SERVED statement -- a holder
+//! fetching their own line over Comlink -- reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/statement.rye
 
