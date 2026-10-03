@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261003.101900` | [language-lane-still-empty](20261003/20261003-101900_language-lane-still-empty.kyri) | Re-confirmed against moved HEAD; still empty, still outside this lane |
+| `20261003.101811` | [twenty-first-empty-sweep-widens-to-ratchets](20261003/20261003-101811_twenty-first-empty-sweep-widens-to-ratchets.kyri) | Patchouli's 21st confirmation; widened to TAME-style and width-check ratchets, both clean here |
 | `20261003.101158` | [statement.rye lift sent after two rebases](20261003/20261003-101158_statement-lift-sent-after-two-rebases.kyri) | pushed clean to df2ab1a9bb after a true-divergence park, a cherry-pick, and two round-open rebases |
 | `20261003.100919` | [forty-third decline, ratchet already handled](20261003/20261003-100919_forty-third-decline-ratchet-already-handled.kyri) | Patchouli's nineteenth sweep already found and correctly left unbooked the one new thing this lap met; nothing law-lane left to do |
 | `20261003.100901` | [still-no-fruit](20261003/20261003-100901_petrichor-still-no-fruit.kyri) | pulled a peer's claim cleanly; queue still empty, nothing duplicated |

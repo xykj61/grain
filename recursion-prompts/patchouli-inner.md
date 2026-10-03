@@ -269,6 +269,31 @@ outside this lane. All three `PATCHOULI` card blocks read as shelved two-line po
 is owed. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
 lane.
 
+**The queue reads empty a twenty-first way, `20261003.101500`.** Round-open pulled nothing new.
+Both `%765` grep nets re-run fresh over all of `mantra/` and `tally/` answer identically to the
+tenth through twentieth: fixture signatures, test-local tag and loop variables, and the elder
+`mantra-weave`/`mantra-commit` read-compat headers this law keeps forever. `receipt_offer.rye`'s
+`schema_v1` still carries its molted value. This lap widened past the two named grep nets to two
+ratchets not yet checked in isolation for this lane: `tools/fixtures/t/tame_style_scan.sh` reads
+GREEN whole-tree, and `mantra/` and `tally/` sit inside its rooms roster already, so the ratchet is
+clean here by the tool's own account rather than by omission. `tools/w/width-check.rish` still
+reads `verdict=authored_width_drift` tree-wide (`corpus_flagged_lines=1114` against
+`ceiling=1109`), and a direct grep of every `usize` in `mantra/`/`tally/` (19 files) found each use
+either inside a comment or an `@as(usize, ...)` seam cast beside its own bound-check -- no new
+flagged line in this lane's custody, matching the eighteenth lap's prior confirmation that this
+reading belongs to another lap entirely. `construction/REDS.md`'s OPEN rows were read whole again;
+none names `mantra/` or `tally/`. `construction/fleet-claims.kyri` now carries two live claims,
+`bakery-root-finder-convert` and `copal-tigerbeetle-last-stage-census-roster`, both outside this
+lane. All three `PATCHOULI` card blocks still read as shelved pointers.
+**Worth naming plainly a second time:** this is the twenty-first consecutive confirmation, now
+spanning two named grep nets plus three standing ratchets (TAME style, width drift, spoken-ASCII),
+all clean or out-of-custody for this lane. `%807` and `%765`'s 38 remaining families are the only
+two things this fruit still tracks, and neither has moved in several days of wall time because
+neither is this lane's to move. Recommending check-in rather than a twenty-second near-identical
+entry: whether this lane should go dormant until `%807` is ruled or `%765` grows a `mantra/`-
+`tally/` candidate, or whether it should widen its own fruit to a different standing instrument
+entirely, is a call for Keaton rather than another repeated sweep.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
