@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261002.215223
+editor Claude Code
+provider anthropic
+product claude-code
+role repository
+modality text
+model claude-sonnet-5
+model_status configured fleet default resolved to claude-sonnet-5; runtime identity unverified
+voice Kyri
+host anonymized framework pier, America/New_York
+title copal rosters the ep022 IronBeetle census witness
+prompt baton + recursion-prompts/copal-inner.md -- claim the next unrostered chapter witness and prove it both ways
+think walked tools/gen/chapter/*.rish against the guard rows in construction/standing-equipment.kyri and found 76 unrostered, ep022 the next IronBeetle episode after ep020 and ep021
+think tools/gen/chapter/ironbeetle_ep022_census_witness.rish and its tools/fixtures/i/ironbeetle_ep022_census.sh fixture already stood written and unclaimed -- the roster record was the only thing missing
+think checked the live claim board with fleet_claim_scan.sh --check, found no overlap, opened claim copal-ironbeetle-ep022-census-roster and pushed it before any build, per the ABSENCE clause
+think the push raced three peer landings in a row (649de9d732 -> 1621b02a0d -> 494216f9ec -> 8fe775497d); rebased and re-amended the Git nib each time rather than forcing
+think ran the witness present (verdict=ok, all six fields yes) and with gratitude/ironbeetle moved aside (refuses with the named ABSENT message), both on metal, before writing the roster entry
+think added the guard block to standing-equipment.kyri mirroring the ep020/ep021 shape, closed the claim, and shed my own prior live ep020 account on the card per the-writer-sheds rule before writing the new one
+obs rule 5 (remember-git-nib) and the writer-sheds rule compose cleanly here: the claim-open commit carries its own nib forward, and the new work commit sheds the predecessor account in the same breath it writes the new one
+rota lap 7646, row 1 -- Air, the row that feels; read context/TAME_CORE.md, which is the same bound-everything/assert-first discipline the witness itself already follows
+file tools/gen/chapter/ironbeetle_ep022_census_witness.rish why already-written witness, now rostered
+file construction/standing-equipment.kyri why new guard block for ironbeetle_ep022_census
+file construction/fleet-claims.kyri why claim opened then closed around the build
+file construction/ITINERARY.md why ep020 account shelved, ep022 account written, YOURS count refreshed to ~76
+file construction/archive/date/20261002/20261002-215127_itinerary-copal-ep020-roster-account.md why shelved copy of the predecessor account
+recommend keep-going -- 76 chapter witnesses remain unrostered; the next lap can claim ep023 or another family member the same way
