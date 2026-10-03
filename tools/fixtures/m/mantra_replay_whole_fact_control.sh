@@ -212,7 +212,7 @@ make_pen "$type_pen"
 edit "$type_pen/mantra/src/receipt_offer.rye" \
   "s|pub const offer_fact_fields = ${declared};|pub const offer_fact_fields = ${grown};|"
 edit "$type_pen/mantra/src/receipt_offer.rye" \
-  's|signer_id: \[\]const u8, signature: \[\]const u8,|signer_id: []const u8, signature: []const u8, planted_flag: bool,|'
+  's|    signature: \[\]const u8,|    signature: []const u8,\n    planted_flag: bool,|'
 edit "$type_pen/mantra/src/receipt_offer_witness.rye" \
   's|.signature = "fixture-signature-v1",|.signature = "fixture-signature-v1", .planted_flag = true,|'
 if ! grep -q 'planted_flag: bool' "$type_pen/mantra/src/receipt_offer.rye" \

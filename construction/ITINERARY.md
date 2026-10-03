@@ -243,20 +243,15 @@ sites crash. Reverted; `git status --porcelain` clean before and after.
 B/83 at Field. **YOURS:** none -- whether the dispatch's own `glow/.cache/caravan` symlink feeds any
 other gate a live Rye value stays unchecked.
 
-**PATCHOULI -- THE SIXTH EMPTY QUEUE, AND A GRADING TOOL MISREAD BEFORE IT COST A FILE.** Elder
-account
-[shelved](archive/date/20261003/20261003-035151_itinerary-patchouli-sixth-empty-queue-and-flat-service-caveat-account.md).
-Fresh `%765`/`%807` greps over `mantra/` and `tally/` again named only elder read-compat headers
-and Tier 1 constants -- no new family. `fleet-claims.kyri` carries two live claims, neither
-touching this lane. Graded all 79 `mantra/`/`tally/` module heads with `qa_report_card.sh
---service 25`, a FLAT service score rather than the real four-question judgment the earlier
-`bolt_apply_step`/`spool_dedup_ratio` lifts actually used -- and that flat number read
-`mantra/src/weave.rye` D/62, `mantra/bolt_apply_step.rye` C/71, and `mantra/spool_dedup_ratio.rye`
-C/70, all three already lifted to B this same lap-day. A flat `--service 25` understates every
-file whose real service score beats 25, so the sweep's own below-B list is not evidence; rewriting
-`weave.rye`'s dense, REDS-laden head against a wrong number was the near-miss this lap caught
-before spending it. **YOURS:** the next lap wanting a below-B reading must price `service` per
-file by hand, the way the landed lifts did, rather than trust one flat flag across the room.
+**PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
+Account
+[shelved](archive/date/20261003/20261003-041504_itinerary-patchouli-fourth-family-and-control-plant-fix-account.md):
+`mantra/src/receipt_offer.rye`'s `schema_v1` moved `grain.receipt-offer.v1` to the one-clock
+stamp `grain.receipt-offer.20261003.040829`, never persisted to any store in this tree -- the same
+cheap molt the consent pair took. Running the full witness chain surfaced REDS `%833`, a
+pre-existing control plant (`tools/fixtures/m/mantra_replay_whole_fact_control.sh`) keyed to a
+struct layout the room no longer carries; booked and repaired in the same entry. Four `%765`
+families now landed in this lane; 38 remain. **YOURS:** none -- both findings closed on metal.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -346,7 +341,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `afa3562f6b` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `5143751289` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
@@ -372,7 +367,9 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Both named cruxes landed `20261001`, whole** -- weave-meets-Tablecloth and the consent lowering.
 [Account](archive/date/20261002/20261002-000200_itinerary-patchouli-two-cruxes-already-landed-account.md).
-Queue empty -- `%807` wants Keaton's ruling, `%765`'s remainder wants another ship.
+**A fourth `%765` family landed `20261003.040829`** -- `receipt_offer.rye`'s `schema_v1`; 38
+families remain, each outside this lane. Queue reads empty again -- `%807` wants Keaton's
+ruling.
 
 ### Copal -- Amphora receipt and portable bundle
 

@@ -86,6 +86,20 @@ already landed on `xy/main` inside the same minute, a wider six-sentence rewrite
 moving `Log.refusal` and `AdmissionError` into backticks so `measure()`'s neutral-placeholder rule
 reads them as code. No below-B module head remains in this lane.
 
+**A fourth `%765` family landed `20261003.040829`.** The sixth confirming sweep (flat
+`--service 25`, withdrawn as a bad reading rather than a repair) still missed one real candidate:
+`receipt_offer.rye`'s own `schema_v1 = "grain.receipt-offer.v1"`, a record-version wire string of
+exactly the audited shape, standing in a file a comment-register pass had already touched without
+anyone reading its CONSTANTS. Moved to `grain.receipt-offer.20261003.040829` -- never persisted to
+any store in this tree, so no elder spelling survives to keep readable, same as the consent pair.
+The full witness chain then surfaced REDS `%833`, a pre-existing control plant
+(`tools/fixtures/m/mantra_replay_whole_fact_control.sh`) keyed to a one-line struct shape the room
+had already reformatted to one field per line -- `%519`'s fault one file over, confirmed
+pre-existing by stashing this lap's own edit first. Both repaired, every touching witness re-run
+GREEN.
+[Account](../construction/archive/date/20261003/20261003-041504_itinerary-patchouli-fourth-family-and-control-plant-fix-account.md).
+38 families remain outside this lane. Queue reads empty again.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

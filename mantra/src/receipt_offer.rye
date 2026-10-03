@@ -15,8 +15,14 @@
 //! `AdmissionError`, with a comptime assert pinning the reason count to the switch that reads
 //! it.
 //!
-//! `schema_v1` names this fact's wire identity, `grain.receipt-offer.v1`, and `ReceiptState`
-//! pairs one offer with its own two-valued status, offered or expired.
+//! `schema_v1` names this fact's wire identity, `grain.receipt-offer.20261003.040829`, and
+//! `ReceiptState` pairs one offer with its own two-valued status, offered or expired. The
+//! constant keeps its elder `_v1` name (stamp-and-name.md's census-number exemption reaches
+//! a tree's own row numbers, never a record-version string); only the VALUE it carries moved
+//! to a one-clock stamp, under REDS %765. This fact is never written to a store anywhere in
+//! this tree today -- `fact_eql` and `Log.refusal` are the whole reach of `ReceiptOfferFact`
+//! -- so no persisted bytes carry the elder `.v1` spelling to keep readable, the same reason
+//! the consent schema constants molted cheaply at `20261002.180446`.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -24,7 +30,7 @@ const print = std.debug.print;
 const bounds = @import("tally_receipt_offer_bounds.rye");
 const tally_refusal = @import("tally_receipt_refusal.rye");
 
-pub const schema_v1 = "grain.receipt-offer.v1";
+pub const schema_v1 = "grain.receipt-offer.20261003.040829";
 
 pub const Refusal = tally_refusal.Refusal;
 pub const Reason = tally_refusal.Reason;

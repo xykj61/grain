@@ -937,3 +937,5 @@ at a closed fold.*
 *Row `20261002.225049` folded to [`REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-225049.md`](REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-225049.md) on `20261002.233200`, **CLOSED** -- folded by hand, stamp-cited and unmatched by the automated tool, to clear headroom and because its own quoted em dashes broke the living-card ASCII wall.*
 
 *Row `20261002.233200` folded to [`REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md`](REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md) on `20261003`, **CLOSED** -- folded by hand, stamp-cited and unmatched by the automated tool, to clear headroom for the disk-reclaim repair row while the pin stood over its 65,536-byte bound; the row describing its own predecessor's ASCII-wall break, folded the same way in turn.*
+
+*Row `%833` folded to [`REDS-a-plant-matched-nothing-rows-833.md`](REDS-a-plant-matched-nothing-rows-833.md) on `20261003.041407`, **CLOSED** -- folded in the same lap that booked it, to clear headroom for its own new row while the pin stood over its 65,536-byte bound; a control's own plant keyed to a struct layout the module had already outgrown.*
