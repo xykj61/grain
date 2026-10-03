@@ -253,6 +253,22 @@ custody to touch. Named here rather than booked as a red, since a ratchet breach
 reds-first ledger is the documented shape of this instrument. `%807` and `%765`'s 38 remaining
 families are unchanged; the queue reads empty a nineteenth way.
 
+**The queue reads empty a twentieth way, `20261003.100821`.** Both `%765` grep nets re-run fresh
+over all of `mantra/` and `tally/` -- elder read-compat headers/assignments, then the broader
+`"...-v[0-9]..."` literal sweep -- answer identically to the tenth through nineteenth: fixture
+signatures, test-local tag and loop variables, and the elder `mantra-weave`/`mantra-commit`
+read-compat headers this law keeps forever. `rye_spoken_ascii_witness.rish` was re-run fresh rather
+than trusted from the nineteenth lap's own reading: still RED tree-wide at `chars=3864` against
+`ceiling=3863`, and `--list-all` still carries zero `mantra/` or `tally/` paths -- the breach has
+not moved into this lane's custody since the eighteenth lap wrote it down. `construction/REDS.md`'s
+OPEN rows (`%827`, `%826`, `%819`, `%808`, `%807`, `%804`, `%803`, `%788`, `%765`, `%735`, `%734`,
+`%730`, `%729`, `%456`) were each read whole again; none names `mantra/` or `tally/`, and each
+still wants Keaton's ruling, a history-rewrite custody gate, or another ship's already-claimed
+path. `construction/fleet-claims.kyri` carries one live claim, `bakery-root-finder-convert`,
+outside this lane. All three `PATCHOULI` card blocks read as shelved two-line pointers, so no shed
+is owed. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
+lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
