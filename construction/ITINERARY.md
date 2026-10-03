@@ -147,18 +147,20 @@ Journey 13 rungs now carry a guard entry.
 shelved](archive/date/20261003/20261003-085439_itinerary-copal-nona-season-n0-account.md) --
 `nona_season_n0_witness.rish` rostered and that claim closed.
 
-**COPAL -- THE BUFFER-BLEEDS ROSTER ACCOUNT.** `tigerbeetle_buffer_bleeds_census_witness.rish`
+**COPAL -- THE BUFFER-BLEEDS ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-091418_itinerary-copal-buffer-bleeds-roster-account.md)
+-- `tigerbeetle_buffer_bleeds_census_witness.rish` rostered and that claim closed.
+
+**COPAL -- THE CACHE-INPLACE ROSTER ACCOUNT.** `tigerbeetle_cache_inplace_census_witness.rish`
 rostered -- the same decided-skip shape as its `tigerbeetle_assert_census` and
-`tigerbeetle_be_explicit_census` siblings: an uninitialised `gratitude/tigerbeetle` submodule is a
-fact about a fresh clone rather than a defect, so the witness reads `gratitude/tigerbeetle/src` and
-takes a GREEN skip exit instead of reding every ship lacking the checkout. Proven both legs on
+`tigerbeetle_buffer_bleeds_census` siblings: an uninitialised `gratitude/tigerbeetle` submodule is
+a fact about a fresh clone rather than a defect, so the witness reads `gratitude/tigerbeetle/src`
+and takes a GREEN skip exit instead of reding every ship lacking the checkout. Proven both legs on
 metal in this lap: with `gratitude/tigerbeetle/src` moved aside it exits GREEN at the clone-absent
-skip, and restored it exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_BLEED`,
-`GUIDE_GROUP`, `TAME_BLEED`, `STYLE`, `ELDER_SHRINK`, and `RADIANT` all at `yes`. Claimed as
-`copal-tigerbeetle-buffer-bleeds-census-roster`, closed. **YOURS:** 46 chapter witnesses remain
-unrostered, measured by `comm -23` between `ls tools/gen/chapter/*.rish` basenames and the `guard`
-rows' own `path` basenames in `construction/standing-equipment.kyri` rather than trusted from this
-line.
+skip, and restored it exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_CACHE`,
+`GUIDE_NODUP`, `GUIDE_INPLACE`, `TAME_CACHE`, `STYLE`, `ELDER_HOW`, and `RADIANT` all at `yes`.
+Claimed as `copal-tigerbeetle-cache-inplace-census-roster`, closed. **YOURS:** 45 chapter witnesses
+remain unrostered, measured the same way rather than trusted from this line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -356,7 +358,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0cf56299af` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `4ae8a035ae` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
