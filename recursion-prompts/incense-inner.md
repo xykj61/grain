@@ -271,3 +271,9 @@ reading script after the first pass mis-split on a non-REDS `*Row %745 ...` para
 scrub trade, `%519`'s ratchet, and the wire-ceiling door read exactly as the prior lap left them.
 Next: unchanged -- a human glance at `%642`'s scrub trade, the wire-ceiling door, or the fourteen
 OPEN rows reopens law-lane work; incense holds rather than re-deriving unmoved ground.
+
+**Lap `20261002.225325` declined a fifteenth, across two true-divergence round-opens in a row.**
+The fleet is landing a commit roughly every ninety seconds tonight; this lap's own send parked
+twice (`pier/diverged-20261002-225055`, `pier/diverged-20261002-225303`) before this push. REDS
+OPEN roll, the claim board, and ITINERARY's three agent-doable items all read exactly as the prior
+fourteen laps left them. Next: unchanged.

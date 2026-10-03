@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.225325 | [incense declines a fifteenth fallow reading](20261002/20261002-225325_incense-declines-fifteenth-fallow-reading.kyri) | law lane dry a fifteenth lap, across two true-divergence round-opens; REDS and ITINERARY unchanged |
 | 20261002.224841 | [Grass's eighteenth reading grades the newest essay clean](20261002/20261002-224841_grass-eighteenth-reading-essay-grades-clean.kyri) | newest active-designing essay graded A-range (register 96, reach 100, truth 100); no molt frame owed |
 | 20261002.224644 | [petrichor's eighteenth reading, water row tasted](20261002/20261002-224644_petrichor-eighteenth-reading-water-row.kyri) | Three witnesses GREEN fresh on metal; lane fallow, rota read water row |
 | 20261002.224455 | [ep030 census witness claimed and rostered, two card accounts shelved](20261002/20261002-224455_copal-ep030-census-roster.kyri) | Claimed, proved both ways, and rostered ironbeetle_ep030_census; folded two stale copal card accounts into one archive shelf |
