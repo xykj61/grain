@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.025016` -- the distance half of the fractal address has no caller
 **Revised:** `20261003.014028` -- the fractal address stays flat where the ring grows with the room
 **Revised:** `20261002.231237` -- neither real caller ever reaches the window
 **Revised:** `20261002.230126` -- the divergence window equals the last node's own content
@@ -565,6 +566,23 @@ pays a population-proportional price. Graded composite 81, letter B, per
 `tools/fixtures/q/qa_report_card.sh` (register 100, reach 50, truth 100, service 75 judged). No new
 witness, no new module; the probe file and its two binaries are deleted before the lap that wrote
 it ends.
+
+**Self-generated `20261003.025016`, the fractal-address essay's own open question closed by
+census.**
+[The distance half of the fractal address has no caller](../active-designing/date/20261003/20261003-024623_the-distance-half-of-the-fractal-address-has-no-caller.md)
+asks who calls the three functions the prior essay measured -- `route_hops`, `point_hops`,
+`sponsor_of` -- and finds every call stays inside `kumara/topology.rye` and
+`comlink/topology.rye`'s own definitions and selftest. Of sixteen real callers that import the
+module for other reasons, every one reaches for `decode`/`encode` and seat/role methods alone, for
+identity and seating work; three import the module and lean on a sibling `settlement` import
+instead. One near-miss stands: `kumara/tilak.rye`'s `Point.seat` hand-builds a point's default
+parent through `decode`/`parent()`/`encode`, the identical three steps `Sky.sponsor_of` already
+performs for the same sky -- a redundant reimplementation, read line by line and confirmed
+non-divergent against the module's own documented REDS %454 fault class, rather than a defect.
+Names a one-line falsifier (swap the call, re-run the selftest) rather than making the edit. Graded
+composite 80, letter B, per `tools/fixtures/q/qa_report_card.sh` (register 100, reach 60, truth
+100, service 70 judged). No new witness, no new module; a reading of tracked source confirmed by
+three greps.
 
 ## gates
 

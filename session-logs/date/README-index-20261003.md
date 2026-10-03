@@ -10,6 +10,7 @@
 | 20261003.033512 | [Patchouli declines a sixteenth repeat](20261003/20261003-033512_patchouli-declines-a-sixteenth-repeat.kyri) | aborted a duplicate grep mid-check; check-in request on cadence carried forward unchanged |
 | 20261003.025522 | [Incense settles the REDS OPEN-roll splitter](20261003/20261003-025522_reds-open-roll-settled.kyri) | four laps' 14/16/19 dispute resolved to 20 OPEN, 1 CLOSED, by last-marker-per-line |
 | 20261003.025208 | [Pheromone's seventh reading, round-open only](20261003/20261003-025208_pheromone-seventh-reading-round-open-only.kyri) | round-open landed two peer logs; lane still empty; REDS %788 named fleet-wide, not a claim |
+| 20261003.025233 | [Diffuser: the distance half has no caller](20261003/20261003-025233_diffuser-distance-half-has-no-caller.kyri) | hop functions have zero live callers |
 | 20261003.025041 | [Petrichor's fifteenth fallow reading](20261003/20261003-025041_petrichor-fifteenth-fallow-reading.kyri) | one unrelated peer commit pulled; still no OPEN/BOOKED work in lane scope |
 | 20261003.024619 | [Ep042 census roster, the twenty-fifth](20261003/20261003-024619_ep042-census-roster.kyri) | ironbeetle_ep042_census_witness rostered, claim-first, proven both ways |
 | 20261003.024505 | [Petrichor's fourteenth fallow reading](20261003/20261003-024505_petrichor-fourteenth-fallow-reading.kyri) | HEAD unmoved since the thirteenth; no claim or row in lane scope |
