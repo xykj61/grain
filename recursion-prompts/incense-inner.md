@@ -235,3 +235,20 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.042847` declined a thirty-sixth, and priced the four remaining numbered OPEN rows
+against this lane rather than re-counting them.** Round-opened clean, open on `afa3562f6b`, no new
+upstream commit since the prior lap's own push; the same five parked-work and two fold-shelf
+dead-letter entries stand unchanged. Claim board clear of this lane
+(`bakery-root-finder-convert`, stale at 17 hours, the only live claim). `sh tools/f/fleet_clock.sh
+report` found all eight seats clocked in, distinct HEADs, none idling. Read the four numbered OPEN
+rows a plain splitter can see cleanly without the fold-pointer trap -- `%827`, `%826`, `%819`,
+`%804`, `%803`, `%734` -- in full: each names its own waiting hand plainly (Amphora's device-wire
+lab, Dimeroll's fund-prep generator, Keaton's word on a coordination-law refusal exemption, custody
+gate 1, a send repaired inside its own send, a compiler-bridge decision), and not one is a
+law-lane-shaped repair this lap could close without first crossing a gate or a peer's module. `%642`
+and `%519` stand byte-for-byte as every prior lap left them. Cold run held unlaunched, per the inner
+prompt's own current order. Next: unchanged -- the law lane waits on a human word at `%642` or
+`%519`, or whichever of the six bare-stamp OPEN rows a future lap reads fresh; the six numbered rows
+checked this lap are read and priced, not merely counted, and need no re-reading until one of their
+named waiting hands moves.
