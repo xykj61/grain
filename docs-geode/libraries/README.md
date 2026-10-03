@@ -36,7 +36,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | `construction/` | 1 | 83 |
 | [`crypto/`](../../crypto/README.md) | 82 | 124 |
 | [`dimeroll/`](../../dimeroll/README.md) | 4 | 5 |
-| [`ember/`](../../ember/README.md) | 2 | 5 |
+| [`ember/`](../../ember/README.md) | 2 | 6 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
 | [`glow/`](../../glow/README.md) | 136 | 138 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
