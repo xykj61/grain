@@ -194,37 +194,23 @@ the contract accepted, and the citizen door's new "A yes you can change" section
 revoke, and the one refusal proven today -- a mismatched holder. Door/B+, composite 89.
 **YOURS:** none -- Consent Rail and the rest wait past this lane.
 
-**GRASS -- FOUR ELDER ACCOUNTS (TWENTY-SIX FOLDED, `GLOW_RUN.RYE`'S `MAIN` SPLIT, SIYA'S
-FOUNDATION LIFT, PLEAC CH01 PAGE 2's REACH FIX), SHELVED WHOLE.** [Fold](archive/20261003-003919_itinerary-grass-three-elder-accounts-fold.md)
-and [pleac account](archive/20261003-000727_itinerary-grass-pleac-ch01-page-2-reach-account.md) --
-nothing lost, every path still opens. `functions_over_70` sits at 437.
+**GRASS -- FIVE ELDER ACCOUNTS, SHELVED WHOLE.** [Fold
+account](archive/date/20261003/20261003-034124_itinerary-grass-five-elder-accounts-fold.md) --
+the twenty-six-account fold, the pleac reach fix, the diffuser-inner find, and the
+spool-dedup/snapshot-projection/three-named-heads module-head lifts; nothing lost, every path
+still opens.
 
-**GRASS -- THE DIFFUSER-INNER REGISTER FIND, SHELVED WHOLE.** [Account
-shelved](archive/20261003-025313_itinerary-grass-diffuser-inner-register-account.md) -- diffuser's
-own fix (`df11d741cd`) closed it at A+/100. Nothing lost.
-
-**GRASS -- `mantra/spool_dedup_ratio.rye`'S MODULE HEAD LIFT, SHELVED WHOLE.** [Account
-shelved](archive/date/20261003/20261003-030755_itinerary-grass-spool-dedup-ratio-module-head-account.md)
--- F/52 to B/83, GREEN on metal. Nothing lost.
-
-**GRASS -- `mantra/snapshot_projection.rye`'S MODULE HEAD LIFT, SHELVED WHOLE.** [Account
-shelved](archive/date/20261003/20261003-032418_itinerary-grass-snapshot-projection-module-head-account.md)
--- D/57 to B/83, GREEN on metal. Nothing lost.
-
-**GRASS -- THE THREE NAMED HEADS LIFT, YOURS LINE CLOSED.** `mycelium/pledge.rye` (register 65%
-negative of 20 sentences, C/74) and `mycelium/lapse.rye` (register 50% negative of 20 sentences)
-each rewrote their seven and ten negative-worded sentences into affirmative ones -- "rather than
-moving them" for "without moving them," "stands idle" for "a lawful no-op," "every coin a phase
-touches is conserved exactly" for "no coin is made or destroyed" -- every fact, bound, and code
-name held exactly. Both read 0% negative of the same 20 sentences after; pledge rose to B/80,
-lapse to B/83. `mantra/src/receipt_offer.rye`'s three-sentence head sat under the register floor
-and still scored, 66% negative over too few sentences for any one rewrite to clear (REDS %430);
-the head grew to six sentences naming `ReceiptOfferFact`'s fields, `fact_eql`'s comptime-pinned
-comparison, and `error_of`'s reason-to-error mapping, wrapping `Log.refusal` and `AdmissionError`
-in backticks so the code name reads as code rather than as prose carrying the word. 0% negative of
-6, composite A/93. All three witnesses (`tools/m/mycelium_pledge_witness.rish`,
-`tools/m/mycelium_lapse_witness.rish`, `tools/m/mantra_receipt_offer_refusal_chain_witness.rish`)
-re-run GREEN on metal; no code line moved. **YOURS:** none -- the named three are read.
+**GRASS -- `mycelium/portage.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.034124`.** The
+head read register 34 (66% negative of 15 sentences), its "no shared channel," "cannot burn,"
+"can never conjure," "no window admits a loss," and four-times-"no" closing line each trading a
+fact for a negation. Every sentence rewrote affirmative, holding the same facts: "whose channels
+stay apart" for "that share no channel," "`NeverPaid` is the guard" for "she cannot burn coins she
+never received," "`NoMatchingBurn` guards every other case" for "refuses... can never conjure,"
+"landing on B exactly when it is gone from A, and exactly once" for "no window admits a loss... or
+a double," "leaving the real key, the funds, the network, and the value crossed for a SERVED
+portage" for the four-fold "no real key, no funds, no network, no value crossed." Register 100 (0%
+of 14 sentences), composite B+/85. `tools/m/mycelium_portage_witness.rish` re-runs GREEN on metal;
+no code line moved. **YOURS:** none -- the head is read.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -339,7 +325,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b83d15ca38` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `fd967628f2` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

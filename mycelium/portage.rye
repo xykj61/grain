@@ -1,35 +1,37 @@
-//! mycelium/portage.rye -- value carried across two worlds, atomic on both ledgers or neither (r1, the portage crux).
+//! mycelium/portage.rye -- value carried across two worlds, atomic on both ledgers together (r1, the portage crux).
 //!
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Portage - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-124159_mycelium-portage-cross-world-transfer-exploration.md
 //!
 //! Every Mycelium ledger before this conserved value it could see in ONE agreed order -- the Purse within a
 //! Cord, the Pledge across two phases, Puddle and Freight moving a whole world between hosts with its state
-//! byte-identical. Yet every coin lived and died inside a single Cord. A real economy is many ledgers, and
-//! its truest question is the one no single-world ledger can answer: how does value cross from one world to
-//! another with no moment where it exists in both or in neither?
+//! byte-identical. Yet every coin lived its whole life inside a single Cord. A real economy holds many
+//! ledgers, and its truest question is the one only a portage answers: how value crosses from one world to
+//! another while existing in exactly one world at every instant.
 //!
-//! A PORTAGE is that crossing -- the old word for goods carried overland between two navigable waters that
-//! share no channel. Alice banks on World A; Bob banks on World B; the two worlds keep separate Cords with no
-//! shared total order. A portage moves N coins from Alice to Bob bound by a content DIGEST -- a SHA-256 over
-//! id-amount-from-to_world-to_account -- so the two halves name one crossing and neither can be forged apart.
-//!   - a signed portage-OUT (`O-id-world-to`) on World A DEBITS the signer by N (she cannot burn coins she
-//!     never received -- `NeverPaid`);
-//!   - a signed portage-IN (`I-id-digest-to`) on World B CREDITS the recipient by N, but ONLY when its
-//!     embedded digest equals the verified burn's -- a credit whose digest matches no verified burn refuses
-//!     `NoMatchingBurn`, so World B can never conjure value across the gap;
-//!   - the crossing lands once -- a second in for one id refuses `AlreadyLanded`.
+//! A PORTAGE is that crossing -- the old word for goods carried overland between two navigable waters whose
+//! channels stay apart. Alice banks on World A; Bob banks on World B; the two worlds keep separate Cords,
+//! each with its own total order. A portage moves N coins from Alice to Bob bound by a content DIGEST -- a
+//! SHA-256 over id-amount-from-to_world-to_account -- so the two halves together prove one crossing, tied by
+//! that digest alone.
+//!   - a signed portage-OUT (`O-id-world-to`) on World A DEBITS the signer by N, bound to coins she actually
+//!     holds (`NeverPaid` is the guard);
+//!   - a signed portage-IN (`I-id-digest-to`) on World B CREDITS the recipient by N exactly when its embedded
+//!     digest matches the verified burn -- `NoMatchingBurn` guards every other case, so World B credits only
+//!     value a burn has already proven;
+//!   - the crossing lands exactly once -- `AlreadyLanded` guards a second in for the same id.
 //!
 //! The crux is CONSERVATION ACROSS THE PAIR: the amount that left the sender on A equals the amount that
 //! reached the recipient on B -- a credit somewhere for every debit, TigerBeetle's double-entry widened
-//! across two independent shards, decided by content rather than a correspondent. Because World B credits
-//! ONLY a digest it can verify against the burn, the decision is a pure function of the two ledgers' bytes;
-//! no window admits a loss (gone from A, absent on B) or a double (present on both).
+//! across two independent shards, decided by content rather than by a correspondent. World B credits ONLY a
+//! digest it can verify against the burn, so the decision is a pure function of the two ledgers' bytes: every
+//! crossing's two halves move together, landing on B exactly when it is gone from A, and exactly once.
 //!
-//! Grown beside cord.rye, fold.rye, voucher.rye -- editing none, composing cord + fold + voucher + kumara
-//! public API only. The credit is DERIVED from a verified burn, never re-declared -- there is no set_balance.
-//! Siloed, dev-only, demo world/keeper seeds -- no real key, no funds, no network, no value crossed. A SERVED
-//! portage (World B fetching World A's out-fact over Comlink) reaches the Comlink-served gate (Keaton's hand).
+//! Grown beside cord.rye, fold.rye, voucher.rye -- leaving each untouched, composing cord + fold + voucher +
+//! kumara public API only. The credit is always DERIVED from a verified burn, and set_balance stays
+//! unwritten. Siloed, dev-only, demo world/keeper seeds carry this crux end to end, leaving the real key, the
+//! funds, the network, and the value crossed for a SERVED portage (World B fetching World A's out-fact over
+//! Comlink), which reaches the Comlink-served gate (Keaton's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage.rye
 
