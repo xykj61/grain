@@ -177,6 +177,18 @@ claim, `bakery-root-finder-convert`, outside this lane. Both `PATCHOULI` card bl
 `construction/ITINERARY.md` read as the shelved two-line pointer form, so no shed is owed. `%807`
 and `%765`'s 38 remaining families still want Keaton's word or another ship's own lane.
 
+**The queue reads empty a fifteenth way, `20261003.091227`.** Round-open pulled one commit
+(`0cf56299af`, bakery's claim) before either grep net ran. Both nets re-run fresh over all of
+`mantra/` and `tally/` answer identically to the tenth through fourteenth: fixture signatures,
+test-local loop and tag variables, the elder `mantra-weave`/`mantra-commit` read-compat headers,
+and `tally/bud.rye`'s `h_domain` Tier 1 domain-separator (never a record-version header).
+`mantra/src/receipt_offer.rye`'s `schema_v1` constant now carries its already-molted value,
+`grain.receipt-offer.20261003.040829` -- the fourth family, confirmed landed rather than a new
+candidate. `construction/REDS.md`'s `%807` and `%765` read unchanged from the fourteenth sweep.
+`construction/fleet-claims.kyri` now carries two live claims, `bakery-root-finder-convert` and
+`copal-tigerbeetle-cache-inplace-census-roster`, both outside this lane. `%807` and `%765`'s 38
+remaining families still want Keaton's word or another ship's own lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
