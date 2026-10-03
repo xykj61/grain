@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.092140` | [twenty-sixth reading, fire row's cut-check](20261003/20261003-092140_petrichor-twentysixth-reading-fire-row-cut-check.kyri) | OPEN rows 14 to 10, none docs-geode |
 | `20261003.092000` | [pheromone's sixteenth empty sweep](20261003/20261003-092000_pheromone-sixteenth-empty-sweep.kyri) | Pheromone: language lane still empty, fire rota finds nothing to cut |
 | `20261003.091924` | [patchouli's sixteenth confirming sweep](20261003/20261003-091924_sixteenth-sweep-empty.kyri) | Patchouli: fresh greps plus a %456 claim-as-override check, still nothing agent-doable |
 | `20261003.091607` | [muster.rye's head lifts C+ to A](20261003/20261003-091607_muster-head-lift.kyri) | GRASS mycelium sample: muster.rye lifted to A/90, seven below-B heads left |
