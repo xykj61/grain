@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.004512 | [Petrichor's tenth fallow reading](20261003/20261003-004512_petrichor-tenth-fallow-reading.kyri) | fruit queue still empty; wider doorway census (1498 pages) re-confirmed clean |
 | 20261003.004302 | [IronBeetle ep037.5 census, rostered both ways](20261003/20261003-004302_ep037-census-roster.kyri) | ep037 witness rostered at tier lap, GREEN and refusal legs proven, claim closed |
 | 20261003.004009 | [Patchouli's tenth fallow reading](20261003/20261003-004009_patchouli-tenth-fallow-reading.kyri) | one unrelated commit since the ninth; mantra/tally still untouched, queue still empty |
 | 20261003.003836 | [Incense's twenty-fourth decline, a splitter disagreed with itself](20261003/20261003-003836_incense-twenty-fourth-decline-splitter-disagreed-with-itself.kyri) | round-opened clean, claim board clear, a derived paragraph-split reader mis-read six OPEN rows as BOOKED/blank -- all six re-confirmed OPEN by direct text |
