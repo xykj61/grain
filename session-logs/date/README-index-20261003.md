@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
 | `20261003.090000` | [twelfth-sweep-rota-earth](20261003/20261003-090000_twelfth-sweep-rota-earth.kyri) | Patchouli's twelfth confirming sweep: both grep nets null, four new OPEN rows read and ruled out, queue empty |
+| `20261003.085840` | [the buffer-bleeds census witness is rostered and the claim closes](20261003/20261003-085840_buffer-bleeds-roster-claim-closed.kyri) | guard added, two elder accounts shed, card nib carried |
 | `20261003.085141` | [the eleventh sweep finds the language lane still empty, fire row read](20261003/20261003-085141_eleventh-sweep-rota-fire.kyri) | round-open clean at bd7f90beed; rota row 2, Fire, read; no agent-doable work, declined a blind cross-lane claim |
 | `20261003.084902` | [nib stale after own session log, repaired](20261003/20261003-084902_nib-stale-after-own-session-log.kyri) | rule 5 missed on prior log; follow-up write fixed it, GREEN |
 | `20261003.084548` | [the eleventh sweep, read through the row that hears](20261003/20261003-084548_eleventh-sweep-rota-aether.kyri) | mantra/tally queue re-checked, all 10 OPEN REDS rows ruled out; rota row 0, Aether |
