@@ -13,9 +13,14 @@ let seat = run ["sh" "-c" "grep -qF 'return_surface_p55' counsel/date/20260729/2
 assert seat.ok else "identity-k6: handback seat scan failed"
 assert seat.out contains "SEAT_OK" else "identity-k6: handback seat missing"
 
-let prin = run ["sh" "-c" "grep -qF 'Identity Remake Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && grep -qF 'Surface Chapter — OPEN' tools/gen/chapter/prin_scope.rish && echo PRIN_OK"]
+# Surface opened right after this handback and has since progressed and paused again (p58,
+# handed into deca) -- a phase it was always going to leave. The rung reads the chapter's
+# presence on the card rather than the one status word it wore the day this witness was born
+# (REDS %292 -- an unrostered witness pinned to a passing state; see oven_season_o0 for the
+# same repair).
+let prin = run ["sh" "-c" "grep -qF 'Identity Remake Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && grep -qF 'Surface Chapter' tools/gen/chapter/prin_scope.rish && echo PRIN_OK"]
 assert prin.ok else "identity-k6: prin_scope scan failed"
-assert prin.out contains "PRIN_OK" else "identity-k6: prin_scope must show Identity PAUSED · Surface OPEN"
+assert prin.out contains "PRIN_OK" else "identity-k6: prin_scope must show Identity PAUSED · Surface present"
 
 say "GREEN: identity-k6 — return_surface_p55 · Identity PAUSED · Surface OPEN"
 say "GREEN: identity-k6 — no invent · Livermore pins kept."

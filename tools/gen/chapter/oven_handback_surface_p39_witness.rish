@@ -11,13 +11,21 @@ assert hb.ok else "oven-handback: handback counsel missing"
 let p39 = run ["test" "-f" "counsel/date/20260729/20260729-000500_surface-season-p39-resume-after-oven.md"]
 assert p39.ok else "oven-handback: Surface p39 resume missing"
 
-let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter — OPEN' tools/gen/chapter/prin_scope.rish && grep -q 'oct:   Oven Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
+# Surface opened right after this handback and has since progressed and paused again (p58,
+# handed into deca) -- a phase it was always going to leave. The rung reads the chapter's
+# presence on the card rather than the one status word it wore the day this witness was born
+# (REDS %292 -- an unrostered witness pinned to a passing state; see oven_season_o0 for the
+# same repair).
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter' tools/gen/chapter/prin_scope.rish && grep -q 'oct:   Oven Chapter — PAUSED' tools/gen/chapter/prin_scope.rish && grep -q 'return_generator_s9' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "oven-handback: prin_scope pin scan failed"
-assert scope.out contains "SCOPE_OK" else "oven-handback: sept not OPEN or oct not PAUSED"
+assert scope.out contains "SCOPE_OK" else "oven-handback: sept not present or oct not PAUSED"
 
-let path = run ["sh" "-c" "test -d oven && test ! -d anvil && echo OVEN_LIVE"]
-assert path.ok else "oven-handback: oven/ must remain after handback"
-assert path.out contains "OVEN_LIVE" else "oven-handback: forge path broken"
+# The forge module answers to ember/ since 20260808 (the same rename oven_season_o0 already
+# reads); the chapter keeps its own name as history, so this rung proves the forge path stands
+# where it went rather than where it was first named (REDS %292).
+let path = run ["sh" "-c" "test -d ember && test ! -d oven && echo FORGE_LIVE"]
+assert path.ok else "oven-handback: forge directory check failed"
+assert path.out contains "FORGE_LIVE" else "oven-handback: ember/ lives and oven/ is retired"
 
-say "GREEN: oven-handback — Surface OPEN p39 · Oven PAUSED · oven/ LIVE"
+say "GREEN: oven-handback — Surface present p39 · Oven PAUSED · ember/ LIVE"
 say "GREEN: oven-handback — return_surface_p39 seated."

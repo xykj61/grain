@@ -9438,3 +9438,44 @@ guard ironbeetle_ep032_census
 path tools/gen/chapter/ironbeetle_ep032_census_witness.rish
 tier lap
 seated 20261002.230441
+
+# identity_remake_k6, nona_season_n3, oven_handback_surface_p39, surface_season_p46,
+# surface_season_p47, surface_season_p51 -- REDS %292's own class ("an unrostered witness pinned
+# to a passing state") found in six more chapter checkpoints: each greps the LIVE
+# tools/gen/chapter/prin_scope.rish for an exact "Surface Chapter — OPEN" status or "pNN complete
+# / pNN+1 next" milestone, true only the day the witness was born, and now permanently false since
+# Surface progressed to PAUSED at p58. nona_season_n3 also read a swept middot and a removed
+# "**OPEN**" string in context/LEXICON.md; oven_handback_surface_p39 also tested `-d oven`, renamed
+# to ember/ on 20260808. Repaired by reading the chapter's durable tag on prin_scope.rish rather
+# than its exact passing phrase, exactly as oven_season_o0_witness.rish already does; nona_season_n3's
+# LEXICON check reads the hyphen separator nona_season_n2 already uses; oven_handback_surface_p39's
+# path check reads ember/ live and oven/ retired. All six GREEN on metal. REDS (20261002.225049).
+guard identity_remake_k6
+path tools/gen/chapter/identity_remake_k6_witness.rish
+tier lap
+seated 20261002.225049
+
+guard nona_season_n3
+path tools/gen/chapter/nona_season_n3_witness.rish
+tier lap
+seated 20261002.225049
+
+guard oven_handback_surface_p39
+path tools/gen/chapter/oven_handback_surface_p39_witness.rish
+tier lap
+seated 20261002.225049
+
+guard surface_season_p46
+path tools/gen/chapter/surface_season_p46_witness.rish
+tier lap
+seated 20261002.225049
+
+guard surface_season_p47
+path tools/gen/chapter/surface_season_p47_witness.rish
+tier lap
+seated 20261002.225049
+
+guard surface_season_p51
+path tools/gen/chapter/surface_season_p51_witness.rish
+tier lap
+seated 20261002.225049

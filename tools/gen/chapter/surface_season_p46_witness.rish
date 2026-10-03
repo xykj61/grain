@@ -13,9 +13,14 @@ let report = run ["sh" "-c" "grep -q 'REPORT' counsel/date/20260729/20260729-133
 assert report.ok else "surface-p46: report scan failed"
 assert report.out contains "REPORT_OK" else "surface-p46: check-in shape incomplete"
 
-let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter — OPEN' tools/gen/chapter/prin_scope.rish && grep -q 'p46 complete / p47 next' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
+# Surface has since progressed past p46 to p58 and paused (handed into deca) -- a phase this
+# round's own milestone was always going to leave behind it. The rung reads the chapter's
+# presence on the card rather than the exact round it wore the day this witness was born
+# (REDS %292 -- an unrostered witness pinned to a passing state; see oven_season_o0 for the
+# same repair). The counsel check above already proves p46's own content landed.
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "surface-p46: prin_scope pin scan failed"
-assert scope.out contains "SCOPE_OK" else "surface-p46: sept bookmark incomplete"
+assert scope.out contains "SCOPE_OK" else "surface-p46: sept bookmark missing"
 
 let pin = run ["test" "-f" "src/shape/shape-brush-pin-key-count.glow"]
 assert pin.ok else "surface-p46: sur×11 pin-key pedestal missing"

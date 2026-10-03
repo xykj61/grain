@@ -13,9 +13,14 @@ let lean = run ["sh" "-c" "grep -q 'Wayland from Frame' counsel/date/20260729/20
 assert lean.ok else "surface-p47: lean scan failed"
 assert lean.out contains "LEAN_OK" else "surface-p47: recommendation incomplete"
 
-let scope = run ["sh" "-c" "grep -q 'p47 complete / p48 next' tools/gen/chapter/prin_scope.rish && grep -q 'sept:   Surface Chapter — OPEN' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
+# Surface has since progressed past p47 to p58 and paused (handed into deca) -- a phase this
+# round's own milestone was always going to leave behind it. The rung reads the chapter's
+# presence on the card rather than the exact round it wore the day this witness was born
+# (REDS %292 -- an unrostered witness pinned to a passing state; see oven_season_o0 for the
+# same repair). The counsel check above already proves p47's own content landed.
+let scope = run ["sh" "-c" "grep -q 'sept:   Surface Chapter' tools/gen/chapter/prin_scope.rish && echo SCOPE_OK"]
 assert scope.ok else "surface-p47: prin_scope pin scan failed"
-assert scope.out contains "SCOPE_OK" else "surface-p47: sept bookmark incomplete"
+assert scope.out contains "SCOPE_OK" else "surface-p47: sept bookmark missing"
 
 say "GREEN: surface-p47 — Wayland-from-Frame recommended · invent held"
 say "GREEN: surface-p47 — handback Generator ranked second."
