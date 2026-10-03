@@ -9563,3 +9563,17 @@ guard ironbeetle_ep038_census
 path tools/gen/chapter/ironbeetle_ep038_census_witness.rish
 tier lap
 seated 20261003.013239
+
+# ironbeetle_ep040_census -- e89 IronBeetle ep040 census, unrostered since it was written. Same
+# shape as ep001 through ep038: gratitude/ironbeetle is presence-only vendored prose rather than a
+# git submodule, so this witness carries no clone-absent skip leg either -- it reads
+# gratitude/ironbeetle/ once and names the fact directly. Proven on metal both ways in this lap:
+# `rishi/bin/rishi run tools/gen/chapter/ironbeetle_ep040_census_witness.rish` exits GREEN at
+# verdict=ok, reading IRON=present, EP040=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes,
+# CLEAN=yes, and MATKLAD_OK=yes; and the same witness, run with gratitude/ironbeetle moved aside,
+# refuses with `gratitude/ironbeetle ABSENT -- host shelf first` rather than reading past the
+# missing shelf. Claimed as copal-ironbeetle-ep040-census-roster before this entry landed.
+guard ironbeetle_ep040_census
+path tools/gen/chapter/ironbeetle_ep040_census_witness.rish
+tier lap
+seated 20261003.014353
