@@ -4,9 +4,9 @@
 #
 # Orientation only -- does not run a graph engine.
 
-say "one-graph: Language EN — Weave DAG · Mantra · Frame redraw."
-say "one-graph: Style Radiant — paper pins; refuse invent stack."
-say "one-graph: Lens TAME — Surface Chapter p8."
+say "one-graph: Language EN -- Weave DAG - Mantra - Frame redraw."
+say "one-graph: Style Radiant -- paper pins; refuse invent stack."
+say "one-graph: Lens TAME -- Surface Chapter p8."
 
 let paper = run ["test" "-f" "counsel/date/20260728/20260728-200159_surface-season-p8-one-graph-dag-redraw-paper.md"]
 assert paper.ok else "one-graph: p8 paper counsel missing"
@@ -36,4 +36,4 @@ let connector = run ["test" "-f" "counsel/date/20260728/20260728-195456_surface-
 assert connector.ok else "one-graph: p5 connector sketch missing"
 
 say "GREEN: one-graph -- paper - foundations - weave - connector pins present"
-say "GREEN: one-graph — redraw along edges; Frame is the fold; no second graph."
+say "GREEN: one-graph -- redraw along edges; Frame is the fold; no second graph."

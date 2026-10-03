@@ -146,7 +146,16 @@ mode="${1:-count}"
 #                             reading fell 10,331 -> 10,313; this falls with it, keeping the same
 #                             80 of slack and taking none of the 18. The listing that hid them is
 #                             held honest from here by `tools/fixtures/l/listing_census_scan.sh`.
-CEILING=10497
+#   10446  `20261003.014536`  FIFTY-ONE characters in seven `tools/gen/chapter/*_witness.rish`
+#                             files, swept on touch by GRASS's ordinary audit lane: three em dashes
+#                             and a varying run of middots in each file's opening Language/Style/Lens
+#                             triad and GREEN lines. The one `assert ... else` string naming
+#                             `sur×11` was left untouched -- it is not a `say` line, and the
+#                             multiplication sign stays the reader's-judgment notation this rule's
+#                             own table declines to spell. All seven witnesses re-run GREEN
+#                             afterward. The reading fell 10,322 -> 10,271; this falls with it,
+#                             keeping the same slack it already stood on and taking none of the 51.
+CEILING=10446
 
 # A symlink is skipped for the sibling's reason: `git ls-files` lists a link AND its target as two
 # paths, and following both counts one set of bytes twice (REDS %340).

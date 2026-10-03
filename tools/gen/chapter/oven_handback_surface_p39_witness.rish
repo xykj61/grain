@@ -2,9 +2,9 @@
 #
 #   rishi/bin/rishi run tools/gen/chapter/oven_handback_surface_p39_witness.rish
 
-say "oven-handback: Language EN — return Surface p39."
-say "oven-handback: Style Radiant — pause Oven; open sept."
-say "oven-handback: Lens TAME — handback 20260729.000500."
+say "oven-handback: Language EN -- return Surface p39."
+say "oven-handback: Style Radiant -- pause Oven; open sept."
+say "oven-handback: Lens TAME -- handback 20260729.000500."
 
 let hb = run ["test" "-f" "counsel/date/20260729/20260729-000500_oven-handback-return-surface-p39.md"]
 assert hb.ok else "oven-handback: handback counsel missing"
@@ -27,5 +27,5 @@ let path = run ["sh" "-c" "test -d ember && test ! -d oven && echo FORGE_LIVE"]
 assert path.ok else "oven-handback: forge directory check failed"
 assert path.out contains "FORGE_LIVE" else "oven-handback: ember/ lives and oven/ is retired"
 
-say "GREEN: oven-handback — Surface present p39 · Oven PAUSED · ember/ LIVE"
-say "GREEN: oven-handback — return_surface_p39 seated."
+say "GREEN: oven-handback -- Surface present p39 - Oven PAUSED - ember/ LIVE"
+say "GREEN: oven-handback -- return_surface_p39 seated."

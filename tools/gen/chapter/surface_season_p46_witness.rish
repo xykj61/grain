@@ -2,9 +2,9 @@
 #
 #   rishi/bin/rishi run tools/gen/chapter/surface_season_p46_witness.rish
 
-say "surface-p46: Language EN — check-in report; museum lane full."
-say "surface-p46: Style Radiant — report doors; refuse invent pad."
-say "surface-p46: Lens TAME — Surface Chapter p46."
+say "surface-p46: Language EN -- check-in report; museum lane full."
+say "surface-p46: Style Radiant -- report doors; refuse invent pad."
+say "surface-p46: Lens TAME -- Surface Chapter p46."
 
 let counsel = run ["test" "-f" "counsel/date/20260729/20260729-133829_surface-season-p46-check-in.md"]
 assert counsel.ok else "surface-p46: p46 counsel missing"
@@ -25,5 +25,5 @@ assert scope.out contains "SCOPE_OK" else "surface-p46: sept bookmark missing"
 let pin = run ["test" "-f" "src/shape/shape-brush-pin-key-count.glow"]
 assert pin.ok else "surface-p46: sur×11 pin-key pedestal missing"
 
-say "GREEN: surface-p46 — check-in seated · sur×11 kept · invent held"
-say "GREEN: surface-p46 — next door waits his word."
+say "GREEN: surface-p46 -- check-in seated - sur×11 kept - invent held"
+say "GREEN: surface-p46 -- next door waits his word."
