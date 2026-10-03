@@ -220,26 +220,21 @@ the twenty-six-account fold, the pleac reach fix, the diffuser-inner find, and t
 spool-dedup/snapshot-projection/three-named-heads module-head lifts; nothing lost, every path
 still opens.
 
-**GRASS -- `mycelium/portage.rye`'S MODULE HEAD LIFT.** [Account shelved
-whole](archive/date/20261003/20261003-040145_itinerary-grass-portage-module-head-account.md):
-register 34 to 100, composite B+/85, no code line moved. **YOURS:** none -- the head is read.
+**GRASS -- FOUR MORE MODULE-HEAD LIFTS, SHELVED WHOLE.** [Fold
+account](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md) --
+portage, braid, cord_byzantine, and the chorus/cord/constel/cord_batch five-head sample; nothing
+lost, every path still opens.
 
-**GRASS -- `mycelium/braid.rye`'S MODULE HEAD LIFT.** [Account shelved
-whole](archive/date/20261003/20261003-042422_itinerary-grass-braid-module-head-account.md):
-register 45 to 98, reach to 100, composite B+/87, no code line moved. **YOURS:** none -- fixing
-negation and grade level as two separate passes beat guessing both at once.
-
-**GRASS -- `mycelium/cord_byzantine.rye`'S MODULE HEAD LIFT.** [Account shelved
-whole](archive/date/20261003/20261003-044130_itinerary-grass-cord-byzantine-module-head-account.md):
-register 46 to 100, composite A/93 at `--service 90`, no code line moved. **YOURS:** none -- the
-head is read.
-
-**GRASS -- THE FIVE-HEAD SAMPLE CLOSES: CHORUS, CORD, CONSTEL, CORD_BATCH.** [Account shelved
-whole](archive/date/20261003/20261003-053700_itinerary-grass-three-c-plus-heads-account.md)
-(`chorus.rye`'s own prior account:
-[archive/date/20261003/20261003-053200](archive/date/20261003/20261003-053200_itinerary-grass-chorus-module-head-account.md)):
-all four module heads lifted from C/C+ to B+ (88, 85, 88, 88), register 100 on each, no code line
-moved. **YOURS:** none -- the sample is fully read; no new sample is queued.
+**GRASS -- A WIDER MYCELIUM SAMPLE NAMES TEN MORE BELOW-B HEADS; `TESTAMENT.RYE` LIFTS FIRST.**
+[Account shelved
+whole](../active-designing/date/20261003/20261003-081955_itinerary-grass-testament-module-head-account.md):
+`testament.rye`'s head read D+/67 (register 46, reach 30), the worst of fifteen mycelium files
+graded this round. Rewrote its two body paragraphs into shorter, affirmative sentences holding
+the same facts -- register rose to 100 (0% negative of 17 sentences), composite to B+/88. Four
+touching witnesses re-run GREEN. **YOURS:** `freight.rye` (75), `fold.rye` (78), `muster.rye`
+(72), `purse.rye` (72), `statement.rye` (74), `tenure.rye` (77), `till.rye` (71), `voucher.rye`
+(76), `warrant.rye` (71), and `rehearsal.rye` (75) all graded below B in the same sweep and wait
+for the same lift, one file at a time.
 
 **DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
 [shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
@@ -349,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `689f1f9c84` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `3786aeb820` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

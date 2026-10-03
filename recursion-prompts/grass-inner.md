@@ -125,6 +125,21 @@ code line moved. `construction/ITINERARY.md`'s GRASS account carries the measure
 prose, comment, or docs surface already open for other reasons, grade it, and push one bounded
 molt frame only where the reading comes back below B.
 
+**A wider mycelium sample drew fifteen main-module heads, and `testament.rye` lifted first
+`20261003`.** `qa_report_card.sh --service 90` graded every remaining top-level `mycelium/*.rye`
+head not already sampled: `testament.rye` read the floor at D+/67 (register 46, reach 30).
+Rewrote its two body paragraphs into shorter, affirmative sentences holding the same facts --
+`chorus_kyri` "tells an enrolled ship from a stranger only when it carries a roster of its own,
+and today that roster stays unwritten" rather than "it cannot ... because it carries no roster" --
+every backticked identifier and the design-read citation held exactly. Register rose to 100 (0%
+negative of 17 sentences), composite to B+/88. Four touching witnesses re-run GREEN; no code line
+moved. [Account](../active-designing/date/20261003/20261003-081955_itinerary-grass-testament-module-head-account.md).
+
+**The next-crux lean:** ten more files from the same sample read below B --`freight.rye`,
+`fold.rye`, `muster.rye`, `purse.rye`, `statement.rye`, `tenure.rye`, `till.rye`, `voucher.rye`,
+`warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's
+usual depth-2 bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

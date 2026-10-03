@@ -2368,3 +2368,12 @@ OPEN-roll splitter question), moved verbatim to
 replaced on the living pin by one pointer line. *What waits there, worth recalling:* nothing new --
 the settled twenty-OPEN REDS count and the one-line-per-row, last-marker-wins splitter rule are
 both repeated in full on the pointer paragraph and in every account written since.
+
+**Checkpoint `20261003.084011` -- grass sheds four already-closed GRASS module-head entries off**
+**`construction/ITINERARY.md` to make room for the testament.rye account and stay under the pin bound.**
+**Walk-back nib:** `41ecd4113c`. **Swept:** the portage, braid, cord_byzantine, and five-head-sample
+(chorus/cord/constel/cord_batch) pointer paragraphs -- each already closed with `YOURS: none` --
+folded into one pointer, moved verbatim to
+[`archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md`](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md).
+*What waits there, worth recalling:* nothing new -- every account's own closed claim and every
+path still opens from the fold's own bullet list.
