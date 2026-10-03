@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261002.233348 | [Patchouli's fifth fallow reading](20261002/20261002-233348_patchouli-fifth-fallow-reading.kyri) | witnesses GREEN; ruled out one %729 candidate; no new agent-doable lap |
+| 20261002.233344 | [Incense's twentieth decline, verified after a real pull](20261002/20261002-233344_incense-twentieth-decline-after-pull.kyri) | round-opened onto a fresh upstream commit, re-verified fourteen-row REDS roll and clear claim board, law lane still dry |
 | 20261002.232959 | [Pheromone's fourth reading, queue closed, Stop held](20261002/20261002-232959_pheromone-fourth-reading-queue-closed-stop-held.kyri) | round-opened, re-confirmed all three lane steps landed, declined a cross-lane override into copal's active red |
 | 20261002.232943 | [Grass's twenty-first reading, label essay clean](20261002/20261002-232943_grass-twenty-first-reading-label-essay-clean.kyri) | one fresh diffuser essay graded A/93, no frame opened |
 | 20261002.232632 | [Grass's nineteenth reading, three diffuser essays clean](20261002/20261002-232632_grass-nineteenth-reading-three-diffuser-essays-clean.kyri) | three fresh arena-window essays graded B+/A, none below B, no frame |

@@ -240,3 +240,13 @@ upstream commit. Claim board clear of this lane (`bakery-root-finder-convert` st
 claim-as-override -- `%745` is already shelved. `%642` and `%519` on the card's agent-doable queue
 are unchanged, each still naming a human word rather than a lap. Next: unchanged -- a human glance
 at `%642`'s scrub trade, `%519`'s spread adoption, or the REDS OPEN rows reopens law-lane work.
+
+**Lap `20261002.233344` declined a twentieth, after a real upstream pull.** Round-opened and
+adopted the anointed order (`03a2655915` -> `3390d70abd`, one new upstream commit); the dead-letter
+box carries nothing from this lap. Claim board clear of this lane (`bakery-root-finder-convert`
+stale, `copal-ironbeetle-ep033-census-roster` building). REDS OPEN roll re-verified by row header:
+fourteen rows (`%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456`), each
+unchanged since the last reading. `%642` and `%519` on the card's agent-doable queue stand exactly
+as the prior lap left them. Next: unchanged -- a human glance at `%642`'s scrub trade, `%519`'s
+spread adoption, or the REDS OPEN rows reopens law-lane work; incense holds rather than re-deriving
+the same unmoved ground a twenty-first time.
