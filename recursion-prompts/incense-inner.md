@@ -271,3 +271,10 @@ reading script after the first pass mis-split on a non-REDS `*Row %745 ...` para
 scrub trade, `%519`'s ratchet, and the wire-ceiling door read exactly as the prior lap left them.
 Next: unchanged -- a human glance at `%642`'s scrub trade, the wire-ceiling door, or the fourteen
 OPEN rows reopens law-lane work; incense holds rather than re-deriving unmoved ground.
+
+**Lap `20261002.225125` declined a fifteenth, after a true-divergence round-open.** The prior
+close parked on `pier/diverged-20261002-225055` when copal, patchouli, and grass each landed a
+commit meanwhile; the anointed order adopted `968cf4e74c`. Re-read fresh against that HEAD: claim
+board clear of this lane (`bakery-root-finder-convert`, stale). REDS OPEN roll unchanged at
+fourteen. ITINERARY's three agent-doable items still name Keaton's word as the blocker. Next:
+unchanged.
