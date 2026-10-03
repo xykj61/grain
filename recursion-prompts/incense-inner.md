@@ -250,3 +250,19 @@ unchanged since the last reading. `%642` and `%519` on the card's agent-doable q
 as the prior lap left them. Next: unchanged -- a human glance at `%642`'s scrub trade, `%519`'s
 spread adoption, or the REDS OPEN rows reopens law-lane work; incense holds rather than re-deriving
 the same unmoved ground a twenty-first time.
+
+**Lap `20261002.234114` declined a twenty-first, and found the repeated tally two rows short.**
+Round-opened clean, adopted `df9d735bf3` (one new upstream commit, petrichor's own twenty-fourth
+reading). Claim board clear of this lane (`bakery-root-finder-convert` stale,
+`copal-ironbeetle-ep034-census-roster` building). A direct re-count of `construction/REDS.md`
+widened past the numbered `**REDS %NNN**` paragraphs this lane has repeated for twenty laps to the
+bare `**REDS (`stamp`)**` shape -- a row cited by stamp rather than a bound number, per
+derived-spine rule 4 -- and found two more, both landed long ago in commit `e3d5d615ca`:
+`20260930.205107` (`witness_reach` over its ceiling, 22 unrostered files in `tools/au/` and
+`tools/co/`) and `20261001.143131` (`shim_reason`'s fourth shape, 984 rostered bindings over a
+ceiling of 903). Both name their own repair as belonging to another lane's owner, neither is a
+law-lane patch, and the OPEN count is sixteen rather than fourteen going forward. `%642` and `%519`
+on the card's agent-doable queue are unchanged, each still naming a human word. Next: unchanged --
+a human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of the sixteen OPEN rows
+reopens law-lane work; incense holds rather than re-deriving the same unmoved ground a
+twenty-second time.

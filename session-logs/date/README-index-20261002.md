@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261002.234200 | [Patchouli's sixth fallow reading](20261002/20261002-234200_patchouli-sixth-fallow-reading.kyri) | round-open pull brought two unrelated claims; queue still empty, no override target |
+| 20261002.234114 | [Incense's twenty-first decline, REDS tally two short](20261002/20261002-234114_incense-twenty-first-decline-undercounted-open-rows.kyri) | re-counted OPEN rows direct: sixteen, not fourteen -- two stamp-cited rows out of this lane's scope |
 | 20261002.233945 | [Pheromone's fifth reading, queue unchanged](20261002/20261002-233945_pheromone-fifth-reading-queue-unchanged.kyri) | round-opened, read the delta since the fourth reading rather than re-deriving; Stop clause still holds |
 | 20261002.233630 | [A quoted em dash broke the ASCII wall](20261002/20261002-233630_quoted-em-dash-broke-the-ascii-wall.kyri) | found and repaired a RED in the REDS ledger's own ASCII wall |
 | 20261002.233540 | [Petrichor's twenty-fourth reading, two witnesses reconfirmed](20261002/20261002-233540_petrichor-twenty-fourth-reading-two-witnesses-reconfirmed.kyri) | fourth fallow lap today, backed by fresh GREEN reruns of living-docs-lint and two-rooms-doorway rather than recollection |
