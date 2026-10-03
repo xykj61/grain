@@ -6,7 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261003.044130` | [chorus head negation and catch-up shed](20261003/20261003-044130_chorus-head-negation-and-catch-up-shed.kyri) | chorus.rye head lifted B+/88; two elder GRASS accounts shed |
+| `20261003.044130` | [chorus head negation and catch-up shed](20261003/20261003-044130_chorus-head-negation-and-catch-up-shed.kyri) | chorus.rye head B+/88; two GRASS accounts shed |
+| `20261003.043856` | [the thirty-seventh decline](20261003/20261003-043856_thirty-seventh-decline-count-moved.kyri) | bare-stamp OPEN set is five, not six; a row born and closed in one lap |
 | 20261003.043245 | [the contested send %803 names, met and carried](20261003/20261003-043245_contested-send-nib-carried.kyri) | round-open's rebase moved HEAD's parent after the nib was written; follow-up shape carries it to 832f733578 |
 | 20261003.043206 | [nona_season_n0_witness rostered](20261003/20261003-043206_nona-season-n0-rostered.kyri) | copal claims, rosters, proves both ways, closes |
 | 20261003.042847 | [the thirty-sixth decline, priced rather than counted](20261003/20261003-042847_thirty-sixth-decline-priced.kyri) | six numbered OPEN REDS rows priced, each waits on a named hand; %642/%519 unchanged |
@@ -23,13 +24,13 @@
 | 20261003.040959 | [Language lane empty, fleet survey, no claim](20261003/20261003-040959_language-lane-empty-fleet-survey-no-claim.kyri) | claim-as-override surveyed REDS and the claims board; found refusal.rye already answers queue item 3 |
 | 20261003.040606 | [Petrichor's twenty-fifth reading, reading-a-name checked](20261003/20261003-040606_petrichor-twentyfifth-reading-reading-a-name-checked.kyri) | fresh angle: graded an untouched study page B+/88; lane still clean |
 | 20261003.040355 | [A third ceiling the prior count never opened](20261003/20261003-040355_a-third-ceiling-the-prior-count-never-opened.kyri) | a Glow Tend witness locks max_dependents=4 outside the prior count's scope, B+/89 |
-| `20261003.040325` | [grass-braid-head-negation-and-grade-level](20261003/20261003-040325_grass-braid-head-negation-and-grade-level.kyri) | mycelium/braid.rye head D/61 to B+/87; register and reach pulled apart, two passes |
+| `20261003.040325` | [grass-braid-head-negation-and-grade-level](20261003/20261003-040325_grass-braid-head-negation-and-grade-level.kyri) | mycelium/braid.rye head D/61 to B+/87 |
 | 20261003.040308 | [Seventh empty queue, read through Fire](20261003/20261003-040308_seventh-empty-queue-fire-row-confirms.kyri) | re-confirms %765/%807 unchanged; no new header family, no claim overlap |
-| `20261003.040043` | [vols-classify-roster](20261003/20261003-040043_vols-classify-roster.kyri) | Rosters vols_classify_witness (CION VOLS r2), the gap between two already-rostered siblings |
+| `20261003.040043` | [vols-classify-roster](20261003/20261003-040043_vols-classify-roster.kyri) | Rosters vols_classify_witness (CION VOLS r2), gap between two siblings |
 | 20261003.035800 | [Petrichor's twenty-fourth reading, doorway witness rerun](20261003/20261003-035800_petrichor-twentyfourth-fallow-reading-doorway-rerun.kyri) | rotated to a fresh witness; two_rooms_doorway confirmed GREEN, 78 of 78 |
 | 20261003.035611 | [Incense declines a 35th, grass owns the grading queue](20261003/20261003-035611_incense-thirty-fifth-decline-grass-owns-grading.kyri) | confirmed grass's own grading sweep covers active-designing; no duplicate work opened |
 | 20261003.035458 | [Language lane still empty, no new rune](20261003/20261003-035458_language-lane-still-empty.kyri) | rota Aether; closed fruit awaits an Incense ruling, nothing agent-doable |
-| `20261003.035346` | [grass-earth-row-head-matches-remote-nothing-new](20261003/20261003-035346_grass-earth-row-head-matches-remote-nothing-new.kyri) | Earth row applied: HEAD equals xy/main exactly, nothing new to grade |
+| `20261003.035346` | [grass-earth-row-nothing-new](20261003/20261003-035346_grass-earth-row-head-matches-remote-nothing-new.kyri) | Earth row: HEAD equals xy/main, nothing new |
 | 20261003.035151 | [Patchouli's flat-service near-miss](20261003/20261003-035151_patchouli-flat-service-near-miss.kyri) | sixth empty queue; caught a flat --service grading pass |
 | 20261003.035118 | [Petrichor's twenty-third reading, water row tasted](20261003/20261003-035118_petrichor-twenty-third-reading-water-row.kyri) | fresh fetch and fresh lint rerun; still no agent-doable docs-geode work |
 | 20261003.035015 | [Grass: round-open settled, one essay graded B+, nothing below B](20261003/20261003-035015_grass-round-open-essay-graded-no-repair.kyri) | diffuser's ceiling-crashes essay graded B+/85; no molt frame opened |

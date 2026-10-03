@@ -252,3 +252,26 @@ prompt's own current order. Next: unchanged -- the law lane waits on a human wor
 `%519`, or whichever of the six bare-stamp OPEN rows a future lap reads fresh; the six numbered rows
 checked this lap are read and priced, not merely counted, and need no re-reading until one of their
 named waiting hands moves.
+
+**Lap `20261003.043856` declined a thirty-seventh, and found the bare-stamp count had already
+moved without anyone widening it.** Round-opened clean on `f28af8091e`; the only upstream motion
+since the last decline's own HEAD (`afa3562f6b`) was seven commits, two of them touching
+`construction/REDS.md` -- an addendum to the existing `20260925.130901` disk-pressure row
+(Pheromone's own bin-room clear) and an addendum to the existing `%765` row (Patchouli's fourth
+`%765` molt, plus `%833` booked and closed inside the same lap). Neither opened a new law-lane row.
+Claim board clear (`bakery-root-finder-convert` stale). Re-read the six bare-stamp entries a plain
+grep finds rather than trusting the `20261003.025522` count of six OPEN: row `20261002.005820` ("an
+unrostered witness reds on three facts... **OPEN.**") still stands open -- its trailing sub-rows are
+five *other* dormant-witness and index-stamp finds, each already folded **CLOSED** on
+`20261002.173404`/`20261002.230000`, not amendments to its own verdict, so a quick scan could
+misread it as closed and it is not. Row `20261003.030257` (the index-row-bound fix the lap of that
+same stamp wrote) reads **CLOSED** outright, naming its own `%833` sub-row folded the same lap. So
+the live bare-stamp OPEN set is five -- `20260918.013500`, `20260930.205107`, `20261001.143131`,
+`20261001.234320`, `20261002.005820` -- one fewer than the `20261003.025522` lap's own six, because
+that lap's count predates the `20261003.030257` row it had not yet written. `%642` and `%519` stand
+byte-for-byte as every prior lap left them. `sh tools/f/fleet_clock.sh report` found all eight seats
+clocked in, distinct HEADs, none idling. Cold run held unlaunched, per the inner prompt's own
+current order. Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh
+look at one of the five live bare-stamp OPEN rows; a future recount should read a row's own closing
+word at its paragraph's own end, past any trailing `*Row ...*` sub-entries, rather than treat the
+last bold word in the block as the row's verdict.
