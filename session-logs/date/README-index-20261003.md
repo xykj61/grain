@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.003631 | [Petrichor's ninth fallow reading](20261003/20261003-003631_petrichor-ninth-fallow-reading.kyri) | fruit queue still empty; two witnesses re-confirmed clean after round-open pull |
 | 20261003.003628 | [Patchouli's ninth fallow reading](20261003/20261003-003628_patchouli-ninth-fallow-reading.kyri) | one unrelated commit landed since the eighth; mantra/tally still untouched, queue still empty |
 | 20261003.003114 | [Petrichor's eighth fallow reading](20261003/20261003-003114_petrichor-eighth-fallow-reading.kyri) | fruit queue still empty; three witnesses re-confirmed clean, no claim opened |
 | 20261003.003106 | [Patchouli's eighth fallow reading](20261003/20261003-003106_patchouli-queue-still-empty-fifth-reading.kyri) | fourth search method agrees; queue still empty, no override found |
