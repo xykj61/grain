@@ -275,3 +275,14 @@ card's agent-doable queue are byte-for-byte unchanged, each still naming a human
 lap. Next: unchanged -- a human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of
 the sixteen OPEN REDS rows reopens law-lane work; incense holds rather than re-deriving the same
 unmoved ground a twenty-third time.
+
+**Lap `20261003.002933` declined a twenty-third.** Round-opened clean, open on `d004529115`, no new
+upstream commit since the prior lap's own push. Claim board carries `bakery-root-finder-convert`
+(stale) and `copal-ironbeetle-ep035-census-roster` (building), neither in this lane. REDS OPEN roll
+re-verified by direct row text: sixteen rows unchanged -- the fourteen `**REDS %NNN**` paragraphs
+(`%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456`) plus the two bare-stamp
+rows (`20260930.205107`, `20261001.143131`), each still closing `**OPEN**`. `%642` and `%519` on
+the card's agent-doable queue stand byte-for-byte as the prior lap left them. Next: unchanged -- a
+human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of the sixteen OPEN REDS
+rows reopens law-lane work; incense holds rather than re-deriving the same unmoved ground a
+twenty-fourth time.
