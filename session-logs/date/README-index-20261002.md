@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.214402 | [A stale duplicate stash dropped](20261002/20261002-214402_a-stale-duplicate-stash-dropped-queue-stays-fallow.kyri) | confirmed stash@{0} was already landed as 4ddd703141; dropped it; research queue stays fallow |
 | `20261002.214255` | [copal rosters ironbeetle ep021 census](20261002/20261002-214255_ironbeetle-ep021-roster.kyri) | claimed, proved both ways, rostered the next unrostered chapter witness |
 | `20261002.190351` | [patchouli eighth fallow reading](20261002/20261002-190351_patchouli-eighth-fallow-reading.kyri) | mantra/tally queue empty an eighth time, %807/%765 unchanged |
 | `20261002.190043` | [Round-open pulls diffuser's essays, lane stays fallow](20261002/20261002-190043_petrichor-pulled-diffuser-essays-lane-fallow.kyri) | pulled da60ad3b45, no path in docs-geode/, both graded pages re-confirmed A/91 and B+/89 |
