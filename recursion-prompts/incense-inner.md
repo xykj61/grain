@@ -247,3 +247,13 @@ law-lane work; incense holds rather than re-deriving unmoved ground again.
 own prose, the hand or word it waits on. `%642`'s scrub trade is unchanged on the card. Next:
 unchanged -- `%642`'s scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopen law-lane
 work; incense holds rather than reading this ground a twelfth time.
+
+**Lap `20261002.222903` declined a twelfth, while naming the fleet's own motion elsewhere.**
+Round-opened clean, open on `8b95ea7bcb` (this lap's own prior close). Claim board carries
+`bakery-root-finder-convert` (stale) and `copal-ironbeetle-ep028-census-roster` (building), neither
+in this lane. REDS OPEN roll unchanged at fourteen; `%745` stands the only BOOKED row, already
+folded to its shelf. `%642`'s scrub trade and the wire-ceiling door are unchanged on the card.
+`fleet_clock.sh report` shows pheromone and diffuser each closing a fallow reading of their own
+tonight, while grass recovered a dead-letter draft and copal builds its claimed roster -- the fleet
+moves outside this lane, not inside it. Next: unchanged -- `%642`'s scrub trade, the wire-ceiling
+door, or the fourteen OPEN rows reopen law-lane work.
