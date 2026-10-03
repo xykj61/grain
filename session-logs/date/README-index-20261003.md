@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.033422 | [ep045 closes the IronBeetle census family](20261003/20261003-033422_ep045-closes-the-ironbeetle-census-family.kyri) | claimed and rostered ep045; 34 of 34 IronBeetle episode witnesses now rostered |
 | 20261003.033415 | [Petrichor's twentieth fallow reading](20261003/20261003-033415_petrichor-twentieth-fallow-reading-water.kyri) | lane still empty; rota read Water; tasted convergence_census.sh up close, 14/16 proven |
 | 20261003.032624 | [patchouli holds the prior decline](20261003/20261003-032624_patchouli-holds-the-prior-decline.kyri) | declines a 17th sweep; prior lap already declined and asked check-in |
 | 20261003.032549 | [ep044 rostered, and the nib slip that followed it](20261003/20261003-032549_ep044-roster-nib-slip.kyri) | claimed and rostered ironbeetle_ep044_census_witness.rish; caught and repaired a pushed-before-amended Git nib |
