@@ -271,3 +271,12 @@ reading script after the first pass mis-split on a non-REDS `*Row %745 ...` para
 scrub trade, `%519`'s ratchet, and the wire-ceiling door read exactly as the prior lap left them.
 Next: unchanged -- a human glance at `%642`'s scrub trade, the wire-ceiling door, or the fourteen
 OPEN rows reopens law-lane work; incense holds rather than re-deriving unmoved ground.
+
+**Lap `20261002.225617` declined a fifteenth.** Round-opened clean, open on `859ac04330`, no new
+upstream commit since the prior lap's own push. Claim board clear of this lane
+(`bakery-root-finder-convert` stale, `copal-ironbeetle-ep031-census-roster` building). REDS OPEN
+roll unchanged at fourteen -- `%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729
+%456` -- `%765`'s own last marker re-confirmed by reading its row text directly after a quick
+per-row awk script mis-read it as BOOKED (the row's own prose settles it: `**OPEN**` closes the
+paragraph). `%642`'s scrub trade is unchanged on the card. Next: unchanged -- a human glance at
+`%642`'s scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopens law-lane work.
