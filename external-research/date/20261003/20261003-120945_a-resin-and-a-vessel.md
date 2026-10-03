@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth, Gauge at Field
 **Status:** Living -- **Room:** research for understanding
-**Silo:** none yet -- design choices on this page wait for a word before a designing page
+**Silo:** [`../../../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md`](../../../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md)
 
 This page starts the explanation over. It is for a reader who has the words resin, vessel, Amphora, and hash in one conversation and cannot yet tell which word is the box.
 
@@ -72,6 +72,6 @@ Leave the formula comment for a later word. The page is mirrored byte for byte, 
 
 Confirmed `20261003.125811`. Resin is the bundle. Vessel is the file. Digest is the address. A vessel may be taught as the file Amphora pours when the bundle is a whole season, and the word vessel stays. The four-part name stays, and the digest remains the check under it.
 
-Nothing from this page is seated in the lexicon, the spellbook, or the favorites list. A designing page stays unwritten until a later word asks for it.
+Nothing from this page is seated in the lexicon, the spellbook, or the favorites list. The designing page is the silo named above.
 
 *May a bundle keep its name, a file keep its shape, and a short check stay honest the thousandth time you ask.*

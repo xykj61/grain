@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.130953` | [resin vessel digest siloed](20261003/20261003-130953_resin-vessel-digest-siloed.kyri) | Designing page; lexicon still unseated |
 | `20261003.125811` | [resin vessel digest for now](20261003/20261003-125811_resin-vessel-digest-for-now.kyri) | Reading confirmed; seating still deferred |
 | `20261003.121056` | [a resin and a vessel](20261003/20261003-121056_a-resin-and-a-vessel.kyri) | Research page; vessel and resin kept apart |
 | `20261003.115440` | [resin is the cargo](20261003/20261003-115440_resin-is-the-cargo.kyri) | Digest is the address; resin stays the bytes |
