@@ -1,0 +1,22 @@
+::  name       receipt refusal field count
+::  shape      fields - int (@u32)
+::  invariant  a Refusal carries exactly three fields (field - reason -
+::             measure)
+::  example    3
+::  readers    Tally - Mantra - Glow Tend - Sur museum
+::  nib        equinox-e208-mantra-tend-v0
+::
+::  Equinox e208 - Mantra M10 -- tenth Mantra structure pedestal in src/shape/.
+::  Names Refusal's field count from tally/receipt_refusal.rye, the record the
+::  product contract asks every admission refusal to render: `field` names the
+::  contract field that refused, `reason` is the closed Reason set, and
+::  `measure` carries value/ceiling/unit exactly when a ceiling decided it.
+::  Pedestal only; Rye still owns `render`, the two text refusal readers, and
+::  the closed Reason enum this record renders by name.
+::
+::  Three sits well under rune_shape.max_fields (15); this pedestal does not
+::  raise it. Smaller than every receipt or consent fact named so far, because
+::  a refusal states what went wrong rather than restating what was offered.
++$  receipt-refusal-field-count-shape
+  $:  fields=@u32
+  ==

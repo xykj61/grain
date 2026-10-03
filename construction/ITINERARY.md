@@ -42,16 +42,13 @@ whole](archive/date/20261002/20261002-070112_itinerary-pheromone-yours-question-
 by Patchouli before this card's own prior stamp. Language lane reads empty; no fresh rune question
 stands.
 
-**PHEROMONE -- SIX MORE CHAPTER CHECKPOINTS TOOK REDS %292'S OWN REPAIR.** `identity_remake_k6`,
-`nona_season_n3`, `oven_handback_surface_p39`, `surface_season_p46`, `surface_season_p47`, and
-`surface_season_p51` each pinned `tools/gen/chapter/prin_scope.rish` to a status word or milestone
-true only the day each was born, and all six went permanently false once Surface progressed to
-PAUSED at p58; `nona_season_n3` also carried an ASCII-swept middot and a removed `**OPEN**` string
-in `context/LEXICON.md`, and `oven_handback_surface_p39` tested a directory renamed to `ember/` on
-`20260808`. Found and repaired as a claim-as-override once this lane's own Glow queue read empty,
-in the same shape `oven_season_o0_witness.rish` already used: read the chapter's durable tag
-rather than its exact passing phrase. All six GREEN on metal and rostered. REDS `(20261002.225049)`.
-**YOURS:** none -- language lane reads empty; no fresh rune question stands.
+**PHEROMONE -- SIX MORE CHAPTER CHECKPOINTS TOOK REDS %292'S OWN REPAIR.** [Account shelved
+whole](archive/date/20261003/20261003-075144_itinerary-pheromone-six-checkpoints-account.md) --
+all six GREEN on metal and rostered. **YOURS:** none -- language lane reads empty.
+
+**PHEROMONE -- THE TENTH STRUCTURE PEDESTAL, `Refusal`'S OWN THREE FIELDS.** [Account shelved
+whole](archive/date/20261003/20261003-075300_itinerary-pheromone-receipt-refusal-pedestal-account.md)
+-- GREEN on metal and rostered. **YOURS:** none -- a new rune returns to Incense.
 
 **INCENSE.** [Account shelved](archive/date/20260918/20260918-055107_itinerary-incense-backtick-path-account.md)
 -- backtick_path fell 68 to 64.
@@ -352,7 +349,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `82ce2b8f08` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `8d86f78a7e` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

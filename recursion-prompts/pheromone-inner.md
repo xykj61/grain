@@ -101,6 +101,21 @@ metal. Rostered into `construction/standing-equipment.kyri` as limb8 and limb9.
 `mantra/src/consent_replay.rye`, `tally/`, nor `glow/rune_shape.rye` was touched. A new rune
 returns to Incense.
 
+**The fruit claimed `20261003.074404` closed `20261003` the same lap.** `src/shape/shape-receipt-refusal-field-count.glow`
+names `tally/receipt_refusal.rye`'s `Refusal` three fields -- field, reason, measure -- the stable
+admission-refusal record ITINERARY's own step 3 ("make refusal output stable: field, value,
+ceiling, unit, and reason") already built in Rye and this pedestal now names in Glow. `tally/receipt_refusal.rye`
+gained a published `refusal_fields` constant tied by a comptime assert to
+`@typeInfo(Refusal).fields.len`, the same tie `offer_fact_fields` already holds for
+`ReceiptOfferFact`, in the same form limb5/limb7/limb8/limb9 already use. `tools/m/mantra_glow_tend_limb10_witness.rish`
+proves the placard's declared count and field order against the rye via
+`tools/fixtures/r/rye_struct_fields_scan.sh`, checks the struct's own comptime constant, lowers and
+runs the desk, and asserts `rune_shape.max_fields` stayed at 15. GREEN on metal. Rostered into
+`construction/standing-equipment.kyri` as limb10. `src/shape/README.md` gained the row.
+`tally/receipt_refusal_witness.rish` and `tools/t/tally_receipt_refusal_witness.rish` both stayed
+GREEN after the one-field addition; neither `mantra/src/receipt_offer.rye` nor
+`glow/rune_shape.rye` was touched. A new rune returns to Incense.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

@@ -8608,6 +8608,20 @@ path tools/m/mantra_glow_tend_limb9_witness.rish
 tier lap
 seated 20261002.153600
 
+# mantra_glow_tend_limb10 -- the tenth Mantra structure pedestal in src/shape/.
+# shape-receipt-refusal-field-count.glow names Refusal's three fields (field - reason - measure),
+# read from tally/receipt_refusal.rye via tools/fixtures/r/rye_struct_fields_scan.sh, the same
+# discipline limb5/limb7/limb8/limb9 above prove. Refusal is the stable admission-refusal record
+# every ceiling and reason renders through -- ITINERARY's own "make refusal output stable" step.
+# tally/receipt_refusal.rye gained a published refusal_fields constant tied by a comptime assert
+# to @typeInfo(Refusal).fields.len, the same tie offer_fact_fields already holds for
+# ReceiptOfferFact. Three sits well under glow/rune_shape.rye's max_fields (15); the witness
+# asserts that constant stayed put.
+guard mantra_glow_tend_limb10
+path tools/m/mantra_glow_tend_limb10_witness.rish
+tier lap
+seated 20261003.074404
+
 # date_dialect -- an unrostered chapter witness, repaired before rostering (REDS `20261002.000949`).
 # It pinned exact library counts (law_library_dated=17, compact=17) from the day it was written,
 # while the scan it calls, tools/fixtures/d/date_dialect_scan.sh, already carries the floor fix for

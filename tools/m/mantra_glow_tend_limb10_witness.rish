@@ -1,0 +1,56 @@
+# tools/m/mantra_glow_tend_limb10_witness.rish -- Mantra M10 in src/shape/.
+#
+#   rishi/bin/rishi run tools/m/mantra_glow_tend_limb10_witness.rish
+
+say "mantra-tend-10: Language EN -- Mantra Glow Tend limb 10 (sur museum)."
+say "mantra-tend-10: Style Radiant -- the stable refusal record, three fields."
+say "mantra-tend-10: Lens TAME -- Ashvini nest-only - Equinox B."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-receipt-refusal-field-count.glow"
+let elder = "tally/receipt_refusal.rye"
+
+say "mantra-tend-10: placard..."
+let placard = run ["sh" "-c" "head -n 10 src/shape/shape-receipt-refusal-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "mantra-tend-10: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "mantra-tend-10: placard missing six lines"
+
+let pex = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-receipt-refusal-field-count.glow"]
+assert pex.ok else "mantra-tend-10: example 3 missing"
+let pelder = run ["sh" "-c" "grep -q 'tally/receipt_refusal.rye' src/shape/shape-receipt-refusal-field-count.glow"]
+assert pelder.ok else "mantra-tend-10: citation missing"
+
+# The claim is the placard's own, read against the rye rather than copied a second time here --
+# the same discipline the limb5, limb7, limb8, and limb9 witnesses already carry: a guard holding
+# its own copy of a number can only ever agree with itself.
+say "mantra-tend-10: the placard's own number, read against Refusal..."
+let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-receipt-refusal-field-count.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert declared.ok else "mantra-tend-10: the placard's example line is unreadable"
+let want = trim declared.out
+let counted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" elder "Refusal"]
+assert counted.ok else "mantra-tend-10: the field reader refused on Refusal -- ${counted.out_brief}"
+let got = trim counted.out
+assert got == want else "mantra-tend-10: Refusal declares ${got} fields where the placard says ${want}"
+let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" elder "Refusal"]
+assert named.ok else "mantra-tend-10: the field reader refused on Refusal fields -- ${named.out_brief}"
+let gotfields = trim named.out
+assert gotfields == "field reason measure" else "mantra-tend-10: Refusal fields missing or reordered in the rye -- ${gotfields}"
+
+# The struct's own comptime proof, read rather than trusted by name -- refusal_fields is the
+# number render's comptime assert ties to @typeInfo(Refusal).fields.len, so a field added
+# without updating it fails the Rye build before this placard could ever drift.
+say "mantra-tend-10: the module's own stated field count agrees..."
+let stated = run ["sh" "-c" "grep -q 'pub const refusal_fields: u32 = 3;' tally/receipt_refusal.rye"]
+assert stated.ok else "mantra-tend-10: refusal_fields moved off 3 in the rye"
+
+say "mantra-tend-10: lower and run the desk..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "mantra-tend-10: receipt refusal shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "mantra-tend-10: receipt refusal shape did not exit 0"
+
+say "mantra-tend-10: max_fields untouched..."
+let ceiling = run ["sh" "-c" "grep -q 'max_fields: u32 = 15' glow/rune_shape.rye"]
+assert ceiling.ok else "mantra-tend-10: rune_shape.max_fields moved off 15 -- this fruit must not raise it"
+
+say "GREEN: mantra Glow Tend limb 10 -- the stable refusal record, three fields, in src/shape/."

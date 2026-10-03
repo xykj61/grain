@@ -94,6 +94,10 @@ pub const Refusal = struct {
     reason: Reason,
     measure: ?Measure = null,
 
+    /// The published field count, stated once so a reader and a comptime
+    /// check are compared against the same number.
+    pub const refusal_fields: u32 = 3;
+
     /// Render the stable one-line ASCII form into the caller's buffer.
     ///
     ///   field=purpose value=93 ceiling=80 unit=ascii-byte reason=too-long
@@ -101,6 +105,8 @@ pub const Refusal = struct {
     ///
     /// Key order is fixed, so a reader and a test may both rely on it.
     pub fn render(self: Refusal, buf: []u8) RenderError![]const u8 {
+        // invariant: the published field set stays the size this record covers.
+        comptime assert(@typeInfo(Refusal).@"struct".fields.len == refusal_fields);
         // invariant: the field name stays inside its published ceiling.
         assert(max_field_name_bytes > 0);
         // invariant: a rendered line fits the published line ceiling.

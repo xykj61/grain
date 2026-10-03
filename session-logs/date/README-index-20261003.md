@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.075425` | [the stable refusal record's own pedestal](20261003/20261003-075425_receipt-refusal-shape-pedestal.kyri) | Mantra Tend limb10, `Refusal`'s three fields, GREEN on metal |
 | `20261003.074630` | [the queue reads empty an eighth way](20261003/20261003-074630_queue-empty-eighth-sweep.kyri) | confirming sweep, patchouli's lane; %807 still OPEN, no new %765 family, no unclaimed BOOKED row to override into |
 | `20261003.074328` | [the queue reads empty a seventh way](20261003/20261003-074328_queue-empty-seventh-sweep.kyri) | confirming sweep, patchouli's lane; %807 still OPEN, no new %765 family |
 | `20261003.044138` | [constel, cord, cord_batch heads close the five-head sample](20261003/20261003-044138_mycelium-cord-constel-cord-batch-heads.kyri) | three C+ module heads lifted to B+; chorus.rye GRASS account shed |
