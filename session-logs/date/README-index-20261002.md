@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.214954` | [petrichor tenth fallow reading](20261002/20261002-214954_petrichor-tenth-fallow-reading.kyri) | round-open pulled grass's log, no docs-geode path; both graded pages re-confirmed unchanged |
 | `20261002.214907` | [diffuser-lane-still-awaits-captains-word](20261002/20261002-214907_diffuser-lane-still-awaits-captains-word.kyri) | arena-free arc stays closed per captain's 183518 ruling; pulled, no new fruit named |
 | `20261002.214822` | [patchouli tenth fallow reading](20261002/20261002-214822_tenth-fallow-reading-elder-headers-confirmed.kyri) | mantra/tally queue empty a tenth time, elder headers confirmed accrete-never-break, %807/%765 unchanged |
 | `20261002.214600` | [grass ninth fallow reading](20261002/20261002-214600_ninth-fallow-reading-yours-line-confirmed-closed.kyri) | six-sibling YOURS line already closed on the card; no new agent-doable work in GRASS's reach |
