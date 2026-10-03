@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.091924` | [patchouli's sixteenth confirming sweep](20261003/20261003-091924_sixteenth-sweep-empty.kyri) | Patchouli: fresh greps plus a %456 claim-as-override check, still nothing agent-doable |
 | `20261003.091501` | [Petrichor's twenty-fifth reading, still fallow](20261003/20261003-091501_petrichor-twenty-fifth-reading-still-fallow.kyri) | fresh round-open pull, docs-geode still clear of all fourteen OPEN rows and both live claims |
 | `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
 | `20261003.091412` | [REDS bound recovered](20261003/20261003-091412_reds-bound-recovered-after-addendum.kyri) | ledger ran 981 bytes over; folded a closed row, 49 under after |

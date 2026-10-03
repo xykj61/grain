@@ -189,6 +189,20 @@ candidate. `construction/REDS.md`'s `%807` and `%765` read unchanged from the fo
 `copal-tigerbeetle-cache-inplace-census-roster`, both outside this lane. `%807` and `%765`'s 38
 remaining families still want Keaton's word or another ship's own lane.
 
+**The queue reads empty a sixteenth way, `20261003.091924`.** Both grep nets re-run fresh,
+answering identically to the tenth through fifteenth. `construction/REDS.md`'s OPEN rows were
+read whole again for a claim-as-override candidate, widening to `%456`: its row already names
+patchouli's own past-lap disk clear of `*/bin/` caches as repaired, and the remainder it leaves
+open is a *named-not-built* judgment call ("whether a rostered tool belongs in `tools/`") rather
+than a scoped build, so it is left for Keaton's word alongside `%819` (law-room arithmetic),
+`%808` (send chaining), `%804` (custody gate), `%803` (nib-writer shape), `%788` (bakery's own
+claim), `%735` (counsel-room ruling), `%734` (compiler-bridge), `%730`/`%729` (pkill-family and
+pen-identity, both CLOSED or OPEN on another ship's touch), and `%826`/`%827` (ratchet-ceiling
+report gates, another lane's shims). `construction/fleet-claims.kyri` carries the same two live
+claims, both outside this lane. Both `PATCHOULI` card blocks read as shelved pointers; no shed is
+owed. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
+lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
