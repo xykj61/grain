@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.232632 | [Grass's nineteenth reading, three diffuser essays clean](20261002/20261002-232632_grass-nineteenth-reading-three-diffuser-essays-clean.kyri) | three fresh arena-window essays graded B+/A, none below B, no frame |
 | 20261002.231716 | [Petrichor's twenty-second reading, the lane still fallow](20261002/20261002-231716_petrichor-twenty-second-reading-queue-fallow.kyri) | round-opened clean, no claim or OPEN REDS row for this lane, doorway witness run fresh GREEN |
 | `20261002.231628` | [incense's nineteenth fallow reading, and a shed](20261002/20261002-231628_incense-nineteenth-fallow-and-a-shed.kyri) | Ground unmoved; folded its own inner prompt back under bound before writing |
 | 20261002.231600 | [Neither real caller reaches the window](20261002/20261002-231600_neither-caller-reaches-the-window.kyri) | closes the prior falsifier by reading two real callers |
