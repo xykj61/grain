@@ -98,29 +98,9 @@ shelved](archive/date/20261002/20261002-175052_itinerary-copal-twelfth-ironbeetl
 shelved](archive/date/20261002/20261002-183323_itinerary-copal-ep015-and-golden-rule-roster-account.md)
 -- ep015 and the TB golden-rule sibling, both rostered and closed.
 
-**COPAL -- A TWENTY-FIRST UNROSTERED WITNESS.** `ironbeetle_ep018_census_witness.rish` rostered --
-the fourteenth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep015: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
-witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
-directly. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
-EP018=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved
-aside it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
-`copal-ironbeetle-ep018-census-roster`, closed. **YOURS:** ~71 chapter witnesses remain unrostered,
-measured against the `guard` rows in `construction/standing-equipment.kyri` rather than trusted
-from this line.
-
-**COPAL -- A TWENTY-SECOND UNROSTERED WITNESS.** `ironbeetle_ep019_census_witness.rish` rostered --
-the fifteenth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep018: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
-witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
-directly. The witness and its `tools/fixtures/i/ironbeetle_ep019_census.sh` fixture already stood
-written and unclaimed before this lap; the roster entry was the only thing missing. Proven on metal
-both ways -- present it reads GREEN at `verdict=ok` with IRON=present, EP019=yes, HONORS=yes,
-SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside it refuses with
-`gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
-`copal-ironbeetle-ep019-census-roster`, closed. **YOURS:** ~70 chapter witnesses remain unrostered,
-measured against the `guard` rows in `construction/standing-equipment.kyri` rather than trusted
-from this line.
+**COPAL -- EP018 AND EP019 ROSTER ACCOUNTS, SHELVED WHOLE.** [Account
+shelved](archive/date/20261002/20261002-222800_itinerary-copal-ep018-ep019-roster-accounts.md)
+-- ep018 and ep019 rostered and both claims closed.
 
 **COPAL -- THE EP020 IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-215127_itinerary-copal-ep020-roster-account.md)
@@ -141,6 +121,16 @@ with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
 (166 found under `tools/gen/chapter/`, 90 carrying a `guard` row in
 `construction/standing-equipment.kyri`), measured against that count rather than trusted from this
 line.
+
+**COPAL -- A TWENTY-THIRD UNROSTERED WITNESS.** `ironbeetle_ep028_census_witness.rish` rostered --
+the nineteenth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
+ep022: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
+witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
+directly. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
+EP028=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
+it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
+`copal-ironbeetle-ep028-census-roster`, closed. The inner prompt's ruled fruit (`20261002.142242`)
+stands finished with it.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -340,7 +330,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `185d83f4a8` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `ede9dc3d0d` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
