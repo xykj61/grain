@@ -150,13 +150,10 @@ roster's own comment names as deliberately left unrostered -- re-measure with
 <(grep -oP '(?<=^path )tools/gen/chapter/\S+' construction/standing-equipment.kyri | xargs -n1
 basename | sed 's/\.rish$//' | sort -u)` rather than trusting this count.
 
-**COPAL -- VOLS_CLASSIFY ROSTERED, THE GAP BETWEEN TWO ROSTERED SIBLINGS.**
-`vols_classify_witness.rish` rostered -- CION VOLS Journey 13 r2, standing between r1
-(`vols_survey`, already rostered) and r4 (`vols_survey_true`, already rostered), with r3
-(`vols_survey_kyri`) left for a later lap per this fruit's own scope of one. The witness carries
-its own both-ways proof: a positive fixture reads `verdict=ok, guarded_sites=0`, and a negative
-fixture -- the same tree with its prose site's path added to the guardlist -- reads
-`verdict=drift, guarded_sites=1`, refused. Claimed as `copal-vols-classify-roster`, closed.
+**COPAL -- VOLS JOURNEY 13 COMPLETE, R2 AND R3 ROSTERED, FOLDED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-041959_itinerary-copal-vols-journey-13-complete-account.md)
+-- `vols_classify` and `vols_survey_kyri` both rostered and their claims closed; all four VOLS
+Journey 13 rungs now carry a guard entry.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)

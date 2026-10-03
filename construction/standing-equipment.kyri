@@ -9670,3 +9670,21 @@ guard vols_classify
 path tools/gen/chapter/vols_classify_witness.rish
 tier lap
 seated 20261003.035902
+
+# vols_survey_kyri -- CION VOLS Journey 13 r3, unrostered since it was written, and the gap
+# copal-inner.md's own fruit named for a later lap once r2 (vols_classify, rostered above) had
+# landed. r1 made the census complete; r2 classified each site; r3 makes the survey a durable
+# artifact rather than a console print that scrolls away: vols_survey_render.sh writes the
+# classified census to a `format cion-survey-v1` Kyri ledger and vols_survey_parse.sh reads it
+# back. Proven on metal both ways in this lap: `rishi/bin/rishi run
+# tools/gen/chapter/vols_survey_kyri_witness.rish` exits GREEN, reading the fixture round-trip
+# (surfaces=3, sites=2, handles=1, prose_gaps=1, guarded_sites=0, site_lines=2), the render's
+# idempotence (the same tree renders identical bytes twice), the tamper refusal
+# (verdict=badformat on a wrong header), and the live ledger's totals (guarded_sites=0); and the
+# same witness, run with tools/fixtures/v/vols_survey_render.sh moved aside, refuses at the
+# assert naming the record missing its format header rather than reading past the absent
+# renderer. Claimed as copal-vols-survey-kyri-roster before this entry landed.
+guard vols_survey_kyri
+path tools/gen/chapter/vols_survey_kyri_witness.rish
+tier lap
+seated 20261003.042200
