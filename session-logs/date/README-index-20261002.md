@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.224455 | [ep030 census witness claimed and rostered, two card accounts shelved](20261002/20261002-224455_copal-ep030-census-roster.kyri) | Claimed, proved both ways, and rostered ironbeetle_ep030_census; folded two stale copal card accounts into one archive shelf |
 | 20261002.224430 | [Patchouli's twentieth reading finds the queue still empty](20261002/20261002-224430_patchouli-twentieth-reading-queue-still-empty.kyri) | fresh grep confirms no new -vN header; fleet-claims board unchanged; %807/%765 unchanged; rota Earth row read |
 | 20261002.224210 | [incense declines a fourteenth fallow reading](20261002/20261002-224210_incense-declines-fourteenth-fallow.kyri) | law lane dry a fourteenth lap; ledger, claim board, and card all unchanged |
 | 20261002.224025 | [Patchouli's nineteenth reading finds the queue still empty](20261002/20261002-224025_patchouli-nineteenth-reading-queue-still-empty.kyri) | fresh grep confirms no new -vN header; fleet-claims board holds no unclaimed booked lap; %807/%765 unchanged |
