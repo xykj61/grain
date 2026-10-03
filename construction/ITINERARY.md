@@ -206,35 +206,15 @@ the contract accepted, and the citizen door's new "A yes you can change" section
 revoke, and the one refusal proven today -- a mismatched holder. Door/B+, composite 89.
 **YOURS:** none -- Consent Rail and the rest wait past this lane.
 
-**GRASS -- TWENTY-SIX ELDER ACCOUNTS, SHELVED WHOLE** (`20260918`-`20261002`, condensed from
-four pointer blocks to one, nothing archived lost -- every account below still opens at its own
-path): open-room reverse-reads, `backtick_path`, `setu6` device-lab, `scribble_core.rye`,
-pin-agreement bound, `setu_desk_hold0_check.rye`, hold1 + zero-assert close, prior live accounts,
-Four Promises, Device That Forgets, Key You Hold, Free and Open Room, Shape of a Day, Roots
-Beneath the Work, Foundation Beneath the Work, Ledger and Grace, Marked Value, the Sealed
-Crossing, two small ratchet sites (memcpy and parseInt), Cord-Knot's parseInt graduation, the
-Caravan fold note, the last zero-assert file, unsaid-rostered's YOURS closed, shim-reason close,
-mycelium's `main` family declined, the two named mycelium candidates split clean, and the
-eval_expr split (folded `20261002.161804` to
-[`archive/20261002-161804_itinerary-grass-eval-expr-split-account.md`](archive/20261002-161804_itinerary-grass-eval-expr-split-account.md)).
-Full index with every path: [`archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md`](archive/date/20261002/20261002-144246_itinerary-grass-twenty-six-accounts-index.md).
-`functions_over_70` narrowed to 439, then 437, after mycelium's own reverse-read and the pledge/lapse split.
+**GRASS -- THREE ELDER ACCOUNTS (TWENTY-SIX FOLDED, `GLOW_RUN.RYE`'S `MAIN` SPLIT, SIYA'S
+FOUNDATION LIFT), SHELVED WHOLE.** [Fold](archive/20261003-003919_itinerary-grass-three-elder-accounts-fold.md)
+-- nothing lost, every path still opens. `functions_over_70` sits at 437.
 
-**GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLIT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-185550_itinerary-grass-glow-run-main-account.md)
--- the flat head-dispatch split, `functions_over_70` fell by one, `20261002`, nothing lost.
-
-**GRASS -- SIYA'S DAILY-SERVICE FOUNDATION RISES FROM C+ TO B.**
-[Shelved pointer](archive/20261002-230922_itinerary-grass-six-sibling-fund-pages-account.md) for
-the prior fund-pages account. `foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-
-service.md` sampled C+/74 (register 55% negative of 20 sentences, reach grade 15 against Door's 9).
-Nine sentences carried a negation word doing affirmative work -- "refuse to skip", "never
-remembered", "nothing edited" -- each reworded same-meaning per the Fire-page precedent
-(`f088d1d3d2`), landing register at 100%. The Status front-matter line, a single 46-word sentence
-restating the Vision-room fact twice, split into two shorter sentences and named its room plainly
-per the baton's DOOR clause; reach rose 40 to 50. Composite with an honest judged service (named_by_
-card=no, 4 living citers, current, side-matched) reads B/81. `YOURS:` none -- no fact, citation, or
-seated vocabulary moved; the piece's refrain ("the sacred is whatever we always keep") kept its
-bookend shape across opening and closing.
+**GRASS -- PLEAC CH01 PAGE 2's REACH FELL FROM 13 TO 8, SHELVED WHOLE.** [Account](archive/20261003-000727_itinerary-grass-pleac-ch01-page-2-reach-account.md):
+found below the door floor at composite C+/79 (reach grade 13), recovered from an earlier lap's
+own stash after a round-open parked it unsent. Three semicolon-chained sentences split at their
+clause boundaries, same facts, no code touched; `tools/p/pleac_ch01_2_witness.rish` stayed GREEN.
+Re-graded register=85, reach=100, composite A-/91. **YOURS:** none -- the fix is self-contained.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
