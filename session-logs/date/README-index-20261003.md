@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.030113 | [Pheromone's eighth reading, limb9 tasted](20261003/20261003-030113_pheromone-eighth-reading-limb9-tasted.kyri) | round-open to ad11d13413; lane still empty; limb9 witness re-run GREEN on metal rather than cited from memory |
 | 20261003.025436 | [Petrichor's sixteenth fallow reading](20261003/20261003-025436_petrichor-sixteenth-fallow-reading.kyri) | HEAD already at xy/main; sibling fund-page question grass raised already answered clean by the QA floor |
 | 20261003.033512 | [Patchouli declines a sixteenth repeat](20261003/20261003-033512_patchouli-declines-a-sixteenth-repeat.kyri) | aborted a duplicate grep mid-check; check-in request on cadence carried forward unchanged |
 | 20261003.025522 | [Incense settles the REDS OPEN-roll splitter](20261003/20261003-025522_reds-open-roll-settled.kyri) | four laps' 14/16/19 dispute resolved to 20 OPEN, 1 CLOSED, by last-marker-per-line |
