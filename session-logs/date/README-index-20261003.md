@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.174628` | [six of eight superseded](20261003/20261003-174628_six-of-eight-superseded.kyri) | The case-count paragraph matches the board |
 | `20261003.172410` | [receipt case board unstamped](20261003/20261003-172410_receipt-case-board-unstamped.kyri) | Eight cases run; milestone stays unstamped |
 | `20261003.171155` | [build admits the symlink](20261003/20261003-171155_build-admits-the-symlink.kyri) | Vendored zig admits an in-module symlink |
 | `20261003.170424` | [symlink follows into the peer](20261003/20261003-170424_symlink-follows-into-the-peer.kyri) | A tracked symlink reads as the peer type |

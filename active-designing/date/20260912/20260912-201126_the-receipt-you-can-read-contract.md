@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting
 **Voice:** Kyri
 **Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge, the landed Tally/Mantra rung, the eight-case board, case 8's direct-import build refusal, the build's admission of an in-module symlink, a one-file third-module import, and a tracked symlink into the peer projection are checkable; the milestone stays unstamped, and a further call graph stays outside the guard
+**Revised:** `20261003.174522` -- the six-of-eight paragraph below is superseded. Case 4's source order is `tools/r/receipt_still_order_witness.rish`. The eight cases run together in `tools/r/receipt_case_board_witness.rish`, which prints `milestone=unstamped`. `swift_runtime=unverified` on this host. One fixture passing all eight on metal stays the milestone's own condition. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.172313` -- the eight-case board. `tools/r/receipt_case_board_witness.rish` runs cases 1, 2, 3, and 5 through `tools/m/mantra_receipt_offer_snapshot_witness.rish`, case 4 through `tools/r/receipt_still_order_witness.rish` as `case4=source_order`, cases 6 and 7 through `tools/m/mantra_receipt_offer_refusal_chain_witness.rish`, and case 8 through the source braid, the build, and the one-file import. The scan prints `milestone=unstamped` on a green board and on a short one. `swift_runtime=unverified` on this host. No elder row, number, or acceptance case was removed, and the achieved name stays unstamped.
 **Revised:** `20261003.170950` -- the build admits the symlink. `tools/fixtures/r/receipt_braid_build_scan.sh` places a symlink beside the importing file, pointed at `dimeroll/receipt_offer.rye`, and the vendored zig build prints `link=admitted`. The outside-module import still prints `outside=refused`, and the std-only file still builds. The source braid scan remains the wall for a tracked symlink. A further call graph stays outside both guards. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.170424` -- the tracked symlink. `tools/fixtures/r/receipt_product_braid_control.sh` plants `linengrow/peer_offer.rye` as a symlink to `../dimeroll/intake.rye`, commits it, and the scan reads `verdict=cross_type`. Removing the link returns `verdict=unbraided`. The pen now holds 49 behaviors. The one-file hop stays with `tools/r/receipt_third_import_witness.rish`. A further call graph stays outside both guards. No elder row, number, or acceptance case was removed.
@@ -347,6 +348,12 @@ milestone has not begun. Case 8 is the falsifier's code half, already held by th
 guard. The two earlier rostered guards -- the ceiling guard and the braid guard -- hold ground no
 acceptance case names, and stay real work of a different kind from proving a case.
 
+**Superseded by the `20261003.174522` revision above.** Case 4's source order is
+`tools/r/receipt_still_order_witness.rish`. The eight cases run together in
+`tools/r/receipt_case_board_witness.rish`, which prints `milestone=unstamped`.
+`swift_runtime=unverified` on this host. One fixture passing all eight on metal
+stays the milestone's own condition.
+
 **Superseded by the `20261001.112238` revision above.** Brushstroke and Skate are begun, and case
 4 carries `tools/r/receipt_still_order_witness.rish` -- GREEN on this host, with the native Swift
 runtime still the proof a macOS lap owes.
@@ -388,3 +395,6 @@ Keaton accepted this contract for bounded synthetic implementation on `20260913`
 to product meaning, module residence, design authority, or custody return to him. Acceptance opens
 the build; it does not claim the whole product runs. Each case above becomes checkable only when its
 own witness passes, and the milestone name waits for the dual-product witness.
+The `20261003.172313` board is that witness's reading on this host. It prints
+`milestone=unstamped`. `swift_runtime=unverified` here, and one fixture passing
+all eight on metal stays the condition the line above names.
