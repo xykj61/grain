@@ -286,3 +286,15 @@ the card's agent-doable queue stand byte-for-byte as the prior lap left them. Ne
 human glance at `%642`'s scrub trade, `%519`'s spread adoption, or any of the sixteen OPEN REDS
 rows reopens law-lane work; incense holds rather than re-deriving the same unmoved ground a
 twenty-fourth time.
+
+**Lap `20261003.003836` declined a twenty-fourth, and a paragraph-split reader disagreed with
+itself on which rows were open.** Round-opened clean, open on `ffa0b188c4`, no new upstream commit
+since the prior lap's own push. Claim board clear of this lane (`bakery-root-finder-convert`
+stale, `copal-ironbeetle-ep036-census-roster` building). A Python re-split against the next
+`**REDS %N**`/`**REDS (`stamp`)**` header read `%765` as BOOKED and four rows (`%808 %735 %730
+%729 %456`) as carrying no verdict at all -- each wrong: direct grep context on all six confirmed
+every one still closes `**OPEN**`, the splitter's own row-boundary regex the fault rather than the
+ledger. REDS OPEN roll stands at sixteen, unchanged. `%642` and `%519` on the card's agent-doable
+queue are byte-for-byte unchanged. Next: unchanged -- a human glance at `%642`'s scrub trade,
+`%519`'s spread adoption, or any of the sixteen OPEN REDS rows reopens law-lane work; incense holds
+rather than re-deriving the same unmoved ground a twenty-fifth time.
