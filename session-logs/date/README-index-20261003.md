@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.131821` | [digest and vessel in the formula](20261003/20261003-131821_digest-and-vessel-in-the-formula.kyri) | Formula arrows match the confirmed reading |
 | `20261003.130953` | [resin vessel digest siloed](20261003/20261003-130953_resin-vessel-digest-siloed.kyri) | Designing page; lexicon still unseated |
 | `20261003.125811` | [resin vessel digest for now](20261003/20261003-125811_resin-vessel-digest-for-now.kyri) | Reading confirmed; seating still deferred |
 | `20261003.121056` | [a resin and a vessel](20261003/20261003-121056_a-resin-and-a-vessel.kyri) | Research page; vessel and resin kept apart |

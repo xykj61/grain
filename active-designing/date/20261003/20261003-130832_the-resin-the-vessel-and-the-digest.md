@@ -30,9 +30,7 @@ The teaching sentence, the one that can be said for years: a vessel is the file 
 
 A digest is the result of a hash. The hash is the recipe. It turns any number of bytes into a fixed-size name. The same bytes yield the same digest. One changed bit yields a different digest.
 
-The resin is what you checked. The digest is how you checked. The formula page still glosses one arrow as if the resin were the address. That gloss and the archive law disagree. A repair updates [`../../../context/CHEMICAL_FORMULAS.md`](../../../context/CHEMICAL_FORMULAS.md) and its byte-identical mirror in the same lap. This page leaves that pair for that lap.
-
-A content address is computed from the bytes alone. An extra secret stirred in first would make one bundle wear two names, and an honest reader with the bytes could not recompute the check. The proof asks for the same answer every time.
+The resin is what you checked. The digest is how you checked. [`../../../context/CHEMICAL_FORMULAS.md`](../../../context/CHEMICAL_FORMULAS.md) and its byte-identical mirror write `payload -> digest` for that short name, and `payload + seal -> vessel` for the sealed file. A content address is computed from the bytes alone. An extra secret stirred in first would make one bundle wear two names, and an honest reader with the bytes could not recompute the check. The proof asks for the same answer every time.
 
 ## The name you ask by
 

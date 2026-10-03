@@ -13,7 +13,7 @@ This page starts the explanation over. It is for a reader who has the words resi
 
 Picture a season of work: notes, programs, a manifest that lists them. You want that season safe at home, and you want to be able to hand the same season to someone far away.
 
-**Cellar** keeps it at home. Cellar is the module for preservation in place. It seals the bytes so a later reading can prove they were not changed. The elder name Amber still appears on a few wire tokens. The living module name is Cellar. [`../../../cellar/README.md`](../../../cellar/README.md) says this in its own first paragraphs.
+**Cellar** keeps it at home. Cellar is the module for preservation in place. It seals the bytes so a later reading can prove they were not changed. [`../../../cellar/README.md`](../../../cellar/README.md) says this in its own first paragraphs.
 
 **Amphora** carries it. Amphora is the module for preservation in motion. You hand it a directory. It writes one file. That file is the **vessel**. Pour fills the vessel and seals it. Carry moves it. Restore opens it at the far side and checks it before trusting it. [`../../../amphora/README.md`](../../../amphora/README.md) names those three verbs.
 
@@ -31,9 +31,9 @@ The original wish was a good one. One Grain word, **resin**, would mean the bund
 
 That wish matches the resin. It does not match the vessel, and it does not match the digest.
 
-A vessel is a particular file shape: one season, poured, sealed, signed, carried, restored. Calling every vessel a resin in the wide sense is fair teaching, once the narrow sense is already clear. A sentence that can survive being said for years is: a vessel is the file Amphora pours when the bundle is a whole season. Folding the word vessel away would make the three verbs harder to teach, because pour, carry, and restore all name that file.
+A vessel is a particular file shape: one season, poured, sealed, signed, carried, restored. The sentence that can survive being said for years is: a vessel is the file Amphora pours when the bundle is a whole season. Pour, carry, and restore all name that file.
 
-Calling the digest a resin is the slip this morning's study made, and the formula page still has a comment that invites it. In [`../../../context/CHEMICAL_FORMULAS.md`](../../../context/CHEMICAL_FORMULAS.md) the line `payload -> resin` is glossed "the content address." The archive law uses resin for the bytes. The short name is the **digest**. A digest is the result of a **hash**, a recipe that turns any number of bytes into a fixed-size name. Same bytes, same digest. Change one bit, and the digest changes. The digest is how you check. The resin is what you checked.
+The short name is the **digest**. A digest is the result of a **hash**, a recipe that turns any number of bytes into a fixed-size name. Same bytes, same digest. Change one bit, and the digest changes. The digest is how you check. The resin is what you checked. The formula in [`../../../context/CHEMICAL_FORMULAS.md`](../../../context/CHEMICAL_FORMULAS.md) writes that check as `payload -> digest`, and it writes the sealed file as `payload + seal -> vessel`.
 
 ## What is already a good idea
 
@@ -66,7 +66,7 @@ Keep **digest** for the short name, and **hash** for the recipe that makes it. B
 
 Keep **Cellar** and **Amphora** as the two ways of caring for a resin: one at home, one in motion.
 
-Leave the formula comment for a later word. The page is mirrored byte for byte, so a one-line tighten belongs in a lap that updates both copies together.
+Leave the lexicon, the spellbook, and the favorites list for a later word. The formula and its byte-identical mirror now name digest and vessel in the same words as this page.
 
 ## The reading, for now
 

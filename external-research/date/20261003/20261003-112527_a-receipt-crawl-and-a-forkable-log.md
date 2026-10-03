@@ -15,10 +15,10 @@ A session log is a receipt. This page asks when a pile of receipts still serves 
 Kyri 6 is a small formula this tree already seats in [`../../../context/CHEMICAL_FORMULAS.md`](../../../context/CHEMICAL_FORMULAS.md):
 
 ```
-resin + stamp + kind + subject  ->  receipt
+digest + stamp + kind + subject  ->  receipt
 ```
 
-The formula names its first ingredient resin, and the comment on that line calls the ingredient the content address. The archive law keeps the two words apart. A resin is the bytes a vessel carries. The digest is the short name those bytes compute, and that short name is a hash. A stamp is the one-clock time the note was written. Kind and subject say what sort of note it is and what it is about. A session log wears the receipt's stamp, kind, and subject. Its `file` lines name paths, not a digest. That path list is the useful compression. You can ignore the mood of a paragraph and still learn which files the day moved.
+A digest is the short name the bytes compute. A resin is the bytes a vessel carries. A stamp is the one-clock time the note was written. Kind and subject say what sort of note it is and what it is about. A session log wears the receipt's stamp, kind, and subject. Its `file` lines name paths, not a digest. That path list is the useful compression. You can ignore the mood of a paragraph and still learn which files the day moved.
 
 ## Why the old notes are a question
 

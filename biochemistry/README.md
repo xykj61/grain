@@ -27,9 +27,9 @@ name + bytes            ->  binding                 Mantra: a name is bound, onc
 binding + name          ->  bytes                   the same bytes, every time
 batch(bolt, revision) + held  ->  manifest + bytes   at most 16 leaves, order preserved
 
-bytes                   ->  resin                   Tablecloth: SHA3-512, written in hex
-resin + store           ->  bytes                   a read: those bytes, or nothing
-bytes + store           ->  resin + store'          a write: the store grows, and never changes
+bytes                   ->  digest                  Tablecloth: SHA3-512, written in hex
+digest + store          ->  bytes                   a read: those bytes, or nothing
+bytes + store           ->  digest + store'         a write: the store grows, and never changes
 ```
 
 **Conserved:** the pairing. Nothing in the notation re-binds a name, because nothing in the module
@@ -52,8 +52,8 @@ formula earns its place by being checkable against the code, so this one moved t
 declaration + world     ->  infusion -> world'      Brix: the world comes to match the declaration
 infusion(world')        ->  world'                  idempotent: running it twice does what once did
 
-payload + seal          ->  amphora                 a sealed vessel, opened by its addressee
-amphora + key           ->  payload                 or nothing at all, when the key is wrong
+payload + seal          ->  vessel                  a sealed file, opened by its addressee
+vessel + key            ->  payload                 or nothing at all, when the key is wrong
 ```
 
 **Conserved:** the declaration. An infusion moves the world rather than the statement about it.
@@ -61,8 +61,8 @@ amphora + key           ->  payload                 or nothing at all, when the 
 ## Receipting
 
 ```
-payload                          ->  resin                     the content address
-resin + stamp + kind + subject   ->  receipt                   Kyri 6
+payload                          ->  digest                    the short name of the bytes
+digest + stamp + kind + subject ->  receipt                   Kyri 6
 receipt + signer + sig           ->  attested receipt          a custody gate, not an automatic step
 ```
 

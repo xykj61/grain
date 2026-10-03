@@ -9,7 +9,7 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 
-**Amphora** is **vessel software** -- preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.
+**Amphora** is **vessel software** -- preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar. The living reading of the three words is [`../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md`](../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md): a resin is the bundle, a vessel is the one file, a digest is the check.
 
 A **vessel** is one file. You hand Amphora a season -- a directory of work you want to keep -- and it
 writes that whole season into a single readable `.kyri` file you can put in a pocket, hand across a
