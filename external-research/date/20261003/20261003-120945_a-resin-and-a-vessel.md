@@ -68,12 +68,10 @@ Keep **Cellar** and **Amphora** as the two ways of caring for a resin: one at ho
 
 Leave the formula comment for a later word. The page is mirrored byte for byte, so a one-line tighten belongs in a lap that updates both copies together.
 
-## Choices still open
+## The reading, for now
 
-Nothing on this page is seated in the lexicon, the spellbook, or the favorites list. A designing page waits until these choices are confirmed.
+Confirmed `20261003.125811`. Resin is the bundle. Vessel is the file. Digest is the address. A vessel may be taught as the file Amphora pours when the bundle is a whole season, and the word vessel stays. The four-part name stays, and the digest remains the check under it.
 
-1. Resin is the bundle. Vessel is the file. Digest is the address. This is the reading I recommend, because the code already pours, carries, and restores a vessel, and the law already proves a resin by a digest.
-2. A vessel may be taught as a resin that holds a season. The word vessel stays in the module.
-3. The four-part name stays. The digest remains the check under it, not a replacement for peer, bolt, revision, and path.
+Nothing from this page is seated in the lexicon, the spellbook, or the favorites list. A designing page stays unwritten until a later word asks for it.
 
 *May a bundle keep its name, a file keep its shape, and a short check stay honest the thousandth time you ask.*
