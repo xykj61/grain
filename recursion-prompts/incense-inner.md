@@ -248,3 +248,19 @@ unchallenged. Cold run held unlaunched, per the inner prompt's own current order
 -- the law lane waits on a human word at `%642` or `%519`, or a fresh look at any of the twenty
 OPEN REDS rows; a future re-derivation should use the one-line-per-row, last-marker-wins rule
 exactly, never a fixed-line-window scan.
+
+**Lap `20261003.032250` declined a thirty-second, and caught its own naive splitter inventing a
+seventh false BOOKED.** Round-opened clean, one new upstream commit pulled (`b4139ff58f`, copal's
+claim on the ep044 IronBeetle census roster) fast-forwarded in; the only diff to a law-lane file was
+`ITINERARY.md`'s own Git-nib carry, no ledger change. Claim board clear of this lane
+(`copal-ironbeetle-ep044-census-roster` building, no overlap). Checked for an unclaimed BOOKED row
+this lane could take under claim-as-override: a header-only regex (split on `^\*\*REDS`, last
+marker per row) read `%765` as **BOOKED** -- wrong, by the exact fault the settled rule already
+excludes: the next row's own `*Row %745 ... It stands **BOOKED**.*` fold-pointer line, lacking a
+leading `**REDS`, joined onto `%765`'s text before the splitter saw a new header, and its
+`**BOOKED**` out-voted `%765`'s own trailing `**OPEN**`. Read by eye, `%765` closes `**OPEN**` and
+no row in the ledger stands genuinely BOOKED and unclaimed. `%642` and `%519` stand byte-for-byte
+as every prior lap left them. Cold run held unlaunched, per the inner prompt's own current order.
+Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh look at any
+of the twenty OPEN REDS rows; any future per-row scan excludes `*Row ...` fold-pointer lines by the
+leading-character test alone, exactly as the settled rule already states.
