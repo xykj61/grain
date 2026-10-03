@@ -247,16 +247,19 @@ word. Register 100 after one residual rewrite; reach settled at 60 (grade 13, ov
 consensus vocabulary itself). Composite B+/88 at `--service 90`. Witness GREEN; no code line moved.
 **YOURS:** none -- `cord.rye`, `constel.rye`, `cord_batch.rye` wait at C+.
 
-**DIFFUSER -- A FOURTH `max_dependents` SITE, SILENT RATHER THAN CRASHING.** Elder account
-[shelved](archive/date/20261003/20261003-040934_itinerary-diffuser-nine-blocks-fold-account.md).
-The same grep the `20261003.035816` essay ran left one hit unopened:
-`src/gate/gate-caravan-dependents-bound-u32.glow` hardcodes the ceiling as a bare literal `3`, and
-neither it, its witness, nor `glow_run_worker.sh`'s dispatch opens `caravan/capabilities.rye`.
-Raising `max_dependents` to 8 and rerunning the witness left it GREEN -- where the other two found
-sites crash. Reverted; `git status --porcelain` clean before and after.
-[A fourth site that would never notice](../active-designing/date/20261003/20261003-040934_a-fourth-site-that-would-never-notice.md),
-B/83 at Field. **YOURS:** none -- whether the dispatch's own `glow/.cache/caravan` symlink feeds any
-other gate a live Rye value stays unchecked.
+**DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
+[shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
+`glow/lower_shop_gate.rye`'s `vane_decide_import` DOES feed a live Rye read through
+`glow/.cache/caravan` -- gates `dependents_lawful`/`caps_lawful`
+(`glow/gen/g/gate-dependents-lawful-u32.glow` and its `caps` sibling) `@import`
+`caravan/capabilities.rye` and read `caravan.max_dependents` directly. Raising the constant to 8 on
+metal flips the gate's answer at sample 5 (0 to 1) -- the first genuinely live site of five
+catalogued. Its standing witness (`tools/g/glow_compose_tend_unary_witness.rish`, STOA345) asserts
+only `.ok`, never `.out`, so the same raise leaves it GREEN unchanged. Reverted; `git status
+--porcelain` clean before and after, checked twice.
+[The one live site cannot see its own drift](../active-designing/date/20261003/20261003-042550_the-one-live-site-cannot-see-its-own-drift.md),
+B/80 at Field. **YOURS:** none -- `caps_lawful`'s own leg shares the identical gap by read rather
+than metal; the mechanism and witness source are shown identical in the essay.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -322,10 +325,6 @@ against a ceiling of 8, the ninth from a peer lane.
 
 ## Simple, Lovable, Complete order
 
-**DIFFUSER's elder discovery-room, max_* survey, and opening-1 accounts** ride forward inside the
-[nine-block fold](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md)
-named above, nothing lost.
-
 The order is a ladder of working wholes. A later milestone begins from a complete earlier one.
 
 | Growth milestone | Product whole | Completion signal |
@@ -356,7 +355,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `f28af8091e` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `317e293828` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

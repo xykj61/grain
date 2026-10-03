@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.042550` -- the one live site cannot see its own drift
 **Revised:** `20261003.040934` -- a fourth site that would never notice
 **Revised:** `20261003.035816` -- a third ceiling the prior count never opened
 **Revised:** `20261003.033159` -- raising the ceiling crashes its own control
@@ -686,6 +687,22 @@ repair's *price* (still two crashing files) apart from its *completeness* (now f
 them silent). Graded composite 83, letter B, per `tools/fixtures/q/qa_report_card.sh --setting
 field --service 80` (register 50, reach 100, truth 100, service 80 judged). No new witness, no new
 module; one tracked-file edit made and reverted on this host, confirmed clean.
+
+**Self-generated `20261003.042550`, the prior essay's own named falsifier run on metal and closed.**
+[The one live site cannot see its own drift](../active-designing/date/20261003/20261003-042550_the-one-live-site-cannot-see-its-own-drift.md)
+reads `glow/lower_shop_gate.rye`'s `vane_decide_import`/`call_body_expr` and finds the symlink
+`glow/.cache/caravan` does feed a live Rye read: gates named `dependents_lawful`/`caps_lawful`
+(tracked at `glow/gen/g/gate-dependents-lawful-u32.glow` and its `caps` sibling) lower to Rye that
+`@import`s `caravan/capabilities.rye` and reads the constant directly. Raising `max_dependents` to
+8 on metal flips the gate's own decision at sample 5 (0 to 1) -- the first of five catalogued sites
+to genuinely read live. Its standing witness, `tools/g/glow_compose_tend_unary_witness.rish`
+(STOA345), asserts only `.ok` on each call and never reads `.out` for the printed `1`/`0`, so the
+same raise, run against the whole witness rather than the bare gate, leaves it GREEN and unchanged
+-- the mechanism built to track the constant works, and nothing beside it checks that the tracked
+answer is the right one. Reverted immediately; `git status --porcelain` clean before and after,
+checked against both the bare gate and the full witness. Graded composite 80, letter B, per
+`tools/fixtures/q/qa_report_card.sh --setting field --service 85` (truth 100 counted, service 85
+judged). No new witness, no new module; one tracked-file edit made and reverted on this host.
 
 ## gates
 

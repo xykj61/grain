@@ -11,6 +11,7 @@
 | 20261003.043206 | [nona_season_n0_witness rostered](20261003/20261003-043206_nona-season-n0-rostered.kyri) | copal claims, rosters, proves both ways, closes |
 | 20261003.042847 | [the thirty-sixth decline, priced rather than counted](20261003/20261003-042847_thirty-sixth-decline-priced.kyri) | six numbered OPEN REDS rows priced, each waits on a named hand; %642/%519 unchanged |
 | 20261003.042734 | [Twelfth reading becomes a disk clear](20261003/20261003-042734_twelfth-reading-becomes-a-disk-clear.kyri) | claim-as-override cleared disk, glow witness rebuilt GREEN |
+| 20261003.042550 | [The one live site cannot see its own drift](20261003/20261003-042550_the-one-live-site-cannot-see-its-own-drift.kyri) | fifth site reads live; witness checks ok, not out |
 | 20261003.042346 | [vols-survey-kyri-rostered](20261003/20261003-042346_vols-survey-kyri-rostered.kyri) | Rosters vols_survey_kyri_witness (CION VOLS r3), the Journey 13 family complete; card folded back under bound |
 | 20261003.042314 | [Petrichor's twenty-eighth reading, lesson 3 checked](20261003/20261003-042314_petrichor-twentyeighth-reading-lesson-three-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 92; lane still clean |
 | 20261003.041908 | [Patchouli's fourth family](20261003/20261003-041908_patchouli-fourth-family-and-control-plant.kyri) | schema_v1 molt, %765's fourth family; REDS %833 closed |
