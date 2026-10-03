@@ -224,19 +224,20 @@ falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_alloc
 and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
 **YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
 
-**PATCHOULI -- TWO ELDER ACCOUNTS SHELVED TO ONE, AND THE QUEUE READS EMPTY A FOURTH WAY.** Two
-live blocks had stood on this card unshed for two laps -- case 8
-([shelved](archive/date/20261002/20261002-231406_itinerary-patchouli-case8-shed.md)) and the
-receipt_offer ruling ([shelved](archive/date/20261002/20261002-231406_itinerary-patchouli-queue-empty-receipt-offer-shed.md))
--- and this lap folds both to one, per the-writer-sheds. This lap also re-walked `mantra/` and
-`tally/` fresh, by a different method than the prior lap's added-files-since-ruling grep: a bare
-`grep -rnE '"[a-zA-Z0-9._-]+-v[0-9]+"|-v[0-9]+ =|schema_v[0-9]'` over both rooms. It surfaces
-nothing new: the `mantra-weave-v1`/`v2` and `mantra-commit-v1`/`v2` headers are elder readers kept
-open forever by design; `mantra/src/receipt_offer.rye`'s `schema_v1` is the already-ruled elder
-header; and `tally/bud.rye`'s `h_domain = "...pedersen-H/v1"` is a cryptographic domain-separator
-string whose own file banner states it **pinned, never changes** -- a Tier 1 constant outside
-`%765`'s reach entirely, never a record-version header. `tally/gardens.rye`'s "Tally v1" is prose
-naming the module's design stage, not a stored header.
+**PATCHOULI -- THE QUEUE STAYS EMPTY A FIFTH WAY, AND THE LANE WIDENS TO MODULE-HEAD GRADING.**
+Elder account [shelved](archive/date/20261003/20261003-031554_itinerary-patchouli-fourth-empty-queue-shed.md).
+A fresh re-walk of `mantra/` and `tally/` for `%765` families, and a check of `%807` and the
+fleet-claim board, surfaced nothing new -- same reading as the shelved account. Rather than a
+sixth identical confirming sweep, this lap borrowed the QA habit grass's lane demonstrated the
+same stamp-day on `mantra/spool_dedup_ratio.rye`: graded every `mantra/` and `tally/` module head
+with `qa_report_card.sh`. `mantra/bolt_apply_step.rye` read worst, D+/65 -- five sentences in its
+`//!` head, all five tripping a negation word, under the 8-sentence floor and scored anyway per
+`%430`. Rewritten into thirteen shorter, affirmative sentences, every cited path and function name
+held exactly; register 0 to 89, composite D+/65 to B/80, `mantra_bolt_apply_step_witness.rish`
+re-run GREEN, no code line moved. Two more below-B module heads in this lane
+(`mantra/src/receipt_offer.rye` C+/77, `mantra/snapshot_projection.rye` D/63) are already named on
+the card as grass's own next targets and were left untouched to avoid duplicating a peer lane's
+queue.
 **YOURS:** thirty-nine families of `%765` remain outside this lane; `%807` stays OPEN for Keaton's
 ruling.
 
@@ -328,7 +329,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `67648acd47` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `b4139ff58f` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
