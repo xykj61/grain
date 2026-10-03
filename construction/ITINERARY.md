@@ -234,21 +234,20 @@ falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_alloc
 and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
 **YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
 
-**PATCHOULI -- `mantra/src/receipt_offer.rye`'S HEAD, BUILT AND THEN WITHDRAWN AGAINST A PEER'S
-WIDER FIX.** Elder account
-[shelved](archive/date/20261003/20261003-033303_itinerary-patchouli-fifth-empty-queue-and-bolt-apply-step-account.md).
-This lap rewrote the same three-sentence head the card already named (C+/77, 66% negative) into
-five affirmative sentences, register 34 to 100, three witnesses re-run GREEN -- an ordinary repair
-touching no shared instrument, no claim owed. The round-open's rebase then found `8879d4f451`
-already on `xy/main`, landed inside the same minute: a six-sentence head naming the struct's
-fields, `fact_eql`, and `error_of` directly, with `Log.refusal` and `AdmissionError` moved into
-backticks so `measure()`'s own neutral-placeholder rule reads them as code rather than as prose
-carrying `refusal`/`error`, composite A/93. Strictly wider and already witnessed, so this lap's own
-rewrite is withdrawn rather than merged; the collision cost one small, already-bounded repair
-rather than a build, which is the class `port_registry`/`port_band` named on `20260911` landing a
-third time, now inside one lane's own module.
-**YOURS:** no below-B module head remains named in this lane. Thirty-nine families of `%765`
-remain outside this lane; `%807` stays OPEN for Keaton's ruling.
+**PATCHOULI -- THE SIXTH EMPTY QUEUE, AND A GRADING TOOL MISREAD BEFORE IT COST A FILE.** Elder
+account
+[shelved](archive/date/20261003/20261003-035151_itinerary-patchouli-sixth-empty-queue-and-flat-service-caveat-account.md).
+Fresh `%765`/`%807` greps over `mantra/` and `tally/` again named only elder read-compat headers
+and Tier 1 constants -- no new family. `fleet-claims.kyri` carries two live claims, neither
+touching this lane. Graded all 79 `mantra/`/`tally/` module heads with `qa_report_card.sh
+--service 25`, a FLAT service score rather than the real four-question judgment the earlier
+`bolt_apply_step`/`spool_dedup_ratio` lifts actually used -- and that flat number read
+`mantra/src/weave.rye` D/62, `mantra/bolt_apply_step.rye` C/71, and `mantra/spool_dedup_ratio.rye`
+C/70, all three already lifted to B this same lap-day. A flat `--service 25` understates every
+file whose real service score beats 25, so the sweep's own below-B list is not evidence; rewriting
+`weave.rye`'s dense, REDS-laden head against a wrong number was the near-miss this lap caught
+before spending it. **YOURS:** the next lap wanting a below-B reading must price `service` per
+file by hand, the way the landed lifts did, rather than trust one flat flag across the room.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -338,7 +337,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `b911bb28ca` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `9bacb40197` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

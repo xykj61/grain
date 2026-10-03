@@ -8,6 +8,7 @@
 |---|---|---|
 | 20261003.035458 | [Language lane still empty, no new rune](20261003/20261003-035458_language-lane-still-empty.kyri) | rota Aether; closed fruit awaits an Incense ruling, nothing agent-doable |
 | `20261003.035346` | [grass-earth-row-head-matches-remote-nothing-new](20261003/20261003-035346_grass-earth-row-head-matches-remote-nothing-new.kyri) | Earth row applied: HEAD equals xy/main exactly, nothing new to grade |
+| 20261003.035151 | [Patchouli's flat-service near-miss](20261003/20261003-035151_patchouli-flat-service-near-miss.kyri) | sixth empty queue; caught a flat --service grading pass |
 | 20261003.035118 | [Petrichor's twenty-third reading, water row tasted](20261003/20261003-035118_petrichor-twenty-third-reading-water-row.kyri) | fresh fetch and fresh lint rerun; still no agent-doable docs-geode work |
 | 20261003.035015 | [Grass: round-open settled, one essay graded B+, nothing below B](20261003/20261003-035015_grass-round-open-essay-graded-no-repair.kyri) | diffuser's ceiling-crashes essay graded B+/85; no molt frame opened |
 | 20261003.034907 | [Diffuser: only one other ceiling stands between four and eight](20261003/20261003-034907_only-one-other-ceiling.kyri) | closes the composition-gap arc's open question; two-file repair is the whole cost, A/95 |
