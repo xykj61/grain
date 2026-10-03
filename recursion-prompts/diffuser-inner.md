@@ -704,6 +704,25 @@ checked against both the bare gate and the full witness. Graded composite 80, le
 `tools/fixtures/q/qa_report_card.sh --setting field --service 85` (truth 100 counted, service 85
 judged). No new witness, no new module; one tracked-file edit made and reverted on this host.
 
+**Self-generated `20261003.082538`, the prior essay's own narrow finding widened to the whole
+witness it stood inside.**
+[The witness reads ok at every boundary it names](../active-designing/date/20261003/20261003-082538_the-witness-reads-ok-at-every-boundary-it-names.md)
+reads all ten boundary assertions in `tools/g/glow_compose_tend_unary_witness.rish` -- not only
+`dependents_lawful`'s `c3`/`c4` the prior essay named -- and finds every one of them asserts
+`.ok` alone across all five `*_lawful` gates (`sumto_lawful`, `prodto_lawful`, `gardens_lawful`,
+`caps_lawful`, `dependents_lawful`), never the printed `0`/`1` digit a boundary check promises.
+A planted one-line mutation in `glow/lower_shop_gate.rye`'s `call_body_expr` (`<=` to `<` in
+`sumto_lawful`'s own comparison) flips its answer at sample 65535 -- the exact value the witness
+calls "at the bound" -- and the full witness still runs GREEN, unchanged. Reverted immediately;
+`git status --porcelain` clean before the plant and after the revert, and the running-correct
+re-check confirmed all ten current digits stand right today regardless. Prices the repair at five
+times the prior essay's own two-assertion scope: ten added `.out` checks inside one file, no other
+module or witness touched, left for whichever lap next opens this file. Names the next falsifier --
+whether the same shape recurs across the roughly twenty sibling Glow Tend limb witnesses -- rather
+than attempting the survey. Graded composite 86, letter B+, per `tools/fixtures/q/qa_report_card.sh
+--setting field --service 85` (register 90, reach 70, truth 100 counted, service 85 judged). No new
+witness, no new module; one tracked-file edit made and reverted on this host.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

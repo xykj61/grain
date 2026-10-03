@@ -250,19 +250,20 @@ code line moved. **YOURS:** `muster.rye` (72), `purse.rye` (72), `statement.rye`
 `tenure.rye` (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), and `rehearsal.rye`
 (75) all stay below B and wait for the same lift, one file at a time.
 
-**DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
-[shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
-`glow/lower_shop_gate.rye`'s `vane_decide_import` DOES feed a live Rye read through
-`glow/.cache/caravan` -- gates `dependents_lawful`/`caps_lawful`
-(`glow/gen/g/gate-dependents-lawful-u32.glow` and its `caps` sibling) `@import`
-`caravan/capabilities.rye` and read `caravan.max_dependents` directly. Raising the constant to 8 on
-metal flips the gate's answer at sample 5 (0 to 1) -- the first genuinely live site of five
-catalogued. Its standing witness (`tools/g/glow_compose_tend_unary_witness.rish`, STOA345) asserts
-only `.ok`, never `.out`, so the same raise leaves it GREEN unchanged. Reverted; `git status
---porcelain` clean before and after, checked twice.
-[The one live site cannot see its own drift](../active-designing/date/20261003/20261003-042550_the-one-live-site-cannot-see-its-own-drift.md),
-B/80 at Field. **YOURS:** none -- `caps_lawful`'s own leg shares the identical gap by read rather
-than metal; the mechanism and witness source are shown identical in the essay.
+**DIFFUSER -- THE WITNESS READS OK AT EVERY BOUNDARY IT NAMES.** Elder account
+[shelved](archive/date/20261003/20261003-082538_itinerary-diffuser-one-live-site-account.md).
+The prior account's `.ok`-only gap was never special to `dependents_lawful`: all ten boundary
+assertions in `tools/g/glow_compose_tend_unary_witness.rish`, across all five `*_lawful` gates
+(`sumto_lawful`, `prodto_lawful`, `gardens_lawful`, `caps_lawful`, `dependents_lawful`), share the
+identical shape -- `.ok` checked, the printed `0`/`1` digit never read. A one-line plant in
+`glow/lower_shop_gate.rye`'s `call_body_expr` (`sumto_lawful`'s own `<=` to `<`) flips the gate's
+answer at sample 65535, the exact value the witness calls "at the bound," and the full witness
+still runs GREEN unchanged. All ten current digits confirmed correct today by direct run; the gap
+is purely in what the witness checks. Reverted; `git status --porcelain` clean before the plant and
+after the revert.
+[The witness reads ok at every boundary it names](../active-designing/date/20261003/20261003-082538_the-witness-reads-ok-at-every-boundary-it-names.md),
+B+/86 at Field. **YOURS:** none -- whether the same shape recurs across the roughly twenty sibling
+Glow Tend limb witnesses (`tools/ca/`, `tools/au/`, `tools/m/`, `tools/t/`) stays unchecked.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -358,7 +359,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3501c94b5b` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `6d386b74d4` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

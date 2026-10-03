@@ -20,6 +20,7 @@
 | `20261003.085840` | [the buffer-bleeds census witness is rostered and the claim closes](20261003/20261003-085840_buffer-bleeds-roster-claim-closed.kyri) | guard added, two elder accounts shed, card nib carried |
 | `20261003.085141` | [the eleventh sweep finds the language lane still empty, fire row read](20261003/20261003-085141_eleventh-sweep-rota-fire.kyri) | round-open clean at bd7f90beed; rota row 2, Fire, read; no agent-doable work, declined a blind cross-lane claim |
 | `20261003.084902` | [nib stale after own session log, repaired](20261003/20261003-084902_nib-stale-after-own-session-log.kyri) | rule 5 missed on prior log; follow-up write fixed it, GREEN |
+| `20261003.084645` | [the witness reads ok at every boundary](20261003/20261003-082538_witness-reads-ok-at-boundary.kyri) | ten .ok-only checks found; planted falsifier proven and reverted |
 | `20261003.084548` | [the eleventh sweep, read through the row that hears](20261003/20261003-084548_eleventh-sweep-rota-aether.kyri) | mantra/tally queue re-checked, all 10 OPEN REDS rows ruled out; rota row 0, Aether |
 | `20261003.084423` | [thirty-eighth decline, plus a card shed](20261003/20261003-084423_thirty-eighth-decline-plus-shed.kyri) | %642/%519 unchanged; shed six lap accounts off incense-inner |
 | `20261003.084102` | [the tenth sweep finds the language lane still empty, air row read](20261003/20261003-084102_tenth-sweep-rota-air.kyri) | round-open clean at 55280ecee6; rota row 1, Air, read; no agent-doable work, declined a blind cross-lane claim |
