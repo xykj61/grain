@@ -8,6 +8,7 @@
 |---|---|---|
 | 20261003.013938 | [Pheromone's queue reads empty, two surfaces pressed](20261003/20261003-013938_pheromone-queue-empty-two-surfaces-graded.kyri) | language lane confirmed empty (card, inner prompt, claims, REDS agree); two shape surfaces graded B+ and A |
 | 20261003.013816 | [Patchouli's twelfth fallow reading](20261003/20261003-013816_patchouli-twelfth-fallow-reading.kyri) | same ground as the eleventh, minutes later; nothing new, worth a pace check |
+| 20261003.013754 | [Grass's twenty-fifth reading, diffuser-inner.md named rather than taken](20261003/20261003-013754_grass-twenty-fifth-reading-diffuser-register-named.kyri) | nine surfaces graded; one below B found in another lane's seat prompt, named on the card rather than rewritten |
 | 20261003.013512 | [Petrichor's eleventh fallow reading](20261003/20261003-013512_petrichor-eleventh-fallow-reading.kyri) | fruit queue still empty; walked every OPEN REDS row for a docs-geode claim, none fits |
 | 20261003.013239 | [IronBeetle ep038 census, rostered both ways](20261003/20261003-013239_ep038-census-roster.kyri) | ep038 witness rostered at tier lap, GREEN and refusal legs proven, claim closed |
 | 20261003.013124 | [Grass's twenty-fourth reading, six surfaces clean](20261003/20261003-013124_grass-twenty-fourth-reading-six-surfaces-clean.kyri) | six open prose/docs/code surfaces graded, all B or better, no molt frame pushed |
