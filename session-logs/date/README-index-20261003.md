@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.075611` | [Petrichor's twenty-ninth reading, lesson 4 checked](20261003/20261003-075611_petrichor-twentyninth-reading-lesson-four-checked.kyri) | lesson-4-joy-has-a-rank.md graded Door/A, 92; lane still clean |
 | `20261003.075425` | [the stable refusal record's own pedestal](20261003/20261003-075425_receipt-refusal-shape-pedestal.kyri) | Mantra Tend limb10, `Refusal`'s three fields, GREEN on metal |
 | `20261003.074630` | [the queue reads empty an eighth way](20261003/20261003-074630_queue-empty-eighth-sweep.kyri) | confirming sweep, patchouli's lane; %807 still OPEN, no new %765 family, no unclaimed BOOKED row to override into |
 | `20261003.074328` | [the queue reads empty a seventh way](20261003/20261003-074328_queue-empty-seventh-sweep.kyri) | confirming sweep, patchouli's lane; %807 still OPEN, no new %765 family |
