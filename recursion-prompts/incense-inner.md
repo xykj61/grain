@@ -222,3 +222,9 @@ upstream commit since the prior lap's own push. Claim board clear (bakery's and 
 this lane). REDS OPEN/BOOKED roll unchanged at 14/2. Next: a human glance at `%642`'s scrub trade or
 the wire-ceiling door reopens law-lane work; incense holds here rather than re-reading unmoved
 ground.
+
+**Lap `20261002.220403` declined a ninth.** Round-opened clean, open on `03e8a2273f` (one new
+commit, this lap's own prior close). Claim board carries `bakery-root-finder-convert` (stale) and
+`copal-ironbeetle-ep025-census-roster` (building), neither in this lane. REDS OPEN/BOOKED roll
+unchanged at 14/2, every row still naming its own waiting hand. Next: unchanged -- `%642`'s scrub
+trade or the wire-ceiling door reopens law-lane work.
