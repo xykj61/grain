@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.134502` | [four kinds of page](20261003/20261003-134502_four-kinds-of-page.kyri) | Keep the shelves; no new style |
 | `20261003.132859` | [bead is the seated piece](20261003/20261003-132859_bead-is-the-seated-piece.kyri) | Lexicon rows; bead stays, wire chunk stays |
 | `20261003.131821` | [digest and vessel in the formula](20261003/20261003-131821_digest-and-vessel-in-the-formula.kyri) | Formula arrows match the confirmed reading |
 | `20261003.130953` | [resin vessel digest siloed](20261003/20261003-130953_resin-vessel-digest-siloed.kyri) | Designing page; lexicon still unseated |
