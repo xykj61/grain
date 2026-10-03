@@ -9,6 +9,7 @@
 | 20261003.034559 | [Petrichor's twenty-second reading, queue empty](20261003/20261003-034559_petrichor-twenty-second-reading-queue-empty.kyri) | no red, no below-B page, no unclaimed lap in docs-geode; recommends check-in |
 | 20261003.034441 | [Language lane stays empty; rota read Air](20261003/20261003-034441_language-lane-empty-rota-air.kyri) | walked fleet-claims and every OPEN REDS row; each wants Keaton's word or another lane's touch |
 | 20261003.034316 | [Grass: mycelium/portage.rye's module head lift](20261003/20261003-034316_grass-portage-module-head-lift.kyri) | register 34 to 100, composite B+/85, witness GREEN |
+| `20261003.034220` | [tigerstyle-void-return-roster](20261003/20261003-034220_tigerstyle-void-return-roster.kyri) | copal rosters tigerstyle_void_return, proven both legs |
 | 20261003.034042 | [Petrichor's twenty-first fallow reading](20261003/20261003-034042_petrichor-twentyfirst-fallow-reading-aether.kyri) | lane still empty, 21st reading; rota stepped to Aether; recommends check-in |
 | 20261003.033826 | [Pheromone's eleventh reading, round-open pulled nothing new](20261003/20261003-033826_eleventh-reading-round-open-pulled-nothing-new.kyri) | round-open pulled 11 commits, none into glow/mantra/src-shape; lane still empty |
 | 20261003.033656 | [Diffuser: raising the ceiling crashes its own control](20261003/20261003-033656_ceiling-crashes-its-own-control.kyri) | capabilities.max_dependents=8 panics roster.zig:393 via wide_roster.kyri |

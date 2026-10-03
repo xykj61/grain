@@ -9633,3 +9633,18 @@ guard ironbeetle_ep045_census
 path tools/gen/chapter/ironbeetle_ep045_census_witness.rish
 tier lap
 seated 20261003.033252
+
+# tigerstyle_void_return -- e17 TigerStyle void return, unrostered since it was written. Unlike the
+# tigerbeetle_*_census family two rows up, this witness reads gratitude/TIGER_STYLE.md alone -- a
+# held, tracked file rather than the gratitude/tigerbeetle gitlink -- so it carries no clone-absent
+# skip leg and no capability gate. Proven on metal both ways in this lap:
+# `rishi/bin/rishi run tools/gen/chapter/tigerstyle_void_return_witness.rish` exits GREEN at
+# verdict=ok, reading the void-trumps-bool ladder line and three `!void` examples off the held
+# guide, CLONE=present, and the almanac seat already present; and the same witness, run with
+# gratitude/TIGER_STYLE.md moved aside, refuses at the assert `TIGER_STYLE.md missing from
+# gratitude/` rather than reading past the missing guide. Claimed as
+# copal-tigerstyle-void-return-roster before this entry landed.
+guard tigerstyle_void_return
+path tools/gen/chapter/tigerstyle_void_return_witness.rish
+tier lap
+seated 20261003.034220
