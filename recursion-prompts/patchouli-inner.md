@@ -240,6 +240,19 @@ different lap. [Account](../construction/archive/date/20261003/20261003-094433_i
 and checking one of those against `mantra/`-`tally/` is real, agent-doable ground this lane had
 never swept on its own account. `%807` and `%765`'s 38 remaining families are unchanged.
 
+**The nineteenth lap swept the two named ratchets, `20261003.095500`.**
+`rye_written_ascii_scan.sh` reads `written=290, ceiling=290, under_ceiling=yes` -- a clean fit,
+nothing to convert. `rye_spoken_ascii_witness.rish` reads RED tree-wide, `chars=3864` against a
+ceiling of `3863` set on `20260916.031248` at an exact fit -- a single character added somewhere
+since. Its own `--list-all` carries no `mantra/` or `tally/` path at all; the breach lives entirely
+in other lanes' files (`mycelium/pledge.rye`, `pond/apps/*`, `comlink/guest_roster_*`,
+`linengrow/*`, `mandate/store.rye`, `scribe/reader.rye`, and more), each carrying an em dash in a
+`print`/`write_str` claim line added after the ceiling was set. This is the ratchet discipline
+working as designed -- *turns on touch, books nothing* -- and none of those files are this lane's
+custody to touch. Named here rather than booked as a red, since a ratchet breach outside the tree's
+reds-first ledger is the documented shape of this instrument. `%807` and `%765`'s 38 remaining
+families are unchanged; the queue reads empty a nineteenth way.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
