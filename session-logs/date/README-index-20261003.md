@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.040431 | [Incense declines a 36th, caught a HEAD the first round-open missed](20261003/20261003-040431_incense-declines-thirty-sixth-second-round-open.kyri) | second round-open pulled petrichor's own commit the clock report had already named |
 | 20261003.035800 | [Petrichor's twenty-fourth reading, doorway witness rerun](20261003/20261003-035800_petrichor-twentyfourth-fallow-reading-doorway-rerun.kyri) | rotated to a fresh witness; two_rooms_doorway confirmed GREEN, 78 of 78 |
 | 20261003.035611 | [Incense declines a 35th, grass owns the grading queue](20261003/20261003-035611_incense-thirty-fifth-decline-grass-owns-grading.kyri) | confirmed grass's own grading sweep covers active-designing; no duplicate work opened |
 | 20261003.035458 | [Language lane still empty, no new rune](20261003/20261003-035458_language-lane-still-empty.kyri) | rota Aether; closed fruit awaits an Incense ruling, nothing agent-doable |

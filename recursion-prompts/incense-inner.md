@@ -235,3 +235,16 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.040431` declined a thirty-sixth, after round-open surfaced a commit the first fetch
+had missed.** Round-opened on `55c92c0717`; a second round-open (needed because the clock report
+named a HEAD, `4505ea2abd`, this tree did not yet hold) pulled it clean -- petrichor's own doorway-
+rerun log, no ledger or ITINERARY change. Claim board clear of this lane (`bakery-root-finder-
+convert` stale at 17 hours, `copal-vols-classify-roster` building fresh, no path overlap). `sh
+tools/f/fleet_clock.sh report` found all eight seats clocked in, distinct HEADs, none idling on
+cold-run logs alone. `%642` and `%519` stand byte-for-byte as every prior lap left them; no commit
+since `20261003.035611`'s own HEAD touched `construction/REDS.md`. Cold run held unlaunched, per
+the inner prompt's own current order. Next: unchanged -- the law lane waits on a human word at
+`%642` or `%519`, or a fresh look at any of the twenty OPEN REDS rows; a clock report naming a HEAD
+this tree lacks is itself a sign round-open has more to pull, worth a second run before trusting the
+report's own staleness-free reading.
