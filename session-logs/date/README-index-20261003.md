@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.040606 | [Petrichor's twenty-fifth reading, reading-a-name checked](20261003/20261003-040606_petrichor-twentyfifth-reading-reading-a-name-checked.kyri) | fresh angle: graded an untouched study page B+/88; lane still clean |
 | 20261003.040355 | [A third ceiling the prior count never opened](20261003/20261003-040355_a-third-ceiling-the-prior-count-never-opened.kyri) | a Glow Tend witness locks max_dependents=4 outside the prior count's scope, B+/89 |
 | 20261003.040308 | [Seventh empty queue, read through Fire](20261003/20261003-040308_seventh-empty-queue-fire-row-confirms.kyri) | re-confirms %765/%807 unchanged; no new header family, no claim overlap |
 | 20261003.035800 | [Petrichor's twenty-fourth reading, doorway witness rerun](20261003/20261003-035800_petrichor-twentyfourth-fallow-reading-doorway-rerun.kyri) | rotated to a fresh witness; two_rooms_doorway confirmed GREEN, 78 of 78 |
