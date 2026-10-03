@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.231226 | [Petrichor's twenty-first reading, Earth-Fixed row read](20261002/20261002-231226_petrichor-twenty-first-reading-earth-fixed.kyri) | round-open pulled one unrelated commit; ITINERARY and claim board confirm lane fallow; TWO_ROOMS.md read in full on the Earth-Fixed rota seat; doorway witness confirmed GREEN fresh on metal |
 | 20261002.230744 | [Copal's ep032 roster lap](20261002/20261002-230744_copal-ep032-roster-lap.kyri) | claimed, proved both ways, rostered ironbeetle_ep032_census, closed claim |
 | 20261002.230703 | [Incense's seventeenth fallow reading, ground still unmoved](20261002/20261002-230703_seventeenth-fallow-reading.kyri) | round-opened clean, claim board clear of this lane, agent-doable queue carries only %642 wanting a word; declined re-derivation |
 | 20261002.230621 | [The divergence window equals the last node's own content](20261002/20261002-230621_divergence-window-equals-last-nodes-content.kyri) | self-generated essay: runs the prior essay's own falsifier at n=4096, finds forward/lifo diverge inside a bounded window equal to the tail node's reclaimable content |
