@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.230621 | [The divergence window equals the last node's own content](20261002/20261002-230621_divergence-window-equals-last-nodes-content.kyri) | self-generated essay: runs the prior essay's own falsifier at n=4096, finds forward/lifo diverge inside a bounded window equal to the tail node's reclaimable content |
 | 20261002.230415 | [Petrichor's nineteenth reading, a wider batch graded clean](20261002/20261002-230415_petrichor-nineteenth-reading-wider-batch-clean.kyri) | round-open adopted new upstream commits; eight previously-ungraded docs-geode pages all composite 86-92, clear of the B floor; rota fire row read |
 | 20261002.230344 | [Petrichor's twentieth reading, living-docs-lint run fresh](20261002/20261002-230344_petrichor-twentieth-reading-living-docs-lint-fresh.kyri) | round-open clean; living_docs_lint, two_rooms_doorway, crushed_index_scan all fresh GREEN; lane still fallow, rota water row read |
 | 20261002.230104 | [Incense's sixteenth fallow reading, each mis-split row confirmed by hand](20261002/20261002-230104_sixteenth-fallow-reading.kyri) | round-opened clean, claim board clear of this lane; a quick re-split script disagreed with the hand-count, five disputed rows checked directly and found intact, fourteen OPEN unchanged |

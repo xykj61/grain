@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.230126` -- the divergence window equals the last node's own content
 **Revised:** `20261002.225028` -- a growing node's own slack dwarfs what a correct free order would recover
 **Revised:** `20261002.222020` -- the label costs 752 overhead bytes; the three joining bytes it replaces cost nothing like that
 **Revised:** `20261002.181135` -- seventy-four of seventy-five close on one script-confirmed cause
@@ -512,6 +513,22 @@ free order. Falsifier named rather than attempted: a function allocating near th
 ceiling in one pass should push items across more than one node and make the two free orders
 diverge again. Graded B+/87 at Field. No new witness, no new module; a scratch probe checked
 against the vendored allocator's own source.
+
+**Self-generated `20261002.230126`, the prior essay's own named falsifier run on metal.**
+[The divergence window equals the last node's own content](../active-designing/date/20261002/20261002-230126_the-divergence-window-equals-the-last-nodes-own-content.md)
+pushes the same scratch-probe method to `n=4096` -- the file-count ceiling the prior essay named
+-- and finds the falsifier fires, in a specific bounded shape rather than a one-sided win: forward
+order and LIFO order tie exactly outside a window roughly `[52,100, 98,300]` bytes on the trailing
+allocation's own size, and diverge by 225,000 to 295,000 bytes inside it. Tracing the vendored
+allocator's six growth events for this run shows the window's width (measured ~46,200 bytes) is
+the live tail node's own reclaimable content (964 items, 46,272 bytes computed) almost exactly --
+the gap between the node's pre-existing birth slack alone (forward's reach) and that same slack
+plus the whole node's content (LIFO's reach). The prior essay's own `n=550` case was re-run in
+this same harness as a sanity check and still ties everywhere. Falsifier for a later lap: whether
+`record_family_evict`'s or `hash_library_into`'s own trailing allocation actually lands inside
+the computed window, which this essay did not check. Graded B/83 at Field. No new witness, no new
+module; a scratch probe checked against the vendored allocator's own source, deleted before this
+lap ends.
 
 ## gates
 
