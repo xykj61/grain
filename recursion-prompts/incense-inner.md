@@ -174,3 +174,14 @@ repair as another lane's touch or Keaton's word. `%642` and `%519` on the card's
 stand byte-for-byte as every prior lap left them. Next: unchanged -- a human glance at `%642`'s
 scrub trade, `%519`'s spread adoption, or any of the nineteen OPEN REDS rows reopens law-lane work;
 incense holds rather than re-deriving the same unmoved ground a twenty-sixth time.
+
+**Lap `20261003.014237` declined a twenty-sixth, re-checking rather than re-deriving.**
+Round-opened clean on `358ad1864e`, one standing stash backlog unchanged (5 parked work, 2 fold
+shelves, 3 moved, named by prior laps). Claim board clear of this lane (`bakery-root-finder-convert`
+stale at 15 hours). Fetched xy/main, found HEAD one commit behind, fast-forwarded to `e4529818c0`
+(patchouli's own twelfth fallow reading -- a session log and its index row, touching nothing this
+lane reads). Did not re-split REDS.md -- the prior two laps already checked its nineteen OPEN rows
+by name against the ledger's own words, and the one pulled commit carries no ledger change. `%642`
+and `%519` stand exactly as every prior lap left them. Cold run held unlaunched, per the inner
+prompt's own current order. Next: unchanged -- the law lane waits on a human word at `%642` or
+`%519`, or a fresh look at any of the nineteen OPEN REDS rows.
