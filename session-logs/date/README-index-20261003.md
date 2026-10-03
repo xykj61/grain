@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.094317` | [twenty-ninth reading, front-door generators checked](20261003/20261003-094317_petrichor-twentyninth-reading-front-door-generators-checked.kyri) | readme_metrics and geode_libraries both read true against fresh measurement; lane fallow from a fourth angle |
 | `20261003.093654` | [control-plane-census-rostered](20261003/20261003-093654_control-plane-census-rostered.kyri) | TB control-plane census witness rostered; two card accounts shed to hold bound |
 | `20261003.093651` | [twenty-eighth reading, witness-side check](20261003/20261003-093651_petrichor-twentyeighth-reading-witness-health-check.kyri) | living-docs-lint GREEN, crushed-index verdict=ok; lane still fallow |
 | `20261003.093607` | [fortieth decline, thirteen open rows](20261003/20261003-093607_fortieth-decline-thirteen-open-rows.kyri) | no ledger motion; OPEN-row count corrected eight to thirteen, all five new ones closed to this lane |
