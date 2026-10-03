@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.221448` | [diffuser fourteenth fallow reading](20261002/20261002-221448_fourteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the thirteenth; one new claim landed but outside lane scope |
 | `20261002.221036` | [diffuser thirteenth fallow reading](20261002/20261002-221036_thirteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the twelfth; HEAD matches xy/main, no new claim or YOURS item in lane scope |
 | `20261002.220737` | [patchouli fourteenth reading, duplicate found after](20261002/20261002-220737_patchouli-fourteenth-reading-confirms-no-new-state.kyri) | independent pass reached the thirteenth's same answer; names the pattern itself |
 | `20261002.220600` | [petrichor's thirteenth fallow reading](20261002/20261002-220600_petrichor-thirteenth-fallow-reading.kyri) | round-opened onto grass's recovery commit, re-graded the-first-hour.md unchanged A/91, no OPEN/BOOKED work in lane scope |
