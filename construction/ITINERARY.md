@@ -216,18 +216,18 @@ Full index with every path: [`archive/date/20261002/20261002-144246_itinerary-gr
 **GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLIT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-185550_itinerary-grass-glow-run-main-account.md)
 -- the flat head-dispatch split, `functions_over_70` fell by one, `20261002`, nothing lost.
 
-**GRASS -- THE SIX SIBLING FUND PAGES ALREADY GRADE B OR BETTER; THE YOURS LINE CLOSES.**
-`keeh-opening.md` graded C+/77 on a double-blank front-matter fault that merged its whole
-Stamp/Voice/Kind/Generator block into counted prose (`20261002`, landed `ab2653e6d9`). The prior
-account left open whether the six siblings -- `bozo`, `gren`, `linn`, `murr`, `shyu`, `trya` --
-carry the identical latent fault and should take the same one-line tidy pre-emptively. Graded with
-`qa_report_card.sh --setting door`: `bozo` A+/98, `gren` A/92 (28 sentences, genuinely above the
-register floor, the fault's merge still landing inside it), `linn` A+/98, `murr` A+/98, `shyu`
-A+/98, `trya` B+/88 -- every one already at or above the door's B floor. `quality-assurance.md`'s
-own rule is grade-driven rather than fault-driven ("grade, then decide" -- a frame opens only below
-B), so the law that raised keeh already answers this one: no molt frame is owed where the grade
-already clears the door. **YOURS:** none -- a latent fault below the floor stays a ratchet to sweep
-on the next hand that opens one of these six pages for another reason, never a sweep of its own.
+**GRASS -- SIYA'S DAILY-SERVICE FOUNDATION RISES FROM C+ TO B.**
+[Shelved pointer](archive/20261002-230922_itinerary-grass-six-sibling-fund-pages-account.md) for
+the prior fund-pages account. `foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-
+service.md` sampled C+/74 (register 55% negative of 20 sentences, reach grade 15 against Door's 9).
+Nine sentences carried a negation word doing affirmative work -- "refuse to skip", "never
+remembered", "nothing edited" -- each reworded same-meaning per the Fire-page precedent
+(`f088d1d3d2`), landing register at 100%. The Status front-matter line, a single 46-word sentence
+restating the Vision-room fact twice, split into two shorter sentences and named its room plainly
+per the baton's DOOR clause; reach rose 40 to 50. Composite with an honest judged service (named_by_
+card=no, 4 living citers, current, side-matched) reads B/81. `YOURS:` none -- no fact, citation, or
+seated vocabulary moved; the piece's refrain ("the sacred is whatever we always keep") kept its
+bookend shape across opening and closing.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -349,7 +349,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ff37af9e5d` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `abe69b9cac` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
