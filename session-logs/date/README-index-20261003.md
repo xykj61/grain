@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.095051` | [the purse.rye lift send landed after seven rebases](20261003/20261003-095051_purse-lift-sent-after-seven-rebases.kyri) | pushed clean to 8fda555ae7 after seven round-open rebases, two conflicts resolved |
 | `20261003.094746` | [glow-seam-queue-empty-again](20261003/20261003-094746_glow-seam-queue-empty-again.kyri) | pheromone's three ITINERARY steps read satisfied; lane waits on Incense's next rune |
 | `20261003.094451` | [Forty-first decline, direct reads confirm](20261003/20261003-094451_forty-first-decline-direct-reads-confirm.kyri) | Nothing moved; direct grep corrected a mid-lap block-slice misread |
 | `20261003.094333` | [release mode flips the allocator gap](20261003/20261003-094333_release-mode-flips-the-allocator-gap.kyri) | Diffuser: Region vs smp reverses under ReleaseFast |
