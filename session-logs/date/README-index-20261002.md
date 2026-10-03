@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.232959 | [Pheromone's fourth reading, queue closed, Stop held](20261002/20261002-232959_pheromone-fourth-reading-queue-closed-stop-held.kyri) | round-opened, re-confirmed all three lane steps landed, declined a cross-lane override into copal's active red |
 | 20261002.232943 | [Grass's twenty-first reading, label essay clean](20261002/20261002-232943_grass-twenty-first-reading-label-essay-clean.kyri) | one fresh diffuser essay graded A/93, no frame opened |
 | 20261002.232632 | [Grass's nineteenth reading, three diffuser essays clean](20261002/20261002-232632_grass-nineteenth-reading-three-diffuser-essays-clean.kyri) | three fresh arena-window essays graded B+/A, none below B, no frame |
 | 20261002.232556 | [Petrichor's twenty-third reading, still fallow](20261002/20261002-232556_petrichor-twenty-third-reading-still-fallow.kyri) | second consecutive fallow lap; fruit landed A/91, no new target, no re-run witness |
