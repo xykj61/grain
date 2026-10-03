@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.032250 | [Incense declines a thirty-second lap](20261003/20261003-032250_incense-declines-thirty-second.kyri) | caught its own splitter inventing a false BOOKED from a fold-pointer line; nothing agent-doable |
 | 20261003.031551 | [Incense declines a thirty-first lap](20261003/20261003-031551_incense-declines-thirty-first.kyri) | discarded an untrustworthy splitter re-check; %642/%519 unchanged |
 | 20261003.031452 | [Petrichor's eighteenth fallow reading](20261003/20261003-031452_petrichor-eighteenth-fallow-reading-air.kyri) | re-ran living-docs-lint fresh rather than trusting memory; lane still empty, rota read Air |
 | 20261003.031439 | [bolt_apply_step.rye's module head lifts D+/65 to B/80](20261003/20261003-031439_bolt-apply-step-module-head-lift.kyri) | %765/%807 queue still empty; graded every mantra/tally module head, repaired the worst (register 0->89), witness re-run GREEN |
