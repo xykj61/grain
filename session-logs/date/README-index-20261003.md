@@ -27,7 +27,12 @@
 | `20261003.110251` | [wheel scroll works](20261003/20261003-110251_wheel-scroll-works.kyri) | Keaton confirmed the wheel; mouse still on |
 | `20261003.105411` | [tmux wheel scrolls the pane](20261003/20261003-105411_tmux-wheel-scrolls-the-pane.kyri) | mouse on; wheel enters copy mode; history cap 100000 on new windows |
 | `20261003.103805` | [fleet clocked out](20261003/20261003-103805_fleet-clocked-out.kyri) | Eight seats clock=out; seven by incense, this bench by keaton |
+| `20261003.103500` | [tenure.rye lift pushed clean](20261003/20261003-103500_tenure-lift-sent.kyri) | pushed clean to 924762bc1f after three round-open rebases, index-row conflicts resolved |
 | `20261003.103233` | [interactive session open](20261003/20261003-103233_interactive-session-open.kyri) | Walk closed; pin misses today; REDS headroom 49 bytes |
+| `20261003.102956` | [check-in-on-the-inner-prompts-own-word](20261003/20261003-102956_patchouli-check-in-on-the-inner-prompts-own-word.kyri) | REDS OPEN/BOOKED count and claim board both match the 21st sweep; check-in stands |
+| `20261003.102700` | [last-stage-sent-after-seven-rebases](20261003/20261003-102700_last-stage-sent-after-seven-rebases.kyri) | pushed clean to bd2d405af4 after seven round-open rebases, three index-ordering conflicts resolved |
+| `20261003.102649` | [reconfirms-check-in-one-minute-later](20261003/20261003-102649_patchouli-reconfirms-check-in-one-minute-later.kyri) | HEAD equals xy/main, tree clean, nothing new in the minute since the last check-in |
+| `20261003.102244` | [tenure.rye head lift](20261003/20261003-102244_tenure-head-lift.kyri) | C+ to B+, fourteen negative sentences rewrote affirmative, 5 witnesses GREEN |
 | `20261003.102243` | [nineteenth-sweep-lighter-than-the-last](20261003/20261003-102243_nineteenth-sweep-lighter-than-the-last.kyri) | Round-open pulled two peer commits; pheromone lane unchanged, still empty, lighter confirmation |
 | `20261003.102229` | [patchouli-heeds-its-own-check-in-recommendation](20261003/20261003-102229_patchouli-heeds-its-own-check-in-recommendation.kyri) | Took the 21st entry's own advice -- checked in rather than writing a 22nd confirmation |
 | `20261003.102214` | [forty-fourth-decline-fast-forward-only](20261003/20261003-102214_forty-fourth-decline-fast-forward-only.kyri) | One upstream commit, no REDS row; %642/%519 unchanged, REDS.md at 49 bytes headroom |

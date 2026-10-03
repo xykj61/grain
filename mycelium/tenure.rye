@@ -10,26 +10,29 @@
 //! every honest node must pick the SAME one. The Cord already derives one total
 //! order from the mesh regardless of arrival; the Tenure reads that order as the
 //! namespace's verdict -- the first reservation of a name in the agreed order holds
-//! it, every later one loses.
+//! it, and every later reservation is recorded as a contested loss.
 //!
-//! The honest distinction is the whole crux. `fold.fold_log` refuses the WHOLE log
-//! on a taken star, which is right for a hand-built log yet wrong for a mesh: it
-//! would let one node break the ledger by front-running a name. So the Tenure walks
-//! the committed facts one at a time through `fold.fold_fact` and treats a
-//! name-contest loss (`StarTaken`) as a lawful no-op -- the loser's signed fact was
-//! rejected by the order, folding continues, the ledger unbroken. Every other fold
-//! refusal -- a forged signature, an unknown kind, an overdraw for a FREE name --
-//! stays poison, because those are corruption, not a lost race. `fold.fold_fact`
-//! already checks taken-before-affordable, so a contestant loses the name before
-//! the ledger asks whether it could pay.
+//! The honest distinction is the whole crux. `fold.fold_log` declines the WHOLE
+//! log on a taken star, which suits a hand-built log yet exposes a mesh: a
+//! hostile node could claim the ledger for itself by front-running a name. So the
+//! Tenure walks the committed facts one at a time through `fold.fold_fact` and
+//! treats a name-contest loss (`StarTaken`) as a lawful standstill -- the loser's
+//! signed fact is set aside by the order, folding continues, the ledger stays
+//! unbroken. Every other fold exception -- a forged signature, an unknown kind, an
+//! overdraw for a FREE name -- stays poison, since those mark genuine corruption
+//! rather than a fairly decided race. `fold.fold_fact` already checks
+//! taken-before-affordable, so a contestant's reservation is settled against the
+//! name's holder before the ledger asks whether it could pay.
 //!
-//! Composes cord.rye + fold.rye public API only -- inventing no storage, weakening
-//! no bound, editing no elder. Siloed, dev-only, demo seeds -- no real key, no funds,
-//! no network, no custody.
+//! Composes cord.rye + fold.rye public API only, leaving their storage, bounds,
+//! and code exactly as they stand. Siloed and dev-only, the whole scene runs on
+//! demo seeds alone, leaving a real key, real funds, a real network, and real
+//! custody for a served arc to one day carry.
 //!
-//! Named horizon (not this arc): a double-spend loser (an `Overdraw` that lost a
-//! race rather than never-could-pay) as a lawful no-op -- kept out on purpose so the
-//! name-contest verdict stays legible.
+//! Named horizon (a later arc): a double-spend contestant (an `Overdraw` whose
+//! reservation would have succeeded had it arrived first, rather than one that
+//! lacked funds at any order) treated as a lawful standstill -- kept out on
+//! purpose so the name-contest verdict stays legible.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/tenure.rye
 

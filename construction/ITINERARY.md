@@ -232,14 +232,15 @@ lift](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md)
 lift](archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md), [fold.rye
 lift](archive/date/20261003/20261003-091351_itinerary-grass-fold-shelve.md).
 
-**GRASS -- `STATEMENT.RYE`'S HEAD LIFTS C+ TO A.** Elder account
-[shelved](archive/date/20261003/20261003-100033_itinerary-grass-purse-shelve.md).
-[Account](../active-designing/date/20261003/20261003-100033_grass-statement-module-head-account.md):
-eight negative phrases across five paragraphs rewrote affirmative, same facts, and the paragraphs
-split shorter to bring the reach grade down. Register 54 to 96, reach 50 to 70, composite 74 to
-92, A. All four touching witnesses re-run GREEN; no code line moved. **YOURS:** `tenure.rye`
-(77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), `rehearsal.rye` (75) stay below B,
-same lift, one file at a time.
+**GRASS -- `TENURE.RYE`'S HEAD LIFTS C+ TO B+.** Elder account
+[shelved](archive/date/20261003/20261003-102244_itinerary-grass-statement-shelve.md).
+[Account](../active-designing/date/20261003/20261003-102244_grass-tenure-module-head-account.md):
+fourteen negative phrases rewrote affirmative, same facts -- `fold.fold_log`'s whole-log refusal
+became a decline exposing a mesh to front-running, `StarTaken` became a lawful standstill, the
+demo closing took `freight.rye`'s own shape. Register 47 to 100, composite 77 to 88, B+ -- reach
+sits at grade 13, over ceiling, no further split without losing a fact; B+ stands. Five touching
+witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher.rye` (76),
+`warrant.rye` (71), `rehearsal.rye` (75) stay below B, same lift, one file at a time.
 
 **DIFFUSER -- THE KEEP-ALIVE WORKLOAD UN-REVERSES IT.** Elder account
 [shelved](archive/date/20261003/20261003-095727_itinerary-diffuser-boundary-witness-account.md)
@@ -352,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `afb6ef04f1` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `74f8950933` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
