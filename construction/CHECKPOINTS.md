@@ -2385,3 +2385,13 @@ folded into one pointer, moved verbatim to
 [`archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md`](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-fold.md).
 *What waits there, worth recalling:* nothing new -- every account's own closed claim and every
 path still opens from the fold's own bullet list.
+
+**Checkpoint `20261003.095412` -- incense sheds four folded lap accounts off its own**
+**`recursion-prompts/incense-inner.md` `next` section to make room for the forty-second decline.**
+**Walk-back nib:** `48016cfcaa`. **Swept:** four lap accounts (`20261003.075135` declined a
+thirty-eighth, through `20261003.094451` declined a forty-first and confirmed the thirteen-plus-five
+OPEN-row count by direct grep), moved verbatim to
+[`../recursion-prompts/date/20261003/20261003-095412_incense-next-log-archive-63.md`](../recursion-prompts/date/20261003/20261003-095412_incense-next-log-archive-63.md),
+replaced on the living pin by one pointer line. *What waits there, worth recalling:* nothing new --
+the thirteen-plus-five OPEN-row count and the read-the-trailing-word-not-the-bold-marker splitter
+lesson are both repeated in full on the pointer paragraph and in every account written since.
