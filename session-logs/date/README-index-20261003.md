@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.110251` | [wheel scroll works](20261003/20261003-110251_wheel-scroll-works.kyri) | Keaton confirmed the wheel; mouse still on |
 | `20261003.105411` | [tmux wheel scrolls the pane](20261003/20261003-105411_tmux-wheel-scrolls-the-pane.kyri) | mouse on; wheel enters copy mode; history cap 100000 on new windows |
 | `20261003.103805` | [fleet clocked out](20261003/20261003-103805_fleet-clocked-out.kyri) | Eight seats clock=out; seven by incense, this bench by keaton |
 | `20261003.103233` | [interactive session open](20261003/20261003-103233_interactive-session-open.kyri) | Walk closed; pin misses today; REDS headroom 49 bytes |
