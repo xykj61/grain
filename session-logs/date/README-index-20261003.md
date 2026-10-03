@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.041719 | [cord_byzantine head negation and grade](20261003/20261003-041719_cord-byzantine-head-negation-and-grade.kyri) | module head D/below-B to A/93; register 46 to 100, zero code moved |
 | 20261003.041716 | [Petrichor's twenty-seventh reading, lesson 2 checked](20261003/20261003-041716_petrichor-twentyseventh-reading-lesson-two-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 93; lane still clean |
 | 20261003.041355 | [No new state since the last survey](20261003/20261003-041355_no-new-state-since-last-survey.kyri) | HEAD unchanged at b6afddbe1b; declined to repeat the just-finished fleet survey |
 | 20261003.041331 | [a fourth site that would never notice](20261003/20261003-041331_a-fourth-site-that-would-never-notice.kyri) | fourth max_dependents site found silent, not crashing; B/83 |

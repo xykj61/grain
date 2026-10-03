@@ -1,27 +1,30 @@
 //! mycelium/cord_byzantine.rye -- the Cord survives equivocation (r2).
 //!
-//! Chapter D (Kresfa & Mycelium) - Mycelium consensus - rung r2 -- Byzantine refusal.
+//! Chapter D (Kresfa & Mycelium) - Mycelium consensus - rung r2 -- Byzantine admission control.
 //! Design read: active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md
 //!
-//! r1 fixed the deterministic-commit crux over an *honest* mesh; r2 wires the
-//! adversary a leaderless DAG must survive onto that spine, known correct. The
-//! adversary is **equivocation** -- one author publishing two distinct blocks at
-//! the same round, hoping different honest nodes admit different ones and split
-//! the network's view of history.
+//! r1 fixed the deterministic-commit crux over an *honest* mesh. r2 wires onto
+//! that known-correct spine the adversary a leaderless DAG must survive. The
+//! adversary is **equivocation**: one author publishes two distinct blocks at
+//! the same round. Different honest nodes may then admit different ones. That
+//! split fractures the network's one shared view of history.
 //!
 //! The Cord quarantines it by admission control: an author speaks at most once
-//! per round. `add_bft` refuses a second, distinct block at a round an author
-//! has already spoken at (`Equivocation`), the Dag unchanged, before it can gain
-//! one grain of ordering weight -- so the commit over the honest sub-DAG is
-//! identical whether or not an equivocator tried. A cycle cannot even be built:
-//! r1 admits a block only when every parent it names is already held, so a block
-//! may reference only backward, and a forward reference refuses `DanglingParent`.
-//! A forged block is still refused as a forgery, never mislabeled an equivocation.
+//! per round. `add_bft` admits an author's first block at a round. A second,
+//! distinct block at that same round meets `Equivocation` instead, and the Dag
+//! stays exactly as it stood. The attempt gains zero ordering weight, so the
+//! commit over the honest sub-DAG stays identical whether an equivocator tries
+//! or stays quiet.
+//!
+//! Every graph stays acyclic by construction. r1 admits a block only when
+//! every parent it names is already held, so a block points only backward. A
+//! forward reference meets `DanglingParent` instead. A forged block meets its
+//! own true label, forgery, ahead of any equivocation classification.
 //!
 //! Additive -- composes r1's public API only (`cord.add`, `cord.commit`,
-//! `cord.address`, `cord.verify_block`), inventing no storage and weakening no
-//! bound. Siloed, dev-only, demo seeds -- no real key, no funds, no network, no
-//! custody.
+//! `cord.address`, `cord.verify_block`). It reuses r1's own storage and bounds
+//! exactly as they stand. Siloed, dev-only, demo seeds -- synthetic keys, play
+//! funds, zero network reach, zero custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_byzantine.rye
 
