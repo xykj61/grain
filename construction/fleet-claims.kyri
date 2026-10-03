@@ -59,3 +59,9 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
+claim incense-publish-seed-rishi
+seat incense
+stamp 20261003.160724
+epoch 1791058044
+paths publish-seed.rish publish-seed.sh tools/fixtures/c/commit_message_guard_scan.sh
+what Move the seed publisher steps into publish-seed.rish and keep publish-seed.sh as the launch edge.
