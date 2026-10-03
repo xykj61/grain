@@ -125,14 +125,9 @@ line.
 shelved](archive/date/20261003/20261003-030606_itinerary-copal-ep030-ep042-roster-fold.md) --
 ep030, ep031, ep034, ep038, ep040, and ep042 rostered and all claims closed, nothing lost.
 
-**COPAL -- EP043 THROUGH EP045 ROSTERED, THE FAMILY COMPLETE.** `ironbeetle_ep043_census_witness.rish`,
-`ironbeetle_ep044_census_witness.rish`, and `ironbeetle_ep045_census_witness.rish` rostered -- the
-twenty-sixth, twenty-seventh, and twenty-eighth of the IronBeetle episode-census family, same
-decided-skip shape as ep001 through ep042. Each proven on metal both ways -- present it reads GREEN
-at `verdict=ok`; moved aside it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`.
-Claimed as `copal-ironbeetle-ep043-census-roster`, `copal-ironbeetle-ep044-census-roster`, and
-`copal-ironbeetle-ep045-census-roster`, all closed. `tools/gen/chapter/` now carries 34 IronBeetle
-episode-census witnesses against 34 episodes under `gratitude/ironbeetle/` -- none left unrostered.
+**COPAL -- EP043 THROUGH EP045 ROSTERED, THE FAMILY COMPLETE, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-093436_itinerary-copal-ep043-ep045-family-complete-account.md)
+-- the IronBeetle episode-census family rostered complete at 34 of 34.
 
 **COPAL -- TIGERSTYLE-VOID-RETURN ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261003/20261003-085439_itinerary-copal-tigerstyle-void-return-account.md)
@@ -151,16 +146,21 @@ shelved](archive/date/20261003/20261003-085439_itinerary-copal-nona-season-n0-ac
 shelved](archive/date/20261003/20261003-091418_itinerary-copal-buffer-bleeds-roster-account.md)
 -- `tigerbeetle_buffer_bleeds_census_witness.rish` rostered and that claim closed.
 
-**COPAL -- THE CACHE-INPLACE ROSTER ACCOUNT.** `tigerbeetle_cache_inplace_census_witness.rish`
-rostered -- the same decided-skip shape as its `tigerbeetle_assert_census` and
-`tigerbeetle_buffer_bleeds_census` siblings: an uninitialised `gratitude/tigerbeetle` submodule is
-a fact about a fresh clone rather than a defect, so the witness reads `gratitude/tigerbeetle/src`
-and takes a GREEN skip exit instead of reding every ship lacking the checkout. Proven both legs on
-metal in this lap: with `gratitude/tigerbeetle/src` moved aside it exits GREEN at the clone-absent
-skip, and restored it exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_CACHE`,
-`GUIDE_NODUP`, `GUIDE_INPLACE`, `TAME_CACHE`, `STYLE`, `ELDER_HOW`, and `RADIANT` all at `yes`.
-Claimed as `copal-tigerbeetle-cache-inplace-census-roster`, closed. **YOURS:** 45 chapter witnesses
-remain unrostered, measured the same way rather than trusted from this line.
+**COPAL -- THE CACHE-INPLACE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-093436_itinerary-copal-cache-inplace-roster-account.md)
+-- `tigerbeetle_cache_inplace_census_witness.rish` rostered and that claim closed.
+
+**COPAL -- THE CONTROL-PLANE ROSTER ACCOUNT.** `tigerbeetle_control_plane_census_witness.rish`
+rostered -- the same decided-skip shape as its `tigerbeetle_assert_census`,
+`tigerbeetle_buffer_bleeds_census`, and `tigerbeetle_cache_inplace_census` siblings: an
+uninitialised `gratitude/tigerbeetle` submodule is a fact about a fresh clone rather than a
+defect, so the witness reads `gratitude/tigerbeetle/src` and takes a GREEN skip exit instead of
+reding every ship lacking the checkout. Proven both legs on metal in this lap: with
+`gratitude/tigerbeetle/src` moved aside it exits GREEN at the clone-absent skip, and restored it
+exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_PLANE`, `ARCH_PLANE`, `STYLE`,
+and `TAME_BRIDGE` all at `yes`, and the `assert_census` elder GREEN. Claimed as
+`copal-tigerbeetle-control-plane-census-roster`, closed. **YOURS:** 44 chapter witnesses remain
+unrostered, measured the same way rather than trusted from this line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -351,7 +351,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `50a8d053ba` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `77215d4694` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

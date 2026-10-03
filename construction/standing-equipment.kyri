@@ -9773,3 +9773,18 @@ guard tigerbeetle_cache_inplace_census
 path tools/gen/chapter/tigerbeetle_cache_inplace_census_witness.rish
 tier lap
 seated 20261003.091242
+
+# tigerbeetle_control_plane_census -- e20 TB control/data-plane census, unrostered since it was
+# written. The same decided-skip shape as its assert_census, buffer_bleeds_census, and
+# cache_inplace_census siblings above: an uninitialised gratitude/tigerbeetle submodule is a fact
+# about a fresh clone rather than a defect, so the witness reads gratitude/tigerbeetle/src and
+# takes a GREEN skip exit instead of reding every ship lacking the checkout. Proven both legs on
+# metal in this lap: with gratitude/tigerbeetle/src moved aside to simulate the absent clone it
+# exits GREEN at the clone-absent skip, and restored to this pier's own present checkout it exits
+# GREEN at verdict=ok, reading REV=97c7a8ef38 with GUIDE_PLANE, ARCH_PLANE, STYLE, and TAME_BRIDGE
+# all at yes, and the assert_census elder GREEN. Claimed as
+# copal-tigerbeetle-control-plane-census-roster before this entry landed.
+guard tigerbeetle_control_plane_census
+path tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish
+tier lap
+seated 20261003.093436

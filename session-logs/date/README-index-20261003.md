@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.093654` | [control-plane-census-rostered](20261003/20261003-093654_control-plane-census-rostered.kyri) | TB control-plane census witness rostered; two card accounts shed to hold bound |
 | `20261003.092834` | [twenty-seventh reading, fallow confirmed](20261003/20261003-092834_petrichor-twentyseventh-reading-fallow-confirmed.kyri) | no fourth sweep; checked fleet-claims directly, bakery's %788 claim not in this lane |
 | `20261003.092550` | [patchouli's seventeenth confirming sweep](20261003/20261003-092550_seventeenth-sweep-empty.kyri) | Patchouli: fresh greps, claim board, REDS rows all re-read; still nothing agent-doable |
 | `20261003.092548` | [thirty-ninth decline, eight open rows](20261003/20261003-092548_thirty-ninth-decline-eight-open-rows.kyri) | no ledger motion; OPEN-row count corrected six to eight |
