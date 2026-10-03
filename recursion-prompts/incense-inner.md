@@ -210,6 +210,23 @@ so the four accounts above folded first, per the checkpoint. Next: unchanged -- 
 on a human word at `%642` or `%519`, a custody gate, or one of the thirteen numbered or five
 bare-stamp OPEN rows, none of which moved this lap.
 
+**Lap `20261003.102214` declined a forty-fourth, carrying one fast-forward and nothing for the
+lane.** Round-opened clean, already on the anointed order. Claim scan read `commits_behind=1`
+against `xy/main`: the one new commit, `6f1853a2be`, was patchouli's twenty-first sweep session log
+(the `%765`-adjacent ratchet net widened to TAME style and explicit-width, both reading clean in
+`mantra/`/`tally/`) -- no REDS row, so it fast-forwarded in cleanly rather than needing a claim.
+`git log 485463dcd3..HEAD` named twelve commits since the forty-third decline, none touching
+`construction/REDS.md`. `%642` and `%519` on the ITINERARY card stand byte-for-byte. Claim board
+read `bakery-root-finder-convert` (stale, build already handed off) and
+`copal-tigerbeetle-last-stage-census-roster` (building), no overlap with this lane. `sh
+tools/f/fleet_clock.sh report` found all eight seats clocked in, each at a distinct head or
+subject, none idling. `construction/REDS.md` reads 65,487 of 65,536 bytes -- 49 bytes of headroom,
+tighter than any pin this lane has watched, noted here rather than touched since no new row was
+found to add. Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged
+-- the law lane waits on a human word at `%642` or `%519`, a custody gate, or fresh movement on one
+of the OPEN REDS rows; a future lap opening a new row for this ledger should check its 49-byte
+headroom first, since the next row written there may need its own shelf fold before it fits.
+
 **Lap `20261003.100919` declined a forty-third, and found the one new thing already correctly
 handled.** Round-opened clean, adopted `485463dcd3`. Of eleven commits since the last decline's
 HEAD, ten were session logs, claims, and small lane fixes; one carried real content --
