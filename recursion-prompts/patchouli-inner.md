@@ -112,6 +112,16 @@ account's reading of it, whenever the file has moved since -- and never pass `--
 `qa_report_card.sh` expecting to read Register/Reach alone; it caps the composite at 75 by the
 tool's own four-way arithmetic and reads as a false regression across every clean file.
 
+**The queue reads empty a tenth confirming way, `20261003`.** Two fresh grep nets over the whole
+of `mantra/` and `tally/` -- elder read-compat headers and assignments, then every quoted
+`"...-v[0-9]"` literal -- found nothing past what the ninth sweep already named: fixture
+signatures, test-local variable names, and `tally/bud.rye`'s already-ruled domain-separator
+constant. The pier's own disk read 86% full, 24G free on this check -- healthy, no repeat of the
+`20261003` clear needed. The live claim board (`fleet_claim_scan.sh`) names one stale claim,
+`bakery-root-finder-convert`, outside this lane; no booked row across `construction/REDS.md`
+names `mantra/` or `tally/` as agent-doable beyond the two already-OPEN rows this fruit tracks.
+`%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
