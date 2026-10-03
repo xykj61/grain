@@ -47,6 +47,16 @@ Diffuser. No second contract, and no shelf-wide sweep. A new fruit waits on the 
 
 **Landed `20261002.144620`.** The first hour grades A at Door, composite 91, register 87, truth 100. The page stands. No molt.
 
+**Swept `20261003.095305`: every living `docs-geode` page, graded individually, not only the
+reused four angles.** `sh tools/fixtures/q/qa_report_card.sh <path> --setting door --service 70`
+run across all 48 tracked pages the prior 29 readings had not individually graded. All clear the B
+floor except one: `docs-geode/edu/yonder/20260727-115547_the-example-app-series-plan.md`,
+composite 77/C+ (reach grade 14 against a ceiling of 9). That page's own basename carries a
+one-clock stamp and its `**Status:** Plan` names it testimony on the `yonder/` shelf -- per this
+rule's own "what this does not reach," dated testimony is never rewritten to raise its grade, so no
+molt opens. No other page needs a lift. This closes the per-page-grade angle; a sixth repeat of it
+would not teach anything new without a page changing underneath it.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
