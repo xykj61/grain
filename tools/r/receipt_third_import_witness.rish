@@ -1,0 +1,25 @@
+# tools/r/receipt_third_import_witness.rish -- a third module importing both receipts.
+#
+# Mantra may import both projections. It is the shared carrier. This witness
+# counts every other tracked rye file that imports both receipt projections
+# in its own lines, and holds that count at zero.
+#
+#   rishi/bin/rishi run tools/r/receipt_third_import_witness.rish
+
+say "third-import: Language EN -- one file outside the shared carrier imports both receipts."
+say "third-import: Style Gauge Meter -- live zero, and four planted answers."
+say "third-import: Lens TAME -- safety first: Mantra stays the one shared room."
+
+let control = run ["sh" "tools/fixtures/r/receipt_third_import_control.sh"]
+say control.out
+assert control.ok else "third-import: the control must pass"
+assert control.out contains "control_verdict=ok" else "third-import: the control must reach its own ok"
+assert control.out contains "control_failed=0" else "third-import: every planted leg must pass"
+assert control.out contains "control_legs=5" else "third-import: five legs"
+assert control.out contains "leg_ok: live" else "third-import: the live tree must be clear"
+assert control.out contains "leg_ok: both_imports" else "third-import: both projection imports must braid"
+assert control.out contains "leg_ok: one_import" else "third-import: one projection import must stay clear"
+assert control.out contains "leg_ok: comment_welcome" else "third-import: a comment naming both imports must stay clear"
+assert control.out contains "leg_ok: mantra_shared" else "third-import: the Mantra carrier must stay clear"
+
+say "GREEN: third-import -- no tracked file outside Mantra and the two product rooms imports both receipt projections."

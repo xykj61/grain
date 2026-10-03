@@ -1396,6 +1396,16 @@ path tools/r/receipt_braid_build_witness.rish
 tier lap
 seated 20261003.163623
 
+# Seated 20261003.164639. The one-file half of a third-module braid. A tracked
+# rye file outside mantra/, linengrow/, and dimeroll/ counts when its own
+# @import lines reach both receipt projections. Mantra stays the shared
+# carrier. pond/apps/drawn_terminal.rye imports other files in those rooms
+# and stays outside this count. A further call graph stays outside this guard.
+guard receipt_third_import
+path tools/r/receipt_third_import_witness.rish
+tier lap
+seated 20261003.164639
+
 # Seated 20260918.043437. The receipt contract's Dimeroll projection stood at zero lines: the
 # product owing half the falsifier had not begun. `dimeroll/receipt_offer.rye` publishes
 # `DimerollReceiptIntake` and `from_snapshot`, reading a settled offer's own fields -- receipt_id,

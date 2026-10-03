@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.164639` | [third import stays clear](20261003/20261003-164639_third-import-stays-clear.kyri) | One file outside Mantra stays clear |
 | `20261003.163851` | [braid build refuses](20261003/20261003-163851_braid-build-refuses.kyri) | Vendored zig refuses an outside import |
 | `20261003.161743` | [receipt contract reread](20261003/20261003-161743_receipt-contract-reread.kyri) | Fresh counts; case 8 build half still proposed |
 | `20261003.161257` | [publish seed in rishi](20261003/20261003-161257_publish-seed-in-rishi.kyri) | Steps in rishi; shell stays the launch edge |
