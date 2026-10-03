@@ -59,3 +59,21 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
+claim incense-landed-line
+seat incense
+stamp 20261003.150138
+epoch 1791054098
+paths tools/fixtures/l/landed_line_scan.sh tools/fixtures/l/landed_line_control.sh tools/l/landed_line_witness.rish
+what A finished design page may carry a Landed line naming a shipping path, and the scan refuses a path the tree does not hold.
+claim incense-receipt-crawl
+seat incense
+stamp 20261003.150138
+epoch 1791054098
+paths tools/fixtures/r/receipt_crawl_scan.sh tools/fixtures/r/receipt_crawl_control.sh tools/r/receipt_crawl_witness.rish
+what Print file paths from one day of session logs, oldest stamp first, and delete nothing.
+claim incense-glow-nib-census
+seat incense
+stamp 20261003.150138
+epoch 1791054098
+paths tools/fixtures/g/glow_nib_census_scan.sh tools/fixtures/g/glow_nib_census_control.sh tools/g/glow_nib_census_witness.rish
+what Count glow nibs that end in -v0, name the comlink family, and leave every nib string in place.
