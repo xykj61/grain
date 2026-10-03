@@ -235,3 +235,16 @@ before the send; one rebase conflict on the shelf's own top rows (a peer lap lan
 round-open and push) resolved by keeping both rows in stamp order. Next: unchanged for the law
 lane's standing question -- `%642`, `%519`, or any of the twenty OPEN REDS rows wait on a human
 word; this lap's own repair was mechanical and separate, not a step toward either.
+
+**Lap `20261003.031551` declined a thirty-first, refusing to write a sixth ad hoc splitter.**
+Round-opened clean on `d394aec23e`; no new upstream commit since the prior lap's own push. Claim
+board clear of this lane (`bakery-root-finder-convert`, stale at 16 hours). `%642` and `%519` on
+the card read byte-for-byte as every prior lap left them. A quick re-check attempt (sed windows
+around each `^\*\*REDS` line) produced a count the prior lap's own warning already named as
+untrustworthy -- a fixed-size window spans into a neighbor row on short entries and misses the
+marker on long ones -- so its output was discarded rather than reported as a finding. The settled
+count from `20261003.025522` (twenty OPEN: fourteen numbered rows plus six bare-stamp rows) stands
+unchallenged. Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged
+-- the law lane waits on a human word at `%642` or `%519`, or a fresh look at any of the twenty
+OPEN REDS rows; a future re-derivation should use the one-line-per-row, last-marker-wins rule
+exactly, never a fixed-line-window scan.
