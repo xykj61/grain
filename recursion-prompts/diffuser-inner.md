@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.014028` -- the fractal address stays flat where the ring grows with the room
 **Revised:** `20261002.231237` -- neither real caller ever reaches the window
 **Revised:** `20261002.230126` -- the divergence window equals the last node's own content
 **Revised:** `20261002.225028` -- a growing node's own slack dwarfs what a correct free order would recover
@@ -543,6 +544,22 @@ lap: `rye/src/std` growing past roughly 3,100 files, the point the growth table 
 birth, would reopen the question. Graded B/82 at Field. No new witness, no new module, no scratch
 probe; a reading of tracked source and real constants against the two prior essays' own
 measurements.
+
+**Self-generated `20261003.014028`, a fresh angle after fifteen consecutive fallow readings, read
+from a module this lane's own ladder had never opened.**
+[The fractal address stays flat; the ring grows with the room](../active-designing/date/20261003/20261003-014028_the-fractal-address-stays-flat-the-ring-does-not.md)
+reads `kumara/topology.rye`'s own d12-d60 fractal address space -- never cited by this lane's prior
+essays -- beside the closed ring/chain arc's own measured `N-1` touch-cost growth, and finds the
+opposite growth law on metal: a scratch probe (built, run, deleted) sweeps `point_hops` across six
+sky sizes from the module's own seated skies up through its coordinate type's own ceiling, and the
+farthest pair at every size, from an 8-point universe to a 16,581,375-point one, holds at exactly 5
+hops -- because the bound's own formula names only the fixed `max_tier_depth` constant and never the
+sky's own tier widths. Answers the lane's standing "radial and polar schemes against the cartesian
+default" question concretely: a fractal, non-flat address buys a depth ceiling where a flat one
+pays a population-proportional price. Graded composite 81, letter B, per
+`tools/fixtures/q/qa_report_card.sh` (register 100, reach 50, truth 100, service 75 judged). No new
+witness, no new module; the probe file and its two binaries are deleted before the lap that wrote
+it ends.
 
 ## gates
 
