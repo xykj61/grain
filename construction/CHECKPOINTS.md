@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261003.091019` -- walk-back nib `e63f94e248`.** Fold REDS row
+`20261003.030257` (three session-log index rows over bound, CLOSED) whole from
+`construction/REDS.md` into
+`construction/archive/REDS/REDS-three-session-log-index-rows-over-bound-20261003-030257.md`,
+and trim an addendum on row `20260918.013500` noting a recurrence, to bring the ledger from
+66,517 bytes back under its 65,536-byte bound (49 bytes of headroom after). Nothing lost: the
+folded row keeps every word, and the living pin keeps a short pointer plus the addendum.
+
 **Checkpoint `20261003.083842` -- walk-back nib `8d86f78a7e`.** Shelve six lap accounts
 (`20261003.030257` through `20261003.035611`) whole from `recursion-prompts/incense-inner.md`'s
 `next` section into
