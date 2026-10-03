@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
+| `20261003.090727` | [lesson-eight-closes-the-series](20261003/20261003-090727_lesson-eight-closes-the-series.kyri) | Petrichor: lesson 8 grades Door/A, 92; the eight-lesson series is fully graded |
 | `20261003.090407` | [the buffer-bleeds send landed after two rebases onto peer commits](20261003/20261003-090407_buffer-bleeds-send-rebased-pushed-clean.kyri) | pushed clean to 484c1dc075 after two round-open rebases |
 | `20261003.090116` | [language-lane-empty-only-two-open-rows-tree-wide](20261003/20261003-090116_language-lane-empty-only-two-open-rows-tree-wide.kyri) | Pheromone: fresh OPEN grep finds two rows tree-wide, both Keaton's word; language lane still empty |
 | `20261003.090111` | [Petrichor's thirty-second reading, lesson 7 checked](20261003/20261003-090111_petrichor-thirtysecond-reading-lesson-seven-checked.kyri) | lesson 7 graded Door/A, 92 composite; three links hand-verified |
