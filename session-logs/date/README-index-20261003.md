@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.121056` | [a resin and a vessel](20261003/20261003-121056_a-resin-and-a-vessel.kyri) | Research page; vessel and resin kept apart |
 | `20261003.115440` | [resin is the cargo](20261003/20261003-115440_resin-is-the-cargo.kyri) | Digest is the address; resin stays the bytes |
 | `20261003.114117` | [kakoune soft wrap](20261003/20261003-114117_kakoune-soft-wrap.kyri) | Display wrap in the kakoune site file |
 | `20261003.112841` | [receipt crawl written](20261003/20261003-112841_receipt-crawl-written.kyri) | Study, silo, and plan; names left unseated |
