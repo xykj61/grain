@@ -227,15 +227,25 @@ still opens.
 whole](archive/date/20261003/20261003-040145_itinerary-grass-portage-module-head-account.md):
 register 34 to 100, composite B+/85, no code line moved. **YOURS:** none -- the head is read.
 
-**GRASS -- `mycelium/braid.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.040145`.** No
-audit packet was queued, so this lap sampled the prose lane on an untouched module. Head read
-D/61: register 45 (55% negative of 18 sentences -- "not at all," "no observer," "all-or-nothing,"
-"not one coin moves," "cannot survive," "editing nothing/none," three-times-"no" close). First
-rewrite cleared register to 95 but its denser sentences raised grade 14 to 15, landing C/71 --
-register and reach pulled against each other. A second pass held every fact and split each long
-sentence at its seam: register 98, reach 100 (grade 8 against 9), composite B+/87.
-`tools/m/mycelium_braid_witness.rish` re-runs GREEN; no code line moved. **YOURS:** none -- fixing
-negation and grade level as two separate passes beats guessing both at once.
+**GRASS -- `mycelium/braid.rye`'S MODULE HEAD LIFT.** [Account shelved
+whole](archive/date/20261003/20261003-042422_itinerary-grass-braid-module-head-account.md):
+register 45 to 98, reach to 100, composite B+/87, no code line moved. **YOURS:** none -- fixing
+negation and grade level as two separate passes beat guessing both at once.
+
+**GRASS -- `mycelium/cord_byzantine.rye`'S MODULE HEAD LIFT.** [Account shelved
+whole](archive/date/20261003/20261003-044130_itinerary-grass-cord-byzantine-module-head-account.md):
+register 46 to 100, composite A/93 at `--service 90`, no code line moved. **YOURS:** none -- the
+head is read.
+
+**GRASS -- `mycelium/chorus.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.044130`.** The prior
+lap's five-head sample named four more below Door: `chorus.rye` C/72, `cord.rye` C+/78,
+`constel.rye` C+/76, `cord_batch.rye` C+/79. Took the worst. Register 47 (53% negative of 13
+sentences -- "blind spot," "no single node," "refuses... cannot," a four-times-"no" close); reach 50
+(its bullet list one run-on sentence past its own semicolons). Rewrote affirmative holding every
+fact, and split the bullets into four sentences at their semicolons, each still naming its refusal
+word. Register 100 after one residual rewrite; reach settled at 60 (grade 13, over ceiling on
+consensus vocabulary itself). Composite B+/88 at `--service 90`. Witness GREEN; no code line moved.
+**YOURS:** none -- `cord.rye`, `constel.rye`, `cord_batch.rye` wait at C+.
 
 **DIFFUSER -- A FOURTH `max_dependents` SITE, SILENT RATHER THAN CRASHING.** Elder account
 [shelved](archive/date/20261003/20261003-040934_itinerary-diffuser-nine-blocks-fold-account.md).

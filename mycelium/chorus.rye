@@ -5,29 +5,33 @@
 //! Design read: active-designing/date/20260813/20260813-102533_mycelium-chorus-quorum-attestation-exploration.md
 //!
 //! The Voucher made a holder's position PROVABLE under one node's signature -- a node reads an account's
-//! Statement out of a Dag and signs it, bound to the order-head the reading was taken against. Yet a
-//! verifier who does not hold the blocks (the ordinary case, since the whole point of a proof is that you
-//! need not obtain the ledger) must simply TRUST that the single signing node read the ledger faithfully.
-//! One node can sign a position it never honestly derived.
+//! Statement out of a Dag and signs it, bound to the order-head the reading was taken against. A
+//! verifier who lacks the blocks -- the ordinary case, since the whole point of a proof is skipping the
+//! ledger -- rests entirely on trusting that the one signing node read it faithfully. One node's own
+//! honesty is the only thing standing behind its signed position.
 //!
-//! The Chorus fills that blind spot: a bounded quorum of independent Vouchers for the SAME account
+//! The Chorus closes that gap: a bounded quorum of independent Vouchers for the SAME account
 //! position at the SAME order-head. Where the Voucher is one node's word, the Chorus is a threshold of
-//! independent words that agree -- a stranger who trusts no single node trusts that `threshold` distinct
-//! nodes all read the same position against the same agreed order. The crux `verify_chorus(threshold)`
-//! passes exactly when:
-//!   - every member's signature holds offline against its own node key (else BadSignature);
-//!   - every member names the one claimed order-head - account - position (else Disagreement);
-//!   - the signers are distinct -- no node counts twice, so one voice cannot manufacture a quorum
-//!     (a repeated signer refuses DuplicateNode: Sybil-by-repetition cannot inflate belief);
-//!   - the distinct count meets the threshold (else BelowThreshold -- a thin quorum is not yet believed).
-//! And `check_against(dag)`, for a verifier who DOES hold the blocks, re-derives the order-head and
-//! re-reads the Statement once and confirms the one claim is true. Arrival-independence is inherited from
-//! the Voucher: a chorus gathered against one arrival permutation verifies and checks against another.
+//! independent words that agree -- a stranger withholding trust from any one node instead extends it
+//! collectively, trusting that `threshold` distinct nodes all read the same position against the same
+//! agreed order. The crux
+//! `verify_chorus(threshold)` passes when every member's signature holds offline against its own node
+//! key, else `BadSignature`. It passes when every member names the one claimed order-head, account, and
+//! position, else `Disagreement`. It passes when the signers are distinct, so each node counts once and
+//! one voice stays one vote; a repeated signer meets `DuplicateNode` instead, holding Sybil-by-repetition's
+//! belief at its true size. And it passes when the distinct count meets the threshold, with
+//! `BelowThreshold` naming a quorum still thin of belief.
 //!
-//! Composes voucher - cord - lapse - statement - kumara public API only, editing none; the quorum law is
-//! the Chorus's own bounded fold over its member set. Siloed, dev-only, demo seeds -- no real key, no
-//! funds, no network, no custody. A SERVED chorus (a holder fetching several nodes' attestations over
-//! Comlink) reaches the Comlink-served gate.
+//! `check_against(dag)` serves a verifier who does hold the blocks: it re-derives the order-head,
+//! re-reads the Statement once, and confirms the one claim is true. Arrival-independence is inherited
+//! from the Voucher: a chorus gathered against one arrival permutation verifies and checks against
+//! another.
+//!
+//! Composes voucher - cord - lapse - statement - kumara public API only; the quorum law is the Chorus's
+//! own bounded fold over its member set, with every composed module left exactly as it stands. Siloed,
+//! dev-only, demo seeds hold the whole surface: synthetic keys, play funds, zero network reach, zero
+//! custody. A SERVED chorus (a holder fetching several nodes' attestations over Comlink) reaches the
+//! Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/chorus.rye
 
