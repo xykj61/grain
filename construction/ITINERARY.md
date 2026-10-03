@@ -235,11 +235,20 @@ registered and GREEN, and the snapshot artifact stays named-but-dormant on `max_
 ruling among its three named doors; Linengrow's own `ConsentState -> LinengrowConsent` projection,
 past this lane's own door.
 
-**PATCHOULI -- A THIRD FAMILY TAKES %765'S MOLT, BORN AFTER THE RULING ITSELF.** [Account shelved
-whole](archive/date/20261002/20261002-180446_itinerary-patchouli-consent-schema-molt-account.md):
-`consent_replay.rye`'s `grant_schema`/`revoke_schema` moved from `-v1` to the one-clock stamp
-`20261002.180446`; authored after `%765` was ruled, so no store ever carried the elder spelling.
-GREEN on metal. **YOURS:** thirty-nine families of `%765` remain outside this lane.
+**PATCHOULI -- THE QUEUE READS EMPTY AGAIN, AND `RECEIPT_OFFER.RYE`'S `SCHEMA_V1` IS RULED OUT BY
+NAME.** [Shelved whole](archive/date/20261002/20261002-225629_itinerary-patchouli-consent-schema-molt-shed.md):
+the prior account (the consent-schema molt) stands and is recorded there. This lap re-walked
+`mantra/` and `tally/` fresh for a `%765` family born after the ruling (`20260916.064510`):
+`git diff-tree --diff-filter=A` on every commit dated on or after that stamp lists sixteen new
+files in the two rooms, and none carries a counted-suffix schema string. `mantra/src/receipt_offer.rye`'s
+`schema_v1 = "grain.receipt-offer.v1"` is the only remaining counted constant in this lane, and the
+prior account already names why it stays untouched: committed `20260913.161728`, before `%765`'s
+ruling, so it is an elder header under accrete-never-break. Confirmed again this lap: no file
+outside `mantra/src/`'s own witnesses references the literal string, and `dimeroll/receipt_offer.rye`
+/ `linengrow/receipt_offer.rye` (the only cross-lane files sharing the name) hold neither the
+constant nor the literal, so there is nothing here even a willing hand could safely move.
+**YOURS:** thirty-nine families of `%765` remain outside this lane; `%807` stays OPEN for Keaton's
+ruling.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -329,7 +338,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d050ec2e2c` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `34cf5c1e67` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
