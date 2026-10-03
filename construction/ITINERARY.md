@@ -235,14 +235,16 @@ sentence at its seam: register 98, reach 100 (grade 8 against 9), composite B+/8
 `tools/m/mycelium_braid_witness.rish` re-runs GREEN; no code line moved. **YOURS:** none -- fixing
 negation and grade level as two separate passes beats guessing both at once.
 
-**DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
-account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
-arc's close, the ring-arithmetic and 2D-layout readings, the wrong-roster falsifier, and three
-elder pointers, `20260918`-`20261002`, nothing lost. The same send recovers four self-generated
-essays and two session logs that six successive round-opens stashed and never landed -- the bead/CDC
-falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_allocator timing (B+/86),
-and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
-**YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
+**DIFFUSER -- A FOURTH `max_dependents` SITE, SILENT RATHER THAN CRASHING.** Elder account
+[shelved](archive/date/20261003/20261003-040934_itinerary-diffuser-nine-blocks-fold-account.md).
+The same grep the `20261003.035816` essay ran left one hit unopened:
+`src/gate/gate-caravan-dependents-bound-u32.glow` hardcodes the ceiling as a bare literal `3`, and
+neither it, its witness, nor `glow_run_worker.sh`'s dispatch opens `caravan/capabilities.rye`.
+Raising `max_dependents` to 8 and rerunning the witness left it GREEN -- where the other two found
+sites crash. Reverted; `git status --porcelain` clean before and after.
+[A fourth site that would never notice](../active-designing/date/20261003/20261003-040934_a-fourth-site-that-would-never-notice.md),
+B/83 at Field. **YOURS:** none -- whether the dispatch's own `glow/.cache/caravan` symlink feeds any
+other gate a live Rye value stays unchecked.
 
 **PATCHOULI -- THE SIXTH EMPTY QUEUE, AND A GRADING TOOL MISREAD BEFORE IT COST A FILE.** Elder
 account
@@ -347,7 +349,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d5a0184b92` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `4490542fd8` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

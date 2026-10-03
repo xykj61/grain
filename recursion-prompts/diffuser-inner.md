@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.040934` -- a fourth site that would never notice
 **Revised:** `20261003.035816` -- a third ceiling the prior count never opened
 **Revised:** `20261003.033159` -- raising the ceiling crashes its own control
 **Revised:** `20261003.031833` -- the declarable ring is twice the livable one
@@ -669,6 +670,22 @@ arrives. Adds a third file (the witness's own grep, and `shape-caravan-max-depen
 Graded composite 89, letter B+, per `tools/fixtures/q/qa_report_card.sh --setting field --service
 85` (register 100, reach 70, truth 100, service 85 judged). No new witness, no new module; one
 tracked-file edit made and reverted on this host, confirmed clean.
+
+**Self-generated `20261003.040934`, the same grep's unread fourth hit, read to the opposite shape.**
+[A fourth site that would never notice](../active-designing/date/20261003/20261003-040934_a-fourth-site-that-would-never-notice.md)
+reads the one remaining hit the prior essay's own whole-tree grep for `max_dependents` left
+unopened: `src/gate/gate-caravan-dependents-bound-u32.glow`, a second Glow gate hardcoding the
+ceiling as a bare literal `3`, and its witness
+`tools/ca/caravan_dependents_a1_gate_bound_witness.rish`. Neither the gate nor its witness nor
+`tools/g/glow_run_worker.sh`'s own dispatch opens `caravan/capabilities.rye` by any path. Confirmed
+on metal: editing `max_dependents` to 8 and rerunning this witness leaves it GREEN, unchanged --
+unlike the two crash sites the prior two essays found, this fourth site would go quietly stale
+rather than stop the build, still claiming a wall of three seats after the Rye source no longer
+agrees. Reverted immediately; `git status --porcelain` read clean before and after. Sharpens the
+repair's *price* (still two crashing files) apart from its *completeness* (now four files, one of
+them silent). Graded composite 83, letter B, per `tools/fixtures/q/qa_report_card.sh --setting
+field --service 80` (register 50, reach 100, truth 100, service 80 judged). No new witness, no new
+module; one tracked-file edit made and reverted on this host, confirmed clean.
 
 ## gates
 

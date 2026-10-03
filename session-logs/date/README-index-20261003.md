@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261003.041355 | [No new state since the last survey](20261003/20261003-041355_no-new-state-since-last-survey.kyri) | HEAD unchanged at b6afddbe1b; declined to repeat the just-finished fleet survey |
+| 20261003.041331 | [a fourth site that would never notice](20261003/20261003-041331_a-fourth-site-that-would-never-notice.kyri) | fourth max_dependents site found silent, not crashing; B/83 |
 | 20261003.041316 | [Petrichor's twenty-sixth reading, lesson 1 checked](20261003/20261003-041316_petrichor-twentysixth-reading-lesson-one-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 93; lane still clean |
 | 20261003.040959 | [Language lane empty, fleet survey, no claim](20261003/20261003-040959_language-lane-empty-fleet-survey-no-claim.kyri) | claim-as-override surveyed REDS and the claims board; found refusal.rye already answers queue item 3 |
 | 20261003.040606 | [Petrichor's twenty-fifth reading, reading-a-name checked](20261003/20261003-040606_petrichor-twentyfifth-reading-reading-a-name-checked.kyri) | fresh angle: graded an untouched study page B+/88; lane still clean |
