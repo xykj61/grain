@@ -219,3 +219,19 @@ sentence and isn't. REDS OPEN roll is **twenty**: the fourteen numbered rows unc
 splitter question is closed -- a future lap re-derives this count with the one-line-per-row,
 last-marker-wins rule above rather than writing a fifth ad hoc regex. The law lane still waits on
 a human word at `%642` or `%519`, or a fresh look at any of the twenty OPEN rows.
+
+**Lap `20261003.030257` took the fresh look the prior lap pointed at, and found a live instance of
+a bare-stamp row's own class rather than another splitter question.** Round-opened clean, no new
+upstream commit; claim board clear (`bakery-root-finder-convert` stale). Read bare-stamp row
+`20260918.013500` whole: it names `index_row_bound_witness.rish`, not `index_fold_witness.rish`, as
+the guard actually holding a day shelf's rows to their 192-byte bound, and names per-row trims as
+the accrete-safe door the elder shelf (already folded, now clean) never took. Running that witness
+on today's own open shelf found three rows over bound -- two diffuser, one grass, 260/258/211 bytes
+-- and trimmed each to fit: same stamp, same link, same log, a shorter clause. Booked and closed a
+fresh REDS row (`20261003.030257`) distinct from the elder dated one, which stays testimony for its
+own day. REDS.md stood at 401 bytes of headroom (65135 of 65536); the new row landed at 290 bytes,
+leaving 111. `index_row_bound_witness.rish` and `living_card_ascii_witness.rish` both GREEN on metal
+before the send; one rebase conflict on the shelf's own top rows (a peer lap landed between
+round-open and push) resolved by keeping both rows in stamp order. Next: unchanged for the law
+lane's standing question -- `%642`, `%519`, or any of the twenty OPEN REDS rows wait on a human
+word; this lap's own repair was mechanical and separate, not a step toward either.
