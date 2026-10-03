@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.110406` | [rebuild and tmux source landed](20261003/20261003-110406_rebuild-and-tmux-source-landed.kyri) | /etc/tmux.conf and the live server agree |
 | `20261003.110251` | [wheel scroll works](20261003/20261003-110251_wheel-scroll-works.kyri) | Keaton confirmed the wheel; mouse still on |
 | `20261003.105411` | [tmux wheel scrolls the pane](20261003/20261003-105411_tmux-wheel-scrolls-the-pane.kyri) | mouse on; wheel enters copy mode; history cap 100000 on new windows |
 | `20261003.103805` | [fleet clocked out](20261003/20261003-103805_fleet-clocked-out.kyri) | Eight seats clock=out; seven by incense, this bench by keaton |
