@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.034042 | [Petrichor's twenty-first fallow reading](20261003/20261003-034042_petrichor-twentyfirst-fallow-reading-aether.kyri) | lane still empty, 21st reading; rota stepped to Aether; recommends check-in |
 | 20261003.033826 | [Pheromone's eleventh reading, round-open pulled nothing new](20261003/20261003-033826_eleventh-reading-round-open-pulled-nothing-new.kyri) | round-open pulled 11 commits, none into glow/mantra/src-shape; lane still empty |
 | 20261003.033656 | [Diffuser: raising the ceiling crashes its own control](20261003/20261003-033656_ceiling-crashes-its-own-control.kyri) | capabilities.max_dependents=8 panics roster.zig:393 via wide_roster.kyri |
 | 20261003.033611 | [incense declines a thirty-third](20261003/20261003-033611_incense-declines-thirty-third.kyri) | clock report finds all eight ships sailing; law lane still holds at twenty OPEN rows |
