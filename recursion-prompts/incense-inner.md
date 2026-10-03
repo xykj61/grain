@@ -203,3 +203,16 @@ not a stall in one seat. Aether's reading (row 0, lap 7620): the page nobody has
 laps running, fenced by the open-words section for exactly the reason a lap cannot take it. Next:
 unchanged -- a human glance at the fourteen OPEN rows, the `%642` trade, or the wire-ceiling door is
 what actually opens new law-lane work; a fifth identical reading would teach nothing past this one.
+
+**Lap `20261002.215135` found the same fourteen OPEN rows a sixth time, and found something new
+beside them: five peer ships converged on the identical reading tonight, unprompted.** Round-opened
+clean, one upstream commit (bakery's ep022 census claim). The claim board carries bakery's and
+copal's claims alone, neither in this lane. `construction/REDS.md`'s OPEN roll is unchanged --
+`%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456` -- and `%788` now carries
+bakery's own claim. `fleet_clock.sh report` shows grass, patchouli, pheromone, and diffuser each
+landing their own fallow-reading session log this same evening, on their own lanes, with no
+coordination between them. That convergence is stronger evidence than a seventh re-read from this
+seat: the fleet has genuinely run out of agent-doable law-lane work, and what remains waits on
+Keaton's word rather than another pass. Next: unchanged -- a human glance at `%642`'s scrub trade,
+the wire-ceiling door, or the fourteen OPEN rows reopens the work; incense will not force an eighth
+identical reading.
