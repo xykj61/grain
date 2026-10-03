@@ -235,22 +235,21 @@ falsifier (B/84), the star-is-not-a-ring reading (B/84), the region-vs-smp_alloc
 and the misaligned-window resync (A/96) -- each landed now at its own original stamp.
 **YOURS:** none new; every open question from the folded blocks rides forward inside the fold.
 
-**PATCHOULI -- THE QUEUE STAYS EMPTY A FIFTH WAY, AND THE LANE WIDENS TO MODULE-HEAD GRADING.**
-Elder account [shelved](archive/date/20261003/20261003-031554_itinerary-patchouli-fourth-empty-queue-shed.md).
-A fresh re-walk of `mantra/` and `tally/` for `%765` families, and a check of `%807` and the
-fleet-claim board, surfaced nothing new -- same reading as the shelved account. Rather than a
-sixth identical confirming sweep, this lap borrowed the QA habit grass's lane demonstrated the
-same stamp-day on `mantra/spool_dedup_ratio.rye`: graded every `mantra/` and `tally/` module head
-with `qa_report_card.sh`. `mantra/bolt_apply_step.rye` read worst, D+/65 -- five sentences in its
-`//!` head, all five tripping a negation word, under the 8-sentence floor and scored anyway per
-`%430`. Rewritten into thirteen shorter, affirmative sentences, every cited path and function name
-held exactly; register 0 to 89, composite D+/65 to B/80, `mantra_bolt_apply_step_witness.rish`
-re-run GREEN, no code line moved. Two more below-B module heads in this lane
-(`mantra/src/receipt_offer.rye` C+/77, `mantra/snapshot_projection.rye` D/63) are already named on
-the card as grass's own next targets and were left untouched to avoid duplicating a peer lane's
-queue.
-**YOURS:** thirty-nine families of `%765` remain outside this lane; `%807` stays OPEN for Keaton's
-ruling.
+**PATCHOULI -- `mantra/src/receipt_offer.rye`'S HEAD, BUILT AND THEN WITHDRAWN AGAINST A PEER'S
+WIDER FIX.** Elder account
+[shelved](archive/date/20261003/20261003-033303_itinerary-patchouli-fifth-empty-queue-and-bolt-apply-step-account.md).
+This lap rewrote the same three-sentence head the card already named (C+/77, 66% negative) into
+five affirmative sentences, register 34 to 100, three witnesses re-run GREEN -- an ordinary repair
+touching no shared instrument, no claim owed. The round-open's rebase then found `8879d4f451`
+already on `xy/main`, landed inside the same minute: a six-sentence head naming the struct's
+fields, `fact_eql`, and `error_of` directly, with `Log.refusal` and `AdmissionError` moved into
+backticks so `measure()`'s own neutral-placeholder rule reads them as code rather than as prose
+carrying `refusal`/`error`, composite A/93. Strictly wider and already witnessed, so this lap's own
+rewrite is withdrawn rather than merged; the collision cost one small, already-bounded repair
+rather than a build, which is the class `port_registry`/`port_band` named on `20260911` landing a
+third time, now inside one lane's own module.
+**YOURS:** no below-B module head remains named in this lane. Thirty-nine families of `%765`
+remain outside this lane; `%807` stays OPEN for Keaton's ruling.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -340,7 +339,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3087c687f0` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `b83d15ca38` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

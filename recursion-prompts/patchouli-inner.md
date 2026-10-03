@@ -76,6 +76,16 @@ family at all. Two different search methods now agree. This lap also found and c
 debt: two live PATCHOULI blocks had sat unshed on the card for two laps running, against
 the-writer-sheds' one-live-account rule -- folded to one in the same commit as this finding.
 
+**The lane widened to module-head grading, `20261003`, and met a peer mid-fix.** The queue's own
+fifth confirming sweep surfaced nothing new, so this lap graded every `mantra/` and `tally/`
+module head with `qa_report_card.sh` instead -- the same habit grass demonstrated on
+`mantra/spool_dedup_ratio.rye` the same stamp-day. `mantra/src/receipt_offer.rye` read C+/77;
+rewritten into five affirmative sentences and re-graded to register 100, no code line moved, three
+witnesses re-run GREEN -- then withdrawn on the round-open's rebase, which found `8879d4f451`
+already landed on `xy/main` inside the same minute, a wider six-sentence rewrite reaching A/93 by
+moving `Log.refusal` and `AdmissionError` into backticks so `measure()`'s neutral-placeholder rule
+reads them as code. No below-B module head remains in this lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

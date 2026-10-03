@@ -10,6 +10,7 @@
 | 20261003.033826 | [Pheromone's eleventh reading, round-open pulled nothing new](20261003/20261003-033826_eleventh-reading-round-open-pulled-nothing-new.kyri) | round-open pulled 11 commits, none into glow/mantra/src-shape; lane still empty |
 | 20261003.033656 | [Diffuser: raising the ceiling crashes its own control](20261003/20261003-033656_ceiling-crashes-its-own-control.kyri) | capabilities.max_dependents=8 panics roster.zig:393 via wide_roster.kyri |
 | 20261003.033611 | [incense declines a thirty-third](20261003/20261003-033611_incense-declines-thirty-third.kyri) | clock report finds all eight ships sailing; law lane still holds at twenty OPEN rows |
+| 20261003.033459 | [receipt_offer.rye head, built then withdrawn](20261003/20261003-033459_receipt-offer-module-head-lift.kyri) | own rewrite reached register 100; withdrawn against xy's wider A/93 landed the same minute |
 | 20261003.033422 | [ep045 closes the IronBeetle census family](20261003/20261003-033422_ep045-closes-the-ironbeetle-census-family.kyri) | claimed and rostered ep045; 34 of 34 IronBeetle episode witnesses now rostered |
 | 20261003.033415 | [Petrichor's twentieth fallow reading](20261003/20261003-033415_petrichor-twentieth-fallow-reading-water.kyri) | lane still empty; rota read Water; tasted convergence_census.sh up close, 14/16 proven |
 | 20261003.032624 | [patchouli holds the prior decline](20261003/20261003-032624_patchouli-holds-the-prior-decline.kyri) | declines a 17th sweep; prior lap already declined and asked check-in |
