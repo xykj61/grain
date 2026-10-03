@@ -163,6 +163,20 @@ than reading as a regression; no flat `--service` value was handed in this time,
 twelfth sweep's own warning. `%807` and `%765`'s 38 remaining families still want Keaton's word or
 another ship's own lane.
 
+**The queue reads empty a fourteenth way, `20261003.090942`.** Both grep nets re-run fresh over
+all of `mantra/` and `tally/` -- elder read-compat headers/assignments, then the broader
+`"...-v[0-9]..."` literal sweep -- answer identically to the tenth through thirteenth: fixture
+signatures, `recall_two_way_sync.rye`'s test-local tag strings, `recall_beaded.rye`'s local loop
+variables, the elder `mantra-weave`/`mantra-commit` read-compat headers, and `mantra-v2`/`mantra-v1`
+witness print-labels (test identifiers, never persisted headers). `construction/REDS.md`'s OPEN or
+BOOKED rows read whole again -- `%827`, `%826`, `%819`, `%807`, `%804`, `%788`, `%765`, `%734` --
+and each still names Keaton's ruling (`%827` register exemption, `%826`, `%807`, `%734`
+compiler-bridge, `%804` custody gate), another ship's already-claimed path (`%788`, bakery), or
+`%765`'s remainder in another lane. `construction/fleet-claims.kyri` carries the same one live
+claim, `bakery-root-finder-convert`, outside this lane. Both `PATCHOULI` card blocks on
+`construction/ITINERARY.md` read as the shelved two-line pointer form, so no shed is owed. `%807`
+and `%765`'s 38 remaining families still want Keaton's word or another ship's own lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

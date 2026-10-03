@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.090942` | [patchouli's queue reads empty a fourteenth confirming way](20261003/20261003-090942_patchouli-fourteenth-empty-sweep.kyri) | Patchouli: two fresh grep nets plus REDS/claim-board reread, nothing new in mantra/-tally/ |
 | `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
 | `20261003.090727` | [lesson-eight-closes-the-series](20261003/20261003-090727_lesson-eight-closes-the-series.kyri) | Petrichor: lesson 8 grades Door/A, 92; the eight-lesson series is fully graded |
 | `20261003.090407` | [the buffer-bleeds send landed after two rebases onto peer commits](20261003/20261003-090407_buffer-bleeds-send-rebased-pushed-clean.kyri) | pushed clean to 484c1dc075 after two round-open rebases |
