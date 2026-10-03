@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.090000` | [twelfth-sweep-rota-earth](20261003/20261003-090000_twelfth-sweep-rota-earth.kyri) | Patchouli's twelfth confirming sweep: both grep nets null, four new OPEN rows read and ruled out, queue empty |
 | `20261003.085141` | [the eleventh sweep finds the language lane still empty, fire row read](20261003/20261003-085141_eleventh-sweep-rota-fire.kyri) | round-open clean at bd7f90beed; rota row 2, Fire, read; no agent-doable work, declined a blind cross-lane claim |
 | `20261003.084548` | [the eleventh sweep, read through the row that hears](20261003/20261003-084548_eleventh-sweep-rota-aether.kyri) | mantra/tally queue re-checked, all 10 OPEN REDS rows ruled out; rota row 0, Aether |
 | `20261003.084423` | [thirty-eighth decline, plus a card shed](20261003/20261003-084423_thirty-eighth-decline-plus-shed.kyri) | %642/%519 unchanged; shed six lap accounts off incense-inner |

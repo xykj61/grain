@@ -136,6 +136,19 @@ decision, custody gate 3), or an already-claimed path (`%788`, bakery). None is 
 here. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
 lane.
 
+**The queue reads empty a twelfth way, `20261003.090000`.** Re-run fresh: the elder read-compat
+grep and the `"...-v[0-9]"` literal grep over all of `mantra/` and `tally/`, both answering
+identically to the tenth and eleventh sweeps -- fixture signatures, test-local loop variables, and
+the elder `mantra-weave`/`mantra-commit` header strings this law keeps forever. `construction/
+REDS.md`'s OPEN rows widened past the ten the eleventh sweep read whole: `%729`, `%730`, `%735`,
+and `%808` have landed since, and each names either a custody-gate history rewrite, a typed-prompt
+class no file can gate, a room-growth ruling, or a compiler-bridge decision -- none inside
+`mantra/` or `tally/`, none agent-doable here. `construction/fleet-claims.kyri` carries one live
+claim, `bakery-root-finder-convert`, outside this lane. The two `PATCHOULI` card blocks on
+`construction/ITINERARY.md` both read as the shelved two-line pointer form the-writer-sheds asks
+for, so no shed was owed this lap. `%807` and `%765`'s 38 remaining families still want Keaton's
+word or another ship's own lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
