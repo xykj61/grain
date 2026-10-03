@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.230744 | [Copal's ep032 roster lap](20261002/20261002-230744_copal-ep032-roster-lap.kyri) | claimed, proved both ways, rostered ironbeetle_ep032_census, closed claim |
 | 20261002.230703 | [Incense's seventeenth fallow reading, ground still unmoved](20261002/20261002-230703_seventeenth-fallow-reading.kyri) | round-opened clean, claim board clear of this lane, agent-doable queue carries only %642 wanting a word; declined re-derivation |
 | 20261002.230621 | [The divergence window equals the last node's own content](20261002/20261002-230621_divergence-window-equals-last-nodes-content.kyri) | self-generated essay: runs the prior essay's own falsifier at n=4096, finds forward/lifo diverge inside a bounded window equal to the tail node's reclaimable content |
 | 20261002.230415 | [Petrichor's nineteenth reading, a wider batch graded clean](20261002/20261002-230415_petrichor-nineteenth-reading-wider-batch-clean.kyri) | round-open adopted new upstream commits; eight previously-ungraded docs-geode pages all composite 86-92, clear of the B floor; rota fire row read |
