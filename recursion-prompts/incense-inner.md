@@ -280,3 +280,14 @@ roll unchanged at fourteen -- `%827 %826 %819 %808 %807 %804 %803 %788 %765 %735
 per-row awk script mis-read it as BOOKED (the row's own prose settles it: `**OPEN**` closes the
 paragraph). `%642`'s scrub trade is unchanged on the card. Next: unchanged -- a human glance at
 `%642`'s scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopens law-lane work.
+
+**Lap `20261002.230104` declined a sixteenth, verifying each of the five rows an awk pass had
+mis-split by reading their own prose directly.** Round-opened clean, open on `fec26d8f4a`, no new
+upstream commit. Claim board clear of this lane (`bakery-root-finder-convert` stale). A Python
+re-split of `construction/REDS.md` paragraphs read nine OPEN rows where the fleet's own hand-count
+reads fourteen; checking `%808`, `%735`, `%730`, `%729`, and `%765` by direct grep context found
+each one's row intact and each one's last marker genuinely `**OPEN**` -- the discrepancy was the
+script's own paragraph boundary, not a change in the ledger. REDS OPEN roll stands at fourteen --
+`%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456` -- one BOOKED (`%745`,
+already shelved). `%642`'s scrub trade is unchanged. Next: unchanged -- a human glance at `%642`'s
+scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopens law-lane work.
