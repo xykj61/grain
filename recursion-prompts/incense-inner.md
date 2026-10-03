@@ -235,3 +235,20 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.040917` declined a thirty-sixth into the hottest pier traffic this lane has met,
+and stopped retrying rather than spending a seventh send on a record with nothing in it.** The
+claim board read clear of this lane at every recheck across the whole lap; `git log
+8c898eafb7..HEAD -- construction/REDS.md` read empty every time, so the settled twenty-OPEN count
+from `20261003.025522` stands unread. Six `git push xy main` attempts in a row were rejected --
+four true divergences, each parked whole onto its own named `pier/diverged-*` branch and pushed,
+nothing lost, and two clean lost-race rebases that `fleet_round_open.sh` re-derived without
+conflict. Every parked branch carries byte-identical content to this account, superseded only
+because the HEAD it was written against moved on before the push landed. Rather than attempt a
+seventh send of a zero-impact record, this lap stops here: nothing in the ledger changed, the board
+stayed clear throughout, and the contention rate itself -- six rejections on one lap's own two
+commits -- is the one thing worth a human eye, named in this lap's own closing line. Cold run held
+unlaunched, per the inner prompt's own current order. Next: unchanged -- the law lane waits on a
+human word at `%642` or `%519`, or a fresh look at any of the twenty OPEN REDS rows; if this
+contention rate recurs, the next lap should treat it as a signal to check in rather than retry a
+seventh time.
