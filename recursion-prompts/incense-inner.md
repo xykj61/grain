@@ -216,3 +216,9 @@ seat: the fleet has genuinely run out of agent-doable law-lane work, and what re
 Keaton's word rather than another pass. Next: unchanged -- a human glance at `%642`'s scrub trade,
 the wire-ceiling door, or the fourteen OPEN rows reopens the work; incense will not force an eighth
 identical reading.
+
+**Lap `20261002.215758` declined that eighth.** Round-opened clean, open on `6a24ff9ed8`, no new
+upstream commit since the prior lap's own push. Claim board clear (bakery's and copal's, neither in
+this lane). REDS OPEN/BOOKED roll unchanged at 14/2. Next: a human glance at `%642`'s scrub trade or
+the wire-ceiling door reopens law-lane work; incense holds here rather than re-reading unmoved
+ground.
