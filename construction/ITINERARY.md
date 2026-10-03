@@ -134,28 +134,31 @@ Claimed as `copal-ironbeetle-ep043-census-roster`, `copal-ironbeetle-ep044-censu
 `copal-ironbeetle-ep045-census-roster`, all closed. `tools/gen/chapter/` now carries 34 IronBeetle
 episode-census witnesses against 34 episodes under `gratitude/ironbeetle/` -- none left unrostered.
 
-**COPAL -- TIGERSTYLE-VOID-RETURN ROSTERED, A FAMILY OF ONE.** `tigerstyle_void_return_witness.rish`
-rostered -- unlike its `tigerbeetle_*_census` neighbors two rows up in the standing roster, this
-witness reads `gratitude/TIGER_STYLE.md` alone, a held tracked file rather than the
-`gratitude/tigerbeetle` gitlink, so it carries no clone-absent skip leg and no capability gate.
-Proven on metal both ways -- present it reads GREEN at `verdict=ok`; the guide moved aside it
-refuses at the assert naming `TIGER_STYLE.md missing from gratitude/`. Claimed as
-`copal-tigerstyle-void-return-roster`, closed. 60 witnesses remain found under
-`tools/gen/chapter/` with no roster row, a dozen of them the `tigerbeetle_*_census` family the
-roster's own comment names as deliberately left unrostered -- re-measure with
-`comm -23 <(ls tools/gen/chapter/*.rish | xargs -n1 basename | sed 's/\.rish$//' | sort)
-<(grep -oP '(?<=^path )tools/gen/chapter/\S+' construction/standing-equipment.kyri | xargs -n1
-basename | sed 's/\.rish$//' | sort -u)` rather than trusting this count.
+**COPAL -- TIGERSTYLE-VOID-RETURN ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-085439_itinerary-copal-tigerstyle-void-return-account.md)
+-- `tigerstyle_void_return_witness.rish` rostered and that claim closed.
 
 **COPAL -- VOLS JOURNEY 13 COMPLETE, R2 AND R3 ROSTERED, FOLDED WHOLE.** [Account
 shelved](archive/date/20261003/20261003-041959_itinerary-copal-vols-journey-13-complete-account.md)
 -- `vols_classify` and `vols_survey_kyri` both rostered and their claims closed; all four VOLS
 Journey 13 rungs now carry a guard entry.
 
-**COPAL -- NONA_SEASON_N0 ROSTERED.** `nona_season_n0_witness.rish` proven both ways on metal
-(present GREEN; charter moved aside, refuses at the missing-charter assert, then restored) and
-rostered in `construction/standing-equipment.kyri`. Claimed as `copal-nona-season-n0-roster`,
-closed.
+**COPAL -- NONA_SEASON_N0 ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-085439_itinerary-copal-nona-season-n0-account.md) --
+`nona_season_n0_witness.rish` rostered and that claim closed.
+
+**COPAL -- THE BUFFER-BLEEDS ROSTER ACCOUNT.** `tigerbeetle_buffer_bleeds_census_witness.rish`
+rostered -- the same decided-skip shape as its `tigerbeetle_assert_census` and
+`tigerbeetle_be_explicit_census` siblings: an uninitialised `gratitude/tigerbeetle` submodule is a
+fact about a fresh clone rather than a defect, so the witness reads `gratitude/tigerbeetle/src` and
+takes a GREEN skip exit instead of reding every ship lacking the checkout. Proven both legs on
+metal in this lap: with `gratitude/tigerbeetle/src` moved aside it exits GREEN at the clone-absent
+skip, and restored it exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_BLEED`,
+`GUIDE_GROUP`, `TAME_BLEED`, `STYLE`, `ELDER_SHRINK`, and `RADIANT` all at `yes`. Claimed as
+`copal-tigerbeetle-buffer-bleeds-census-roster`, closed. **YOURS:** 46 chapter witnesses remain
+unrostered, measured by `comm -23` between `ls tools/gen/chapter/*.rish` basenames and the `guard`
+rows' own `path` basenames in `construction/standing-equipment.kyri` rather than trusted from this
+line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
