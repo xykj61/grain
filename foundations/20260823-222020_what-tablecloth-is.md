@@ -6,6 +6,7 @@
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
 **Status:** Living -- a foundation, written for a complete beginner -- **Mixed room**: holding a thing by its content address is checkable; the honest limits name what is not built.
+**Erratum `20261003.132751`:** the living formula in [`../context/CHEMICAL_FORMULAS.md`](../context/CHEMICAL_FORMULAS.md) names the short result a **digest** and the sealed file a **vessel**. A **resin** is the bundle of bytes. The arrows below keep the words this page wrote on its stamp.
 **Kin:** [`../README.md`](../README.md) - [Mantra](20260825-211056_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
 
 ---

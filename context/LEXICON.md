@@ -242,7 +242,9 @@ Full loop bounds: `construction/ready-to-ask-claude.md`.
 
 | Term | One line |
 |------|----------|
-| **Resin** | One content-addressed unit the cellar seals and Amphora carries (vessel) -- the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md). Tensegral Arc II fold: [`../tools/r/resin_unit_witness.rish`](../tools/r/resin_unit_witness.rish) (`20260728.002049`). |
+| **Resin** | One content-addressed unit the cellar seals and Amphora carries -- the stored bytes at a SHA3 name; the manifest catalogs, the digest proves; [`specs/20260703-191112_resins-and-hash-tiers.md`](specs/20260703-191112_resins-and-hash-tiers.md). Tensegral Arc II fold: [`../tools/r/resin_unit_witness.rish`](../tools/r/resin_unit_witness.rish) (`20260728.002049`). |
+| **Vessel** | The one file Amphora pours for a season. Pour fills it, carry moves it, restore opens it after the digest proves. A vessel may hold many resins. Living reading: [`../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md`](../active-designing/date/20261003/20261003-130832_the-resin-the-vessel-and-the-digest.md). Seated `20261003.132751`. |
+| **Digest** | The short name a hash computes from the bytes. The resin is the matter. The digest is the check. Same bytes, same digest. Seated `20261003.132751`. |
 | **SHA3-512 tier** | Canonical forever-names -- weave states, sealed content identity, promises that must mean one thing for the life of the work |
 | **SHA3-256 tier** | Working-store names -- resins, blob files, manifest entries where path size and external oracles matter |
 

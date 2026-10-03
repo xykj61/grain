@@ -22,7 +22,9 @@ That is the original wish in the word that already holds it: one bundle you can 
 
 A vessel is one file. You hand Amphora a directory of work. Pour fills the vessel, seals the cargo, and signs the sealed bytes, so a change to the cargo or the signature shows in the other. Carry moves the vessel. Restore opens it at the far side.
 
-The season inside a vessel may hold many resins. A resin too large for one message on the wire is cut into chunks for the crossing and assembled again on arrival. The chunk size is the module's own bound. This page does not copy that number, because a copied number drifts.
+The season inside a vessel may hold many resins. A resin too large for one store frame is beaded. A **bead** is one smaller content-addressed part. That vocabulary was seated `20260706.163312` in `mantra/beading.rye`: bead, beading, and the bead-index. The word resin replaced **stone**, the earlier name for the unit. It was not coined as a softer word for chunk.
+
+Amphora's carry still cuts a large resin into wire fragments, and that module names them chunks, kind `0x33`. The witnesses and the kind byte already say chunk, so this page does not rename them. The bead size and the fragment size stay in their modules. A copied number drifts.
 
 The teaching sentence, the one that can be said for years: a vessel is the file Amphora pours when the bundle is a whole season. The word vessel stays. Pour, carry, and restore all name that file.
 
