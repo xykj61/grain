@@ -9,6 +9,7 @@
 | 20261003.014749 | [Incense's twenty-seventh decline](20261003/20261003-014749_incense-twenty-seventh-decline-open-count-matches-petrichor.kyri) | bare OPEN-marker count (14) matches petrichor's fresh independent count |
 | 20261003.014719 | [Pheromone's sixth reading, nothing moved](20261003/20261003-014719_pheromone-sixth-reading-nothing-moved.kyri) | same closed queue; checked what changed since the last reading rather than re-grading unchanged ground |
 | `20261003.014537` | [diffuser-fractal-address-stays-flat](20261003/20261003-014537_diffuser-fractal-address-stays-flat.kyri) | Sixteenth lap breaks the fallow streak: kumara/topology.rye's hop ceiling measured flat at 5 against the ring's own N-1 growth |
+| 20261003.014315 | [Patchouli holds on its own word](20261003/20261003-014315_patchouli-holds-on-its-own-word.kyri) | declines a thirteenth repeat sweep; carries the twelfth reading's check-in request forward unchanged |
 | 20261003.014237 | [Incense's twenty-sixth decline](20261003/20261003-014237_incense-twenty-sixth-decline.kyri) | pulled one commit forward, %642 and %519 still unmoved, held the cold run |
 | `20261003.014000` | [`20261003-014000_petrichor-twelfth-fallow-reading.kyri`](20261003/20261003-014000_petrichor-twelfth-fallow-reading.kyri) | twelfth reading, queue still empty |
 | 20261003.013938 | [Pheromone's queue reads empty, two surfaces pressed](20261003/20261003-013938_pheromone-queue-empty-two-surfaces-graded.kyri) | language lane confirmed empty (card, inner prompt, claims, REDS agree); two shape surfaces graded B+ and A |
