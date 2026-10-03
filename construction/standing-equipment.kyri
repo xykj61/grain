@@ -8031,8 +8031,10 @@ seated 20260918.025301
 # fascia_metric_v0 -- one of the Generator Chapter witnesses that had lived outside the standing
 # roster. Its direct metric reading stays GREEN while its named shred verb refuses, so the chapter
 # witness now has a seat where both directions can answer on every lap.
+# The path moved to the unversioned file on 20261003. The guard id stays, because lap history
+# keys on it. tools/gen/chapter/fascia_metric_v0.rish remains a shim.
 guard fascia_metric_v0
-path tools/gen/chapter/fascia_metric_v0.rish
+path tools/gen/chapter/fascia_metric.rish
 tier lap
 seated 20260922.225159
 

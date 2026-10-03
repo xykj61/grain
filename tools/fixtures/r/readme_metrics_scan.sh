@@ -35,7 +35,7 @@ set -eu
 
 # stdin is closed for the fascia call on purpose: it blocks when it inherits one, and a
 # metrics scan that hangs in a witness is a metrics scan nobody runs.
-fascia=$(sh tools/fixtures/f/fascia_metric_v0.sh </dev/null 2>/dev/null | sed -n 's/^fascia=\([0-9][0-9]*\)$/\1/p' | head -1)
+fascia=$(sh tools/fixtures/f/fascia_metric.sh </dev/null 2>/dev/null | sed -n 's/^fascia=\([0-9][0-9]*\)$/\1/p' | head -1)
 [ -n "${fascia:-}" ] || fascia=unknown
 
 witnesses=$(git ls-files 'tools/*_witness.rish' | wc -l | tr -d ' ')

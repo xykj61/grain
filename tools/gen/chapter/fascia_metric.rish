@@ -1,0 +1,189 @@
+# tools/gen/chapter/fascia_metric.rish -- fascia metric (i4-i10).
+#
+# Difficulty-style connective-tissue grade 0-100 from four clutter signals.
+# i5: Amphora manifest entry - softer weights - window mean.
+# i6: Amphora laps 1-3 folded; weights unchanged (window like-to-like).
+# i7: Class A exclude trial - window_min baseline.
+# i8: Class A HOLD disclosed - window_min kept - exclusion refuses silence.
+# i9: window carry across revisions - arc seed 100/85/92 - fall stays visible.
+# i10: signal 1 stops reading date/ shelves -- testimony the archive fold moved.
+# Measure only -- shred / breach / deploy refuse by name.
+#
+#   rishi/bin/rishi run tools/gen/chapter/fascia_metric.rish
+#   rishi/bin/rishi run tools/f/fascia_metric.rish            # accrete shim
+#   rishi/bin/rishi run tools/gen/chapter/fascia_metric_v0.rish  # elder door, still answers
+#   rishi/bin/rishi run tools/gen/chapter/fascia_metric.rish prove
+
+let verb = ""
+if length args != 0 then let verb = args[0]
+
+# Fascia face. A u32 count of ten-thousandths of a point. 1000000 prints as 100.0000.
+# The shell grade below stays a whole number so its window stays like-to-like.
+# superseded: 5000 each, half a point, cap 250000.
+# ratchet category: 40000 each, four points, cap 250000.
+# class-a hit: 20000 each, two points, cap 250000.
+# over-70 function: 10000 each, one point, cap 250000.
+# Census is a separate file count. Its ceiling is 1048576, which is 2^20.
+if verb == "face" then assert (length args) == 5
+if verb == "census" then assert (length args) == 2
+let superseded = 0
+let ratchet_n = 0
+let class_a = 0
+let over70 = 0
+if verb == "face" then let superseded = clamp (parse args[1]) 0 1000000
+if verb == "face" then let ratchet_n = clamp (parse args[2]) 0 1000000
+if verb == "face" then let class_a = clamp (parse args[3]) 0 1000000
+if verb == "face" then let over70 = clamp (parse args[4]) 0 1000000
+let pen_super = 0
+let pen_ratchet = 0
+let pen_target = 0
+let pen_over70 = 0
+if verb == "face" then let pen_super = clamp (superseded * 5000) 0 250000
+if verb == "face" then let pen_ratchet = clamp (ratchet_n * 40000) 0 250000
+if verb == "face" then let pen_target = clamp (class_a * 20000) 0 250000
+if verb == "face" then let pen_over70 = clamp (over70 * 10000) 0 250000
+let clutter_u = 0
+let fascia_units = 0
+if verb == "face" then let clutter_u = clamp (pen_super + pen_ratchet + pen_target + pen_over70) 0 1000000
+if verb == "face" then let fascia_units = 1000000 - clutter_u
+if verb == "face" then let fascia_units = ^- @u32 fascia_units
+let whole = 0
+let frac = 0
+let frac_raw = "0"
+let frac_pad = "0000"
+if verb == "face" then let whole = fascia_units / 10000
+if verb == "face" then let frac = fascia_units - (whole * 10000)
+if verb == "face" then let frac_raw = str frac
+if verb == "face" then let frac_pad = frac_raw
+if verb == "face" then if (length frac_raw) == 1 then let frac_pad = "000${frac_raw}"
+if verb == "face" then if (length frac_raw) == 2 then let frac_pad = "00${frac_raw}"
+if verb == "face" then if (length frac_raw) == 3 then let frac_pad = "0${frac_raw}"
+if verb == "face" then say "fascia_units=${fascia_units}"
+if verb == "face" then say "fascia_face=${whole}.${frac_pad}"
+if verb == "face" then say "fascia_penalties=${pen_super},${pen_ratchet},${pen_target},${pen_over70}"
+if verb == "face" then exit exit-ok
+let tracked_raw = 0
+let tracked = 0
+let census_bound = "inside"
+if verb == "census" then let tracked_raw = parse args[1]
+if verb == "census" then let tracked = clamp tracked_raw 0 1048576
+if verb == "census" then let tracked = ^- @u32 tracked
+if verb == "census" then if tracked != tracked_raw then let census_bound = "clamped"
+if verb == "census" then say "census_files=${tracked}"
+if verb == "census" then say "census_ceiling=1048576"
+if verb == "census" then say "census_bound=${census_bound}"
+if verb == "census" then exit exit-ok
+if verb == "prove" then let face_zero = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" "0" "0" "0" "0"]
+if verb == "prove" then assert face_zero.ok
+if verb == "prove" then assert (face_zero.out contains "fascia_units=1000000")
+if verb == "prove" then assert (face_zero.out contains "fascia_face=100.0000")
+if verb == "prove" then let face_half = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" "1" "0" "0" "0"]
+if verb == "prove" then assert face_half.ok
+if verb == "prove" then assert (face_half.out contains "fascia_units=995000")
+if verb == "prove" then assert (face_half.out contains "fascia_face=99.5000")
+if verb == "prove" then let face_mix = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" "1" "1" "1" "1"]
+if verb == "prove" then assert face_mix.ok
+if verb == "prove" then assert (face_mix.out contains "fascia_units=925000")
+if verb == "prove" then assert (face_mix.out contains "fascia_face=92.5000")
+if verb == "prove" then let face_cap = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" "100" "0" "0" "0"]
+if verb == "prove" then assert face_cap.ok
+if verb == "prove" then assert (face_cap.out contains "fascia_units=750000")
+if verb == "prove" then assert (face_cap.out contains "fascia_face=75.0000")
+if verb == "prove" then let face_floor = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" "80" "7" "20" "30"]
+if verb == "prove" then assert face_floor.ok
+if verb == "prove" then assert (face_floor.out contains "fascia_units=0")
+if verb == "prove" then assert (face_floor.out contains "fascia_face=0.0000")
+if verb == "prove" then let census_in = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "census" "12"]
+if verb == "prove" then assert census_in.ok
+if verb == "prove" then assert (census_in.out contains "census_files=12")
+if verb == "prove" then assert (census_in.out contains "census_bound=inside")
+if verb == "prove" then let census_top = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "census" "2000000"]
+if verb == "prove" then assert census_top.ok
+if verb == "prove" then assert (census_top.out contains "census_files=1048576")
+if verb == "prove" then assert (census_top.out contains "census_bound=clamped")
+if verb == "prove" then say "GREEN: fascia-face -- u32 ten-thousandths, ceiling 1000000, census ceiling 1048576"
+if verb == "prove" then exit exit-ok
+
+# UNBRAIDED `20260821.180613`, closing REDS %112. Three Amphora laps used to run as a GATE here,
+# and this meter could not report a fascia grade unless all three passed. The pour-carry-cold-scrub
+# lap (amphora_lap2) was failing on this pier because `openssl` was not installed -- an
+# ENVIRONMENTAL absence in an unrelated module -- so the meter that reports the tree's
+# connective-tissue health had been silent for an unknown span, and no surface said so. (That lap
+# was itself repaired later the same day, REDS %116, by giving the Amphora path this tree's own
+# SHA3-256 instead of openssl. The unbraid stands regardless: it was never right for a health meter
+# to gate on another module's laps, and a fix to those laps does not make the gate correct again.)
+#
+# An instrument must be no more braided than the thing it measures. A meter gated behind three
+# unrelated laps has three ways to go silent and no way to say which, and it will spend most of
+# its life reporting nothing. The laps are not lost: eight Amphora witnesses already prove that
+# stack (`tools/amphora_*_witness.rish`), which is where a claim about Amphora belongs.
+#
+# The meter now takes its reading directly.
+
+say "fascia-metric-v0: Language EN — fascia grade from measurable clutter."
+say "fascia-metric-v0: Style Radiant -- GREEN when four signals and the window read; the meter reports its own reading and gates on nothing else."
+say "fascia-metric-v0: Lens TAME -- an instrument no more braided than the thing it measures; measure only, no live shred."
+
+let metric = run ["sh" "tools/fixtures/f/fascia_metric.sh" verb]
+say metric.out
+assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
+assert metric.out contains "GREEN: fascia-metric-v0" else "fascia-metric-v0 missing GREEN line"
+assert metric.out contains "metric_rev=i10" else "fascia-metric-v0 missing i10 metric_rev"
+assert metric.out contains "fascia=" else "fascia-metric-v0 missing fascia grade"
+assert metric.out contains "signal:superseded=" else "fascia-metric-v0 missing superseded signal"
+assert metric.out contains "signal:ratchet_outstanding=" else "fascia-metric-v0 missing ratchet signal"
+assert metric.out contains "signal:target_class_a=" else "fascia-metric-v0 missing target-class signal"
+assert metric.out contains "signal:class_a_held_disclosed=" else "fascia-metric-v0 missing held-disclosed count"
+assert metric.out contains "law=hold_not_exclude" else "fascia-metric-v0 missing hold law"
+assert metric.out contains "signal:over70=" else "fascia-metric-v0 missing over70 signal"
+assert metric.out contains "window_mean=" else "fascia-metric-v0 missing window_mean"
+assert metric.out contains "baseline_kind=window_min" else "fascia-metric-v0 missing window_min baseline"
+assert metric.out contains "window_carry=honored" else "fascia-metric-v0 missing window carry"
+assert metric.out contains "window_arc_fall=-15" else "fascia-metric-v0 missing arc fall"
+assert metric.out contains "delta_vs_mean=" else "fascia-metric-v0 missing delta_vs_mean"
+assert metric.out contains "weight=half" else "fascia-metric-v0 missing i5 half-weight on superseded"
+assert metric.out contains "refuse: shred" else "fascia-metric-v0 missing refuse line"
+
+# Refuse-walk post-fold: shred must exit RED
+let refuse = run ["sh" "tools/fixtures/f/fascia_metric.sh" "shred"]
+assert (refuse.ok == false) else "fascia-metric-v0 refuse-walk broken: shred must exit RED"
+
+let sup_key = "signal:superseded="
+let sup_at = metric.out index-of sup_key
+let sup_from = sup_at + (length sup_key)
+let sup_rest = slice metric.out sup_from (length metric.out)
+let sup_sp = sup_rest index-of " "
+let superseded_live = parse (slice sup_rest 0 sup_sp)
+let rat_key = "signal:ratchet_outstanding="
+let rat_at = metric.out index-of rat_key
+let rat_from = rat_at + (length rat_key)
+let rat_rest = slice metric.out rat_from (length metric.out)
+let rat_sp = rat_rest index-of " "
+let ratchet_live = parse (slice rat_rest 0 rat_sp)
+let cls_key = "signal:target_class_a="
+let cls_at = metric.out index-of cls_key
+let cls_from = cls_at + (length cls_key)
+let cls_rest = slice metric.out cls_from (length metric.out)
+let cls_sp = cls_rest index-of " "
+let class_live = parse (slice cls_rest 0 cls_sp)
+let o70_key = "signal:over70="
+let o70_at = metric.out index-of o70_key
+let o70_from = o70_at + (length o70_key)
+let o70_rest = slice metric.out o70_from (length metric.out)
+let o70_sp = o70_rest index-of " "
+let over_live = parse (slice o70_rest 0 o70_sp)
+let face_live = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "face" (str superseded_live) (str ratchet_live) (str class_live) (str over_live)]
+assert face_live.ok else "fascia-face: live grade refused"
+say trim face_live.out
+let listed = run ["git" "ls-files"]
+assert listed.ok else "fascia-face: git ls-files refused"
+let file_rows = lines listed.out
+let file_n = length file_rows
+let file_last = ""
+if file_n != 0 then let file_last = file_rows[file_n - 1]
+if file_last == "" then let file_n = file_n - 1
+let census_live = run ["rishi/bin/rishi" "run" "tools/gen/chapter/fascia_metric.rish" "census" (str file_n)]
+assert census_live.ok else "fascia-face: live census refused"
+say trim census_live.out
+
+say "GREEN: fascia-metric-v0 -- the grade above is measured and reported; window carry, hold disclosed, window_min baseline, shred refuse RED, and nothing unrelated standing between the reading and the reader."

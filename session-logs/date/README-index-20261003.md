@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.142904` | [fascia meter unversioned](20261003/20261003-142904_fascia-meter-unversioned.kyri) | Living name beside the v0 doors |
 | `20261003.142202` | [v0 is a counted version](20261003/20261003-142202_v0-is-a-counted-version.kyri) | v0 is a counted version, not a stamp |
 | `20261003.141934` | [fascia face in rishi](20261003/20261003-141934_fascia-face-in-rishi.kyri) | Face verb prints ten-thousandths |
 | `20261003.140223` | [where a finished page lives](20261003/20261003-140223_finished-page-and-fascia-face.kyri) | Shelf law and the fascia bound |
