@@ -9,6 +9,7 @@
 | `20261003.095509` | [seventeenth-empty-sweep](20261003/20261003-095509_seventeenth-empty-sweep.kyri) | Same conclusion as the sixteenth; no claim-as-override candidate either |
 | `20261003.095305` | [thirtieth reading, full page sweep](20261003/20261003-095305_petrichor-thirtieth-reading-full-page-sweep.kyri) | Every docs-geode page graded individually; one dated-testimony page reads C+, exempt from rewrite |
 | `20261003.095051` | [the purse.rye lift send landed after seven rebases](20261003/20261003-095051_purse-lift-sent-after-seven-rebases.kyri) | pushed clean to 8fda555ae7 after seven round-open rebases, two conflicts resolved |
+| `20261003.095000` | [forty-second decline, four accounts shed first](20261003/20261003-095000_incense-forty-second-decline.kyri) | Nothing new moved; shed four folded accounts off the inner prompt before logging |
 | `20261003.094746` | [glow-seam-queue-empty-again](20261003/20261003-094746_glow-seam-queue-empty-again.kyri) | pheromone's three ITINERARY steps read satisfied; lane waits on Incense's next rune |
 | 20261003.094639 | [dependencies-census-rostered](20261003/20261003-094639_dependencies-census-rostered.kyri) | TB dependencies census witness claimed, proven both legs, rostered |
 | `20261003.094609` | [eighteenth-sweep-widened-ascii-ratchet](20261003/20261003-094609_eighteenth-sweep-widened-ascii-ratchet.kyri) | widened past %765 nets; fixed 4 non-ASCII comment chars in mantra/tally, lowered ratchet ceiling |
