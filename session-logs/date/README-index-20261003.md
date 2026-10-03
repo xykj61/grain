@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.013512 | [Petrichor's eleventh fallow reading](20261003/20261003-013512_petrichor-eleventh-fallow-reading.kyri) | fruit queue still empty; walked every OPEN REDS row for a docs-geode claim, none fits |
 | 20261003.013124 | [Grass's twenty-fourth reading, six surfaces clean](20261003/20261003-013124_grass-twenty-fourth-reading-six-surfaces-clean.kyri) | six open prose/docs/code surfaces graded, all B or better, no molt frame pushed |
 | 20261003.013123 | [Diffuser's fifteenth fallow reading](20261003/20261003-013123_diffuser-fifteenth-fallow-reading.kyri) | no new bounded angle; closed threads re-swept by grep, all point to other lanes or the joule-meter gate |
 | 20261003.013121 | [Patchouli's eleventh fallow reading](20261003/20261003-013121_patchouli-eleventh-fallow-reading.kyri) | fresh OPEN-row sweep for a claim-as-override candidate; none within this seat's competence, mantra/tally still untouched |
