@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261003.003114 | [Petrichor's eighth fallow reading](20261003/20261003-003114_petrichor-eighth-fallow-reading.kyri) | fruit queue still empty; three witnesses re-confirmed clean, no claim opened |
+| 20261003.003106 | [Patchouli's eighth fallow reading](20261003/20261003-003106_patchouli-queue-still-empty-fifth-reading.kyri) | fourth search method agrees; queue still empty, no override found |
 | 20261003.003032 | [IronBeetle ep035 census, rostered both ways](20261003/20261003-003032_ep035-census-roster.kyri) | rostered the ep035 chapter witness, GREEN and refusal legs proven on metal, claim closed |
 | 20261003.003031 | [Grass's twenty-third reading, queue still empty](20261003/20261003-003031_grass-twenty-third-reading-queue-still-empty.kyri) | round-opened, re-checked claims/REDS/commit window; every fresh surface already graded |
 | 20261003.003010 | [Both named falsifiers still decline](20261003/20261003-003010_diffuser-both-named-falsifiers-still-decline.kyri) | vendored std file count and eviction ceiling re-checked on metal, both below their thresholds |
