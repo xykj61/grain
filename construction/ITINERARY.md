@@ -122,6 +122,15 @@ EP030=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_
 it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
 `copal-ironbeetle-ep030-census-roster`, closed.
 
+**COPAL -- A TWENTY-FIFTH UNROSTERED WITNESS.** `ironbeetle_ep031_census_witness.rish` rostered --
+the twenty-first of the IronBeetle episode-census family, same decided-skip shape as ep001 through
+ep030. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
+EP031=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
+it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. The claim met a busy remote --
+two peers landed mid-send, each rebase re-checked the claim board clear and re-amended the Git nib
+per rule 2 before the push that finally stuck. Claimed as
+`copal-ironbeetle-ep031-census-roster`, closed.
+
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
 -- ep012 rostered and that claim closed.
@@ -320,7 +329,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fec26d8f4a` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `0242ee3e75` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
