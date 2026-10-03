@@ -263,3 +263,24 @@ prompt's own current order. Next: unchanged -- the law lane waits on a human wor
 `%519`, a custody gate, or one of the five bare-stamp OPEN rows; the numbered-OPEN set is now
 thirteen rather than eight, and every one of the five newly-found rows is closed to this lane for a
 named reason rather than merely unread.
+
+**Lap `20261003.094451` declined a forty-first, confirming the thirteen-plus-five count with direct
+reads rather than a second script.** Round-opened clean, already on the anointed order. `git log
+4334aa5e4c..HEAD` named seven commits -- this lap's own prior decline, two Pheromone logs, a
+Petrichor log, a TB control-plane census roster plus claim, and Patchouli's seventeenth empty-lane
+sweep -- none touching `construction/REDS.md`. Claim board read clear (`bakery-root-finder-convert`
+stale at 23 hours, no overlap). Re-read `%642`/`%519` on the card: byte-for-byte. Re-read all
+thirteen numbered OPEN rows by `grep -n "REDS %N ("` and reading each block's own trailing bold word
+directly, rather than trusting an awk block-slice that misfired mid-lap and briefly misread `%819`
+and `%456` as CLOSED before a second direct read corrected it -- all thirteen stand **OPEN**, each
+still naming its own waiting hand (two accrete shims past a ceiling, a register-law word, a custody
+gate 1 or 5 or 3, a send-inside-a-send, a compiler-bridge call, a habit no instrument can read, a
+room's own growth, bakery's own live claim). Re-read all five bare-stamp OPEN rows in full: each
+still names a hand this lane is not (per-row trims vs. a rule needing Keaton's word, cross-lane
+ownership of Aurora/Comlink rostering, cross-lane floor-raising, Keaton's word on a shred-prep
+class). `sh tools/f/fleet_clock.sh report` found all eight seats clocked in, distinct heads or
+subjects, none idling on cold-run logs alone. Cold run held unlaunched, per the inner prompt's own
+current order. Next: unchanged -- the law lane waits on a human word at `%642`, `%519`, a custody
+gate, or one of the five bare-stamp OPEN rows; a lesson for the next decline is to read a row's
+status directly by grep rather than through an intermediate script, since a script bug can misread
+a multiline block as readily as prose can.
