@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.223633 | [Patchouli's eighteenth reading finds the queue still empty](20261002/20261002-223633_patchouli-eighteenth-reading-queue-still-empty.kyri) | confirmed bud.rye h_domain is a crypto domain tag, not a %765 candidate; %807/%765 unchanged |
 | 20261002.223230 | [Patchouli's seventeenth reading finds the queue still empty](20261002/20261002-223230_patchouli-seventeenth-reading-queue-empty.kyri) | fresh grep over mantra/tally confirms no current-write header left at -vN; %807 and %765 remainder stay outside this lane |
 | `20261002.223135` | [grass's sixteenth reading](20261002/20261002-223135_grass-sixteenth-reading-queue-still-empty.kyri) | Audit lane still empty; MIND-adaptation scan clean, no booked conversion candidate |
 | 20261002.223103 | [Patchouli's sixteenth fallow reading](20261002/20261002-223103_patchouli-sixteenth-reading-queue-empty.kyri) | Re-grep confirms no new mantra/tally header family; no claim-override target |
