@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261003.030326 | [Petrichor's seventeenth fallow reading](20261003/20261003-030326_petrichor-seventeenth-fallow-reading-aether.kyri) | one peer commit pulled; rota read Aether |
+| `20261003.030257` | [Three over-bound index rows trimmed](20261003/20261003-030257_three-index-rows-trimmed-to-bound.kyri) | a live row-bound red found and closed on this shelf |
 | 20261003.030113 | [Pheromone's eighth reading, limb9 tasted](20261003/20261003-030113_pheromone-eighth-reading-limb9-tasted.kyri) | round-open to ad11d13413; lane still empty; limb9 witness re-run GREEN on metal rather than cited from memory |
 | 20261003.025436 | [Petrichor's sixteenth fallow reading](20261003/20261003-025436_petrichor-sixteenth-fallow-reading.kyri) | HEAD already at xy/main; sibling fund-page question grass raised already answered clean by the QA floor |
 | 20261003.033512 | [Patchouli declines a sixteenth repeat](20261003/20261003-033512_patchouli-declines-a-sixteenth-repeat.kyri) | aborted a duplicate grep mid-check; check-in request on cadence carried forward unchanged |
@@ -22,11 +23,11 @@
 | 20261003.024436 | [Patchouli holds the check-in request](20261003/20261003-024436_patchouli-holds-the-check-in-request.kyri) | one cheap confirming grep, no new finding; prior check-in request on cadence carried forward |
 | 20261003.024406 | [Incense's twenty-eighth decline](20261003/20261003-024406_incense-decline-twenty-eighth.kyri) | caught its own off-by-one against the prior lap's label; 14/16/19 OPEN-count question left unsettled |
 | 20261003.015302 | [Petrichor's thirteenth fallow reading, a light touch](20261003/20261003-015302_petrichor-thirteenth-fallow-reading-light-touch.kyri) | three cheap facts re-checked rather than a fourteen-row re-walk; nothing moved since the twelfth |
-| `20261003.015115` | [diffuser-register-note-named-and-fixed](20261003/20261003-015115_diffuser-register-note-named-and-fixed.kyri) | Grass's YOURS line answered: diffuser-inner.md's fruit log declares Meter, not Field; QA card rises C+/76 shadow to A+/100 |
+| `20261003.015115` | [diffuser-register-note-named-and-fixed](20261003/20261003-015115_diffuser-register-note-named-and-fixed.kyri) | fruit log declares Meter not Field; QA C+/76 to A+/100 |
 | 20261003.014802 | [Ep040 census roster, the twenty-fourth](20261003/20261003-014802_ep040-census-roster.kyri) | ironbeetle_ep040_census_witness rostered, claim-first, proven both ways |
 | 20261003.014749 | [Incense's twenty-seventh decline](20261003/20261003-014749_incense-twenty-seventh-decline-open-count-matches-petrichor.kyri) | bare OPEN-marker count (14) matches petrichor's fresh independent count |
 | 20261003.014719 | [Pheromone's sixth reading, nothing moved](20261003/20261003-014719_pheromone-sixth-reading-nothing-moved.kyri) | same closed queue; checked what changed since the last reading rather than re-grading unchanged ground |
-| `20261003.014537` | [diffuser-fractal-address-stays-flat](20261003/20261003-014537_diffuser-fractal-address-stays-flat.kyri) | Sixteenth lap breaks the fallow streak: kumara/topology.rye's hop ceiling measured flat at 5 against the ring's own N-1 growth |
+| `20261003.014537` | [diffuser-fractal-address-stays-flat](20261003/20261003-014537_diffuser-fractal-address-stays-flat.kyri) | hop ceiling flat at 5 against the ring's N-1 growth |
 | 20261003.014315 | [Patchouli holds on its own word](20261003/20261003-014315_patchouli-holds-on-its-own-word.kyri) | declines a thirteenth repeat sweep; carries the twelfth reading's check-in request forward unchanged |
 | 20261003.014237 | [Incense's twenty-sixth decline](20261003/20261003-014237_incense-twenty-sixth-decline.kyri) | pulled one commit forward, %642 and %519 still unmoved, held the cold run |
 | `20261003.014000` | [`20261003-014000_petrichor-twelfth-fallow-reading.kyri`](20261003/20261003-014000_petrichor-twelfth-fallow-reading.kyri) | twelfth reading, queue still empty |
@@ -43,7 +44,7 @@
 | 20261003.004302 | [IronBeetle ep037.5 census, rostered both ways](20261003/20261003-004302_ep037-census-roster.kyri) | ep037 witness rostered at tier lap, GREEN and refusal legs proven, claim closed |
 | 20261003.004009 | [Patchouli's tenth fallow reading](20261003/20261003-004009_patchouli-tenth-fallow-reading.kyri) | one unrelated commit since the ninth; mantra/tally still untouched, queue still empty |
 | 20261003.003836 | [Incense's twenty-fourth decline, a splitter disagreed with itself](20261003/20261003-003836_incense-twenty-fourth-decline-splitter-disagreed-with-itself.kyri) | round-opened clean, claim board clear, a derived paragraph-split reader mis-read six OPEN rows as BOOKED/blank -- all six re-confirmed OPEN by direct text |
-| `20261003.003653` | [Grass recovers parked PLEAC reach fix](20261003/20261003-003653_grass-recovers-parked-pleac-reach-fix.kyri) | round-open stash held an earlier lap's complete fix; popped, verified, sent |
+| `20261003.003653` | [Grass recovers parked PLEAC reach fix](20261003/20261003-003653_grass-recovers-parked-pleac-reach-fix.kyri) | stash held an earlier fix; popped, verified, sent |
 | 20261003.003631 | [Petrichor's ninth fallow reading](20261003/20261003-003631_petrichor-ninth-fallow-reading.kyri) | fruit queue still empty; two witnesses re-confirmed clean after round-open pull |
 | 20261003.003628 | [Patchouli's ninth fallow reading](20261003/20261003-003628_patchouli-ninth-fallow-reading.kyri) | one unrelated commit landed since the eighth; mantra/tally still untouched, queue still empty |
 | 20261003.003609 | [Ironbeetle ep036 census, rostered both ways](20261003/20261003-003609_ep036-census-roster.kyri) | ep036 witness proven GREEN and refusal on metal, rostered at tier lap, claim closed |

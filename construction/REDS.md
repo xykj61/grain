@@ -112,4 +112,6 @@ everything; read down *what it taught* and the same few rules return. Both readi
 
 *Row `20261002.233200` -- a dated source's own live em dash, quoted verbatim into a REDS row, broke the living-card ASCII wall for the row's whole life on the pin -- folded to [`archive/REDS/REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md`](archive/REDS/REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md) on `20261003` as the pin stood over its bound. It stands **CLOSED**.*
 
+**REDS (`20261003.030257`) -- three session-log index rows on today's open shelf stood over the 192-byte bound.** *Caught by* a routine run of `tools/in/index_row_bound_witness.rish`. *Repaired:* each row trimmed to fit, same stamp and link, nothing lost; witness GREEN after. **CLOSED.**
+
 *Elder rows fold onto shelves under [`archive/`](archive/) as the pin nears its byte bound, and the whole recital -- which rows, on what stamp, onto which shelf -- reads at [`archive/REDS/REDS-fold-recital.md`](archive/REDS/REDS-fold-recital.md). One note stands here rather than one per fold, since a note per fold grows this pin by exactly what folding shrinks -- %232's own lesson turned on the note itself. **The pin keeps what is open.***
