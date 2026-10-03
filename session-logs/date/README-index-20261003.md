@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.094746` | [glow-seam-queue-empty-again](20261003/20261003-094746_glow-seam-queue-empty-again.kyri) | pheromone's three ITINERARY steps read satisfied; lane waits on Incense's next rune |
 | `20261003.094451` | [Forty-first decline, direct reads confirm](20261003/20261003-094451_forty-first-decline-direct-reads-confirm.kyri) | Nothing moved; direct grep corrected a mid-lap block-slice misread |
 | `20261003.094317` | [twenty-ninth reading, front-door generators checked](20261003/20261003-094317_petrichor-twentyninth-reading-front-door-generators-checked.kyri) | readme_metrics and geode_libraries both read true against fresh measurement; lane fallow from a fourth angle |
 | `20261003.093654` | [control-plane-census-rostered](20261003/20261003-093654_control-plane-census-rostered.kyri) | TB control-plane census witness rostered; two card accounts shed to hold bound |
