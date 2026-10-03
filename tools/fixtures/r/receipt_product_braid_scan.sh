@@ -39,11 +39,13 @@
 #                  rather than a fault: the two products may legitimately share a fixture name or
 #                  a lane word, and only a person reading the line can say which.
 #
-# WHAT IT CANNOT SEE. Whether the two projections actually mean different things, and a braid
-# routed through a third module that imports both and hands each a view of the other. The first is
-# a judgment about the product; the second wants a call graph rather than a scan, and the shared
-# room the contract names -- Mantra -- is shared ON PURPOSE, which is why every room outside the
-# two product rooms is read past here.
+# WHAT IT CANNOT SEE. Whether the two projections actually mean different things. That is a
+# judgment about the product. A further call graph, one module calling the next, stays outside
+# this scan. The one-file hop is a sibling: tools/r/receipt_third_import_witness.rish counts a
+# tracked rye file outside Mantra and these two rooms whose own import lines reach both
+# projections. Mantra is shared ON PURPOSE, which is why every room outside the two product
+# rooms is read past here. A tracked symlink inside a product room is this scan's own
+# population: git ls-files names it, and the read follows the link into the peer's bytes.
 #
 # STRINGS ARE BLANKED BEFORE COMMENTS, because a `//` inside a string literal opens no comment and
 # blanking the other way round loses the rest of that line. Zig's `\\` multiline string runs to the

@@ -24,7 +24,7 @@ say pen.out
 assert pen.ok else "product-braid: the pen must pass"
 assert pen.out contains "control_verdict=ok" else "product-braid: the pen must reach its own ok"
 assert pen.out contains "control_failed=0" else "product-braid: every planted leg must pass"
-assert pen.out contains "control_legs=47" else "product-braid: a leg written tomorrow is heard the day it lands"
+assert pen.out contains "control_legs=49" else "product-braid: a leg written tomorrow is heard the day it lands"
 
 assert pen.out contains "leg_ok: clean_verdict" else "product-braid: an unbraided tree must walk free"
 assert pen.out contains "leg_ok: import_planted" else "product-braid: acceptance case 8 must refuse an import"
@@ -40,6 +40,8 @@ assert pen.out contains "leg_ok: multiline_welcome" else "product-braid: a multi
 assert pen.out contains "leg_ok: shared_room_welcome" else "product-braid: Mantra is shared on purpose"
 assert pen.out contains "leg_ok: untracked_ignored" else "product-braid: an untracked scratch copy is nobody's boundary"
 assert pen.out contains "leg_ok: spaced_path_read" else "product-braid: a path holding a space must still be read"
+assert pen.out contains "leg_ok: symlink_followed" else "product-braid: a tracked symlink into the peer projection must refuse"
+assert pen.out contains "leg_ok: symlink_lifted" else "product-braid: removing that symlink must return the reading"
 assert pen.out contains "leg_ok: rename_follows" else "product-braid: renaming the type in the contract moves the guard"
 assert pen.out contains "leg_ok: one_row_unreadable" else "product-braid: a contract naming one product must refuse"
 assert pen.out contains "leg_ok: empty_room_unreadable" else "product-braid: an empty room must refuse, never report a clean zero"

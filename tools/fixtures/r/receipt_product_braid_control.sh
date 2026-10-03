@@ -213,6 +213,17 @@ git_pen rm -q "linengrow/a file.rye"
 git_pen commit -qm unspace
 leg spaced_path_lifted unbraided "$(verdict)"
 
+# --- a tracked symlink is the peer's own bytes, then it lifts ------------------
+# git ls-files names the link. Opening it follows into the peer projection, so the
+# peer's type stands in this room's population.
+ln -s ../dimeroll/intake.rye "$PEN/linengrow/peer_offer.rye"
+git_pen add -A >/dev/null 2>&1
+git_pen commit -qm symlink
+leg symlink_followed cross_type "$(verdict)"
+git_pen rm -q "linengrow/peer_offer.rye"
+git_pen commit -qm unlink
+leg symlink_lifted unbraided "$(verdict)"
+
 # --- 12. the contract names the pair, so a rename moves the guard ------------
 edit 's/DimerollReceiptIntake`/DimerollIntakeV2`/' "$PEN/active-designing/contract.md"
 printf 'pub fn v2(v: DimerollIntakeV2) u8 { return 0; }\n' >> "$PEN/linengrow/project.rye"

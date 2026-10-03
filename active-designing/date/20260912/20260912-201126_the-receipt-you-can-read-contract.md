@@ -4,7 +4,8 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge, the landed Tally/Mantra rung, case 8's direct-import build refusal, and a one-file third-module import are checkable; a further call graph stays outside the guard
+**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge, the landed Tally/Mantra rung, case 8's direct-import build refusal, a one-file third-module import, and a tracked symlink into the peer projection are checkable; a further call graph stays outside the guard
+**Revised:** `20261003.170424` -- the tracked symlink. `tools/fixtures/r/receipt_product_braid_control.sh` plants `linengrow/peer_offer.rye` as a symlink to `../dimeroll/intake.rye`, commits it, and the scan reads `verdict=cross_type`. Removing the link returns `verdict=unbraided`. The pen now holds 49 behaviors. The one-file hop stays with `tools/r/receipt_third_import_witness.rish`. A further call graph stays outside both guards. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.164639` -- the one-file third-module half. `tools/r/receipt_third_import_witness.rish` counts a tracked rye file outside `mantra/`, `linengrow/`, and `dimeroll/` whose own `@import` lines reach both receipt projections, and holds that count at zero. Mantra stays the shared carrier. `pond/apps/drawn_terminal.rye` imports other files in those rooms and stays outside this count. A further call graph stays outside this guard. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.163623` -- case 8's direct-import build half. `tools/r/receipt_braid_build_witness.rish` builds a file under `.lap/receipt-braid-build` that imports `../../dimeroll/receipt_offer.rye`, and the vendored `vendor/zig-toolchain/zig` refuses with `import of file outside module path`. A file in that pen that imports only `std` builds. The control plants a compiler that accepts the import and one that refuses for a different sentence. A braid through a third module stays the gap the source scan already names. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.161601` -- a fresh reading, additive. `ReceiptOfferFact` and `ReceiptState` each stand in 5 tracked rye sources. `linengrow/` and `dimeroll/` together hold 179 tracked rye sources, 174 and 5. Ceiling `verdict=agree`, braid `verdict=unbraided` with `cross_mention=2` and `peer_word=0`, still-order `verdict=source_order_agrees`, `swift_runtime=unverified_on_this_host`. `zig` is absent on this host, so case 8's build-time half stays proposed. No elder row, number, or acceptance case was removed.
@@ -249,6 +250,11 @@ a third module that imports both and hands each a view of the other wants a call
 a scan, and case 8's own build condition closes that half when the build lands. **Proven from both
 sides** on real git repositories in a throwaway pen: 47 behaviors, every refusal planted and then
 lifted, and five mutations asserted to bite.
+The `20261003.170424` revision adds the tracked-symlink pair, so the pen reads 49.
+A symlink committed inside a product room follows into the peer projection and
+reads `cross_type`. The one-file hop lives in
+`tools/r/receipt_third_import_witness.rish`. A further call graph stays outside
+both guards.
 
 ## What stands built, measured
 
