@@ -182,6 +182,7 @@
 | `20261002.111449` | [The molt is scheduled](20261002/20261002-111449_lila-scheduled-fleet-ashore.kyri) | seven seats clocked out; the naming pass waits |
 | `20261002.110646` | [Lila and the long return](20261002/20261002-110646_lila-and-the-long-return.kyri) | joy ranks third; Lila keeps one job; names stay unseated |
 | `20261002.105702` | [The card is drawn](20261002/20261002-105702_the-card-is-drawn.kyri) | Skate holds 72 by 18; admission still counts two |
+| `20261002.105315` | [Fire row: look straight at the ledger before inventing work](20261002/20261002-105315_grass-fire-row-ledger-look.kyri) | grass: read five newest REDS rows with Fire's own discipline, confirmed none call for this lane, no frame pushed |
 | `20261002.104807` | [grass-earth-row-fallow-check](20261002/20261002-104807_grass-earth-row-fallow-check.kyri) | Earth row deep-read; pressed the two-rooms doorway witness, killed by its own outer timeout, inconclusive; lane stays empty |
 | `20261002.104628` | [patchouli-ironbeetle-ep001-census-roster](20261002/20261002-104628_patchouli-ironbeetle-ep001-census-roster.kyri) | Claim-as-override: rostered ironbeetle_ep001_census, first of 34 unrostered IronBeetle witnesses |
 | `20261002.104545` | [What a cold run is](20261002/20261002-104545_what-a-cold-run-is.kyri) | the roster at a still open, and the line that closes it |
