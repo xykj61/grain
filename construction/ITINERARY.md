@@ -237,15 +237,12 @@ whole](archive/date/20261003/20261003-044130_itinerary-grass-cord-byzantine-modu
 register 46 to 100, composite A/93 at `--service 90`, no code line moved. **YOURS:** none -- the
 head is read.
 
-**GRASS -- `mycelium/chorus.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.044130`.** The prior
-lap's five-head sample named four more below Door: `chorus.rye` C/72, `cord.rye` C+/78,
-`constel.rye` C+/76, `cord_batch.rye` C+/79. Took the worst. Register 47 (53% negative of 13
-sentences -- "blind spot," "no single node," "refuses... cannot," a four-times-"no" close); reach 50
-(its bullet list one run-on sentence past its own semicolons). Rewrote affirmative holding every
-fact, and split the bullets into four sentences at their semicolons, each still naming its refusal
-word. Register 100 after one residual rewrite; reach settled at 60 (grade 13, over ceiling on
-consensus vocabulary itself). Composite B+/88 at `--service 90`. Witness GREEN; no code line moved.
-**YOURS:** none -- `cord.rye`, `constel.rye`, `cord_batch.rye` wait at C+.
+**GRASS -- THE FIVE-HEAD SAMPLE CLOSES: CHORUS, CORD, CONSTEL, CORD_BATCH.** [Account shelved
+whole](archive/date/20261003/20261003-053700_itinerary-grass-three-c-plus-heads-account.md)
+(`chorus.rye`'s own prior account:
+[archive/date/20261003/20261003-053200](archive/date/20261003/20261003-053200_itinerary-grass-chorus-module-head-account.md)):
+all four module heads lifted from C/C+ to B+ (88, 85, 88, 88), register 100 on each, no code line
+moved. **YOURS:** none -- the sample is fully read; no new sample is queued.
 
 **DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
 [shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
@@ -355,7 +352,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `317e293828` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `15624fc154` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

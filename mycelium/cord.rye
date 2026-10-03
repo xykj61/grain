@@ -6,8 +6,9 @@
 //! A Cord bundles many hyphal threads into one transporting strand -- many
 //! validators' Kumara-signed blocks, one total order. From TigerBeetle it takes
 //! determinism and static allocation; from Mysticeti, order read from an
-//! uncertified DAG by a deterministic commit rule (no leader, no certificate
-//! round). Clean-room: both are studied, never copied.
+//! uncertified DAG by a deterministic commit rule that runs leaderless and
+//! certificate-free. Clean-room: both are studied and reimplemented in our
+//! own words.
 //!
 //! A Block carries its author's key, a round, the hashes of the blocks it
 //! references (its parents), one `mycelium/fold` Fact, and the author's signature
@@ -19,7 +20,8 @@
 //! one order -- identical at every honest node, independent of arrival order -- over
 //! which `fold_log` runs unchanged.
 //!
-//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- a sandbox key, a sandbox balance, a sandbox
+//! network, apart from real custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord.rye
 

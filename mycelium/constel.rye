@@ -1,20 +1,22 @@
 //! mycelium/constel.rye -- a named, reproducible dev-net constellation reaches quorum (r1).
 //!
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r1.
-//! Every consensus witness so far conjured its nodes inline (`seeded(0x11)`...) -- anonymous keypairs made up
-//! for one proof and forgotten. A CONSTEL gives the dev-net a name and a roster: a small set of fake ships,
-//! each ship's identity a PURE FUNCTION of its name (seed = SHA-256(name)), so the whole constellation --
-//! every key, the Muster it seats, the quorum it reaches -- is determined by the list of names alone. Boot it
-//! twice, read it the same. The sovereign-lane echo of elder Urbit's fake-galaxy dev networks, run from
-//! inside the jailed pier under quarantined demo identities.
+//! Every consensus witness so far conjured its nodes inline (`seeded(0x11)`...), anonymous keypairs made
+//! up for one proof and forgotten. A CONSTEL gives the dev-net a name and a roster instead: a small set
+//! of fake ships. Each ship's identity is a PURE FUNCTION of its name -- seed = SHA-256(name). So the
+//! whole constellation -- every key, the Muster it seats, the quorum it reaches -- comes from the list
+//! of names alone. Boot it twice, read it the same. The sovereign-lane echo of elder Urbit's
+//! fake-galaxy dev networks, run from inside the jailed pier under quarantined demo identities.
 //!
 //! Ship names are seated under the Constel naming law (the queyqwinqkri / maicmalammurr family) and the
-//! always-on placeholder-ship-names rule: each is a single invented token of irregular length (nine or ten
-//! letters, no `~`, no three-letter hyphenated syllable structure), so it can NEVER parse as a live-network
-//! `@p`. Siloed dev fixtures only -- never a real point, never signing real value.
+//! always-on placeholder-ship-names rule. Each is a single invented token of irregular length, nine or
+//! ten letters, carrying a shape that stays entirely outside a live-network `@p` -- it drops the
+//! leading `~` and the three-letter hyphenated syllable structure that form always carries. Siloed dev
+//! fixtures only, holding a demo identity rather than a real point or real value.
 //!
-//! Composes kumara + cord + fold + voucher + chorus + muster public API only, editing none. Demo ship and
-//! keeper seeds -- no key held, no funds, no network, no real value.
+//! Composes kumara + cord + fold + voucher + chorus + muster public API only, reading each one as-is.
+//! Demo ship and keeper seeds stay demo-only: a sandbox key, a sandbox balance, a sandbox network,
+//! apart from real value.
 //!
 //! Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!

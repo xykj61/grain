@@ -7,20 +7,22 @@
 //! node in the agreed order, one round of admission -- exactly one fact. From
 //! TigerBeetle comes the batching insight: amortize that fixed per-block cost
 //! across many facts by sealing a bounded *batch* under one author signature.
-//! Clean-room -- TigerBeetle is studied, never copied.
+//! Clean-room -- TigerBeetle is studied and reimplemented in our own words.
 //!
-//! Grown BESIDE the elder, never over it: the single-fact `cord.Block` and its
-//! whole witnessed arc stay a green binary. A `BatchBlock` carries `fact_count`
-//! facts, sealed together under one author signature, admitted and ordered as one
-//! node of the Dag -- the topological commit rule (round asc - author key - block
-//! hash) is the elder's exactly; only the payload per node grows from one fact to
-//! a bounded batch.
+//! Grown BESIDE the elder rather than over it: the single-fact `cord.Block` and
+//! its whole witnessed arc stay a green binary. A `BatchBlock` carries
+//! `fact_count` facts, sealed together under one author signature, admitted and
+//! ordered as one node of the Dag -- the topological commit rule (round asc -
+//! author key - block hash) is the elder's exactly; only the payload per node
+//! grows from one fact to a bounded batch.
 //!
 //! The crux: a batched history and a single-fact history over the identical facts
-//! fold to the byte-identical supply -- batching is a throughput transform, never a
-//! semantic one. The supply never notices how the facts were packed.
+//! fold to the byte-identical supply -- batching is a throughput transform alone,
+//! leaving the semantics exactly as the elder reads them. The supply reads the
+//! same whichever way the facts were packed.
 //!
-//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
+//! Siloed, dev-only, demo seeds -- a sandbox key, a sandbox balance, a sandbox
+//! network, apart from real custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_batch.rye
 
