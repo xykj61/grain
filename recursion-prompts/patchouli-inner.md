@@ -100,6 +100,18 @@ GREEN.
 [Account](../construction/archive/date/20261003/20261003-041504_itinerary-patchouli-fourth-family-and-control-plant-fix-account.md).
 38 families remain outside this lane. Queue reads empty again.
 
+**That very commit regressed the head it touched, caught `20261003.043445`.** Re-grading
+`mantra/src/receipt_offer.rye` at Door with `qa_report_card.sh` read F/51: the schema-molt
+paragraph's own sentence count crossed the eight-sentence register floor from below to above,
+turning Reach from reported to scored, and its grade-16 density had stood unscored and unnoticed.
+Rewritten into eighteen shorter, affirmative sentences, every identifier held exactly; A+/100 at
+Door with a real Service estimate, no code line moved, four touching witnesses re-run GREEN.
+[Account](../construction/archive/date/20261003/20261003-043445_itinerary-patchouli-schema-molt-own-regression-account.md).
+**Lesson for the next lap:** grade a module head's current state before trusting an elder
+account's reading of it, whenever the file has moved since -- and never pass `--service 0` to
+`qa_report_card.sh` expecting to read Register/Reach alone; it caps the composite at 75 by the
+tool's own four-way arithmetic and reads as a false regression across every clean file.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

@@ -1,28 +1,27 @@
 //! mantra/src/receipt_offer.rye -- bounded admission and replay for one immutable receipt offer.
 //!
-//! A `ReceiptOfferFact` names a full trade: the holder, the recipient, the product and its
-//! digest, the purpose, the value's amount, unit and basis, the return kind, the issue and
-//! expiry stamps, and the signer and signature that bind them together. Admission is decided
-//! ONCE, by `Log.refusal`, which returns one stable record naming field, value, ceiling, unit,
-//! and reason, and every named `error` this module returns traces back to that one reading, so
-//! the order of checks stays stated in a single place.
+//! A `ReceiptOfferFact` names a full trade. It carries the holder, the recipient, the product and
+//! its digest, the purpose, and the value's amount, unit, and basis. It also carries the return
+//! kind, the issue and expiry stamps, and the signer and signature that bind the whole fact
+//! together. `Log.refusal` decides admission exactly once. It returns one stable record naming
+//! the field, value, ceiling, unit, and reason. Every named `error` this module returns traces
+//! back to that single reading, so one place states the order of checks.
 //!
-//! `fact_eql` compares two offer facts field by field, each field's own type choosing the
-//! comparison -- bytes for a slice, equality for an integer -- and a comptime assert ties the
-//! comparison to `offer_fact_fields`, the published count, so the whole fact is always the
-//! reading rather than a chosen few of its fifteen fields. `error_of` carries the matching
-//! promise the other way: every reason `tally_receipt_refusal.rye` publishes maps to one named
-//! `AdmissionError`, with a comptime assert pinning the reason count to the switch that reads
-//! it.
+//! `fact_eql` compares two offer facts field by field. Each field's own type chooses the
+//! comparison: bytes for a slice, equality for an integer. A comptime assert ties the comparison
+//! to `offer_fact_fields`, the published count, so the whole fact is always the reading across
+//! all fifteen fields. `error_of` carries the matching promise the other way. Every reason
+//! `tally_receipt_refusal.rye` publishes maps to one named `AdmissionError`, and a comptime
+//! assert pins the reason count to the switch that reads it.
 //!
-//! `schema_v1` names this fact's wire identity, `grain.receipt-offer.20261003.040829`, and
-//! `ReceiptState` pairs one offer with its own two-valued status, offered or expired. The
-//! constant keeps its elder `_v1` name (stamp-and-name.md's census-number exemption reaches
-//! a tree's own row numbers, never a record-version string); only the VALUE it carries moved
-//! to a one-clock stamp, under REDS %765. This fact is never written to a store anywhere in
-//! this tree today -- `fact_eql` and `Log.refusal` are the whole reach of `ReceiptOfferFact`
-//! -- so no persisted bytes carry the elder `.v1` spelling to keep readable, the same reason
-//! the consent schema constants molted cheaply at `20261002.180446`.
+//! `schema_v1` names this fact's wire identity, `grain.receipt-offer.20261003.040829`.
+//! `ReceiptState` pairs one offer with its own two-valued status, offered or expired. The constant
+//! keeps its elder `_v1` name: `stamp-and-name.md`'s census-number exemption reaches a tree's own
+//! row numbers rather than a record-version string. Only the VALUE it carries moved, to a
+//! one-clock stamp, under REDS %765. `fact_eql` and `Log.refusal` are the whole reach of
+//! `ReceiptOfferFact` today, and every store in this tree stays clear of this fact so far. So this
+//! molt keeps the elder `.v1` spelling off every disk, the same reason the consent schema
+//! constants molted cheaply at `20261002.180446`.
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -9,6 +9,7 @@
 | `20261003.044138` | [constel, cord, cord_batch heads close the five-head sample](20261003/20261003-044138_mycelium-cord-constel-cord-batch-heads.kyri) | three C+ module heads lifted to B+; chorus.rye GRASS account shed |
 | `20261003.044130` | [chorus head negation and catch-up shed](20261003/20261003-044130_chorus-head-negation-and-catch-up-shed.kyri) | chorus.rye head B+/88; two GRASS accounts shed |
 | `20261003.043856` | [the thirty-seventh decline](20261003/20261003-043856_thirty-seventh-decline-count-moved.kyri) | bare-stamp OPEN set is five, not six; a row born and closed in one lap |
+| 20261003.043445 | [schema molt regressed its own head](20261003/20261003-043445_schema-molt-regressed-its-own-head.kyri) | receipt_offer.rye head F/51 after crossing the register floor; rewritten A+/100, 4 witnesses GREEN |
 | 20261003.043245 | [the contested send %803 names, met and carried](20261003/20261003-043245_contested-send-nib-carried.kyri) | round-open's rebase moved HEAD's parent after the nib was written; follow-up shape carries it to 832f733578 |
 | 20261003.043206 | [nona_season_n0_witness rostered](20261003/20261003-043206_nona-season-n0-rostered.kyri) | copal claims, rosters, proves both ways, closes |
 | 20261003.042847 | [the thirty-sixth decline, priced rather than counted](20261003/20261003-042847_thirty-sixth-decline-priced.kyri) | six numbered OPEN REDS rows priced, each waits on a named hand; %642/%519 unchanged |

@@ -352,7 +352,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `15624fc154` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `1576dfbab2` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
@@ -378,9 +378,10 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Both named cruxes landed `20261001`, whole** -- weave-meets-Tablecloth and the consent lowering.
 [Account](archive/date/20261002/20261002-000200_itinerary-patchouli-two-cruxes-already-landed-account.md).
-**A fourth `%765` family landed `20261003.040829`** -- `receipt_offer.rye`'s `schema_v1`; 38
-families remain, each outside this lane. Queue reads empty again -- `%807` wants Keaton's
-ruling.
+**PATCHOULI -- ITS OWN COMMIT REGRESSED THE HEAD IT TOUCHED.** [Account
+shelved](archive/date/20261003/20261003-043445_itinerary-patchouli-schema-molt-own-regression-account.md)
+-- head fell F/51 crossing a floor %765 never re-checked; rewritten A+/100, GREEN. 38 `%765`
+families remain outside this lane. `%807` wants Keaton's ruling.
 
 ### Copal -- Amphora receipt and portable bundle
 
