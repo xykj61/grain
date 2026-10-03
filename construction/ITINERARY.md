@@ -124,41 +124,16 @@ remain unrostered (166 found under `tools/gen/chapter/`, 91 carrying a `guard` r
 `construction/standing-equipment.kyri`), measured against that count rather than trusted from this
 line.
 
-**COPAL -- A TWENTY-FOURTH UNROSTERED WITNESS.** `ironbeetle_ep030_census_witness.rish` rostered --
-the twentieth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep028: `gratitude/ironbeetle` is presence-only vendored prose rather than a git submodule, so the
-witness carries no clone-absent skip leg; it reads `gratitude/ironbeetle/` once and names the fact
-directly. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
-EP030=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
+**COPAL -- EP030 THROUGH EP042 ROSTER ACCOUNTS, FOLDED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-030606_itinerary-copal-ep030-ep042-roster-fold.md) --
+ep030, ep031, ep034, ep038, ep040, and ep042 rostered and all claims closed, nothing lost.
+
+**COPAL -- A TWENTY-NINTH UNROSTERED WITNESS.** `ironbeetle_ep043_census_witness.rish` rostered --
+the twenty-sixth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
+ep042. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
+EP043=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
 it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
-`copal-ironbeetle-ep030-census-roster`, closed.
-
-**COPAL -- A TWENTY-FIFTH UNROSTERED WITNESS.** `ironbeetle_ep031_census_witness.rish` rostered --
-the twenty-first of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep030. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
-EP031=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
-it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. The claim met a busy remote --
-two peers landed mid-send, each rebase re-checked the claim board clear and re-amended the Git nib
-per rule 2 before the push that finally stuck. Claimed as
-`copal-ironbeetle-ep031-census-roster`, closed.
-
-**COPAL -- THE TWENTY-SIXTH UNROSTERED WITNESS.** `ironbeetle_ep034_census_witness.rish` rostered
--- the twenty-second of the IronBeetle episode-census family, same decided-skip shape as ep001
-through ep033. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with
-IRON=present, EP034=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and
-MATKLAD_OK=yes; moved aside it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`.
-Claimed as `copal-ironbeetle-ep034-census-roster`, closed.
-
-**COPAL -- THE TWENTY-SEVENTH UNROSTERED WITNESS ACCOUNT, SHELVED WHOLE.** [Account
-shelved](archive/date/20261003/20261003-024741_itinerary-copal-ep038-ep040-roster-account.md) --
-ep038 and ep040 rostered and both claims closed.
-
-**COPAL -- A TWENTY-EIGHTH UNROSTERED WITNESS.** `ironbeetle_ep042_census_witness.rish` rostered --
-the twenty-fifth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep040. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
-EP042=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
-it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
-`copal-ironbeetle-ep042-census-roster`, closed. Three remain unrostered: ep043, ep044, ep045.
+`copal-ironbeetle-ep043-census-roster`, closed. Two remain unrostered: ep044, ep045.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
@@ -349,7 +324,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `093f165b23` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `3b759a75f2` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
