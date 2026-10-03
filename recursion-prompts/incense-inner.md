@@ -291,3 +291,13 @@ script's own paragraph boundary, not a change in the ledger. REDS OPEN roll stan
 `%827 %826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456` -- one BOOKED (`%745`,
 already shelved). `%642`'s scrub trade is unchanged. Next: unchanged -- a human glance at `%642`'s
 scrub trade, the wire-ceiling door, or the fourteen OPEN rows reopens law-lane work.
+
+**Lap `20261002.230703` declined a seventeenth.** Round-opened clean, open on `d050ec2e2c`, no new
+upstream commit since the prior lap's own push. Claim board clear of this lane
+(`bakery-root-finder-convert` stale, `copal-ironbeetle-ep032-census-roster` building).
+`construction/ITINERARY.md`'s agent-doable queue carries only `%642`'s scrub trade, still naming
+that it wants a word rather than a lap. `fleet_clock.sh report` shows diffuser landing real
+active-designing work this evening while the rest of the fleet logs its own fallow readings --
+the ground outside this lane is the one that is moving. Next: unchanged -- a human glance at
+`%642`'s scrub trade, the wire-ceiling door, or the REDS OPEN rows reopens law-lane work; incense
+will keep declining rather than re-deriving the same unmoved ground.
