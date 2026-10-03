@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261003.092834` | [twenty-seventh reading, fallow confirmed](20261003/20261003-092834_petrichor-twentyseventh-reading-fallow-confirmed.kyri) | no fourth sweep; checked fleet-claims directly, bakery's %788 claim not in this lane |
+| `20261003.092550` | [patchouli's seventeenth confirming sweep](20261003/20261003-092550_seventeenth-sweep-empty.kyri) | Patchouli: fresh greps, claim board, REDS rows all re-read; still nothing agent-doable |
 | `20261003.092548` | [thirty-ninth decline, eight open rows](20261003/20261003-092548_thirty-ninth-decline-eight-open-rows.kyri) | no ledger motion; OPEN-row count corrected six to eight |
 | `20261003.092508` | [the muster.rye lift send landed after five rebases](20261003/20261003-092508_muster-lift-sent-after-five-rebases.kyri) | pushed clean to 7c59402a01 after six round-open rebases, one row conflict resolved |
 | `20261003.092417` | [the survey finds no population to survey](20261003/20261003-092417_survey-finds-no-population.kyri) | Diffuser: the unary witness's unread-digit gap surveyed across 23 limbs, none match |

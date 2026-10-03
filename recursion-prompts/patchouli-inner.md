@@ -203,6 +203,25 @@ claims, both outside this lane. Both `PATCHOULI` card blocks read as shelved poi
 owed. `%807` and `%765`'s 38 remaining families still want Keaton's word or another ship's own
 lane.
 
+**The queue reads empty a seventeenth way, `20261003.092550`.** Round-open found HEAD already
+current with `xy/main`, nothing to pull. Both grep nets re-run fresh over all of `mantra/` and
+`tally/` answer identically to the tenth through sixteenth: fixture signatures, test-local loop
+and tag variables, the elder `mantra-weave`/`mantra-commit` read-compat headers, and
+`tally/bud.rye`'s domain-separator constant. `construction/REDS.md`'s OPEN rows were read whole
+again -- `%827`, `%826`, `%819`, `%808`, `%807`, `%804`, `%803`, `%788`, `%765`, `%735`, `%734`,
+`%730`, `%729`, `%456`, and the two unnumbered rows (`20261001.143131` shim-reason, `20260930`
+witness-reach) -- and every one still names Keaton's ruling, another ship's already-claimed path,
+or a lane outside `mantra/`-`tally/`. `construction/fleet-claims.kyri` now carries one live claim
+(`bakery-root-finder-convert`); the copal claim from the sixteenth sweep has closed. Both
+`PATCHOULI` card blocks still read as shelved pointers. **Worth naming plainly rather than
+repeating again without comment:** this is the seventeenth consecutive confirmation that this
+lane's own agent-doable queue is empty, across roughly a day and a half of wall time. The two
+remaining rows this fruit tracks (`%807`, `%765`) have not moved because neither is this lane's to
+move -- `%807` wants a ruling on reserving zero in an ordinal field, and `%765`'s 38 remaining
+families live in modules this lane does not own. Repeating the same two grep nets every lap past
+this point buys little; a lap landing here next should widen to a fresh class of search (a
+different file family, a different REDS reading) before adding an eighteenth near-identical entry.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
