@@ -8,6 +8,7 @@
 |---|---|---|
 | 20261003.032624 | [patchouli holds the prior decline](20261003/20261003-032624_patchouli-holds-the-prior-decline.kyri) | declines a 17th sweep; prior lap already declined and asked check-in |
 | 20261003.032549 | [ep044 rostered, and the nib slip that followed it](20261003/20261003-032549_ep044-roster-nib-slip.kyri) | claimed and rostered ironbeetle_ep044_census_witness.rish; caught and repaired a pushed-before-amended Git nib |
+| 20261003.032547 | [Grass lifts the three named heads](20261003/20261003-032547_grass-three-named-heads-lift.kyri) | pledge/lapse/receipt_offer heads lift to B/B/A; YOURS closed |
 | 20261003.032500 | [Petrichor's nineteenth fallow reading](20261003/20261003-032500_petrichor-nineteenth-fallow-reading-earth.kyri) | lane still empty; rota read Earth; two_rooms_doorway finished GREEN, 78/78 |
 | 20261003.032448 | [Pheromone's tenth reading, cheap diff over full walk](20261003/20261003-032448_tenth-reading-cheap-diff-confirms-empty.kyri) | nothing moved in glow/mantra/src-shape since the ninth reading; flagged the fleet-wide fallow pattern for a check-in |
 | 20261003.032250 | [Incense declines a thirty-second lap](20261003/20261003-032250_incense-declines-thirty-second.kyri) | caught its own splitter inventing a false BOOKED from a fold-pointer line; nothing agent-doable |

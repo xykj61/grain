@@ -10,26 +10,26 @@
 //! wholly reverses. That is the two-phase transfer (pending -> post-or-void), TigerBeetle's
 //! signature, read here as the agreed order's own law.
 //!
-//! A PLEDGE reserves coins without moving them -- the signer's spendable balance falls, a
-//! matching RESERVED amount rises, and an open pledge is seated under a 16-byte id. A later
-//! POST honors it (the reserved coins reach the named recipient); a later VOID releases it
+//! A PLEDGE reserves coins in place rather than moving them -- the signer's spendable balance
+//! falls, a matching RESERVED amount rises, and an open pledge is seated under a 16-byte id. A
+//! later POST honors it (the reserved coins reach the named recipient); a later VOID releases it
 //! (the reserved coins return to the pledger). The pledge settles exactly once.
 //!
 //! The crux is EQUIVOCATION: a holder signs BOTH a post and a void for one pledge at the
 //! same round, the twin of the Purse's double-spender signing two transfers of coins she
-//! held once. No arrival order may leave the pledge both honored and released, and no two
-//! honest nodes may disagree on which won. The Cord's total order is deterministic
-//! regardless of arrival, so the FIRST resolution the order places decides and the second
-//! is a lawful no-op -- every honest node names the same outcome, proven here by resolving
+//! held once. Every arrival order leaves the pledge either honored or released, and every
+//! honest node agrees on which one won. The Cord's total order is deterministic
+//! regardless of arrival, so the FIRST resolution the order places decides, and the second
+//! stands idle -- every honest node names the same outcome, proven here by resolving
 //! every arrival permutation to one identical verdict.
 //!
 //! Conservation is the Purse's law widened by one column: at every step the sum of all
 //! spendable BALANCES plus all RESERVED holdings equals exactly what genesis issued. A
 //! pledge moves coins balance->reserved, a post reserved->recipient, a void reserved->balance --
-//! no coin is made or destroyed by any phase.
+//! every coin a phase touches is conserved exactly.
 //!
-//! A phase rides the Cord editing nothing: `fold.verify_fact` trusts a fact by its
-//! signature over kind-amount-star-body without restricting the kind, so the Pledge reads
+//! A phase rides the Cord through composition alone: `fold.verify_fact` trusts a fact by its
+//! signature over kind-amount-star-body, the kind left open, so the Pledge reads
 //! the same signed `kind_tax` facts the Purse does and discriminates the phase by a body
 //! tag bound to the signer's signature -- `P-id-to` reserves, `H-id` honors, `V-id`
 //! releases. A post or void carries the pledge's own amount (positive, so `mint_fact`
@@ -37,9 +37,10 @@
 //! signature binds phase, id, and sum together. A genesis credit is a kind_issue whose body
 //! names the account to fund, exactly as the Purse's.
 //!
-//! Grown beside cord.rye, fold.rye, purse.rye -- editing none, composing cord + fold +
-//! kumara public API only. Siloed, dev-only, demo seeds -- no real key, no funds, no
-//! network, no custody. A served pledge reaches the Comlink-served gate (Keaton's hand).
+//! Grown beside cord.rye, fold.rye, purse.rye -- composing cord + fold + kumara public API
+//! alone, each sibling left exactly as it stands. Siloed, dev-only, demo seeds -- fictional
+//! keys stand in, zero funds move, the network stays local, and custody rests untouched. A
+//! served pledge reaches the Comlink-served gate (Keaton's hand) alone.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/pledge.rye
 

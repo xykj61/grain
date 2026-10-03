@@ -4,40 +4,41 @@
 //! Design read: active-designing/date/20260813/20260813-085046_mycelium-lapse-pending-timeout-exploration.md
 //!
 //! The Pledge reserves coins now and settles them later -- honored or released, decided once
-//! by the order. Yet a reservation neither honored nor released would lock a purse forever,
-//! and a counterparty who simply falls silent would strand another's balance to the end of
-//! the ledger. TigerBeetle answers this with a PENDING-TRANSFER TIMEOUT -- a reservation the
-//! ledger itself expires when its clock passes a deadline, returning the held coins to their
-//! owner with no one's further signature. That is the Lapse, the third of TigerBeetle's
-//! signature primitives (after the two-phase Pledge and the linked Braid), read here as the
-//! agreed order's own law.
+//! by the order. Yet a reservation left open past both honor and release would lock a purse
+//! forever, and a counterparty who simply falls silent would strand another's balance to the
+//! end of the ledger. TigerBeetle answers this with a PENDING-TRANSFER TIMEOUT -- a reservation
+//! the ledger itself expires when its clock passes a deadline, returning the held coins to
+//! their owner on the ledger's own authority alone. That is the Lapse, the third of
+//! TigerBeetle's signature primitives (after the two-phase Pledge and the linked Braid), read
+//! here as the agreed order's own law.
 //!
 //! The clock is the one thing every honest node already agrees on: the POSITION of each fact
-//! in the committed order -- never the wall, which two nodes never share. A pledge opened at
-//! order position `p` names a DEADLINE `d > p`. The resolver walks the committed order; at
-//! each step, BEFORE applying the fact at position `pos`, it lapses every still-open pledge
-//! whose `deadline <= pos` -- reserved coins return to the pledger's spendable balance, state
-//! becomes LAPSED. Only then is the fact at `pos` applied.
+//! in the committed order, rather than the wall clock, which stays private to each node. A
+//! pledge opened at order position `p` names a DEADLINE `d > p`. The resolver walks the
+//! committed order; at each step, BEFORE applying the fact at position `pos`, it lapses every
+//! still-open pledge whose `deadline <= pos` -- reserved coins return to the pledger's
+//! spendable balance, state becomes LAPSED. Only then is the fact at `pos` applied.
 //!
 //! The crux is EXPIRY BEATS A LATE HONOR: a post the order places at or past the deadline
-//! finds the pledge already lapsed -- its coins already home -- so the honor is a lawful no-op.
+//! finds the pledge already lapsed -- its coins already home -- so the honor simply stands idle.
 //! And because the Cord's order is deterministic regardless of arrival, whether a given honor
-//! is ON TIME is a property of the committed order, never of who heard which block first, so
-//! every honest node names the identical verdict -- proven, as the Pledge and Braid proved it,
-//! by resolving every arrival permutation to one identical ledger.
+//! is ON TIME is a property of the committed order, rather than of who heard which block first,
+//! so every honest node names the identical verdict -- proven, as the Pledge and Braid proved
+//! it, by resolving every arrival permutation to one identical ledger.
 //!
 //! Conservation is the Pledge's law, unwidened: at every step balances + reserved sums to
 //! exactly what genesis issued. A lapse moves coins reserved -> balance, exactly as a void
-//! does -- no coin is made or destroyed by the passage of the deadline.
+//! does -- every coin the deadline touches is conserved exactly.
 //!
-//! A deadline rides INSIDE the signed pledge body so it cannot be moved after the signature:
-//! `P - id(16) - deadline(8, little-endian u64) - to(32)` reserves; `H - id(16)` honors,
-//! `V - id(16)` releases (unchanged from the Pledge). A pledge whose deadline is not strictly
-//! after its own opening position is expired at birth and refuses whole (BadDeadline).
+//! A deadline rides INSIDE the signed pledge body, fixed in place the moment the signature
+//! lands: `P - id(16) - deadline(8, little-endian u64) - to(32)` reserves; `H - id(16)` honors,
+//! `V - id(16)` releases (unchanged from the Pledge). A pledge whose deadline sits at or before
+//! its own opening position is expired at birth and is declined whole (BadDeadline).
 //!
-//! Grown beside cord.rye, fold.rye, pledge.rye -- editing none, composing cord + fold +
-//! kumara public API only. Siloed, dev-only, demo seeds -- no real key, no funds, no network,
-//! no custody. A served lapse reaches the Comlink-served gate (the maintainer's hand).
+//! Grown beside cord.rye, fold.rye, pledge.rye -- composing cord + fold + kumara public API
+//! alone, each sibling left exactly as it stands. Siloed, dev-only, demo seeds -- fictional
+//! keys stand in, zero funds move, the network stays local, and custody rests untouched. A
+//! served lapse reaches the Comlink-served gate (the maintainer's hand) alone.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/lapse.rye
 

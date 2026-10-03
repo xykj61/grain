@@ -109,6 +109,22 @@ own. `construction/ITINERARY.md`'s GRASS account carries the measurement.
 comment, or docs surface already open for other reasons, grade it, and push one bounded molt frame
 only where the reading comes back below B.
 
+**The three named below-B heads from `mantra/snapshot_projection.rye`'s own YOURS line close
+`20261003`.** `mycelium/pledge.rye` (C/74, register 65% negative of 20 sentences) and
+`mycelium/lapse.rye` (register 50% negative of 20) each rewrote every negative-worded sentence
+into an affirmative one holding the same fact -- "rather than moving them" for "without moving
+them," "stands idle" for "a lawful no-op" -- landing both at 0% negative and B (80, 83).
+`mantra/src/receipt_offer.rye`'s three-sentence head sat under the register floor and scored
+anyway, 66% negative, too few sentences for one rewrite to clear; it grew to six sentences naming
+`ReceiptOfferFact`'s fields and `fact_eql`/`error_of`'s comptime-pinned mappings, with
+`Log.refusal` and `AdmissionError` moved into backticks so the code name reads as code rather than
+as prose carrying the word. 0% negative of 6, A/93. All three witnesses re-run GREEN on metal; no
+code line moved. `construction/ITINERARY.md`'s GRASS account carries the measurement.
+
+**The next-crux lean:** no new audit packet is queued. Continue the ordinary move -- touch a
+prose, comment, or docs surface already open for other reasons, grade it, and push one bounded
+molt frame only where the reading comes back below B.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

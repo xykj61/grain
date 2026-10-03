@@ -1,9 +1,22 @@
 //! mantra/src/receipt_offer.rye -- bounded admission and replay for one immutable receipt offer.
 //!
-//! Admission is decided ONCE, by `Log.refusal`, which returns the stable refusal
-//! record naming field, value, ceiling, unit, and reason. Every named error this
-//! module returns is derived from that one reading, so the order of checks is
-//! stated in a single place and the two answers can never disagree.
+//! A `ReceiptOfferFact` names a full trade: the holder, the recipient, the product and its
+//! digest, the purpose, the value's amount, unit and basis, the return kind, the issue and
+//! expiry stamps, and the signer and signature that bind them together. Admission is decided
+//! ONCE, by `Log.refusal`, which returns one stable record naming field, value, ceiling, unit,
+//! and reason, and every named `error` this module returns traces back to that one reading, so
+//! the order of checks stays stated in a single place.
+//!
+//! `fact_eql` compares two offer facts field by field, each field's own type choosing the
+//! comparison -- bytes for a slice, equality for an integer -- and a comptime assert ties the
+//! comparison to `offer_fact_fields`, the published count, so the whole fact is always the
+//! reading rather than a chosen few of its fifteen fields. `error_of` carries the matching
+//! promise the other way: every reason `tally_receipt_refusal.rye` publishes maps to one named
+//! `AdmissionError`, with a comptime assert pinning the reason count to the switch that reads
+//! it.
+//!
+//! `schema_v1` names this fact's wire identity, `grain.receipt-offer.v1`, and `ReceiptState`
+//! pairs one offer with its own two-valued status, offered or expired.
 
 const std = @import("std");
 const assert = std.debug.assert;

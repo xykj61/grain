@@ -205,15 +205,24 @@ own fix (`df11d741cd`) closed it at A+/100. Nothing lost.
 shelved](archive/date/20261003/20261003-030755_itinerary-grass-spool-dedup-ratio-module-head-account.md)
 -- F/52 to B/83, GREEN on metal. Nothing lost.
 
-**GRASS -- `mantra/snapshot_projection.rye`'S MODULE HEAD LIFTS D/57 TO B/83.** Worst of the four
-heads named by the prior lift -- register 62% negative of 8 sentences, driven by one design
-essay's own filename ("cannot," "nothing") cited twice, once in the body and once in the closing
-`Scope:` line. Dropping the body's duplicate citation and rewriting the rest into ten shorter,
-affirmative sentences (every path and fact held exactly) left only the required `Scope:` line
-carrying the word, and it falls off the sentence count unclosed. Register rose to 100, reach to
-80, composite to 83 (B). `tools/m/mantra_snapshot_projection_witness.rish` re-run GREEN. **YOURS:**
-three more below-B heads remain (`mycelium/pledge.rye`, `mycelium/lapse.rye`,
-`mantra/src/receipt_offer.rye`), next GRASS lap per the one-keystone bound.
+**GRASS -- `mantra/snapshot_projection.rye`'S MODULE HEAD LIFT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-032418_itinerary-grass-snapshot-projection-module-head-account.md)
+-- D/57 to B/83, GREEN on metal. Nothing lost.
+
+**GRASS -- THE THREE NAMED HEADS LIFT, YOURS LINE CLOSED.** `mycelium/pledge.rye` (register 65%
+negative of 20 sentences, C/74) and `mycelium/lapse.rye` (register 50% negative of 20 sentences)
+each rewrote their seven and ten negative-worded sentences into affirmative ones -- "rather than
+moving them" for "without moving them," "stands idle" for "a lawful no-op," "every coin a phase
+touches is conserved exactly" for "no coin is made or destroyed" -- every fact, bound, and code
+name held exactly. Both read 0% negative of the same 20 sentences after; pledge rose to B/80,
+lapse to B/83. `mantra/src/receipt_offer.rye`'s three-sentence head sat under the register floor
+and still scored, 66% negative over too few sentences for any one rewrite to clear (REDS %430);
+the head grew to six sentences naming `ReceiptOfferFact`'s fields, `fact_eql`'s comptime-pinned
+comparison, and `error_of`'s reason-to-error mapping, wrapping `Log.refusal` and `AdmissionError`
+in backticks so the code name reads as code rather than as prose carrying the word. 0% negative of
+6, composite A/93. All three witnesses (`tools/m/mycelium_pledge_witness.rish`,
+`tools/m/mycelium_lapse_witness.rish`, `tools/m/mantra_receipt_offer_refusal_chain_witness.rish`)
+re-run GREEN on metal; no code line moved. **YOURS:** none -- the named three are read.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -329,7 +338,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `bc93a8dd1b` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `edd1a41388` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
