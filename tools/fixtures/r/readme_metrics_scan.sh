@@ -7,7 +7,7 @@
 # current. These four move only when something real changes, and each says something a reader
 # actually wants to know:
 #
-#   fascia          the connective-tissue grade, 0-100 -- can a reader follow any thread home
+#   fascia          the connective-tissue grade, printed to four decimal places out of 100
 #   witnesses       proofs that run on metal
 #   modules         Rye modules those proofs stand over -- the RATIO is the interesting part
 #   rooms_over      rooms grown past what a browser can list; enforced at zero
@@ -35,8 +35,18 @@ set -eu
 
 # stdin is closed for the fascia call on purpose: it blocks when it inherits one, and a
 # metrics scan that hangs in a witness is a metrics scan nobody runs.
-fascia=$(sh tools/fixtures/f/fascia_metric.sh </dev/null 2>/dev/null | sed -n 's/^fascia=\([0-9][0-9]*\)$/\1/p' | head -1)
-[ -n "${fascia:-}" ] || fascia=unknown
+# One shell reading, then the Rishi face. The face owns the decimal. Appending
+# ".0000" to the whole number would invent a precision the counts may not have.
+metric_out=$(sh tools/fixtures/f/fascia_metric.sh </dev/null 2>/dev/null || true)
+sup=$(printf '%s\n' "$metric_out" | sed -n 's/^signal:superseded=\([0-9][0-9]*\).*/\1/p' | head -1)
+rat=$(printf '%s\n' "$metric_out" | sed -n 's/^signal:ratchet_outstanding=\([0-9][0-9]*\).*/\1/p' | head -1)
+cls=$(printf '%s\n' "$metric_out" | sed -n 's/^signal:target_class_a=\([0-9][0-9]*\).*/\1/p' | head -1)
+o70=$(printf '%s\n' "$metric_out" | sed -n 's/^signal:over70=\([0-9][0-9]*\).*/\1/p' | head -1)
+fascia=unknown
+if [ -n "${sup:-}" ] && [ -n "${rat:-}" ] && [ -n "${cls:-}" ] && [ -n "${o70:-}" ]; then
+  fascia=$(rishi/bin/rishi run tools/gen/chapter/fascia_metric.rish face "$sup" "$rat" "$cls" "$o70" 2>/dev/null | sed -n 's/^fascia_face=\([0-9][0-9]*\.[0-9][0-9][0-9][0-9]\)$/\1/p' | head -1)
+  [ -n "${fascia:-}" ] || fascia=unknown
+fi
 
 witnesses=$(git ls-files 'tools/*_witness.rish' | wc -l | tr -d ' ')
 
