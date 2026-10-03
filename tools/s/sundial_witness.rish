@@ -4,7 +4,7 @@
 # by zero on an empty face), reads all-green honestly, and emits its roll-up as a valid
 # Ledgerworks baton -- a format baton-v1 - archetype ledgerworks document the Scribe
 # reader validates (member+, roll, stamp, next), carrying the health line the recursion
-# batons can hold.
+# batons can hold, plus fascia_face at four decimal places.
 #
 #   rishi/bin/rishi run tools/s/sundial_witness.rish
 
@@ -28,7 +28,8 @@ assert (em.out contains "format baton-v1") else "the health face must emit a bat
 assert (em.out contains "archetype ledgerworks") else "the roll-up must declare the ledgerworks archetype"
 assert (em.out contains "roll 4 of 5 green") else "the roll-up must aggregate its members"
 assert (em.out contains "health 80%") else "the health line must carry the percent"
-assert (em.out contains "fascia 41") else "the health line must carry the fascia metric"
+assert (em.out contains "fascia 41") else "the health line must carry the fascia percent"
+assert (em.out contains "fascia_face 41.0000") else "the face line must carry four decimal places"
 assert (em.out contains "unit witness-status") else "every member must carry its unit"
 assert (em.out contains "date 20260829") else "every member must carry its date"
 assert (em.out contains "source kumara-tilak") else "every member must carry its source"

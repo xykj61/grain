@@ -3,7 +3,7 @@
 //! A sundial tells the time of day by a shadow; this one tells the HEALTH of the day.
 //! It gathers a set of module readings -- each module and whether its witness stands
 //! green -- and shows them as one face: which modules hold, how many are green, the
-//! health percent, and the tree's fascia (connective-reference) metric.
+//! health percent, the fascia percent, and the fascia face in ten-thousandths.
 //!
 //! It is the rendering of a **Ledgerworks** roll-up (the bat fleet's portfolio
 //! archetype): many modules gathered under one head. Its `emit` prints exactly that --
@@ -26,6 +26,12 @@ pub const sundial_version = "20260829.043703";
 // A sundial holds at most this many module readings -- the tree is bounded, named once.
 pub const max_modules: u32 = 256;
 
+// The fascia percent and the finer face are separate u32 bounds.
+// 100 points, and 10000 units per point, meet at 1000000.
+pub const fascia_percent_max: u32 = 100;
+pub const fascia_units_scale: u32 = 10000;
+pub const fascia_units_max: u32 = 1000000;
+
 /// One reading, with enough provenance to understand and reproduce it.
 pub const Reading = struct {
     name: []const u8,
@@ -41,13 +47,37 @@ pub const AddError = error{SourcelessReading};
 pub const Sundial = struct {
     readings: [max_modules]Reading,
     count: u32,
-    fascia: u32, // the tree's connective-health metric, a percent set by the caller
+    fascia: u32, // a percent, 0 to 100, set by the caller
+    fascia_units: u32, // ten-thousandths of a point, 0 to 1000000
 
-    /// A fresh sundial with a fascia reading and no modules yet.
+    /// A fresh sundial. A whole percent becomes exact units: 41 becomes 410000.
     pub fn init(fascia: u32) Sundial {
         // invariant: fascia is a percent.
-        assert(fascia <= 100);
-        return .{ .readings = undefined, .count = 0, .fascia = fascia };
+        assert(fascia <= fascia_percent_max);
+        const units = fascia * fascia_units_scale;
+        // invariant: a whole percent stays inside the units ceiling.
+        assert(units <= fascia_units_max);
+        return .{
+            .readings = undefined,
+            .count = 0,
+            .fascia = fascia,
+            .fascia_units = units,
+        };
+    }
+
+    /// Percent and ten-thousandths, stored as the caller passed them.
+    /// A half point may sit beside a whole percent: 99 beside 995000.
+    pub fn init_face(fascia: u32, fascia_units: u32) Sundial {
+        // invariant: fascia is a percent.
+        assert(fascia <= fascia_percent_max);
+        // invariant: the face stays inside one million units.
+        assert(fascia_units <= fascia_units_max);
+        return .{
+            .readings = undefined,
+            .count = 0,
+            .fascia = fascia,
+            .fascia_units = fascia_units,
+        };
     }
 
     /// Record one sourced module status. Bounded by max_modules.
@@ -100,7 +130,9 @@ pub const Sundial = struct {
 };
 
 fn run_selftest() !u8 {
-    var s = Sundial.init(41); // a fascia reading of 41
+    var s = Sundial.init(41); // a fascia percent of 41, units 410000
+    if (s.fascia != 41) return error.FasciaPercentWrong;
+    if (s.fascia_units != 410000) return error.FasciaUnitsWrong;
     try s.add("kumara", true, "witness-status", "20260829", "kumara-tilak");
     try s.add("vault", true, "witness-status", "20260829", "vault-split");
     try s.add("basin", true, "witness-status", "20260829", "basin-suite");
@@ -115,13 +147,20 @@ fn run_selftest() !u8 {
     // An empty sundial reads zero, never divides by zero.
     var empty = Sundial.init(0);
     if (empty.health_percent() != 0) return error.EmptyNotZero;
+    if (empty.fascia_units != 0) return error.EmptyUnitsWrong;
 
     // A fully-green sundial reads all-green and 100 percent.
     var whole = Sundial.init(100);
+    if (whole.fascia_units != 1000000) return error.FullUnitsWrong;
     try whole.add("scribe", true, "witness-status", "20260829", "scribe-reader");
     try whole.add("sundial", true, "witness-status", "20260829", "sundial-selftest");
     if (!whole.all_green()) return error.NotAllGreen;
     if (whole.health_percent() != 100) return error.WholeNotFull;
+
+    // 99.5000 beside a percent of 99: the two fields are allowed to disagree.
+    const half = Sundial.init_face(99, 995000);
+    if (half.fascia != 99) return error.HalfPercentWrong;
+    if (half.fascia_units != 995000) return error.HalfUnitsWrong;
 
     var refused = Sundial.init(0);
     if (refused.add("unknown", true, "witness-status", "20260829", "")) |_| {
@@ -130,7 +169,7 @@ fn run_selftest() !u8 {
         if (err != error.SourcelessReading) return err;
     }
 
-    print("sundial: four modules read -- three green, one red; the face shows 3 of 4 green, health 75%, fascia 41.\n", .{});
+    print("sundial: four modules read -- three green, one red; the face shows 3 of 4 green, health 75%, fascia 41, fascia_face 41.0000.\n", .{});
     print("sundial: an empty face divides by zero never (reads 0), a whole face reads all-green at 100%.\n", .{});
     print("sundial: a sourceless reading is refused as SourcelessReading.\n", .{});
     print("sundial: version {s}\n", .{sundial_version});
@@ -176,6 +215,10 @@ fn run_emit(io: std.Io) !u8 {
     }
     put_line(io, "roll {d} of {d} green\n", .{ s.green_count(), s.count });
     put_line(io, "health {d}% fascia {d}\n", .{ s.health_percent(), s.fascia });
+    put_line(io, "fascia_face {d}.{d:0>4}\n", .{
+        s.fascia_units / fascia_units_scale,
+        s.fascia_units % fascia_units_scale,
+    });
     put_line(io, "next keep watch\n", .{});
     return 0;
 }
