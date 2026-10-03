@@ -4,7 +4,8 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge and landed Tally/Mantra rung are checkable; case 8's build-time half stays proposed until that build lands
+**Status:** Accepted for bounded synthetic implementation on Keaton's `20260913` word -- **mixed room**: the contract edge, the landed Tally/Mantra rung, and case 8's direct-import build refusal are checkable; a braid through a third module stays proposed
+**Revised:** `20261003.163623` -- case 8's direct-import build half. `tools/r/receipt_braid_build_witness.rish` builds a file under `.lap/receipt-braid-build` that imports `../../dimeroll/receipt_offer.rye`, and the vendored `vendor/zig-toolchain/zig` refuses with `import of file outside module path`. A file in that pen that imports only `std` builds. The control plants a compiler that accepts the import and one that refuses for a different sentence. A braid through a third module stays the gap the source scan already names. No elder row, number, or acceptance case was removed.
 **Revised:** `20261003.161601` -- a fresh reading, additive. `ReceiptOfferFact` and `ReceiptState` each stand in 5 tracked rye sources. `linengrow/` and `dimeroll/` together hold 179 tracked rye sources, 174 and 5. Ceiling `verdict=agree`, braid `verdict=unbraided` with `cross_mention=2` and `peer_word=0`, still-order `verdict=source_order_agrees`, `swift_runtime=unverified_on_this_host`. `zig` is absent on this host, so case 8's build-time half stays proposed. No elder row, number, or acceptance case was removed.
 **Milestone:** The receipt you can read
 **Revised:** `20261002.105438` -- the card is drawn. `skate/Sources/SkateCore/ReceiptCard.swift` holds `columns = 72` and `rows = 18`. The ceiling scan still reads `row_unenforced=2`, because those two rows are the frame and the scan reads admission sites only. On metal this hour: ceiling `verdict=agree`, braid `verdict=unbraided` over linengrow 174 files and dimeroll 5, still-order `verdict=source_order_agrees` with `swift_runtime=unverified_on_this_host`. Every elder row, number, and acceptance case stays.
@@ -360,6 +361,11 @@ holds 5, together 179, where the braid paragraph's **175** was the reading of `2
 with `borrowed_rows=0` and `row_unenforced=2`. The still-order witness reads
 `verdict=source_order_agrees` and `swift_runtime=unverified_on_this_host`. This host has no
 `zig` binary, so case 8's build-time half stays the proposed half the status line names.
+That sentence read the host `PATH`. The vendored binary `vendor/zig-toolchain/zig`
+is 0.16.0, and the `20261003.163623` revision runs the build half with it. A
+braid through a third module stays proposed.
+
+
 
 ## Completion and review edge
 

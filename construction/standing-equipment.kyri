@@ -1386,6 +1386,16 @@ path tools/r/receipt_product_braid_witness.rish
 tier lap
 seated 20260917.090914
 
+# Seated 20261003.163623. Case 8's build half, the direct import. The vendored
+# toolchain vendor/zig-toolchain/zig refuses an @import whose path leaves the
+# module, with the sentence "import of file outside module path". A file in the
+# same pen that imports only std builds. The braid scan's third-module call
+# graph stays outside this guard.
+guard receipt_braid_build
+path tools/r/receipt_braid_build_witness.rish
+tier lap
+seated 20261003.163623
+
 # Seated 20260918.043437. The receipt contract's Dimeroll projection stood at zero lines: the
 # product owing half the falsifier had not begun. `dimeroll/receipt_offer.rye` publishes
 # `DimerollReceiptIntake` and `from_snapshot`, reading a settled offer's own fields -- receipt_id,

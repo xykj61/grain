@@ -59,9 +59,3 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
-claim incense-receipt-braid-build
-seat incense
-stamp 20261003.163623
-epoch 1791059783
-paths tools/fixtures/r/receipt_braid_build_scan.sh tools/fixtures/r/receipt_braid_build_control.sh tools/r/receipt_braid_build_witness.rish
-what Witness that the vendored zig build refuses an import of dimeroll/receipt_offer.rye from outside the module path.

@@ -1,0 +1,23 @@
+# tools/r/receipt_braid_build_witness.rish -- case 8, the build half.
+#
+# The source scan already walls a product file that names the other product.
+# This witness asks the vendored zig build the same question: an import whose
+# path leaves the module refuses, and a file that imports only std builds.
+#
+#   rishi/bin/rishi run tools/r/receipt_braid_build_witness.rish
+
+say "braid-build: Language EN -- the build refuses an import that leaves the module."
+say "braid-build: Style Gauge Meter -- one refusal, one welcome, two planted compilers."
+say "braid-build: Lens TAME -- safety first: the module path is the build's own wall."
+
+let control = run ["sh" "tools/fixtures/r/receipt_braid_build_control.sh"]
+say control.out
+assert control.ok else "braid-build: the control must pass"
+assert control.out contains "control_verdict=ok" else "braid-build: the control must reach its own ok"
+assert control.out contains "control_failed=0" else "braid-build: every planted leg must pass"
+assert control.out contains "control_legs=3" else "braid-build: three legs, the live build and two stubs"
+assert control.out contains "leg_ok: live" else "braid-build: the vendored build must refuse the outside import"
+assert control.out contains "leg_ok: admitted_stub" else "braid-build: a compiler that accepts the import must read admitted"
+assert control.out contains "leg_ok: other_stub" else "braid-build: a different refusal must stay distinct from the module-path error"
+
+say "GREEN: braid-build -- zig refuses an import of dimeroll/receipt_offer.rye from outside the module, and a std-only file builds."
