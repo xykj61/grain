@@ -1,45 +1,47 @@
-//! mycelium/braid.rye -- the Braid: a linked chain of transfers, committed whole or not at all.
+//! mycelium/braid.rye -- the Braid: a linked chain of transfers. It lands as one whole, every time.
 //!
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Journey rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-081709_mycelium-braid-linked-atomic-chain-exploration.md
 //!
-//! Every Mycelium ledger before this settles the fate of ONE transfer -- the Purse decides a
-//! per-account double-spend, the Pledge carries a single transfer across two phases. Yet a
-//! real exchange is rarely one move: a payment routes through a hop, a swap trades one thing
-//! for another, a settlement touches three books at once -- and every step must land TOGETHER
-//! or not at all, so no observer ever sees the chain half-applied. That all-or-nothing across
-//! several LINKED moves is TigerBeetle's other signature (linked events), read here as the
-//! agreed order's own law.
+//! Every Mycelium ledger before this settles the fate of ONE transfer. The Purse decides a
+//! per-account double-spend. The Pledge carries a single transfer across two phases. A real
+//! exchange is rarely one move. A payment routes through a hop. A swap trades one thing for
+//! another. A settlement touches three books at once. Every step in that chain lands together,
+//! as one whole. So an observer who looks sees the chain whole, or sees it absent -- always one
+//! of the two. That same wholeness across several LINKED moves is TigerBeetle's own signature
+//! (linked events), read here as the agreed order's own law.
 //!
-//! A BRAID is an ordered chain of linked transfers sharing one 16-byte braid id, each link a
-//! signed kind_tax fact carrying its SEQUENCE in the chain and a flag marking the LAST link.
-//! The links chain on the Cord causally -- link k+1 names link k's block as its parent -- so
-//! the agreed order always places seq 0, 1, 2, ... in order, no matter what order a node first
-//! heard the blocks. When the final link commits the chain is complete, and the order resolves
-//! it as ONE atom: if every link can afford its transfer at its point in the chain (reading
-//! each sender's balance forward through the chain's own earlier moves) the whole braid
-//! COMMITS; if any link cannot afford, the whole braid REJECTS -- not one coin moves, not even
-//! the earlier links that would have paid on their own.
+//! A BRAID is an ordered chain of linked transfers. Every link shares one 16-byte braid id.
+//! Each link is a signed kind_tax fact. It carries its own SEQUENCE in the chain, and a flag
+//! marking the LAST link. The links chain on the Cord causally -- link k+1 names link k's block
+//! as its parent. So the agreed order always places seq 0, 1, 2, ... in sequence, the same way
+//! on every node, in whatever order that node first heard the blocks. The final link completes
+//! the chain. The order then resolves it as ONE atom. When every link can afford its transfer --
+//! reading each sender's balance forward through the chain's own earlier moves -- the whole
+//! braid COMMITS. When a single link falls short, the whole braid REJECTS. Every coin stays
+//! exactly where it stood, including the earlier links that would have paid on their own.
 //!
-//! The crux is that last line: a three-link braid whose first two steps afford alone, but
-//! whose final step overdraws, leaves the ledger UNTOUCHED -- the atom is indivisible, so an
-//! early success cannot survive a late failure. Because the Cord's order is deterministic
-//! regardless of arrival, every honest node names the identical commit-or-reject verdict --
-//! proven here by resolving every arrival permutation of the chain's blocks to one identical
-//! ledger. Conservation is unwidened: a committed braid moves coins between accounts (no coin
-//! made or destroyed), a rejected braid moves nothing, so the balances always sum to exactly
-//! what genesis issued.
+//! Here is the crux. Picture a three-link braid whose first two steps afford alone. Its final
+//! step overdraws. The ledger stays exactly as it was: the atom is indivisible, so an early
+//! success rides on every later link succeeding too. The Cord's order stays the same whatever
+//! order the blocks arrive in. So every honest node names the identical commit-or-reject
+//! verdict. This file proves it by resolving every arrival order of the chain's blocks to one
+//! identical ledger. Conservation holds exactly. A committed braid moves coins between
+//! accounts, and the total stays fixed. A rejected braid leaves every balance exactly where it
+//! stood. The balances always sum to exactly what genesis issued.
 //!
-//! A link rides the Cord editing nothing: `fold.verify_fact` trusts a fact by its signature
-//! over kind-amount-star-body without restricting the kind, so the Braid reads the same signed
-//! kind_tax facts the Purse does and discriminates a link by a body tag bound to the signer's
-//! signature -- `L-id-seq-last-to` transfers `amount` to `to` as sequence `seq` of braid `id`,
-//! and every link may carry a DIFFERENT signer (the chain routes coins hand to hand). A genesis
-//! credit is a kind_issue whose body names the account to fund, exactly as the Purse's.
+//! A link rides the Cord exactly as it is. `fold.verify_fact` trusts a fact by its signature
+//! over kind-amount-star-body, open to every kind. So the Braid reads the same signed kind_tax
+//! facts the Purse does, and tells a link apart by a body tag bound to the signer's signature --
+//! `L-id-seq-last-to` sends `amount` to `to` as sequence `seq` of braid `id`. Every link may
+//! carry a DIFFERENT signer, so the chain routes coins hand to hand. A genesis credit is a
+//! kind_issue whose body names the account to fund, exactly as the Purse's.
 //!
-//! Grown beside cord.rye, fold.rye, purse.rye, pledge.rye -- editing none, composing cord +
-//! fold + kumara public API only. Siloed, dev-only, demo seeds -- no real key, no funds, no
-//! network, no custody. A served braid reaches the Comlink-served gate (Keaton's hand).
+//! This file grows beside cord.rye, fold.rye, purse.rye, pledge.rye, and leaves each one exactly
+//! as it stands. It composes the cord, fold, and kumara public API alone. It is siloed, dev-only,
+//! and seeded with demo data throughout -- every key, every fund, the network, and custody all
+//! stay play-money, made up for the demo. A served braid reaches the Comlink-served gate
+//! (Keaton's hand).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid.rye
 

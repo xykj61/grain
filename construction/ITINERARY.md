@@ -221,17 +221,19 @@ the twenty-six-account fold, the pleac reach fix, the diffuser-inner find, and t
 spool-dedup/snapshot-projection/three-named-heads module-head lifts; nothing lost, every path
 still opens.
 
-**GRASS -- `mycelium/portage.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.034124`.** The
-head read register 34 (66% negative of 15 sentences), its "no shared channel," "cannot burn,"
-"can never conjure," "no window admits a loss," and four-times-"no" closing line each trading a
-fact for a negation. Every sentence rewrote affirmative, holding the same facts: "whose channels
-stay apart" for "that share no channel," "`NeverPaid` is the guard" for "she cannot burn coins she
-never received," "`NoMatchingBurn` guards every other case" for "refuses... can never conjure,"
-"landing on B exactly when it is gone from A, and exactly once" for "no window admits a loss... or
-a double," "leaving the real key, the funds, the network, and the value crossed for a SERVED
-portage" for the four-fold "no real key, no funds, no network, no value crossed." Register 100 (0%
-of 14 sentences), composite B+/85. `tools/m/mycelium_portage_witness.rish` re-runs GREEN on metal;
-no code line moved. **YOURS:** none -- the head is read.
+**GRASS -- `mycelium/portage.rye`'S MODULE HEAD LIFT.** [Account shelved
+whole](archive/date/20261003/20261003-040145_itinerary-grass-portage-module-head-account.md):
+register 34 to 100, composite B+/85, no code line moved. **YOURS:** none -- the head is read.
+
+**GRASS -- `mycelium/braid.rye`'S MODULE HEAD LIFT, YOURS LINE CLOSED `20261003.040145`.** No
+audit packet was queued, so this lap sampled the prose lane on an untouched module. Head read
+D/61: register 45 (55% negative of 18 sentences -- "not at all," "no observer," "all-or-nothing,"
+"not one coin moves," "cannot survive," "editing nothing/none," three-times-"no" close). First
+rewrite cleared register to 95 but its denser sentences raised grade 14 to 15, landing C/71 --
+register and reach pulled against each other. A second pass held every fact and split each long
+sentence at its seam: register 98, reach 100 (grade 8 against 9), composite B+/87.
+`tools/m/mycelium_braid_witness.rish` re-runs GREEN; no code line moved. **YOURS:** none -- fixing
+negation and grade level as two separate passes beats guessing both at once.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -345,7 +347,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `4ebe4bb51b` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `92c111387e` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
