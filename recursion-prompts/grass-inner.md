@@ -140,6 +140,19 @@ moved. [Account](../active-designing/date/20261003/20261003-081955_itinerary-gra
 `warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's
 usual depth-2 bound.
 
+**`freight.rye`'s head lifts C+ to A, landed `20261003`.** Nine negative sentences across three
+paragraphs -- `never carried`, `worthless without`, `takes no host`, `not a no-op`, `disagrees ...
+and refuses`, `editing none`, the closing `no ... no ... no ... no` -- rewrote into affirmative
+sentences holding the same facts, every backticked identifier and citation held exactly.
+Register rose from 31 (69% negative of 13) to 93 (7% negative), composite from 75 to 91.
+`mycelium_freight_witness.rish` re-runs GREEN; no code line moved.
+[Account](../active-designing/date/20261003/20261003-085552_grass-freight-module-head-account.md).
+
+**The next-crux lean:** nine more files from the same sample read below B -- `fold.rye`,
+`muster.rye`, `purse.rye`, `statement.rye`, `tenure.rye`, `till.rye`, `voucher.rye`, `warrant.rye`,
+`rehearsal.rye` -- and wait for the same lift, one file at a time, per this lane's usual depth-2
+bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

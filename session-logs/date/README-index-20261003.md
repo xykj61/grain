@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.091500` | [freight.rye's head lifts C+ to A; nine more named](20261003/20261003-091500_freight-head-lift.kyri) | GRASS mycelium sample: freight.rye lifted, nine below-B heads left |
 | `20261003.090000` | [twelfth-sweep-rota-earth](20261003/20261003-090000_twelfth-sweep-rota-earth.kyri) | Patchouli's twelfth confirming sweep: both grep nets null, four new OPEN rows read and ruled out, queue empty |
 | `20261003.085141` | [the eleventh sweep finds the language lane still empty, fire row read](20261003/20261003-085141_eleventh-sweep-rota-fire.kyri) | round-open clean at bd7f90beed; rota row 2, Fire, read; no agent-doable work, declined a blind cross-lane claim |
 | `20261003.084902` | [nib stale after own session log, repaired](20261003/20261003-084902_nib-stale-after-own-session-log.kyri) | rule 5 missed on prior log; follow-up write fixed it, GREEN |

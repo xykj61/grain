@@ -4,26 +4,27 @@
 //! Design read: active-designing/date/20260813/20260813-121424_puddle-freight-world-state-migration-exploration.md
 //!
 //! Puddle proved WHICH host runs which world, and healed a departure by moving only the worlds the failed
-//! host carried. Yet it named a world by its id alone -- it never carried the one thing a world exists to
-//! keep: its STATE. Freight is what a world carries to its berth: its whole signed Mycelium ledger (a Cord
-//! Dag). This rung proves the durability guarantee a fleet is worthless without -- when a host departs and
-//! the world re-berths, it arrives on its new host reading the BYTE-IDENTICAL account position it held on
-//! the old one. Placement moves; state does not.
+//! host carried. It named a world by its id alone, leaving the one thing a world exists to keep -- its
+//! STATE -- outside that proof. Freight is what closes that gap: a world's whole signed Mycelium ledger
+//! (a Cord Dag), carried to its new berth. This rung proves the durability a fleet depends on: when a host
+//! departs and the world re-berths, it arrives on its new host reading the BYTE-IDENTICAL account position
+//! it held on the old one. Placement moves; state stays exactly itself.
 //!
-//! The property is almost given, and that is the point: a world's position is a PURE FUNCTION of its ledger
-//! bytes (`statement_for(resolve(dag))` takes no host as input), so moving WHERE it runs cannot move WHAT it
-//! says. The work is to PROVE the trivial migration is the honest one:
-//!   - a moved world genuinely changed host (a real migration, not a no-op);
-//!   - its order-head digest + position triple are byte-identical across the move (it arrives whole);
+//! The property follows almost for free, which is the point: a world's position is a PURE FUNCTION of its
+//! ledger bytes (`statement_for(resolve(dag))` reads the dag alone, with the host left out), so moving WHERE
+//! it runs leaves WHAT it says untouched. The work is to PROVE the trivial migration is the honest one:
+//!   - a moved world genuinely changed host (a real migration, rather than standing still in place);
+//!   - its order-head digest + position triple stay byte-identical across the move (it arrives whole);
 //!   - a world that stayed keeps both its berth and its position;
 //!   - a freight TAMPERED in transit is caught (`FreightTampered`) -- the receiving host recomputes an
-//!     order-head that disagrees with the advertised head and refuses, rather than serving a rewritten
-//!     position.
+//!     order-head and holds it against the advertised one, honoring a match alone and leaving a rewritten
+//!     position unserved.
 //!
-//! Composes `puddle` + `cord` + `lapse` + `statement` + `fold` + `voucher` + `kumara` public API only,
-//! editing none (each re-runs GREEN at this witness's door). The position is derived, never re-declared --
-//! there is no set_position. Siloed, dev-only, demo host/world/keeper seeds -- no real key, no funds, no
-//! network, no world provisioned or moved; a served migration reaches the Comlink-served gate.
+//! Composes `puddle` + `cord` + `lapse` + `statement` + `fold` + `voucher` + `kumara` public API alone, each
+//! re-running GREEN at this witness's door and left exactly as it stands. The position is always derived,
+//! kept clear of any `set_position`. Siloed and dev-only, the whole scene runs on demo host/world/keeper
+//! seeds alone, leaving a real key, real funds, and a real network for a served migration to one day carry,
+//! at the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/freight.rye
 

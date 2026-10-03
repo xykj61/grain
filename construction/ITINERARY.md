@@ -225,16 +225,20 @@ account](archive/date/20261003/20261003-084011_itinerary-grass-four-module-head-
 portage, braid, cord_byzantine, and the chorus/cord/constel/cord_batch five-head sample; nothing
 lost, every path still opens.
 
-**GRASS -- A WIDER MYCELIUM SAMPLE NAMES TEN MORE BELOW-B HEADS; `TESTAMENT.RYE` LIFTS FIRST.**
-[Account shelved
-whole](../active-designing/date/20261003/20261003-081955_itinerary-grass-testament-module-head-account.md):
-`testament.rye`'s head read D+/67 (register 46, reach 30), the worst of fifteen mycelium files
-graded this round. Rewrote its two body paragraphs into shorter, affirmative sentences holding
-the same facts -- register rose to 100 (0% negative of 17 sentences), composite to B+/88. Four
-touching witnesses re-run GREEN. **YOURS:** `freight.rye` (75), `fold.rye` (78), `muster.rye`
-(72), `purse.rye` (72), `statement.rye` (74), `tenure.rye` (77), `till.rye` (71), `voucher.rye`
-(76), `warrant.rye` (71), and `rehearsal.rye` (75) all graded below B in the same sweep and wait
-for the same lift, one file at a time.
+**GRASS -- A WIDER MYCELIUM SAMPLE NAMES TEN BELOW-B HEADS; `TESTAMENT.RYE` LIFTS FIRST (shelved
+whole)](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md)** -- nothing
+lost, every path still opens.
+
+**GRASS -- `FREIGHT.RYE`'S HEAD LIFTS C+ TO A.** [Account
+shelved whole](../active-designing/date/20261003/20261003-085552_grass-freight-module-head-account.md):
+nine negative sentences across three paragraphs -- `never carried`, `worthless without`, `takes no
+host`, `not a no-op`, `disagrees ... and refuses`, `editing none`, the closing `no ... no ... no
+... no` -- rewrote into affirmative sentences holding the same facts, every backticked identifier
+and citation held exactly. Register rose from 31 (69% negative of 13) to 93 (7% negative),
+composite from 75 to 91. `mycelium_freight_witness.rish` re-runs GREEN; no code line moved.
+**YOURS:** `fold.rye` (78), `muster.rye` (72), `purse.rye` (72), `statement.rye` (74), `tenure.rye`
+(77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), and `rehearsal.rye` (75) all stay
+below B and wait for the same lift, one file at a time.
 
 **DIFFUSER -- THE ONE LIVE SITE CANNOT SEE ITS OWN DRIFT.** Elder account
 [shelved](archive/date/20261003/20261003-042550_itinerary-diffuser-fourth-site-account.md).
@@ -344,7 +348,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `ff695d1d21` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `e63f94e248` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
