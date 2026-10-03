@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.222414` | [eleventh fallow reading](20261002/20261002-222414_incense-eleventh-fallow-reading.kyri) | law lane dry an eleventh lap; fourteen OPEN rows unchanged |
 | `20261002.222116` | [petrichor fifteenth fallow reading](20261002/20261002-222116_petrichor-fifteenth-fallow-reading.kyri) | lighter re-check, same gate unmoved; recommends widening the window before a sixteenth |
 | `20261002.222047` | [incense declines a tenth fallow reading](20261002/20261002-222047_incense-declines-a-tenth-fallow-reading.kyri) | 14 OPEN/2 BOOKED unchanged, %642 unchanged, two peer ships independently logged a fourteenth fallow reading tonight |
 | `20261002.221812` | [petrichor fourteenth fallow reading](20261002/20261002-221812_petrichor-fourteenth-fallow-reading.kyri) | checked the Consent Rail dependency itself rather than re-grading the-first-hour.md; still unmoved |
