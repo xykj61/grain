@@ -9,6 +9,7 @@
 | 20261003.033512 | [Patchouli declines a sixteenth repeat](20261003/20261003-033512_patchouli-declines-a-sixteenth-repeat.kyri) | aborted a duplicate grep mid-check; check-in request on cadence carried forward unchanged |
 | 20261003.025208 | [Pheromone's seventh reading, round-open only](20261003/20261003-025208_pheromone-seventh-reading-round-open-only.kyri) | round-open landed two peer logs; lane still empty; REDS %788 named fleet-wide, not a claim |
 | 20261003.025041 | [Petrichor's fifteenth fallow reading](20261003/20261003-025041_petrichor-fifteenth-fallow-reading.kyri) | one unrelated peer commit pulled; still no OPEN/BOOKED work in lane scope |
+| 20261003.024619 | [Ep042 census roster, the twenty-fifth](20261003/20261003-024619_ep042-census-roster.kyri) | ironbeetle_ep042_census_witness rostered, claim-first, proven both ways |
 | 20261003.024505 | [Petrichor's fourteenth fallow reading](20261003/20261003-024505_petrichor-fourteenth-fallow-reading.kyri) | HEAD unmoved since the thirteenth; no claim or row in lane scope |
 | 20261003.024454 | [Grass's ordinary sweep finds nothing below B](20261003/20261003-024454_grass-ordinary-sweep-nothing-below-b.kyri) | checked the fractal-address essay and incense-inner.md fresh, both B or above; diffuser's own YOURS fix confirmed closed |
 | 20261003.024436 | [Patchouli holds the check-in request](20261003/20261003-024436_patchouli-holds-the-check-in-request.kyri) | one cheap confirming grep, no new finding; prior check-in request on cadence carried forward |
