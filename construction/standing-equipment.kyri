@@ -9688,3 +9688,17 @@ guard vols_survey_kyri
 path tools/gen/chapter/vols_survey_kyri_witness.rish
 tier lap
 seated 20261003.042200
+
+# nona_season_n0 -- the Nona Chapter's own seat witness, unrostered since it was written. Proves
+# the n0 charter and bow are both present, that the lexicon carries the three/quad/nona nest-depth
+# words plus the "Retired living depth word" line, that prin_scope.rish still names the MUR/Gren/
+# Nona three-nest slate with return_surface_p41, and that the charter's own text still refuses a
+# force-push. Proven on metal both ways in this lap: present it reads GREEN at the two closing
+# `say` lines; with
+# counsel/date/20260729/20260729-125911_the-nona-season-charter.md moved aside it refuses at the
+# assert naming the charter missing, then restored. Claimed as copal-nona-season-n0-roster before
+# this entry landed.
+guard nona_season_n0
+path tools/gen/chapter/nona_season_n0_witness.rish
+tier lap
+seated 20261003.043200

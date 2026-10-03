@@ -155,6 +155,11 @@ shelved](archive/date/20261003/20261003-041959_itinerary-copal-vols-journey-13-c
 -- `vols_classify` and `vols_survey_kyri` both rostered and their claims closed; all four VOLS
 Journey 13 rungs now carry a guard entry.
 
+**COPAL -- NONA_SEASON_N0 ROSTERED.** `nona_season_n0_witness.rish` proven both ways on metal
+(present GREEN; charter moved aside, refuses at the missing-charter assert, then restored) and
+rostered in `construction/standing-equipment.kyri`. Claimed as `copal-nona-season-n0-roster`,
+closed.
+
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
 -- ep012 rostered and that claim closed.
@@ -341,7 +346,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `5143751289` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `099ab71854` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
