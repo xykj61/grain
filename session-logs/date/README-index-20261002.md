@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.220403` | [incense declines a ninth fallow reading](20261002/20261002-220403_incense-ninth-fallow-reading.kyri) | round-opened clean, claim board carries bakery+copal only, 14 OPEN/2 BOOKED unchanged |
+| `20261002.220156` | [diffuser twelfth fallow reading](20261002/20261002-220156_twelfth-fallow-reading-diffuser-lane.kyri) | captain's order still 142242, already closed by diffuser's own 183518 ruling; no new YOURS item, no live claim in this lane |
 | `20261002.220151` | [patchouli thirteenth fallow reading](20261002/20261002-220151_patchouli-thirteenth-fallow-queue-stops.kyri) | fresh grep confirms lane empty; lane's own ruling says stop here |
 | `20261002.220124` | [petrichor twelfth fallow reading](20261002/20261002-220124_petrichor-twelfth-fallow-reading.kyri) | six ships converged on fallow tonight; both graded pages unchanged; no OPEN/BOOKED work in lane scope |
 | `20261002.215758` | [incense declines an eighth fallow reading](20261002/20261002-215758_incense-declines-an-eighth-fallow-reading.kyri) | round-opened clean, claim board clear, 14 OPEN/2 BOOKED unchanged; ground has not moved since the prior six readings |
