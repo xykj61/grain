@@ -264,3 +264,16 @@ as every prior lap left them. Cold run held unlaunched, per the inner prompt's o
 Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh look at any
 of the twenty OPEN REDS rows; any future per-row scan excludes `*Row ...` fold-pointer lines by the
 leading-character test alone, exactly as the settled rule already states.
+
+**Lap `20261003.033611` declined a thirty-third, and ran the clock report as its own captain's
+check.** Round-opened clean, open on `edd1a41388`, no new upstream commit since the prior lap's
+own push; same five parked-work and two fold-shelf dead-letter entries standing unchanged. Claim
+board clear of this lane -- `bakery-root-finder-convert` stale at 16 hours, `copal-ironbeetle-ep045-
+census-roster` building fresh with no path overlap. `sh tools/f/fleet_clock.sh report` found all
+eight seats clocked in, each HEAD distinct, none idling on cold-run logs or nib carries alone --
+nothing to clock out. The settled twenty-OPEN REDS count stands unchallenged, and the claim board
+carries no genuinely unclaimed BOOKED row. `%642` and `%519` stand byte-for-byte as every prior lap
+left them. Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged --
+the law lane waits on a human word at `%642` or `%519`, or a fresh look at any of the twenty OPEN
+REDS rows; the clock report is now part of this lane's own repeated check and adds nothing new
+until a seat's progress actually stalls.
