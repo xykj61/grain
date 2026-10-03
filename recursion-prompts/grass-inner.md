@@ -210,6 +210,25 @@ line moved.
 `till.rye`, `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file
 at a time, per this lane's usual depth-2 bound.
 
+**`tenure.rye`'s head lifts C+ to B+, landed `20261003`.** Fourteen negative sentences --
+`loses` (twice), `refuses`, `wrong`, `break`, `no-op` (twice), `refusal`, `not ... lost`,
+`inventing no storage, weakening no bound, editing no elder`, the closing `no real key, no funds,
+no network, no custody` -- rewrote into affirmative sentences holding the same facts: `fold.fold_log`'s
+whole-log refusal became a decline that exposes a mesh to front-running, the `StarTaken` contest
+path became a lawful standstill, and the siloed/demo closing took the same affirmative shape
+`freight.rye`'s own lift set (leaving a real key, real funds, a real network, and real custody for
+a served arc to one day carry). Every backticked identifier and the design-read citation held
+exactly. Register rose from 47 (53% negative of 15) to 100 (0% negative), composite from 75 to 88,
+B+ -- reach moved to grade 13 on the paragraph's own vocabulary, over the Door ceiling, with no
+further split available without losing a fact; B or better still stands. All five touching
+witnesses -- `mycelium_tenure_witness`, `mycelium_tenure_true_witness`, `mycelium_tenure_knot_witness`,
+`mycelium_tenure_kyri_witness`, `fora_tenure_witness` -- re-run GREEN; no code line moved.
+[Account](../active-designing/date/20261003/20261003-102244_grass-tenure-module-head-account.md).
+
+**The next-crux lean:** four more files from the same sample read below B -- `till.rye`,
+`voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file at a time,
+per this lane's usual depth-2 bound.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
