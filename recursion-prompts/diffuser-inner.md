@@ -1,6 +1,11 @@
 # Diffuser, inner
 
-**Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
+**Language:** EN - **Voice:** Kyri - **Style:** Gauge, two registers below
+**Register:** the engine section stays Field. The fruit log is **Meter** -- each entry records a
+landed finding or a declined falsifier, refusal is the subject, and the ceiling is uncapped per
+Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own audit finding
+(`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
+across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
 **Revised:** `20261003.014028` -- the fractal address stays flat where the ring grows with the room
 **Revised:** `20261002.231237` -- neither real caller ever reaches the window
