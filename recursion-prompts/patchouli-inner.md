@@ -222,6 +222,24 @@ families live in modules this lane does not own. Repeating the same two grep net
 this point buys little; a lap landing here next should widen to a fresh class of search (a
 different file family, a different REDS reading) before adding an eighteenth near-identical entry.
 
+**The eighteenth lap widened to a fresh class rather than repeating the grep nets,
+`20261003.094433`.** The seventeenth sweep named the lesson plainly -- repeat the same two `%765`
+nets and little is bought; widen before adding a near-identical entry. This lap read the standing
+ASCII-first comment ratchet (`tools/fixtures/r/rye_comment_ascii_scan.sh`) against this lane's own
+`mantra/` and `tally/` files, rather than against `%765`'s header class, and found four real
+non-ASCII characters standing inside the already-counted ratchet: one Unicode `<=` sign in
+`mantra/recall_batch_wire.rye`, and three section-sign comment headers in `tally/gardens.rye`. Both
+repaired per the rule's own table and precedent, the ratchet's `CEILING` lowered `2625 -> 2596` to
+match with zero slack, and GREEN re-proven: `ascii_comment_witness.rish`, `tame_style_check.rish`,
+`mantra_recall_batch_wire.rish`, and a direct build-and-run of `tally/gardens.rye`.
+`tools/w/width-check.rish` reads `authored_width_drift` unchanged before and after this edit --
+confirmed pre-existing by stashing the touched files and re-reading identically, so it belongs to a
+different lap. [Account](../construction/archive/date/20261003/20261003-094433_itinerary-patchouli-ascii-comment-ratchet-sweep-account.md).
+**The lesson for the next empty-queue lap:** this lane owns several standing TAME ratchets beside
+`%765` -- `rye_written_ascii_scan.sh`, `rye_spoken_ascii_scan.sh`, the explicit-width corpus --
+and checking one of those against `mantra/`-`tally/` is real, agent-doable ground this lane had
+never swept on its own account. `%807` and `%765`'s 38 remaining families are unchanged.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

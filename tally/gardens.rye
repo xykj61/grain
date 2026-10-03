@@ -40,7 +40,7 @@ const print = std.debug.print;
 const tally_gardens_version = "20260620.211712";
 
 // =========================================================================
-// § Region -- reached, no longer inlined
+// Section Region -- reached, no longer inlined
 // =========================================================================
 //
 // `Region` and `buf_len_u32` stood here as a copy of `tally/seed.rye`'s, kept inline because an
@@ -55,7 +55,7 @@ const buf_len_u32 = region_mod.buf_len_u32;
 pub const Region = region_mod.Region;
 
 // =========================================================================
-// § Gardens -- a named collection of Regions
+// Section Gardens -- a named collection of Regions
 // =========================================================================
 
 /// Maximum name length for a garden name.
@@ -240,7 +240,7 @@ pub const Gardens = struct {
 };
 
 // =========================================================================
-// § Proof -- main asserts all facts hold
+// Section Proof -- main asserts all facts hold
 // =========================================================================
 
 pub fn main() void {

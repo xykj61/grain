@@ -348,7 +348,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `431d43e6c7` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `ae49012fc9` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
@@ -378,6 +378,9 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 shelved](archive/date/20261003/20261003-043445_itinerary-patchouli-schema-molt-own-regression-account.md)
 -- head fell F/51 crossing a floor %765 never re-checked; rewritten A+/100, GREEN. 38 `%765`
 families remain outside this lane. `%807` wants Keaton's ruling.
+**PATCHOULI -- ascii ratchet.** [Account
+shelved](archive/date/20261003/20261003-094433_itinerary-patchouli-ascii-comment-ratchet-sweep-account.md)
+-- 4 comment chars fixed, ceiling lowered, GREEN.
 
 ### Copal -- Amphora receipt and portable bundle
 
