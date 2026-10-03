@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.222020` -- the label costs 752 overhead bytes; the three joining bytes it replaces cost nothing like that
 **Revised:** `20261002.181135` -- seventy-four of seventy-five close on one script-confirmed cause
 **Revised:** `20261002.175448` -- the kin essay's own traced instance never reclaimed anything
 **Revised:** `20261002.174555` -- the one release gesture has never been exercised twice
@@ -473,6 +474,25 @@ superseded and they are not recovered. One stashed card-fold (`20261002-065637`)
 card before the fold at `20261002.185031` superseded it; both now stand in
 `construction/archive/`. The next fruit stays whatever the captain rules; this recovery adds no new
 claim to the board, since no new tracked instrument was created.
+
+**Self-generated `20261002.222020`, fourteen fallow readings broken by the lane's own standing
+mandate to self-generate rather than wait.** The `20261002.183518` ruling closed the arena-tail-free
+arc and named the next fruit as awaiting the captain's word; fourteen consecutive fallow readings
+across the day found no such word had landed. Per this seat prompt's own baton ("your lane is
+moonshots and research, and you are expected to generate them yourself rather than wait to be
+handed one"), this lap self-generates rather than extending the fallow streak.
+[The label costs more than the four wires it labels](../active-designing/date/20261002/20261002-222020_the-label-costs-more-than-the-four-wire-pulls-it-labels.md)
+extends [the four pairs ride as one string](../active-designing/date/20261002/20261002-004836_the-four-pairs-ride-as-one-string-not-four-channels.md),
+which named a real per-channel traffic weight as needing a five-guest build this lane declined to
+attempt. This page asks a smaller question with the wire format already landed: what would four
+separately sealed messages cost against one concatenated seal? A scratch host probe, built beside
+`comlink/wire_format.rye`, run, and deleted before this lap ends, measures it on metal: one seal of
+the four pairs costs 277 wire bytes (89 payload, 188 fixed `off_cipher` overhead); four seals of one
+pair each cost 838 wire bytes (86 payload, 752 overhead) -- 3.02 times the bytes, almost entirely
+`seal_message`'s own per-call cryptographic cost rather than anything spent naming a channel. Names
+a falsifier against Comlink's own deferred batched-frame hardening. No module, no witness, no
+Swift file; the probe is deleted and nothing lands beyond this page. Graded A/95 at Field
+(register 96, reach 100, truth 100).
 
 ## gates
 
