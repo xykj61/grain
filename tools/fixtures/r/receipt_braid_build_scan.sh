@@ -4,7 +4,9 @@
 # Zig refuses an @import whose path leaves the module. A file under
 # .lap/receipt-braid-build that imports ../../dimeroll/receipt_offer.rye fails
 # with "import of file outside module path". A file in that same pen that
-# imports only std builds. BRAID_BUILD, when set, replaces rye_build.sh so a
+# imports only std builds. A symlink beside the importing file, pointed at
+# dimeroll/receipt_offer.rye, is admitted: the source braid scan is what holds
+# a tracked symlink. BRAID_BUILD, when set, replaces rye_build.sh so a
 # control can plant the other two answers.
 #
 #   sh tools/fixtures/r/receipt_braid_build_scan.sh
@@ -27,6 +29,12 @@ const std = @import("std");
 pub fn main() void {
     _ = std;
 }
+EOF
+
+ln -s ../../dimeroll/receipt_offer.rye "$pen/peer_offer.rye"
+cat > "$pen/via_link.rye" <<'EOF'
+const other = @import("peer_offer.rye");
+pub fn main() void {}
 EOF
 
 build_one() {
@@ -62,6 +70,18 @@ else
   clean=failed
 fi
 
+set +e
+build_one "$pen/via_link.rye" "$pen/via_link"
+link_rc=$?
+set -e
+if [ "$link_rc" -eq 0 ]; then
+  link=admitted
+elif grep -q "import of file outside module path" "$pen/out.txt"; then
+  link=refused
+else
+  link=other
+fi
+
 if [ "$outside" = refused ] && [ "$clean" = built ]; then
   verdict=build_refuses
 elif [ "$outside" = admitted ]; then
@@ -72,5 +92,6 @@ fi
 
 echo "outside=$outside"
 echo "clean=$clean"
+echo "link=$link"
 echo "verdict=$verdict"
 rm -rf "$pen"

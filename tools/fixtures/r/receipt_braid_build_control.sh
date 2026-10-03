@@ -25,6 +25,10 @@ case "$out" in
   *verdict=build_refuses*) report live ok ;;
   *) report live red "$out" ;;
 esac
+case "$out" in
+  *link=admitted*) report live_link ok ;;
+  *) report live_link red "$out" ;;
+esac
 
 stubdir=".lap/receipt-braid-build-control"
 rm -rf "$stubdir"
@@ -54,7 +58,7 @@ case "$out" in
 esac
 
 rm -rf "$stubdir"
-echo "control_legs=3"
+echo "control_legs=4"
 echo "control_failed=$bad"
 if [ "$bad" -eq 0 ]; then
   echo "control_verdict=ok"
