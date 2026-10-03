@@ -59,9 +59,3 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
-claim copal-vols-classify-roster
-seat copal
-stamp 20261003.035751
-epoch 1791014271
-paths tools/gen/chapter/vols_classify_witness.rish construction/standing-equipment.kyri
-what CION VOLS Journey 13 r2: roster vols_classify_witness, the lone unrostered witness between r1 (vols_survey) and r4 (vols_survey_true)

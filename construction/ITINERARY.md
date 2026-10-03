@@ -150,6 +150,14 @@ roster's own comment names as deliberately left unrostered -- re-measure with
 <(grep -oP '(?<=^path )tools/gen/chapter/\S+' construction/standing-equipment.kyri | xargs -n1
 basename | sed 's/\.rish$//' | sort -u)` rather than trusting this count.
 
+**COPAL -- VOLS_CLASSIFY ROSTERED, THE GAP BETWEEN TWO ROSTERED SIBLINGS.**
+`vols_classify_witness.rish` rostered -- CION VOLS Journey 13 r2, standing between r1
+(`vols_survey`, already rostered) and r4 (`vols_survey_true`, already rostered), with r3
+(`vols_survey_kyri`) left for a later lap per this fruit's own scope of one. The witness carries
+its own both-ways proof: a positive fixture reads `verdict=ok, guarded_sites=0`, and a negative
+fixture -- the same tree with its prose site's path added to the guardlist -- reads
+`verdict=drift, guarded_sites=1`, refused. Claimed as `copal-vols-classify-roster`, closed.
+
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
 -- ep012 rostered and that claim closed.
@@ -337,7 +345,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d099484097` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `4ebe4bb51b` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

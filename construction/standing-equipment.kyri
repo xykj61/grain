@@ -9648,3 +9648,25 @@ guard tigerstyle_void_return
 path tools/gen/chapter/tigerstyle_void_return_witness.rish
 tier lap
 seated 20261003.034220
+
+# vols_classify -- CION VOLS Journey 13 r2, unrostered since it was written, and the gap between
+# two already-rostered siblings: r1 (vols_survey, seated 20261002.051538) and r4
+# (vols_survey_true, seated 20261002.053600) both carry a guard entry; r2 and r3
+# (vols_survey_kyri) do not. This entry takes r2 alone. Proves each survey site from r1's census
+# is CLASSIFIED -- by kind (a prose relabel-target vs a kept witness-handle filename) and by
+# guard (already watched by cion_module_labeling_witness.rish vs a gap) -- so the guarded set is
+# derived from that guard witness itself rather than hand-copied, and guarded_sites reads 0 by
+# construction. Proven on metal both ways in this lap: the positive fixture
+# (tools/fixtures/vols_classify_tree against vols_classify_guardlist_ok.txt) reads verdict=ok,
+# sites=2, handles=1, prose_gaps=1, guarded_sites=0; the negative fixture
+# (vols_classify_guardlist_neg.txt, the same tree with its prose site's own path added to the
+# guardlist) reads verdict=drift, guarded_sites=1, status refused -- the classifier bites a
+# guarded file that still carries a bare ordinal rather than trusting the guardlist blindly. The
+# live classification over the whole tree then reports guarded_sites=0 informationally, which is
+# the invariant the CION labeling guard and this survey's sites stay disjoint. One of the
+# unrostered tools/gen/chapter/ witnesses copal-inner.md names; claimed as
+# copal-vols-classify-roster before this entry landed.
+guard vols_classify
+path tools/gen/chapter/vols_classify_witness.rish
+tier lap
+seated 20261003.035902
