@@ -105,6 +105,19 @@ merge. `.claude/rules/quality-assurance.md` answers its own question: the rule p
 when a reading comes back below B, so a latent fault that never lowers a grade owes no sweep of its
 own. `construction/ITINERARY.md`'s GRASS account carries the measurement.
 
+**The air lap pressed the `functions_over_70` claim and the hand passed through, `20261002`.**
+Running `rishi/bin/rishi run tools/t/tame_style_scan_advise.rish` -- the same instrument the
+mycelium and `glow_run.rye` accounts above cite for their "439 to 437" and "fell by one" readings
+-- answers **`functions_over_70=690`** against the unchanged 20-room roster
+(`roster_files=1161`), not 437. The three named split/decline sites still hold clean on their own:
+`glow/glow_run.rye` carries nothing over 70 lines, `rishi/src/main.rye`'s `eval_expr` likewise, and
+`rye/src/main.rye`'s `bridge_to_zig` sits at 377 lines exactly where the decline left it. The 253-row
+gap sits elsewhere in the roster -- its ten longest rows are now witness `run_selftest` and caravan
+`check_suffice_runs` functions this packet never touched -- and this lap did not trace where or when
+those grew past 70, since doing so honestly is a new audit packet rather than an ordinary touch.
+Named here as the current, re-derivable number for whichever lap takes that packet up next; this
+page's own prior "437" line is left standing as the record of what that day's narrower reading said.
+
 **The next-crux lean:** no new audit packet is queued. Continue the ordinary move -- touch a prose,
 comment, or docs surface already open for other reasons, grade it, and push one bounded molt frame
 only where the reading comes back below B.

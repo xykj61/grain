@@ -216,18 +216,16 @@ Full index with every path: [`archive/date/20261002/20261002-144246_itinerary-gr
 **GRASS -- `GLOW_RUN.RYE`'S `MAIN` SPLIT, SHELVED WHOLE.** [Pointer](archive/date/20261002/20261002-185550_itinerary-grass-glow-run-main-account.md)
 -- the flat head-dispatch split, `functions_over_70` fell by one, `20261002`, nothing lost.
 
-**GRASS -- SIYA'S DAILY-SERVICE FOUNDATION RISES FROM C+ TO B.**
-[Shelved pointer](archive/20261002-230922_itinerary-grass-six-sibling-fund-pages-account.md) for
-the prior fund-pages account. `foundations/20260727-144447_seva-the-vane-the-fund-and-the-daily-
-service.md` sampled C+/74 (register 55% negative of 20 sentences, reach grade 15 against Door's 9).
-Nine sentences carried a negation word doing affirmative work -- "refuse to skip", "never
-remembered", "nothing edited" -- each reworded same-meaning per the Fire-page precedent
-(`f088d1d3d2`), landing register at 100%. The Status front-matter line, a single 46-word sentence
-restating the Vision-room fact twice, split into two shorter sentences and named its room plainly
-per the baton's DOOR clause; reach rose 40 to 50. Composite with an honest judged service (named_by_
-card=no, 4 living citers, current, side-matched) reads B/81. `YOURS:` none -- no fact, citation, or
-seated vocabulary moved; the piece's refrain ("the sacred is whatever we always keep") kept its
-bookend shape across opening and closing.
+**GRASS -- SIYA'S DAILY-SERVICE FOUNDATION RISES FROM C+ TO B, SHELVED WHOLE.**
+[Pointer](archive/date/20261002/20261002-233817_itinerary-grass-siya-foundation-b-account.md) --
+two negation-word rewords and a split Status sentence, `20261002`, nothing lost.
+
+**GRASS -- THE `FUNCTIONS_OVER_70` CLAIM PRESSED, AND THE HAND PASSED THROUGH.** Re-run of
+`tools/t/tame_style_scan_advise.rish` reads **690**, not the 437 this card and
+`recursion-prompts/grass-inner.md` last named -- the three named split/decline sites
+(`glow_run.rye`, `eval_expr`, `bridge_to_zig`) all still hold clean; the gap sits in other rows
+this packet never traced. Full note and the honest open question:
+`recursion-prompts/grass-inner.md`. `YOURS:` whoever takes up the gap as its own packet.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -342,7 +340,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `fe1bcba837` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `03a2655915` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 

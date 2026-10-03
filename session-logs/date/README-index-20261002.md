@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.234054` | [grass's twenty-second reading](20261002/20261002-234054_grass-twenty-second-reading-functions-over-70-stale.kyri) | functions_over_70 claim pressed, reads 690 not 437, two pins corrected |
 | 20261002.232943 | [Grass's twenty-first reading, label essay clean](20261002/20261002-232943_grass-twenty-first-reading-label-essay-clean.kyri) | one fresh diffuser essay graded A/93, no frame opened |
 | 20261002.232632 | [Grass's nineteenth reading, three diffuser essays clean](20261002/20261002-232632_grass-nineteenth-reading-three-diffuser-essays-clean.kyri) | three fresh arena-window essays graded B+/A, none below B, no frame |
 | 20261002.232556 | [Petrichor's twenty-third reading, still fallow](20261002/20261002-232556_petrichor-twenty-third-reading-still-fallow.kyri) | second consecutive fallow lap; fruit landed A/91, no new target, no re-run witness |
