@@ -53,6 +53,40 @@
     { from = 60000; to = 65535; }
   ];
 
+  # Mouse wheel on this pier. Termux on the Daylight tablet sends Up and Down
+  # for the wheel while tmux mouse is off, and Cursor CLI and Claude Code spend
+  # those keys on the input box's own history. Blink keeps the wheel and scrolls
+  # the printout. mouse on turns the wheel into a mouse event. The two bindings
+  # below always enter copy mode and never forward the wheel into the pane.
+  # alternate-screen off keeps lines that scroll off the pane in tmux history;
+  # with it on, prefix [ shows the lines from before the full-screen app started.
+  # history-limit applies to windows created after this file loads. secureSocket
+  # stays off so the socket remains /tmp/tmux-1000/default.
+  programs.tmux = {
+    enable = true;
+    terminal = "tmux-256color";
+    historyLimit = 100000;
+    secureSocket = false;
+    withUtempter = false;
+    extraConfig = ''
+      set -g mouse on
+      set -g alternate-screen off
+      bind-key -n WheelUpPane {
+        if -F '#{pane_in_mode}' {
+          send-keys -M
+        } {
+          copy-mode -e
+          send-keys -M
+        }
+      }
+      bind-key -n WheelDownPane {
+        if -F '#{pane_in_mode}' {
+          send-keys -M
+        }
+      }
+    '';
+  };
+
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -364,7 +398,6 @@
   environment.systemPackages = with pkgs; [
     opencode
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
-    tmux
     git
     git-filter-repo  # deep-debride: safe history rewrite (git filter-repo)
     gh
