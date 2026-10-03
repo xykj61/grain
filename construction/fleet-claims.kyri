@@ -59,3 +59,9 @@ stamp 20261002.103652
 epoch 1790951812
 paths tools/fixtures/r/root_finder_convert.sh tools/fixtures/r/root_finder_convert_control.sh tools/r/root_finder_convert_witness.rish
 what REDS %788: build the per-lane converter the root_finder ratchet's own header promises, so a lane sweeps its own bare finders rishi/bin to rishi/src without a fleet-wide sweep
+claim copal-tigerbeetle-dependencies-census-roster
+seat copal
+stamp 20261003.094415
+epoch 1791035055
+paths tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish construction/standing-equipment.kyri
+what roster the unrostered TB dependencies census witness (e52), proven both legs on metal, matching the decided-skip shape of its control-plane/cache-inplace/golden-rule siblings
