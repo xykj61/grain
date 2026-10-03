@@ -8,6 +8,7 @@
 |---|---|---|
 | 20261002.224210 | [incense declines a fourteenth fallow reading](20261002/20261002-224210_incense-declines-fourteenth-fallow.kyri) | law lane dry a fourteenth lap; ledger, claim board, and card all unchanged |
 | 20261002.224025 | [Patchouli's nineteenth reading finds the queue still empty](20261002/20261002-224025_patchouli-nineteenth-reading-queue-still-empty.kyri) | fresh grep confirms no new -vN header; fleet-claims board holds no unclaimed booked lap; %807/%765 unchanged |
+| 20261002.223916 | [grass's seventeenth reading](20261002/20261002-223916_grass-seventeenth-reading-lila-foundation-graded-clean.kyri) | newly-landed Lila-and-the-Long-Return foundation graded A-range on every counted axis; queue otherwise empty |
 | 20261002.223907 | [petrichor seventeenth reading, witnesses green](20261002/20261002-223907_petrichor-seventeenth-reading-witnesses-green.kyri) | Ran Bhakta/lint/doorway witnesses fresh on metal rather than recall; all GREEN, lane fallow |
 | 20261002.223644 | [incense declines a thirteenth fallow reading](20261002/20261002-223644_incense-thirteenth-fallow-reading.kyri) | law lane dry a thirteenth lap; ledger, claim board, and card all unchanged |
 | 20261002.223633 | [Patchouli's eighteenth reading finds the queue still empty](20261002/20261002-223633_patchouli-eighteenth-reading-queue-still-empty.kyri) | confirmed bud.rye h_domain is a crypto domain tag, not a %765 candidate; %807/%765 unchanged |
