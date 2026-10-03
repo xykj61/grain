@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261002.220403` | [incense declines a ninth fallow reading](20261002/20261002-220403_incense-ninth-fallow-reading.kyri) | round-opened clean, claim board carries bakery+copal only, 14 OPEN/2 BOOKED unchanged |
 | `20261002.220151` | [patchouli thirteenth fallow reading](20261002/20261002-220151_patchouli-thirteenth-fallow-queue-stops.kyri) | fresh grep confirms lane empty; lane's own ruling says stop here |
+| `20261002.220124` | [petrichor twelfth fallow reading](20261002/20261002-220124_petrichor-twelfth-fallow-reading.kyri) | six ships converged on fallow tonight; both graded pages unchanged; no OPEN/BOOKED work in lane scope |
 | `20261002.215758` | [incense declines an eighth fallow reading](20261002/20261002-215758_incense-declines-an-eighth-fallow-reading.kyri) | round-opened clean, claim board clear, 14 OPEN/2 BOOKED unchanged; ground has not moved since the prior six readings |
 | `20261002.215652` | [patchouli twelfth fallow reading](20261002/20261002-215652_patchouli-twelfth-fallow-fleet-converges.kyri) | fresh grep of mantra/tally confirms only elder arms remain; %807/%765 unchanged; fleet-wide convergence corroborates |
 | `20261002.215520` | [petrichor eleventh fallow reading, earth row](20261002/20261002-215520_petrichor-eleventh-fallow-reading-earth-row.kyri) | fruit still landed, no new word; earth row's own fallow/harvest vocabulary named this lap's shape |
