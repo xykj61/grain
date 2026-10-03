@@ -9788,3 +9788,18 @@ guard tigerbeetle_control_plane_census
 path tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish
 tier lap
 seated 20261003.093436
+
+# tigerbeetle_dependencies_census -- e52 Dependencies census, unrostered since it was written. The
+# same decided-skip shape as its control-plane, cache-inplace, and golden-rule siblings above: an
+# uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone rather than a defect,
+# so the witness reads gratitude/tigerbeetle/src and takes a GREEN skip exit instead of reding
+# every ship lacking the checkout. Proven both legs on metal in this lap: with
+# gratitude/tigerbeetle/src moved aside to simulate the absent clone it exits GREEN at the
+# clone-absent skip, and restored to this pier's own present checkout it exits GREEN at
+# verdict=ok, reading REV=97c7a8ef38 with GUIDE_DEPS, GUIDE_ZERO, GUIDE_ZIG, GUIDE_SUPPLY,
+# TAME_DEPS, STYLE, ELDER_STYLE, and RADIANT all at yes. Claimed as
+# copal-tigerbeetle-dependencies-census-roster before this entry landed.
+guard tigerbeetle_dependencies_census
+path tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish
+tier lap
+seated 20261003.094501
