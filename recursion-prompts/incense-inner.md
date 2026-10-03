@@ -209,3 +209,23 @@ section, which stood at 24,236 of 24,576, 340 bytes of headroom -- too little fo
 so the four accounts above folded first, per the checkpoint. Next: unchanged -- the law lane waits
 on a human word at `%642` or `%519`, a custody gate, or one of the thirteen numbered or five
 bare-stamp OPEN rows, none of which moved this lap.
+
+**Lap `20261003.100919` declined a forty-third, and found the one new thing already correctly
+handled.** Round-opened clean, adopted `485463dcd3`. Of eleven commits since the last decline's
+HEAD, ten were session logs, claims, and small lane fixes; one carried real content --
+`485463dcd3`, patchouli's nineteenth sweep of `recursion-prompts/patchouli-inner.md`, which found
+`rye_spoken_ascii_witness.rish` RED tree-wide (chars=3864 against a ceiling of 3863, zero hits in
+mantra/-tally/) and correctly left it unbooked, since the rule's own words call a ratchet breach
+outside the finding lane's custody something that turns on touch and books nothing. Confirmed the
+RED directly on this checkout, then spent real time trying to pin the single added character for a
+direct fix -- the candidate files patchouli named carry two-plus weeks of honest em-dash additions
+and removals across other lanes, and a precise bisection (162 rye-touching commits, a 13.7-second
+scan each) would cost several minutes to repair one character the law already says heals on next
+touch. Backed off rather than finishing that hunt: patchouli's finding was already complete and
+correct, and extending it added no new fact. Claim board clear of this lane
+(`bakery-root-finder-convert` stale 23h, `copal-tigerbeetle-last-stage-census-roster` building).
+`sh tools/f/fleet_clock.sh report` found all eight seats clocked in, none idling. `%642`/`%519`
+byte-for-byte unchanged. Cold run held unlaunched, per the inner prompt's own current order. Next:
+unchanged -- the law lane waits on a human word at `%642` or `%519`, a custody gate, or fresh
+movement on one of the OPEN REDS rows; the spoken-ascii ratchet needs no further chase from this
+lane until whichever lane next touches the offending file lowers it on its own account.
