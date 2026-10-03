@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.114117` | [kakoune soft wrap](20261003/20261003-114117_kakoune-soft-wrap.kyri) | Display wrap in the kakoune site file |
 | `20261003.112841` | [receipt crawl written](20261003/20261003-112841_receipt-crawl-written.kyri) | Study, silo, and plan; names left unseated |
 | `20261003.110406` | [rebuild and tmux source landed](20261003/20261003-110406_rebuild-and-tmux-source-landed.kyri) | /etc/tmux.conf and the live server agree |
 | `20261003.110251` | [wheel scroll works](20261003/20261003-110251_wheel-scroll-works.kyri) | Keaton confirmed the wheel; mouse still on |

@@ -136,6 +136,26 @@
         };
       });
 
+      # Soft wrap for reading. Kakoune's autowrap-enable command inserts a
+      # newline into the buffer once a line passes autowrap_column, and its
+      # own note says paragraph formatting can break markup. The wrap
+      # highlighter leaves the file alone and folds the display at the
+      # window width, on word boundaries, keeping the line's indent.
+      # nixos-26.05 has no programs.kakoune module. The binary reads
+      # ~/.config/kak/kakrc and, from the shipped kakrc, ${kak_runtime}/kakrc.local.
+      # This wrapper is that site file. A kak already running keeps its old
+      # display until it is quit and opened again.
+      kakoune = prev.wrapKakoune final.kakoune-unwrapped {
+        plugins = [
+          (final.runCommand "kak-soft-wrap" { } ''
+            mkdir -p "$out/share/kak"
+            cat > "$out/share/kak/kakrc.local" <<'EOF'
+            add-highlighter global/ wrap -word -indent
+            EOF
+          '')
+        ];
+      };
+
       cursor-cli = prev.cursor-cli.overrideAttrs (_old: {
         version = "0-unstable-2026-09-18";
         src = final.fetchurl {
