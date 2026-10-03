@@ -1408,6 +1408,18 @@ path tools/r/receipt_third_import_witness.rish
 tier lap
 seated 20261003.164639
 
+# Seated 20261003.172313. One reading of the eight acceptance cases through the
+# witnesses that already hold them. Cases 1, 2, 3, and 5 share the snapshot
+# runner. Cases 6 and 7 share the refusal runner. Case 8 needs the source
+# braid, the build, and the one-file import. Case 4 stays the source-order
+# reading. The scan prints milestone=unstamped on a green board and on a short
+# one. It has no stamp verb. Cadence, because each runner already has its own
+# lap guard.
+guard receipt_case_board
+path tools/r/receipt_case_board_witness.rish
+tier cadence
+seated 20261003.172313
+
 # Seated 20260918.043437. The receipt contract's Dimeroll projection stood at zero lines: the
 # product owing half the falsifier had not begun. `dimeroll/receipt_offer.rye` publishes
 # `DimerollReceiptIntake` and `from_snapshot`, reading a settled offer's own fields -- receipt_id,

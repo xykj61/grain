@@ -1,0 +1,29 @@
+# tools/r/receipt_case_board_witness.rish -- eight receipt cases, milestone unstamped.
+#
+# The witnesses already exist. This one runs them as one board. Case 4 stays
+# the source-order reading. The milestone line is unstamped on a green board
+# and on a short one. There is no stamp verb in this file.
+#
+#   rishi/bin/rishi run tools/r/receipt_case_board_witness.rish
+
+say "case-board: Language EN -- eight receipt cases, one reading, milestone unstamped."
+say "case-board: Style Gauge Meter -- the live board, a planted short case, and green stubs that still do not stamp."
+say "case-board: Lens TAME -- safety first: a green board leaves the achieved name where it is."
+
+let control = run ["sh" "tools/fixtures/r/receipt_case_board_control.sh"]
+say control.out
+assert control.ok else "case-board: the control must pass"
+assert control.out contains "control_verdict=ok" else "case-board: the control must reach its own ok"
+assert control.out contains "control_failed=0" else "case-board: every planted leg must pass"
+assert control.out contains "control_legs=9" else "case-board: nine legs"
+assert control.out contains "leg_ok: live" else "case-board: the live witnesses must pass"
+assert control.out contains "leg_ok: live_unstamped" else "case-board: the live board must leave the milestone unstamped"
+assert control.out contains "leg_ok: live_case4" else "case-board: case 4 stays the source-order reading"
+assert control.out contains "leg_ok: live_case8" else "case-board: case 8 needs the braid, the build, and the one-file import"
+assert control.out contains "leg_ok: braid_short" else "case-board: a refused braid must shorten the board"
+assert control.out contains "leg_ok: braid_case8" else "case-board: that refusal belongs to case 8"
+assert control.out contains "leg_ok: braid_unstamped" else "case-board: a short board still does not stamp"
+assert control.out contains "leg_ok: stubs_unstamped" else "case-board: green stubs stay unstamped"
+assert control.out contains "leg_ok: stubs_milestone" else "case-board: the milestone line stays unstamped when every stub is green"
+
+say "GREEN: case-board -- the eight cases ran through their witnesses, and the milestone stays unstamped."
