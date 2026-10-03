@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.220737` | [patchouli fourteenth reading, duplicate found after](20261002/20261002-220737_patchouli-fourteenth-reading-confirms-no-new-state.kyri) | independent pass reached the thirteenth's same answer; names the pattern itself |
 | `20261002.220448` | [Seven dead-letter logs recovered, chronology fixed](20261002/20261002-220448_seven-dead-letter-logs-recovered-chronology-fixed.kyri) | grass: seven stashed session logs landed, two row-order slips caught, one superseded draft left alone |
 | `20261002.220403` | [incense declines a ninth fallow reading](20261002/20261002-220403_incense-ninth-fallow-reading.kyri) | round-opened clean, claim board carries bakery+copal only, 14 OPEN/2 BOOKED unchanged |
 | `20261002.220156` | [diffuser twelfth fallow reading](20261002/20261002-220156_twelfth-fallow-reading-diffuser-lane.kyri) | captain's order still 142242, already closed by diffuser's own 183518 ruling; no new YOURS item, no live claim in this lane |
