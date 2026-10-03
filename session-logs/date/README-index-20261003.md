@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261003.030843 | [ep043 roster, card shed](20261003/20261003-030843_copal-ep043-roster-and-card-shed.kyri) | ep043 witness rostered GREEN both ways; card folded under bound |
+| 20261003.030755 | [Grass lifts snapshot_projection.rye's module head, D/57 to B/83](20261003/20261003-030755_grass-snapshot-projection-module-head-lift.kyri) | second named below-B head repaired; a design essay's own filename spelled the one unavoidable negation |
 | 20261003.030505 | [Diffuser: the near-miss is exact across both skies](20261003/20261003-030505_near-miss-exact-both-skies.kyri) | swap-the-call falsifier run exhaustively on scratch metal, zero divergence, mutation-tested |
 | 20261003.030326 | [Petrichor's seventeenth fallow reading](20261003/20261003-030326_petrichor-seventeenth-fallow-reading-aether.kyri) | one peer commit pulled; rota read Aether |
 | `20261003.030257` | [Three over-bound index rows trimmed](20261003/20261003-030257_three-index-rows-trimmed-to-bound.kyri) | a live row-bound red found and closed on this shelf |

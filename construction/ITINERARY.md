@@ -201,15 +201,19 @@ nothing lost, every path still opens. `functions_over_70` sits at 437.
 shelved](archive/20261003-025313_itinerary-grass-diffuser-inner-register-account.md) -- diffuser's
 own fix (`df11d741cd`) closed it at A+/100. Nothing lost.
 
-**GRASS -- `mantra/spool_dedup_ratio.rye`'S MODULE HEAD LIFTS F/52 TO B/83.** The ordinary sweep
-widened to module heads touched by other lanes, graded nine against `qa_report_card.sh`'s Door
-dial; this one read worst -- register 34 (66% of 9 sentences negative against the 20% ceiling) and
-reach 0 (grade 19 against a ceiling of 9). Rewritten into eighteen shorter, affirmative sentences,
-every path and fact held exactly; register rose to 96, reach to 60, composite to 83 (B).
-`tools/m/mantra_spool_dedup_ratio_witness.rish` re-run GREEN. **YOURS:** four more below-B heads,
-named in [this lap's log](../session-logs/date/20261003/20261003-025313_grass-spool-dedup-ratio-module-head-lift.kyri)
-(`mycelium/pledge.rye` C+/75, `mycelium/lapse.rye` C/71, `mantra/src/receipt_offer.rye` C+/77,
-`mantra/snapshot_projection.rye` D/63), wait for the next GRASS lap per the one-keystone bound.
+**GRASS -- `mantra/spool_dedup_ratio.rye`'S MODULE HEAD LIFT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-030755_itinerary-grass-spool-dedup-ratio-module-head-account.md)
+-- F/52 to B/83, GREEN on metal. Nothing lost.
+
+**GRASS -- `mantra/snapshot_projection.rye`'S MODULE HEAD LIFTS D/57 TO B/83.** Worst of the four
+heads named by the prior lift -- register 62% negative of 8 sentences, driven by one design
+essay's own filename ("cannot," "nothing") cited twice, once in the body and once in the closing
+`Scope:` line. Dropping the body's duplicate citation and rewriting the rest into ten shorter,
+affirmative sentences (every path and fact held exactly) left only the required `Scope:` line
+carrying the word, and it falls off the sentence count unclosed. Register rose to 100, reach to
+80, composite to 83 (B). `tools/m/mantra_snapshot_projection_witness.rish` re-run GREEN. **YOURS:**
+three more below-B heads remain (`mycelium/pledge.rye`, `mycelium/lapse.rye`,
+`mantra/src/receipt_offer.rye`), next GRASS lap per the one-keystone bound.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -324,7 +328,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `d394aec23e` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `f69fc47ebb` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

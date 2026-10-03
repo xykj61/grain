@@ -1,25 +1,27 @@
 //! mantra/snapshot_projection.rye -- two readings of one catalog's own shape.
 //!
-//! active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md
-//! names two fixtures. `count_exported_leaves` answers the first: it decodes the
-//! outer header and every batch frame `snapshot_export.rye`'s `export_catalog`
-//! wrote, reading each batch's own declared entry count independently of the
-//! snapshot header's `leaf_count` field, and sums them -- so the claim "every
-//! leaf appears in the export" is checked against the frames themselves rather
-//! than against a second copy of the same number the exporter wrote once.
-//! `projected_leaf_count` answers the second: a read-only scan over the
-//! catalog that never calls `export_catalog` at all, counting one entry per
-//! distinct `(peer, bolt, path)` tuple no matter how many revisions were
-//! written for it. The gap between the two counts is the cost shape the design
-//! paper names -- a full-history export walks every leaf ever written, and a
-//! projected view walks only the paths still live.
+//! The design note below names two fixtures. `count_exported_leaves` answers the
+//! first, decoding the outer header and every batch frame `snapshot_export.rye`'s
+//! `export_catalog` wrote, reading each batch's own declared entry count
+//! independently of the snapshot header's `leaf_count` field, and summing them.
+//! The claim "every leaf appears in the export" is checked against the frames
+//! themselves, rather than against a second copy of the same number the
+//! exporter wrote once.
 //!
-//! This module writes no new wire format and changes no line of
-//! `recall_lap1.rye`, `resin_batch.rye`, or `snapshot_export.rye`. Both
-//! readings stay reports: the catalog they read is never mutated.
+//! `projected_leaf_count` answers the second, as a read-only scan over the
+//! catalog that counts one entry per distinct `(peer, bolt, path)` tuple,
+//! however many revisions were written for it. `export_catalog` stays
+//! untouched by this reading. The gap between the two counts is the cost
+//! shape the design note names -- a full-history export walks every leaf
+//! ever written, while a projected view walks only the paths still live.
+//!
+//! This module keeps the wire format exactly as it stands, and leaves
+//! `recall_lap1.rye`, `resin_batch.rye`, and `snapshot_export.rye` exactly as
+//! written. Both readings stay reports, holding the catalog they read fixed
+//! in place.
 //!
 //!   rye build mantra/snapshot_projection.rye -femit-bin=mantra/bin/snapshot-projection
-//!   mantra/bin/snapshot-projection selftest
+//!   mantra/bin/snapshot-projection selftest.
 //!
 //! Scope: active-designing/date/20261001/20261001-122725_a-snapshot-that-cannot-shrink-buys-nothing.md
 
