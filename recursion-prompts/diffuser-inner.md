@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.035816` -- a third ceiling the prior count never opened
 **Revised:** `20261003.033159` -- raising the ceiling crashes its own control
 **Revised:** `20261003.031833` -- the declarable ring is twice the livable one
 **Revised:** `20261003.030505` -- the near-miss is exact across both seated skies
@@ -648,6 +649,26 @@ repair the prior essay named is the whole cost of the move, confirmed by rereadi
 already-published measurement rather than a fresh build. Graded composite 95, letter A, per
 `tools/fixtures/q/qa_report_card.sh --setting field --service 80` (register 98, reach 100, truth
 100, service 80 judged). No new witness, no new module, no scratch probe.
+
+**Self-generated `20261003.035816`, a third ceiling the prior count's own file scope could never
+reach.**
+[A third ceiling the prior count never opened](../active-designing/date/20261003/20261003-035816_a-third-ceiling-the-prior-count-never-opened.md)
+asks whether a ceiling on `caravan/capabilities.rye`'s `max_dependents` lives outside the four
+files the prior essay's grep scoped to -- `roster.rye`, `regions.rye`, `channels.rye`,
+`capabilities.rye` -- and finds one in a room that grep could never see:
+`tools/ca/caravan_glow_tend_limb1_witness.rish` asserts the exact literal
+`pub const max_dependents: u32 = 4;` by name, as the first limb of a Glow Tend ladder proving a
+Glow pedestal shape stays locked to one named Rye value. Confirmed on metal: editing the constant
+to 8 and re-running the witness stops it at that exact line, before the Glow lowering step even
+runs; reverted immediately, `git status --porcelain` read clean before and after, both runs GREEN
+around the plant. A different fault class from the fixture the prior essay named --
+`wide_roster.kyri` goes stale because its own fixed `domain_count=5` assumed the old ceiling, where
+this witness is built on purpose to notice any change to the constant it watches, every time one
+arrives. Adds a third file (the witness's own grep, and `shape-caravan-max-dependents.glow`'s
+`example    4` line) to the same future repair commit, without arguing the constant should rise.
+Graded composite 89, letter B+, per `tools/fixtures/q/qa_report_card.sh --setting field --service
+85` (register 100, reach 70, truth 100, service 85 judged). No new witness, no new module; one
+tracked-file edit made and reverted on this host, confirmed clean.
 
 ## gates
 
