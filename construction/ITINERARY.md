@@ -128,12 +128,12 @@ line.
 shelved](archive/date/20261003/20261003-030606_itinerary-copal-ep030-ep042-roster-fold.md) --
 ep030, ep031, ep034, ep038, ep040, and ep042 rostered and all claims closed, nothing lost.
 
-**COPAL -- A TWENTY-NINTH UNROSTERED WITNESS.** `ironbeetle_ep043_census_witness.rish` rostered --
-the twenty-sixth of the IronBeetle episode-census family, same decided-skip shape as ep001 through
-ep042. Proven on metal both ways -- present it reads GREEN at `verdict=ok` with IRON=present,
-EP043=yes, HONORS=yes, SOURCE=yes, TEACH=yes, RHYME=yes, CLEAN=yes, and MATKLAD_OK=yes; moved aside
-it refuses with `gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as
-`copal-ironbeetle-ep043-census-roster`, closed. Two remain unrostered: ep044, ep045.
+**COPAL -- EP043 AND EP044 ROSTERED, ONE LEFT.** `ironbeetle_ep043_census_witness.rish` and
+`ironbeetle_ep044_census_witness.rish` rostered -- the twenty-sixth and twenty-seventh of the
+IronBeetle episode-census family, same decided-skip shape as ep001 through ep042. Each proven on
+metal both ways -- present it reads GREEN at `verdict=ok`; moved aside it refuses with
+`gratitude/ironbeetle ABSENT -- host shelf first`. Claimed as `copal-ironbeetle-ep043-census-roster`
+and `copal-ironbeetle-ep044-census-roster`, both closed. One remains unrostered: ep045.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
 shelved](archive/date/20261002/20261002-170210_itinerary-copal-tenth-ironbeetle-roster-account.md)
