@@ -235,14 +235,14 @@ lift](archive/date/20261003/20261003-085552_itinerary-grass-testament-shelve.md)
 lift](archive/date/20261003/20261003-090430_itinerary-grass-freight-shelve.md), [fold.rye
 lift](archive/date/20261003/20261003-091351_itinerary-grass-fold-shelve.md).
 
-**GRASS -- `PURSE.RYE`'S HEAD LIFTS C+ TO A.** Elder account
-[shelved](archive/date/20261003/20261003-093328_itinerary-grass-muster-shelve.md).
-[Account](../active-designing/date/20261003/20261003-093328_grass-purse-module-head-account.md):
-thirteen negative phrases across five paragraphs rewrote affirmative, same facts, and the
-paragraphs split shorter to bring the reach grade down. Register 48 to 100, reach 50 to 80,
-composite 75 to 93, A. Four touching witnesses re-run GREEN; no code line moved. **YOURS:**
-`statement.rye` (74), `tenure.rye` (77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71),
-`rehearsal.rye` (75) stay below B, same lift, one file at a time.
+**GRASS -- `STATEMENT.RYE`'S HEAD LIFTS C+ TO A.** Elder account
+[shelved](archive/date/20261003/20261003-100033_itinerary-grass-purse-shelve.md).
+[Account](../active-designing/date/20261003/20261003-100033_grass-statement-module-head-account.md):
+eight negative phrases across five paragraphs rewrote affirmative, same facts, and the paragraphs
+split shorter to bring the reach grade down. Register 54 to 96, reach 50 to 70, composite 74 to
+92, A. All four touching witnesses re-run GREEN; no code line moved. **YOURS:** `tenure.rye`
+(77), `till.rye` (71), `voucher.rye` (76), `warrant.rye` (71), `rehearsal.rye` (75) stay below B,
+same lift, one file at a time.
 
 **DIFFUSER -- THE WITNESS READS OK AT EVERY BOUNDARY IT NAMES.** Elder account
 [shelved](archive/date/20261003/20261003-082538_itinerary-diffuser-one-live-site-account.md).
@@ -353,7 +353,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `0f602b9ab8` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `9049fb3fef` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
