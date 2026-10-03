@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Style:** Bhakta with Radiant warmth, Gauge at Field
 **Status:** Living -- **Room:** research for understanding
-**Silo:** waits on a word
+**Silo:** [`../../../active-designing/date/20261003/20261003-135506_where-a-finished-page-lives.md`](../../../active-designing/date/20261003/20261003-135506_where-a-finished-page-lives.md)
 
 This page is for a reader who sees a quiet `manual/` and a landed health face, and wonders whether finished design should leave `active-designing/` for a professional manual. The outside field already answered the shape. This tree already filed that answer. The open question is what a page does after its witness goes green.
 
@@ -57,4 +57,4 @@ For the fascia face approved in this session, the design stays in `active-design
 
 ## What this page does not do
 
-It does not move `manual/`. It does not seat a style. It does not rewrite Sundial. The outside names stay here. A designing page, if one is wanted, would say the same pattern in this tree's words alone, after a word that the pattern holds.
+It does not move `manual/`. It does not seat a style. It does not rewrite Sundial. The outside names stay here. The pattern in this tree's words is the silo linked above. The bound for the finer grade is [`../../../active-designing/date/20261003/20261003-135506_the-fascia-face.md`](../../../active-designing/date/20261003/20261003-135506_the-fascia-face.md).

@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.140223` | [where a finished page lives](20261003/20261003-140223_finished-page-and-fascia-face.kyri) | Shelf law and the fascia bound |
 | `20261003.134502` | [four kinds of page](20261003/20261003-134502_four-kinds-of-page.kyri) | Keep the shelves; no new style |
 | `20261003.132859` | [bead is the seated piece](20261003/20261003-132859_bead-is-the-seated-piece.kyri) | Lexicon rows; bead stays, wire chunk stays |
 | `20261003.131821` | [digest and vessel in the formula](20261003/20261003-131821_digest-and-vessel-in-the-formula.kyri) | Formula arrows match the confirmed reading |
