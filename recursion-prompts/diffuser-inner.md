@@ -634,6 +634,21 @@ per `tools/fixtures/q/qa_report_card.sh --setting field --service 85` (register 
 100, service 85 judged). No new witness, no new module; one tracked-file edit made and reverted on
 this host, confirmed clean.
 
+**Self-generated `20261003.034214`, the prior essay's own open question closed from source already
+on hand.**
+[Only one other ceiling stands between four and eight](../active-designing/date/20261003/20261003-034214_only-one-other-ceiling-stands-between-four-and-eight.md)
+reads all four of Caravan's graph-bounding constants (`max_domains=8`, `max_dependents=4`,
+`max_channels=16`, `max_regions=12`, `max_grants=24`) and asks whether raising `max_dependents`
+toward 8 would meet a second, unnoticed ceiling on channels, regions, or grants before reaching the
+fixture repair the prior essay already priced. It finds `caravan/roster.rye:59`'s comptime assert
+is the only place any of the four constants is wired against `max_dependents`, and that the
+composition-gap essay's own already-run eight-domain scratch ring already measured the other three
+with headroom to spare (8 of 16 channels, 8 of 12 regions, 16 of 24 grants) -- so the two-file
+repair the prior essay named is the whole cost of the move, confirmed by rereading source and an
+already-published measurement rather than a fresh build. Graded composite 95, letter A, per
+`tools/fixtures/q/qa_report_card.sh --setting field --service 80` (register 98, reach 100, truth
+100, service 80 judged). No new witness, no new module, no scratch probe.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
