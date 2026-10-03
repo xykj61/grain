@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.231628` | [incense's nineteenth fallow reading, and a shed](20261002/20261002-231628_incense-nineteenth-fallow-and-a-shed.kyri) | Ground unmoved; folded its own inner prompt back under bound before writing |
+| 20261002.231600 | [Neither real caller reaches the window](20261002/20261002-231600_neither-caller-reaches-the-window.kyri) | closes the prior falsifier by reading two real callers |
 | 20261002.231226 | [Petrichor's twenty-first reading, Earth-Fixed row read](20261002/20261002-231226_petrichor-twenty-first-reading-earth-fixed.kyri) | round-open pulled one unrelated commit; ITINERARY and claim board confirm lane fallow; TWO_ROOMS.md read in full on the Earth-Fixed rota seat; doorway witness confirmed GREEN fresh on metal |
 | 20261002.230828 | [Six chapter-checkpoint witnesses took REDS %292's own repair](20261002/20261002-230828_pheromone-chapter-checkpoints-class-repair.kyri) | identity_remake_k6, nona_season_n3, oven_handback_surface_p39, surface_season_p46/p47/p51 all pinned to a passing prin_scope.rish phrase; repaired to durable tags, rostered, REDS booked, pin folded under bound |
 | 20261002.230744 | [Copal's ep032 roster lap](20261002/20261002-230744_copal-ep032-roster-lap.kyri) | claimed, proved both ways, rostered ironbeetle_ep032_census, closed claim |

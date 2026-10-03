@@ -2,6 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261002.231237` -- neither real caller ever reaches the window
 **Revised:** `20261002.230126` -- the divergence window equals the last node's own content
 **Revised:** `20261002.225028` -- a growing node's own slack dwarfs what a correct free order would recover
 **Revised:** `20261002.222020` -- the label costs 752 overhead bytes; the three joining bytes it replaces cost nothing like that
@@ -529,6 +530,19 @@ this same harness as a sanity check and still ties everywhere. Falsifier for a l
 the computed window, which this essay did not check. Graded B/83 at Field. No new witness, no new
 module; a scratch probe checked against the vendored allocator's own source, deleted before this
 lap ends.
+
+**Self-generated `20261002.231237`, the prior essay's own named falsifier read rather than run.**
+[Neither real caller ever reaches the window](../active-designing/date/20261002/20261002-231237_neither-real-caller-ever-reaches-the-window.md)
+reads `record_family_evict` and `hash_library_into` in full and finds the falsifier the prior essay
+named does not fire for either, for two independent reasons: `record_family_evict`'s own eviction
+ceiling (32 peers) keeps its walk below the point where the kin arc's own growth table places even
+the first node's birth (item 43), and `hash_library_into`'s real scale (552 files, matching the
+already-ties `n=550` case) pairs with trailing allocations of roughly 100 to 300 bytes -- two
+orders of magnitude under the window's own floor of roughly 52,100 bytes. Falsifier for a later
+lap: `rye/src/std` growing past roughly 3,100 files, the point the growth table places node 6's
+birth, would reopen the question. Graded B/82 at Field. No new witness, no new module, no scratch
+probe; a reading of tracked source and real constants against the two prior essays' own
+measurements.
 
 ## gates
 
