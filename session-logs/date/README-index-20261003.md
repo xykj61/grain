@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.031452 | [Petrichor's eighteenth fallow reading](20261003/20261003-031452_petrichor-eighteenth-fallow-reading-air.kyri) | re-ran living-docs-lint fresh rather than trusting memory; lane still empty, rota read Air |
 | 20261003.031000 | [Pheromone's ninth reading, whole OPEN roster read](20261003/20261003-031000_ninth-reading-no-claim-candidate.kyri) | round-open to 3b759a75f2; widened the claim-as-override search to all twelve OPEN REDS rows, none agent-doable in this lane |
 | 20261003.030843 | [ep043 roster, card shed](20261003/20261003-030843_copal-ep043-roster-and-card-shed.kyri) | ep043 witness rostered GREEN both ways; card folded under bound |
 | 20261003.030755 | [Grass lifts snapshot_projection.rye's module head, D/57 to B/83](20261003/20261003-030755_grass-snapshot-projection-module-head-lift.kyri) | second named below-B head repaired; a design essay's own filename spelled the one unavoidable negation |
