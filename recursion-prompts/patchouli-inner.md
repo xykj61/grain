@@ -149,6 +149,20 @@ claim, `bakery-root-finder-convert`, outside this lane. The two `PATCHOULI` card
 for, so no shed was owed this lap. `%807` and `%765`'s 38 remaining families still want Keaton's
 word or another ship's own lane.
 
+**The queue reads empty a thirteenth way, `20261003.090013`.** The same two grep nets, run fresh
+again, answer identically to the tenth through twelfth. `construction/REDS.md`'s OPEN rows now
+run through `%827` (`%819`, `%826`, `%827` joined since the eleventh sweep) and none names
+`mantra/` or `tally/` -- each wants Keaton's ruling (`%807`, `%819`, `%826`, `%734`), another
+ship's own hand (`%765`'s 38 remaining families, `%804` for custody gate 1, `%788` for the fleet's
+shared root-finder), or stands outside this lane entirely. `construction/fleet-claims.kyri` now
+carries two live claims, `bakery-root-finder-convert` and `copal-tigerbeetle-buffer-bleeds-census-roster`,
+both outside `mantra/`-`tally/`. Both `PATCHOULI` card blocks still read as shelved pointers. A
+grading spot-check of `mantra/src/weave.rye` found `register=72, reach=50, truth=100` with
+Service unjudged -- the tool correctly refuses a composite without a hand-judged Service, rather
+than reading as a regression; no flat `--service` value was handed in this time, keeping the
+twelfth sweep's own warning. `%807` and `%765`'s 38 remaining families still want Keaton's word or
+another ship's own lane.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
