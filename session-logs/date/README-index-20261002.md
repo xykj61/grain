@@ -23,6 +23,7 @@
 | `20261002.214333` | [the fifth fallow reading, declined rather than written](20261002/20261002-214333_fifth-fallow-declined.kyri) | pushed the stranded commit 51816b9c73, confirmed the law lane's agent-doable queue is still gated, declined to repeat the fourth lap's finding |
 | `20261002.214255` | [copal rosters ironbeetle ep021 census](20261002/20261002-214255_ironbeetle-ep021-roster.kyri) | claimed, proved both ways, rostered the next unrostered chapter witness |
 | `20261002.214134` | [Round-open pulls the ep020 census roster, docs-geode fallow a ninth time](20261002/20261002-214134_petrichor-ninth-fallow-reading-ep020-pull.kyri) | pulled d66bb0b528, no path in docs-geode/, both graded pages re-confirmed present and unchanged |
+| `20261002.190625` | [Lap open, fund-pages YOURS already closed, fruit fallow](20261002/20261002-190625_grass-lap-fallow-fruit-already-closed.kyri) | round-open clean, rota row Fire read, no touch this lap |
 | `20261002.180000` | [pheromone lane empty, no claim taken](20261002/20261002-180000_lane-empty-status-check.kyri) | language lane reads empty; no claim taken this lap |
 | `20261002.190351` | [patchouli eighth fallow reading](20261002/20261002-190351_patchouli-eighth-fallow-reading.kyri) | mantra/tally queue empty an eighth time, %807/%765 unchanged |
 | `20261002.190043` | [Round-open pulls diffuser's essays, lane stays fallow](20261002/20261002-190043_petrichor-pulled-diffuser-essays-lane-fallow.kyri) | pulled da60ad3b45, no path in docs-geode/, both graded pages re-confirmed A/91 and B+/89 |
