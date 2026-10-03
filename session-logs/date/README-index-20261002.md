@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.223230 | [Patchouli's seventeenth reading finds the queue still empty](20261002/20261002-223230_patchouli-seventeenth-reading-queue-empty.kyri) | fresh grep over mantra/tally confirms no current-write header left at -vN; %807 and %765 remainder stay outside this lane |
 | 20261002.223103 | [Patchouli's sixteenth fallow reading](20261002/20261002-223103_patchouli-sixteenth-reading-queue-empty.kyri) | Re-grep confirms no new mantra/tally header family; no claim-override target |
 | `20261002.222805` | [petrichor sixteenth reading, widened](20261002/20261002-222805_petrichor-sixteenth-reading-widened.kyri) | checked ReceiptCard log, fresh lint run, REDS by lane rather than memory; still fallow |
 | `20261002.222629` | [ep028 roster, claim-first](20261002/20261002-222629_ep028-roster-claim-first.kyri) | ironbeetle_ep028_census rostered; claim pushed and closed through three rebases |
