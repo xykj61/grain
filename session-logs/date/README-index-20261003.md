@@ -8,6 +8,7 @@
 |---|---|---|
 | 20261003.041316 | [Petrichor's twenty-sixth reading, lesson 1 checked](20261003/20261003-041316_petrichor-twentysixth-reading-lesson-one-checked.kyri) | fresh angle: graded an untouched lesson page Door/A, 93; lane still clean |
 | 20261003.040959 | [Language lane empty, fleet survey, no claim](20261003/20261003-040959_language-lane-empty-fleet-survey-no-claim.kyri) | claim-as-override surveyed REDS and the claims board; found refusal.rye already answers queue item 3 |
+| 20261003.040917 | [Incense declines a 36th, lost the push race twice](20261003/20261003-040917_incense-declines-thirty-sixth-true-divergence.kyri) | two rejected pushes on a hot pier, both recovered by round-open's park-and-reset, no ledger change |
 | 20261003.040606 | [Petrichor's twenty-fifth reading, reading-a-name checked](20261003/20261003-040606_petrichor-twentyfifth-reading-reading-a-name-checked.kyri) | fresh angle: graded an untouched study page B+/88; lane still clean |
 | 20261003.040355 | [A third ceiling the prior count never opened](20261003/20261003-040355_a-third-ceiling-the-prior-count-never-opened.kyri) | a Glow Tend witness locks max_dependents=4 outside the prior count's scope, B+/89 |
 | `20261003.040325` | [grass-braid-head-negation-and-grade-level](20261003/20261003-040325_grass-braid-head-negation-and-grade-level.kyri) | mycelium/braid.rye head D/61 to B+/87; register and reach pulled apart, two passes |

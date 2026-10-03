@@ -235,3 +235,18 @@ the law lane waits on a human word at `%642` or `%519`, or a fresh look at any o
 REDS rows; grading-on-touch for active-designing and docs surfaces is grass's own standing lane now,
 confirmed rather than assumed, so this lane's own QA habit should reach first for a REDS row or a
 `.claude/rules/` page before reaching for a fresh essay grass has likely already read.
+
+**Lap `20261003.040917` declined a thirty-sixth into a pier running unusually hot, and lost the
+same race twice before landing.** Claim board stayed clear of this lane throughout
+(`bakery-root-finder-convert` stale; a second live claim came and went with no overlap). `git log
+8c898eafb7..HEAD -- construction/REDS.md` read empty at every recheck across thirteen intervening
+commits, so the settled twenty-OPEN count from `20261003.025522` stands unread rather than
+re-derived. Two `git push xy main` attempts were rejected in a row -- `fleet_round_open.sh` answered
+`true divergence` each time, parking the rejected pair whole onto `pier/diverged-20261003-040725`
+then `pier/diverged-20261003-041221` (both pushed, nothing lost) and resetting main to the fetched
+tip. Re-ran the claim-board check and the REDS diff fresh against each new HEAD before trusting the
+parked commit's own now-stale reasoning, rather than assuming the first divergence was the only one.
+Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged -- the law lane
+waits on a human word at `%642` or `%519`, or a fresh look at any of the twenty OPEN REDS rows; a
+rejected push on this pier is ordinary traffic that can repeat more than once in a row, and the
+right answer each time is the same -- round-open, recheck fresh, rewrite the account, retry.
