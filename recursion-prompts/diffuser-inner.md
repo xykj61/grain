@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.092417` -- the survey finds no population to survey
 **Revised:** `20261003.042550` -- the one live site cannot see its own drift
 **Revised:** `20261003.040934` -- a fourth site that would never notice
 **Revised:** `20261003.035816` -- a third ceiling the prior count never opened
@@ -722,6 +723,23 @@ whether the same shape recurs across the roughly twenty sibling Glow Tend limb w
 than attempting the survey. Graded composite 86, letter B+, per `tools/fixtures/q/qa_report_card.sh
 --setting field --service 85` (register 90, reach 70, truth 100 counted, service 85 judged). No new
 witness, no new module; one tracked-file edit made and reverted on this host.
+
+**Self-generated `20261003.092417`, the prior essay's own named survey run rather than left
+unopened.**
+[The survey finds no population to survey](../active-designing/date/20261003/20261003-092417_the-survey-finds-no-population-to-survey.md)
+runs the falsifier the prior essay named -- whether the unread-digit gap in
+`glow_compose_tend_unary_witness.rish` recurs across the roughly twenty sibling Glow Tend limb
+witnesses -- against the full, counted population of 23 such files (`*_glow_tend_limb*_witness.rish`
+across Aurora, Caravan, Mantra, and Tally). Every one of the 23 reads `lawful=0`: none calls a
+`*_lawful` gate at all, and a tree-wide grep confirms `glow_compose_tend_unary_witness.rish` is the
+only file in the tree composing more than one such gate call. The 23 tend a structurally different
+pedestal -- a single shape or struct layout, closed by asserting a lowered build's own run output
+`contains "EXIT:0"` -- and several read `.out` far more thoroughly than the unary witness does when
+there is real content to check. The named survey closes at zero rather than widening the repair; the
+ten-assertion fix stays scoped exactly where the prior essay priced it. Graded composite 88, letter
+B+, per `tools/fixtures/q/qa_report_card.sh --setting field --service 85` (register 95, reach 70,
+truth 100 counted, service 85 judged). No new witness, no new module; two whole-population greps
+over tracked `.rish` source.
 
 ## gates
 
