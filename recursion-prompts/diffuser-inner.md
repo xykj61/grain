@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.093803` -- the five-times gap reverses under -OReleaseFast
 **Revised:** `20261003.092417` -- the survey finds no population to survey
 **Revised:** `20261003.042550` -- the one live site cannot see its own drift
 **Revised:** `20261003.040934` -- a fourth site that would never notice
@@ -740,6 +741,23 @@ ten-assertion fix stays scoped exactly where the prior essay priced it. Graded c
 B+, per `tools/fixtures/q/qa_report_card.sh --setting field --service 85` (register 95, reach 70,
 truth 100 counted, service 85 judged). No new witness, no new module; two whole-population greps
 over tracked `.rish` source.
+
+**Self-generated `20261003.093803`, the kin allocator essay's own named falsifier run across
+build modes rather than sizes alone.**
+[The five-times gap reverses under -OReleaseFast](../active-designing/date/20261003/20261003-093803_the-five-times-gap-reverses-under-oreleasefast.md)
+sweeps `Region.alloc` against `smp_allocator` across eight sizes (16 bytes to 262,144 bytes) in
+both Debug and `-OReleaseFast` build modes, and finds the build mode matters more than the size
+the kin essay's own falsifier named. In Debug mode -- this tree's own unstated default, since
+`rye/src/main.rye:814-820` adds no `-O` flag of its own -- `Region.alloc` wins at every size,
+widening to three orders of magnitude past 65,536 bytes. Under `-OReleaseFast`, the direction
+flips for every size from 16 bytes through 16,384 bytes, with `smp_allocator` reading 1.2 to over
+200 times faster, and `Region.alloc` regains its edge only at 65,536 bytes and above. The kin
+essay's own reading stays correct for its own stated scope; what this essay adds is the unnamed
+variable that decides which allocator wins. Falsifier named rather than attempted: whether
+`Region.alloc`'s edge survives ReleaseFast under a workload that keeps many objects alive at
+once, rather than this probe's own write-then-free pattern. Graded A/95 at Field (register 94,
+reach 100, truth 100 counted, service 85 judged). No new witness, no new module; the probe file
+and its binary are deleted before the lap that wrote it ends.
 
 ## gates
 
