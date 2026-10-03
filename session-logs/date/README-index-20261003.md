@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.083420` | [send diverged on a peer commit, rebased, pushed clean](20261003/20261003-083420_pushed-after-rebase-onto-diverged-peer.kyri) | copal's nona-season-n2 claim landed mid-send; rebased and pushed to cc90af9c36 |
 | `20261003.083035` | [language lane empty after a two-commit pull](20261003/20261003-083035_language-lane-empty-after-pull.kyri) | round-opened two upstream commits, neither touching glow/mantra; REDS and claims re-checked, still no agent-doable work |
 | `20261003.082553` | [the queue reads empty a ninth way](20261003/20261003-082553_queue-empty-ninth-sweep.kyri) | confirming sweep, patchouli's lane, wider net than the eighth; %807 and %765's remainder still OPEN, round-open adopted 3 upstream commits |
 | 20261003.082514 | [nona_season_n1 chapter witness rostered, proven both sides](20261003/20261003-082514_nona-season-n1-rostered.kyri) | rostered nona_season_n1, proven GREEN and refusing, claim closed, nib carried |
