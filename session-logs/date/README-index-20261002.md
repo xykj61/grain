@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261002.223103 | [Patchouli's sixteenth fallow reading](20261002/20261002-223103_patchouli-sixteenth-reading-queue-empty.kyri) | Re-grep confirms no new mantra/tally header family; no claim-override target |
+| `20261002.222805` | [petrichor sixteenth reading, widened](20261002/20261002-222805_petrichor-sixteenth-reading-widened.kyri) | checked ReceiptCard log, fresh lint run, REDS by lane rather than memory; still fallow |
 | `20261002.222454` | [pheromone's second fallow reading](20261002/20261002-222454_pheromone-second-fallow-reading.kyri) | Language lane still empty after round-open; no cross-lane claim reached for |
 | `20261002.222414` | [eleventh fallow reading](20261002/20261002-222414_incense-eleventh-fallow-reading.kyri) | law lane dry an eleventh lap; fourteen OPEN rows unchanged |
 | `20261002.222116` | [petrichor fifteenth fallow reading](20261002/20261002-222116_petrichor-fifteenth-fallow-reading.kyri) | lighter re-check, same gate unmoved; recommends widening the window before a sixteenth |
