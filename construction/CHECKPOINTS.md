@@ -1,5 +1,13 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261003.083842` -- walk-back nib `8d86f78a7e`.** Shelve six lap accounts
+(`20261003.030257` through `20261003.035611`) whole from `recursion-prompts/incense-inner.md`'s
+`next` section into
+`recursion-prompts/date/20261003/20261003-083842_incense-next-log-archive-62.md`, making room for
+this lap's own thirty-eighth decline inside the pin's 24,576-byte bound (25,054 before the fold).
+Nothing lost: the shelved accounts keep every word, and the living pin keeps a short pointer plus
+the new account.
+
 **Checkpoint `20261003.030755` -- walk-back nib `a5bcb5f257`.** Shelve GRASS's live
 `mantra/spool_dedup_ratio.rye` module-head account whole from `construction/ITINERARY.md` into
 `construction/archive/date/20261003/20261003-030755_itinerary-grass-spool-dedup-ratio-module-head-account.md`,
