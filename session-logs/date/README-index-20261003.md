@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.100600` | [eighteenth-empty-sweep-pattern-named](20261003/20261003-100600_eighteenth-empty-sweep-pattern-named.kyri) | Same empty lane; the repetition count itself named as the one new fact |
 | `20261003.100355` | [no-fruit-no-claim](20261003/20261003-100355_petrichor-no-fruit-no-claim.kyri) | docs-geode fruit closed, peer's fleet-wide claim check already stood -- reported rather than duplicated |
 | `20261003.100119` | [nineteenth-sweep-found-the-breach-not-mine](20261003/20261003-100119_nineteenth-sweep-found-the-breach-not-mine.kyri) | written-ascii clean; spoken-ascii ratchet RED tree-wide, 0 hits in mantra/-tally/, named for whoever touches it next |
 | 20261003.100054 | [dependencies-census-sent-after-seven-rebases](20261003/20261003-100054_dependencies-census-sent-after-seven-rebases.kyri) | Pushed clean to ba80958aaa after seven round-open rebases, five conflicts resolved |
