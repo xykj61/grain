@@ -24,7 +24,7 @@ What we leave on the study shelf is an outside implementation: durable bytes in 
 
 The transitive writing crawl follows Markdown links through `foundations/` before a mutant is seated. It is already in the lexicon.
 
-A receipt crawl follows `file` lines in stamp order. The unit is a Kyri receipt: resin, stamp, kind, and subject, which a session log already is. The `file` field is the compression that makes the pile readable. You learn which paths a lap touched without re-reading the mood of the paragraph.
+A receipt crawl follows `file` lines in stamp order. A session log carries a stamp, a kind, a subject, and those path lines. The formula's resin slot is the content address on one page and the carried bytes in the archive law, so this walk does not treat resin as a nickname for a hash. The `file` field is the compression that makes the pile readable. You learn which paths a lap touched without re-reading the mood of the paragraph.
 
 The age of the log is a prior. An older citation is less likely to be today's Lila. The falsifier is a living citer, a witness, or the front door. Any one of those keeps the file in the working set.
 
