@@ -9716,3 +9716,16 @@ guard nona_season_n0
 path tools/gen/chapter/nona_season_n0_witness.rish
 tier lap
 seated 20261003.043200
+
+# nona_season_n1 -- the Nona Chapter's n1 rung, unrostered since it was written. Proves the n1
+# counsel, external-research, foundations law, and season-open template all stand on disk, that
+# the lexicon carries both "Chapter-Driven Development" and "Nest-Chapter Development," and that
+# tools/gen/chapter/prin_scope.rish still names both terms beside each other. Proven on metal both
+# ways in this lap: present it reads GREEN at the two closing `say` lines; with
+# counsel/date/20260729/20260729-130535_nona-season-n1-season-driven-development.md moved aside it
+# refuses at the assert naming the n1 counsel missing, then restored. Claimed as
+# copal-nona-season-n1-roster before this entry landed.
+guard nona_season_n1
+path tools/gen/chapter/nona_season_n1_witness.rish
+tier lap
+seated 20261003.082424
