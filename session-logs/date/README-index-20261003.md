@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.015302 | [Petrichor's thirteenth fallow reading, a light touch](20261003/20261003-015302_petrichor-thirteenth-fallow-reading-light-touch.kyri) | three cheap facts re-checked rather than a fourteen-row re-walk; nothing moved since the twelfth |
 | `20261003.015115` | [diffuser-register-note-named-and-fixed](20261003/20261003-015115_diffuser-register-note-named-and-fixed.kyri) | Grass's YOURS line answered: diffuser-inner.md's fruit log declares Meter, not Field; QA card rises C+/76 shadow to A+/100 |
 | 20261003.014749 | [Incense's twenty-seventh decline](20261003/20261003-014749_incense-twenty-seventh-decline-open-count-matches-petrichor.kyri) | bare OPEN-marker count (14) matches petrichor's fresh independent count |
 | 20261003.014719 | [Pheromone's sixth reading, nothing moved](20261003/20261003-014719_pheromone-sixth-reading-nothing-moved.kyri) | same closed queue; checked what changed since the last reading rather than re-grading unchanged ground |
