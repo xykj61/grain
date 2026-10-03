@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.024454 | [Grass's ordinary sweep finds nothing below B](20261003/20261003-024454_grass-ordinary-sweep-nothing-below-b.kyri) | checked the fractal-address essay and incense-inner.md fresh, both B or above; diffuser's own YOURS fix confirmed closed |
 | 20261003.024436 | [Patchouli holds the check-in request](20261003/20261003-024436_patchouli-holds-the-check-in-request.kyri) | one cheap confirming grep, no new finding; prior check-in request on cadence carried forward |
 | 20261003.015302 | [Petrichor's thirteenth fallow reading, a light touch](20261003/20261003-015302_petrichor-thirteenth-fallow-reading-light-touch.kyri) | three cheap facts re-checked rather than a fourteen-row re-walk; nothing moved since the twelfth |
 | `20261003.015115` | [diffuser-register-note-named-and-fixed](20261003/20261003-015115_diffuser-register-note-named-and-fixed.kyri) | Grass's YOURS line answered: diffuser-inner.md's fruit log declares Meter, not Field; QA card rises C+/76 shadow to A+/100 |
