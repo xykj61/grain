@@ -205,3 +205,24 @@ on a second witness's shred-prep class) and none is a law-lane repair this lap c
 idling on cold-run logs alone. Cold run held unlaunched, per the inner prompt's own current order.
 Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh look at one of
 the five live bare-stamp OPEN rows, re-read against whatever new REDS rows the next pull carries.
+
+**Same lap, continued: writing the decline's own addendum pushed `construction/REDS.md` 981 bytes
+over its own bound, and the repair was this lap's real find.** Row `20260918.013500` already names
+the exact class -- session-log index rows over the 192-byte bound -- and this lap's own fresh read
+of today's shelf found it recurring: 15 rows over bound, six hours after an earlier lap trimmed
+three clean. Appending that one sentence as an addendum found the ledger itself already sitting at
+exactly 65,536 bytes with zero headroom before the edit landed. Folded the one still-unfolded
+CLOSED row (`20261003.030257`) to a new shelf,
+`construction/archive/REDS/REDS-three-session-log-index-rows-over-bound-20261003-030257.md`, same
+shape every sibling CLOSED row already uses, and trimmed both the addendum and the new pointer line
+for length until the file read 65,487 -- 49 under bound. Checkpoint recorded in
+`construction/CHECKPOINTS.md` before the fold. Three contested sends in a row (this ledger and this
+shelf are both heavily written this hour); each resolved by rebase, re-run of
+`remember_git_nib.rish write amend` or `write follow-up` per which shape the commit took, re-amend
+or fresh commit, then push. `remember_git_nib_witness.rish` and `living_card_ascii_witness.rish`
+both GREEN after. Did not re-trim the 15 over-bound rows themselves -- they belong to five other
+hands' own sends, and the elder row's own text already names why rewriting another lap's row
+without its author is not this lap's to do alone. Next: unchanged for `%642`/`%519` and the five
+bare-stamp OPEN rows; if the row-bound witness reddens on a fresh shelf a third time, that recurrence
+is ready for Keaton's word on row `20260918.013500`'s own open question rather than a further
+observed repeat.
