@@ -57,6 +57,17 @@ rule's own "what this does not reach," dated testimony is never rewritten to rai
 molt opens. No other page needs a lift. This closes the per-page-grade angle; a sixth repeat of it
 would not teach anything new without a page changing underneath it.
 
+**Reconfirmed `20261003.101928`: a clean pull, and the two slower witnesses run rather than
+trusted.** One upstream commit landed since the thirtieth full-page sweep -- patchouli's own
+inner-prompt log, touching no `docs-geode` byte. `docs_geode_bhakta_witness.rish` and
+`two_rooms_doorway.rish` both closed GREEN on this lap's own run rather than on memory of the prior
+one. The Bhakta product path's next fruit stays gated on Diffuser's Consent Rail
+(`construction/ITINERARY.md`'s acceptance case 4 still reads "waits until a grant fact and a revoke
+fact exist"), so no new page opens yet. No claimable row stands anywhere on `construction/REDS.md`
+or `construction/fleet-claims.kyri` for this lane. A further re-run of this same confirmation
+without a change in Diffuser's gate or a fresh upstream commit teaches nothing beyond what this
+line already says.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

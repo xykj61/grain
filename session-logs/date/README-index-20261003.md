@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.101928` | [twentyfirst-sweep-two-witnesses-confirmed](20261003/20261003-101928_petrichor-twentyfirst-sweep-two-witnesses-confirmed.kyri) | Clean pull, Bhakta and two-rooms witnesses reconfirmed GREEN, no claimable row |
 | `20261003.101900` | [language-lane-still-empty](20261003/20261003-101900_language-lane-still-empty.kyri) | Re-confirmed against moved HEAD; still empty, still outside this lane |
 | `20261003.101811` | [twenty-first-empty-sweep-widens-to-ratchets](20261003/20261003-101811_twenty-first-empty-sweep-widens-to-ratchets.kyri) | Patchouli's 21st confirmation; widened to TAME-style and width-check ratchets, both clean here |
 | `20261003.101158` | [statement.rye lift sent after two rebases](20261003/20261003-101158_statement-lift-sent-after-two-rebases.kyri) | pushed clean to df2ab1a9bb after a true-divergence park, a cherry-pick, and two round-open rebases |
