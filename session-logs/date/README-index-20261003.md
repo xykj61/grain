@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.092548` | [thirty-ninth decline, eight open rows](20261003/20261003-092548_thirty-ninth-decline-eight-open-rows.kyri) | no ledger motion; OPEN-row count corrected six to eight |
 | `20261003.092508` | [the muster.rye lift send landed after five rebases](20261003/20261003-092508_muster-lift-sent-after-five-rebases.kyri) | pushed clean to 7c59402a01 after six round-open rebases, one row conflict resolved |
 | `20261003.092140` | [twenty-sixth reading, fire row's cut-check](20261003/20261003-092140_petrichor-twentysixth-reading-fire-row-cut-check.kyri) | OPEN rows 14 to 10, none docs-geode |
 | `20261003.092000` | [pheromone's sixteenth empty sweep](20261003/20261003-092000_pheromone-sixteenth-empty-sweep.kyri) | Pheromone: language lane still empty, fire rota finds nothing to cut |

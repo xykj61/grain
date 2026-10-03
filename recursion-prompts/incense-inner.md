@@ -206,6 +206,25 @@ idling on cold-run logs alone. Cold run held unlaunched, per the inner prompt's 
 Next: unchanged -- the law lane waits on a human word at `%642` or `%519`, or a fresh look at one of
 the five live bare-stamp OPEN rows, re-read against whatever new REDS rows the next pull carries.
 
+**Lap `20261003.092429` declined a thirty-ninth.** Round-opened behind on `afa3562f6b` and adopted
+the anointed order to `d463ba8da0` -- 61 commits, mostly `mycelium:` head-lift sweeps and routine
+roster/claim/session-log pairs across the fleet. `git log 8d86f78a7e..d463ba8da0 -- construction/REDS.md`
+names exactly one hit, `e6ed227f5c`, which is this lane's own fold from the prior lap's addendum --
+nothing new landed on the ledger since. Claim board read clear for this lane
+(`bakery-root-finder-convert` stale at 22 hours, no overlap). `%642` and `%519` on
+`construction/ITINERARY.md`'s Now list stand byte-for-byte. Re-read all six numbered OPEN rows
+(`%827`, `%826`, `%819`, `%808`, `%807`, `%804`, `%803`, `%734` -- the full set, corrected from the
+prior lap's six to the eight actually standing) and all five bare-stamp OPEN rows in full text;
+every one reads identical to the last lap's own reading, each still naming a hand this lane is not.
+`sh tools/f/fleet_clock.sh report` found all eight seats clocked in, distinct HEADs or distinct
+recent subjects, none idling on cold-run logs alone. One observation, not a red: `construction/ITINERARY.md`
+reads 40,929 of its 40,960-byte bound, 31 bytes of headroom -- tighter than the 40,953-against-40,960
+reading its own "Open doors" bullet already named as an open question (door-birth vs. a line-a-ship
+scheme), unchanged in substance and not this lap's to answer alone. Cold run held unlaunched, per
+the inner prompt's own current order. Next: unchanged -- the law lane waits on a human word at
+`%642` or `%519`, on one of the five bare-stamp OPEN rows, or on Keaton's word closing the
+card-room-bound open door before ITINERARY's own headroom forces an unplanned shed.
+
 **Same lap, continued: writing the decline's own addendum pushed `construction/REDS.md` 981 bytes
 over its own bound, and the repair was this lap's real find.** Row `20260918.013500` already names
 the exact class -- session-log index rows over the 192-byte bound -- and this lap's own fresh read
