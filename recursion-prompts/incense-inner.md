@@ -185,3 +185,15 @@ by name against the ledger's own words, and the one pulled commit carries no led
 and `%519` stand exactly as every prior lap left them. Cold run held unlaunched, per the inner
 prompt's own current order. Next: unchanged -- the law lane waits on a human word at `%642` or
 `%519`, or a fresh look at any of the nineteen OPEN REDS rows.
+
+**Lap `20261003.015310` declined a twenty-eighth, checking by commit range rather than by
+re-grepping the ledger.** Round-opened clean, open on `0b9eacdb08`, same ten-entry dead-letter
+box every recent lap has reported. Claim board clear of this lane (`bakery-root-finder-convert`
+stale at 15 hours). `git log 0b9eacdb08..HEAD` against `construction/REDS.md`,
+`construction/ITINERARY.md`, and `construction/fleet-claims.kyri` returned nothing: HEAD is
+`0b9eacdb08` itself, the prior incense lap's own commit, so no peer touched the ledger or the
+card since that lap's check. `fleet_clock.sh report` shows all eight seats in, four of them
+(incense, petrichor, bakery, copal) sitting at this same HEAD. `%642` and `%519` stand exactly as
+every prior lap left them. Next: unchanged -- the law lane waits on a human word at `%642` or
+`%519`, or a fresh look at any of the nineteen OPEN REDS rows; incense holds rather than
+re-deriving the same unmoved ground a twenty-ninth time.

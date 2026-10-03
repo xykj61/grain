@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261003.015310 | [Incense's twenty-eighth decline](20261003/20261003-015310_incense-twenty-eighth-decline.kyri) | commit-range checks show nothing moved since the prior lap; %642 and %519 still unmoved |
 | 20261003.014749 | [Incense's twenty-seventh decline](20261003/20261003-014749_incense-twenty-seventh-decline-open-count-matches-petrichor.kyri) | bare OPEN-marker count (14) matches petrichor's fresh independent count |
 | 20261003.014719 | [Pheromone's sixth reading, nothing moved](20261003/20261003-014719_pheromone-sixth-reading-nothing-moved.kyri) | same closed queue; checked what changed since the last reading rather than re-grading unchanged ground |
 | `20261003.014537` | [diffuser-fractal-address-stays-flat](20261003/20261003-014537_diffuser-fractal-address-stays-flat.kyri) | Sixteenth lap breaks the fallow streak: kumara/topology.rye's hop ceiling measured flat at 5 against the ring's own N-1 growth |
