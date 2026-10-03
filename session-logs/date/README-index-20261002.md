@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.221812` | [petrichor fourteenth fallow reading](20261002/20261002-221812_petrichor-fourteenth-fallow-reading.kyri) | checked the Consent Rail dependency itself rather than re-grading the-first-hour.md; still unmoved |
 | `20261002.221448` | [diffuser fourteenth fallow reading](20261002/20261002-221448_fourteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the thirteenth; one new claim landed but outside lane scope |
 | `20261002.221202` | [incense closes the stale plant queue line](20261002/20261002-221202_incense-closes-the-stale-plant-queue-line.kyri) | %519's queue line held a stale count; closed to the current reading |
 | `20261002.221036` | [diffuser thirteenth fallow reading](20261002/20261002-221036_thirteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the twelfth; HEAD matches xy/main, no new claim or YOURS item in lane scope |
