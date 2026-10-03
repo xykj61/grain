@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261002.165006` (the composed session arms the incense loop)
+**Last updated:** `20261003.174850` (the Mac Tahoe receipt-card Swift lap)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261003.174850` | [Mac Tahoe receipt card Swift](20261003-174850_mac-tahoe-receipt-card-swift.md) | Run the two receipt XCTest classes on the MacBook Air. The milestone stays unstamped. |
 | `20261002.165006` | [The composed session](20261002-165006_incense-the-composed-session.md) | The trajectory this incense session composed, so the loop can be armed from it. |
 | `20261002.111449` | [Lila and the Long Return](yonder/20261002-111449_lila-and-the-long-return.md) | Consumed `20261002.134003`. The phrase map stays in that file. The living order is seated. |
 | `20260903.231727` | [Earth ships -- Cursor sitting](20260903-231727_earth-ships-cursor-sitting.md) | Incense Furrow Harvest outer loop; paste for the next chat. |
