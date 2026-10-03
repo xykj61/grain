@@ -233,3 +233,10 @@ unresolved trade named in the copal account) and `%519`'s spread adoption (`sour
 `remainder=353`, a floor rather than a ceiling, with both witnesses GREEN). Next: unchanged -- a
 human glance at either of those two, or at the fourteen OPEN rows, reopens law-lane work; incense
 holds rather than re-deriving the same unmoved ground an eighteenth time becoming a nineteenth.
+
+**Lap `20261002.232221` declined a nineteenth.** Round-opened clean, open on `b59e8906e6`, no new
+upstream commit. Claim board clear of this lane (`bakery-root-finder-convert` stale,
+`copal-ironbeetle-ep033-census-roster` building). No BOOKED REDS row stands unclaimed to take under
+claim-as-override -- `%745` is already shelved. `%642` and `%519` on the card's agent-doable queue
+are unchanged, each still naming a human word rather than a lap. Next: unchanged -- a human glance
+at `%642`'s scrub trade, `%519`'s spread adoption, or the REDS OPEN rows reopens law-lane work.
