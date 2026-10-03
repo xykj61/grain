@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261002.221448` | [diffuser fourteenth fallow reading](20261002/20261002-221448_fourteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the thirteenth; one new claim landed but outside lane scope |
+| `20261002.221202` | [incense closes the stale plant queue line](20261002/20261002-221202_incense-closes-the-stale-plant-queue-line.kyri) | %519's queue line held a stale count; closed to the current reading |
 | `20261002.221036` | [diffuser thirteenth fallow reading](20261002/20261002-221036_thirteenth-fallow-reading-diffuser-lane.kyri) | state unchanged since the twelfth; HEAD matches xy/main, no new claim or YOURS item in lane scope |
 | `20261002.220737` | [patchouli fourteenth reading, duplicate found after](20261002/20261002-220737_patchouli-fourteenth-reading-confirms-no-new-state.kyri) | independent pass reached the thirteenth's same answer; names the pattern itself |
 | `20261002.220705` | [copal rosters ep025 IronBeetle census witness](20261002/20261002-220705_roster-the-ep025-ironbeetle-census-witness.kyri) | claimed, proved both legs, rostered; caught and reset a mistaken post-push amend |

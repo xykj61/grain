@@ -27,10 +27,12 @@ lap to seat the newest under the pin's bound.
 **The agent-doable queue, the Long Return first:**
 
 1. `%642` -- the path refusal and the **copy** both landed, `20260917.064837` and `20260917.091616`, at 8.9s to 0.11 and 28.4s to 0.77. A projection reads **24.12s** where it read 74. What remains is the **scrub**, 19.91s of that 24 and now four fifths of it; the trade is named in the copal account and wants a word rather than a lap.
-2. `%519` -- spread `plant.sh`; sourcing 40 to 42. `plant_apply_args` (variadic sed argv) unblocked
-   `comlink_glow_tend_control.sh` and `tablecloth_glow_tend_control.sh`'s own `edit()`; a genuinely
-   dead no-op sed clause in comlink's case 11 was removed rather than specially exempted, proven
-   by an unchanged 5-welcome/21-refusal verdict before and after. Both witnesses GREEN on metal.
+2. `%519` -- spread `plant.sh`; the comlink and tablecloth unblocking this line once named is done
+   and both witnesses still read GREEN on metal (`20261002`, re-run). `sourcing` has kept rising
+   since -- it reads **44** now, against a `remainder` of **353** controls not yet adopted, a floor
+   that only rises (`sh tools/fixtures/p/plant_adoption_scan.sh`, free, re-run rather than trusting
+   this line). The queue's own named unblocking is closed; the wider ratchet is ordinary touch-on
+   work for any lane editing a control, not a standing ask of this card.
 3. (`20260916.004153`) -- **the wire ceiling above**, once Keaton's word names which door it takes.
    `%646` left this queue `20260917`: swept and closed, its 7 hard sites each wanting their own lane.
 
@@ -338,7 +340,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `e5b23281bb` -- the tip this commit is built on, read before this commit (rule 5).
+**Git nib:** `3c30d54dca` -- the tip this commit is built on, read before this commit (rule 5).
 
 ### Incense -- product captain
 
