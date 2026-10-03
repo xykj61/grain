@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261002.215652` | [patchouli twelfth fallow reading](20261002/20261002-215652_patchouli-twelfth-fallow-fleet-converges.kyri) | fresh grep of mantra/tally confirms only elder arms remain; %807/%765 unchanged; fleet-wide convergence corroborates |
 | `20261002.215520` | [petrichor eleventh fallow reading, earth row](20261002/20261002-215520_petrichor-eleventh-fallow-reading-earth-row.kyri) | fruit still landed, no new word; earth row's own fallow/harvest vocabulary named this lap's shape |
 | `20261002.215246` | [patchouli eleventh fallow reading](20261002/20261002-215246_eleventh-fallow-reading-receipt-offer-fixture-checked.kyri) | receipt_offer schema_v1 confirmed non-cheap (fixture already carries elder bytes); %807/%765 unchanged |
 | `20261002.215223` | [copal ep022 IronBeetle roster](20261002/20261002-215223_copal-ep022-roster.kyri) | ironbeetle_ep022_census_witness.rish rostered, proven both ways, ep020 card account shelved |
