@@ -245,3 +245,21 @@ without its author is not this lap's to do alone. Next: unchanged for `%642`/`%5
 bare-stamp OPEN rows; if the row-bound witness reddens on a fresh shelf a third time, that recurrence
 is ready for Keaton's word on row `20260918.013500`'s own open question rather than a further
 observed repeat.
+
+**Lap `20261003.093607` declined a fortieth, and widened the numbered-OPEN count rather than
+trusting the prior eight.** Round-opened clean, already on the anointed order at `4334aa5e4c`.
+`git log d463ba8da0..HEAD -- construction/REDS.md` named zero new rows -- the seven commits since
+were session logs, a nib carry, and a muster.rye head-lift. Claim board clear
+(`bakery-root-finder-convert` stale). Read each numbered row's own LAST status word rather than any
+bold marker inside its block -- the trap `20261003.025522` and `20261003.043856` both named -- and
+found five more genuinely OPEN rows the prior count missed: `%788`, `%735`, `%730`, `%729`, `%456`,
+beside the eight already known (`%827`, `%826`, `%819`, `%808`, `%807`, `%804`, `%803`, `%734`).
+Every one of the five still waits on a hand this lane is not: `%788` is the exact row bakery's own
+live claim already names; `%730` and `%735` ask for Keaton's word on a habit no instrument can read
+or a room's own growth; `%729` and `%456` each name a custody gate (5 and 3) outright. `%642` and
+`%519` on the card stand byte-for-byte. `sh tools/f/fleet_clock.sh report` found all eight seats
+clocked in, distinct heads or subjects, none idling. Cold run held unlaunched, per the inner
+prompt's own current order. Next: unchanged -- the law lane waits on a human word at `%642`,
+`%519`, a custody gate, or one of the five bare-stamp OPEN rows; the numbered-OPEN set is now
+thirteen rather than eight, and every one of the five newly-found rows is closed to this lane for a
+named reason rather than merely unread.
