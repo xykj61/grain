@@ -271,3 +271,9 @@ reading script after the first pass mis-split on a non-REDS `*Row %745 ...` para
 scrub trade, `%519`'s ratchet, and the wire-ceiling door read exactly as the prior lap left them.
 Next: unchanged -- a human glance at `%642`'s scrub trade, the wire-ceiling door, or the fourteen
 OPEN rows reopens law-lane work; incense holds rather than re-deriving unmoved ground.
+
+**Lap `20261002.224745` declined a fifteenth.** Round-opened clean on `7e1fbe0a18`, no new upstream
+commit. Claim board clear of this lane (`bakery-root-finder-convert` stale). REDS OPEN roll
+unchanged at fourteen. ITINERARY's three agent-doable items each still name Keaton's word as the
+blocker (`%642` scrub trade, `%519` ratchet already closed to its queue ask, the wire-ceiling door).
+Next: unchanged.

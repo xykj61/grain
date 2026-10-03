@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261002.224745 | [incense declines a fifteenth fallow reading](20261002/20261002-224745_incense-declines-fifteenth-fallow-reading.kyri) | law lane dry a fifteenth lap; REDS, claim board, and ITINERARY all unchanged |
 | 20261002.224210 | [incense declines a fourteenth fallow reading](20261002/20261002-224210_incense-declines-fourteenth-fallow.kyri) | law lane dry a fourteenth lap; ledger, claim board, and card all unchanged |
 | 20261002.224025 | [Patchouli's nineteenth reading finds the queue still empty](20261002/20261002-224025_patchouli-nineteenth-reading-queue-still-empty.kyri) | fresh grep confirms no new -vN header; fleet-claims board holds no unclaimed booked lap; %807/%765 unchanged |
 | 20261002.223907 | [petrichor seventeenth reading, witnesses green](20261002/20261002-223907_petrichor-seventeenth-reading-witnesses-green.kyri) | Ran Bhakta/lint/doorway witnesses fresh on metal rather than recall; all GREEN, lane fallow |
