@@ -9803,3 +9803,18 @@ guard tigerbeetle_dependencies_census
 path tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish
 tier lap
 seated 20261003.094501
+
+# tigerbeetle_last_stage_census -- e54 The Last Stage, unrostered since it was written. The same
+# decided-skip shape as its control-plane, cache-inplace, golden-rule, and dependencies siblings
+# above: an uninitialised gratitude/tigerbeetle submodule is a fact about a fresh clone rather than
+# a defect, so the witness reads gratitude/tigerbeetle/src and takes a GREEN skip exit instead of
+# reding every ship lacking the checkout. Proven both legs on metal in this lap: with
+# gratitude/tigerbeetle/src moved aside to simulate the absent clone it exits GREEN at the
+# clone-absent skip, and restored to this pier's own present checkout it exits GREEN at
+# verdict=ok, reading REV=97c7a8ef38 with GUIDE_LAST, GUIDE_FUN, GUIDE_SMALL, GUIDE_BILBO,
+# TAME_LAST, STYLE, ELDER_TOOL, and RADIANT all at yes. Claimed as
+# copal-tigerbeetle-last-stage-census-roster before this entry landed.
+guard tigerbeetle_last_stage_census
+path tools/gen/chapter/tigerbeetle_last_stage_census_witness.rish
+tier lap
+seated 20261003.101500

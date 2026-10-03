@@ -154,17 +154,14 @@ shelved](archive/date/20261003/20261003-093436_itinerary-copal-cache-inplace-ros
 shelved](archive/date/20261003/20261003-094501_itinerary-copal-control-plane-roster-account.md)
 -- `tigerbeetle_control_plane_census_witness.rish` rostered and that claim closed.
 
-**COPAL -- THE DEPENDENCIES ROSTER ACCOUNT.** `tigerbeetle_dependencies_census_witness.rish`
-rostered -- the same decided-skip shape as its `tigerbeetle_control_plane_census`,
-`tigerbeetle_cache_inplace_census`, and `tigerbeetle_golden_rule_census` siblings: an
-uninitialised `gratitude/tigerbeetle` submodule is a fact about a fresh clone rather than a
-defect, so the witness reads `gratitude/tigerbeetle/src` and takes a GREEN skip exit instead of
-reding every ship lacking the checkout. Proven both legs on metal in this lap: with
-`gratitude/tigerbeetle/src` moved aside it exits GREEN at the clone-absent skip, and restored it
-exits GREEN at `verdict=ok`, reading `REV=97c7a8ef38` with `GUIDE_DEPS`, `GUIDE_ZERO`,
-`GUIDE_ZIG`, `GUIDE_SUPPLY`, `TAME_DEPS`, `STYLE`, `ELDER_STYLE`, and `RADIANT` all at `yes`.
-Claimed as `copal-tigerbeetle-dependencies-census-roster`, closed. **YOURS:** chapter witnesses
-remain unrostered under `tools/gen/chapter/`, measured by `comm -23` against
+**COPAL -- THE DEPENDENCIES ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-101500_itinerary-copal-dependencies-roster-account.md)
+-- `tigerbeetle_dependencies_census_witness.rish` rostered and that claim closed.
+
+**COPAL -- THE LAST-STAGE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
+shelved](archive/date/20261003/20261003-101810_itinerary-copal-last-stage-roster-account.md)
+-- `tigerbeetle_last_stage_census_witness.rish` rostered and that claim closed. **YOURS:** chapter
+witnesses remain unrostered under `tools/gen/chapter/`, measured by `comm -23` against
 `construction/standing-equipment.kyri`'s guard paths rather than trusted from this line.
 
 **COPAL -- THE TENTH IRONBEETLE ROSTER ACCOUNT, SHELVED WHOLE.** [Account
@@ -355,7 +352,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `90a95c918c` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `296419f8d5` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
