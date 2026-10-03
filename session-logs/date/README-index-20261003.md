@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261003.191745` | [mac jail before swift](20261003/20261003-191745_mac-jail-before-swift.kyri) | Jailed Cursor GUI before the receipt tests |
 | `20261003.175007` | [mac tahoe swift prompt](20261003/20261003-175007_mac-tahoe-swift-prompt.kyri) | Handoff for the receipt card XCTest |
 | `20261003.174628` | [six of eight superseded](20261003/20261003-174628_six-of-eight-superseded.kyri) | The case-count paragraph matches the board |
 | `20261003.172410` | [receipt case board unstamped](20261003/20261003-172410_receipt-case-board-unstamped.kyri) | Eight cases run; milestone stays unstamped |

@@ -110,7 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
-| `20261003.174850` | [Mac Tahoe receipt card Swift](20261003-174850_mac-tahoe-receipt-card-swift.md) | Run the two receipt XCTest classes on the MacBook Air. The milestone stays unstamped. |
+| `20261003.174850` | [Mac Tahoe receipt card Swift](20261003-174850_mac-tahoe-receipt-card-swift.md) | Jail the Cursor GUI first, then run the two receipt XCTest classes. The milestone stays unstamped. |
 | `20261002.165006` | [The composed session](20261002-165006_incense-the-composed-session.md) | The trajectory this incense session composed, so the loop can be armed from it. |
 | `20261002.111449` | [Lila and the Long Return](yonder/20261002-111449_lila-and-the-long-return.md) | Consumed `20261002.134003`. The phrase map stays in that file. The living order is seated. |
 | `20260903.231727` | [Earth ships -- Cursor sitting](20260903-231727_earth-ships-cursor-sitting.md) | Incense Furrow Harvest outer loop; paste for the next chat. |
