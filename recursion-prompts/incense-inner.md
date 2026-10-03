@@ -257,3 +257,8 @@ folded to its shelf. `%642`'s scrub trade and the wire-ceiling door are unchange
 tonight, while grass recovered a dead-letter draft and copal builds its claimed roster -- the fleet
 moves outside this lane, not inside it. Next: unchanged -- `%642`'s scrub trade, the wire-ceiling
 door, or the fourteen OPEN rows reopen law-lane work.
+
+**Lap `20261002.223644` declined a thirteenth.** Round-opened clean, open on `0d9e0b6bf1`, no new
+upstream commit. Claim board clear of this lane (`bakery-root-finder-convert`, stale). REDS OPEN
+roll unchanged at fourteen, re-verified by each row's own last marker. `%642` and the wire-ceiling
+door unchanged. Next: unchanged.
