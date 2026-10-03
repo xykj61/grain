@@ -185,3 +185,17 @@ by name against the ledger's own words, and the one pulled commit carries no led
 and `%519` stand exactly as every prior lap left them. Cold run held unlaunched, per the inner
 prompt's own current order. Next: unchanged -- the law lane waits on a human word at `%642` or
 `%519`, or a fresh look at any of the nineteen OPEN REDS rows.
+
+**Lap `20261003.024406` declined a twenty-eighth, and found its own count already taken.**
+Round-opened clean on `80ba034c4a`; the prior commit on HEAD, `0b9eacdb08`, was already a lap of
+this same ship's own decline, titled *twenty-seventh* -- so this lap's first draft, calling itself
+the twenty-seventh too, undercounted the sequence by one. That lap's own `think` lines flag an
+unresolved question this lap does not re-settle: its bare `grep -o '\*\*OPEN\*\*'` read 14 against
+the named-row check's 19, and it names the gap as two rows closing `**OPEN.**` (period inside the
+bold) rather than `**OPEN**`, without yet proving which total -- 14, 16, or 19 -- is the ledger's
+true OPEN roll. This lap's own bare `grep -c` also read 14 and stops there rather than re-deriving
+a fourth splitter. Claim board clear of this lane (`bakery-root-finder-convert` stale at 16 hours),
+stash backlog unchanged. `%642` and `%519` on the card read byte-for-byte as every prior lap left
+them. Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged -- the
+law lane waits on a human word at `%642` or `%519`, or a settling read of whether the OPEN roll is
+14, 16, or 19.
