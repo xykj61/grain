@@ -199,3 +199,23 @@ stash backlog unchanged. `%642` and `%519` on the card read byte-for-byte as eve
 them. Cold run held unlaunched, per the inner prompt's own current order. Next: unchanged -- the
 law lane waits on a human word at `%642` or `%519`, or a settling read of whether the OPEN roll is
 14, 16, or 19.
+
+**Lap `20261003.025522` declined a twenty-ninth, and settled the OPEN-roll question four laps
+left open.** Round-opened clean on `80ba034c4a`; no new upstream commit; claim board clear
+(`bakery-root-finder-convert` stale). The gap is a splitter fault rather than a counting one: every
+row in this ledger is ONE PHYSICAL LINE, header and body together, so a naive `grep -c '^\*\*REDS'`
+-then-`next`-style awk reads the header line and skips scanning it for a status marker, and a bare
+`grep -c '\*\*OPEN\*\*'` misses the seven rows spelling `**OPEN.**` (period inside the bold).
+Reading the LAST of `**OPEN**`, `**OPEN.**`, `**CLOSED**`, `**BOOKED**` found within each of the 21
+lines matching `^\*\*REDS` (never within the `*Row ...` fold-pointer lines beneath them, already
+resolved by definition) gives **20 OPEN and 1 CLOSED**, 21 total. The nineteen-count from two laps
+ago also mis-read one row by eye: `20260925.130901` was hand-called CLOSED, yet it continues past
+its `**Repaired, incense's own tree only:**` clause to a trailing `**OPEN**` sentence naming the
+other seven ships' own `*/bin/` rooms as still theirs to clear -- a row that reads final mid-
+sentence and isn't. REDS OPEN roll is **twenty**: the fourteen numbered rows unchanged (`%827
+%826 %819 %808 %807 %804 %803 %788 %765 %735 %734 %730 %729 %456`) plus six bare-stamp rows
+(`20260918.013500`, `20260925.130901`, `20260930.205107`, `20261001.143131`, `20261001.234320`,
+`20261002.005820`). `%642` and `%519` stand byte-for-byte as every prior lap left them. Next: the
+splitter question is closed -- a future lap re-derives this count with the one-line-per-row,
+last-marker-wins rule above rather than writing a fifth ad hoc regex. The law lane still waits on
+a human word at `%642` or `%519`, or a fresh look at any of the twenty OPEN rows.
