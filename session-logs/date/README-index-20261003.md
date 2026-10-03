@@ -9,6 +9,7 @@
 | 20261003.025436 | [Petrichor's sixteenth fallow reading](20261003/20261003-025436_petrichor-sixteenth-fallow-reading.kyri) | HEAD already at xy/main; sibling fund-page question grass raised already answered clean by the QA floor |
 | 20261003.033512 | [Patchouli declines a sixteenth repeat](20261003/20261003-033512_patchouli-declines-a-sixteenth-repeat.kyri) | aborted a duplicate grep mid-check; check-in request on cadence carried forward unchanged |
 | 20261003.025522 | [Incense settles the REDS OPEN-roll splitter](20261003/20261003-025522_reds-open-roll-settled.kyri) | four laps' 14/16/19 dispute resolved to 20 OPEN, 1 CLOSED, by last-marker-per-line |
+| 20261003.025313 | [Grass lifts spool_dedup_ratio.rye's module head, F/52 to B/83](20261003/20261003-025313_grass-spool-dedup-ratio-module-head-lift.kyri) | widened the sweep to touched module heads; four more below-B readings named for the next lap |
 | 20261003.025208 | [Pheromone's seventh reading, round-open only](20261003/20261003-025208_pheromone-seventh-reading-round-open-only.kyri) | round-open landed two peer logs; lane still empty; REDS %788 named fleet-wide, not a claim |
 | 20261003.025233 | [Diffuser: the distance half has no caller](20261003/20261003-025233_diffuser-distance-half-has-no-caller.kyri) | hop functions have zero live callers |
 | 20261003.025041 | [Petrichor's fifteenth fallow reading](20261003/20261003-025041_petrichor-fifteenth-fallow-reading.kyri) | one unrelated peer commit pulled; still no OPEN/BOOKED work in lane scope |

@@ -1,30 +1,33 @@
 //! mantra/spool_dedup_ratio.rye -- the spool-scale dedup ratio the fourth angle named and
 //! left untouched.
 //!
-//! The fourth-angle measurement (mantra/beading_dedup_ratio.rye) found content-defined
-//! beading winning on shift edits (insert/delete) and losing on same-length substitutes,
-//! inside a single 400-byte resin. mantra/spool.rye's own header names a different scale
-//! -- 64 resins, two fixed-size beads each -- and that module never calls
-//! beading.bead_content_defined at all: spool_content always chunks at
-//! beading.max_resin_bytes-wide absolute offsets, then beads each resin with the fixed-size
-//! beading.bead alone (spool.rye:143). So the question this module measures is not "does
-//! content-defined beading help here" (it is never invoked), but a sharper one: what does
-//! a SHIFT edit cost when resin boundaries themselves are fixed at absolute byte offsets,
-//! rather than content-defined? A fixed-offset split cannot resync after an insert or
-//! delete the way a content-defined one can -- every resin whose window now starts at a
-//! different byte offset than before re-chunks into different content, win or lose at the
-//! bead level notwithstanding.
+//! The fourth-angle measurement (mantra/beading_dedup_ratio.rye) found a win for
+//! content-defined beading on shift edits: insert and delete. On same-length substitutes,
+//! inside one 400-byte resin, that same measurement read its weakest ratio.
 //!
-//! This module winds a multi-resin artifact twice into one shared BeadStore -- an
-//! unedited base, then one of substitute / insert / delete at a named position -- and
-//! reads the second winding's own SpoolReport (beads_deposited, beads_deduped) exactly as
-//! spool.rye's own selftest already does for its one hand-picked case. No change to
-//! spool.rye or beading.rye; this module calls both as a library.
+//! mantra/spool.rye works at a different scale: 64 resins, two fixed-size beads each.
+//! spool_content always chunks at beading.max_resin_bytes-wide absolute offsets. Each
+//! resin then beads with the fixed-size beading.bead alone (spool.rye:143). It calls
+//! beading.bead_content_defined zero times.
+//!
+//! So this module asks a sharper question. Not "does content-defined beading help here" --
+//! spool.rye's own zero calls already answer that one. The question: what a SHIFT edit
+//! costs when resin boundaries sit at fixed byte offsets, rather than content-defined
+//! ones. A content-defined split resyncs after an insert or delete. A fixed-offset split
+//! keeps its old boundaries instead. So every resin whose window now starts at a
+//! different offset re-chunks into different content, whatever that resin's own bead
+//! score reads.
+//!
+//! This module winds one artifact twice into one shared BeadStore. First an unedited
+//! base. Then one edit -- substitute, insert, or delete -- at a named position. It reads
+//! the second winding's own SpoolReport (beads_deposited, beads_deduped), the way
+//! spool.rye's own selftest already reads its one hand-picked case. spool.rye and
+//! beading.rye stay exactly as they stand; this module calls both as a library.
 //!
 //! Scope: active-designing/date/20261001/20261001-184131_the-one-real-revision-this-tree-has-is-a-shift.md
-//!   names this scale as its own open door; active-designing/date/20261001/20261001-182131_
-//!   the-ratio-the-comment-was-actually-about.md names it the prior page's "spool-scale
-//!   behavior" this scan does not touch.
+//!   names this scale as its own open door. active-designing/date/20261001/20261001-182131_
+//!   the-ratio-the-comment-was-actually-about.md calls it the prior page's own "spool-scale
+//!   behavior," a scale that page left aside.
 //!
 //!   rye build mantra/spool_dedup_ratio.rye -femit-bin=mantra/bin/spool-dedup-ratio
 //!   mantra/bin/spool-dedup-ratio selftest

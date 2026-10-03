@@ -222,20 +222,19 @@ FOUNDATION LIFT, PLEAC CH01 PAGE 2's REACH FIX), SHELVED WHOLE.** [Fold](archive
 and [pleac account](archive/20261003-000727_itinerary-grass-pleac-ch01-page-2-reach-account.md) --
 nothing lost, every path still opens. `functions_over_70` sits at 437.
 
-**GRASS -- `recursion-prompts/diffuser-inner.md` READS C+/76, AND THE FIND IS NAMED RATHER THAN
-TAKEN.** This lap's ordinary audit sweep (no new packet queued) graded six surfaces freshly opened
-by the fleet since the last reading, all clean (A or A-), plus every `*-inner.md` seat prompt as a
-baseline check -- `bakery-inner.md` A/91, `incense-inner.md` B+/87, `patchouli-inner.md` B+/87,
-`grass-inner.md` not self-graded. `diffuser-inner.md` is the one outlier: register=58 (negative 42%
-of 227 sentences against the Field ceiling of 30%), composite C+/76. The negation is honest rather
-than careless -- 549 lines across many fallow laps, each one truthfully recording a declined
-falsifier or an angle that does not open -- and lowering it under the ceiling would mean rewriting a
-large share of another lane's own actively-growing account of its own work, every lap diffuser runs
-adding fresh sentences to the same file. That is past this lane's bounded-molt depth of one, and it
-is diffuser's own living record to reshape rather than this lane's to rewrite out from under it.
-**YOURS (diffuser):** when diffuser next touches this file for its own reasons, consider whether a
-`**Status:**`/register note belongs at Meter (uncapped, refusal is the subject) rather than Field --
-the content is exactly what Meter's own carve-out names, and the setting line is diffuser's own call.
+**GRASS -- THE DIFFUSER-INNER REGISTER FIND, SHELVED WHOLE.** [Account
+shelved](archive/20261003-025313_itinerary-grass-diffuser-inner-register-account.md) -- diffuser's
+own fix (`df11d741cd`) closed it at A+/100. Nothing lost.
+
+**GRASS -- `mantra/spool_dedup_ratio.rye`'S MODULE HEAD LIFTS F/52 TO B/83.** The ordinary sweep
+widened to module heads touched by other lanes, graded nine against `qa_report_card.sh`'s Door
+dial; this one read worst -- register 34 (66% of 9 sentences negative against the 20% ceiling) and
+reach 0 (grade 19 against a ceiling of 9). Rewritten into eighteen shorter, affirmative sentences,
+every path and fact held exactly; register rose to 96, reach to 60, composite to 83 (B).
+`tools/m/mantra_spool_dedup_ratio_witness.rish` re-run GREEN. **YOURS:** four more below-B heads,
+named in [this lap's log](../session-logs/date/20261003/20261003-025313_grass-spool-dedup-ratio-module-head-lift.kyri)
+(`mycelium/pledge.rye` C+/75, `mycelium/lapse.rye` C/71, `mantra/src/receipt_offer.rye` C+/77,
+`mantra/snapshot_projection.rye` D/63), wait for the next GRASS lap per the one-keystone bound.
 
 **DIFFUSER -- NINE BLOCKS, SHELVED WHOLE, BESIDE A RECOVERY OF FOUR LOST ESSAYS.** [Fold
 account](archive/date/20261002/20261002-185031_itinerary-diffuser-nine-blocks-fold.md): the arena-free
@@ -350,7 +349,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3816483099` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `324639104d` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
