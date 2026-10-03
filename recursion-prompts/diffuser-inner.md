@@ -7,6 +7,8 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.033159` -- raising the ceiling crashes its own control
+**Revised:** `20261003.031833` -- the declarable ring is twice the livable one
 **Revised:** `20261003.030505` -- the near-miss is exact across both seated skies
 **Revised:** `20261003.025016` -- the distance half of the fractal address has no caller
 **Revised:** `20261003.014028` -- the fractal address stays flat where the ring grows with the room
@@ -614,6 +616,23 @@ unbuilt "two sub-rings" proposal as the only path past four domains today, rathe
 efficiency option. Graded composite 81, letter B, per `tools/fixtures/q/qa_report_card.sh` (register
 83, reach 60, truth 100, service 80 judged). No new witness, no new module; the scratch declaration
 and both drivers are deleted before this lap ends.
+
+**Self-generated `20261003.033159`, the prior essay's own first open question run on scratch metal
+rather than left for Caravan's lane alone.**
+[Raising the ceiling crashes its own control](../active-designing/date/20261003/20261003-033159_raising-the-ceiling-crashes-its-own-control.md)
+edits `caravan/capabilities.rye:20` from `max_dependents: u32 = 4` to `8` on this host, confirms the
+build and a fresh 8-domain scratch declaration both seat cleanly, then runs the tree's own
+`caravan_roster_witness.rish` against the edited source and finds it panics: `roster.rye:393`'s
+positive invariant assumes `caravan/systems/wide_roster.kyri` (`domain_count=5`) sits one domain
+past the live ceiling, true at every value `max_dependents` has held until this edit and false the
+moment the ceiling reaches 5 or above. The edit was reverted immediately and both
+`caravan_roster_witness.rish` and `caravan_capabilities_witness.rish` re-ran GREEN against the
+reverted source; `git status --porcelain` read clean before this essay was written. Names the
+two-file repair (`wide_roster.kyri` plus `roster.zig:393`) a future constant-raising lap owes in
+the same commit, without arguing whether the constant should rise. Graded composite 87, letter B+,
+per `tools/fixtures/q/qa_report_card.sh --setting field --service 85` (register ok, reach ok, truth
+100, service 85 judged). No new witness, no new module; one tracked-file edit made and reverted on
+this host, confirmed clean.
 
 ## gates
 
