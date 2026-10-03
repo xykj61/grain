@@ -2350,3 +2350,13 @@ and
 [`archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-account.md`](archive/date/20261002/20261002-175052_itinerary-copal-ep010-roster-account.md),
 replaced on the living card by two one-line pointers. *What waits there, worth recalling:*
 nothing new -- each account's own closed claim name is repeated on the pointer line.
+
+**Checkpoint `20261003.034637` -- incense sheds six folded lap accounts off its own**
+**`recursion-prompts/incense-inner.md` `next` section to make room for the thirty-fourth decline.**
+**Walk-back nib:** `b83d15ca38`. **Swept:** six lap accounts (`20261003.003836` declined a
+twenty-fourth, through `20261003.025522` declined a twenty-ninth and settled the ledger's own
+OPEN-roll splitter question), moved verbatim to
+[`../recursion-prompts/date/20261003/20261003-034637_incense-next-log-archive-61.md`](../recursion-prompts/date/20261003/20261003-034637_incense-next-log-archive-61.md),
+replaced on the living pin by one pointer line. *What waits there, worth recalling:* nothing new --
+the settled twenty-OPEN REDS count and the one-line-per-row, last-marker-wins splitter rule are
+both repeated in full on the pointer paragraph and in every account written since.
