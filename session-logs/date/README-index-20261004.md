@@ -6,4 +6,5 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261004.002738` | [ubuntu cloud, nixos pier](20261004/20261004-002738_ubuntu-cloud-nixos-pier.kyri) | Cloud VMs are Ubuntu; NixOS stays the pier |
 | `20261004.002003` | [workers empty repos](20261004/20261004-002003_workers-empty-repos.kyri) | Three Mac workers, empty repo lists |
