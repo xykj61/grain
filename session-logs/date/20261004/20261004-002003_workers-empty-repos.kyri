@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261004.002003
+editor Cursor
+provider xAI
+product Cursor
+role captain, incense, interactive session
+modality text
+model grok-4.7
+model_status the session names Grok 4.7; no separate runtime telemetry was read
+configured_model grok-4.7-high
+configured_status fleet cursor launcher default
+evidence frontier/cursor-cli/INCENSE-FLEET.md
+voice Kyri
+host Cursor cloud agent, America/New_York
+title workers empty repos
+prompt Start an incense interactive session, and explain No self-hosted workers were available for this repo while several agents run at once from inside the jail, on Ultra.
+think listed the account workers: three connected, all idle, all repos empty, directories grain and grain-incense on the MacBook Air
+think Cursor-hosted cloud agents are a separate plane; this lap is one, on github.com/xykj61/grain
+think My Machines matches a request to a worker only when that worker registered the git remote; an empty list is the refusal
+think the Mac GUI jail denies the real home ssh and Library trees; the incense cursor paste is FLEET_BARE=1
+obs Ultra pays the model; it does not place a run onto a worker that registered no repository
+rota none -- placement question, council grid unread
+file session-logs/date/20261004/20261004-002003_workers-empty-repos.kyri -- this record
+file session-logs/date/README-index-20261004.md -- opened the day shelf
+file session-logs/README.md -- 20261004 open; 20261003 closed at its shelf count
+file session-logs/CHAPTERS.md -- the same two day rows
+file construction/ITINERARY.md -- Git nib names this commit's parent
+recommend check-in (Cursor) -- paste fleet interactive incense cursor bare, outside the jail, or pick the Cursor-hosted environment
+status GREEN -- the reading is the live worker list
+scope the worker list and the incense paste
