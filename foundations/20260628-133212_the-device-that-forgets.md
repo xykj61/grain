@@ -1,5 +1,7 @@
 # The Device That Forgets
 
+> **Fossil, `20261004.222439`.** The living strand is [`the pockets stand free`](20261004-222439_the-pockets-stand-free.md). This page stays whole on disk. A shed waits for a circled word.
+
 *A pocket tool that holds nothing, connects by a single wire, and returns your attention by letting go.*
 
 **Stamp:** `20260628.133212`

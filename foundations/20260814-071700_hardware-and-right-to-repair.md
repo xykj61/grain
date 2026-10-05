@@ -6,7 +6,7 @@
 **Voice:** Kyri, with **Keaton Livermore** as coauthor
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Living -- Chapter A front door; the software surfaces below are proven on metal, the hardware itself is a named custody gate -- **Mixed room**: the four software surfaces are proven on metal; the hardware is a named custody gate.
-**Kin:** [`20260801-005853_mantrapod-venture-pitch.md`](20260801-005853_mantrapod-venture-pitch.md) - [`20260628-133212_the-device-that-forgets.md`](20260628-133212_the-device-that-forgets.md) - [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
+**Kin:** [`20261004-222439_the-pockets-stand-free.md`](20261004-222439_the-pockets-stand-free.md) - [`20260801-005853_mantrapod-venture-pitch.md`](20260801-005853_mantrapod-venture-pitch.md) - [`20260628-133212_the-device-that-forgets.md`](20260628-133212_the-device-that-forgets.md) - [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md)
 
 > *What forgets, protects. What opens, endures.*
 
