@@ -1,7 +1,7 @@
 > **A grain is a tree you can hold.**
 
 <p align="center">
-  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a light-gold sephirot tree of hexagons on dark aetheric purple, drawn like a terminal" />
+  <img src="assets/grain-logo.svg" width="168" height="168" alt="Grain -- a charcoal band on a black field" />
 </p>
 
 <h1 align="center">Grain</h1>
@@ -15,6 +15,7 @@
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
   <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-wave, honest register" src="https://img.shields.io/badge/status-crashed--wave-b9954a"></a>
+  <a href="tools/gen/chapter/fascia_metric.rish"><img alt="Fascia: 58 of 100, measured 20261005.005451" src="https://img.shields.io/badge/fascia-58-b9954a"></a>
 </p>
 
 <!-- **Voice:** Kyri -- **Style:** Bhakta, Door setting -- full note at the foot of this page. -->

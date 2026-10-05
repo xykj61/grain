@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261005.003027
+editor Cursor
+provider xAI
+product Cursor
+role incense interactive
+modality text
+model grok-4.7
+model_status the session names Grok 4.7; no separate runtime telemetry was read
+configured_model grok-4.7-high
+voice Kyri
+host macOS Cursor GUI
+timezone America/New_York
+title charcoal band
+prompt Make the attached square the new SVG logo of Grain.
+think the attached square is 1920 by 1920
+think every pixel is #000000 or #111111
+think the charcoal band starts at row 420 and stands 1080 rows tall
+think the living path assets/grain-logo.svg is the file the front door already cites
+obs the wheat drawing stays at assets/grain-logo-wheat.svg
+obs the new mark uses the same 256 field, band y 56 height 144
+file assets/grain-logo.svg the charcoal band on black
+file README.md the alt text names the band
+file session-logs/date/20261005/20261005-003027_charcoal-band.kyri this record
+recommend check in (Cursor) -- the mark is local, and the ww publish has not run
+status sending
+scope the front-door logo and this log
