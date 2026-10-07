@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261007.145700` | [Signing runs from this tree](20261007/20261007-145700_signing-runs-from-this-tree.kyri) | Local gpg.sh. First of six. |
 | `20261007.142904` | [The public seed is grain-ww](20261007/20261007-142904_the-public-seed-is-grain-ww.kyri) | The first hour clones grain-ww/grain. |
+| `20261007.120206` | [Rota prep, the old kept](20261007/20261007-120206_rota-prep-the-old-kept.kyri) | Five rows walked. Cut stays RED. |
 | `20261007.114809` | [The two functions and the span](20261007/20261007-114809_the-two-functions-and-the-span.kyri) | Four fences match the weave. Ojjo stays a yardstick. |
 | `20261007.101045` | [Calfive grouped, the center aloud](20261007/20261007-101045_calfive-grouped-the-center-aloud.kyri) | One calendar. One conversation. Seat 9 stays unnamed. |
 | `20261007.100012` | [Calfive, the English door](20261007/20261007-100012_calfive-the-english-door.kyri) | English alias for the five-calendar. Rings stay capacities. |

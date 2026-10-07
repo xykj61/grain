@@ -192,6 +192,26 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 ## Class W -- walked, cited, kept
 
+### Class W7 -- the rota over the center, kept `20261007.120041`
+
+Walked all five rows over the cluster this sitting had open: the fold, the two lessons, the span scan, Calfive, Ojjo, and the lineage pages. **Breach declared, not begun. No new mutant. No new banner. No repoint. Cut RED.**
+
+| Row | What it found |
+| --- | --- |
+| Aether | The work exists so one list can be said whole. The living picture is `foundations/20261003-220920_the-fold-from-the-fact-to-the-frame.md`. |
+| Air | Each page ends at its own job. The short lesson points at the four fences. Ojjo stays a yardstick. |
+| Fire | The cut stays refused. A unique orbit for Calfive stays unseated. No `ojjo/` directory. |
+| Water | The tutorial asks and `tools/fixtures/d/docs_geode_span_scan.sh` answers. `verdict=ok`, `spans=4`, read `20261007.114657`. |
+| Earth | `foundations/20260825-233310_realidream.md` already carries a fossil banner naming the fold page. The gratitude originals stay held whole. |
+
+| Kept | Why the cut was refused |
+| --- | --- |
+| `docs-geode/tutorials/the-list-and-the-picture.md` | Its job is the one sentence, the heart, and the count. |
+| `docs-geode/tutorials/the-two-functions.md` | Its job is the four fences. |
+| the fold page | Its job is the living picture. A second mutant would repeat it. |
+| the Ojjo design | Its job is the symmetric measure. |
+| Calfive | An unseated alias. A ring stays a capacity. |
+
 *Every W row -- W3's three charters, W4's census piece, W5's almanac machinery -- was measured and
 **held**, and the settled record rests on
 [`archive/date/20260908/20260908-180000_shred-prep-class-w-walked-and-kept.md`](archive/date/20260908/20260908-180000_shred-prep-class-w-walked-and-kept.md).

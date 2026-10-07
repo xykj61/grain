@@ -31,6 +31,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **shred** / **shed** | the authorized cut of a fossil that has a living mutant | `.claude/rules/molt.md` - SHRED_PREP |
 | **add to molt queue** | note a document into `construction/SHRED_PREP.md` with its measurement -- prep only, the file itself untouched | `context/CHEMICAL_FORMULAS.md` |
 | **mitra shed prep** | a fossil seen off like a friend -- mutant seated, living citers repointed, banner on its face, row written -- and the cut still RED | `construction/SHRED_PREP.md` Class M |
+| **rota prep** | walk all five rota rows over one named cluster, consolidate what repeats, molt and declare the breach, mitra-shed-prep the old, and leave the cut RED | this page, the section of that name |
 | **debride** | the sanctioned break of accrete-never-break -- remove named dead history | `.claude/rules/debride.md` |
 | **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |
@@ -43,6 +44,20 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **fleet loop** | start a ship's unattended loop; the words are `fleet loop <ship> <door>` | this page |
 | **fleet watch** | re-arm stopped loops; the words are `fleet watch pier <door>` | this page |
 | **incense interactive** | the same pastes as `fleet interactive incense` | this page |
+## rota prep
+
+The words are `rota prep`, then the cluster in one sentence. The five rows are read in order. Each one is a question, and the lap answers it before any file moves. The cut stays RED.
+
+| Row | Page | The question |
+|---|---|---|
+| Aether hears | [`../foundations/20260826-021731_aether-the-row-that-hears.md`](../foundations/20260826-021731_aether-the-row-that-hears.md) | Why does the work exist? |
+| Air feels | [`../foundations/20260826-021732_air-the-row-that-feels.md`](../foundations/20260826-021732_air-the-row-that-feels.md) | Where does each thing end? |
+| Fire sees | [`../foundations/20260826-021733_fire-the-row-that-sees.md`](../foundations/20260826-021733_fire-the-row-that-sees.md) | What must stop, and what must be cut? |
+| Water tastes | [`../foundations/20260826-021734_water-the-row-that-tastes.md`](../foundations/20260826-021734_water-the-row-that-tastes.md) | Is the work cared for, the way a stream wears one channel? |
+| Earth breathes in | [`../foundations/20260826-021735_earth-the-row-that-breathes-in.md`](../foundations/20260826-021735_earth-the-row-that-breathes-in.md) | What already stands true? |
+
+Then the gestures, still prep. Improve means one sentence said once. Consolidate means a page that repeats that sentence keeps its own job and points. Molt seats a mutant only when none stands. Breach is declared in the row and the session log, and the repoint waits. Mitra shed prep writes the row on [`../construction/SHRED_PREP.md`](../construction/SHRED_PREP.md). A shred, a debride, and a second copy of a page that already has a banner stay outside this spell.
+
 ## fleet
 
 A fleet spell is four words: `fleet`, the gesture, the ship, and the door. The gesture is `interactive`, `loop`, or `watch`. The ship is a live seat. The door is `cursor`, `claude`, `codex`, `antigravity`, or `opencode`. `incense interactive <door>` names the same paste as `fleet interactive incense <door>`.
