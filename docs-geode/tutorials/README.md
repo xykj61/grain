@@ -26,6 +26,7 @@ you can check with your own eyes, and that ending is the whole reason this room 
 | [Session logs in Cursor](session-logs-in-cursor.md) | someone running `~/grain-incense` in the Cursor window | the day's `.kyri` film, the index row, fields you can re-read |
 | [Cursor Agent on the pier](cursor-agent-on-the-pier.md) | someone starting the same agent from a terminal | `launch-cursor-agent.rish`, agent-jail flags, prompt examples from Kyri and Kyli |
 | [The incense Acme walk](the-incense-acme-walk.md) | an Acme employee meeting this whole sitting | seed subject `incense`, style molt, Teacher Style, publish at custody gate %1 |
+| [The list and the picture](the-list-and-the-picture.md) | someone who wants one sentence they can say whole | Kyli and Kyri, one list, `current`, and `git rev-list --count HEAD` |
 
 ## What earns a place here
 
