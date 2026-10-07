@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.193836` | [Sagittarius and Capricorn](20261007/20261007-193836_sagittarius-and-capricorn.kyri) | The mission. The bound is 1. |
+| `20261007.193613` | [Libra and Scorpio on xy](20261007/20261007-193613_libra-and-scorpio-on-xy.kyri) | Count 8033. Sky opens at 8038. |
 | `20261007.193459` | [The fold waits on two links](20261007/20261007-193459_the-fold-waits-on-two-links.kyri) | Scorpio names two links. The page stays. |
 | `20261007.193420` | [Libra and Scorpio](20261007/20261007-193420_libra-and-scorpio.kyri) | Span scan ok. Fold links wait. |
 | `20261007.192811` | [Leo and Virgo on xy](20261007/20261007-192811_leo-and-virgo-on-xy.kyri) | Count 8031. Sky opens at 8038. |
