@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.175832` | [The picture on the door](20261007/20261007-175832_the-picture-on-the-door.kyri) | Cancer sets the sentence on the door. |
 | `20261007.174815` | [Gemini and Cancer](20261007/20261007-174815_gemini-and-cancer.kyri) | The sentence, then the picture. |
 | `20261007.174428` | [Taurus is on xy](20261007/20261007-174428_taurus-is-on-xy.kyri) | Count 8027. Sky opens at 8038. |
 | `20261007.173836` | [Round load sent](20261007/20261007-173836_round-load-sent.kyri) | Taurus seating goes to xy. |

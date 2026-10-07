@@ -29,6 +29,8 @@ you can check with your own eyes, and that ending is the whole reason this room 
 | [The list and the picture](the-list-and-the-picture.md) | someone who wants one sentence they can say whole | Kyli and Kyri, one list, `current`, and `git rev-list --count HEAD` |
 | [The two functions](the-two-functions.md) | someone ready to read `apply` and `current` in the file | four source fences, and `docs_geode_span_scan.sh` keeps them equal to the lines |
 
+The list is the one copy. The picture is that list, folded into light.
+
 ## What earns a place here
 
 A tutorial ships when **every command in it has been run before it was written down**. That rule
