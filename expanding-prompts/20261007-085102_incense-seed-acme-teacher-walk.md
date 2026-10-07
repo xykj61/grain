@@ -29,6 +29,7 @@ Document the session-log user experience of running `~/grain-incense` in Cursor.
 4. Change `publish-seed.rish` `shipped_subject` to `incense`. Match the commit-msg exemption and the wall scans. Keep `crashed-wave` in the template leak list and add `incense` beside it.
 5. Write a kyri resin at `context/archive/20261007-085102_style-blend-resin.kyri`. A Mantra `resin_batch` wait for a booked code lap.
 6. Session log. Commit the field. `sh publish-seed.sh --push`.
+7. If `sow_witness` prints `M1_BAD` and a ghost shipping root (`programming` with files on disk, none in `git ls-files`), track `programming/` and classify `upstream` as `personal` in `template-manifest.kyri`. Re-run `sh tools/fixtures/s/sow_manifest_cover.sh`. Then `--push` again. Do not `--no-verify`.
 
 ## Audit pass, what this sitting actually does
 

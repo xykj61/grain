@@ -94,6 +94,7 @@ allow vault
 allow assets
 allow brix
 allow pleac
+allow programming
 # -- teaching (clean-authored; personal sub-parts sub_excluded) --
 allow manual
 allow docs
@@ -270,7 +271,8 @@ template  tally                           # bounded allocation
 template  tools                           # witnesses and gates; gitignored secrets never enter; scrub any name on touch
 template  assets                          # the Grain logo (archetype wheat-sephirot SVG, no personal art, no name)
 template  brix                            # Brix composition language module (infuse) -- clean code, no name
-template  pleac                           # the PLEAC cookbook (strings/lists/numbers) -- clean code, no name
+template  programming                     # the cookbook (strings/lists/numbers) -- clean code, no name
+template  pleac                           # pointer at programming/; the elder path stays
 
 # ---- code modules that name the maintainer in comments (scrub the name, ship the code) ----
 scrub     kumara                          # identity module -- tilak comments name the maintainer
@@ -303,6 +305,7 @@ template  vendor                          # third-party build source, unmodified
 
 # ---- personal record (never copied) ----
 personal  session-logs                    # years of reasoning traces that name the maintainer by design
+personal  upstream                        # reports filed outward; withheld until a clearance pass
 personal  SKILL.md                      # the operator skills door -- 4 of its 13 rows point at withheld
                                         # rooms (construction, SPELLBOOK, LEXICON, TAME_CORE); a door onto
                                         # four missing rooms serves a stranger worse than no door
@@ -390,7 +393,8 @@ sub_exclude foundations/yonder/20260729-220100_the-names-we-did-not-use.md      
 # essays naming real public figures as project-naming rationale
 sub_exclude foundations/yonder/20260728-020607_mala-and-kamala-harris.md
 sub_exclude foundations/yonder/20260728-021252_gwoh-and-sarah-guo.md
-sub_exclude foundations/yonder/20260728-021508_eyva-and-avanti.md
+sub_exclude foundations/yonder/20260728-021508_eyva-and-avanti.md   # shed 20261005.234011; row kept
+sub_exclude foundations/yonder/20261005-234011_eyva-and-avanti.md   # living Eyva page; seat 3; still withheld
 sub_exclude foundations/yonder/20260728-024417_trya-and-ariana-grande.md
 sub_exclude foundations/yonder/20260728-025220_murr-and-kyler-murray.md
 sub_exclude foundations/yonder/20260728-032134_keeh-and-kia.md

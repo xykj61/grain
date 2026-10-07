@@ -76,6 +76,26 @@ Teacher Style is almost Bhakta. It uses plain American English. It may speak of 
 - A session log on today's shelf.
 - docs-geode style lines still reading **Bhakta at the Door setting, with Radiant warmth**.
 
+## Kyli -- when the seed will not publish
+
+The publisher does not push a dirty story. After the field commit, `sow_witness` reads `template-manifest.kyri` against `git ls-files`. A **shipping row** (`template` or `scrub`) must name a tracked root. A file sitting on disk that git has not added is a **ghost**. This sitting met that shape: the cookbook lived at `programming/` on disk, the worktree manifest already said `template programming`, and HEAD had no `programming` tree. The witness printed `M1_BAD` and `THE SEED IS NOT PROVABLY CLEAN`. Nothing published. Nothing initialised.
+
+Kyri: track the cookbook, or stop listing it as a shipping row until a later sitting tracks it. Do not `--no-verify`. Do not force-push the private field. Classify `upstream` as `personal` if it is already a tracked root with no verdict -- an unclassified tracked root is the other M1 red.
+
+Prove cover before the long projection:
+
+```sh
+sh tools/fixtures/s/sow_manifest_cover.sh
+```
+
+Green is `M1_OK`. Then:
+
+```sh
+sh publish-seed.sh --push
+```
+
+The public seed is still one unsigned Option-B root. The field commits stay GPG-signed. Dated logs keep the word `crashed-wave`. The living subject is `incense`.
+
 ---
 
 *May the seed wear the team's name, and may the door stay open.*

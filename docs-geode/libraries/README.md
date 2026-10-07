@@ -44,7 +44,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
-| `linengrow/` | 157 | 85 |
+| `linengrow/` | 156 | 85 |
 | [`lotus/`](../../lotus/README.md) | 238 | 250 |
 | [`mand/`](../../mand/README.md) | 6 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
@@ -52,9 +52,10 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`mantra/`](../../mantra/README.md) | 52 | 73 |
 | [`manual/`](../../manual/README.md) | 1 | 14 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
-| [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
-| [`pleac/`](../../pleac/README.md) | 3 | 7 |
+| [`mycelium/`](../../mycelium/README.md) | 98 | 87 |
+| [`pleac/`](../../pleac/README.md) | 3 | 1 |
 | [`pond/`](../../pond/README.md) | 156 | 167 |
+| [`programming/`](../../programming/README.md) | 3 | 6 |
 | [`rishi/`](../../rishi/README.md) | 2 | 19 |
 | [`rye/`](../../rye/README.md) | 117 | 116 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
