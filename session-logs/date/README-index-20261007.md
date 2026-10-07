@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.174815` | [Gemini and Cancer](20261007/20261007-174815_gemini-and-cancer.kyri) | The sentence, then the picture. |
+| `20261007.174428` | [Taurus is on xy](20261007/20261007-174428_taurus-is-on-xy.kyri) | Count 8027. Sky opens at 8038. |
 | `20261007.173836` | [Round load sent](20261007/20261007-173836_round-load-sent.kyri) | Taurus seating goes to xy. |
 | `20261007.165939` | [Round load is seated](20261007/20261007-165939_round-load-is-seated.kyri) | Spell prints the orbit round. |
 | `20261007.165339` | [The fifteen and the five goals](20261007/20261007-165339_the-fifteen-and-the-five-goals.kyri) | Fifteen signs. One calendar. |
