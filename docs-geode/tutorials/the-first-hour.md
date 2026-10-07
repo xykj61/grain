@@ -53,9 +53,11 @@ a household. That is what these six steps are the first hour of.
 ## 1. Clone
 
 ```sh
-git clone https://github.com/grain-os/grain.git
+git clone https://github.com/grain-ww/grain.git
 cd grain
 ```
+
+The public seed is `grain-ww/grain`. `grain-os/grain` is a pointer at that seed.
 
 ## 2. Fetch the toolchain
 

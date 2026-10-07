@@ -10,6 +10,7 @@
 
 | Chapter | Range | Count | Index |
 |--------|-------|------:|-------|
+| 20261007 | `20261007` | open | [`date/README-index-20261007.md`](date/README-index-20261007.md) |
 | 20261005 | `20261005` | open | [`date/README-index-20261005.md`](date/README-index-20261005.md) |
 | 20261004 | `20261004` | 2 | [`date/README-index-20261004.md`](date/README-index-20261004.md) |
 | 20261003 | `20261003` | 121 | [`date/README-index-20261003.md`](date/README-index-20261003.md) |
