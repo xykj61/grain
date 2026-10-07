@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.193459` | [The fold waits on two links](20261007/20261007-193459_the-fold-waits-on-two-links.kyri) | Scorpio names two links. The page stays. |
 | `20261007.193420` | [Libra and Scorpio](20261007/20261007-193420_libra-and-scorpio.kyri) | Span scan ok. Fold links wait. |
 | `20261007.192811` | [Leo and Virgo on xy](20261007/20261007-192811_leo-and-virgo-on-xy.kyri) | Count 8031. Sky opens at 8038. |
 | `20261007.192058` | [One repeat, left in place](20261007/20261007-192058_one-repeat-left-in-place.kyri) | Virgo names the repeat. The page stays. |
