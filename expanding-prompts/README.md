@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.193714` (Sagittarius and Capricorn)
+**Last updated:** `20261007.194208` (Aquarius and Pisces)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261007.194208` | [Aquarius and Pisces](20261007-194208_aquarius-and-pisces.md) | One type, studied. Then the wish, before sky. |
 | `20261007.193714` | [Sagittarius and Capricorn](20261007-193714_sagittarius-and-capricorn.md) | The mission, then the fascia bound of 1. |
 | `20261007.193310` | [Libra and Scorpio](20261007-193310_libra-and-scorpio.md) | The green line, then the fold's two absent links. |
 | `20261007.191625` | [Leo and Virgo](20261007-191625_leo-and-virgo.md) | The economics check, then one repeat left in place. |
