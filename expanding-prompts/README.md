@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.174657` (Gemini and Cancer)
+**Last updated:** `20261007.191625` (Leo and Virgo)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261007.191625` | [Leo and Virgo](20261007-191625_leo-and-virgo.md) | The economics check, then one repeat left in place. |
 | `20261007.174657` | [Gemini and Cancer](20261007-174657_gemini-and-cancer.md) | Two rounds: the sentence, then the picture. |
 | `20261007.165138` | [The fifteen and the five goals](20261007-165138_the-fifteen-and-the-five-goals.md) | Fifteen signs read the rounds. One calendar stays. |
 | `20261007.114657` | [The two functions and the span](20261007-114657_the-two-functions-and-the-span.md) | Four fences match weave.rye. Ojjo stays a yardstick. |
