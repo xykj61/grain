@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.195614` | [Siya says the close](20261007/20261007-195614_siya-says-the-close.kyri) | Sky 15. Orbit 2 is next. |
+| `20261007.195330` | [Sky fourteen landed](20261007/20261007-195330_sky-fourteen-landed.kyri) | Count 8039. Siya's chair is next. |
 | `20261007.195209` | [The heart page held whole](20261007/20261007-195209_the-heart-page-held-whole.kyri) | Sky 14. Siya's chair is next. |
 | `20261007.195131` | [Sky thirteen and fourteen](20261007/20261007-195131_sky-thirteen-and-fourteen.kyri) | Heart page named. Siya waits. |
 | `20261007.194537` | [The approach is Pisces](20261007/20261007-194537_the-approach-is-pisces.kyri) | Count 8037. The next commit is sky. |
