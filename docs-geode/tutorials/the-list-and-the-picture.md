@@ -29,7 +29,7 @@ The list has a ceiling written in that same file. `max_weave_lines` is `1 << 20`
 
 Mantra's own door says Mantra is where names live. The words "fold head" live in the lineage page `external-research/grain-lineage-silo/the-state-at-center.md`. Say both once. The silo names the center. The function you can open is `current`.
 
-The lines themselves, and the check that keeps them true, wait in the next lesson.
+The lines themselves, and the check that keeps them true, are the next lesson: [The two functions](the-two-functions.md).
 
 ## Kyli -- does this path have a heart?
 
