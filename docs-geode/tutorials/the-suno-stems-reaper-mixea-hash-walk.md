@@ -34,15 +34,15 @@ Kyri will name the numbers. I will keep the door open. Both of us mean the same 
 
 Each later step takes the file the earlier step actually wrote. The hash is of the Mixea HD bytes, not of the Suno zip and not of the Reaper bounce.
 
-## The title, 100 characters
+## The title, 80 characters
 
-The title, without the file extension, stays at or under 100 characters:
+The title, without the file extension, stays at or under 80 characters:
 
 ```
 {name} {sha3-256 prefix} (feat. reyklah2 & vegankeatonsiya) - reyklah2
 ```
 
-`name` is the short word for the track. The feat clause is 49 characters. Two spaces sit around the hash prefix. For `istanbul` (8 letters) the prefix is the first 41 hex characters of SHA3-256. The full 64-character digest is the truth of the file; the prefix is how the title fits.
+`name` is the short word for the track. When the track is instrumental, `(instrumental)` sits immediately after that word and counts inside `name`. The feat clause and artist suffix stay at the end. The hash prefix is however many hex characters still fit at 80. That length is `33` minus the length of `name`: `istanbul (instrumental)` takes 10 hex characters, `delhi (instrumental)` takes 13, `children` takes 25, `glimmering` takes 23. The full 64-character digest is the truth of the file; the prefix is how the title fits.
 
 Derived m4a, mp3, and mp4 that come from a wav reuse that wav's title. A Mixea mp3 that is its own encode keeps its own digest.
 
@@ -66,8 +66,8 @@ ffmpeg -y -loop 1 -i album-art-111111-on-000000.png -i istanbul-hd.wav \
   -c:v libx264 -tune stillimage -preset veryfast -crf 20 -r 30 -pix_fmt yuv420p \
   -c:a aac -b:a 320k -ac 2 -ar 48000 \
   -shortest -movflags +faststart \
-  -metadata title='istanbul {prefix} (feat. reyklah2 & vegankeatonsiya) - reyklah2' \
-  'istanbul {prefix} (feat. reyklah2 & vegankeatonsiya) - reyklah2.mp4'
+  -metadata title='istanbul (instrumental) {prefix} (feat. reyklah2 & vegankeatonsiya) - reyklah2' \
+  'istanbul (instrumental) {prefix} (feat. reyklah2 & vegankeatonsiya) - reyklah2.mp4'
 ```
 
 AAC 320k and MP3 320k come from the same HD wav. Mixea's own 16-bit wav and 256k mp3 are hashed as themselves.

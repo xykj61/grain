@@ -113,7 +113,7 @@ in its own name.
 | `20261007.114657` | [The two functions and the span](20261007-114657_the-two-functions-and-the-span.md) | Four fences match weave.rye. Ojjo stays a yardstick. |
 | `20261007.100840` | [Calfive grouped, the center aloud](20261007-100840_calfive-grouped-the-center-aloud.md) | Calfive is the English alias of the panchanga. One conversation. Seat 9 stays unnamed. |
 | `20261007.085102` | [Incense seed, Acme teacher walk](20261007-085102_incense-seed-acme-teacher-walk.md) | Seed subject incense. Style molt. Teacher Style. Cursor CLI. Acme geode audit. |
-| `20261007.084500` | [The Suno stems, Reaper, Mixea hash walk](20261007-084500_the-suno-stems-reaper-mixea-hash-walk.md) | Incense interactive. Generate, stem, bounce, master, hash. Titles at 100. Square still. |
+| `20261007.084500` | [The Suno stems, Reaper, Mixea hash walk](20261007-084500_the-suno-stems-reaper-mixea-hash-walk.md) | Incense interactive. Generate, stem, bounce, master, hash. Titles at 80. Square still. |
 | `20261003.174850` | [Mac Tahoe receipt card Swift](20261003-174850_mac-tahoe-receipt-card-swift.md) | Jail the Cursor GUI first, then run the two receipt XCTest classes. The milestone stays unstamped. |
 | `20261002.165006` | [The composed session](20261002-165006_incense-the-composed-session.md) | The trajectory this incense session composed, so the loop can be armed from it. |
 | `20261002.111449` | [Lila and the Long Return](yonder/20261002-111449_lila-and-the-long-return.md) | Consumed `20261002.134003`. The phrase map stays in that file. The living order is seated. |
