@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.193916` | [The fascia bound](20261007/20261007-193916_the-fascia-bound.kyri) | Capricorn. The badge stays 58. |
 | `20261007.193836` | [Sagittarius and Capricorn](20261007/20261007-193836_sagittarius-and-capricorn.kyri) | The mission. The bound is 1. |
 | `20261007.193613` | [Libra and Scorpio on xy](20261007/20261007-193613_libra-and-scorpio-on-xy.kyri) | Count 8033. Sky opens at 8038. |
 | `20261007.193459` | [The fold waits on two links](20261007/20261007-193459_the-fold-waits-on-two-links.kyri) | Scorpio names two links. The page stays. |
