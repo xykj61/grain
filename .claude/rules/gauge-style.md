@@ -4,6 +4,7 @@
 
 **Full guide:** [`../../context/GAUGE_STYLE.md`](../../context/GAUGE_STYLE.md) - **Seated:** `20260823.045448` on Keaton's word - **Status:** Living
 **Inherits:** [`radiant-style`](radiant-style.md) (warmth) - `context/CIVIC_STYLE.md` (name what you reward) - [`tame-guidance`](tame-guidance.md) (bound every claim, say why)
+**Kin:** [`bhakta-style`](bhakta-style.md) - [`teacher-style`](teacher-style.md) -- blended `20261007.085102`
 **Meter:** [`../../tools/p/prose_register_witness.rish`](../../tools/p/prose_register_witness.rish)
 -- which reads **this room** from `20260910`, at the Field target of 30%, under a ceiling that only
 falls. Seating lap: 54 rule pages, 38 clearing the eight-sentence floor, **19 above the target**.

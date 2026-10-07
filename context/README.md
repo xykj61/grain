@@ -21,6 +21,9 @@ Everything here lives inside the persistent project directory, so it survives ev
 ## What Lives Here
 
 - **`RADIANT_STYLE.md`** -- the canonical voice. How we write and speak so every piece reads clearly, lands warmly, and carries well aloud.
+- **`GAUGE_STYLE.md`** -- the working meter. Warmth plus a number a later hand can re-run. Blended `20261007.085102` with Radiant, Bhakta, and Teacher.
+- **`BHAKTA_STYLE.md`** -- the open door. Assumes no background. Devotion-shaped manuals.
+- **`TEACHER_STYLE.md`** -- the secular sibling of Bhakta. Plain American English, siloed sports metaphors, gratitude apart. Seated `20261007.085102`.
 - **`TAME_GUIDANCE.md`** -- the operational code supplement (root + Rye / Brix / Rishi). Named like TigerBeetle's own `TIGER_STYLE.md` (their `docs/` naming pattern); pairs with `external-research/TAME_GUIDANCE.md` and our own held copy at `gratitude/TIGER_STYLE.md`.
 - **`SIMPLE_LOVABLE_COMPLETE.md`** -- how we ship. Simple, lovable, complete at every lap; our distillation of Jason Cohen's method, bound to how Rye OS grows. Source essay in `gratitude/`.
 - **`CIVIC_STYLE.md`** -- how we design public benefit. Name the outcome you want, name what the reward measures, keep the two aligned -- the civic companion to TAME, Radiant, and SLC.

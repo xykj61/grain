@@ -1,7 +1,7 @@
 # docs-geode is Bhakta
 
 **Seated:** `20261002.114619` on Keaton's word - **Status:** Living
-**Kin:** [`bhakta-style`](bhakta-style.md) - [`radiant-style`](radiant-style.md) - [`gauge-style`](gauge-style.md)
+**Kin:** [`bhakta-style`](bhakta-style.md) - [`radiant-style`](radiant-style.md) - [`gauge-style`](gauge-style.md) - [`teacher-style`](teacher-style.md)
 
 `docs-geode/` is the shelf a person reads in order to learn the product. Its register is **Bhakta**: Radiant warmth for a reader who may be meeting the work for the first time. Gauge remains the working style of the rest of the tree. Inside this folder, Gauge is the measurement dial, and the dial stays at **Door**.
 
@@ -11,7 +11,7 @@ Every Markdown page under `docs-geode/`, drafts in `edu/yonder/` included, carri
 
 `**Style:** Bhakta at the Door setting, with Radiant warmth`
 
-The line points at `context/BHAKTA_STYLE.md`. It names Bhakta and Door. It does not name Gauge as the page's register.
+The line points at `context/BHAKTA_STYLE.md`. It names Bhakta and Door. It does not name Gauge as the page's register. Teacher Style may speak in the body and in a Guide line. The door line stays Bhakta.
 
 A page written by a generator declares the same line in the generator, so the next render keeps it. `tools/fixtures/g/geode_libraries_scan.sh` is the library index's source.
 

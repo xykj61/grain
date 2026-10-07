@@ -3,6 +3,7 @@
 **The working style of this tree is [Gauge](gauge-style.md)**, whose first rule governs Bhakta
 hardest: **don't be too smart about it**. Bhakta is the third register beside
 [Radiant](radiant-style.md) and [Twilight](twilight-style.md).
+[Teacher Style](teacher-style.md) is the secular sibling, seated `20261007.085102`.
 
 **Full guide:** `context/BHAKTA_STYLE.md` - **Seated:** `20260908` on Keaton's word - **Status:** Living
 

@@ -1,7 +1,7 @@
 # edu -- Learning by Making
 
 **Language:** EN
-**Last updated:** 2026-07-30 (`20260730.104053` -- discovery walk door 13 GREEN)
+**Last updated:** 2026-10-07 (`20261007.085102` -- Acme voice audit draft)
 **Style:** Bhakta at the Door setting, with Radiant warmth (see `../../../context/BHAKTA_STYLE.md`)
 **Status:** Living -- the learning floor: puzzles, first steps, and worked examples
 **Where this sits:** home is [`../README.md`](../../../README.md) - a first hour in your hands is
@@ -18,6 +18,7 @@ Five lanes, all teaching Glow and Grain by the hand:
 - **Funds lane** -- Gren's gift (was Djin - was Twah): tutorials for creating one of the twelve constellation funds. Page one: [`funds/gren-creating-one-of-twelve.md`](funds/gren-creating-one-of-twelve.md) - generator `tools/g/gen_gren_fund_prep.rish`.
 - **Discovery walk** -- the round-trip *shape* on one bench: descriptor - table - gossip - introduce - fold, already GREEN. Page: [`discovery/round-trip-walk.md`](discovery/round-trip-walk.md) - witness `tools/e/edu_discovery_walk_witness.rish`. Wire both-sides lab stays a future door.
 - **Citizen door** -- one invitation for any country, from the public copy: [`20260922-143256_anyone-under-our-sun.md`](20260922-143256_anyone-under-our-sun.md). A draft until its path has been run by a fresh reader.
+- **Acme voice audit** -- first pass of docs-geode for a generic employee, Gauge at the dial: [`20261007-085102_acme-gauge-radiant-audit.md`](20261007-085102_acme-gauge-radiant-audit.md). Later laps rewrite doors when a hand next touches them.
 
 While a long loop or parity season runs, an outer terminal can hold **Prin** (`%prin`) -- Matrix rain of green verdicts -- and a **verse ticker** that cycles foundations closing lines beside this floor's shape-of-a-day rhythm (learn - build - gather - rest):
 

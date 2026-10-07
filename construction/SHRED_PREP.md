@@ -77,6 +77,9 @@ its bound. The word stays **shred RED** until the next circle.*
 | `tools/l/launch-mind-cardinal-chapter.rish` | `launch-fleet-chapter.rish mind` | same; the Codex supervisor law at `tools/c/chatgpt-mind.rish` is untouched |
 | `tools/l/launch-dream-dual-chapter.rish` | `launch-fleet-chapter.rish dream` | same |
 | `expanding-prompts/20260904-171306_incense-the-field-captain-two-doors.md` | `expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md` | the elder named the pier's clone `~/grain`; there is no `~/grain` on Dallas |
+| `context/archive/20261007-085102_GAUGE_STYLE.md` | `context/GAUGE_STYLE.md` | Gauge living mutant blended `20261007.085102`; cut stays RED |
+| `context/archive/20261007-085102_RADIANT_STYLE.md` | `context/RADIANT_STYLE.md` | Radiant living mutant blended `20261007.085102`; cut stays RED |
+| `context/archive/20261007-085102_BHAKTA_STYLE.md` | `context/BHAKTA_STYLE.md` | Bhakta living mutant blended `20261007.085102`; Teacher Style is a new sibling; cut stays RED |
 
 **The six launcher rows, in one note** (`20260904.193221`, REDS %409). Each names a seat beside an
 astrological **modality** -- planet, fixed, cardinal, dual -- which named which body orbits which

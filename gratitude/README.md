@@ -14,6 +14,7 @@ When we adapt one of these works into Radiant Style, the rewrite lives elsewhere
 
 ## What Lives Here
 
+- **`american-coaching-craft.md`** -- thanks for the civic teaching tradition of American coaching: practice together, watch the film, take the next possession. No slogans copied. Teacher Style silos the pattern. [`american-coaching-craft.md`](american-coaching-craft.md).
 - **`20261002-111449_the-durability-study.md`** -- thanks for the public study of why a lasting thing's age is evidence it may last. Albert Goldman, 1964; Benoit Mandelbrot, *The Fractal Geometry of Nature*, 1982; Nassim Nicholas Taleb, *Antifragile*, 2012; and Lindy's, the deli whose nickname the study still wears. Our own order is the Long Return. No book is quoted. [`20261002-111449_the-durability-study.md`](20261002-111449_the-durability-study.md).
 - **`TIGER_STYLE.md`** — TigerBeetle's coding style guide. Safety, performance, and developer experience, woven into a discipline we admire. Our radiant adaptation lives at `../external-research/TAME_GUIDANCE.md`, and the gratitude bridge that records its lineage lives at `../external-research/date/20260620/20260620-014412_system.md`.
   - Source: <https://raw.githubusercontent.com/tigerbeetle/tigerbeetle/refs/heads/main/docs/TIGER_STYLE.md>

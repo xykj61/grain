@@ -9,10 +9,11 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ---
 
-Four tutorials ship from this room, and the table below says who each one is for. Start where
+Tutorials ship from this room, and the table below says who each one is for. Start where
 your own morning starts: the first hour when this tree is new to you, shopping when you are about
 to buy the three things that hour asks for, recursion once you have arrived at the language
-itself, and running the fleet once you want the unattended ships sailing. Each page ends somewhere
+itself, running the fleet once you want the unattended ships sailing, and the incense walks once
+you are documenting a Cursor sitting. Each page ends somewhere
 you can check with your own eyes, and that ending is the whole reason this room exists.
 
 | Tutorial | For | Shape |
@@ -21,6 +22,10 @@ you can check with your own eyes, and that ending is the whole reason this room 
 | [Shopping](SHOPPING.md) | someone about to buy the three things a first hour needs | a way to choose a model, a forge, and somewhere to keep bytes -- ordered safety, performance, joy, naming a method rather than a winner so it keeps |
 | [Recursion in Glow](recursion-in-glow.md) | someone past the first hour, meeting the language | how a rune-shaped language expresses a loop that carries itself |
 | [Running the fleet](running-the-fleet.md) | someone with a pier, launching the unattended ships | launch, watch, and stop -- one roster row per seat, two sentinels, and where the effort setting lives |
+| [The Suno stems, Reaper, Mixea hash walk](the-suno-stems-reaper-mixea-hash-walk.md) | someone carrying a song from suno.com to a named master | fixed-tempo stems, Reaper bounce, Mixea HD, SHA3-256 titles at 100 characters, square `111111` on `000000` mp4 -- Kyri and Kyli |
+| [Session logs in Cursor](session-logs-in-cursor.md) | someone running `~/grain-incense` in the Cursor window | the day's `.kyri` film, the index row, fields you can re-read |
+| [Cursor Agent on the pier](cursor-agent-on-the-pier.md) | someone starting the same agent from a terminal | `launch-cursor-agent.rish`, agent-jail flags, prompt examples from Kyri and Kyli |
+| [The incense Acme walk](the-incense-acme-walk.md) | an Acme employee meeting this whole sitting | seed subject `incense`, style molt, Teacher Style, publish at custody gate %1 |
 
 ## What earns a place here
 

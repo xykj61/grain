@@ -52,7 +52,7 @@ assert remote.ok else "publish-seed: could not add remote ww"
 
 let staged = run ["git" "-C" "seed" "add" "-A"]
 assert staged.ok else "publish-seed: git add refused"
-let shipped_subject = "crashed-wave"
+let shipped_subject = "incense"
 let committed = run ["git" "-C" "seed" "commit" "-q" "-m" shipped_subject]
 assert committed.ok else "publish-seed: the seed commit refused"
 

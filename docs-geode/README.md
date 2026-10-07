@@ -39,7 +39,7 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`press/`](press/README.md) | Press releases | **living** -- announcements, a magazine piece, a public projection and a paired telling, each indexed with its honest scope; the table on that page is the count |
 | [`etc/`](etc/README.md) | Further shipping genres as seated | **open, empty on purpose** -- a waiting area, rather than a destination |
 | [`sangha/`](sangha/README.md) | Sangha patterns (page-zero, three patterns) | **living** |
-| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), [Glow recursion](tutorials/recursion-in-glow.md), [Shopping](tutorials/SHOPPING.md), and [Running the fleet](tutorials/running-the-fleet.md) |
+| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), [Glow recursion](tutorials/recursion-in-glow.md), [Shopping](tutorials/SHOPPING.md), [Running the fleet](tutorials/running-the-fleet.md), [The Suno stems, Reaper, Mixea hash walk](tutorials/the-suno-stems-reaper-mixea-hash-walk.md), [Session logs in Cursor](tutorials/session-logs-in-cursor.md), [Cursor Agent on the pier](tutorials/cursor-agent-on-the-pier.md), and [The incense Acme walk](tutorials/the-incense-acme-walk.md) |
 
 **The table is the count.** Every room on disk earns a row. Each row says, in the shelf's own words, what stands behind that door: **living** for a page crushed from a real source, **pointer crush** for a row that points at the source it would crush, and **open, empty on purpose** where the entry rule is named and waiting. Every room here was filled from something that already stood in the tree.
 

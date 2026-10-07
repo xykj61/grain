@@ -23,7 +23,7 @@
 
 | Remote | Forge | Use |
 |--------|-------|-----|
-| `ww` | GitHub `grain-ww/grain` | **The public seed** (depersonalized, Option-B fresh history). **Custody gate %1** -- the seed force-push. `publish-seed.sh` force-pushes the one crashed-wave commit to this door alone. The field's own checkouts do not carry `ww` as a remote, so a push of the private history cannot land on the public seed by the remote's name. |
+| `ww` | GitHub `grain-ww/grain` | **The public seed** (depersonalized, Option-B fresh history). **Custody gate %1** -- the seed force-push. `publish-seed.sh` force-pushes the one incense commit to this door alone. The field's own checkouts do not carry `ww` as a remote, so a push of the private history cannot land on the public seed by the remote's name. |
 
 **Pier write ruling -- Option 2 SEATED** (`20260730.034136` - Keaton's word - red 32 - counsel lean held): ls-remote proves existence; the push itself decides authorization. **auth-refused** (403) is named in the send-word guard. **Cloud** pushes `xy` branch + PR, and **FF-merges to `xy/main` itself** (approved `20260730.034520` -- Keaton's word: merge here in the Cloud environment). Living push is `xy` alone.
 

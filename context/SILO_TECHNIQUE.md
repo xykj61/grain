@@ -1,13 +1,17 @@
 # The Silo Technique
 
 **Language:** EN
-**Last updated:** `20260712` (scoped relaxation for docs compression layer)
-**Style:** Gauge (see `GAUGE_STYLE.md`)
+**Last updated:** `20261007.085102` (Teacher Style is a siloed sibling of Bhakta; gratitude stays apart)
+**Style:** Gauge (see `GAUGE_STYLE.md`); the opening paragraph is Bhakta (see `BHAKTA_STYLE.md`)
 
 **Purpose:** Name a way of taking in an idea from outside your work and making it truly your own -- so that what enters your writing arrives as an owned, understood concept in your own voice, rather than a borrowed quotation wearing someone else's name. This is a portable technique; it travels to any subject and any tool.
-**Room:** vision -- a way of taking in an idea; no witness binds it
+**Room:** vision -- a way of taking in an idea; no witness binds it.
 
 ---
+
+## What Siloing Is Not
+
+The Silo Technique is not plagiarism. Plagiarism presents another person's words or ideas as your own discovery. Siloing is the practice of understanding an idea until you can teach it yourself, and then writing that understanding in your own words. The idea stays at full strength. You plant it again in your own ground, and its reasons and its edges come with it. The people who taught you stay named and honored in a place kept for thanks, and the practice depends on that open gratitude. The test is comprehension. When you can teach the idea, you hold it. Teacher Style (`TEACHER_STYLE.md`) is this technique applied to a register: Bhakta's open door, rewritten in civic American English, with sports metaphors of our own and thanks at `../gratitude/american-coaching-craft.md`.
 
 ## What Siloing Is
 
@@ -46,10 +50,6 @@ Then test the result with one plain question: could a reader who never met the s
 Siloing never erases the teacher. It keeps gratitude in its own honored space -- a place where sources are named plainly and thanked, distinct from the siloed body of the work. Breaking the silo is a deliberate act, reserved for thanks and honest attribution, rather than the default way ideas arrive.
 
 This is the whole shape of the trust: the ideas move into your work digested and owned, while the record of who taught you stays explicit and warm in the place set aside for it. Siloing hides nothing. It simply keeps the thinking in one room and the thanksgiving in another, so each can be whole.
-
-## What Siloing Is Not
-
-Siloing is not taking without crediting -- gratitude lives openly in its own space, and the practice depends on it. It is not erasing those who taught you, who remain named and honored. It is not making an idea smaller or simpler; it re-roots the idea at full strength in your own ground. And it is not paraphrase performed to dodge a rule -- it is genuine re-understanding, the kind that leaves you able to teach the idea yourself. The test is always comprehension, never concealment.
 
 ## Scoped relaxation (docs compression layer)
 
