@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.192058` | [One repeat, left in place](20261007/20261007-192058_one-repeat-left-in-place.kyri) | Virgo names the repeat. The page stays. |
 | `20261007.191930` | [Leo and Virgo](20261007/20261007-191930_leo-and-virgo.kyri) | The check reads. The repeat stays. |
 | `20261007.184202` | [Two rounds, Gemini on xy](20261007/20261007-184202_two-rounds-gemini-on-xy.kyri) | Cancer is local. Sky opens at 8038. |
 | `20261007.175832` | [The picture on the door](20261007/20261007-175832_the-picture-on-the-door.kyri) | Cancer sets the sentence on the door. |
