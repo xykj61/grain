@@ -6,6 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.173836` | [Round load sent](20261007/20261007-173836_round-load-sent.kyri) | Taurus seating goes to xy. |
+| `20261007.165939` | [Round load is seated](20261007/20261007-165939_round-load-is-seated.kyri) | Spell prints the orbit round. |
+| `20261007.165339` | [The fifteen and the five goals](20261007/20261007-165339_the-fifteen-and-the-five-goals.kyri) | Fifteen signs. One calendar. |
 | `20261007.154225` | [One list, one picture](20261007/20261007-154225_one-list-one-picture.kyri) | First note. Apply, current, the ceiling. |
 | `20261007.151508` | [Suno titles fit at eighty](20261007/20261007-151508_suno-titles-fit-at-eighty.kyri) | Title length 80. Sixth of six. |
 | `20261007.145700` | [Signing runs from this tree](20261007/20261007-145700_signing-runs-from-this-tree.kyri) | Local gpg.sh. First of six. |

@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.114657` (the two functions and the span)
+**Last updated:** `20261007.165138` (the fifteen and the five goals)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261007.165138` | [The fifteen and the five goals](20261007-165138_the-fifteen-and-the-five-goals.md) | Fifteen signs read the rounds. One calendar stays. |
 | `20261007.114657` | [The two functions and the span](20261007-114657_the-two-functions-and-the-span.md) | Four fences match weave.rye. Ojjo stays a yardstick. |
 | `20261007.100840` | [Calfive grouped, the center aloud](20261007-100840_calfive-grouped-the-center-aloud.md) | Calfive is the English alias of the panchanga. One conversation. Seat 9 stays unnamed. |
 | `20261007.085102` | [Incense seed, Acme teacher walk](20261007-085102_incense-seed-acme-teacher-walk.md) | Seed subject incense. Style molt. Teacher Style. Cursor CLI. Acme geode audit. |

@@ -101,6 +101,9 @@ fire sees, water tastes, earth breathes in. RECORD IT IN A FIELD: your session l
 read and whether the reading was recorded are two questions, and only the field answers the second.
 Measured the day it was seated: 24 logs carried the field, 59 named a row in prose alone, 43 said
 nothing. If a lap honestly did no rota read, write `rota none -- <why>` and the record stays true.
+ROUND LOAD. The words `round load` in context/SPELLBOOK.md print this orbit's round as
+`(count - 1) % 15 + 1`, its sign and goal, the fascia whole number, and one sundial line; that
+whole number moves by at most 1 in a round, and the spell rewrites no rota page.
 
 THREAD. Read the newest day shelf named at the top of session-logs/README.md, its top three rows,
 and the newest recommend line, to pick up the running thread.
