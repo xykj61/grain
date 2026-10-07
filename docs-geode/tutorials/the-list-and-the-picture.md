@@ -9,7 +9,7 @@
 **Written:** `20261007.100840`
 **Status:** Living -- the one command below was run at that stamp
 **Room:** mixed -- the count and the function names are checkable; the sky is a reading
-**Where this sits:** home is [`../../README.md`](../../README.md) - tutorials home is [`README.md`](README.md)
+**Where this sits:** home is [`../../README.md`](../../README.md) - tutorials home is [`README.md`](README.md) - the plan is [`../../expanding-prompts/20261007-100840_calfive-grouped-the-center-aloud.md`](../../expanding-prompts/20261007-100840_calfive-grouped-the-center-aloud.md)
 
 ---
 
@@ -51,7 +51,7 @@ At `20261007.100840` that command printed `8019`. The place in the orbit is `(co
 
 Seat 9 of the twelve is open. Its sky is Sagittarius, fire, and the sign is one of the dual signs Jupiter holds, together with Pisces. The teaching we keep says Jupiter there is self-rule through conscience, and fire's question is what must stop. MUR stays the one token. The fund's name is unchosen. This lesson does not choose it.
 
-The longer load, with the paths, waits in the expanding prompt this sitting wrote.
+The longer load, with the paths, lives in the plan linked above.
 
 ## Where you can check
 
