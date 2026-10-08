@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.211447` | [The picture held whole](20261007/20261007-211447_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
 | `20261007.211328` | [Two checks, one green line](20261007/20261007-211328_two-checks-one-green-line.kyri) | Face 58.1000 to 58.4000. |
 | `20261007.210702` | [Three seats and a tenth](20261007/20261007-210702_three-seats-and-a-tenth.kyri) | Count 8061. Face 58.1000. |
 | `20261007.210532` | [One table row left](20261007/20261007-210532_one-table-row-left.kyri) | Virgo. The row stays. |
