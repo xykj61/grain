@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.214631` | [The links stay](20261007/20261007-214631_the-links-stay.kyri) | Taurus. Four links, one file. |
 | `20261007.214432` | [The printout for a later audit](20261007/20261007-214432_the-printout-for-a-later-audit.kyri) | Face 59.2000 to 59.7000. |
 | `20261007.213741` | [Orbit 3 closed on the name](20261007/20261007-213741_orbit-3-closed-on-the-name.kyri) | Count 8070. Face 59.2000. |
 | `20261007.213630` | [The name stays](20261007/20261007-213630_the-name-stays.kyri) | Siya. Orbit 3 closes. |
