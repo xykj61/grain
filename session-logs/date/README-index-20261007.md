@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.201349` | [One table row left as written](20261007/20261007-201349_one-table-row-left-as-written.kyri) | Virgo. The row stays. |
 | `20261007.201306` | [The read copies the lines](20261007/20261007-201306_the-read-copies-the-lines.kyri) | Leo reads the cost. No wallet. |
 | `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri) | Cancer picture, uncommitted. |
 | `20261007.200339` | [Taurus and Gemini landed](20261007/20261007-200339_taurus-and-gemini-landed.kyri) | Count 8043. Sky opens at 8053. |
