@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.213358` | [The brief stays dated](20261007/20261007-213358_the-brief-stays-dated.kyri) | Face 58.8000 to 59.2000. |
+| `20261007.212814` | [The approach has arrived](20261007/20261007-212814_the-approach-has-arrived.kyri) | Count 8067. Face 58.8000. |
 | `20261007.212703` | [The wish](20261007/20261007-212703_the-wish.kyri) | Pisces. The next commit is sky. |
 | `20261007.212537` | [The name, studied](20261007/20261007-212537_the-name-studied.kyri) | Aquarius. Name stays as written. |
 | `20261007.212327` | [The bound and the named bytes](20261007/20261007-212327_the-bound-and-the-named-bytes.kyri) | Face 58.4000 to 58.8000. |

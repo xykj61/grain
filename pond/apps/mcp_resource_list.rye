@@ -26,6 +26,7 @@ const tc = @import("tablecloth.rye");
 const beading = @import("mantra/beading.rye");
 const mr = @import("mcp_resource.rye");
 const tally_copy = @import("tally_copy.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 pub const mcp_resource_list_version = "20260812.151959";
 
@@ -122,7 +123,7 @@ pub fn parse_list(src: []const u8, list: *ResourceList) ListError!void {
             if (list.count >= max_resources) return error.TooManyResources;
             const inner = first_token(kv.rest);
             if (inner.head.len == 0 or inner.head.len > mr.max_uri) return error.LineTooLong;
-            const len = std.fmt.parseInt(u32, inner.rest, 10) catch return error.BadInt;
+            const len = tally_parse_int.parse_int(u32, inner.rest, .{}) catch return error.BadInt;
             list.entries[list.count] = .{ .uri = inner.head, .len = len };
             list.count += 1;
         } else {

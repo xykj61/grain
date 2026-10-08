@@ -4,7 +4,9 @@
 //!   mantra/bin/recall-lap1 selftest
 //!   mantra/bin/recall-lap1 selftest-lap2
 //!
-//! Scope: [`active-designing/date/20260706/20260706-023912_the-referential-namespace.md`](../active-designing/date/20260706/20260706-023912_the-referential-namespace.md)
+//! Scope: active-designing/date/20260706/20260706-023912_the-referential-namespace.md
+//! Living reference: context/specs/20260707-011412_mantra-referential-namespace-reference.md
+//! This file is that spec's normative source for the name. The brief stays the dated seating.
 
 const std = @import("std");
 const tally_copy = @import("tally_copy.rye");

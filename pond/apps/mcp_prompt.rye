@@ -34,6 +34,7 @@
 const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
+const tally_parse_int = @import("parse_int.rye");
 
 pub const mcp_prompt_version = "20260812.153255";
 
@@ -232,7 +233,7 @@ pub fn parse_get(src: []const u8, req: *GetRequest) PromptError!void {
             if (!std.mem.eql(u8, kv.val, "mcp-prompt-get-v1")) return error.BadFormat;
             have_header = true;
         } else if (std.mem.eql(u8, kv.key, "id")) {
-            req.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            req.id = tally_parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
             have_id = true;
         } else if (std.mem.eql(u8, kv.key, "prompt")) {
             if (kv.val.len == 0 or kv.val.len > max_name) return error.NameTooLong;
@@ -420,12 +421,12 @@ pub fn parse_result(src: []const u8, out: *PromptResult) PromptError!void {
             if (!std.mem.eql(u8, kv.val, "mcp-prompt-result-v1")) return error.BadFormat;
             have_header = true;
         } else if (std.mem.eql(u8, kv.key, "id")) {
-            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            out.id = tally_parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
             have_id = true;
         } else if (std.mem.eql(u8, kv.key, "prompt")) {
             out.prompt = kv.val;
         } else if (std.mem.eql(u8, kv.key, "len")) {
-            published_len = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            published_len = tally_parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
             have_len = true;
         } else if (std.mem.eql(u8, kv.key, "error")) {
             out.err_name = kv.val;
