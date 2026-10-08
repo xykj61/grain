@@ -6,4 +6,5 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.184553` | [The cost of the ceiling](20261008/20261008-184553_the-cost-of-the-ceiling.kyri) | Leo. Half the ceiling, read only. |
 | `20261008.184341` | [Where the modules stand](20261008/20261008-184341_where-the-modules-stand.kyri) | Face 59.7000 to 60.0000. |
