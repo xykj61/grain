@@ -2554,7 +2554,7 @@ fn do_slice(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u
 
 /// `clamp <x> <lo> <hi>` -- bound an integer to `[lo, hi]`; the bound must be
 /// well-ordered. The cookbook's numbers-chapter `clamp`, wired as a builtin (spec:
-/// `pleac/numbers.rye`). Out-of-range pulls to the near edge.
+/// `programming/numbers.rye`). Out-of-range pulls to the near edge.
 fn do_clamp(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
     var tok = TokenIter{ .text = rest };
     const x_token = tok.next() orelse return error.ClampNeedsInt;
@@ -2587,7 +2587,7 @@ fn do_clamp(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u
 
 /// `chunk <list> <size>` -- cut a list into consecutive, non-overlapping groups of
 /// `size` (the last may be shorter). Returns a list of lists; inner groups slice the
-/// source. The cookbook's lists-chapter `chunk` (spec: `pleac/lists.rye`).
+/// source. The cookbook's lists-chapter `chunk` (spec: `programming/lists.rye`).
 fn do_chunk(allocator: std.mem.Allocator, io: std.Io, env: *Env, rest: []const u8) EvalError!Value {
     var tok = TokenIter{ .text = rest };
     const list_token = tok.next() orelse return error.ChunkNeedsList;
@@ -2682,16 +2682,17 @@ fn do_flatten(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const 
 }
 
 /// `parse <string>` -- a decimal string to an integer (optional leading `-`). Empty,
-/// a non-digit, or a value past the i64 range is a named refusal, never a wrapped
-/// number. The cookbook's numbers-chapter `parse` (spec: `pleac/numbers.rye`); the
-/// `^-` cast validates a kind, it does not convert one -- this is the conversion.
+/// a non-digit, a leading zero, or a value past the i64 range is a named refusal,
+/// never a wrapped number. The cookbook's numbers-chapter `parse`
+/// (spec: `programming/numbers.rye`); the `^-` cast validates a kind, it does not
+/// convert one -- this is the conversion.
 fn do_parse(allocator: std.mem.Allocator, io: std.Io, env: *Env, arg: []const u8) EvalError!Value {
     const value = try eval_expr(allocator, io, env, arg);
     const s = switch (value) {
         .string => |x| x,
         else => return error.ParseNeedsString,
     };
-    const n = std.fmt.parseInt(i64, s, 10) catch return error.ParseBadInt;
+    const n = tally_parse_int.parse_int(i64, s, .{}) catch return error.ParseBadInt;
     return .{ .int = n };
 }
 

@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.210126` | [The picture and the tenth](20261007/20261007-210126_the-picture-and-the-tenth.kyri) | Face 58.0000 to 58.1000. |
+| `20261007.204559` | [The face gained half a point](20261007/20261007-204559_the-face-gained-half-a-point.kyri) | Count 8058. Face 58.0000. |
 | `20261007.204414` | [The name said at the door](20261007/20261007-204414_the-name-said-at-the-door.kyri) | Gemini. Cancer is next. |
 | `20261007.204329` | [One recall sentence left in place](20261007/20261007-204329_one-recall-sentence-left-in-place.kyri) | Taurus. Gemini is next. |
 | `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri) | Aries. Face 57.5000 to 58.0000. |
