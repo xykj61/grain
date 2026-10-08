@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.211328` | [Two checks, one green line](20261007/20261007-211328_two-checks-one-green-line.kyri) | Face 58.1000 to 58.4000. |
+| `20261007.210702` | [Three seats and a tenth](20261007/20261007-210702_three-seats-and-a-tenth.kyri) | Count 8061. Face 58.1000. |
 | `20261007.210532` | [One table row left](20261007/20261007-210532_one-table-row-left.kyri) | Virgo. The row stays. |
 | `20261007.210336` | [The cost of asking twice](20261007/20261007-210336_the-cost-of-asking-twice.kyri) | Leo. The caller owns the buffer. |
 | `20261007.210126` | [The picture and the tenth](20261007/20261007-210126_the-picture-and-the-tenth.kyri) | Face 58.0000 to 58.1000. |

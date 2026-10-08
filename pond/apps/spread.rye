@@ -25,6 +25,7 @@ const print = std.debug.print;
 
 const tablecloth = @import("tablecloth.rye");
 const beading = @import("mantra/beading.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 
@@ -168,17 +169,17 @@ fn parse_manifest(text: []const u8, parts: *u32, whole_len: *u32, digest: *[32]u
     if (!std.mem.eql(u8, head, "spread")) return error.Bad;
     const p = it.next() orelse return error.Bad;
     if (!std.mem.startsWith(u8, p, "parts=")) return error.Bad;
-    parts.* = try std.fmt.parseInt(u32, p[6..], 10);
+    parts.* = try tally_parse_int.parse_int(u32, p[6..], .{});
     const l = it.next() orelse return error.Bad;
     if (!std.mem.startsWith(u8, l, "len=")) return error.Bad;
-    whole_len.* = try std.fmt.parseInt(u32, l[4..], 10);
+    whole_len.* = try tally_parse_int.parse_int(u32, l[4..], .{});
     const w = it.next() orelse return error.Bad;
     if (!std.mem.startsWith(u8, w, "whole=")) return error.Bad;
     const hex = w[6..];
     if (hex.len != 64) return error.Bad;
     var i: u32 = 0;
     while (i < 32) : (i += 1) {
-        digest[i] = try std.fmt.parseInt(u8, hex[i * 2 .. i * 2 + 2], 16);
+        digest[i] = try tally_parse_int.parse_int(u8, hex[i * 2 .. i * 2 + 2], .{ .base = 16, .allow_leading_zero = true });
     }
 }
 

@@ -63,7 +63,7 @@ Then the gestures, still prep. Improve means one sentence said once. Consolidate
 
 The words are `round load`. Read `git rev-list --count HEAD`. The orbit round is `(count - 1) % 15 + 1`. Print that round, the sign, the goal, the fascia face, and one sundial line.
 
-The fascia face is `fascia_face` from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish): a u32 count of ten-thousandths of a point, ceiling 1000000, printed to four decimal places. The last witnessed face is 58.1000, measured `20261007.210126`. The root README badge still prints the whole number 58. A round that runs the witness may move the face by at most 1.0000. A round that leaves the witness unrun leaves the face where it stands.
+The fascia face is `fascia_face` from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish): a u32 count of ten-thousandths of a point, ceiling 1000000, printed to four decimal places. The last witnessed face is 58.4000, measured `20261007.211328`. The root README badge still prints the whole number 58. A round that runs the witness may move the face by at most 1.0000. A round that leaves the witness unrun leaves the face where it stands.
 
 One sundial line is a sentence already on [`../sundial/README.md`](../sundial/README.md). The health face stays that page. This spell builds no second printer.
 
