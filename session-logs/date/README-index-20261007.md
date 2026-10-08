@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.202504` | [One type, nothing implemented](20261007/20261007-202504_one-type-nothing-implemented.kyri) | Aquarius. Sky is after the wish. |
 | `20261007.202326` | [The fascia bound, orbit 2](20261007/20261007-202326_the-fascia-bound-orbit-2.kyri) | Capricorn. Badge stays 58. |
 | `20261007.202113` | [Libra Scorpio and Sagittarius landed](20261007/20261007-202113_libra-scorpio-sagittarius-landed.kyri) | Count 8049. Sky opens at 8053. |
 | `20261007.202005` | [The mission of this orbit](20261007/20261007-202005_the-mission-of-this-orbit.kyri) | Sagittarius. Capricorn is next. |
