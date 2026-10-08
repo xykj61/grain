@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.211447` (Scorpio, the picture held whole, orbit 3)
+**Last updated:** `20261007.212537` (Aquarius, the name studied, orbit 3)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
