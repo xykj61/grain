@@ -33,6 +33,16 @@ The list is the one copy. The picture is that list, folded into light.
 
 Fold head is the silo's name for the center. The read you can open is `current`.
 
+```
+fold head          the silo's name for the center
+    |
+    v
+current            mantra/src/weave.rye line 1690
+    |
+    v
+odd generation     the lines that are present
+```
+
 ## What earns a place here
 
 A tutorial ships when **every command in it has been run before it was written down**. That rule

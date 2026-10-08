@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri) | Cancer picture, uncommitted. |
+| `20261007.200339` | [Taurus and Gemini landed](20261007/20261007-200339_taurus-and-gemini-landed.kyri) | Count 8043. Sky opens at 8053. |
 | `20261007.200144` | [The read said at the door](20261007/20261007-200144_the-read-said-at-the-door.kyri) | Gemini. Cancer is next. |
 | `20261007.200106` | [One repeat left in place](20261007/20261007-200106_one-repeat-left-in-place.kyri) | Taurus. Sky of this orbit is ahead. |
 | `20261007.195802` | [The orbit closed on Siya](20261007/20261007-195802_the-orbit-closed-on-siya.kyri) | Count 8041. Sky aether has closed. |
