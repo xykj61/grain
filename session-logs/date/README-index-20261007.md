@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.200106` | [One repeat left in place](20261007/20261007-200106_one-repeat-left-in-place.kyri) | Taurus. Sky of this orbit is ahead. |
+| `20261007.195802` | [The orbit closed on Siya](20261007/20261007-195802_the-orbit-closed-on-siya.kyri) | Count 8041. Sky aether has closed. |
 | `20261007.195653` | [Fold head then current](20261007/20261007-195653_fold-head-then-current.kyri) | Aries. Sky aether has closed. |
 | `20261007.195614` | [Siya says the close](20261007/20261007-195614_siya-says-the-close.kyri) | Sky 15. Orbit 2 is next. |
 | `20261007.195330` | [Sky fourteen landed](20261007/20261007-195330_sky-fourteen-landed.kyri) | Count 8039. Siya's chair is next. |
