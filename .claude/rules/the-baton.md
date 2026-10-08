@@ -26,6 +26,7 @@ and an invocation that reaches the agent apart from the baton are each counted a
 | **ABSENCE**, second half | **this rule** -- the instrument is [`../../tools/fixtures/f/fleet_claim_scan.sh`](../../tools/fixtures/f/fleet_claim_scan.sh); intent had no surface to read at all |
 | **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.md) *(the other law wearing the word)* |
 | **ROTA** | **this rule** -- it had none |
+| **ROUND LOAD** | **this rule** -- Calfive planning, the fifteen-sign orbit, seated `20261008` |
 | **THREAD** | [`session-logs`](session-logs.md) |
 | **FLEET** | **this rule** -- one writer per checkout had none |
 | **WATCH** | **this rule** -- the watch is new on `20260906` and had none |
@@ -399,6 +400,20 @@ breathes in.** Read the row *through* its sense -- an aether lap listens for the
 answered, an earth lap takes in the concrete fact at the door before any argument about it. The
 rota is a **meter**, not a ritual: it has caught a sleeping doorway guard and a silent page in two
 commanded laps, which is what earns it a rule.
+
+## Round load -- Calfive planning
+
+**Calfive is the English name for the panchanga planning already seated.** It is one
+count, read with `git rev-list --count HEAD`. The orbit round is `(count - 1) % 15 + 1`.
+The quest place is `(count - 1) % 75 + 1`, five orbits of fifteen. The sign, the
+element, the goal, and the verb live in the round load table in `context/SPELLBOOK.md`.
+
+The five goals are aether heart, water aesthetics, fire talent, earth law, and air fun.
+Earth's three signs carry what must stop: Taurus, Virgo, and Capricorn. Let that verb
+color the keystone. The five-row council rota stays the lap's deep read. This reading
+shares the council's count. It opens no second calendar, no ship name, and no fund name.
+A session log records `orbit round N sign -- the verb` beside the rota field. The fascia
+face moves by at most 1.0000 in a round that runs the witness. The spell rewrites no rota page.
 
 ## GATES-ONLY
 

@@ -101,9 +101,17 @@ fire sees, water tastes, earth breathes in. RECORD IT IN A FIELD: your session l
 read and whether the reading was recorded are two questions, and only the field answers the second.
 Measured the day it was seated: 24 logs carried the field, 59 named a row in prose alone, 43 said
 nothing. If a lap honestly did no rota read, write `rota none -- <why>` and the record stays true.
-ROUND LOAD. The words `round load` in context/SPELLBOOK.md print this orbit's round as
-`(count - 1) % 15 + 1`, its sign and goal, the fascia face, and one sundial line; that
-face is ten-thousandths of a point and moves by at most 1.0000 in a round, and the spell rewrites no rota page.
+ROUND LOAD. Calfive is the English name for this planning: one count, the panchanga
+already seated, not a second calendar. Read `git rev-list --count HEAD`. The orbit
+round is `(count - 1) % 15 + 1`. The quest place is `(count - 1) % 75 + 1`, five
+orbits of fifteen. The round's sign, element, goal, and verb are the round load
+table in context/SPELLBOOK.md. The five goals are aether heart, water aesthetics,
+fire talent, earth law, and air fun. Earth's three signs carry what must stop:
+Taurus, Virgo, and Capricorn. Let that verb color the keystone. The 5 x 3 council
+rota above stays the lap's deep read. Mint no ship name and no fund name. Record
+`orbit round N sign -- the verb` in the session log beside the rota field. The
+fascia face moves by at most 1.0000 in a round that runs the witness. The spell
+rewrites no rota page.
 
 THREAD. Read the newest day shelf named at the top of session-logs/README.md, its top three rows,
 and the newest recommend line, to pick up the running thread.

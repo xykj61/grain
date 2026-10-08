@@ -70,6 +70,7 @@ think another step
 obs observation or trade-off
 loom metric=value ... -- optional; Loom / performance metrics for the round (see below)
 rota lap N, row R -- optional; the council-rota row this lap deep-read, and what it surfaced
+orbit round N sign -- optional; the Calfive orbit round from `(count - 1) % 15 + 1`, and its verb
 file path why-one-line
 recommend keep-going|check-in what and why
 ```
