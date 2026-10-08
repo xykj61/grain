@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.203213` | [The fascia face and the heart](20261007/20261007-203213_the-fascia-face-and-the-heart.kyri) | Sky 13. The face is 58.0000. |
+| `20261007.202716` | [The approach is Pisces, orbit 2](20261007/20261007-202716_the-approach-is-pisces-orbit-2.kyri) | Count 8052. The next commit is sky. |
 | `20261007.202539` | [The wish before sky, orbit 2](20261007/20261007-202539_the-wish-before-sky-orbit-2.kyri) | Pisces. The next commit is sky. |
 | `20261007.202504` | [One type, nothing implemented](20261007/20261007-202504_one-type-nothing-implemented.kyri) | Aquarius. Sky is after the wish. |
 | `20261007.202326` | [The fascia bound, orbit 2](20261007/20261007-202326_the-fascia-bound-orbit-2.kyri) | Capricorn. Badge stays 58. |

@@ -32,7 +32,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **add to molt queue** | note a document into `construction/SHRED_PREP.md` with its measurement -- prep only, the file itself untouched | `context/CHEMICAL_FORMULAS.md` |
 | **mitra shed prep** | a fossil seen off like a friend -- mutant seated, living citers repointed, banner on its face, row written -- and the cut still RED | `construction/SHRED_PREP.md` Class M |
 | **rota prep** | walk all five rota rows over one named cluster, consolidate what repeats, molt and declare the breach, mitra-shed-prep the old, and leave the cut RED | this page, the section of that name |
-| **round load** | print this orbit's round, its sign and goal, the fascia whole number, and one sundial line | this page, the section of that name |
+| **round load** | print this orbit's round, its sign and goal, the fascia face, and one sundial line | this page, the section of that name |
 | **debride** | the sanctioned break of accrete-never-break -- remove named dead history | `.claude/rules/debride.md` |
 | **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |
@@ -61,9 +61,9 @@ Then the gestures, still prep. Improve means one sentence said once. Consolidate
 
 ## round load
 
-The words are `round load`. Read `git rev-list --count HEAD`. The orbit round is `(count - 1) % 15 + 1`. Print that round, the sign, the goal, the fascia whole number, and one sundial line.
+The words are `round load`. Read `git rev-list --count HEAD`. The orbit round is `(count - 1) % 15 + 1`. Print that round, the sign, the goal, the fascia face, and one sundial line.
 
-The fascia whole number is the integer on the root README badge. The last reading there is 58 of 100, measured `20261005.005451`, from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish). A round that runs that witness may move the printed whole number by at most 1. A round that leaves the witness unrun leaves the badge where it stands.
+The fascia face is `fascia_face` from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish): a u32 count of ten-thousandths of a point, ceiling 1000000, printed to four decimal places. The last witnessed face is 58.0000, measured `20261005.005451`. The root README badge still prints the whole number 58. A round that runs the witness may move the face by at most 1.0000. A round that leaves the witness unrun leaves the face where it stands.
 
 One sundial line is a sentence already on [`../sundial/README.md`](../sundial/README.md). The health face stays that page. This spell builds no second printer.
 
@@ -80,7 +80,7 @@ The five-row council rota stays the lap's deep read. This table is the orbit rou
 | 7 | Libra | cardinal | air | fun | The two checks, and one green line. |
 | 8 | Scorpio | fixed | water | aesthetics | The picture held whole. The fold page, once its links resolve. |
 | 9 | Sagittarius | dual | fire | talent | The mission, in Bhakta, Gauge, Radiant, and Twilight. |
-| 10 | Capricorn | cardinal | earth | law | What must stop. The bound. Fascia's whole number moves by at most 1. |
+| 10 | Capricorn | cardinal | earth | law | What must stop. The bound. Fascia's face moves by at most 1.0000. |
 | 11 | Aquarius | fixed | air | fun | One clear type, studied. |
 | 12 | Pisces | dual | water | aesthetics | The wish. One beautiful close. |
 | 13 | sky | cardinal | aether | heart | Wildcard. May borrow one other verb. Names the heart page. |
