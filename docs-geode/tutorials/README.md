@@ -43,6 +43,8 @@ current            mantra/src/weave.rye line 1690
 odd generation     the lines that are present
 ```
 
+A name asked twice returns the same bytes.
+
 ## What earns a place here
 
 A tutorial ships when **every command in it has been run before it was written down**. That rule

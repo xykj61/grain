@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.204414` | [The name said at the door](20261007/20261007-204414_the-name-said-at-the-door.kyri) | Gemini. Cancer is next. |
 | `20261007.204329` | [One recall sentence left in place](20261007/20261007-204329_one-recall-sentence-left-in-place.kyri) | Taurus. Gemini is next. |
 | `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri) | Aries. Face 57.5000 to 58.0000. |
 | `20261007.203555` | [The orbit closed on the face](20261007/20261007-203555_the-orbit-closed-on-the-face.kyri) | Count 8055. Siya closed the orbit. |
