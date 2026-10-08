@@ -46,6 +46,7 @@
 //!   restart dependent <domain> <plan> ... Run as a supervised dependent (internal)
 
 const std = @import("std");
+const tally_parse_int = @import("parse_int.rye");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const system = @import("system.rye");
@@ -293,7 +294,7 @@ pub fn run_dependent(io: std.Io, args: []const [:0]const u8) u8 {
         return carry.Outcome.malformed;
     };
 
-    const cap_count = std.fmt.parseInt(u32, args[5], 10) catch {
+    const cap_count = tally_parse_int.parse_int(u32, args[5], .{}) catch {
         print("    {s}: refused an unreadable capability count\n", .{domain});
         return carry.Outcome.malformed;
     };
