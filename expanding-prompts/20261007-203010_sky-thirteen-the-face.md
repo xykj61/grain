@@ -17,7 +17,7 @@ Read `20261007.203010`. `git rev-list --count HEAD` is 8,052. The nib is `125c29
 
 The rounds printed 58 because `round load` told them to. The spell named the fascia whole number as the integer on the root README badge, and the rounds left `tools/gen/chapter/fascia_metric.rish` unrun, so they copied that badge.
 
-The meter already keeps the finer reading. `fascia_units` is a u32 count of ten-thousandths of a point. The ceiling is 1000000, which prints as `fascia_face` 100.0000. A superseded hit is 5000 units, half a point. The last witnessed face, in `session-logs/date/20261005/20261005-005821_fascia-on-the-status-row.kyri`, is `fascia_face=58.0000`. That day the badge and the face agreed, so printing 58 hid nothing. A later gain of half a point would still have printed as 58.
+The meter already keeps the finer reading. `fascia_units` is a u32 count of ten-thousandths of a point. The ceiling is 1000000, which prints as `fascia_face` 100.0000. One signal-1 hit is 5000 units, half a point. The last witnessed face, in `session-logs/date/20261005/20261005-005821_fascia-on-the-status-row.kyri`, is `fascia_face=58.0000`. That day the badge and the face agreed, so printing 58 hid nothing. A later gain of half a point would still have printed as 58.
 
 This round borrows Capricorn's verb, the bound, and turns the printed value to the face. The face may move by at most 1.0000 in a round that runs the witness. This round leaves the witness unrun. The face stays 58.0000. The badge on the root README still prints 58.
 

@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri) | Aries. Face 57.5000 to 58.0000. |
+| `20261007.203555` | [The orbit closed on the face](20261007/20261007-203555_the-orbit-closed-on-the-face.kyri) | Count 8055. Siya closed the orbit. |
 | `20261007.203444` | [Siya closes the orbit](20261007/20261007-203444_siya-closes-the-orbit.kyri) | Sky 15. Orbit 3 is next. |
 | `20261007.203405` | [The heart page held whole, orbit 2](20261007/20261007-203405_the-heart-page-held-whole-orbit-2.kyri) | Sky 14. Siya is next. |
 | `20261007.203213` | [The fascia face and the heart](20261007/20261007-203213_the-fascia-face-and-the-heart.kyri) | Sky 13. The face is 58.0000. |
