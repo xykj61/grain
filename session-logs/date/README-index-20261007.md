@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.203444` | [Siya closes the orbit](20261007/20261007-203444_siya-closes-the-orbit.kyri) | Sky 15. Orbit 3 is next. |
 | `20261007.203405` | [The heart page held whole, orbit 2](20261007/20261007-203405_the-heart-page-held-whole-orbit-2.kyri) | Sky 14. Siya is next. |
 | `20261007.203213` | [The fascia face and the heart](20261007/20261007-203213_the-fascia-face-and-the-heart.kyri) | Sky 13. The face is 58.0000. |
 | `20261007.202716` | [The approach is Pisces, orbit 2](20261007/20261007-202716_the-approach-is-pisces-orbit-2.kyri) | Count 8052. The next commit is sky. |
