@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.202005` | [The mission of this orbit](20261007/20261007-202005_the-mission-of-this-orbit.kyri) | Sagittarius. Capricorn is next. |
 | `20261007.201927` | [The picture held whole](20261007/20261007-201927_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
 | `20261007.201731` | [Two checks one green line](20261007/20261007-201731_two-checks-one-green-line.kyri) | Libra. verdict=ok. |
 | `20261007.201503` | [Cancer Leo and Virgo landed](20261007/20261007-201503_cancer-leo-and-virgo-landed.kyri) | Count 8046. Sky opens at 8053. |
