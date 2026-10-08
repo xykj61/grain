@@ -24,6 +24,7 @@
 //! Scope: active-designing/date/20260812/20260812-150600_buhr-journey9-intelligence-served-as-mcp-tools-exploration.md
 
 const std = @import("std");
+const tally_parse_int = @import("parse_int.rye");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const lc = @import("lantern/lantern_core.rye");
@@ -100,7 +101,7 @@ pub fn serve(call: *const mcp.Call, allow_text: []const u8, out: []u8) mcp.McpEr
     const prompt = call.arg_val("prompt") orelse return render_error(call.id, "bad_args", out);
     var budget: u32 = default_budget;
     if (call.arg_val("max_tokens")) |b| {
-        budget = std.fmt.parseInt(u32, b, 10) catch return render_error(call.id, "bad_int", out);
+        budget = tally_parse_int.parse_int(u32, b, .{}) catch return render_error(call.id, "bad_int", out);
     }
 
     const req = lc.Request{ .model_hash = model_hash, .prompt = prompt, .max_tokens = budget };

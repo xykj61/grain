@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.214808` | [Three seats into the ceiling](20261007/20261007-214808_three-seats-into-the-ceiling.kyri) | Count 8073. Face 59.7000. |
 | `20261007.214710` | [The ceiling, said aloud](20261007/20261007-214710_the-ceiling-said-aloud.kyri) | Gemini. 1048576 lines. |
 | `20261007.214631` | [The links stay](20261007/20261007-214631_the-links-stay.kyri) | Taurus. Four links, one file. |
 | `20261007.214432` | [The printout for a later audit](20261007/20261007-214432_the-printout-for-a-later-audit.kyri) | Face 59.2000 to 59.7000. |

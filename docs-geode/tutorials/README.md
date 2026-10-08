@@ -55,6 +55,16 @@ name               peer / bolt / revision / path
 
 A weave holds at most 1,048,576 lines.
 
+```
+ceiling            1,048,576 lines
+    |
+    v
+current            the lines that are present
+    |
+    v
+your slice         the read copies them into memory you own
+```
+
 ## What earns a place here
 
 A tutorial ships when **every command in it has been run before it was written down**. That rule
