@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.210532` | [One table row left](20261007/20261007-210532_one-table-row-left.kyri) | Virgo. The row stays. |
 | `20261007.210336` | [The cost of asking twice](20261007/20261007-210336_the-cost-of-asking-twice.kyri) | Leo. The caller owns the buffer. |
 | `20261007.210126` | [The picture and the tenth](20261007/20261007-210126_the-picture-and-the-tenth.kyri) | Face 58.0000 to 58.1000. |
 | `20261007.204559` | [The face gained half a point](20261007/20261007-204559_the-face-gained-half-a-point.kyri) | Count 8058. Face 58.0000. |
