@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.201731` | [Two checks one green line](20261007/20261007-201731_two-checks-one-green-line.kyri) | Libra. verdict=ok. |
+| `20261007.201503` | [Cancer Leo and Virgo landed](20261007/20261007-201503_cancer-leo-and-virgo-landed.kyri) | Count 8046. Sky opens at 8053. |
 | `20261007.201349` | [One table row left as written](20261007/20261007-201349_one-table-row-left-as-written.kyri) | Virgo. The row stays. |
 | `20261007.201306` | [The read copies the lines](20261007/20261007-201306_the-read-copies-the-lines.kyri) | Leo reads the cost. No wallet. |
 | `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri) | Cancer picture, uncommitted. |
