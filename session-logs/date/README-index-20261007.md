@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.200144` | [The read said at the door](20261007/20261007-200144_the-read-said-at-the-door.kyri) | Gemini. Cancer is next. |
 | `20261007.200106` | [One repeat left in place](20261007/20261007-200106_one-repeat-left-in-place.kyri) | Taurus. Sky of this orbit is ahead. |
 | `20261007.195802` | [The orbit closed on Siya](20261007/20261007-195802_the-orbit-closed-on-siya.kyri) | Count 8041. Sky aether has closed. |
 | `20261007.195653` | [Fold head then current](20261007/20261007-195653_fold-head-then-current.kyri) | Aries. Sky aether has closed. |

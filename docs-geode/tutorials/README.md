@@ -31,6 +31,8 @@ you can check with your own eyes, and that ending is the whole reason this room 
 
 The list is the one copy. The picture is that list, folded into light.
 
+Fold head is the silo's name for the center. The read you can open is `current`.
+
 ## What earns a place here
 
 A tutorial ships when **every command in it has been run before it was written down**. That rule
