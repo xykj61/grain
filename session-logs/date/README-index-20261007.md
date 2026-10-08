@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.202326` | [The fascia bound, orbit 2](20261007/20261007-202326_the-fascia-bound-orbit-2.kyri) | Capricorn. Badge stays 58. |
+| `20261007.202113` | [Libra Scorpio and Sagittarius landed](20261007/20261007-202113_libra-scorpio-sagittarius-landed.kyri) | Count 8049. Sky opens at 8053. |
 | `20261007.202005` | [The mission of this orbit](20261007/20261007-202005_the-mission-of-this-orbit.kyri) | Sagittarius. Capricorn is next. |
 | `20261007.201927` | [The picture held whole](20261007/20261007-201927_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
 | `20261007.201731` | [Two checks one green line](20261007/20261007-201731_two-checks-one-green-line.kyri) | Libra. verdict=ok. |
