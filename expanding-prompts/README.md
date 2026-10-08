@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.200011` (Taurus and Gemini)
+**Last updated:** `20261007.201213` (Leo and Virgo, orbit 2)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261007.201213` | [Leo and Virgo, orbit 2](20261007-201213_leo-and-virgo-orbit-2.md) | The read's cost, then one table row left as written. |
 | `20261007.200011` | [Taurus and Gemini](20261007-200011_taurus-and-gemini.md) | One repeat left in place. The read said at the door. |
 | `20261007.195509` | [Siya closes, Aries commences](20261007-195509_siya-and-aries.md) | Orbit 1 ends aloud. Orbit 2 opens on current. |
 | `20261007.195032` | [Sky 13 and sky 14](20261007-195032_sky-thirteen-and-fourteen.md) | The heart page, named, then held whole. Siya waits. |

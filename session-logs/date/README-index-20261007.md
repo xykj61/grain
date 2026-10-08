@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.201306` | [The read copies the lines](20261007/20261007-201306_the-read-copies-the-lines.kyri) | Leo reads the cost. No wallet. |
 | `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri) | Cancer picture, uncommitted. |
 | `20261007.200339` | [Taurus and Gemini landed](20261007/20261007-200339_taurus-and-gemini-landed.kyri) | Count 8043. Sky opens at 8053. |
 | `20261007.200144` | [The read said at the door](20261007/20261007-200144_the-read-said-at-the-door.kyri) | Gemini. Cancer is next. |
