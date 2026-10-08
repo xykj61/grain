@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.212327` | [The bound and the named bytes](20261007/20261007-212327_the-bound-and-the-named-bytes.kyri) | Face 58.4000 to 58.8000. |
+| `20261007.211647` | [One round from the approach](20261007/20261007-211647_one-round-from-the-approach.kyri) | Count 8064. Face 58.4000. |
 | `20261007.211536` | [The mission of this orbit](20261007/20261007-211536_the-mission-of-this-orbit.kyri) | Sagittarius. One round from sky. |
 | `20261007.211447` | [The picture held whole](20261007/20261007-211447_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
 | `20261007.211328` | [Two checks, one green line](20261007/20261007-211328_two-checks-one-green-line.kyri) | Face 58.1000 to 58.4000. |

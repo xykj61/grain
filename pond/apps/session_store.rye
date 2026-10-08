@@ -26,6 +26,7 @@ const photo_edits = @import("photo_edits.rye");
 const edit_cursor = @import("edit_cursor.rye");
 const tablecloth = @import("tablecloth.rye");
 const beading = @import("mantra/beading.rye");
+const tally_parse_int = @import("parse_int.rye");
 
 pub const session_store_version = "20260813.174500";
 
@@ -79,7 +80,7 @@ pub fn parse_session(text: []const u8, out: *edit_cursor.EditCursor) !void {
     const pos_line = rest[0..nl];
     if (!std.mem.startsWith(u8, pos_line, "position ")) return error.BadSession;
     const pos_tok = pos_line["position ".len..];
-    const position = std.fmt.parseInt(u32, pos_tok, 10) catch return error.BadSession;
+    const position = tally_parse_int.parse_int(u32, pos_tok, .{}) catch return error.BadSession;
 
     var list: photo_edits.EditList = undefined;
     try photo_edits.parse_edits(rest[nl + 1 ..], &list);
