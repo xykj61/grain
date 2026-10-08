@@ -7,7 +7,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20261007.203316` (sky 14 and sky 15)
+**Last updated:** `20261007.204238` (Taurus and Gemini, orbit 3)
 
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
@@ -110,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20261007.204238` | [Taurus and Gemini, orbit 3](20261007-204238_taurus-and-gemini-orbit-3.md) | One repeat left in place. The name said at the door. |
 | `20261007.203316` | [Sky 14 and sky 15](20261007-203316_sky-fourteen-and-fifteen.md) | The heart page held whole. Siya closes the orbit. |
 | `20261007.203010` | [Sky 13, the face and the heart](20261007-203010_sky-thirteen-the-face.md) | Round load prints the fascia face. The heart page is named. |
 | `20261007.202414` | [Aquarius and Pisces, orbit 2](20261007-202414_aquarius-and-pisces-orbit-2.md) | One type, studied. The wish before sky. |

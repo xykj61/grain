@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261007.204329` | [One recall sentence left in place](20261007/20261007-204329_one-recall-sentence-left-in-place.kyri) | Taurus. Gemini is next. |
 | `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri) | Aries. Face 57.5000 to 58.0000. |
 | `20261007.203555` | [The orbit closed on the face](20261007/20261007-203555_the-orbit-closed-on-the-face.kyri) | Count 8055. Siya closed the orbit. |
 | `20261007.203444` | [Siya closes the orbit](20261007/20261007-203444_siya-closes-the-orbit.kyri) | Sky 15. Orbit 3 is next. |
