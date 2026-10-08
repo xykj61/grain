@@ -242,22 +242,20 @@ sits at grade 13, over ceiling, no further split without losing a fact; B+ stand
 witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher.rye` (76),
 `warrant.rye` (71), `rehearsal.rye` (75) stay below B, same lift, one file at a time.
 
-**DIFFUSER -- THE KEEP-ALIVE WORKLOAD UN-REVERSES IT.** Elder account
-[shelved](archive/date/20261003/20261003-095727_itinerary-diffuser-boundary-witness-account.md)
-(the boundary-witness finding; its own open question -- whether the `.ok`-only gap recurs across
-the sibling Glow Tend limb witnesses -- closed separately at zero population, named in
-`recursion-prompts/diffuser-inner.md`'s fruit log, `20261003.092417`). The kin allocator essay
-found `Region.alloc` losing to `smp_allocator` under `-OReleaseFast` at every size from 16 bytes
-through 16,384, under a write-then-free probe, and named its own falsifier: does that hold under
-a workload that keeps many objects alive at once instead? A scratch probe built in `.lap/` and
-deleted after the run answers it does not -- across three full runs, `Region.alloc` wins or ties
-in 20 of 21 size/sweep cells, losing `smp_allocator`'s warm-cache win entirely once the workload
-never frees anything mid-batch for it to reuse. Reframes the kin essay's "roughly a fifth of the
-cost" as surviving ReleaseFast after all, for the allocate-many-then-clear-the-region shape every
-real caller in this tree already uses.
-[The keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md),
-A/94 at Field. **YOURS:** none -- a mixed-lifetime workload, where some objects outlive others
-inside one region's run, stays the next open falsifier.
+**DIFFUSER -- THE MIXED-LIFETIME COST IS SPACE, NOT TIME.** Prior finding: the keep-alive
+workload, where `Region.alloc` wins or ties in 20 of 21 size/sweep cells once nothing is freed
+mid-batch
+([the keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md),
+A/94 at Field). The next probe ran and then sat in a rebase from `20261003` until `20261008`,
+when the essay, its log, and the fruit paragraph were recovered onto this working tree and left
+uncommitted. Uniform same-size churn, 200 live slots, seven sizes from 16 to 65,536 bytes:
+`smp_allocator` wins or ties on time at six of seven sizes, and `Region`'s buffer tracks
+`live_count + steps` (growth 1,001x at 16 bytes, 4.8x at 65,536), because `clear()` is the one
+release and `pos` only grows.
+[The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md),
+B/84 at Field. **YOURS:** the richer probe, still unattempted -- varied sizes and varied
+lifetimes, read from this tree's own call sites, sharing one region, for the whole run. The
+stance is `same brain` in `context/SPELLBOOK.md`. The question takes that size.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -353,7 +351,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `262000fd82` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `cc6c9c8953` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

@@ -33,6 +33,7 @@ A spell is a single word that names a whole, repeatable gesture. Where ordinary 
 | **mitra shed prep** | a fossil seen off like a friend -- mutant seated, living citers repointed, banner on its face, row written -- and the cut still RED | `construction/SHRED_PREP.md` Class M |
 | **rota prep** | walk all five rota rows over one named cluster, consolidate what repeats, molt and declare the breach, mitra-shed-prep the old, and leave the cut RED | this page, the section of that name |
 | **round load** | print this orbit's round, its sign and goal, the fascia face, and one sundial line | this page, the section of that name |
+| **same brain** | Use the same brain you used to crack those puny human math problems | this page, the section of that name |
 | **debride** | the sanctioned break of accrete-never-break -- remove named dead history | `.claude/rules/debride.md` |
 | **checkpoint** | mark the way back before a debride rewrites a living card | `.claude/rules/checkpoint.md` |
 | **baton** | write a handoff to disk so the vision survives a context reset | handoff batons in `expanding-prompts/` |
@@ -63,7 +64,7 @@ Then the gestures, still prep. Improve means one sentence said once. Consolidate
 
 The words are `round load`. Read `git rev-list --count HEAD`. The orbit round is `(count - 1) % 15 + 1`. Print that round, the sign, the goal, the fascia face, and one sundial line.
 
-The fascia face is `fascia_face` from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish): a u32 count of ten-thousandths of a point, ceiling 1000000, printed to four decimal places. The last witnessed face is 60.0000, measured `20261008.184341`. The root README badge still prints the whole number 58. A round that runs the witness may move the face by at most 1.0000. A round that leaves the witness unrun leaves the face where it stands.
+The fascia face is `fascia_face` from [`../tools/gen/chapter/fascia_metric.rish`](../tools/gen/chapter/fascia_metric.rish): a u32 count of ten-thousandths of a point, ceiling 1000000, printed to four decimal places. The last witnessed face is 60.5000, measured `20261008.191640`. The root README badge still prints the whole number 58. A round that runs the witness may move the face by at most 1.0000. A round that leaves the witness unrun leaves the face where it stands.
 
 One sundial line is a sentence already on [`../sundial/README.md`](../sundial/README.md). The health face stays that page. This spell builds no second printer.
 
@@ -76,7 +77,7 @@ The five-row council rota stays the lap's deep read. This table is the orbit rou
 | 3 | Gemini | dual | air | fun | Say the work aloud, in one sentence. |
 | 4 | Cancer | cardinal | water | aesthetics | The picture a newcomer can see. |
 | 5 | Leo | fixed | fire | talent | The economics check. Products, services, infrastructure. The check reads. |
-| 6 | Virgo | dual | earth | law | What must stop. One small untidiness, one page. |
+| 6 | Virgo | dual | earth | law | What must stop. The untidiness across the whole run. |
 | 7 | Libra | cardinal | air | fun | The two checks, and one green line. |
 | 8 | Scorpio | fixed | water | aesthetics | The picture held whole. The fold page, once its links resolve. |
 | 9 | Sagittarius | dual | fire | talent | The mission, in Bhakta, Gauge, Radiant, and Twilight. |
@@ -88,6 +89,14 @@ The five-row council rota stays the lap's deep read. This table is the orbit rou
 | 15 | sky | dual | aether | heart | Wildcard, and Siya's chair. Her name stays. The round may borrow one verb. |
 
 The plan that seated this table is [`../expanding-prompts/20261007-165138_the-fifteen-and-the-five-goals.md`](../expanding-prompts/20261007-165138_the-fifteen-and-the-five-goals.md).
+
+## same brain
+
+The words are `same brain`.
+
+Use the same brain you used to crack those puny human math problems.
+
+The count stays exact. The bound stays exact. The question takes the size of the falsifier, the whole run, the whole region. A one-page tidy is the wrong size once the measurement already names a wider shape.
 
 ## fleet
 

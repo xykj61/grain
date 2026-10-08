@@ -18,6 +18,7 @@
 //!   pond/bin/mcp-kyri selftest
 
 const std = @import("std");
+const tally_parse_int = @import("parse_int.rye");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
@@ -107,7 +108,7 @@ pub fn parse_call(src: []const u8, call: *Call) McpError!void {
             have_header = true;
         } else if (std.mem.eql(u8, kv.key, "id")) {
             if (kv.val.len > max_field) return error.FieldTooLong;
-            call.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            call.id = tally_parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
             have_id = true;
         } else if (std.mem.eql(u8, kv.key, "tool")) {
             if (kv.val.len == 0 or kv.val.len > max_field) return error.FieldTooLong;
@@ -168,7 +169,7 @@ pub fn parse_result(src: []const u8, out: *Result) McpError!void {
             if (!std.mem.eql(u8, kv.val, "mcp-result-v1")) return error.BadFormat;
             have_header = true;
         } else if (std.mem.eql(u8, kv.key, "id")) {
-            out.id = std.fmt.parseInt(u32, kv.val, 10) catch return error.BadInt;
+            out.id = tally_parse_int.parse_int(u32, kv.val, .{}) catch return error.BadInt;
             have_id = true;
         } else if (std.mem.eql(u8, kv.key, "result")) {
             out.value = kv.val;
@@ -212,8 +213,8 @@ pub fn dispatch(call: *const Call, out: []u8) McpError![]const u8 {
     if (std.mem.eql(u8, call.tool, "add")) {
         const a_s = call.arg_val("a") orelse return render_error(call.id, "bad_args", out);
         const b_s = call.arg_val("b") orelse return render_error(call.id, "bad_args", out);
-        const a = std.fmt.parseInt(u32, a_s, 10) catch return render_error(call.id, "bad_int", out);
-        const b = std.fmt.parseInt(u32, b_s, 10) catch return render_error(call.id, "bad_int", out);
+        const a = tally_parse_int.parse_int(u32, a_s, .{}) catch return render_error(call.id, "bad_int", out);
+        const b = tally_parse_int.parse_int(u32, b_s, .{}) catch return render_error(call.id, "bad_int", out);
         const sum = a + b;
         const s = std.fmt.bufPrint(out, "format mcp-result-v1\nid {d}\nresult {d}\n", .{ call.id, sum }) catch return error.ResultTooLong;
         // invariant: bufPrint returns a slice into the buffer it was given, so this states the

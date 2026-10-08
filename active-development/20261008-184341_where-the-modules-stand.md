@@ -49,8 +49,20 @@ Leo, this same send, reads the cost of the ceiling and edits no function. Virgo,
 
 The three seats after that can be one bundle, still about a bound said once:
 
-- **Libra, commit 8,077.** Two checks, one green line. `max_weave_lines` is still `1 << 20`, and Caravan still refuses a capability count past `capabilities.max_caps_per_dependent`.
-- **Scorpio, commit 8,078.** Hold this page whole.
-- **Sagittarius, commit 8,079.** Say that mission in four registers: Bhakta, Gauge, Radiant, and Twilight. A bound said once, across the modules above.
+- **Libra, commit 8,077.** Done this send. Two checks, one green line.
+- **Scorpio, commit 8,078.** Hold this page whole. Read it. Add no module and no second picture.
+- **Sagittarius, commit 8,079.** Say the mission in four registers: Bhakta, Gauge, Radiant, and Twilight. One bound, the modules above, four voices.
+
+## Libra, the two checks
+
+Read `20261008.191640`.
+
+`mantra/src/weave.rye` line 142 is still `pub const max_weave_lines: u32 = 1 << 20`. That is 1,048,576 lines.
+
+`caravan/capabilities.rye` line 23 is still `pub const max_caps_per_dependent: u32 = 8`. Twenty-one Caravan files refuse a count past that constant, with `cap_count > capabilities.max_caps_per_dependent`.
+
+The green line is the fascia witness: `GREEN: fascia-metric-v0`. Five roster calls in `pond/apps/mcp_kyri.rye` and `pond/apps/mcp_prompt_voice.rye` now call `tally_parse_int.parse_int`. The face moved from 60.0000 to 60.5000. The shell grade stays 58. `ember/ember_core.rye` still parses its line count with `parseInt`, outside the roster.
+
+Sky of this orbit opens at commit 8,083. After this send the count is 8,078. Five rounds sit between that open and the sky: Scorpio, Sagittarius, Capricorn, Aquarius, Pisces. Siya closes the orbit at 8,085.
 
 That bundle reads. It does not rename, and it does not open a wallet.

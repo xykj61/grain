@@ -41,7 +41,7 @@ The mode is cardinal, fixed, or dual. The element carries the goal. The sign car
 | 3 | Gemini | dual | air | fun | Say the work aloud. One sentence a newcomer can enjoy. |
 | 4 | Cancer | cardinal | water | aesthetics | The picture a newcomer can see. Care at the door. |
 | 5 | Leo | fixed | fire | talent | The economics check. Products, services, infrastructure. No keys, no wallets, no funds moved. |
-| 6 | Virgo | dual | earth | law | What must stop. One small untidiness, one page. |
+| 6 | Virgo | dual | earth | law | What must stop. The untidiness across the whole run. |
 | 7 | Libra | cardinal | air | fun | The two checks. A green line that is a pleasure to read. |
 | 8 | Scorpio | fixed | water | aesthetics | The picture held in the depth. The fold page, when its links resolve. |
 | 9 | Sagittarius | dual | fire | talent | The mission, written in Bhakta, Gauge, Radiant, and Twilight. |

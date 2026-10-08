@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261003.102318` -- the mixed-lifetime cost is space, not time
 **Revised:** `20261003.095727` -- the keep-alive workload un-reverses it
 **Revised:** `20261003.093803` -- the five-times gap reverses under -OReleaseFast
 **Revised:** `20261003.092417` -- the survey finds no population to survey
@@ -775,6 +776,24 @@ the write-then-free shape specifically. Names the next falsifier: a mixed-lifeti
 some objects outlive others inside one region's run. Graded A/94 at Field (register 92, reach
 100, truth 100 counted, service 85 judged). No new witness, no new module; the probe file is
 deleted before this lap ends.
+
+**Self-generated `20261003.102318`, the mixed-lifetime falsifier run and split into two
+questions.**
+[The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md)
+runs a churn workload -- 200 live slots, a replacement loop of 760 to 200,000 steps depending on
+size -- across `Region.alloc` and `smp_allocator`, and finds the kin essay's single falsifier
+splits into two axes the prior essays had folded together. On time, `smp_allocator` wins or ties
+at six of seven sizes (its same-size free-then-alloc path is close to its own best case), with
+`Region.alloc` regaining the lead only at 65,536 bytes, consistent with the kin arc's own table.
+On space, the direction holds steady: `Region`'s backing buffer must be sized to
+`live_count + steps` rather than `live_count` alone, since `clear()` is its one release gesture
+and every churned replacement claims fresh, permanent bytes -- a cost that climbs indefinitely
+for a longer-running version of the same workload, where `smp_allocator`'s resident footprint
+stays flat throughout. Names the richer falsifier -- varied sizes and varied lifetimes sharing
+one region, rather than uniform same-size churn -- for a later lap. Graded B/84 at Field
+(register 87, reach 70, truth 100 counted, service 80 judged). No new witness, no new module;
+the probe files are built, run three times under `-OReleaseFast`, and deleted before this lap
+ends.
 
 ## gates
 
