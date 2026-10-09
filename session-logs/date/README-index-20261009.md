@@ -16,6 +16,7 @@
 | `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
 | `20261009.155108` | [Consent gate facts moved, no fruit claimed](20261009/20261009-155108_consent-gate-facts-moved.kyri) | Grant and revoke facts exist in mantra; card gate text reads stale. Check-in named. |
 | `20261009.155003` | [Garden call-site count re-read](20261009/20261009-155003_garden-alloc-count-reread.kyri) | Re-derived 656 sites; one site straddles two classes. |
+| `20261009.155423` | [Pheromone lane empty; nib repaired](20261009/20261009-155423_pheromone-lane-empty-nib-repaired.kyri) | Log only. Glow queue empty; stale card nib carried to HEAD. |
 | `20261009.154912` | [Incense lap declines at the standing order](20261009/20261009-154912_incense-lap-declines-at-the-standing-order.kyri) | Log only. Queue empty for this lane; cold run held, %642 and %519 wait on a word. |
 | `20261009.154851` | [Petrichor gate held, second reading](20261009/20261009-154851_petrichor-gate-held-second-reading.kyri) | Log only. Consent gate unmoved; no fruit claimed. |
 | `20261009.154806` | [Bakery crux surveyed, check-in](20261009/20261009-154806_bakery-crux-survey-check-in.kyri) | crux unbuilt, awaiting Claude ruling |
