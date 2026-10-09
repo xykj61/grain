@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.174314` | [copal roster of the Surface p55 check-in witness](20261009/20261009-174314_copal-p55-roster.kyri) | p55 witness rostered and proven both ways. |
 | `20261009.173832` | [Petrichor gate ninth read](20261009/20261009-173832_petrichor-gate-ninth-read-no-build.kyri) | Pulled two; Consent Rail still zero; no build. |
 | `20261009.173955` | [Patchouli queue empty, second stop](20261009/20261009-173955_patchouli-queue-empty-second-stop.kyri) | Queue empty again; no build; check-in named. |
 | `20261009.173753` | [GRASS softer-register frame](20261009/20261009-173753_grass-softer-register-frame.kyri) | SOURCE.md graded below B on register (27% negative); frame booked, no edit. |
