@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.192055` | [Bakery cold open, claim board read, no build](20261009/20261009-192055_bakery-cold-open-no-build.kyri) | Claim board read; first rung needs a ruling; no build. |
 
 | 20261009.191850 | [Diffuser Next blocked, lap holds](20261009/20261009-191850_diffuser-next-blocked-on-trace.kyri) | Card Next waits on a caller trace; no build. |
 | `20261009.191642` | [Petrichor no-build hold](20261009/20261009-191642_petrichor-no-build-hold.kyri) | Zero behind xy; consent gate held; no build. |
