@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.100524` | [The studied signs, four ways](20261009/20261009-100524_the-studied-signs-four-ways.kyri) | Sagittarius. Studied signs only. |
 | `20261009.100446` | [The picture, held](20261009/20261009-100446_the-picture-held.kyri) | Scorpio. The picture stays. |
 | `20261009.100321` | [Two checks, one green line](20261009/20261009-100321_two-checks-one-green-line.kyri) | Libra. Face 61.3000. |
 | `20261009.002001` | [Three seats, the picture](20261009/20261009-002001_three-seats-the-picture.kyri) | Sent. Sky opens at 8098. |
