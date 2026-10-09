@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.192055` | [Bakery cold open, claim board read, no build](20261009/20261009-192055_bakery-cold-open-no-build.kyri) | Claim board read; first rung needs a ruling; no build. |
 
+| 20261009.192048 | [Diffuser hold, trace still absent](20261009/20261009-192048_diffuser-hold-trace-still-absent.kyri) | Card Next still waits on a caller trace; no build. |
 | 20261009.191850 | [Diffuser Next blocked, lap holds](20261009/20261009-191850_diffuser-next-blocked-on-trace.kyri) | Card Next waits on a caller trace; no build. |
 | `20261009.191642` | [Petrichor no-build hold](20261009/20261009-191642_petrichor-no-build-hold.kyri) | Zero behind xy; consent gate held; no build. |
 | 20261009.191701 | [incense law lane declined](20261009/20261009-191701_incense-law-lane-declined.kyri) | Forty-sixth lap declines: round-open clean, no law-lane item open. |
