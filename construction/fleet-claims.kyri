@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-commence-m6-roster
-seat copal
-stamp 20261009.170620
-epoch 1791579980
-paths tools/gen/chapter/commence_m6_see_witness.rish construction/standing-equipment.kyri
-what Copal rosters the commence M6 eyes witness on the standing-equipment lap tier, after proving it GREEN on the live tree.

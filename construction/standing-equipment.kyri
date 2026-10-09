@@ -9884,3 +9884,10 @@ guard oven_season_o1
 path tools/gen/chapter/oven_season_o1_witness.rish
 tier lap
 seated 20261009.165840
+
+# commence_m6_see -- the Commence M6 eyes witness, rostered on the claim copal-commence-m6-roster.
+# It proves the finishing edge is seen on the ch7 seats, with the scan control proven first; GREEN on the live tree.
+guard commence_m6_see
+path tools/gen/chapter/commence_m6_see_witness.rish
+tier lap
+seated 20261009.170654
