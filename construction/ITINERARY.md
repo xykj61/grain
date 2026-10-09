@@ -248,7 +248,9 @@ B/84 at Field. The mixed population ran (`20261009.153349`): time reverses to sm
 space holds at 270x. The call-site mix is counted (`20261009.154443`); the budget and knee ran
 after it (`20261009.163113`). The knee falsifier ran on a one-jump shift (`20261009.165111`): the
 knee does not transfer, the overshoot trend reverses, and over-budget allocations rise with the
-window after the jump. Next: a real allocator on a single-jump workload, with the window swept.
+window after the jump. The real-allocator run landed at `20261009.170234`: the jump's monotone rise
+survives on a glibc buffer (129 to 1,696 over W=30 to 10,000, three seeds), and the gradual knee does
+not appear in this model. Next: the slow-block population, which the real-buffer run did not model.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account

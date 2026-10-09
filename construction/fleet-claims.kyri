@@ -53,12 +53,6 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim diffuser-single-jump-allocator
-seat diffuser
-stamp 20261009.165855
-epoch 1791579535
-paths active-designing/date/20261009 recursion-prompts/diffuser-inner.md construction/ITINERARY.md
-what Diffuser runs the single-jump falsifier on a real allocator: glibc malloc through ctypes, window swept, a Gauge paper beside it; the probe is deleted after its numbers are copied.
 claim copal-commence-m6-roster
 seat copal
 stamp 20261009.170620

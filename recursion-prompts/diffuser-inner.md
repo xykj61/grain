@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.170234` -- the single-jump falsifier run on a real glibc buffer: the jump's monotone over-budget rise survives (129 at W=30 to 1,696 at W=10,000), the gradual knee does not appear in this model
 **Revised:** `20261009.165111` -- the knee falsifier fires on a one-jump shift: the overshoot trend reverses, and over-budget allocations rise with the window after the jump
 **Revised:** `20261009.163113` -- the window sweep finds its knee near 1,000 steps: overshoot falls as the window lengthens while clears rise, and 10,000 breaks the bound at k=4
 **Revised:** `20261009.162216` -- the live-set budget run under a mix shift: a constant budget fails (96,802 over-budget), a tracked budget holds near k times live, overshooting about ten percent
@@ -858,6 +859,19 @@ allocations rise monotonically with the window (1,281 at 30 steps to 32,488 at 1
 the overshoot trend reverses against the gradual case. The falsifier fired on the claim as written.
 Graded B+ 88 at Field (truth 100 counted, service 80 judged). No new witness, no new module; the
 scratch probe is deleted after its numbers are copied into the paper.
+
+**Self-generated `20261009.170234`, the single-jump falsifier on a real buffer.** The window knee paper named a
+falsifier it did not run: a real allocator on a single-jump workload, with the window swept. The run
+uses glibc `malloc` through `ctypes`, with real `memmove` for every compaction. The host carries no Zig,
+no C compiler, and no Rishi on the search path, so the bump bookkeeping is Python. Three seeds, 200
+slots, 100,000 steps, `k = 4`, the paper's own over-budget definition. On the jump arm over-budget
+allocations rise monotonically with the window, from 129 at 30 steps to 1,696 at 10,000, all after the
+jump step. The gradual arm fails the bound at no window, so it offers no knee in this model. The
+falsifier as written did not fire. The magnitudes sit well below the simulated paper's, and the likely
+cause, the slow-block population, is unrun. The first probe draft counted the wrong thing and read zero
+everywhere; the paper's appendix records both faults. The paper is `active-designing/date/20261009/20261009-170234_the-single-jump-on-a-real-buffer.md`,
+Room vision, and not yet graded: the QA card has not been run on it. No new witness, no new module;
+the scratch probe is deleted after its appendix carries it.
 
 ## gates
 
