@@ -238,10 +238,11 @@ exactly, and the code below the head stays byte-identical. Register rose from 54
 `mycelium_voucher_witness`, `mycelium_voucher_true_witness`, `mycelium_voucher_knot_witness`,
 `mycelium_voucher_kyri_witness` -- re-run GREEN on metal.
 
-**The next-crux lean, re-stated:** two files remain below B from the sample -- `warrant.rye` (C/71)
-and `rehearsal.rye` (C+/75) -- and each waits for its own lift, one per lap, per this lane's usual
-depth-2 bound. `till.rye` already reads B+ (88) since `20261009.153415`, so the list above it is
-one file stale.
+**The next-crux lean, re-read `20261009`:** no file from the sample reads below B. `warrant.rye`
+reads B (83) and `rehearsal.rye` reads A (91), measured by `qa_report_card.sh --setting door
+--service 90` at HEAD `4dfbd22f3e`, and `till.rye` reads B+ (88) since `20261009.153415`. The
+queue is empty, so the next lap takes an unopened file only if a reading comes back below B.
+The earlier C/71 and C+/75 figures are testimony from the day each lift began.
 
 ## gates
 

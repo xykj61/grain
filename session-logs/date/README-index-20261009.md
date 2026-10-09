@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.172330` | [Bakery cache census re-read](20261009/20261009-172330_bakery-cache-census-no-build.kyri) | Compile layer shares by content; receipt key waits on a ruling; no build. |
 | 20261009.172318 | [Law lane holds, no build](20261009/20261009-172318_law-lane-holds-no-build.kyri) | Card read; no build; %642 and %519 await Keaton. |
+| `20261009.172216` | [Grass stale prompt line corrected](20261009/20261009-172216_grass-stale-prompt-line-fixed.kyri) | Inner-prompt crux re-read: warrant B 83, rehearsal A 91; stale line fixed. |
 | 20261009.172056 | [petrichor gate fifth read](20261009/20261009-172056_petrichor-gate-fifth-read-no-build.kyri) | Consent Rail still zero grant or revoke, no build |
 | `20261009.172157` | [Round-open adopted the anointed order](20261009/20261009-172157_round-open-no-build.kyri) | Round-open; no build; check-in on the law lane's word. |
 | `20261009.172140` | [Surface p53 witness rostered](20261009/20261009-172140_copal-surface-p53-roster.kyri) | One guard row, lap tier; the roster verdict predates this lap. |
