@@ -20,6 +20,7 @@
 //!   pond/bin/mcp-json selftest
 
 const std = @import("std");
+const tally_parse_int = @import("parse_int.rye");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const mcp = @import("mcp_kyri.rye");
@@ -247,7 +248,7 @@ pub const Parser = struct {
         const start = self.pos;
         while (self.pos < self.src.len and self.src[self.pos] >= '0' and self.src[self.pos] <= '9') : (self.pos += 1) {}
         if (self.pos == start) return error.BadJson;
-        return std.fmt.parseInt(u32, self.src[start..self.pos], 10) catch return error.BadJson;
+        return tally_parse_int.parse_int(u32, self.src[start..self.pos], .{}) catch return error.BadJson;
     }
 
     /// Skip a signed integer -- the JSON-RPC error `code` this tile does not carry back.
