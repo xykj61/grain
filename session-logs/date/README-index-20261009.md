@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.181811` | [Patchouli queue empty, twenty-fourth](20261009/20261009-181811_patchouli-queue-empty-twenty-fourth.kyri) | Queue empty; no build; check-in named. |
 | `20261009.181733` | [Grass inner prompt graded B+](20261009/20261009-181733_grass-inner-grade-b-plus.kyri) | Inner prompt graded B+ at field, queue empty, no frame pushed; nib refreshed. |
 | `20261009.181605` | [Petrichor regrade, no new fruit](20261009/20261009-181605_petrichor-regrade-no-new-fruit.kyri) | No page changed; 20261006 shelf absent, ruling awaited. |
 | `20261009.181554` | [Pheromone step three held](20261009/20261009-181554_pheromone-step-three-held-for-ruling.kyri) | Read-only lap; step 3 needs a Refusal-shape ruling. No build. |
