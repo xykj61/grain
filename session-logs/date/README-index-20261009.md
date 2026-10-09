@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.155511` | [Petrichor gate read](20261009/20261009-155511_petrichor-gate-read-check-in.kyri) | Log only. Consent gate reads met; no fruit claimed. |
 | `20261009.155308` | [Petrichor lap, no open fruit](20261009/20261009-155308_petrichor-no-open-fruit.kyri) | Log only. Fruit closed; claim board empty for this lane; card nib carried. |
 | `20261009.155108` | [Consent gate facts moved, no fruit claimed](20261009/20261009-155108_consent-gate-facts-moved.kyri) | Grant and revoke facts exist in mantra; card gate text reads stale. Check-in named. |
 | `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
