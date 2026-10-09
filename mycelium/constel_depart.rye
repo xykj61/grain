@@ -1,15 +1,15 @@
 //! mycelium/constel_depart.rye -- a constellation tolerates f ships down, the (f+1)th honestly fails (r2).
 //!
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r2.
-//! r1 booted a named constellation and reached quorum when EVERY ship vouched. A real dev-net loses nodes:
-//! a ship goes down, its host reboots, a laptop closes. The roll's Byzantine arithmetic promises a precise
+//! r1 booted a named constellation and reached quorum when EVERY ship vouched. A real dev-net drops nodes
+//! all the time: a ship goes down, its host reboots, a laptop closes. The roll's Byzantine arithmetic promises a precise
 //! fault tolerance -- an n-ship roll believes any quorum of at least `n - (n-1)/3` enrolled voices, so it
 //! survives up to `f = (n-1)/3` down. r2 proves that promise on metal: the muster stays the FULL roster
 //! (every ship enrolled), only a subset is UP and vouches, and the constellation still believes while `up`
-//! meets the threshold -- then the (f+1)th departure refuses BelowQuorum, the honest edge of the guarantee.
+//! meets the threshold -- then the (f+1)th departure returns BelowQuorum, the honest edge of the guarantee.
 //!
-//! Composes constel + chorus + muster + voucher public API only, editing none. Demo ship and keeper seeds --
-//! no key held, no funds, no network, no real value.
+//! Composes the public API of constel, chorus, muster, and voucher, and leaves each file as it stood.
+//! Demo ship and keeper seeds carry demo keys, demo funds, and a local network, and they stand for real value at zero.
 //!
 //! Scope: active-designing/date/20260813/20260813-132009_mycelium-constel-named-dev-net-exploration.md
 //!
