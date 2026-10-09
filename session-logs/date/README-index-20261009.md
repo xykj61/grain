@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.180641 | [20261009-180641_sunn8-roster-claim.kyri](20261009/20261009-180641_sunn8-roster-claim.kyri) | sunn8 witness rostered, both sides proven |
 | `20261009.180322` | [Pheromone lane empty, no build](20261009/20261009-180322_pheromone-lane-empty-no-build.kyri) | Glow capacity witness GREEN on re-read; queue empty; no build; check-in named. |
 | `20261009.180338` | [Grass queue still empty, inner page B+](20261009/20261009-180338_grass-queue-empty-grades-front-door-b-plus.kyri) | Inner page grades B+ 86; register 38% over Field 30%; no lift, no claim. |
 | `20261009.180542` | [Diffuser live-set hold, third time](20261009/20261009-180542_diffuser-live-set-hold-third.kyri) | Same absence re-read after a fast-forward; no build; check-in named. |

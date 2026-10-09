@@ -9959,3 +9959,11 @@ guard tigerbeetle_tooling_census
 path tools/gen/chapter/tigerbeetle_tooling_census_witness.rish
 tier lap
 seated 20261009.173000
+
+# sunn8_root_readme -- the SUNN8 front-door witness, unrostered until the copal-sunn8-root-readme-roster claim.
+# It reads the root README for the living pier name, the xykj61 remote, SOURCE, and the Quin fifth boot image.
+# GREEN on the live tree; the pen leg below plants a README missing the pier name and reads RED.
+guard sunn8_root_readme
+path tools/gen/chapter/sunn8_root_readme_witness.rish
+tier lap
+seated 20261009.180900
