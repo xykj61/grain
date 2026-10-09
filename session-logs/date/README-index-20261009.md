@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.184524` | [Diffuser held, eighth time](20261009/20261009-184524_diffuser-eighth-hold-no-build.kyri) | Live-set trace still a ruling; no macOS Swift on this host; no build. |
 | `20261009.184458` | [Incense fast-forwards, declines again](20261009/20261009-184458_incense-fast-forward-decline.kyri) | Fast-forward; no build; cold run held; check in (either). |
 | `20261009.184705` | [Patchouli queue empty, again](20261009/20261009-184705_patchouli-queue-empty-again.kyri) | Fresh scan; open rows read; no lane build; check-in named. |
 | `20261009.184155` | [Patchouli queue empty, thirtieth](20261009/20261009-184155_patchouli-queue-empty-thirtieth.kyri) | Queue empty; fresh net; no build; check-in named. |
