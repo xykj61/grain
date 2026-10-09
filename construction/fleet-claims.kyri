@@ -59,3 +59,10 @@ stamp 20261009.175125
 epoch 1791582685
 paths tools/gen/chapter/surface_season_p58_witness.rish construction/standing-equipment.kyri
 what Roster the unrostered surface_season_p58 witness in the standing equipment, proven green and red on a throwaway pen.
+
+claim bakery-shared-receipt-basis
+seat bakery
+stamp 20261009.175138
+epoch 1791582698
+paths tools/b/shared_receipt_basis.rish tools/fixtures/b/shared_receipt_basis_scan.sh
+what Bakery crux: a read-only instrument that reads a peer checkout's standing-equipment receipt and says whether its digest can stand as this pier's --scoped basis; no build cache yet.
