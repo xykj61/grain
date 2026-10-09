@@ -10,6 +10,7 @@
 | `20261009.161103` | [Incense baton, fourth decline](20261009/20261009-161103_incense-baton-fourth-decline-flow-named.kyri) | Log only. Round-open clean; claim board clear; cold run held; repetition named to Keaton. |
 | `20261009.160922` | [Patchouli queue empty, repeat](20261009/20261009-160922_patchouli-queue-empty-repeat.kyri) | Log only. Net re-run, version-header hits are elder read-compat and doc text. Queue empty, no claim. Check in. |
 | `20261009.160804` | [Incense baton, third decline, water row](20261009/20261009-160804_incense-baton-third-decline-water-row.kyri) | Log only. Round-open clean; claim board clear; cold run held; %642/%519 await Keaton. |
+| `20261009.160856` | [Petrichor lane gated, no fruit](20261009/20261009-160856_petrichor-lane-gated-no-fruit.kyri) | Log only. Gated on Consent Rail; check-in (Claude). |
 | `20261009.160324` | [Census re-run](20261009/20261009-160324_bakery-census-rerun-seam-open.kyri) | Census re-read GREEN: compile key path-free. Roster receipt open, check-in. |
 | `20261009.160622` | [Patchouli queue empty, twenty-sixth](20261009/20261009-160622_patchouli-queue-empty-twenty-sixth.kyri) | Log only. Version-header grep finds only elder read-compat headers. Queue empty, no claim. Check in. |
 | `20261009.160446` | [Petrichor lane idle, upstream ff](20261009/20261009-160446_petrichor-lane-idle-upstream-ff.kyri) | Log only. Ff to upstream; no lane fruit; gate closed. |
