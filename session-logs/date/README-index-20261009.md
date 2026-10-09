@@ -12,6 +12,7 @@
 | `20261009.181913` | [Grass regrade, queue empty](20261009/20261009-181913_grass-inner-regrade-queue-empty.kyri) | Inner prompt regraded B+ at field, no frame owed; no build. |
 | `20261009.181822` | [Incense law lane holds](20261009/20261009-181822_incense-law-lane-holds.kyri) | Round-open clean at 561bee3fef; one peer claim live; %642 and %519 wait on Keaton; no build. |
 | `20261009.181811` | [Patchouli queue empty, twenty-fourth](20261009/20261009-181811_patchouli-queue-empty-twenty-fourth.kyri) | Queue empty; no build; check-in named. |
+| `20261009.181846` | [Energy follows bytes touched](20261009/20261009-181846_energy-follows-bytes-touched-proposal.kyri) | Diffuser moonshot proposal, falsifier named; no measurement; check-in named. |
 | `20261009.181733` | [Grass inner prompt graded B+](20261009/20261009-181733_grass-inner-grade-b-plus.kyri) | Inner prompt graded B+ at field, queue empty, no frame pushed; nib refreshed. |
 | `20261009.181605` | [Petrichor regrade, no new fruit](20261009/20261009-181605_petrichor-regrade-no-new-fruit.kyri) | No page changed; 20261006 shelf absent, ruling awaited. |
 | `20261009.181319` | [Incense open order holds](20261009/20261009-181319_incense-open-order-no-build.kyri) | Card and inner prompt read; no open build in lane; no build; check-in named. |
