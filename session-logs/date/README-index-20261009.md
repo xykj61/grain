@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.160324` | [Census re-run](20261009/20261009-160324_bakery-census-rerun-seam-open.kyri) | Census re-read GREEN: compile key path-free. Roster receipt open, check-in. |
 | `20261009.160622` | [Patchouli queue empty, twenty-sixth](20261009/20261009-160622_patchouli-queue-empty-twenty-sixth.kyri) | Log only. Version-header grep finds only elder read-compat headers. Queue empty, no claim. Check in. |
 | `20261009.160446` | [Petrichor lane idle, upstream ff](20261009/20261009-160446_petrichor-lane-idle-upstream-ff.kyri) | Log only. Ff to upstream; no lane fruit; gate closed. |
 | `20261009.160547` | [Incense baton, second decline](20261009/20261009-160547_incense-baton-second-decline.kyri) | Log only. Round-open clean; no lane fruit; gate closed. |
