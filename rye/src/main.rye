@@ -342,7 +342,7 @@ const build_lock_stall_max_ms: u64 = 10_000;
 
 fn build_lock_stall(init: std.process.Init) void {
     const raw = init.environ_map.get("RYE_BUILD_LOCK_STALL_MS") orelse return;
-    const want = std.fmt.parseInt(u64, std.mem.trim(u8, raw, " \n\r\t"), 10) catch return;
+    const want = tally_parse_int.parse_int(u64, std.mem.trim(u8, raw, " \n\r\t"), .{}) catch return;
     const ms = if (want > build_lock_stall_max_ms) build_lock_stall_max_ms else want;
     // invariant: a deliberate stall stays inside the bound this file names.
     assert(ms <= build_lock_stall_max_ms);
@@ -448,7 +448,7 @@ fn build_lock_acquire(init: std.process.Init, io: std.Io, dir: std.Io.Dir, garde
             };
             unreadable_looks = 0;
             const trimmed = std.mem.trim(u8, raw, " \n\r\t");
-            const pid = std.fmt.parseInt(c.pid_t, trimmed, 10) catch break :blk false;
+            const pid = tally_parse_int.parse_int(c.pid_t, trimmed, .{}) catch break :blk false;
             break :blk c.kill(pid, @enumFromInt(0)) == 0;
         };
         if (!holder_alive) {

@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.235559` | [A list of names](20261008/20261008-235559_a-list-of-names.kyri) | Aries. Face 61.2000. |
+| `20261008.221125` | [Sky closed the orbit](20261008/20261008-221125_sky-closed-the-orbit.kyri) | Sent. Orbit 4 closes. |
 | `20261008.221032` | [Siya closes the orbit](20261008/20261008-221032_siya-closes-the-orbit.kyri) | Siya. Orbit 4 closes. |
 | `20261008.220938` | [The heart page, held whole](20261008/20261008-220938_the-heart-page-held.kyri) | Fixed sky. The heart page stays. |
 | `20261008.220824` | [Keep, and the heart page](20261008/20261008-220824_keep-and-the-heart-page.kyri) | Sky. Face 60.6000 to 61.0000. |
