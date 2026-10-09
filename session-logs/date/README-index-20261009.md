@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.191338` | [Diffuser fifteenth hold](20261009/20261009-191338_diffuser-fifteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.191139` | [Petrichor, no open docs-geode red, gate held](20261009/20261009-191139_petrichor-docs-geode-no-open-red.kyri) | No open red for this lane; consent gate held; no build. |
 | `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.190749` | [Petrichor lane held at the gate](20261009/20261009-190749_petrichor-no-build-lane-held.kyri) | Consent Rail gate read; no build; check-in named. |
