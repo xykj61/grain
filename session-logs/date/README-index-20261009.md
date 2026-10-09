@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.181319` | [Incense open order holds](20261009/20261009-181319_incense-open-order-no-build.kyri) | Card and inner prompt read; no open build in lane; no build; check-in named. |
 | `20261009.181529` | [Bakery census holds](20261009/20261009-181529_bakery-census-holds-receipt-ruling.kyri) | Census GREEN; receipt key waits on ruling; no build. |
 | `20261009.181447` | [Oven o0 witness rostered](20261009/20261009-181447_copal-oven-o0-roster.kyri) | Unrostered chapter witness rostered, GREEN and proven both ways; o3 held RED. |
 | `20261009.181216` | [Petrichor 20261006 gap](20261009/20261009-181216_petrichor-20261006-gap-no-peer-copy.kyri) | 20261006 shelf absent on every checkout here; row 72 awaits ruling. |
