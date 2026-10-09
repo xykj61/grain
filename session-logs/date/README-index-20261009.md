@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.185129` | [Diffuser held, ninth time](20261009/20261009-185129_diffuser-ninth-hold-no-build.kyri) | Live-set trace still a ruling; no Swift on this host; no build. |
 | `20261009.184524` | [Diffuser held, eighth time](20261009/20261009-184524_diffuser-eighth-hold-no-build.kyri) | Live-set trace still a ruling; no macOS Swift on this host; no build. |
 | `20261009.184458` | [Incense fast-forwards, declines again](20261009/20261009-184458_incense-fast-forward-decline.kyri) | Fast-forward; no build; cold run held; check in (either). |
 | `20261009.184905` | [Petrichor queue held, gate open](20261009/20261009-184905_petrichor-queue-held-gate-open.kyri) | Queue empty; consent gate still closed; no build. |
