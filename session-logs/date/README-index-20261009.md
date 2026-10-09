@@ -1,11 +1,10 @@
 # session-logs day index -- 20261009
-
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 **Chapter:** `20261009`
-
 | Stamp | Log | What it carried |
 |---|---|---|
+
 | 20261009.191850 | [Diffuser Next blocked, lap holds](20261009/20261009-191850_diffuser-next-blocked-on-trace.kyri) | Card Next waits on a caller trace; no build. |
 | `20261009.191642` | [Petrichor no-build hold](20261009/20261009-191642_petrichor-no-build-hold.kyri) | Zero behind xy; consent gate held; no build. |
 | 20261009.191701 | [incense law lane declined](20261009/20261009-191701_incense-law-lane-declined.kyri) | Forty-sixth lap declines: round-open clean, no law-lane item open. |

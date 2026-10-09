@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261009.191914
+editor Claude Code
+provider Anthropic
+product Claude Code
+role captain incense
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default, not the active runtime
+evidence .claude/settings.json and tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host Linux shell in grain-incense tree
+title incense law lane declines a forty-seventh lap
+prompt the overnight baton: round-open, claim, cold run if fitting, build, log
+think round-open fast-forwarded one commit from patchouli, a queue-empty session log, with no local work to lose
+think the claim board holds the live claims of copal and pheromone, neither in the law lane
+think the inner prompt still holds the law lane's open items behind a human word: %642, %519, or a custody gate
+think the cold run stays unlaunched by the inner prompt's current order, so no roster pass starts here
+obs the honest lap is a decline again, and the decline record is the only file this lap writes
+obs the card headroom and the ledger headroom were not re-measured this lap, since no card or ledger row changed
+loom not measured this round
+rota lap 47, row 2 -- fire sees -- the seat reads the open items as unchanged and asks no new question
+orbit round 6 sign -- the verb; no build this round, the verb is stop-before-cross
+file session-logs/date/20261009/20261009-191914_law-lane-declined-47.kyri why this decline record
+file session-logs/date/README-index-20261009.md why the day shelf's row for this lap
+recommend check-in (checkpoint) -- the law lane waits on a human word at %642 or %519, or a custody gate
+status GREEN round-open and reads only; no witness moved; nothing to send beyond this log
+scope session-log and day-shelf row only, no code, no card change
