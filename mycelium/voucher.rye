@@ -3,31 +3,32 @@
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - the Voucher - rung r1 -- the crux.
 //! Design read: active-designing/date/20260813/20260813-095216_mycelium-voucher-attested-statement-exploration.md
 //!
-//! The Statement answered WHERE DO I STAND as a pure projection of one account, and statement_kyri let
-//! it cross a wire. Yet a statement that travels is still only a READING: a recipient can check the
-//! arithmetic reconciles, but nothing binds those numbers to the real agreed order they claim. A holder
-//! could hand over any balance at all, and the counterparty's only recourse would be to replay the whole
-//! ledger. The Voucher fills that blind spot: PROOF OF POSITION WITHOUT REPLAY.
+//! The Statement answers WHERE DO I STAND as a pure projection of one account, and statement_kyri lets
+//! it cross a wire. A statement that travels is still a reading. A recipient can check that the
+//! arithmetic adds up, yet the numbers stay unbound to the agreed order they claim. A holder could
+//! hand over any balance at all, and the counterparty would have to replay the whole ledger to know.
+//! The Voucher closes that gap: PROOF OF POSITION, CHECKED BY SIGNATURE RATHER THAN BY REPLAY.
 //!
-//! A VOUCHER is a fixed record a node signs -- its own key, an ORDER-HEAD (a single SHA-256 digest of the
-//! committed block order the reading was taken against), the account vouched, and the position (balance,
-//! reserved, received) read straight from the Statement -- under an Ed25519 signature over
-//! order-head - account - balance - reserved - received.
+//! A VOUCHER is a fixed record a node signs. It holds the node's own key, an ORDER-HEAD (a single
+//! SHA-256 digest of the committed block order the reading was taken against), the account vouched,
+//! and the position (balance, reserved, received) read straight from the Statement. An Ed25519
+//! signature covers order-head, account, balance, reserved, and received.
 //!
-//! The crux is A VOUCHER IS BOUND TO THE ORDER IT WAS READ AGAINST:
-//!   - verify_voucher checks the signature offline against the record's own node key -- trust the node,
-//!     no ledger needed; a tampered field or wrong signer refuses BadSignature.
+//! The crux is that a voucher is bound to the order it was read against:
+//!   - verify_voucher checks the signature offline, against the record's own node key. A verifier
+//!     trusts the node and holds no ledger. A tampered field or a wrong signer is refused as BadSignature.
 //!   - check_against(dag) re-derives the order-head and re-reads the Statement from the same Dag, then
-//!     confirms every signed field matches -- a node cannot vouch a false balance to a verifier who holds
-//!     the blocks, nor silently swap the order (the order-head is inside the signature).
-//!   - Arrival-independence is inherited: cord.commit yields one agreed order per permutation, so the
-//!     order-head folds to one digest and the Statement to one position -- a voucher made against one
-//!     arrival checks against another. The attestation binds the AGREED order, not the arrival accident.
+//!     confirms every signed field matches. Any verifier who holds the blocks catches a false balance.
+//!     The order-head sits inside the signature, so the order a node read is the order it must stand on.
+//!   - Arrival-independence is inherited. cord.commit yields one agreed order per permutation, so the
+//!     order-head folds to one digest and the Statement to one position. A voucher made against one
+//!     arrival checks against every other. The attestation binds the AGREED order, the one all arrivals share.
 //!
-//! The order-head fold lives here as the Voucher's own bounded derivation; cord, lapse, statement, and
-//! kumara are composed by public API only, edited none. Siloed, dev-only, demo seeds -- no real key, no
-//! funds, no network, no custody. A SERVED voucher (a holder fetching a node's attestation over Comlink)
-//! reaches the Comlink-served gate.
+//! The order-head fold lives here as the Voucher's own bounded derivation. Cord, lapse, statement, and
+//! kumara are composed through their public API alone, and each one stays as it was. The module is
+//! siloed and dev-only, with demo seeds: every key is a test key. A real key, real funds, a real
+//! network, and real custody wait for a served arc. A SERVED voucher, a holder fetching a node's
+//! attestation over Comlink, reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/voucher.rye
 

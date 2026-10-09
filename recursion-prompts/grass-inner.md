@@ -229,6 +229,20 @@ witnesses -- `mycelium_tenure_witness`, `mycelium_tenure_true_witness`, `myceliu
 `voucher.rye`, `warrant.rye`, `rehearsal.rye` -- and wait for the same lift, one file at a time,
 per this lane's usual depth-2 bound.
 
+**`voucher.rye`'s head lifts C+ to A, landed `20261009`.** Its `//!` head held fourteen negative
+sentences in its first twenty-four -- `nothing binds`, `blind spot`, `cannot vouch`, `not merely`,
+`edited none`, `no real key, no funds, no network, no custody` -- and each rewrote into an
+affirmative sentence holding the same fact. Every identifier, path, and design-read citation held
+exactly, and the code below the head stays byte-identical. Register rose from 54 (46% negative of
+15) to 92 (8% negative of 24), composite from 76 (C+) to 93 (A). The four voucher witnesses --
+`mycelium_voucher_witness`, `mycelium_voucher_true_witness`, `mycelium_voucher_knot_witness`,
+`mycelium_voucher_kyri_witness` -- re-run GREEN on metal.
+
+**The next-crux lean, re-stated:** two files remain below B from the sample -- `warrant.rye` (C/71)
+and `rehearsal.rye` (C+/75) -- and each waits for its own lift, one per lap, per this lane's usual
+depth-2 bound. `till.rye` already reads B+ (88) since `20261009.153415`, so the list above it is
+one file stale.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
