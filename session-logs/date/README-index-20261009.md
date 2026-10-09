@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.175852` | [Bakery basis held](20261009/20261009-175852_bakery-basis-held-no-build.kyri) | Receipt-key ruling open; claim held; no build. |
+| `20261009.175820` | [Patchouli queue empty, eighth stop](20261009/20261009-175820_patchouli-queue-empty-eighth-stop.kyri) | Twenty-second empty-queue reading; no build; check-in named. |
 | `20261009.175812` | [Pheromone queue empty after ff pull](20261009/20261009-175812_pheromone-queue-empty-after-ff-pull.kyri) | Empty queue after ff pull; no build; check-in named. |
 | `20261009.180015` | [Petrichor gate loop named](20261009/20261009-180015_petrichor-gate-loop-named-check-in.kyri) | Held gate re-read again; loop named; check-in asked. |
 | `20261009.175627` | [Patchouli queue empty, seventh stop](20261009/20261009-175627_patchouli-queue-empty-seventh-stop.kyri) | Seventh empty-queue reading; no build; check-in named. |
