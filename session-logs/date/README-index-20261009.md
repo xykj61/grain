@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.140844` | [Taurus names a repeat](20261009/20261009-140844_taurus-names-a-repeat.kyri) | Sent. One repeat stopped, eleven left standing. |
 | `20261009.114758` | [The calfive schedule guard](20261009/20261009-114758_the-calfive-schedule-guard.kyri) | Sent. The guard GREEN; four notes found owed. |
 | `20261009.104053` | [Orbit five closes](20261009/20261009-104053_orbit-five-closes.kyri) | Sent. Next commit is Aries of orbit 6. |
 | `20261009.103828` | [The orbit closes on the list](20261009/20261009-103828_the-orbit-closes-on-the-list.kyri) | Siya. Orbit 5 closes. |
