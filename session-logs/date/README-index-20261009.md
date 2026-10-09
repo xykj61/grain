@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.192917` | [Petrichor fast-forward, consent gate held](20261009/20261009-192917_petrichor-no-build-gate-held.kyri) | Clean ff to xy; consent gate held; no build. |
 | `20261009.192740` | [Law lane declined a forty-ninth, carries the nib](20261009/20261009-192740_law-lane-declined-49.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192542` | [Law lane declined a forty-eighth, carries the nib](20261009/20261009-192542_law-lane-declined-48.kyri) | Round-open clean; no ledger row moved; no build. |
 | 20261009.192147 | [Front doors grade clear, no lift](20261009/20261009-192147_grass-front-door-sample-clear.kyri) | Eight front doors graded at Door, all B or better, no lift. |
