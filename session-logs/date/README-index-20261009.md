@@ -10,6 +10,7 @@
 | `20261009.154609` | [Pheromone lane repeat, parked](20261009/20261009-154609_pheromone-lane-repeat-parked.kyri) | Log only. Lane still at its ruling; no re-run. |
 | `20261009.154606` | [Patchouli queue empty, twenty-third reading](20261009/20261009-154606_patchouli-queue-empty-dormancy-ask.kyri) | queue empty, dormancy asked, check-in named |
 | `20261009.154426` | [Petrichor lane gated, no repeat](20261009/20261009-154426_petrichor-no-fruit-gated-no-repeat.kyri) | Log only. Consent gate still open; no fruit claimed. |
+| `20261009.154806` | [Bakery crux surveyed, check-in](20261009/20261009-154806_bakery-crux-survey-check-in.kyri) | crux unbuilt, awaiting Claude ruling |
 | `20261009.154307` | [Patchouli queue still empty, thirteenth reading](20261009/20261009-154307_patchouli-queue-empty-thirteenth.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154222` | [Warrant head lifted to B](20261009/20261009-154222_warrant-head-to-b.kyri) | Grass. warrant.rye head C 71 to B 83. Four warrant witnesses GREEN. |
 | `20261009.154211` | [Incense declines the lap](20261009/20261009-154211_incense-declines-the-lap.kyri) | Read only. Board clear of incense work; law lane holds for a word. |
