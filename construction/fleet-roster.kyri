@@ -156,12 +156,15 @@ seated 20260829.203718
 # Fire sees. Earth already sails eight live ships. These eight are berthed: a name, a lane,
 # and a prompt, and no tree yet. Birth stays a hand. The watch reads --live, so a berthed
 # ship is not armed, and it takes no stagger slot beside incense.
+# Candle is the fire fleet captain, seated 20261009.095959 on Keaton's word. Berthed still.
+# The other seven defer where a lane brushes the hat. Incense keeps the earth captain's hat.
 seat candle
 tree grain-candle
 engine claude
-lane the one picture a newcomer can hold -- one bound, drawn so a person can see where a tray ends
+lane the fire fleet captain -- the one picture a newcomer can hold, and the hat the other seven defer to
 status berthed
 seated 20261009.001346
+lane_updated 20261009.095959 -- captain of the fire fleet, still berthed, no tree born
 
 seat horizon
 tree grain-horizon

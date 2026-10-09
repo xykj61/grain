@@ -1019,7 +1019,7 @@ fn digest_record_read(
             var i: u32 = 0;
             while (i < Sha256.digest_length) : (i += 1) {
                 const at: usize = @intCast(i * 2); // seam: a slice index is the machine word
-                digest[i] = std.fmt.parseInt(u8, value[at .. at + 2], 16) catch return null;
+                digest[i] = tally_parse_int.parse_int(u8, value[at .. at + 2], .{ .base = 16, .allow_leading_zero = true }) catch return null;
             }
             seen_digest = true;
         }
