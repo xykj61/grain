@@ -9855,3 +9855,14 @@ guard tigerbeetle_last_stage_census
 path tools/gen/chapter/tigerbeetle_last_stage_census_witness.rish
 tier lap
 seated 20261003.101500
+
+# calfive_schedule -- added on the round that asked whether Calfive scheduling was ever
+# double-checked for conflicts. It had not been: fifteen expanding-prompts pages state a
+# commit count beside the orbit round they claim for it, by hand, and nothing re-derived the
+# second number from `(count - 1) % 15 + 1` before this guard. Reads the live tree clean
+# (pages_checked=10 conflicts=0 table=ok) and proves it catches a planted conflict, on metal,
+# 20261009.114234.
+guard calfive_schedule
+path tools/ca/calfive_schedule_witness.rish
+tier lap
+seated 20261009.114234

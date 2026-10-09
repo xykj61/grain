@@ -360,6 +360,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 1. Review and revise the proposed one-page contract for **[The receipt you can read](../active-designing/date/20260912/20260912-201126_the-receipt-you-can-read-contract.md)**: one synthetic input, four public types, module residences, eight acceptance cases, and one falsifier now stand at a checkable edge.
 2. Keep Linengrow meaning and Dimeroll meaning separate over the same Mantra facts during implementation; the `20260913` review accepts this boundary.
 3. Integrate the first whole and stamp its achieved name only after the dual-product witness passes.
+4. The Zig 0.17.0 standfast is named at expanding-prompts/20261005-171200_zig-017-standfast-orbit.md. Census counted. Pin stays 0.16.0. A ledger row waits until a compile refuses.
 
 **Stop:** product meaning, DJINN design authority, custody, or a new module seat returns to Keaton.
 
@@ -488,6 +489,9 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 
 ## Open doors for Keaton
 
+- **The notetaking quest owes four notes.** Orbit 1 landed; orbits 2-5 did not. A new
+  `calfive_schedule` guard checks the cadence math itself each round. Catch-up plan:
+  [`../active-development/20261009-114234_the-notetaking-quest-fell-behind.md`](../active-development/20261009-114234_the-notetaking-quest-fell-behind.md).
 - The first receipt contract is accepted for bounded synthetic implementation; material scope changes return here.
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.

@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.114758` | [The calfive schedule guard](20261009/20261009-114758_the-calfive-schedule-guard.kyri) | Sent. The guard GREEN; four notes found owed. |
+| `20261009.104053` | [Orbit five closes](20261009/20261009-104053_orbit-five-closes.kyri) | Sent. Next commit is Aries of orbit 6. |
 | `20261009.103828` | [The orbit closes on the list](20261009/20261009-103828_the-orbit-closes-on-the-list.kyri) | Siya. Orbit 5 closes. |
 | `20261009.103720` | [The sill, held](20261009/20261009-103720_the-sill-held.kyri) | Fixed sky. The page is held. |
 | `20261009.103404` | [Keep the sill](20261009/20261009-103404_keep-the-sill.kyri) | Sky. The name is seated. |

@@ -1,0 +1,31 @@
+# tools/ca/calfive_schedule_witness.rish -- the round-process check: does a stated orbit
+# round agree with (count - 1) % 15 + 1, the formula context/SPELLBOOK.md's own `round load`
+# spell already names.
+#
+# Added on the round that asked whether Calfive scheduling was ever double-checked for
+# conflicts. It had not been: fifteen expanding-prompts pages state a commit count beside the
+# orbit round they claim for it, by hand, and nothing before this witness re-derived the second
+# number from the first.
+#
+#   rishi/bin/rishi run tools/ca/calfive_schedule_witness.rish
+
+say "calfive-w: Language EN -- Calfive scheduling, checked rather than eyeballed."
+say "calfive-w: Lens TAME -- the formula is asserted, never retyped by hand."
+
+say "calfive-w: the live tree's round-load table and its planning pages agree with the formula..."
+let live = run ["sh" "tools/fixtures/c/calfive_schedule_scan.sh"]
+assert live.ok else "calfive-w: the scan itself failed to run -- read its output above"
+assert live.out contains "verdict=ok" else "calfive-w: a planning page or the round-load table disagrees with the formula -- read the CONFLICT line above"
+
+say "calfive-w: a planted conflict is caught rather than passed..."
+let pen_made = run ["mktemp" "-d"]
+assert pen_made.ok else "calfive-w: could not make a pen for the planted page"
+let pen = trim pen_made.out
+let planted = "${pen}/planted.md"
+let write = run ["sh" "-c" "printf 'Read x. git rev-list --count HEAD is 8,101. The orbit round is 5.\n' > ${planted}"]
+assert write.ok else "calfive-w: could not write the planted page"
+let caught = run ["sh" "tools/fixtures/c/calfive_schedule_scan.sh" "--room" pen]
+assert (caught.ok == false) else "calfive-w: a planted conflict must refuse rather than pass"
+assert caught.out contains "CONFLICT" else "calfive-w: the scan ran but never named the planted conflict"
+
+say "GREEN: calfive schedule witness -- the live tree agrees with its own formula, and a planted disagreement is caught."
