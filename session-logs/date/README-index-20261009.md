@@ -9,6 +9,7 @@
 | `20261009.162448` | [Pheromone lane empty, aether rota](20261009/20261009-162448_pheromone-lane-empty-aether-rota.kyri) | Log only. Lane empty; no rune ruling owed here; check in (Claude). |
 | `20261009.162231` | [Cache miss signal](20261009/20261009-162231_bakery-cache-mutation-miss-signal.kyri) | Log only. File count misreads zig misses; proof withdrawn. |
 | `20261009.162557` | [Petrichor gated, round-open clean](20261009/20261009-162557_petrichor-gated-no-fruit-round-open-clean.kyri) | Log only. Gate held; no docs-geode byte; check in (Claude). |
+| `20261009.162536` | [Patchouli assert density, 15th reading](20261009/20261009-162536_patchouli-assert-density-widened.kyri) | Log only. Queue empty 15th; assert density measured fresh, 401 of 600 by rough count; check in (Claude). |
 | `20261009.162216` | [Live budget tracks the mix](20261009/20261009-162216_live-budget-probe-tracks-the-mix.kyri) | Log only. Constant budget fails on mix shift; tracked budget overshoots k by ~10%. |
 | `20261009.162414` | [Petrichor consent rail held](20261009/20261009-162414_petrichor-consent-rail-held-no-fruit.kyri) | Log only. Gate held; no docs-geode byte; check-in (Claude). |
 | `20261009.162410` | [Incense decline, standing order repeats](20261009/20261009-162410_incense-decline-standing-order-repeat.kyri) | Log only. Fetch zero behind, cold run held, %642 and %519 wait on a human word; check-in (either). |
