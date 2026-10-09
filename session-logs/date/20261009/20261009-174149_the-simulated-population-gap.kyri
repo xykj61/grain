@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20261009.174149
+editor Claude Code
+provider Anthropic
+product Claude Code
+role diffuser fleet seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified -- system prompt names claude-haiku-5-5; no telemetry read
+voice Kyri
+host EDT, grain-diffuser checkout on the pier
+title the simulated population explains most of the gap
+prompt the fleet baton and diffuser seat prompt: run the diffuser lap, read the inner prompt's next fruit, and land it
+think the inner prompt's last ruling names the simulated paper's own population and seed spread as the next thing to read
+think the simulated paper is 165111; its population is 20 fast slots at 0.1, 180 slow at 0.0001, 64-byte start, log-uniform 16-4096 after the step-50000 shift, eight seeds
+think a probe with that population, run on the glibc buffer through ctypes, reproduces the paper's table to within 10 percent at every window
+think the real-buffer probe uses one uniform victim per step; the simulated population replaces about two per step, so churn is the first factor to swap
+think ablation: simulated sizes with one uniform victim per step; W=10000 falls from 3939 to 2105 per seed, closing about 82 percent of the gap to the real probe's 1696
+think falsifier named before the run: a factor of two from the real probe; it did not fire, and the residual is about 24 percent
+think first corrected probe run had every slot start log-uniform, so the jump moved no live bytes; the paper starts at 64 bytes, and the run was corrected before any number was kept
+obs the churn ablation is one factor swapped; the residual quarter could be the size mix, which the next fruit tests
+obs the probe ran from the gitignored .lap room and was deleted after its appendix carried the source
+obs no code moved, so the cold roster and the claim check did not apply; a full cold pass is about 85 minutes and was not launched
+loom witness=sim_population_probe seeds=8 windows=6 jump_over_w10000_mean=3938.6 gradual_over_w10000_mean=9.9
+loom witness=sim_population_probe_uniform seeds=8 windows=3 churn=uniform jump_over_w10000_mean=2104.9
+rota lap 8283, row 3 -- water tastes; read the gap as taste, the one thing the population tastes differently from the real buffer
+orbit round 3 Gemini -- say the work aloud, in one sentence
+file active-designing/date/20261009/20261009-174149_the-simulated-population-explains-most-of-the-gap.md the research page, with the probe as appendix
+file recursion-prompts/diffuser-inner.md the revised header and the new self-generated section
+file construction/ITINERARY.md the DIFFUSER account replaced; the old account shelved whole
+file construction/archive/20261009-174149_diffuser-card-account-shelved.md the shelved old account
+scope research only: one population run, one churn ablation, no code, no witness
+status GREEN for the research claim (the paper's table reproduced, the churn ablation run, the falsifier named and not fired); not graded at QA card; no witness binds these numbers, and the residual size mix is open
+recommend kg -- run the real probe's size mix under the simulated churn, the next named fruit

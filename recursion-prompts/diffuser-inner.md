@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.174149` -- the simulated paper's own population reproduces its table on a real buffer, and churn explains most of the gap to the real probe
 **Revised:** `20261009.172710` -- the lifetime ratio near a hundred holds the gap inside seed noise: the jump reads about five percent above the uniform control at W=10,000, and the falsifier does not fire
 **Revised:** `20261009.171658` -- the slow fraction swept to half holds the gap inside seed noise, with per-seed ranges printed
 **Revised:** `20261009.171150` -- the slow-block population runs: a slow tenth at eleven times the lifetime shifts the jump's counts about five percent, and the gradual arm stays at zero
@@ -898,6 +899,18 @@ before the run, a factor of two or a reversed rise, did not fire. Graded B+ 89 a
 witness, no new module; the scratch probe is in /tmp and deleted after its appendix carries it. The
 gap to the simulated paper is still unexplained by the slow fraction and the lifetime ratio; its own
 population and seed spread are the next thing to read.
+
+**Self-generated `20261009.174149`, the simulated paper's own population, run on the real buffer.**
+[The simulated population explains most of the gap](../active-designing/date/20261009/20261009-174149_the-simulated-population-explains-most-of-the-gap.md)
+reads the population the jump paper ran (20 fast slots at 0.1 per step, 180 slow at 0.0001, sizes 64
+bytes until a log-uniform 16 to 4,096 shift at step 50,000, eight seeds). Its reproduction reads the
+paper's table to within 10 percent at every window: 3,939 over budget per seed at W=10,000 against
+the paper's 4,061. The real-buffer probe read about 1,700 at the same window. Swapping one factor, the
+churn, to one uniform victim per step closes about 82 percent of that gap, leaving 2,105 per seed,
+about 24 percent above the real probe. The window trend keeps its shape (about fourteen-fold rise in
+both). The falsifier named before the run, a factor of two, did not fire. Graded not yet, pending the
+QA card. Next fruit: the real probe's size mix under the simulated churn, which tests whether the
+remaining quarter belongs to the size model.
 
 ## gates
 

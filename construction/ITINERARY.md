@@ -236,7 +236,7 @@ sits at grade 13, over ceiling, no further split without losing a fact; B+ stand
 witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher.rye` (76),
 `warrant.rye` (71), `rehearsal.rye` (75) stay below B, same lift, one file at a time.
 
-**DIFFUSER -- THE MIXED-LIFETIME COST IS SPACE, NOT TIME; THE GAP IS NOT THE LIFETIME RATIO.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md) and its runs, shelved whole at `a2039ece2d`. Landed `20261009.172710`: the single-jump probe at a lifetime ratio of 100 reads 1,791 over budget at W=10,000 against the uniform control's 1,700, about five percent, inside seed noise. The falsifier did not fire, and the slow fraction and the ratio are both ruled out as the gap. Next: the simulated paper's own population and seed spread.
+**DIFFUSER -- THE SIMULATED POPULATION EXPLAINS MOST OF THE GAP; CHURN IS THE LARGEST FACTOR.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md). Landed `20261009.174149`: the simulated paper's own population reproduces its table on a real glibc buffer to within 10 percent, and matching the churn to the real probe closes about 82 percent of the gap at W=10,000 (2,105 per seed against 1,696). The falsifier did not fire. Next: the real probe's size mix under the simulated churn. The old account is shelved at [construction/archive/20261009-174149_diffuser-card-account-shelved.md](archive/20261009-174149_diffuser-card-account-shelved.md).
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
