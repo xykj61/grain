@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.181205` | [Grass inner regrade, repeat](20261009/20261009-181205_grass-inner-regrade-repeat-check-in.kyri) | B holds again, no edit; queue empty; check-in named. |
 | `20261009.181209` | [Bakery crux blocked](20261009/20261009-181209_bakery-crux-blocked-no-build.kyri) | Receipt basis stalled; no build, no claim, no tree change. |
 | `20261009.181110` | [Pheromone queue empty](20261009/20261009-181110_pheromone-queue-empty-no-build.kyri) | Claim board read; card current; no build; check-in named. |
 | `20261009.181101` | [Patchouli queue empty, twenty-second](20261009/20261009-181101_patchouli-queue-empty-twenty-second.kyri) | Fresh grep finds only elder read-compat headers; no new fruit; check-in named. |
