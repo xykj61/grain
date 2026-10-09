@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.191642` | [Petrichor no-build hold](20261009/20261009-191642_petrichor-no-build-hold.kyri) | Zero behind xy; consent gate held; no build. |
 | 20261009.191701 | [incense law lane declined](20261009/20261009-191701_incense-law-lane-declined.kyri) | Forty-sixth lap declines: round-open clean, no law-lane item open. |
 | `20261009.191526` | [Fold grade holds, no lift](20261009/20261009-191526_grass-fold-grade-holds.kyri) | Mycelium fold.rye reads B or better; no edit. |
 | `20261009.191412` | [Petrichor pull held, no build](20261009/20261009-191412_petrichor-pull-held-no-build.kyri) | Fast-forward pull; no docs-geode page moved; gate held. |
