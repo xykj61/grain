@@ -246,15 +246,13 @@ witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher
 workload, where `Region.alloc` wins or ties in 20 of 21 size/sweep cells once nothing is freed
 mid-batch
 ([the keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md),
-A/94 at Field). The next probe ran and then sat in a rebase from `20261003` until `20261008`,
-when the essay, its log, and the fruit paragraph were recovered onto this working tree and left
-uncommitted. Uniform same-size churn, 200 live slots, seven sizes from 16 to 65,536 bytes:
-`smp_allocator` wins or ties on time at six of seven sizes, and `Region`'s buffer tracks
-`live_count + steps` (growth 1,001x at 16 bytes, 4.8x at 65,536), because `clear()` is the one
-release and `pos` only grows.
+A/94 at Field). Uniform churn, 200 live slots, sizes 16 to 65,536 bytes: `smp_allocator` wins or
+ties on time at six of seven, and `Region`'s buffer tracks `live_count + steps`, since `clear()`
+is the one release.
 [The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md),
 B/84 at Field. The mixed population ran (`20261009.153349`): time reverses to smp at about 1.9x,
-space holds at 270x. **YOURS:** the call-site size mix, still unread.
+space holds at 270x. The call-site mix is counted (`20261009.154443`); the budget and knee ran
+after it (`20261009.163113`). Next falsifier: a knee outside 1,000 to 3,000 steps.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -350,7 +348,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `301de91f08` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `39164c7815` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
