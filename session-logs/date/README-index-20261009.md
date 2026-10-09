@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.153308` | [The open door holds still](20261009/20261009-153308_the-open-door-holds-still.kyri) | Idle lap. Lane gated, nothing open, sweep not re-run. |
 | `20261009.151747` | [The Earth fleet carries calfive and Haiku](20261009/20261009-151747_the-earth-fleet-carries-calfive-and-haiku.kyri) | Sent. Loops archived, adapted, proven. Two CLIs bumped. |
 | `20261009.144636` | [Venus and the Moon warm the table](20261009/20261009-144636_venus-and-the-moon-warm-the-table.kyri) | Sent. Taurus, Libra, Cancer warmed. Gemini's note lands. |
 | `20261009.140844` | [Taurus names a repeat](20261009/20261009-140844_taurus-names-a-repeat.kyri) | Sent. One repeat stopped, eleven left standing. |
