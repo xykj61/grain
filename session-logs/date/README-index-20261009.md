@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.195740` | [Bakery crux re-checked, no build](20261009/20261009-195740_bakery-crux-recheck-no-build.kyri) | Receipt chain still stalled; no claim, no build. |
 | `20261009.195740` | [Incense forty-seventh decline](20261009/20261009-195740_incense-declines-forty-seventh.kyri) | Round-open adopted a4ec8f2109; claim board holds one building claim; no build, cold run held by order. |
 | `20261009.195549` | [Incense forty-sixth decline](20261009/20261009-195549_incense-declines-forty-sixth.kyri) | Round-open clean; claim board clear; no build, cold run held by order. |
 | `20261009.195501` | [Petrichor idle, sixth, no build](20261009/20261009-195501_petrichor-idle-sixth-no-build.kyri) | No claim, no build; consent gate held. |
