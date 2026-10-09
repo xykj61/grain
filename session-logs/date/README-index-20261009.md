@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.182112` | [Pisces: the language lane reads empty](20261009/20261009-182112_pheromone-language-lane-empty.kyri) | Pheromone. Lane empty, no build. |
 | `20261009.182158` | [Law lane declines forty-seventh](20261009/20261009-182158_incense-law-lane-declines-forty-seventh.kyri) | Round-open clean; no build; %642 and %519 wait on Keaton. |
 | `20261009.182100` | [Patchouli queue empty, twenty-fifth](20261009/20261009-182100_patchouli-queue-empty-twenty-fifth.kyri) | Queue empty again; no build; check-in named. |
 | `20261009.181922` | [Bakery queue held, no build](20261009/20261009-181922_bakery-queue-held-no-build.kyri) | Queue held on the receipt key and owner-held ratchets; log only. |
