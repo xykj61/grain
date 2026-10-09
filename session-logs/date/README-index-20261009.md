@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.173436` | [Diffuser seed-spread falsifier located](20261009/20261009-173436_diffuser-seed-spread-next-falsifier-held.kyri) | Falsifier needs a pinned population; located, not run; no code. |
 | `20261009.173126` | [Patchouli queue empty](20261009/20261009-173126_patchouli-queue-empty-no-build.kyri) | Queue read empty again; claims clear; no build. |
 | `20261009.173258` | [Copal rosters tigerbeetle seventy-line](20261009/20261009-173258_copal-tigerbeetle-seventy-line-roster.kyri) | one witness, claimed, proven |
 | `20261009.173258` | [Petrichor gate seventh read](20261009/20261009-173258_petrichor-gate-seventh-read-no-build.kyri) | Consent Rail still zero grant or revoke; no build. |
