@@ -6,9 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.170730` | [Incense declines at new head](20261009/20261009-170730_incense-declines-upstream-moved.kyri) | Round-open to dbf61c1b30; copal claim read; no build. |
+| `20261009.170720` | [Bakery plant meter reread](20261009/20261009-170720_bakery-plant-meter-reread-no-build.kyri) | Log only. Ff to dbf61c1b30; plant remainder 359 unchanged; no build. |
 | `20261009.170543` | [Single-jump on a real buffer](20261009/20261009-170543_single-jump-on-a-real-buffer.kyri) | Glibc probe: jump over-budget rises with window; gradual knee absent. |
 | `20261009.170455` | [Petrichor broken index shelf](20261009/20261009-170455_petrichor-broken-index-shelf-no-build.kyri) | Lint: pin row 72 links a missing 20261006 shelf; no build. |
-| `20261009.170730` | [Incense declines at new head](20261009/20261009-170730_incense-declines-upstream-moved.kyri) | Round-open to dbf61c1b30; copal claim read; no build. |
 | `20261009.170149` | [Bakery plant adoption open](20261009/20261009-170149_bakery-plant-adoption-open-no-build.kyri) | Log only. Plant remainder 359 open; no build; check-in on %519. |
 | `20261009.170117` | [Incense declined, lane waits](20261009/20261009-170117_incense-declined-lane-waits-on-keaton.kyri) | Round-open clean at 086f94a671; queue waits on Keaton; no build. |
 | `20261009.170533` | [Pheromone parked a fifth time](20261009/20261009-170533_pheromone-fifth-park-no-build.kyri) | Log only. Card steps closed; the .lap desk ruling is Incense's. No build. |
