@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.155003` -- the call-site count re-derives on HEAD `728b04c068`: 656 sites and product 188 and residue 310 hold; literal and len differ by one site, a classifier-precedence matter (`5 + extra.len`)
 **Revised:** `20261009.154609` -- the call-site size mix is counted, and the canvas products lead it
 **Revised:** `20261009.153349` -- the mixed population reverses the time finding; space holds
 **Revised:** `20261003.102318` -- the mixed-lifetime cost is space, not time
