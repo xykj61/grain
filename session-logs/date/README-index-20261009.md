@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.102037` | [The wish at the sill](20261009/20261009-102037_the-wish-at-the-sill.kyri) | Pisces. The wish. Sky is next. |
 | `20261009.101957` | [The terminal type, studied](20261009/20261009-101957_the-terminal-type.kyri) | Aquarius. One type, studied. |
 | `20261009.101857` | [What must stop](20261009/20261009-101857_what-must-stop.kyri) | Capricorn. The last site stays. |
 | `20261009.100656` | [Three seats, the scale](20261009/20261009-100656_three-seats-the-scale.kyri) | Sent. One round from sky's door. |
