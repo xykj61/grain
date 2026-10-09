@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.164914` | [Patchouli queue empty, 26th](20261009/20261009-164914_queue-empty-26th.kyri) | Log only. TAME reflexes swept clean in mantra/ and tally/; queue empty; no build. |
 | `20261009.164525` | [Petrichor ff, gate held, no build](20261009/20261009-164525_petrichor-ff-gate-held-no-build.kyri) | Log only. Fast-forward to 49dee93d19; Consent Rail gate holds; no page moved. |
 | `20261009.164729` | [Incense fallow, order holds, no build](20261009/20261009-164729_incense-fallow-order-holds-no-build.kyri) | Log only. Round-open clean; claims clear; no build. |
 | `20261009.164547` | [Pheromone parked again](20261009/20261009-164547_pheromone-second-park-no-build.kyri) | Log only. Lane parked on the Incense ruling again; no build. |
