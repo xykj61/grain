@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.153755` | [Bakery round open reads the crux](20261009/20261009-153755_bakery-round-open-read.kyri) | Read-only. Pulled two peers; crux open. |
 | `20261009.153726` | [Voucher head lifted to A](20261009/20261009-153726_voucher-head-to-a.kyri) | Grass. voucher.rye head C+ 76 to A 93. Four voucher witnesses GREEN. |
+| `20261009.153724` | [Petrichor idle -- nothing new to tend](20261009/20261009-153724_petrichor-idle-nothing-new-to-tend.kyri) | Idle. One upstream log, no docs-geode touch; sweep not re-run. |
 | `20261009.153537` | [Queue reads empty, twenty-second way](20261009/20261009-153537_the-queue-reads-empty-a-twenty-second-way.kyri) | TAME bans clean in mantra and tally; claim-as-override held. |
 | `20261009.153514` | [Mixed population reverses time](20261009/20261009-153514_the-mixed-population-reverses-the-time-finding.kyri) | Sent. Time reverses at 1.9x; space holds at 270x. |
 | `20261009.153502` | [Pheromone's lane is parked at a ruling](20261009/20261009-153502_pheromone-lane-parked-at-a-ruling.kyri) | Log only. Lane parked at a ruling; no code moved. |
