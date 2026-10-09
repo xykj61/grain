@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.103720` | [The sill, held](20261009/20261009-103720_the-sill-held.kyri) | Fixed sky. The page is held. |
 | `20261009.103404` | [Keep the sill](20261009/20261009-103404_keep-the-sill.kyri) | Sky. The name is seated. |
 | `20261009.102159` | [Three seats at the door](20261009/20261009-102159_three-seats-at-the-door.kyri) | Sent. Next commit is sky. |
 | `20261009.102037` | [The wish at the sill](20261009/20261009-102037_the-wish-at-the-sill.kyri) | Pisces. The wish. Sky is next. |
