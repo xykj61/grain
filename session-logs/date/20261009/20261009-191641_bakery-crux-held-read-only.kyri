@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261009.191641
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Bakery -- core infrastructure, Rishi fusion-build spine
+modality text
+model unverified
+model_status active runtime unverified -- self-reported claude-haiku-5-5 in session context, not verified by telemetry
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Bakery lap -- crux held for Keaton's ruling, read-only, no build
+prompt Baton and Bakery inner prompt, one lap; the first Bakery fruit is the shared build and cold-run cache.
+think The card's Bakery item names the receipt key as YOURS: whether tree_digest drops HEAD for the watched inputs changes the roster runner's contract, so it waits on a ruling.
+think The shared compile layer already shares by content (shared_build_cache_census reads 819 new files on a miss and 0 from another checkout path), so the open gap is the receipt key, which the ruling gates.
+think The claim board read clear with two live peer claims (copal roster, pheromone pedestal). No overlap with a Bakery path, so claim-as-override was not needed.
+think The agent-doable queue items (%642 scrub, %519 plant adoption) are either waiting on a trade word or a free ratchet with no open defect. Plant adoption reads sourcing=44 against floor 13, verdict ok.
+think Starting a cold endurance run without a landed change would spend about an hour to answer a question nobody asked, so I did not launch one.
+obs No code, no page, and no REDS row touched. The only writes are this log and its day-shelf row.
+obs The crux cannot advance past the receipt key until Keaton rules on it. Building around it would pre-empt the ruling.
+rota none -- no council row deep-read; this lap was a gate reading, and a row would have repeated the crux's own reasoning.
+loom plant_adoption sourcing=44 remainder=360 controls=404 floor=13 verdict=ok -- read from tools/fixtures/p/plant_adoption_scan.sh.
+file session-logs/date/20261009/20261009-191641_bakery-crux-held-read-only.kyri the log for this lap, born on its day's shelf.
+file session-logs/date/README-index-20261009.md one shelf row for this log, under the delimiter.
+product_nib none -- no product lap this round.
+scope read-only pass over the Bakery card item, the inner prompt, the claim board, and the plant adoption scan; one log and one row written.
+status GREEN for the read; no witness run because no code or page changed; the receipt-key ruling stays open with Keaton.
+recommend check-in (checkpoint) -- Keaton's ruling on whether the receipt key drops HEAD for the watched inputs is the gate the next Bakery lap waits on.

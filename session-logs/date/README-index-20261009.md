@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.191641` | [Bakery crux held, read-only, no build](20261009/20261009-191641_bakery-crux-held-read-only.kyri) | Receipt key waits on Keaton's ruling; no build, no claim. |
 | `20261009.191139` | [Petrichor, no open docs-geode red, gate held](20261009/20261009-191139_petrichor-docs-geode-no-open-red.kyri) | No open red for this lane; consent gate held; no build. |
 | `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.191038` | [Patchouli queue empty, twenty-fifth way](20261009/20261009-191038_patchouli-queue-empty-twenty-fifth-way.kyri) | Queue empty again; no code; no build. |
