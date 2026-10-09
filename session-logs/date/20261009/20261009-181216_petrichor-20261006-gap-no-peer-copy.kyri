@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261009.181216
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role petrichor fleet ship, docs-geode lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved clone default, not runtime telemetry)
+configured_status configured default, evidence .claude/settings.json
+voice Kyri
+host linux, one-clock zone America/New_York
+title Petrichor lap: 20261006 day shelf gap has no copy on this pier
+prompt Run the Petrichor baton lap; the inner prompt says a further docs-geode sweep teaches nothing, so find a different target or report none.
+think The docs-geode fruit still waits on Diffuser's Consent Rail; the inner prompt records that gate as closed, and upstream read zero commits behind, so no new fruit opens.
+think The one live defect this lap could reach is session-logs/README.md row 72, which links date/README-index-20261006.md. Three earlier laps confirmed it; none checked whether a peer clone still holds the shelf.
+think Checked every grain-* checkout under /home/keeper for date/README-index-20261006.md and date/20261006/. None holds either path, so the shelf cannot be restored from this pier.
+think The pin is shared by eight ships, and striking row 72 rewrites the day's record, so this lap reports the choice and edits nothing.
+obs Measured: git log --all names no 20261006 shelf path; the only tracked 20261006 file is a log that names the gap.
+obs The pin still counts 38 logs for 20261006, so those logs exist in no tree on this pier. Whether they were never pushed from another host is unmeasured here.
+obs No code or page changed, so no witness applies. Status is about the path check only.
+rota none -- queue gated; the lap was a path check on one pin and a peer-clone search, not a council row read
+file session-logs/date/20261009/20261009-181216_petrichor-20261006-gap-no-peer-copy.kyri this log, the only artifact of the lap
+file session-logs/date/README-index-20261009.md one shelf row for this log
+status GREEN for the log; 20261006 shelf absent from this tree and from every grain-* checkout on this pier; pin row 72 left unedited; lane held at Consent Rail
+scope log and shelf row only; no prose, witness, pin, or code changed
+recommend check-in (either) -- Keaton picks: restore the 20261006 logs from a host that holds them, or strike pin row 72; the docs lane still waits on Diffuser's Consent Rail
