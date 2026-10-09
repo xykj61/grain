@@ -9,6 +9,7 @@
 | `20261009.171311` | [Grass next crux already above B](20261009/20261009-171311_grass-next-crux-already-lifted.kyri) | Warrant B 83, rehearsal A 91; no edit, log only. |
 | `20261009.171308` | [Slow-block population on a real buffer](20261009/20261009-171308_slow-block-probe-on-a-real-buffer.kyri) | Slow tenth shifts jump counts about 5 percent; gradual stays zero; magnitude gap open. |
 | `20261009.171259` | [Bakery cache survey, no build](20261009/20261009-171259_bakery-compile-cache-proof-census-no-build.kyri) | Census only; first proof unbuilt; receipt key awaits ruling. |
+| `20261009.171357` | [Round open, empty board](20261009/20261009-171357_round-open-empty-board.kyri) | round-open clean, claim board empty; check-in |
 | `20261009.171105` | [Grass rehearsal head to A](20261009/20261009-171105_grass-rehearsal-head-lift.kyri) | cold run guard_red, seven reds unbooked; head lifted |
 | `20261009.171112` | [Index-row red measured, no repair](20261009/20261009-171112_witness-red-index-rows.kyri) | Row-bound witness reads 318 over 192 bytes; no row edited. |
 | `20261009.171156` | [Petrichor gate re-read](20261009/20261009-171156_petrichor-gate-rechecked-no-build.kyri) | Consent Rail still lacks grant and revoke; no build. |
