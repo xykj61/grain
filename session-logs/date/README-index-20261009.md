@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.193526` | [Petrichor idle lap, ff, no build](20261009/20261009-193526_petrichor-idle-ff-no-build.kyri) | Ff to 21057e2b30; consent gate held; no build. |
 | `20261009.193357` | [Incense declines a fifty-first, carries the nib](20261009/20261009-193357_incense-declines-fifty-first.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192915` | [Tally limb 7 -- receipt bounds](20261009/20261009-192915_pheromone-tally-limb7-receipt-bounds.kyri) | Twelve ceilings named as a pedestal; witness GREEN. |
 | `20261009.193231` | [Petrichor stale room count](20261009/20261009-193231_petrichor-stale-room-count.kyri) | First-hour worked output 72 to 88, dated; grade A holds. |
