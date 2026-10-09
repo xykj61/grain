@@ -20,6 +20,7 @@ think The same queue was read at 190601 by an earlier Grass lap of this shelf, w
 think The card's Git nib named 6049e0e2a7, several commits behind HEAD. The nib tool named HEAD 8c93e40044 as the follow-up shape, and the card was written to it before this commit was made.
 obs No code, witness, or ledger row moved. The only living edit is the card's Git nib, one line.
 obs The claim check was not needed: no new instrument was opened and no booked red was taken.
+obs Contested send: the first push was refused as non-fast-forward after peers landed, the pull rebased this commit, and the card's nib named a commit two back. Amending a pushed commit is refused, so the fix rides this follow-up as a log fact plus the nib line.
 obs The fascia face was not re-measured because no witness ran this lap. It stands at the last witnessed value, 61.3000 (`20261009.100321`).
 rota none -- queue reading only; the council row was read by the earlier lap at 190601
 orbit round 9 sign Sagittarius, fire, talent -- The mission, in Bhakta, Gauge, Radiant, and Twilight. No mission is written this lap, and the queue stays as read.
@@ -32,6 +33,6 @@ file mycelium/statement.rye graded at door, composite 89 B+, unchanged
 file mycelium/rehearsal.rye graded at door, composite 91 A, unchanged
 file mycelium/fold.rye graded at door, composite 93 A, unchanged
 file construction/ITINERARY.md Git nib carried from 6049e0e2a7 to 8c93e40044 (follow-up rule 5)
-status GREEN for the readings; the nib carry is the only living edit; the audit queue is empty and stays empty
+status GREEN for the readings; the nib carry is the only living edit; the contested-send nib gap is carried by this follow-up; the audit queue is empty and stays empty
 scope eight readings of named module heads and one nib carry; no code, no ledger row, no seed or custody action
 recommend check in (either) -- the queue is empty; the register lift on warrant (reach 50) or a fresh unopened room waits for Keaton's word
