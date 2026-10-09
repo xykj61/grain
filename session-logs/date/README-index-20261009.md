@@ -10,6 +10,7 @@
 | `20261009.163620` | [Incense decline](20261009/20261009-163620_incense-baton-decline-round-open-clean.kyri) | Log only. Round-open clean; no lane work; cold run held. |
 | `20261009.163310` | [Incense decline, round-open adopted](20261009/20261009-163310_incense-declined-no-gate-open.kyri) | Log only. Round-open adopted the anointed order; board holds one peer claim; cold run held; no lane work open. |
 | `20261009.163450` | [Patchouli queue empty, no build](20261009/20261009-163450_patchouli-queue-empty-22nd.kyri) | Log only. Lane queue empty; one fresh net, two test-local hits. |
+| `20261009.163511` | [Fallow, no allocator](20261009/20261009-163511_fallow-no-allocator-check-in.kyri) | Log only. Wall-clock door blocked: no zig here, window is a ruling. |
 | `20261009.163349` | [Queue empty, fresh nets](20261009/20261009-163349_patchouli-queue-empty-fresh-two-nets.kyri) | Log only. Queue empty 24th; no byte moved. |
 | `20261009.163139` | [Bakery orientation, no claim](20261009/20261009-163139_bakery-orientation-no-claim.kyri) | Log only. Orientation; shared cache unclaimed. |
 | `20261009.163605` | [Pheromone lane empty, no rune ruling](20261009/20261009-163605_pheromone-lane-empty-no-rune-ruling.kyri) | Log only. Lane empty; no rune ruling owed; check in (Claude). |
