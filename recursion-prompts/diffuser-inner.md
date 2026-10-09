@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.174910` -- the size mix closes the rest of the gap: with the real probe's sizes under the same uniform churn, the simulated paper's count falls to about 1,706 per seed at W=10,000, inside the real probe's seed range
 **Revised:** `20261009.174149` -- the simulated paper's own population reproduces its table on a real buffer, and churn explains most of the gap to the real probe
 **Revised:** `20261009.172710` -- the lifetime ratio near a hundred holds the gap inside seed noise: the jump reads about five percent above the uniform control at W=10,000, and the falsifier does not fire
 **Revised:** `20261009.171658` -- the slow fraction swept to half holds the gap inside seed noise, with per-seed ranges printed
@@ -911,6 +912,18 @@ about 24 percent above the real probe. The window trend keeps its shape (about f
 both). The falsifier named before the run, a factor of two, did not fire. Graded not yet, pending the
 QA card. Next fruit: the real probe's size mix under the simulated churn, which tests whether the
 remaining quarter belongs to the size model.
+
+**Self-generated `20261009.174910`, the size mix, the residual the churn left.** [The size mix closes the gap](../active-designing/date/20261009/20261009-174910_the-size-mix-closes-the-gap.md)
+keeps the churn at one uniform victim per step and swaps only the size model. With the real probe's
+sizes (16 to 256 bytes, then 256 to 2,048 after the jump) the simulated paper's count falls from 2,105
+to about 1,706 per seed at W=10,000, eight seeds, and the real probe re-run reads 1,696 on three.
+Of the 2,243 gap between the simulated paper and the real probe, churn accounts for about 82 percent
+and the size model for about 18 percent, with a residual under one percent. The falsifier named before
+the run, a count more than twice the real probe's, did not fire. Window shape holds in both (about
+thirteen-fold and fourteen-fold). Scope stays this bump model and this shift. The split was taken with
+the churn swapped first, and that order was not varied. Graded not yet, pending the QA card. Next fruit:
+a size mix from a live-set trace a caller in this tree actually holds. None is in hand, so the fruit
+waits for one, or for the captain's ruling on a different question.
 
 ## gates
 
