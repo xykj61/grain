@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.182700` | [Bakery receipt-basis claim closed](20261009/20261009-182700_bakery-receipt-basis-claim-closed.kyri) | Landed claim closed; scan refused as designed; ruling still open. |
 | `20261009.182404` | [Grass regrade held, queue empty](20261009/20261009-182404_grass-inner-regrade-held-queue-empty.kyri) | Inner prompt B+ held, no edit; cold run not launched. |
 | `20261009.182316` | [Petrichor lint, no new fruit](20261009/20261009-182316_petrichor-lap-lint-no-new-fruit.kyri) | Living docs lint read; docs-geode clean; 20261006 gap awaits ruling. |
 | `20261009.182249` | [Patchouli queue empty, twenty-sixth](20261009/20261009-182249_patchouli-queue-empty-twenty-sixth.kyri) | Queue empty; no build; check-in named. |

@@ -54,12 +54,6 @@ format fleet-claims-v1
 # declaration may never be.
 
 
-claim bakery-shared-receipt-basis
-seat bakery
-stamp 20261009.175138
-epoch 1791582698
-paths tools/b/shared_receipt_basis.rish tools/fixtures/b/shared_receipt_basis_scan.sh
-what Bakery crux: a read-only instrument that reads a peer checkout's standing-equipment receipt and says whether its digest can stand as this pier's --scoped basis; no build cache yet.
 claim copal-tigerbeetle-shrink-scope-roster
 seat copal
 stamp 20261009.181942
