@@ -12,6 +12,7 @@
 | `20261009.154307` | [Patchouli queue still empty, thirteenth reading](20261009/20261009-154307_patchouli-queue-empty-thirteenth.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154222` | [Warrant head lifted to B](20261009/20261009-154222_warrant-head-to-b.kyri) | Grass. warrant.rye head C 71 to B 83. Four warrant witnesses GREEN. |
 | `20261009.154211` | [Incense declines the lap](20261009/20261009-154211_incense-declines-the-lap.kyri) | Read only. Board clear of incense work; law lane holds for a word. |
+| `20261009.154609` | [Call-site size mix counted](20261009/20261009-154609_call-site-size-mix-counted.kyri) | 656 garden.alloc sites counted; canvas products lead; probe's mix unexamined |
 | `20261009.154148` | [Diffuser call-site mix opened](20261009/20261009-154148_diffuser-call-site-mix-survey-opened.kyri) | Log only. Region call-site survey named, not measured. |
 | `20261009.154140` | [Bakery stale claim cleared](20261009/20261009-154140_bakery-stale-claim-cleared.kyri) | Closed own stale claim. Crux left for Claude ruling. |
 | `20261009.154112` | [Patchouli queue re-check, still empty](20261009/20261009-154112_patchouli-queue-empty-recheck.kyri) | queue empty again, no new family, check-in named |
