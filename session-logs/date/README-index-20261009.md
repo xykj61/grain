@@ -13,6 +13,7 @@
 | `20261009.174314` | [copal roster of the Surface p55 check-in witness](20261009/20261009-174314_copal-p55-roster.kyri) | p55 witness rostered and proven both ways. |
 | `20261009.174232` | [GRASS frame reread](20261009/20261009-174232_grass-register-frame-reread-no-edit.kyri) | SOURCE.md B+/88; register lift stays booked; no edit. |
 | `20261009.174428` | [Petrichor gate tenth read](20261009/20261009-174428_petrichor-gate-tenth-read-no-build.kyri) | Pulled one; Consent Rail still zero; no build. |
+| `20261009.174146` | [Pheromone lane empty after ff pull, no build](20261009/20261009-174146_pheromone-lane-empty-ff-pull-no-build.kyri) | Queue empty; refusal shape waits on Incense; no build. |
 | `20261009.173832` | [Petrichor gate ninth read](20261009/20261009-173832_petrichor-gate-ninth-read-no-build.kyri) | Pulled two; Consent Rail still zero; no build. |
 | 20261009.174223 | [patchouli queue empty, third stop](20261009/20261009-174223_patchouli-queue-empty-third-stop.kyri) | Third empty-queue reading; no build, no red |
 | `20261009.173955` | [Patchouli queue empty, second stop](20261009/20261009-173955_patchouli-queue-empty-second-stop.kyri) | Queue empty again; no build; check-in named. |
