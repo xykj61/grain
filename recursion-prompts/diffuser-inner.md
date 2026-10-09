@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.161337` -- the byte threshold holds the budget, and the step cadence keeps the cheaper frontier
 **Revised:** `20261009.160733` -- the window caveat run as a clear cadence: the ratio falls with the window, and the price becomes copy traffic
 **Revised:** `20261009.160141` -- the mixed-lifetime probe run: 90/10 lifetimes read 958.56 at 100k steps, the falsifier did not fire
 **Revised:** `20261009.155617` -- the mixed-lifetime falsifier's space half run as a simulation: region bytes rise with replacements, live bytes stay flat, and the size mix moves only the slope
@@ -833,6 +834,17 @@ block` sits within about five percent at 1,000 steps. The price moves to copy tr
 per step at a 100-step cadence on the log mix. Names the next falsifier, a byte-threshold clear, and
 does not run it. Graded B+ 89 at Field (register 71, reach 100, truth 100 counted, service 85
 judged). No new witness, no new module; the scratch probe is deleted.
+
+**Self-generated `20261009.161337`, the byte-threshold falsifier run as named.**
+[The byte threshold holds the budget, not the frontier](../active-designing/date/20261009/20261009-161337_the-byte-threshold-holds-the-budget-not-the-frontier.md)
+runs the clear-on-budget arm the `20261009.160733` paper predicted: the high-water mark should sit at
+k times the mean live set whatever the mix. It does, in both mixes, and every threshold arm kept zero
+allocations over budget. The step cadence reproduces the prior uniform readings (11.52 against 11.63,
+2.23 against 2.23), and the log mix reproduces only in shape, since the random stream differs from the
+prior probe. The threshold buys the bound and not a cheaper trade-off: at comparable copy traffic the
+cadence stays ahead. Names the live-set-tracking budget as the next falsifier and does not run it.
+Graded A/91 at Field (register 79, reach 100, truth 100 counted, service 85 judged). No new witness,
+no new module; the scratch probe is deleted.
 
 ## gates
 

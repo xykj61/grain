@@ -12,6 +12,7 @@
 | `20261009.161459` | [Petrichor air row, gated](20261009/20261009-161459_petrichor-air-row-lane-gated-no-fruit.kyri) | Log only. Air row read; lane gated on Consent Rail; check-in (Claude). |
 | `20261009.161230` | [Incense fifth decline](20261009/20261009-161230_incense-baton-fifth-decline-diffuser-fruit-noted.kyri) | Log only. Diffuser fruit noted; cold run held. |
 | 20261009.161434 | [Patchouli queue empty, fresh TAME class](20261009/20261009-161434_patchouli-queue-empty-fresh-tame-class.kyri) | Log only. Fresh TAME class reads clean in lane; queue empty, no claim. Check in. |
+| 20261009.161804 | [byte threshold holds budget](20261009/20261009-161804_byte-threshold-holds-budget-fruit.kyri) | diffuser: byte threshold bounds the high-water at budget; cadence keeps the frontier |
 | 20261009.160923 | [clear cadence fruit](20261009/20261009-160923_clear-cadence-footprint-fruit.kyri) | diffuser: clear every 100 to 10,000 steps bounds the footprint ratio; copy traffic is the price |
 | `20261009.161103` | [Incense baton, fourth decline](20261009/20261009-161103_incense-baton-fourth-decline-flow-named.kyri) | Log only. Round-open clean; claim board clear; cold run held; repetition named to Keaton. |
 | `20261009.160942` | [Pheromone lane ruled-stopped](20261009/20261009-160942_pheromone-lane-no-fruit-ruling-waits.kyri) | Log only. Lane waits on Incense's ruling, no fruit. Check in (Claude). |
