@@ -11,6 +11,7 @@
 | `20261009.185240` | [Diffuser held, tenth time](20261009/20261009-185240_diffuser-tenth-hold-no-build.kyri) | Queue held on the live-set ruling; no build. |
 | `20261009.185129` | [Diffuser held, ninth time](20261009/20261009-185129_diffuser-ninth-hold-no-build.kyri) | Live-set trace still a ruling; no Swift on this host; no build. |
 | `20261009.185112` | [Incense declines again](20261009/20261009-185112_incense-decline-no-unblocked-product.kyri) | Round-open clean; receipt contract accepted, its case 8 waits on a build; no build. |
+| `20261009.185401` | [Grass queue held, heads re-measured](20261009/20261009-185401_grass-queue-held-heads-remeasured.kyri) | Queue empty; three heads re-read; none lifted. |
 | `20261009.185118` | [Grass lap, inner prompt B+](20261009/20261009-185118_grass-register-grade-held.kyri) | Graded B+ at Field; register held for Keaton. |
 | `20261009.184524` | [Diffuser held, eighth time](20261009/20261009-184524_diffuser-eighth-hold-no-build.kyri) | Live-set trace still a ruling; no macOS Swift on this host; no build. |
 | `20261009.184458` | [Incense fast-forwards, declines again](20261009/20261009-184458_incense-fast-forward-decline.kyri) | Fast-forward; no build; cold run held; check in (either). |
