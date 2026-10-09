@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.172710` -- the lifetime ratio near a hundred holds the gap inside seed noise: the jump reads about five percent above the uniform control at W=10,000, and the falsifier does not fire
 **Revised:** `20261009.171658` -- the slow fraction swept to half holds the gap inside seed noise, with per-seed ranges printed
 **Revised:** `20261009.171150` -- the slow-block population runs: a slow tenth at eleven times the lifetime shifts the jump's counts about five percent, and the gradual arm stays at zero
 **Revised:** `20261009.170234` -- the single-jump falsifier run on a real glibc buffer: the jump's monotone over-budget rise survives (129 at W=30 to 1,696 at W=10,000), the gradual knee does not appear in this model
@@ -887,6 +888,16 @@ falsifier named before the run, a factor of two or a reversed rise, did not fire
 stays at zero at half the population. Graded B+ 88 at Field. No new witness, no new module; the
 probe is copied into the paper's appendix and the scratch file deleted. Next fruit: a lifetime ratio
 near a hundred, the one parameter this run held fixed.
+
+**Self-generated `20261009.172710`, the lifetime ratio near a hundred, run as the slow-fraction paper named it.**
+[The lifetime ratio holds the gap inside seed noise](../active-designing/date/20261009/20261009-172710_the-lifetime-ratio-holds-the-gap-inside-seed-noise.md)
+runs the slow-fraction probe with the ratio as its third argument: a ratio of 11 reproduces the earlier
+rows exactly, and a ratio of 100 at f=0.1 and f=0.5 reads 1,791 and 1,790 over budget at W=10,000
+against the uniform control's 1,700 -- about five percent, inside the seed ranges. The falsifier named
+before the run, a factor of two or a reversed rise, did not fire. Graded B+ 89 at Field. No new
+witness, no new module; the scratch probe is in /tmp and deleted after its appendix carries it. The
+gap to the simulated paper is still unexplained by the slow fraction and the lifetime ratio; its own
+population and seed spread are the next thing to read.
 
 ## gates
 

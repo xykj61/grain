@@ -236,21 +236,7 @@ sits at grade 13, over ceiling, no further split without losing a fact; B+ stand
 witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher.rye` (76),
 `warrant.rye` (71), `rehearsal.rye` (75) stay below B, same lift, one file at a time.
 
-**DIFFUSER -- THE MIXED-LIFETIME COST IS SPACE, NOT TIME.** Prior finding: the keep-alive
-workload, where `Region.alloc` wins or ties in 20 of 21 size/sweep cells once nothing is freed
-mid-batch
-([the keep-alive workload un-reverses it](../active-designing/date/20261003/20261003-095727_the-keep-alive-workload-un-reverses-it.md),
-A/94 at Field). Uniform churn, 200 live slots, sizes 16 to 65,536 bytes: `smp_allocator` wins or
-ties on time at six of seven, and `Region`'s buffer tracks `live_count + steps`, since `clear()`
-is the one release.
-[The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md),
-B/84 at Field. The mixed population ran (`20261009.153349`): time reverses to smp at about 1.9x,
-space holds at 270x. The call-site mix is counted (`20261009.154443`); the budget and knee ran
-after it (`20261009.163113`). The knee falsifier ran on a one-jump shift (`20261009.165111`): the
-knee does not transfer, the overshoot trend reverses, and over-budget allocations rise with the
-window after the jump. The real-allocator run landed at `20261009.170234`: the jump's monotone rise
-survives on a glibc buffer (129 to 1,696 over W=30 to 10,000, three seeds), and the gradual knee does
-not appear in this model. The slow-block population ran (`20261009.171150`): a slow tenth at about eleven times the lifetime moves the jump's counts by about five percent at W=10,000 (1,780 against the uniform control's 1,692), and the gradual arm stays at zero. The magnitude gap to the simulated paper is not that slow block; its seed spread was not printed. A slow fraction near half ran (`20261009.171658`): seed noise holds from 0.0 to 0.5, the largest mean shift about 5.6 percent. Next: a lifetime ratio near a hundred.
+**DIFFUSER -- THE MIXED-LIFETIME COST IS SPACE, NOT TIME; THE GAP IS NOT THE LIFETIME RATIO.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md) and its runs, shelved whole at `a2039ece2d`. Landed `20261009.172710`: the single-jump probe at a lifetime ratio of 100 reads 1,791 over budget at W=10,000 against the uniform control's 1,700, about five percent, inside seed noise. The falsifier did not fire, and the slow fraction and the ratio are both ruled out as the gap. Next: the simulated paper's own population and seed spread.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -346,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `57922fa9b6` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `5ae11cc9b8` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
