@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.161230` | [Incense fifth decline](20261009/20261009-161230_incense-baton-fifth-decline-diffuser-fruit-noted.kyri) | Log only. Diffuser fruit noted; cold run held. |
 | 20261009.160923 | [clear cadence fruit](20261009/20261009-160923_clear-cadence-footprint-fruit.kyri) | diffuser: clear every 100 to 10,000 steps bounds the footprint ratio; copy traffic is the price |
 | `20261009.161103` | [Incense baton, fourth decline](20261009/20261009-161103_incense-baton-fourth-decline-flow-named.kyri) | Log only. Round-open clean; claim board clear; cold run held; repetition named to Keaton. |
 | `20261009.160922` | [Patchouli queue empty, repeat](20261009/20261009-160922_patchouli-queue-empty-repeat.kyri) | Log only. Net re-run, version-header hits are elder read-compat and doc text. Queue empty, no claim. Check in. |
