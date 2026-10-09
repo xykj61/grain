@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.172916` | [Petrichor earth row, nib red](20261009/20261009-172916_petrichor-earth-row-nib-red.kyri) | Card nib re-pinned to HEAD; witness GREEN; no fruit, gate holds. |
 | `20261009.173041` | [Bakery round held](20261009/20261009-173041_bakery-round-held-no-build.kyri) | Census holds; receipt key still waits on a ruling; no build. |
+| `20261009.173015` | [Pheromone lane reads empty](20261009/20261009-173015_pheromone-language-lane-reads-empty.kyri) | Limb10 re-run GREEN; no open fruit; a new rune returns to Incense. |
 | `20261009.172636` | [Bakery round re-read](20261009/20261009-172636_bakery-round-read-no-build.kyri) | Census and plant readings hold; receipt key still waits; no build. |
 | 20261009.172742 | [copal tooling roster](20261009/20261009-172742_copal-tigerbeetle-tooling-roster.kyri) | tooling census witness rostered, both legs GREEN |
 | `20261009.172734` | [Incense lane holds, no build](20261009/20261009-172734_incense-lane-holds-no-build.kyri) | Round-open clean; card under bound; no build; %642 and %519 wait. |
