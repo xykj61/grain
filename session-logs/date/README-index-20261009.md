@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.154148` | [Diffuser call-site mix opened](20261009/20261009-154148_diffuser-call-site-mix-survey-opened.kyri) | Log only. Region call-site survey named, not measured. |
 | `20261009.154112` | [Patchouli queue re-check, still empty](20261009/20261009-154112_patchouli-queue-empty-recheck.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154009` | [Pheromone still parked, repeat stopped](20261009/20261009-154009_pheromone-lane-still-parked-no-repeat.kyri) | Log only. Lane still at its ruling; no re-run. |
 | `20261009.153950` | [Diffuser queue blocked](20261009/20261009-153950_diffuser-queue-blocked-on-macos.kyri) | Log only. Item 2 needs macOS; no claim, no build. |
