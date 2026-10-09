@@ -11,6 +11,7 @@
 | `20261009.192814` | [Grass rule-page grades clear, no frame](20261009/20261009-192814_grass-rule-grade-sample-clear.kyri) | Five living rule pages graded at Field, all B+ or better; no edit. |
 | `20261009.192542` | [Law lane declined a forty-eighth, carries the nib](20261009/20261009-192542_law-lane-declined-48.kyri) | Round-open clean; no ledger row moved; no build. |
 | 20261009.192147 | [Front doors grade clear, no lift](20261009/20261009-192147_grass-front-door-sample-clear.kyri) | Eight front doors graded at Door, all B or better, no lift. |
+| `20261009.192654` | [Bakery ruling held, no build](20261009/20261009-192654_bakery-ruling-held-no-build.kyri) | Receipt-key ruling still open; no build. |
 | `20261009.192055` | [Bakery cold open, claim board read, no build](20261009/20261009-192055_bakery-cold-open-no-build.kyri) | Claim board read; first rung needs a ruling; no build. |
 | `20261009.192053` | [Petrichor ff pull, gate held](20261009/20261009-192053_petrichor-ff-pull-gate-held.kyri) | Fast-forward to xy; consent gate held; no build. |
 | 20261009.192048 | [Diffuser hold, trace still absent](20261009/20261009-192048_diffuser-hold-trace-still-absent.kyri) | Card Next still waits on a caller trace; no build. |
