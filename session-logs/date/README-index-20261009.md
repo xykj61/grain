@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.171308` | [Slow-block population on a real buffer](20261009/20261009-171308_slow-block-probe-on-a-real-buffer.kyri) | Slow tenth shifts jump counts about 5 percent; gradual stays zero; magnitude gap open. |
 | `20261009.171259` | [Bakery cache survey, no build](20261009/20261009-171259_bakery-compile-cache-proof-census-no-build.kyri) | Census only; first proof unbuilt; receipt key awaits ruling. |
 | `20261009.171105` | [Grass rehearsal head to A](20261009/20261009-171105_grass-rehearsal-head-lift.kyri) | cold run guard_red, seven reds unbooked; head lifted |
 | `20261009.171112` | [Index-row red measured, no repair](20261009/20261009-171112_witness-red-index-rows.kyri) | Row-bound witness reads 318 over 192 bytes; no row edited. |

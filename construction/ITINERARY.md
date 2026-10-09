@@ -250,7 +250,7 @@ after it (`20261009.163113`). The knee falsifier ran on a one-jump shift (`20261
 knee does not transfer, the overshoot trend reverses, and over-budget allocations rise with the
 window after the jump. The real-allocator run landed at `20261009.170234`: the jump's monotone rise
 survives on a glibc buffer (129 to 1,696 over W=30 to 10,000, three seeds), and the gradual knee does
-not appear in this model. Next: the slow-block population, which the real-buffer run did not model.
+not appear in this model. The slow-block population ran (`20261009.171150`): a slow tenth at about eleven times the lifetime moves the jump's counts by about five percent at W=10,000 (1,780 against the uniform control's 1,692), and the gradual arm stays at zero. The magnitude gap to the simulated paper is not that slow block; its seed spread was not printed. Next: a slow fraction near half, or a lifetime near a hundred, as the falsifier the paper names, with the per-seed range printed beside the means.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -346,7 +346,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `3a02e0d57b` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `17d6b1d7eb` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

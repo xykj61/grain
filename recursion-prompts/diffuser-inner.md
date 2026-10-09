@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.171150` -- the slow-block population runs: a slow tenth at eleven times the lifetime shifts the jump's counts about five percent, and the gradual arm stays at zero
 **Revised:** `20261009.170234` -- the single-jump falsifier run on a real glibc buffer: the jump's monotone over-budget rise survives (129 at W=30 to 1,696 at W=10,000), the gradual knee does not appear in this model
 **Revised:** `20261009.165111` -- the knee falsifier fires on a one-jump shift: the overshoot trend reverses, and over-budget allocations rise with the window after the jump
 **Revised:** `20261009.163113` -- the window sweep finds its knee near 1,000 steps: overshoot falls as the window lengthens while clears rise, and 10,000 breaks the bound at k=4
@@ -62,6 +63,8 @@ across 227 largely negative, honestly-fallow sentences) -- the setting line was 
 **Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. The fleet default is `claude-opus-5`; this tree resolves `claude-sonnet-5`.
 
 ## fruit
+
+**The slow-block population is run, and it does not explain the gap.** [The slow-block paper](../active-designing/date/20261009/20261009-171150_the-slow-block-population-on-a-real-buffer.md) adds a slow tenth at about eleven times the fast lifetime to the real-buffer probe. At W=10,000 the jump reads 1,780 over budget against a uniform control's 1,692, about five percent, inside what three seeds cannot separate. The gradual arm reads zero at every window. The paper's own falsifier, a factor of two from a slow block of this size, did not fire, and the seed spread was not printed, so the magnitude gap to the simulated paper stays open. Next: a slow fraction near half, with the per-seed range printed beside the means.
 
 **Case 4 is closed.** `tools/r/receipt_still_order_witness.rish` (landed `20260925`) proves the Still
 frame and the accessibility snapshot carry the Linengrow fields in one reading order, GREEN on this
