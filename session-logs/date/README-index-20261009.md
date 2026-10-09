@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.195549` | [Incense forty-sixth decline](20261009/20261009-195549_incense-declines-forty-sixth.kyri) | Round-open clean; claim board clear; no build, cold run held by order. |
+| `20261009.195501` | [Petrichor idle, sixth, no build](20261009/20261009-195501_petrichor-idle-sixth-no-build.kyri) | No claim, no build; consent gate held. |
 | `20261009.195320` | [Bakery queue gated](20261009/20261009-195320_bakery-queue-gated-no-build.kyri) | Queue gated on a ruling; no build, no claim. |
 | `20261009.195247` | [Petrichor idle, fifth, ff, no build](20261009/20261009-195247_petrichor-idle-fifth-ff-no-build.kyri) | Ff to aa2c8cf28e; no build, no claim. |
 | `20261009.195051` | [Petrichor idle, fourth, ff, no build](20261009/20261009-195051_petrichor-idle-fourth-no-build.kyri) | Ff to eb7898217b; no build, no claim. |
