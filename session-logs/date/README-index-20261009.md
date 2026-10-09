@@ -9,6 +9,7 @@
 | `20261009.195400` | [Bakery crux measured, no claim](20261009/20261009-195400_bakery-crux-measure-no-build.kyri) | Read-only measure of the Rye build seam; receipt found stale at fa310d296b; no build, no claim. |
 | `20261009.195000` | [Patchouli queue empty, 22nd, no build](20261009/20261009-195000_patchouli-queue-empty-twenty-second.kyri) | Lane empty again; %835 owned elsewhere. |
 | `20261009.194747` | [Grass lifts constel_depart head to B+](20261009/20261009-194747_grass-constel-depart-head-lift.kyri) | Head 71 to 85; witness GREEN; no code moved. |
+| `20261009.194933` | [Incense holds, stall named, no build](20261009/20261009-194933_incense-holds-stalled-no-build.kyri) | Round-open clean; order held; stall named; no build, no claim. |
 | `20261009.194605` | [Incense declines a fifty-sixth, no build](20261009/20261009-194605_incense-declines-fifty-sixth.kyri) | Held order stands; no build, no claim, cold run held. |
 | `20261009.194600` | [Petrichor idle, third, no build](20261009/20261009-194600_petrichor-idle-third-no-build.kyri) | Lane idle; %835 open for session-logs; no build, no claim. |
 | `20261009.194803` | [Diffuser holds, no trace](20261009/20261009-194803_diffuser-holds-no-trace.kyri) | Trace absent; energy blocked; no build. |
