@@ -9875,3 +9875,12 @@ guard tigerbeetle_off_by_one_census
 path tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
 tier lap
 seated 20261009.164920
+
+# oven_season_o1 -- the Oven Chapter o1 path cut, rostered on the claim this lap took (copal-oven-o1-
+# witness-roster). It proves the forge path reads ember/ LIVE with anvil/ and oven/ both gone, and it
+# stood unrostered through the rename to ember/, so no lap ever ran it.
+# Present tree reads GREEN on metal; the pen leg plants a stray anvil/ directory and reads RED.
+guard oven_season_o1
+path tools/gen/chapter/oven_season_o1_witness.rish
+tier lap
+seated 20261009.165840
