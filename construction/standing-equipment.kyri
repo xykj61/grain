@@ -9891,3 +9891,10 @@ guard commence_m6_see
 path tools/gen/chapter/commence_m6_see_witness.rish
 tier lap
 seated 20261009.170654
+
+# surface_season_p53 -- the Surface p53 check-in witness, unrostered until the copal-surface-p53-roster claim.
+# It reads the counsel seat for the live-five lean and refuses an invented pad; GREEN on the live tree.
+guard surface_season_p53
+path tools/gen/chapter/surface_season_p53_witness.rish
+tier lap
+seated 20261009.172117
