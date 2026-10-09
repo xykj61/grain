@@ -1,21 +1,23 @@
 //! mycelium/rehearsal.rye -- the constellation rehearsal: three ships practice the pen rounds on one machine.
 //!
 //! Chapter D (Kresfa & Mycelium) - Mycelium consensus - dev-net family - the rehearsal.
-//! The season wrote the multi-pier prose -- the three-MOX wiring, the derived spine, the
-//! twice-pulled rota, the pen decided by the order everyone computes alike -- and every sentence
-//! leans on a primitive that already stands witnessed. This module is the composition: the
-//! sentences run. Three ships (the r1 dev-net's own first three names, reused rather than
-//! invented) each propose a lap for one round; every ship reads the same pen from the same
-//! blocks whatever order they arrived; the shared row numbers derive from the merged record
-//! rather than being claimed; a sleeping ship misses a round and catches up by replaying the
-//! facts it missed; and the round closes under a full-voice Testament a keeper can verify
-//! offline. The pen layer is crash-only on purpose (a proposal absent is a ship asleep, and
-//! two of three still read a pen) -- the Byzantine roll stays where value moves, exactly as
+//! The season wrote the multi-pier prose: the three-MOX wiring, the derived spine, the
+//! twice-pulled rota, and the pen, decided by the order every ship computes alike. Each sentence
+//! leans on a primitive already witnessed. This module is the composition, and the sentences run.
+//! Three ships (the r1 dev-net's first three names, reused rather than invented) each propose a
+//! lap for one round. Every ship reads the same pen from the same blocks, whatever order they
+//! arrived. The shared row numbers derive from the merged record, computed rather than claimed.
+//! A sleeping ship misses a round, then catches up by replaying the facts it missed. The round
+//! closes under a full-voice Testament that a keeper can verify offline.
+//!
+//! The pen layer is crash-only on purpose: a missing proposal marks a sleeping ship, and two of
+//! three ships still read a pen. The Byzantine roll stays where value moves, as
 //! active-designing/date/20260825/20260825-133156_three-real-mox-and-the-outer-loop.md argues.
 //!
-//! Composes constel + cord + testament public API only, editing none. Demo seeds and fixture
-//! stamps only: no key held, no funds, no network, no custody. The wire crossing of the same
-//! rule lives one room over, in comlink/rehearsal_wire.rye, on localhost by design.
+//! The module composes the constel, cord, and testament public APIs and leaves each one as it
+//! stands. Demo seeds and fixture stamps are the whole of it. Real keys, funds, networks, and
+//! custody stay outside the module. The wire crossing of the same rule lives one room over, in
+//! comlink/rehearsal_wire.rye, on localhost by design.
 //!
 //! Scope: active-designing/date/20260825/20260825-210819_the-round-that-pulls-twice.md (the rota this runs)
 //!        active-designing/date/20260825/20260825-205011_the-pen-the-gossip-and-the-derived-spine.md
