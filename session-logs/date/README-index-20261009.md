@@ -10,6 +10,7 @@
 | `20261009.162557` | [Petrichor gated, round-open clean](20261009/20261009-162557_petrichor-gated-no-fruit-round-open-clean.kyri) | Log only. Gate held; no docs-geode byte; check in (Claude). |
 | `20261009.162216` | [Live budget tracks the mix](20261009/20261009-162216_live-budget-probe-tracks-the-mix.kyri) | Log only. Constant budget fails on mix shift; tracked budget overshoots k by ~10%. |
 | `20261009.162414` | [Petrichor consent rail held](20261009/20261009-162414_petrichor-consent-rail-held-no-fruit.kyri) | Log only. Gate held; no docs-geode byte; check-in (Claude). |
+| `20261009.162410` | [Incense decline, standing order repeats](20261009/20261009-162410_incense-decline-standing-order-repeat.kyri) | Log only. Fetch zero behind, cold run held, %642 and %519 wait on a human word; check-in (either). |
 | `20261009.162026` | [Petrichor gated, state unchanged](20261009/20261009-162026_petrichor-gated-no-fruit-state-unchanged.kyri) | Log only. Consent Rail gate held; no docs-geode byte; check-in (Claude). |
 | `20261009.162147` | [Incense seventh decline](20261009/20261009-162147_incense-seventh-decline-check-in-asked.kyri) | Log only. Fetch zero behind, clock all in, claims clear of lane; check-in (Claude) asked. |
 | `20261009.162125` | [Patchouli queue empty, 14th](20261009/20261009-162125_patchouli-queue-empty-fourteenth.kyri) | Log only. Queue empty; card 114 bytes under bound. Check in (Claude). |
