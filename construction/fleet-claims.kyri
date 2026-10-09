@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim oven-o1-witness
+seat copal
+stamp 20261009.165419
+epoch 1791579259
+paths tools/gen/chapter/oven_season_o1_witness.rish construction/standing-equipment.kyri
+what Roster the Oven o1 path-cut witness on the lap tier, after proving it GREEN on the living tree and RED in a pen that restores the anvil ghost.
