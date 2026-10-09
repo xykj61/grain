@@ -18,7 +18,7 @@ whole at [`../active-designing/date/20261001/20261001-112153_grass-sealed-crossi
 whole at [`../active-designing/date/20261001/20261001-181739_grass-unsaid-rostered-reverse-read.md`](../active-designing/date/20261001/20261001-181739_grass-unsaid-rostered-reverse-read.md).
 `construction/REDS.md` row `%829` (cited by stamp `20261001.143449`) named 984 rostered bindings
 against a ceiling of 903. The walk found two exempt families the scan's own fourth-shape header
-already names in words but never checks for: **86** bindings already reporting through a guarded
+already names in words but leaves unchecked: **86** bindings already reporting through a guarded
 `if v.ok == false then say v.err` one `if` deeper than the scan reads, and **70** bare presence
 checks (`test -f`/`-d`/`-x`, `[ -f ]`/`[ -d ]`) whose whole reason already lives in the assert's own
 else string. Together **156** of 988, leaving **832** real -- under the 903 ceiling.
@@ -37,7 +37,7 @@ closing the one real repair the prior reverse-read left ready -- `construction/I
 GRASS account ("shim-reason red on metal, three causes, all closed") carries the measurement.
 `sh tools/fixtures/s/shim_reason_scan.sh` now reads `unsaid_rostered=893` against the unchanged
 ceiling of `903`, and `tools/s/shim_reason_witness.rish` answers GREEN on metal, re-read
-`20261002.093600`. Nothing further waits on this file.
+`20261002.093600`. This file rests complete.
 
 **The two named mycelium candidates split clean, and the YOURS line is closed `20261002`** --
 [account](../active-designing/date/20261002/20261002-101612_grass-pledge-lapse-split-account.md):
@@ -48,21 +48,20 @@ witnesses GREEN after the move. `functions_over_70`'s honest remaining populatio
 437, concentrated in the three large files already named (`glow/glow_run.rye: main`,
 `rye/src/main.rye: bridge_to_zig`, `rishi/src/main.rye: eval_expr`), unread by this packet.
 
-**The next-crux lean:** no new audit packet is queued. This lane's honest next move stays the
+**The next-crux lean:** the audit queue holds only the ordinary move. This lane's honest next move stays the
 ordinary one named in the baton and in `.claude/rules/quality-assurance.md` -- touch a prose,
 comment, or docs surface already open for other reasons, grade it with
-`tools/fixtures/q/qa_report_card.sh`, and push one bounded molt frame if it reads below B. Nothing
-here licenses a fresh sweep of untouched rooms; the read-scope law keeps the walk to what the round
-already opened.
+`tools/fixtures/q/qa_report_card.sh`, and push one bounded molt frame if it reads below B. A fresh
+sweep of untouched rooms waits; the read-scope law keeps the walk to what the round already opened.
 
 **Ruled `20261002.142242`.** The page already open is the fruit. Grade it. A fresh sweep of an unopened room waits.
 
 **The eval_expr split's own file graded below B, and the lift landed `20261002.150708`.** The
-module head (`//! ...`) describing Rishi's whole surface predates the split and was never touched
-by it; `qa_report_card.sh`'s Door reading found it at register=82, reach=50 -- one 27-line run-on
+module head (`//! ...`) describing Rishi's whole surface predates the split and the split left it
+untouched; `qa_report_card.sh`'s Door reading found it at register=82, reach=50 -- one 27-line run-on
 sentence naming twenty-five-plus builtins drove the grade level to 14 against a Door ceiling of 9.
 Regrouped into short paragraphs by kind, same facts, zero added or dropped: reach rose to 100,
-register to 89. No code line moved; no witness applies.
+register to 89. The code lines stayed put, and the witness stayed idle.
 
 **`glow_run.rye`'s `main` (426 lines) split at its own head-dispatch seams, landed `20261002.161804`**
 -- [account](../active-designing/date/20261002/20261002-161804_grass-glow-run-main-split-account.md):
@@ -73,9 +72,9 @@ named exit-contract words rather than a bare code, translated back to the litera
 `glow_run_contract_scan.sh` depends on finding inside `main` itself. No function in the file reaches
 70 lines; the contract witness, the 1,133-line desk witness, the 347-desk derived-population
 witness, and every rune-family witness this dispatch reaches are all GREEN. `functions_over_70`
-fell by one. `YOURS:` none -- `bridge_to_zig` stays declined, and no further named candidate waits.
+fell by one. `YOURS:` closed -- `bridge_to_zig` stays declined, and the named candidates are spent.
 
-**The next-crux lean, re-stated:** no new audit packet is queued, and the two named TAME split
+**The next-crux lean, re-stated:** the audit queue holds only the ordinary move, and the two named TAME split
 candidates from the eval_expr account are now both read (one split, one declined). This lane's
 honest next move stays the ordinary one -- touch a prose, comment, or docs surface already open for
 other reasons, grade it, and push one bounded molt frame if it reads below B.
@@ -95,17 +94,17 @@ because each one's gap-times-sentences arithmetic stays under the free-reading t
 Stamp line, so the whole front-matter block stays one contiguous, correctly held-out unit:
 `register` reads 33% of 3 (was 66% of 2, with the giant run-on counted twice), the gated reading
 frees under the floor, and the composite rises to A/94. `gen_keeh_fund_prep.rish`'s witness and the
-`docs-geode` Bhakta-door scan both stay GREEN; no code line moved.
+`docs-geode` Bhakta-door scan both stay GREEN; the code lines stayed put.
 
 **The YOURS line closed `20261002.185550`.** Graded the six siblings with the same
 `qa_report_card.sh --setting door` reading that caught keeh: `bozo` A+/98, `gren` A/92, `linn`
 A+/98, `murr` A+/98, `shyu` A+/98, `trya` B+/88 -- every one already at or above the door floor,
 `gren` genuinely past the 8-sentence register floor and still landing A despite carrying the same
 merge. `.claude/rules/quality-assurance.md` answers its own question: the rule pushes a frame only
-when a reading comes back below B, so a latent fault that never lowers a grade owes no sweep of its
-own. `construction/ITINERARY.md`'s GRASS account carries the measurement.
+when a reading comes back below B, so a latent fault that leaves every grade standing waits for a
+reading of its own. `construction/ITINERARY.md`'s GRASS account carries the measurement.
 
-**The next-crux lean:** no new audit packet is queued. Continue the ordinary move -- touch a prose,
+**The next-crux lean:** the audit queue holds only the ordinary move. Continue the ordinary move -- touch a prose,
 comment, or docs surface already open for other reasons, grade it, and push one bounded molt frame
 only where the reading comes back below B.
 
@@ -121,7 +120,7 @@ anyway, 66% negative, too few sentences for one rewrite to clear; it grew to six
 as prose carrying the word. 0% negative of 6, A/93. All three witnesses re-run GREEN on metal; no
 code line moved. `construction/ITINERARY.md`'s GRASS account carries the measurement.
 
-**The next-crux lean:** no new audit packet is queued. Continue the ordinary move -- touch a
+**The next-crux lean:** the audit queue holds only the ordinary move. Continue the ordinary move -- touch a
 prose, comment, or docs surface already open for other reasons, grade it, and push one bounded
 molt frame only where the reading comes back below B.
 
@@ -145,7 +144,7 @@ paragraphs -- `never carried`, `worthless without`, `takes no host`, `not a no-o
 and refuses`, `editing none`, the closing `no ... no ... no ... no` -- rewrote into affirmative
 sentences holding the same facts, every backticked identifier and citation held exactly.
 Register rose from 31 (69% negative of 13) to 93 (7% negative), composite from 75 to 91.
-`mycelium_freight_witness.rish` re-runs GREEN; no code line moved.
+`mycelium_freight_witness.rish` re-runs GREEN; the code lines stayed put.
 [Account](../active-designing/date/20261003/20261003-085552_grass-freight-module-head-account.md).
 
 **The next-crux lean:** nine more files from the same sample read below B -- `fold.rye`,
@@ -159,7 +158,7 @@ sentence on its own. The remaining two true negatives -- `Unknown kinds refuse w
 not invent release or expiry` -- rewrote into affirmative sentences holding the same facts, every
 bound name and citation held exactly. Register rose from 63 (37% negative of 8) to 100 (0%
 negative of 9), composite from 78 to 93. The module's own selftest re-runs GREEN on metal; a
-touching witness, `mycelium_pledge_witness.rish`, re-runs GREEN unchanged; no code line moved.
+touching witness, `mycelium_pledge_witness.rish`, re-runs GREEN unchanged; the code lines stayed put.
 [Account](../active-designing/date/20261003/20261003-090430_grass-fold-module-head-account.md).
 
 **The next-crux lean:** eight more files from the same sample read below B -- `muster.rye`,
@@ -186,7 +185,7 @@ sentences holding the same facts, and the five paragraphs split into shorter sen
 reach grade down. Register rose from 48 (52% negative of 19) to 100 (0% negative of 31), composite
 from 75 to 93, A. All four touching witnesses -- `mycelium_purse_witness`,
 `mycelium_purse_true_witness`, `mycelium_purse_knot_witness`, `mycelium_purse_kyri_witness` --
-re-run GREEN; no code line moved.
+re-run GREEN; the code lines stayed put.
 [Account](../active-designing/date/20261003/20261003-093328_grass-purse-module-head-account.md).
 
 **The next-crux lean:** six more files from the same sample read below B -- `statement.rye`,
@@ -222,7 +221,7 @@ exactly. Register rose from 47 (53% negative of 15) to 100 (0% negative), compos
 B+ -- reach moved to grade 13 on the paragraph's own vocabulary, over the Door ceiling, with no
 further split available without losing a fact; B or better still stands. All five touching
 witnesses -- `mycelium_tenure_witness`, `mycelium_tenure_true_witness`, `mycelium_tenure_knot_witness`,
-`mycelium_tenure_kyri_witness`, `fora_tenure_witness` -- re-run GREEN; no code line moved.
+`mycelium_tenure_kyri_witness`, `fora_tenure_witness` -- re-run GREEN; the code lines stayed put.
 [Account](../active-designing/date/20261003/20261003-102244_grass-tenure-module-head-account.md).
 
 **The next-crux lean:** four more files from the same sample read below B -- `till.rye`,
@@ -238,7 +237,7 @@ exactly, and the code below the head stays byte-identical. Register rose from 54
 `mycelium_voucher_witness`, `mycelium_voucher_true_witness`, `mycelium_voucher_knot_witness`,
 `mycelium_voucher_kyri_witness` -- re-run GREEN on metal.
 
-**The next-crux lean, re-read `20261009`:** no file from the sample reads below B. `warrant.rye`
+**The next-crux lean, re-read `20261009`:** every file from the sample reads B or better. `warrant.rye`
 reads B (83) and `rehearsal.rye` reads A (91), measured by `qa_report_card.sh --setting door
 --service 90` at HEAD `4dfbd22f3e`, and `till.rye` reads B+ (88) since `20261009.153415`. The
 queue is empty, so the next lap takes an unopened file only if a reading comes back below B.
