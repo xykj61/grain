@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.182700` | [Bakery receipt-basis claim closed](20261009/20261009-182700_bakery-receipt-basis-claim-closed.kyri) | Landed claim closed; scan refused as designed; ruling still open. |
+| `20261009.182642` | [Patchouli queue empty, claim board read](20261009/20261009-182642_patchouli-queue-empty-claim-board-read.kyri) | Queue empty; no build; ruling named. |
 | `20261009.182640` | [Energy counter blocked here, re-read](20261009/20261009-182640_energy-counter-blocked-here.kyri) | Energy falsifier unreadable on this guest; no build. |
 | `20261009.182404` | [Grass regrade held, queue empty](20261009/20261009-182404_grass-inner-regrade-held-queue-empty.kyri) | Inner prompt B+ held, no edit; cold run not launched. |
 | `20261009.182316` | [Petrichor lint, no new fruit](20261009/20261009-182316_petrichor-lap-lint-no-new-fruit.kyri) | Living docs lint read; docs-geode clean; 20261006 gap awaits ruling. |
