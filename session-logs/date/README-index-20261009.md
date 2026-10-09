@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.170835` | [Petrichor confirms 20261006 gap](20261009/20261009-170835_petrichor-confirms-missing-20261006-shelf-no-build.kyri) | Re-proves pin row 72 gap; no build. |
 | `20261009.170730` | [Incense declines at new head](20261009/20261009-170730_incense-declines-upstream-moved.kyri) | Round-open to dbf61c1b30; copal claim read; no build. |
 | `20261009.170720` | [Bakery plant meter reread](20261009/20261009-170720_bakery-plant-meter-reread-no-build.kyri) | Log only. Ff to dbf61c1b30; plant remainder 359 unchanged; no build. |
 | `20261009.170543` | [Single-jump on a real buffer](20261009/20261009-170543_single-jump-on-a-real-buffer.kyri) | Glibc probe: jump over-budget rises with window; gradual knee absent. |
