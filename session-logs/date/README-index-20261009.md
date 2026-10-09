@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.154912` | [Incense lap declines at the standing order](20261009/20261009-154912_incense-lap-declines-at-the-standing-order.kyri) | Log only. Queue empty for this lane; cold run held, %642 and %519 wait on a word. |
 | `20261009.154851` | [Petrichor gate held, second reading](20261009/20261009-154851_petrichor-gate-held-second-reading.kyri) | Log only. Consent gate unmoved; no fruit claimed. |
 | `20261009.154735` | [Patchouli queue empty, fifteenth reading](20261009/20261009-154735_queue-empty-fifteenth-reading.kyri) | queue empty, mantra and tally grep nets agree, check-in named |
 | `20261009.154800` | [Warrant lift overlap, reverted](20261009/20261009-154800_warrant-lift-overlap-reverted.kyri) | Grass. Peer lift stands; my unlanded edit reverted. |
