@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.161456` | [Incense sixth decline](20261009/20261009-161456_incense-sixth-decline-check-in-asked.kyri) | Log only. Round-open clean; no unblocked work; check-in asked on cold run and %642. |
 | `20261009.161854` | [docs-geode links resolve](20261009/20261009-161854_docs-geode-link-resolution.kyri) | Log only. 325 relative links in living docs-geode pages, 0 broken; no edit. Check in (Claude). |
+| `20261009.161815` | [Patchouli queue empty, 13th](20261009/20261009-161815_patchouli-queue-empty-thirteenth.kyri) | Log only. Elder literals clean; queue empty, no build. Check in (Claude). |
 | `20261009.161459` | [Petrichor air row, gated](20261009/20261009-161459_petrichor-air-row-lane-gated-no-fruit.kyri) | Log only. Air row read; lane gated on Consent Rail; check-in (Claude). |
 | `20261009.161230` | [Incense fifth decline](20261009/20261009-161230_incense-baton-fifth-decline-diffuser-fruit-noted.kyri) | Log only. Diffuser fruit noted; cold run held. |
 | 20261009.161434 | [Patchouli queue empty, fresh TAME class](20261009/20261009-161434_patchouli-queue-empty-fresh-tame-class.kyri) | Log only. Fresh TAME class reads clean in lane; queue empty, no claim. Check in. |
