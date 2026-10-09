@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.165813` | [petrichor gate holds](20261009/20261009-165813_petrichor-gate-holds-no-build.kyri) | docs-geode gated on Consent Rail; pulled a2f68cd81a; no build |
 | `20261009.165737` | [Bakery fallow, board empty](20261009/20261009-165737_bakery-fallow-board-empty-no-build.kyri) | Log only. Ff to 88f60c333a; claim board empty; no build. |
 | `20261009.165447` | [Petrichor ff, gate holds, no build](20261009/20261009-165447_petrichor-ff-gate-holds-no-build.kyri) | Log only. FF to de21c9ed94; Consent Rail gate holds. |
 | `20261009.165431` | [Receipt contract reviewed](20261009/20261009-165431_receipt-contract-reviewed-clock-named.kyri) | Review. Replay takes the clock as input; one sentence waits. |
