@@ -26,3 +26,6 @@ file session-logs/date/README-index-20261009.md why the day shelf gets its row b
 scope read the card, the receipt census, the agent-doable queue, the REDS open rows, and the plant and redleg scans; no tree change beyond this log and its shelf row
 status GREEN on the redleg and plant scans as read; no build; receipt-key ruling, %642 scrub word, and wire-ceiling word still open with Keaton
 recommend check-in (Claude) -- the receipt key drops HEAD from the runner contract, so the ruling is Keaton's before any build
+obs the first push was rejected because two peers landed; the rebase conflicted on the card and on the day shelf, and both were resolved by keeping every upstream row and re-pinning the nib
+obs after the second rebase the card named the grandparent, so the nib witness read RED on the pushed state; the pushed commit is not amended, since amending a pushed commit would force the remote
+obs the follow-up carries this record and the nib pinned to HEAD read before it is made, as remember-git-nib rule 5 asks
