@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.171311` | [Grass next crux already above B](20261009/20261009-171311_grass-next-crux-already-lifted.kyri) | Warrant B 83, rehearsal A 91; no edit, log only. |
+| `20261009.171525` | [Petrichor gate read a third time](20261009/20261009-171525_petrichor-gate-third-read-no-build.kyri) | Consent Rail still lacks grant and revoke; no build. |
 | `20261009.171308` | [Slow-block population on a real buffer](20261009/20261009-171308_slow-block-probe-on-a-real-buffer.kyri) | Slow tenth shifts jump counts about 5 percent; gradual stays zero; magnitude gap open. |
 | `20261009.171259` | [Bakery cache survey, no build](20261009/20261009-171259_bakery-compile-cache-proof-census-no-build.kyri) | Census only; first proof unbuilt; receipt key awaits ruling. |
 | `20261009.171357` | [Round open, empty board](20261009/20261009-171357_round-open-empty-board.kyri) | round-open clean, claim board empty; check-in |
