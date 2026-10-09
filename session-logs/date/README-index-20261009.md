@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.155108` | [Consent gate facts moved, no fruit claimed](20261009/20261009-155108_consent-gate-facts-moved.kyri) | Grant and revoke facts exist in mantra; card gate text reads stale. Check-in named. |
+| `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
 | `20261009.154912` | [Incense lap declines at the standing order](20261009/20261009-154912_incense-lap-declines-at-the-standing-order.kyri) | Log only. Queue empty for this lane; cold run held, %642 and %519 wait on a word. |
 | `20261009.154851` | [Petrichor gate held, second reading](20261009/20261009-154851_petrichor-gate-held-second-reading.kyri) | Log only. Consent gate unmoved; no fruit claimed. |
 | `20261009.154735` | [Patchouli queue empty, fifteenth reading](20261009/20261009-154735_queue-empty-fifteenth-reading.kyri) | queue empty, mantra and tally grep nets agree, check-in named |
