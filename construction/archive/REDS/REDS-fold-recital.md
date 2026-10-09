@@ -939,3 +939,5 @@ at a closed fold.*
 *Row `20261002.233200` folded to [`REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md`](REDS-a-quoted-em-dash-broke-the-ascii-wall-20261002-233200.md) on `20261003`, **CLOSED** -- folded by hand, stamp-cited and unmatched by the automated tool, to clear headroom for the disk-reclaim repair row while the pin stood over its 65,536-byte bound; the row describing its own predecessor's ASCII-wall break, folded the same way in turn.*
 
 *Row `%833` folded to [`REDS-a-plant-matched-nothing-rows-833.md`](REDS-a-plant-matched-nothing-rows-833.md) on `20261003.041407`, **CLOSED** -- folded in the same lap that booked it, to clear headroom for its own new row while the pin stood over its 65,536-byte bound; a control's own plant keyed to a struct layout the module had already outgrown.*
+
+*Row `%803` (`20260917.023605`) folded to [`REDS-the-nib-writer-named-its-shape-rows-803.md`](REDS-the-nib-writer-named-its-shape-rows-803.md) on `20261009.180222`, **CLOSED** -- folded by hand to clear headroom for two OPEN rows while the pin stood 2,324 bytes over its 65,536-byte bound.*

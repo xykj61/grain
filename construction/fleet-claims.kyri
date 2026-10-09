@@ -60,9 +60,3 @@ stamp 20261009.175138
 epoch 1791582698
 paths tools/b/shared_receipt_basis.rish tools/fixtures/b/shared_receipt_basis_scan.sh
 what Bakery crux: a read-only instrument that reads a peer checkout's standing-equipment receipt and says whether its digest can stand as this pier's --scoped basis; no build cache yet.
-claim copal-tigerbeetle-sized-types-roster
-seat copal
-stamp 20261009.175917
-epoch 1791583157
-paths tools/gen/chapter/tigerbeetle_sized_types_census_witness.rish construction/standing-equipment.kyri
-what Roster the unrostered tigerbeetle_sized_types census witness in the standing equipment, proven both ways on the real clone and a planted thin clone; p49 withdrawn (its BrushFrame binary needs a zig build this machine lacks).
