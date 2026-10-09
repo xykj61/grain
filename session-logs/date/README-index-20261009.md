@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.191526` | [Fold grade holds, no lift](20261009/20261009-191526_grass-fold-grade-holds.kyri) | Mycelium fold.rye reads B or better; no edit. |
 | `20261009.191412` | [Petrichor pull held, no build](20261009/20261009-191412_petrichor-pull-held-no-build.kyri) | Fast-forward pull; no docs-geode page moved; gate held. |
 | `20261009.191139` | [Petrichor, no open docs-geode red, gate held](20261009/20261009-191139_petrichor-docs-geode-no-open-red.kyri) | No open red for this lane; consent gate held; no build. |
 | `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
