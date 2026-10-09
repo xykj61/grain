@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.172005` | [incense baton recur decline](20261009/20261009-172005_incense-baton-recur-decline-no-build.kyri) | Round-open read, upstream equal, no claim, no build. |
 | 20261009.171824 | [petrichor gate fourth read](20261009/20261009-171824_petrichor-gate-fourth-read-no-build.kyri) | Consent Rail still zero grant or revoke, no build |
 | `20261009.171722` | [Pheromone queue re-read, no build](20261009/20261009-171722_pheromone-gate-reread-no-build.kyri) | Glow queue ruling-held; no code moved. |
 | `20261009.171311` | [Grass next crux already above B](20261009/20261009-171311_grass-next-crux-already-lifted.kyri) | Warrant B 83, rehearsal A 91; no edit, log only. |
