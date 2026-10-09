@@ -11,6 +11,7 @@
 | `20261009.173454` | [Water row, two front doors A](20261009/20261009-173454_grass-water-row-two-front-doors-grade-a.kyri) | Front doors graded A (91, 94); no lift, no edit. |
 | `20261009.173436` | [Diffuser seed-spread falsifier located](20261009/20261009-173436_diffuser-seed-spread-next-falsifier-held.kyri) | Falsifier needs a pinned population; located, not run; no code. |
 | `20261009.173600` | [Pheromone lane empty](20261009/20261009-173600_pheromone-lane-empty-no-build.kyri) | Lane empty; pull clean; no OPEN row taken; no build. |
+| `20261009.173605` | [Copal rosters tigerbeetle static-alloc](20261009/20261009-173605_copal-static-alloc-roster.kyri) | one witness rostered, proven both ways |
 | `20261009.173126` | [Patchouli queue empty](20261009/20261009-173126_patchouli-queue-empty-no-build.kyri) | Queue read empty again; claims clear; no build. |
 | `20261009.173258` | [Copal rosters tigerbeetle seventy-line](20261009/20261009-173258_copal-tigerbeetle-seventy-line-roster.kyri) | one witness, claimed, proven |
 | `20261009.173258` | [Petrichor gate seventh read](20261009/20261009-173258_petrichor-gate-seventh-read-no-build.kyri) | Consent Rail still zero grant or revoke; no build. |

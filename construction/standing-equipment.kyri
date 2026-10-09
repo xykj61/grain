@@ -1832,6 +1832,17 @@ tier lap
 capability tigerbeetle_clone
 seated 20261009.173300
 
+# tigerbeetle_static_alloc -- the e33 static-allocation census, rostered under the same
+# `capability tigerbeetle_clone` arm. The witness skips honestly where the gratitude/tigerbeetle
+# gitlink is uninitialised. Proven both ways on 20261009: green on the present clone, and the
+# census script itself refuses a planted thin root (`verdict=thin`, exit 1) and a missing root
+# (`verdict=absent`, exit 2). Claimed as copal-tigerbeetle-static-alloc-roster before this entry.
+guard tigerbeetle_static_alloc
+path tools/gen/chapter/tigerbeetle_static_alloc_census_witness.rish
+tier lap
+capability tigerbeetle_clone
+seated 20261009.173600
+
 # precondition_dependent -- the other half of REDS %646, and the half nothing had counted. That row
 # sampled 40 unreached witnesses, ran 5 red, and found two PRECONDITIONS among them. One was an
 # optional submodule, which `gitlink_dependent` walled above. The other was `build wayland_seed
