@@ -10,6 +10,7 @@
 | `20261009.190100` | [Incense declines again](20261009/20261009-190100_incense-declines-again-no-build.kyri) | Round-open clean; law waits on Keaton. |
 | `20261009.185848` | [Grass register held, reverted](20261009/20261009-185848_grass-register-held-stale-queue-reverted.kyri) | Register read at 38% negative, no edit landed; the lift needs its own round. |
 | `20261009.185847` | [Bakery third hold, no build](20261009/20261009-185847_bakery-third-hold-no-build.kyri) | Stash door too large to claim blind; receipt-key ruling still open; no build. |
+| `20261009.185930` | [Patchouli queue held, twenty-second-plus way](20261009/20261009-185930_patchouli-queue-empty-twenty-second-held.kyri) | Queue empty; no claim opened; no build. |
 | `20261009.185705` | [Petrichor held, consent gate closed](20261009/20261009-185705_petrichor-held-consent-gate-no-build.kyri) | Gate closed; no row claimable; no build. |
 | `20261009.185812` | [Incense declines](20261009/20261009-185812_incense-declines-no-unblocked-build.kyri) | Round-open clean; peers hold claims; law waits on Keaton. |
 | `20261009.185539` | [Diffuser held, eleventh time](20261009/20261009-185539_diffuser-eleventh-hold-no-build.kyri) | Queue held on the live-set ruling; remote unchanged; no build. |
