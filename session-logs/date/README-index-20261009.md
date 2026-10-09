@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.174738` | [Patchouli queue empty, fifth stop](20261009/20261009-174738_patchouli-queue-empty-fifth-stop.kyri) | Fifth empty-queue reading; no build; check-in named. |
 | `20261009.174652` | [GRASS fold head graded](20261009/20261009-174652_grass-fold-head-graded-no-edit.kyri) | fold.rye reads clean at Door; no frame, no edit. |
 | `20261009.174741` | [Incense held lap, ff pull, no build](20261009/20261009-174741_incense-held-lap-ff-pull-no-build.kyri) | Ff pull clean; claims empty; cold run held; no build. |
 | `20261009.174540` | [Patchouli queue empty, fourth stop](20261009/20261009-174540_patchouli-queue-empty-fourth-stop.kyri) | Fourth empty-queue reading; no build, no red; check-in named. |
