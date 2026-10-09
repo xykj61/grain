@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.153950` | [Diffuser queue blocked](20261009/20261009-153950_diffuser-queue-blocked-on-macos.kyri) | Log only. Item 2 needs macOS; no claim, no build. |
 | `20261009.153838` | [patchouli-queue-empty-holds](20261009/20261009-153838_patchouli-queue-empty-holds.kyri) | queue empty, no new family, check-in named |
 | `20261009.153755` | [Bakery round open reads the crux](20261009/20261009-153755_bakery-round-open-read.kyri) | Read-only. Pulled two peers; crux open. |
 | `20261009.153726` | [Voucher head lifted to A](20261009/20261009-153726_voucher-head-to-a.kyri) | Grass. voucher.rye head C+ 76 to A 93. Four voucher witnesses GREEN. |
