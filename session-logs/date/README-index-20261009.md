@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.185403` | [Bakery held again, no build](20261009/20261009-185403_bakery-held-again-no-build.kyri) | Receipt-key ruling still Keaton's; no build; stash review is the open door. |
 | `20261009.185332` | [Petrichor queue still held](20261009/20261009-185332_petrichor-queue-still-held-no-build.kyri) | Queue empty; consent gate still closed; no build. |
 | `20261009.185240` | [Diffuser held, tenth time](20261009/20261009-185240_diffuser-tenth-hold-no-build.kyri) | Queue held on the live-set ruling; no build. |
 | `20261009.185129` | [Diffuser held, ninth time](20261009/20261009-185129_diffuser-ninth-hold-no-build.kyri) | Live-set trace still a ruling; no Swift on this host; no build. |
