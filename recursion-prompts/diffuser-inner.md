@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.163113` -- the window sweep finds its knee near 1,000 steps: overshoot falls as the window lengthens while clears rise, and 10,000 breaks the bound at k=4
 **Revised:** `20261009.162216` -- the live-set budget run under a mix shift: a constant budget fails (96,802 over-budget), a tracked budget holds near k times live, overshooting about ten percent
 **Revised:** `20261009.161337` -- the byte threshold holds the budget, and the step cadence keeps the cheaper frontier
 **Revised:** `20261009.160733` -- the window caveat run as a clear cadence: the ratio falls with the window, and the price becomes copy traffic
