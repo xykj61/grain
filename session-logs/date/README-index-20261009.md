@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.192606` | [Petrichor second hold, consent gate still held](20261009/20261009-192606_petrichor-second-hold-no-build.kyri) | Ff to 1e1c0ac0b3; consent gate held; no build. |
 | `20261009.192055` | [Bakery cold open, claim board read, no build](20261009/20261009-192055_bakery-cold-open-no-build.kyri) | Claim board read; first rung needs a ruling; no build. |
 | `20261009.192053` | [Petrichor ff pull, gate held](20261009/20261009-192053_petrichor-ff-pull-gate-held.kyri) | Fast-forward to xy; consent gate held; no build. |
 | 20261009.192048 | [Diffuser hold, trace still absent](20261009/20261009-192048_diffuser-hold-trace-still-absent.kyri) | Card Next still waits on a caller trace; no build. |
