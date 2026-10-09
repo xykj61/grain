@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.184802` | [Grass inner page regraded](20261009/20261009-184802_grass-inner-page-regraded-register-over-field.kyri) | Regraded B+; register 38% over Field ceiling, left for ruling. |
 | `20261009.184155` | [Patchouli queue empty, thirtieth](20261009/20261009-184155_patchouli-queue-empty-thirtieth.kyri) | Queue empty; fresh net; no build; check-in named. |
 | `20261009.184616` | [Grass inner page graded B+](20261009/20261009-184616_grass-inner-page-graded-b-plus.kyri) | Graded B+ at Field; register over ceiling, reported. |
 | `20261009.184358` | [Grass front doors sampled clean](20261009/20261009-184358_grass-front-doors-sampled-clean.kyri) | Five front doors graded A or B+; queue empty; no repair owed. |
