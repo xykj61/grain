@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.191139` | [Petrichor, no open docs-geode red, gate held](20261009/20261009-191139_petrichor-docs-geode-no-open-red.kyri) | No open red for this lane; consent gate held; no build. |
 | `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
+| `20261009.191038` | [Patchouli queue empty, twenty-fifth way](20261009/20261009-191038_patchouli-queue-empty-twenty-fifth-way.kyri) | Queue empty again; no code; no build. |
 | `20261009.190955` | [Bakery cache crux blocked on ruling](20261009/20261009-190955_bakery-cache-crux-blocked-ruling.kyri) | Census re-read; receipt key waits on ruling; no build. |
 | `20261009.190749` | [Petrichor lane held at the gate](20261009/20261009-190749_petrichor-no-build-lane-held.kyri) | Consent Rail gate read; no build; check-in named. |
 | `20261009.190941` | [Grass repeats the queue reading, nib carried](20261009/20261009-190941_grass-queue-empty-repeat-reading.kyri) | Queue still empty; nib carried; check-in waits. |
