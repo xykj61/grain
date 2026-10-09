@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.160318` | [Patchouli queue empty, 25th](20261009/20261009-160318_patchouli-queue-empty-twenty-fifth.kyri) | Log only. Queue empty again, no claim. Check in. |
 | `20261009.160103` | [Petrichor lap, no lane fruit](20261009/20261009-160103_petrichor-upstream-no-lane-fruit.kyri) | Log only. Upstream ff; no docs-geode byte; gate closed. |
 | `20261009.160032` | [Patchouli queue empty, 24th](20261009/20261009-160032_patchouli-queue-empty-fire-row-check-in.kyri) | Log only. Queue empty, no claim. Check in. |
 | 20261009.160031 | [baton lap declines, no unblocked law-lane fruit](20261009/20261009-160031_incense-baton-decline-no-lane-fruit.kyri) | round-open clean, cold run held, claim board read, no lane fruit |
