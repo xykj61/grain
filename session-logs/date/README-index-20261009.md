@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.190100` | [Incense declines again](20261009/20261009-190100_incense-declines-again-no-build.kyri) | Round-open clean; law waits on Keaton. |
 | `20261009.185848` | [Grass register held, reverted](20261009/20261009-185848_grass-register-held-stale-queue-reverted.kyri) | Register read at 38% negative, no edit landed; the lift needs its own round. |
 | `20261009.185847` | [Bakery third hold, no build](20261009/20261009-185847_bakery-third-hold-no-build.kyri) | Stash door too large to claim blind; receipt-key ruling still open; no build. |
 | `20261009.185705` | [Petrichor held, consent gate closed](20261009/20261009-185705_petrichor-held-consent-gate-no-build.kyri) | Gate closed; no row claimable; no build. |
