@@ -59,3 +59,9 @@ stamp 20261009.153018
 epoch 1791574218
 paths construction/standing-equipment.kyri tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
 what roster tigerbeetle_off_by_one_census_witness.rish, the e49 off-by-one census, unrostered since it was written
+claim bakery-shared-zig-cache-census
+seat bakery
+stamp 20261009.155201
+epoch 1791575521
+paths construction/fleet-claims.kyri tools/fixtures/b/shared_build_cache_census.sh
+what census whether the eight checkouts already share one Zig global cache, and what a per-checkout build still rebuilds, before any shared-cache change is built
