@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.192917` | [Petrichor fast-forward, consent gate held](20261009/20261009-192917_petrichor-no-build-gate-held.kyri) | Clean ff to xy; consent gate held; no build. |
+| `20261009.193053` | [Incense declines a fiftieth, carries the nib](20261009/20261009-193053_incense-declined-fiftieth.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192740` | [Law lane declined a forty-ninth, carries the nib](20261009/20261009-192740_law-lane-declined-49.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192702` | [Patchouli queue empty, fresh scan, stop](20261009/20261009-192702_patchouli-queue-empty-fresh-scan-stop.kyri) | Mantra/tally scan clean; no build. |
 | `20261009.192814` | [Grass rule-page grades clear, no frame](20261009/20261009-192814_grass-rule-grade-sample-clear.kyri) | Five living rule pages graded at Field, all B+ or better; no edit. |
