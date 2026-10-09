@@ -24,6 +24,13 @@ the status marker has **two spellings**, `**OPEN**` and `**OPEN.**`, and a reade
 undercounts by six. `%756` `%745` `%456` want Keaton's word; a lap opens none of them. One BOOKED row folded this
 lap to seat the newest under the pin's bound.
 
+**BAKERY -- THE RECEIPT KEY IS THE NEXT RULING, NOT THE NEXT LAP.** The compile layer already shares
+by content: `tools/fixtures/b/shared_build_cache_census.sh` reads 819 new files on a miss and 0 from
+another checkout path (`20261009.164213`, session log beside it). The receipt does not. `tree_digest`
+in `tools/fixtures/s/standing_equipment_run.sh` begins with `git rev-parse HEAD`, so one tree at two
+commits reads two digests, proven in a throwaway pen. **YOURS:** whether the receipt key drops HEAD
+for the watched inputs. That changes the roster runner's contract, so it waits on a ruling.
+
 **The agent-doable queue, the Long Return first:**
 
 1. `%642` -- the path refusal and the **copy** both landed, `20260917.064837` and `20260917.091616`, at 8.9s to 0.11 and 28.4s to 0.77. A projection reads **24.12s** where it read 74. What remains is the **scrub**, 19.91s of that 24 and now four fifths of it; the trade is named in the copal account and wants a word rather than a lap.
@@ -181,21 +188,8 @@ shelved](archive/date/20261002/20261002-180725_itinerary-copal-fifteenth-through
 -- pond_brushstroke_frame, tigerbeetle_assert_census, tigerbeetle_be_explicit_census,
 wayland_from_frame, and ironbeetle_ep006_census, all rostered and claims closed.
 
-**BAKERY -- A CAPTURE THAT FAILED WAS READING AS A CAPTURE THAT LANDED.**
-`capture_evidence` in `tools/fixtures/s/shell_portable.sh` closed on `[ -f "$dst" ]`, and a shell
-redirect creates the destination before the producer runs -- so every way the producer can fail left
-a file standing and the helper answering yes. Measured on metal before the repair: with `cat` absent
-from PATH, `rc=0 bytes=0`; with `head` refusing, `rc=0` and the three header lines this helper exists
-to keep were gone. Three readings hold it now -- the producer's own status, the destination's byte
-count, and its line count -- and a failed capture removes the stub, since absence says *the answer
-was lost* where a zero-byte file says *the guard answered nothing*. Return 3 names a copy that did
-not land, apart from 1 and 2. The caller in `standing_equipment_run.sh` is untouched: it already
-removed the file, said the answer was lost rather than read, and counted the guard `unrun`.
-`shell_portable_control.sh` stands at **81 legs**, 0 failing, five plants lifted, and the two
-bounded-branch readings were each made load-bearing by measurement -- with the header plant alone,
-dropping either left every leg green, so one leg plants a producer that emits nothing at status zero
-and one a producer that answers whole and then refuses. `shell_dialect_witness` GREEN on metal, its
-pinned count 71 to 81; `shell_dialect_touch` and `instrument_absence` GREEN beside it.
+**BAKERY -- CAPTURE ACCOUNT SHELVED WHOLE.** [Account shelved](archive/date/20261009/20261009-164312_itinerary-bakery-capture-evidence-account.md) -- `capture_evidence` now reads the producer's status, bytes, and lines; `shell_portable_control.sh` 81 legs GREEN.
+
 **Two elder accounts [shelved whole](archive/date/20261002/20261002-055950_itinerary-bakery-two-accounts-fold.md).**
 **YOURS:** the proposed 10,800-second lap window, against 9,837 seconds of guard cost and a
 5,400-second timeout a running process confirmed; and whether the receipt earns a `clean_tree`
@@ -348,7 +342,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `39164c7815` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `bc75b68f0f` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
