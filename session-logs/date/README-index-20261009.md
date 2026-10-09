@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.172056 | [petrichor gate fifth read](20261009/20261009-172056_petrichor-gate-fifth-read-no-build.kyri) | Consent Rail still zero grant or revoke, no build |
 | `20261009.171852` | [Warrant already lifted, log only](20261009/20261009-171852_warrant-already-lifted-no-edit.kyri) | Warrant B 83 at HEAD; a draft lift reverted; no code moved. |
 | 20261009.171824 | [petrichor gate fourth read](20261009/20261009-171824_petrichor-gate-fourth-read-no-build.kyri) | Consent Rail still zero grant or revoke, no build |
 | `20261009.171722` | [Pheromone queue re-read, no build](20261009/20261009-171722_pheromone-gate-reread-no-build.kyri) | Glow queue ruling-held; no code moved. |
