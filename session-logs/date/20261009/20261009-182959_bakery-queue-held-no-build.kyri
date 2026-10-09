@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261009.182959
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role bakery core-infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5 declared in .claude/settings.json, not runtime telemetry
+voice Kyri
+host Framework bench, America/New_York one-clock
+title Bakery queue held pending rulings, no build
+prompt Run the bakery baton lap: read the inner prompt and card, claim-first, build what the queue allows.
+think Read the bakery inner prompt and the card. The crux, one shared build and cold-run cache, is ruled and waits on a witness, but the receipt key that would make it real is a YOURS ruling on the roster runner contract.
+think Queue items %642 (scrub) and %519 (plant.sh spread) both wait on Keaton's word; the card names %519 as ordinary touch-on work, not a standing ask.
+think The previous bakery lap closed its claim and recorded ruling still open, so no new instrument is opened and no claim is owed.
+think A build now would change the receipt key or spread controls without a ruling, which the card forbids. The honest lap is read-only and says so.
+think Fleet state: clean tree, HEAD ef5f514e17, absence scan reads claim file present upstream (commits_behind not run beyond fetch).
+obs No build this lap, by design: the receipt key and the scrub trade both wait on Keaton. Writing a log is the only change.
+obs Rota and orbit fields omitted: this read-only lap did not deep-read a council row, and the sign table in SPELLBOOK was not consulted, so no orbit verb is claimed.
+file session-logs/date/20261009/20261009-182959_bakery-queue-held-no-build.kyri read-only record of the held lap
+scope read-only lap: card and inner prompt read, fleet clean, absence scan run, log written; no code, no witness run, no send
+status GREEN for the read; no build owed. The two YOURS rulings (receipt key, %642 scrub) remain open and are named, not guessed.
+recommend check-in (claude) -- the receipt-key ruling decides the roster runner contract, which is past what a bakery lap should decide alone
