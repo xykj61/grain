@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.160103` | [Petrichor lap, no lane fruit](20261009/20261009-160103_petrichor-upstream-no-lane-fruit.kyri) | Log only. Upstream ff; no docs-geode byte; gate closed. |
 | `20261009.160032` | [Patchouli queue empty, 24th](20261009/20261009-160032_patchouli-queue-empty-fire-row-check-in.kyri) | Log only. Queue empty, no claim. Check in. |
+| 20261009.160031 | [baton lap declines, no unblocked law-lane fruit](20261009/20261009-160031_incense-baton-decline-no-lane-fruit.kyri) | round-open clean, cold run held, claim board read, no lane fruit |
 | `20261009.155511` | [Petrichor gate read](20261009/20261009-155511_petrichor-gate-read-check-in.kyri) | Log only. Consent gate reads met; no fruit claimed. |
 | `20261009.155428` | [Zig cache already shared](20261009/20261009-155428_bakery-zig-cache-already-shared.kyri) | Census fixture GREEN: compile key path-free. Cold run not run. |
 | `20261009.155506` | [Incense decline, no lane fruit](20261009/20261009-155506_incense-decline-no-lane-fruit.kyri) | Log only. Claim board holds two peer claims; cold run held. |
