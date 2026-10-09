@@ -253,9 +253,8 @@ uncommitted. Uniform same-size churn, 200 live slots, seven sizes from 16 to 65,
 `live_count + steps` (growth 1,001x at 16 bytes, 4.8x at 65,536), because `clear()` is the one
 release and `pos` only grows.
 [The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md),
-B/84 at Field. **YOURS:** the richer probe, still unattempted -- varied sizes and varied
-lifetimes, read from this tree's own call sites, sharing one region, for the whole run. The
-stance is `same brain` in `context/SPELLBOOK.md`. The question takes that size.
+B/84 at Field. The mixed population ran (`20261009.153349`): time reverses to smp at about 1.9x,
+space holds at 270x. **YOURS:** the call-site size mix, still unread.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -351,7 +350,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `8df2e2845c` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `75d670789b` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 
