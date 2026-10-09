@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.160141` -- the mixed-lifetime probe run: 90/10 lifetimes read 958.56 at 100k steps, the falsifier did not fire
 **Revised:** `20261009.155617` -- the mixed-lifetime falsifier's space half run as a simulation: region bytes rise with replacements, live bytes stay flat, and the size mix moves only the slope
 **Revised:** `20261009.155003` -- the call-site count re-derives on HEAD `728b04c068`: 656 sites and product 188 and residue 310 hold; literal and len differ by one site, a classifier-precedence matter (`5 + extra.len`)
 **Revised:** `20261009.154609` -- the call-site size mix is counted, and the canvas products lead it
@@ -810,6 +811,16 @@ Lifetimes do not yet vary in the model, since the pinned arm sits beside 90 perc
 mixed-lifetime falsifier stays open. Its named probe -- 90 percent of slots at one replacement in
 10,000 per step, 10 percent at one in 10 -- is written in the essay for a later lap. Not run through
 the report card. No witness, no module; the probe was a scratch file and is deleted.
+
+**Self-generated `20261009.160141`, the mixed-lifetime probe run as named.**
+[The mixed-lifetime footprint is still the total](../active-designing/date/20261009/20261009-160141_the-mixed-lifetime-footprint-is-still-the-total.md)
+runs the 90/10 probe the `20261009.155522` paper named: 90 percent of 200 slots at a replacement
+probability of 1/10000 per step, 10 percent at 1/10, under both size mixes, seed `20261009`, and
+Python `-I`. The region reads 958.56 times live bytes at 100,000 steps, against the prediction
+written before the run that the ratio would stay large. **The falsifier did not fire.** A
+same-code-path cross-check at 1/200 per slot reproduces the prior uniform row (500.12 against 501).
+The window caveat stands: the slow blocks live about 10,000 steps, so the reading covers the no-clear
+case only. Graded B+ 87 at Field. No new witness, no new module; the scratch probe is deleted.
 
 ## gates
 
