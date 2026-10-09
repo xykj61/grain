@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.160923 | [clear cadence fruit](20261009/20261009-160923_clear-cadence-footprint-fruit.kyri) | diffuser: clear every 100 to 10,000 steps bounds the footprint ratio; copy traffic is the price |
 | `20261009.161103` | [Incense baton, fourth decline](20261009/20261009-161103_incense-baton-fourth-decline-flow-named.kyri) | Log only. Round-open clean; claim board clear; cold run held; repetition named to Keaton. |
 | `20261009.160804` | [Incense baton, third decline, water row](20261009/20261009-160804_incense-baton-third-decline-water-row.kyri) | Log only. Round-open clean; claim board clear; cold run held; %642/%519 await Keaton. |
 | `20261009.160324` | [Census re-run](20261009/20261009-160324_bakery-census-rerun-seam-open.kyri) | Census re-read GREEN: compile key path-free. Roster receipt open, check-in. |

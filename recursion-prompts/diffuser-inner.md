@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.160733` -- the window caveat run as a clear cadence: the ratio falls with the window, and the price becomes copy traffic
 **Revised:** `20261009.160141` -- the mixed-lifetime probe run: 90/10 lifetimes read 958.56 at 100k steps, the falsifier did not fire
 **Revised:** `20261009.155617` -- the mixed-lifetime falsifier's space half run as a simulation: region bytes rise with replacements, live bytes stay flat, and the size mix moves only the slope
 **Revised:** `20261009.155003` -- the call-site count re-derives on HEAD `728b04c068`: 656 sites and product 188 and residue 310 hold; literal and len differ by one site, a classifier-precedence matter (`5 + extra.len`)
@@ -821,6 +822,17 @@ written before the run that the ratio would stay large. **The falsifier did not 
 same-code-path cross-check at 1/200 per slot reproduces the prior uniform row (500.12 against 501).
 The window caveat stands: the slow blocks live about 10,000 steps, so the reading covers the no-clear
 case only. Graded B+ 87 at Field. No new witness, no new module; the scratch probe is deleted.
+
+**Self-generated `20261009.160733`, the window caveat run as a clear cadence.**
+[The clear cadence bounds the footprint](../active-designing/date/20261009/20261009-160733_the-clear-cadence-bounds-the-footprint.md)
+re-runs the 90/10 probe with `clear()` every 100, 1,000 and 10,000 steps, each clear re-copying the
+live set. The footprint ratio falls to 11.63 at 1,000 steps on the uniform mix and 2.23 at 100, and
+the log mix reads 11.35 and 2.33, against 1,011 and 958 with no clear. The "never" row reproduces the
+`20261009.160141` figure of 958.56 exactly. The projection `live + replacements per window x mean
+block` sits within about five percent at 1,000 steps. The price moves to copy traffic: 1,486 bytes
+per step at a 100-step cadence on the log mix. Names the next falsifier, a byte-threshold clear, and
+does not run it. Graded B+ 89 at Field (register 71, reach 100, truth 100 counted, service 85
+judged). No new witness, no new module; the scratch probe is deleted.
 
 ## gates
 
