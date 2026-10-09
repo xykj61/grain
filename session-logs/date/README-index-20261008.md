@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.220938` | [The heart page, held whole](20261008/20261008-220938_the-heart-page-held.kyri) | Fixed sky. The heart page stays. |
 | `20261008.220824` | [Keep, and the heart page](20261008/20261008-220824_keep-and-the-heart-page.kyri) | Sky. Face 60.6000 to 61.0000. |
 | `20261008.211045` | [Three seats at the door of sky](20261008/20261008-211045_three-seats-at-the-door.kyri) | Sent. Next commit is sky. |
 | `20261008.210951` | [The wish at the door of sky](20261008/20261008-210951_the-wish-at-the-door-of-sky.kyri) | Pisces. The wish. Sky is next. |
