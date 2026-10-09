@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.190749` | [Petrichor lane held at the gate](20261009/20261009-190749_petrichor-no-build-lane-held.kyri) | Consent Rail gate read; no build; check-in named. |
 | `20261009.190648` | [Incense declines again, round-open clean](20261009/20261009-190648_incense-declines-again-round-open-clean.kyri) | Round-open clean; claim board empty; no build. |
 | `20261009.190618` | [Diffuser thirteenth hold](20261009/20261009-190618_diffuser-thirteenth-hold-no-build.kyri) | Fruit blocked on a live-set trace; no build. |
