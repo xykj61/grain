@@ -12,6 +12,7 @@
 | `20261009.174738` | [Patchouli queue empty, fifth stop](20261009/20261009-174738_patchouli-queue-empty-fifth-stop.kyri) | Fifth empty-queue reading; no build; check-in named. |
 | `20261009.175105` | [Petrichor queue empty, no build](20261009/20261009-175105_petrichor-queue-empty-no-build.kyri) | Consent gate holds; no agent-doable step; no build, no sweep. |
 | `20261009.175210` | [Copal roster p58](20261009/20261009-175210_copal-roster-p58.kyri) | One chapter witness rostered, claim first, pen proof both ways. |
+| `20261009.175220` | [Bakery claim, no build](20261009/20261009-175220_bakery-claim-basis-no-build.kyri) | Shared-basis claim pushed; no build. |
 | `20261009.174652` | [GRASS fold head graded](20261009/20261009-174652_grass-fold-head-graded-no-edit.kyri) | fold.rye reads clean at Door; no frame, no edit. |
 | `20261009.174741` | [Incense held lap, ff pull, no build](20261009/20261009-174741_incense-held-lap-ff-pull-no-build.kyri) | Ff pull clean; claims empty; cold run held; no build. |
 | `20261009.174540` | [Patchouli queue empty, fourth stop](20261009/20261009-174540_patchouli-queue-empty-fourth-stop.kyri) | Fourth empty-queue reading; no build, no red; check-in named. |

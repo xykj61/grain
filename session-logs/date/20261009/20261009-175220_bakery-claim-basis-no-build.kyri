@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261009.175220
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery lane, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Bakery claim on the shared receipt basis, no build
+prompt ty every1 baton prin recur -- run the Bakery lap from the inner prompt and the baton.
+think Read recursion-prompts/bakery-inner.md. Its crux is one shared build cache and one cold-run cache across the eight checkouts, and its first proof is six mutations that each miss the cache. That is far larger than one turn, so this lap claims the first instrument and does not build it.
+think Round-open: working tree clean, fast-forward pull from xy/main took HEAD to a8bf467724 with commits_behind=0 after the pull.
+think Claim scan on the two planned paths read verdict=clear, claims_live=0. Opened claim bakery-shared-receipt-basis; the card carried its nib.
+think The first commit was refused twice by commit-msg: once for zero mechanism words, once for citing a path that is not in the tree. The second body describes the planned files in words instead.
+think Push rejected as non-fast-forward. A pull --rebase conflicted in construction/fleet-claims.kyri with a peer's surface_season_p58 claim. Both records kept, sed removed the markers, two claim records now stand on the board.
+think After the rebase the card named a8bf467724, which was stale. remember_git_nib write amend moved the card to da9c619549, but that edit went unstaged and was pushed without the claim commit. The card's pin is therefore not in the pushed commit; it rides the follow-up commit this log lands in.
+obs Scope is the claim alone. No code, witness, or ledger row changed, so no GREEN is claimed and the cold roster run was not launched.
+obs The planned reader stays a single bounded instrument. A shared build cache is multi-lap work, and a receipt basis that cannot prove its digest matches the peer's tree would be a false green.
+obs Round-load: count 8310 gives orbit round 15, the sky wildcard, dual, aether, heart. The sky round may borrow one verb, and this lap borrows none.
+rota none -- claim-and-stop lap; the rota deep read was not performed, so no council row is claimed as read.
+orbit round 15 sky -- the wildcard may borrow one verb, and this lap borrows none
+scope claim board and card only; shared receipt basis instrument not yet built
+status GREEN for the claim commit's own guards; no build; instrument open on the board; cold roster not launched
+file construction/fleet-claims.kyri claim bakery-shared-receipt-basis opened; surface_season_p58 claim kept beside it
+file construction/ITINERARY.md git nib moved to da9c619549 in amend shape; the pin rides this log's follow-up
+recommend check-in (Claude) -- the shared basis needs a ruling on whether a peer receipt may stand as this pier's --scoped basis before any build
