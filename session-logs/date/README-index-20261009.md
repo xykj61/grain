@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.181733` | [Grass inner prompt graded B+](20261009/20261009-181733_grass-inner-grade-b-plus.kyri) | Inner prompt graded B+ at field, queue empty, no frame pushed; nib refreshed. |
 | `20261009.181319` | [Incense open order holds](20261009/20261009-181319_incense-open-order-no-build.kyri) | Card and inner prompt read; no open build in lane; no build; check-in named. |
 | `20261009.181554` | [Pheromone step three held](20261009/20261009-181554_pheromone-step-three-held-for-ruling.kyri) | Read-only lap; step 3 needs a Refusal-shape ruling. No build. |
 | `20261009.181529` | [Bakery census holds](20261009/20261009-181529_bakery-census-holds-receipt-ruling.kyri) | Census GREEN; receipt key waits on ruling; no build. |
