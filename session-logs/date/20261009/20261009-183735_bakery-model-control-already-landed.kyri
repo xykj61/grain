@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261009.183735
+editor Claude Code, bakery seat in grain-bakery
+provider Anthropic
+product Claude Code
+role bakery fleet seat, core infrastructure lane, baton lap
+modality text
+model unverified
+model_status active runtime self-reports claude-haiku-5-5; unverified against telemetry
+configured_model claude-opus-5
+configured_status resolved clone value
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized, one-clock zone America/New_York
+title Bakery lap -- model-control repair already landed, claim board clear, no build
+prompt Baton and bakery inner prompt: read the card, check claims, run the lap the queue allows.
+think The card's owed item was the codex model-control repair. Ran fleet_codex_control.sh: 21 legs ok, exit 0, with exact-model refusals on probe and lap both present.
+think The claim scan read one live claim, copal's roster line, touching no bakery path. overlap_peer=0.
+think The receipt-key ruling is still Keaton's, and the wire ceiling and %642 scrub each want a word. No new instrument is owed.
+obs No file was built or edited. The model-control item reads closed on this tree, so repairing it again would only rewrite a passing control.
+obs No cold endurance run was launched. A pass with no claim and no build would describe an unchanged tree.
+rota none -- queue gated on rulings; council row not read this lap
+orbit round 11 Aquarius -- One clear type, studied.
+file session-logs/date/20261009/20261009-183735_bakery-model-control-already-landed.kyri why-one-line the record of a no-build lap and why the owed repair reads closed.
+scope bakery lane -- card read, claim board read, codex model control run; no build, no claim, no push
+status GREEN for the reading; the owed model-control repair holds on this tree. No code changed.
+recommend check in (either) -- the receipt-key ruling stays Keaton's; the wire ceiling and %642 scrub wait on words.
