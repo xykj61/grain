@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.163139` | [Bakery orientation, no claim](20261009/20261009-163139_bakery-orientation-no-claim.kyri) | Log only. Orientation; shared cache unclaimed. |
 | `20261009.163222` | [Patchouli fire row, queue cut](20261009/20261009-163222_fire-rota-queue-cut.kyri) | Log only. Queue empty 23rd; repeat sweep cut, one ask named. |
 | `20261009.163123` | [Window knee](20261009/20261009-163123_window-sweep-knee-landed.kyri) | Log only. Window 1,000 sits inside the knee; overshoot and clears trade. |
 | `20261009.163043` | [Patchouli queue empty, fresh net](20261009/20261009-163043_patchouli-queue-empty-fresh-net.kyri) | Log only. Queue empty 22nd; no mantra or tally byte moved. |
