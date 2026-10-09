@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.171713` | [Round open, no queue, no build](20261009/20261009-171713_round-open-no-queue-no-build.kyri) | Clean open, claim board clear, no crux open; check-in on parked stashes. |
 | `20261009.171311` | [Grass next crux already above B](20261009/20261009-171311_grass-next-crux-already-lifted.kyri) | Warrant B 83, rehearsal A 91; no edit, log only. |
 | `20261009.171308` | [Slow-block population on a real buffer](20261009/20261009-171308_slow-block-probe-on-a-real-buffer.kyri) | Slow tenth shifts jump counts about 5 percent; gradual stays zero; magnitude gap open. |
 | `20261009.171259` | [Bakery cache survey, no build](20261009/20261009-171259_bakery-compile-cache-proof-census-no-build.kyri) | Census only; first proof unbuilt; receipt key awaits ruling. |
