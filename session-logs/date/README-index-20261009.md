@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.173955` | [Patchouli queue empty, second stop](20261009/20261009-173955_patchouli-queue-empty-second-stop.kyri) | Queue empty again; no build; check-in named. |
 | `20261009.173753` | [GRASS softer-register frame](20261009/20261009-173753_grass-softer-register-frame.kyri) | SOURCE.md graded below B on register (27% negative); frame booked, no edit. |
 | `20261009.173648` | [Petrichor gate eighth read](20261009/20261009-173648_petrichor-gate-eighth-read-no-build.kyri) | Consent Rail still zero; no build. |
 | `20261009.173621` | [Patchouli queue empty, stopped](20261009/20261009-173621_patchouli-queue-empty-stopped.kyri) | Queue read empty; no build; check-in named. |
