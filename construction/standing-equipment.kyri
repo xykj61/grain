@@ -9898,3 +9898,12 @@ guard surface_season_p53
 path tools/gen/chapter/surface_season_p53_witness.rish
 tier lap
 seated 20261009.172117
+
+# tigerbeetle_tooling_census -- the e53 Tooling census, rostered on the claim copal-tigerbeetle-tooling-roster.
+# It proves the clone's guide teaches Zig as the primary tool and the scripts as Zig, with the RADIANT
+# and TAME lenses present. GREEN both ways on metal: clone-present reads verdict=ok at REV=97c7a8ef38,
+# and clone-absent (run from an empty pen) takes the honest GREEN skip rather than reding a fresh clone.
+guard tigerbeetle_tooling_census
+path tools/gen/chapter/tigerbeetle_tooling_census_witness.rish
+tier lap
+seated 20261009.173000

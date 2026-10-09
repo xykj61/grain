@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-tigerbeetle-tooling-roster
-seat copal
-stamp 20261009.172612
-epoch 1791581172
-paths tools/gen/chapter/tigerbeetle_tooling_census_witness.rish construction/standing-equipment.kyri
-what Roster the unrostered tigerbeetle_tooling_census witness in construction/standing-equipment.kyri and prove it GREEN on both the clone-present and clone-absent legs.

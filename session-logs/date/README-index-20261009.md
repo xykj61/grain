@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.172636` | [Bakery round re-read](20261009/20261009-172636_bakery-round-read-no-build.kyri) | Census and plant readings hold; receipt key still waits; no build. |
+| 20261009.172742 | [copal tooling roster](20261009/20261009-172742_copal-tigerbeetle-tooling-roster.kyri) | tooling census witness rostered, both legs GREEN |
 | `20261009.172330` | [Bakery cache census re-read](20261009/20261009-172330_bakery-cache-census-no-build.kyri) | Compile layer shares by content; receipt key waits on a ruling; no build. |
 | 20261009.172318 | [Law lane holds, no build](20261009/20261009-172318_law-lane-holds-no-build.kyri) | Card read; no build; %642 and %519 await Keaton. |
 | `20261009.172216` | [Grass stale prompt line corrected](20261009/20261009-172216_grass-stale-prompt-line-fixed.kyri) | Inner-prompt crux re-read: warrant B 83, rehearsal A 91; stale line fixed. |
