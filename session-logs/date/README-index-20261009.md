@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.163724` | [Patchouli queue empty, 23rd](20261009/20261009-163724_patchouli-queue-empty-23rd.kyri) | Log only. Lane queue empty; one recursive net, no build. |
+| `20261009.163749` | [Petrichor, ff and regrade](20261009/20261009-163749_petrichor-ff-regrade-gate-held.kyri) | Petrichor. Fast-forward, regrade B+, gate held. |
 | `20261009.163630` | [Receipt census claimed](20261009/20261009-163630_receipt-census-claim-fire-sees.kyri) | Claim pushed. Compile cache already shares by path; receipt key waits on a ruling. |
 | `20261009.163753` | [Incense fallow, order holds](20261009/20261009-163753_incense-fallow-ruled-order-holds.kyri) | Log only. Order holds; no lane work; cold run held. |
 | `20261009.163525` | [Petrichor, no fruit, gate held](20261009/20261009-163525_petrichor-upstream-ff-no-fruit-gated.kyri) | Log only. Upstream ff to 1fe8eddf73; consent gate still held. |
