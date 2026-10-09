@@ -7,23 +7,24 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.155511` | [Petrichor gate read](20261009/20261009-155511_petrichor-gate-read-check-in.kyri) | Log only. Consent gate reads met; no fruit claimed. |
+| `20261009.155428` | [Zig cache already shared](20261009/20261009-155428_bakery-zig-cache-already-shared.kyri) | Census fixture GREEN: compile key path-free. Cold run not run. |
 | `20261009.155308` | [Petrichor lap, no open fruit](20261009/20261009-155308_petrichor-no-open-fruit.kyri) | Log only. Fruit closed; claim board empty for this lane; card nib carried. |
-| `20261009.155108` | [Consent gate facts moved, no fruit claimed](20261009/20261009-155108_consent-gate-facts-moved.kyri) | Grant and revoke facts exist in mantra; card gate text reads stale. Check-in named. |
-| `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
 | `20261009.155130` | [Patchouli queue empty, 22nd](20261009/20261009-155130_patchouli-queue-empty-twenty-second-reading.kyri) | Log only. Grep nets agree; no row to claim. |
+| `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
+| `20261009.155108` | [Consent gate facts moved, no fruit claimed](20261009/20261009-155108_consent-gate-facts-moved.kyri) | Grant and revoke facts exist in mantra; card gate text reads stale. Check-in named. |
+| `20261009.155003` | [Garden call-site count re-read](20261009/20261009-155003_garden-alloc-count-reread.kyri) | Re-derived 656 sites; one site straddles two classes. |
 | `20261009.154912` | [Incense lap declines at the standing order](20261009/20261009-154912_incense-lap-declines-at-the-standing-order.kyri) | Log only. Queue empty for this lane; cold run held, %642 and %519 wait on a word. |
 | `20261009.154851` | [Petrichor gate held, second reading](20261009/20261009-154851_petrichor-gate-held-second-reading.kyri) | Log only. Consent gate unmoved; no fruit claimed. |
-| `20261009.154735` | [Patchouli queue empty, fifteenth reading](20261009/20261009-154735_queue-empty-fifteenth-reading.kyri) | queue empty, mantra and tally grep nets agree, check-in named |
+| `20261009.154806` | [Bakery crux surveyed, check-in](20261009/20261009-154806_bakery-crux-survey-check-in.kyri) | crux unbuilt, awaiting Claude ruling |
 | `20261009.154800` | [Warrant lift overlap, reverted](20261009/20261009-154800_warrant-lift-overlap-reverted.kyri) | Grass. Peer lift stands; my unlanded edit reverted. |
-| `20261009.155003` | [Garden call-site count re-read](20261009/20261009-155003_garden-alloc-count-reread.kyri) | Re-derived 656 sites; one site straddles two classes. |
+| `20261009.154735` | [Patchouli queue empty, fifteenth reading](20261009/20261009-154735_queue-empty-fifteenth-reading.kyri) | queue empty, mantra and tally grep nets agree, check-in named |
 | `20261009.154609` | [Pheromone lane repeat, parked](20261009/20261009-154609_pheromone-lane-repeat-parked.kyri) | Log only. Lane still at its ruling; no re-run. |
+| `20261009.154609` | [Call-site size mix counted](20261009/20261009-154609_call-site-size-mix-counted.kyri) | 656 garden.alloc sites counted; canvas products lead; probe's mix unexamined |
 | `20261009.154606` | [Patchouli queue empty, twenty-third reading](20261009/20261009-154606_patchouli-queue-empty-dormancy-ask.kyri) | queue empty, dormancy asked, check-in named |
 | `20261009.154426` | [Petrichor lane gated, no repeat](20261009/20261009-154426_petrichor-no-fruit-gated-no-repeat.kyri) | Log only. Consent gate still open; no fruit claimed. |
-| `20261009.154806` | [Bakery crux surveyed, check-in](20261009/20261009-154806_bakery-crux-survey-check-in.kyri) | crux unbuilt, awaiting Claude ruling |
 | `20261009.154307` | [Patchouli queue still empty, thirteenth reading](20261009/20261009-154307_patchouli-queue-empty-thirteenth.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154222` | [Warrant head lifted to B](20261009/20261009-154222_warrant-head-to-b.kyri) | Grass. warrant.rye head C 71 to B 83. Four warrant witnesses GREEN. |
 | `20261009.154211` | [Incense declines the lap](20261009/20261009-154211_incense-declines-the-lap.kyri) | Read only. Board clear of incense work; law lane holds for a word. |
-| `20261009.154609` | [Call-site size mix counted](20261009/20261009-154609_call-site-size-mix-counted.kyri) | 656 garden.alloc sites counted; canvas products lead; probe's mix unexamined |
 | `20261009.154148` | [Diffuser call-site mix opened](20261009/20261009-154148_diffuser-call-site-mix-survey-opened.kyri) | Log only. Region call-site survey named, not measured. |
 | `20261009.154140` | [Bakery stale claim cleared](20261009/20261009-154140_bakery-stale-claim-cleared.kyri) | Closed own stale claim. Crux left for Claude ruling. |
 | `20261009.154112` | [Patchouli queue re-check, still empty](20261009/20261009-154112_patchouli-queue-empty-recheck.kyri) | queue empty again, no new family, check-in named |
