@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.180709` | [Petrichor no new fruit](20261009/20261009-180709_petrichor-no-new-fruit-dead-index-link.kyri) | Dead index link confirmed by file check, not edited; lane held at Consent Rail. |
 | `20261009.180619` | [Shared receipt basis reader](20261009/20261009-180619_shared-receipt-basis-reader.kyri) | Read-only reader for a peer receipt basis, 11 pen legs green; pier receipt head diverged, refused. |
 | `20261009.180633` | [Incense lane clear again](20261009/20261009-180633_incense-lane-clear-again-no-build.kyri) | Round-opened clean; claim board read; no build; check-in named. |
 | 20261009.180641 | [20261009-180641_sunn8-roster-claim.kyri](20261009/20261009-180641_sunn8-roster-claim.kyri) | sunn8 witness rostered, both sides proven |
