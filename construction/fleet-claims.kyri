@@ -53,9 +53,3 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
-claim copal-tigerbeetle-off-by-one-census-roster
-seat copal
-stamp 20261009.153018
-epoch 1791574218
-paths construction/standing-equipment.kyri tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
-what roster tigerbeetle_off_by_one_census_witness.rish, the e49 off-by-one census, unrostered since it was written

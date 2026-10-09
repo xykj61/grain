@@ -9866,3 +9866,12 @@ guard calfive_schedule
 path tools/ca/calfive_schedule_witness.rish
 tier lap
 seated 20261009.114234
+
+# tigerbeetle_off_by_one_census -- the e49 off-by-one census, rostered on the claim this lap
+# took (copal-tigerbeetle-off-by-one-census-roster). Present checkout reads verdict=ok on metal;
+# the census exits 2 verdict=absent on a missing root (a skip, never a defect) and reads
+# verdict=thin on a pen root with src/ but no docs, which the witness refuses.
+guard tigerbeetle_off_by_one_census
+path tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
+tier lap
+seated 20261009.164920
