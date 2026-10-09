@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.170149` | [Bakery plant adoption open](20261009/20261009-170149_bakery-plant-adoption-open-no-build.kyri) | Log only. Plant remainder 359 open; no build; check-in on %519. |
+| `20261009.170117` | [Incense declined, lane waits](20261009/20261009-170117_incense-declined-lane-waits-on-keaton.kyri) | Round-open clean at 086f94a671; queue waits on Keaton; no build. |
 | `20261009.165813` | [petrichor gate holds](20261009/20261009-165813_petrichor-gate-holds-no-build.kyri) | docs-geode gated on Consent Rail; pulled a2f68cd81a; no build |
 | `20261009.165737` | [Bakery fallow, board empty](20261009/20261009-165737_bakery-fallow-board-empty-no-build.kyri) | Log only. Ff to 88f60c333a; claim board empty; no build. |
 | `20261009.165907` | [Oven o1 witness rostered](20261009/20261009-165907_oven-o1-witness-rostered.kyri) | Roster row for the oven o1 witness; both pen legs RED, live GREEN. |
