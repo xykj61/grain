@@ -220,8 +220,11 @@ rishi/bin/rishi first.rish        # or the short way -- the same thing
 ```
 
 ```
-this tree has 72 rooms at its root
+this tree has 88 rooms at its root
 ```
+
+Your number may differ. It counts the folders at your clone's root, and the tree grows, so the
+figure above is one reading taken on `20261009`.
 
 **Your number will differ, and that is worth understanding on your first day.** A working tree
 holds more rooms than a fresh clone, because `.gitignore` keeps personal files, build output, and
