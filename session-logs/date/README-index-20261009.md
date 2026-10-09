@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.153502` | [Pheromone's lane is parked at a ruling](20261009/20261009-153502_pheromone-lane-parked-at-a-ruling.kyri) | Log only. Lane parked at a ruling; no code moved. |
 | `20261009.153453` | [The Virgo round stops the repeat](20261009/20261009-153453_the-virgo-round-stops-the-repeat.kyri) | Idle. Virgo round 6 names the untidy repeat; the sweep stops. |
 | `20261009.153415` | [Till head lifted to B](20261009/20261009-153415_till-head-lift-to-b.kyri) | Grass. till.rye head C 71 to B+ 88. Four till witnesses GREEN. |
 | `20261009.153308` | [The open door holds still](20261009/20261009-153308_the-open-door-holds-still.kyri) | Idle lap. Lane gated, nothing open, sweep not re-run. |
