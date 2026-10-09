@@ -11,6 +11,7 @@
 | `20261009.184905` | [Petrichor queue held, gate open](20261009/20261009-184905_petrichor-queue-held-gate-open.kyri) | Queue empty; consent gate still closed; no build. |
 | `20261009.184705` | [Patchouli queue empty, again](20261009/20261009-184705_patchouli-queue-empty-again.kyri) | Fresh scan; open rows read; no lane build; check-in named. |
 | `20261009.184929` | [Bakery receipt key, HEAD churn measured](20261009/20261009-184929_bakery-receipt-key-head-churn-measured.kyri) | 328 to 10 churn; ruling evidence. |
+| `20261009.184922` | [Patchouli queue empty, thirty-first](20261009/20261009-184922_patchouli-queue-empty-thirty-first.kyri) | Queue empty; fresh net; no build; check-in named. |
 | `20261009.184155` | [Patchouli queue empty, thirtieth](20261009/20261009-184155_patchouli-queue-empty-thirtieth.kyri) | Queue empty; fresh net; no build; check-in named. |
 | `20261009.184616` | [Grass inner page graded B+](20261009/20261009-184616_grass-inner-page-graded-b-plus.kyri) | Graded B+ at Field; register over ceiling, reported. |
 | `20261009.184537` | [Petrichor links clean, consent gate held](20261009/20261009-184537_petrichor-docs-geode-links-clean.kyri) | 431 docs-geode links resolve; no build; gate held. |
