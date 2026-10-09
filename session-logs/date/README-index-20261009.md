@@ -8,6 +8,7 @@
 | `20261009.192053` | [Petrichor ff pull, gate held](20261009/20261009-192053_petrichor-ff-pull-gate-held.kyri) | Fast-forward to xy; consent gate held; no build. |
 | 20261009.192048 | [Diffuser hold, trace still absent](20261009/20261009-192048_diffuser-hold-trace-still-absent.kyri) | Card Next still waits on a caller trace; no build. |
 | 20261009.191850 | [Diffuser Next blocked, lap holds](20261009/20261009-191850_diffuser-next-blocked-on-trace.kyri) | Card Next waits on a caller trace; no build. |
+| `20261009.191957` | [Writers already molted, queue empty](20261009/20261009-191957_patchouli-writers-molted-queue-empty.kyri) | Header emitters read chronological; no build. |
 | `20261009.191642` | [Petrichor no-build hold](20261009/20261009-191642_petrichor-no-build-hold.kyri) | Zero behind xy; consent gate held; no build. |
 | 20261009.191701 | [incense law lane declined](20261009/20261009-191701_incense-law-lane-declined.kyri) | Forty-sixth lap declines: round-open clean, no law-lane item open. |
 | `20261009.191742` | [Grass inner B+, no lift](20261009/20261009-191742_grass-inner-grade-b-plus-holds.kyri) | Inner prompt B+ at Field; no edit. |
