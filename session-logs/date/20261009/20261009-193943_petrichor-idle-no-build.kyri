@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261009.193943
+editor Claude Code
+provider Anthropic
+product Claude Code
+role grain-petrichor -- docs-geode lane, first-hour prose
+modality text
+model claude-haiku-5-5
+model_status active runtime named by the session system context; not independently verified
+configured_model claude-haiku-5-5
+configured_status resolved by tools/fixtures/d/declared_model.sh resolved_model; runtime not independently verified
+evidence declared_model.sh resolved_model prints claude-haiku-5-5 for this clone
+voice Kyri
+host Linux pier, grain-petrichor tree
+timezone America/New_York
+title Petrichor idle lap -- fast-forward to grass, no page to write
+prompt The Petrichor baton run as one lap: read the inner prompt, take the next fruit, and record the lap.
+think The inner prompt names the next fruit as already landed and the first-hour walkthrough as waiting on the public seam and the Consent Rail.
+think Upstream carried one grass log commit; a fast-forward-only pull brings it in before this lap writes its own row, so the day index cannot conflict.
+think No page was opened or graded, because the inner prompt says a fourth sweep of docs-geode teaches nothing new.
+obs Measurement beats memory: the fast-forward was read from git, and no grade was re-run, so no grade is claimed.
+obs No build, so no claim, no cold roster run, and no orbit field: the spell and sign were not read this lap.
+rota none -- the Petrichor lane has no open page; the council row was not deep-read this lap
+status GREEN for the record only: no page opened, no edit made, fast-forward to 54d5834106 landed, card nib carried to HEAD
+file session-logs/date/20261009/20261009-193943_petrichor-idle-no-build.kyri why-one-line -- this log, the lap's only new record
+file session-logs/date/README-index-20261009.md why-one-line -- one row for this log on the day shelf
+file construction/ITINERARY.md why-one-line -- Git nib carried forward to the parent of this commit
+recommend check-in (checkpoint) -- the public seam and the Consent Rail gate the walkthrough; the next owed move waits on Keaton's word
