@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.210951` | [The wish at the door of sky](20261008/20261008-210951_the-wish-at-the-door-of-sky.kyri) | Pisces. The wish. Sky is next. |
 | `20261008.210855` | [The copy a name depends on](20261008/20261008-210855_the-copy-a-name-depends-on.kyri) | Aquarius. One type, studied. |
 | `20261008.210553` | [What must stop](20261008/20261008-210553_what-must-stop.kyri) | Capricorn. Face 60.5000 to 60.6000. |
 | `20261008.204705` | [One bound, sent](20261008/20261008-204705_one-bound-sent.kyri) | Sent. Sky opens at 8083. |
