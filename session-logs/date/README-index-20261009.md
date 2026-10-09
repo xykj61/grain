@@ -6,7 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261009.161141` | [Census re-run, no build](20261009/20261009-161141_bakery-census-upstream-ff-no-build.kyri) | Census GREEN again. Seam open, check in. |
+| `20261009.161459` | [Petrichor air row, gated](20261009/20261009-161459_petrichor-air-row-lane-gated-no-fruit.kyri) | Log only. Air row read; lane gated on Consent Rail; check-in (Claude). |
 | `20261009.161230` | [Incense fifth decline](20261009/20261009-161230_incense-baton-fifth-decline-diffuser-fruit-noted.kyri) | Log only. Diffuser fruit noted; cold run held. |
 | 20261009.161434 | [Patchouli queue empty, fresh TAME class](20261009/20261009-161434_patchouli-queue-empty-fresh-tame-class.kyri) | Log only. Fresh TAME class reads clean in lane; queue empty, no claim. Check in. |
 | 20261009.160923 | [clear cadence fruit](20261009/20261009-160923_clear-cadence-footprint-fruit.kyri) | diffuser: clear every 100 to 10,000 steps bounds the footprint ratio; copy traffic is the price |
