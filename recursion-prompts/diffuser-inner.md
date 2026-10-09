@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.171658` -- the slow fraction swept to half holds the gap inside seed noise, with per-seed ranges printed
 **Revised:** `20261009.171150` -- the slow-block population runs: a slow tenth at eleven times the lifetime shifts the jump's counts about five percent, and the gradual arm stays at zero
 **Revised:** `20261009.170234` -- the single-jump falsifier run on a real glibc buffer: the jump's monotone over-budget rise survives (129 at W=30 to 1,696 at W=10,000), the gradual knee does not appear in this model
 **Revised:** `20261009.165111` -- the knee falsifier fires on a one-jump shift: the overshoot trend reverses, and over-budget allocations rise with the window after the jump
@@ -875,6 +876,17 @@ cause, the slow-block population, is unrun. The first probe draft counted the wr
 everywhere; the paper's appendix records both faults. The paper is `active-designing/date/20261009/20261009-170234_the-single-jump-on-a-real-buffer.md`,
 Room vision, and not yet graded: the QA card has not been run on it. No new witness, no new module;
 the scratch probe is deleted after its appendix carries it.
+
+**Self-generated `20261009.171658`, the slow-block paper's named next step, run with the spread printed.**
+[The slow fraction holds the gap inside seed noise](../active-designing/date/20261009/20261009-171658_the-slow-fraction-holds-the-gap-inside-seed-noise.md)
+sweeps the slow fraction over 0.0, 0.1, 0.3 and 0.5 on the single-jump real-buffer probe, holding the
+lifetime ratio at eleven by solving the slow-victim probability, so only the fraction moves. At
+W=10,000 the jump reads 1,700 (uniform control, seed range 1,570-1,812), 1,795, 1,740 and 1,776
+over-budget allocations, a largest shift of about 5.6 percent, inside the control's own spread. The
+falsifier named before the run, a factor of two or a reversed rise, did not fire, and the gradual arm
+stays at zero at half the population. Graded B+ 88 at Field. No new witness, no new module; the
+probe is copied into the paper's appendix and the scratch file deleted. Next fruit: a lifetime ratio
+near a hundred, the one parameter this run held fixed.
 
 ## gates
 
