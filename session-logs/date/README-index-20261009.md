@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.193231` | [Petrichor stale room count](20261009/20261009-193231_petrichor-stale-room-count.kyri) | First-hour worked output 72 to 88, dated; grade A holds. |
+| `20261009.193302` | [Grass queue graded clear, no frame](20261009/20261009-193302_grass-queue-clear-no-frame.kyri) | Ten queued mycelium heads graded at Door, all B or better; no edit. |
 | `20261009.192917` | [Petrichor fast-forward, consent gate held](20261009/20261009-192917_petrichor-no-build-gate-held.kyri) | Clean ff to xy; consent gate held; no build. |
 | `20261009.193053` | [Incense declines a fiftieth, carries the nib](20261009/20261009-193053_incense-declined-fiftieth.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192740` | [Law lane declined a forty-ninth, carries the nib](20261009/20261009-192740_law-lane-declined-49.kyri) | Round-open clean; no ledger row moved; no build. |
