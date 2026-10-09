@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.154851` | [Petrichor gate held, second reading](20261009/20261009-154851_petrichor-gate-held-second-reading.kyri) | Log only. Consent gate unmoved; no fruit claimed. |
+| `20261009.154735` | [Patchouli queue empty, fifteenth reading](20261009/20261009-154735_queue-empty-fifteenth-reading.kyri) | queue empty, mantra and tally grep nets agree, check-in named |
 | `20261009.154800` | [Warrant lift overlap, reverted](20261009/20261009-154800_warrant-lift-overlap-reverted.kyri) | Grass. Peer lift stands; my unlanded edit reverted. |
 | `20261009.154609` | [Pheromone lane repeat, parked](20261009/20261009-154609_pheromone-lane-repeat-parked.kyri) | Log only. Lane still at its ruling; no re-run. |
 | `20261009.154606` | [Patchouli queue empty, twenty-third reading](20261009/20261009-154606_patchouli-queue-empty-dormancy-ask.kyri) | queue empty, dormancy asked, check-in named |
