@@ -911,8 +911,8 @@ paper's table to within 10 percent at every window: 3,939 over budget per seed a
 the paper's 4,061. The real-buffer probe read about 1,700 at the same window. Swapping one factor, the
 churn, to one uniform victim per step closes about 82 percent of that gap, leaving 2,105 per seed,
 about 24 percent above the real probe. The window trend keeps its shape (about fourteen-fold rise in
-both). The falsifier named before the run, a factor of two, did not fire. Graded not yet, pending the
-QA card. Next fruit: the real probe's size mix under the simulated churn, which tests whether the
+both). The falsifier named before the run, a factor of two, did not fire. Graded A 90 at Field, per the
+paper's own Grade line, reproduced by `sh tools/fixtures/q/qa_report_card.sh <path> --setting field --service 80`. Next fruit: the real probe's size mix under the simulated churn, which tests whether the
 remaining quarter belongs to the size model.
 
 **Self-generated `20261009.174910`, the size mix, the residual the churn left.** [The size mix closes the gap](../active-designing/date/20261009/20261009-174910_the-size-mix-closes-the-gap.md)
@@ -923,7 +923,7 @@ Of the 2,243 gap between the simulated paper and the real probe, churn accounts 
 and the size model for about 18 percent, with a residual under one percent. The falsifier named before
 the run, a count more than twice the real probe's, did not fire. Window shape holds in both (about
 thirteen-fold and fourteen-fold). Scope stays this bump model and this shift. The split was taken with
-the churn swapped first, and that order was not varied. Graded not yet, pending the QA card. Next fruit:
+the churn swapped first, and that order was not varied. Graded B+ 89 at Field, per the paper's own Grade line, reproduced by the same card at service 80. Next fruit:
 a size mix from a live-set trace a caller in this tree actually holds. None is in hand, so the fruit
 waits for one, or for the captain's ruling on a different question.
 

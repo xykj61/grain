@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.194502` | [Diffuser corrects two stale grades](20261009/20261009-194502_diffuser-stale-grades-corrected.kyri) | Two stale grade lines set to reproduced grades; no paper written. |
 | `20261009.194247` | [Incense declines a fifty-fourth](20261009/20261009-194247_incense-declines-fifty-fourth.kyri) | Held order stands; stall named; no build. |
 | `20261009.194127` | [Incense declines a fifty-third, ff to 364259851e](20261009/20261009-194127_incense-declines-fifty-third.kyri) | Ff to 364259851e; no build, no claim, cold run held. |
 | `20261009.194500` | [Incense declines a fifty-second, ff only](20261009/20261009-194500_incense-declines-fifty-second.kyri) | Ff to f2e08a34ce; no build, no claim, cold run held. |

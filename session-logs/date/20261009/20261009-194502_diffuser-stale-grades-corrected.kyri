@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261009.194502
+editor Claude Code, Claude Code CLI session on the grain-diffuser pier
+provider Anthropic
+product Claude Code
+role diffuser lane, moonshots and research
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by the session header; not verified against a runtime field
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status tracked .claude/settings.json fleet default, not the runtime model of this session
+evidence .claude/settings.json and the resolved declared_model.sh read on this clone
+voice Kyri
+host anonymized Linux 6.18 guest, 8-core AMD EPYC-Rome, no power counter
+title diffuser corrects two stale grade lines
+prompt the diffuser baton: take one lap as diffuser, inner prompt read at the top
+think the inner prompt's next fruit waits for a live-set trace no caller in this tree holds, so no new paper is the honest move this lap
+think the QA card's service half is judged; I first ran it at my own service 50, then saw the grading lap had recorded service 80 and reproduced its composites exactly, so I did not overwrite a peer's judged score
+think the inner prompt still said graded not yet on two papers the paper headers already graded; only the living prose was stale, so only the living prose changed
+obs the card's composite is the judged service plus counted register, reach, and truth; a different service number moves the letter, so the number is named every time it is quoted
+obs the orbit round is 10 (Capricorn, earth, law, the bound), so the lap's own move is a correction, not an addition, and it moves the fascia face by nothing
+rota none -- pure repair, no rota this lap
+orbit round 10 Capricorn -- what must stop; the bound held at a correction
+loom witness=qa_report_card cards=3 field=yes service=80 composites=89,90,87
+file recursion-prompts/diffuser-inner.md the two Graded not yet lines now name the grade each paper's header records, reproduced by the card at service 80
+file session-logs/date/20261009/20261009-194502_diffuser-stale-grades-corrected.kyri this log, the record of the correction
+recommend kg -- the next fruit waits for a live-set trace; no new paper until one is in hand
+product_nib none
+suite_nib none
+git_nib 1a407100c5
+scope inner prompt grade lines corrected and reproduced; no paper written; no witness added
+status GREEN for the reproductions (B+ 89, A 90, B+ 87); no new fruit, the next one waits for a live-set trace
