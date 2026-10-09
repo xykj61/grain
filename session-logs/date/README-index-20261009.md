@@ -9,6 +9,7 @@
 | `20261009.191139` | [Petrichor, no open docs-geode red, gate held](20261009/20261009-191139_petrichor-docs-geode-no-open-red.kyri) | No open red for this lane; consent gate held; no build. |
 | `20261009.191040` | [Diffuser fourteenth hold](20261009/20261009-191040_diffuser-fourteenth-hold-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.190749` | [Petrichor lane held at the gate](20261009/20261009-190749_petrichor-no-build-lane-held.kyri) | Consent Rail gate read; no build; check-in named. |
+| `20261009.190941` | [Grass repeats the queue reading, nib carried](20261009/20261009-190941_grass-queue-empty-repeat-reading.kyri) | Queue still empty; nib carried; check-in waits. |
 | `20261009.190648` | [Incense declines again, round-open clean](20261009/20261009-190648_incense-declines-again-round-open-clean.kyri) | Round-open clean; claim board empty; no build. |
 | `20261009.190618` | [Diffuser thirteenth hold](20261009/20261009-190618_diffuser-thirteenth-hold-no-build.kyri) | Fruit blocked on a live-set trace; no build. |
 | `20261009.190836` | [Patchouli queue empty, twenty-fourth way](20261009/20261009-190836_patchouli-queue-empty-twenty-fourth-way.kyri) | Queue empty again; no code; no build. |
