@@ -12,6 +12,7 @@
 | `20261009.184537` | [Petrichor links clean, consent gate held](20261009/20261009-184537_petrichor-docs-geode-links-clean.kyri) | 431 docs-geode links resolve; no build; gate held. |
 | `20261009.184358` | [Grass front doors sampled clean](20261009/20261009-184358_grass-front-doors-sampled-clean.kyri) | Five front doors graded A or B+; queue empty; no repair owed. |
 | `20261009.184338` | [Diffuser held, seventh time](20261009/20261009-184338_diffuser-seventh-hold-no-build.kyri) | Live-set trace still a ruling; energy door unchanged; no build. |
+| `20261009.184652` | [Pheromone holds at the ruling](20261009/20261009-184652_pheromone-holds-at-the-ruling.kyri) | Pheromone fruits closed; next step awaits an Incense ruling; no build. |
 | `20261009.184137` | [Petrichor declines repeat, pushed](20261009/20261009-184137_petrichor-decline-repeats-named.kyri) | Pending log rebased and pushed; repeated declines named; no build. |
 | `20261009.184328` | [Bakery crux still held](20261009/20261009-184328_bakery-crux-still-held.kyri) | Crux still held; no build; receipt-key ruling named. |
 | `20261009.184033` | [Bakery crux held, check in](20261009/20261009-184033_bakery-crux-held-check-in.kyri) | Crux held; no build; check-in (Claude) on cache shape. |
