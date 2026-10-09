@@ -1819,6 +1819,19 @@ tier lap
 capability tigerbeetle_clone
 seated 20260908.224618
 
+# tigerbeetle_seventy_line_census -- the second of the optional-clone census leaves, rostered
+# under the same `capability tigerbeetle_clone` arm the naming census uses. Its own header says
+# the absent gitlink is a fact about the host, so the witness skips honestly where the clone is
+# absent. Proven both ways on 20261009: green on the present clone, `verdict=thin` when the
+# planted tidy.zig ratchet reads `.min = 71`, and `verdict=absent` when the root is missing.
+# Pure counting over a checkout, so it moves nothing on a pier that holds the clone. Claimed as
+# copal-tigerbeetle-seventy-line-roster before this entry landed.
+guard tigerbeetle_seventy_line_census
+path tools/gen/chapter/tigerbeetle_seventy_line_census_witness.rish
+tier lap
+capability tigerbeetle_clone
+seated 20261009.173300
+
 # precondition_dependent -- the other half of REDS %646, and the half nothing had counted. That row
 # sampled 40 unreached witnesses, ran 5 red, and found two PRECONDITIONS among them. One was an
 # optional submodule, which `gitlink_dependent` walled above. The other was `build wayland_seed
