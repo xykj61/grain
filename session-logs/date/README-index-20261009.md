@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.185332` | [Petrichor queue still held](20261009/20261009-185332_petrichor-queue-still-held-no-build.kyri) | Queue empty; consent gate still closed; no build. |
 | `20261009.185240` | [Diffuser held, tenth time](20261009/20261009-185240_diffuser-tenth-hold-no-build.kyri) | Queue held on the live-set ruling; no build. |
 | `20261009.185129` | [Diffuser held, ninth time](20261009/20261009-185129_diffuser-ninth-hold-no-build.kyri) | Live-set trace still a ruling; no Swift on this host; no build. |
 | `20261009.184524` | [Diffuser held, eighth time](20261009/20261009-184524_diffuser-eighth-hold-no-build.kyri) | Live-set trace still a ruling; no macOS Swift on this host; no build. |
