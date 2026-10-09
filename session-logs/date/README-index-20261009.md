@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.181110` | [Pheromone queue empty](20261009/20261009-181110_pheromone-queue-empty-no-build.kyri) | Claim board read; card current; no build; check-in named. |
+| `20261009.181050` | [Diffuser live-set hold, fifth](20261009/20261009-181050_diffuser-live-set-hold-fifth.kyri) | Same absence on level HEAD; no build; check-in named. |
 | `20261009.180937` | [Air row reads the boundary](20261009/20261009-180937_air-row-lane-held-no-build.kyri) | Round-opened clean; rota Air row read; card and ledger headroom read; no build; check-in named. |
 | `20261009.181209` | [Bakery crux blocked](20261009/20261009-181209_bakery-crux-blocked-no-build.kyri) | Receipt basis stalled; no build, no claim, no tree change. |
 | `20261009.180711` | [Grass inner regrade, no change](20261009/20261009-180711_grass-inner-page-regrade-no-change.kyri) | B+ 86 reproduced; queue empty; no lift. |
