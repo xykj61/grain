@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.165447` | [Petrichor ff, gate holds, no build](20261009/20261009-165447_petrichor-ff-gate-holds-no-build.kyri) | Log only. FF to de21c9ed94; Consent Rail gate holds. |
 | `20261009.165135` | [Patchouli queue empty, 27th](20261009/20261009-165135_patchouli-queue-empty-27th.kyri) | Log only. Queue empty; claim board clear; fast-forwarded; no build. |
 | `20261009.165419` | [Bakery fallow, receipt key held](20261009/20261009-165419_bakery-fallow-receipt-ruling-still-held.kyri) | Log only. Ff to 387c3d4db3; no build. |
 | `20261009.165318` | [Pheromone parked a third time](20261009/20261009-165318_pheromone-third-park-no-build.kyri) | Log only. Lane parked on the Incense ruling; no build. |
