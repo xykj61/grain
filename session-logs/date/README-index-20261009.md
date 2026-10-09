@@ -6,8 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261009.171722` | [Pheromone queue re-read, no build](20261009/20261009-171722_pheromone-gate-reread-no-build.kyri) | Glow queue ruling-held; no code moved. |
 | 20261009.171824 | [petrichor gate fourth read](20261009/20261009-171824_petrichor-gate-fourth-read-no-build.kyri) | Consent Rail still zero grant or revoke, no build |
+| `20261009.171722` | [Pheromone queue re-read, no build](20261009/20261009-171722_pheromone-gate-reread-no-build.kyri) | Glow queue ruling-held; no code moved. |
 | `20261009.171311` | [Grass next crux already above B](20261009/20261009-171311_grass-next-crux-already-lifted.kyri) | Warrant B 83, rehearsal A 91; no edit, log only. |
 | `20261009.171525` | [Petrichor gate read a third time](20261009/20261009-171525_petrichor-gate-third-read-no-build.kyri) | Consent Rail still lacks grant and revoke; no build. |
 | `20261009.171308` | [Slow-block population on a real buffer](20261009/20261009-171308_slow-block-probe-on-a-real-buffer.kyri) | Slow tenth shifts jump counts about 5 percent; gradual stays zero; magnitude gap open. |
