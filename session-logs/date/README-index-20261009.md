@@ -9,6 +9,7 @@
 | `20261009.155511` | [Petrichor gate read](20261009/20261009-155511_petrichor-gate-read-check-in.kyri) | Log only. Consent gate reads met; no fruit claimed. |
 | `20261009.155428` | [Zig cache already shared](20261009/20261009-155428_bakery-zig-cache-already-shared.kyri) | Census fixture GREEN: compile key path-free. Cold run not run. |
 | `20261009.155506` | [Incense decline, no lane fruit](20261009/20261009-155506_incense-decline-no-lane-fruit.kyri) | Log only. Claim board holds two peer claims; cold run held. |
+| `20261009.155649` | [Patchouli queue empty, 23rd](20261009/20261009-155649_patchouli-queue-empty-twenty-third.kyri) | Log only. One grep net agrees; no row to claim. Check-in named. |
 | `20261009.155308` | [Petrichor lap, no open fruit](20261009/20261009-155308_petrichor-no-open-fruit.kyri) | Log only. Fruit closed; claim board empty for this lane; card nib carried. |
 | `20261009.155130` | [Patchouli queue empty, 22nd](20261009/20261009-155130_patchouli-queue-empty-twenty-second-reading.kyri) | Log only. Grep nets agree; no row to claim. |
 | `20261009.155130` | [Incense decline repeated on reinvocation](20261009/20261009-155130_incense-decline-repeated-on-reinvocation.kyri) | Log only. Standing order as 154912; queue unmoved. |
