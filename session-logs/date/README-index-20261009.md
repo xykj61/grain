@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.184155` | [Patchouli queue empty, thirtieth](20261009/20261009-184155_patchouli-queue-empty-thirtieth.kyri) | Queue empty; fresh net; no build; check-in named. |
 | `20261009.184616` | [Grass inner page graded B+](20261009/20261009-184616_grass-inner-page-graded-b-plus.kyri) | Graded B+ at Field; register over ceiling, reported. |
+| `20261009.184537` | [Petrichor links clean, consent gate held](20261009/20261009-184537_petrichor-docs-geode-links-clean.kyri) | 431 docs-geode links resolve; no build; gate held. |
 | `20261009.184358` | [Grass front doors sampled clean](20261009/20261009-184358_grass-front-doors-sampled-clean.kyri) | Five front doors graded A or B+; queue empty; no repair owed. |
 | `20261009.184338` | [Diffuser held, seventh time](20261009/20261009-184338_diffuser-seventh-hold-no-build.kyri) | Live-set trace still a ruling; energy door unchanged; no build. |
 | `20261009.184137` | [Petrichor declines repeat, pushed](20261009/20261009-184137_petrichor-decline-repeats-named.kyri) | Pending log rebased and pushed; repeated declines named; no build. |
