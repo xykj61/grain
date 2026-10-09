@@ -6,8 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261009.173454` | [Water row, two front doors A](20261009/20261009-173454_grass-water-row-two-front-doors-grade-a.kyri) | Front doors graded A (91, 94); no lift, no edit. |
 | `20261009.173648` | [Petrichor gate eighth read](20261009/20261009-173648_petrichor-gate-eighth-read-no-build.kyri) | Consent Rail still zero; no build. |
+| `20261009.173621` | [Patchouli queue empty, stopped](20261009/20261009-173621_patchouli-queue-empty-stopped.kyri) | Queue read empty; no build; check-in named. |
+| `20261009.173454` | [Water row, two front doors A](20261009/20261009-173454_grass-water-row-two-front-doors-grade-a.kyri) | Front doors graded A (91, 94); no lift, no edit. |
 | `20261009.173436` | [Diffuser seed-spread falsifier located](20261009/20261009-173436_diffuser-seed-spread-next-falsifier-held.kyri) | Falsifier needs a pinned population; located, not run; no code. |
 | `20261009.173600` | [Pheromone lane empty](20261009/20261009-173600_pheromone-lane-empty-no-build.kyri) | Lane empty; pull clean; no OPEN row taken; no build. |
 | `20261009.173126` | [Patchouli queue empty](20261009/20261009-173126_patchouli-queue-empty-no-build.kyri) | Queue read empty again; claims clear; no build. |
