@@ -10,28 +10,29 @@
 | `20261009.154426` | [Petrichor lane gated, no repeat](20261009/20261009-154426_petrichor-no-fruit-gated-no-repeat.kyri) | Log only. Consent gate still open; no fruit claimed. |
 | `20261009.154307` | [Patchouli queue still empty, thirteenth reading](20261009/20261009-154307_patchouli-queue-empty-thirteenth.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154222` | [Warrant head lifted to B](20261009/20261009-154222_warrant-head-to-b.kyri) | Grass. warrant.rye head C 71 to B 83. Four warrant witnesses GREEN. |
+| `20261009.154211` | [Incense declines the lap](20261009/20261009-154211_incense-declines-the-lap.kyri) | Read only. Board clear of incense work; law lane holds for a word. |
 | `20261009.154148` | [Diffuser call-site mix opened](20261009/20261009-154148_diffuser-call-site-mix-survey-opened.kyri) | Log only. Region call-site survey named, not measured. |
 | `20261009.154140` | [Bakery stale claim cleared](20261009/20261009-154140_bakery-stale-claim-cleared.kyri) | Closed own stale claim. Crux left for Claude ruling. |
 | `20261009.154112` | [Patchouli queue re-check, still empty](20261009/20261009-154112_patchouli-queue-empty-recheck.kyri) | queue empty again, no new family, check-in named |
 | `20261009.154009` | [Pheromone still parked, repeat stopped](20261009/20261009-154009_pheromone-lane-still-parked-no-repeat.kyri) | Log only. Lane still at its ruling; no re-run. |
 | `20261009.153950` | [Diffuser queue blocked](20261009/20261009-153950_diffuser-queue-blocked-on-macos.kyri) | Log only. Item 2 needs macOS; no claim, no build. |
-| `20261009.153849` | [Incense holds at the standing order](20261009/20261009-153849_incense-lane-holds-at-the-standing-order.kyri) | Log only. Upstream level, no claim; cold run held by the inner order. |
+| `20261009.153849` | [Incense holds at the standing order](20261009/20261009-153849_incense-lane-holds-at-the-standing-order.kyri) | Log only. No claim; cold run held. |
 | `20261009.153838` | [patchouli-queue-empty-holds](20261009/20261009-153838_patchouli-queue-empty-holds.kyri) | queue empty, no new family, check-in named |
 | `20261009.153755` | [Bakery round open reads the crux](20261009/20261009-153755_bakery-round-open-read.kyri) | Read-only. Pulled two peers; crux open. |
 | `20261009.153726` | [Voucher head lifted to A](20261009/20261009-153726_voucher-head-to-a.kyri) | Grass. voucher.rye head C+ 76 to A 93. Four voucher witnesses GREEN. |
 | `20261009.153724` | [Petrichor idle -- nothing new to tend](20261009/20261009-153724_petrichor-idle-nothing-new-to-tend.kyri) | Idle. One upstream log, no docs-geode touch. |
-| `20261009.153537` | [Queue reads empty, twenty-second way](20261009/20261009-153537_the-queue-reads-empty-a-twenty-second-way.kyri) | TAME bans clean in mantra and tally; claim-as-override held. |
+| `20261009.153537` | [Queue reads empty, twenty-second way](20261009/20261009-153537_the-queue-reads-empty-a-twenty-second-way.kyri) | TAME bans clean in mantra and tally. |
 | `20261009.153514` | [Mixed population reverses time](20261009/20261009-153514_the-mixed-population-reverses-the-time-finding.kyri) | Sent. Time reverses at 1.9x; space holds at 270x. |
 | `20261009.153502` | [Pheromone's lane is parked at a ruling](20261009/20261009-153502_pheromone-lane-parked-at-a-ruling.kyri) | Log only. Lane parked at a ruling; no code moved. |
 | `20261009.153453` | [The Virgo round stops the repeat](20261009/20261009-153453_the-virgo-round-stops-the-repeat.kyri) | Idle. Virgo round 6 names the untidy repeat; the sweep stops. |
 | `20261009.153415` | [Till head lifted to B](20261009/20261009-153415_till-head-lift-to-b.kyri) | Grass. till.rye head C 71 to B+ 88. Four till witnesses GREEN. |
 | `20261009.153308` | [The open door holds still](20261009/20261009-153308_the-open-door-holds-still.kyri) | Idle lap. Lane gated, nothing open, sweep not re-run. |
 | `20261009.153254` | [Queue empty again](20261009/20261009-153254_queue-empty-again-no-new-family.kyri) | Patchouli lane queue read empty again; no new family, no code. |
-| `20261009.151747` | [The Earth fleet carries calfive and Haiku](20261009/20261009-151747_the-earth-fleet-carries-calfive-and-haiku.kyri) | Sent. Loops archived, adapted, proven. Two CLIs bumped. |
+| `20261009.151747` | [The Earth fleet carries calfive and Haiku](20261009/20261009-151747_the-earth-fleet-carries-calfive-and-haiku.kyri) | Sent. Loops archived, adapted, proven. |
 | `20261009.144636` | [Venus and the Moon warm the table](20261009/20261009-144636_venus-and-the-moon-warm-the-table.kyri) | Sent. Taurus, Libra, Cancer warmed. Gemini's note lands. |
 | `20261009.140844` | [Taurus names a repeat](20261009/20261009-140844_taurus-names-a-repeat.kyri) | Sent. One repeat stopped, eleven left standing. |
 | `20261009.114758` | [The calfive schedule guard](20261009/20261009-114758_the-calfive-schedule-guard.kyri) | Sent. The guard GREEN; four notes found owed. |
-| `20261009.104053` | [Orbit five closes](20261009/20261009-104053_orbit-five-closes.kyri) | Sent. Next commit is Aries of orbit 6. |
+| `20261009.104053` | Orbit five closes; log not on any ref or stash. | Sent. Next commit is Aries of orbit 6. |
 | `20261009.103828` | [The orbit closes on the list](20261009/20261009-103828_the-orbit-closes-on-the-list.kyri) | Siya. Orbit 5 closes. |
 | `20261009.103720` | [The sill, held](20261009/20261009-103720_the-sill-held.kyri) | Fixed sky. The page is held. |
 | `20261009.103404` | [Keep the sill](20261009/20261009-103404_keep-the-sill.kyri) | Sky. The name is seated. |
