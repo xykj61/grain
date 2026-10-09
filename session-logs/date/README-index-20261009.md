@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.194317` | [Petrichor idle, second of the day, ff to 8a3011c4c3](20261009/20261009-194317_petrichor-idle-ff-second-no-build.kyri) | Ff to 8a3011c4c3; no build, no claim, consent gate still Diffuser's. |
+| `20261009.194423` | [Bakery declines a fifty-fifth, ff only](20261009/20261009-194423_bakery-declines-fifty-fifth.kyri) | Ff to d0e3deba21; no build, no claim, cold run held. |
 | `20261009.194247` | [Incense declines a fifty-fourth](20261009/20261009-194247_incense-declines-fifty-fourth.kyri) | Held order stands; stall named; no build. |
 | `20261009.194131` | [Grass sample graded, no frame](20261009/20261009-194131_grass-sample-graded-no-frame.kyri) | Five front-door pages graded B+ or better; no edit. |
 | `20261009.194127` | [Incense declines a fifty-third, ff to 364259851e](20261009/20261009-194127_incense-declines-fifty-third.kyri) | Ff to 364259851e; no build, no claim, cold run held. |
