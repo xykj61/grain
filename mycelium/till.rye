@@ -4,34 +4,38 @@
 //! Design read: active-designing/date/20260813/20260813-064129_mycelium-till-double-spend-exploration.md
 //!
 //! A till is the drawer a treasury's coins sit in. When two keepers reach into one
-//! till for coins that cannot pay both, the first draw the agreed order places takes
-//! what is there, and the second finds the till already emptied -- and breaks nothing.
-//! This is the double-spend, the oldest reason a value ledger wants consensus: the
-//! Cord already derives one total order from the mesh regardless of arrival, and the
-//! Till reads that order as the treasury's verdict -- the first draw wins the coins,
-//! a later draw the treasury can no longer pay comes up short as a lawful no-op.
+//! till for coins that can pay only one of them, the first draw the agreed order
+//! places takes what is there. The second finds the till already emptied, and it
+//! settles as a spent-out draw with every other entry intact.
+//! This is the double-spend, the oldest reason a value ledger wants consensus. The
+//! Cord already derives one total order from the mesh whatever the arrival order,
+//! and the Till reads that order as the treasury's verdict: the first draw takes the
+//! coins, and a later draw the treasury can no longer pay settles as a spent-out draw
+//! with its amount on record.
 //!
-//! The honest distinction is the whole crux, and it is the twin of the Tenure's.
-//! `fold.fold_fact` returns one `Overdraw` for two different facts: a spend that lost
-//! a race (affordable alone, refused only because a competing spend drained first)
-//! and a spend that never could pay (more than the treasury ever held). The measure
-//! that separates them is monotonic and position-respecting -- `issued-so-far`, the
-//! cumulative issue at the losing draw's position (issues only add; the fold invents
-//! no release). A draw that overdraws yet whose amount is <= issued-so-far LOST A
-//! RACE -- the coins existed for it once -- so it is a lawful no-op spent-out loss and
-//! folding continues. A draw that overdraws and asks for more than issued-so-far
-//! NEVER COULD PAY -- no ordering fixes that -- so it refuses the whole resolution. An
-//! issue that overdraws (a u64 wrap) is never a race and stays poison unconditionally.
+//! The crux is the distinction, and it is the twin of the Tenure's. `fold.fold_fact`
+//! reports one `Overdraw` for two different facts: a spend that was affordable alone
+//! and came up short only because a competing spend drained the treasury first, and a
+//! spend that the treasury could not pay in any order. The measure that separates them
+//! is monotonic and position-respecting: `issued-so-far`, the cumulative issue at the
+//! draw's position. Issues only add, and the fold releases nothing. A draw whose amount
+//! is at or below issued-so-far had coins available for it once, so it settles as a
+//! spent-out draw and folding continues. A draw whose amount exceeds issued-so-far is
+//! one that every ordering would still fail to pay, so the whole resolution returns an
+//! error. An issue that overdraws (a u64 wrap) is a corrupt fact, and it refuses the
+//! resolution in every case.
 //!
-//! Grown beside cord.rye, fold.rye, and tenure.rye -- editing none, composing cord +
-//! fold public API only. A `StarTaken` name-contest loss is the Tenure's verdict, so
-//! the Till lets it refuse the whole resolution here (a Till log carries coins, not
-//! two-keepers-one-name contests; the Tenure owns that verdict on a mixed log).
-//! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
+//! Grown beside cord.rye, fold.rye, and tenure.rye. It edits each of them not at all,
+//! and it composes the public API of cord and fold alone. A `StarTaken` name contest is
+//! the Tenure's verdict, so the Till passes that error through and returns the
+//! resolution as an error. A Till log carries coins, and the two-keepers-one-name
+//! contests belong to the Tenure, which owns that verdict on a mixed log.
+//! Siloed and dev-only, with demo seeds. Each key is a test key, and the module moves
+//! value only inside the demo ledger.
 //!
-//! Named horizon (not this arc): per-account balances (fold folds a GLOBAL supply,
-//! so a double-spend here is a supply-exhaustion race -- the truest this ledger carries
-//! today); a Till served to another node reaches the Comlink-served gate.
+//! Named horizon, for a later arc: per-account balances. Fold folds one global supply,
+//! so a double-spend here is a supply-exhaustion race, the truest this ledger carries
+//! today. A Till served to another node reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/till.rye
 
