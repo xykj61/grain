@@ -59,3 +59,9 @@ stamp 20261009.153018
 epoch 1791574218
 paths construction/standing-equipment.kyri tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
 what roster tigerbeetle_off_by_one_census_witness.rish, the e49 off-by-one census, unrostered since it was written
+claim bakery-shared-cache-mutation-proof
+seat bakery
+stamp 20261009.161748
+epoch 1791577068
+paths tools/fixtures/b/shared_build_cache_mutation.sh
+what Bakery measures which declared compile inputs miss the shared zig cache: six mutations of one source, each read against a warm baseline, each required to write new cache files
