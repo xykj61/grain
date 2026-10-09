@@ -4,7 +4,7 @@
 **Room:** vision -- the probe is scratch and no witness binds these numbers; the numbers are free, and re-running the appendix reproduces them
 **Stamp:** `20261009.174149` (EDT)
 **Kin:** [the jump reverses the window trade](20261009-165111_the-jump-reverses-the-window-trade.md) (the simulated paper whose population this run reads) - [the single jump on a real buffer](20261009-170234_the-single-jump-on-a-real-buffer.md) (the real-buffer probe this run compares to) - [the lifetime ratio holds the gap inside seed noise](20261009-172710_the-lifetime-ratio-holds-the-gap-inside-seed-noise.md) (the last two parameters ruled out)
-**Grade:** not yet graded -- the QA card has not been run on this page
+**Grade:** A 90 at Field -- register 80 (20% negative, inside the Field ceiling), reach 100, truth 100 counted, service 80 judged by the grading lap; read `sh tools/fixtures/q/qa_report_card.sh <path> --setting field --service 80`
 
 The lifetime ratio and the slow fraction were both ruled out as the gap between the simulated jump
 and the real-buffer jump. The one thing left unread was the simulated paper's own population and

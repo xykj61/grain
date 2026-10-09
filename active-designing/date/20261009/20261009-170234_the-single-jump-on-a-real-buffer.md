@@ -4,7 +4,7 @@
 **Room:** vision -- the probe is scratch and no witness binds these numbers; the numbers are free, and re-running the appendix reproduces them
 **Stamp:** `20261009.170234` (EDT)
 **Kin:** [the window knee](20261009-163113_the-window-knee-trades-overshoot-for-clears.md) (the falsifier this run takes) - [the jump reverses the window trade](20261009-165111_the-jump-reverses-the-window-trade.md) (the simulated jump this run replaces) - [the live budget](20261009-162216_the-live-budget-bounds-the-footprint-at-k-times-live.md)
-**Grade:** not yet graded -- the QA card has not been run on this page
+**Grade:** B+ 86 at Field -- register 64 (36% negative against the Field ceiling of 30%, above it), reach 100, truth 100 counted, service 80 judged by the grading lap; read `sh tools/fixtures/q/qa_report_card.sh <path> --setting field --service 80`
 
 The window knee paper named one falsifier and left it unrun: a real allocator on a single-jump
 workload, with the window swept. This paper runs it. The honest answer is partial. The direction of

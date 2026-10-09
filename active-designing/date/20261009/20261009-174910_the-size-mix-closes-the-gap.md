@@ -4,7 +4,7 @@
 **Room:** vision -- the probe is scratch and no witness binds these numbers; the numbers are free, and re-running the appendix reproduces them
 **Stamp:** `20261009.174910` (EDT)
 **Kin:** [the simulated population explains most of the gap](20261009-174149_the-simulated-population-explains-most-of-the-gap.md) (the paper whose residual this run names and tests) - [the single jump on a real buffer](20261009-170234_the-single-jump-on-a-real-buffer.md) (the real-buffer probe whose size model this run reuses)
-**Grade:** not yet graded -- the QA card has not been run on this page
+**Grade:** B+ 89 at Field -- register 76 (24% negative, inside the Field ceiling), reach 100, truth 100 counted, service 80 judged by the grading lap; read `sh tools/fixtures/q/qa_report_card.sh <path> --setting field --service 80`
 
 The simulated paper read about 3,939 over budget per seed at W=10,000. The real-buffer probe read
 about 1,700. The earlier page swapped the churn and closed about 82 percent of that gap, leaving a
