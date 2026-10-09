@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.153453` | [The Virgo round stops the repeat](20261009/20261009-153453_the-virgo-round-stops-the-repeat.kyri) | Idle. Virgo round 6 names the untidy repeat; the sweep stops. |
 | `20261009.153415` | [Till head lifted to B](20261009/20261009-153415_till-head-lift-to-b.kyri) | Grass. till.rye head C 71 to B+ 88. Four till witnesses GREEN. |
 | `20261009.153308` | [The open door holds still](20261009/20261009-153308_the-open-door-holds-still.kyri) | Idle lap. Lane gated, nothing open, sweep not re-run. |
 | `20261009.153254` | [Queue empty again](20261009/20261009-153254_queue-empty-again-no-new-family.kyri) | Patchouli lane queue read empty again; no new family, no code. |
