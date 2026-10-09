@@ -6,8 +6,9 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261009.163955` | [Pheromone parked](20261009/20261009-163955_pheromone-parked-awaiting-ruling.kyri) | Log only. Lane parked on a ruling; no build. |
 | `20261009.164228` | [Incense fallow, witness re-run green](20261009/20261009-164228_incense-fallow-witness-rerun.kyri) | Log only. Receipt witness re-read GREEN; lane gated; no code. |
+| `20261009.164050` | [Patchouli queue empty, 24th](20261009/20261009-164050_patchouli-queue-empty-24th.kyri) | Log only. Lane queue empty; clean tree, no new net, no build. |
+| `20261009.163955` | [Pheromone parked](20261009/20261009-163955_pheromone-parked-awaiting-ruling.kyri) | Log only. Lane parked on a ruling; no build. |
 | `20261009.163724` | [Patchouli queue empty, 23rd](20261009/20261009-163724_patchouli-queue-empty-23rd.kyri) | Log only. Lane queue empty; one recursive net, no build. |
 | `20261009.163749` | [Petrichor, ff and regrade](20261009/20261009-163749_petrichor-ff-regrade-gate-held.kyri) | Petrichor. Fast-forward, regrade B+, gate held. |
 | `20261009.163630` | [Receipt census claimed](20261009/20261009-163630_receipt-census-claim-fire-sees.kyri) | Claim pushed. Compile cache already shares by path; receipt key waits on a ruling. |
