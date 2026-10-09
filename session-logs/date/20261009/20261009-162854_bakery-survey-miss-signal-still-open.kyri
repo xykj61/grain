@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261009.162854
+editor claude code, terminal
+provider anthropic
+product claude code
+role bakery, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime claimed by session header, not verified
+configured_model claude-haiku-5-5
+configured_status resolved value this clone runs, read by tools/fixtures/d/declared_model.sh resolved_model; a local override is present
+evidence .claude/settings.local.json override outranks the tracked .claude/settings.json per key, not runtime telemetry
+voice Kyri
+host one-clock zone America/New_York
+coordination user coordinated separate sessions
+collaborator_scope incense, patchouli, copal and diffuser log commits, read as upstream only
+title Bakery baton lap: the miss-signal ruling is still open, so no build
+prompt Baton lap for bakery: read the card and inner prompt, then advance the first Rishi fusion-build rung.
+think The card's first bakery priority is a content-keyed Rishi build cache, and its first proof needs six independent mutations that each miss the shared cache.
+think The prior lap found that zig does not expose a per-input miss signal as a file count, and that its output is not byte-stable across identical builds. Re-running the same census would reproduce that finding, not advance it.
+think The remaining choice is design: a behavioral check per input (a sentinel literal that must reach the binary), or a zig-internal cache trace whose flags this lap did not verify. That is a seam decision, so it stays with a Claude ruling.
+think The Rishi seam and the value model are check-in territory under the collaboration rule, so this lap builds nothing that the ruling would have to undo.
+obs no product code, fixture, claim, or cold run this lap. The remote was two commits ahead and was not pulled, since no pass was running to hold still.
+obs the rota grid was not deep-read this lap, so the rota field declares that absence rather than naming a row.
+rota none -- survey-only lap; the council row was not deep-read, and the miss-signal ruling is what this lap needed.
+file construction/ITINERARY.md git nib carried to the log commit's parent, as the card's follow-up rule asks
+file session-logs/date/20261009/20261009-162854_bakery-survey-miss-signal-still-open.kyri records the open ruling and the lap that declined to build past it
+scope a survey of the card and inner prompt, and this log and its shelf row; no product code moved
+status GREEN for the log only. The six-mutation cache proof is NOT built and stays open on the miss-signal ruling. No witness run, because no code changed.
+recommend check-in (claude) -- choose the per-input miss signal: a sentinel literal that must reach the binary, or a zig cache trace whose flags need verifying first.

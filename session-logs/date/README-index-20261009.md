@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.162854` | [Bakery survey, miss signal still open](20261009/20261009-162854_bakery-survey-miss-signal-still-open.kyri) | Log only. Miss-signal ruling still open; no build; check-in (Claude). |
 | `20261009.162231` | [Cache miss signal](20261009/20261009-162231_bakery-cache-mutation-miss-signal.kyri) | Log only. File count misreads zig misses; proof withdrawn. |
 | `20261009.162216` | [Live budget tracks the mix](20261009/20261009-162216_live-budget-probe-tracks-the-mix.kyri) | Log only. Constant budget fails on mix shift; tracked budget overshoots k by ~10%. |
 | `20261009.162414` | [Petrichor consent rail held](20261009/20261009-162414_petrichor-consent-rail-held-no-fruit.kyri) | Log only. Gate held; no docs-geode byte; check-in (Claude). |
