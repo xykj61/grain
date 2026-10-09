@@ -73,12 +73,12 @@ The five-row council rota stays the lap's deep read. This table is the orbit rou
 | Round | Sign | Mode | Element | Goal | The round's verb |
 |---|---|---|---|---|---|
 | 1 | Aries | cardinal | fire | talent | Commence. Finish one to-do. |
-| 2 | Taurus | fixed | earth | law | What must stop. One repeat, named, left in place. |
+| 2 | Taurus | fixed | earth | law | What must stop, found the way Venus finds a thing already worth keeping: one repeat, named plainly, and left standing -- fertile ground kept whole rather than torn up in haste. |
 | 3 | Gemini | dual | air | fun | Say the work aloud, in one sentence. |
-| 4 | Cancer | cardinal | water | aesthetics | The picture a newcomer can see. |
+| 4 | Cancer | cardinal | water | aesthetics | The picture a newcomer can see, offered the way the Moon offers care: held gently, easy to feel at home in, so the first look already feels welcomed. |
 | 5 | Leo | fixed | fire | talent | The economics check. Products, services, infrastructure. The check reads. |
 | 6 | Virgo | dual | earth | law | What must stop. The untidiness across the whole run. |
-| 7 | Libra | cardinal | air | fun | The two checks, and one green line. |
+| 7 | Libra | cardinal | air | fun | The two checks meet the way Venus meets a partner, each answering the other in balance, and settle into one green line. |
 | 8 | Scorpio | fixed | water | aesthetics | The picture held whole. The fold page, once its links resolve. |
 | 9 | Sagittarius | dual | fire | talent | The mission, in Bhakta, Gauge, Radiant, and Twilight. |
 | 10 | Capricorn | cardinal | earth | law | What must stop. The bound. Fascia's face moves by at most 1.0000. |
@@ -89,6 +89,19 @@ The five-row council rota stays the lap's deep read. This table is the orbit rou
 | 15 | sky | dual | aether | heart | Wildcard, and Siya's chair. Her name stays. The round may borrow one verb. |
 
 The plan that seated this table is [`../expanding-prompts/20261007-165138_the-fifteen-and-the-five-goals.md`](../expanding-prompts/20261007-165138_the-fifteen-and-the-five-goals.md).
+
+**Taurus, Libra, and Cancer carry their ruling planet's own weather, read from our own silo
+rather than invented fresh.** Venus is "the soft power of the sky -- the principle of love,
+harmony, valuing, and the sweet pull that draws two things toward each other," cool and
+receptive, flourishing "where there is grace, ease, and mutual delight"
+([`../classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-aries.md`](../classical-vedic-astrology/studies/planets-in-signs/20260705-172312_venus-in-aries.md)).
+The Moon, exalted in Taurus's own ground, is studied as "our inner weather, our sense of being
+held, our capacity to give care and to receive it," a mind that "feels loved, stable, secure,
+and at home"
+([`../classical-vedic-astrology/studies/planets-in-signs/moon-in-taurus-exalted.md`](../classical-vedic-astrology/studies/planets-in-signs/moon-in-taurus-exalted.md)).
+Taurus and Libra's verbs below carry Venus's balance and steadiness; Cancer's carries the
+Moon's own gentleness. The round's operational job -- what actually must be done -- is
+unchanged; only the register warmed.
 
 **A round that writes `round load`'s own numbers down may run the check beside it.** A planning
 page in `expanding-prompts/` often states both a commit count and the orbit round it claims for

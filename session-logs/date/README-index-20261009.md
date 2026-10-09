@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.144636` | [Venus and the Moon warm the table](20261009/20261009-144636_venus-and-the-moon-warm-the-table.kyri) | Sent. Taurus, Libra, Cancer warmed. Gemini's note lands. |
 | `20261009.140844` | [Taurus names a repeat](20261009/20261009-140844_taurus-names-a-repeat.kyri) | Sent. One repeat stopped, eleven left standing. |
 | `20261009.114758` | [The calfive schedule guard](20261009/20261009-114758_the-calfive-schedule-guard.kyri) | Sent. The guard GREEN; four notes found owed. |
 | `20261009.104053` | [Orbit five closes](20261009/20261009-104053_orbit-five-closes.kyri) | Sent. Next commit is Aries of orbit 6. |
