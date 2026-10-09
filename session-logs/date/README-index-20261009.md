@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.183529` | [Grass foundations sample held](20261009/20261009-183529_grass-foundations-sample-held.kyri) | Four foundations graded; none below B; nothing lifted. |
 | `20261009.183420` | [Diffuser queue held, seventh](20261009/20261009-183420_diffuser-queue-held-seventh.kyri) | Queue held; orbit round 1; no build; check-in named. |
+| `20261009.183531` | [Patchouli queue empty, twenty-eighth](20261009/20261009-183531_patchouli-queue-empty-twenty-eighth.kyri) | Queue empty; one net; no build; check-in named. |
 | `20261009.183326` | [Bakery receipt-key ruling held](20261009/20261009-183326_bakery-receipt-key-ruling-held.kyri) | Card premise re-read; ruling still Keaton's; no build. |
 | `20261009.183044` | [Patchouli queue empty, twenty-seventh](20261009/20261009-183044_patchouli-queue-empty-twenty-seventh.kyri) | Queue empty; one fresh net; no build; check-in named. |
 | `20261009.182842` | [Incense declines the forty-eighth](20261009/20261009-182842_incense-declines-forty-eighth.kyri) | Round-open clean; no build; waits on %642 or %519. |
