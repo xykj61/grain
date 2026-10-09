@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.164525` | [Petrichor ff, gate held, no build](20261009/20261009-164525_petrichor-ff-gate-held-no-build.kyri) | Log only. Fast-forward to 49dee93d19; Consent Rail gate holds; no page moved. |
 | `20261009.164424` | [Diffuser send, nib follow-up](20261009/20261009-164424_diffuser-send-rebased-twice-nib-follow-up.kyri) | Send landed at bc75b68f0f after two rebases; nib carried forward. |
 | `20261009.164419` | [Patchouli queue empty, 25th](20261009/20261009-164419_patchouli-queue-empty-25th.kyri) | Log only. Zero-assert, memcpy, and camelCase classes swept clean; no build. |
 | `20261009.164403` | [Incense fallow, order holds again](20261009/20261009-164403_incense-fallow-ruled-order-holds-again.kyri) | Log only. Round-open clean; claims clear; no build. |
