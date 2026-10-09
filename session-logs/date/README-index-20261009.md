@@ -10,6 +10,7 @@
 | `20261009.184358` | [Grass front doors sampled clean](20261009/20261009-184358_grass-front-doors-sampled-clean.kyri) | Five front doors graded A or B+; queue empty; no repair owed. |
 | `20261009.184338` | [Diffuser held, seventh time](20261009/20261009-184338_diffuser-seventh-hold-no-build.kyri) | Live-set trace still a ruling; energy door unchanged; no build. |
 | `20261009.184137` | [Petrichor declines repeat, pushed](20261009/20261009-184137_petrichor-decline-repeats-named.kyri) | Pending log rebased and pushed; repeated declines named; no build. |
+| `20261009.184328` | [Bakery crux still held](20261009/20261009-184328_bakery-crux-still-held.kyri) | Crux still held; no build; receipt-key ruling named. |
 | `20261009.184033` | [Bakery crux held, check in](20261009/20261009-184033_bakery-crux-held-check-in.kyri) | Crux held; no build; check-in (Claude) on cache shape. |
 | `20261009.183439` | [Incense declines the forty-ninth](20261009/20261009-183439_incense-declines-forty-ninth.kyri) | Fast-forward clean; no build; waits on %642 or %519. |
 | `20261009.183631` | [Pheromone lane reads empty](20261009/20261009-183631_pheromone-lane-reads-empty.kyri) | Lane empty; no rune question; no build; ruling named. |
