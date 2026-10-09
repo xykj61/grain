@@ -11,6 +11,7 @@
 | `20261009.163450` | [Patchouli queue empty, no build](20261009/20261009-163450_patchouli-queue-empty-22nd.kyri) | Log only. Lane queue empty; one fresh net, two test-local hits. |
 | `20261009.163349` | [Queue empty, fresh nets](20261009/20261009-163349_patchouli-queue-empty-fresh-two-nets.kyri) | Log only. Queue empty 24th; no byte moved. |
 | `20261009.163139` | [Bakery orientation, no claim](20261009/20261009-163139_bakery-orientation-no-claim.kyri) | Log only. Orientation; shared cache unclaimed. |
+| `20261009.163605` | [Pheromone lane empty, no rune ruling](20261009/20261009-163605_pheromone-lane-empty-no-rune-ruling.kyri) | Log only. Lane empty; no rune ruling owed; check in (Claude). |
 | `20261009.163222` | [Patchouli fire row, queue cut](20261009/20261009-163222_fire-rota-queue-cut.kyri) | Log only. Queue empty 23rd; repeat sweep cut, one ask named. |
 | `20261009.163123` | [Window knee](20261009/20261009-163123_window-sweep-knee-landed.kyri) | Log only. Window 1,000 sits inside the knee; overshoot and clears trade. |
 | `20261009.163043` | [Patchouli queue empty, fresh net](20261009/20261009-163043_patchouli-queue-empty-fresh-net.kyri) | Log only. Queue empty 22nd; no mantra or tally byte moved. |
