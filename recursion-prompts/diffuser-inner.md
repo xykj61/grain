@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.165111` -- the knee falsifier fires on a one-jump shift: the overshoot trend reverses, and over-budget allocations rise with the window after the jump
 **Revised:** `20261009.163113` -- the window sweep finds its knee near 1,000 steps: overshoot falls as the window lengthens while clears rise, and 10,000 breaks the bound at k=4
 **Revised:** `20261009.162216` -- the live-set budget run under a mix shift: a constant budget fails (96,802 over-budget), a tracked budget holds near k times live, overshooting about ten percent
 **Revised:** `20261009.161337` -- the byte threshold holds the budget, and the step cadence keeps the cheaper frontier
@@ -847,6 +848,16 @@ prior probe. The threshold buys the bound and not a cheaper trade-off: at compar
 cadence stays ahead. Names the live-set-tracking budget as the next falsifier and does not run it.
 Graded A/91 at Field (register 79, reach 100, truth 100 counted, service 85 judged). No new witness,
 no new module; the scratch probe is deleted.
+
+**Self-generated `20261009.165111`, the knee falsifier run on the one-jump shift it named.**
+[The jump reverses the window trade](../active-designing/date/20261009/20261009-165111_the-jump-reverses-the-window-trade.md)
+runs the probe the knee paper named and did not run: every slot replaced at one step rather than
+drifting in over a shift. The control arm reproduces the landed table's clears and peaks to within
+its seed spread before the jump arm is read. On the jump the knee does not appear: over-budget
+allocations rise monotonically with the window (1,281 at 30 steps to 32,488 at 10,000, `k=4`), and
+the overshoot trend reverses against the gradual case. The falsifier fired on the claim as written.
+Graded B+ 88 at Field (truth 100 counted, service 80 judged). No new witness, no new module; the
+scratch probe is deleted after its numbers are copied into the paper.
 
 ## gates
 

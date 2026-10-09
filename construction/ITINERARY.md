@@ -246,7 +246,9 @@ is the one release.
 [The mixed-lifetime cost is space, not time](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md),
 B/84 at Field. The mixed population ran (`20261009.153349`): time reverses to smp at about 1.9x,
 space holds at 270x. The call-site mix is counted (`20261009.154443`); the budget and knee ran
-after it (`20261009.163113`). Next falsifier: a knee outside 1,000 to 3,000 steps.
+after it (`20261009.163113`). The knee falsifier ran on a one-jump shift (`20261009.165111`): the
+knee does not transfer, the overshoot trend reverses, and over-budget allocations rise with the
+window after the jump. Next: a real allocator on a single-jump workload, with the window swept.
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -342,7 +344,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `de21c9ed94` -- the tip this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `88f60c333a` -- the tip this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

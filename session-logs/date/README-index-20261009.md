@@ -10,6 +10,7 @@
 | `20261009.165135` | [Patchouli queue empty, 27th](20261009/20261009-165135_patchouli-queue-empty-27th.kyri) | Log only. Queue empty; claim board clear; fast-forwarded; no build. |
 | `20261009.165419` | [Bakery fallow, receipt key held](20261009/20261009-165419_bakery-fallow-receipt-ruling-still-held.kyri) | Log only. Ff to 387c3d4db3; no build. |
 | `20261009.165318` | [Pheromone parked a third time](20261009/20261009-165318_pheromone-third-park-no-build.kyri) | Log only. Lane parked on the Incense ruling; no build. |
+| `20261009.165111` | [Jump falsifier fires](20261009/20261009-165111_jump-falsifier-fires.kyri) | The knee does not transfer to a one-jump shift; the overshoot trend reverses. |
 | `20261009.165015` | [Petrichor pull, gate holds, no build](20261009/20261009-165015_petrichor-pull-gate-holds-no-build.kyri) | Log only. Fast-forward to 74fb3e6b79; Consent Rail still waits on a revoke fact. |
 | `20261009.164948` | [Roster the off-by-one census](20261009/20261009-164948_roster-the-off-by-one-census.kyri) | Rostered one witness. Scoped hot GREEN. Full roster 41 reds stand. |
 | `20261009.164914` | [Patchouli queue empty, 26th](20261009/20261009-164914_queue-empty-26th.kyri) | Log only. TAME reflexes swept clean in mantra/ and tally/; queue empty; no build. |
