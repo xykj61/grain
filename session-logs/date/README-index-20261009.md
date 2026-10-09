@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.101957` | [The terminal type, studied](20261009/20261009-101957_the-terminal-type.kyri) | Aquarius. One type, studied. |
 | `20261009.101857` | [What must stop](20261009/20261009-101857_what-must-stop.kyri) | Capricorn. The last site stays. |
 | `20261009.100656` | [Three seats, the scale](20261009/20261009-100656_three-seats-the-scale.kyri) | Sent. One round from sky's door. |
 | `20261009.100524` | [The studied signs, four ways](20261009/20261009-100524_the-studied-signs-four-ways.kyri) | Sagittarius. Studied signs only. |
