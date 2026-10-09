@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.190648` | [Incense declines again, round-open clean](20261009/20261009-190648_incense-declines-again-round-open-clean.kyri) | Round-open clean; claim board empty; no build. |
+| `20261009.190618` | [Diffuser thirteenth hold](20261009/20261009-190618_diffuser-thirteenth-hold-no-build.kyri) | Fruit blocked on a live-set trace; no build. |
 | `20261009.190339` | [Incense declines once more](20261009/20261009-190339_incense-declines-once-more-no-build.kyri) | Round-open clean; law waits on Keaton. |
 | `20261009.190336` | [Bakery census re-confirmed, key held](20261009/20261009-190336_bakery-census-confirms-key-held.kyri) | Census path_independent=yes; key waits on ruling. |
 | `20261009.190531` | [Patchouli queue empty, twenty-third way](20261009/20261009-190531_patchouli-queue-empty-twenty-third-way.kyri) | Queue empty again; no code; no build. |
