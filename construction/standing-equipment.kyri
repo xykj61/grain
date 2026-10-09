@@ -9976,3 +9976,14 @@ guard oven_season_o0
 path tools/gen/chapter/oven_season_o0_witness.rish
 tier lap
 seated 20261009.181340
+
+# tally_glow_tend_limb7 -- the seventh Tally structure pedestal in src/shape/.
+# shape-receipt-offer-bounds.glow names how many typed ceilings tally/receipt_offer_bounds.rye
+# publishes (twelve), read from the rye by a grep over its pub const lines rather than copied into
+# the witness. Pheromone item 1 -- the receipt facts and Tally bounds in the smallest Glow form
+# already owned. Twelve sits under glow/rune_shape.rye's max_fields (15); the witness asserts that
+# constant stayed put.
+guard tally_glow_tend_limb7
+path tools/t/tally_glow_tend_limb7_witness.rish
+tier lap
+seated 20261009.192525

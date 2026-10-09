@@ -1,0 +1,43 @@
+# tools/t/tally_glow_tend_limb7_witness.rish -- Tally T7 receipt offer bounds in src/shape/.
+#
+#   rishi/bin/rishi run tools/t/tally_glow_tend_limb7_witness.rish
+
+say "tally-tend-7: Language EN -- seventh Tally Glow Tend limb (sur museum)."
+say "tally-tend-7: Style Radiant -- twelve receipt ceilings counted; Rye still owns each value."
+say "tally-tend-7: Lens TAME -- Equinox B - nest-only - the count is read, never copied."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-receipt-offer-bounds.glow"
+let elder = "tally/receipt_offer_bounds.rye"
+
+say "tally-tend-7: placard..."
+let placard = run ["sh" "-c" "head -n 10 src/shape/shape-receipt-offer-bounds.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert placard.ok else "tally-tend-7: placard scan failed"
+let pcount = trim placard.out
+assert pcount == "6" else "tally-tend-7: placard missing six lines"
+
+say "tally-tend-7: the placard's declared count, read against the rye..."
+let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-receipt-offer-bounds.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert declared.ok else "tally-tend-7: the placard's example line is unreadable"
+let want = trim declared.out
+let counted = run ["sh" "-c" "grep -cE '^pub const [a-z_0-9]+: (u32|u64) ' tally/receipt_offer_bounds.rye"]
+assert counted.ok else "tally-tend-7: the rye could not be read for typed ceilings"
+let got = trim counted.out
+assert got == want else "tally-tend-7: receipt_offer_bounds.rye publishes ${got} typed ceilings where the placard says ${want}"
+
+say "tally-tend-7: the placard names the rye and its error set..."
+let cite = run ["sh" "-c" "grep -q 'tally/receipt_offer_bounds.rye' src/shape/shape-receipt-offer-bounds.glow"]
+assert cite.ok else "tally-tend-7: citation missing"
+let errs = run ["sh" "-c" "grep -q 'pub const BoundError = error{' tally/receipt_offer_bounds.rye"]
+assert errs.ok else "tally-tend-7: BoundError moved in the rye"
+
+say "tally-tend-7: lower and run the desk..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "tally-tend-7: receipt offer bounds shape lower/build/run failed"
+assert gate.out contains "EXIT:0" else "tally-tend-7: receipt offer bounds shape did not exit 0"
+
+say "tally-tend-7: max_fields untouched..."
+let ceiling = run ["sh" "-c" "grep -q 'max_fields: u32 = 15' glow/rune_shape.rye"]
+assert ceiling.ok else "tally-tend-7: rune_shape.max_fields moved off 15 -- this fruit must not raise it"
+
+say "GREEN: tally Glow Tend limb 7 -- twelve receipt offer ceilings in src/shape/; Tend ladder kept."

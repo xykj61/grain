@@ -38,7 +38,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`dimeroll/`](../../dimeroll/README.md) | 4 | 5 |
 | [`ember/`](../../ember/README.md) | 2 | 6 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 136 | 139 |
+| [`glow/`](../../glow/README.md) | 136 | 140 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 253 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
@@ -62,7 +62,7 @@ find tools -name '*_witness.rish' | tr '\n' '\0' | xargs -0 grep -l 'rishi/' | w
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 4 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 16 | 33 |
+| [`tally/`](../../tally/README.md) | 16 | 34 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---

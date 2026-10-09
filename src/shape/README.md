@@ -33,6 +33,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/ca/caravan_glow_tend_limb3_witness.rish` |
 | [`shape-tally-parse-int-laws.glow`](shape-tally-parse-int-laws.glow) | Tally `parse_int` two refuse laws (Tend T4) | `tools/t/tally_glow_tend_limb4_witness.rish` |
 | [`shape-tally-stack-laws.glow`](shape-tally-stack-laws.glow) | Tally stack three laws (Tend T6) | `tools/t/tally_glow_tend_limb6_witness.rish` |
+| [`shape-receipt-offer-bounds.glow`](shape-receipt-offer-bounds.glow) | Tally receipt offer bounds, twelve ceilings (Tend T7) | `tools/t/tally_glow_tend_limb7_witness.rish` |
 | [`shape-aurora-wire-capacity.glow`](shape-aurora-wire-capacity.glow) | Aurora `wire_capacity=512` (Tend A1) | `tools/au/aurora_glow_tend_limb1_witness.rish` |
 | [`shape-aurora-seed-length.glow`](shape-aurora-seed-length.glow) | Aurora `seed_length=32` (Tend A2) | `tools/au/aurora_glow_tend_limb2_witness.rish` |
 | [`shape-aurora-living-stages.glow`](shape-aurora-living-stages.glow) | Aurora six living stages (Tend A3) | `tools/au/aurora_glow_tend_limb3_witness.rish` |

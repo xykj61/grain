@@ -1,0 +1,18 @@
+::  name       receipt offer bounds count
+::  shape      ceilings - int (@u32)
+::  invariant  tally/receipt_offer_bounds.rye publishes exactly twelve typed ceilings
+::  example    12
+::  readers    Tally - Mantra - Glow Tend - shape museum
+::  nib        tally-tend-7-v0
+::
+::  Pheromone -- Tally Glow Tend limb 7. Names how many typed ceilings the first
+::  readable receipt offer publishes in tally/receipt_offer_bounds.rye: identifier,
+::  purpose, value-basis, encoded-fact, amount, replay, card width and height,
+::  product digest length, value unit, return kind, and signature. The count is
+::  the number the witness reads from the rye rather than copies here.
+::  Pedestal only; Rye still owns every ceiling's value, the BoundError set, and
+::  each admission check. Twelve sits well under rune_shape.max_fields (15), so
+::  this pedestal does not raise it.
++$  receipt-offer-bounds-shape
+  $:  ceilings=@u32
+  ==
