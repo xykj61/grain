@@ -8,8 +8,10 @@
 | `20261009.193357` | [Incense declines a fifty-first, carries the nib](20261009/20261009-193357_incense-declines-fifty-first.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.193543` | [Grass lap, no open page](20261009/20261009-193543_grass-lap-no-open-page.kyri) | No page open; queue clear; nib carried. |
 | `20261009.192915` | [Tally limb 7 -- receipt bounds](20261009/20261009-192915_pheromone-tally-limb7-receipt-bounds.kyri) | Twelve ceilings named as a pedestal; witness GREEN. |
+| `20261009.193500` | [Patchouli rebase kept both rows](20261009/20261009-193500_patchouli-rebase-kept-both-rows.kyri) | Rebase kept both index rows; queue still empty. |
 | `20261009.193231` | [Petrichor stale room count](20261009/20261009-193231_petrichor-stale-room-count.kyri) | First-hour worked output 72 to 88, dated; grade A holds. |
 | `20261009.193302` | [Grass queue graded clear, no frame](20261009/20261009-193302_grass-queue-clear-no-frame.kyri) | Ten queued mycelium heads graded at Door, all B or better; no edit. |
+| `20261009.193152` | [Patchouli queue empty, fresh net, stop](20261009/20261009-193152_patchouli-queue-empty-fresh-net-stop.kyri) | Fresh family grep clean; no build; check-in asked on dormancy. |
 | `20261009.192917` | [Petrichor fast-forward, consent gate held](20261009/20261009-192917_petrichor-no-build-gate-held.kyri) | Clean ff to xy; consent gate held; no build. |
 | `20261009.193053` | [Incense declines a fiftieth, carries the nib](20261009/20261009-193053_incense-declined-fiftieth.kyri) | Round-open clean; no ledger row moved; no build. |
 | `20261009.192740` | [Law lane declined a forty-ninth, carries the nib](20261009/20261009-192740_law-lane-declined-49.kyri) | Round-open clean; no ledger row moved; no build. |
