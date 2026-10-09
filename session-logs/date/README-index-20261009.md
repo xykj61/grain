@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.175852` | [Bakery basis held](20261009/20261009-175852_bakery-basis-held-no-build.kyri) | Receipt-key ruling open; claim held; no build. |
 | `20261009.175812` | [Pheromone queue empty after ff pull](20261009/20261009-175812_pheromone-queue-empty-after-ff-pull.kyri) | Empty queue after ff pull; no build; check-in named. |
 | `20261009.175627` | [Patchouli queue empty, seventh stop](20261009/20261009-175627_patchouli-queue-empty-seventh-stop.kyri) | Seventh empty-queue reading; no build; check-in named. |
 | `20261009.175353` | [Grass inner prompt graded, no edit](20261009/20261009-175353_grass-inner-prompt-graded.kyri) | Register 62 at Field, 38% negative; no edit; nib carried to HEAD. |
