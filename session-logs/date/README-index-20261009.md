@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.163525` | [Petrichor, no fruit, gate held](20261009/20261009-163525_petrichor-upstream-ff-no-fruit-gated.kyri) | Log only. Upstream ff to 1fe8eddf73; consent gate still held. |
+| `20261009.163620` | [Incense decline](20261009/20261009-163620_incense-baton-decline-round-open-clean.kyri) | Log only. Round-open clean; no lane work; cold run held. |
 | `20261009.163310` | [Incense decline, round-open adopted](20261009/20261009-163310_incense-declined-no-gate-open.kyri) | Log only. Round-open adopted the anointed order; board holds one peer claim; cold run held; no lane work open. |
 | `20261009.163450` | [Patchouli queue empty, no build](20261009/20261009-163450_patchouli-queue-empty-22nd.kyri) | Log only. Lane queue empty; one fresh net, two test-local hits. |
 | `20261009.163349` | [Queue empty, fresh nets](20261009/20261009-163349_patchouli-queue-empty-fresh-two-nets.kyri) | Log only. Queue empty 24th; no byte moved. |
