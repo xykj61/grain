@@ -6,6 +6,8 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.103404` | [Keep the sill](20261009/20261009-103404_keep-the-sill.kyri) | Sky. The name is seated. |
+| `20261009.102159` | [Three seats at the door](20261009/20261009-102159_three-seats-at-the-door.kyri) | Sent. Next commit is sky. |
 | `20261009.102037` | [The wish at the sill](20261009/20261009-102037_the-wish-at-the-sill.kyri) | Pisces. The wish. Sky is next. |
 | `20261009.101957` | [The terminal type, studied](20261009/20261009-101957_the-terminal-type.kyri) | Aquarius. One type, studied. |
 | `20261009.101857` | [What must stop](20261009/20261009-101857_what-must-stop.kyri) | Capricorn. The last site stays. |
