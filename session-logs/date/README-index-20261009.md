@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.184137` | [Petrichor declines repeat, pushed](20261009/20261009-184137_petrichor-decline-repeats-named.kyri) | Pending log rebased and pushed; repeated declines named; no build. |
 | `20261009.184033` | [Bakery crux held, check in](20261009/20261009-184033_bakery-crux-held-check-in.kyri) | Crux held; no build; check-in (Claude) on cache shape. |
 | `20261009.183439` | [Incense declines the forty-ninth](20261009/20261009-183439_incense-declines-forty-ninth.kyri) | Fast-forward clean; no build; waits on %642 or %519. |
 | `20261009.183631` | [Pheromone lane reads empty](20261009/20261009-183631_pheromone-lane-reads-empty.kyri) | Lane empty; no rune question; no build; ruling named. |
