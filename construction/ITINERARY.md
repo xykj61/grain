@@ -236,7 +236,7 @@ sits at grade 13, over ceiling, no further split without losing a fact; B+ stand
 witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher.rye` (76),
 `warrant.rye` (71), `rehearsal.rye` (75) stay below B, same lift, one file at a time.
 
-**DIFFUSER -- THE SIMULATED POPULATION EXPLAINS MOST OF THE GAP; CHURN IS THE LARGEST FACTOR.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md). Landed `20261009.174149`: the simulated paper's own population reproduces its table on a real glibc buffer to within 10 percent, and matching the churn to the real probe closes about 82 percent of the gap at W=10,000 (2,105 per seed against 1,696). The falsifier did not fire. Next: the real probe's size mix under the simulated churn. The old account is shelved at [construction/archive/20261009-174149_diffuser-card-account-shelved.md](archive/20261009-174149_diffuser-card-account-shelved.md).
+**DIFFUSER -- THE SIMULATED POPULATION EXPLAINS MOST OF THE GAP; CHURN IS THE LARGEST FACTOR.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md). Landed `20261009.174149`: the simulated paper's own population reproduces its table on a real glibc buffer to within 10 percent, and matching the churn to the real probe closes about 82 percent of the gap at W=10,000 (2,105 per seed against 1,696). The falsifier did not fire. The size mix ran at `20261009.174910` and closed the residual to the seed spread, so that Next is done. Next waits on a real caller's live-set trace, which the tracked tree does not hold: the `20261009.183640` read opened the two matches the `175814` log left unopened, and neither is a trace. The old account is shelved at [construction/archive/20261009-174149_diffuser-card-account-shelved.md](archive/20261009-174149_diffuser-card-account-shelved.md).
 
 **PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
 Account
@@ -293,7 +293,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `ec76cd400a` -- the nib this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `65703162b8` -- the nib this commit is built on, read after the final rebase (rule 2).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/date/20260915/20260915-180554_itinerary-landed-accounts.md`](archive/date/20260915/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -332,7 +332,7 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 ## Now -- the eight sailing ship itineraries
 
-**Git nib:** `36a377bd86` -- the nib this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `36d492ab6d` -- the nib this commit is built on, read after the final rebase (rule 2).
 
 ### Incense -- product captain
 

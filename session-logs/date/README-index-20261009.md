@@ -12,6 +12,7 @@
 | `20261009.183858` | [Patchouli queue empty, twenty-ninth](20261009/20261009-183858_patchouli-queue-empty-twenty-ninth.kyri) | Queue empty; one net; no build; check-in named. |
 | `20261009.183902` | [Petrichor consent gate held again](20261009/20261009-183902_petrichor-consent-gate-held-again.kyri) | Gate unchanged; no page moved; check-in named. |
 | `20261009.183529` | [Grass foundations sample held](20261009/20261009-183529_grass-foundations-sample-held.kyri) | Four foundations graded; none below B; nothing lifted. |
+| `20261009.183640` | [Diffuser card corrected](20261009/20261009-183640_diffuser-size-mix-next-already-landed.kyri) | Size-mix Next done; trace still absent; no build. |
 | `20261009.183420` | [Diffuser queue held, seventh](20261009/20261009-183420_diffuser-queue-held-seventh.kyri) | Queue held; orbit round 1; no build; check-in named. |
 | `20261009.183531` | [Patchouli queue empty, twenty-eighth](20261009/20261009-183531_patchouli-queue-empty-twenty-eighth.kyri) | Queue empty; one net; no build; check-in named. |
 | `20261009.183404` | [Petrichor declines, gate held](20261009/20261009-183404_petrichor-consent-gate-declined.kyri) | No page moved; check-in named. |
