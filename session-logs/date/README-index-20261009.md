@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.160547` | [Incense baton, second decline](20261009/20261009-160547_incense-baton-second-decline.kyri) | Log only. Round-open clean; no lane fruit; gate closed. |
 | `20261009.160445` | [Pheromone lane no fruit](20261009/20261009-160445_pheromone-lane-no-fruit-board-rechecked.kyri) | Log only. Lane empty; board read, one peer claim outside Glow. Check-in (Claude). |
 | `20261009.160318` | [Patchouli queue empty, 25th](20261009/20261009-160318_patchouli-queue-empty-twenty-fifth.kyri) | Log only. Queue empty again, no claim. Check in. |
 | `20261009.160103` | [Petrichor lap, no lane fruit](20261009/20261009-160103_petrichor-upstream-no-lane-fruit.kyri) | Log only. Upstream ff; no docs-geode byte; gate closed. |
