@@ -59,3 +59,9 @@ stamp 20261009.153018
 epoch 1791574218
 paths construction/standing-equipment.kyri tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish
 what roster tigerbeetle_off_by_one_census_witness.rish, the e49 off-by-one census, unrostered since it was written
+claim bakery-shared-receipt-census
+seat bakery
+stamp 20261009.163543
+epoch 1791578143
+paths tools/fixtures/b/shared_build_cache_census.sh construction/standing-equipment-receipt.kyri
+what measure whether the cold-run receipt can be shared across checkouts; the compile layer already shares by content, so the open question is the receipt key
