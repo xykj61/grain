@@ -1,0 +1,37 @@
+# tools/b/shared_receipt_basis.rish -- can a peer's full green receipt stand as this pier's basis?
+#
+# Bakery's first proof for the shared build-and-cold-run crux (construction/ITINERARY.md, Bakery).
+# The reading lives in tools/fixtures/b/shared_receipt_basis_scan.sh: it applies the same ancestry
+# test --scoped applies to this pier's own receipt, to a receipt written on another checkout. Read
+# only. It builds nothing, runs no guard, and writes nothing.
+#
+# Run from the repository root, with a receipt path:
+#   rishi/bin/rishi run tools/b/shared_receipt_basis.rish
+#
+# This witness proves the reading on real history in a throwaway pen, then reports this pier's own
+# receipt against this pier's HEAD. A refusal there is a true finding, not a failure of the witness:
+# the receipt's head is on a line this HEAD does not descend from, and the witness says so.
+say "shared-receipt-basis: Language EN -- a peer's green head stands here only if this HEAD descends from it."
+say "shared-receipt-basis: Style Gauge Meter -- one reading, eleven planted legs, one reported finding."
+say "shared-receipt-basis: Lens TAME -- read only, refuse by name, never write into the tree."
+
+let pen = run ["sh" "tools/fixtures/b/shared_receipt_basis_control.sh"]
+say pen.out
+assert pen.ok else "shared-receipt-basis: the pen must pass"
+assert pen.out contains "control_verdict=ok" else "shared-receipt-basis: the pen must reach its own ok"
+assert pen.out contains "control_failed=0" else "shared-receipt-basis: every planted leg must pass"
+assert pen.out contains "control_legs=11" else "shared-receipt-basis: a leg written tomorrow is heard the day it lands"
+
+assert pen.out contains "leg_ok: a full green receipt at an ancestor stands, with the delta counted" else "shared-receipt-basis: an ancestor full green must stand"
+assert pen.out contains "leg_ok: a scoped receipt refuses: only a full green chains" else "shared-receipt-basis: a scoped receipt must never be a basis"
+assert pen.out contains "leg_ok: a head on a side branch refuses: its delta does not exist here" else "shared-receipt-basis: a head this HEAD does not descend from must refuse"
+assert pen.out contains "leg_ok: an unknown head refuses: the commit is not held here" else "shared-receipt-basis: an unheld head must refuse by name"
+assert pen.out contains "leg_ok: the digest is named as per-tree in every reading" else "shared-receipt-basis: the digest must never be read as a cross-checkout match"
+assert pen.out contains "leg_ok: outside a repository the scan refuses rather than answering" else "shared-receipt-basis: an instrument that cannot answer must refuse"
+
+let here = run ["sh" "tools/fixtures/b/shared_receipt_basis_scan.sh" "construction/standing-equipment-receipt.kyri"]
+say here.out
+assert here.out contains "digest_carries=no" else "shared-receipt-basis: the per-tree caveat must print on every reading"
+assert here.out contains "verdict=" else "shared-receipt-basis: the reading must name a verdict"
+
+say "shared-receipt-basis: GREEN -- the pen holds 11 legs with every refusal planted and then tested, and this pier's own receipt reads as the finding it is."

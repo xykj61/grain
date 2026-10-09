@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.180619` | [Shared receipt basis reader](20261009/20261009-180619_shared-receipt-basis-reader.kyri) | Read-only reader for a peer receipt basis, 11 pen legs green; pier receipt head diverged, refused. |
 | `20261009.180633` | [Incense lane clear again](20261009/20261009-180633_incense-lane-clear-again-no-build.kyri) | Round-opened clean; claim board read; no build; check-in named. |
 | 20261009.180641 | [20261009-180641_sunn8-roster-claim.kyri](20261009/20261009-180641_sunn8-roster-claim.kyri) | sunn8 witness rostered, both sides proven |
 | `20261009.180322` | [Pheromone lane empty, no build](20261009/20261009-180322_pheromone-lane-empty-no-build.kyri) | Glow capacity witness GREEN on re-read; queue empty; no build; check-in named. |
