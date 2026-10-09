@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.173454` | [Water row, two front doors A](20261009/20261009-173454_grass-water-row-two-front-doors-grade-a.kyri) | Front doors graded A (91, 94); no lift, no edit. |
 | `20261009.173436` | [Diffuser seed-spread falsifier located](20261009/20261009-173436_diffuser-seed-spread-next-falsifier-held.kyri) | Falsifier needs a pinned population; located, not run; no code. |
 | `20261009.173126` | [Patchouli queue empty](20261009/20261009-173126_patchouli-queue-empty-no-build.kyri) | Queue read empty again; claims clear; no build. |
 | `20261009.173258` | [Copal rosters tigerbeetle seventy-line](20261009/20261009-173258_copal-tigerbeetle-seventy-line-roster.kyri) | one witness, claimed, proven |
