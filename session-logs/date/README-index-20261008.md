@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.235650` | [Two hex reads stay](20261008/20261008-235650_two-hex-reads-stay.kyri) | Taurus. Two hex reads stay. |
 | `20261008.235559` | [A list of names](20261008/20261008-235559_a-list-of-names.kyri) | Aries. Face 61.2000. |
 | `20261008.221125` | [Sky closed the orbit](20261008/20261008-221125_sky-closed-the-orbit.kyri) | Sent. Orbit 4 closes. |
 | `20261008.221032` | [Siya closes the orbit](20261008/20261008-221032_siya-closes-the-orbit.kyri) | Siya. Orbit 4 closes. |
