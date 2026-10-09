@@ -5,30 +5,30 @@
 //! Design read: active-designing/date/20260813/20260813-112420_mycelium-warrant-validator-set-rotation-exploration.md
 //!
 //! The Muster named WHICH nodes are the legitimate validators -- a bounded open roll with a Byzantine
-//! threshold read from its own size. Yet the roll is FROZEN: nothing lets a validator set change. Real
+//! threshold read from its own size. Yet the roll is FROZEN: every validator set stays as first seated. Real
 //! fault-tolerant systems must retire a compromised node, admit a new one, or rotate a whole committee
 //! between epochs (TigerBeetle changes its view, Mysticeti reconfigures its committee) -- and each faces the
 //! same trap: WHO authorizes the new roll? If a fresh set of keys could simply declare itself the
 //! validators, the Muster's whole guarantee evaporates -- an attacker mints a roll of their own keys, calls
-//! it the committee, and a stranger cannot tell the real succession from a coup.
+//! it the committee, and a stranger sees a coup and a real succession wearing the same face.
 //!
 //! The Warrant fills that blind spot: a validator set rotates only when a QUORUM OF THE CURRENT ROLL
-//! certifies its successor. Authority is never seized; it is handed forward under signature. A new roll is
-//! believed not because it says it is the committee, but because a Byzantine quorum of the OUTGOING
-//! validators signed the successor's content-address. The crux `verify_warrant(warrant, prev, next)` passes
+//! certifies its successor. Authority is handed forward under signature, one link at a time. A new roll is
+//! believed on the strength of a Byzantine quorum of the OUTGOING validators, who sign the successor's
+//! content-address, rather than on its own word that it is the committee. The crux `verify_warrant(warrant, prev, next)` passes
 //! exactly when:
 //!   - the digests bind the two real rolls (prev_digest == roll_digest(prev), next_digest ==
-//!     roll_digest(next); else DigestMismatch -- a certificate cannot be re-pointed at rolls it never signed);
+//!     roll_digest(next); else DigestMismatch -- a certificate stays bound to the rolls it signed);
 //!   - every endorser is an enrolled member of the PREVIOUS roll (else NotMember -- the CRUX: the successor's
-//!     own fresh keys, signing their own coronation, do not authorize themselves; a set cannot crown itself);
-//!   - the endorsers are distinct (else DuplicateSigner -- one outgoing node cannot sign the handoff twice);
+//!     own fresh keys, signing their own coronation, are weighed as strangers, so a set crowns itself only through the outgoing roll);
+//!   - the endorsers are distinct (else DuplicateSigner -- one outgoing node may sign the handoff only once);
 //!   - every signature holds over the bound tuple (else BadSignature);
 //!   - the count meets the PREVIOUS roll's Byzantine threshold (else BelowQuorum -- a thin handoff, short of
-//!     the outgoing set's own bar, is not yet a lawful succession).
+//!     the outgoing set's own bar, stays a succession yet to become lawful).
 //!
-//! Composes muster - muster_kyri - kumara public API only, editing none; the succession law is the
+//! Composes the muster, muster_kyri, and kumara public APIs only, leaving each elder as it stands; the succession law is the
 //! Warrant's own bounded fold over two rolls and a quorum of the first. Siloed, dev-only, demo validator and
-//! keeper seeds -- no real key, no funds, no network, no custody. A SERVED warrant (a holder fetching the
+//! keeper keys, a demo network, and demo custody, all for testing. A SERVED warrant (a holder fetching the
 //! live succession chain over Comlink) reaches the Comlink-served gate.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/warrant.rye
