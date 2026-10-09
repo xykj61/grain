@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.163043` | [Patchouli queue empty, fresh net](20261009/20261009-163043_patchouli-queue-empty-fresh-net.kyri) | Log only. Queue empty 22nd; no mantra or tally byte moved. |
 | `20261009.162448` | [Pheromone lane empty, aether rota](20261009/20261009-162448_pheromone-lane-empty-aether-rota.kyri) | Log only. Lane empty; no rune ruling owed here; check in (Claude). |
 | `20261009.162231` | [Cache miss signal](20261009/20261009-162231_bakery-cache-mutation-miss-signal.kyri) | Log only. File count misreads zig misses; proof withdrawn. |
 | `20261009.162557` | [Petrichor gated, round-open clean](20261009/20261009-162557_petrichor-gated-no-fruit-round-open-clean.kyri) | Log only. Gate held; no docs-geode byte; check in (Claude). |
