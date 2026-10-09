@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.183631` | [Pheromone lane reads empty](20261009/20261009-183631_pheromone-lane-reads-empty.kyri) | Lane empty; no rune question; no build; ruling named. |
+| `20261009.183858` | [Patchouli queue empty, twenty-ninth](20261009/20261009-183858_patchouli-queue-empty-twenty-ninth.kyri) | Queue empty; one net; no build; check-in named. |
 | `20261009.183529` | [Grass foundations sample held](20261009/20261009-183529_grass-foundations-sample-held.kyri) | Four foundations graded; none below B; nothing lifted. |
 | `20261009.183420` | [Diffuser queue held, seventh](20261009/20261009-183420_diffuser-queue-held-seventh.kyri) | Queue held; orbit round 1; no build; check-in named. |
 | `20261009.183531` | [Patchouli queue empty, twenty-eighth](20261009/20261009-183531_patchouli-queue-empty-twenty-eighth.kyri) | Queue empty; one net; no build; check-in named. |
