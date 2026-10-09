@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.175812` | [Pheromone queue empty after ff pull](20261009/20261009-175812_pheromone-queue-empty-after-ff-pull.kyri) | Empty queue after ff pull; no build; check-in named. |
 | `20261009.175627` | [Patchouli queue empty, seventh stop](20261009/20261009-175627_patchouli-queue-empty-seventh-stop.kyri) | Seventh empty-queue reading; no build; check-in named. |
 | `20261009.175327` | [Pheromone lane empty](20261009/20261009-175327_pheromone-lane-empty-no-build.kyri) | Glow lane queue empty after ff pull; no build. |
 | `20261009.175248` | [Incense earth-row decline](20261009/20261009-175248_incense-earth-row-dead-letter-no-build.kyri) | Dead-letter box read; no build. |
