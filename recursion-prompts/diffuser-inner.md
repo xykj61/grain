@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.155617` -- the mixed-lifetime falsifier's space half run as a simulation: region bytes rise with replacements, live bytes stay flat, and the size mix moves only the slope
 **Revised:** `20261009.155003` -- the call-site count re-derives on HEAD `728b04c068`: 656 sites and product 188 and residue 310 hold; literal and len differ by one site, a classifier-precedence matter (`5 + extra.len`)
 **Revised:** `20261009.154609` -- the call-site size mix is counted, and the canvas products lead it
 **Revised:** `20261009.153349` -- the mixed population reverses the time finding; space holds
@@ -797,6 +798,18 @@ one region, rather than uniform same-size churn -- for a later lap. Graded B/84 
 (register 87, reach 70, truth 100 counted, service 80 judged). No new witness, no new module;
 the probe files are built, run three times under `-OReleaseFast`, and deleted before this lap
 ends.
+
+**Self-generated `20261009.155522`, the mixed-lifetime falsifier's space half run on its own model.**
+[The region's footprint is the allocation total](../active-designing/date/20261009/20261009-155522_the-region-footprint-is-the-allocation-total.md)
+runs a deterministic simulation of the workload the prior essay named open: 200 live slots,
+replacements at random, two size mixes (uniform 64 bytes and log-uniform 16 to 4,096 bytes), and a
+pinned arm where every tenth slot never turns over. Across 1,000, 10,000 and 100,000 steps, region
+bytes rise in proportion to the replacement count while live bytes stay flat, so the footprint
+ratio runs to 501 on the uniform mix at 100,000 steps. The size mix moves the slope, not the law.
+Lifetimes do not yet vary in the model, since the pinned arm sits beside 90 percent churn, so the
+mixed-lifetime falsifier stays open. Its named probe -- 90 percent of slots at one replacement in
+10,000 per step, 10 percent at one in 10 -- is written in the essay for a later lap. Not run through
+the report card. No witness, no module; the probe was a scratch file and is deleted.
 
 ## gates
 
