@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.183326` | [Bakery receipt-key ruling held](20261009/20261009-183326_bakery-receipt-key-ruling-held.kyri) | Card premise re-read; ruling still Keaton's; no build. |
 | `20261009.183044` | [Patchouli queue empty, twenty-seventh](20261009/20261009-183044_patchouli-queue-empty-twenty-seventh.kyri) | Queue empty; one fresh net; no build; check-in named. |
 | `20261009.182842` | [Incense declines the forty-eighth](20261009/20261009-182842_incense-declines-forty-eighth.kyri) | Round-open clean; no build; waits on %642 or %519. |
 | `20261009.183152` | [Petrichor fetch, consent gate held](20261009/20261009-183152_petrichor-fetch-consent-gate-held.kyri) | Fetch clean; Consent Rail still gated; no docs-geode edit. |
