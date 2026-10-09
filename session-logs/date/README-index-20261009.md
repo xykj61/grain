@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.163246` | [Petrichor consent gate, idle](20261009/20261009-163246_petrichor-consent-gate-idle-no-fruit.kyri) | Log only. Gate held, no fruit; check in (Claude). |
 | `20261009.163043` | [Patchouli queue empty, fresh net](20261009/20261009-163043_patchouli-queue-empty-fresh-net.kyri) | Log only. Queue empty 22nd; no mantra or tally byte moved. |
 | `20261009.162934` | [Incense decline](20261009/20261009-162934_incense-decline-board-clear-cold-held.kyri) | Log only. Board clear, cold run held, no lane work unblocked. |
 | `20261009.162448` | [Pheromone lane empty, aether rota](20261009/20261009-162448_pheromone-lane-empty-aether-rota.kyri) | Log only. Lane empty; no rune ruling owed here; check in (Claude). |
