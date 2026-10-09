@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261008.204218` | [One bound, four ways](20261008/20261008-204218_one-bound-four-ways.kyri) | Sagittarius. One ceiling, four ways. |
 | `20261008.191640` | [Libra, two bounds](20261008/20261008-191640_libra-two-bounds.kyri) | Face 60.5000. Sky opens at 8083. |
 | `20261008.190849` | [Same brain, the whole run](20261008/20261008-190849_same-brain-the-whole-run.kyri) | The richer probe is the size. Spell seated. |
 | `20261008.185712` | [Fleet reads Calfive](20261008/20261008-185712_fleet-calfive-planning.kyri) | Orbit 6, Virgo. The baton teaches the plan. |
