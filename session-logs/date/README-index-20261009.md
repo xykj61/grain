@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.164424` | [Diffuser send, nib follow-up](20261009/20261009-164424_diffuser-send-rebased-twice-nib-follow-up.kyri) | Send landed at bc75b68f0f after two rebases; nib carried forward. |
+| `20261009.164403` | [Incense fallow, order holds again](20261009/20261009-164403_incense-fallow-ruled-order-holds-again.kyri) | Log only. Round-open clean; claims clear; no build. |
 | `20261009.164321` | [Petrichor gated, no build](20261009/20261009-164321_petrichor-gate-held-no-build.kyri) | Log only. Upstream read clean; Consent Rail gate holds; no page moved. |
 | `20261009.164228` | [Incense fallow, witness re-run green](20261009/20261009-164228_incense-fallow-witness-rerun.kyri) | Log only. Receipt witness re-read GREEN; lane gated; no code. |
 | `20261009.164213` | [Census measured](20261009/20261009-164213_receipt-key-waits-on-ruling.kyri) | Cache shares by content; receipt key ruling asked. |
