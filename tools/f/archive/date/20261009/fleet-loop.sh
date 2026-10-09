@@ -28,18 +28,6 @@
 #   LOOP_HOURS=6 sh tools/f/fleet-loop.sh petrichor
 #   FLEET_DRY=1 sh tools/f/fleet-loop.sh incense   # print the command; run nothing
 #   FLEET_BARE=1 LOOP_LAPS=1 sh tools/f/fleet-loop.sh incense  # Linux, no ai-jail
-#   FLEET_MODEL=claude-sonnet-5-5 sh tools/f/fleet-loop.sh incense  # override the model default
-#
-# FLEET_MODEL, seated 20261009.150000 on Keaton's word: the Earth fleet's unattended laps
-# default to claude-haiku-5-5 (the same default fleet_lap.sh carries for the jailed path),
-# overridable per launch the same way LOOP_HOURS and FLEET_BARE already are.
-#
-# CALFIVE, fused at round-open: every lap prints the calfive_schedule guard's own reading
-# (tools/fixtures/c/calfive_schedule_scan.sh) right after the round-open pull succeeds, so a
-# scheduling conflict is visible in the lap's own transcript rather than needing a separate
-# hand to run the guard later. The guard is non-fatal here on purpose -- it names a conflict,
-# it never stops a lap, the same report-rather-than-gate choice the guard itself already
-# makes for anything a lap cannot fix by running again.
 #
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
 # for Claude seats), per the read-scope law's shared window -- /tmp is not durable in
@@ -162,13 +150,11 @@ echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_l
 
 # Print the command a lap would run. Linux Earth ships wrap in agent-jail; Darwin does not.
 # The prompt stays a file -- never inlined here.
-model=${FLEET_MODEL:-claude-haiku-5-5}
-
 earth_claude_cmd() {
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
-    printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags, and the model default, live in tools/f/fleet_lap.sh (%414)"
+    printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags live in tools/f/fleet_lap.sh (%414)"
   else
-    printf '%s\n' "claude --dangerously-skip-permissions --effort medium --model ${model} --output-format stream-json --verbose -p <${prompt_file}>"
+    printf '%s\n' "claude --dangerously-skip-permissions --effort medium --output-format stream-json --verbose -p <${prompt_file}>"
   fi
 }
 
@@ -272,7 +258,7 @@ run_earth_claude() {
     # argv, and every flag claude needs is spelled in there.
     ./tools/ag/agent-jail.sh lap "$seat" | stream_claude
   else
-    claude --dangerously-skip-permissions --effort medium --model "$model" --output-format stream-json --verbose \
+    claude --dangerously-skip-permissions --effort medium --output-format stream-json --verbose \
       -p "$_prompt" \
       | stream_claude
   fi
@@ -322,7 +308,6 @@ while [ "$indefinite" = 1 ] || [ "$(date +%s)" -lt "$deadline" ]; do
     sleep 60
     continue
   fi
-  sh tools/fixtures/c/calfive_schedule_scan.sh 2>&1 | sed 's/^/calfive: /' || true
   rc=0
   run_lap || rc=$?
   if [ "$rc" -eq 130 ] || [ "$rc" -eq 143 ] || [ "$rc" -eq 4 ]; then

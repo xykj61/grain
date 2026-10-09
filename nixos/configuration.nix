@@ -95,16 +95,19 @@
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
   # claude-code: nixos-26.05's pin lags upstream.
-  # This overlay pins the latest release, 2.1.286, fetching the same native binary
+  # This overlay pins the latest release, 2.1.295, fetching the same native binary
   # the nixpkgs derivation would, from the same downloads.claude.ai release path.
   # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
   # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
   # argument -- overrideAttrs works on both the locked rev and future ones. The
   # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest,
-  # verified on metal against the downloaded binary (sha256sum == fe503f65...fc73f,
-  # 20261001.125300; the elder 2.1.278 read 5c473593...47ab, 20260917). The build
-  # self-checks twice: fetchurl fails loudly on any hash mismatch, and
-  # versionCheckHook runs `claude --version`.
+  # read 20261009.150000 from downloads.claude.ai/claude-code-releases/2.1.295/
+  # manifest.json's own linux-x64 field (checksum == 4503bfe1...6f358) -- a
+  # published checksum rather than a hand's own sha256sum of a downloaded binary,
+  # which this bump did not run. The elder 2.1.286 read fe503f65...fc73f,
+  # 20261001.125300, verified on metal that round; 2.1.278 read 5c473593...47ab,
+  # 20260917. The build self-checks twice: fetchurl fails loudly on any hash
+  # mismatch, and versionCheckHook runs `claude --version`.
   #
   # The VERSION STRING is proven by that hook rather than here, and the reason is
   # this overlay's own subject: the downloaded binary is dynamically linked against
@@ -164,17 +167,17 @@
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.286";
+        version = "2.1.295";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.286/linux-x64/claude";
-          sha256 = "fe503f65c6289d59c23e5b21ae44f03583f997dd33a2cbfc75ab4f96fb8fc73f";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.295/linux-x64/claude";
+          sha256 = "4503bfe11a6c7fcc1e0b39b5e0d347c04248f750b03b0977b3ad6b531fe6f358";
         };
       });
 
       # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
       # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
       # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
-      # upstream ships 0.155.1, so this overlay is the same declared road the two
+      # upstream ships 0.162.0, so this overlay is the same declared road the two
       # entries above take, for the fastest-moving of the three agent CLIs.
       #
       # This one REPLACES the derivation rather than overrideAttrs'ing it, because
@@ -192,33 +195,43 @@
       #
       # The build self-checks twice, exactly as claude-code's does: fetchurl fails
       # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
-      # and asserts the string carries 0.155.1. The sha256 below is the release
-      # asset's own checksum, verified on this pier against the downloaded file
-      # and the unpacked binary answered `codex-cli 0.155.1`.
+      # and asserts the string carries 0.162.0. The sha256 below is read
+      # 20261009.150000 from GitHub's own release-asset digest field
+      # (api.github.com/repos/openai/codex/releases/tags/rust-v0.162.0) rather
+      # than from a hand's own sha256sum of a downloaded file, which this bump
+      # did not run. The elder 0.155.1 read a0ef8b2d...d9115, verified on this
+      # pier against the downloaded file, and the unpacked binary answered
+      # `codex-cli 0.155.1`.
       #
       # To bump: read the newest rust-vX.Y.Z tag at github.com/openai/codex/releases,
       # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
       codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
         pname = "codex";
-        version = "0.155.1";
+        version = "0.162.0";
 
         src = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "a0ef8b2debc3bf747e07b1a039354de31300ac0dcc2276498ba281470b5d9115";
+          sha256 = "8daf67f6261161aa5939d8d42a516032d760406216779d7ce6040f242140ff73";
         };
 
         # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
-        # code_mode_host feature reads stable-and-default-true in this release
-        # (verified with `codex features list`, 20260828), and the tool router
-        # spawns $out/bin/codex-code-mode-host for every tool call when it is on
-        # -- DREAM's first lap on this pier died there three bounded casts in a
-        # row, BLOCKED as a machine limit (correctly: the binary was absent, not
-        # the tree wrong). Upstream ships it as its own artifact under the same
-        # release tag; hash from a local fetch of that artifact, sha256sum ==
-        # b476...4fc5, 20260828, 21,208,013 bytes.
+        # code_mode_host feature read stable-and-default-true in 0.155.1
+        # (verified with `codex features list`, 20260828); this bump carries the
+        # same artifact forward at the new tag without re-running that check on
+        # the pier, so the next lap that touches DREAM's seat should confirm it
+        # still reads stable before trusting this comment on its word alone. The
+        # tool router spawns $out/bin/codex-code-mode-host for every tool call
+        # when the feature is on -- DREAM's first lap on this pier died there
+        # three bounded casts in a row, BLOCKED as a machine limit (correctly:
+        # the binary was absent, not the tree wrong). Upstream ships it as its
+        # own artifact under the same release tag; the sha256 below is read
+        # 20261009.150000 from GitHub's own release-asset digest field, the same
+        # source and the same honesty as the primary binary above. The elder
+        # 0.155.1 asset read b476...4fc5, a hand's own local fetch, 20260828,
+        # 21,208,013 bytes.
         codeModeHost = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "9fd083743af55be818aceb351d371fb5136f5b6aa3938f167087373d27067b2d";
+          sha256 = "dee8bf3df637c68e1495b928d643b76d4ad44f94e4f0ed79fe8482fa79e23d97";
         };
 
         # The tarball holds one bare file rather than a directory, so the default

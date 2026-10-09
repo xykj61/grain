@@ -18,15 +18,7 @@
 # Silence's loop on `20260829` has nowhere left to bite.
 #
 #   sh tools/f/fleet_lap.sh incense          # inside the jail, or bare on Darwin
-#   FLEET_MODEL=claude-sonnet-5-5 sh tools/f/fleet_lap.sh incense   # override the default
 set -eu
-
-# FLEET_MODEL, seated 20261009.150000 on Keaton's word: the Earth fleet's unattended laps
-# default to claude-haiku-5-5 rather than whatever the tree's own settings.json names, the
-# same way LOOP_HOURS and FLEET_BARE are already env-var defaults a hand can override per
-# launch. A round that must run on the fuller model still can, by naming it; nothing here
-# narrows what a hand may choose, only what an unwatched loop chooses for itself.
-model=${FLEET_MODEL:-claude-haiku-5-5}
 
 seat=${1:-}
 [ -n "$seat" ] || { echo "fleet-lap: want a seat name" >&2; exit 2; }
@@ -52,5 +44,5 @@ prompt=$(
   cat "$prompt_file"
 )
 
-exec claude --dangerously-skip-permissions --effort max --model "$model" \
+exec claude --dangerously-skip-permissions --effort max \
   --output-format stream-json --verbose -p "$prompt"

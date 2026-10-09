@@ -489,9 +489,10 @@ At check-in, count completed named wholes, dual-product acceptance cases green, 
 
 ## Open doors for Keaton
 
-- **The notetaking quest owes four notes.** Orbit 1 landed; orbits 2-5 did not. A new
-  `calfive_schedule` guard checks the cadence math itself each round. Catch-up plan:
-  [`../active-development/20261009-114234_the-notetaking-quest-fell-behind.md`](../active-development/20261009-114234_the-notetaking-quest-fell-behind.md).
+- **2 of 4 notetaking-quest notes still owed** (Mantra idempotence, the Tally ceiling). [The
+  finding and the catch-up plan](../active-development/20261009-114234_the-notetaking-quest-fell-behind.md).
+- **Earth fleet laps now default to Haiku 5.5, unwatched on a real pier** -- override with
+  `FLEET_MODEL=claude-sonnet-5-5`. [The account](../active-development/20261009-151449_the-earth-fleet-carries-calfive-and-haiku.md).
 - The first receipt contract is accepted for bounded synthetic implementation; material scope changes return here.
 - The full eight-ship formation is chosen and may remain under the watcher.
 - Invite DJINN to accept, alter, or replace the proposed visual seats.
