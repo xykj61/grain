@@ -9,6 +9,7 @@
 | `20261009.190339` | [Incense declines once more](20261009/20261009-190339_incense-declines-once-more-no-build.kyri) | Round-open clean; law waits on Keaton. |
 | `20261009.190336` | [Bakery census re-confirmed, key held](20261009/20261009-190336_bakery-census-confirms-key-held.kyri) | Census path_independent=yes; key waits on ruling. |
 | `20261009.190531` | [Patchouli queue empty, twenty-third way](20261009/20261009-190531_patchouli-queue-empty-twenty-third-way.kyri) | Queue empty again; no code; no build. |
+| `20261009.190601` | [Grass sample readings, queue empty](20261009/20261009-190601_grass-sample-readings-queue-empty.kyri) | Warrant B, rehearsal A, till B+; none below B; nib carried. |
 | `20261009.190125` | [Patchouli queue empty, 22nd way](20261009/20261009-190125_patchouli-queue-empty-twenty-second-way.kyri) | Queue empty; no code; no build. |
 | `20261009.190227` | [Grass warrant at B, queue empty](20261009/20261009-190227_grass-warrant-measured-queue-still-empty.kyri) | Warrant reads B (83); no build; queue still empty. |
 | `20261009.190100` | [Incense declines again](20261009/20261009-190100_incense-declines-again-no-build.kyri) | Round-open clean; law waits on Keaton. |
