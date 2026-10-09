@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.174037` | [Law lane declined, no build](20261009/20261009-174037_incense-law-lane-declined-no-build.kyri) | Round-open clean; law lane waits on Keaton's word; no build. |
+| `20261009.174540` | [Patchouli queue empty, fourth stop](20261009/20261009-174540_patchouli-queue-empty-fourth-stop.kyri) | Fourth empty-queue reading; no build, no red; check-in named. |
 | `20261009.174314` | [copal roster of the Surface p55 check-in witness](20261009/20261009-174314_copal-p55-roster.kyri) | p55 witness rostered and proven both ways. |
 | `20261009.174232` | [GRASS frame reread](20261009/20261009-174232_grass-register-frame-reread-no-edit.kyri) | SOURCE.md B+/88; register lift stays booked; no edit. |
 | `20261009.173832` | [Petrichor gate ninth read](20261009/20261009-173832_petrichor-gate-ninth-read-no-build.kyri) | Pulled two; Consent Rail still zero; no build. |
