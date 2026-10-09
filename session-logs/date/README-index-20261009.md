@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.171105` | [Grass rehearsal head to A](20261009/20261009-171105_grass-rehearsal-head-lift.kyri) | cold run guard_red, seven reds unbooked; head lifted |
 | `20261009.171112` | [Index-row red measured, no repair](20261009/20261009-171112_witness-red-index-rows.kyri) | Row-bound witness reads 318 over 192 bytes; no row edited. |
+| `20261009.171156` | [Petrichor gate re-read](20261009/20261009-171156_petrichor-gate-rechecked-no-build.kyri) | Consent Rail still lacks grant and revoke; no build. |
 | `20261009.170835` | [Petrichor confirms 20261006 gap](20261009/20261009-170835_petrichor-confirms-missing-20261006-shelf-no-build.kyri) | Re-proves pin row 72 gap; no build. |
 | `20261009.170730` | [Incense declines at new head](20261009/20261009-170730_incense-declines-upstream-moved.kyri) | Round-open to dbf61c1b30; copal claim read; no build. |
 | `20261009.170720` | [Bakery plant meter reread](20261009/20261009-170720_bakery-plant-meter-reread-no-build.kyri) | Log only. Ff to dbf61c1b30; plant remainder 359 unchanged; no build. |
