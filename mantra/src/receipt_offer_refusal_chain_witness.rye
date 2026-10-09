@@ -1,20 +1,19 @@
-//! mantra/src/receipt_offer_refusal_chain_witness.rye -- refusal blocks the chain, not just the field.
+//! mantra/src/receipt_offer_refusal_chain_witness.rye -- a refused fact stops the whole chain.
 //!
-//! Proves the receipt contract's acceptance cases 6 and 7 as CHAIN properties, rather than as the
-//! admission module's own field-level refusal tests already prove them. `receipt_refusal_witness.rye`
-//! proves a bad fact names its own field and reason; this witness proves the CONSEQUENCE the
-//! contract's own words ask for -- a refused fact refuses "before append" (case 6) and "before
-//! either product projects" (case 7). The proof is structural: a refused `Log.append` leaves
-//! `Log.offer` empty, so `Log.replay` -- the one call that ever produces a `ReceiptState` --
-//! itself refuses with `NoAdmittedFact`. Since `receipt_offer_snapshot.rye`'s two conversions take
-//! only a `ReceiptState`, a caller that cannot replay cannot build either product's `OfferSnapshot`,
-//! and cannot call either product's `from_snapshot`. This witness reads that chain directly rather
-//! than trusting the argument: it calls `replay` itself after every refusal and asserts the error.
+//! This witness proves the receipt contract's acceptance cases 6 and 7 as chain properties. The
+//! admission module's own field-level tests, in `receipt_refusal_witness.rye`, already show that a
+//! bad fact names its own field and reason. This witness shows the consequence the contract asks
+//! for: a refused fact halts "before append" (case 6) and "before either product projects" (case 7).
+//! The proof is structural. A refused `Log.append` leaves `Log.offer` empty, so `Log.replay` -- the
+//! one call that produces a `ReceiptState` -- returns `NoAdmittedFact`. `receipt_offer_snapshot.rye`'s
+//! two conversions take only a `ReceiptState`, so a caller that fails to replay also fails to build
+//! either product's `OfferSnapshot` and to call either product's `from_snapshot`. The witness checks
+//! that chain directly: it calls `replay` itself after each refusal and asserts the error.
 //!
-//! Case 6 -- every required text field this contract publishes, emptied one at a time, refuses by
-//! that field's own name and blocks the replay that would follow. Case 7 -- a wrong-length digest
-//! and an invalid signature each refuse "false authority" the same way, before any projection could
-//! read the fact at all.
+//! Case 6 covers every required text field this contract publishes. Each field is emptied in turn,
+//! and each one refuses by its own name and blocks the replay that would follow. Case 7 covers a
+//! wrong-length digest and an invalid signature. Each one refuses "false authority" in the same way,
+//! before any projection reads the fact.
 
 const std = @import("std");
 const assert = std.debug.assert;

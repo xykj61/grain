@@ -294,6 +294,18 @@ entry: whether this lane should go dormant until `%807` is ruled or `%765` grows
 `tally/` candidate, or whether it should widen its own fruit to a different standing instrument
 entirely, is a call for Keaton rather than another repeated sweep.
 
+**The hidden shelf was never graded, `20261009`.** The module-head sweeps above read the flat
+`mantra/` and `tally/` rooms. `module_room_reach_scan.sh list` names `mantra` as `hidden_shelf`
+(31 files under `mantra/src/`, which the flat glob cannot reach). Grading those heads at Door with
+`qa_report_card.sh` read register below the 80 bar on 25 of 31 files. The lowest,
+`mantra/src/receipt_offer_refusal_chain_witness.rye`, read register 0 (eight of eight sentences
+negative). Its head was rewritten to affirmative sentences, keeping every identifier, and it now
+reads register 34, reach 100, with its runner GREEN on metal. The register stays low by design:
+a refusal witness's subject is refusal, and Gauge's Meter setting counts that as the subject, so
+Door's bar is the wrong yardstick for this genre. **Do not reword a witness head further to reach
+80.** The grades to read are `--setting door` without `--service 0`, which caps the composite at 75.
+Next: the remaining 24 `mantra/src/` heads are a ratchet, graded on touch, not a red.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

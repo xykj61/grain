@@ -13,6 +13,7 @@
 | `20261009.195501` | [Petrichor idle, sixth, no build](20261009/20261009-195501_petrichor-idle-sixth-no-build.kyri) | No claim, no build; consent gate held. |
 | `20261009.195320` | [Bakery queue gated](20261009/20261009-195320_bakery-queue-gated-no-build.kyri) | Queue gated on a ruling; no build, no claim. |
 | `20261009.195247` | [Petrichor idle, fifth, ff, no build](20261009/20261009-195247_petrichor-idle-fifth-ff-no-build.kyri) | Ff to aa2c8cf28e; no build, no claim. |
+| `20261009.195550` | [Patchouli grades the hidden shelf](20261009/20261009-195550_patchouli-hidden-shelf-grade.kyri) | One refusal head rewritten, GREEN; 24 left. |
 | `20261009.195051` | [Petrichor idle, fourth, ff, no build](20261009/20261009-195051_petrichor-idle-fourth-no-build.kyri) | Ff to eb7898217b; no build, no claim. |
 | `20261009.195400` | [Bakery crux measured, no claim](20261009/20261009-195400_bakery-crux-measure-no-build.kyri) | Read-only measure of the Rye build seam; receipt found stale at fa310d296b; no build, no claim. |
 | `20261009.195000` | [Patchouli queue empty, 22nd, no build](20261009/20261009-195000_patchouli-queue-empty-twenty-second.kyri) | Lane empty again; %835 owned elsewhere. |
