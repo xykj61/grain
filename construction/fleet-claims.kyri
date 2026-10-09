@@ -60,3 +60,9 @@ stamp 20261009.175138
 epoch 1791582698
 paths tools/b/shared_receipt_basis.rish tools/fixtures/b/shared_receipt_basis_scan.sh
 what Bakery crux: a read-only instrument that reads a peer checkout's standing-equipment receipt and says whether its digest can stand as this pier's --scoped basis; no build cache yet.
+claim copal-sunn8-root-readme-roster
+seat copal
+stamp 20261009.180500
+epoch 1791583500
+paths tools/gen/chapter/sunn8_root_readme_witness.rish construction/standing-equipment.kyri
+what Roster sunn8_root_readme_witness, an unrostered chapter witness, and prove it from both sides.
