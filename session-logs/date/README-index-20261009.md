@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+
 | `20261009.181216` | [Petrichor 20261006 gap](20261009/20261009-181216_petrichor-20261006-gap-no-peer-copy.kyri) | 20261006 shelf absent on every checkout here; row 72 awaits ruling. |
 | `20261009.181205` | [Grass inner regrade, repeat](20261009/20261009-181205_grass-inner-regrade-repeat-check-in.kyri) | B holds again, no edit; queue empty; check-in named. |
 | `20261009.181209` | [Bakery crux blocked](20261009/20261009-181209_bakery-crux-blocked-no-build.kyri) | Receipt basis stalled; no build, no claim, no tree change. |

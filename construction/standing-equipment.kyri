@@ -9967,3 +9967,12 @@ guard sunn8_root_readme
 path tools/gen/chapter/sunn8_root_readme_witness.rish
 tier lap
 seated 20261009.180900
+
+# oven_season_o0 -- the Oven Chapter o0 seat, rostered on the claim copal-oven-o0-witness-roster.
+# It proves the charter stands while the forge path reads ember/ LIVE with oven/ retired, and it
+# stood unrostered since the rename, so no fleet seat ran it. Present tree reads GREEN on metal;
+# the pen legs plant a stray oven/ directory and remove ember/, and both read RED.
+guard oven_season_o0
+path tools/gen/chapter/oven_season_o0_witness.rish
+tier lap
+seated 20261009.181340
