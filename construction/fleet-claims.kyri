@@ -53,3 +53,9 @@ format fleet-claims-v1
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
 
+claim copal-surface-season-p58-roster
+seat copal
+stamp 20261009.175125
+epoch 1791582685
+paths tools/gen/chapter/surface_season_p58_witness.rish construction/standing-equipment.kyri
+what Roster the unrostered surface_season_p58 witness in the standing equipment, proven green and red on a throwaway pen.
