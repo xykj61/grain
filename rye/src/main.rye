@@ -65,6 +65,7 @@
 //! would have pinned it.
 
 const std = @import("std");
+const tally_parse_int = @import("parse_int.rye");
 const assert = std.debug.assert;
 const c = std.c;
 const Sha256 = std.crypto.hash.sha2.Sha256;
@@ -1000,16 +1001,16 @@ fn digest_record_read(
         } else if (std.mem.eql(u8, field, "path")) {
             seen_path = std.mem.eql(u8, value, path);
         } else if (std.mem.eql(u8, field, "inode")) {
-            const n = std.fmt.parseInt(u64, value, 10) catch return null;
+            const n = tally_parse_int.parse_int(u64, value, .{}) catch return null;
             seen_inode = n == identity.inode;
         } else if (std.mem.eql(u8, field, "size")) {
-            const n = std.fmt.parseInt(u64, value, 10) catch return null;
+            const n = tally_parse_int.parse_int(u64, value, .{}) catch return null;
             seen_size = n == identity.size;
         } else if (std.mem.eql(u8, field, "mtime")) {
-            const n = std.fmt.parseInt(i96, value, 10) catch return null;
+            const n = tally_parse_int.parse_int(i96, value, .{}) catch return null;
             seen_mtime = n == identity.mtime_ns;
         } else if (std.mem.eql(u8, field, "ctime")) {
-            const n = std.fmt.parseInt(i96, value, 10) catch return null;
+            const n = tally_parse_int.parse_int(i96, value, .{}) catch return null;
             seen_ctime = n == identity.ctime_ns;
         } else if (std.mem.eql(u8, field, "sha256")) {
             if (value.len != Sha256.digest_length * 2) return null;
