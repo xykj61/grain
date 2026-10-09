@@ -9,6 +9,7 @@
 | `20261009.194443` | [Incense declines a fifty-fifth, no build](20261009/20261009-194443_incense-declines-fifty-fifth.kyri) | Held order stands; no build, no claim, cold run held. |
 | `20261009.194247` | [Incense declines a fifty-fourth](20261009/20261009-194247_incense-declines-fifty-fourth.kyri) | Held order stands; stall named; no build. |
 | `20261009.194131` | [Grass sample graded, no frame](20261009/20261009-194131_grass-sample-graded-no-frame.kyri) | Five front-door pages graded B+ or better; no edit. |
+| `20261009.194404` | [Patchouli queue empty, a fresh net, no edit](20261009/20261009-194404_patchouli-queue-empty-fresh-net.kyri) | Queue empty; one fresh net; no edit; check in named. |
 | `20261009.194127` | [Incense declines a fifty-third, ff to 364259851e](20261009/20261009-194127_incense-declines-fifty-third.kyri) | Ff to 364259851e; no build, no claim, cold run held. |
 | `20261009.194500` | [Incense declines a fifty-second, ff only](20261009/20261009-194500_incense-declines-fifty-second.kyri) | Ff to f2e08a34ce; no build, no claim, cold run held. |
 | `20261009.193958` | [Diffuser grades three papers](20261009/20261009-193958_diffuser-qa-grades-three-papers.kyri) | Three QA grades set; 36% negative on one paper, held open. |
