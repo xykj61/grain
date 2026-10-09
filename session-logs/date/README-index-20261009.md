@@ -8,6 +8,7 @@
 |---|---|---|
 | `20261009.175812` | [Pheromone queue empty after ff pull](20261009/20261009-175812_pheromone-queue-empty-after-ff-pull.kyri) | Empty queue after ff pull; no build; check-in named. |
 | `20261009.175627` | [Patchouli queue empty, seventh stop](20261009/20261009-175627_patchouli-queue-empty-seventh-stop.kyri) | Seventh empty-queue reading; no build; check-in named. |
+| `20261009.175353` | [Grass inner prompt graded, no edit](20261009/20261009-175353_grass-inner-prompt-graded.kyri) | Register 62 at Field, 38% negative; no edit; nib carried to HEAD. |
 | `20261009.175327` | [Pheromone lane empty](20261009/20261009-175327_pheromone-lane-empty-no-build.kyri) | Glow lane queue empty after ff pull; no build. |
 | `20261009.175248` | [Incense earth-row decline](20261009/20261009-175248_incense-earth-row-dead-letter-no-build.kyri) | Dead-letter box read; no build. |
 | `20261009.175440` | [Petrichor queue still empty, recheck](20261009/20261009-175440_petrichor-queue-still-empty-recheck.kyri) | Second empty reading; gate unmoved; no build. |
