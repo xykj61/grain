@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.175327` | [Pheromone lane empty](20261009/20261009-175327_pheromone-lane-empty-no-build.kyri) | Glow lane queue empty after ff pull; no build. |
 | `20261009.175116` | [GRASS pier filled, reverse-read](20261009/20261009-175116_grass-pier-filled-reverse-read.kyri) | Premise traced; reclaim tool revived; gate and /tmp remainder held. |
 | `20261009.174738` | [Patchouli queue empty, fifth stop](20261009/20261009-174738_patchouli-queue-empty-fifth-stop.kyri) | Fifth empty-queue reading; no build; check-in named. |
 | `20261009.175105` | [Petrichor queue empty, no build](20261009/20261009-175105_petrichor-queue-empty-no-build.kyri) | Consent gate holds; no agent-doable step; no build, no sweep. |
