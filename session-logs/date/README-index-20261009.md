@@ -6,9 +6,10 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261009.174037` | [Law lane declined, no build](20261009/20261009-174037_incense-law-lane-declined-no-build.kyri) | Round-open clean; law lane waits on Keaton's word; no build. |
+| `20261009.174652` | [GRASS fold head graded](20261009/20261009-174652_grass-fold-head-graded-no-edit.kyri) | fold.rye reads clean at Door; no frame, no edit. |
 | `20261009.174540` | [Patchouli queue empty, fourth stop](20261009/20261009-174540_patchouli-queue-empty-fourth-stop.kyri) | Fourth empty-queue reading; no build, no red; check-in named. |
 | `20261009.174524` | [Bakery receipt key read](20261009/20261009-174524_bakery-receipt-key-read-no-build.kyri) | Receipt key waits on Keaton's ruling; no build. |
+| `20261009.174037` | [Law lane declined, no build](20261009/20261009-174037_incense-law-lane-declined-no-build.kyri) | Round-open clean; law lane waits on Keaton's word; no build. |
 | `20261009.174314` | [copal roster of the Surface p55 check-in witness](20261009/20261009-174314_copal-p55-roster.kyri) | p55 witness rostered and proven both ways. |
 | `20261009.174232` | [GRASS frame reread](20261009/20261009-174232_grass-register-frame-reread-no-edit.kyri) | SOURCE.md B+/88; register lift stays booked; no edit. |
 | `20261009.174428` | [Petrichor gate tenth read](20261009/20261009-174428_petrichor-gate-tenth-read-no-build.kyri) | Pulled one; Consent Rail still zero; no build. |
