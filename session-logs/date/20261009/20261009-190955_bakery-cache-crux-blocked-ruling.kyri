@@ -7,7 +7,7 @@ role bakery core infrastructure, one writer of this checkout
 modality text
 model unverified
 model_status active runtime unverified -- the session names claude-haiku-5-5 in its system prompt; no runtime probe confirmed it
-configured_model claude-sonnet-5 resolved per declared_model; this clone's override not read this lap
+configured_model not read this lap -- tracked default claude-sonnet-5 at medium in .claude/settings.json; a clone override was not checked
 configured_reasoning medium
 configured_status configured default from .claude/settings.json, not runtime telemetry
 evidence sh tools/fixtures/d/declared_model.sh resolved_model not run this lap
