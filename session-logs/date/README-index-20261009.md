@@ -7,6 +7,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.182638` | [Petrichor, repeat declined](20261009/20261009-182638_petrichor-lap-repeat-declined.kyri) | Lint read stands; no docs-geode fruit; no build. |
+| `20261009.182846` | [Diffuser queue held, fifth](20261009/20261009-182846_diffuser-queue-held-fifth.kyri) | Read-only lap; energy and live-set doors still blocked; check-in named. |
 | `20261009.182700` | [Bakery receipt-basis claim closed](20261009/20261009-182700_bakery-receipt-basis-claim-closed.kyri) | Landed claim closed; scan refused as designed; ruling still open. |
 | `20261009.182642` | [Patchouli queue empty, claim board read](20261009/20261009-182642_patchouli-queue-empty-claim-board-read.kyri) | Queue empty; no build; ruling named. |
 | `20261009.182640` | [Energy counter blocked here, re-read](20261009/20261009-182640_energy-counter-blocked-here.kyri) | Energy falsifier unreadable on this guest; no build. |
