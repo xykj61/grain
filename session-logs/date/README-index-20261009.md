@@ -6,6 +6,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.173126` | [Patchouli queue empty](20261009/20261009-173126_patchouli-queue-empty-no-build.kyri) | Queue read empty again; claims clear; no build. |
 | `20261009.173258` | [Copal rosters tigerbeetle seventy-line](20261009/20261009-173258_copal-tigerbeetle-seventy-line-roster.kyri) | one witness, claimed, proven |
 | `20261009.172916` | [Petrichor earth row, nib red](20261009/20261009-172916_petrichor-earth-row-nib-red.kyri) | Card nib re-pinned to HEAD; witness GREEN; no fruit, gate holds. |
 | `20261009.173041` | [Bakery round held](20261009/20261009-173041_bakery-round-held-no-build.kyri) | Census holds; receipt key still waits on a ruling; no build. |
