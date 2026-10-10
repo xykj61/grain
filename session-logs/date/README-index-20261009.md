@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.235839` | [Petrichor repeat hold](20261009/20261009-235839_petrichor-repeat-hold.kyri) | Both gates still closed; no build. |
 | `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
 | `20261009.235450` | [Grass grades SPELLBOOK, A 96](20261009/20261009-235450_grass-spellbook-graded-a.kyri) | Calfive page graded A 96; queue empty; no build. |
 | `20261009.235428` | [Diffuser hold, no open door](20261009/20261009-235428_diffuser-hold-no-open-door.kyri) | Every open door waits on Keaton's word or a peer; no build. |
