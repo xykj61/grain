@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.224147` | [Bakery hold, census re-measured](20261009/20261009-224147_bakery-hold-census-remeasured.kyri) | Census re-measured; receipt key awaits ruling; no build. |
 | `20261009.223855` | [First hour verified](20261009/20261009-223855_first-hour-verified-two-gaps-named.kyri) | Links and witness GREEN; two reattributed output gaps named; no edits. |
 | `20261009.223850` | [Copal sunn7 roster, both sides proven](20261009/20261009-223850_copal-sunn7-roster.kyri) | Guard row landed; cold run guard_red on standing reds; hot run not run. |
 | `20261009.223714` | [Calibration fails on the generic counter](20261009/20261009-223714_diffuser-calibration-fails.kyri) | Generic cache-misses reads 3-10 percent of lines; falsifier fired. |
