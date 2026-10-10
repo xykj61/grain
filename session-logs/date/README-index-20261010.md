@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.024146 | [gate held, no build](20261010/20261010-024146_petrichor-gate-held-no-build.kyri) | Petrichor: consent rail still gated, repeat sweep declined, no build |
 | 20261010.023858 | [grass audit, queue empty](20261010/20261010-023858_grass-audit-queue-empty-three-grades-no-build.kyri) | Grass: queue empty, three grades A or better |
 | 20261010.023726 | [held, no build](20261010/20261010-023726_incense-round-held-no-build-3.kyri) | Incense: round-open clean, board clear, order stands |
 | 20261010.023844 | [gate closed, no build](20261010/20261010-023844_petrichor-gate-still-closed-no-build.kyri) | Petrichor: tree current, consent gate still closed, no build |
