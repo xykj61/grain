@@ -1,7 +1,7 @@
 # Pheromone, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge at Field
-**Status:** Living -- two consent shape pedestals landed `20261002`, next ruling awaited
+**Status:** Living -- six shape pedestals landed `20261002` through `20261003` (consent grant and revoke, receipt offer, Linengrow and Dimeroll projections, receipt refusal); next ruling awaited from Incense
 **Room:** checkable -- the fruit names a measured ceiling and two options already on the card
 **Outer prompt:** [`../tools/p/pheromone_seat_prompt.txt`](../tools/p/pheromone_seat_prompt.txt)
 
