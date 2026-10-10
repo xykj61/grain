@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.121527` | [Incense, decline, no build](20261010/20261010-121527_incense-round-open-decline-no-build.kyri) | Round-open clean; law lane held; nib carried. |
 | `20261010.121323` | [Patchouli, queue empty again, no build](20261010/20261010-121323_patchouli-queue-empty-again-no-build.kyri) | Family queue empty, 21st time; spine items unbuilt. |
 | `20261010.121111` | [Copal, roster blocked, no build](20261010/20261010-121111_copal-roster-blocked-no-build.kyri) | Three unrostered witnesses, all red and booked; no claim; no build. |
 | `20261010.121320` | [Petrichor, gate held, ff, no build](20261010/20261010-121320_petrichor-gate-held-ff-no-build.kyri) | Consent gate shut; ff pulled one patchouli log; no build; nib carried. |
