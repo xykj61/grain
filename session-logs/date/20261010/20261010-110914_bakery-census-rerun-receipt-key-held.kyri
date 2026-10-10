@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.110914
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status invoking session named the model; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Bakery census re-run, receipt key still held
+prompt Run the bakery baton lap: read the inner prompt, honor the card, pick the most durable solvable work, and land it or report what is blocked.
+think Re-ran tools/fixtures/b/shared_build_cache_census.sh read-only: miss 819 new files, same source at another path 0, same path again 0, path_independent=yes. The compile layer already shares by content.
+think Read tree_digest in tools/fixtures/s/standing_equipment_run.sh: line 785 still begins with git rev-parse HEAD, so the receipt key still carries HEAD. The card marks dropping it YOURS.
+think The four earlier hold logs today already record this same question. This lap adds the census re-run and the line reference, and stops without a code change.
+obs No code moved and no pin edited. The one standing bakery question is Keaton's ruling on the receipt key; no agent-doable bakery item is unblocked.
+rota lap 9714, row 4 -- the row 4 reading; the held question stays a question
+orbit round 9 -- sign and verb not read this lap
+file session-logs/date/20261010/20261010-110914_bakery-census-rerun-receipt-key-held.kyri this log, the only artifact this lap writes
+file session-logs/date/README-index-20261010.md one shelf row under the delimiter
+scope read-only: census re-run, tree_digest read, shelf checked; no code, no pin, no card edit
+status GREEN for the reading only; census re-run exit 0; no code changed, so no build or witness was owed; receipt key held for Keaton's ruling
+recommend check-in (Claude) -- drop HEAD from the receipt key for watched inputs, or keep it; that ruling changes the roster runner contract

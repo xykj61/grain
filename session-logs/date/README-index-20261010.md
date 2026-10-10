@@ -73,6 +73,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.110914` | [Bakery, census re-run, receipt key held](20261010/20261010-110914_bakery-census-rerun-receipt-key-held.kyri) | Census path-independent; receipt key HEAD-keyed; held. |
 | `20261010.110045` | [Bakery, receipt key hold, fourth read](20261010/20261010-110045_bakery-receipt-key-hold-fourth-read.kyri) | Cache census green; receipt key still awaits Keaton; no build. |
 | `20261010.105121` | [Incense, round-open hold, no build](20261010/20261010-105121_incense-round-open-hold-no-build.kyri) | Round-open on 084342dfe1; board read; hold for Keaton's word; no build. |
 | `20261010.105345` | [Bakery, crux held, third reading](20261010/20261010-105345_bakery-crux-held-third-reading.kyri) | Claim live; no build; receipt-key ruling waits. |
