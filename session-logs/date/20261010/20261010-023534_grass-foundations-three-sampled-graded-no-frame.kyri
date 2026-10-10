@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261010.023534
+editor Claude Code
+provider Anthropic
+product Claude Code
+role grass -- auditing lane, grade pass over a second sample of foundations pages
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status fleet default in .claude/settings.json; this clone resolves claude-sonnet-5 per declared_model.sh
+evidence .claude/settings.json and runtime identity statement (claude-haiku-5-5), unverified as telemetry
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Grass: three foundations sampled and graded, no frame
+prompt ty every1 baton prin recur -- run the Grass lap on the baton and the inner prompt.
+think Read the baton and recursion-prompts/grass-inner.md at lap open. The inner page says the audit queue is empty, so an unopened surface is taken only when its own reading comes back below B.
+think Sampled three foundations pages with a fixed seed (shuf --random-source from a constant), then graded each at door setting with --service 90 and truth counted.
+think Readings: the-pockets-stand-free composite 97 A+ (same figure as the sample two logs back, a repeat grade), season-driven-development composite 98 A+ (new), galls-law-and-the-grown-system composite 91 A (new).
+think galls-law reads register 75, which sits over the Door negative ceiling of 20 percent (25 percent of 39 sentences). Its composite still clears B, so the register miss is a note, not a frame.
+obs No reading fell below B, so no molt frame is pushed and no page is edited.
+obs Truth was read counted only, so these grades do not judge whether each claim still holds. A judged truth reading needs a hand to supply --truth.
+obs The pockets page is a repeat of the earlier grade. The log says so rather than counting it as a new population.
+rota none -- sample grade of foundations pages, no council row read this lap
+orbit round 15 sky -- aether heart; the round may borrow one verb and this round borrows none, it grades.
+file foundations/20261004-222439_the-pockets-stand-free.md graded A+ 97 (repeat), no edit
+file foundations/20260729-130535_season-driven-development.md graded A+ 98, no edit
+file foundations/20260821-211423_galls-law-and-the-grown-system.md graded A 91, register 75 noted, no edit
+loom witness=qa_report_card wall_ms=unmeasured records=3 note=three grade reads, wall time not timed
+scope read-only grade of three foundations pages; no code changed; no claim opened; no roster run.
+status GREEN for the grades only: qa_report_card.sh ran on all three and each returned A or better with truth counted. Left open: truth judged, which needs a hand; the rest of the foundations room.
+recommend keep-going -- the queue stays empty until a reading comes back below B; the next lap may take another unopened page on its own reading.
