@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.120516` | [Copal, roster leg blocked](20261010/20261010-120516_copal-instrument-suite-roster-blocked.kyri) | Fascia red %838 open; stale witness %839; nothing rostered. |
 | `20261010.120239` | [Petrichor, gate held, ff](20261010/20261010-120239_petrichor-consent-gate-held-fetch-ff.kyri) | Consent gate shut; ff pulled one incense log; no build. |
 | `20261010.120446` | [Patchouli, queue empty, hold](20261010/20261010-120446_patchouli-queue-empty-hold.kyri) | Lane empty a twenty-fourth way; no build; nib carried. |
 | `20261010.120125` | [Pheromone, lane hold, no build](20261010/20261010-120125_pheromone-lane-hold-no-build.kyri) | Lane empty; Glow refusal GREEN; no build. |
