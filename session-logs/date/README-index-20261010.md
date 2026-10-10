@@ -56,6 +56,22 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.101341` | [Bakery, hold, receipt-key ruling still owed](20261010/20261010-101341_bakery-hold-receipt-key-ruling.kyri) | No build; receipt key waits on Keaton; log and row only. |
+| `20261010.093559` | [Bakery, hold, fast-forward, ruling unchanged](20261010/20261010-093559_bakery-hold-ruling-unchanged-no-build.kyri) | Fast-forward to 116397ece3; receipt-key ruling still unwritten; no build |
+| `20261010.065631` | [Bakery, hold, receipt key owed](20261010/20261010-065631_bakery-hold-receipt-key-open-no-build.kyri) | Receipt key still open; no code moved; no build. |
+| `20261010.064923` | [Bakery, hold after fast-forward](20261010/20261010-064923_bakery-hold-after-fast-forward.kyri) | Four peers landed; no ruling; no build. |
+| `20261010.064308` | [Bakery, hold, no ruling upstream](20261010/20261010-064308_bakery-hold-no-ruling-upstream.kyri) | Fetch found no ruling; no build; both doors owed. |
+| `20261010.062612` | [Bakery, hold after ff](20261010/20261010-062612_bakery-hold-after-ff.kyri) | Four peer logs fast-forwarded, no code; receipt-key ruling still owed. |
+| `20261010.061808` | [Bakery, hold, rulings owed](20261010/20261010-061808_bakery-hold-rulings-owed.kyri) | Read-only hold; fetch shows five upstream commits; both doors await Keaton. |
+| `20261010.054602` | [Bakery, hold stands on the receipt key ruling](20261010/20261010-054602_bakery-hold-receipt-key-ruling.kyri) | Card and inner read; no mechanical lap; no build; check in on the receipt key. |
+| 20261010.020227 | [bakery hold, round nine](20261010/20261010-020227_bakery-hold-round-nine-no-build.kyri) | receipt key still awaits Keaton; no build |
+| 20261010.015820 | [bakery hold](20261010/20261010-015820_bakery-hold-ruling-awaited-no-build.kyri) | Bakery: receipt key ruling awaited; no build |
+| 20261010.003248 | [log](20261010/20261010-003248_bakery-hold-receipt-key-still-unruled.kyri) | Bakery hold on the receipt key; round-open pulled two peers, no build |
+| 20261010.002854 | [hold](20261010/20261010-002854_bakery-hold-receipt-key-fifth-read.kyri) | Bakery hold: receipt key still unruled; no build |
+| 20261010.002324 | [log](20261010/20261010-002324_bakery-hold-receipt-key-fourth-read.kyri) | Bakery hold; receipt key still awaiting ruling; no build |
+| 20261010.001740 | [log](20261010/20261010-001740_bakery-hold-receipt-key-third-read.kyri) | Bakery third hold; receipt key still YOURS; no build |
+| 20261010.001151 | [log](20261010/20261010-001151_bakery-hold-receipt-key-second-read.kyri) | Bakery second hold; receipt key still ruled YOURS; no build |
+| 20261010.000652 | [log](20261010/20261010-000652_bakery-hold-receipt-key-still-ruled.kyri) | Bakery hold; receipt key still awaits ruling; no build |
 | `20261010.101019` | [Patchouli, zero-assert reading corrected](20261010/20261010-101019_patchouli-zero-assert-reading-corrected.kyri) | Build_batch carries three asserts; 188 figure left unverified. |
 | `20261010.100815` | [Copal, roster fruit red](20261010/20261010-100815_copal-roster-fruit-both-red-claim-closed.kyri) | Both candidates red, already booked; claim closed; nothing rostered. |
 | `20261010.100721` | [Incense, receipt board green, no build](20261010/20261010-100721_incense-receipt-board-green-no-build.kyri) | Case board GREEN, braid unbraided; no build. |
