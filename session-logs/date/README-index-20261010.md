@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.063438` | [Petrichor, repeat no build](20261010/20261010-063438_petrichor-no-build-repeat.kyri) | Same reading, consent gate shut; no build. |
 | `20261010.063223` | [Patchouli, queue empty, fourth record-only](20261010/20261010-063223_patchouli-queue-empty-fourth-same-day.kyri) | Re-ran version-literal scan; only elder read-compat; no code. |
+| `20261010.063602` | [Incense, decline, no build](20261010/20261010-063602_incense-decline-no-build.kyri) | Round-open clean, board clear, cold run held; no build. |
 | `20261010.063142` | [Incense, decline forty-eight](20261010/20261010-063142_incense-decline-forty-eight.kyri) | Round-open clean, board empty, cold run held; no build. |
 | `20261010.063022` | [Grass, queue empty, molt confirmed](20261010/20261010-063022_grass-queue-empty-molt-confirmed.kyri) | Six pages graded A or better; one C page already molted. |
 | `20261010.063504` | [Pheromone, no open fruit](20261010/20261010-063504_pheromone-no-open-fruit.kyri) | Lane steps already landed; no build; check-in (Claude) on lane choice. |
