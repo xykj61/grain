@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.020903 | [grass air row](20261010/20261010-020903_grass-air-row-door-reading-held.kyri) | Grass: air-row foundation graded A (Door), no molt frame |
 | 20261010.020600 | [receipt-key options](20261010/20261010-020600_receipt-key-options-for-the-ruling.kyri) | Bakery: receipt key options for Keaton's ruling; no build |
 | 20261010.020332 | [grass B+ held](20261010/20261010-020332_grass-b-plus-reading-held.kyri) | Grass: inner prompt graded B+ (89), no molt frame |
 | 20261010.020711 | [link check, no defect](20261010/20261010-020711_petrichor-link-check-no-defect.kyri) | Petrichor: docs-geode relative links, zero broken; no build |
