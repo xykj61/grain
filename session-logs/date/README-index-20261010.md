@@ -32,9 +32,9 @@
 | `20261010.090838` | [Patchouli, queue empty, twenty-sixth](20261010/20261010-090838_patchouli-queue-empty-twenty-sixth-net.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
 | `20261010.090818` | [Incense, forty-seventh, held](20261010/20261010-090818_incense-decline-forty-seventh-law-held.kyri) | Round-open clean; no build; law waits on Keaton. |
 | `20261010.090601` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-090601_patchouli-queue-empty-twenty-fifth-net.kyri) | Queue empty; no build; check-in named. |
+| `20261010.090457` | [Grass, sample graded B or better](20261010/20261010-090457_grass-sample-graded-b-or-better.kyri) | Docs-geode sample graded A or better; no edit; the-sill register noted. |
 | `20261010.090423` | [Pheromone, hold, nib carried](20261010/20261010-090423_pheromone-hold-no-open-fruit-nib-carried.kyri) | No open fruit; no build; nib carried; check in to Incense. |
 | `20261010.090151` | [Copal, glow_hygiene_pin rostered](20261010/20261010-090151_copal-glow-hygiene-roster-row.kyri) | Row appended; red leg proven; roster red predates it. |
-| `20261010.090457` | [Grass, sample graded B or better](20261010/20261010-090457_grass-sample-graded-b-or-better.kyri) | Docs-geode sample graded A or better; no edit; the-sill register noted. |
 | `20261010.090122` | [Grass, queue clear](20261010/20261010-090122_grass-inner-prompt-regraded-queue-clear.kyri) | Named mycelium queue reads B or above; no frame; check-in named. |
 | `20261010.090138` | [Incense, sixty-eighth, held](20261010/20261010-090138_incense-declines-sixty-eighth-no-build.kyri) | Round-open clean on d667e43969; no build; law waits on Keaton. |
 | `20261010.085820` | [Grass, inner prompt re-graded](20261010/20261010-085820_grass-inner-prompt-regraded-no-frame.kyri) | Same page, B+ (89) again; no frame, no edit. |
