@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.002854 | [hold](20261010/20261010-002854_bakery-hold-receipt-key-fifth-read.kyri) | Bakery hold: receipt key still unruled; no build |
 | 20261010.002658 | [hold](20261010/20261010-002658_petrichor-hold-consent-gate-third-read.kyri) | Petrichor hold: consent gate shut, no open fruit; no build |
 | 20261010.002708 | [hold](20261010/20261010-002708_diffuser-blockers-hold-msr-absent.kyri) | Diffuser hold: msr, perf and macOS blockers re-read absent; next fruit waits on Keaton; no build |
 | 20261010.002657 | [log](20261010/20261010-002657_patchouli-queue-empty-fresh-net-again.kyri) | Patchouli queue empty again, fresh elder-header net, no build; log-only |
