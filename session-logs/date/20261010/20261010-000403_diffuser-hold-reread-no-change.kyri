@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.000403
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status declared by the session prompt; configuration, not telemetry
+evidence the session declares claude-haiku-5-5; sh tools/fixtures/d/declared_model.sh resolved_model was not run this lap
+voice Kyri
+host anonymized host and one-clock zone America/New_York
+title Diffuser hold re-read, no change since 000118
+prompt Baton and diffuser inner prompt: read the card, the inner prompt, and the newest day shelf, then take the next honest step in the moonshots lane.
+think HEAD is cdcd9a9f33, the diffuser hold landed at 000118, and the tree is clean, so no outside fact has arrived since that hold was written.
+think The inner prompt's newest fruit, revised 20261009.233953, still waits on Keaton's word for an msr route or a raw vendor event; the prefetch door stays shut on this guest.
+think The energy proposal, the caller live-set trace, and the macOS Swift component pair each still wait on a fact outside the tree, as the 000118 hold recorded.
+obs A second hold with the same findings would add a commit and no new reading, so this lap writes no paper and runs no witness.
+obs The card's git nib is not moved, because no card account changed in this lap.
+rota none -- the open doors all wait on Keaton, and the inner prompt's council row was read in the 000118 hold
+orbit round 5 -- sign not read this lap, so the verb is not claimed
+scope diffuser seat re-read: this log and its day-shelf row only. No paper, no witness, no code.
+status GREEN for the re-read itself. No witness was run, so none is claimed. Left open: msr route or raw vendor event (diffuser fruit), real caller live-set trace (diffuser card), joule meter (energy proposal), macOS Swift toolchain (component pair).
+file session-logs/date/20261010/20261010-000403_diffuser-hold-reread-no-change.kyri this re-read record
+file session-logs/date/README-index-20261010.md the day shelf, opened by this log's row
+recommend check-in (Keaton) -- seat an msr route or a raw vendor event for the prefetch fruit, or a real caller trace, so the lane has an agent-doable door again
