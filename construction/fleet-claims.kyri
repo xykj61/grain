@@ -58,9 +58,3 @@ stamp 20261010.134503
 epoch 1791654303
 paths tools/gen/chapter/instrument_suite_witness.rish construction/standing-equipment.kyri
 what Roster instrument_suite_witness.rish, the last unrostered instrument-season witness, and prove it on metal from both sides.
-claim patchouli-pin-tidy-witness-red
-seat patchouli
-stamp 20261010.135131
-epoch 1791654691
-paths tools/gen/chapter/remember_pin_history_tidy_witness.rish
-what Repair REDS %839: the one-shot pin-tidy witness asserts a deleted backup branch and an absent counter script; retire those two history-only assertions and keep the live rule checks, then prove GREEN on metal.

@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.135403` | [Bakery, control already landed](20261010/20261010-135403_bakery-codex-control-already-landed.kyri) | Model control 18 ok, 0 fail; repair in 51e8ba4ffb; no build. |
 | `20261010.135023` | [Petrichor, lane gated, no build](20261010/20261010-135023_petrichor-lane-gated-no-build.kyri) | Nib carried to 7d179d62b5; lane gated; no build. |
+| `20261010.135323` | [Patchouli, pin-tidy red closed, no build](20261010/20261010-135323_patchouli-pin-tidy-red-closed.kyri) | REDS %839 repaired; witness GREEN; claim pushed. |
 | `20261010.134838` | [Grass, queue still empty, no build](20261010/20261010-134838_grass-queue-empty-recheck-no-build.kyri) | Inner queue empty on recheck; no build. |
 | `20261010.134617` | [Patchouli, queue empty, no build](20261010/20261010-134617_patchouli-queue-empty-lap-no-build.kyri) | Lane queue held; nib carried to 7d179d62b5; no build. |
 | `20261010.134741` | [Bakery, crux held, no build](20261010/20261010-134741_bakery-crux-held-no-build.kyri) | Round-open settled at e691aae31a; crux needs a claim and a ruling; no build. |
