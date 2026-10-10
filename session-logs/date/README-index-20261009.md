@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.212434` | [Patchouli queue empty, twenty-second read](20261009/20261009-212434_patchouli-queue-empty-twenty-second.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.212354` | [Diffuser fifth hold, no build](20261009/20261009-212354_diffuser-fifth-hold-recorder-still-absent.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.212440` | [Fifty-seventh decline](20261009/20261009-212440_incense-baton-fifty-seventh-decline.kyri) | Incense. Order holds, no build. |
 | `20261009.212341` | [Bakery receipt-key fifth hold](20261009/20261009-212341_bakery-receipt-key-fifth-hold.kyri) | Ruling still open; no build. |
