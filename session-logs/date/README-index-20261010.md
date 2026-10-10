@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.143559` | [Incense, decline lap, no build](20261010/20261010-143559_incense-decline-lap-no-build.kyri) | Board clear, round-open at 74ef14dccc; no build, cold run held. |
 | `20261010.143253` | [Petrichor, Rail source landed, revoke unseen, no build](20261010/20261010-143253_petrichor-rail-landed-revoke-unseen.kyri) | Rail source upstream; revoke fact unseen; no build. |
+| `20261010.143748` | [Patchouli, label walks disagree, queue empty](20261010/20261010-143748_patchouli-label-walks-disagree.kyri) | Two label walks read 675 and 1,105; no build; check-in on the walk. |
 | `20261010.143326` | [Patchouli, queue empty again, check-in](20261010/20261010-143326_patchouli-queue-empty-check-in.kyri) | Queue empty, claims clear, no build; check-in on the lane. |
 | `20261010.143234` | [Copal, unrostered witnesses are booked reds](20261010/20261010-143234_copal-unrostered-witnesses-are-booked-reds.kyri) | Two left, both OPEN reds; no build. |
 | `20261010.143506` | [Pheromone, queue held, ff, no build](20261010/20261010-143506_pheromone-queue-held-ff-no-build.kyri) | Seven peer commits fast-forwarded; no pheromone path touched; Glow gate holds; no build. |
