@@ -116,6 +116,15 @@ runs the desk, and asserts `rune_shape.max_fields` stayed at 15. GREEN on metal.
 GREEN after the one-field addition; neither `mantra/src/receipt_offer.rye` nor
 `glow/rune_shape.rye` was touched. A new rune returns to Incense.
 
+**Measured `20261010.082219` -- step three's printing question closed on metal, with no ruling
+needed.** `tools/g/glow_refusal_witness.rish` reads GREEN: the Glow refusal record carries field,
+value, ceiling, unit, and reason, and `glow/refusal_witness.rye` asserts the five-part rendering
+along with both format strings agreeing with `tally/receipt_refusal.rye` byte for byte. Step three
+asks for exactly that output, so the five-field stability it names already stands. No rune changed
+and no language ruling was made, so the card's stop clause is not triggered. The card's step three
+line still reads as open; Incense may retire it on the card, since this lane does not edit the
+shared card from its own sitting.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
