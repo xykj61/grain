@@ -7,6 +7,7 @@
 | `20261009.213103` | [Patchouli queue empty again](20261009/20261009-213103_patchouli-queue-empty-again.kyri) | Queue empty; no code changed; check in. |
 | `20261009.212706` | [Diffuser sixth hold, no build](20261009/20261009-212706_diffuser-sixth-hold-recorder-absent.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.212910` | [Patchouli queue empty, twenty-third read](20261009/20261009-212910_patchouli-queue-empty-twenty-third.kyri) | Queue empty again; no code changed; check in. |
+| `20261009.212817` | [Incense fifty-eighth decline](20261009/20261009-212817_incense-fifty-eighth-decline.kyri) | Incense. Round opened clean, order holds, no build. |
 | `20261009.212434` | [Patchouli queue empty, twenty-second read](20261009/20261009-212434_patchouli-queue-empty-twenty-second.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.212749` | [Petrichor sixth hold, no build](20261009/20261009-212749_petrichor-sixth-hold-gate-unchanged-no-build.kyri) | Gate unchanged; ff-only pull; nib carried; no build. |
 | `20261009.212354` | [Diffuser fifth hold, no build](20261009/20261009-212354_diffuser-fifth-hold-recorder-still-absent.kyri) | Recorder absent; fruit waits on a ruling. |
