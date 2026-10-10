@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.211041` | [Patchouli queue empty, no build](20261009/20261009-211041_patchouli-queue-empty-no-build.kyri) | Header scan and claim board clear; queue empty; no build. |
 | `20261009.210735` | [Grass air sample grades A, no build](20261009/20261009-210735_grass-air-sample-grades-a.kyri) | Two docs-geode pages read A; no frame pushed; no build. |
 | `20261009.210611` | [Petrichor hold, second read, no build](20261009/20261009-210611_petrichor-hold-second-read-no-build.kyri) | Gate holds again; no claimable docs-geode row; no build. |
 | `20261009.210846` | [Bakery receipt-key hold repeat, no build](20261009/20261009-210846_bakery-receipt-key-hold-repeat.kyri) | Gated crux holds; queue unchanged; no build. |
