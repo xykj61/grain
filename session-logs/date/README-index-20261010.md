@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.113953` | [Incense, round-open, no-build decline](20261010/20261010-113953_incense-round-open-decline-no-build.kyri) | Clean round-open to 5253db6c32; no claim; no build. |
 | `20261010.113525` | [Grass, inner page graded B+, card nib carried, hold](20261010/20261010-113525_grass-inner-page-graded-b-plus-hold.kyri) | Inner page B+ 89; no molt; card nib carried. |
 | `20261010.113333` | [Petrichor, gate held, no build](20261010/20261010-113333_petrichor-gate-held-upstream-logs-no-build.kyri) | Consent gate shut; ff to f78751acd5; no build. |
 | `20261010.113428` | [Incense, round-open, hold, no build](20261010/20261010-113428_incense-baton-round-open-hold-no-build.kyri) | Clean round-open; claim board clear; no build. |
