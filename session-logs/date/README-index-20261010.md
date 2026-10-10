@@ -9,6 +9,7 @@
 | `20261010.072628` | [Incense, round ten decline](20261010/20261010-072628_incense-round-ten-decline.kyri) | Fast-forward to f5ddc40fb1; claim board clear of this lane; no build behind the human word |
 | `20261010.072520` | [Bakery, receipt key measured](20261010/20261010-072520_bakery-receipt-key-measured.kyri) | HEAD keys the receipt; 190 of 200 log-only commits miss; build held for check-in. |
 | `20261010.072550` | [Pheromone, lane empty a third way](20261010/20261010-072550_pheromone-lane-empty-third-read.kyri) | Fast-forward read; no language-lane path touched; no build. |
+| `20261010.072706` | [Petrichor, hold at the consent rail, no build](20261010/20261010-072706_petrichor-hold-consent-rail-no-build.kyri) | Held; no claim, no build, no page touched. |
 | `20261010.072110` | [Incense, round nine decline](20261010/20261010-072110_incense-round-nine-decline.kyri) | Round-open clean, no upstream motion; no build behind the human word |
 | `20261010.072437` | [Petrichor, links clean, no build](20261010/20261010-072437_petrichor-links-clean-no-build.kyri) | 325 links, 0 broken; no page edited. |
 | `20261010.072010` | [Petrichor, hold at the consent rail, no build](20261010/20261010-072010_petrichor-hold-consent-rail-no-build.kyri) | Held; no claim, no build, no page touched. |
