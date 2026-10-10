@@ -6,6 +6,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.075336` | [Bakery, agent-jail refusal leg](20261010/20261010-075336_bakery-agent-jail-refusal-leg.kyri) | One refusal leg; redleg 54 over 51, %827 OPEN. |
 | `20261010.075806` | [Patchouli, queue empty, fifth read](20261010/20261010-075806_patchouli-queue-empty-fifth-net.kyri) | Queue empty; no build. |
 | `20261010.075508` | [Petrichor, hold, nothing moved since the last read](20261010/20261010-075508_petrichor-hold-nothing-moved-since.kyri) | Upstream level; gate unmoved; no page touched. |
 | `20261010.075448` | [Grass, queue empty, no open fruit](20261010/20261010-075448_grass-queue-empty-no-open-fruit.kyri) | Inner fruit closed; no booked lap; no edit. |
