@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.071311` | [Bakery, compile cache already shares](20261010/20261010-071311_bakery-census-cache-shares-compile-layer.kyri) | Census reads path_independent=yes; crux narrowed to the cold-run receipt; no build. |
 | `20261010.070510` | [Incense, round six, decline, no build](20261010/20261010-070510_incense-round-six-decline-no-build.kyri) | Round-open clean on 5c0c32f577; lane holds on Keaton's word; no build. |
 | `20261010.070409` | [Pheromone, queue empty, limb10 GREEN](20261010/20261010-070409_pheromone-queue-empty-limb10-green.kyri) | Lane empty by card; one pedestal witness GREEN; no build. |
 | `20261010.070356` | [Copal, roster held, no row](20261010/20261010-070356_copal-roster-held-skip-only-and-dup-red.kyri) | Claim withdrawn; skip-only and booked reds held. |

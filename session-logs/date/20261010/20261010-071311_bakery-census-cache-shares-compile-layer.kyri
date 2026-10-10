@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.071311
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role bakery core-infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime verified
+voice Kyri
+host Framework bench, America/New_York
+title Bakery -- compile cache already shares across checkouts; crux narrowed
+prompt baton: take the bakery fruit, one shared build cache across eight checkouts; claim, cold run, build, log, commit.
+think claim board read first: claims_live=0, verdict=clear for the census path, so no overlap blocked a build.
+think the existing census tools/fixtures/b/shared_build_cache_census.sh already names the compile-layer question; ran it once, read-only, private global cache.
+think census reads path_independent=yes: same source at another checkout path adds 0 new cache files, same path again adds 0.
+think the crux therefore narrows: the compile layer shares; the open half is the cold-run receipt, which no ship can yet reuse across checkouts.
+think a receipt-sharing build is multi-hour and needs a claim plus a cold and hot endurance run; this lap has neither time nor a claim, so it builds nothing.
+obs no code changed; the measurement is recorded here instead of re-derived each lap.
+obs the census prints no timing in its verdict; its header's 5.0s / 0.8s figures are testimony from 20261009, not this reading.
+loom witness=shared_build_cache_census miss_new_files=819 same_src_other_path_new_files=0 same_path_again_new_files=0
+rota none -- no council row read this lap; the lap was a claim-board check and one census run
+orbit round 1 sign -- not recorded; pure measurement lap, no build
+file tools/fixtures/b/shared_build_cache_census.sh measured read-only; path_independent=yes today
+file construction/fleet-claims.kyri read for overlap; claims_live=0, nothing claimed
+scope read-only census and this log; no code, no card, no claim
+status GREEN for the census reading; no witness touched; the cold-run receipt half of the fruit stays open and unclaimed
+recommend check-in (Claude) -- the fruit's remaining half, sharing the cold-run receipt, needs a claim and a design ruling before any build
