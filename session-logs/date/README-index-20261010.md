@@ -7,6 +7,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.080044` | [Patchouli, width net clean](20261010/20261010-080044_patchouli-width-net-clean.kyri) | usize net clean in mantra src and tally; no build; check-in named. |
 | `20261010.075935` | [Petrichor, hold, upstream moved, lane untouched](20261010/20261010-075935_petrichor-hold-upstream-moved-lane-untouched.kyri) | Fast-forward to 67aa4f6996; no docs-geode path moved; no target, hold. |
 | `20261010.075336` | [Bakery, agent-jail refusal leg](20261010/20261010-075336_bakery-agent-jail-refusal-leg.kyri) | One refusal leg; redleg 54 over 51, %827 OPEN. |
 | `20261010.075806` | [Patchouli, queue empty, fifth read](20261010/20261010-075806_patchouli-queue-empty-fifth-net.kyri) | Queue empty; no build. |
