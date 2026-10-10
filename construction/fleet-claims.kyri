@@ -58,3 +58,9 @@ stamp 20261010.042350
 epoch 1791620630
 paths tools/gen/chapter/oven_season_o2_witness.rish construction/standing-equipment.kyri
 what Retarget the stale oven_season_o2 witness from oven/ and anvil/ to the live ember/ path, then roster it as a lap guard with both sides proven, the way o1 and o3 landed.
+claim bakery-content-keyed-compile
+seat bakery
+stamp 20261010.043341
+epoch 1791621221
+paths rishi/src tools/r/rye_build_witness.rish
+what Land content-keyed compilation for Rishi: identical declared inputs may reuse a binary while every owed proof still runs, and any changed source, flag, overlay, compiler, or toolchain pin forces a miss.
