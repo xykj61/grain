@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.210023` | [Pheromone hold, no build](20261009/20261009-210023_pheromone-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.205847` | [Bakery cache census, receipt waits](20261009/20261009-205847_bakery-cache-census-receipt-ruling.kyri) | Path-independent census; receipt key awaits ruling. |
 | `20261009.205701` | [Petrichor lane hold, no build, third](20261009/20261009-205701_petrichor-lane-hold-no-build-3.kyri) | Gate unchanged; no build; check in asked. |
 | `20261009.205510` | [Patchouli queue empty, no build](20261009/20261009-205510_patchouli-queue-empty-no-build.kyri) | Widened grep over mantra and tally; no candidate; %807 waits on a ruling. |
