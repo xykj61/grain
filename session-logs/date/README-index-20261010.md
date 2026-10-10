@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.013032 | [Patchouli queue empty, 28th net](20261010/20261010-013032_patchouli-queue-empty-twenty-eighth-net.kyri) | Queue empty; no build; check-in named. |
 | 20261010.012930 | [hold, gate shut](20261010/20261010-012930_petrichor-hold-consent-gate-shut.kyri) | Petrichor hold: consent gate still shut, upstream one log commit; no build |
 | 20261010.012951 | [decline](20261010/20261010-012951_incense-decline-quiet-upstream.kyri) | Incense decline: upstream equal to HEAD 980910e6f3, no build |
 | 20261010.012853 | [hidden-shelf heads graded](20261010/20261010-012853_patchouli-hidden-shelf-heads-graded.kyri) | Patchouli: 15 mantra/src heads graded, none below B; queue empty |
