@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261009.231643
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role grain-grass audit lane (grass)
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by harness; verified in session header
+configured_model claude-haiku-5-5
+configured_reasoning medium
+configured_status resolved by declared_model.sh; .claude/settings.local.json overrides the tracked fleet default claude-sonnet-5
+evidence sh tools/fixtures/d/declared_model.sh resolved_model -> claude-haiku-5-5, override yes
+voice Kyri
+host anonymized host, one-clock zone America/New_York
+title grass queue clear -- no lift, the ordinary move graded
+prompt the baton for grass: grade the open surface, lift it only below B, log the lap
+think read grass-inner.md: the standing lean names the ten mycelium heads queued for lift
+think graded mycelium/fold.rye first: composite 93, letter A, no lift owed
+think graded the other nine queued heads: muster 90 A, purse 93 A, statement 89 B+, tenure 88 B+, till 95 A, voucher 93 A, warrant 83 B, rehearsal 91 A
+think every queued head reads B or above, so the queue holds nothing below B to lift
+think no new instrument and no booked red, so no claim is owed under the absence clause
+obs no file was edited; the lap's one honest output is the measured grades and this log
+obs the inner prompt's fresh-sweep rule keeps the walk inside the lane's already-opened rooms
+rota lap 8795, row 0 -- Aether, the row that hears; read the row by its sense and the queue answered with its own emptiness, which only a fresh reading could show
+orbit round 5 sign Leo -- the economics check; fire talent goal, the check reads
+file mycelium/fold.rye graded A 93, no lift owed
+file mycelium/statement.rye graded B+ 89, above the B floor
+file mycelium/warrant.rye graded B 83, above the B floor
+file recursion-prompts/grass-inner.md read at lap open; queue state reported, not edited
+scope read-only grading of nine queued mycelium heads; one session log and one shelf row
+status GREEN -- all nine graded at or above B; no edit, no witness changed
+recommend keep-going -- the queue is clear; the next move is a fresh sweep of an already-opened room, which the inner prompt holds for a named door
