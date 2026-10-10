@@ -871,25 +871,9 @@ pub const Weave = struct {
         // and the bound just checked is what makes the cast safe.
         const row_count: u32 = @intCast(rows.len);
 
-        var next_pos: u32 = 0;
-        var seen_any = false;
-        var previous_pos: u32 = 0;
-        for (rows) |row| {
-            if (row.gen == 0) return WeaveError.V1GenerationBelowOne;
-            // Read BEFORE the counter below rises off this position: the line
-            // that follows is `row.pos + 1`, and at the u32 ceiling that
-            // addition is an overflow rather than a number. A lawful elder
-            // record cannot reach here, since its writer appends one row per
-            // position off a counter that starts at zero and the record stands
-            // inside `max_weave_lines` rows.
-            if (row.pos >= max_weave_lines) return WeaveError.CounterPastCeiling;
-            if (seen_any and row.pos <= previous_pos) return WeaveError.V1PositionsDoNotRise;
-            previous_pos = row.pos;
-            seen_any = true;
-            // A position counter that only rises means the last row carries the
-            // highest position, so the floor for the next line is one above it.
-            next_pos = row.pos + 1;
-        }
+        // The refusals run before anything is lifted, so a bad record leaves no
+        // half-built weave behind. The helper returns the position floor.
+        const next_pos = try check_v1_rows(rows);
 
         var lifted: Weave = .{ .lines = .empty, .next_pos = next_pos, .next_run = 1 };
         errdefer lifted.lines.deinit(allocator);
@@ -937,6 +921,33 @@ pub const Weave = struct {
         }
 
         return lifted;
+    }
+
+    /// Check an elder record's rows before any of them is lifted. Each
+    /// generation counts from one, and each position rises strictly over the
+    /// last. Returns the position floor for the lifted weave: one above the
+    /// last row's position, or zero for an empty record.
+    fn check_v1_rows(rows: []const V1Row) !u32 {
+        var next_pos: u32 = 0;
+        var seen_any = false;
+        var previous_pos: u32 = 0;
+        for (rows) |row| {
+            if (row.gen == 0) return WeaveError.V1GenerationBelowOne;
+            // Read BEFORE the counter below rises off this position: the line
+            // that follows is `row.pos + 1`, and at the u32 ceiling that
+            // addition is an overflow rather than a number. A lawful elder
+            // record cannot reach here, since its writer appends one row per
+            // position off a counter that starts at zero and the record stands
+            // inside `max_weave_lines` rows.
+            if (row.pos >= max_weave_lines) return WeaveError.CounterPastCeiling;
+            if (seen_any and row.pos <= previous_pos) return WeaveError.V1PositionsDoNotRise;
+            previous_pos = row.pos;
+            seen_any = true;
+            // A position counter that only rises means the last row carries the
+            // highest position, so the floor for the next line is one above it.
+            next_pos = row.pos + 1;
+        }
+        return next_pos;
     }
 
     /// Write this weave back out as an elder `mantra-weave-v1` record.

@@ -318,6 +318,19 @@ should still widen rather than repeat these nets.
 
 **The queue reads empty a twenty-third way, `20261010.042148`, by a fresh class.** The version-literal nets were not run again. This lap ran the TAME tidy bans (`std.debug.assert(`, `usingnamespace`, `Self = @This()`, `copyForwards`, `copyBackwards`, `FIXME`, `dbg(`, error-compare seams, camelCase `fn`) across `mantra/src/` and the flat `mantra/` and `tally/` rooms: all zero. The only `@memcpy` site is `tally/copy.rye:40`, the one `copy_disjoint` may hold. Every `mantra/src/` file carries the opening triad. Five `assert(a or b)` sites stand in `consent_replay.rye` and `main.rye`; the tidy scanner bans only the `and` form, so they are not a parity fault as written. Whether `or` joins the ban is a ruling for Keaton. `%807` and `%765` are unchanged.
 
+**A fresh class with real work in it, `20261010.045220`: functions past 70 lines.** The
+standing ratchet reads this class tree-wide and lists only its ten longest. A 70-line sweep over
+`mantra/` and `tally/` (both flat and `src/`) found twelve. Ten are witness self-tests, and the
+ratchet's own rule is to split on touch. Two are production code. `Weave.from_v1` in
+`mantra/src/weave.rye` stood at 76 lines, and its elder-row validation loop is a natural seam.
+That loop moved into a private `check_v1_rows`, which returns the position floor, and `from_v1`
+now calls it and reads 60 lines. Behavior is unchanged: the refusals still run before any row is
+lifted. GREEN on metal: `mantra_weave_v1_lift_witness`, `mantra_weave_v1_write_witness`,
+`mantra_weave_v2_witness`, and `mantra_weave_merge_witness`. `Beading.bead_content_defined` at 71
+lines stays for the next touch. The `weave.rye:1063` citation in `weave_v2_witness.rye` was already
+stale before this lap, since the overflow line it names now sits at `weave.rye:1619`. It is left for
+a separate citation repair.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
