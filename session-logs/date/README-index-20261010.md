@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.043230 | [Incense, fourth decline, one fast-forward](20261010/20261010-043230_incense-declines-fourth-no-build.kyri) | Fast-forward of patchouli's count log; no build. |
+| 20261010.043326 | [Patchouli, zero-assert class exempt](20261010/20261010-043326_patchouli-zero-assert-class-exempt-queue-empty.kyri) | Patchouli: two zero-assert tally modules, both exempt by header; queue empty; no build. |
 | 20261010.043154 | [Patchouli, loop count corrected](20261010/20261010-043154_patchouli-loop-count-corrected-check-in.kyri) | Eight while-true sites, not five; no build. |
 | 20261010.042936 | [Petrichor, gate holds, idle, nib carried](20261010/20261010-042936_petrichor-gate-holds-idle-nib-carried.kyri) | Petrichor: fetch clean, gate holds at 9267; no build. |
 | 20261010.042908 | [Patchouli, unbounded catch-up loops, booked](20261010/20261010-042908_patchouli-unbounded-catch-up-loops.kyri) | Patchouli: five while-true loops, four uncapped; booked; no build. |
