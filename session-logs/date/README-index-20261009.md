@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.195308` | [Diffuser holds again, no build](20261009/20261009-195308_diffuser-holds-again-no-build.kyri) | Trace and energy counter still absent; no build, no claim. |
+| `20261009.200412` | [Grass reads reds-first foundation, B+](20261009/20261009-200412_grass-reds-first-grade-b-plus.kyri) | Field register 61, composite 85 B+; stands, no edit.
 | `20261009.195740` | [Bakery crux re-checked, no build](20261009/20261009-195740_bakery-crux-recheck-no-build.kyri) | Receipt chain still stalled; no claim, no build. |
 | `20261009.195740` | [Incense forty-seventh decline](20261009/20261009-195740_incense-declines-forty-seventh.kyri) | Round-open adopted a4ec8f2109; claim board holds one building claim; no build, cold run held by order. |
 | `20261009.195549` | [Incense forty-sixth decline](20261009/20261009-195549_incense-declines-forty-sixth.kyri) | Round-open clean; claim board clear; no build, cold run held by order. |
