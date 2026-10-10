@@ -14,6 +14,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.082838` | [Petrichor, hold again, gate unmoved](20261010/20261010-082838_petrichor-hold-consent-gate-unmoved-again.kyri) | Fetched zero behind; gate unmoved; no page touched. |
+| `20261010.082711` | [Patchouli, queue empty, fresh nets](20261010/20261010-082711_patchouli-queue-empty-fresh-nets.kyri) | Both queue nets re-run; no elder header in lane; stopped, no build. |
 | `20261010.082326` | [Pheromone, step three's printing closed on metal](20261010/20261010-082326_pheromone-step-three-printing-closed-on-metal.kyri) | Glow refusal witness GREEN; no rune, no card edit. |
 | `20261010.082055` | [Patchouli, queue empty, census](20261010/20261010-082055_patchouli-queue-empty-class-census.kyri) | Allocator class zero; 770 of 1368 asserts carry invariant; no code. |
 | `20261010.082500` | [Petrichor, hold, consent gate unmoved, ff](20261010/20261010-082500_petrichor-hold-gate-unmoved-ff.kyri) | Fast-forwarded one peer log; consent gate unmoved; no page or claim touched.
