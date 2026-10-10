@@ -9,6 +9,7 @@
 | `20261009.233925` | [Patchouli queue empty, 28th](20261009/20261009-233925_queue-empty-twenty-eighth.kyri) | Elder-header sweep held; no build; check-in named. |
 | `20261009.233905` | [Grass grades the docs-geode front door, A 94](20261009/20261009-233905_grass-front-door-grade.kyri) | Door reading A 94, nothing lifted; cold run not taken. |
 | `20261009.233605` | [Patchouli queue empty, 27th](20261009/20261009-233605_queue-empty-twenty-seventh.kyri) | Recursive hidden-shelf read, still empty; check-in named. |
+| `20261009.233906` | [Copal roster commence saga](20261009/20261009-233906_copal-commence-saga-roster.kyri) | One guard rostered; GREEN and planted RED; %836 booked. |
 | `20261009.233459` | [Pheromone hold, air-feels lap](20261009/20261009-233459_pheromone-hold-air-feels-lap.kyri) | Language lane empty; no rune question; no build; nib carried. |
 | `20261009.233521` | [Bakery receipt-key lap held](20261009/20261009-233521_bakery-receipt-key-held.kyri) | Card read; receipt key on YOURS; no build. |
 | `20261009.233559` | [Grass grades its own open page](20261009/20261009-233559_grass-grade-grass-inner-held.kyri) | Inner prompt graded B+ 89; nothing lifted |
