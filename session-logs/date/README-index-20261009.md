@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.205510` | [Patchouli queue empty, no build](20261009/20261009-205510_patchouli-queue-empty-no-build.kyri) | Widened grep over mantra and tally; no candidate; %807 waits on a ruling. |
 | `20261009.205323` | [Pheromone hold, state read once, no build](20261009/20261009-205323_pheromone-hold-state-read-once.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.205323` | [Diffuser thirteenth hold, stopped for Keaton](20261009/20261009-205323_diffuser-hold-thirteen-stop.kyri) | Live-set trace still absent; no build; the repeat stops here. |
 | `20261009.205238` | [Petrichor dead shelf named to Keaton](20261009/20261009-205238_petrichor-dead-shelf-named-to-keaton.kyri) | 20261006 shelf absent from all git history; no build; check-in asked. |
