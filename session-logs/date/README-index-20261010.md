@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.154953` | [Patchouli, queue empty a fifteenth way](20261010/20261010-154953_patchouli-queue-empty-fourteenth-sweep.kyri) | Fresh version-suffix grep; no family surfaces; no code moved. |
 | `20261010.154305` | [Bakery, no-build lap, queue held](20261010/20261010-154305_bakery-no-build-lap-queue-held.kyri) | Card read; receipt key and 
 | `20261010.154535` | [Incense, seventh queue declined](20261010/20261010-154535_incense-lap-declines-seventh-queue.kyri) | Round-open clean; no lane build; cold run held; rota earth. |
 | `20261010.154246` | [Patchouli, queue empty, kumara red unbooked](20261010/20261010-154246_patchouli-queue-empty-kumara-red-unbooked.kyri) | Queue empty again; REDS pin deadlocked, kumara row held. |

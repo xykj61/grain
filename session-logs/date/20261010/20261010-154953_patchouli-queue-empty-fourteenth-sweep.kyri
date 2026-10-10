@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.154953
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role patchouli seat, mantra and tally lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status tracked .claude/settings.json default, read at lap open
+evidence .claude/settings.json; declared_model.sh resolved_model not run this lap
+voice Kyri
+host Framework bench, America/New_York
+title Patchouli -- queue read empty a fifteenth way; no family surfaces
+prompt Patchouli seat lap: read the inner prompt and the card, run a fresh chronological-header grep over mantra/ and tally/, and take the next family if one surfaces, else say the queue is empty.
+think The inner prompt asks for a fresh grep each lap rather than trusting the prior reading, so the lap ran the version-suffix literal sweep over mantra/ and tally/ .rye sources.
+think Every hit is one of four already-ruled kinds: elder read-compat headers the law keeps forever (mantra-weave-v1/v2, mantra-commit-v1/v2 in mantra/src/main.rye), fixture signatures (fixture-signature-v1/v2 in witnesses), test-local strings (unique-b-v2 in recall_two_way_sync.rye, alpha notes v2 in recall_tablecloth_query.rye), and tally/bud.rye h_domain, a Tier 1 domain separator.
+obs No candidate is a record-version header that a store persists under a counted name, so no %765 family opens this lap. The fourteen prior sweeps and this one agree.
+obs No code changed this lap. The only write is this log and its shelf row.
+loom none -- the grep is a reading, not a timed run
+rota none -- queue-empty re-read only; no council row read this lap
+orbit round 10 sign Taurus -- the verb is stop, and the queue stopped on its own
+file recursion-prompts/patchouli-inner.md untouched; its queue-empty reading stands
+file session-logs/date/20261010/20261010-154953_patchouli-queue-empty-fourteenth-sweep.kyri this log
+scope re-read of the mantra/ and tally/ version-suffix grep; no build, no sweep
+status GREEN for the queue reading only; no family open, no code moved
+recommend check-in (Claude) -- %807 wants a ruling on the ord zero reservation, and the legacy kumara sign seam still awaits its ruling; the lane's own queue stays empty until one of those lands.
