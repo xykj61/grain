@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261009.204703
+editor product Claude Code
+provider model provider Anthropic
+product Claude Code
+role grass -- auditing lane, grain-grass tree
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved here via declared_model.sh; not the runtime identity above)
+configured_status configured default from resolver, not runtime telemetry
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized one-clock zone America/New_York
+title Grass inner prompt grade holds B, no lift
+prompt Baton as Grass: read the inner prompt and the whole card, then take the ordinary move on a surface already open.
+think The card reads the audit queue as empty, so the one surface open this lap is the inner prompt itself, and the lift waits on a reading below B.
+think qa_report_card.sh --setting door --service 90 reads composite 84, letter B, register and reach clear, truth counted 100 with truth_mode=counted.
+think B clears the floor, so no molt frame is pushed and no file is edited.
+obs Only a read happened. The tree gains this log and one shelf row, nothing else.
+obs Truth is counted, not judged: the card says so plainly, and a judged truth reading waits for a hand with the file in front of it.
+rota none -- queue-empty grade pass, the inner prompt names no rota row for it
+orbit round 1 sign -- the verb not read this lap
+file recursion-prompts/grass-inner.md graded B (84) on the Door setting, unchanged
+file tools/fixtures/q/qa_report_card.sh the grade instrument, read only
+status GREEN -- qa_report_card reads B (84) on the inner prompt; no edits; send held because the only new file is this log
+recommend kg -- the audit queue is empty; the next lap takes an unopened file only if a reading comes back below B
