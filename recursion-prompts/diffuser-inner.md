@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.215630` -- the radius-two stencil the row-band paper named is run: row-major's floor moves to five row bands (80 lines at N=256, 160 at N=512), and the falsifier does not fire
 **Revised:** `20261009.214759` -- a self-generated fruit that does not wait on a trace: a cache model of a 5-point stencil shows row-major reaches its compulsory miss rate once the cache holds three row bands, and Z-order wins only below that. The falsifier was named first and not triggered in the model; the hardware counter it needs is unread.
 **Revised:** `20261009.202114` -- the size-mix paper grades B+ 89, and the trace survey finds no live-set caller trace in the tree, so the next fruit waits
 **Revised:** `20261009.174910` -- the size mix closes the rest of the gap: with the real probe's sizes under the same uniform churn, the simulated paper's count falls to about 1,706 per seed at W=10,000, inside the real probe's seed range

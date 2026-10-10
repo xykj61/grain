@@ -8,6 +8,7 @@
 | `20261009.215853` | [Air-feels hold, no build](20261009/20261009-215853_bakery-air-feels-hold-no-build.kyri) | Rebased onto three peer holds; receipt key still held; no build. |
 | 20261009.215948 | [20261009-215948_patchouli-queue-empty-fourth-net.kyri](20261009/20261009-215948_patchouli-queue-empty-fourth-net.kyri) | Patchouli queue empty, fourth net; no build
 | 20261009.215803 | [20261009-215803_patchouli-queue-empty-fresh-net-again.kyri](20261009/20261009-215803_patchouli-queue-empty-fresh-net-again.kyri) | Patchouli queue empty, third net this day |
+| `20261009.215728` | [Radius-two stencil band at five rows](20261009/20261009-215728_radius-two-stencil-band-five.kyri) | Radius two moves the row band to 5N/16; falsifier did not fire. |
 | 20261009.215610 | [petrichor upstream pull](20261009/20261009-215610_petrichor-upstream-pull-hold.kyri) | pull one bakery commit; lane holds, no build |
 | `20261009.215512` | [Key reread, no build](20261009/20261009-215512_bakery-key-reread-no-build.kyri) | Per-ship key finding re-read; census and binary hashes hold; no build. |
 | `20261009.215241` | [Petrichor round hold](20261009/20261009-215241_petrichor-round-hold-no-build.kyri) | Tree at xy/main; gate unchanged; no build. |
