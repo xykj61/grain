@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.024517 | [consent gate held, no build](20261010/20261010-024517_petrichor-consent-gate-still-closed-no-build-2.kyri) | Petrichor: fetch current, grant and revoke facts still unnamed, no build |
+| 20261010.024500 | [queue empty, twenty-third, no build](20261010/20261010-024500_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: widened version-literal net, queue empty, schema_v1 still for Keaton, no build |
 | 20261010.024120 | [fire reading, held](20261010/20261010-024120_incense-round-held-fire-reading-4.kyri) | Incense: row 2 fire read, orbit 7 Libra, dead-letter box read, no build |
 | 20261010.024555 | [lane closed, awaiting ruling](20261010/20261010-024555_pheromone-lane-closed-awaiting-ruling.kyri) | Pheromone: card items 1-3 landed, no build, ruling needed |
 | 20261010.023909 | [lane empty, no build](20261010/20261010-023909_pheromone-lane-empty-no-build.kyri) | Pheromone: stop condition held, no build, nib carried |
