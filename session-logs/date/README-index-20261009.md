@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.234540` | [Incense hold, roster red left open](20261009/20261009-234540_incense-hold-roster-red-left-open.kyri) | Claim board clear; %836 and %835 left OPEN for owners; no build. |
 | `20261009.234344` | [Bakery third hold](20261009/20261009-234344_bakery-receipt-ruling-third-hold.kyri) | Receipt ruling still open; no build; check-in named. |
 | `20261009.234107` | [Pheromone lane verified, sky round](20261009/20261009-234107_pheromone-language-lane-verified.kyri) | Lane empty by witness; limb10, limb7 GREEN; nib carried. |
 | `20261009.234234` | [Grass grades the grass inner page, B+ 89](20261009/20261009-234234_grass-inner-grade-stands-b-plus.kyri) | Inner page reads B+ 89 and stands; queue empty; no molt. |
