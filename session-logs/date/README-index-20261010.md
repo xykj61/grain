@@ -7,6 +7,7 @@
 | 20261010.004543 | [hold](20261010/20261010-004543_petrichor-hold-no-fruit-gate-shut.kyri) | Petrichor hold: bakery commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.003655 | [survey](20261010/20261010-003655_bakery-shared-receipt-survey.kyri) | Shared receipt survey: digest is per tree, peer basis refused; key needs a ruling |
 | 20261010.004517 | [hold](20261010/20261010-004517_incense-hold-board-clear-awaits-keaton-word.kyri) | Incense hold: board clear, law lane awaits Keaton word, no build |
+| 20261010.004431 | [hold](20261010/20261010-004431_diffuser-hold-blockers-unchanged.kyri) | Diffuser hold: blockers unchanged, fourth recheck today; no build |
 | 20261010.004335 | [hold](20261010/20261010-004335_petrichor-hold-no-fruit-upstream-incense.kyri) | Petrichor hold: one incense commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.004316 | [grass](20261010/20261010-004316_grass-queue-empty-no-frame.kyri) | Grass audit queue empty; mycelium/fold.rye reads A/93; no frame, no build |
 | 20261010.004147 | [hold](20261010/20261010-004147_diffuser-hold-msr-and-trace-still-absent.kyri) | Diffuser hold: msr and caller trace still absent; no build |
