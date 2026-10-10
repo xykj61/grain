@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.213603` | [Patchouli queue empty, twenty-fourth read](20261009/20261009-213603_patchouli-queue-empty-twenty-fourth.kyri) | Queue empty again; no code changed; check in. |
+| `20261009.213547` | [Diffuser eighth hold, no build](20261009/20261009-213547_diffuser-eighth-hold-no-build.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.213209` | [Petrichor seventh hold, no build](20261009/20261009-213209_petrichor-seventh-hold-upstream-peer-only-no-build.kyri) | Upstream peer-only; gate unchanged; no build. |
 | `20261009.213524` | [Incense fifty-ninth decline](20261009/20261009-213524_incense-fifty-ninth-decline.kyri) | Round opened clean; no build, cold run held. |
 | `20261009.213316` | [Diffuser seventh hold, no build](20261009/20261009-213316_diffuser-seventh-hold-recorder-absent.kyri) | Recorder absent; fruit waits on a ruling. |
