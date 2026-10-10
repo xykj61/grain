@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.051350 | [Bakery, crux held for ruling, fast-forward](20261010/20261010-051350_bakery-crux-held-fast-forward-decline.kyri) | Fast-forward to e4aa88d616; crux waits on the roster-contract ruling; no build. |
 | 20261010.051306 | [Incense, fifty-third decline](20261010/20261010-051306_incense-fifty-third-decline.kyri) | Round-open clean on e4aa88d616; claim board holds copal only; no build. |
 | 20261010.051217 | [Grass, foundation graded clean, no frame](20261010/20261010-051217_grass-foundation-grade-no-frame.kyri) | Foundation counted clean; no frame. |
 | 20261010.050958 | [Petrichor, no open fruit, water row](20261010/20261010-050958_petrichor-no-open-fruit-water-row.kyri) | Fruit held; Consent Rail gate holds; no build. |
