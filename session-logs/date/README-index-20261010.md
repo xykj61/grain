@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.085154` | [Copal, p54 rostered](20261010/20261010-085154_copal-p54-roster-claim-and-row.kyri) | Green by skip; two reds booked, not rostered. |
 | `20261010.085052` | [Patchouli, queue empty, fresh net](20261010/20261010-085052_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
+| `20261010.085036` | [Grass, civic pages graded A](20261010/20261010-085036_grass-civic-pages-graded-a.kyri) | Four civic and mand pages read A or B+; no frame; no edit. |
 | `20261010.084835` | [Pheromone, hold, status line corrected](20261010/20261010-084835_pheromone-hold-pull-stale-status-fixed.kyri) | Lane at stop clause; no rune; one status line fixed. |
 | `20261010.084739` | [Patchouli, queue empty, check-in held](20261010/20261010-084739_patchouli-queue-empty-check-in-held.kyri) | Fast-forwarded one peer commit; queue still empty; no build; broad sweep awaits Keaton. |
 | `20261010.084105` | [Patchouli, assert class measured](20261010/20261010-084105_patchouli-assert-class-measured.kyri) | 188 functions lack asserts; ratchet on touch, no red; check-in asked. |
