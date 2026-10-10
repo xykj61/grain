@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.010023 | [decline again](20261010/20261010-010023_incense-round-open-decline-again.kyri) | Round-open fast-forward, board clear, lane held for a human word |
 | 20261010.005834 | [hold](20261010/20261010-005834_petrichor-hold-no-fruit-msr-word-upstream-pulled.kyri) | Petrichor hold: no open fruit, consent gate still shut, one upstream hold pulled; no build. |
 | 20261010.005810 | [hold](20261010/20261010-005810_pheromone-hold-fast-forward-witnesses-green.kyri) | Pheromone hold: fast-forwarded, lane witnesses GREEN, ruling awaited; no build |
 | 20261010.005754 | [lift](20261010/20261010-005754_grass-learning-chapter-molt-a-plus.kyri) | Grass molt: learning chapter Reach C+/71 to A+/97 at Door; fossil bannered, no build |
