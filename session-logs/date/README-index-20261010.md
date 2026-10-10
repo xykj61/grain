@@ -7,6 +7,7 @@
 | 20261010.021707 | [grass counted clean](20261010/20261010-021707_grass-counted-readings-clean-no-frame.kyri) | Grass: six field pages graded, none below B on counted readings, no frame |
 | 20261010.021532 | [round-open decline](20261010/20261010-021532_incense-round-open-decline-no-build.kyri) | Incense: round-open clean, orbit 15 dual, aether row repeat declined, no build |
 | 20261010.021502 | [patchouli triad census](20261010/20261010-021502_patchouli-triad-census-no-build.kyri) | Patchouli: triad census, six ratchet gaps, no build |
+| 20261010.021924 | [basis branch reach](20261010/20261010-021924_bakery-basis-branch-reach.kyri) | Bakery: receipt basis fa310d296b off main, held on lap-save and pier branches; no build |
 | 20261010.021335 | [receipt basis measured](20261010/20261010-021335_bakery-receipt-basis-measured.kyri) | Bakery: receipt basis not an ancestor; 4382 of 9083 log-only; no build |
 | 20261010.021322 | [lane empty](20261010/20261010-021322_pheromone-lane-empty-check-in.kyri) | Pheromone: language queue empty, no build, check in |
 | 20261010.021221 | [repeat declined](20261010/20261010-021221_incense-repeat-declined-no-build.kyri) | Incense: round-open clean, orbit 10 Capricorn, repeat row declined, no build |
