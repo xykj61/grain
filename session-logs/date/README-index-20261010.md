@@ -33,6 +33,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.092005` | [Grass, round seven, two wiki pages](20261010/20261010-092005_grass-round-seven-two-wiki-pages-graded.kyri) | docs-geode etc A+/98 and wiki A/95; no frame; queue empty. |
+| `20261010.091932` | [Pheromone, hold, round seven](20261010/20261010-091932_pheromone-hold-round-seven.kyri) | Lane at stop clause; glow witness GREEN; no build. |
 | `20261010.091828` | [Grass, round six, front doors held](20261010/20261010-091828_grass-round-six-audit-held.kyri) | Three front doors A or better; no edit; shadow ungated. |
 
 | `20261010.091650` | [Copal fruit held](20261010/20261010-091650_copal-unrostered-choir-held-red.kyri) | Three unrostered witnesses all RED; none rostered; REDS 837 booked. |
