@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.203311` | [Petrichor draft paths resolve, no build](20261009/20261009-203311_petrichor-draft-paths-resolve-no-build.kyri) | Cited paths resolve; repeats 202715; no build. |
 | `20261009.203240` | [Diffuser live-set hold, seventh, no build](20261009/20261009-203240_diffuser-live-set-hold-seventh.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.203154` | [Bakery receipt key held, no build](20261009/20261009-203154_bakery-receipt-key-held-no-build.kyri) | Receipt key waits on Keaton's ruling; census re-read, no build. |
 | `20261009.195532` | [Grass lifts grass-inner register to Field](20261009/20261009-195532_grass-inner-register-to-field.kyri) | Register 62 to 77; repeats rephrased; witness GREEN. |
