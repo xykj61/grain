@@ -6,6 +6,9 @@
 |---|---|---|
 | `20261010.033345` | [cache census premise held](20261010/20261010-033345_bakery-cache-census-premise-held.kyri) | Bakery: shared compile cache rechecked path-independent, no build, Claude ruling named. |
 | `20261010.033308` | [lane idle, pull, no build](20261010/20261010-033308_petrichor-lane-idle-pull-no-build.kyri) | Petrichor: fast-forwarded to xy, claim clear, no build. |
+| `20261010.033147` | [lane clear, no build](20261010/20261010-033147_pheromone-lane-clear-no-build.kyri) | Pheromone: five Glow limb witnesses GREEN, claim board clear, no build. |
+| `20261010.033600` | [Incense hold, board read, no build](20261010/20261010-033600_incense-hold-claim-board-read.kyri) | Round-open clean on 1acdabcdd6; claim board read, one peer claim; no build, no send. |
+| `20261010.033150` | [queue empty, hidden shelf, no build](20261010/20261010-033150_patchouli-queue-empty-hidden-shelf-idents.kyri) | Patchouli: mantra/src version-literal net, only elder headers, no build. |
 | `20261010.033102` | [held, claim first, no build](20261010/20261010-033102_bakery-held-claim-first-no-build.kyri) | Bakery: round-open clean, claim board read, no build. |
 | `20261010.033023` | [lane idle, fire look](20261010/20261010-033023_petrichor-lane-idle-fire-look.kyri) | Petrichor: tree clean, in sync with xy, no claim, no build. |
 | `20261010.033012` | [queue empty, widened, GREEN](20261010/20261010-033012_patchouli-queue-empty-widened-lane-green.kyri) | Patchouli: lane witnesses re-run GREEN, queue still empty, no build. |
