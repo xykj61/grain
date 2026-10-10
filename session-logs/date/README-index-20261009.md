@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.212910` | [Patchouli queue empty, twenty-third read](20261009/20261009-212910_patchouli-queue-empty-twenty-third.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.212434` | [Patchouli queue empty, twenty-second read](20261009/20261009-212434_patchouli-queue-empty-twenty-second.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.212749` | [Petrichor sixth hold, no build](20261009/20261009-212749_petrichor-sixth-hold-gate-unchanged-no-build.kyri) | Gate unchanged; ff-only pull; nib carried; no build. |
 | `20261009.212354` | [Diffuser fifth hold, no build](20261009/20261009-212354_diffuser-fifth-hold-recorder-still-absent.kyri) | Recorder absent; fruit waits on a ruling. |
