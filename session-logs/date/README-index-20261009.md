@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.213822` | [Bakery queue held, no build](20261009/20261009-213822_bakery-queue-held-no-build.kyri) | Queue waits on a ruling; no build. |
 | `20261009.213954` | [Diffuser ninth hold, no build](20261009/20261009-213954_diffuser-ninth-hold-no-build.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.213838` | [Incense fifty-ninth decline](20261009/20261009-213838_incense-fiftyninth-hold-no-build.kyri) | Held per current order; nothing built; check in. |
 | `20261009.213719` | [Patchouli queue empty, twenty-fifth read](20261009/20261009-213719_patchouli-queue-empty-twenty-fifth.kyri) | Queue empty; no code changed. |
