@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001106 | [log](20261010/20261010-001106_diffuser-hold-prefetch-door-still-shut.kyri) | Diffuser hold: prefetch door still shut, next door waits on Keaton |
 | 20261010.001052 | [log](20261010/20261010-001052_petrichor-door-hold-consent-gate.kyri) | Petrichor door hold; Consent Rail gate still standing; no build |
 | 20261010.000910 | [log](20261010/20261010-000910_incense-round-open-held-no-build.kyri) | Incense round-open held; claim board empty; no build; check in named |
 | 20261010.001056 | [log](20261010/20261010-001056_patchouli-queue-empty-twenty-fifth-net.kyri) | Queue empty, twenty-fifth net; no build; check-in on %807 ruling |
