@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.003338 | [log](20261010/20261010-003338_patchouli-queue-still-empty-recheck.kyri) | Patchouli queue still empty on re-check; no build |
 | 20261010.003003 | [hold](20261010/20261010-003003_diffuser-hold-no-agent-fruit.kyri) | Diffuser hold: no agent-doable fruit, claim board empty; next waits on Keaton; no build |
 | 20261010.002859 | [log](20261010/20261010-002859_incense-round-open-decline-law-waits.kyri) | Incense round-open clean, board clear, law lane held on Keaton's word; no build |
 | 20261010.002734 | [log](20261010/20261010-002734_grass-door-grade-all-a.kyri) | Grass door grade: five touched docs all A, no lift |
