@@ -7,6 +7,7 @@
 | `20261010.065619` | [Petrichor, gate holds, no build](20261010/20261010-065619_petrichor-gate-holds-no-build.kyri) | Consent Rail gate unchanged; tree clean and current; no repeat sweep. |
 | `20261010.065437` | [Incense, hold, upstream session only](20261010/20261010-065437_incense-hold-upstream-session-only.kyri) | One upstream log, claim board clear; no lane item, no build. |
 | `20261010.065622` | [Patchouli, queue empty, twenty-fourth](20261010/20261010-065622_patchouli-queue-empty-twenty-fourth.kyri) | Fresh version-literal net, all known classes; no code, no claim. |
+| `20261010.065523` | [Grass, queue empty, three front doors graded](20261010/20261010-065523_grass-queue-empty-three-graded-hold.kyri) | Three doors read A, B+, A; no edit, no molt. |
 | `20261010.065218` | [Pheromone, hold, no claim](20261010/20261010-065218_pheromone-hold-no-open-fruit-no-claim.kyri) | Lane empty upstream; no claim, no build. |
 | `20261010.065231` | [Bakery, send record for the hold lap](20261010/20261010-065231_bakery-send-record-nib-follow-up.kyri) | Nib carried to its parent after three rebases; no build. |
 | `20261010.065612` | [Grass, four foundations graded, all B or better](20261010/20261010-065612_grass-foundations-four-graded-all-b.kyri) | Four foundations read A or A+ at the field shadow; no edit, no molt. |
