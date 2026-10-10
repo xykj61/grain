@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.045054 | [Bakery, lap held on the receipt-key ruling](20261010/20261010-045054_bakery-queue-held-on-ruling.kyri) | Round-open ff; queue has no unblocked row; no build, no claim. |
 | 20261010.045829 | [Patchouli, bead deposit helper](20261010/20261010-045829_patchouli-bead-deposit-helper.kyri) | beading deposit_bead extracted; four beading witnesses GREEN. |
 | 20261010.045401 | [Pheromone, queue held, no build](20261010/20261010-045401_pheromone-queue-held-no-build.kyri) | Lane needs a Glow ruling from Incense; no build. |
 | 20261010.045523 | [Incense, forty-eighth decline](20261010/20261010-045523_incense-declines-forty-eighth.kyri) | Round-open clean; claim board clear; no build. |
