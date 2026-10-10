@@ -9,6 +9,7 @@
 | `20261010.124827` | [Patchouli, queue empty recheck, no build](20261010/20261010-124827_patchouli-queue-empty-recheck-no-build.kyri) | Fresh net finds nothing new; no build. |
 | `20261010.124434` | [Patchouli, queue empty, no build](20261010/20261010-124434_patchouli-queue-empty-no-build.kyri) | Fresh net finds nothing new; no build. |
 | `20261010.124438` | [Grass, register grade B+, no repair](20261010/20261010-124438_grass-register-grade-b-plus-no-repair.kyri) | Inner prompt graded B+ (89); register 77; no frame. |
+| `20261010.124531` | [Pheromone, queue held after rebase, no build](20261010/20261010-124531_pheromone-queue-held-rebased-no-build.kyri) | Lane held on Incense; rebased; no build. |
 | `20261010.124141` | [Grass, claim board empty, no build](20261010/20261010-124141_grass-claim-board-empty-no-build.kyri) | Fast-forward; queue empty; board clear; no build. |
 | `20261010.123929` | [Incense, index red confirmed, booking held](20261010/20261010-123929_incense-index-red-booking-held-by-ledger-bound.kyri) | Red reproduced; REDS %840 waits on a fold. |
 | `20261010.123428` | [Grass, queue empty, no build](20261010/20261010-123428_grass-queue-empty-no-build.kyri) | Queue empty; nothing below B; no build. |
