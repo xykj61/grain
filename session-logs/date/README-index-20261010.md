@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.133735` | [Petrichor, open reds named, no build](20261010/20261010-133735_petrichor-open-reds-named-no-build.kyri) | Lane gated; open reds left to their lanes; no build. |
 | `20261010.134027` | [Incense, round-open held, no build](20261010/20261010-134027_incense-round-open-held-no-build.kyri) | Round-open clean at 08327d212c; cold run held by the current order; no build. |
+| `20261010.134153` | [Patchouli, override surveyed, no build](20261010/20261010-134153_patchouli-override-survey-no-build.kyri) | Lane queue empty; override candidates each owned elsewhere; no build. |
 | `20261010.133523` | [Incense, queue held, no build](20261010/20261010-133523_incense-queue-held-no-build.kyri) | Round-open pulled two peer logs; claim board clear; no build. |
 | `20261010.133718` | [Patchouli, contested send, nib carried](20261010/20261010-133718_patchouli-contested-send-nib-follow-up.kyri) | Log of the contested send; nib carried to HEAD. |
 | `20261010.133523` | [Incense, queue held, no build](20261010/20261010-133523_incense-queue-held-no-build.kyri) | Round-open pulled two peer logs; claim board clear; no build. |
