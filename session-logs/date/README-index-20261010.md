@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.011126 | [hold](20261010/20261010-011126_petrichor-hold-consent-rail.kyri) | Rail source landed; macOS proof and grant facts still gate the fruit |
+| 20261010.011127 | [crux held](20261010/20261010-011127_bakery-crux-held-no-build.kyri) | Bakery crux held: cache priced, no build, window waits on Keaton |
 | 20261010.010818 | [hold](20261010/20261010-010818_diffuser-fire-sees-hold-doors-still-gated.kyri) | Diffuser fire-sees hold: five repeat holds today, four doors gated; no paper, no build |
 | 20261010.010634 | [census](20261010/20261010-010634_bakery-cache-census-remeasured.kyri) | Bakery census re-read: compile cache shares across paths; crux priced, no build |
 | 20261010.010407 | [hold](20261010/20261010-010407_patchouli-queue-empty-widened-scan-hold.kyri) | Patchouli hold: queue empty on a widened scan, lane rows await Keaton's word; no build |
