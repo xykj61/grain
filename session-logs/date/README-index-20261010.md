@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.043642 | [Petrichor, gate holds after ff, nib carried](20261010/20261010-043642_petrichor-gate-holds-ff-three-nib-carried.kyri) | Petrichor: ff 5c4d4b9593; gate holds; no build. |
 | 20261010.043405 | [Bakery, content-keyed compile claimed](20261010/20261010-043405_bakery-content-keyed-compile-claim.kyri) | Claim pushed to xy; no build, no cold run. |
 | 20261010.043402 | [Grass, two fronts graded, no frame](20261010/20261010-043402_grass-grade-two-fronts-no-frame.kyri) | Grass: KYRI A/96, MAP B+/89; no edit; no frame. |
 | 20261010.043230 | [Incense, fourth decline, one fast-forward](20261010/20261010-043230_incense-declines-fourth-no-build.kyri) | Fast-forward of patchouli's count log; no build. |
