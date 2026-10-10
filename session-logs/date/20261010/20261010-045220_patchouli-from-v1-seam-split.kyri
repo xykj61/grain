@@ -27,4 +27,5 @@ file recursion-prompts/patchouli-inner.md why the reading of the functions-past-
 file session-logs/date/README-index-20261010.md why one row above the delimiter for this log
 scope mantra/src/weave.rye from_v1 extraction; inner prompt reading; no change to any witness or to tally
 status GREEN: mantra_weave_v1_lift_witness, mantra_weave_v1_write_witness, mantra_weave_v2_witness, mantra_weave_merge_witness all GREEN after the edit; tame_style_check bans clean with no weave.rye flag; from_v1 60 lines, check_v1_rows 22 lines; ASCII-only
+obs send: the work commit 9f84da0fda was pushed fast-forward to xy main over f6e34ddf40. The card's Git nib was written after the push and lagged one commit at it, so the follow-up commit carries the nib forward to 9f84da0fda. No force-push.
 recommend keep-going -- the next functions-past-70 touch is bead_content_defined at 71 lines in mantra/beading.rye, on its next touch; %807 and %765 still want Keaton's word
