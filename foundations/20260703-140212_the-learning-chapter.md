@@ -1,5 +1,7 @@
 # The Learning Chapter -- A Candidate for Civic Style
 
+> **Writing fossil.** Molted `20261010.005450` into the living mutant [`20261010-005450_the-learning-chapter.md`](20261010-005450_the-learning-chapter.md), which reads at Door grade A+/97 where this dated page read C+/71 (Reach: a grade-18 run of long clauses; Register and truth unchanged). This page keeps every word it wrote, as testimony.
+
 *The second harvest named a genuine gap: Civic Style speaks of work, soil, materials, supply
 chains, refuge, broadband, and representation, and holds no education chapter yet. This
 foundations piece drafts that chapter in Civic voice, siloed from the material that taught it --

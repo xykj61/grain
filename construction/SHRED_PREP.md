@@ -246,6 +246,12 @@ and its `template-manifest.kyri` rows.
 holds 51 `.md`; `rule_twin` reads 39 drifted pairs against a ceiling of 36 and has been gated at
 `%7` since `20260824.112806`. Full reading: [`../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md`](../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md).
 
+### Class M -- `foundations/20260703-140212_the-learning-chapter.md`, prepped `20261010.005450` (cut stays RED)
+
+Molted by the QA frame, Grass lane: the writing fossil is bannered, the one living citer
+(`foundations/README.md`) is repointed, and the Reach reading moved C+/71 to A+/97 at Door on
+the living mutant. Prep only -- the fossil stays on disk, and no shred is opened.
+
 ### Class M -- the vendor names (Codex, arbor, the bench scorecard) -- prepped `20260906.114734`, folded whole to [`archive/shred/SHRED_PREP-vendor-names-class-m-20260906.md`](archive/shred/SHRED_PREP-vendor-names-class-m-20260906.md) on `20260907.023053`. Thirteen fossils bannered, three refused a banner for three different reasons, three traps named. **Cut still RED.**
 
 ### Class M -- CUT `20260826`, the rune renames -- folded whole to [`archive/shred/SHRED_PREP-rune-rename-cut-20260826.md`](archive/shred/SHRED_PREP-rune-rename-cut-20260826.md) on `20260906.114734`: 19 files renamed, 46 touched, 538 substitutions, and 273 occurrences of the syllable left standing as the scope line rather than a leftover.
