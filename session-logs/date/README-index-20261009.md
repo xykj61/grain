@@ -8,6 +8,7 @@
 | `20261009.235839` | [Petrichor repeat hold](20261009/20261009-235839_petrichor-repeat-hold.kyri) | Both gates still closed; no build. |
 | `20261009.235800` | [Bakery redleg re-run](20261009/20261009-235800_bakery-redleg-rerun-head-455f1bffb5.kyri) | Redleg red re-reproduced on 455f1bffb5; four over ceiling; no edit. |
 | `20261009.235825` | [Incense hold, claim board clear](20261009/20261009-235825_incense-hold-claim-board-clear.kyri) | Claim board clear; law lane waits on Keaton's word; no build. |
+| `20261009.235718` | [Anvil path-survey witness rostered](20261009/20261009-235718_anvil-witness-retargeted-rostered.kyri) | Oven-to-ember retarget; GREEN; one witness rostered. |
 | `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
 | `20261009.235812` | [Grass re-grades two foundations, molts held](20261009/20261009-235812_grass-merit-ledger-held-again.kyri) | Merit ledger D+ 69 and learning chapter C+ 76 stay held for Keaton's word; no build. |
 | `20261009.235705` | [Sweep replay, five pairs](20261009/20261009-235705_diffuser-sweep-replay-band-missed.kyri) | Huge and 4 KiB sweeps replayed; both arms miss the band; no build. |

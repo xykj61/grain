@@ -10,17 +10,19 @@ let counsel = "counsel/date/20260728/20260728-233638_surface-season-p38-anvil-pa
 let c = run ["test" "-f" counsel]
 assert c.ok else "anvil-path-survey: counsel missing"
 
-let cut = run ["sh" "-c" "test -d oven && test -f oven/oven_core.rye && test ! -d anvil && echo CUT_OK"]
-assert cut.ok else "anvil-path-survey: oven/ cut missing or anvil/ still present"
+# invariant: the o1 cut read forward -- the forge path now lives at ember/ (renamed from oven/ on 20260808), and anvil/ is gone.
+let cut = run ["sh" "-c" "test -d ember && test -f ember/ember_core.rye && test ! -d anvil && echo CUT_OK"]
+assert cut.ok else "anvil-path-survey: ember/ cut missing or anvil/ still present"
 assert cut.out contains "CUT_OK" else "anvil-path-survey: cut not complete"
 
-let views = run ["sh" "-c" "ls tools/inference_oven_corpus_*.rish | wc -l"]
+# invariant: the 14 Skate views follow the path to its current name, inference_ember_corpus*_view.rish.
+let views = run ["sh" "-c" "ls tools/i/inference_ember_corpus*_view.rish | wc -l"]
 assert views.ok else "anvil-path-survey: view glob failed"
 let n = trim views.out
-assert n == "14" else "anvil-path-survey: expected 14 inference_oven views"
+assert n == "14" else "anvil-path-survey: expected 14 inference_ember views"
 
-let gen = run ["test" "-d" "tools/gen/oven"]
-assert gen.ok else "anvil-path-survey: tools/gen/oven missing"
+let gen = run ["test" "-d" "tools/gen/ember"]
+assert gen.ok else "anvil-path-survey: tools/gen/ember missing"
 
-say "GREEN: anvil-path-survey — oven/ LIVE · anvil/ gone · 14 Skate views · Oven o1"
+say "GREEN: anvil-path-survey — ember/ LIVE · anvil/ gone · 14 Skate views · Oven o1"
 say "GREEN: anvil-path-survey — path cut complete."

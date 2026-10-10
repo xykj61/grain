@@ -10083,3 +10083,11 @@ guard commence_saga_seat_fork
 path tools/gen/chapter/commence_saga_seat_fork_witness.rish
 tier lap
 seated 20261009.233801
+
+# anvil_path_breach_survey -- the Surface p38 survey, rostered on the claim copal-chapter-witness-roster.
+# It stood unrostered and RED: it asserted oven/ stood after the module had moved to ember/. Retargeted
+# to ember/ and the inference_ember_corpus views (the o1 precedent), it reads GREEN on metal with 14 views.
+guard anvil_path_breach_survey
+path tools/gen/chapter/anvil_path_breach_survey_witness.rish
+tier lap
+seated 20261009.235655
