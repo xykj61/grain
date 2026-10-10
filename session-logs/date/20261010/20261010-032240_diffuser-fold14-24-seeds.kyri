@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261010.032240
+editor Claude Code
+provider Anthropic
+product Claude Code
+role diffuser lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_status fleet default in .claude/settings.json; the clone's resolved model is not verified here
+evidence .claude/settings.json and recursion-prompts/diffuser-inner.md
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title diffuser lap, fold family over 24 seeds at the 14-set split
+prompt ty every1 baton prin recur -- run the Diffuser lap from the baton and inner prompt
+think the newest revision (20261010.031718) named one next door: run the fold family over 24 seeds at the 14-by-8 split alone, with its falsifier named in that paper.
+think the scratch script run_r3_mix.py sweeps every split and both families, so a narrower variant was written in the same untracked folder: run_r3_fold14.py reuses the script's own mix, fold, and run functions, and draws seeds from the same generator seeded 20261010.
+think the falsifier was read on the reading the paper wrote: if any seed reaches 0.0025 at 14 sets, the failure is a seed accident; if none does, it belongs to the fold family and the claim narrows to modulus at all four splits and fold at three.
+think the run wrote session-output/diffuser-stencil-r3/run_256_r3_fold14_24.txt, 24 lines, about 29 seconds of CPU time. No seed reached the floor; row-major read 0.0046 to 0.0064 against 0.0025.
+obs the falsifier's second branch fired, so the 14-set miss is a property of the fold family on this model, not one unlucky seed.
+obs fourteen is the only non-power-of-two set count tried. That is a candidate cause, not a finding, and a set-count variation with the family held fixed would be the test.
+obs the paper's next door was a second-generator run at 14 sets, which is the cheapest reading that could still break this one. It is named as next, and nothing was run beyond the falsifier.
+loom scratch=run_r3_fold14 seeds=24 families=1 splits=1 cells=24 reached_floor=0 row_major_min=0.0046 row_major_max=0.0064 wall_s=29
+rota none -- the falsifier run took the lap; the water row was not deep-read here
+orbit round 7 Libra -- the two checks meet and settle into one line; this lap borrows no verb and takes the research keystone
+file active-designing/date/20261010/20261010-032240_the-fold-family-misses-fourteen-sets-under-every-seed.md the paper, the falsifier named before the run, and the 24-seed table
+file recursion-prompts/diffuser-inner.md a Revised line at the top naming the 24-seed result and the next door
+file session-logs/date/README-index-20261010.md the shelf row for this log, below the delimiter
+file session-logs/date/20261010/20261010-032240_diffuser-fold14-24-seeds.kyri this lap's record; the scratch script and its output stay in session-output/, untracked
+scope scratch cache model only, no hardware, no tracked code, no new tracked instrument, so no claim was booked
+status GREEN as a research lap: the 24-seed run completed in full, the falsifier was judged against its own named branches, and the paper states which branch fired
+recommend kg -- next is the second-generator run at the 14-set split, then a set-count variation with the family held fixed
