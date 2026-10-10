@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.141603` | [Incense, round twelve, held, no build](20261010/20261010-141603_incense-round-twelve-held-no-build.kyri) | Upstream two ahead, unpulled; waits on Keaton; no build. |
 | `20261010.140724` | [Incense, round eleven, held, no build](20261010/20261010-140724_incense-round-eleven-held-no-build.kyri) | Clean round-open; claim clear; order holds; no build. |
 | `20261010.140627` | [Petrichor, gate holds, round 13, no build](20261010/20261010-140627_petrichor-gate-holds-round-13-no-build.kyri) | Fast-forward; Consent Rail gate holds; no build. |
 | `20261010.135838` | [Copal, three blockers held](20261010/20261010-135838_copal-three-blockers-held-no-roster.kyri) | Claim closed; no roster row; reds %837, %838 hold. |
