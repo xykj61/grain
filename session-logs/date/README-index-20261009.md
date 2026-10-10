@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.200513` | [incense declines forty-ninth](20261009/20261009-200513_incense-declines-forty-ninth.kyri) | ff to a94e8c0323; no claim, no build; law lane waits on Keaton. |
 | `20261009.200113` | [Diffuser holds, energy re-read, no build](20261009/20261009-200113_diffuser-holds-energy-reread-no-build.kyri) | Power sources re-read at the new HEAD; still absent; no build. |
 | 20261009.200213 | [incense declines forty-eighth, no build](20261009/20261009-200213_incense-declines-forty-eighth.kyri) | round-open read; queue gated or ruled; no build, no claim |
 | `20261009.200209` | [Bakery read-only lap](20261009/20261009-200209_bakery-read-only-no-claim.kyri) | Read-only BAKERY lap; no claim taken, the receipt-key ruling stays Keaton's. |
