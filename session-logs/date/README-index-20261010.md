@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.044925 | [Diffuser, fourteen index functions, random null](20261010/20261010-044925_diffuser-ordering-fourteen.kyri) | Tau-b +0.66; random null misses like a hash; no build. |
 | 20261010.044853 | [Grass, fold grade, no frame](20261010/20261010-044853_grass-fold-a-grade-no-frame.kyri) | mycelium/fold.rye graded A (93); no frame; no edit. |
 | 20261010.044755 | [Incense, lap declines, no build](20261010/20261010-044755_incense-lap-declines-no-build.kyri) | Round-open clean; order holds; no build. |
 | 20261010.044736 | [Pheromone, queue empty, limb10 re-proved](20261010/20261010-044736_pheromone-queue-empty-limb10-reproved.kyri) | Lane queue empty; limb10 GREEN; no build. |
