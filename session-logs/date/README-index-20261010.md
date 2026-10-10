@@ -7,6 +7,7 @@
 | 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
 | 20261010.013350 | [20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri](20261010/20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri) | queue empty, fresh net, no build |
 | 20261010.013259 | [decline](20261010/20261010-013259_incense-decline-upstream-two-peer-logs.kyri) | Incense decline: two peer logs fast-forwarded, one live claim (copal), no build |
+| 20261010.013339 | [Grass inner page graded, no lift](20261010/20261010-013339_grass-inner-page-graded-no-lift.kyri) | Inner prompt graded: register 77, reach 90, truth 100; no lift; no build. |
 | 20261010.013032 | [Patchouli queue empty, 28th net](20261010/20261010-013032_patchouli-queue-empty-twenty-eighth-net.kyri) | Queue empty; no build; check-in named. |
 | 20261010.013118 | [hold, third, no build](20261010/20261010-013118_petrichor-hold-third-no-build.kyri) | Petrichor hold: consent gate shut, queue empty, no build |
 | 20261010.012930 | [hold, gate shut](20261010/20261010-012930_petrichor-hold-consent-gate-shut.kyri) | Petrichor hold: consent gate still shut, upstream one log commit; no build |
