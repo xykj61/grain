@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.223500` | [Petrichor hold, gate holds](20261009/20261009-223500_petrichor-hold-gate-holds-ff-clean.kyri) | Upstream ff clean; gate holds; no build. |
+| `20261009.223456` | [Patchouli queue empty, twenty-second](20261009/20261009-223456_patchouli-queue-empty-twentysecond.kyri) | Fresh net, elder strings only; no build. |
 | `20261009.223015` | [Patchouli queue empty again](20261009/20261009-223015_patchouli-queue-empty-again.kyri) | Both nets re-read; no candidate; no build. |
 | `20261009.223028` | [Petrichor hold, consent gate holds](20261009/20261009-223028_petrichor-hold-gate-holds-no-build.kyri) | Upstream clean; claim board holds copal alone; consent gate holds; no fruit ruled; no build. |
 | `20261009.223021` | [Bakery hold, no ruled fruit](20261009/20261009-223021_bakery-hold-no-ruled-fruit-nib-carried.kyri) | Receipt key ruling-gated; no build; log only. |
