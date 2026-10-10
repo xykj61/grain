@@ -67,6 +67,7 @@
 | `20261010.073521` | [Petrichor, hold, consent rail still gated](20261010/20261010-073521_petrichor-hold-consent-rail-red-carried.kyri) | Held; no claim, no page touched. |
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
+| `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
 | `20261010.105345` | [Bakery, crux held, third reading](20261010/20261010-105345_bakery-crux-held-third-reading.kyri) | Claim live; no build; receipt-key ruling waits. |
 | `20261010.105039` | [Pheromone, repeat hold, no build](20261010/20261010-105039_pheromone-repeat-hold-no-build.kyri) | Repeat of the 104156 hold; language lane waits on Incense; no build. |
