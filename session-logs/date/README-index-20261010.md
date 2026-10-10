@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.112522` | [Patchouli, queue empty again, hold](20261010/20261010-112522_patchouli-queue-empty-thirteen-nets-hold.kyri) | Fresh nets all known; no build. |
 | `20261010.112025` | [Patchouli, queue empty, fresh nets, hold](20261010/20261010-112025_patchouli-queue-empty-fresh-nets-hold.kyri) | Fresh nets all known; no build. |
 | `20261010.111932` | [Grass, Lila pages graded A, no build](20261010/20261010-111932_grass-lila-pages-grade-a-no-build.kyri) | Read-only grade, foundation A+ and rule A; no molt; nib carried. |
 | `20261010.111725` | [Petrichor, consent gate shut, ff, no build](20261010/20261010-111725_petrichor-consent-gate-shut-ff-no-build.kyri) | Ff to e691820b9e; gate holds; no build. |
