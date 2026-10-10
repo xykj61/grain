@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261009.212825
+editor Claude Code, bakery seat, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime declared by the harness
+configured_model claude-haiku-5-5
+configured_status resolved by sh tools/fixtures/d/declared_model.sh resolved_model
+evidence harness-declared active model; configuration only, not runtime telemetry
+voice Kyri
+host Linux pier, one-clock zone America/New_York
+title Bakery ruling hold, stash count drifted to 94
+prompt Run the bakery baton and inner prompt as one lap: begin with the newest Bakery log, inspect parked work, and take the next agent-doable rung.
+think Newest Bakery log is the fifth receipt-key hold at 212341. Its one door is Keaton's ruling on whether the receipt key drops HEAD for the watched inputs; the card names the same YOURS line at ITINERARY lines 27-32.
+think The inner prompt counts 85 stashes. Measured now: 94 stashes, and the top nine carry round-open labels from this day. The prompt's count is stale, not the stashes; each round-open parks a lap's unsent work by design.
+think Remote check: xy/main is zero commits ahead of HEAD, and the tree is clean. No peer claim names the receipt key or the recovery queue, so no claim is needed for a read-only pass.
+think The 23-version recovery queue the prompt names needs a fresh recompute before it can be worked. That recompute is read-only, but it is a multi-hour review and no ruling says it outranks the blocked crux, so this lap does not start it.
+think Opening a claim or a build now would repeat the five holds already logged today, against the same closed door.
+rota none -- the crux is already named by the newest log and the card; a sixth read adds no fact.
+obs No build, no claim, no witness. The door is Keaton's ruling. Two facts were added: the stash count reads 94, not 85, and the recovery queue needs a recompute before the next review lap.
+file construction/ITINERARY.md git nib carried by the follow-up shape, so the guard reads parent rather than stale.
+file session-logs/date/20261009/20261009-212825_bakery-ruling-hold-stash-drift.kyri this log, the record of a hold with no build and the stash-count drift.
+file session-logs/date/README-index-20261009.md one index row prepended under the delimiter.
+status GREEN for the nib carry and log. No build was claimed or attempted; the receipt-key ruling is still open.
+recommend check-in (Claude) -- Keaton's ruling on the receipt key is the one door; after it, the recovery queue recompute is the next read-only lap.
