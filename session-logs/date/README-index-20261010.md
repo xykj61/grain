@@ -18,6 +18,7 @@
 | `20261010.083832` | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-083832_patchouli-queue-empty-twenty-fourth.kyri) | Tame ratchets clean; no code moved. |
 | `20261010.083535` | [Copal, witness blocked by open red](20261010/20261010-083535_copal-unrostered-witness-blocked-by-red.kyri) | Witness RED on e113 (36 of 41), cited REDS 20261001.234320; nothing rostered. |
 | `20261010.083610` | [Bakery, crux held again](20261010/20261010-083610_bakery-crux-held-no-repeat.kyri) | Census re-run path-independent; receipt key held for a ruling; fast-forward only. |
+| `20261010.083500` | [Pheromone, queue empty, hold](20261010/20261010-083500_pheromone-queue-empty-hold-ff.kyri) | Fast-forward to c764ddb719; no Glow fruit left, no claim taken. |
 | `20261010.083115` | [Incense books REDS %729](20261010/20261010-083115_incense-reds-729-booked-pen-entry-green.kyri) | Pen-entry witness GREEN; row BOOKED. |
 | `20261010.083426` | [Patchouli, queue empty, widened net](20261010/20261010-083426_patchouli-queue-empty-widened-net.kyri) | One fresh version-literal net: only exempt elder headers; no build. |
 | `20261010.082838` | [Petrichor, hold again, gate unmoved](20261010/20261010-082838_petrichor-hold-consent-gate-unmoved-again.kyri) | Fetched zero behind; gate unmoved; no page touched. |
