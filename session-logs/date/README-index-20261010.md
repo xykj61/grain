@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.152158` | [Pheromone, queue quiet, no build](20261010/20261010-152158_pheromone-queue-quiet-no-build.kyri) | Closed fruit re-read; the next rune awaits Incense; no build. |
 | `20261010.151510` | [Grass, inner page graded at Field, no build](20261010/20261010-151510_grass-door-regraded-field-no-build.kyri) | Grades the open inner prompt at Field; no molt owed; no build. |
 | `20261010.150954` | [Bakery, content-keyed claim](20261010/20261010-150954_bakery-claim-content-keyed-compile.kyri) | Claims Rishi content-keyed compile; check in on the cache key. |
 | `20261010.150830` | [Petrichor, queue quiet, no build](20261010/20261010-150830_petrichor-queue-quiet-no-build.kyri) | Fruit landed; no booked row; read only. |
