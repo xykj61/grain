@@ -8,6 +8,7 @@
 | 20261010.041331 | [Grass grades the inner prompt, B+](20261010/20261010-041331_grass-inner-grade-b-plus-no-build.kyri) | Grass: inner prompt graded B+ 89 at field; no lift owed, no build. |
 | 20261010.041009 | [Grass regrade, queue empty](20261010/20261010-041009_grass-foundations-docs-geode-regrade-no-build.kyri) | Grass: three pages graded at field, all B or better; no lift owed, no build. |
 | 20261010.041207 | [petrichor idle after ff](20261010/20261010-041207_petrichor-idle-after-ff.kyri) | Petrichor: fast-forwarded to c53db58959, no claimable lane work; no build. |
+| 20261010.041219 | [pheromone lane empty, no build](20261010/20261010-041219_pheromone-language-lane-empty-no-build.kyri) | Pheromone: language queue empty; no build. |
 | 20261010.040943 | [bakery held, gated queue](20261010/20261010-040943_bakery-held-after-fast-forward.kyri) | Bakery: five commits pulled, gate unchanged; no build. |
 | 20261010.041124 | [diffuser fib 126](20261010/20261010-041124_diffuser-fib-126-misses.kyri) | the fib family also misses at 126 lines on all 24 seeds |
 | 20261010.040701 | [Grass foundations and docs-geode grade](20261010/20261010-040701_grass-foundations-docs-geode-grade-no-build.kyri) | Grass: five foundation and docs-geode pages graded, lowest B+ 87; no build. |
