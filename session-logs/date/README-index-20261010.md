@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.005147 | [hold](20261010/20261010-005147_pheromone-hold-shape-witnesses-green.kyri) | Pheromone hold: shape witnesses re-run GREEN, lane awaits ruling; no build |
 | 20261010.005211 | [crux waits](20261010/20261010-005211_bakery-crux-waits-no-build.kyri) | Bakery crux waits on the receipt-key ruling; no build, no claim |
 | 20261010.005115 | [hold](20261010/20261010-005115_diffuser-hold-sixth-recheck.kyri) | Diffuser hold: sixth recheck today, blockers unchanged, no fruit; no build |
 | 20261010.005108 | [log](20261010/20261010-005108_petrichor-docs-geode-gate-held-no-build.kyri) | Petrichor lap: docs-geode gate held, commits_behind=0, no build |
