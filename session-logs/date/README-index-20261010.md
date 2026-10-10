@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.000406 | [log](20261010/20261010-000406_petrichor-fresh-net-hold.kyri) | Petrichor fresh-net hold; two peer logs pulled, no build |
 | 20261010.000229 | [log](20261010/20261010-000229_bakery-receipt-key-held-for-ruling.kyri) | Receipt key waits on Keaton's ruling; no code moved |
 | `20261010.000119` | [Patchouli queue empty, fresh net](20261010/20261010-000119_patchouli-queue-empty-fresh-net.kyri) | Queue empty; elder headers only; no build; check-in named. |
 | 20261010.000118 | [log](20261010/20261010-000118_diffuser-every-door-waits-on-keaton.kyri) | Diffuser hold: every open door waits on an outside fact, no build |
