@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
 | 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
 | 20261010.022222 | [consent gate holds](20261010/20261010-022222_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: Consent Rail gate holds, no build, check in |
 | 20261010.022355 | [patchouli queue empty, fresh scan](20261010/20261010-022355_patchouli-queue-empty-fresh-scan-no-build.kyri) | Patchouli: queue empty on a fresh scan, no build, check in (Claude) |
