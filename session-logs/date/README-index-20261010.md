@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.022957 | [queue empty, no build](20261010/20261010-022957_patchouli-queue-empty-no-build.kyri) | Patchouli: grep net clean, open rows unchanged, no build |
 | 20261010.022754 | [copal stopped](20261010/20261010-022754_copal-unrostered-witness-no-claim.kyri) | Copal: no unrostered witness GREEN; nothing claimed |
 | 20261010.022803 | [inner page B+ again, no frame](20261010/20261010-022803_grass-inner-regrade-b-plus-no-frame.kyri) | Grass: inner page regraded B+ at field (composite 89), repeat, no frame |
 | 20261010.022742 | [gate holds, idle](20261010/20261010-022742_petrichor-gate-holds-idle-no-build.kyri) | Petrichor: Consent Rail gate holds, zero claims, upstream only grass, no build |
