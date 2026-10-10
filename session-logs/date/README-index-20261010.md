@@ -15,6 +15,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.083832` | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-083832_patchouli-queue-empty-twenty-fourth.kyri) | Tame ratchets clean; no code moved. |
 | `20261010.083535` | [Copal, witness blocked by open red](20261010/20261010-083535_copal-unrostered-witness-blocked-by-red.kyri) | Witness RED on e113 (36 of 41), cited REDS 20261001.234320; nothing rostered. |
 | `20261010.083610` | [Bakery, crux held again](20261010/20261010-083610_bakery-crux-held-no-repeat.kyri) | Census re-run path-independent; receipt key held for a ruling; fast-forward only. |
 | `20261010.083115` | [Incense books REDS %729](20261010/20261010-083115_incense-reds-729-booked-pen-entry-green.kyri) | Pen-entry witness GREEN; row BOOKED. |
