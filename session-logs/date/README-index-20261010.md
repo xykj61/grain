@@ -7,6 +7,7 @@
 | `20261010.132338` | [Patchouli, queue empty fourth](20261010/20261010-132338_patchouli-queue-empty-fourth-net-no-build.kyri) | Header nets re-run, nothing new; no build. |
 | `20261010.132219` | [Copal, three unrostered witnesses red, held](20261010/20261010-132219_copal-fruit-three-reds-verdicts-no-roster.kyri) | Three reds on metal, already booked %837-%839; no roster. |
 | `20261010.132600` | [Incense, round-open declined, no build, fifth](20261010/20261010-132600_incense-round-open-declined-no-build-fifth.kyri) | Clean round-open; board read; no build. |
+| `20261010.132516` | [Grass, card regraded B+ a third time, no edit](20261010/20261010-132516_grass-card-regraded-third-no-edit.kyri) | Inner page B+ (89) again; no edit; queue empty. |
 | `20261010.132114` | [Petrichor, gated and held, no build](20261010/20261010-132114_petrichor-gated-held-no-build.kyri) | Lane gate holds; no page edited; no build. |
 | `20261010.131730` | [Bakery, crux held, fast-forward, no build](20261010/20261010-131730_bakery-crux-held-ff-no-build.kyri) | Receipt key still a YOURS ruling; no build. |
 | `20261010.132206` | [Grass, card regraded B+, repeat, no edit](20261010/20261010-132206_grass-card-regraded-b-plus-repeat-no-edit.kyri) | Inner page regraded B+ (89), same as 131831; no edit. |
