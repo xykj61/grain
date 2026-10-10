@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.234344` | [Bakery third hold](20261009/20261009-234344_bakery-receipt-ruling-third-hold.kyri) | Receipt ruling still open; no build; check-in named. |
 | `20261009.234036` | [Incense hold, no build](20261009/20261009-234036_incense-hold-no-build-upstream-clean.kyri) | Upstream clean; no build; %642 and %519 wait on Keaton. |
 | `20261009.234001` | [Petrichor hold, tenth reading](20261009/20261009-234001_petrichor-hold-tenth-reading-gate-holds.kyri) | Consent gate holds; no build; check-in named. |
 | `20261009.234153` | [Patchouli queue empty, 29th](20261009/20261009-234153_patchouli-queue-empty-twenty-ninth.kyri) | Queue empty again; no build; check-in named. |
