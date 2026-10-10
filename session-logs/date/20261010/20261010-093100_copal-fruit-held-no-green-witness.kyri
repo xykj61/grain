@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.093100
+editor claude-code terminal
+provider anthropic
+product claude-code
+role copal lane grain-copal, roster pass
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host ai-jail-free pier, America/New_York
+title Copal, fruit held, no green witness left
+prompt baton and copal inner prompt; take one unrostered tools/gen/chapter/ witness, claim, roster, prove both sides
+think the inner prompt fruit is one unrostered witness; the card says about 75 remain, the prior lap measured three
+think the census by exact path now finds 157 chapter witnesses, all but two rostered by path, and the two are booked red
+think the third unrostered red is sunn14_witness_choir, booked as REDS 837; the eight other unrostered files are tools, not witnesses
+think re-ran the three unrostered candidates GREEN-first: sunn14 red at its SOURCE thickness leg, remember_pin_history_tidy red at its habit count, instrument_suite unfinished at 300s
+think none is green, and rostering a red adds a permanent red, so the prior lap's hold stands
+obs the card's 166 and 75 figures are stale against a measured census; the card line says measure rather than trust, and this lap did
+obs the ruling owed stays Keaton's: whether a RED witness may be rostered as a booked red
+obs no claim opened and no build, since no fruit is take-able; the orbit round is not recorded because the sign table was not read this lap
+loom witness=instrument_suite_witness wall_ms=300000 verdict=timeout_unfinished
+loom witness=remember_pin_history_tidy_witness verdict=red assert=habit_count
+loom witness=sunn14_witness_choir verdict=red assert=living_source_thickness
+rota none -- fruit held and the roster census was the lap's whole work
+scope census of unrostered chapter witnesses and a GREEN-first re-run of the three candidates; no roster change, no claim, no build
+status HELD -- no green unrostered witness exists in the room; the three are red or unfinished, re-measured this lap; ruling owed to Keaton
+file session-logs/date/20261010/20261010-093100_copal-fruit-held-no-green-witness.kyri why this lap's record of the held fruit and its measurements
+recommend check-in (checkpoint) -- Keaton rules whether a RED witness may be rostered as a booked red; the fruit cannot move until that word lands
