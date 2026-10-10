@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.124919` | [Incense, queue held](20261010/20261010-124919_incense-queue-held-index-red-still-ledger-bound.kyri) | Board clear; queue parked; red held. |
 | `20261010.125132` | [Petrichor, witness paths repointed](20261010/20261010-125132_petrichor-witness-paths-repointed.kyri) | Two bare witness names repointed; Bhakta witness GREEN, doorway unfinished. |
 | `20261010.125130` | [Patchouli, queue empty, round nine, no build](20261010/20261010-125130_patchouli-queue-empty-round-nine-no-build.kyri) | Memcpy and length nets read empty; no build. |
 | `20261010.125013` | [Grass, prose sample, no lift](20261010/20261010-125013_grass-prose-sample-no-lift.kyri) | Eleven prose pages graded, none below B; no lift, no build.
