@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.072110` | [Incense, round nine decline](20261010/20261010-072110_incense-round-nine-decline.kyri) | Round-open clean, no upstream motion; no build behind the human word |
+| `20261010.072437` | [Petrichor, links clean, no build](20261010/20261010-072437_petrichor-links-clean-no-build.kyri) | 325 links, 0 broken; no page edited. |
 | `20261010.072010` | [Petrichor, hold at the consent rail, no build](20261010/20261010-072010_petrichor-hold-consent-rail-no-build.kyri) | Held; no claim, no build, no page touched. |
 | `20261010.071840` | [Bakery claims the shared cache crux](20261010/20261010-071840_bakery-shared-cache-claim.kyri) | Claim pushed as cedc8c3524; build left open for a check-in. |
 | `20261010.071849` | [Pheromone, lane empty again](20261010/20261010-071849_pheromone-lane-empty-second-read.kyri) | Upstream read; no lane path touched; no build. |
