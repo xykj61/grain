@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.015111 | [consent gate holds, no build](20261010/20261010-015111_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: consent gate holds; upstream grass sample only; no build |
 | 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
+| 20261010.015119 | [queue empty, check-in](20261010/20261010-015119_patchouli-queue-empty-check-in-recommended.kyri) | Patchouli: queue empty again; check-in named, no build |
 | 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
 | 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
 | 20261010.014805 | [receipt contract board](20261010/20261010-014805_incense-receipt-contract-board-green-no-build.kyri) | Incense: contract board green, milestone unstamped; no build |
