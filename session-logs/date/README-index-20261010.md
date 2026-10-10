@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.005710 | [Queue empty again](20261010/20261010-005710_patchouli-queue-empty-again-net.kyri) | Queue empty; elder headers only; no build. |
 | 20261010.005659 | [hold](20261010/20261010-005659_diffuser-hold-fruit-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on msr route or raw vendor event; no claim, no build |
 | 20261010.005511 | [stop](20261010/20261010-005511_petrichor-consent-gate-held-stop-round.kyri) | Petrichor stop: consent gate still shut, sweep held, fast-forwarded; no build |
 | 20261010.005549 | [Queue empty, thirteenth net](20261010/20261010-005549_patchouli-queue-empty-thirteenth-net.kyri) | Queue empty again; elder headers only; no build. |
