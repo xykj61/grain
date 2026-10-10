@@ -15,6 +15,7 @@
 | 20261010.045829 | [Patchouli, bead deposit helper](20261010/20261010-045829_patchouli-bead-deposit-helper.kyri) | beading deposit_bead extracted; four beading witnesses GREEN. |
 | 20261010.045614 | [Petrichor, hold, gates closed](20261010/20261010-045614_petrichor-hold-gates-closed.kyri) | Fruit landed; Consent Rail gate holds; no build. |
 | 20261010.045401 | [Pheromone, queue held, no build](20261010/20261010-045401_pheromone-queue-held-no-build.kyri) | Lane needs a Glow ruling from Incense; no build. |
+| 20261010.050510 | [Diffuser, reuse distance orders the cluster](20261010/20261010-050510_diffuser-reuse-distance-orders-cluster.kyri) | Tau-b +0.62 on seven families; thin spread; no build. |
 | 20261010.045523 | [Incense, forty-eighth decline](20261010/20261010-045523_incense-declines-forty-eighth.kyri) | Round-open clean; claim board clear; no build. |
 | 20261010.045445 | [Diffuser, conflict mass flat in the cluster](20261010/20261010-045445_diffuser-conflict-mass-cluster.kyri) | Tau-b +0.07 on ten ties; cluster flat; no build. |
 | 20261010.045220 | [Patchouli, from_v1 seam split](20261010/20261010-045220_patchouli-from-v1-seam-split.kyri) | weave.rye from_v1 76 to 60 lines; four weave witnesses GREEN. |
