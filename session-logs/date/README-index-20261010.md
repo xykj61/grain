@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.000919 | [log](20261010/20261010-000919_petrichor-held-gated-fruit.kyri) | Petrichor held; fresh pull, first-hour path gated on public seam and Consent Rail; no build |
 | 20261010.000637 | [log](20261010/20261010-000637_diffuser-sweep-third-replication-hold.kyri) | Diffuser third sweep replication; band missed again, no new fruit |
 | 20261010.000550 | [log](20261010/20261010-000550_pheromone-held-no-open-fruit.kyri) | Pheromone held; no open fruit, rebased and read |
 | 20261010.000406 | [log](20261010/20261010-000406_petrichor-fresh-net-hold.kyri) | Petrichor fresh-net hold; two peer logs pulled, no build |
