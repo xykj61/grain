@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.132338` | [Patchouli, queue empty fourth](20261010/20261010-132338_patchouli-queue-empty-fourth-net-no-build.kyri) | Header nets re-run, nothing new; no build. |
 | `20261010.132219` | [Copal, three unrostered witnesses red, held](20261010/20261010-132219_copal-fruit-three-reds-verdicts-no-roster.kyri) | Three reds on metal, already booked %837-%839; no roster. |
 | `20261010.132600` | [Incense, round-open declined, no build, fifth](20261010/20261010-132600_incense-round-open-declined-no-build-fifth.kyri) | Clean round-open; board read; no build. |
 | `20261010.132114` | [Petrichor, gated and held, no build](20261010/20261010-132114_petrichor-gated-held-no-build.kyri) | Lane gate holds; no page edited; no build. |
