@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.001300 | [log](20261010/20261010-001300_grass-kyri-air-reread-no-frame.kyri) | Grass air reread of KYRI.md: queue empty, no frame owed |
+| 20261010.001151 | [log](20261010/20261010-001151_bakery-hold-receipt-key-second-read.kyri) | Bakery second hold; receipt key still ruled YOURS; no build |
 | 20261010.001106 | [log](20261010/20261010-001106_diffuser-hold-prefetch-door-still-shut.kyri) | Diffuser hold: prefetch door still shut, next door waits on Keaton |
 | 20261010.001052 | [log](20261010/20261010-001052_petrichor-door-hold-consent-gate.kyri) | Petrichor door hold; Consent Rail gate still standing; no build |
 | 20261010.001006 | [log](20261010/20261010-001006_copal-fruit-blocked-by-two-red-witnesses.kyri) | Copal fruit blocked: two candidates red, REDS 97 and 99 OPEN |
