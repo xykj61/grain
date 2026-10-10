@@ -16,3 +16,10 @@ let result = run ["sh" "-c" "AGENT_JAIL_PART=base bash tools/ag/agent_jail_witne
 say "agent_jail_witness: ok=${result.ok}"
 assert result.ok else "agent-jail witness RED -- see tools/ag/agent_jail_witness.sh output"
 say "GREEN: agent-jail witness -- the plans, paths and seeded files the launcher promises"
+
+# REFUSAL LEG (REDS %827). The launcher refuses an unknown option while it parses its arguments,
+# before any jail or bwrap starts, so a planted flag proves the refusal with no side effect. The
+# exit code is the refusal: the plant is the flag, and code 2 is the launcher answering it.
+let refused = run ["sh" "tools/ag/agent-jail.sh" "--no-such-arg-plant"]
+assert refused.code == 2 else "agent-jail witness: an unknown launcher option was admitted instead of refused"
+say "GREEN: agent-jail refusal -- an unknown option is refused with exit 2 before any jail starts"
