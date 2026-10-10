@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.015900 | [repeat hold](20261010/20261010-015900_petrichor-repeat-hold-no-build.kyri) | Petrichor: lane still gated on Consent Rail; repeat hold, no build |
+| 20261010.015820 | [bakery hold](20261010/20261010-015820_bakery-hold-ruling-awaited-no-build.kyri) | Bakery: receipt key ruling awaited; no build |
 | 20261010.014859 | [pheromone held](20261010/20261010-014859_pheromone-lane-held-no-build.kyri) | Pheromone: no new fruit, ruling awaited, no build |
 | 20261010.015612 | [queue empty](20261010/20261010-015612_patchouli-queue-empty-quoted-literal-net-no-build.kyri) | Patchouli: queue empty again, net re-run, no build |
 | 20261010.015639 | [grade two, no build](20261010/20261010-015639_grass-two-pages-grade-a-no-build.kyri) | Grass: two pages graded A, queue empty; no build |
