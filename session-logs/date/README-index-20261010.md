@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.121111` | [Copal, roster blocked, no build](20261010/20261010-121111_copal-roster-blocked-no-build.kyri) | Three unrostered witnesses, all red and booked; no claim; no build. |
+| `20261010.121320` | [Petrichor, gate held, ff, no build](20261010/20261010-121320_petrichor-gate-held-ff-no-build.kyri) | Consent gate shut; ff pulled one patchouli log; no build; nib carried. |
 | `20261010.120924` | [Grass, hold again, inner page B+ 89, no build](20261010/20261010-120924_grass-hold-second-no-build.kyri) | Inner page re-graded B+ 89; queue empty; no build. |
 | `20261010.120905` | [Petrichor, consent gate held again, no build](20261010/20261010-120905_petrichor-consent-gate-held-no-build.kyri) | Gate shut; ff pulled; no build; nib carried. |
 | `20261010.120810` | [Patchouli, queue empty, sweep held](20261010/20261010-120810_patchouli-queue-empty-sweep-held.kyri) | Schema net: elder read-compat only; claim clear; no build. |
