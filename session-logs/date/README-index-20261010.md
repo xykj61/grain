@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.015956 | [p50 rostered](20261010/20261010-015956_copal-surface-p50-roster.kyri) | Copal: surface p50 witness rostered, both sides in a pen |
 | 20261010.020150 | [queue empty](20261010/20261010-020150_patchouli-queue-empty-twenty-second-no-build.kyri) | Patchouli: queue empty, no build |
+| 20261010.020120 | [heart-in-the-work below B](20261010/20261010-020120_grass-heart-in-the-work-below-b.kyri) | Grass: register 69 on a foundation, under Door floor; no molt, no build |
 | 20261010.015823 | [queue empty, no build](20261010/20261010-015823_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty again; nets re-run; no build |
 | 20261010.020035 | [lane empty, fourth reading](20261010/20261010-020035_pheromone-lane-empty-fourth-reading-no-build.kyri) | Pheromone: lane empty; ruling awaited; no build |
 | 20261010.015900 | [repeat hold](20261010/20261010-015900_petrichor-repeat-hold-no-build.kyri) | Petrichor: lane still gated on Consent Rail; repeat hold, no build |
