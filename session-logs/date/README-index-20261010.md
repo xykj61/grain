@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.192628` | [Petrichor, air row held at the gate](20261010/20261010-192628_petrichor-air-row-held.kyri) | No upstream change; consent gate closed; no build. |
 | `20261010.192226` | [Petrichor, gate held, no build](20261010/20261010-192226_petrichor-gate-held-no-build.kyri) | Fast-forwarded one peer log; consent gate held; no build. |
 | `20261010.192211` | [Pheromone, held again](20261010/20261010-192211_pheromone-lane-held-again-no-build.kyri) | Six peers in; no Glow file moved; no build. |
 | `20261010.191920` | [Patchouli, queue empty again, kumara red held at the ledger bound](20261010/20261010-191920_patchouli-queue-empty-kumara-red-bound-held.kyri) | Spine next 840; REDS at 65532 of 65536; no build. |
