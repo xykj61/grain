@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001300 | [log](20261010/20261010-001300_grass-kyri-air-reread-no-frame.kyri) | Grass air reread of KYRI.md: queue empty, no frame owed |
 | 20261010.001106 | [log](20261010/20261010-001106_diffuser-hold-prefetch-door-still-shut.kyri) | Diffuser hold: prefetch door still shut, next door waits on Keaton |
 | 20261010.001052 | [log](20261010/20261010-001052_petrichor-door-hold-consent-gate.kyri) | Petrichor door hold; Consent Rail gate still standing; no build |
 | 20261010.000910 | [log](20261010/20261010-000910_incense-round-open-held-no-build.kyri) | Incense round-open held; claim board empty; no build; check in named |
