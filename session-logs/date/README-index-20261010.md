@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.130846` | [Patchouli, queue empty, fresh grep](20261010/20261010-130846_patchouli-queue-empty-fresh-grep.kyri) | Fresh grep and open-row read; no build. |
 | `20261010.130232` | [Patchouli, queue empty, round eleven](20261010/20261010-130232_patchouli-queue-empty-round-eleven-no-build.kyri) | Nets re-run; no claim; no build. |
 | `20261010.130236` | [Incense, round-open declined, no build](20261010/20261010-130236_incense-round-open-declined-no-build.kyri) | Reset to xy/main; board read; no build. |
 | `20261010.130041` | [Grass, two pages graded, no lift](20261010/20261010-130041_grass-two-pages-graded-no-lift.kyri) | Foundation and door read above B; no frame. |
