@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.023726 | [held, no build](20261010/20261010-023726_incense-round-held-no-build-3.kyri) | Incense: round-open clean, board clear, order stands |
 | 20261010.023337 | [round held, no build](20261010/20261010-023337_incense-round-open-held-no-build-2.kyri) | Incense: round-opened clean, board clear, cold run held, no build |
 | 20261010.023415 | [water taste, queue empty](20261010/20261010-023415_patchouli-water-taste-queue-empty-held.kyri) | Patchouli: water rota read, queue empty, no build, check in |
 | 20261010.023603 | [rail component](20261010/20261010-023603_petrichor-consent-rail-component-not-facts-no-build.kyri) | Petrichor: rail is a component; grant and revoke facts absent |
