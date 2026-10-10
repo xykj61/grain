@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20261010.040554
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role diffuser lane, moonshots and research
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported; no separate verification read this lap
+configured_model claude-haiku-5-5
+configured_reasoning not read this lap
+configured_status resolved value from declared_model.sh resolved_model; a local override is present (declared_model.sh override reads yes)
+evidence sh tools/fixtures/d/declared_model.sh resolved_model read claude-haiku-5-5 this lap
+voice Kyri
+host anonymized Linux pier, one-clock zone America/New_York
+title bit-mix family also misses the floor at 126 lines
+prompt ty every1 baton prin recur -- run the diffuser lap from its inner prompt, take the second-hash door the 126-line paper named
+think the 126-line paper named two next doors: a 127-line layout, awkward since no clean power-of-two split exists, and a second hash family at 126 lines
+think the second family is the bit-mix finalizer already in run_r3_mix.py; its falsifier was written after the clock read 20261010.040441 and before the run
+think all 24 seeds miss the floor, row-major 0.0084 to 0.0089 against 0.0025, so the miss branch holds for both families and the 126 point misses under two index functions
+obs the mix family misses roughly three times the margin the fold family does at 126 lines; the index function matters for this stencil and this run does not say why
+obs the falsifier's stamp was first written as 041500, a time that did not match the clock read, and corrected to the true order before the paper was written
+obs both families ran in one layout, so a layout effect is not ruled out; a third index family or a 127-line layout would test it
+obs no hardware claim; the scratch model has one stencil, one visit order, LRU, and one seed stream
+loom witness=mix_21x6_sweep wall_s=37 seeds=24 sets=21 ways=6 lines=126 reaches_floor=0
+rota none -- the lap ran the fold and hash thread from the inner prompt; the council row was not deep-read this lap
+orbit round 8 Scorpio -- The fold page, once its links resolve.
+file active-designing/date/20261010/20261010-040441_the-mix-family-misses-at-one-hundred-twenty-six-lines.md the paper: bit-mix at 126 lines, falsifier written before the run, miss branch holds for both families
+file session-output/diffuser-stencil-r3/run_r3_mix_21x6.py the untracked scratch sweep, bit-mix at 21 sets by 6 ways, imports the model from run_r3_mix.py
+file session-output/diffuser-stencil-r3/run_256_r3_mix_21x6_24.txt the untracked output, 24 seeds, reaches_floor=no on all 24
+file recursion-prompts/diffuser-inner.md the fruit paragraph and the revised line for 20261010.040441
+git_nib 0b7a340674
+scope second-hash-family door at 126 lines, one scratch sweep, one paper, one fruit entry
+status GREEN on the new sweep, which reads 0 of 24 seeds reaching the floor at 126 lines under bit-mix; the miss branch of the falsifier holds; no witness gated on this scratch run, and the scratch script is untracked by design
+recommend keep-going -- the next door is a third index family at 126 lines or a 127-line layout, each with its falsifier written before the sweep
