@@ -7,6 +7,7 @@
 | 20261010.001300 | [log](20261010/20261010-001300_grass-kyri-air-reread-no-frame.kyri) | Grass air reread of KYRI.md: queue empty, no frame owed |
 | 20261010.001106 | [log](20261010/20261010-001106_diffuser-hold-prefetch-door-still-shut.kyri) | Diffuser hold: prefetch door still shut, next door waits on Keaton |
 | 20261010.001052 | [log](20261010/20261010-001052_petrichor-door-hold-consent-gate.kyri) | Petrichor door hold; Consent Rail gate still standing; no build |
+| 20261010.001006 | [log](20261010/20261010-001006_copal-fruit-blocked-by-two-red-witnesses.kyri) | Copal fruit blocked: two candidates red, REDS 97 and 99 OPEN |
 | 20261010.000910 | [log](20261010/20261010-000910_incense-round-open-held-no-build.kyri) | Incense round-open held; claim board empty; no build; check in named |
 | 20261010.001056 | [log](20261010/20261010-001056_patchouli-queue-empty-twenty-fifth-net.kyri) | Queue empty, twenty-fifth net; no build; check-in on %807 ruling |
 | 20261010.000839 | [log](20261010/20261010-000839_diffuser-no-open-fruit-hold.kyri) | Diffuser hold: no open fruit, next door waits on Keaton's word |
