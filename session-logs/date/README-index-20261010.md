@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.000839 | [log](20261010/20261010-000839_diffuser-no-open-fruit-hold.kyri) | Diffuser hold: no open fruit, next door waits on Keaton's word |
 | 20261010.000816 | [log](20261010/20261010-000816_patchouli-queue-empty-twenty-fourth-net.kyri) | Queue empty, twenty-fourth net; claim board clear; no build; check-in named |
 | 20261010.000652 | [log](20261010/20261010-000652_bakery-hold-receipt-key-still-ruled.kyri) | Bakery hold; receipt key still awaits ruling; no build |
 | 20261010.000637 | [log](20261010/20261010-000637_diffuser-sweep-third-replication-hold.kyri) | Diffuser third sweep replication; band missed again, no new fruit |
