@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.203706` | [Patchouli queue empty a twenty-second way, no build](20261009/20261009-203706_patchouli-queue-empty-twenty-second-no-build.kyri) | Fresh header search over mantra and tally finds no candidate; no build. |
 | `20261009.203311` | [Petrichor draft paths resolve, no build](20261009/20261009-203311_petrichor-draft-paths-resolve-no-build.kyri) | Cited paths resolve; repeats 202715; no build. |
 | `20261009.203513` | [Diffuser live-set hold, eighth, no build](20261009/20261009-203513_diffuser-live-set-hold-eighth-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.203240` | [Diffuser live-set hold, seventh, no build](20261009/20261009-203240_diffuser-live-set-hold-seventh.kyri) | Fruit still blocked on a live-set trace; no build. |
