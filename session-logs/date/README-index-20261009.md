@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.212354` | [Diffuser fifth hold, no build](20261009/20261009-212354_diffuser-fifth-hold-recorder-still-absent.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.212341` | [Bakery receipt-key fifth hold](20261009/20261009-212341_bakery-receipt-key-fifth-hold.kyri) | Ruling still open; no build. |
+| `20261009.212533` | [Grass prose front doors clear B, no lift](20261009/20261009-212533_grass-prose-front-doors-clear-b.kyri) | Three front doors graded A/B+ and B+; no edit; no build. |
 | `20261009.212338` | [Grass audit, four foundations clear B](20261009/20261009-212338_grass-audit-four-foundations-clear-b.kyri) | Four foundations graded B+ to A; no edit. |
 | `20261009.212312` | [Petrichor fifth hold, no build](20261009/20261009-212312_petrichor-fifth-hold-upstream-moved-no-build.kyri) | Gate unchanged; pulled ff-only; nib carried; no build. |
 | `20261009.211554` | [Patchouli queue empty, twenty-third read](20261009/20261009-211554_patchouli-queue-empty-twenty-third.kyri) | Queue empty again; no code changed; check in. |
