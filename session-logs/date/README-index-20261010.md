@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.173541` | [Diffuser, sixth base blocked](20261010/20261010-173541_diffuser-seed-base-six-runner-missing.kyri) | Runner source absent from disk; sixth base not run; check in (Claude). |
 | `20261010.173228` | [Grass, queue empty, fire row](20261010/20261010-173228_grass-queue-empty-no-build-fire-row.kyri) | No build; fire row read; grade stands at B+. |
 | `20261010.173011` | [Patchouli, queue empty, twentieth](20261010/20261010-173011_patchouli-queue-empty-twentieth-no-build.kyri) | Queue empty; owed red %840 waits on headroom and a seam ruling; no build. |
 | `20261010.172653` | [Grass, queue empty, sixth repeat](20261010/20261010-172653_grass-queue-empty-sixth-repeat-no-build.kyri) | No build; no open audit-lane fruit; no claim collision. |
