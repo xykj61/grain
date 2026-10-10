@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261010.015638
+editor product interface Claude Code CLI
+provider model provider Anthropic
+product product name Claude Code
+role repository role petrichor lane, docs-geode
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status fleet default read from .claude/settings.json; not runtime telemetry
+voice Kyri
+host Framework bench, one-clock America/New_York
+title petrichor hold, one upstream pulse, no build
+prompt ty every1 baton prin recur -- petrichor lane, one lap
+think read the inner prompt; the fruit is landed and the consent gate is Diffuser's
+think fetched xy: one new upstream commit, pheromone's session log, no docs-geode byte
+think no petrichor claim on the board and no REDS row open for this lane
+obs no build: the upstream change does not reopen the gated door
+rota none -- consent-gate hold; no rota row read this lap
+file session-logs/date/20261010/20261010-015638_petrichor-hold-upstream-pulse-no-build.kyri the lap's own record
+recommend check-in (Claude) -- the Consent Rail waits on Diffuser; a grant fact and a revoke fact must exist before the first-hour fruit moves
+scope log only -- no docs-geode byte touched
+status GREEN -- nothing built; blocked by Diffuser's consent gate, named honestly

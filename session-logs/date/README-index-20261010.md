@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.015638 | [hold, upstream pulse, no build](20261010/20261010-015638_petrichor-hold-upstream-pulse-no-build.kyri) | Petrichor: one upstream pulse; consent gate holds; no build |
 | 20261010.015335 | [hold](20261010/20261010-015335_copal-oven-roster-red-stale.kyri) | Copal oven roster held: stale red, claim released |
 | 20261010.015438 | [hold repeat named, no build](20261010/20261010-015438_petrichor-hold-repeat-named-no-build.kyri) | Petrichor: consent gate still holds; repeat named, no build |
 | 20261010.015414 | [compressor shelf graded](20261010/20261010-015414_grass-compressor-shelf-grade-no-build.kyri) | Grass: docs graded, lowest B; no build |
