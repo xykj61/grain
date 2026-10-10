@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.102057` | [Incense, lap 9671 decline](20261010/20261010-102057_incense-round-air-decline-no-build.kyri) | Board clear, no build; law lane held. |
 | `20261010.102020` | [Petrichor, consent gate shut, no build](20261010/20261010-102020_petrichor-hold-consent-gate-no-build.kyri) | Hold: no fruit open, Consent Rail gates; no edit. |
+| `20261010.101849` | [Patchouli, queue held, orbit nine](20261010/20261010-101849_patchouli-queue-held-orbit-nine.kyri) | Ff to cad819a466; queue empty; no build; log and row only. |
 | `20261010.100929` | [Grass, docs README graded A+](20261010/20261010-100929_grass-docs-readme-grade-a-plus-no-molt.kyri) | One read-only grade, 98 A+; no molt, no file changed. |
 | `20261010.100540` | [Grass, foundations door sweep, molts owed](20261010/20261010-100540_grass-foundations-door-sweep-three-c-plus-molts-owed.kyri) | Door sweep of 90 pages; one fossil closed by its mutant; three C+ molts owed. |
 | `20261010.100220` | [Patchouli, queue held at counted versions](20261010/20261010-100220_patchouli-queue-held-counted-versions.kyri) | Counted headers left for Keaton's word; no code moved; log and row only. |
