@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.023909 | [lane empty, no build](20261010/20261010-023909_pheromone-lane-empty-no-build.kyri) | Pheromone: stop condition held, no build, nib carried |
 | 20261010.023858 | [aether queue empty](20261010/20261010-023858_patchouli-aether-queue-empty-held.kyri) | Patchouli: aether row listens, queue empty, %807 waiting, no build |
 | 20261010.023858 | [grass audit, queue empty](20261010/20261010-023858_grass-audit-queue-empty-three-grades-no-build.kyri) | Grass: queue empty, three grades A or better |
 | 20261010.023726 | [held, no build](20261010/20261010-023726_incense-round-held-no-build-3.kyri) | Incense: round-open clean, board clear, order stands |
