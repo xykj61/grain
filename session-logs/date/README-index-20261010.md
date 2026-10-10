@@ -11,13 +11,13 @@
 | 20261010.005810 | [hold](20261010/20261010-005810_pheromone-hold-fast-forward-witnesses-green.kyri) | Pheromone hold: fast-forwarded, lane witnesses GREEN, ruling awaited; no build |
 | 20261010.005754 | [lift](20261010/20261010-005754_grass-learning-chapter-molt-a-plus.kyri) | Grass molt: learning chapter Reach C+/71 to A+/97 at Door; fossil bannered, no build |
 | 20261010.005944 | [Queue empty, stop after scan](20261010/20261010-005944_patchouli-queue-empty-stop-after-scan.kyri) | Hidden shelf scanned; live writers already molted; queue empty; no build. |
+| 20261010.005714 | [census](20261010/20261010-005714_bakery-census-measured-three-unmeasured-no-build.kyri) | Bakery census re-run: three changed, zero silent, three unmeasured; no build |
 | 20261010.005710 | [Queue empty again](20261010/20261010-005710_patchouli-queue-empty-again-net.kyri) | Queue empty; elder headers only; no build. |
 | 20261010.005659 | [hold](20261010/20261010-005659_diffuser-hold-fruit-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on msr route or raw vendor event; no claim, no build |
 | 20261010.005619 | [hold](20261010/20261010-005619_incense-hold-claim-board-clear-no-build.kyri) | Incense hold: fetch clean, claim board clear, law lane holds for a human word; no build |
 | 20261010.005511 | [stop](20261010/20261010-005511_petrichor-consent-gate-held-stop-round.kyri) | Petrichor stop: consent gate still shut, sweep held, fast-forwarded; no build |
 | 20261010.005549 | [Queue empty, thirteenth net](20261010/20261010-005549_patchouli-queue-empty-thirteenth-net.kyri) | Queue empty again; elder headers only; no build. |
 | 20261010.005351 | [hold](20261010/20261010-005351_incense-hold-board-clear-law-lane-awaits-word.kyri) | Incense hold: fast-forwarded two upstream commits, board clear, law lane awaits Keaton word; no build |
-
 | 20261010.005147 | [hold](20261010/20261010-005147_pheromone-hold-shape-witnesses-green.kyri) | Pheromone hold: shape witnesses re-run GREEN, lane awaits ruling; no build |
 | 20261010.005211 | [crux waits](20261010/20261010-005211_bakery-crux-waits-no-build.kyri) | Bakery crux waits on the receipt-key ruling; no build, no claim |
 | 20261010.005115 | [hold](20261010/20261010-005115_diffuser-hold-sixth-recheck.kyri) | Diffuser hold: sixth recheck today, blockers unchanged, no fruit; no build |
