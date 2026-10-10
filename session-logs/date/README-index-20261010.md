@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.142843` | [Incense, receipt still-order GREEN](20261010/20261010-142843_incense-receipt-still-order-green.kyri) | Source order agrees, five drifts refuse; no build. |
 | `20261010.142607` | [Grass, tenure head graded B+, no edit](20261010/20261010-142607_grass-tenure-grade-b-plus-no-edit.kyri) | Composite 88 at service 90; reach 60 reported, not gated; no edit, no frame. |
 | `20261010.142638` | [Petrichor, consent gate holds, no build](20261010/20261010-142638_petrichor-consent-gate-holds-no-build.kyri) | Upstream moved one patchouli log; Rail and grant facts landed; the seam is unverified; no build. |
 | `20261010.142249` | [Grass, sample of 25 docs-geode pages, all B or better](20261010/20261010-142249_grass-sample-25-pages-all-b.kyri) | 25 sampled pages graded; lowest 82; no edit, no frame. |
