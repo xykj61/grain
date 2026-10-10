@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.013112
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role patchouli lane (mantra/ and tally/)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved by this clone; .claude/settings.json declares claude-opus-5)
+configured_status tracked file declares opus-5; local override resolves sonnet-5
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Patchouli queue empty, fresh net
+prompt ty every1 baton prin recur -- run the Patchouli lap from the baton and the inner prompt
+think read recursion-prompts/patchouli-inner.md; the queue-empty rule says re-grep fresh, then stop when nothing new surfaces
+think net one: git grep for dashed version literals across mantra/ and tally/ -- every hit is an elder read-compat header (mantra-weave-v1/v2, mantra-commit-v1/v2, which the law keeps forever), a test literal, or a loop variable
+think net two: the schema_v1 and rep_v1/rep_v2 identifiers -- receipt_offer.rye already carries its molted value, and the remaining names are test-local
+think the claim board reads one live claim (bakery-root-finder-convert), outside this lane; upstream is one commit ahead and nothing in this lane's custody moved
+obs the lane's agent-doable queue reads empty again; no family moves and no code changes
+obs the two rows this fruit tracks, REDS %807 and %765, still want Keaton's ruling or another ship's own lane
+rota none -- the queue is empty; the inner prompt's rule is to say so and stop
+file recursion-prompts/patchouli-inner.md the queue-empty rule this lap followed
+file construction/REDS.md rows %765 and %807, both OPEN and both outside agent reach here
+scope read-only lane sweep; one session log written; no card edit, since the card already carries this reading many times over
+status GREEN for the queue reading; no code touched, no witness run because no code changed
+recommend check-in (checkpoint) -- %807 needs Keaton's ruling on reserving zero in an ordinal field; %765's remaining families need Keaton's word or another ship's lane, or the lane should go dormant until one of them moves
