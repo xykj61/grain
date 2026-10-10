@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.071849` | [Pheromone, lane empty again](20261010/20261010-071849_pheromone-lane-empty-second-read.kyri) | Upstream read; no lane path touched; no build. |
 | `20261010.071835` | [Grass, inner page graded B+, no frame](20261010/20261010-071835_grass-inner-page-graded-b-plus-no-frame.kyri) | Queue empty; page at B+; no edit; no build. |
 | `20261010.071730` | [Patchouli, queue empty a twenty-fifth way](20261010/20261010-071730_patchouli-queue-empty-twenty-fifth-no-build.kyri) | Queue empty; no build; check-in named. |
 | `20261010.071719` | [Incense, round eight, decline](20261010/20261010-071719_incense-round-eight-decline.kyri) | Round-open clean on 1ab6fbd846; board clear; cold run held; no build. |
