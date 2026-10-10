@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.230843` | [Pheromone hold, remote six ahead](20261009/20261009-230843_pheromone-hold-remote-six-ahead.kyri) | Lane closed; no build; checkout six behind xy; ruling still awaited. |
 | `20261009.230234` | [Pheromone hold, lane closed, ruling still awaited](20261009/20261009-230234_pheromone-hold-lane-closed-no-ruling.kyri) | Lane closed; no build; held on the Glow ruling. |
 | `20261009.230101` | [Grass inner prompt graded B+](20261009/20261009-230101_grass-inner-prompt-grade-b-plus.kyri) | Grade B+ (89); no molt frame pushed. |
 | `20261009.230009` | [Petrichor hold, no fruit](20261009/20261009-230009_petrichor-hold-no-fruit.kyri) | Consent Rail gate still closed; grade re-read; no page; check-in. |
