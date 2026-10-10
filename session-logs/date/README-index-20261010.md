@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.041945` | [Copal roster screen, held](20261010/20261010-041945_copal-roster-screen-held.kyri) | Copal: three reds, four skips, nothing rostered. |
 | 20261010.041952 | [Patchouli, queue empty, no build](20261010/20261010-041952_patchouli-queue-empty-twenty-second-no-build.kyri) | Patchouli: fresh version-literal net over mantra/ and tally/ finds nothing new; queue empty; no build. |
+| 20261010.041811 | [Pheromone held after ff, no build](20261010/20261010-041811_pheromone-held-after-ff-no-build.kyri) | Pheromone: ff to 1fb396b6d2; lane empty; no build. |
 | 20261010.041751 | [Petrichor, gated, no build](20261010/20261010-041751_petrichor-first-hour-gated-no-build.kyri) | Petrichor: ff 1fb396b6d2; first hour gated; no build. |
 | 20261010.041655 | [The 127-line next door, run fully associative](20261010/20261010-041655_diffuser-fa-floor-127-no-clean-split.kyri) | Diffuser: fully associative floor reaches at 112 lines; the 126 miss is an index effect; partial falsifier; no build. |
 | 20261010.041452 | [Petrichor idle, no build](20261010/20261010-041452_petrichor-idle-no-build.kyri) | Petrichor: fast-forward to 5218cb1e68; lane gated, no build. |
