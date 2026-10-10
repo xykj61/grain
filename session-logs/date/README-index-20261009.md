@@ -9,6 +9,7 @@
 | `20261009.233521` | [Bakery receipt-key lap held](20261009/20261009-233521_bakery-receipt-key-held.kyri) | Card read; receipt key on YOURS; no build. |
 | `20261009.233559` | [Grass grades its own open page](20261009/20261009-233559_grass-grade-grass-inner-held.kyri) | Inner prompt graded B+ 89; nothing lifted |
 | `20261009.233400` | [Grass grades queue held again](20261009/20261009-233400_grass-grades-queue-held-again.kyri) | Three front doors graded A or B+; nothing lifted |
+| `20261009.233510` | [Petrichor hold, ninth reading](20261009/20261009-233510_petrichor-hold-ninth-reading-no-build.kyri) | Gate holds; ff to af3cf91543; no build. |
 | `20261009.233340` | [Patchouli queue empty, 26th](20261009/20261009-233340_queue-empty-twenty-sixth.kyri) | Queue held on a fresh class of sweep; no build; check-in named. |
 | `20261009.233040` | [Copal roster commence M9, one witness](20261009/20261009-233040_copal-commence-m9-roster.kyri) | Roster row, GREEN live, RED planted |
 | `20261009.232855` | [Grass four grades, queue held](20261009/20261009-232855_grass-four-grades-clean-queue-held.kyri) | Four pages read B+ to A+; no lift owed; no edit. |
