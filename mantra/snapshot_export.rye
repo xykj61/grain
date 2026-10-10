@@ -321,7 +321,15 @@ fn parse_head_record_content(content: []const u8) SnapshotError!struct {
         }
     }
 
+    // invariant: copy_bounded refuses any input longer than its buffer, so both lengths stay within their 64-byte fields.
+    assert(parity_claim_len <= parity_claim.len);
+    assert(continuity_stamp_len <= continuity_stamp.len);
+
     if (!have_head_digest or continuity_epoch == 0) return error.Truncated;
+
+    // invariant: the early return above guarantees a head digest was seen and the continuity epoch is nonzero.
+    assert(have_head_digest);
+    assert(continuity_epoch != 0);
 
     const pk_bytes = try decode_identity_hex(&identity_hex);
 

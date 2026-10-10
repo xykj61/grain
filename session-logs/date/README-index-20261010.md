@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.072252` | [Patchouli, assert density](20261010/20261010-072252_patchouli-assert-density-parse-head-record.kyri) | Fresh class; one parser given invariants. |
 | `20261010.072648` | [Copal, instrument suite held RED](20261010/20261010-072648_copal-instrument-suite-red-held.kyri) | Fascia leg 37 under floor 41; claim closed; no roster edit. |
 | `20261010.072520` | [Bakery, receipt key measured](20261010/20261010-072520_bakery-receipt-key-measured.kyri) | HEAD keys the receipt; 190 of 200 log-only commits miss; build held for check-in. |
 | `20261010.072110` | [Incense, round nine decline](20261010/20261010-072110_incense-round-nine-decline.kyri) | Round-open clean, no upstream motion; no build behind the human word |
