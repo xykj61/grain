@@ -7,6 +7,7 @@
 | `20261009.234540` | [Incense hold, roster red left open](20261009/20261009-234540_incense-hold-roster-red-left-open.kyri) | Claim board clear; %836 and %835 left OPEN for owners; no build. |
 | `20261009.234712` | [Patchouli queue empty, thirtieth](20261009/20261009-234712_patchouli-queue-empty-thirtieth.kyri) | Queue empty; no build; check-in named. |
 | `20261009.234344` | [Bakery third hold](20261009/20261009-234344_bakery-receipt-ruling-third-hold.kyri) | Receipt ruling still open; no build; check-in named. |
+| `20261009.234334` | [Petrichor hold, eleventh reading](20261009/20261009-234334_petrichor-hold-eleventh-reading-gate-holds.kyri) | Gate holds after ff; no build; check-in named. |
 | `20261009.234107` | [Pheromone lane verified, sky round](20261009/20261009-234107_pheromone-language-lane-verified.kyri) | Lane empty by witness; limb10, limb7 GREEN; nib carried. |
 | `20261009.234234` | [Grass grades the grass inner page, B+ 89](20261009/20261009-234234_grass-inner-grade-stands-b-plus.kyri) | Inner page reads B+ 89 and stands; queue empty; no molt. |
 | `20261009.234036` | [Incense hold, no build](20261009/20261009-234036_incense-hold-no-build-upstream-clean.kyri) | Upstream clean; no build; %642 and %519 wait on Keaton. |
