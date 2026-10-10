@@ -220,20 +220,52 @@ pub fn apply_batch(
     const revision = try get_u32(batch, &off);
     const count = try get_u32(batch, &off);
     if (count > max_batch_entries) return error.TooManyEntries;
+    // invariant: the count check above keeps every entries[i] inside the fixed array
+    assert(count <= max_batch_entries);
 
     var entries: [max_batch_entries]ParsedEntry = undefined;
+    try read_manifest(batch, &off, count, &entries);
+    // invariant: the manifest read left the cursor inside the frame, before the signature
+    assert(off <= cap_u32(batch));
+
+    // Verify the one signature over header and manifest.
+    const sig_start = off;
+    const sig_len = kumara.signature_length;
+    if (sig_start + sig_len > cap_u32(batch)) return error.Truncated;
+    kumara.verify_bytes(batch[0..sig_start], batch[sig_start..], source_pk) catch return error.BadSignature;
+    off += sig_len;
+
+    const report = try bind_payloads(batch, &off, count, &entries);
+
+    // Every check passed. Append all; held entries reconstructed from local resins.
+    try append_entries(dest, peer, bolt, revision, count, &entries);
+    return report;
+}
+
+/// Read count manifest entries into entries[0..count]. Refuses a truncated frame, an
+/// unknown tilak, and a path named twice, all before the signature is checked.
+fn read_manifest(
+    batch: []const u8,
+    off: *u32,
+    count: u32,
+    entries: *[max_batch_entries]ParsedEntry,
+) BatchError!void {
+    // invariant: the caller already capped count at max_batch_entries
+    assert(count <= max_batch_entries);
+    // invariant: the cursor starts inside the frame, past the header
+    assert(off.* <= cap_u32(batch));
     var i: u32 = 0;
     while (i < count) : (i += 1) {
-        const path = try get_field(batch, &off);
-        const tilak = try get_field(batch, &off);
-        if (off + 64 > cap_u32(batch)) return error.Truncated;
+        const path = try get_field(batch, off);
+        const tilak = try get_field(batch, off);
+        if (off.* + 64 > cap_u32(batch)) return error.Truncated;
         var digest: [64]u8 = undefined;
-        tally_copy.copy_disjoint(u8, digest[0..], batch[off..][0..64]);
-        off += 64;
-        const length = try get_u32(batch, &off);
-        if (off + 1 > cap_u32(batch)) return error.Truncated;
-        const has_payload = batch[off] == 1;
-        off += 1;
+        tally_copy.copy_disjoint(u8, digest[0..], batch[off.*..][0..64]);
+        off.* += 64;
+        const length = try get_u32(batch, off);
+        if (off.* + 1 > cap_u32(batch)) return error.Truncated;
+        const has_payload = batch[off.*] == 1;
+        off.* += 1;
         if (!tilak_known(tilak)) return error.UnknownTilak;
         var j: u32 = 0;
         while (j < i) : (j += 1) {
@@ -248,28 +280,33 @@ pub fn apply_batch(
             .payload = "",
         };
     }
+}
 
-    // Verify the one signature over header and manifest.
-    const sig_start = off;
-    const sig_len = kumara.signature_length;
-    if (sig_start + sig_len > cap_u32(batch)) return error.Truncated;
-    kumara.verify_bytes(batch[0..sig_start], batch[sig_start..], source_pk) catch return error.BadSignature;
-    off += sig_len;
-
-    // Payload section: bind each need-resin payload and verify it against its digest.
+/// Bind each need-resin payload from the payload section and verify it against the digest
+/// the signed manifest already carries. Held entries carry no bytes and count as had-already.
+fn bind_payloads(
+    batch: []const u8,
+    off: *u32,
+    count: u32,
+    entries: *[max_batch_entries]ParsedEntry,
+) BatchError!BatchReport {
+    // invariant: the caller already capped count at max_batch_entries
+    assert(count <= max_batch_entries);
+    // invariant: the signature check left the cursor inside the frame, at the payload section
+    assert(off.* <= cap_u32(batch));
     var report: BatchReport = .{
         .total = count,
         .had_already = 0,
         .needed = 0,
         .payload_bytes = 0,
     };
-    i = 0;
+    var i: u32 = 0;
     while (i < count) : (i += 1) {
         if (entries[i].has_payload) {
             const n = entries[i].length;
-            if (off + n > cap_u32(batch)) return error.Truncated;
-            const bytes = batch[off..][0..n];
-            off += n;
+            if (off.* + n > cap_u32(batch)) return error.Truncated;
+            const bytes = batch[off.*..][0..n];
+            off.* += n;
             var recomputed: [64]u8 = undefined;
             digest_hex_of(bytes, &recomputed);
             const digest_ok = std.mem.eql(u8, recomputed[0..64], entries[i].digest_hex[0..64]);
@@ -281,9 +318,24 @@ pub fn apply_batch(
             report.had_already += 1;
         }
     }
+    return report;
+}
 
-    // Every check passed. Append all; held entries reconstructed from local resins.
-    i = 0;
+/// Append every entry to dest in manifest order. A held entry's bytes come from the local
+/// store by digest; a store that cannot supply one refuses with StoreMissing.
+fn append_entries(
+    dest: *ns.BoltCatalog,
+    peer: []const u8,
+    bolt: []const u8,
+    revision: u32,
+    count: u32,
+    entries: *const [max_batch_entries]ParsedEntry,
+) BatchError!void {
+    // invariant: the caller already capped count at max_batch_entries
+    assert(count <= max_batch_entries);
+    // invariant: read_manifest refuses an unknown tilak, so a non-empty batch starts with a known one
+    assert(count == 0 or tilak_known(entries[0].tilak));
+    var i: u32 = 0;
     while (i < count) : (i += 1) {
         const bytes = if (entries[i].has_payload)
             entries[i].payload
@@ -292,8 +344,6 @@ pub fn apply_batch(
         dest.append_leaf(peer, bolt, revision, entries[i].path, bytes, entries[i].tilak) catch
             return error.Overflow;
     }
-
-    return report;
 }
 
 fn run_batch_selftest(_: std.Io) !u8 {
