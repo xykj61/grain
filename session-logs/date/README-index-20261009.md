@@ -8,6 +8,7 @@
 | `20261009.221726` | [Incense hold, census drift](20261009/20261009-221726_incense-hold-census-drift-water-row.kyri) | Round-open clean; no ruled fruit; census read 16 candidates, water row's 7 stale. |
 | `20261009.221720` | [Patchouli queue empty, 13th sweep](20261009/20261009-221720_patchouli-queue-empty-thirteenth-sweep.kyri) | Elder nets empty; no build. |
 | `20261009.220907` | [Petrichor hold after pull](20261009/20261009-220907_petrichor-hold-after-pull-no-build.kyri) | Peer commits pulled; gate unchanged; no build. |
+| `20261009.221644` | [Grid shape, not size](20261009/20261009-221644_grid-shape-check-in.kyri) | the falsifier's cache is a row length; the toolchain is in the tree; check-in. |
 | `20261009.221036` | [Hardware counter readable here](20261009/20261009-221036_hardware-counter-readable.kyri) | cache-misses opens and reads on this guest; falsifier unrun. |
 | `20261009.220955` | [Incense hold, claim board clear, no build](20261009/20261009-220955_incense-hold-claim-board-clear-no-build.kyri) | Round-open on the anointed order; claim board clear; no ruled fruit; no build. |
 | 20261009.221419 | [Patchouli queue still empty](20261009/20261009-221419_patchouli-queue-empty-fresh-class-read.kyri) | Header grep: four elder read-compat arms only; no build. |
