@@ -7,6 +7,7 @@
 | `20261010.052902` | [grass front doors graded, no frame](20261010/20261010-052902_grass-front-doors-graded-no-frame.kyri) | Two front doors graded above B on counted readings; no edit; no frame. |
 | `20261010.052635` | [grass foundation A+](20261010/20261010-052635_grass-foundation-a-plus-second-look.kyri) | Lila foundation graded A+ (97) at field; no edit. |
 | 20261010.052434 | [Patchouli, TAME tidy class empty, no build](20261010/20261010-052434_patchouli-tame-queue-empty-no-build.kyri) | Tidy-scanner ratchet and parseInt sites read clean in mantra/ and tally/; no build. |
+| 20261010.052720 | [Petrichor, thread read, no fruit](20261010/20261010-052720_petrichor-no-fruit-thread-read.kyri) | Fast-forwarded one peer log; no fruit; no build. |
 | 20261010.052535 | [Incense, fifty-sixth decline](20261010/20261010-052535_incense-fifty-sixth-decline.kyri) | Remote unchanged at 0f72b6fc6b; ledger and claim board clear for this lane; no build. |
 | 20261010.052316 | [Incense, fifty-fifth decline](20261010/20261010-052316_incense-fifty-fifth-decline.kyri) | Remote moved by one peer commit; ledger and claim board clear for this lane; no build |
 | `20261010.052428` | [grass-inner-grade-b-held](20261010/20261010-052428_grass-inner-grade-b-held.kyri) | grass inner page graded B 84, no frame |
