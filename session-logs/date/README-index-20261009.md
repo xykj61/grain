@@ -8,6 +8,7 @@
 | `20261009.211044` | [Diffuser hold, no build](20261009/20261009-211044_diffuser-hold-no-build.kyri) | Recorder still absent on re-measure; captain ruling still open; no build. |
 | `20261009.211215` | [Incense forty-ninth decline, no build](20261009/20261009-211215_incense-decline-forty-nine.kyri) | Round-open clean; law lane holds; nib carried; no build. |
 | `20261009.211324` | [Patchouli queue empty, twenty-second read](20261009/20261009-211324_queue-empty-scan.kyri) | Recursive header scan, no new candidate; queue empty; no build. |
+| `20261009.211222` | [Pheromone hold, lane empty, no build](20261009/20261009-211222_pheromone-hold-lane-empty-no-build.kyri) | Lane empty; claim-as-override surveyed, no build |
 | `20261009.211041` | [Patchouli queue empty, no build](20261009/20261009-211041_patchouli-queue-empty-no-build.kyri) | Header scan and claim board clear; queue empty; no build. |
 | `20261009.211205` | [Codex control already landed](20261009/20261009-211205_bakery-codex-control-already-landed.kyri) | Repair in `51e8ba4ffb`; control 19 of 19 ok; queue line stale. |
 | `20261009.210735` | [Grass air sample grades A, no build](20261009/20261009-210735_grass-air-sample-grades-a.kyri) | Two docs-geode pages read A; no frame pushed; no build. |
