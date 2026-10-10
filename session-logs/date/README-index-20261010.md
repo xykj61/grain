@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.070409` | [Pheromone, queue empty, limb10 GREEN](20261010/20261010-070409_pheromone-queue-empty-limb10-green.kyri) | Lane empty by card; one pedestal witness GREEN; no build. |
+| `20261010.070356` | [Copal, roster held, no row](20261010/20261010-070356_copal-roster-held-skip-only-and-dup-red.kyri) | Claim withdrawn; skip-only and booked reds held. |
 | `20261010.070317` | [Petrichor, hold, rota none](20261010/20261010-070317_petrichor-hold-rota-none-no-build.kyri) | Lane held at Consent Rail; no claim, no build. |
 | `20261010.070139` | [Grass, inner graded, no frame](20261010/20261010-070139_grass-inner-graded-no-frame.kyri) | Inner prompt reads above B; no edit; no build. |
 | `20261010.065827` | [Petrichor, hold, no claim, no build](20261010/20261010-065827_petrichor-hold-no-claim-no-build.kyri) | Lane held at Consent Rail; no claim, no page touched. |
