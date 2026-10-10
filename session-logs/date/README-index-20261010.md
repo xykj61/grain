@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.042632 | [Petrichor, gated after ff, water row](20261010/20261010-042632_petrichor-gated-fast-forward-water-row.kyri) | Petrichor: ff 7ba79a3e94; first hour gated; no build. |
 | 20261010.042502 | [Patchouli, long-function class, no build](20261010/20261010-042502_patchouli-long-function-class-no-build.kyri) | Patchouli: queue empty again; 25 long fns measured; no build. |
 | 20261010.042521 | [Incense declines after ff, no build](20261010/20261010-042521_incense-declines-after-ff-to-2e6553c1f1.kyri) | Incense: ff to 2e6553c1f1; claim board clear; %642 and %519 wait; no build. |
 | 20261010.042402 | [Grass queue clean, no build](20261010/20261010-042402_grass-queue-clean-no-build.kyri) | Grass: ten named mycelium heads graded, none below B; no build. |
