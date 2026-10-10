@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.055547` | [Grass, inner re-grade reproduces B+](20261010/20261010-055547_grass-inner-regrade-reproduces.kyri) | Re-grade at field reads B+ (89), same as 055224; no edit. |
 | `20261010.055535` | [Petrichor, gate shut](20261010/20261010-055535_petrichor-consent-gate-shut-upstream-check.kyri) | Fetched; no grant or revoke upstream; log only. |
+| `20261010.055729` | [Bakery, receipt-key hold](20261010/20261010-055729_bakery-receipt-key-hold-readonly.kyri) | Read-only; ruling owed; no build. |
 | `20261010.055008` | [Incense, fiftieth decline](20261010/20261010-055008_incense-fiftieth-decline-no-build.kyri) | Round-open clean at c9bc5c8695; claim board one copal claim; no build. |
 | `20261010.055043` | [Petrichor, gate still shut](20261010/20261010-055043_petrichor-gate-still-shut-repeat.kyri) | Gate shut; no upstream change; log only. |
 | `20261010.055214` | [Bakery, redleg re-run on a36c17863b](20261010/20261010-055214_bakery-redleg-rerun-a36c17863b.kyri) | Four-guard ceiling red stands; no build, no claim. |
