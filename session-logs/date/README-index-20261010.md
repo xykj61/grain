@@ -13,6 +13,7 @@
 | `20261010.132907` | [Incense, roster reds read, no build](20261010/20261010-132907_incense-roster-reds-read-no-build.kyri) | Roster reads 22 red guards and self; owning lanes rule. |
 | `20261010.133159` | [Grass, queue empty, graded, no edit](20261010/20261010-133159_grass-queue-empty-graded-no-edit.kyri) | Three foundations graded; no file changed. |
 | `20261010.132621` | [Petrichor, tending target checked, held, no build](20261010/20261010-132621_petrichor-tending-held-no-build.kyri) | Citations clean; lane gated; no page edited. |
+| `20261010.133511` | [Pheromone, lane held, witnesses GREEN, no build](20261010/20261010-133511_pheromone-lane-held-witnesses-green-no-build.kyri) | Both lane witnesses GREEN on metal; board empty; no open language fruit; no build. |
 | `20261010.132338` | [Patchouli, queue empty fourth](20261010/20261010-132338_patchouli-queue-empty-fourth-net-no-build.kyri) | Header nets re-run, nothing new; no build. |
 | `20261010.132825` | [Bakery, redleg re-read, held, ff](20261010/20261010-132825_bakery-redleg-reread-held-ff.kyri) | Ceiling 51 holds, reads 54; two rulings owed; no build. |
 | `20261010.132219` | [Copal, three unrostered witnesses red, held](20261010/20261010-132219_copal-fruit-three-reds-verdicts-no-roster.kyri) | Three reds on metal, already booked %837-%839; no roster. |
