@@ -18,6 +18,7 @@ think Fruit is one unrostered witness under tools/gen/chapter/. Ran all 19 unros
 think Claim commit first: board and card staged together, push refused by a hook on the body, then a five-commit fast-forward. Rebase conflicted only on the card nib; resolved to upstream then amended the nib to the true parent.
 think Both sides proven in throwaway pens: absent clone reads GREEN by skip (exit 0); empty clone src reads RED at the census assert (exit 1).
 obs Oven o3 witness is RED on metal: it asserts oven/ live and anvil/ absent, but neither exists; the forge path reads ember/. A stale red, not booked here; it wants a REDS row and its own lap.
+obs Send landed on xy at 65a74f5f5f: claim 03b87ec16a and roster 68ad2f4fab, both rebased onto peers; card nib conflicts resolved to upstream, then carried to HEAD by the follow-up shape.
 obs Roster witness is RED for a reason this row did not cause: scan reads runs_red=48 verdict=roster_broken with and without the new row.
 rota none -- roster lap, no deep read of a council row this round
 file tools/gen/chapter/tigerbeetle_style_by_the_numbers_census_witness.rish why the chosen unrostered witness; GREEN live, skip absent, RED from an empty src pen
