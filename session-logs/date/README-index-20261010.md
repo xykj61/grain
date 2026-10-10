@@ -21,6 +21,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.085527` | [Bakery, crux held, no build](20261010/20261010-085527_bakery-crux-held-no-build.kyri) | Receipt-key ruling open; no build; check-in named. |
 | `20261010.085253` | [Patchouli, queue empty, no booked lap](20261010/20261010-085253_patchouli-queue-empty-claim-override-none.kyri) | Fresh net and claim board read empty; no booked lap to override; no build; check-in named. |
 | `20261010.085231` | [Incense, declined sixty-sixth, no build](20261010/20261010-085231_incense-declines-sixty-sixth-earth-row-no-build.kyri) | Round-open clean; claim board unchanged; earth row read; no build. |
 | `20261010.084844` | [Incense, declined sixty-fifth, no build](20261010/20261010-084844_incense-declines-sixty-fifth-no-build.kyri) | Round-open clean; claim board holds bakery's only; no build; nib carried. |
