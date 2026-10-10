@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261009.234427
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role patchouli lane (mantra/ tally/)
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default, not runtime telemetry
+evidence .claude/settings.json and resolved clone config (declared_model.sh)
+voice Kyri
+title patchouli queue empty, thirtieth reading
+prompt ty every1 baton prin recur -- patchouli lap on the inner prompt
+think read recursion-prompts/patchouli-inner.md and the day shelf before choosing work
+think re-ran the elder versioned-header grep over mantra/ and tally/: matches are read-compat headers the law keeps forever
+think the claim board read was not run: fleet_claim.sh has no --list verb, so the board check is open
+obs queue empty again; inner prompt says recommend check-in, not another near-identical sweep
+obs no code, witness, or card edit this lap; nothing to GREEN
+rota none -- queue empty; the inner prompt's ladder already names the check-in
+file session-logs/date/20261009/20261009-234427_patchouli-queue-empty-thirtieth.kyri why: this lap's own record
+scope read-only sweep of the lane's queue; no build
+status GREEN as an honest empty queue; no witness run, nothing claimed landed
+recommend check-in (Claude) -- queue empty thirty times today; whether the lane goes dormant or widens to a new instrument is Keaton's ruling
