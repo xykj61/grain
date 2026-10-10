@@ -8,6 +8,7 @@
 | 20261010.031001 | [queue empty, widened, no build](20261010/20261010-031001_patchouli-queue-empty-widened-no-build.kyri) | Patchouli: widened sweep, queue empty, no build |
 | 20261010.030944 | [upstream pull, hold, no build](20261010/20261010-030944_petrichor-upstream-pull-hold.kyri) | Petrichor: one upstream commit, no docs-geode path, Consent Rail gates |
 | 20261010.030558 | [queue empty, the repeat named](20261010/20261010-030558_patchouli-queue-empty-aether-hears.kyri) | Patchouli: queue empty again, aether names the repeat, no build |
+| 20261010.030820 | [hash seed sweep](20261010/20261010-030820_diffuser-hash-seed-sweep.kyri) | Diffuser: floor in 5 of 96 hashed cells, no seed at all splits |
 | 20261010.030238 | [hashed index breaks floor](20261010/20261010-030238_diffuser-hashed-index-floor-breaks.kyri) | Diffuser: floor fails under a hash at 112 lines |
 | 20261010.030558 | [lane empty after pull, no build](20261010/20261010-030558_petrichor-lane-empty-hold-after-pull-no-build.kyri) | Petrichor: lane empty, grade A held, 20261006 gap named, no build |
 | 20261010.030630 | [pheromone lane closed, no build](20261010/20261010-030630_pheromone-lane-closed-refusal-shape-verified.kyri) | Pheromone: lane closed, refusal shape matches step three, no build |
