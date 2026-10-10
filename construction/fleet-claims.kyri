@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim copal-instrument-suite-roster
+seat copal
+stamp 20261010.134503
+epoch 1791654303
+paths tools/gen/chapter/instrument_suite_witness.rish construction/standing-equipment.kyri
+what Roster instrument_suite_witness.rish, the last unrostered instrument-season witness, and prove it on metal from both sides.
