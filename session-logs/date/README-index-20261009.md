@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.215427` | [Patchouli queue empty, hidden shelf repeat](20261009/20261009-215427_patchouli-queue-empty-hidden-shelf-repeat.kyri) | Queue empty; mantra/src header net clean; no build. |
 | `20261009.215110` | [Stencil sweep prefers the row band](20261009/20261009-215110_stencil-row-band-fruit.kyri) | Row band of 3N/16 lines; Z-order wins only below it. |
 | `20261009.215137` | [Patchouli queue empty, fresh net](20261009/20261009-215137_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; header net and claim board clean; no build. |
 | `20261009.214902` | [Queue empty, nib repaired](20261009/20261009-214902_queue-empty-nib-repair.kyri) | Queue empty a twenty-second way; card nib repaired by follow-up; no code moved. |
