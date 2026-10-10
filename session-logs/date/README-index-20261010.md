@@ -9,6 +9,7 @@
 | `20261010.065612` | [Grass, four foundations graded, all B or better](20261010/20261010-065612_grass-foundations-four-graded-all-b.kyri) | Four foundations read A or A+ at the field shadow; no edit, no molt. |
 | `20261010.065047` | [Patchouli, queue empty, ninth](20261010/20261010-065047_patchouli-queue-empty-ninth-brace-sweep.kyri) | Brace-counted long-function sweep; queue empty, no code moved. |
 | `20261010.064911` | [Grass, six docs compressors graded, none below B](20261010/20261010-064911_grass-docs-compressors-graded-none-below-b.kyri) | Six docs/ pages read B or better at the field shadow; no edit. |
+| `20261010.065209` | [Petrichor, gated fruit, no build](20261010/20261010-065209_petrichor-gated-fruit-no-build.kyri) | Fruit landed and gated; one upstream log fast-forwarded; no build. |
 | `20261010.064829` | [Petrichor, lint reads the 20261006 gap, no build](20261010/20261010-064829_petrichor-lint-20261006-gap-no-build.kyri) | Lint clean in lane; one held-gap link. |
 | `20261010.064923` | [Bakery, hold after fast-forward](20261010/20261010-064923_bakery-hold-after-fast-forward.kyri) | Four peers landed; no ruling; no build. |
 | `20261010.064847` | [Incense, decline, cold run held per the card](20261010/20261010-064847_incense-decline-current-order-holds.kyri) | Round-open clean; board clear; cold run held by the card's order; nib carried. |
