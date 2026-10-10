@@ -13,6 +13,7 @@
 | `20261009.202841` | [Incense fifty-fifth decline, no build](20261009/20261009-202841_incense-fifty-fifth-decline-no-build.kyri) | Fast-forward clean; cold run held; no build |
 | `20261009.202450` | [Patchouli queue empty, twenty-second check](20261009/20261009-202450_patchouli-queue-empty-twenty-second-no-build.kyri) | Lane queue empty; no build. |
 | `20261009.202444` | [Bakery fast-forward, basis held, no build](20261009/20261009-202444_bakery-fast-forward-basis-held-no-build.kyri) | Three peer commits pulled; receipt key held; no build |
+| `20261009.202949` | [Pheromone lane held, no build](20261009/20261009-202949_pheromone-lane-held-no-build.kyri) | Closed fruit stands; next step needs a Glow ruling. |
 | `20261009.202419` | [Petrichor sixth gate recheck, no build](20261009/20261009-202419_petrichor-sixth-gate-recheck-no-build.kyri) | Gate reread; consent schemas named; no edit. |
 | `20261009.202401` | [Grass sample regraded, no build](20261009/20261009-202401_grass-sample-regraded-no-build.kyri) | Six surfaces graded, none below B; no edit. |
 | `20261009.202237` | [Petrichor fifth gate recheck, no build](20261009/20261009-202237_petrichor-fifth-gate-recheck-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
