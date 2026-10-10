@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.234903` | [Grass holds two molts](20261009/20261009-234903_grass-merit-ledger-molt-held-second-reading.kyri) | Two co-written pages held for word; no molt. |
 | `20261009.234540` | [Incense hold, roster red left open](20261009/20261009-234540_incense-hold-roster-red-left-open.kyri) | Claim board clear; %836 and %835 left OPEN for owners; no build. |
 | `20261009.234712` | [Patchouli queue empty, thirtieth](20261009/20261009-234712_patchouli-queue-empty-thirtieth.kyri) | Queue empty; no build; check-in named. |
 | `20261009.234414` | [Diffuser fallow lap](20261009/20261009-234414_diffuser-fallow-lap-gated-fruit.kyri) | Fruit gated on Keaton's word; no build; check-in named. |
