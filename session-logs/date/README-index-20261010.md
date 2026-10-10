@@ -5,118 +5,114 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.023305 | [model-control landed](20261010/20261010-023305_bakery-model-control-already-landed.kyri) | Codex repair at 51e8ba4ffb green; page stale |
+| 20261010.023217 | [foundations sample, no frame](20261010/20261010-023217_grass-foundations-sample-a-no-frame.kyri) | Grass: three unopened foundations graded A or better, no frame |
 | 20261010.023204 | [hidden-shelf queue empty](20261010/20261010-023204_patchouli-hidden-shelf-queue-empty-no-build.kyri) | Patchouli: recursive mantra/tally header net clean, queue empty, no build |
-| 20261010.022957 | [queue empty, no build](20261010/20261010-022957_patchouli-queue-empty-no-build.kyri) | Patchouli: grep net clean, open rows unchanged, no build |
 | 20261010.023040 | [grass inner repeat, no frame](20261010/20261010-023040_grass-inner-regrade-repeat-no-frame.kyri) | Grass: inner page regraded at field, register 77, repeat, no frame |
-| 20261010.022754 | [copal stopped](20261010/20261010-022754_copal-unrostered-witness-no-claim.kyri) | Copal: no unrostered witness GREEN; nothing claimed |
+| 20261010.022957 | [queue empty, no build](20261010/20261010-022957_patchouli-queue-empty-no-build.kyri) | Patchouli: grep net clean, open rows unchanged, no build |
 | 20261010.022803 | [inner page B+ again, no frame](20261010/20261010-022803_grass-inner-regrade-b-plus-no-frame.kyri) | Grass: inner page regraded B+ at field (composite 89), repeat, no frame |
-| 20261010.022742 | [gate holds, idle](20261010/20261010-022742_petrichor-gate-holds-idle-no-build.kyri) | Petrichor: Consent Rail gate holds, zero claims, upstream only grass, no build |
-| 20261010.022758 | [census re-proved](20261010/20261010-022758_bakery-shared-cache-census-reproved-no-build.kyri) | Bakery: cache census re-run, path-independent, queue gated, no build |
 | 20261010.022803 | [held, no build](20261010/20261010-022803_incense-round-open-held-no-build.kyri) | Incense: upstream one grass log, board empty, order held, no build |
-| 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
-| 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
-| 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
+| 20261010.022758 | [census re-proved](20261010/20261010-022758_bakery-shared-cache-census-reproved-no-build.kyri) | Bakery: cache census re-run, path-independent, queue gated, no build |
+| 20261010.022754 | [copal stopped](20261010/20261010-022754_copal-unrostered-witness-no-claim.kyri) | Copal: no unrostered witness GREEN; nothing claimed |
+| 20261010.022742 | [gate holds, idle](20261010/20261010-022742_petrichor-gate-holds-idle-no-build.kyri) | Petrichor: Consent Rail gate holds, zero claims, upstream only grass, no build |
 | 20261010.022545 | [grass reread, no frame](20261010/20261010-022545_grass-inner-reread-repeat-no-frame.kyri) | Grass: inner page re-graded B+ at field, repeat of 022026, no frame |
-| 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
-| 20261010.022222 | [consent gate holds](20261010/20261010-022222_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: Consent Rail gate holds, no build, check in |
-| 20261010.022355 | [patchouli queue empty, fresh scan](20261010/20261010-022355_patchouli-queue-empty-fresh-scan-no-build.kyri) | Patchouli: queue empty on a fresh scan, no build, check in (Claude) |
-| 20261010.021846 | [patchouli queue empty](20261010/20261010-021846_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty a twenty-second way, no build, check in (Claude) |
 | 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
+| 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
+| 20261010.022355 | [patchouli queue empty, fresh scan](20261010/20261010-022355_patchouli-queue-empty-fresh-scan-no-build.kyri) | Patchouli: queue empty on a fresh scan, no build, check in (Claude) |
 | 20261010.022317 | [queue held, no build](20261010/20261010-022317_incense-queue-held-no-build.kyri) | Incense: round-open clean, law lane held on %642 and %519, no claim, no build |
-| 20261010.021947 | [lane empty, second check](20261010/20261010-021947_pheromone-lane-empty-second-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
-| 20261010.021707 | [grass counted clean](20261010/20261010-021707_grass-counted-readings-clean-no-frame.kyri) | Grass: six field pages graded, none below B on counted readings, no frame |
+| 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
+| 20261010.022222 | [consent gate holds](20261010/20261010-022222_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: Consent Rail gate holds, no build, check in |
+| 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
 | 20261010.021954 | [leo check decline](20261010/20261010-021954_incense-leo-check-decline-no-build.kyri) | Incense: lap 9095, orbit 5 Leo, aether row read, no build |
+| 20261010.021947 | [lane empty, second check](20261010/20261010-021947_pheromone-lane-empty-second-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
+| 20261010.021924 | [basis branch reach](20261010/20261010-021924_bakery-basis-branch-reach.kyri) | Bakery: receipt basis fa310d296b off main, held on lap-save and pier branches; no build |
+| 20261010.021846 | [patchouli queue empty](20261010/20261010-021846_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty a twenty-second way, no build, check in (Claude) |
+| 20261010.021707 | [grass counted clean](20261010/20261010-021707_grass-counted-readings-clean-no-frame.kyri) | Grass: six field pages graded, none below B on counted readings, no frame |
 | 20261010.021532 | [round-open decline](20261010/20261010-021532_incense-round-open-decline-no-build.kyri) | Incense: round-open clean, orbit 15 dual, aether row repeat declined, no build |
 | 20261010.021502 | [patchouli triad census](20261010/20261010-021502_patchouli-triad-census-no-build.kyri) | Patchouli: triad census, six ratchet gaps, no build |
-| 20261010.021924 | [basis branch reach](20261010/20261010-021924_bakery-basis-branch-reach.kyri) | Bakery: receipt basis fa310d296b off main, held on lap-save and pier branches; no build |
 | 20261010.021335 | [receipt basis measured](20261010/20261010-021335_bakery-receipt-basis-measured.kyri) | Bakery: receipt basis not an ancestor; 4382 of 9083 log-only; no build |
 | 20261010.021322 | [lane empty](20261010/20261010-021322_pheromone-lane-empty-check-in.kyri) | Pheromone: language queue empty, no build, check in |
-| 20261010.021221 | [repeat declined](20261010/20261010-021221_incense-repeat-declined-no-build.kyri) | Incense: round-open clean, orbit 10 Capricorn, repeat row declined, no build |
-| 20261010.021305 | [patchouli empty queue](20261010/20261010-021305_patchouli-queue-empty-hidden-shelf.kyri) | Patchouli: mantra/ and tally/ hidden shelf swept, queue empty, no build |
 | 20261010.021306 | [grass fold grade](20261010/20261010-021306_grass-fold-grade-a-no-frame.kyri) | Grass: mycelium fold.rye graded A/93, queue entry stale, no frame |
+| 20261010.021305 | [patchouli empty queue](20261010/20261010-021305_patchouli-queue-empty-hidden-shelf.kyri) | Patchouli: mantra/ and tally/ hidden shelf swept, queue empty, no build |
+| 20261010.021221 | [repeat declined](20261010/20261010-021221_incense-repeat-declined-no-build.kyri) | Incense: round-open clean, orbit 10 Capricorn, repeat row declined, no build |
 | 20261010.021100 | [grass sample held](20261010/20261010-021100_grass-report-card-sample-foundations-b-held.kyri) | Grass: five foundations graded, none below B, no edit |
 | 20261010.021017 | [petrichor lane held](20261010/20261010-021017_petrichor-lane-held-consent-gate.kyri) | Petrichor: lane held on the consent-rail gate, no build |
 | 20261010.020903 | [grass air row](20261010/20261010-020903_grass-air-row-door-reading-held.kyri) | Grass: air-row foundation graded A (Door), no molt frame |
 | 20261010.020729 | [aether lap, no build](20261010/20261010-020729_incense-aether-lap-no-build.kyri) | Incense: round-open clean, claim board clear, orbit round 5, no build |
-| 20261010.020600 | [receipt-key options](20261010/20261010-020600_receipt-key-options-for-the-ruling.kyri) | Bakery: receipt key options for Keaton's ruling; no build |
-| 20261010.020332 | [grass B+ held](20261010/20261010-020332_grass-b-plus-reading-held.kyri) | Grass: inner prompt graded B+ (89), no molt frame |
 | 20261010.020711 | [link check, no defect](20261010/20261010-020711_petrichor-link-check-no-defect.kyri) | Petrichor: docs-geode relative links, zero broken; no build |
 | 20261010.020628 | [20261010/20261010-020628_patchouli-queue-empty-24.kyri](20261010/20261010-020628_patchouli-queue-empty-24.kyri) | Patchouli queue empty, no build |
-| 20261010.020336 | [fruit blocked again](20261010/20261010-020336_copal-fruit-blocked-again-skip-only-no-roster.kyri) | Copal: eight candidates run; two red, five SKIP-only; none rostered |
+| 20261010.020600 | [receipt-key options](20261010/20261010-020600_receipt-key-options-for-the-ruling.kyri) | Bakery: receipt key options for Keaton's ruling; no build |
 | 20261010.020524 | [repeat hold three](20261010/20261010-020524_petrichor-repeat-hold-three-no-build.kyri) | Petrichor: Consent Rail still gated; third repeat hold, no build |
 | 20261010.020418 | [incense hold](20261010/20261010-020418_incense-hold-claim-board-clear-no-build.kyri) | Incense: board clear, cold run held, no build |
-| 20261010.020204 | [repeat hold two](20261010/20261010-020204_petrichor-repeat-hold-two-no-build.kyri) | Petrichor: Consent Rail still gated; second repeat hold, no build |
-| 20261010.020227 | [bakery hold, round nine](20261010/20261010-020227_bakery-hold-round-nine-no-build.kyri) | receipt key still awaits Keaton; no build |
+| 20261010.020336 | [fruit blocked again](20261010/20261010-020336_copal-fruit-blocked-again-skip-only-no-roster.kyri) | Copal: eight candidates run; two red, five SKIP-only; none rostered |
+| 20261010.020332 | [grass B+ held](20261010/20261010-020332_grass-b-plus-reading-held.kyri) | Grass: inner prompt graded B+ (89), no molt frame |
 | 20261010.020316 | [queue empty](20261010/20261010-020316_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: queue empty, twenty-third reading; no build |
-| 20261010.015956 | [p50 rostered](20261010/20261010-015956_copal-surface-p50-roster.kyri) | Copal: surface p50 witness rostered, both sides in a pen |
+| 20261010.020227 | [bakery hold, round nine](20261010/20261010-020227_bakery-hold-round-nine-no-build.kyri) | receipt key still awaits Keaton; no build |
+| 20261010.020204 | [repeat hold two](20261010/20261010-020204_petrichor-repeat-hold-two-no-build.kyri) | Petrichor: Consent Rail still gated; second repeat hold, no build |
 | 20261010.020150 | [queue empty](20261010/20261010-020150_patchouli-queue-empty-twenty-second-no-build.kyri) | Patchouli: queue empty, no build |
 | 20261010.020120 | [heart-in-the-work below B](20261010/20261010-020120_grass-heart-in-the-work-below-b.kyri) | Grass: register 69 on a foundation, under Door floor; no molt, no build |
-| 20261010.015823 | [queue empty, no build](20261010/20261010-015823_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty again; nets re-run; no build |
 | 20261010.020035 | [lane empty, fourth reading](20261010/20261010-020035_pheromone-lane-empty-fourth-reading-no-build.kyri) | Pheromone: lane empty; ruling awaited; no build |
+| 20261010.015956 | [p50 rostered](20261010/20261010-015956_copal-surface-p50-roster.kyri) | Copal: surface p50 witness rostered, both sides in a pen |
 | 20261010.015900 | [repeat hold](20261010/20261010-015900_petrichor-repeat-hold-no-build.kyri) | Petrichor: lane still gated on Consent Rail; repeat hold, no build |
+| 20261010.015823 | [queue empty, no build](20261010/20261010-015823_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty again; nets re-run; no build |
 | 20261010.015820 | [bakery hold](20261010/20261010-015820_bakery-hold-ruling-awaited-no-build.kyri) | Bakery: receipt key ruling awaited; no build |
-| 20261010.014859 | [pheromone held](20261010/20261010-014859_pheromone-lane-held-no-build.kyri) | Pheromone: no new fruit, ruling awaited, no build |
-| 20261010.015612 | [queue empty](20261010/20261010-015612_patchouli-queue-empty-quoted-literal-net-no-build.kyri) | Patchouli: queue empty again, net re-run, no build |
 | 20261010.015639 | [grade two, no build](20261010/20261010-015639_grass-two-pages-grade-a-no-build.kyri) | Grass: two pages graded A, queue empty; no build |
-| 20261010.015335 | [hold](20261010/20261010-015335_copal-oven-roster-red-stale.kyri) | Copal oven roster held: stale red, claim released |
+| 20261010.015612 | [queue empty](20261010/20261010-015612_patchouli-queue-empty-quoted-literal-net-no-build.kyri) | Patchouli: queue empty again, net re-run, no build |
 | 20261010.015438 | [hold repeat named, no build](20261010/20261010-015438_petrichor-hold-repeat-named-no-build.kyri) | Petrichor: consent gate still holds; repeat named, no build |
 | 20261010.015414 | [compressor shelf graded](20261010/20261010-015414_grass-compressor-shelf-grade-no-build.kyri) | Grass: docs graded, lowest B; no build |
-| 20261010.015301 | [citations hold, still no build](20261010/20261010-015301_petrichor-citations-hold-no-build.kyri) | Petrichor: citations resolve; consent gate holds; no build |
+| 20261010.015335 | [hold](20261010/20261010-015335_copal-oven-roster-red-stale.kyri) | Copal oven roster held: stale red, claim released |
 | 20261010.015331 | [queue empty, twenty-fourth net](20261010/20261010-015331_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli: queue empty; no build. |
-| 20261010.015111 | [consent gate holds, no build](20261010/20261010-015111_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: consent gate holds; upstream grass sample only; no build |
+| 20261010.015301 | [citations hold, still no build](20261010/20261010-015301_petrichor-citations-hold-no-build.kyri) | Petrichor: citations resolve; consent gate holds; no build |
 | 20261010.015142 | [grass register grade](20261010/20261010-015142_grass-register-grade-field-no-build.kyri) | Grass: grass-inner.md graded at Field, register 77, none below; no build |
-| 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
 | 20261010.015119 | [queue empty, check-in](20261010/20261010-015119_patchouli-queue-empty-check-in-recommended.kyri) | Patchouli: queue empty again; check-in named, no build |
-| 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
+| 20261010.015111 | [consent gate holds, no build](20261010/20261010-015111_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: consent gate holds; upstream grass sample only; no build |
 | 20261010.014936 | [round-open decline](20261010/20261010-014936_incense-round-open-decline-no-build.kyri) | Incense: round-open clean, claim board held; no build |
-| 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
+| 20261010.014913 | [radius-three set-assoc](20261010/20261010-014913_diffuser-radius-three-floor-set-associative.kyri) | Diffuser: seven-band floor holds under set-associativity |
+| 20261010.014859 | [pheromone held](20261010/20261010-014859_pheromone-lane-held-no-build.kyri) | Pheromone: no new fruit, ruling awaited, no build |
+| 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
+| 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
 | 20261010.014805 | [receipt contract board](20261010/20261010-014805_incense-receipt-contract-board-green-no-build.kyri) | Incense: contract board green, milestone unstamped; no build |
 | 20261010.014635 | [grass queue sample](20261010/20261010-014635_grass-queue-sample-all-a-no-build.kyri) | Grass: four foundation pages graded A or A+; queue empty, no build |
-| 20261010.014913 | [radius-three set-assoc](20261010/20261010-014913_diffuser-radius-three-floor-set-associative.kyri) | Diffuser: seven-band floor holds under set-associativity |
+| 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
 | 20261010.014426 | [hardware front door lift](20261010/20261010-014426_grass-hardware-front-door-lift.kyri) | Grass: hardware front door C+ to B, seven negatives affirmed |
 | 20261010.014349 | [radius-three floor](20261010/20261010-014349_diffuser-radius-three-stencil-boundary-seven-bands.kyri) | Diffuser: row-major floor at seven bands on both grids |
 | 20261010.014330 | [petrichor front doors graded](20261010/20261010-014330_petrichor-front-doors-graded.kyri) | Petrichor: four newcomer pages graded B or better; no build |
-| 20261010.014241 | [receipt key held, no build](20261010/20261010-014241_bakery-receipt-key-hold-claim-board.kyri) | Bakery: no build; receipt key waits on Keaton; board holds copal only |
-| 20261010.014210 | [queue empty, no build](20261010/20261010-014210_patchouli-queue-empty-nets-no-build.kyri) | Patchouli: nets rerun, queue empty, no build |
-| 20261010.014215 | [round-open clean, declines](20261010/20261010-014215_incense-round-open-clean-declines-no-build.kyri) | Incense: round-open clean; claim board clear; %642 and %519 wait on Keaton; no build |
-| 20261010.013821 | [set-assoc floor](20261010/20261010-013821_diffuser-set-associative-floor-follows-capacity.kyri) | Diffuser: five-band floor holds at 80 lines |
-| 20261010.013908 | [receipt key held, no build](20261010/20261010-013908_bakery-receipt-key-held-no-build.kyri) | Bakery: census 819 miss again; receipt key still on HEAD; waits on Keaton |
 | 20261010.014320 | [lane empty, third reading](20261010/20261010-014320_pheromone-lane-empty-third-reading.kyri) | Pheromone: lane empty, no build; check in (Claude) for the ruling |
-
-| `20261010.013824` | [Hold, declines repeat](20261010/20261010-013824_incense-hold-declines-repeat-no-build.kyri) | Incense: round-open clean at ede522a8f6; claim board clear; gated items wait; no build. |
+| 20261010.014241 | [receipt key held, no build](20261010/20261010-014241_bakery-receipt-key-hold-claim-board.kyri) | Bakery: no build; receipt key waits on Keaton; board holds copal only |
+| 20261010.014215 | [round-open clean, declines](20261010/20261010-014215_incense-round-open-clean-declines-no-build.kyri) | Incense: round-open clean; claim board clear; %642 and %519 wait on Keaton; no build |
+| 20261010.014210 | [queue empty, no build](20261010/20261010-014210_patchouli-queue-empty-nets-no-build.kyri) | Patchouli: nets rerun, queue empty, no build |
+| 20261010.013908 | [receipt key held, no build](20261010/20261010-013908_bakery-receipt-key-held-no-build.kyri) | Bakery: census 819 miss again; receipt key still on HEAD; waits on Keaton |
+| 20261010.013821 | [set-assoc floor](20261010/20261010-013821_diffuser-set-associative-floor-follows-capacity.kyri) | Diffuser: five-band floor holds at 80 lines |
 | 20261010.013711 | [lane empty, claim board read](20261010/20261010-013711_pheromone-lane-empty-claim-board-read.kyri) | Pheromone: lane empty, no build; check in (Claude) for the ruling |
-| `20261010.013941` | [Queue empty, nets rerun, no build](20261010/20261010-013941_patchouli-queue-empty-fresh-nets-no-build.kyri) | Patchouli: queue empty again; no build, check-in named |
-| `20261010.013545` | [Incense hold, round-open clean](20261010/20261010-013545_incense-hold-no-build-round-open-clean.kyri) | Round-open clean at 9875befbf6; gated items wait on a word; no build. |
-| 20261010.013522 | [queue empty, board read](20261010/20261010-013522_patchouli-queue-empty-claim-board-check.kyri) | Patchouli: queue empty; no build, check-in named |
 | 20261010.013639 | [hold, fourth, no build](20261010/20261010-013639_petrichor-hold-fourth-no-build.kyri) | Petrichor hold: gate shut, no cross-lane claim taken, no build |
-| 20261010.013314 | [hold, ruling awaited](20261010/20261010-013314_bakery-receipt-key-ruling-hold.kyri) | Bakery: cache census clean, receipt key still on HEAD; contract change waits on Keaton; no build |
-| 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
+| 20261010.013522 | [queue empty, board read](20261010/20261010-013522_patchouli-queue-empty-claim-board-check.kyri) | Patchouli: queue empty; no build, check-in named |
 | 20261010.013350 | [20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri](20261010/20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri) | queue empty, fresh net, no build |
-| 20261010.013259 | [decline](20261010/20261010-013259_incense-decline-upstream-two-peer-logs.kyri) | Incense decline: two peer logs fast-forwarded, one live claim (copal), no build |
 | 20261010.013339 | [Grass inner page graded, no lift](20261010/20261010-013339_grass-inner-page-graded-no-lift.kyri) | Inner prompt graded: register 77, reach 90, truth 100; no lift; no build. |
-| 20261010.013032 | [Patchouli queue empty, 28th net](20261010/20261010-013032_patchouli-queue-empty-twenty-eighth-net.kyri) | Queue empty; no build; check-in named. |
+| 20261010.013314 | [hold, ruling awaited](20261010/20261010-013314_bakery-receipt-key-ruling-hold.kyri) | Bakery: cache census clean, receipt key still on HEAD; contract change waits on Keaton; no build |
+| 20261010.013259 | [decline](20261010/20261010-013259_incense-decline-upstream-two-peer-logs.kyri) | Incense decline: two peer logs fast-forwarded, one live claim (copal), no build |
+| 20261010.013220 | [fruit](20261010/20261010-013220_diffuser-radius-two-stencil-five-bands.kyri) | Diffuser fruit: radius-two stencil boundary at five row bands; paper, no build |
 | 20261010.013118 | [hold, third, no build](20261010/20261010-013118_petrichor-hold-third-no-build.kyri) | Petrichor hold: consent gate shut, queue empty, no build |
-| 20261010.012930 | [hold, gate shut](20261010/20261010-012930_petrichor-hold-consent-gate-shut.kyri) | Petrichor hold: consent gate still shut, upstream one log commit; no build |
+| 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
+| 20261010.013032 | [Patchouli queue empty, 28th net](20261010/20261010-013032_patchouli-queue-empty-twenty-eighth-net.kyri) | Queue empty; no build; check-in named. |
 | 20261010.012951 | [decline](20261010/20261010-012951_incense-decline-quiet-upstream.kyri) | Incense decline: upstream equal to HEAD 980910e6f3, no build |
-| 20261010.012853 | [hidden-shelf heads graded](20261010/20261010-012853_patchouli-hidden-shelf-heads-graded.kyri) | Patchouli: 15 mantra/src heads graded, none below B; queue empty |
+| 20261010.012930 | [hold, gate shut](20261010/20261010-012930_petrichor-hold-consent-gate-shut.kyri) | Petrichor hold: consent gate still shut, upstream one log commit; no build |
 | 20261010.012910 | [grade, no lift](20261010/20261010-012910_grass-grade-four-surfaces-no-lift.kyri) | Grass grade: seven recent prose pages B or better; no edit |
+| 20261010.012853 | [hidden-shelf heads graded](20261010/20261010-012853_patchouli-hidden-shelf-heads-graded.kyri) | Patchouli: 15 mantra/src heads graded, none below B; queue empty |
 | 20261010.012646 | [grade, no lift](20261010/20261010-012646_grass-front-door-grade-no-lift.kyri) | Grass grade: libraries README and root README both B or better; no edit |
 | 20261010.012633 | [ruling awaited, no build](20261010/20261010-012633_pheromone-ruling-wait-no-build.kyri) | Pheromone ff pull; fruit parked on Incense ruling; no build
-| 20261010.012430 | [decline](20261010/20261010-012430_incense-decline-upstream-equal-head.kyri) | Incense decline: upstream equal to HEAD f744e7e908, claim board one live, no build |
 | 20261010.012615 | [ascii sweep, docs-geode clean](20261010/20261010-012615_petrichor-ascii-docs-geode-clean.kyri) | Petrichor: zero non-ASCII across 56 living docs-geode pages; no build |
-| 20261010.013220 | [fruit](20261010/20261010-013220_diffuser-radius-two-stencil-five-bands.kyri) | Diffuser fruit: radius-two stencil boundary at five row bands; paper, no build |
+| 20261010.012430 | [decline](20261010/20261010-012430_incense-decline-upstream-equal-head.kyri) | Incense decline: upstream equal to HEAD f744e7e908, claim board one live, no build |
 | 20261010.012425 | [queue empty, thirteenth net](20261010/20261010-012425_patchouli-queue-empty-thirteenth-net.kyri) | Patchouli queue empty: writers and literals both clean; no build |
-| 20261010.012407 | [hold](20261010/20261010-012407_petrichor-consent-gate-hold.kyri) | Petrichor hold: consent gate shut, fruit landed, no build |
 | 20261010.012418 | [hold](20261010/20261010-012418_diffuser-hold-both-blockers-still-no-build.kyri) | Diffuser hold: msr node and live-set trace still absent; no build |
-| 20261010.011956 | [queue empty, twenty-fourth net](20261010/20261010-011956_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli queue empty: every hit elder or test; no build |
+| 20261010.012407 | [hold](20261010/20261010-012407_petrichor-consent-gate-hold.kyri) | Petrichor hold: consent gate shut, fruit landed, no build |
+| 20261010.012406 | [hold](20261010/20261010-012406_bakery-crux-hold-third-no-build.kyri) | Bakery crux held a third time: ruled and priced, receipt key still unruled; no build |
 | 20261010.012244 | [decline](20261010/20261010-012244_incense-decline-upstream-adopted.kyri) | Incense decline: upstream adopted at 3631222793, no build |
 | 20261010.012125 | [hold](20261010/20261010-012125_grass-foundation-grade-hold.kyri) | Grass grade: foundation B 84, Radiant page A 93; both stand, no edit |
-| 20261010.012406 | [hold](20261010/20261010-012406_bakery-crux-hold-third-no-build.kyri) | Bakery crux held a third time: ruled and priced, receipt key still unruled; no build |
 | 20261010.012057 | [decline](20261010/20261010-012057_incense-decline-upstream-equal.kyri) | Incense decline: upstream equal to HEAD, claim board clear; no build |
 | 20261010.012010 | [hold](20261010/20261010-012010_diffuser-hold-blockers-reread-no-build.kyri) | Diffuser hold: msr node still absent, trace still missing; no build |
 | 20261010.012008 | [hold](20261010/20261010-012008_bakery-crux-hold-no-build.kyri) | Bakery crux held: ruled and priced, receipt key still unruled; no build |
-| 20261010.011735 | [hold](20261010/20261010-011735_grass-inner-regraded-hold.kyri) | Grass inner page re-graded B+ at Field, no edit, hold |
+| 20261010.011956 | [queue empty, twenty-fourth net](20261010/20261010-011956_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli queue empty: every hit elder or test; no build |
 | 20261010.011744 | [hold](20261010/20261010-011744_diffuser-hold-msr-trace-reread.kyri) | Diffuser hold: msr and live-set trace re-read, both still absent; no build |
+| 20261010.011735 | [hold](20261010/20261010-011735_grass-inner-regraded-hold.kyri) | Grass inner page re-graded B+ at Field, no edit, hold |
 | 20261010.011610 | [hold](20261010/20261010-011610_patchouli-queue-empty-fresh-net-hold.kyri) | Patchouli queue empty again: one fresh net, every hit already ruled, no build |
 | 20261010.011529 | [crux hold](20261010/20261010-011529_bakery-crux-hold-repeat-no-build.kyri) | Bakery crux held again: pulled four log-only commits, no build, receipt-key ruling still awaited |
 | 20261010.011449 | [hold](20261010/20261010-011449_petrichor-hold-docs-geode-links.kyri) | Docs-geode links resolve, lint GREEN; consent gate still shut |
@@ -130,45 +126,45 @@
 | 20261010.010959 | [hold](20261010/20261010-010959_pheromone-hold-shape-fruit-closed-ruling-awaited.kyri) | Pheromone hold: shape fruit closed; next Glow step awaits a ruling; no build |
 | 20261010.010844 | [hold](20261010/20261010-010844_patchouli-queue-empty-thirteenth-net.kyri) | Patchouli hold: thirteenth net finds only elder read-compat headers; queue empty; no build |
 | 20261010.010818 | [hold](20261010/20261010-010818_diffuser-fire-sees-hold-doors-still-gated.kyri) | Diffuser fire-sees hold: five repeat holds today, four doors gated; no paper, no build |
-| 20261010.010634 | [census](20261010/20261010-010634_bakery-cache-census-remeasured.kyri) | Bakery census re-read: compile cache shares across paths; crux priced, no build |
-| 20261010.010407 | [hold](20261010/20261010-010407_patchouli-queue-empty-widened-scan-hold.kyri) | Patchouli hold: queue empty on a widened scan, lane rows await Keaton's word; no build |
 | 20261010.010737 | [grass hold](20261010/20261010-010737_grass-aether-page-graded-b-plus-hold.kyri) | Grass aether page B+/87, no edit, no claim, no frame |
-| 20261010.010401 | [regrade](20261010/20261010-010401_grass-inner-page-regraded-b-plus-no-edit.kyri) | Grass regrade: inner page B+/89 again, no edit |
+| 20261010.010634 | [census](20261010/20261010-010634_bakery-cache-census-remeasured.kyri) | Bakery census re-read: compile cache shares across paths; crux priced, no build |
 | 20261010.010551 | [hold](20261010/20261010-010551_diffuser-hold-upstream-unchanged-gates-still-shut.kyri) | Diffuser hold: upstream unchanged, gated doors still shut; no paper, no build |
-| 20261010.010230 | [grade](20261010/20261010-010230_grass-inner-page-graded-b-plus-no-frame.kyri) | Grass grade: inner prompt B+/89, no edit, no frame |
-| 20261010.010310 | [repeat hold](20261010/20261010-010310_diffuser-hold-repeat-doors-still-gated.kyri) | Diffuser repeat hold: every gated door still gated; no paper, no witness, no build |
-| 20261010.010121 | [hold](20261010/20261010-010121_petrichor-docs-geode-links-clean-hold.kyri) | Petrichor: zero broken docs-geode links; consent gate shut; no build. |
-| 20261010.010332 | [GREEN](20261010/20261010-010332_incense-receipt-witnesses-green-milestone-unstamped.kyri) | Five receipt witnesses GREEN; milestone unstamped; no build |
-| 20261010.010023 | [decline again](20261010/20261010-010023_incense-round-open-decline-again.kyri) | Round-open fast-forward, board clear, lane held for a human word |
-| 20261010.005905 | [hold](20261010/20261010-005905_diffuser-hold-fruit-still-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on Keaton's word; no build |
+| 20261010.010407 | [hold](20261010/20261010-010407_patchouli-queue-empty-widened-scan-hold.kyri) | Patchouli hold: queue empty on a widened scan, lane rows await Keaton's word; no build |
+| 20261010.010401 | [regrade](20261010/20261010-010401_grass-inner-page-regraded-b-plus-no-edit.kyri) | Grass regrade: inner page B+/89 again, no edit |
 | 20261010.010355 | [hold](20261010/20261010-010355_pheromone-hold-no-open-fruit-claim-board-quiet.kyri) | Pheromone hold: no open fruit, claim board quiet for this lane, no build. |
+| 20261010.010332 | [GREEN](20261010/20261010-010332_incense-receipt-witnesses-green-milestone-unstamped.kyri) | Five receipt witnesses GREEN; milestone unstamped; no build |
+| 20261010.010310 | [repeat hold](20261010/20261010-010310_diffuser-hold-repeat-doors-still-gated.kyri) | Diffuser repeat hold: every gated door still gated; no paper, no witness, no build |
+| 20261010.010230 | [grade](20261010/20261010-010230_grass-inner-page-graded-b-plus-no-frame.kyri) | Grass grade: inner prompt B+/89, no edit, no frame |
+| 20261010.010121 | [hold](20261010/20261010-010121_petrichor-docs-geode-links-clean-hold.kyri) | Petrichor: zero broken docs-geode links; consent gate shut; no build. |
+| 20261010.010023 | [decline again](20261010/20261010-010023_incense-round-open-decline-again.kyri) | Round-open fast-forward, board clear, lane held for a human word |
+| 20261010.005944 | [Queue empty, stop after scan](20261010/20261010-005944_patchouli-queue-empty-stop-after-scan.kyri) | Hidden shelf scanned; live writers already molted; queue empty; no build. |
+| 20261010.005905 | [hold](20261010/20261010-005905_diffuser-hold-fruit-still-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on Keaton's word; no build |
 | 20261010.005834 | [hold](20261010/20261010-005834_petrichor-hold-no-fruit-msr-word-upstream-pulled.kyri) | Petrichor hold: no open fruit, consent gate still shut, one upstream hold pulled; no build. |
 | 20261010.005810 | [hold](20261010/20261010-005810_pheromone-hold-fast-forward-witnesses-green.kyri) | Pheromone hold: fast-forwarded, lane witnesses GREEN, ruling awaited; no build |
 | 20261010.005754 | [lift](20261010/20261010-005754_grass-learning-chapter-molt-a-plus.kyri) | Grass molt: learning chapter Reach C+/71 to A+/97 at Door; fossil bannered, no build |
-| 20261010.005944 | [Queue empty, stop after scan](20261010/20261010-005944_patchouli-queue-empty-stop-after-scan.kyri) | Hidden shelf scanned; live writers already molted; queue empty; no build. |
 | 20261010.005714 | [census](20261010/20261010-005714_bakery-census-measured-three-unmeasured-no-build.kyri) | Bakery census re-run: three changed, zero silent, three unmeasured; no build |
 | 20261010.005710 | [Queue empty again](20261010/20261010-005710_patchouli-queue-empty-again-net.kyri) | Queue empty; elder headers only; no build. |
 | 20261010.005659 | [hold](20261010/20261010-005659_diffuser-hold-fruit-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on msr route or raw vendor event; no claim, no build |
 | 20261010.005619 | [hold](20261010/20261010-005619_incense-hold-claim-board-clear-no-build.kyri) | Incense hold: fetch clean, claim board clear, law lane holds for a human word; no build |
-| 20261010.005511 | [stop](20261010/20261010-005511_petrichor-consent-gate-held-stop-round.kyri) | Petrichor stop: consent gate still shut, sweep held, fast-forwarded; no build |
 | 20261010.005549 | [Queue empty, thirteenth net](20261010/20261010-005549_patchouli-queue-empty-thirteenth-net.kyri) | Queue empty again; elder headers only; no build. |
+| 20261010.005511 | [stop](20261010/20261010-005511_petrichor-consent-gate-held-stop-round.kyri) | Petrichor stop: consent gate still shut, sweep held, fast-forwarded; no build |
 | 20261010.005351 | [hold](20261010/20261010-005351_incense-hold-board-clear-law-lane-awaits-word.kyri) | Incense hold: fast-forwarded two upstream commits, board clear, law lane awaits Keaton word; no build |
-| 20261010.005147 | [hold](20261010/20261010-005147_pheromone-hold-shape-witnesses-green.kyri) | Pheromone hold: shape witnesses re-run GREEN, lane awaits ruling; no build |
 | 20261010.005211 | [crux waits](20261010/20261010-005211_bakery-crux-waits-no-build.kyri) | Bakery crux waits on the receipt-key ruling; no build, no claim |
+| 20261010.005147 | [hold](20261010/20261010-005147_pheromone-hold-shape-witnesses-green.kyri) | Pheromone hold: shape witnesses re-run GREEN, lane awaits ruling; no build |
 | 20261010.005115 | [hold](20261010/20261010-005115_diffuser-hold-sixth-recheck.kyri) | Diffuser hold: sixth recheck today, blockers unchanged, no fruit; no build |
 | 20261010.005108 | [log](20261010/20261010-005108_petrichor-docs-geode-gate-held-no-build.kyri) | Petrichor lap: docs-geode gate held, commits_behind=0, no build |
 | 20261010.004929 | [log](20261010/20261010-004929_patchouli-queue-empty-twenty-fifth-net.kyri) | Patchouli queue empty, twenty-fifth net: no elder header written, no code moved |
 | 20261010.004824 | [hold](20261010/20261010-004824_petrichor-hold-consent-gate-still-shut.kyri) | Petrichor hold: pheromone commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.004823 | [crux held](20261010/20261010-004823_bakery-crux-held-for-ruling.kyri) | Bakery crux held: witness rerun 11 of 11, shared basis refused; digest ruling needed; no build |
+| 20261010.004755 | [hold](20261010/20261010-004755_diffuser-hold-fifth-recheck.kyri) | Diffuser hold: fifth recheck today, blockers unchanged, no fruit; no build |
+| 20261010.004744 | [hold](20261010/20261010-004744_incense-hold-upstream-two-logs.kyri) | Incense hold: round-open took two upstream logs, nib repaired by follow-up write, law lane awaits word; no build |
 | 20261010.004705 | [grass](20261010/20261010-004705_grass-audit-queue-empty-no-frame.kyri) | Grass lap: audit queue empty, no frame opened, no build |
 | 20261010.004625 | [log](20261010/20261010-004625_pheromone-lane-witnesses-green-no-ruling.kyri) | Pheromone lane: six shape witnesses re-run GREEN, no ruling; no build |
 | 20261010.004547 | [log](20261010/20261010-004547_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli queue empty, twenty-fourth net: mantra and tally read clean, no code moved |
-| 20261010.004755 | [hold](20261010/20261010-004755_diffuser-hold-fifth-recheck.kyri) | Diffuser hold: fifth recheck today, blockers unchanged, no fruit; no build |
-| 20261010.004744 | [hold](20261010/20261010-004744_incense-hold-upstream-two-logs.kyri) | Incense hold: round-open took two upstream logs, nib repaired by follow-up write, law lane awaits word; no build |
-| 20261010.004414 | [orient](20261010/20261010-004414_incense-baton-orient.kyri) | Incense orientation, restored from the round-open stash: baton read, no lap taken |
 | 20261010.004543 | [hold](20261010/20261010-004543_petrichor-hold-no-fruit-gate-shut.kyri) | Petrichor hold: bakery commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.004517 | [hold](20261010/20261010-004517_incense-hold-board-clear-awaits-keaton-word.kyri) | Incense hold: board clear, law lane awaits Keaton word, no build |
 | 20261010.004431 | [hold](20261010/20261010-004431_diffuser-hold-blockers-unchanged.kyri) | Diffuser hold: blockers unchanged, fourth recheck today; no build |
+| 20261010.004414 | [orient](20261010/20261010-004414_incense-baton-orient.kyri) | Incense orientation, restored from the round-open stash: baton read, no lap taken |
 | 20261010.004335 | [hold](20261010/20261010-004335_petrichor-hold-no-fruit-upstream-incense.kyri) | Petrichor hold: one incense commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.004316 | [grass](20261010/20261010-004316_grass-queue-empty-no-frame.kyri) | Grass audit queue empty; mycelium/fold.rye reads A/93; no frame, no build |
 | 20261010.004147 | [hold](20261010/20261010-004147_diffuser-hold-msr-and-trace-still-absent.kyri) | Diffuser hold: msr and caller trace still absent; no build |
@@ -238,5 +234,9 @@
 | 20261010.000118 | [log](20261010/20261010-000118_diffuser-every-door-waits-on-keaton.kyri) | Diffuser hold: every open door waits on an outside fact, no build |
 | 20261010.000029 | [log](20261010/20261010-000029_petrichor-midnight-hold.kyri) | Petrichor hold; both gates closed; no build |
 | 20261010.000028 | [log](20261010/20261010-000028_grass-warrant-grade-held-at-b.kyri) | Warrant grade held at B; queue still empty |
+
+| `20261010.013824` | [Hold, declines repeat](20261010/20261010-013824_incense-hold-declines-repeat-no-build.kyri) | Incense: round-open clean at ede522a8f6; claim board clear; gated items wait; no build. |
+| `20261010.013941` | [Queue empty, nets rerun, no build](20261010/20261010-013941_patchouli-queue-empty-fresh-nets-no-build.kyri) | Patchouli: queue empty again; no build, check-in named |
+| `20261010.013545` | [Incense hold, round-open clean](20261010/20261010-013545_incense-hold-no-build-round-open-clean.kyri) | Round-open clean at 9875befbf6; gated items wait on a word; no build. |
 | `20261010.000119` | [Patchouli queue empty, fresh net](20261010/20261010-000119_patchouli-queue-empty-fresh-net.kyri) | Queue empty; elder headers only; no build; check-in named. |
 | `20261010.000221` | [Incense round-open decline](20261010/20261010-000221_incense-round-open-decline.kyri) | Board clear, lane idle; law lane waits on a human word; no build. |
