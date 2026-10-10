@@ -9999,3 +9999,12 @@ guard tally_glow_tend_limb7
 path tools/t/tally_glow_tend_limb7_witness.rish
 tier lap
 seated 20261009.192525
+
+# sunn6_key_cards_ops -- the SUNN6 first-day ops and key-card guide presence, with the legacy alias.
+# Rostered from the unrostered chapter-witness list by the copal claim 20261009.211121. Presence
+# and string checks only, so it is a lap-tier meter; proven both ways -- GREEN in the tree and RED
+# from a pen that holds none of its manual pages (exit 1, first assert named).
+guard sunn6_key_cards_ops
+path tools/gen/chapter/sunn6_key_cards_ops_witness.rish
+tier lap
+seated 20261009.211121

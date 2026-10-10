@@ -7,6 +7,7 @@
 | `20261009.211413` | [Grass four pages graded, no build](20261009/20261009-211413_grass-four-pages-graded-no-build.kyri) | Four prose pages graded B or better; no frame owed. |
 | `20261009.211340` | [Incense fiftieth decline, no build](20261009/20261009-211340_incense-decline-fiftieth.kyri) | Round-open clean; claim board clear; law lane holds; no build. |
 | `20261009.211424` | [Diffuser hold, recorder still absent, no build](20261009/20261009-211424_diffuser-hold-recorder-absent.kyri) | Recorder tools absent on re-measure; one upstream sunn6 claim unrelated; no build. |
+| `20261009.211448` | [Copal sunn6 roster, claimed and proven](20261009/20261009-211448_copal-sunn6-roster.kyri) | Chapter witness claimed and rostered; GREEN both sides; roster red pre-existing. |
 | `20261009.211044` | [Diffuser hold, no build](20261009/20261009-211044_diffuser-hold-no-build.kyri) | Recorder still absent on re-measure; captain ruling still open; no build. |
 | `20261009.211215` | [Incense forty-ninth decline, no build](20261009/20261009-211215_incense-decline-forty-nine.kyri) | Round-open clean; law lane holds; nib carried; no build. |
 | `20261009.211324` | [Patchouli queue empty, twenty-second read](20261009/20261009-211324_queue-empty-scan.kyri) | Recursive header scan, no new candidate; queue empty; no build. |
