@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.011610 | [hold](20261010/20261010-011610_patchouli-queue-empty-fresh-net-hold.kyri) | Patchouli queue empty again: one fresh net, every hit already ruled, no build |
 | 20261010.011529 | [crux hold](20261010/20261010-011529_bakery-crux-hold-repeat-no-build.kyri) | Bakery crux held again: pulled four log-only commits, no build, receipt-key ruling still awaited |
 | 20261010.011449 | [hold](20261010/20261010-011449_petrichor-hold-docs-geode-links.kyri) | Docs-geode links resolve, lint GREEN; consent gate still shut |
 | 20261010.011442 | [decline](20261010/20261010-011442_incense-round-open-decline-no-build.kyri) | Incense decline: board clear, law lane and cold run held for Keaton's word; no build |
