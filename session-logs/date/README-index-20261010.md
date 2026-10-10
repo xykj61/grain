@@ -4,4 +4,5 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.000029 | [log](20261010/20261010-000029_petrichor-midnight-hold.kyri) | Petrichor hold; both gates closed; no build |
 | 20261010.000028 | [log](20261010/20261010-000028_grass-warrant-grade-held-at-b.kyri) | Warrant grade held at B; queue still empty |
