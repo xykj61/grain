@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.054238` | [Pheromone, lane empty, no fruit](20261010/20261010-054238_pheromone-lane-empty-no-fruit.kyri) | Language lane reads empty; no rune ruling; no build. |
 | `20261010.054230` | [Incense, forty-eighth decline](20261010/20261010-054230_incense-forty-eighth-decline-no-build.kyri) | Round-open clean; no build. |
 | `20261010.053747` | [Patchouli, queue empty a twenty-fifth way](20261010/20261010-053747_patchouli-queue-empty-twenty-fifth-way.kyri) | No chronological header left; no build; check-in on the catch-up cap. |
 | `20261010.053712` | [Petrichor, compressors graded](20261010/20261010-053712_petrichor-docs-compressors-graded-no-frame.kyri) | Fifteen pages graded; none below B. |
