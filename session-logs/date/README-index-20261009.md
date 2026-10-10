@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.233901` | [Bakery hold, repeat](20261009/20261009-233901_bakery-hold-on-receipt-key-repeat.kyri) | Card read again; receipt key still on YOURS; no build. |
 | `20261009.233521` | [Bakery receipt-key lap held](20261009/20261009-233521_bakery-receipt-key-held.kyri) | Card read; receipt key on YOURS; no build. |
 | `20261009.233400` | [Grass grades queue held again](20261009/20261009-233400_grass-grades-queue-held-again.kyri) | Three front doors graded A or B+; nothing lifted |
 | `20261009.233340` | [Patchouli queue empty, 26th](20261009/20261009-233340_queue-empty-twenty-sixth.kyri) | Queue held on a fresh class of sweep; no build; check-in named. |
