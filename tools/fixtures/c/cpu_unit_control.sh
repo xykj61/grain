@@ -32,6 +32,7 @@ SCAN="$ROOT/tools/fixtures/c/cpu_unit_scan.sh"
 # One shell dialect on both piers: `sed -i` takes no argument on GNU and REQUIRES a backup suffix
 # on BSD, so the flag is gated at zero tree-wide and `sed_inplace` is the portable form.
 . "$ROOT/tools/fixtures/s/shell_portable.sh"
+. "$ROOT/tools/fixtures/p/plant.sh"
 
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM
@@ -163,8 +164,7 @@ mutate() {
   # $1 label, $2 sed program, $3 key that must move, $4 value it must NOT keep,
   # $5 wall samples, $6 cpu samples
   cp "$SCAN" "$PEN/mutant.sh"
-  sed_inplace "$2" "$PEN/mutant.sh"
-  if cmp -s "$SCAN" "$PEN/mutant.sh"; then
+  if ! plant_apply "$PEN/mutant.sh" "$2" "$1"; then
     no "$1 -- the mutation did not apply, so the leg proves nothing"
     return
   fi
