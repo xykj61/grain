@@ -68,6 +68,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.110814` | [Copal, both unrostered witnesses red](20261010/20261010-110814_copal-unrostered-witness-both-red.kyri) | Both chapter witnesses red; none rostered. |
 | `20261010.105039` | [Pheromone, repeat hold, no build](20261010/20261010-105039_pheromone-repeat-hold-no-build.kyri) | Repeat of the 104156 hold; language lane waits on Incense; no build. |
 | `20261010.105337` | [Grass, inner page third hold](20261010/20261010-105337_grass-inner-third-hold-no-build.kyri) | Read-only grade B+ 89; no molt, no build. |
 | `20261010.104901` | [Grass, inner page re-graded, repeat hold](20261010/20261010-104901_grass-inner-repeat-hold-no-build.kyri) | Repeat B+ read of the open page; queue empty; no build. |
