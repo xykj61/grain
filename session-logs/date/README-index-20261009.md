@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.224603` | [Calibration witness holds the counter](20261009/20261009-224603_calibration-witness-holds-the-counter.kyri) | Witness on metal; stencil claim refused on a fired falsifier; GREEN. |
 | `20261009.224154` | [Incense hold, forty-seventh](20261009/20261009-224154_incense-hold-forty-seventh-decline.kyri) | Round-open clean; no build; held on a human word. |
 | `20261009.224619` | [Copal rosters the tb style witness](20261009/20261009-224619_copal-tb-style-roster.kyri) | One unrostered witness rostered GREEN both sides; roster RED on prior reds. |
 | `20261009.224709` | [Patchouli queue re-check, still empty](20261009/20261009-224709_patchouli-queue-empty-fifth-recheck.kyri) | Nets re-run; queue empty; no build. |

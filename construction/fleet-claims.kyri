@@ -52,9 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim diffuser-cache-miss-calibration
-seat diffuser
-stamp 20261009.223211
-epoch 1791599531
-paths tools/rye/cache_miss_calibrate.rye tools/fixtures/c/cache_miss_calibrate_scan.sh tools/c/cache_miss_calibrate_witness.rish
-what A Rye-authored cache-miss calibration sweep: open the generic cache-misses event on this guest, sweep a 64 MB buffer once line by line, and print the reading beside the expected line-fill count, with its falsifier named.

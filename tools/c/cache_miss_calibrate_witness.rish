@@ -1,0 +1,48 @@
+# tools/c/cache_miss_calibrate_witness.rish -- the generic cache-miss counter's calibration, held on
+# metal, and the stencil claim held closed behind it.
+#
+#   rishi/bin/rishi run tools/c/cache_miss_calibrate_witness.rish
+#
+# WHY. The stencil paper's hardware falsifier needs a counter that counts the line fills a sweep
+# causes. The generic `cache-misses` event was tried on `20261009` and read 8 percent of the expected
+# fills on a 64 MB sequential sweep; the calibration scan reads it again on every run. The fruit that
+# named it said the witness that would hold this reading was NOT YET BUILT and that its claim row
+# stayed open. This is that witness.
+#
+# WHAT IT HOLDS, and it is two things kept apart on purpose:
+#
+#   1. THE INSTRUMENT MEASURES. The scan must build the calibration program, read a counter on
+#      three runs, and print `verdict=measured`. A build failure or a run that yields no reading is a
+#      red -- the instrument is broken, and a broken instrument reads nothing about the guest.
+#
+#   2. THE STENCIL CLAIM IS GATED ON THE FALSIFIER, NOT ON TASTE. The falsifier band is 500 to 2000
+#      permille of one million expected lines, named before the run. While it reads `fired`, the
+#      generic event is not a line-fill proxy on this guest, and the stencil claim is REFUSED. The
+#      witness prints that refusal and stays green: a counter that reads low is the finding, and a
+#      finding is not a red (the scan's own header says the same).
+#
+# WHAT IT DOES NOT DO. It does not pick a raw, vendor-specific last-level event. Naming that event is
+# Keaton's word, as the fruit says, and it is not chosen here. It does not raise or lower the band,
+# and it does not run a stencil. A stencil claim may open only when `falsifier=not_fired`, and this
+# witness is the place that would say so.
+#
+# THE SCAN IT RUNS is tools/fixtures/c/cache_miss_calibrate_scan.sh, which rebuilds the Rye program
+# and runs it three times. Each run is one sample of a noisy machine, so the falsifier is read over
+# all three, never over one.
+
+say "cache-miss-calibrate: Language EN -- the generic counter's reading is printed beside its expected line fills, and the stencil claim is read from the falsifier line."
+say "cache-miss-calibrate: Style Gauge, Meter -- every figure below is the scan's own output, read from this tree and not recited here."
+say "cache-miss-calibrate: Lens TAME -- a broken instrument is a red; a counter that reads low is a finding."
+
+let scan = run ["sh" "tools/fixtures/c/cache_miss_calibrate_scan.sh"]
+say scan.out
+assert scan.ok else "cache-miss-calibrate: the scan did not build or did not read -- the instrument is broken, see its build.txt"
+assert scan.out contains "verdict=measured" else "cache-miss-calibrate: the scan must end measured, not short of a reading"
+assert scan.out contains "runs=3" else "cache-miss-calibrate: the falsifier must be read over three runs, never one"
+assert scan.out contains "band=500-2000" else "cache-miss-calibrate: the band was named before the run and does not move"
+assert scan.out contains "falsifier=" else "cache-miss-calibrate: the scan printed no falsifier line to read"
+
+say "cache-miss-calibrate: the instrument measures on this guest -- three readings printed above, verdict=measured."
+
+if scan.out contains "falsifier=fired" then say "cache-miss-calibrate: stencil_claim=refused -- the generic cache-misses event is not a line-fill proxy on this guest, so no stencil run is claimed on it; a raw vendor event is Keaton's word to name."
+if scan.out contains "falsifier=not_fired" then say "cache-miss-calibrate: stencil_claim=open -- the falsifier did not fire on any of three runs; a stencil run may cite this reading as its proxy."
