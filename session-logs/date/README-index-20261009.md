@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.235428` | [Diffuser hold, no open door](20261009/20261009-235428_diffuser-hold-no-open-door.kyri) | Every open door waits on Keaton's word or a peer; no build. |
 | `20261009.235400` | [Bakery redleg reproduce](20261009/20261009-235400_bakery-redleg-reproduce.kyri) | Redleg red stands on HEAD: 55 against 51, four over; no build. |
 | `20261009.234654` | [Oven o3 retarget, GREEN](20261009/20261009-234654_oven-o3-retarget-green.kyri) | Path to ember/, roster row, RED legs proven; kg. |
 | `20261009.235142` | [Grass queue clear](20261009/20261009-235142_grass-queue-clear-two-doors-graded.kyri) | Two front doors graded A and A+; no molt; no build. |
