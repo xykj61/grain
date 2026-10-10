@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.063223` | [Patchouli, queue empty, fourth record-only](20261010/20261010-063223_patchouli-queue-empty-fourth-same-day.kyri) | Re-ran version-literal scan; only elder read-compat; no code. |
 | `20261010.063142` | [Incense, decline forty-eight](20261010/20261010-063142_incense-decline-forty-eight.kyri) | Round-open clean, board empty, cold run held; no build. |
 | `20261010.062811` | [Grass, inner prompt, Field](20261010/20261010-062811_grass-inner-grade-counted.kyri) | Counted 77, 90, 100; service open; no edit. |
 | `20261010.062915` | [Petrichor, no build](20261010/20261010-062915_petrichor-no-build-consent-gated.kyri) | No open door; consent gate named; no build. |
