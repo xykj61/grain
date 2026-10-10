@@ -4,6 +4,8 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.203240` | [Diffuser live-set hold, seventh, no build](20261009/20261009-203240_diffuser-live-set-hold-seventh.kyri) | Fruit still blocked on a live-set trace; no build. |
+| `20261009.195532` | [Grass lifts grass-inner register to Field](20261009/20261009-195532_grass-inner-register-to-field.kyri) | Register 62 to 77; repeats rephrased; witness GREEN. |
 | `20261009.202632` | [Grass inner prompt graded B+, no build](20261009/20261009-202632_grass-inner-graded-no-build.kyri) | Inner prompt reads B+ 89; queue empty; no edit. |
 | `20261009.203043` | [Petrichor consent gate held, no build](20261009/20261009-203043_petrichor-consent-gate-held-no-build.kyri) | Gate still holds; no edit, no build. |
 | `20261009.202715` | [Petrichor docs link sweep, clean, no build](20261009/20261009-202715_petrichor-docs-link-sweep-clean-no-build.kyri) | Relative links in docs/ and README resolve; no edit. |
