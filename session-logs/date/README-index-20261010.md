@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.004100 | [log](20261010/20261010-004100_grass-docs-front-doors-grade-a-no-frame.kyri) | Grass grades docs/README A+ and ORGANIZING A; no frame, no edit |
 | 20261010.004008 | [hold](20261010/20261010-004008_diffuser-hold-no-fruit-msr-still-absent.kyri) | Diffuser hold: no fruit, msr door still shut; no build |
+| 20261010.003955 | [decline](20261010/20261010-003955_incense-decline-upstream-held-no-gate.kyri) | Incense round-open adopted 4d7e125f48, board clear, law lane held; no build |
 | 20261010.003811 | [hold](20261010/20261010-003811_incense-hold-board-clear-no-gate.kyri) | Incense hold, board clear, no gate opened; no build |
 | 20261010.003630 | [log](20261010/20261010-003630_grass-front-doors-grade-b-plus-no-frame.kyri) | Grass front-door grade: SOURCE B+/88, CONTRIBUTING A/92, docs-geode README A/94; no frame |
 | 20261010.003620 | [hold](20261010/20261010-003620_petrichor-hold-gate-fourth-tasting.kyri) | Petrichor hold: consent gate and public seam still shut, no fruit; no build |
