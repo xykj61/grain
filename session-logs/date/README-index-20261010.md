@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.135838` | [Copal, three blockers held](20261010/20261010-135838_copal-three-blockers-held-no-roster.kyri) | Claim closed; no roster row; reds %837, %838 hold. |
 | `20261010.140203` | [Bakery, receipt key held, no build](20261010/20261010-140203_bakery-receipt-key-held-no-build.kyri) | Fast-forwarded; receipt key held for Keaton; no build. |
+| `20261010.140116` | [Patchouli, owed notes read, no build](20261010/20261010-140116_patchouli-owed-notes-witness-green-no-build.kyri) | Merge witness GREEN; notes owed. |
 | `20261010.140114` | [Petrichor, round 12, lane gated, no build](20261010/20261010-140114_petrichor-lane-gated-round-12-no-build.kyri) | Nib carried to 020370c32a; lane gated; no build. |
 | `20261010.140346` | [Incense, round ten, no build](20261010/20261010-140346_incense-round-ten-declined-no-build.kyri) | Clean round-open; one peer claim; no build. |
 | `20261010.135403` | [Bakery, control already landed](20261010/20261010-135403_bakery-codex-control-already-landed.kyri) | Model control 18 ok, 0 fail; repair in 51e8ba4ffb; no build. |
