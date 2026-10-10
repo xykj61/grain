@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.094651` | [Pheromone, hold, lane closed](20261010/20261010-094651_pheromone-hold-lane-closed-no-build.kyri) | No build; lane fruit closed, next door awaits Keaton's word. |
+| `20261010.094838` | [Grass, named list all B](20261010/20261010-094838_grass-named-list-all-b-no-edit.kyri) | Named heads graded, all B or better; no edit; round is 3, not 15. |
 | `20261010.094515` | [Grass, queue still empty](20261010/20261010-094515_grass-queue-still-empty.kyri) | Queue still empty since 094150; no edit; log and row only. |
 | `20261010.094746` | [Petrichor, hold, water row](20261010/20261010-094746_petrichor-hold-water-row-no-door.kyri) | Fast-forwarded two log-only peer commits; consent gate unmoved; no build. |
 | `20261010.094150` | [Grass, queue spent at B](20261010/20261010-094150_grass-queue-spent-all-b-plus.kyri) | Nine mycelium heads graded, all B or better; no edit; stale queue lean named. |
