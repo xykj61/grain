@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.061653` | [Incense, decline fifty-three](20261010/20261010-061653_incense-decline-fifty-three.kyri) | Round-open clean on 5ef35164bc; no build; law lane waits on %642 or %519. |
+| `20261010.061745` | [Petrichor, hold](20261010/20261010-061745_petrichor-hold-upstream-patchouli-only.kyri) | Pulled 0b59e1f8f2; gate shut; no build. |
 | `20261010.061355` | [Grass, foundations sample, all six at A](20261010/20261010-061355_grass-foundations-sample-all-a.kyri) | Six random foundations pages graded A to A+; no edit. |
 | `20261010.061231` | [Patchouli, queue empty again](20261010/20261010-061231_patchouli-queue-empty-again-fresh-nets.kyri) | Fresh nets re-run; writers already chronological; no build. |
 | `20261010.061046` | [Petrichor, hold, no fresh fruit](20261010/20261010-061046_petrichor-hold-no-fresh-fruit.kyri) | Zero behind xy; no docs-geode row; Consent Rail still shut; no build. |
