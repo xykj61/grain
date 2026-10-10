@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.225048` | [Quiet hold, queue gated](20261009/20261009-225048_diffuser-quiet-hold-queue-gated.kyri) | Diffuser queue held on Keaton's word; no build; log only. |
 | `20261009.225110` | [Incense hold, forty-eighth](20261009/20261009-225110_incense-hold-forty-eighth-decline.kyri) | Round-open clean; no build; held on a human word. |
+| `20261009.224843` | [Patchouli queue empty, twenty-second way](20261009/20261009-224843_patchouli-queue-empty-twenty-second.kyri) | Version-literal nets re-run over mantra/ and tally/; no build; check-in on the dormant question. |
 | `20261009.224659` | [Petrichor hold, patchouli recheck](20261009/20261009-224659_petrichor-hold-patchouli-recheck-no-build.kyri) | Ff to 29d5790c01; consent gate still holds; log only. |
 | `20261009.224603` | [Calibration witness holds the counter](20261009/20261009-224603_calibration-witness-holds-the-counter.kyri) | Witness on metal; stencil claim refused on a fired falsifier; GREEN. |
 | `20261009.224154` | [Incense hold, forty-seventh](20261009/20261009-224154_incense-hold-forty-seventh-decline.kyri) | Round-open clean; no build; held on a human word. |
