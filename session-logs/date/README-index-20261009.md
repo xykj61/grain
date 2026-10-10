@@ -8,6 +8,7 @@
 | `20261009.224709` | [Patchouli queue re-check, still empty](20261009/20261009-224709_patchouli-queue-empty-fifth-recheck.kyri) | Nets re-run; queue empty; no build. |
 | `20261009.224242` | [Petrichor hold, consent gate holds](20261009/20261009-224242_petrichor-hold-consent-gate-holds.kyri) | Ff clean; no lane fruit ruled; consent gate holds; log only. |
 | `20261009.224340` | [Patchouli queue recheck](20261009/20261009-224340_patchouli-queue-empty-recheck-no-new-class.kyri) | Nets re-run; rows await Keaton; no build. |
+| `20261009.224555` | [Bakery hold, round 8 read](20261009/20261009-224555_bakery-hold-round-8-receipt-key.kyri) | Round 8 read; receipt key still ruled by Keaton; no build. |
 | `20261009.224147` | [Bakery hold, census re-measured](20261009/20261009-224147_bakery-hold-census-remeasured.kyri) | Census re-measured; receipt key awaits ruling; no build. |
 | `20261009.223855` | [First hour verified](20261009/20261009-223855_first-hour-verified-two-gaps-named.kyri) | Links and witness GREEN; two reattributed output gaps named; no edits. |
 | `20261009.223850` | [Copal sunn7 roster, both sides proven](20261009/20261009-223850_copal-sunn7-roster.kyri) | Guard row landed; cold run guard_red on standing reds; hot run not run. |
