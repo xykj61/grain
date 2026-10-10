@@ -4,6 +4,8 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.215241` | [Petrichor round hold](20261009/20261009-215241_petrichor-round-hold-no-build.kyri) | Tree at xy/main; gate unchanged; no build. |
+| `20261009.215110` | [Stencil sweep prefers the row band](20261009/20261009-215110_stencil-row-band-fruit.kyri) | Row band of 3N/16 lines; Z-order wins only below it. |
 | `20261009.215137` | [Patchouli queue empty, fresh net](20261009/20261009-215137_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; header net and claim board clean; no build. |
 | `20261009.215110` | [Stencil sweep prefers the row band](20261009/20261009-215110_stencil-row-band-fruit.kyri) | Row band of 3N/16 lines; Z-order wins only below it. |
 | `20261009.215043` | [Pheromone hold, lane empty, no build](20261009/20261009-215043_pheromone-hold-no-build-lane-empty.kyri) | No ruled fruit; ruling waits on Incense; no build. |
