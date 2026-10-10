@@ -65,6 +65,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.104156` | [Pheromone, lane hold, no build](20261010/20261010-104156_pheromone-hold-stop-clause-no-build.kyri) | Glow witness re-read GREEN; language lane empty; no build. |
 | `20261010.103846` | [Patchouli, queue empty, twentieth](20261010/20261010-103846_patchouli-queue-empty-twentieth-first-net.kyri) | Fresh net reads empty; no build; log and row only. |
 | `20261010.103416` | [Petrichor, consent gate shut, second hold](20261010/20261010-103416_petrichor-hold-consent-gate-after-second-ff.kyri) | Ff to cef437564f; gate still shut; log and row only. |
 | `20261010.103616` | [Copal, fruit blocked, no clean witness](20261010/20261010-103616_copal-no-clean-roster-candidate.kyri) | Both unrostered witnesses are OPEN reds; Keaton rules. |
