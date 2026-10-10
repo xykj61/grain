@@ -10026,3 +10026,12 @@ guard tigerbeetle_style_by_the_numbers_census
 path tools/gen/chapter/tigerbeetle_style_by_the_numbers_census_witness.rish
 tier lap
 seated 20261009.224544
+
+# sunn9_claude_llms_stewards -- SUNN9 agent papers, rostered on the claim copal-sunn9-roster.
+# Reads CLAUDE.md, llms.txt and STEWARDS.md at the tree root and names their SUNN face and the Quin hats.
+# Proven both ways: GREEN on the live tree, and RED (exit 1, the STEWARDS assert named) from a pen
+# whose STEWARDS.md has lost its SUNN waymark.
+guard sunn9_claude_llms_stewards
+path tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish
+tier lap
+seated 20261009.225059
