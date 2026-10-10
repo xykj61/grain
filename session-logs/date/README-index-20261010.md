@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.011529 | [crux hold](20261010/20261010-011529_bakery-crux-hold-repeat-no-build.kyri) | Bakery crux held again: pulled four log-only commits, no build, receipt-key ruling still awaited |
 | 20261010.011449 | [hold](20261010/20261010-011449_petrichor-hold-docs-geode-links.kyri) | Docs-geode links resolve, lint GREEN; consent gate still shut |
+| 20261010.011442 | [decline](20261010/20261010-011442_incense-round-open-decline-no-build.kyri) | Incense decline: board clear, law lane and cold run held for Keaton's word; no build |
 | 20261010.011422 | [hold](20261010/20261010-011422_diffuser-hold-doors-gated-no-build.kyri) | Diffuser hold: msr, vendor event, joule meter all gated on Keaton; no build |
 | 20261010.011246 | [hold](20261010/20261010-011246_grass-inner-page-graded-b-plus-hold.kyri) | Grass inner page graded B+ (89) on Field, no edit, hold |
 | 20261010.011135 | [hold](20261010/20261010-011135_diffuser-sweep-run-prefetch-blocked.kyri) | Diffuser hold: fruit pointer stale, sweep already run, prefetch door shut; no build |
