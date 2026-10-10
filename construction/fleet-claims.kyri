@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim oven-o3-path-retarget
+seat copal
+stamp 20261009.234434
+epoch 1791603874
+paths tools/gen/chapter/oven_season_o3_witness.rish
+what Retarget the unrostered Oven o3 witness from the retired oven/ path to the live ember/ path (o1 precedent), prove GREEN and a RED leg, and roster it.
