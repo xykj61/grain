@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.085154` | [Copal, p54 rostered](20261010/20261010-085154_copal-p54-roster-claim-and-row.kyri) | Green by skip; two reds booked, not rostered. |
 | `20261010.085052` | [Patchouli, queue empty, fresh net](20261010/20261010-085052_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
 | `20261010.084835` | [Pheromone, hold, status line corrected](20261010/20261010-084835_pheromone-hold-pull-stale-status-fixed.kyri) | Lane at stop clause; no rune; one status line fixed. |
 | `20261010.084739` | [Patchouli, queue empty, check-in held](20261010/20261010-084739_patchouli-queue-empty-check-in-held.kyri) | Fast-forwarded one peer commit; queue still empty; no build; broad sweep awaits Keaton. |

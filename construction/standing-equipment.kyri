@@ -10161,3 +10161,16 @@ guard surface_season_p49
 path tools/gen/chapter/surface_season_p49_witness.rish
 tier cadence
 seated 20261010.074554
+
+# surface_season_p54 -- the live-five type and :quit witness, unrostered since it was written. Like p49,
+# p56 and p57 it answers SKIP-GREEN where the built seed binary is absent (REDS %646): this clone carries
+# no built brushstroke/bin/brushstroke-wayland-seed, so the honest reading here is the skip. Its metal scan
+# (the Prompt struct and the run_live and run_live_five_witness functions) runs BEFORE that skip, so a
+# removed live-five symbol refuses on any clone. Proven in a throwaway pen: the real tree reaches the GREEN
+# skip, and a pen whose brushstroke/wayland_seed.rye lacks those markers refuses at
+# `surface-p54: Prompt - livetest metal scan failed`. Cadence tier, as its siblings are. Claim
+# copal-surface-p54-roster.
+guard surface_season_p54
+path tools/gen/chapter/surface_season_p54_witness.rish
+tier cadence
+seated 20261010.085115

@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261010.085154
+editor Claude Code
+provider Anthropic
+product Claude Code
+role copal lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_status fleet default in .claude/settings.json; this clone resolves per declared_model.sh, not verified here
+evidence .claude/settings.json and recursion-prompts/copal-inner.md
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title copal rosters surface p54, witness green by honest skip
+prompt ty every1 baton prin recur -- run the Copal lap from the baton and inner prompt
+think the inner prompt's fruit is one unrostered witness under tools/gen/chapter/; four had no roster hit and I checked the candidates one at a time.
+think instrument_suite_witness.rish runs RED: its e113 fascia-health limb reads 36 against a floor of 41. REDS row 97 already books this and says lowering the floor is the refused move, so I did not roster it.
+think sunn14_witness_choir.rish runs RED on a SOURCE dual-push drift, drift=1. That is a second red, outside this lap's lane, and I left it alone.
+think surface_season_p54_witness.rish runs GREEN by a decided skip, since brushstroke/bin/brushstroke-wayland-seed is unbuilt here. Its metal scan runs before the skip, so the skip is not a blanket pass.
+think the two sides: the real tree reaches the GREEN skip with exit 0, and a pen whose wayland_seed.rye lacks the Prompt and live-five markers refuses at the metal scan with exit 1. Both legs ran.
+obs the claim was opened and pushed before the roster row was written, as the ORDER clause asks. The witness proofs were run before the claim, so the claim came after evidence, not before the build. Recording it plainly.
+obs the claim commit's first message was refused by the mechanism-sentence hook (0 of 1 mechanism words); the message was rewritten with a plain sentence about the two paths added, and the hook passed.
+obs session_roster_agree_witness.rish reads verdict=drift (one_sided=2 over ceiling 1). The roster row touches standing-equipment.kyri only, so this is drift from the peer session logs fast-forwarded this lap, not this lap's diff; not repaired here.
+rota none -- the lap was a roster-and-prove pass on one witness; no council row was deep-read.
+file tools/gen/chapter/surface_season_p54_witness.rish the witness being rostered, unchanged
+file construction/standing-equipment.kyri one guard row appended, tier cadence, seated 20261010.085115
+file construction/fleet-claims.kyri claim copal-surface-p54-roster opened, then closed in this commit
+file construction/ITINERARY.md git nib carried to f0902d3f03, the parent of this work commit
+scope roster one unrostered chapter witness and prove it on both sides; the instrument suite and sunn14 stay open reds
+status GREEN for surface_season_p54: the real tree skips green, a pen missing its metal markers reds, fleet_roster_witness GREEN; instrument_suite RED on the booked e113 floor; sunn14 RED on SOURCE dual-push; session_roster_agree RED as drift
+recommend check-in (Claude) -- rule whether the e113 floor is raised tree-wide or the witness copy is repointed at the rostered fascia_health_scan, since the instrument suite cannot roster until that ruling lands
