@@ -61,6 +61,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.103350` | [Patchouli, queue empty, nineteenth](20261010/20261010-103350_patchouli-queue-empty-nineteenth.kyri) | Queue read empty; no build; log and row only. |
 | `20261010.102924` | [Pheromone, hold, no build](20261010/20261010-102924_pheromone-hold-no-build.kyri) | Card steps landed; ruling-gated; no code moved. |
 | `20261010.103309` | [Incense, aether decline, no build](20261010/20261010-103309_incense-aether-decline-no-build.kyri) | Ff to 5ac548eefd; board clear; no build; law lane held. |
 | `20261010.102917` | [Patchouli, queue empty, eighteenth](20261010/20261010-102917_patchouli-queue-empty-eighteenth.kyri) | Fresh version-literal net; queue empty; no build; log and row only. |
