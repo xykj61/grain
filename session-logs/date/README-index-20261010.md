@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.132114` | [Petrichor, gated and held, no build](20261010/20261010-132114_petrichor-gated-held-no-build.kyri) | Lane gate holds; no page edited; no build. |
 | `20261010.131730` | [Bakery, crux held, fast-forward, no build](20261010/20261010-131730_bakery-crux-held-ff-no-build.kyri) | Receipt key still a YOURS ruling; no build. |
 | `20261010.132206` | [Grass, card regraded B+, repeat, no edit](20261010/20261010-132206_grass-card-regraded-b-plus-repeat-no-edit.kyri) | Inner page regraded B+ (89), same as 131831; no edit. |
 | `20261010.131831` | [Grass, card graded B+, no edit](20261010/20261010-131831_grass-card-graded-b-plus-no-edit.kyri) | Inner page graded B+ (89); no edit; queue empty. |
