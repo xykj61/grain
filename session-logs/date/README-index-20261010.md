@@ -48,6 +48,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.095640` | [Bakery, crux held](20261010/20261010-095640_bakery-crux-held-ruling-awaited.kyri) | No build; receipt key awaits Keaton's ruling; roster claim is copal's. |
 | `20261010.095347` | [Patchouli, queue empty, twenty-seventh](20261010/20261010-095347_patchouli-queue-empty-twenty-seventh.kyri) | Nets re-run, nothing new in mantra or tally; no build, log only. |
 | `20261010.095240` | [Petrichor, hold, no door](20261010/20261010-095240_petrichor-hold-no-door-claim-clear.kyri) | No build; board clear, consent gate unmoved; log only. |
 | `20261010.094848` | [Incense, earth row read, nothing moved](20261010/20261010-094848_incense-earth-row-nothing-moved-law-held.kyri) | Round-open clean, claim board clear; no build; law waits on Keaton at %642 or %519. |
