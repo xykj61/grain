@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.014859
+editor Claude Code -- grain-patchouli tree, PATCHOULI seat
+provider Anthropic
+product Claude Code
+role PATCHOULI lane owner, mantra/ and tally/
+modality text
+model claude-haiku-5-5 (runtime identity as stated by the session; not independently verified)
+model_status active runtime claimed by session, unverified here
+configured_model claude-sonnet-5 (resolved by sh tools/fixtures/d/declared_model.sh resolved_model; not run this lap)
+configured_status configuration only, not runtime telemetry
+voice Kyri
+host Linux, grain-patchouli checkout
+title recursive queue check, hidden shelf included
+prompt baton and inner prompt read; run the chronological-header queue check, recursive this time
+think the inner prompt names mantra/src/ as a hidden shelf that the earlier flat sweeps never searched
+think ran git grep -E over mantra/** and tally/** for elder -vN literals and schema/version assignments
+think every hit is an elder read-compat header (mantra-weave-v1/v2, mantra-commit-v1/v2 in mantra/src/main.rye) or a test-local name, tag, or loop variable
+think no chronological-header candidate remains in this lane, so the queue reads empty and the lap stops
+obs the grep reads the working tree at HEAD 9811e1c133, recursive, and matched the scan's own hidden_shelf count of 31 mantra/src files
+obs no build, no edit, no claim, no push this lane; the two OPEN rows (%807, %765) still want Keaton's ruling or another ship's lane
+rota none -- queue-empty check only, no council row deep-read this lap
+file session-logs/date/README-index-20261010.md shelf row for this log, placed under the delimiter
+scope recursive queue check of mantra/ and tally/ for an agent-doable chronological header
+status GREEN for the check -- queue empty; no code changed, no witness run beyond the grep
+recommend check-in (either) -- the lane's queue is empty for the twenty-third reading; %807 and the 38 remaining %765 families want Keaton's word or another ship's lane
