@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.033429` | [queue empty, no build](20261010/20261010-033429_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: queue empty again, nib carried. |
 | `20261010.033409` | [fold capacity threshold](20261010/20261010-033409_diffuser-fold-capacity-threshold-sweep.kyri) | Diffuser: fold misses 13-15 sets, reaches floor at 16; modulus control |
 | `20261010.033345` | [cache census premise held](20261010/20261010-033345_bakery-cache-census-premise-held.kyri) | Bakery: shared compile cache rechecked path-independent, no build, Claude ruling named. |
 | `20261010.033308` | [lane idle, pull, no build](20261010/20261010-033308_petrichor-lane-idle-pull-no-build.kyri) | Petrichor: fast-forwarded to xy, claim clear, no build. |
