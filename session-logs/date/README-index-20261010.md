@@ -61,6 +61,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.102917` | [Patchouli, queue empty, eighteenth](20261010/20261010-102917_patchouli-queue-empty-eighteenth.kyri) | Fresh version-literal net; queue empty; no build; log and row only. |
 | `20261010.102802` | [Petrichor, hold after fast-forward, gate shut](20261010/20261010-102802_petrichor-hold-consent-gate-after-ff.kyri) | Ff to 86d4248cd1; Consent Rail still gates; no build. |
 | `20261010.102722` | [Grass, sameness molted, C+ to A](20261010/20261010-102722_grass-sameness-molt-a-93.kyri) | One M1 molt; nine living citers repointed; a dated_path red predates it. |
 | `20261010.102315` | [Petrichor, steps gated, no build](20261010/20261010-102315_petrichor-hold-steps-open-no-build.kyri) | Hold; no code moved. |
