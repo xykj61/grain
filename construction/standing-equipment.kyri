@@ -10130,3 +10130,12 @@ guard oven_season_o2
 path tools/gen/chapter/oven_season_o2_witness.rish
 tier lap
 seated 20261010.042540
+
+# surface_season_p56 -- the live-five idle pong, unrostered since its own header named the reason:
+# it could not skip cleanly on a clone without the built seed binary (REDS %646). It now answers
+# SKIP-GREEN there, and drives idletest on a live Wayland session. Cadence tier: the honest skip
+# costs nothing, and the live run is the expensive part. Claim copal-surface-p56-roster.
+guard surface_season_p56
+path tools/gen/chapter/surface_season_p56_witness.rish
+tier cadence
+seated 20261010.073055
