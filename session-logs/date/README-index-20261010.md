@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.044419 | [Incense, roster red held, no build](20261010/20261010-044419_incense-roster-red-held-no-build.kyri) | Round-open clean; roster 48 reds held OPEN in %836; no build. |
 | 20261010.044457 | [Grass, fold reads A, no build](20261010/20261010-044457_grass-fold-reads-a-no-build.kyri) | mycelium/fold.rye graded A (93); queue empty; no edit. |
+| 20261010.044216 | [Patchouli, queue empty a twenty-sixth way](20261010/20261010-044216_patchouli-queue-empty-zero-assert-class.kyri) | Zero-assert class re-read after 043326; still clean; no build. |
 | 20261010.044040 | [Grass, register repeat read](20261010/20261010-044040_grass-front-door-register-repeat-read.kyri) | Six pages graded B+ or better; SOURCE register noted; no frame. |
 | 20261010.044102 | [Incense, contract accepted, read-only](20261010/20261010-044102_incense-contract-accepted-read-only.kyri) | Contract already accepted; read-only lap; no build. |
 | 20261010.044013 | [Bakery, receipt key measured](20261010/20261010-044013_bakery-receipt-key-measured.kyri) | Content-keyed compile already lands; cross-ship gap OPEN, ruling asked. |
