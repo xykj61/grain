@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.204022` | [Incense round-open hold, no build](20261009/20261009-204022_incense-round-open-hold-no-build.kyri) | Round-open reset to 1a3c36f0ce; cold run held; queue gated; no build. |
 | `20261009.203751` | [Petrichor gated hold, no build](20261009/20261009-203751_petrichor-gated-hold-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.203747` | [Bakery holds on the receipt key, no build](20261009/20261009-203747_bakery-hold-open-reds-no-build.kyri) | Receipt key waits on Keaton; 14 OPEN reds read; no build. |
 | `20261009.203706` | [Patchouli queue empty a twenty-second way, no build](20261009/20261009-203706_patchouli-queue-empty-twenty-second-no-build.kyri) | Fresh header search over mantra and tally finds no candidate; no build. |
