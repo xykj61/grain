@@ -4,7 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
-
+| 20261010.005115 | [hold](20261010/20261010-005115_diffuser-hold-sixth-recheck.kyri) | Diffuser hold: sixth recheck today, blockers unchanged, no fruit; no build |
 | 20261010.004929 | [log](20261010/20261010-004929_patchouli-queue-empty-twenty-fifth-net.kyri) | Patchouli queue empty, twenty-fifth net: no elder header written, no code moved |
 | 20261010.004824 | [hold](20261010/20261010-004824_petrichor-hold-consent-gate-still-shut.kyri) | Petrichor hold: pheromone commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.004823 | [crux held](20261010/20261010-004823_bakery-crux-held-for-ruling.kyri) | Bakery crux held: witness rerun 11 of 11, shared basis refused; digest ruling needed; no build |
