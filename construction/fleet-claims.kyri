@@ -58,3 +58,9 @@ stamp 20261009.212011
 epoch 1791595211
 paths tools/gen/chapter/sunn7_macos_enclosure_witness.rish construction/standing-equipment.kyri
 what Roster the unrostered chapter witness sunn7_macos_enclosure_witness.rish in standing-equipment and prove it from both sides.
+claim diffuser-cache-miss-calibration
+seat diffuser
+stamp 20261009.223211
+epoch 1791599531
+paths tools/rye/cache_miss_calibrate.rye tools/fixtures/c/cache_miss_calibrate_scan.sh tools/c/cache_miss_calibrate_witness.rish
+what A Rye-authored cache-miss calibration sweep: open the generic cache-misses event on this guest, sweep a 64 MB buffer once line by line, and print the reading beside the expected line-fill count, with its falsifier named.
