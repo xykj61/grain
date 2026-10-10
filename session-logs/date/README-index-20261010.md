@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.045220 | [Patchouli, from_v1 seam split](20261010/20261010-045220_patchouli-from-v1-seam-split.kyri) | weave.rye from_v1 76 to 60 lines; four weave witnesses GREEN. |
 | 20261010.045008 | [Incense, forty-seventh decline](20261010/20261010-045008_incense-declines-forty-seventh.kyri) | Round-open clean; queue clear; no build. |
+| 20261010.045518 | [Grass, inner prompt graded B+](20261010/20261010-045518_grass-grass-inner-page-graded-b-plus.kyri) | Field 77, reach 90, composite 89; no frame; no edit. |
 | 20261010.045134 | [Grass, two front doors, no frame](20261010/20261010-045134_grass-two-front-doors-graded-no-frame.kyri) | docs/ and foundations/ front doors graded; both clear B; no edit. |
 | 20261010.044925 | [Diffuser, fourteen index functions, random null](20261010/20261010-044925_diffuser-ordering-fourteen.kyri) | Tau-b +0.66; random null misses like a hash; no build. |
 | 20261010.044853 | [Grass, fold grade, no frame](20261010/20261010-044853_grass-fold-a-grade-no-frame.kyri) | mycelium/fold.rye graded A (93); no frame; no edit. |
