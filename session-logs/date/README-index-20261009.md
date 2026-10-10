@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.220709` | [Diffuser trace re-survey, no fruit](20261009/20261009-220709_diffuser-trace-resurvey-no-fruit.kyri) | Trace survey re-run on HEAD 5817128e4f; region_stats hit is a false positive; no build. |
 | `20261009.220527` | [Petrichor gate hold, no build](20261009/20261009-220527_petrichor-gate-hold-no-build.kyri) | Consent gate unchanged; no fetch lead, no claim, no build. |
+| 20261009.220424 | [Bakery queue held on the receipt-key ruling, sky round](20261009/20261009-220424_bakery-queue-held-sky-round-no-build.kyri) | Reads only; queue held on a ruling; no build. |
 | 20261009.220319 | [Patchouli parity net, queue empty](20261009/20261009-220319_patchouli-parity-net-queue-empty.kyri) | Parity bans clean in mantra/ and tally/; no build. |
 | `20261009.220354` | [Diffuser fallow lane, no unblocked fruit](20261009/20261009-220354_diffuser-fallow-lane-no-unblocked-fruit.kyri) | Hold: stencil, energy, and size-mix lines closed or blocked; no build. |
 | `20261009.220644` | [Incense hold, earth row, no build](20261009/20261009-220644_incense-hold-earth-row-stash-scan-no-build.kyri) | Clean round-open; seven stranded logs named. |
