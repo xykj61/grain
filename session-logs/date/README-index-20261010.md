@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.035024 | [petrichor idle held, no claim](20261010/20261010-035024_petrichor-idle-held-no-claim.kyri) | Petrichor: lane idle after pull, no docs-geode row open, no claim, no build. |
 | 20261010.034824 | [20261010-034824_petrichor-idle-after-pull-no-claim](20261010/20261010-034824_petrichor-idle-after-pull-no-claim.kyri) | petrichor idle after pull; no claim, no build |
 | `20261010.034731` | [incense decline, no build](20261010/20261010-034731_incense-decline-held-no-build.kyri) | Incense: round-open clean at bc6187a8b2, board clear, no build. |
 | `20261010.034534` | [petrichor repeat idle, no claim](20261010/20261010-034534_petrichor-repeat-idle-no-claim.kyri) | Petrichor: same board and gate as the two idle rows above, no claim, no build. |
