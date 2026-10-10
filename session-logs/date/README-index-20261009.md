@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.210406` | [Petrichor hold, no build](20261009/20261009-210406_petrichor-hold-no-build.kyri) | Gate holds; no claimable docs-geode row; no build. |
 | `20261009.210310` | [Diffuser baton read, no fruit yet](20261009/20261009-210310_diffuser-baton-read-no-fruit-yet.kyri) | The baton and the inner gate disagree; one ruling named. |
 | `20261009.210021` | [Patchouli queue empty](20261009/20261009-210021_patchouli-queue-empty-stray-kill.kyri) | Nothing agent-doable; stray kill recorded; no build. |
 | `20261009.210023` | [Pheromone hold, no build](20261009/20261009-210023_pheromone-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
