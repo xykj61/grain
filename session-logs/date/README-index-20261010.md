@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.022742 | [gate holds, idle](20261010/20261010-022742_petrichor-gate-holds-idle-no-build.kyri) | Petrichor: Consent Rail gate holds, zero claims, upstream only grass, no build |
 | 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
 | 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
