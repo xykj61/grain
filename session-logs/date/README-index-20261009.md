@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.212341` | [Bakery receipt-key fifth hold](20261009/20261009-212341_bakery-receipt-key-fifth-hold.kyri) | Ruling still open; no build. |
 | `20261009.212338` | [Grass audit, four foundations clear B](20261009/20261009-212338_grass-audit-four-foundations-clear-b.kyri) | Four foundations graded B+ to A; no edit. |
 | `20261009.212312` | [Petrichor fifth hold, no build](20261009/20261009-212312_petrichor-fifth-hold-upstream-moved-no-build.kyri) | Gate unchanged; pulled ff-only; nib carried; no build. |
 | `20261009.211554` | [Patchouli queue empty, twenty-third read](20261009/20261009-211554_patchouli-queue-empty-twenty-third.kyri) | Queue empty again; no code changed; check in. |
