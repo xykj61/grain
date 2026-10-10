@@ -75,6 +75,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.111520` | [Patchouli, census re-measured, no build](20261010/20261010-111520_patchouli-invariant-census-remeasured-no-build.kyri) | weave.rye 69 of 73 unlabeled; no sweep. |
 | `20261010.111151` | [Petrichor, dead link repointed](20261010/20261010-111151_petrichor-dead-foundation-link-repointed.kyri) | Dead foundation link repointed; A 92. |
 | `20261010.111218` | [Incense, baton lap, second hold, no build](20261010/20261010-111218_incense-baton-lap-hold-second-no-build.kyri) | Ff to b8ce3b978d; no build; ruling waits. |
 | `20261010.110301` | [Incense, baton lap, no build, ratchet held](20261010/20261010-110301_incense-baton-lap-no-build-ratchet-held.kyri) | Round-open clean; claim board read; no build; cold run held. |
