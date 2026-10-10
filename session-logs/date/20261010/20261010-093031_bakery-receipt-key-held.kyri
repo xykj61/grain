@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.093031
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported by harness; not independently verified
+configured_model claude-opus-5 per bakery resolution (not re-read this lap)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host Framework bench, America/New_York
+title Bakery, receipt key held for Keaton
+prompt Bakery baton lap: read the inner prompt, the card, the claim board, and the newest shelf; open or continue the shared build and cold-run crux.
+think The inner prompt rules the fruit: one shared build cache and one cold-run cache across the eight checkouts. The claim for it is already on the board and reads on xy/main.
+think The card's #1 question is YOURS: whether the receipt key drops HEAD for the watched inputs. tree_digest begins with git rev-parse HEAD, so one tree at two commits reads two digests. That changes the roster runner's contract, so this lap does not edit it.
+think Re-ran tools/fixtures/b/shared_build_cache_census.sh: miss_new_files=819, same_src_other_path_new_files=0, path_independent=yes. The compile layer already shares by content; the receipt layer is the open half.
+obs No code changed. The honest move is to hold the contract change for the ruling, not to pick the key on Keaton's behalf.
+obs The inner prompt's cold run would cost about 9,837 seconds against a 5,400-second timeout, and the card reports that a pass on this scale cannot finish inside one lap window. Launching one now would be a partial pass that certifies nothing.
+loom witness=shared_build_cache_census miss_new_files=819 same_src_other_path_new_files=0 wall_ms=unmeasured
+rota lap 1, row 2 -- Fire, the row that sees: the census shows what the compile layer shares; the receipt key shows what it does not.
+orbit round 1 sign -- the verb not measured this lap; no fascia face was moved.
+file construction/fleet-claims.kyri the crux claim is already on xy/main; no edit this lap
+file construction/ITINERARY.md Git nib follow-up only; the question stays Keaton's
+scope the shared build cache census and the claim board; no roster pass, no runner edit
+status GREEN for the census reading; the receipt key is held for Keaton's ruling, and no cold pass was launched because a partial one certifies nothing
+recommend check-in (Claude) -- the receipt-key ruling is a contract change to the roster runner; say whether the key drops HEAD for the watched inputs, and the lap resumes there
