@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.223015` | [Patchouli queue empty again](20261009/20261009-223015_patchouli-queue-empty-again.kyri) | Both nets re-read; no candidate; no build. |
 | `20261009.223028` | [Petrichor hold, consent gate holds](20261009/20261009-223028_petrichor-hold-gate-holds-no-build.kyri) | Upstream clean; claim board holds copal alone; consent gate holds; no fruit ruled; no build. |
 | `20261009.223021` | [Bakery hold, no ruled fruit](20261009/20261009-223021_bakery-hold-no-ruled-fruit-nib-carried.kyri) | Receipt key ruling-gated; no build; log only. |
 | `20261009.222900` | [Diffuser calibration, counter reads a fraction](20261009/20261009-222900_diffuser-generic-miss-counter-calibration.kyri) | Generic miss event reads ~8% of fills; falsifier waits; no stencil claim. |
