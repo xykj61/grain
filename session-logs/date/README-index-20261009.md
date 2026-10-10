@@ -9,6 +9,7 @@
 
 | `20261009.204913` | [Diffuser live-set blocked, twelfth hold, check in](20261009/20261009-204913_diffuser-live-set-twelfth-hold-check-in.kyri) | No trace in the tree; no build. |
 | `20261009.204731` | [Bakery holds on the receipt-key ruling](20261009/20261009-204731_bakery-receipt-key-hold-no-build.kyri) | Card and claim board read; receipt key waits on Keaton; no build. |
+| `20261009.204806` | [Patchouli queue empty, check in](20261009/20261009-204806_patchouli-queue-empty-hold-check-in.kyri) | Version net and hidden shelf read empty; no build. |
 | `20261009.204613` | [Incense claim-board hold, no build](20261009/20261009-204613_incense-claim-board-hold-no-build.kyri) | Round-open clean; claim board read; cold run held; no build. |
 | `20261009.204451` | [Pheromone lane hold, no build](20261009/20261009-204451_pheromone-lane-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.204550` | [Diffuser live-set blocked, eleventh read](20261009/20261009-204550_diffuser-live-set-eleventh-read.kyri) | No trace re-read; no build. |
@@ -91,7 +92,6 @@
 | `20261009.195051` | [Petrichor idle, fourth, ff, no build](20261009/20261009-195051_petrichor-idle-fourth-no-build.kyri) | Ff to eb7898217b; no build, no claim. |
 | `20261009.195400` | [Bakery crux measured, no claim](20261009/20261009-195400_bakery-crux-measure-no-build.kyri) | Read-only measure of the Rye build seam; receipt found stale at fa310d296b; no build, no claim. |
 | `20261009.195000` | [Patchouli queue empty, 22nd, no build](20261009/20261009-195000_patchouli-queue-empty-twenty-second.kyri) | Lane empty again; %835 owned elsewhere. |
-| `20261009.195532` | [Grass lifts grass-inner register to Field](20261009/20261009-195532_grass-inner-register-to-field.kyri) | Register 62 to 77; repeats rephrased; witness GREEN. |
 | `20261009.194747` | [Grass lifts constel_depart head to B+](20261009/20261009-194747_grass-constel-depart-head-lift.kyri) | Head 71 to 85; witness GREEN; no code moved. |
 | `20261009.194933` | [Incense holds, stall named, no build](20261009/20261009-194933_incense-holds-stalled-no-build.kyri) | Round-open clean; order held; stall named; no build, no claim. |
 | `20261009.194605` | [Incense declines a fifty-sixth, no build](20261009/20261009-194605_incense-declines-fifty-sixth.kyri) | Held order stands; no build, no claim, cold run held. |
@@ -219,7 +219,6 @@
 | `20261009.181529` | [Bakery census holds](20261009/20261009-181529_bakery-census-holds-receipt-ruling.kyri) | Census GREEN; receipt key waits on ruling; no build. |
 | `20261009.181447` | [Oven o0 witness rostered](20261009/20261009-181447_copal-oven-o0-roster.kyri) | Unrostered chapter witness rostered, GREEN and proven both ways; o3 held RED. |
 | `20261009.181402` | [Patchouli queue empty, twenty-third](20261009/20261009-181402_patchouli-queue-empty-twenty-third.kyri) | Same empty queue, no fresh net; no build; check-in named. |
-| `20261009.181319` | [Incense open order holds](20261009/20261009-181319_incense-open-order-no-build.kyri) | Card and inner prompt read; no open build in lane; no build; check-in named. |
 | `20261009.181216` | [Petrichor 20261006 gap](20261009/20261009-181216_petrichor-20261006-gap-no-peer-copy.kyri) | 20261006 shelf absent on every checkout here; row 72 awaits ruling. |
 | `20261009.181205` | [Grass inner regrade, repeat](20261009/20261009-181205_grass-inner-regrade-repeat-check-in.kyri) | B holds again, no edit; queue empty; check-in named. |
 | `20261009.181356` | [Diffuser live-set hold, sixth](20261009/20261009-181356_diffuser-live-set-hold-sixth.kyri) | Same absence on level HEAD; no build; check-in named. |
