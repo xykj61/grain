@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.014330 | [petrichor front doors graded](20261010/20261010-014330_petrichor-front-doors-graded.kyri) | Petrichor: four newcomer pages graded B or better; no build |
 | 20261010.014210 | [queue empty, no build](20261010/20261010-014210_patchouli-queue-empty-nets-no-build.kyri) | Patchouli: nets rerun, queue empty, no build |
+| 20261010.014426 | [hardware front door lift](20261010/20261010-014426_grass-hardware-front-door-lift.kyri) | Grass: hardware front door C+ to B, seven negatives affirmed |
 | 20261010.013821 | [set-assoc floor](20261010/20261010-013821_diffuser-set-associative-floor-follows-capacity.kyri) | Diffuser: five-band floor holds at 80 lines |
 | 20261010.013908 | [receipt key held, no build](20261010/20261010-013908_bakery-receipt-key-held-no-build.kyri) | Bakery: census 819 miss again; receipt key still on HEAD; waits on Keaton |
 | 20261010.014320 | [lane empty, third reading](20261010/20261010-014320_pheromone-lane-empty-third-reading.kyri) | Pheromone: lane empty, no build; check in (Claude) for the ruling |

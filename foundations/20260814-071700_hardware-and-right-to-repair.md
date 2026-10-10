@@ -14,9 +14,9 @@
 
 ## Why this front door exists
 
-Two journeys of Chapter A already stand whole and witnessed -- the **Mikrophone firmware** (waymark **DREY**, thirteen proven rungs) and the **open image module** with the **Photos app** and the **parts marketplace** grown above it (waymark **HUNK**). A newcomer meeting them, though, met scattered modules and a wall of witnesses, with no single page naming what the season *is* and how its surfaces belong to one promise. This is that page: the season-level front door, tying four built surfaces into one durable claim a reader grasps in a minute.
+Two journeys of Chapter A already stand whole and witnessed -- the **Mikrophone firmware** (waymark **DREY**, thirteen proven rungs) and the **open image module** with the **Photos app** and the **parts marketplace** grown above it (waymark **HUNK**). A newcomer meeting them, however, found scattered modules and a wall of witnesses. This page names what the season *is* and how its surfaces belong to one promise: the season-level front door, tying four built surfaces into one durable claim a reader grasps in a minute.
 
-Chapter A is the body you can hold. Where the language season proved the tree can think, and the surface season proved it can show a graph to a person, this season answers the plainest question a family asks: *what do I actually pick up?* The answer is a device that keeps nothing it should not keep, opens for repair instead of aging into waste, and runs software that was proven before the first board was ever ordered.
+Chapter A is the body you can hold. Where the language season proved the tree can think, and the surface season proved it can show a graph to a person, this season answers the plainest question a family asks: *what do I actually pick up?* The answer is a device that keeps only what it must, opens for repair rather than aging into waste, and runs software proven before the first board was ever ordered.
 
 ## The durable promise
 
@@ -41,15 +41,15 @@ Front door: [`../mikrophone/README.md`](../mikrophone/README.md). One-command pr
 
 ### The open image module -- verified bytes that decode to a grid
 
-An image is verified bytes that **decode, deterministically and within named bounds, to a pixel grid** -- a malformed stream refuses by name rather than painting garbage. The tree owns both halves of a real lossless codec so the property that matters is provable on metal: `decode(encode(pm))` recovers the pixmap byte-for-byte, across every chunk kind ([`../image/qoi.rye`](../image/qoi.rye), HUNK0; witness [`../tools/h/hunk_qoi_witness.rish`](../tools/h/hunk_qoi_witness.rish)). A decoded image becomes a **content-addressed Tablecloth artifact** whose every bead is proven against its digest before a pixel is read ([`../pond/apps/image_artifact.rye`](../pond/apps/image_artifact.rye), HUNK1), and lowers straight into **Skate** paint ([`../brushstroke/image_skate.rye`](../brushstroke/image_skate.rye), HUNK2).
+An image is verified bytes that **decode, deterministically and within named bounds, to a pixel grid** -- a malformed stream is rejected by name, so only verified pixels reach the screen. The tree owns both halves of a real lossless codec so the property that matters is provable on metal: `decode(encode(pm))` recovers the pixmap byte-for-byte, across every chunk kind ([`../image/qoi.rye`](../image/qoi.rye), HUNK0; witness [`../tools/h/hunk_qoi_witness.rish`](../tools/h/hunk_qoi_witness.rish)). A decoded image becomes a **content-addressed Tablecloth artifact** whose every bead is proven against its digest before a pixel is read ([`../pond/apps/image_artifact.rye`](../pond/apps/image_artifact.rye), HUNK1), and lowers straight into **Skate** paint ([`../brushstroke/image_skate.rye`](../brushstroke/image_skate.rye), HUNK2).
 
 ### Photos -- the app named plainly
 
-The first things a Photos app is *for*, each a pure bounded function over the decoded grid that leaves its source untouched: **crop, flip, rotate, scale, adjust, and a family of filters** ([`../image/photos.rye`](../image/photos.rye), HUNK3+). Every gesture records **as data** in a non-destructive edit-list, so the original is never wounded and an edited image never needs its pixels stored -- only the pair of source and edit-list, replayed deterministically ([`../image/photo_edits.rye`](../image/photo_edits.rye), HUNK11). No edit is a wound; every edit travels.
+The first things a Photos app is *for*, each a pure bounded function over the decoded grid that leaves its source untouched: **crop, flip, rotate, scale, adjust, and a family of filters** ([`../image/photos.rye`](../image/photos.rye), HUNK3+). Every gesture records **as data** in a non-destructive edit-list, so the original stays whole and an edited image stores the pair of source and edit-list, replayed deterministically, rather than pixels of its own ([`../image/photo_edits.rye`](../image/photo_edits.rye), HUNK11). Each edit travels with the image.
 
 ### The parts marketplace -- repair made findable
 
-Built in the shape of **McMaster-Carr**: one massive sprite image, each product rendered as an index into that single image -- the render trick that makes a catalog of thousands feel instant. Tablecloth holds the sprite in the open image format above; Skate and Brushstroke paint it; the catalog faceted, searched, and sorted so a keeper finds the exact part a worn device needs ([`../image/sprite.rye`](../image/sprite.rye) - [`../image/part_catalog.rye`](../image/part_catalog.rye) - [`../image/part_facets.rye`](../image/part_facets.rye)). Right-to-repair is not a slogan here; it is a working index from a broken part to its replacement.
+Built in the shape of **McMaster-Carr**: one massive sprite image, each product rendered as an index into that single image -- the render trick that makes a catalog of thousands feel instant. Tablecloth holds the sprite in the open image format above; Skate and Brushstroke paint it; the catalog faceted, searched, and sorted so a keeper finds the exact part a worn device needs ([`../image/sprite.rye`](../image/sprite.rye) - [`../image/part_catalog.rye`](../image/part_catalog.rye) - [`../image/part_facets.rye`](../image/part_facets.rye)). Right-to-repair is here a working index, leading from a broken part to its replacement.
 
 ## The gates -- honestly named
 
@@ -61,7 +61,7 @@ Software proves; hardware waits for the keeper's hand. This season keeps its gat
 
 ## Gratitude, siloed
 
-Chapter A studies the world clean-room and thanks its teachers plainly: **QOI** (the "Quite OK Image" format -- public spec only, [`../gratitude/qoi.md`](../gratitude/qoi.md)), **McMaster-Carr** (the single-sprite render trick), and the common **iCloud Photos / Google Photos** crop and non-destructive-edit gestures (concept only). Each is thanked, studied through the clean room, and siloed -- never a line of their code in ours.
+Chapter A studies the world clean-room and thanks its teachers plainly: **QOI** (the "Quite OK Image" format -- public spec only, [`../gratitude/qoi.md`](../gratitude/qoi.md)), **McMaster-Carr** (the single-sprite render trick), and the common **iCloud Photos / Google Photos** crop and non-destructive-edit gestures (concept only). Each is thanked, studied through the clean room, and siloed, and their code lives outside ours.
 
 ---
 
