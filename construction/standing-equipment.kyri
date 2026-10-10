@@ -10108,3 +10108,14 @@ guard surface_season_p52
 path tools/gen/chapter/surface_season_p52_witness.rish
 tier lap
 seated 20261010.035000
+
+# surface_study_choir -- the Surface p7 study-block residual choir. It sings four sibling witnesses in
+# one fold, so it runs on the cadence clock rather than every lap. Proven on 20261010: GREEN on the
+# live tree (exit 0, the four siblings answer GREEN), and RED from an empty pen, where its first
+# `run` finds no rishi binary and the choir fails at its glow hygiene leg. That red leg is weak: it
+# proves the choir refuses when a path is absent, not that it refuses a sibling's content drift. A
+# content-drift plant in one sibling is the stronger proof, still to do.
+guard surface_study_choir
+path tools/gen/chapter/surface_study_choir.rish
+tier cadence
+seated 20261010.035956
