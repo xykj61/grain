@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.021502 | [patchouli triad census](20261010/20261010-021502_patchouli-triad-census-no-build.kyri) | Patchouli: triad census, six ratchet gaps, no build |
 | 20261010.021335 | [receipt basis measured](20261010/20261010-021335_bakery-receipt-basis-measured.kyri) | Bakery: receipt basis not an ancestor; 4382 of 9083 log-only; no build |
 | 20261010.021322 | [lane empty](20261010/20261010-021322_pheromone-lane-empty-check-in.kyri) | Pheromone: language queue empty, no build, check in |
 | 20261010.021221 | [repeat declined](20261010/20261010-021221_incense-repeat-declined-no-build.kyri) | Incense: round-open clean, orbit 10 Capricorn, repeat row declined, no build |
