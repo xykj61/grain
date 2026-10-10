@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.030944 | [upstream pull, hold, no build](20261010/20261010-030944_petrichor-upstream-pull-hold.kyri) | Petrichor: one upstream commit, no docs-geode path, Consent Rail gates |
 | 20261010.030558 | [queue empty, the repeat named](20261010/20261010-030558_patchouli-queue-empty-aether-hears.kyri) | Patchouli: queue empty again, aether names the repeat, no build |
 | 20261010.030238 | [hashed index breaks floor](20261010/20261010-030238_diffuser-hashed-index-floor-breaks.kyri) | Diffuser: floor fails under a hash at 112 lines |
 | 20261010.030558 | [lane empty after pull, no build](20261010/20261010-030558_petrichor-lane-empty-hold-after-pull-no-build.kyri) | Petrichor: lane empty, grade A held, 20261006 gap named, no build |
