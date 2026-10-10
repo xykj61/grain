@@ -58,3 +58,9 @@ stamp 20261010.071744
 epoch 1791631064
 paths tools/fixtures/s/standing_equipment_run.sh construction/standing-equipment-receipt.kyri
 what Bakery opens the shared build and cold-run cache crux: one green receipt usable across the eight checkouts, every owed proof still executed, a miss on any changed input.
+claim patchouli-resin-batch-build-asserts
+seat patchouli
+stamp 20261010.091042
+epoch 1791637842
+paths mantra/resin_batch.rye
+what Patchouli adds two contract asserts to resin_batch.rye build_batch, the one zero-assert production function in that file, under the SLC two-asserts-on-touch rule.
