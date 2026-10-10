@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.200622` | [Bakery read-only lap, queue held](20261009/20261009-200622_bakery-read-only-queue-held.kyri) | Read-only lap; no claim, no build; two words held. |
 | 20261009.201500 | [Patchouli queue empty, no build](20261009/20261009-201500_patchouli-queue-empty-no-build.kyri) | mantra/tally header queue empty a thirteenth way; no build, no claim. |
+| `20261009.200854` | [Diffuser fourteenth hold, no build](20261009/20261009-200854_diffuser-fourteenth-hold-no-build.kyri) | live-set trace still absent; no build. |
 | 20261009.200735 | [Petrichor idle ninth, no build](20261009/20261009-200735_petrichor-idle-ninth-no-build.kyri) | docs-geode gate holds; no fruit, no claim, no build |
 | `20261009.200513` | [incense declines forty-ninth](20261009/20261009-200513_incense-declines-forty-ninth.kyri) | ff to a94e8c0323; no claim, no build; law lane waits on Keaton. |
 | `20261009.200602` | [Diffuser holds, blockers re-read](20261009/20261009-200602_diffuser-holds-blockers-reread.kyri) | Energy counter and live-set trace still absent; no build. |
