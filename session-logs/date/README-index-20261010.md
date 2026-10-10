@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.040943 | [bakery held, gated queue](20261010/20261010-040943_bakery-held-after-fast-forward.kyri) | Bakery: five commits pulled, gate unchanged; no build. |
 | 20261010.040701 | [Grass foundations and docs-geode grade](20261010/20261010-040701_grass-foundations-docs-geode-grade-no-build.kyri) | Grass: five foundation and docs-geode pages graded, lowest B+ 87; no build. |
+| 20261010.040841 | [petrichor idle, no target](20261010/20261010-040841_petrichor-idle-no-target-no-build.kyri) | Petrichor: no claimable lane work; gate holds; no build. |
 | 20261010.040612 | [bakery held again, gated queue](20261010/20261010-040612_bakery-held-queue-again.kyri) | Bakery: three upstream commits pulled, claim board empty, queue still ruling-gated; no build. |
 | `20261010.040554` | [Bit-mix misses at 126](20261010/20261010-040554_diffuser-mix-126-misses.kyri) | Diffuser: bit-mix at 126 lines, floor on 0 of 24; the miss is the index function. |
 | 20261010.040522 | [petrichor repeat, no build](20261010/20261010-040522_petrichor-broken-day-index-repeat-no-build.kyri) | Petrichor: 20261006 index link still broken; no build. |
