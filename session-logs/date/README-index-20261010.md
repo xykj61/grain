@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.044457 | [Grass, fold reads A, no build](20261010/20261010-044457_grass-fold-reads-a-no-build.kyri) | mycelium/fold.rye graded A (93); queue empty; no edit. |
 | 20261010.044040 | [Grass, register repeat read](20261010/20261010-044040_grass-front-door-register-repeat-read.kyri) | Six pages graded B+ or better; SOURCE register noted; no frame. |
 | 20261010.044102 | [Incense, contract accepted, read-only](20261010/20261010-044102_incense-contract-accepted-read-only.kyri) | Contract already accepted; read-only lap; no build. |
 | 20261010.044013 | [Bakery, receipt key measured](20261010/20261010-044013_bakery-receipt-key-measured.kyri) | Content-keyed compile already lands; cross-ship gap OPEN, ruling asked. |
