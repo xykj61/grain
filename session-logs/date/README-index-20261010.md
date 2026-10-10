@@ -13,6 +13,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.082055` | [Patchouli, queue empty, census](20261010/20261010-082055_patchouli-queue-empty-class-census.kyri) | Allocator class zero; 770 of 1368 asserts carry invariant; no code. |
+| `20261010.082500` | [Petrichor, hold, consent gate unmoved, ff](20261010/20261010-082500_petrichor-hold-gate-unmoved-ff.kyri) | Fast-forwarded one peer log; consent gate unmoved; no page or claim touched.
 | `20261010.081831` | [Grass, docs sample graded, no frame](20261010/20261010-081831_grass-docs-sample-graded-no-frame.kyri) | 16 of 16 at B or better; no frame, no edit. |
 | `20261010.082013` | [Petrichor, hold, upstream fast-forward, gate unmoved](20261010/20261010-082013_petrichor-hold-upstream-gate-unmoved.kyri) | Fast-forwarded three upstream log commits; consent gate unmoved; no page touched. |
 | `20261010.081724` | [Patchouli, queue empty, fresh net](20261010/20261010-081724_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; claims owned elsewhere; no build. |
