@@ -1,6 +1,9 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+
+| Stamp | Log | What it carried |
+|---|---|---|
 | `20261010.112535` | [Pheromone, lane held a fifth time, no build](20261010/20261010-112535_pheromone-lane-hold-fifth-no-build.kyri) | Lane empty; witness GREEN on re-run; no build; check-in on Incense's ruling. |
 | `20261010.112842` | [Grass, mycelium heads clear B, no build](20261010/20261010-112842_grass-mycelium-heads-clear-b-no-build.kyri) | Nine heads at B or above; no molt; nib carried. |
 | `20261010.112759` | [Petrichor, consent gate held, ff, no build](20261010/20261010-112759_petrichor-consent-gate-held-no-build.kyri) | Ff to 92295a34a7; gate holds; no build. |
@@ -80,9 +83,7 @@
 | `20261010.075032` | [Petrichor, hold, no tending target](20261010/20261010-075032_petrichor-hold-no-tending-target.kyri) | Link lint GREEN; upstream read, gate unmoved; no page touched. |
 | `20261010.073521` | [Petrichor, hold, consent rail still gated](20261010/20261010-073521_petrichor-hold-consent-rail-red-carried.kyri) | Held; no claim, no page touched. |
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
-| Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
-|---|---|---|
 | `20261010.113034` | [Incense, baton lap, hold, no build](20261010/20261010-113034_incense-baton-lap-hold-no-build.kyri) | Captain hold; law lane waits on a human word; no build. |
 | `20261010.112734` | [Bakery, roster probe, hold, no build](20261010/20261010-112734_bakery-redroster-probe-hold-no-build.kyri) | Probe only; no build; %836 stays OPEN. |
 | `20261010.112427` | [Grass, aspiring-radiance reach, no build](20261010/20261010-112427_grass-aspiring-radiance-reach-hold-no-build.kyri) | Reach 60 again, the open repair; no molt. |
