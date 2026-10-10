@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.040347 | [pheromone idle, ruling-gated](20261010/20261010-040347_pheromone-no-build-queue-ruling-gated.kyri) | Pheromone: queue ruling-gated, no build. |
+| `20261010.040310` | [Grass docs grade all B](20261010/20261010-040310_grass-docs-grade-all-b-no-build.kyri) | Grass: fourteen docs/ pages graded, lowest 88, none below B; no build. |
 | `20261010.040125` | [Grass cold run guard red](20261010/20261010-040125_grass-cold-run-guard-red.kyri) | Cold run guard_red, 43 reds; prose graded B+ or above; no build. |
 | 20261010.040122 | [choir roster row](20261010/20261010-040122_copal-surface-study-choir-roster.kyri) | Copal: surface_study_choir rostered on cadence, GREEN on metal, weak red leg named. |
 | 20261010.040115 | [fold 126 misses](20261010/20261010-040115_diffuser-fold-126-misses.kyri) | Diffuser: 21x6 at 126 lines, floor on 0 of 24; lower bound moves to 127. |
