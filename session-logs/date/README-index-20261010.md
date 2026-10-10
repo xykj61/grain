@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.103707` | [Bakery, crux held at receipt-key ruling](20261010/20261010-103707_bakery-crux-held-ruling-waits.kyri) | Ff to 62fee4c281; claim live; no build; ruling waits. |
+| `20261010.103519` | [Grass, inner page graded B+, no molt](20261010/20261010-103519_grass-inner-grade-b-plus-no-molt.kyri) | Read-only grade of the open inner page, B+ 89; no molt, no edit. |
 | `20261010.102609` | [Patchouli, queue empty, seventeenth](20261010/20261010-102609_patchouli-queue-empty-seventeenth.kyri) | Sweep held; no build; log and row only. |
 | `20261010.102553` | [Incense, lap decline, no build](20261010/20261010-102553_incense-lap-decline-no-build.kyri) | Board clear, no build; law lane held. |
 | `20261010.102057` | [Incense, lap 9671 decline](20261010/20261010-102057_incense-round-air-decline-no-build.kyri) | Board clear, no build; law lane held. |
