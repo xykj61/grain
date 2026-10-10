@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim copal-sunn9-roster
+seat copal
+stamp 20261009.224913
+epoch 1791600553
+paths tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish construction/standing-equipment.kyri
+what Roster the one unrostered chapter witness sunn9_claude_llms_stewards_witness.rish in construction/standing-equipment.kyri and prove it from both sides, the copal fruit for this lap.
