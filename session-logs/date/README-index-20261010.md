@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.012853 | [hidden-shelf heads graded](20261010/20261010-012853_patchouli-hidden-shelf-heads-graded.kyri) | Patchouli: 15 mantra/src heads graded, none below B; queue empty |
 | 20261010.012646 | [grade, no lift](20261010/20261010-012646_grass-front-door-grade-no-lift.kyri) | Grass grade: libraries README and root README both B or better; no edit |
 | 20261010.012633 | [ruling awaited, no build](20261010/20261010-012633_pheromone-ruling-wait-no-build.kyri) | Pheromone ff pull; fruit parked on Incense ruling; no build
 | 20261010.012430 | [decline](20261010/20261010-012430_incense-decline-upstream-equal-head.kyri) | Incense decline: upstream equal to HEAD f744e7e908, claim board one live, no build |
