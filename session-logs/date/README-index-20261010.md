@@ -9,6 +9,7 @@
 | `20261010.053552` | [Incense, forty-seventh decline, no build](20261010/20261010-053552_incense-decline-no-build.kyri) | Round-open clean; claim board and clock read; law lane waits on Keaton's word; no build. |
 | `20261010.053341` | [Petrichor, fast-forward, no fruit](20261010/20261010-053341_petrichor-fast-forward-no-fruit.kyri) | Fast-forwarded one peer log; no fruit; no build. |
 | `20261010.053205` | [grass inner regraded B+, no frame](20261010/20261010-053205_grass-inner-regraded-bplus-no-frame.kyri) | Inner prompt graded B+ 89 at field with service 90; no edit; no frame. |
+| 20261010.053724 | [Bakery, no mechanical lap left, held for a ruling](20261010/20261010-053724_bakery-no-mechanical-lap-compiler-pin-held.kyri) | One zig on this pier; compiler and toolchain legs unmeasurable; receipt key held; no build. |
 | 20261010.053052 | [Bakery, census re-run GREEN](20261010/20261010-053052_bakery-census-rerun-green-receipt-key-held.kyri) | Census GREEN on this tree; receipt key held for a ruling; no build. |
 | `20261010.052902` | [grass front doors graded, no frame](20261010/20261010-052902_grass-front-doors-graded-no-frame.kyri) | Two front doors graded above B on counted readings; no edit; no frame. |
 | `20261010.053003` | [Patchouli, catch-up loops unbounded](20261010/20261010-053003_patchouli-fresh-class-unbounded-catchup.kyri) | Five catch-up loops lack a step cap; check-in. |
