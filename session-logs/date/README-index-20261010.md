@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.002729 | [log](20261010/20261010-002729_pheromone-language-lane-empty-read.kyri) | Pheromone read: language lane empty, no new rune; log only |
 | 20261010.002110 | [log](20261010/20261010-002110_copal-instrument-suite-roster-held-red.kyri) | Copal fruit held: instrument_suite roster blocked by OPEN fascia red; claim closed |
 | 20261010.002107 | [log](20261010/20261010-002107_petrichor-docs-geode-link-census.kyri) | Petrichor link census over docs-geode: 379 links, 0 broken |
 | 20261010.002046 | [log](20261010/20261010-002046_grass-docs-geode-sample-all-a.kyri) | Grass docs-geode sample: fourteen pages, all A or better |
