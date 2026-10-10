@@ -10,25 +10,25 @@
 //! This is the double-spend, the oldest reason a value ledger wants consensus. The
 //! Cord already derives one total order from the mesh whatever the arrival order,
 //! and the Till reads that order as the treasury's verdict: the first draw takes the
-//! coins, and a later draw the treasury can no longer pay settles as a spent-out draw
+//! coins, and a later draw that finds the treasury run dry settles as a spent-out draw
 //! with its amount on record.
 //!
 //! The crux is the distinction, and it is the twin of the Tenure's. `fold.fold_fact`
 //! reports one `Overdraw` for two different facts: a spend that was affordable alone
 //! and came up short only because a competing spend drained the treasury first, and a
-//! spend that the treasury could not pay in any order. The measure that separates them
+//! spend that every order would leave unpaid. The measure that separates them
 //! is monotonic and position-respecting: `issued-so-far`, the cumulative issue at the
-//! draw's position. Issues only add, and the fold releases nothing. A draw whose amount
+//! draw's position. Issues only add, and the fold keeps every one. A draw whose amount
 //! is at or below issued-so-far had coins available for it once, so it settles as a
 //! spent-out draw and folding continues. A draw whose amount exceeds issued-so-far is
-//! one that every ordering would still fail to pay, so the whole resolution returns an
-//! error. An issue that overdraws (a u64 wrap) is a corrupt fact, and it refuses the
-//! resolution in every case.
+//! one that every ordering would still leave short, so the whole resolution returns
+//! `error.Overdraw`. An issue that overdraws (a u64 wrap) is a damaged fact, and it stops
+//! the resolution in every case.
 //!
-//! Grown beside cord.rye, fold.rye, and tenure.rye. It edits each of them not at all,
+//! Grown beside cord.rye, fold.rye, and tenure.rye. It leaves each of them untouched,
 //! and it composes the public API of cord and fold alone. A `StarTaken` name contest is
-//! the Tenure's verdict, so the Till passes that error through and returns the
-//! resolution as an error. A Till log carries coins, and the two-keepers-one-name
+//! the Tenure's verdict, so the Till passes that verdict through and returns the
+//! resolution as its own result. A Till log carries coins, and the two-keepers-one-name
 //! contests belong to the Tenure, which owns that verdict on a mixed log.
 //! Siloed and dev-only, with demo seeds. Each key is a test key, and the module moves
 //! value only inside the demo ledger.
