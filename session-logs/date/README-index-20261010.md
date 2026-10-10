@@ -8,6 +8,7 @@
 | 20261010.025646 | [forty-ninth decline](20261010/20261010-025646_incense-round-declined-forty-ninth-no-build.kyri) | Incense: round clean, board clear, law lane held, no build |
 | 20261010.025641 | [gap lint, no build](20261010/20261010-025641_petrichor-20261006-shelf-gap-lint-no-build.kyri) | Petrichor: lint names the 20261006 gap again, no build |
 | 20261010.025554 | [receipt key still held, no build](20261010/20261010-025554_bakery-receipt-key-still-held-no-build.kyri) | Bakery: key ruling held, nib carried, no build |
+| 20261010.025651 | [fn length measured](20261010/20261010-025651_patchouli-fn-length-measured-no-build.kyri) | Patchouli: fn length read, no build, check in (Claude) |
 | 20261010.025017 | [water row read, no build](20261010/20261010-025017_pheromone-water-row-read-no-build.kyri) | Pheromone: water rota row read, card closed, ruling still pending, no build |
 | 20261010.025301 | [assert density widened, no build](20261010/20261010-025301_patchouli-assert-density-widened-no-build.kyri) | Patchouli: hidden shelf and assert density read, exempt shims only, no build |
 | 20261010.024737 | [queue empty, twenty-fourth, no build](20261010/20261010-024737_patchouli-queue-empty-twenty-fourth-no-build.kyri) | Patchouli: version nets re-run, queue empty, no build |
