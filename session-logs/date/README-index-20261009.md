@@ -7,6 +7,7 @@
 | `20261009.234844` | [Bakery redleg triage](20261009/20261009-234844_bakery-redleg-triage.kyri) | Redleg red reproduces, four over ceiling; no build. |
 | `20261009.234903` | [Grass holds two molts](20261009/20261009-234903_grass-merit-ledger-molt-held-second-reading.kyri) | Two co-written pages held for word; no molt. |
 | `20261009.234840` | [Incense hold, round thirteen](20261009/20261009-234840_incense-hold-round-thirteen-water-row.kyri) | Card read whole; queue gated; no build; water row read. |
+| `20261009.235110` | [Petrichor witnesses green, no edit](20261009/20261009-235110_petrichor-witnesses-green-no-edit.kyri) | Lint, link promises, Bhakta door GREEN; first-hour count 88 matches; no page changed. |
 | `20261009.234540` | [Incense hold, roster red left open](20261009/20261009-234540_incense-hold-roster-red-left-open.kyri) | Claim board clear; %836 and %835 left OPEN for owners; no build. |
 | `20261009.234712` | [Patchouli queue empty, thirtieth](20261009/20261009-234712_patchouli-queue-empty-thirtieth.kyri) | Queue empty; no build; check-in named. |
 | `20261009.234414` | [Diffuser fallow lap](20261009/20261009-234414_diffuser-fallow-lap-gated-fruit.kyri) | Fruit gated on Keaton's word; no build; check-in named. |
