@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.035205 | [petrichor idle, no claim](20261010/20261010-035205_petrichor-idle-fetch-one-behind-no-build.kyri) | Petrichor idle after fast-forward, no build |
+| 20261010.035130 | [incense decline, no build](20261010/20261010-035130_incense-decline-forty-seven-no-build.kyri) | Incense: round-open clean at fd0654ad90, no build, cold run held, status GREEN for the decline. |
 | 20261010.035024 | [petrichor idle held, no claim](20261010/20261010-035024_petrichor-idle-held-no-claim.kyri) | Petrichor: lane idle after pull, no docs-geode row open, no claim, no build. |
 | `20261010.034920` | [fold 128 in two layouts](20261010/20261010-034920_diffuser-fold-128-two-layouts.kyri) | Diffuser: 32x4 at 128 lines, floor on 24 of 24; 128 holds across layouts. |
 | `20261010.034844` | [diff split, green](20261010/20261010-034844_patchouli-diff-helpers-split-green.kyri) | Patchouli: diff.rye split into helpers, witnesses green. |
