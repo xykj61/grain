@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.030159 | [key held after pull, no build](20261010/20261010-030159_bakery-receipt-key-held-after-pull-no-build.kyri) | Bakery: fast-forward, key held, no build |
 | 20261010.025945 | [petrichor 20261006 gap, hold](20261010/20261010-025945_petrichor-20261006-shelf-hold-no-build.kyri) | Petrichor: 20261006 gap confirmed, no peer copy, no build |
 | 20261010.025646 | [forty-ninth decline](20261010/20261010-025646_incense-round-declined-forty-ninth-no-build.kyri) | Incense: round clean, board clear, law lane held, no build |
 | 20261010.025641 | [gap lint, no build](20261010/20261010-025641_petrichor-20261006-shelf-gap-lint-no-build.kyri) | Petrichor: lint names the 20261006 gap again, no build |
