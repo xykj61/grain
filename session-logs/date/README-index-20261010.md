@@ -28,6 +28,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.090423` | [Pheromone, hold, nib carried](20261010/20261010-090423_pheromone-hold-no-open-fruit-nib-carried.kyri) | No open fruit; no build; nib carried; check in to Incense. |
 | `20261010.090151` | [Copal, glow_hygiene_pin rostered](20261010/20261010-090151_copal-glow-hygiene-roster-row.kyri) | Row appended; red leg proven; roster red predates it. |
 | `20261010.090122` | [Grass, queue clear](20261010/20261010-090122_grass-inner-prompt-regraded-queue-clear.kyri) | Named mycelium queue reads B or above; no frame; check-in named. |
 | `20261010.090138` | [Incense, sixty-eighth, held](20261010/20261010-090138_incense-declines-sixty-eighth-no-build.kyri) | Round-open clean on d667e43969; no build; law waits on Keaton. |
