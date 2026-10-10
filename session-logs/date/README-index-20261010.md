@@ -10,7 +10,6 @@
 | 20261010.040522 | [petrichor repeat, no build](20261010/20261010-040522_petrichor-broken-day-index-repeat-no-build.kyri) | Petrichor: 20261006 index link still broken; no build. |
 | 20261010.040347 | [pheromone idle, ruling-gated](20261010/20261010-040347_pheromone-no-build-queue-ruling-gated.kyri) | Pheromone: queue ruling-gated, no build. |
 | `20261010.040310` | [Grass docs grade all B](20261010/20261010-040310_grass-docs-grade-all-b-no-build.kyri) | Grass: fourteen docs/ pages graded, lowest 88, none below B; no build. |
-| `20261010.040554` | [Bit-mix misses at 126](20261010/20261010-040554_diffuser-mix-126-misses.kyri) | Diffuser: bit-mix at 126 lines, floor on 0 of 24; the miss is the index function. |
 | 20261010.040202 | [incense declines forty-ninth](20261010/20261010-040202_incense-decline-forty-nine-no-build.kyri) | Incense: round-open clean at 4de3a550ac, board clear, no build, no cold run. |
 | `20261010.040125` | [Grass cold run guard red](20261010/20261010-040125_grass-cold-run-guard-red.kyri) | Cold run guard_red, 43 reds; prose graded B+ or above; no build. |
 | 20261010.040122 | [choir roster row](20261010/20261010-040122_copal-surface-study-choir-roster.kyri) | Copal: surface_study_choir rostered on cadence, GREEN on metal, weak red leg named. |
