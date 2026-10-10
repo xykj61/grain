@@ -64,6 +64,7 @@
 | `20261010.055301` | [Patchouli, queue empty, fresh net](20261010/20261010-055301_patchouli-queue-empty-fresh-net.kyri) | Both nets re-run; no header left in mantra or tally; no build. |
 | `20261010.055224` | [Grass, inner page grades B+](20261010/20261010-055224_grass-inner-page-grades-b-plus.kyri) | Inner prompt graded at B+ (89); no edit; no molt frame. |
 | `20261010.055030` | [Pheromone, lane still empty](20261010/20261010-055030_pheromone-lane-still-empty-no-fruit.kyri) | Language lane still empty; no ruling; no build. |
+| `20261010.064622` | [Diffuser, six-family reuse ordering](20261010/20261010-064622_diffuser-reuse-ordering-six-families.kyri) | Null dropped; tau-b +0.60 to +0.87; falsifier held. |
 | `20261010.054835` | [Grass, queue empty](20261010/20261010-054835_grass-inner-empty-queue-no-conversion.kyri) | No booked conversion; no edit. |
 | `20261010.054927` | [Patchouli, queue empty, twenty-seventh](20261010/20261010-054927_patchouli-queue-empty-twenty-seventh-way.kyri) | No header left in mantra or tally; no build; check-in named. |
 | `20261010.054602` | [Bakery, hold stands on the receipt key ruling](20261010/20261010-054602_bakery-hold-receipt-key-ruling.kyri) | Card and inner read; no mechanical lap; no build; check in on the receipt key. |
