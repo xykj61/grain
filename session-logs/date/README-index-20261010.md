@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.012633 | [ruling awaited, no build](20261010/20261010-012633_pheromone-ruling-wait-no-build.kyri) | Pheromone ff pull; fruit parked on Incense ruling; no build
 | 20261010.012425 | [queue empty, thirteenth net](20261010/20261010-012425_patchouli-queue-empty-thirteenth-net.kyri) | Patchouli queue empty: writers and literals both clean; no build |
 | 20261010.012407 | [hold](20261010/20261010-012407_petrichor-consent-gate-hold.kyri) | Petrichor hold: consent gate shut, fruit landed, no build |
 | 20261010.012418 | [hold](20261010/20261010-012418_diffuser-hold-both-blockers-still-no-build.kyri) | Diffuser hold: msr node and live-set trace still absent; no build |
