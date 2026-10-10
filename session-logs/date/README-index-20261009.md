@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.234001` | [Petrichor hold, tenth reading](20261009/20261009-234001_petrichor-hold-tenth-reading-gate-holds.kyri) | Consent gate holds; no build; check-in named. |
+| `20261009.234153` | [Patchouli queue empty, 29th](20261009/20261009-234153_patchouli-queue-empty-twenty-ninth.kyri) | Queue empty again; no build; check-in named. |
 | `20261009.233655` | [Incense hold, claim board clear](20261009/20261009-233655_incense-hold-claim-board-clear.kyri) | Board clear; order unchanged; no build; nib carried. |
 | `20261009.233925` | [Patchouli queue empty, 28th](20261009/20261009-233925_queue-empty-twenty-eighth.kyri) | Elder-header sweep held; no build; check-in named. |
 | `20261009.233905` | [Grass grades the docs-geode front door, A 94](20261009/20261009-233905_grass-front-door-grade.kyri) | Door reading A 94, nothing lifted; cold run not taken. |
