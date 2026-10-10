@@ -10139,3 +10139,14 @@ guard surface_season_p56
 path tools/gen/chapter/surface_season_p56_witness.rish
 tier cadence
 seated 20261010.073055
+
+# surface_season_p57 -- the live-five ceiling fill, unrostered since it was written. Like p56 it
+# answers SKIP-GREEN where the built seed binary is absent (REDS %646): this clone carries no
+# Wayland dev libraries, so the honest reading here is the skip. Its metal grep runs BEFORE the skip,
+# proven both ways in a throwaway pen: an unmutated seed reaches the GREEN skip, and one with
+# `fn run_ceiling_witness` renamed refuses at `surface-p57: ceiling metal scan failed`. Cadence tier:
+# the live ceiling run is the expensive part. Claim copal-roster-surface-p57.
+guard surface_season_p57
+path tools/gen/chapter/surface_season_p57_witness.rish
+tier cadence
+seated 20261010.073758
