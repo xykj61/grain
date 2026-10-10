@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.031742` | [Petrichor shelf repair](20261010/20261010-031742_petrichor-index-shelf-repair.kyri) | Open-shelf rows trimmed and ordered; claim closed; witness GREEN. |
 | 20261010.031525 | [lane witness sweep, no build](20261010/20261010-031525_patchouli-lane-witness-sweep-no-build.kyri) | Patchouli: six mantra witnesses GREEN on metal, queue empty, no build |
 | 20261010.031033 | [plant adopted](20261010/20261010-031033_bakery-cpu-unit-control-plant-adopted.kyri) | Bakery: cpu control on plant.sh, 41 of 41 |
 | 20261010.031012 | [round-open clean, claim board clear, held](20261010/20261010-031012_incense-round-open-claim-board-clear-no-build.kyri) | Incense: round-open clean, no lane item, cold run unlaunched; law lane waits on REDS %642 or %519. |
