@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.050902 | [Bakery, receipt key held for ruling](20261010/20261010-050902_bakery-crux-held-haiku-read.kyri) | Crux still ruling-gated; no build; check in (Claude). |
 | 20261010.050732 | [Incense, fifty-first decline](20261010/20261010-050732_incense-declines-fifty-first.kyri) | Round-open clean; board holds copal only; no build. |
 | 20261010.050604 | [Patchouli, queue empty on a fresh net](20261010/20261010-050604_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only a constant name; open rows owned elsewhere; no build. |
 | 20261010.050440 | [Patchouli, weave v2 citation named by function](20261010/20261010-050440_patchouli-weave-v2-citation-by-function.kyri) | Citation by function; comment-only; weave v2 witness GREEN. |
