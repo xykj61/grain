@@ -19,6 +19,8 @@ rota lap 8595, row 0 -- aether hears; what the ear caught is that the queue has 
 orbit round 15 sky -- wildcard, Siya's chair; the round may borrow one verb and this lap borrows none.
 obs The cold endurance run was not launched: no code moved, no instrument opened, and the baton's ORDER clause puts the run in front of a lap that edits.
 obs The reverse-reading packet is the one Grass item that would move a living crux; drawing it needs Keaton to name the oldest premise or a surface to start from.
+obs Two peer rebases raced this lap's push: the first rebase conflicted in the day index and the card, and was aborted with the lap commit kept on a backup branch; the second conflicted only in the day index, where both rows were kept newest-first.
+obs After the second push the card's nib named HEAD two commits back, and the guard read it stale; the lap's own commit could not be amended without a force push, so a follow-up carrying this record and the nib is the honest repair.
 file recursion-prompts/grass-inner.md read whole; no edit.
 file construction/ITINERARY.md read; Git nib carried forward to the head this log sits on.
 file session-logs/date/20261009/20261009-210118_grass-queue-still-empty-stop-holds.kyri this record of the no-op lap and the stop that holds.
