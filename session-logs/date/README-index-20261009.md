@@ -5,9 +5,9 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.220527` | [Petrichor gate hold, no build](20261009/20261009-220527_petrichor-gate-hold-no-build.kyri) | Consent gate unchanged; no fetch lead, no claim, no build. |
-
 | 20261009.220319 | [Patchouli parity net, queue empty](20261009/20261009-220319_patchouli-parity-net-queue-empty.kyri) | Parity bans clean in mantra/ and tally/; no build. |
 | `20261009.220354` | [Diffuser fallow lane, no unblocked fruit](20261009/20261009-220354_diffuser-fallow-lane-no-unblocked-fruit.kyri) | Hold: stencil, energy, and size-mix lines closed or blocked; no build. |
+| `20261009.220644` | [Incense hold, earth row, no build](20261009/20261009-220644_incense-hold-earth-row-stash-scan-no-build.kyri) | Clean round-open; seven stranded logs named. |
 | `20261009.215844` | [Pheromone hold, lane empty, claim board read](20261009/20261009-215844_pheromone-hold-lane-empty-claim-board-read.kyri) | No ruled fruit; board holds one live claim; no build. |
 | 20261009.220146 | [Petrichor gate hold, two peer holds](20261009/20261009-220146_petrichor-gate-hold-two-peer-holds-no-build.kyri) | Fast-forwarded past two peer holds; gate unchanged; no build. |
 | 20261009.215925 | [Petrichor consent-gate hold](20261009/20261009-215925_petrichor-consent-gate-hold-no-build.kyri) | Gate unchanged; no fetch lead, no claim, no build. |
