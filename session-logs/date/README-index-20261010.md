@@ -5,7 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.123428` | [Grass, queue empty, no build](20261010/20261010-123428_grass-queue-empty-no-build.kyri) | Queue empty; nothing below B; no build. |
-| `20261010.123622` | [Patchouli, weave labels already clean, no build](20261010/20261010-123622_patchouli-weave-labels-already-clean-no-build.kyri) | Queue empty; weave labels clean; no build. |
+| `20261010.123622` | [Patchouli, weave labels already clean, no build](20261010/20261010-123622_patchouli-weave-labels-already-clean-no-build.kyri) | Queue empty; no build. |
 | `20261010.123358` | [Petrichor, SOURCE.md B, no build](20261010/20261010-123358_petrichor-source-md-b-no-build.kyri) | Composite 83 B; no edit; no build. |
 | `20261010.123104` | [Patchouli, queue empty net again, no build](20261010/20261010-123104_patchouli-queue-empty-net-again-no-build.kyri) | Family queue empty again; %807 owed a ruling; no build. |
 | `20261010.123039` | [Pheromone, index red read, held](20261010/20261010-123039_pheromone-index-red-held-no-build.kyri) | Shelf red named; no build. |
