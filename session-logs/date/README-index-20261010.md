@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.142607` | [Grass, tenure head graded B+, no edit](20261010/20261010-142607_grass-tenure-grade-b-plus-no-edit.kyri) | Composite 88 at service 90; reach 60 reported, not gated; no edit, no frame. |
 | `20261010.142249` | [Grass, sample of 25 docs-geode pages, all B or better](20261010/20261010-142249_grass-sample-25-pages-all-b.kyri) | 25 sampled pages graded; lowest 82; no edit, no frame. |
 | `20261010.142259` | [Petrichor, gate holds, no build](20261010/20261010-142259_petrichor-no-build.kyri) | Fast-forwarded; docs witnesses cut off, not claimed GREEN; no build. |
 | `20261010.142247` | [Patchouli, queue empty, fresh net, stop](20261010/20261010-142247_patchouli-queue-empty-fresh-net-stop.kyri) | Version nets re-run; queue empty; no build; check-in named. |
