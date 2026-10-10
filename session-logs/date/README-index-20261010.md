@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.100540` | [Grass, foundations door sweep, molts owed](20261010/20261010-100540_grass-foundations-door-sweep-three-c-plus-molts-owed.kyri) | Door sweep of 90 pages; one fossil closed by its mutant; three C+ molts owed. |
 | `20261010.100220` | [Patchouli, queue held at counted versions](20261010/20261010-100220_patchouli-queue-held-counted-versions.kyri) | Counted headers left for Keaton's word; no code moved; log and row only. |
 | `20261010.100016` | [Diffuser, hold chain](20261010/20261010-100016_diffuser-hold-the-deterministic-chain.kyri) | No sweep; chain stops; ruling on next door. |
 | `20261010.095648` | [Petrichor, hold, links clean](20261010/20261010-095648_petrichor-hold-no-door-links-clean.kyri) | Dangling docs-geode links zero; no edit; stray pkill noted. |
