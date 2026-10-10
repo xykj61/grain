@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.183828` | [Pheromone, fourth hold, no build](20261010/20261010-183828_pheromone-lane-fourth-hold-no-build.kyri) | Lane held on the card; claim board names no Pheromone path; no build. |
 | `20261010.183039` | [Pheromone, third hold, no build](20261010/20261010-183039_pheromone-lane-third-hold-no-build.kyri) | Lane held on the card; claims and BOOKED reds read, nothing agent-doable; no build. |
 | `20261010.182904` | [Patchouli, kumara sign red held](20261010/20261010-182904_patchouli-kumara-sign-red-held-witness-green.kyri) | Witness GREEN; legacy sign red OPEN on seam ruling; no code moved. |
 | `20261010.182957` | [Copal, dep-crawl roster GREEN](20261010/20261010-182957_copal-dep-crawl-roster-green.kyri) | dep_crawl rostered; refusal side held by its sibling; planted red bites. |
