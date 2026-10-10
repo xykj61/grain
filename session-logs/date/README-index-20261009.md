@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.225341` | [Bakery queue hold, no build](20261009/20261009-225341_bakery-queue-hold-no-build.kyri) | Queue held; plant adoption measured; ruling waits. |
 | `20261009.225427` | [Queue empty, 23rd](20261009/20261009-225427_queue-empty-twenty-third.kyri) | Grep re-run; no build; check-in on repeats. |
 | `20261009.225202` | [Copal rosters sunn9 witness](20261009/20261009-225202_copal-sunn9-roster.kyri) | One witness rostered; GREEN and RED both sides. |
 | `20261009.225324` | [Diffuser hold, second recheck](20261009/20261009-225324_diffuser-hold-second-recheck.kyri) | Both gates still closed; no build; log only. |
