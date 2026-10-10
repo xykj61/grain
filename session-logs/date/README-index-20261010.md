@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.065218` | [Pheromone, hold, no claim](20261010/20261010-065218_pheromone-hold-no-open-fruit-no-claim.kyri) | Lane empty upstream; no claim, no build. |
+| `20261010.065231` | [Bakery, send record for the hold lap](20261010/20261010-065231_bakery-send-record-nib-follow-up.kyri) | Nib carried to its parent after three rebases; no build. |
 | `20261010.065047` | [Patchouli, queue empty, ninth](20261010/20261010-065047_patchouli-queue-empty-ninth-brace-sweep.kyri) | Brace-counted long-function sweep; queue empty, no code moved. |
 | `20261010.064911` | [Grass, six docs compressors graded, none below B](20261010/20261010-064911_grass-docs-compressors-graded-none-below-b.kyri) | Six docs/ pages read B or better at the field shadow; no edit. |
 | `20261010.064829` | [Petrichor, lint reads the 20261006 gap, no build](20261010/20261010-064829_petrichor-lint-20261006-gap-no-build.kyri) | Lint clean in lane; one held-gap link. |
