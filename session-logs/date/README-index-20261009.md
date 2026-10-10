@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.205323` | [Diffuser thirteenth hold, stopped for Keaton](20261009/20261009-205323_diffuser-hold-thirteen-stop.kyri) | Live-set trace still absent; no build; the repeat stops here. |
+| `20261009.205238` | [Petrichor dead shelf named to Keaton](20261009/20261009-205238_petrichor-dead-shelf-named-to-keaton.kyri) | 20261006 shelf absent from all git history; no build; check-in asked. |
 | `20261009.205136` | [Incense receipt witness green](20261009/20261009-205136_incense-receipt-witness-green-check-in.kyri) | Witness green on metal; receipt contract held for Keaton. |
 | `20261009.205041` | [Grass inner prompt regraded, no lift](20261009/20261009-205041_grass-inner-regrade-no-lift.kyri) | Repeat Field grade, no lift; no build. |
 | `20261009.204932` | [Petrichor hold, no build, second](20261009/20261009-204932_petrichor-hold-no-build-2.kyri) | Gate unchanged; no build. |
