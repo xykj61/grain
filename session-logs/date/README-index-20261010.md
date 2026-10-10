@@ -4,6 +4,8 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+
+| 20261010.013711 | [lane empty, claim board read](20261010/20261010-013711_pheromone-lane-empty-claim-board-read.kyri) | Pheromone: lane empty, no build; check in (Claude) for the ruling |
 | `20261010.013545` | [Incense hold, round-open clean](20261010/20261010-013545_incense-hold-no-build-round-open-clean.kyri) | Round-open clean at 9875befbf6; gated items wait on a word; no build. |
 | 20261010.013522 | [queue empty, board read](20261010/20261010-013522_patchouli-queue-empty-claim-board-check.kyri) | Patchouli: queue empty; no build, check-in named |
 | 20261010.013314 | [hold, ruling awaited](20261010/20261010-013314_bakery-receipt-key-ruling-hold.kyri) | Bakery: cache census clean, receipt key still on HEAD; contract change waits on Keaton; no build |
