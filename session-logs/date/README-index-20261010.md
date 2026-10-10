@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.065047` | [Patchouli, queue empty, ninth](20261010/20261010-065047_patchouli-queue-empty-ninth-brace-sweep.kyri) | Brace-counted long-function sweep; queue empty, no code moved. |
 | `20261010.064911` | [Grass, six docs compressors graded, none below B](20261010/20261010-064911_grass-docs-compressors-graded-none-below-b.kyri) | Six docs/ pages read B or better at the field shadow; no edit. |
 | `20261010.064829` | [Petrichor, lint reads the 20261006 gap, no build](20261010/20261010-064829_petrichor-lint-20261006-gap-no-build.kyri) | Lint clean in lane; one held-gap link. |
 | `20261010.064542` | [Grass, five foundations sampled, all B or better](20261010/20261010-064542_grass-foundations-sampled-all-b.kyri) | Five foundations graded B or better; no molt owed; register question for Keaton. |
