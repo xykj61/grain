@@ -36,6 +36,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.093559` | [Bakery, hold, fast-forward, ruling unchanged](20261010/20261010-093559_bakery-hold-ruling-unchanged-no-build.kyri) | Fast-forward to 116397ece3; receipt-key ruling still unwritten; no build |
 | `20261010.093052` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-093052_patchouli-queue-empty-twenty-fifth.kyri) | Lane queue empty; two OPEN rows wait on Keaton; no build. |
 | `20261010.092911` | [Petrichor, hold, no open door](20261010/20261010-092911_petrichor-hold-no-open-door.kyri) | Gate unmoved; claim board holds only bakery; no build, log only. |
 | `20261010.092910` | [Grass, round nine, inner prompt graded B](20261010/20261010-092910_grass-round-nine-inner-prompt-graded-b.kyri) | Grade B 82; no edit. |
