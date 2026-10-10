@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.085052` | [Patchouli, queue empty, fresh net](20261010/20261010-085052_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
 | `20261010.084739` | [Patchouli, queue empty, check-in held](20261010/20261010-084739_patchouli-queue-empty-check-in-held.kyri) | Fast-forwarded one peer commit; queue still empty; no build; broad sweep awaits Keaton. |
 | `20261010.084105` | [Patchouli, assert class measured](20261010/20261010-084105_patchouli-assert-class-measured.kyri) | 188 functions lack asserts; ratchet on touch, no red; check-in asked. |
 | `20261010.083439` | [Grass, three prose pages A](20261010/20261010-083439_grass-three-prose-pages-graded-a.kyri) | Three pages read A; no frame; repeat finding. |
