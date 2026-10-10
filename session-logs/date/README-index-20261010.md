@@ -11,8 +11,9 @@
 | `20261010.072520` | [Bakery, receipt key measured](20261010/20261010-072520_bakery-receipt-key-measured.kyri) | HEAD keys the receipt; 190 of 200 log-only commits miss; build held for check-in. |
 | `20261010.072550` | [Pheromone, lane empty a third way](20261010/20261010-072550_pheromone-lane-empty-third-read.kyri) | Fast-forward read; no language-lane path touched; no build. |
 | `20261010.072706` | [Petrichor, hold at the consent rail, no build](20261010/20261010-072706_petrichor-hold-consent-rail-no-build.kyri) | Held; no claim, no build, no page touched. |
-| `20261010.072110` | [Incense, round nine decline](20261010/20261010-072110_incense-round-nine-decline.kyri) | Round-open clean, no upstream motion; no build behind the human word |
 | `20261010.072437` | [Petrichor, links clean, no build](20261010/20261010-072437_petrichor-links-clean-no-build.kyri) | 325 links, 0 broken; no page edited. |
+| `20261010.072243` | [Grass, four pages graded, no frame](20261010/20261010-072243_grass-four-pages-graded-no-frame.kyri) | Four pages at A or above; truth counted only; no edit. |
+| `20261010.072110` | [Incense, round nine decline](20261010/20261010-072110_incense-round-nine-decline.kyri) | Round-open clean, no upstream motion; no build behind the human word |
 | `20261010.072010` | [Petrichor, hold at the consent rail, no build](20261010/20261010-072010_petrichor-hold-consent-rail-no-build.kyri) | Held; no claim, no build, no page touched. |
 | `20261010.071840` | [Bakery claims the shared cache crux](20261010/20261010-071840_bakery-shared-cache-claim.kyri) | Claim pushed as cedc8c3524; build left open for a check-in. |
 | `20261010.071849` | [Pheromone, lane empty again](20261010/20261010-071849_pheromone-lane-empty-second-read.kyri) | Upstream read; no lane path touched; no build. |
