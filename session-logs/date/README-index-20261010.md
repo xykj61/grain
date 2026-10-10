@@ -8,6 +8,7 @@
 | 20261010.002658 | [hold](20261010/20261010-002658_petrichor-hold-consent-gate-third-read.kyri) | Petrichor hold: consent gate shut, no open fruit; no build |
 | 20261010.002708 | [hold](20261010/20261010-002708_diffuser-blockers-hold-msr-absent.kyri) | Diffuser hold: msr, perf and macOS blockers re-read absent; next fruit waits on Keaton; no build |
 | 20261010.002657 | [log](20261010/20261010-002657_patchouli-queue-empty-fresh-net-again.kyri) | Patchouli queue empty again, fresh elder-header net, no build; log-only |
+| 20261010.002615 | [log](20261010/20261010-002615_copal-instrument-suite-still-held-red.kyri) | Copal fruit still held: instrument_suite roster blocked by OPEN fascia red, re-read on fresh pull; no build |
 | 20261010.002505 | [log](20261010/20261010-002505_petrichor-hold-consent-gate-second-read.kyri) | Petrichor hold: consent gate still shut after fresh pull; no build |
 | 20261010.002350 | [log](20261010/20261010-002350_grass-front-door-grade-no-lift.kyri) | Grass front doors graded, no lift needed; docs/README scored A+ 98 |
 | 20261010.002330 | [hold](20261010/20261010-002330_diffuser-fire-held-no-msr-route.kyri) | Diffuser fire held: next fruit waits on msr route or vendor event; no build |
