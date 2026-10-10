@@ -11,6 +11,7 @@
 | `20261010.142259` | [Petrichor, gate holds, no build](20261010/20261010-142259_petrichor-no-build.kyri) | Fast-forwarded; docs witnesses cut off, not claimed GREEN; no build. |
 | `20261010.142247` | [Patchouli, queue empty, fresh net, stop](20261010/20261010-142247_patchouli-queue-empty-fresh-net-stop.kyri) | Version nets re-run; queue empty; no build; check-in named. |
 | `20261010.142346` | [Copal, pin-history tidy roster landed](20261010/20261010-142346_copal-pin-history-tidy-roster-landed.kyri) | Guard row landed, witness GREEN and red leg proven; instrument suite held on OPEN %838. |
+| `20261010.142835` | [Pheromone, queue held, no build](20261010/20261010-142835_pheromone-queue-held-no-build.kyri) | Gate holds; ff to 0311051a46; no lane file. |
 | `20261010.142034` | [Grass, queue empty, no build](20261010/20261010-142034_grass-queue-empty-no-build.kyri) | Audit queue empty; no surface to grade; no build. |
 | `20261010.141842` | [Pheromone, queue held, no build](20261010/20261010-141842_pheromone-queue-held-fast-forward-no-build.kyri) | Gate holds on Incense's Glow ruling; fast-forward only; no build. |
 | `20261010.142501` | [Bakery, rulings held, ff, no build](20261010/20261010-142501_bakery-rulings-held-ff-no-build.kyri) | Fast-forward; both rulings held; no build. |
