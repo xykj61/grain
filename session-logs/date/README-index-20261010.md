@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.032257` | [queue empty, proof held](20261010/20261010-032257_patchouli-queue-empty-receipt-proof-held.kyri) | Patchouli: receipt proof GREEN, no build. |
 | `20261010.032240` | [fold family, 24 seeds at 14 sets](20261010/20261010-032240_diffuser-fold14-24-seeds.kyri) | Diffuser: no seed reaches the floor at 14 sets, paper 032240 |
+| `20261010.032637` | [held, no build again](20261010/20261010-032637_incense-held-no-build-2.kyri) | Incense: round-open clean, copal's claim live, cold run held, no build. |
 | `20261010.032235` | [held, no build](20261010/20261010-032235_incense-held-no-build.kyri) | Incense: clean at xy/main, no lane item, law lane waits. |
 | 20261010.032157 | [receipt-key hold, no build](20261010/20261010-032157_bakery-receipt-key-hold-no-build.kyri) | Bakery: crux waits on Keaton's receipt-key ruling; queue gated; card nib refreshed; no build |
 | `20261010.031742` | [Petrichor shelf repair](20261010/20261010-031742_petrichor-index-shelf-repair.kyri) | Open-shelf rows trimmed and ordered; claim closed; witness GREEN. |
