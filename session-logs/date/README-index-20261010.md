@@ -35,6 +35,7 @@
 |---|---|---|
 | `20261010.091818` | [Bakery, ruling question](20261010/20261010-091818_bakery-crux-ruling-question.kyri) | Receipt-key question written for Keaton; no build, no pass. |
 | `20261010.092005` | [Grass, round seven, two wiki pages](20261010/20261010-092005_grass-round-seven-two-wiki-pages-graded.kyri) | docs-geode etc A+/98 and wiki A/95; no frame; queue empty. |
+| `20261010.091914` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-091914_patchouli-queue-empty-twenty-fifth.kyri) | Queue empty again; triad gaps measured, no build. |
 | `20261010.091828` | [Grass, round six, front doors held](20261010/20261010-091828_grass-round-six-audit-held.kyri) | Three front doors A or better; no edit; shadow ungated. |
 
 | `20261010.091650` | [Copal fruit held](20261010/20261010-091650_copal-unrostered-choir-held-red.kyri) | Three unrostered witnesses all RED; none rostered; REDS 837 booked. |
