@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.063850` | [Incense round-open, no build](20261010/20261010-063850_incense-round-open-decline-no-build.kyri) | Round-open clean; no build; cold run held. |
 | `20261010.063942` | [Patchouli, queue empty, sixth](20261010/20261010-063942_patchouli-queue-empty-sixth-no-build.kyri) | Fresh class net over mantra/ and tally/; no candidate; no build. |
 | `20261010.063544` | [Patchouli, queue empty, fifth](20261010/20261010-063544_patchouli-queue-empty-fifth-record-only.kyri) | Zero-assert class clean; queue empty; no code. |
 | `20261010.063438` | [Petrichor, repeat no build](20261010/20261010-063438_petrichor-no-build-repeat.kyri) | Same reading, consent gate shut; no build. |
