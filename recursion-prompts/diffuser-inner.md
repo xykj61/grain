@@ -1,3 +1,4 @@
+**Revised:** `20261010.032753` -- the fold family's fourteen-set miss is run under a second seed generator, SplitMix64 beside the Mersenne draws: no seed of 24 reaches the floor and the falsifier does not fire, so the family-property branch stands on 48 seeds; [the paper](../active-designing/date/20261010/20261010-032753_the-fold-family-misses-fourteen-sets-under-a-second-generator.md) names a set-count sweep at 13, 14 and 15 sets as its next door
 # Diffuser, inner
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, two registers below
