@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.043405 | [Bakery, content-keyed compile claimed](20261010/20261010-043405_bakery-content-keyed-compile-claim.kyri) | Claim pushed to xy; no build, no cold run. |
+| 20261010.043402 | [Grass, two fronts graded, no frame](20261010/20261010-043402_grass-grade-two-fronts-no-frame.kyri) | Grass: KYRI A/96, MAP B+/89; no edit; no frame. |
 | 20261010.043230 | [Incense, fourth decline, one fast-forward](20261010/20261010-043230_incense-declines-fourth-no-build.kyri) | Fast-forward of patchouli's count log; no build. |
 | 20261010.043326 | [Patchouli, zero-assert class exempt](20261010/20261010-043326_patchouli-zero-assert-class-exempt-queue-empty.kyri) | Patchouli: two zero-assert tally modules, both exempt by header; queue empty; no build. |
 | 20261010.043154 | [Patchouli, loop count corrected](20261010/20261010-043154_patchouli-loop-count-corrected-check-in.kyri) | Eight while-true sites, not five; no build. |
