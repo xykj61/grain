@@ -10,6 +10,7 @@
 | `20261009.231013` | [Copal roster commence m8](20261009/20261009-231013_copal-commence-m8-roster.kyri) | Commence m8 saga witness rostered at tier lap; runner GREEN. |
 | `20261009.231416` | [Grass sample A+](20261009/20261009-231416_grass-sample-a-plus-queue-empty.kyri) | Newest foundation graded A+; queue empty; no edit. |
 | `20261009.231056` | [Grass sample B+](20261009/20261009-231056_grass-sample-b-plus-queue-empty.kyri) | One foundation graded B+; queue empty; no edit. |
+| `20261009.231633` | [Pointer chase reads high](20261009/20261009-231633_diffuser-pointer-chase-reads-high.kyri) | Random chase at 2.6 misses per access; falsifier fired upward; huge-page door named. |
 | `20261009.231139` | [Diffuser calibration held](20261009/20261009-231139_diffuser-calibration-witness-held-no-fruit.kyri) | Witness GREEN; stencil claim refused; no new fruit. |
 | `20261009.231252` | [Petrichor hold, fourth reading](20261009/20261009-231252_petrichor-hold-fourth-reading.kyri) | Queue hold; consent rail still closed; no page opened; no build. |
 | `20261009.231032` | [Patchouli queue empty, hidden-shelf net](20261009/20261009-231032_patchouli-queue-empty-hidden-shelf-net.kyri) | Queue empty; mantra/src hidden shelf netted clean; no code moved. |

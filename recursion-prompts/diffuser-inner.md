@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.231436` -- a random pointer chase reads the generic counter at 2.6 misses per access, above the falsifier's band, so the generic event is neither a demand count nor a fill count on this guest; the huge-page run is the next door
 **Revised:** `20261009.224515` -- the calibration witness is built: the generic counter's three readings are held on metal, the instrument measures, and the stencil claim stays refused while the falsifier reads fired
 **Revised:** `20261009.222800` -- the hardware counter opens for an unprivileged self-count, but the generic cache-miss event reads about 8 percent of the expected line fills on a 64 MB sequential sweep, so the falsifier waits on calibration, and no stencil run is claimed
 **Revised:** `20261009.215630` -- the radius-two stencil the row-band paper named is run: row-major's floor moves to five row bands (80 lines at N=256, 160 at N=512), and the falsifier does not fire
@@ -72,6 +73,8 @@ across 227 largely negative, honestly-fallow sentences) -- the setting line was 
 **Claude.** The sailing loop is [`../tools/f/fleet-loop.sh`](../tools/f/fleet-loop.sh). The roster row reads claude. The fleet default is `claude-opus-5`; this tree resolves `claude-sonnet-5`.
 
 ## fruit
+
+**The generic counter reads high on a random chase, so it is neither a demand count nor a fill count.** [The paper](../active-designing/date/20261009/20261009-231436_the-generic-counter-reads-high-on-a-random-chase.md) runs a dependent pointer chase over the same 64 MB buffer, one access per line, falsifier named first: the 500 to 2000 permille band the calibration note set. Three runs read 2596 to 2649 permille, so the falsifier fired upward. The same counter reads 65 to 105 permille on the sequential sweep, a factor of 25 to 40 between two patterns, so no single correction converts it into fills. The likeliest cause is page-walk references counted as misses, since the buffer spans 16,384 pages; the paper names a huge-page rerun that would test it, and does not claim it. The probe is a scratch program in `session-output/`, untracked, and its core loop is printed in the paper. No stencil run is claimed. Next: the huge-page run with its page status printed, or Keaton's word on a raw vendor event.
 
 **The calibration witness holds the generic counter on metal, and the stencil claim stays closed.** Landed `20261009.224515` as [the witness](../tools/c/cache_miss_calibrate_witness.rish) over [the calibration scan](../tools/fixtures/c/cache_miss_calibrate_scan.sh). The scan reads 90, 88 and 68 permille on the witness's run and 48, 47 and 53 on the scan's own, so the reading moves between runs but holds below the 500 band every time. The witness refuses the stencil claim on a fired falsifier and stays green, because a counter that reads low is the finding and a finding is not a red. A raw vendor event is still Keaton's word to name, and no stencil run is claimed here.
 
