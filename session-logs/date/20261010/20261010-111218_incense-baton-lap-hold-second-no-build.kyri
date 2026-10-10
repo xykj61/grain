@@ -25,5 +25,5 @@ file session-logs/date/20261010/20261010-111218_incense-baton-lap-hold-second-no
 file session-logs/date/README-index-20261010.md one row for this log, under the delimiter, shelf-qualified link
 file construction/ITINERARY.md Git nib carried forward to HEAD read before this follow-up commit (rule 5)
 scope incense lane read only; fast-forward only; no build; no claim; no card line changed beyond the nib carry
-status GREEN as a read: round-open clean, claim board read, no open lane item; no witness run, since no code moved
+status GREEN as a read: round-open clean, claim board read, no open lane item; no code moved. The index-row-bound witness was run and reads RED on the open shelf, but the red predates this lap: 151 peer rows stand above 192 bytes at parent 9868effeec, and this lap's own row is 181 bytes. Booked to the commit body; no REDS row written.
 recommend check in (either) -- the lane waits on a human word at %642 or %519, or a custody gate; there is no mechanical lap for incense until one arrives
