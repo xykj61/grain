@@ -9955,6 +9955,13 @@ path tools/gen/chapter/commence_m6_see_witness.rish
 tier lap
 seated 20261009.170654
 
+# commence_m8_saga -- the Commence M8 saga witness, rostered on the claim copal-commence-m8-roster.
+# It proves the saga home, its eight beats and seats 97-102, and the shelf end; GREEN on the live tree.
+guard commence_m8_saga
+path tools/gen/chapter/commence_m8_saga_witness.rish
+tier lap
+seated 20261009.231000
+
 # surface_season_p53 -- the Surface p53 check-in witness, unrostered until the copal-surface-p53-roster claim.
 # It reads the counsel seat for the live-five lean and refuses an invented pad; GREEN on the live tree.
 guard surface_season_p53
