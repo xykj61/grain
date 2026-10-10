@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.223548` | [Pheromone held again, no ruled fruit](20261009/20261009-223548_pheromone-lane-held-no-ruled-fruit-no-build.kyri) | Lane held on the interactive ruling; no REDS row claimed; no build. |
 | `20261009.223630` | [Bakery hold, receipt key reconfirmed](20261009/20261009-223630_bakery-hold-receipt-key-reconfirmed.kyri) | Receipt key still ruled by Keaton; claim board clear; no build. |
 | `20261009.223500` | [Petrichor hold, gate holds](20261009/20261009-223500_petrichor-hold-gate-holds-ff-clean.kyri) | Upstream ff clean; gate holds; no build. |
 | `20261009.223456` | [Patchouli queue empty, twenty-second](20261009/20261009-223456_patchouli-queue-empty-twentysecond.kyri) | Fresh net, elder strings only; no build. |
