@@ -9941,6 +9941,13 @@ path tools/gen/chapter/oven_season_o1_witness.rish
 tier lap
 seated 20261009.165840
 
+# commence_m5_recut -- the Commence M5 recut witness (e96), rostered on the claim copal-commence-m5-roster.
+# It reads the recut seam of the commence chapter; GREEN on the live tree at seating.
+guard commence_m5_recut
+path tools/gen/chapter/commence_m5_recut_witness.rish
+tier lap
+seated 20261009.233000
+
 # commence_m6_see -- the Commence M6 eyes witness, rostered on the claim copal-commence-m6-roster.
 # It proves the finishing edge is seen on the ch7 seats, with the scan control proven first; GREEN on the live tree.
 guard commence_m6_see
