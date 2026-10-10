@@ -10,6 +10,7 @@
 | 20261010.022803 | [inner page B+ again, no frame](20261010/20261010-022803_grass-inner-regrade-b-plus-no-frame.kyri) | Grass: inner page regraded B+ at field (composite 89), repeat, no frame |
 | 20261010.022742 | [gate holds, idle](20261010/20261010-022742_petrichor-gate-holds-idle-no-build.kyri) | Petrichor: Consent Rail gate holds, zero claims, upstream only grass, no build |
 | 20261010.022758 | [census re-proved](20261010/20261010-022758_bakery-shared-cache-census-reproved-no-build.kyri) | Bakery: cache census re-run, path-independent, queue gated, no build |
+| 20261010.022803 | [held, no build](20261010/20261010-022803_incense-round-open-held-no-build.kyri) | Incense: upstream one grass log, board empty, order held, no build |
 | 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
 | 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
