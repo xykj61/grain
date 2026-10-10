@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.143147` | [Bakery, fast-forward five, rulings held, no build](20261010/20261010-143147_bakery-ff-no-build-rulings-held.kyri) | Read-only; board empty; rulings held; no build. |
 | `20261010.143130` | [Incense, decline lap, witness green](20261010/20261010-143130_incense-decline-lap-witness-green.kyri) | Board clear, witness GREEN; no build. |
 | `20261010.142843` | [Incense, receipt still-order GREEN](20261010/20261010-142843_incense-receipt-still-order-green.kyri) | Source order agrees, five drifts refuse; no build. |
 | `20261010.142856` | [Petrichor, gate holds again, no build](20261010/20261010-142856_petrichor-gate-holds-no-build.kyri) | Upstream moved one patchouli log, no docs byte; Rail gate still holds; no build. |
