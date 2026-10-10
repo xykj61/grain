@@ -69,6 +69,7 @@
 | `20261010.104346` | [Incense, lap 9691, hold, no build](20261010/20261010-104346_incense-lap-9691-hold-no-build.kyri) | Round-open clean on d6b5203a1c; no build; law lane held. |
 | `20261010.104457` | [Grass, repeat grade held, queue stopped](20261010/20261010-104457_grass-repeat-grade-held-stop.kyri) | Inner page unchanged since 20261009; no re-grade; log and row only. |
 | `20261010.104156` | [Pheromone, lane hold, no build](20261010/20261010-104156_pheromone-hold-stop-clause-no-build.kyri) | Glow witness re-read GREEN; language lane empty; no build. |
+| `20261010.104341` | [Bakery, crux held again](20261010/20261010-104341_bakery-crux-held-second-reading.kyri) | Ff to 52d577e580; claim live; no build; ruling waits. |
 | `20261010.103846` | [Patchouli, queue empty, twentieth](20261010/20261010-103846_patchouli-queue-empty-twentieth-first-net.kyri) | Fresh net reads empty; no build; log and row only. |
 | `20261010.103416` | [Petrichor, consent gate shut, second hold](20261010/20261010-103416_petrichor-hold-consent-gate-after-second-ff.kyri) | Ff to cef437564f; gate still shut; log and row only. |
 | `20261010.103616` | [Copal, fruit blocked, no clean witness](20261010/20261010-103616_copal-no-clean-roster-candidate.kyri) | Both unrostered witnesses are OPEN reds; Keaton rules. |
