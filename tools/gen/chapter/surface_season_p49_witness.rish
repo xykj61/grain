@@ -12,6 +12,12 @@ say "surface-p49: Lens TAME -- Surface Chapter p49."
 let counsel = run ["test" "-f" "counsel/date/20260729/20260729-134827_surface-season-p49-brushframe-wayland-feed.md"]
 assert counsel.ok else "surface-p49: p49 counsel missing"
 
+# The metal scan runs BEFORE the built-binary skip, so an unbuilt clone still reads the
+# source: a renamed feed symbol refuses here whether or not the seed binary exists (REDS %646).
+let named = run ["sh" "-c" "grep -q '@import(\"brush_parse.rye\")' brushstroke/wayland_seed.rye && grep -q 'fn lines_from_brush_src' brushstroke/wayland_seed.rye && grep -q 'run_brush_feed_witness' brushstroke/wayland_seed.rye && echo NAMED_OK"]
+assert named.ok else "surface-p49: feed symbols scan failed"
+assert named.out contains "NAMED_OK" else "surface-p49: feed symbols missing"
+
 let seed_bin = "brushstroke/bin/brushstroke-wayland-seed"
 
 # AN UNBUILT OPTIONAL ARTIFACT IS A FACT ABOUT THE CLONE, NEVER A DEFECT (REDS %646).
@@ -25,10 +31,6 @@ let have = run ["test" "-x" seed_bin]
 if (have.ok == false) then say "surface-p49: SKIP -- ${seed_bin} is not built here; the module header names its build line"
 if (have.ok == false) then say "GREEN: surface-p49 -- skipped honestly, the binary this witness drives is absent"
 if (have.ok == false) then exit 0
-
-let named = run ["sh" "-c" "grep -q '@import(\"brush_parse.rye\")' brushstroke/wayland_seed.rye && grep -q 'fn lines_from_brush_src' brushstroke/wayland_seed.rye && grep -q 'run_brush_feed_witness' brushstroke/wayland_seed.rye && echo NAMED_OK"]
-assert named.ok else "surface-p49: feed symbols scan failed"
-assert named.out contains "NAMED_OK" else "surface-p49: feed symbols missing"
 
 let brushtest = run ["sh" "-c" "${seed_bin} brushtest brushstroke/seed-frame.brush 2>&1"]
 assert brushtest.ok else "surface-p49: brushtest failed"

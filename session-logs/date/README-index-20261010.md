@@ -7,6 +7,7 @@
 |---|---|---|
 | `20261010.074227` | [Petrichor, hold, consent rail still gated, third read](20261010/20261010-074227_petrichor-hold-consent-rail-third-read.kyri) | Held; no claim, no page touched. |
 | `20261010.074521` | [Incense, fifty-eighth decline](20261010/20261010-074521_incense-declines-fifty-eighth-held.kyri) | Round-open clean; held on the human word; no build. |
+| `20261010.074726` | [Copal, surface p49 rostered](20261010/20261010-074726_copal-surface-p49-roster.kyri) | Metal scan above the skip; cadence roster row; both sides proven in a pen. |
 | `20261010.074042` | [Incense, fifty-seventh decline, consolidated](20261010/20261010-074042_incense-declines-fifty-seventh-consolidated.kyri) | Round-open clean; no build behind the human word; no agent-doable item. |
 | `20261010.074412` | [Patchouli, queue empty again](20261010/20261010-074412_patchouli-queue-empty-again-no-build.kyri) | Queue empty; no build. |
 | `20261010.073959` | [Patchouli, queue empty, no build](20261010/20261010-073959_patchouli-queue-empty-no-build.kyri) | Version-literal net clean; no header family; no build. |

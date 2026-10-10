@@ -10150,3 +10150,14 @@ guard surface_season_p57
 path tools/gen/chapter/surface_season_p57_witness.rish
 tier cadence
 seated 20261010.073758
+
+# surface_season_p49 -- the BrushFrame-to-Wayland feed, unrostered since it was written. Like p56 and p57 it
+# answers SKIP-GREEN where the built seed binary is absent (REDS %646): this clone carries no Wayland dev
+# libraries, so the honest reading here is the skip. Its metal scan now runs BEFORE that skip, so a renamed
+# feed symbol refuses on any clone, proven in a throwaway pen: an unmutated seed reaches the GREEN skip, and a
+# seed with `fn lines_from_brush_src` renamed refuses at `surface-p49: feed symbols scan failed`. Cadence tier:
+# the brushtest run is the slower part. Claim copal-roster-surface-p49.
+guard surface_season_p49
+path tools/gen/chapter/surface_season_p49_witness.rish
+tier cadence
+seated 20261010.074554
