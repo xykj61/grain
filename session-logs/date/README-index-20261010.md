@@ -31,6 +31,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.091047` | [Pheromone, hold, round twelve](20261010/20261010-091047_pheromone-hold-no-open-fruit-round-twelve.kyri) | Lane at no open fruit; three Glow witnesses GREEN; no rune. |
+| `20261010.091031` | [Bakery, crux held, ruling owed](20261010/20261010-091031_bakery-crux-held-ruling-owed.kyri) | Receipt key waits on Keaton; %836 owned by lanes; no build; check-in claude. |
 | `20261010.090838` | [Patchouli, queue empty, twenty-sixth](20261010/20261010-090838_patchouli-queue-empty-twenty-sixth-net.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
 | `20261010.090818` | [Incense, forty-seventh, held](20261010/20261010-090818_incense-decline-forty-seventh-law-held.kyri) | Round-open clean; no build; law waits on Keaton. |
 | `20261010.090601` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-090601_patchouli-queue-empty-twenty-fifth-net.kyri) | Queue empty; no build; check-in named. |
