@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.002107 | [log](20261010/20261010-002107_petrichor-docs-geode-link-census.kyri) | Petrichor link census over docs-geode: 379 links, 0 broken |
 | 20261010.002022 | [log](20261010/20261010-002022_diffuser-fire-row-fruit-waits-on-word.kyri) | Diffuser fire row; next fruit held at Keaton's word; no build |
 | 20261010.002110 | [log](20261010/20261010-002110_copal-instrument-suite-roster-held-red.kyri) | Copal fruit held: instrument_suite roster blocked by OPEN fascia red; claim closed |
 | 20261010.002107 | [log](20261010/20261010-002107_petrichor-docs-geode-link-census.kyri) | Petrichor link census over docs-geode: 379 links, 0 broken |
