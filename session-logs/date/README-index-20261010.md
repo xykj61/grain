@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.085605` | [Pheromone, hold, nib carried](20261010/20261010-085605_pheromone-hold-round-four-nib-carried.kyri) | Peers fast-forwarded; lane at stop clause; no rune. |
 | `20261010.085712` | [Incense, sixty-seventh, held](20261010/20261010-085712_incense-declines-sixty-seventh-law-held.kyri) | Round-open to xy 3e4f917247; no build; law waits on Keaton. |
 | `20261010.085525` | [Patchouli, queue empty, fresh net](20261010/20261010-085525_patchouli-queue-empty-fresh-net-again.kyri) | Fresh net finds only elder read-compat headers; no build; check-in named. |
 | `20261010.085154` | [Copal, p54 rostered](20261010/20261010-085154_copal-p54-roster-claim-and-row.kyri) | Green by skip; two reds booked, not rostered. |
