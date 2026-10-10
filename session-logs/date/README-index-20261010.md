@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.010230 | [grade](20261010/20261010-010230_grass-inner-page-graded-b-plus-no-frame.kyri) | Grass grade: inner prompt B+/89, no edit, no frame |
+| 20261010.010310 | [repeat hold](20261010/20261010-010310_diffuser-hold-repeat-doors-still-gated.kyri) | Diffuser repeat hold: every gated door still gated; no paper, no witness, no build |
 | 20261010.010023 | [decline again](20261010/20261010-010023_incense-round-open-decline-again.kyri) | Round-open fast-forward, board clear, lane held for a human word |
 | 20261010.005905 | [hold](20261010/20261010-005905_diffuser-hold-fruit-still-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on Keaton's word; no build |
 | 20261010.005834 | [hold](20261010/20261010-005834_petrichor-hold-no-fruit-msr-word-upstream-pulled.kyri) | Petrichor hold: no open fruit, consent gate still shut, one upstream hold pulled; no build. |
