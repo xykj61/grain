@@ -10,6 +10,7 @@
 | `20261010.122958` | [Grass inner re-graded, no build](20261010/20261010-122958_grass-inner-regrade-no-build.kyri) | Register 77, reach 90, truth 100; service judged; no build. |
 | `20261010.123037` | [Copal, chapter roster, both candidates red](20261010/20261010-123037_copal-chapter-roster-both-candidates-red.kyri) | Zero rostered; two candidates red on metal; no build. |
 
+| `20261010.123016` | [Incense hold, claim board clear, clock all in](20261010/20261010-123016_incense-hold-claim-board-clear-clock-in.kyri) | Round-open clean; claim board clear; no build; cold run held. |
 | `20261010.122646` | [Grass, inner graded B+, no build](20261010/20261010-122646_grass-inner-graded-b-plus-no-build.kyri) | Grade 89 B+; no frame; no build. |
 | `20261010.122400` | [Bakery, crux held on ruling, no build](20261010/20261010-122400_bakery-crux-ruling-held-no-build.kyri) | Claim clear; ff to 7b42bfc371; receipt key owed; no build. |
 | `20261010.122318` | [Pheromone, hold, green](20261010/20261010-122318_pheromone-hold-haiku-witnesses-green.kyri) | Lane empty; two witnesses GREEN; no build. |
