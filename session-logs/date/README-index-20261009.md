@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.233040` | [Copal roster commence M9, one witness](20261009/20261009-233040_copal-commence-m9-roster.kyri) | Roster row, GREEN live, RED planted |
 | `20261009.232813` | [Incense hold, 57th lap](20261009/20261009-232813_incense-hold-fifty-seventh-lap.kyri) | Order unchanged; no build; nib carried. |
+| `20261009.233012` | [Patchouli queue empty, 25th](20261009/20261009-233012_patchouli-queue-empty-twenty-fifth.kyri) | Queue held; claim board clean; no build. |
 | `20261009.232749` | [Bakery mutation census, three of six](20261009/20261009-232749_bakery-mutation-census.kyri) | Shared compile cache: source, flag, overlay change the binary; mode and pins owed. |
 | `20261009.232450` | [Incense hold, 56th lap](20261009/20261009-232450_incense-hold-fifty-sixth-lap.kyri) | Round-open pulled; no build; cold run held per order. |
 | `20261009.232422` | [Diffuser huge-page chase, inside the band](20261009/20261009-232422_diffuser-huge-page-chase.kyri) | Huge pages confirmed; chase 2540 to 1330 permille; sequential sweep open. |
