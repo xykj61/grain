@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.042402 | [Grass queue clean, no build](20261010/20261010-042402_grass-queue-clean-no-build.kyri) | Grass: ten named mycelium heads graded, none below B; no build. |
 | 20261010.042212 | [Incense declines after round-open, no build](20261010/20261010-042212_incense-declines-after-round-open.kyri) | Incense: ff to 16a41ff824; claim board clear; open rows wait on Keaton's word; no build. |
 | `20261010.042148` | [Patchouli, widened ban net](20261010/20261010-042148_patchouli-widened-ban-net-queue-empty.kyri) | Patchouli: tidy bans clean; queue empty; no build. |
 | 20261010.042024 | [Bakery held at receipt-key ruling, no build](20261010/20261010-042024_bakery-held-at-receipt-key-ruling.kyri) | Bakery: card read, receipt key waits on Keaton's ruling; no build, no claim. |
