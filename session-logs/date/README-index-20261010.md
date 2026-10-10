@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.013821 | [set-assoc floor](20261010/20261010-013821_diffuser-set-associative-floor-follows-capacity.kyri) | Diffuser: five-band floor holds at 80 lines |
 | 20261010.013908 | [receipt key held, no build](20261010/20261010-013908_bakery-receipt-key-held-no-build.kyri) | Bakery: census 819 miss again; receipt key still on HEAD; waits on Keaton |
 
 | `20261010.013824` | [Hold, declines repeat](20261010/20261010-013824_incense-hold-declines-repeat-no-build.kyri) | Incense: round-open clean at ede522a8f6; claim board clear; gated items wait; no build. |
