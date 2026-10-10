@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.040612 | [bakery held again, gated queue](20261010/20261010-040612_bakery-held-queue-again.kyri) | Bakery: three upstream commits pulled, claim board empty, queue still ruling-gated; no build. |
 | 20261010.040347 | [pheromone idle, ruling-gated](20261010/20261010-040347_pheromone-no-build-queue-ruling-gated.kyri) | Pheromone: queue ruling-gated, no build. |
 | `20261010.040310` | [Grass docs grade all B](20261010/20261010-040310_grass-docs-grade-all-b-no-build.kyri) | Grass: fourteen docs/ pages graded, lowest 88, none below B; no build. |
 | `20261010.040125` | [Grass cold run guard red](20261010/20261010-040125_grass-cold-run-guard-red.kyri) | Cold run guard_red, 43 reds; prose graded B+ or above; no build. |
