@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.115122` | [Petrichor, consent gate held, no build](20261010/20261010-115122_petrichor-consent-gate-held-no-build.kyri) | Gate shut; re-read; no build. |
 | `20261010.114502` | [Incense, round-open, hold](20261010/20261010-114502_incense-round-open-hold-no-build.kyri) | Clean round-open to 28785f5d7f; claim board empty; no build. |
 | `20261010.114551` | [Grass, inner page re-graded B+, nib carried](20261010/20261010-114551_grass-inner-regrade-b-plus-nib-carried.kyri) | Inner page B+ 89 re-read; no edit; card nib to ac51bcfd37. |
 | `20261010.114342` | [Grass, queue empty, no build](20261010/20261010-114342_grass-queue-empty-no-build.kyri) | Mycelium sample all B or better; tenure B+ 88 re-read; no edit. |
