@@ -8,6 +8,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.080613` | [Grass, four doors graded, no frame](20261010/20261010-080613_grass-doors-no-frame.kyri) | All four read B+ or better; no molt owed. |
 | `20261010.080600` | [Petrichor, hold, consent rail still gated](20261010/20261010-080600_petrichor-hold-consent-rail-still-gated.kyri) | Upstream read clean; no target; held, nothing built. |
 | `20261010.080257` | [Bakery, crux held, no build](20261010/20261010-080257_bakery-crux-held-no-build.kyri) | Claim live, receipt key held for ruling; %519 sweep too large for a lap; no edit. |
 | `20261010.080044` | [Patchouli, width net clean](20261010/20261010-080044_patchouli-width-net-clean.kyri) | usize net clean in mantra src and tally; no build; check-in named. |
