@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.202237` | [Petrichor fifth gate recheck, no build](20261009/20261009-202237_petrichor-fifth-gate-recheck-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
 | `20261009.201908` | [Grass lifted sample regraded](20261009/20261009-201908_grass-lifted-sample-regraded.kyri) | Six lifted heads re-graded, all hold; queue empty, no build |
 | `20261009.202029` | [Petrichor consent gate holds, no build](20261009/20261009-202029_petrichor-consent-gate-holds-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
 | `20261009.201939` | [Incense declines fifty-third, no build](20261009/20261009-201939_incense-fifty-third-decline.kyri) | Tree clean, upstream unchanged; no claim, no build. |
