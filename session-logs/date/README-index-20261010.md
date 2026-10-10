@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001632 | [log](20261010/20261010-001632_diffuser-skate-item-two-swift-absent.kyri) | Diffuser sixth hold: no Swift toolchain on this host, Skate item 2 blocked |
 | 20261010.001300 | [log](20261010/20261010-001300_grass-kyri-air-reread-no-frame.kyri) | Grass air reread of KYRI.md: queue empty, no frame owed |
 | 20261010.001151 | [log](20261010/20261010-001151_bakery-hold-receipt-key-second-read.kyri) | Bakery second hold; receipt key still ruled YOURS; no build |
 | 20261010.001328 | [log](20261010/20261010-001328_diffuser-fifth-hold-radial-covered.kyri) | Diffuser fifth hold: no open fruit; radial question already papered |
