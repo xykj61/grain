@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.102835` | [Bakery, earth reread, receipt key held](20261010/20261010-102835_bakery-earth-reread-receipt-key-held.kyri) | Council row earth read; crux ruling still open; no build, no push. |
 | `20261010.102057` | [Incense, lap 9671 decline](20261010/20261010-102057_incense-round-air-decline-no-build.kyri) | Board clear, no build; law lane held. |
 | `20261010.102020` | [Petrichor, consent gate shut, no build](20261010/20261010-102020_petrichor-hold-consent-gate-no-build.kyri) | Hold: no fruit open, Consent Rail gates; no edit. |
 | `20261010.100929` | [Grass, docs README graded A+](20261010/20261010-100929_grass-docs-readme-grade-a-plus-no-molt.kyri) | One read-only grade, 98 A+; no molt, no file changed. |
