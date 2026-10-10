@@ -7,6 +7,7 @@
 | `20261009.232749` | [Bakery mutation census, three of six](20261009/20261009-232749_bakery-mutation-census.kyri) | Shared compile cache: source, flag, overlay change the binary; mode and pins owed. |
 | `20261009.232450` | [Incense hold, 56th lap](20261009/20261009-232450_incense-hold-fifty-sixth-lap.kyri) | Round-open pulled; no build; cold run held per order. |
 | `20261009.232422` | [Diffuser huge-page chase, inside the band](20261009/20261009-232422_diffuser-huge-page-chase.kyri) | Huge pages confirmed; chase 2540 to 1330 permille; sequential sweep open. |
+| `20261009.232748` | [Patchouli queue empty, 24th](20261009/20261009-232748_patchouli-queue-empty-twenty-fourth.kyri) | Grep nets not rerun; disk reads 9.6G free, noted; %807, %765 outside lane. |
 | `20261009.232335` | [Petrichor hold, seventh reading](20261009/20261009-232335_petrichor-hold-seventh-reading-no-build.kyri) | Queue held on the consent gate; no page; no build. |
 | `20261009.232457` | [Patchouli queue empty, 23rd](20261009/20261009-232457_patchouli-queue-empty-twenty-third.kyri) | Grep nets clean again; %807, %765 outside lane. |
 | `20261009.232433` | [Grass inner prompt regraded, queue held](20261009/20261009-232433_grass-inner-prompt-regraded-queue-held.kyri) | Inner prompt reads B+ 89 again; queue held; no edit. |
