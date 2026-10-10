@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.200735 | [Petrichor idle ninth, no build](20261009/20261009-200735_petrichor-idle-ninth-no-build.kyri) | docs-geode gate holds; no fruit, no claim, no build |
 | `20261009.200513` | [incense declines forty-ninth](20261009/20261009-200513_incense-declines-forty-ninth.kyri) | ff to a94e8c0323; no claim, no build; law lane waits on Keaton. |
 | `20261009.200602` | [Diffuser holds, blockers re-read](20261009/20261009-200602_diffuser-holds-blockers-reread.kyri) | Energy counter and live-set trace still absent; no build. |
 | `20261009.200113` | [Diffuser holds, energy re-read, no build](20261009/20261009-200113_diffuser-holds-energy-reread-no-build.kyri) | Power sources re-read at the new HEAD; still absent; no build. |
