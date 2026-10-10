@@ -364,6 +364,18 @@ original walk over the whole lane; treat it as unverified. Re-run any census of 
 that reads each function's real body before quoting it. The queue still reads empty: no touched
 function, no booked red, and both named rows still want Keaton's word or another ship's lap.
 
+**The invariant label class, measured `20261010.111026`.** The tidy bans and the 70-line class
+were swept; the TAME core also asks that each `assert(` carry a `// invariant:` line directly above
+it. A line-level walk over the 79 tracked `mantra/` and `tally/` Rye files, reading only the line
+immediately above each non-comment `assert(`, counts **1,105 asserts with no `invariant:` label on
+that line**. The worst are `mantra/src/weave.rye` (69 of 72 unlabeled), `weave_merge_witness.rye`
+(64 of 64), `weave_annotate_witness.rye` (49 of 49), and `tally/gardens.rye` (46 of 48). The walk
+is coarse: it does not see a label two lines up, and a multi-line assert may be miscounted. Treat
+the figure as a free reading to re-run, not a fact to quote. **No sweep this lap.** Labeling 1,105
+asserts in one pass would touch witnesses across the whole lane, and the TAME ratchet rule is
+"on touch", so each function gains its labels when a lap next edits it. Re-run the walk before
+quoting the count; `mantra/src/weave.rye` is the first candidate when a lap next opens it.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
