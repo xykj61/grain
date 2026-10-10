@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.052902` | [grass front doors graded, no frame](20261010/20261010-052902_grass-front-doors-graded-no-frame.kyri) | Two front doors graded above B on counted readings; no edit; no frame. |
 | `20261010.052635` | [grass foundation A+](20261010/20261010-052635_grass-foundation-a-plus-second-look.kyri) | Lila foundation graded A+ (97) at field; no edit. |
 | 20261010.052434 | [Patchouli, TAME tidy class empty, no build](20261010/20261010-052434_patchouli-tame-queue-empty-no-build.kyri) | Tidy-scanner ratchet and parseInt sites read clean in mantra/ and tally/; no build. |
 | 20261010.052535 | [Incense, fifty-sixth decline](20261010/20261010-052535_incense-fifty-sixth-decline.kyri) | Remote unchanged at 0f72b6fc6b; ledger and claim board clear for this lane; no build. |
