@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.232203` -- the huge-page rerun lands inside the band: with `AnonHugePages` confirmed at 64 MiB, the chase falls from about 2,540 to about 1,330 permille, so page-walk traffic is a large share of the excess, and the sequential sweep's low reading is untouched
 **Revised:** `20261009.231436` -- a random pointer chase reads the generic counter at 2.6 misses per access, above the falsifier's band, so the generic event is neither a demand count nor a fill count on this guest; the huge-page run is the next door
 **Revised:** `20261009.224515` -- the calibration witness is built: the generic counter's three readings are held on metal, the instrument measures, and the stencil claim stays refused while the falsifier reads fired
 **Revised:** `20261009.222800` -- the hardware counter opens for an unprivileged self-count, but the generic cache-miss event reads about 8 percent of the expected line fills on a 64 MB sequential sweep, so the falsifier waits on calibration, and no stencil run is claimed
@@ -945,6 +946,18 @@ half unread). Next fruit: a size mix from a live-set trace a caller in this tree
 survey on `20261009.202114` finds none: `git ls-files` and `git grep` for allocation traces, alloc logs
 and size histograms return the scope-trace tools and the image and comment modules, and no tracked
 malloc population. So the fruit waits for a trace, or for the captain's ruling on a different question.
+
+**Self-generated `20261009.232203`, the huge-page rerun the random-chase paper named as its next door.**
+[The huge-page chase lands inside the band](../active-designing/date/20261009/20261009-232203_the-huge-page-chase-lands-inside-the-band.md)
+runs the same Sattolo chase on a 64 MiB buffer mapped with `MADV_HUGEPAGE` against a 4 KiB control, three
+pairs alternating, with the kernel's own `AnonHugePages` printed beside every counter reading. The huge arm
+reads 65,536 kB on every run, so the fallback the paper warned about did not happen. The reading falls from
+2486 to 2545 permille on the control to 1320 to 1332 on the huge arm, inside the paper's 500 to 2000 band. That
+is the condition the paper set, and it supports page-walk traffic as a large share of the excess. It does not
+make the generic event a fill counter: the sequential sweep's 65 to 105 permille reading is still on 4 KiB pages,
+and the stencil claim stays closed. Graded not yet, pending the QA card. Scratch probe in
+`session-output/hugepage-chase/`, untracked. Next fruit: a huge-page sequential sweep with the same
+`AnonHugePages` printed, against the 500 to 2000 band over one million expected fills.
 
 ## gates
 
