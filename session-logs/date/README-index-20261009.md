@@ -9,6 +9,7 @@
 | `20261009.210118` | [Grass queue still empty](20261009/20261009-210118_grass-queue-still-empty-stop-holds.kyri) | No regrade; stop holds, check-in asked. |
 | `20261009.210209` | [Incense forty-seventh decline, no build](20261009/20261009-210209_incense-decline-forty-seven.kyri) | Board clear; nib carried; no build; check in asked. |
 | `20261009.210021` | [Patchouli queue empty](20261009/20261009-210021_patchouli-queue-empty-stray-kill.kyri) | Nothing agent-doable; stray kill recorded; no build. |
+| `20261009.210231` | [Bakery receipt-key hold, no build](20261009/20261009-210231_bakery-receipt-key-hold.kyri) | Receipt key waits on Keaton's ruling; no build. |
 | `20261009.210023` | [Pheromone hold, no build](20261009/20261009-210023_pheromone-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.205847` | [Bakery cache census, receipt waits](20261009/20261009-205847_bakery-cache-census-receipt-ruling.kyri) | Path-independent census; receipt key awaits ruling. |
 | `20261009.205943` | [Diffuser repeat stopped, ask Keaton](20261009/20261009-205943_diffuser-repeat-stopped-ask-keaton.kyri) | Fifteenth hold declined; ask named; check in. |
