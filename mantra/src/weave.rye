@@ -548,9 +548,11 @@ pub fn row_eql(comptime T: type, a: T, b: T) bool {
 pub fn order_record_eql(a: OrderRecord, b: OrderRecord) bool {
     // invariant: the published field set stays the size this comparison covers,
     // so a field joining the record moves this number rather than passing unread.
+    // invariant: @typeInfo(OrderRecord).@"struct".fields.len == order_record_fields
     comptime assert(@typeInfo(OrderRecord).@"struct".fields.len == order_record_fields);
     // invariant: a row's published field set stays the size `row_eql` walks, and
     // the count the witness reads is the struct's own.
+    // invariant: @typeInfo(OrderRow).@"struct".fields.len == order_row_fields
     comptime assert(@typeInfo(OrderRow).@"struct".fields.len == order_row_fields);
     if (a.next_pos != b.next_pos) return false;
     if (a.next_run != b.next_run) return false;
@@ -704,11 +706,13 @@ pub const Note = struct {
         // is the same precondition `reading` states -- said here too because
         // this is the other reader of the same two counts, and a note neither
         // side has seen would answer zero rather than refusing
+        // invariant: self.left_gen != 0 or self.right_gen != 0
         assert(self.left_gen != 0 or self.right_gen != 0);
         const merged = @max(self.left_gen, self.right_gen);
         // invariant: the answer is a real generation, so a caller may compare
         // it against a weave's counts without first asking whether it is the
         // reserved zero
+        // invariant: merged >= 1
         assert(merged >= 1);
         // A third and fourth assert -- that `merged` stands at or above each
         // count -- were written here and taken out the same lap. `@max` is on
@@ -735,6 +739,7 @@ pub const Note = struct {
     pub fn reading(self: Note) Reading {
         // invariant: a note names a position at least one side has seen, since
         // a position neither weave holds never enters the union at all
+        // invariant: self.left_gen != 0 or self.right_gen != 0
         assert(self.left_gen != 0 or self.right_gen != 0);
         if (self.right_gen == 0) return .left_only;
         if (self.left_gen == 0) return .right_only;
@@ -742,6 +747,7 @@ pub const Note = struct {
         // invariant: both counts are real and they differ, so exactly one side
         // stands higher and the two arms below name it rather than falling
         // through to a default that would hide a fourth case
+        // invariant: self.left_gen != self.right_gen
         assert(self.left_gen != self.right_gen);
         if (self.left_gen > self.right_gen) return .left_moved;
         return .right_moved;
@@ -775,6 +781,7 @@ fn search_by_name(key: LineId, item: LineId) std.math.Order {
 fn copy_lines(into: []Line, from: []const Line) void {
     // invariant: the destination holds exactly the source's count, since a
     // shorter one would drop lines a later search would then never find
+    // invariant: into.len == from.len
     assert(into.len == from.len);
     for (from, 0..) |line, i| into[i] = line;
 }
@@ -794,6 +801,7 @@ fn sort_by_id(lines: []Line) void {
     for (lines, 0..) |line, i| {
         // invariant: identities strictly increase, which is what makes the
         // search below return the one line that carries the name it was given
+        // invariant: lines[i].id().less_than(lines[i + 1].id())
         if (i + 1 < lines.len) assert(lines[i].id().less_than(lines[i + 1].id()));
         _ = line;
     }
@@ -895,9 +903,11 @@ pub const Weave = struct {
             // invariant: every lifted line stands below the weave's own counter,
             // which is what lets a later apply hand out a position no line here
             // already answers to
+            // invariant: line.pos < lifted.next_pos
             assert(line.pos < lifted.next_pos);
             // invariant: a generation counts from one, so a lifted line never
             // predates the weave that now holds it
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             // invariant: every lifted line stands below the weave's run counter as
             // well as its position counter -- the third of the weave's three declared
@@ -911,11 +921,13 @@ pub const Weave = struct {
             // with this assert removed, which exits 134 either way. It is kept for
             // uniformity across the constructors rather than for a break it catches
             // alone, and the merge assert one function over is the opposite case.
+            // invariant: line.run < lifted.next_run
             assert(line.run < lifted.next_run);
             if (i + 1 < lifted.lines.items.len) {
                 // invariant: the backing list comes out in strictly increasing
                 // place order, which is the precondition `current` asserts --
                 // proven here at the lift rather than discovered there
+                // invariant: line.place().less_than(lifted.lines.items[i + 1].place())
                 assert(line.place().less_than(lifted.lines.items[i + 1].place()));
             }
         }
@@ -996,6 +1008,7 @@ pub const Weave = struct {
     pub fn to_v1(self: *const Weave, allocator: std.mem.Allocator) ![]const V1Row {
         // invariant: the weave stands inside its own ceiling, so the record this
         // writes is bounded by max_weave_lines rather than by whoever calls it
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
 
         // Both refusals are read over the whole weave BEFORE anything is
@@ -1021,6 +1034,7 @@ pub const Weave = struct {
             // invariant: a generation counts from one, so a row this writes never
             // predates the weave it came out of -- and never trips `from_v1`'s own
             // reserved-generation refusal on the way back
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             rows.appendAssumeCapacity(.{ .text = line.text, .gen = line.gen, .pos = line.pos });
         }
@@ -1028,14 +1042,17 @@ pub const Weave = struct {
 
         // invariant: one row per line, since a record that dropped or invented a
         // row would make every later reading a reading of a different document
+        // invariant: result.len == self.lines.items.len
         assert(result.len == self.lines.items.len);
         for (result, 0..) |row, i| {
             // invariant: every row carries a real generation, which is the parity
             // the record uses as its tombstone
+            // invariant: row.gen >= 1
             assert(row.gen >= 1);
             if (i + 1 < result.len) {
                 // invariant: the rows rise strictly by position, which is what
                 // `from_v1` demands of a record -- so what this writes lifts
+                // invariant: row.pos < result[i + 1].pos
                 assert(row.pos < result[i + 1].pos);
             }
         }
@@ -1083,6 +1100,7 @@ pub const Weave = struct {
     pub fn to_order_record(self: *const Weave, allocator: std.mem.Allocator) !OrderRecord {
         // invariant: the weave stands inside the ceiling a record may hold, so a
         // record this writes can always be read back.
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
         const line_count: u32 = @intCast(self.lines.items.len);
         var rows: std.ArrayListUnmanaged(OrderRow) = .empty;
@@ -1091,6 +1109,7 @@ pub const Weave = struct {
         for (self.lines.items) |line| {
             // invariant: a generation counts from one, so a row this writes never
             // predates the weave it came out of.
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             rows.appendAssumeCapacity(.{
                 .text = line.text,
@@ -1104,14 +1123,17 @@ pub const Weave = struct {
         const result = try rows.toOwnedSlice(allocator);
         // invariant: one row per line, since a record that dropped or invented a
         // row would make every later reading a reading of a different document.
+        // invariant: result.len == self.lines.items.len
         assert(result.len == self.lines.items.len);
         for (result, 0..) |row, i| {
             // invariant: every row stands under both counters the header carries.
             assert(row.pos < self.next_pos);
+            // invariant: row.run < self.next_run
             assert(row.run < self.next_run);
             if (i + 1 < result.len) {
                 // invariant: the rows rise strictly in place order, which is what
                 // `from_order_record` demands of a record -- so what this writes lifts.
+                // invariant: row.place().less_than(result[i + 1].place())
                 assert(row.place().less_than(result[i + 1].place()));
             }
         }
@@ -1166,6 +1188,7 @@ pub const Weave = struct {
     pub fn to_v2(self: *const Weave, allocator: std.mem.Allocator) !V2Record {
         // invariant: the weave stands inside its own ceiling, so the record this
         // writes is bounded by max_weave_lines rather than by whoever calls it
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
 
         // usize lives at the inherited-std seam alone: a slice counts in usize,
@@ -1179,6 +1202,7 @@ pub const Weave = struct {
             // invariant: a generation counts from one, so a row this writes never
             // predates the weave it came out of -- and never trips `from_v2`'s own
             // reserved-generation refusal on the way back
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             rows.appendAssumeCapacity(.{
                 .text = line.text,
@@ -1192,15 +1216,19 @@ pub const Weave = struct {
 
         // invariant: one row per line, since a record that dropped or invented a
         // row would make every later reading a reading of a different document
+        // invariant: result.len == self.lines.items.len
         assert(result.len == self.lines.items.len);
         for (result, 0..) |row, i| {
             // invariant: every row stands under both counters the header carries,
             // which is the pair of weave invariants `from_v2` reads back at its edge
+            // invariant: row.pos < self.next_pos
             assert(row.pos < self.next_pos);
+            // invariant: row.run < self.next_run
             assert(row.run < self.next_run);
             if (i + 1 < result.len) {
                 // invariant: the rows rise strictly in place order, which is what
                 // `from_v2` demands of a record -- so what this writes lifts
+                // invariant: row.place().less_than(result[i + 1].place())
                 assert(row.place().less_than(result[i + 1].place()));
             }
         }
@@ -1309,18 +1337,22 @@ pub const Weave = struct {
             // invariant: every restored line stands below the weave's position
             // counter, which is what lets a later apply hand out a position no
             // line here already answers to
+            // invariant: line.pos < restored.next_pos
             assert(line.pos < restored.next_pos);
             // invariant: a generation counts from one, so a restored line never
             // predates the weave that now holds it
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             // invariant: every restored line stands below the run counter as well
             // -- the third of the weave's three declared counter invariants, said
             // at this constructor as it is said at the other two
+            // invariant: line.run < restored.next_run
             assert(line.run < restored.next_run);
             if (i + 1 < restored.lines.items.len) {
                 // invariant: the backing list comes out in strictly increasing
                 // place order, which is the precondition `current` asserts --
                 // proven here at the read rather than discovered there
+                // invariant: line.place().less_than(restored.lines.items[i + 1].place())
                 assert(line.place().less_than(restored.lines.items[i + 1].place()));
             }
         }
@@ -1388,14 +1420,17 @@ pub const Weave = struct {
         // invariant: the weave already stands inside its own ceiling, so the
         // refusal just below names the diff rather than covering for a weave
         // that was over the ceiling before this call arrived
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
         // invariant: the position counter stands inside the same ceiling, which is
         // what makes the subtraction below a real number rather than a wrap. Every
         // constructor holds it -- `empty` at zero, `from_v1` and `from_v2` refusing
         // past it by name, `merge` taking the max of two that already do
+        // invariant: self.next_pos <= max_weave_lines
         assert(self.next_pos <= max_weave_lines);
         // invariant: and so does the run counter, said separately because the two
         // rise at different rates -- one per line against one per inserting edit
+        // invariant: self.next_run <= max_weave_lines
         assert(self.next_run <= max_weave_lines);
 
         // The weave grows by exactly the diff's inserts, so the sum is what the
@@ -1437,6 +1472,7 @@ pub const Weave = struct {
             // invariant: a diff names no more lines than the weave can hold, since
             // every target must name a line this weave already carries -- and this is
             // the bound the scratch slice just below is sized by
+            // invariant: diff.deletes.len <= max_weave_lines
             assert(diff.deletes.len <= max_weave_lines);
 
             const targets = try allocator.alloc(LineId, diff.deletes.len);
@@ -1478,6 +1514,7 @@ pub const Weave = struct {
                 // invariant: one mark per target, since the targets are distinct and a
                 // weave holds one line per identity -- so the scratch sized by the
                 // delete count can never be written past its end
+                // invariant: hits < marks.len
                 assert(hits < marks.len);
                 // usize lives at the inherited-std seam alone: a slice counts in usize,
                 // and the weave's own ceiling, asserted at the head of this function, is
@@ -1500,6 +1537,7 @@ pub const Weave = struct {
                 // invariant: the line under each mark is still present, which the walk
                 // above read and nothing between here and there could change -- this
                 // loop is the weave's only mutation on the delete path
+                // invariant: self.lines.items[at].gen % 2 == 1
                 assert(self.lines.items[at].gen % 2 == 1);
                 self.lines.items[at].gen += 1;       // odd -> even: mark gone
             }
@@ -1523,6 +1561,7 @@ pub const Weave = struct {
         // rests on it -- one pass, where asking each new line against every held
         // line cost |inserts| x |lines| and was the second quadratic this function
         // carried.
+        // invariant: held.pos < floor
         for (self.lines.items) |held| assert(held.pos < floor);
         for (diff.inserts, 0..) |text, insert_at| {
             // A REPLACEMENT INHERITS THE ORDER KEY OF THE LINE IT REPLACES, on
@@ -1590,12 +1629,14 @@ pub const Weave = struct {
             };
             // invariant: an odd generation means present -- the parity IS the tombstone, so an
             // even one reaching here would be a deleted line treated as live
+            // invariant: line.gen % 2 == 1
             assert(line.gen % 2 == 1);
             // invariant: the identity being handed out is one this weave does not already
             // hold. This is what the pair buys, asserted where it is created rather than
             // trusted: its position stands at or above the floor every held line sits
             // below, so no held line can answer to this name whatever its site, and a
             // counter that repeated itself is caught right here.
+            // invariant: line.pos >= floor
             assert(line.pos >= floor);
             // THE LINE GOES WHERE ITS PLACE SAYS, rather than at the end. The
             // backing list is held in place order -- `current` asserts it on
@@ -1629,11 +1670,14 @@ pub const Weave = struct {
         for (self.lines.items) |line| {
             // invariant: a line carries a real generation and a position inside the weave's own
             // counter, so neither ordering nor identity is left to the caller
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
+            // invariant: line.pos < self.next_pos
             assert(line.pos < self.next_pos);
             // invariant: a line's run stands under the weave's own run counter, so the next
             // edit is handed a number no line already carries -- which is what makes two
             // sides' concurrent runs comparable rather than merely different
+            // invariant: line.run < self.next_run
             assert(line.run < self.next_run);
         }
     }
@@ -1701,6 +1745,7 @@ pub const Weave = struct {
     pub fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
         // invariant: the weave stands inside its own ceiling, so the slice this
         // returns is bounded by max_weave_lines rather than by whoever calls it
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
         var out: std.ArrayListUnmanaged(Line) = .empty;
         for (self.lines.items, 0..) |line, i| {
@@ -1709,6 +1754,7 @@ pub const Weave = struct {
                 // what lets this read return document order without sorting. Held
                 // over the whole list rather than over the filtered result, because
                 // a filter can hide a disorder that a later delete would reveal.
+                // invariant: line.place().less_than(self.lines.items[i + 1].place())
                 assert(line.place().less_than(self.lines.items[i + 1].place()));
             }
             if (line.gen % 2 == 1) { // odd = present
@@ -1723,12 +1769,14 @@ pub const Weave = struct {
         for (result) |line| {
             // invariant: an odd generation means present -- the parity IS the tombstone, so an
             // even one reaching here would be a deleted line treated as live
+            // invariant: line.gen % 2 == 1
             assert(line.gen % 2 == 1);
         }
         for (result, 0..) |line, i| {
             if (i + 1 < result.len) {
                 // invariant: the result comes out ordered by identity, which is what makes a
                 // weave readable as a document rather than a bag of lines
+                // invariant: result[i].place().less_than(result[i + 1].place())
                 assert(result[i].place().less_than(result[i + 1].place()));
             }
             _ = line;
@@ -1766,12 +1814,15 @@ pub const Weave = struct {
     fn union_into(out: *std.ArrayListUnmanaged(Line), sorted_len: u32, incoming: []const Line) WeaveError!void {
         // invariant: the list can take the whole union without growing, which is
         // what lets this fold run with no allocator and no error but the refusal
+        // invariant: out.capacity >= out.items.len + incoming.len
         assert(out.capacity >= out.items.len + incoming.len);
         // invariant: the union stays inside the weave's own ceiling, so the
         // append below can never carry the list past what merge already checked
+        // invariant: out.items.len + incoming.len <= max_weave_lines
         assert(out.items.len + incoming.len <= max_weave_lines);
         // invariant: the searched prefix is one the list actually holds, since
         // a search past the end would read whatever the capacity left behind
+        // invariant: sorted_len <= out.items.len
         assert(sorted_len <= out.items.len);
 
         const sorted = out.items[0..sorted_len];
@@ -1872,7 +1923,9 @@ pub const Weave = struct {
         // invariant: each weave already stands inside the named bound, so a
         // refusal below names the union rather than covering for an input that
         // was over the ceiling before a merge was ever asked for
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
+        // invariant: other.lines.items.len <= max_weave_lines
         assert(other.lines.items.len <= max_weave_lines);
 
         // The union holds at most the sum, so checking the sum checks the union
@@ -1945,17 +1998,23 @@ pub const Weave = struct {
         //
         // Four asserts rather than two compound ones, because a compound
         // `assert(a and b)` names the pair and not the side that failed.
+        // invariant: merged.next_pos >= self.next_pos
         assert(merged.next_pos >= self.next_pos);
+        // invariant: merged.next_pos >= other.next_pos
         assert(merged.next_pos >= other.next_pos);
+        // invariant: merged.next_run >= self.next_run
         assert(merged.next_run >= self.next_run);
+        // invariant: merged.next_run >= other.next_run
         assert(merged.next_run >= other.next_run);
 
         for (merged.lines.items, 0..) |line, i| {
             // invariant: a line carries a real generation, since zero is
             // reserved and a merge must never invent one
+            // invariant: line.gen >= 1
             assert(line.gen >= 1);
             // invariant: every position stays under the merged counter, so the
             // next insert is handed one neither side has ever used
+            // invariant: line.pos < merged.next_pos
             assert(line.pos < merged.next_pos);
             // invariant: every run stays under the merged counter too, which is
             // the third of the weave's three declared counter invariants and the
@@ -1964,12 +2023,14 @@ pub const Weave = struct {
             // backing list without sorting -- both rest on every held run standing
             // below that number. Max carries it here, and this is where the max is
             // held to rather than trusted.
+            // invariant: line.run < merged.next_run
             assert(line.run < merged.next_run);
             if (i + 1 < merged.lines.items.len) {
                 // invariant: identities strictly increase, which both orders the
                 // document and proves the union kept exactly one line per
                 // identity -- two branches' concurrent inserts share a position
                 // and are separated here by their sites
+                // invariant: merged.lines.items[i].place().less_than(merged.lines.items[i + 1].place())
                 assert(merged.lines.items[i].place().less_than(merged.lines.items[i + 1].place()));
             }
         }
@@ -2001,9 +2062,11 @@ pub const Weave = struct {
     ) WeaveError!void {
         // invariant: the list can take the whole fold without growing, which is
         // what lets this run with no allocator and no error but the refusal
+        // invariant: out.capacity >= out.items.len + left.len
         assert(out.capacity >= out.items.len + left.len);
         // invariant: the fold stays inside the weave's own ceiling, so the
         // append below can never carry the list past what annotate checked
+        // invariant: out.items.len + left.len <= max_weave_lines
         assert(out.items.len + left.len <= max_weave_lines);
 
         for (left) |line| {
@@ -2040,9 +2103,11 @@ pub const Weave = struct {
     ) void {
         // invariant: the list can take the whole fold without growing, which is
         // what lets this run with no allocator at all
+        // invariant: out.capacity >= out.items.len + right.len
         assert(out.capacity >= out.items.len + right.len);
         // invariant: the fold stays inside the weave's own ceiling, so the
         // append below can never carry the list past what annotate checked
+        // invariant: out.items.len + right.len <= max_weave_lines
         assert(out.items.len + right.len <= max_weave_lines);
 
         for (right) |line| {
@@ -2128,7 +2193,9 @@ pub const Weave = struct {
         // invariant: each weave already stands inside the named bound, so the
         // refusal below names the union rather than covering for an input that
         // was over the ceiling before a reading was ever asked for
+        // invariant: self.lines.items.len <= max_weave_lines
         assert(self.lines.items.len <= max_weave_lines);
+        // invariant: other.lines.items.len <= max_weave_lines
         assert(other.lines.items.len <= max_weave_lines);
 
         // One note per position in the union, and the union holds at most the
@@ -2175,12 +2242,14 @@ pub const Weave = struct {
         for (result, 0..) |note, i| {
             // invariant: a note names a line at least one side has seen,
             // since an identity neither weave holds never enters the union
+            // invariant: note.left_gen != 0 or note.right_gen != 0
             assert(note.left_gen != 0 or note.right_gen != 0);
             if (i + 1 < result.len) {
                 // invariant: identities strictly increase, which orders the
                 // reading as a document and proves the union kept exactly one
                 // note per identity -- the reading stays line for line with the
                 // merge it describes, which is the seam between the two
+                // invariant: result[i].place().less_than(result[i + 1].place())
                 assert(result[i].place().less_than(result[i + 1].place()));
             }
         }

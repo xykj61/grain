@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.114953` | [Bakery, roster red re-read, hold](20261010/20261010-114953_bakery-836-triage-hold.kyri) | REDS %836 still OPEN; no claim; no build. |
 | `20261010.115434` | [Grass, counted readings clean, no frame](20261010/20261010-115434_grass-counted-readings-clean-no-frame.kyri) | Inner page counted clear again (repeats 114551); no edit; log only. |
+| `20261010.115432` | [Patchouli, weave labels, GREEN](20261010/20261010-115432_patchouli-weave-invariant-labels-green.kyri) | 69 invariant lines on weave asserts; nine witnesses GREEN. |
 | `20261010.115122` | [Petrichor, consent gate held, no build](20261010/20261010-115122_petrichor-consent-gate-held-no-build.kyri) | Gate shut; re-read; no build. |
 | `20261010.114502` | [Incense, round-open, hold](20261010/20261010-114502_incense-round-open-hold-no-build.kyri) | Clean round-open to 28785f5d7f; claim board empty; no build. |
 | `20261010.114551` | [Grass, inner page re-graded B+, nib carried](20261010/20261010-114551_grass-inner-regrade-b-plus-nib-carried.kyri) | Inner page B+ 89 re-read; no edit; card nib to ac51bcfd37. |
