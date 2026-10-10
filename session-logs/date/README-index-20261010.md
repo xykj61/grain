@@ -11,6 +11,7 @@
 | 20261010.003314 | [log](20261010/20261010-003314_grass-merit-ledger-lift.kyri) | Grass merit-ledger lift: D+/69 to A/93, one foundation rewritten; no witness touched |
 | 20261010.003248 | [log](20261010/20261010-003248_bakery-hold-receipt-key-still-unruled.kyri) | Bakery hold on the receipt key; round-open pulled two peers, no build |
 | 20261010.003218 | [decline](20261010/20261010-003218_incense-round-open-decline-no-gate.kyri) | Incense round-open clean, board clear, law lane held on Keaton's word; no build |
+| 20261010.003124 | [log](20261010/20261010-003124_copal-roster-held-red-booked.kyri) | Copal roster held: no green unrostered witness; sunn14 red found, booking held by pin bound |
 | 20261010.003113 | [water intake](20261010/20261010-003113_petrichor-water-row-intake-link-sweep.kyri) | Petrichor intake: docs-geode links resolve; no fruit |
 | 20261010.003003 | [hold](20261010/20261010-003003_diffuser-hold-no-agent-fruit.kyri) | Diffuser hold: no agent-doable fruit, claim board empty; next waits on Keaton; no build |
 | 20261010.002859 | [log](20261010/20261010-002859_incense-round-open-decline-law-waits.kyri) | Incense round-open clean, board clear, law lane held on Keaton's word; no build |
