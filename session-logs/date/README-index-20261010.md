@@ -8,6 +8,7 @@
 | 20261010.050732 | [Incense, fifty-first decline](20261010/20261010-050732_incense-declines-fifty-first.kyri) | Round-open clean; board holds copal only; no build. |
 | 20261010.050856 | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-050856_patchouli-queue-empty-twenty-fourth.kyri) | Fresh nets find nothing; %807, %765 owned elsewhere. |
 | 20261010.050604 | [Patchouli, queue empty on a fresh net](20261010/20261010-050604_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only a constant name; open rows owned elsewhere; no build. |
+| 20261010.050717 | [Pheromone, no fruit after pull](20261010/20261010-050717_pheromone-no-fruit-after-pull.kyri) | Six peer commits pulled ff; no open fruit; no build. |
 | 20261010.050440 | [Patchouli, weave v2 citation named by function](20261010/20261010-050440_patchouli-weave-v2-citation-by-function.kyri) | Citation by function; comment-only; weave v2 witness GREEN. |
 | 20261010.050213 | [Incense, fiftieth decline](20261010/20261010-050213_incense-declines-fiftieth.kyri) | Round-open clean; board holds copal only; no build. |
 | 20261010.050233 | [Grass, Lila foundation graded A+](20261010/20261010-050233_grass-lila-foundation-grade-a-plus.kyri) | Field 97 composite; no frame; no edit. |
