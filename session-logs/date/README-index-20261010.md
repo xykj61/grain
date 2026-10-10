@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.093946` | [Patchouli, queue empty again](20261010/20261010-093946_patchouli-queue-empty-twenty-fourth.kyri) | Nets re-run, nothing new in mantra or tally; no build, log only. |
 | `20261010.093721` | [Patchouli, horizon asserts](20261010/20261010-093721_patchouli-stage-horizon-asserts.kyri) | stage_horizon_catalog gains postconditions; I2 witnesses GREEN. |
+| `20261010.093625` | [Incense, round-open adopted, law held](20261010/20261010-093625_incense-round-open-adopted-law-held.kyri) | Round-open to xy 1b7dafb843; no build; law waits on Keaton at %642 or %519. |
 | `20261010.093413` | [Petrichor, hold, no open door](20261010/20261010-093413_petrichor-hold-inner-prompt-no-door.kyri) | No build; consent gate and public seam unmoved; log only. |
 | `20261010.093135` | [Incense, fiftieth, held](20261010/20261010-093135_incense-decline-fiftieth-law-held.kyri) | Round-open clean; no build; law waits on Keaton at %642 or %519. |
 | `20261010.092125` | [Petrichor, hold, tool paths resolve](20261010/20261010-092125_petrichor-hold-tool-paths-resolve.kyri) | 51 docs-geode tool paths all resolve; no build; consent gate unmoved. |
