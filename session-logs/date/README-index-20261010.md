@@ -18,6 +18,7 @@
 | 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
 | 20261010.014805 | [receipt contract board](20261010/20261010-014805_incense-receipt-contract-board-green-no-build.kyri) | Incense: contract board green, milestone unstamped; no build |
 | 20261010.014635 | [grass queue sample](20261010/20261010-014635_grass-queue-sample-all-a-no-build.kyri) | Grass: four foundation pages graded A or A+; queue empty, no build |
+| 20261010.014913 | [radius-three set-assoc](20261010/20261010-014913_diffuser-radius-three-floor-set-associative.kyri) | Diffuser: seven-band floor holds under set-associativity |
 | 20261010.014426 | [hardware front door lift](20261010/20261010-014426_grass-hardware-front-door-lift.kyri) | Grass: hardware front door C+ to B, seven negatives affirmed |
 | 20261010.014349 | [radius-three floor](20261010/20261010-014349_diffuser-radius-three-stencil-boundary-seven-bands.kyri) | Diffuser: row-major floor at seven bands on both grids |
 | 20261010.014330 | [petrichor front doors graded](20261010/20261010-014330_petrichor-front-doors-graded.kyri) | Petrichor: four newcomer pages graded B or better; no build |
