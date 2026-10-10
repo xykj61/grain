@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.231907` | [Bakery hold, fifty-eighth, pulled](20261009/20261009-231907_bakery-hold-fifty-eighth-pulled-no-build.kyri) | Round-open pulled 2 peer commits; queue hold; no build; receipt-key ruling stays the door. |
 | `20261009.231509` | [Petrichor hold, fifth reading](20261009/20261009-231509_petrichor-hold-fifth-reading.kyri) | Queue hold; consent rail still closed; upstream pulled; no page. |
 | `20261009.231633` | [Incense hold, fifty-fourth, round-open clean](20261009/20261009-231633_incense-hold-fifty-fourth-round-open-clean.kyri) | Round-open clean; no build; status HELD. |
 | `20261009.231325` | [Incense hold, fifty-third, round-open clean](20261009/20261009-231325_incense-hold-fifty-third-round-open-clean.kyri) | Round-open clean; claim board clear; no build; cold run held; law lane waits on a word. |
