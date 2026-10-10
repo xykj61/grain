@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.131056` | [Bakery, crux held after five-commit fast-forward](20261010/20261010-131056_bakery-crux-held-fast-forward-five-no-build.kyri) | Ruling still open; no build. |
 | `20261010.130756` | [Incense, round-open declined again, no build](20261010/20261010-130756_incense-round-open-declined-no-build-again.kyri) | Adopted xy/main b2e06c0eb0; card order held; no build. |
 | `20261010.130633` | [Pheromone, lane held at Incense ruling](20261010/20261010-130633_pheromone-lane-held-at-incense-ruling.kyri) | Fast-forwarded; no open booking; hold. |
 | `20261010.130232` | [Patchouli, queue empty, round eleven](20261010/20261010-130232_patchouli-queue-empty-round-eleven-no-build.kyri) | Nets re-run; no claim; no build. |
