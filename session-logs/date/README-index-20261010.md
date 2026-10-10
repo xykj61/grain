@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.134617` | [Patchouli, queue empty, no build](20261010/20261010-134617_patchouli-queue-empty-lap-no-build.kyri) | Lane queue held; nib carried to 7d179d62b5; no build. |
 | `20261010.134741` | [Bakery, crux held, no build](20261010/20261010-134741_bakery-crux-held-no-build.kyri) | Round-open settled at e691aae31a; crux needs a claim and a ruling; no build. |
 | `20261010.134536` | [Grass queue empty, no build](20261010/20261010-134536_grass-queue-empty-no-build.kyri) | Inner queue empty; claim board clear; no build. |
 | `20261010.134350` | [Petrichor, earth lap, first-hour links, no build](20261010/20261010-134350_petrichor-earth-lap-first-hour-links-no-build.kyri) | Door paths resolve; no edit. |
