@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.010407 | [hold](20261010/20261010-010407_patchouli-queue-empty-widened-scan-hold.kyri) | Patchouli hold: queue empty on a widened scan, lane rows await Keaton's word; no build |
 | 20261010.010401 | [regrade](20261010/20261010-010401_grass-inner-page-regraded-b-plus-no-edit.kyri) | Grass regrade: inner page B+/89 again, no edit |
 | 20261010.010551 | [hold](20261010/20261010-010551_diffuser-hold-upstream-unchanged-gates-still-shut.kyri) | Diffuser hold: upstream unchanged, gated doors still shut; no paper, no build |
 | 20261010.010230 | [grade](20261010/20261010-010230_grass-inner-page-graded-b-plus-no-frame.kyri) | Grass grade: inner prompt B+/89, no edit, no frame |
