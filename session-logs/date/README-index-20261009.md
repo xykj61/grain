@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.230942` | [Bakery hold, fifty-seventh](20261009/20261009-230942_bakery-hold-fifty-seventh-no-build.kyri) | Queue hold; no build; the receipt-key ruling stays the door. |
+| `20261009.230939` | [Incense hold, fifty-second decline](20261009/20261009-230939_incense-hold-fifty-second-decline.kyri) | Round-open ff; law lane waits on a word; nib carried; held. |
 | `20261009.230717` | [Diffuser calibration re-read green](20261009/20261009-230717_diffuser-calibration-re-read-green.kyri) | Calibration witness re-run green; no new fruit; nib carried. |
 | `20261009.230714` | [Grass queue empty again](20261009/20261009-230714_grass-queue-empty-again.kyri) | Queue empty again; no page opened; log-only lap. |
 | `20261009.230713` | [Copal roster commence m5](20261009/20261009-230713_copal-commence-m5-roster.kyri) | Commence m5 recut witness rostered at tier lap; runner GREEN. |
