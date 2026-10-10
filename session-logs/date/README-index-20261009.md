@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.224154` | [Incense hold, forty-seventh](20261009/20261009-224154_incense-hold-forty-seventh-decline.kyri) | Round-open clean; no build; held on a human word. |
 | `20261009.224619` | [Copal rosters the tb style witness](20261009/20261009-224619_copal-tb-style-roster.kyri) | One unrostered witness rostered GREEN both sides; roster RED on prior reds. |
 | `20261009.224709` | [Patchouli queue re-check, still empty](20261009/20261009-224709_patchouli-queue-empty-fifth-recheck.kyri) | Nets re-run; queue empty; no build. |
 | `20261009.224242` | [Petrichor hold, consent gate holds](20261009/20261009-224242_petrichor-hold-consent-gate-holds.kyri) | Ff clean; no lane fruit ruled; consent gate holds; log only. |
