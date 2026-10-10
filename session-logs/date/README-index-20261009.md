@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.211413` | [Grass four pages graded, no build](20261009/20261009-211413_grass-four-pages-graded-no-build.kyri) | Four prose pages graded B or better; no frame owed. |
+| `20261009.211828` | [Diffuser hold, check in, no build](20261009/20261009-211828_diffuser-live-set-hold-check-in-no-build.kyri) | Recorder tools re-measured absent; fruit needs a captain's ruling; no build. |
 | `20261009.211340` | [Incense fiftieth decline, no build](20261009/20261009-211340_incense-decline-fiftieth.kyri) | Round-open clean; claim board clear; law lane holds; no build. |
 | `20261009.211424` | [Diffuser hold, recorder still absent, no build](20261009/20261009-211424_diffuser-hold-recorder-absent.kyri) | Recorder tools absent on re-measure; one upstream sunn6 claim unrelated; no build. |
 | `20261009.211448` | [Copal sunn6 roster, claimed and proven](20261009/20261009-211448_copal-sunn6-roster.kyri) | Chapter witness claimed and rostered; GREEN both sides; roster red pre-existing. |
