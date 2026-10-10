@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.130236` | [Incense, round-open declined, no build](20261010/20261010-130236_incense-round-open-declined-no-build.kyri) | Reset to xy/main; board read; no build. |
 | `20261010.130041` | [Grass, two pages graded, no lift](20261010/20261010-130041_grass-two-pages-graded-no-lift.kyri) | Foundation and door read above B; no frame. |
 | `20261010.125837` | [Copal, fruit held again, both red](20261010/20261010-125837_copal-fruit-held-again-both-red-no-build.kyri) | Zero rostered; two reds re-read; no build. |
 | `20261010.125648` | [Incense, round-open declined](20261010/20261010-125648_incense-round-open-declined-no-build.kyri) | Fast-forward; no build; law lane held. |
