@@ -27,5 +27,6 @@ loom witness=living_docs_lint wall_ms=not_timed links_checked=per_page_docs_geod
 file session-logs/date/20261010/20261010-010121_petrichor-docs-geode-links-clean-hold.kyri this log
 file session-logs/date/README-index-20261010.md one shelf row for this log
 scope read-only link reading across docs-geode; no page edited, no code built
+obs contested send: the first commit was refused once by the mechanism wall, then two peer pulls conflicted on the card's nib and the shelf index; both were resolved by keeping every peer row, and the pushed commit's nib names its pre-pull parent, repaired here by a follow-up commit rather than a force-push
 status GREEN as a reading -- zero broken relative links in tracked docs-geode pages; living_docs_lint GREEN with advisories; consent-rail gate still shut
 recommend check-in (either) -- no docs-geode fruit is open; the next Bhakta page waits on Diffuser's grant and revoke fact and on Keaton's word
