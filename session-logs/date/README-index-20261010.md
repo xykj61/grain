@@ -58,6 +58,7 @@
 |---|---|---|
 | `20261010.101404` | [Incense, round four, decline](20261010/20261010-101404_incense-round-four-earth-decline-no-build.kyri) | Decline, no build; held queue left for Keaton. |
 | `20261010.101451` | [Pheromone, lane empty, hold](20261010/20261010-101451_pheromone-hold-lane-empty.kyri) | No build; check-in (Claude) on the card's step-three line. |
+| `20261010.101431` | [Grass, baton tick, molts held](20261010/20261010-101431_grass-foundations-molt-owed-held-read-only.kyri) | Read-only tick; queue empty; three foundations molts owed. |
 | `20261010.101341` | [Bakery, hold, receipt-key ruling still owed](20261010/20261010-101341_bakery-hold-receipt-key-ruling.kyri) | No build; receipt key waits on Keaton; log and row only. |
 | `20261010.093559` | [Bakery, hold, fast-forward, ruling unchanged](20261010/20261010-093559_bakery-hold-ruling-unchanged-no-build.kyri) | Fast-forward to 116397ece3; receipt-key ruling still unwritten; no build |
 | `20261010.065631` | [Bakery, hold, receipt key owed](20261010/20261010-065631_bakery-hold-receipt-key-open-no-build.kyri) | Receipt key still open; no code moved; no build. |
