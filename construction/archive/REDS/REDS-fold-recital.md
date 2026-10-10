@@ -941,3 +941,5 @@ at a closed fold.*
 *Row `%833` folded to [`REDS-a-plant-matched-nothing-rows-833.md`](REDS-a-plant-matched-nothing-rows-833.md) on `20261003.041407`, **CLOSED** -- folded in the same lap that booked it, to clear headroom for its own new row while the pin stood over its 65,536-byte bound; a control's own plant keyed to a struct layout the module had already outgrown.*
 
 *Row `%803` (`20260917.023605`) folded to [`REDS-the-nib-writer-named-its-shape-rows-803.md`](REDS-the-nib-writer-named-its-shape-rows-803.md) on `20261009.180222`, **CLOSED** -- folded by hand to clear headroom for two OPEN rows while the pin stood 2,324 bytes over its 65,536-byte bound.*
+
+*Row `%729` (`20260915.180733`) folded to [`REDS-a-control-wrote-its-pen-identity-into-live-keys-rows-729.md`](REDS-a-control-wrote-its-pen-identity-into-live-keys-rows-729.md) on `20261010.092200`, **BOOKED**, to clear headroom for REDS 
