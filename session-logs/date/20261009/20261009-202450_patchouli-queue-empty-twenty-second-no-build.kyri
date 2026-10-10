@@ -24,6 +24,8 @@ rota none -- the rota was read in prior laps; this lap is the queue check the ca
 orbit round 1 sign -- no orbit reading this lap; the card carried none
 file construction/ITINERARY.md -- Git nib carried forward to HEAD parent, per remember-git-nib rule 5
 file session-logs/date/20261009/20261009-202450_patchouli-queue-empty-twenty-second-no-build.kyri -- this log, born on its shelf
+obs send: the first push was refused by a rebase conflict on the day index, where upstream had two newer rows; both kept, mine first. Pushed as ce646b3873 after the conflict was resolved.
+obs send: the rebase moved this log commit onto 421df9f0a4, so the card nib e93136fd93 went stale; repaired here as a follow-up with real log content, not as a pin-only commit.
 scope read-only queue check across mantra/ and tally/; no code or card change
 status GREEN for the check; queue empty; nothing built, nothing left half-done
 recommend check-in (either) -- the lane's queue is empty and only Keaton's ruling on %807 or a dormant call moves it; check in or name the next lane
