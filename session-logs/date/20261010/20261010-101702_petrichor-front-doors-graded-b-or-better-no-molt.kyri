@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.101702
+editor Claude Code
+provider Anthropic
+product Claude Code
+role petrichor -- docs-geode lane, grain-petrichor tree
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by session header; not independently verified
+configured_model claude-haiku-5-5
+configured_reasoning medium
+configured_status resolved by this clone: local override in .claude/settings.local.json outranks the tracked fleet default claude-sonnet-5
+evidence sh tools/fixtures/d/declared_model.sh resolved_model -> claude-haiku-5-5, override=yes
+voice Kyri
+host anonymized one-clock zone America/New_York
+title Petrichor, front doors graded B or better, no molt
+prompt Ty every1 baton: run the Petrichor lap -- read the inner prompt and card, take one bounded docs-geode move, grade, lift only what falls below B, close with a log.
+think The inner prompt says the docs-geode tending sweep has already run several times and a fourth identical pass teaches nothing, so this lap names a different target: the front pages a newcomer meets first.
+think Ran sh tools/fixtures/q/qa_report_card.sh at Door on README.md, SOURCE.md, docs-geode/README.md and MAP.md, each with --service 70. Composites: README 89 B+, SOURCE 83 B, docs-geode/README 89 B+, MAP 84 B.
+think The service figure of 70 was supplied by this lap, not measured, and truth read counted-only on all four. Those two facts bound what the grades say.
+obs Nothing read below B, so no molt frame was pushed and no page changed. Lifting a B to a higher grade would be cosmetic work the card does not ask for.
+obs No new instrument was built and no booked red was taken, so no claim was opened on the fleet board.
+rota none -- one read-only grade pass over four front pages; no council row was read this lap
+orbit round 15 sign -- sign and verb not read this lap (spellbook table not opened)
+file session-logs/date/20261010/20261010-101702_petrichor-front-doors-graded-b-or-better-no-molt.kyri the log of this lap, the only artifact
+file session-logs/date/README-index-20261010.md the shelf row for this log, prepended under the delimiter
+scope four read-only Door grades of the newcomer front pages; no page written, no molt, no code touched
+status GREEN -- all four pages read B or better at Door (counted truth, service supplied as 70); no finding lifted; docs-geode queue still empty per its inner prompt
+recommend keep-going -- the audit queue is empty; the next move waits on a named door or on Diffuser's Consent Rail gate

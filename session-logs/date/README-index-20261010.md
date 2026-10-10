@@ -56,6 +56,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.101702` | [Petrichor, front doors graded B+ or B](20261010/20261010-101702_petrichor-front-doors-graded-b-or-better-no-molt.kyri) | Four Door grades, all B or better; no molt. |
 | `20261010.100815` | [Copal, roster fruit red](20261010/20261010-100815_copal-roster-fruit-both-red-claim-closed.kyri) | Both candidates red, already booked; claim closed; nothing rostered. |
 | `20261010.100721` | [Incense, receipt board green, no build](20261010/20261010-100721_incense-receipt-board-green-no-build.kyri) | Case board GREEN, braid unbraided; no build. |
 | `20261010.100627` | [Pheromone, hold, glow witness green](20261010/20261010-100627_pheromone-hold-glow-refusal-witness-green.kyri) | Lane empty; witness re-run GREEN; no build. |
