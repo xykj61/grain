@@ -7,6 +7,7 @@
 | `20261009.220907` | [Petrichor hold after pull](20261009/20261009-220907_petrichor-hold-after-pull-no-build.kyri) | Peer commits pulled; gate unchanged; no build. |
 | `20261009.221036` | [Hardware counter readable here](20261009/20261009-221036_hardware-counter-readable.kyri) | cache-misses opens and reads on this guest; falsifier unrun. |
 | `20261009.220955` | [Incense hold, claim board clear, no build](20261009/20261009-220955_incense-hold-claim-board-clear-no-build.kyri) | Round-open on the anointed order; claim board clear; no ruled fruit; no build. |
+| 20261009.221419 | [Patchouli queue still empty](20261009/20261009-221419_patchouli-queue-empty-fresh-class-read.kyri) | Header grep: four elder read-compat arms only; no build. |
 | 20261009.221056 | [Beading self-test split](20261009/20261009-221056_beading-selftest-split.kyri) | Two seams out of mantra/beading.rye; 209 to 133 lines; GREEN. |
 | 20261009.221503 | [Pheromone hold, no ruled fruit](20261009/20261009-221503_pheromone-hold-no-ruled-fruit.kyri) | Lane has no ruled fruit; no build. |
 | 20261009.220723 | [Pheromone hold, fresh read, no build](20261009/20261009-220723_pheromone-hold-lane-empty-fresh-read.kyri) | Lane empty; board one live claim; no build. |
