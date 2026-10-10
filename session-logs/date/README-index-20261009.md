@@ -10,6 +10,7 @@
 | `20261009.215137` | [Patchouli queue empty, fresh net](20261009/20261009-215137_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; header net and claim board clean; no build. |
 | `20261009.215110` | [Stencil sweep prefers the row band](20261009/20261009-215110_stencil-row-band-fruit.kyri) | Row band of 3N/16 lines; Z-order wins only below it. |
 | `20261009.215043` | [Pheromone hold, lane empty, no build](20261009/20261009-215043_pheromone-hold-no-build-lane-empty.kyri) | No ruled fruit; ruling waits on Incense; no build. |
+| `20261009.214919` | [Incense sixty-second hold, no build](20261009/20261009-214919_incense-sixty-second-hold-no-build.kyri) | Round-open clean; held per order; stash-only work flagged for Keaton; no build. |
 | `20261009.214902` | [Queue empty, nib repaired](20261009/20261009-214902_queue-empty-nib-repair.kyri) | Queue empty a twenty-second way; card nib repaired by follow-up; no code moved. |
 | `20261009.214700` | [Bakery key binary per ship](20261009/20261009-214700_bakery-key-binary-per-ship.kyri) | Key holds each ship's rye binary; no build. |
 | `20261009.214545` | [Petrichor round 16 hold](20261009/20261009-214545_petrichor-round-16-hold-upstream-diffuser-only-no-build.kyri) | Upstream diffuser only; no build. |
