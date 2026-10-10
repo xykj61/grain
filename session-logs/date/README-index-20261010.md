@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.055043` | [Petrichor, gate still shut](20261010/20261010-055043_petrichor-gate-still-shut-repeat.kyri) | Gate shut; no upstream change; log only. |
 | `20261010.054835` | [Grass, queue empty](20261010/20261010-054835_grass-inner-empty-queue-no-conversion.kyri) | No booked conversion; no edit. |
 | `20261010.054927` | [Patchouli, queue empty, twenty-seventh](20261010/20261010-054927_patchouli-queue-empty-twenty-seventh-way.kyri) | No header left in mantra or tally; no build; check-in named. |
 | `20261010.054602` | [Bakery, hold stands on the receipt key ruling](20261010/20261010-054602_bakery-hold-receipt-key-ruling.kyri) | Card and inner read; no mechanical lap; no build; check in on the receipt key. |
