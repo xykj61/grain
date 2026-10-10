@@ -13,6 +13,8 @@
 | 20261010.003113 | [water intake](20261010/20261010-003113_petrichor-water-row-intake-link-sweep.kyri) | Petrichor intake: docs-geode links resolve; no fruit |
 | 20261010.003003 | [hold](20261010/20261010-003003_diffuser-hold-no-agent-fruit.kyri) | Diffuser hold: no agent-doable fruit, claim board empty; next waits on Keaton; no build |
 | 20261010.002859 | [log](20261010/20261010-002859_incense-round-open-decline-law-waits.kyri) | Incense round-open clean, board clear, law lane held on Keaton's word; no build |
+| 20261010.003327 | [hold](20261010/20261010-003327_pheromone-hold-lane-empty-witness-green.kyri) | Pheromone hold: lane empty, limb10 GREEN, no build |
+| 20261010.002734 | [log](20261010/20261010-002734_grass-door-grade-all-a.kyri) | Grass door grade: five touched docs all A, no lift |
 | 20261010.002854 | [hold](20261010/20261010-002854_bakery-hold-receipt-key-fifth-read.kyri) | Bakery hold: receipt key still unruled; no build |
 | 20261010.002802 | [log](20261010/20261010-002802_patchouli-queue-empty-classes-clean.kyri) | Patchouli queue empty; TAME bans, parseInt, memcpy clean in lane; no build |
 | 20261010.002734 | [log](20261010/20261010-002734_grass-door-grade-all-a.kyri) | Grass door grade: five touched docs all A, no lift |
