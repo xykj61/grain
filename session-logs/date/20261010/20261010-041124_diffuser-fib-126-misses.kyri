@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261010.041124
+editor Claude Code, grain-diffuser tree (Diffuser seat)
+provider Anthropic
+product Claude Code
+role diffuser moonshots and research, one lap
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status tracked .claude/settings.json default, resolved by tools/fixtures/d/declared_model.sh; not runtime telemetry
+voice Kyri
+host anonymized Linux pier, America/New_York clock
+title diffuser fib family misses at one hundred twenty-six lines
+prompt baton with diffuser inner prompt; take the next fruit the top revision names
+think read the newest fruit, the bit-mix paper at 20261010.040441, whose next doors are a 127-line layout and a third index family at 126 lines
+think chose the third index family: it is structurally different from fold (xorshift) and mix (two multiply-xorshift rounds), and it stays in the same scratch model
+think falsifier written into the script header after the clock read 20261010.041058 and before the run; three branches named: fib reaches floor on all seeds, fib misses on all seeds, mixed
+think ran python3 -I run_r3_fib_21x6.py, 24 seeds, exit 0; every seed misses, row-major 0.0060 to 0.0076 against 0.0025
+think miss branch holds: the 126 miss now spans three index functions, so it reads as a capacity property of this model at 21 by 6
+obs scratch only, no hardware claim; three index functions is a small sample, one LRU policy, one stencil, one visit order
+obs 127-line layout not run: no clean way count exists at 127, so its falsifier has to be written before the layout is chosen; left as the next door
+loom witness=diffuser_fib_21x6 seeds=24 lines=126 rowmajor_min=0.0060 rowmajor_max=0.0076 compulsory=0.0025
+rota none -- pure scratch-model fruit under the diffuser inner prompt; no council row deep-read this lap
+orbit round 6 sign -- Virgo, law, what must stop: stop widening the sweep at three families and name the 127-line layout as the next door
+file active-designing/date/20261010/20261010-041124_the-fib-family-also-misses-at-one-hundred-twenty-six-lines.md the paper: falsifier, result, confidence, next door
+file session-output/diffuser-stencil-r3/run_r3_fib_21x6.py the scratch script with the falsifier header (untracked, gitignored)
+file session-output/diffuser-stencil-r3/run_256_r3_fib_21x6_24.txt the 24-seed output (untracked, gitignored)
+file recursion-prompts/diffuser-inner.md revised line at the top naming the paper
+scope the fib family at 126 lines under 21 by 6, 24 seeds, scratch model only
+status GREEN as a scratch fruit: falsifier written before the run, miss branch read on all 24 seeds; the 127-line layout not run; no witness, no tools/ instrument
+recommend kg -- next fruit is the 127-line layout, its falsifier written first
