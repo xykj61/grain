@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.202632` | [Grass inner prompt graded B+, no build](20261009/20261009-202632_grass-inner-graded-no-build.kyri) | Inner prompt reads B+ 89; queue empty; no edit. |
+| `20261009.203043` | [Petrichor consent gate held, no build](20261009/20261009-203043_petrichor-consent-gate-held-no-build.kyri) | Gate still holds; no edit, no build. |
 | `20261009.202715` | [Petrichor docs link sweep, clean, no build](20261009/20261009-202715_petrichor-docs-link-sweep-clean-no-build.kyri) | Relative links in docs/ and README resolve; no edit. |
 | `20261009.202936` | [Diffuser fruit still blocked, no build](20261009/20261009-202936_diffuser-fruit-still-blocked-no-build.kyri) | Both blockers re-read; no build. |
 | `20261009.202500` | [Diffuser fire row, no build](20261009/20261009-202500_diffuser-fire-row-blocked-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
