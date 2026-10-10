@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.102201
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role copal bench, grain-copal tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5 (from tools/fixtures/d/declared_model.sh resolved_model; not runtime telemetry)
+configured_status configured default, read from this clone's resolved value, not verified against the running session
+voice Kyri
+host Linux bench, one-clock zone America/New_York
+title Copal, unrostered fruit all red, held
+prompt Baton and copal inner prompt: take one unrostered tools/gen/chapter/ witness, claim it, roster it, prove it from both sides.
+think Read copal-inner.md and the card. The fruit names one unrostered witness; comm against the roster paths leaves three.
+think Ran the three candidates on metal before rostering. remember_pin_history_tidy_witness reds: its habit-count python and backup branch are gone. REDS row OPEN already names it, awaiting Keaton's word on retirement.
+think sunn14_witness_choir reds on the living SOURCE thickness leg. It is SUNN's choir, outside copal's lane, and REDS %837 holds it OPEN.
+think instrument_suite_witness reds on the fascia_health floor, 40 against 41. REDS %838 and card line 183 hold it OPEN.
+think Rostering a red would turn the cold endurance run red for a fault this lap did not cause and cannot repair in its own lane. So nothing was claimed, rostered, or built.
+obs No code changed, so no claim was opened. The baton's ORDER clause asks a claim before a build, and a build never began.
+obs The inner prompt says "finish the merge in hand". No merge or rebase is standing: .git has no MERGE_HEAD and no rebase directories. Nothing was there to finish.
+obs Each unrostered witness is already booked red. A rostering lap could only close one by repairing it, and two of the three repairs are outside copal's lane.
+rota none -- fruit held; the chapter-witness ask has no green candidate in lane this lap
+orbit round 11 Aquarius -- one clear type, studied
+file session-logs/date/20261010/20261010-102201_copal-unrostered-fruit-all-red-held.kyri why this log, the held fruit, and the three red candidates
+file session-logs/date/README-index-20261010.md why the one-row index entry for this log
+scope roster only; no witness rostered, no source edited, no claim opened, no send attempted
+status HELD, no GREEN landed: 0 of 3 unrostered chapter witnesses were green; all three are already booked red (REDS OPEN)
+recommend check-in (Claude) -- which of the three red witnesses to take first, and whether remember_pin_history_tidy_witness should be retired (its retirement awaits Keaton's word per REDS OPEN)
