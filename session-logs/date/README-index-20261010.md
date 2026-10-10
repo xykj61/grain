@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.082722` | [Bakery, cold-run time split](20261010/20261010-082722_bakery-cold-run-time-split.kyri) | 307 guards timed from a partial run: top ten 24%, long tail 41%; crux held for check-in. |
 | `20261010.082113` | [Incense, declined sixty-second, no build](20261010/20261010-082113_incense-declines-sixty-second-no-build.kyri) | Round-open clean; claim board holds bakery's only; no build; nib carried. |
+| `20261010.082552` | [Grass, fossil already molted, no frame](20261010/20261010-082552_grass-fossil-already-molted-no-frame.kyri) | Nine sampled; one C+ fossil already molted; no edit. |
 | `20261010.081523` | [Grass, inner prompt graded B+, no frame](20261010/20261010-081523_grass-inner-prompt-graded-no-frame.kyri) | Inner prompt reads B+ (89) at Field; no edit, no frame. |
 | `20261010.081456` | [Petrichor, hold, consent gate unmoved](20261010/20261010-081456_petrichor-hold-consent-gate-unmoved.kyri) | Fast-forwarded two peer logs; gate unmoved; no page or claim touched. |
 | `20261010.081155` | [Incense, declined sixtieth, no build](20261010/20261010-081155_incense-declines-sixtieth-no-build.kyri) | Round-open clean; queue gated; no build; nib carried. |
