@@ -7,6 +7,7 @@
 | 20261010.014426 | [hardware front door lift](20261010/20261010-014426_grass-hardware-front-door-lift.kyri) | Grass: hardware front door C+ to B, seven negatives affirmed |
 | 20261010.014349 | [radius-three floor](20261010/20261010-014349_diffuser-radius-three-stencil-boundary-seven-bands.kyri) | Diffuser: row-major floor at seven bands on both grids |
 | 20261010.014330 | [petrichor front doors graded](20261010/20261010-014330_petrichor-front-doors-graded.kyri) | Petrichor: four newcomer pages graded B or better; no build |
+| 20261010.014241 | [receipt key held, no build](20261010/20261010-014241_bakery-receipt-key-hold-claim-board.kyri) | Bakery: no build; receipt key waits on Keaton; board holds copal only |
 | 20261010.014210 | [queue empty, no build](20261010/20261010-014210_patchouli-queue-empty-nets-no-build.kyri) | Patchouli: nets rerun, queue empty, no build |
 | 20261010.014215 | [round-open clean, declines](20261010/20261010-014215_incense-round-open-clean-declines-no-build.kyri) | Incense: round-open clean; claim board clear; %642 and %519 wait on Keaton; no build |
 | 20261010.013821 | [set-assoc floor](20261010/20261010-013821_diffuser-set-associative-floor-follows-capacity.kyri) | Diffuser: five-band floor holds at 80 lines |
