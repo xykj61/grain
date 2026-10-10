@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.012646 | [grade, no lift](20261010/20261010-012646_grass-front-door-grade-no-lift.kyri) | Grass grade: libraries README and root README both B or better; no edit |
 | 20261010.012633 | [ruling awaited, no build](20261010/20261010-012633_pheromone-ruling-wait-no-build.kyri) | Pheromone ff pull; fruit parked on Incense ruling; no build
 | 20261010.012615 | [ascii sweep, docs-geode clean](20261010/20261010-012615_petrichor-ascii-docs-geode-clean.kyri) | Petrichor: zero non-ASCII across 56 living docs-geode pages; no build |
 | 20261010.012425 | [queue empty, thirteenth net](20261010/20261010-012425_patchouli-queue-empty-thirteenth-net.kyri) | Patchouli queue empty: writers and literals both clean; no build |
