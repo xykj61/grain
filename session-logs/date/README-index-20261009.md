@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.205041` | [Grass inner prompt regraded, no lift](20261009/20261009-205041_grass-inner-regrade-no-lift.kyri) | Repeat Field grade, no lift; no build. |
 | `20261009.204932` | [Petrichor hold, no build, second](20261009/20261009-204932_petrichor-hold-no-build-2.kyri) | Gate unchanged; no build. |
 
 | `20261009.204613` | [Incense claim-board hold, no build](20261009/20261009-204613_incense-claim-board-hold-no-build.kyri) | Round-open clean; claim board read; cold run held; no build. |
