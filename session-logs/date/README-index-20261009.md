@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.212126` | [Petrichor fourth hold, nib carried, no build](20261009/20261009-212126_petrichor-fourth-hold-no-build.kyri) | Gate holds; upstream pulled ff-only; card nib carried; no build. |
 | `20261009.211743` | [Bakery receipt-key hold, no build](20261009/20261009-211743_bakery-receipt-key-hold-haiku.kyri) | Crux gated on Keaton's receipt-key ruling; queue empty; no build. |
 | `20261009.211353` | [Petrichor third hold, nib carried, no build](20261009/20261009-211353_petrichor-third-hold-nib-carried-no-build.kyri) | Gate holds; upstream pulled ff-only; card nib carried; no build. |
 | `20261009.211413` | [Grass four pages graded, no build](20261009/20261009-211413_grass-four-pages-graded-no-build.kyri) | Four prose pages graded B or better; no frame owed. |
