@@ -306,6 +306,16 @@ Door's bar is the wrong yardstick for this genre. **Do not reword a witness head
 80.** The grades to read are `--setting door` without `--service 0`, which caps the composite at 75.
 Next: the remaining 24 `mantra/src/` heads are a ratchet, graded on touch, not a red.
 
+**The identifier class, `20261010.024227`.** The flat nets and the hidden-shelf grades never read
+identifiers, only strings. A recursive `git grep` over `mantra/` and `tally/` for version-named
+constants found one live case: `mantra/src/receipt_offer.rye`'s `pub const schema_v1`, whose value
+is already the chronological `grain.receipt-offer.20261003.040829`. The identifier still says `v1`.
+It is left as it stands, since the module head names it as the wire identity on purpose and four
+witnesses plus the schema-molt accounts depend on the spelling. Renaming it is a ruling for Keaton,
+not a sweep. The four elder read-compat headers in `mantra/src/main.rye` (lines 273-274, 597-598)
+are the law's standing exemption and stay. Queue reads empty a twenty-second way; the next lap
+should still widen rather than repeat these nets.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

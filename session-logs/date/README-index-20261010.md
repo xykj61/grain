@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.024120 | [fire reading, held](20261010/20261010-024120_incense-round-held-fire-reading-4.kyri) | Incense: row 2 fire read, orbit 7 Libra, dead-letter box read, no build |
 | 20261010.023909 | [lane empty, no build](20261010/20261010-023909_pheromone-lane-empty-no-build.kyri) | Pheromone: stop condition held, no build, nib carried |
+| 20261010.024227 | [hidden-shelf sweep, schema_v1 flagged](20261010/20261010-024227_patchouli-hidden-shelf-schema-v1-flag.kyri) | Patchouli: recursive identifier net, queue empty, schema_v1 left for Keaton's ruling |
 | 20261010.023858 | [aether queue empty](20261010/20261010-023858_patchouli-aether-queue-empty-held.kyri) | Patchouli: aether row listens, queue empty, %807 waiting, no build |
 | 20261010.023858 | [grass audit, queue empty](20261010/20261010-023858_grass-audit-queue-empty-three-grades-no-build.kyri) | Grass: queue empty, three grades A or better |
 | 20261010.023726 | [held, no build](20261010/20261010-023726_incense-round-held-no-build-3.kyri) | Incense: round-open clean, board clear, order stands |
