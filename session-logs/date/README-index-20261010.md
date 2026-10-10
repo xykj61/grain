@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.044232 | [Pheromone, capacity GREEN](20261010/20261010-044232_pheromone-glow-capacity-held-ruling-open.kyri) | Witness GREEN; no build; ruling awaited. |
 | 20261010.043713 | [Diffuser, busiest window 127x1](20261010/20261010-043713_diffuser-busiest-window-127.kyri) | Windows crowd under hashes, controls flat; no build. |
 | 20261010.043642 | [Petrichor, gate holds after ff, nib carried](20261010/20261010-043642_petrichor-gate-holds-ff-three-nib-carried.kyri) | Petrichor: ff 5c4d4b9593; gate holds; no build. |
 | 20261010.043640 | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-043640_patchouli-queue-empty-fresh-class.kyri) | Recursive version-literal grep over mantra and tally; no candidate; no build. |

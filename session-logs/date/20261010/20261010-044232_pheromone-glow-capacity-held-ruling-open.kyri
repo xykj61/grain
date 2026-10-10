@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.044232
+editor product interface Claude Code (terminal, this thread)
+provider model provider Anthropic
+product product name Claude Code
+role repository role pheromone lane, Glow language and its molecules
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved by this clone; declared claude-opus-5 in .claude/settings.json)
+configured_reasoning medium
+configured_status configured default, not runtime telemetry
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Pheromone: capacity witness GREEN, next fruit awaits a ruling
+prompt Run the Pheromone baton lap: read the inner prompt, the card, and the running thread; act on what the lane can do.
+think The inner prompt names one fruit closed on 20261002 and says the next move is a scope question for Incense, not another re-check.
+think Re-running the capacity witness is the one fresh measurement the lap can take; it is cheap and it is what the inner prompt asks before any claim of GREEN.
+think The witness reads capacity_gap=0 and widest_type=ReceiptOfferFact at 15 fields, so the state matches the record.
+think No new instrument is opened and no booked red is taken, so no claim is required under the baton's ABSENCE clause.
+obs No Glow source changed this lap. A build would need a ruling the inner prompt says comes from the interactive bench.
+obs The day shelf already carries several queue-empty and hold logs from peers; this one adds a measured GREEN, not a new reading.
+loom witness=glow_shape_capacity_witness wall_ms=not_timed fields_widest=15 capacity_gap=0
+file tools/g/glow_shape_capacity_witness.rish why the one fresh GREEN read this lap, run before the claim of state
+file recursion-prompts/pheromone-inner.md why the lane's standing ruling and its open question
+scope read and witness only; no source, no rune, no rostered guard changed
+status GREEN -- glow_shape_capacity_witness verdict=within_capacity, capacity_gap=0, all four types expressible; lane open on a ruling, not built
+recommend check-in (Claude) -- the next fruit is a scope question for Incense (whether a new rune or a tracked Glow form is wanted); no build until that ruling
