@@ -1,0 +1,22 @@
+format session-log-v1
+stamp 20261010.082629
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role copal lane, grain-copal tree
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+title Copal, unrostered chapter witness -- all four candidates RED or unproven, no roster
+prompt Copal inner fruit: claim and roster one unrostered witness under tools/gen/chapter/, prove both sides.
+think Listed four unrostered chapter witnesses by diffing tools/gen/chapter names against construction/standing-equipment.kyri.
+think Ran each candidate. remember_pin_history_tidy RED at habit count. sunn14_witness_choir RED at living SOURCE thickness. surface_season_p54 GREEN only by skip (Wayland seed binary not built). instrument_suite RED: limb_e113_fascia_health exit nonzero.
+think No candidate is a clean roster target, so no claim was opened and no guard was added. Rostering a RED witness would hide the red.
+obs First attempt timed out at 300s and killed instrument_suite; a rerun without timeout gave the real verdict. The sunn14 glob missed its filename.
+loom witness=instrument_suite wall_ms=unmeasured limbs=10 pass=9 fail=1
+rota none -- fruit gated on candidate health this lap, no rota read
+orbit round unset -- lap made no change beyond this log
+status NOT GREEN -- no roster change; four candidates red or skipped; instrument_suite and sunn14 reds owed to their own laps
+file session-logs/date/20261010/20261010-082629_copal-witness-candidates-red.kyri -- the lap's own record
+recommend check-in (Claude) -- which red to book first: fascia health limb in instrument_suite, or pin tidy habit count
