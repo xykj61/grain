@@ -52,6 +52,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.100105` | [Pheromone, third hold, witness GREEN](20261010/20261010-100105_pheromone-hold-third-witness-green.kyri) | Lane empty; witness re-run GREEN; no build; awaits Incense.
 | `20261010.095723` | [Patchouli, twenty-eighth](20261010/20261010-095723_patchouli-queue-empty-twenty-eighth.kyri) | No build; %807 awaits ruling. |
 | `20261010.095640` | [Bakery, crux held](20261010/20261010-095640_bakery-crux-held-ruling-awaited.kyri) | No build; receipt key awaits Keaton's ruling; roster claim is copal's. |
 | `20261010.095347` | [Patchouli, queue empty, twenty-seventh](20261010/20261010-095347_patchouli-queue-empty-twenty-seventh.kyri) | Nets re-run, nothing new in mantra or tally; no build, log only. |
