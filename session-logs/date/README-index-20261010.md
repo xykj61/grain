@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.073521` | [Petrichor, hold, consent rail still gated](20261010/20261010-073521_petrichor-hold-consent-rail-red-carried.kyri) | Held; no claim, no page touched. |
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
