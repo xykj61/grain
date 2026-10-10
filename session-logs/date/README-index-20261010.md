@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001753 | [log](20261010/20261010-001753_grass-mycelium-yours-already-spent.kyri) | Grass mycelium YOURS already spent; four files B or better |
 | 20261010.001426 | [log](20261010/20261010-001426_patchouli-queue-empty-twenty-sixth-net.kyri) | Patchouli queue empty, twenty-sixth net; no build; check-in on %807 |
 | 20261010.001556 | [log](20261010/20261010-001556_grass-foundations-sweep-two-below-b.kyri) | Grass foundations sweep: 90 read, 2 below B, molt awaits word |
 | 20261010.001345 | [log](20261010/20261010-001345_petrichor-no-open-fruit-consent-gate-held.kyri) | Petrichor no open fruit; consent gate held; no build |
