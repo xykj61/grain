@@ -41,6 +41,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.094126` | [Bakery, crux held, no new hold](20261010/20261010-094126_bakery-crux-held-no-new-hold.kyri) | No build; receipt-key ruling still waits on Keaton. |
+| `20261010.093827` | [Petrichor, earth row, ff pull, no door](20261010/20261010-093827_petrichor-hold-earth-row-ff-pull.kyri) | Ff pull; no build; Consent Rail gate unmoved; log only. |
 | `20261010.093559` | [Bakery, hold, fast-forward, ruling unchanged](20261010/20261010-093559_bakery-hold-ruling-unchanged-no-build.kyri) | Fast-forward to 116397ece3; receipt-key ruling still unwritten; no build |
 | `20261010.093445` | [Grass, round ten, inner prompt graded B+](20261010/20261010-093445_grass-round-ten-inner-prompt-graded-bplus.kyri) | Field grade B+ at 89; no edit; cold run not launched, named in log. |
 | `20261010.093052` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-093052_patchouli-queue-empty-twenty-fifth.kyri) | Lane queue empty; two OPEN rows wait on Keaton; no build. |
