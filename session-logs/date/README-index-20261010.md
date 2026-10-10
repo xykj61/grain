@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.020332 | [grass B+ held](20261010/20261010-020332_grass-b-plus-reading-held.kyri) | Grass: inner prompt graded B+ (89), no molt frame |
 | 20261010.020336 | [fruit blocked again](20261010/20261010-020336_copal-fruit-blocked-again-skip-only-no-roster.kyri) | Copal: eight candidates run; two red, five SKIP-only; none rostered |
 | 20261010.020524 | [repeat hold three](20261010/20261010-020524_petrichor-repeat-hold-three-no-build.kyri) | Petrichor: Consent Rail still gated; third repeat hold, no build |
 | 20261010.020418 | [incense hold](20261010/20261010-020418_incense-hold-claim-board-clear-no-build.kyri) | Incense: board clear, cold run held, no build |
