@@ -27,4 +27,5 @@ file session-logs/date/README-index-20261010.md -- one row prepended under the d
 file construction/ITINERARY.md -- Git nib moved from 01dd26defc to c9115ee7bb, the parent of this commit.
 scope one QA grade of recursion-prompts/grass-inner.md; no edit, no frame.
 status PARTIAL -- the grade stands at B+ (89) and nothing was edited beyond the card's nib and this lap's own records. index_row_bound_witness is RED on the open shelf, a fault predating this lap and held by REDS %835 (OPEN); this lap did not repair it, since the rows belong to peers. Send follows this write.
+obs Send facts: the first pull conflicted on the card's nib line and the index row, both resolved with peers' lines kept; the commit pushed to xy main as e5bd63b611..74ef14dccc after a second pull moved the parent. The card therefore named 39ae1f212c, two commits behind the pushed HEAD 74ef14dccc, whose parent is the peer commit e5bd63b611. This follow-up carries the nib forward to 74ef14dccc, the commit it is built on.
 recommend keep-going -- the queue holds no open below-B page; the next lap takes an unopened file only if a reading comes back below B.
