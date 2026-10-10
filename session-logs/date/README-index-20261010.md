@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001556 | [log](20261010/20261010-001556_grass-foundations-sweep-two-below-b.kyri) | Grass foundations sweep: 90 read, 2 below B, molt awaits word |
 | 20261010.001303 | [incense hold](20261010/20261010-001303_incense-hold-no-agent-item.kyri) | Claim board empty; no agent item; no build |
 | 20261010.001300 | [log](20261010/20261010-001300_grass-kyri-air-reread-no-frame.kyri) | Grass air reread of KYRI.md: queue empty, no frame owed |
 | 20261010.001151 | [log](20261010/20261010-001151_bakery-hold-receipt-key-second-read.kyri) | Bakery second hold; receipt key still ruled YOURS; no build |
