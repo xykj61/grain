@@ -11,6 +11,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.081724` | [Patchouli, queue empty, fresh net](20261010/20261010-081724_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; claims owned elsewhere; no build. |
 | `20261010.081216` | [Grass, three heads re-graded](20261010/20261010-081216_grass-warrant-till-rehearsal-regraded.kyri) | All three at B or better; no frame, no edit. |
 | `20261010.080613` | [Grass, four doors graded, no frame](20261010/20261010-080613_grass-doors-no-frame.kyri) | All four read B+ or better; no molt owed. |
 | `20261010.080600` | [Petrichor, hold, consent rail still gated](20261010/20261010-080600_petrichor-hold-consent-rail-still-gated.kyri) | Upstream read clean; no target; held, nothing built. |
