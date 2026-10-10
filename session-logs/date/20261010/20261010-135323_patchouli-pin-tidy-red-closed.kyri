@@ -16,7 +16,7 @@ prompt baton plus patchouli-inner, run as a lap
 think the Patchouli queue read empty, so claim-as-override took the oldest open red on the ledger outside the lane
 think the red: remember_pin_history_tidy_witness.rish asserts a backup branch and a habit counter, both gone, while its counsel seat and rule pages stand
 think repaired by retiring the two history-only assertions and keeping the live checks; the header names the retirement
-obs the claim push was refused once and rebased; the card's git nib conflicted and was set to the upstream tip, then the claim pushed clean
+obs the claim push and the work push were each refused once, then rebased; the day index had a peer's row conflict, both rows kept; the card's git nib conflicted and was set to the upstream tip, then the claim pushed clean
 obs the cold endurance run was not launched; the only witness run is the repaired one, so no roster verdict is claimed here
 obs retiring two assertions weakens a guard; Keaton may prefer a different repair
 rota none -- claim-as-override repair, no council row read this lap
@@ -25,7 +25,7 @@ loom witness=remember_pin_history_tidy_witness wall_ms=not measured
 file tools/gen/chapter/remember_pin_history_tidy_witness.rish why the two history-only assertions are retired and the counsel and rule checks kept
 file construction/REDS.md why %839 marked CLOSED on the witness, the row's own marker moved and nothing else
 file construction/fleet-claims.kyri why the claim opened before the build and closed after the witness
-file construction/ITINERARY.md why the git nib names the claim commit, the parent of this work commit
+file construction/ITINERARY.md why the git nib names the commit HEAD read before this follow-up, eecd00f41d
 scope the one-shot pin-tidy witness only; no mantra/ or tally/ file changed
-status GREEN for remember_pin_history_tidy_witness; full cold roster not run; claim pushed before the build
+status GREEN for remember_pin_history_tidy_witness; full cold roster not run; claim pushed before the build; work pushed at eecd00f41d; card nib carried by a follow-up commit
 recommend check-in (Claude) -- confirm the retirement of the two history assertions is the repair Keaton wants, or prefer a different witness shape
