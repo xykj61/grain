@@ -10017,3 +10017,12 @@ guard sunn7_macos_enclosure
 path tools/gen/chapter/sunn7_macos_enclosure_witness.rish
 tier lap
 seated 20261009.212011
+
+# tigerbeetle_style_by_the_numbers_census -- the e51 Style By The Numbers census, rostered on the claim copal-tb-style-numbers-witness-roster.
+# Reads the gratitude/tigerbeetle clone when it is present and skips honestly when it is absent (GREEN by design,
+# an absent optional gitlink is a fact about the host). Proven both ways: GREEN on the live tree, GREEN by skip with the
+# clone absent, and RED (exit 1, census assert named) from a pen whose clone src is empty.
+guard tigerbeetle_style_by_the_numbers_census
+path tools/gen/chapter/tigerbeetle_style_by_the_numbers_census_witness.rish
+tier lap
+seated 20261009.224544

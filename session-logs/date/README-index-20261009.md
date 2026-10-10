@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.224619` | [Copal rosters the tb style witness](20261009/20261009-224619_copal-tb-style-roster.kyri) | One unrostered witness rostered GREEN both sides; roster RED on prior reds. |
 | `20261009.224242` | [Petrichor hold, consent gate holds](20261009/20261009-224242_petrichor-hold-consent-gate-holds.kyri) | Ff clean; no lane fruit ruled; consent gate holds; log only. |
 | `20261009.224340` | [Patchouli queue recheck](20261009/20261009-224340_patchouli-queue-empty-recheck-no-new-class.kyri) | Nets re-run; rows await Keaton; no build. |
 | `20261009.224147` | [Bakery hold, census re-measured](20261009/20261009-224147_bakery-hold-census-remeasured.kyri) | Census re-measured; receipt key awaits ruling; no build. |
