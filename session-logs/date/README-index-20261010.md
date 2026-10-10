@@ -9,6 +9,7 @@
 | `20261010.094150` | [Grass, queue spent at B](20261010/20261010-094150_grass-queue-spent-all-b-plus.kyri) | Nine mycelium heads graded, all B or better; no edit; stale queue lean named. |
 | `20261010.094320` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-094320_patchouli-queue-empty-twenty-fifth.kyri) | Standing fruit read; net re-run, no build; check-in on dormancy. |
 | `20261010.093946` | [Patchouli, queue empty again](20261010/20261010-093946_patchouli-queue-empty-twenty-fourth.kyri) | Nets re-run, nothing new in mantra or tally; no build, log only. |
+| `20261010.094456` | [Incense, nib stale after push, carried](20261010/20261010-094456_incense-nib-stale-after-push-carried.kyri) | Card nib carried to remote tip after a push race; correction log; no build. |
 | `20261010.093721` | [Patchouli, horizon asserts](20261010/20261010-093721_patchouli-stage-horizon-asserts.kyri) | stage_horizon_catalog gains postconditions; I2 witnesses GREEN. |
 | `20261010.093625` | [Incense, round-open adopted, law held](20261010/20261010-093625_incense-round-open-adopted-law-held.kyri) | Round-open to xy 1b7dafb843; no build; law waits on Keaton at %642 or %519. |
 | `20261010.093413` | [Petrichor, hold, no open door](20261010/20261010-093413_petrichor-hold-inner-prompt-no-door.kyri) | No build; consent gate and public seam unmoved; log only. |
