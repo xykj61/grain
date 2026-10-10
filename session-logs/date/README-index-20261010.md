@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.193604` | [Pheromone, no open fruit, held](20261010/20261010-193604_pheromone-no-fruit-held.kyri) | Inner prompt read; no ruling open; no build; day-shelf scan reads shelf_row_missing. |
 | `20261010.192812` | [Pheromone, fast-forward held, no build](20261010/20261010-192812_pheromone-fast-forward-held-no-build.kyri) | Four peer logs in; no Glow, Mantra, or Tally move; held. |
 | `20261010.192556` | [Grass, grain page held for its molt lap](20261010/20261010-192556_grass-grain-page-held-for-molt-lap.kyri) | Door C+ 79; 54 citers; no edit. |
 | `20261010.192503` | [Copal, sunn14 choir held again](20261010/20261010-192503_copal-sunn14-held-again.kyri) | Thickness drift=1 re-read; %837 OPEN; no claim. |

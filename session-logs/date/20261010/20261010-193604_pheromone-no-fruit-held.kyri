@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.193604
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role pheromone seat, grain-pheromone tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 per tools/fixtures/d/declared_model.sh resolved_model (not re-run this lap)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host Linux 6.18.41, one-clock America/New_York
+title Pheromone lane: no open fruit, no build, held
+prompt the pheromone baton loop ("ty every1 baton prin recur")
+think read recursion-prompts/pheromone-inner.md: the shape fruit closed 20261002.144821 and the tenth refusal pedestal closed 20261003; the inner prompt says a fifth re-check of GREEN teaches nothing, and the next move needs a ruling from Incense.
+think read construction/ITINERARY.md pheromone entries: the last lane notes name closed checkpoints; no open pheromone fruit is booked for this lap.
+think did not re-run the limb witnesses: the inner prompt names re-checks as non-news, and the tree is clean at dbf092a2f3.
+think the day-shelf scan reads verdict=shelf_row_missing, newest_shelf=20261010, flat_logs=0; the open shelf row is present in the pin, so the miss sits outside this lane and is named here rather than repaired.
+obs no fruit was ruled, so the lap writes a log and nothing else.
+obs rota none -- lap read the inner prompt and card only; no council row deep-read this lap.
+obs no claim filed: no new instrument, no booked red taken.
+file recursion-prompts/pheromone-inner.md why the lane's closed fruit and next-ruling gate were read
+file construction/ITINERARY.md why the pheromone entries were checked for an open booked lap
+file tools/fixtures/l/log_has_a_row_scan.sh why the day-shelf verdict was read (shelf_row_missing, not repaired here)
+scope read-only lane check plus this session log
+status GREEN for the lane read; no witness re-run; day-shelf scan reads shelf_row_missing, not owned by this lap
+recommend check in (Claude) -- the next pheromone move needs Incense's ruling on the untracked receipt-offer desk, and the scan miss needs a hand to decide its owner
