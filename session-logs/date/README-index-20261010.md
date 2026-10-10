@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.013641 | [Grass inner regraded, no lift](20261010/20261010-013641_grass-inner-regraded-no-lift.kyri) | Inner page re-graded B+/89, unchanged; no lift, no build. |
 | 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
 | 20261010.013350 | [20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri](20261010/20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri) | queue empty, fresh net, no build |
 | 20261010.013259 | [decline](20261010/20261010-013259_incense-decline-upstream-two-peer-logs.kyri) | Incense decline: two peer logs fast-forwarded, one live claim (copal), no build |
