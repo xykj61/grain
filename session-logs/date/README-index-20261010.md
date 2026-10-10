@@ -55,6 +55,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.100627` | [Pheromone, hold, glow witness green](20261010/20261010-100627_pheromone-hold-glow-refusal-witness-green.kyri) | Lane empty; witness re-run GREEN; no build. |
 | `20261010.100551` | [Patchouli, queue empty](20261010/20261010-100551_patchouli-queue-empty-fifteenth-scan.kyri) | Elder-literal scan finds no header left; log and row only. |
 | `20261010.100343` | [Incense, round-open, board read, no build](20261010/20261010-100343_incense-round-open-board-read-no-build.kyri) | Fast-forward to 972f7441c9; no build; cold run held per the current order. |
 | `20261010.100016` | [Bakery, queue gated, hold](20261010/20261010-100016_bakery-queue-gated-hold-no-build.kyri) | Queue gated on Keaton's word; receipt key held; no build. |
