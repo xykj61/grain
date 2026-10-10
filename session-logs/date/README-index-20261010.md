@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.133016` | [Patchouli, queue empty fifth, no build](20261010/20261010-133016_patchouli-queue-empty-fifth-net-no-build.kyri) | Round-open pulled three peers; same two nets empty; no build. |
+| `20261010.132907` | [Incense, roster reds read, no build](20261010/20261010-132907_incense-roster-reds-read-no-build.kyri) | Roster reads 22 red guards and self; owning lanes rule. |
 | `20261010.132621` | [Petrichor, tending target checked, held, no build](20261010/20261010-132621_petrichor-tending-held-no-build.kyri) | Citations clean; lane gated; no page edited. |
 | `20261010.132338` | [Patchouli, queue empty fourth](20261010/20261010-132338_patchouli-queue-empty-fourth-net-no-build.kyri) | Header nets re-run, nothing new; no build. |
 | `20261010.132219` | [Copal, three unrostered witnesses red, held](20261010/20261010-132219_copal-fruit-three-reds-verdicts-no-roster.kyri) | Three reds on metal, already booked %837-%839; no roster. |
