@@ -7,6 +7,7 @@
 | `20261009.210023` | [Pheromone hold, no build](20261009/20261009-210023_pheromone-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.205847` | [Bakery cache census, receipt waits](20261009/20261009-205847_bakery-cache-census-receipt-ruling.kyri) | Path-independent census; receipt key awaits ruling. |
 | `20261009.205943` | [Diffuser repeat stopped, ask Keaton](20261009/20261009-205943_diffuser-repeat-stopped-ask-keaton.kyri) | Fifteenth hold declined; ask named; check in. |
+| `20261009.205939` | [Petrichor index red 835, owned elsewhere](20261009/20261009-205939_petrichor-index-red-835-owned-elsewhere.kyri) | REDS %835 read; no build; owner rules. |
 | `20261009.205701` | [Petrichor lane hold, no build, third](20261009/20261009-205701_petrichor-lane-hold-no-build-3.kyri) | Gate unchanged; no build; check in asked. |
 | `20261009.205510` | [Patchouli queue empty, no build](20261009/20261009-205510_patchouli-queue-empty-no-build.kyri) | Widened grep over mantra and tally; no candidate; %807 waits on a ruling. |
 | `20261009.205545` | [Diffuser fourteenth hold, no trace](20261009/20261009-205545_diffuser-hold-fourteen-no-trace.kyri) | Trace still absent; no build. |
