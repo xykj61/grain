@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.103952` | [Petrichor, consent gate shut, third ff](20261010/20261010-103952_petrichor-hold-consent-gate-third-ff.kyri) | Ff to 30f8764ff3; no build; gate holds. |
+| `20261010.104417` | [Patchouli, queue empty, twenty-first](20261010/20261010-104417_patchouli-queue-empty-twenty-first-net.kyri) | Fresh net and open reds read; no build; log and row only. |
 | `20261010.103739` | [Incense, round-open hold, no build](20261010/20261010-103739_incense-round-open-hold-no-build.kyri) | Round-open reset; hold for Keaton's word; no build. |
 | `20261010.103707` | [Bakery, crux held at receipt-key ruling](20261010/20261010-103707_bakery-crux-held-ruling-waits.kyri) | Ff to 62fee4c281; claim live; no build; ruling waits. |
 | `20261010.103519` | [Grass, inner page graded B+, no molt](20261010/20261010-103519_grass-inner-grade-b-plus-no-molt.kyri) | Read-only grade of the open inner page, B+ 89; no molt, no edit. |
