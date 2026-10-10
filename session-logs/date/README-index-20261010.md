@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.062639` | [Copal, instrument-suite held, fascia red](20261010/20261010-062639_copal-instrument-suite-held-fascia-red.kyri) | Claim landed; roster reverted; e113 fascia 37 of 41 held; no floor lowered. |
 | `20261010.062612` | [Bakery, hold after ff](20261010/20261010-062612_bakery-hold-after-ff.kyri) | Four peer logs fast-forwarded, no code; receipt-key ruling still owed. |
 | `20261010.062534` | [Patchouli, queue empty](20261010/20261010-062534_patchouli-queue-empty-fresh-header-scan.kyri) | Fresh header scan: elder read-compat only; no code. |
 | `20261010.062519` | [Grass, docs-geode front door, A](20261010/20261010-062519_grass-docs-geode-front-door-grade.kyri) | Graded `docs-geode/README.md` A/94; truth counted; no edit. |
