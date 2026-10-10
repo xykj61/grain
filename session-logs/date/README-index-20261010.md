@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward; claim verified; crux held. |
 | `20261010.073147` | [Copal, surface p56 rostered](20261010/20261010-073147_copal-surface-p56-roster.kyri) | One unrostered witness rostered, proven both sides. |
+| `20261010.073107` | [Petrichor, hold, index red on peers](20261010/20261010-073107_petrichor-hold-index-red-peers.kyri) | Held; no claim, no page touched. |
 | `20261010.072252` | [Patchouli, assert density](20261010/20261010-072252_patchouli-assert-density-parse-head-record.kyri) | Fresh class; one parser given invariants. |
 | `20261010.072648` | [Copal, instrument suite held RED](20261010/20261010-072648_copal-instrument-suite-red-held.kyri) | Fascia leg 37 under floor 41; claim closed; no roster edit. |
 | `20261010.072628` | [Incense, round ten decline](20261010/20261010-072628_incense-round-ten-decline.kyri) | Fast-forward to f5ddc40fb1; claim board clear of this lane; no build behind the human word |
