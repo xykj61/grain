@@ -340,6 +340,20 @@ a separate citation repair.
 
 **The stale citation closed, `20261010.050440`.** `mantra/src/weave_v2_witness.rye` cited `weave.rye:1063` for the 20260912 overflow, and that line had drifted to 1619. The dated proof stays; the citation now names `Weave.apply`'s `next_pos += 1` by function. `mantra_weave_v2_witness` reads GREEN. The cold roster was not run this lap, and the queue still reads empty.
 
+**A fresh class, measured `20261010.084105`: contract asserts.** The version nets and the tidy
+bans said nothing about whether a function states its invariants. A brace-depth walk over the 79
+tracked `mantra/` and `tally/` Rye files (772 functions, witnesses included) counts **321 with no
+`assert(` in the body** and **459 with fewer than two**. Excluding witness, self-test, demo, and
+runner names leaves **188** production-like functions with zero asserts. The largest are
+`mantra/resin_batch.rye` `build_batch` (64 lines), `mantra/snapshot_export.rye`
+`stage_horizon_catalog` (54) and `import_catalog` (39), and `mantra/recall_batch_wire.rye` `feed`
+(42). **The rule that governs them is a ratchet, not a red:** the SLC definition of done asks two
+asserts on every new or *touched* function, so an untouched function owes nothing and books no
+row. Adding asserts across 188 functions in one sweep would edit a wire path and a snapshot path
+in one lap, which is the broad move that wants Keaton's word rather than a lap of its own. The
+figures are free: rerun the walk rather than trusting this paragraph. The next lap that touches
+one of those functions adds its two asserts with it.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

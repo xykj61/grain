@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.084105` | [Patchouli, assert class measured](20261010/20261010-084105_patchouli-assert-class-measured.kyri) | 188 functions lack asserts; ratchet on touch, no red; check-in asked. |
 | `20261010.083439` | [Grass, three prose pages A](20261010/20261010-083439_grass-three-prose-pages-graded-a.kyri) | Three pages read A; no frame; repeat finding. |
 | `20261010.083334` | [Petrichor, hold, fast-forwarded, gate unmoved](20261010/20261010-083334_petrichor-hold-fast-forward-gate-unmoved.kyri) | Fast-forwarded one patchouli log; gate unmoved; no page or claim touched. |
 | `20261010.082722` | [Bakery, cold-run time split](20261010/20261010-082722_bakery-cold-run-time-split.kyri) | 307 guards timed from a partial run: top ten 24%, long tail 41%; crux held for check-in. |
