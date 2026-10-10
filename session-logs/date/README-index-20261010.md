@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.033102` | [held, claim first, no build](20261010/20261010-033102_bakery-held-claim-first-no-build.kyri) | Bakery: round-open clean, claim board read, no build. |
 | `20261010.033012` | [queue empty, widened, GREEN](20261010/20261010-033012_patchouli-queue-empty-widened-lane-green.kyri) | Patchouli: lane witnesses re-run GREEN, queue still empty, no build. |
 | `20261010.032257` | [queue empty, proof held](20261010/20261010-032257_patchouli-queue-empty-receipt-proof-held.kyri) | Patchouli: receipt proof GREEN, no build. |
 | `20261010.032753` | [fold, second generator, 14 sets](20261010/20261010-032753_diffuser-fold14-second-generator.kyri) | Diffuser: 24 SplitMix seeds, still no floor |
