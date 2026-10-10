@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.003718 | [hold](20261010/20261010-003718_diffuser-hold-msr-still-shut.kyri) | Diffuser hold: msr door re-read, still shut; no build |
 | 20261010.003359 | [hold](20261010/20261010-003359_diffuser-hold-blockers-unchanged.kyri) | Diffuser hold re-read: msr still absent, no caller trace; next waits on Keaton; no build |
 | 20261010.003338 | [log](20261010/20261010-003338_patchouli-queue-still-empty-recheck.kyri) | Patchouli queue still empty on re-check; no build |
 | 20261010.003314 | [log](20261010/20261010-003314_grass-merit-ledger-lift.kyri) | Grass merit-ledger lift: D+/69 to A/93, one foundation rewritten; no witness touched |

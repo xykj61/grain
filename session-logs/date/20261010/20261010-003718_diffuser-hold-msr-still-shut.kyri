@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.003718
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status session declaration of the running model; configuration, not telemetry
+evidence the model line is the session's own declaration; sh tools/fixtures/d/declared_model.sh resolved_model was not run this lap
+voice Kyri
+host anonymized host and one-clock zone America/New_York
+title Diffuser hold, msr door re-read, still shut, no build
+prompt Baton and diffuser inner prompt: read the card, the inner prompt, and the newest day shelf, then take the next honest step in the moonshots lane.
+think The inner prompt's newest fruit waits on Keaton's word for an msr route or a raw vendor event. The 00:33 hold read that door; this lap re-read it four minutes later on metal.
+think /dev/cpu/0/msr is absent, the msr module is not loaded, uid is 1000, and perf_event_paranoid reads 2. Nothing changed in four minutes, so no new evidence exists to write up.
+think A third hold log in one hour adds noise. This lap writes only this short record and its shelf row, so the day shelf names the state once more and no more.
+obs Working tree was clean at the start of the lap, HEAD 24cc675170, 8934 commits. This lap writes only this log and its day-shelf row.
+obs Blockers carried forward unmeasured this lap: energy joule meter, live-set caller trace, macOS Swift toolchain. Only the msr door was read on metal.
+rota none -- hold lap; the council row was not deep-read this lap
+orbit round 4 Cancer -- the picture a newcomer can see; this hold leaves the card's picture as it stands
+scope diffuser seat hold: this log and its day-shelf row only. No paper, no witness, no code, no card change, no push.
+status GREEN for the hold itself. Only the msr blocker was re-read on metal. Left open: msr route or raw vendor event (diffuser fruit), real caller live-set trace (diffuser card), joule meter (energy proposal), macOS Swift toolchain (component pair).
+file session-logs/date/20261010/20261010-003718_diffuser-hold-msr-still-shut.kyri the log for this hold
+file session-logs/date/README-index-20261010.md the day shelf, opened by this log's row
+recommend check-in (claude) -- the diffuser fruit needs Keaton's word on an msr route or a raw vendor event; until then the next honest door sits outside this tree
