@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.204451` | [Pheromone lane hold, no build](20261009/20261009-204451_pheromone-lane-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.204550` | [Diffuser live-set blocked, eleventh read](20261009/20261009-204550_diffuser-live-set-eleventh-read.kyri) | No trace re-read; no build. |
 | `20261009.204441` | [Petrichor hold, no build](20261009/20261009-204441_petrichor-hold-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.204407` | [Patchouli card shed, check in](20261009/20261009-204407_patchouli-card-shed-queue-empty-check-in.kyri) | Three blocks shelved; queue empty. |
