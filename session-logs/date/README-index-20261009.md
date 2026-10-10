@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.203948` | [Diffuser live-set blocked, ninth read](20261009/20261009-203948_diffuser-live-set-blocked-check-in.kyri) | No live-set trace; no build. |
 | `20261009.204022` | [Incense round-open hold, no build](20261009/20261009-204022_incense-round-open-hold-no-build.kyri) | Round-open reset to 1a3c36f0ce; cold run held; queue gated; no build. |
 | `20261009.203751` | [Petrichor gated hold, no build](20261009/20261009-203751_petrichor-gated-hold-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.203747` | [Bakery holds on the receipt key, no build](20261009/20261009-203747_bakery-hold-open-reds-no-build.kyri) | Receipt key waits on Keaton; 14 OPEN reds read; no build. |
