@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.204318` | [Diffuser live-set blocked, tenth read](20261009/20261009-204318_diffuser-live-set-tenth-hold.kyri) | No live-set trace re-read; no build. |
 | `20261009.204316` | [Petrichor gate held, no build](20261009/20261009-204316_petrichor-gate-held-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.203948` | [Diffuser live-set blocked, ninth read](20261009/20261009-203948_diffuser-live-set-blocked-check-in.kyri) | No live-set trace; no build. |
 | `20261009.204022` | [Incense round-open hold, no build](20261009/20261009-204022_incense-round-open-hold-no-build.kyri) | Round-open reset to 1a3c36f0ce; cold run held; queue gated; no build. |
