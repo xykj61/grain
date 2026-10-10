@@ -316,6 +316,8 @@ not a sweep. The four elder read-compat headers in `mantra/src/main.rye` (lines 
 are the law's standing exemption and stay. Queue reads empty a twenty-second way; the next lap
 should still widen rather than repeat these nets.
 
+**The queue reads empty a twenty-third way, `20261010.042148`, by a fresh class.** The version-literal nets were not run again. This lap ran the TAME tidy bans (`std.debug.assert(`, `usingnamespace`, `Self = @This()`, `copyForwards`, `copyBackwards`, `FIXME`, `dbg(`, error-compare seams, camelCase `fn`) across `mantra/src/` and the flat `mantra/` and `tally/` rooms: all zero. The only `@memcpy` site is `tally/copy.rye:40`, the one `copy_disjoint` may hold. Every `mantra/src/` file carries the opening triad. Five `assert(a or b)` sites stand in `consent_replay.rye` and `main.rye`; the tidy scanner bans only the `and` form, so they are not a parity fault as written. Whether `or` joins the ban is a ruling for Keaton. `%807` and `%765` are unchanged.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
