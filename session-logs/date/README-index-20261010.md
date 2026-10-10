@@ -14,6 +14,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.083610` | [Bakery, crux held again](20261010/20261010-083610_bakery-crux-held-no-repeat.kyri) | Census re-run path-independent; receipt key held for a ruling; fast-forward only. |
 | `20261010.083115` | [Incense books REDS %729](20261010/20261010-083115_incense-reds-729-booked-pen-entry-green.kyri) | Pen-entry witness GREEN; row BOOKED. |
 | `20261010.083426` | [Patchouli, queue empty, widened net](20261010/20261010-083426_patchouli-queue-empty-widened-net.kyri) | One fresh version-literal net: only exempt elder headers; no build. |
 | `20261010.082838` | [Petrichor, hold again, gate unmoved](20261010/20261010-082838_petrichor-hold-consent-gate-unmoved-again.kyri) | Fetched zero behind; gate unmoved; no page touched. |
