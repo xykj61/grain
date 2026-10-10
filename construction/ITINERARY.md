@@ -238,15 +238,7 @@ witnesses re-run GREEN; no code line moved. **YOURS:** `till.rye` (71), `voucher
 
 **DIFFUSER -- THE SIMULATED POPULATION EXPLAINS MOST OF THE GAP; CHURN IS THE LARGEST FACTOR.** The mixed-lifetime chain stands in [the mixed-lifetime essay](../active-designing/date/20261003/20261003-102318_the-mixed-lifetime-cost-is-space-not-time.md). Landed `20261009.174149`: the simulated paper's own population reproduces its table on a real glibc buffer to within 10 percent, and matching the churn to the real probe closes about 82 percent of the gap at W=10,000 (2,105 per seed against 1,696). The falsifier did not fire. The size mix ran at `20261009.174910` and closed the residual to the seed spread, so that Next is done. Next waits on a real caller's live-set trace, which the tracked tree does not hold: the `20261009.183640` read opened the two matches the `175814` log left unopened, and neither is a trace. The old account is shelved at [construction/archive/20261009-174149_diffuser-card-account-shelved.md](archive/20261009-174149_diffuser-card-account-shelved.md).
 
-**PATCHOULI -- A FOURTH %765 FAMILY, AND A CONTROL'S OWN STALE PLANT FOUND ALONG THE WAY.**
-Account
-[shelved](archive/date/20261003/20261003-041504_itinerary-patchouli-fourth-family-and-control-plant-fix-account.md):
-`mantra/src/receipt_offer.rye`'s `schema_v1` moved `grain.receipt-offer.v1` to the one-clock
-stamp `grain.receipt-offer.20261003.040829`, never persisted to any store in this tree -- the same
-cheap molt the consent pair took. Running the full witness chain surfaced REDS `%833`, a
-pre-existing control plant (`tools/fixtures/m/mantra_replay_whole_fact_control.sh`) keyed to a
-struct layout the room no longer carries; booked and repaired in the same entry. Four `%765`
-families now landed in this lane; 38 remain. **YOURS:** none -- both findings closed on metal.
+**PATCHOULI -- THE LANE'S ACCOUNTS, SHELVED WHOLE.** [Account shelved](archive/date/20261009/20261009-204317_itinerary-patchouli-three-blocks-account.md) -- the fourth %765 family, the control plant fix, the ascii ratchet, and the schema-molt regression, all closed on metal. **YOURS:** none; the family queue reads empty again on `20261009`.
 
 **EVERY SHIP OWES ITS `rishi` BINARY A REBUILD** (`20260915.223610`, `%746`). `rishi/bin/rishi` is
 untracked, so a checkout carries whatever it last built, and a stale one answers `NoSuchField` on a
@@ -293,7 +285,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `1a3c36f0ce` -- the nib this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `9d1656914c` -- the nib this commit is built on, read after the final rebase (rule 2).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/date/20260915/20260915-180554_itinerary-landed-accounts.md`](archive/date/20260915/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -359,13 +351,6 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 
 **Both named cruxes landed `20261001`, whole** -- weave-meets-Tablecloth and the consent lowering.
 [Account](archive/date/20261002/20261002-000200_itinerary-patchouli-two-cruxes-already-landed-account.md).
-**PATCHOULI -- ITS OWN COMMIT REGRESSED THE HEAD IT TOUCHED.** [Account
-shelved](archive/date/20261003/20261003-043445_itinerary-patchouli-schema-molt-own-regression-account.md)
--- head fell F/51 crossing a floor %765 never re-checked; rewritten A+/100, GREEN. 38 `%765`
-families remain outside this lane. `%807` wants Keaton's ruling.
-**PATCHOULI -- ascii ratchet.** [Account
-shelved](archive/date/20261003/20261003-094433_itinerary-patchouli-ascii-comment-ratchet-sweep-account.md)
--- 4 comment chars fixed, ceiling lowered, GREEN.
 
 ### Copal -- Amphora receipt and portable bundle
 
