@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.221849` | [Petrichor hold after pull](20261009/20261009-221849_petrichor-hold-pull-docs-geode-clean.kyri) | Lane has no ruled fruit; one pull; Bhakta scan clean; no build. |
+| `20261009.221726` | [Incense hold, census drift](20261009/20261009-221726_incense-hold-census-drift-water-row.kyri) | Round-open clean; no ruled fruit; census read 16 candidates, water row's 7 stale. |
 | `20261009.221720` | [Patchouli queue empty, 13th sweep](20261009/20261009-221720_patchouli-queue-empty-thirteenth-sweep.kyri) | Elder nets empty; no build. |
 | `20261009.220907` | [Petrichor hold after pull](20261009/20261009-220907_petrichor-hold-after-pull-no-build.kyri) | Peer commits pulled; gate unchanged; no build. |
 | `20261009.221036` | [Hardware counter readable here](20261009/20261009-221036_hardware-counter-readable.kyri) | cache-misses opens and reads on this guest; falsifier unrun. |
