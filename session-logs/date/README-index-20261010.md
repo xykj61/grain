@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.110032` | [Incense, baton lap, hold, no build](20261010/20261010-110032_incense-baton-lap-hold-no-build.kyri) | Round-open clean; cold run held; no build. |
+| `20261010.105937` | [Pheromone, lane empty, no build](20261010/20261010-105937_pheromone-lane-empty-no-build.kyri) | No open language fruit; no claim taken; no build. |
 | `20261010.105617` | [Grass, front doors graded A, no molt](20261010/20261010-105617_grass-front-doors-grade-a-no-molt.kyri) | Read-only grade of two front doors, both A; no edit, no molt. |
 | `20261010.105851` | [Patchouli, queue empty, twenty-second net](20261010/20261010-105851_patchouli-queue-empty-twenty-second-net.kyri) | Fresh nets, no build; log and row only. |
 | `20261010.105157` | [Petrichor, consent witness green](20261010/20261010-105157_petrichor-consent-gate-witness-green.kyri) | Witness GREEN on Linux; no page change. |
