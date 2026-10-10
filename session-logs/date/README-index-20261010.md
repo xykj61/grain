@@ -16,7 +16,7 @@
 | 20261010.012633 | [ruling awaited, no build](20261010/20261010-012633_pheromone-ruling-wait-no-build.kyri) | Pheromone ff pull; fruit parked on Incense ruling; no build
 | 20261010.012430 | [decline](20261010/20261010-012430_incense-decline-upstream-equal-head.kyri) | Incense decline: upstream equal to HEAD f744e7e908, claim board one live, no build |
 | 20261010.012615 | [ascii sweep, docs-geode clean](20261010/20261010-012615_petrichor-ascii-docs-geode-clean.kyri) | Petrichor: zero non-ASCII across 56 living docs-geode pages; no build |
-| 20261010.013220 | [fruit](20261010/20261010-013220_diffuser-radius-two-stencil-five-bands.kyri) | Diffuser fruit: radius-two stencil boundary at five row bands on both grids; paper, no build |
+| 20261010.013220 | [fruit](20261010/20261010-013220_diffuser-radius-two-stencil-five-bands.kyri) | Diffuser fruit: radius-two stencil boundary at five row bands; paper, no build |
 | 20261010.012425 | [queue empty, thirteenth net](20261010/20261010-012425_patchouli-queue-empty-thirteenth-net.kyri) | Patchouli queue empty: writers and literals both clean; no build |
 | 20261010.012407 | [hold](20261010/20261010-012407_petrichor-consent-gate-hold.kyri) | Petrichor hold: consent gate shut, fruit landed, no build |
 | 20261010.012418 | [hold](20261010/20261010-012418_diffuser-hold-both-blockers-still-no-build.kyri) | Diffuser hold: msr node and live-set trace still absent; no build |
