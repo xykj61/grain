@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.044040 | [Grass, register repeat read](20261010/20261010-044040_grass-front-door-register-repeat-read.kyri) | Six pages graded B+ or better; SOURCE register noted; no frame. |
 | 20261010.044102 | [Incense, contract accepted, read-only](20261010/20261010-044102_incense-contract-accepted-read-only.kyri) | Contract already accepted; read-only lap; no build. |
 | 20261010.043923 | [Patchouli, queue empty a twenty-fifth way](20261010/20261010-043923_patchouli-queue-empty-twenty-fifth-way.kyri) | Queue empty; no build. |
 | 20261010.043723 | [Incense, receipt board read](20261010/20261010-043723_incense-receipt-board-read-no-build.kyri) | Board GREEN, milestone unstamped; no build. |
