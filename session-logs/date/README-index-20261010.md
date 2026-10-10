@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.143253` | [Petrichor, Rail source landed, revoke unseen, no build](20261010/20261010-143253_petrichor-rail-landed-revoke-unseen.kyri) | Rail source upstream; revoke fact unseen; no build. |
 | `20261010.143326` | [Patchouli, queue empty again, check-in](20261010/20261010-143326_patchouli-queue-empty-check-in.kyri) | Queue empty, claims clear, no build; check-in on the lane. |
 | `20261010.143234` | [Copal, unrostered witnesses are booked reds](20261010/20261010-143234_copal-unrostered-witnesses-are-booked-reds.kyri) | Two left, both OPEN reds; no build. |
 | `20261010.143147` | [Bakery, fast-forward five, rulings held, no build](20261010/20261010-143147_bakery-ff-no-build-rulings-held.kyri) | Read-only; board empty; rulings held; no build. |
