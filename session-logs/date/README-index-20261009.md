@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.235839` | [Petrichor repeat hold](20261009/20261009-235839_petrichor-repeat-hold.kyri) | Both gates still closed; no build. |
+| `20261009.235800` | [Bakery redleg re-run](20261009/20261009-235800_bakery-redleg-rerun-head-455f1bffb5.kyri) | Redleg red re-reproduced on 455f1bffb5; four over ceiling; no edit. |
 | `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
 | `20261009.235812` | [Grass re-grades two foundations, molts held](20261009/20261009-235812_grass-merit-ledger-held-again.kyri) | Merit ledger D+ 69 and learning chapter C+ 76 stay held for Keaton's word; no build. |
 | `20261009.235450` | [Grass grades SPELLBOOK, A 96](20261009/20261009-235450_grass-spellbook-graded-a.kyri) | Calfive page graded A 96; queue empty; no build. |
