@@ -58,6 +58,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.102135` | [Bakery, hold, no agent-doable step](20261010/20261010-102135_bakery-hold-no-agent-doable-step.kyri) | No code, no claim change; crux held for the receipt-key ruling. |
 | `20261010.101404` | [Incense, round four, decline](20261010/20261010-101404_incense-round-four-earth-decline-no-build.kyri) | Decline, no build; held queue left for Keaton. |
 | `20261010.101451` | [Pheromone, lane empty, hold](20261010/20261010-101451_pheromone-hold-lane-empty.kyri) | No build; check-in (Claude) on the card's step-three line. |
 | `20261010.101431` | [Grass, baton tick, molts held](20261010/20261010-101431_grass-foundations-molt-owed-held-read-only.kyri) | Read-only tick; queue empty; three foundations molts owed. |
