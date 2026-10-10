@@ -77,6 +77,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.112010` | [Petrichor, consent gate held, no build](20261010/20261010-112010_petrichor-consent-gate-held-no-build.kyri) | Gate shut; no build; row only. |
 | `20261010.111536` | [Pheromone, lane held](20261010/20261010-111536_pheromone-glow-lane-held-witnesses-green.kyri) | Both lane witnesses GREEN; no build. |
 | `20261010.111529` | [Diffuser, eleven hashes](20261010/20261010-111529_diffuser-eleven-hashes-ordering-holds.kyri) | Eleven deterministic families, 55 pairs: tau-b +0.96 to +1.00, falsifier did not fire; scratch only. |
 | `20261010.111317` | [Grass, foundation graded, no build](20261010/20261010-111317_grass-foundation-grade-no-build.kyri) | Door grade: register 93, reach 90, truth 100; no edit. |
