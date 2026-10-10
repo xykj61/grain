@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.142259` | [Petrichor, gate holds, no build](20261010/20261010-142259_petrichor-no-build.kyri) | Fast-forwarded; docs witnesses cut off, not claimed GREEN; no build. |
 | `20261010.142034` | [Grass, queue empty, no build](20261010/20261010-142034_grass-queue-empty-no-build.kyri) | Audit queue empty; no surface to grade; no build. |
 | `20261010.141842` | [Pheromone, queue held, no build](20261010/20261010-141842_pheromone-queue-held-fast-forward-no-build.kyri) | Gate holds on Incense's Glow ruling; fast-forward only; no build. |
 | `20261010.141420` | [Patchouli, witnesses green, queue empty](20261010/20261010-141420_patchouli-witnesses-green-queue-empty-no-build.kyri) | 14 Mantra witnesses GREEN; queue empty; no build. |
