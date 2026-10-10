@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.113333` | [Petrichor, gate held, no build](20261010/20261010-113333_petrichor-gate-held-upstream-logs-no-build.kyri) | Consent gate shut; ff to f78751acd5; no build. |
 | `20261010.113428` | [Incense, round-open, hold, no build](20261010/20261010-113428_incense-baton-round-open-hold-no-build.kyri) | Clean round-open; claim board clear; no build. |
 | `20261010.113428` | [Pheromone, sixth hold, no build](20261010/20261010-113428_pheromone-lane-hold-sixth-no-build.kyri) | Lane empty; GREEN; no build. |
 | `20261010.113144` | [Grass, fold head graded A, nib pinned](20261010/20261010-113144_grass-fold-head-a-nib-pinned.kyri) | Fold head reads A 93; queue empty; card nib pinned to 16507032a6. |
