@@ -140,6 +140,8 @@ pub fn build_batch(
 ) BatchError!struct { len: u32, report: BatchReport } {
     const count = src.revision_leaf_count(peer, bolt, revision);
     if (count > max_batch_entries) return error.TooManyEntries;
+    // invariant: the cap above bounds every loop below by max_batch_entries
+    assert(count <= max_batch_entries);
 
     var off: u32 = 0;
     if (off + 1 > cap_u32(out)) return error.Overflow;
@@ -191,6 +193,10 @@ pub fn build_batch(
         }
     }
 
+    // invariant: every manifest entry is counted exactly once, as needed or already held
+    assert(report.needed + report.had_already == count);
+    // invariant: the frame never reaches past the caller's buffer
+    assert(off <= cap_u32(out));
     return .{ .len = off, .report = report };
 }
 
