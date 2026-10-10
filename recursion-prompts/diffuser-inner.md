@@ -1,3 +1,4 @@
+**Revised:** `20261010.034920` -- the 32-sets-by-4-ways run at 128 lines is done: fold reaches the floor on all 24 seeds, the same line count as the 16-by-8 run, so the 128 point holds across two layouts and the falsifier did not fire; the lower bound stays 125 to 128, [the paper](../active-designing/date/20261010/20261010-034920_the-fold-family-reaches-the-floor-at-one-hundred-twenty-eight-lines-in-two-layouts.md) names a 25-by-5 run at 125 lines as its next door
 **Revised:** `20261010.032753` -- the fold family's fourteen-set miss is run under a second seed generator, SplitMix64 beside the Mersenne draws: no seed of 24 reaches the floor and the falsifier does not fire, so the family-property branch stands on 48 seeds; [the paper](../active-designing/date/20261010/20261010-032753_the-fold-family-misses-fourteen-sets-under-a-second-generator.md) names a set-count sweep at 13, 14 and 15 sets as its next door
 # Diffuser, inner
 
