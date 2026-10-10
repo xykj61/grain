@@ -140,6 +140,212 @@ pub fn check_bounds(old_len: u64, new_len: u64) DiffError!void {
     if (cells > max_diff_table_cells) return DiffError.TableTooLarge;
 }
 
+/// Build the LCS table over `old_lines` and `new_text`, one cell per prefix
+/// pair. The caller owns the returned slice and frees it.
+///
+/// Precondition:  both sides already passed `check_bounds`.
+/// Postcondition: `table[i * (n + 1) + j]` is the LCS length of the first `i`
+///   old lines against the first `j` new lines.
+fn build_lcs_table(
+    allocator: std.mem.Allocator,
+    old_lines: []const Line,
+    new_text:  []const []const u8,
+) ![]u32 {
+    const m = old_lines.len;
+    const n = new_text.len;
+
+    // invariant: each side stands inside the weave's ceiling, so the product
+    // below is a u64 product of two bounded quantities
+    assert(m <= max_diff_lines);
+    assert(n <= max_diff_lines);
+
+    // lcs[i][j] = length of LCS of old_lines[0..i] and new_text[0..j].
+    // Allocate as a flat array: lcs[i * (n+1) + j].
+    const table = try allocator.alloc(u32, (m + 1) * (n + 1));
+    @memset(table, 0);
+
+    for (1..m + 1) |i| {
+        for (1..n + 1) |j| {
+            if (std.mem.eql(u8, old_lines[i - 1].text, new_text[j - 1])) {
+                table[i * (n + 1) + j] = table[(i - 1) * (n + 1) + (j - 1)] + 1;
+            } else {
+                const up   = table[(i - 1) * (n + 1) + j];
+                const left = table[i * (n + 1) + (j - 1)];
+                table[i * (n + 1) + j] = if (up >= left) up else left;
+            }
+        }
+    }
+    return table;
+}
+
+/// Back-track through `table` and mark which old lines (`kept_old`) and which
+/// new lines (`kept_new`) sit in the LCS. Unmarked lines are the deletes and
+/// the inserts.
+///
+/// Precondition:  `table` is the one `build_lcs_table` laid out for these sides.
+/// Postcondition: every marked pair matches by text, and the walk visits each
+///   row and column at most once.
+fn mark_kept(
+    table:    []const u32,
+    old_lines: []const Line,
+    new_text: []const []const u8,
+    kept_old: []bool,
+    kept_new: []bool,
+) void {
+    const m = old_lines.len;
+    const n = new_text.len;
+
+    // invariant: the table is the (m + 1) * (n + 1) layout build_lcs_table wrote
+    assert(table.len == (m + 1) * (n + 1));
+    // invariant: each keep flag has one slot per line on its own side
+    assert(kept_old.len == m);
+    assert(kept_new.len == n);
+
+    var i: u32 = @intCast(m);
+    var j: u32 = @intCast(n);
+    while (i > 0 and j > 0) {
+        if (std.mem.eql(u8, old_lines[@intCast(i - 1)].text, new_text[@intCast(j - 1)])) {
+            kept_old[@intCast(i - 1)] = true;
+            kept_new[@intCast(j - 1)] = true;
+            i -= 1;
+            j -= 1;
+        } else if (table[@intCast((i - 1) * (@as(u32, @intCast(n)) + 1) + j)] >= table[@intCast(i * (@as(u32, @intCast(n)) + 1) + (j - 1))]) {
+            i -= 1;
+        } else {
+            j -= 1;
+        }
+    }
+}
+
+/// The inserts of a diff, each beside the line it replaces and the anchor it
+/// sits behind -- the three parallel slices `Diff` carries.
+const Pairing = struct {
+    inserts:  []const []const u8,
+    replaces: []const ?LineId,
+    after:    []const ?LineId,
+};
+
+/// The anchor of every gap, gap 0 first: the document head (`null`), then the
+/// identity of each kept old line in order. Gap `k` sits behind the `k`th kept
+/// line, so index `k` of the list is the anchor for gap `k`.
+///
+/// Precondition:  `kept_old` is the mark `mark_kept` wrote over `old_lines`.
+/// Postcondition: the list holds one entry per kept line plus the head.
+fn gap_anchors(
+    allocator: std.mem.Allocator,
+    old_lines: []const Line,
+    kept_old:  []const bool,
+) !std.ArrayListUnmanaged(?LineId) {
+    var anchor_of_gap: std.ArrayListUnmanaged(?LineId) = .empty;
+    try anchor_of_gap.append(allocator, null); // gap 0 opens the document
+    for (old_lines, 0..) |line, idx| {
+        if (kept_old[idx]) try anchor_of_gap.append(allocator, line.id());
+    }
+    // invariant: the document head is always an anchor, so the list is never
+    // empty and gap 0 always has one to read
+    assert(anchor_of_gap.items.len >= 1);
+    return anchor_of_gap;
+}
+
+/// The departure that an arrival in gap `seen_kept` answers to: the `taken`th
+/// delete in that same gap, when there is one. Returns null for a fresh insert.
+///
+/// Precondition:  `gap_of_delete[d]` counts the kept old lines behind delete `d`.
+/// Postcondition: a non-null answer is a delete sitting in the named gap.
+fn departure_in_gap(
+    gap_of_delete: []const u32,
+    deletes:       []const LineId,
+    seen_kept:     u32,
+    taken:         u32,
+) ?LineId {
+    // invariant: each delete has one gap and the lists are parallel
+    assert(gap_of_delete.len == deletes.len);
+    var seen_in_gap: u32 = 0;
+    for (gap_of_delete, 0..) |gap, d| {
+        if (gap != seen_kept) continue;
+        if (seen_in_gap == taken) return deletes[d];
+        seen_in_gap += 1;
+    }
+    return null;
+}
+
+/// Pair each insert with the delete it replaces, and anchor each insert to the
+/// kept line before it. Inserts come out in new-text order.
+///
+/// Precondition:  `kept_old`/`kept_new` are the marks `mark_kept` wrote, and
+///   `deletes` lists the unkept old lines by identity in old-text order.
+/// Postcondition: one replace and one anchor per insert, so the three slices
+///   of the Pairing stay the same length.
+fn pair_inserts(
+    allocator: std.mem.Allocator,
+    old_lines: []const Line,
+    new_text:  []const []const u8,
+    kept_old:  []const bool,
+    kept_new:  []const bool,
+    deletes:   []const LineId,
+) !Pairing {
+    // Collect the gap of each delete: the count of kept old lines behind it.
+    // THE PAIRING IS BY GAP, which is how a diff tool decides a hunk is a
+    // replacement rather than a delete standing next to an insert. Both walks
+    // count the kept lines behind them; two unkept lines with the same count
+    // behind them fall in the same gap between anchors, and inside one gap the
+    // nth departure is replaced by the nth arrival. A gap holding more
+    // departures than arrivals leaves those deletes unpaired, and one holding
+    // more arrivals leaves those inserts fresh -- both are ordinary and neither
+    // is a replacement.
+    //
+    // Pairing decides WHICH line a replacement stands in for. Where it then
+    // goes is `Weave.apply`'s answer, and it answers with the `ord` this names.
+    var gap_of_delete: std.ArrayListUnmanaged(u32) = .empty;
+    var seen_kept: u32 = 0;
+    for (old_lines, 0..) |_, idx| {
+        if (kept_old[idx]) {
+            seen_kept += 1;
+        } else {
+            try gap_of_delete.append(allocator, seen_kept);
+        }
+    }
+
+    // THE ANCHOR EACH GAP SITS BEHIND, read off the old side: the last kept line
+    // before the gap opens. An insert with no replacement takes its place and
+    // sorts just past it, which is what puts a middle insert in the middle.
+    const anchor_of_gap = try gap_anchors(allocator, old_lines, kept_old);
+
+    var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
+    var replaces: std.ArrayListUnmanaged(?LineId) = .empty;
+    var after: std.ArrayListUnmanaged(?LineId) = .empty;
+    var taken: u32 = 0;
+    seen_kept = 0;
+    for (new_text, 0..) |text, idx| {
+        if (kept_new[idx]) {
+            seen_kept += 1;
+            // A gap closes at an anchor, so the count of departures already
+            // spoken for resets to whatever this gap has consumed.
+            taken = 0;
+            continue;
+        }
+        try inserts.append(allocator, text);
+        const found = departure_in_gap(gap_of_delete.items, deletes, seen_kept, taken);
+        taken += 1;
+        try replaces.append(allocator, found);
+        // invariant: every gap has an anchor recorded for it, the document head
+        // included, so this read can never run past the list it walks.
+        assert(seen_kept < anchor_of_gap.items.len);
+        try after.append(allocator, anchor_of_gap.items[seen_kept]);
+    }
+    // invariant: one answer per insert, so a reader walking the slices together
+    // can never run off the end of one while another still has entries.
+    assert(replaces.items.len == inserts.items.len);
+    // invariant: and one anchor per insert, for the same reason.
+    assert(after.items.len == inserts.items.len);
+
+    return Pairing{
+        .inserts  = try inserts.toOwnedSlice(allocator),
+        .replaces = try replaces.toOwnedSlice(allocator),
+        .after    = try after.toOwnedSlice(allocator),
+    };
+}
+
 /// Compute the diff between `old_lines` (the weave's current view) and
 /// `new_text` (the desired lines of the file as it is now), as an edit
 /// authored by `site`.
@@ -182,7 +388,6 @@ pub fn diff(
     // decision proven there is the decision taken here.
     try check_bounds(old_lines.len, new_text.len);
 
-    // LCS table over (old_lines, new_text) using line text equality.
     const m = old_lines.len;
     const n = new_text.len;
 
@@ -193,47 +398,19 @@ pub fn diff(
     assert(m <= max_diff_lines);
     assert(n <= max_diff_lines);
 
-    // lcs[i][j] = length of LCS of old_lines[0..i] and new_text[0..j].
-    // Allocate as a flat array: lcs[i * (n+1) + j].
-    const table = try allocator.alloc(u32, (m + 1) * (n + 1));
+    // LCS table over (old_lines, new_text) using line text equality.
+    const table = try build_lcs_table(allocator, old_lines, new_text);
     defer allocator.free(table);
-    @memset(table, 0);
-
-    for (1..m + 1) |i| {
-        for (1..n + 1) |j| {
-            if (std.mem.eql(u8, old_lines[i - 1].text, new_text[j - 1])) {
-                table[i * (n + 1) + j] = table[(i - 1) * (n + 1) + (j - 1)] + 1;
-            } else {
-                const up   = table[(i - 1) * (n + 1) + j];
-                const left = table[i * (n + 1) + (j - 1)];
-                table[i * (n + 1) + j] = if (up >= left) up else left;
-            }
-        }
-    }
 
     // Back-track to find which old lines are in the LCS (kept) and which are
     // not (deleted), and which new lines are not in the LCS (inserted).
-    var kept_old = try allocator.alloc(bool, m); // true = matched in LCS
-    var kept_new = try allocator.alloc(bool, n); // true = matched in LCS
+    const kept_old = try allocator.alloc(bool, m); // true = matched in LCS
+    const kept_new = try allocator.alloc(bool, n); // true = matched in LCS
     defer allocator.free(kept_old);
     defer allocator.free(kept_new);
     @memset(kept_old, false);
     @memset(kept_new, false);
-
-    var i: u32 = @intCast(m);
-    var j: u32 = @intCast(n);
-    while (i > 0 and j > 0) {
-        if (std.mem.eql(u8, old_lines[@intCast(i - 1)].text, new_text[@intCast(j - 1)])) {
-            kept_old[@intCast(i - 1)] = true;
-            kept_new[@intCast(j - 1)] = true;
-            i -= 1;
-            j -= 1;
-        } else if (table[@intCast((i - 1) * (@as(u32, @intCast(n)) + 1) + j)] >= table[@intCast(i * (@as(u32, @intCast(n)) + 1) + (j - 1))]) {
-            i -= 1;
-        } else {
-            j -= 1;
-        }
-    }
+    mark_kept(table, old_lines, new_text, kept_old, kept_new);
 
     // Collect deletes: old lines not in the LCS, by their stable identity.
     // Identity rather than position, since old_lines may come from a merged
@@ -245,86 +422,18 @@ pub fn diff(
         }
     }
 
-    // Collect inserts: new lines not in the LCS, in new-text order, and beside
-    // each the line it REPLACES (REDS %680).
-    //
-    // THE PAIRING IS BY GAP, which is how a diff tool decides a hunk is a
-    // replacement rather than a delete standing next to an insert. Both walks
-    // count the kept lines behind them; two unkept lines with the same count
-    // behind them fall in the same gap between anchors, and inside one gap the
-    // nth departure is replaced by the nth arrival. A gap holding more
-    // departures than arrivals leaves those deletes unpaired, and one holding
-    // more arrivals leaves those inserts fresh -- both are ordinary and neither
-    // is a replacement.
-    //
-    // Pairing decides WHICH line a replacement stands in for. Where it then
-    // goes is `Weave.apply`'s answer, and it answers with the `ord` this names.
-    var gap_of_delete: std.ArrayListUnmanaged(u32) = .empty;
-    var seen_kept: u32 = 0;
-    for (old_lines, 0..) |_, idx| {
-        if (kept_old[idx]) {
-            seen_kept += 1;
-        } else {
-            try gap_of_delete.append(allocator, seen_kept);
-        }
-    }
-
-    // THE ANCHOR EACH GAP SITS BEHIND, read off the old side: the last kept line
-    // before the gap opens. An insert with no replacement takes its place and
-    // sorts just past it, which is what puts a middle insert in the middle.
-    var anchor_of_gap: std.ArrayListUnmanaged(?LineId) = .empty;
-    try anchor_of_gap.append(allocator, null); // gap 0 opens the document
-    for (old_lines, 0..) |line, idx| {
-        if (kept_old[idx]) try anchor_of_gap.append(allocator, line.id());
-    }
-
-    var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
-    var replaces: std.ArrayListUnmanaged(?LineId) = .empty;
-    var after: std.ArrayListUnmanaged(?LineId) = .empty;
-    var taken: u32 = 0;
-    seen_kept = 0;
-    for (new_text, 0..) |text, idx| {
-        if (kept_new[idx]) {
-            seen_kept += 1;
-            // A gap closes at an anchor, so the count of departures already
-            // spoken for resets to whatever this gap has consumed.
-            taken = 0;
-            continue;
-        }
-        try inserts.append(allocator, text);
-        // The nth arrival in this gap answers to the nth departure in the same
-        // gap, when there is one.
-        var found: ?LineId = null;
-        var seen_in_gap: u32 = 0;
-        for (gap_of_delete.items, 0..) |gap, d| {
-            if (gap != seen_kept) continue;
-            if (seen_in_gap == taken) {
-                found = deletes.items[d];
-                break;
-            }
-            seen_in_gap += 1;
-        }
-        taken += 1;
-        try replaces.append(allocator, found);
-        // invariant: every gap has an anchor recorded for it, the document head
-        // included, so this read can never run past the list it walks.
-        assert(seen_kept < anchor_of_gap.items.len);
-        try after.append(allocator, anchor_of_gap.items[seen_kept]);
-    }
-    // invariant: one answer per insert, so a reader walking the two together
-    // can never run off the end of one while the other still has entries.
-    assert(replaces.items.len == inserts.items.len);
-    // invariant: and one anchor per insert, for the same reason.
-    assert(after.items.len == inserts.items.len);
+    // Collect inserts, each beside the line it REPLACES (REDS %680). The pairing
+    // is by gap; `pair_inserts` carries the reasoning and its invariants.
+    const pairing = try pair_inserts(allocator, old_lines, new_text, kept_old, kept_new, deletes.items);
 
     // Postcondition: applying the diff is a net transformation -- not necessarily
     // fewer lines, yet never a negative-length insert or delete.
     const result = Diff{
         .site    = site,
-        .inserts = try inserts.toOwnedSlice(allocator),
+        .inserts = pairing.inserts,
         .deletes = try deletes.toOwnedSlice(allocator),
-        .replaces = try replaces.toOwnedSlice(allocator),
-        .after = try after.toOwnedSlice(allocator),
+        .replaces = pairing.replaces,
+        .after = pairing.after,
     };
     // invariant: a diff inserts no more than the new document holds and deletes no more than
     // the old one did, so neither side can be asked to apply a change to a line that never
