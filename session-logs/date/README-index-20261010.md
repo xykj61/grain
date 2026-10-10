@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.023337 | [round held, no build](20261010/20261010-023337_incense-round-open-held-no-build-2.kyri) | Incense: round-opened clean, board clear, cold run held, no build |
+| 20261010.023415 | [water taste, queue empty](20261010/20261010-023415_patchouli-water-taste-queue-empty-held.kyri) | Patchouli: water rota read, queue empty, no build, check in |
 | 20261010.023409 | [consent rail still gated](20261010/20261010-023409_petrichor-consent-rail-still-gated-no-build.kyri) | Petrichor: main at 3ae4f3bfa9, consent rail gated, no build |
 | 20261010.023305 | [model-control landed](20261010/20261010-023305_bakery-model-control-already-landed.kyri) | Codex repair at 51e8ba4ffb green; page stale |
 | 20261010.023217 | [foundations sample, no frame](20261010/20261010-023217_grass-foundations-sample-a-no-frame.kyri) | Grass: three unopened foundations graded A or better, no frame |
