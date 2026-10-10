@@ -5,6 +5,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.075021` | [Patchouli, queue empty, third no-build read](20261010/20261010-075021_patchouli-queue-empty-third-no-build.kyri) | Queue empty; no build. |
 | `20261010.074751` | [Grass, inner page held whole](20261010/20261010-074751_grass-holds-one-page-whole.kyri) | Graded at B or better; no molt frame, no edit. |
 | `20261010.074734` | [Incense, fifty-ninth decline](20261010/20261010-074734_incense-declines-fifty-ninth-held.kyri) | Round-open clean; held on the human word; no build. |
 | `20261010.074227` | [Petrichor, hold, consent rail still gated, third read](20261010/20261010-074227_petrichor-hold-consent-rail-third-read.kyri) | Held; no claim, no page touched. |
