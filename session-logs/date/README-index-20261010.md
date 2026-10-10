@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.032408` | [petrichor gate repeat](20261010/20261010-032408_petrichor-gate-repeat-stop.kyri) | Petrichor: gate held, no build, captain line; repeat named. |
 | `20261010.031742` | [Petrichor shelf repair](20261010/20261010-031742_petrichor-index-shelf-repair.kyri) | Open-shelf rows trimmed and ordered; claim closed; witness GREEN. |
 | 20261010.031525 | [lane witness sweep, no build](20261010/20261010-031525_patchouli-lane-witness-sweep-no-build.kyri) | Patchouli: six mantra witnesses GREEN on metal, queue empty, no build |
 | 20261010.031033 | [plant adopted](20261010/20261010-031033_bakery-cpu-unit-control-plant-adopted.kyri) | Bakery: cpu control on plant.sh, 41 of 41 |
