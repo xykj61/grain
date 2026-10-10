@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.202029` | [Petrichor consent gate holds, no build](20261009/20261009-202029_petrichor-consent-gate-holds-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
 | `20261009.201644` | [Patchouli queue recheck, check-in](20261009/20261009-201644_patchouli-queue-empty-recheck-check-in.kyri) | fresh net, no new header; no build. |
 | `20261009.201824` | [Incense declines fifty-second, no build](20261009/20261009-201824_incense-fifty-second-decline.kyri) | Round-opened clean; no claim, no build; cold run held. |
 | 20261009.200920 | [Petrichor first-hour links read](20261009/20261009-200920_petrichor-first-hour-links-read.kyri) | Paths and build block resolve; grade A 91; no edit. |
