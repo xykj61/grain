@@ -340,6 +340,15 @@ a separate citation repair.
 
 **The stale citation closed, `20261010.050440`.** `mantra/src/weave_v2_witness.rye` cited `weave.rye:1063` for the 20260912 overflow, and that line had drifted to 1619. The dated proof stays; the citation now names `Weave.apply`'s `next_pos += 1` by function. `mantra_weave_v2_witness` reads GREEN. The cold roster was not run this lap, and the queue still reads empty.
 
+**The fresh class, `20261010.080907`: production functions under two asserts.** A census awk
+pass over the `fn` bodies of `mantra/` and `tally/` found 361 hits across 61 files, witness helpers
+dominating. Narrowed to production code in `tally/` and `mantra/src/`, the top candidate was
+`check_v1_rows` in `mantra/src/weave.rye`, a validation function with refusals and zero asserts. It
+gained three invariant asserts -- the row-count precondition, the loop-carried position read, and
+the floor postcondition -- each standing alone with its `// invariant:` line. Four weave witnesses
+(v1 lift, v1 write, v2, merge) GREEN on metal. The rest of the 361 is a ratchet on touch, not a red;
+the next empty-queue lap starts here rather than repeating the grep nets.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

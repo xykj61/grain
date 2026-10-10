@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20261010.080907
+editor Claude Code
+provider Anthropic
+product Claude Code
+role patchouli lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_status fleet default in .claude/settings.json; this clone resolves per declared_model.sh, not verified here
+evidence .claude/settings.json and recursion-prompts/patchouli-inner.md
+voice Kyri
+host anonymized Linux bench, one-clock zone America/New_York
+title Patchouli, check_v1_rows asserts landed
+prompt baton ty every1 baton prin recur -- run the Patchouli lap
+think the inner prompt says the agent-doable queue has read empty for a long run of laps, and that a lap should widen to a fresh class rather than repeat the same grep nets.
+think a fresh class not yet named on the card: production functions with fewer than two asserts. A 361-hit census over 61 mantra and tally files, counted by an awk pass over fn bodies, names the class.
+think the census is free, not gated: witness helpers dominate it, so the production slice narrows to tally and mantra src, not witness or control files.
+think check_v1_rows in mantra/src/weave.rye was the cleanest keystone: a validation fn with refusals, zero asserts, and a postcondition nobody guarded.
+think three asserts, each standing alone with a // invariant: line, to respect the no-compound-assert rule: the row-count precondition, the loop-carried previous_pos read, and the floor postcondition.
+think all four weave witnesses (v1 lift, v1 write, v2, merge) re-run GREEN on metal after the edit, with their pen breaks caught.
+obs the census of 361 is a ratchet class, not a red; fixing all of it is a multi-lap sweep and this lap took one function.
+obs check_v1_rows' first assert leans on from_v1 having refused any record past max_weave_lines before the call; that ordering is the caller's contract, stated in the comment rather than re-proven here.
+obs the git nib writer needs a clean index and a shape word; the card is updated by its own tool, not by hand.
+file mantra/src/weave.rye check_v1_rows gains three invariant asserts -- the class the census named, one function, witnesses GREEN.
+file recursion-prompts/patchouli-inner.md records the fresh-class finding so the next empty-queue lap starts from it rather than repeating the same grep nets.
+file session-logs/date/20261010/20261010-080907_patchouli-check-in-weave-v1-asserts.kyri this log, born on its day's shelf.
+rota none -- the lap was a fresh-class widening of the lane's own queue, not a council row read.
+loom witness=mantra_weave_v1_lift_witness wall_ms=not_timed
+loom witness=mantra_weave_merge_witness wall_ms=not_timed
+scope mantra/src/weave.rye check_v1_rows and its four weave witnesses; the 361-function census is a ratchet left standing.
+status GREEN -- four weave witnesses GREEN on metal (v1 lift, v1 write, v2, merge); tame check reports nothing for weave.rye; the rest of the 361 remain a ratchet on touch.
+recommend check-in (Claude) -- the fresh-class census is now a visible ratchet; whether to sweep it across the lane or hold is a ruling for Keaton.

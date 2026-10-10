@@ -928,10 +928,16 @@ pub const Weave = struct {
     /// last. Returns the position floor for the lifted weave: one above the
     /// last row's position, or zero for an empty record.
     fn check_v1_rows(rows: []const V1Row) !u32 {
+        // invariant: the caller has already refused a record past max_weave_lines,
+        // so every position below fits the u32 counter with room to spare.
+        assert(rows.len <= max_weave_lines);
         var next_pos: u32 = 0;
         var seen_any = false;
         var previous_pos: u32 = 0;
         for (rows) |row| {
+            // invariant: previous_pos is read only once seen_any holds, so the
+            // strict-rise comparison never reads a placeholder zero as a position.
+            assert(!seen_any or previous_pos < max_weave_lines);
             if (row.gen == 0) return WeaveError.V1GenerationBelowOne;
             // Read BEFORE the counter below rises off this position: the line
             // that follows is `row.pos + 1`, and at the u32 ceiling that
@@ -947,6 +953,9 @@ pub const Weave = struct {
             // highest position, so the floor for the next line is one above it.
             next_pos = row.pos + 1;
         }
+        // invariant: the floor is one above a checked position, so it never exceeds
+        // max_weave_lines; a lifted weave that started past the ceiling could not hold its rows.
+        assert(next_pos <= max_weave_lines);
         return next_pos;
     }
 
