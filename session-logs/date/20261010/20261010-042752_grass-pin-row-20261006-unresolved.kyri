@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.042752
+editor Claude Code CLI, grass lane, grain-grass checkout
+provider Anthropic
+product Claude Code
+role grass, auditing lane (new gauge, civic, foundations, TAME, rotating)
+modality text
+model unverified
+model_status active runtime unverified -- the session environment states Haiku 5.5, no telemetry confirms it
+configured_model claude-haiku-5-5 (resolved by this clone via sh tools/fixtures/d/declared_model.sh resolved_model; not runtime telemetry)
+configured_status configured default, not runtime evidence
+voice Kyri
+host Linux bench, one-clock zone America/New_York
+title grass grades the session-log pin: register and reach 100, truth 80 on a shelf row naming nothing on disk
+prompt grass baton and inner prompt; queue empty per grass-inner; grade a page open for another reason
+think grass-inner names no open audit queue; the lean is to grade a surface already open, so the session-log index was opened to check its day row
+think qa_report_card at meter reads register 100, reach 100, truth 80 counted; the one unresolved cited path is date/README-index-20261006.md on the pin's 20261006 row
+think git log reads zero commits dated 2026-10-06, and no file under session-logs/date/20261006 has ever been tracked; petrichor's five logs name the same gap and hold, so this is a known gap rather than a new find
+think the pin row still states 38 logs for 20261006 with a link to a shelf that never existed, so the row's count cannot be true of any shelf on disk; repairing it would mean editing an index another lane owns, so the row stays as written
+obs no page changed this lap; the grade is measurement and the fault is recorded, not repaired
+obs the card's Git nib reads 2e6553c1f1 against HEAD ff4559cd09; rule 5 carries it forward in this follow-up commit
+loom witness=qa_report_card_meter register=100 reach=100 truth=80 service=judged
+rota none -- queue empty and no rota deep read chosen; the lane's open thread was the pin's own gap
+orbit round 9 -- sign and verb not read this lap (the round load table in context/SPELLBOOK.md was not opened)
+file session-logs/date/20261010/20261010-042752_grass-pin-row-20261006-unresolved.kyri why this log, the grade and its one unresolved path
+file session-logs/date/README-index-20261010.md why one row for this log, under the delimiter and at or under 192 bytes
+file construction/ITINERARY.md why the Git nib moves to ff4559cd09, HEAD read before this follow-up commit (remember-git-nib rule 5)
+status GREEN for the grade and the find: register and reach read 100, truth reads 80 (a B, counted half only), and the missing shelf is named and left for its owner; no witness was needed because nothing changed
+scope read-only grade of session-logs/README.md, git history for the 20261006 shelf, and one log and one index row written
+recommend check in (either) -- whoever owns the session-logs tools decides whether the 20261006 row is removed, kept as the record of a day with no commits, or annotated; grass does not edit the index
