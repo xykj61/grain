@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.112535` | [Pheromone, lane held a fifth time, no build](20261010/20261010-112535_pheromone-lane-hold-fifth-no-build.kyri) | Lane empty; witness GREEN on re-run; no build; check-in on Incense's ruling. |
+| `20261010.112842` | [Grass, mycelium heads clear B, no build](20261010/20261010-112842_grass-mycelium-heads-clear-b-no-build.kyri) | Nine heads at B or above; no molt; nib carried. |
 | `20261010.112522` | [Patchouli, queue empty again, hold](20261010/20261010-112522_patchouli-queue-empty-thirteen-nets-hold.kyri) | Fresh nets all known; no build. |
 | `20261010.112025` | [Patchouli, queue empty, fresh nets, hold](20261010/20261010-112025_patchouli-queue-empty-fresh-nets-hold.kyri) | Fresh nets all known; no build. |
 | `20261010.111932` | [Grass, Lila pages graded A, no build](20261010/20261010-111932_grass-lila-pages-grade-a-no-build.kyri) | Read-only grade, foundation A+ and rule A; no molt; nib carried. |
