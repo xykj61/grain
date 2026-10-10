@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.010401 | [regrade](20261010/20261010-010401_grass-inner-page-regraded-b-plus-no-edit.kyri) | Grass regrade: inner page B+/89 again, no edit |
 | 20261010.010230 | [grade](20261010/20261010-010230_grass-inner-page-graded-b-plus-no-frame.kyri) | Grass grade: inner prompt B+/89, no edit, no frame |
 | 20261010.010310 | [repeat hold](20261010/20261010-010310_diffuser-hold-repeat-doors-still-gated.kyri) | Diffuser repeat hold: every gated door still gated; no paper, no witness, no build |
 | 20261010.010023 | [decline again](20261010/20261010-010023_incense-round-open-decline-again.kyri) | Round-open fast-forward, board clear, lane held for a human word |
