@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.015111 | [consent gate holds, no build](20261010/20261010-015111_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: consent gate holds; upstream grass sample only; no build |
+| 20261010.015142 | [grass register grade](20261010/20261010-015142_grass-register-grade-field-no-build.kyri) | Grass: grass-inner.md graded at Field, register 77, none below; no build |
 | 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
 | 20261010.015119 | [queue empty, check-in](20261010/20261010-015119_patchouli-queue-empty-check-in-recommended.kyri) | Patchouli: queue empty again; check-in named, no build |
 | 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
