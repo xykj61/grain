@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.041009 | [Grass regrade, queue empty](20261010/20261010-041009_grass-foundations-docs-geode-regrade-no-build.kyri) | Grass: three pages graded at field, all B or better; no lift owed, no build. |
 | 20261010.040943 | [bakery held, gated queue](20261010/20261010-040943_bakery-held-after-fast-forward.kyri) | Bakery: five commits pulled, gate unchanged; no build. |
 | 20261010.040701 | [Grass foundations and docs-geode grade](20261010/20261010-040701_grass-foundations-docs-geode-grade-no-build.kyri) | Grass: five foundation and docs-geode pages graded, lowest B+ 87; no build. |
 | 20261010.040841 | [petrichor idle, no target](20261010/20261010-040841_petrichor-idle-no-target-no-build.kyri) | Petrichor: no claimable lane work; gate holds; no build. |
