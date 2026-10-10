@@ -10119,3 +10119,14 @@ guard surface_study_choir
 path tools/gen/chapter/surface_study_choir.rish
 tier cadence
 seated 20261010.035956
+
+# oven_season_o2 -- the Oven Chapter o2 residual tidy, unrostered and RED since the module moved
+# anvil/ -> oven/ -> ember/. Retargeted from oven/ to ember/ the way oven_season_o3 landed, on the
+# claim copal-oven-o2-witness-roster. Proven on metal both ways in this lap: GREEN on the live tree,
+# RED with a stray anvil/ directory planted (path leg), and RED with an `anvil/` faculty row planted
+# in STEWARDS.md (STEWARDS leg). That second leg read GREEN before this lap: its escaped backtick
+# pattern never matched, so the plant passed. Dated homes and hammock checks read testimony and stay.
+guard oven_season_o2
+path tools/gen/chapter/oven_season_o2_witness.rish
+tier lap
+seated 20261010.042540

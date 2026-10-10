@@ -9,7 +9,10 @@ say "oven-season-o2: Lens TAME — Oven Chapter o2."
 let counsel = run ["test" "-f" "counsel/date/20260728/20260728-235951_oven-season-o2-residual-tidy.md"]
 assert counsel.ok else "oven-season-o2: o2 counsel missing"
 
-let stewards = run ["sh" "-c" "grep -q 'oven/' STEWARDS.md && ! grep -q '\`anvil/\`' STEWARDS.md && echo STEWARDS_OK"]
+# invariant: STEWARDS names the living ember/ faculty and no bare anvil/ faculty remains.
+# The module moved anvil/ -> oven/ -> ember/ (see oven_season_o1_witness.rish); this witness
+# retargets from oven/ to ember/ the way oven_season_o3 did, rather than asserting a dead name.
+let stewards = run ["sh" "-c" "grep -q 'ember/' STEWARDS.md && ! grep -q '`anvil/`' STEWARDS.md && echo STEWARDS_OK"]
 assert stewards.ok else "oven-season-o2: STEWARDS faculty row scan failed"
 assert stewards.out contains "STEWARDS_OK" else "oven-season-o2: STEWARDS still names anvil/ faculty"
 
@@ -21,9 +24,10 @@ let hammock = run ["sh" "-c" "grep -q 'oven/README.md' active-designing/yonder/d
 assert hammock.ok else "oven-season-o2: hammock link scan failed"
 assert hammock.out contains "HAMMOCK_OK" else "oven-season-o2: yonder hammock still points at anvil/"
 
-let path = run ["sh" "-c" "test -d oven && test ! -d anvil && echo PATH_OK"]
+# invariant: the path reads ember/ LIVE, and both retired names are gone.
+let path = run ["sh" "-c" "test -d ember && test -f ember/ember.rye && test ! -d anvil && test ! -d oven && echo PATH_OK"]
 assert path.ok else "oven-season-o2: path state broken"
-assert path.out contains "PATH_OK" else "oven-season-o2: oven/ LIVE expected"
+assert path.out contains "PATH_OK" else "oven-season-o2: ember/ LIVE expected"
 
 say "GREEN: oven-season-o2 — STEWARDS · homes · hammock · path · Oven Chapter"
 say "GREEN: oven-season-o2 — residual tidy seated."
