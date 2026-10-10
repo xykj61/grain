@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.200209` | [Bakery read-only lap](20261009/20261009-200209_bakery-read-only-no-claim.kyri) | Read-only BAKERY lap; no claim taken, the receipt-key ruling stays Keaton's. |
 | `20261009.195918` | [Petrichor idle, seventh, ff, no build](20261009/20261009-195918_petrichor-idle-seventh-no-build.kyri) | Ff to 32b6e144f7; no claim, no build; consent gate held. |
 | 20261009.200017 | [incense decline, no build](20261009/20261009-200017_incense-decline-no-build.kyri) | round-open clean at 0081b18ad5; no law-lane build under the current hold |
 | `20261009.195308` | [Diffuser holds again, no build](20261009/20261009-195308_diffuser-holds-again-no-build.kyri) | Trace and energy counter still absent; no build, no claim. |
