@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.021221 | [repeat declined](20261010/20261010-021221_incense-repeat-declined-no-build.kyri) | Incense: round-open clean, orbit 10 Capricorn, repeat row declined, no build |
 | 20261010.021305 | [patchouli empty queue](20261010/20261010-021305_patchouli-queue-empty-hidden-shelf.kyri) | Patchouli: mantra/ and tally/ hidden shelf swept, queue empty, no build |
 | 20261010.021100 | [grass sample held](20261010/20261010-021100_grass-report-card-sample-foundations-b-held.kyri) | Grass: five foundations graded, none below B, no edit |
 | 20261010.020903 | [grass air row](20261010/20261010-020903_grass-air-row-door-reading-held.kyri) | Grass: air-row foundation graded A (Door), no molt frame |
