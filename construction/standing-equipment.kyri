@@ -10185,3 +10185,13 @@ guard glow_hygiene_pin
 path tools/gen/chapter/glow_hygiene_pin.rish
 tier cadence
 seated 20261010.085902
+
+# remember_pin_history_tidy -- the one-shot 20260728 ITINERARY pin tidy, unrostered since it was written.
+# It asserts the full-tidy counsel seat and the two remember-git-nib rule pages (claude and cursor),
+# and says the squash ran and its backup branch was retired (REDS %839). It runs in milliseconds, so
+# it stands on the lap tier. Red leg proven on a planted copy: a missing counsel seat reds the test -f
+# assert and exits 1. Claim copal-pin-history-tidy-roster.
+guard remember_pin_history_tidy
+path tools/gen/chapter/remember_pin_history_tidy_witness.rish
+tier lap
+seated 20261010.142234
