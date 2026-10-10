@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.054602` | [Bakery, hold stands on the receipt key ruling](20261010/20261010-054602_bakery-hold-receipt-key-ruling.kyri) | Card and inner read; no mechanical lap; no build; check in on the receipt key. |
 | `20261010.054658` | [Incense, forty-ninth decline](20261010/20261010-054658_incense-forty-ninth-decline-no-build.kyri) | Round-open clean; claim board one copal claim; no build. |
 | `20261010.054238` | [Pheromone, lane empty, no fruit](20261010/20261010-054238_pheromone-lane-empty-no-fruit.kyri) | Language lane reads empty; no rune ruling; no build. |
 | `20261010.054546` | [Grass inner, repeat grade](20261010/20261010-054546_grass-inner-repeat-grade-no-frame.kyri) | Field grade 82 (B), repeat of 053634; no edit. |
