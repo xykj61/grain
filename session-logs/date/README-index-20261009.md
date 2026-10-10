@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.210600` | [Pheromone repeat hold, no build](20261009/20261009-210600_pheromone-repeat-hold-no-build.kyri) | Repeat of 210023; gate unchanged; no build. |
 | `20261009.210232` | [Copal roster](20261009/20261009-210232_copal-shrink-scope-roster.kyri) | Shrink-scope chapter witness rostered; claim closed; cold and hot reds pre-existing. |
 | `20261009.210450` | [Patchouli queue empty, twenty-second](20261009/20261009-210450_patchouli-queue-empty-twenty-second.kyri) | Nothing agent-doable again; no build; check in. |
 | `20261009.210406` | [Petrichor hold, no build](20261009/20261009-210406_petrichor-hold-no-build.kyri) | Gate holds; no claimable docs-geode row; no build. |
