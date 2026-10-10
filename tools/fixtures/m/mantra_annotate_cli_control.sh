@@ -104,7 +104,7 @@ echo "mark_blind_added=$(reading "$mb" edit_added)"
 # The skip becomes a statement that does nothing, rather than being deleted:
 # Zig refuses a pointless discard, and a phase that fails to COMPILE proves
 # the compiler rather than the reading.
-ts=$(run_pen tomb_shown 's|^            continue;$|            gone += 0;|')
+ts=$(run_pen tomb_shown 's|^            continue;$|            t.gone += 0;|')
 echo "tomb_shown_hidden=$(reading "$ts" tombstone_hidden)"
 
 echo "control_verdict=ok"
