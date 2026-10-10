@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.020851
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role pheromone seat, Glow product language lane
+modality text
+model claude-haiku-5-5
+model_status active runtime
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status tracked .claude/settings.json fleet default, not runtime telemetry
+evidence .claude/settings.json; declared-host config read per session-log-provenance
+voice Kyri
+host linux, one-clock zone America/New_York
+title pheromone hold -- no open mechanical fruit
+prompt the baton and pheromone inner prompt, one lap
+think read the baton, the inner prompt, and the pheromone section of construction/ITINERARY.md
+think the inner prompt's closed fruit is reconfirmed GREEN; a fifth re-check teaches nothing a fourth did not, and the card says so in its own words
+think the one open step is a Glow language ruling, which the card routes to Incense and the interactive bench
+think nothing mechanical in this lane remains that does not depend on that ruling, so the lap builds nothing
+obs tools/f/fleet_claim.sh was run bare and answered verdict=no_verb; a claim was not opened, because no build is planned
+obs HEAD db3376b833 read clean at the start; the working tree was clean
+rota lap 9077, row 2 -- fire sees; read the ITINERARY pheromone account and the inner prompt's ruling section
+orbit round 2 sign -- the verb is the round load for this count, read from git rev-list --count HEAD
+file construction/ITINERARY.md -- read only; the pheromone lane's open step is a Glow language ruling, which the card names as Incense's and the interactive bench's
+file recursion-prompts/pheromone-inner.md -- read only; its closed fruit stands and its ruling section is kept as record
+scope read the lane, found no mechanical step, logged the hold
+status GREEN on the lap's own terms: no code touched, no witness owed; the one open door waits on a ruling this seat cannot make
+recommend check in (Claude) -- the next Glow shape step needs a language ruling from the interactive bench, and this seat cannot seat one alone
