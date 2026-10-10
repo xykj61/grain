@@ -16,6 +16,7 @@
 | `20261010.133511` | [Pheromone, lane held, witnesses GREEN, no build](20261010/20261010-133511_pheromone-lane-held-witnesses-green-no-build.kyri) | Both lane witnesses GREEN on metal; board empty; no open language fruit; no build. |
 | `20261010.132338` | [Patchouli, queue empty fourth](20261010/20261010-132338_patchouli-queue-empty-fourth-net-no-build.kyri) | Header nets re-run, nothing new; no build. |
 | `20261010.132825` | [Bakery, redleg re-read, held, ff](20261010/20261010-132825_bakery-redleg-reread-held-ff.kyri) | Ceiling 51 holds, reads 54; two rulings owed; no build. |
+| `20261010.133736` | [Copal, repeat: three reds held, no roster](20261010/20261010-133736_copal-fruit-repeat-three-reds-held-no-roster.kyri) | Same unrostered reds re-measured; already booked; no roster. |
 | `20261010.132219` | [Copal, three unrostered witnesses red, held](20261010/20261010-132219_copal-fruit-three-reds-verdicts-no-roster.kyri) | Three reds on metal, already booked %837-%839; no roster. |
 | `20261010.132600` | [Incense, round-open declined, no build, fifth](20261010/20261010-132600_incense-round-open-declined-no-build-fifth.kyri) | Clean round-open; board read; no build. |
 | `20261010.132516` | [Grass, card regraded B+ a third time, no edit](20261010/20261010-132516_grass-card-regraded-third-no-edit.kyri) | Inner page B+ (89) again; no edit; queue empty. |
