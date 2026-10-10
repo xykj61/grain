@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
 | 20261010.022222 | [consent gate holds](20261010/20261010-022222_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: Consent Rail gate holds, no build, check in |
+| 20261010.022355 | [patchouli queue empty, fresh scan](20261010/20261010-022355_patchouli-queue-empty-fresh-scan-no-build.kyri) | Patchouli: queue empty on a fresh scan, no build, check in (Claude) |
 | 20261010.021846 | [patchouli queue empty](20261010/20261010-021846_patchouli-queue-empty-no-build.kyri) | Patchouli: queue empty a twenty-second way, no build, check in (Claude) |
 | 20261010.021947 | [lane empty, second check](20261010/20261010-021947_pheromone-lane-empty-second-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.021707 | [grass counted clean](20261010/20261010-021707_grass-counted-readings-clean-no-frame.kyri) | Grass: six field pages graded, none below B on counted readings, no frame |
