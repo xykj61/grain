@@ -7,6 +7,7 @@
 | 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
 | 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
+| 20261010.022545 | [grass reread, no frame](20261010/20261010-022545_grass-inner-reread-repeat-no-frame.kyri) | Grass: inner page re-graded B+ at field, repeat of 022026, no frame |
 | 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
 | 20261010.022222 | [consent gate holds](20261010/20261010-022222_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: Consent Rail gate holds, no build, check in |
 | 20261010.022355 | [patchouli queue empty, fresh scan](20261010/20261010-022355_patchouli-queue-empty-fresh-scan-no-build.kyri) | Patchouli: queue empty on a fresh scan, no build, check in (Claude) |
