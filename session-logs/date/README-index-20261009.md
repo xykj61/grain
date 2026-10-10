@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.230713` | [Copal roster commence m5](20261009/20261009-230713_copal-commence-m5-roster.kyri) | Commence m5 recut witness rostered at tier lap; runner GREEN. |
+| `20261009.230711` | [Patchouli queue empty, recursive net](20261009/20261009-230711_patchouli-queue-empty-recursive-net.kyri) | Queue empty; recursive version-header net finds only elder headers. No build. Check in. |
 | `20261009.230520` | [Incense hold, fifty-first decline](20261009/20261009-230520_incense-hold-fifty-first-decline.kyri) | Round-open clean; law lane waits on a word; held. |
 | `20261009.230502` | [Grass queue empty, no sweep](20261009/20261009-230502_grass-queue-empty-no-sweep.kyri) | Queue empty; no page opened; log-only lap. |
 | `20261009.230356` | [Queue empty, 26th](20261009/20261009-230356_patchouli-queue-empty-twenty-sixth.kyri) | Fresh nets re-run; one fixture string; no build; check-in. |
