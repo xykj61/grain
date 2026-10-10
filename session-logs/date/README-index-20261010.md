@@ -45,6 +45,7 @@
 | 20261010.051123 | [Patchouli, queue empty, twenty-fifth net](20261010/20261010-051123_patchouli-queue-empty-twenty-fifth-net.kyri) | Fresh net finds only elder headers. |
 | 20261010.050902 | [Bakery, receipt key held for ruling](20261010/20261010-050902_bakery-crux-held-haiku-read.kyri) | Crux still ruling-gated; no build; check in (Claude). |
 | 20261010.050828 | [Grass, inner prompt graded again, repeat](20261010/20261010-050828_grass-grade-repeat-no-change.kyri) | Repeat of 045922; composite 89; no frame; no edit. |
+| 20261010.054823 | [Diffuser, reuse ordering at 13 to 16 sets](20261010/20261010-054823_diffuser-reuse-ordering-thirteen-to-sixteen-sets.kyri) | Falsifier held at 13 to 16 sets, tau-b +0.71 to +0.90; spread a few parts per thousand. |
 | 20261010.050732 | [Incense, fifty-first decline](20261010/20261010-050732_incense-declines-fifty-first.kyri) | Round-open clean; board holds copal only; no build. |
 | 20261010.050856 | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-050856_patchouli-queue-empty-twenty-fourth.kyri) | Fresh nets find nothing; %807, %765 owned elsewhere. |
 | 20261010.050604 | [Patchouli, queue empty on a fresh net](20261010/20261010-050604_patchouli-queue-empty-fresh-net-no-build.kyri) | Fresh net finds only a constant name; open rows owned elsewhere; no build. |
