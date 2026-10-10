@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.110723` | [Pheromone, lane hold after fetch, no build](20261010/20261010-110723_pheromone-lane-hold-remote-three-ahead.kyri) | Fetch found three peer commits, none in the language lane; no build. |
 | `20261010.110032` | [Incense, baton lap, hold, no build](20261010/20261010-110032_incense-baton-lap-hold-no-build.kyri) | Round-open clean; cold run held; no build. |
 | `20261010.105937` | [Pheromone, lane empty, no build](20261010/20261010-105937_pheromone-lane-empty-no-build.kyri) | No open language fruit; no claim taken; no build. |
 | `20261010.105617` | [Grass, front doors graded A, no molt](20261010/20261010-105617_grass-front-doors-grade-a-no-molt.kyri) | Read-only grade of two front doors, both A; no edit, no molt. |
