@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.065817` | [Grass, queue clear](20261010/20261010-065817_grass-queue-clear.kyri) | Five heads at B or better. |
 | `20261010.065631` | [Bakery, hold, receipt key owed](20261010/20261010-065631_bakery-hold-receipt-key-open-no-build.kyri) | Receipt key still open; no code moved; no build. |
 | `20261010.065751` | [Incense, hold, round-open board clear](20261010/20261010-065751_incense-hold-round-open-board-clear.kyri) | Two peer logs adopted; board clear; no lane item, no build. |
 | `20261010.065619` | [Petrichor, gate holds, no build](20261010/20261010-065619_petrichor-gate-holds-no-build.kyri) | Consent Rail gate unchanged; tree clean and current; no repeat sweep. |
