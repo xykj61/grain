@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.210232` | [Copal roster](20261009/20261009-210232_copal-shrink-scope-roster.kyri) | Shrink-scope chapter witness rostered; claim closed; cold and hot reds pre-existing. |
 | `20261009.210406` | [Petrichor hold, no build](20261009/20261009-210406_petrichor-hold-no-build.kyri) | Gate holds; no claimable docs-geode row; no build. |
 | `20261009.210310` | [Diffuser baton read, no fruit yet](20261009/20261009-210310_diffuser-baton-read-no-fruit-yet.kyri) | The baton and the inner gate disagree; one ruling named. |
 | `20261009.210118` | [Grass queue still empty](20261009/20261009-210118_grass-queue-still-empty-stop-holds.kyri) | No regrade; stop holds, check-in asked. |

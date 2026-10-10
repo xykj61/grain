@@ -9900,6 +9900,18 @@ path tools/gen/chapter/tigerbeetle_last_stage_census_witness.rish
 tier lap
 seated 20261003.101500
 
+# tigerbeetle_shrink_scope_census -- e46 Shrink scope / POCPOU, unrostered since it was written. The
+# same decided-skip shape as its rostered tigerbeetle siblings above: an uninitialised
+# gratitude/tigerbeetle submodule is a fact about a fresh clone, so the witness reads
+# gratitude/tigerbeetle/src and takes a GREEN skip exit rather than reding a ship without the
+# checkout. Proven on metal this lap: present clone reads REV=97c7a8ef38 with GUIDE_SHRINK,
+# GUIDE_POCPOU, TAME_SHRINK, STYLE, ELDER_CACHE and RADIANT all at yes, verdict=ok, GREEN.
+# Claimed as copal-tigerbeetle-shrink-scope-roster before this entry landed.
+guard tigerbeetle_shrink_scope_census
+path tools/gen/chapter/tigerbeetle_shrink_scope_census_witness.rish
+tier lap
+seated 20261009.181942
+
 # calfive_schedule -- added on the round that asked whether Calfive scheduling was ever
 # double-checked for conflicts. It had not been: fifteen expanding-prompts pages state a
 # commit count beside the orbit round they claim for it, by hand, and nothing re-derived the
