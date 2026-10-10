@@ -7,6 +7,7 @@
 | `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
 | `20261009.235450` | [Grass grades SPELLBOOK, A 96](20261009/20261009-235450_grass-spellbook-graded-a.kyri) | Calfive page graded A 96; queue empty; no build. |
 | `20261009.235428` | [Diffuser hold, no open door](20261009/20261009-235428_diffuser-hold-no-open-door.kyri) | Every open door waits on Keaton's word or a peer; no build. |
+| `20261009.235425` | [Patchouli queue empty, twenty-second net](20261009/20261009-235425_patchouli-queue-empty-twenty-second-net.kyri) | Queue empty; one fresh %765 net, hits elder only; no build; check-in named. |
 | `20261009.235400` | [Bakery redleg reproduce](20261009/20261009-235400_bakery-redleg-reproduce.kyri) | Redleg red stands on HEAD: 55 against 51, four over; no build. |
 | `20261009.234654` | [Oven o3 retarget, GREEN](20261009/20261009-234654_oven-o3-retarget-green.kyri) | Path to ember/, roster row, RED legs proven; kg. |
 | `20261009.235142` | [Grass queue clear](20261009/20261009-235142_grass-queue-clear-two-doors-graded.kyri) | Two front doors graded A and A+; no molt; no build. |
