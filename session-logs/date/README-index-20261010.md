@@ -8,6 +8,7 @@
 | 20261010.012244 | [decline](20261010/20261010-012244_incense-decline-upstream-adopted.kyri) | Incense decline: upstream adopted at 3631222793, no build |
 | 20261010.012125 | [hold](20261010/20261010-012125_grass-foundation-grade-hold.kyri) | Grass grade: foundation B 84, Radiant page A 93; both stand, no edit |
 | 20261010.012057 | [decline](20261010/20261010-012057_incense-decline-upstream-equal.kyri) | Incense decline: upstream equal to HEAD, claim board clear; no build |
+| 20261010.012010 | [hold](20261010/20261010-012010_diffuser-hold-blockers-reread-no-build.kyri) | Diffuser hold: msr node still absent, trace still missing; no build |
 | 20261010.012008 | [hold](20261010/20261010-012008_bakery-crux-hold-no-build.kyri) | Bakery crux held: ruled and priced, receipt key still unruled; no build |
 | 20261010.011735 | [hold](20261010/20261010-011735_grass-inner-regraded-hold.kyri) | Grass inner page re-graded B+ at Field, no edit, hold |
 | 20261010.011744 | [hold](20261010/20261010-011744_diffuser-hold-msr-trace-reread.kyri) | Diffuser hold: msr and live-set trace re-read, both still absent; no build |
