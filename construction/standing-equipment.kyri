@@ -10060,3 +10060,12 @@ guard graph_redraw_spine
 path tools/gen/chapter/graph_redraw_spine_witness.rish
 tier lap
 seated 20261009.232310
+
+# commence_m9_ascent -- the Commence M9 ascent witness (e100), unrostered since it was written.
+# Runs the census control first, then the baton museum and the scan's ascent legs. Proven both ways
+# in this lap: GREEN on the live tree, and RED (exit 1, the planted assert named) from a pen copy
+# that demands a leg the scan never prints.
+guard commence_m9_ascent
+path tools/gen/chapter/commence_m9_ascent_witness.rish
+tier lap
+seated 20261009.233025
