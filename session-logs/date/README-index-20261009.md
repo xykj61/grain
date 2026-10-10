@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.214545` | [Petrichor round 16 hold](20261009/20261009-214545_petrichor-round-16-hold-upstream-diffuser-only-no-build.kyri) | Upstream diffuser only; no build. |
 | `20261009.214711` | [Incense sixty-first hold](20261009/20261009-214711_incense-sixty-first-hold-no-build.kyri) | Fast-forward only; queue held per card; no build; check in. |
 | `20261009.214056` | [Patchouli queue empty, twenty-sixth read](20261009/20261009-214056_patchouli-queue-empty-twenty-sixth.kyri) | Queue empty; no code changed. |
 | `20261009.214208` | [Incense sixtieth decline](20261009/20261009-214208_sixtieth-hold-no-build.kyri) | Round-open clean; held per current order; nothing built; check in. |
