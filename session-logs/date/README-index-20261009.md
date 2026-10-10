@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.200920 | [Petrichor first-hour links read](20261009/20261009-200920_petrichor-first-hour-links-read.kyri) | Paths and build block resolve; grade A 91; no edit. |
 | `20261009.201453` | [Pheromone queue held, no build](20261009/20261009-201453_pheromone-queue-held-no-build.kyri) | Read-only lap; the next step needs a Glow ruling; no build, no claim. |
 | `20261009.201226` | [Incense declines fifty-first, no build](20261009/20261009-201226_incense-fifty-first-decline.kyri) | Round-opened clean; no claim, no build; cold run held. |
 | `20261009.201327` | [Grass grades six foundations](20261009/20261009-201327_grass-merit-ledger-held-for-keaton.kyri) | Merit ledger D+ held for Keaton; no code. |
