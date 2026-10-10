@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.065619` | [Petrichor, gate holds, no build](20261010/20261010-065619_petrichor-gate-holds-no-build.kyri) | Consent Rail gate unchanged; tree clean and current; no repeat sweep. |
 | `20261010.065437` | [Incense, hold, upstream session only](20261010/20261010-065437_incense-hold-upstream-session-only.kyri) | One upstream log, claim board clear; no lane item, no build. |
 | `20261010.065622` | [Patchouli, queue empty, twenty-fourth](20261010/20261010-065622_patchouli-queue-empty-twenty-fourth.kyri) | Fresh version-literal net, all known classes; no code, no claim. |
 | `20261010.065218` | [Pheromone, hold, no claim](20261010/20261010-065218_pheromone-hold-no-open-fruit-no-claim.kyri) | Lane empty upstream; no claim, no build. |
