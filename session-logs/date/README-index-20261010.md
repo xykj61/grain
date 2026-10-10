@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.145840 | [pheromone gate reading](20261010/20261010-145840_pheromone-gate-reading-no-build.kyri) | Gate reading; fruit landed, next needs Glow ruling. |
 | `20261010.145147` | [Pheromone, queue empty, fast-forward, no build](20261010/20261010-145147_pheromone-queue-empty-ff-no-build.kyri) | Six peers fast-forwarded; queue empty; no build. |
 | `20261010.144645` | [Petrichor, Rail still holds, no build](20261010/20261010-144645_petrichor-rail-holds-no-build.kyri) | Gate unsettled; no build; check-in asked. |
 | `20261010.144929` | [Patchouli, queue empty a fourteenth way](20261010/20261010-144929_patchouli-queue-empty-fourteenth.kyri) | Fresh scan repeats; no build; check-in on the lane. |
