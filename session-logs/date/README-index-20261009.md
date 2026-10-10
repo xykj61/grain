@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.232335` | [Petrichor hold, seventh reading](20261009/20261009-232335_petrichor-hold-seventh-reading-no-build.kyri) | Queue held on the consent gate; no page; no build. |
 | `20261009.232145` | [Patchouli queue empty, 22nd](20261009/20261009-232145_patchouli-queue-empty-twenty-second.kyri) | Test string only; %807, %765 outside lane. |
 | `20261009.232220` | [Grass foundations graded, queue held](20261009/20261009-232220_grass-foundations-graded-queue-held.kyri) | Three recent foundations read B+ 89, A 94, B+ 86; queue held; no edit. |
 | `20261009.232148` | [Copal graph redraw roster](20261009/20261009-232148_copal-graph-redraw-spine-roster.kyri) | Roster graph_redraw_spine; planted red proven; claim pushed first |
