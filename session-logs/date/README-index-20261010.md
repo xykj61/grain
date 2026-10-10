@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.065634` | [Pheromone, repeat hold, no claim](20261010/20261010-065634_pheromone-repeat-hold-no-claim.kyri) | Same lane state as 065218; no claim, no build. |
 | `20261010.065218` | [Pheromone, hold, no claim](20261010/20261010-065218_pheromone-hold-no-open-fruit-no-claim.kyri) | Lane empty upstream; no claim, no build. |
 | `20261010.065047` | [Patchouli, queue empty, ninth](20261010/20261010-065047_patchouli-queue-empty-ninth-brace-sweep.kyri) | Brace-counted long-function sweep; queue empty, no code moved. |
 | `20261010.064911` | [Grass, six docs compressors graded, none below B](20261010/20261010-064911_grass-docs-compressors-graded-none-below-b.kyri) | Six docs/ pages read B or better at the field shadow; no edit. |
