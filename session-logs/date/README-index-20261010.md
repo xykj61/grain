@@ -53,6 +53,7 @@
 | `20261010.095723` | [Patchouli, twenty-eighth](20261010/20261010-095723_patchouli-queue-empty-twenty-eighth.kyri) | No build; %807 awaits ruling. |
 | `20261010.095640` | [Bakery, crux held](20261010/20261010-095640_bakery-crux-held-ruling-awaited.kyri) | No build; receipt key awaits Keaton's ruling; roster claim is copal's. |
 | `20261010.095347` | [Patchouli, queue empty, twenty-seventh](20261010/20261010-095347_patchouli-queue-empty-twenty-seventh.kyri) | Nets re-run, nothing new in mantra or tally; no build, log only. |
+| `20261010.095554` | [Incense, decline sixty-seventh](20261010/20261010-095554_incense-decline-sixty-seventh.kyri) | Fast-forward, no build; law lane waits on Keaton's word at %642 or %519. |
 | `20261010.095240` | [Petrichor, hold, no door](20261010/20261010-095240_petrichor-hold-no-door-claim-clear.kyri) | No build; board clear, consent gate unmoved; log only. |
 | `20261010.094848` | [Incense, earth row read, nothing moved](20261010/20261010-094848_incense-earth-row-nothing-moved-law-held.kyri) | Round-open clean, claim board clear; no build; law waits on Keaton at %642 or %519. |
 | `20261010.094803` | [Patchouli, queue empty, twenty-sixth](20261010/20261010-094803_patchouli-queue-empty-twenty-sixth.kyri) | Nets re-run, queue empty; no build. |
