@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.211554` | [Patchouli queue empty, twenty-third read](20261009/20261009-211554_patchouli-queue-empty-twenty-third.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.212126` | [Petrichor fourth hold, nib carried, no build](20261009/20261009-212126_petrichor-fourth-hold-no-build.kyri) | Gate holds; upstream pulled ff-only; card nib carried; no build. |
 | `20261009.212031` | [Grass till head lifted](20261009/20261009-212031_grass-till-head-lift.kyri) | Till head register 71 to 100, comment-only; module GREEN. |
 | `20261009.212013` | [Diffuser hold, ruling open, no build](20261009/20261009-212013_diffuser-hold-ruling-still-open-no-build.kyri) | Fruit blocked on a trace and a recorder ruling; no re-measure this lap; no build. |
