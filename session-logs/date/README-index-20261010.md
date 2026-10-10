@@ -9,6 +9,7 @@
 | 20261010.005834 | [hold](20261010/20261010-005834_petrichor-hold-no-fruit-msr-word-upstream-pulled.kyri) | Petrichor hold: no open fruit, consent gate still shut, one upstream hold pulled; no build. |
 | 20261010.005810 | [hold](20261010/20261010-005810_pheromone-hold-fast-forward-witnesses-green.kyri) | Pheromone hold: fast-forwarded, lane witnesses GREEN, ruling awaited; no build |
 | 20261010.005754 | [lift](20261010/20261010-005754_grass-learning-chapter-molt-a-plus.kyri) | Grass molt: learning chapter Reach C+/71 to A+/97 at Door; fossil bannered, no build |
+| 20261010.005944 | [Queue empty, stop after scan](20261010/20261010-005944_patchouli-queue-empty-stop-after-scan.kyri) | Hidden shelf scanned; live writers already molted; queue empty; no build. |
 | 20261010.005710 | [Queue empty again](20261010/20261010-005710_patchouli-queue-empty-again-net.kyri) | Queue empty; elder headers only; no build. |
 | 20261010.005659 | [hold](20261010/20261010-005659_diffuser-hold-fruit-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on msr route or raw vendor event; no claim, no build |
 | 20261010.005619 | [hold](20261010/20261010-005619_incense-hold-claim-board-clear-no-build.kyri) | Incense hold: fetch clean, claim board clear, law lane holds for a human word; no build |
