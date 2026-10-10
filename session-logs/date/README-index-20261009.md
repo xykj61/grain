@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.225549` | [Petrichor hold, Consent Rail gate](20261009/20261009-225549_petrichor-hold-consent-rail-gate.kyri) | Gate held; no fruit; log only. |
 | `20261009.225451` | [Pheromone hold, air row read, no ruling](20261009/20261009-225451_pheromone-hold-air-row-no-ruling.kyri) | Air row read; lane held on the Glow ruling; no build. |
 | `20261009.225340` | [Incense hold, forty-ninth](20261009/20261009-225340_incense-hold-forty-ninth-decline.kyri) | Round-open clean; copal alone on the board; held. |
 | `20261009.225341` | [Bakery queue hold, no build](20261009/20261009-225341_bakery-queue-hold-no-build.kyri) | Queue held; plant adoption measured; ruling waits. |
