@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.003314 | [log](20261010/20261010-003314_grass-merit-ledger-lift.kyri) | Grass merit-ledger lift: D+/69 to A/93, one foundation rewritten; no witness touched |
 | 20261010.003338 | [log](20261010/20261010-003338_patchouli-queue-still-empty-recheck.kyri) | Patchouli queue still empty on re-check; no build |
 | 20261010.003003 | [hold](20261010/20261010-003003_diffuser-hold-no-agent-fruit.kyri) | Diffuser hold: no agent-doable fruit, claim board empty; next waits on Keaton; no build |
 | 20261010.003248 | [log](20261010/20261010-003248_bakery-hold-receipt-key-still-unruled.kyri) | Bakery hold on the receipt key; round-open pulled two peers, no build |
