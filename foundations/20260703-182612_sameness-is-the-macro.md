@@ -1,5 +1,7 @@
 # Sameness Is the Macro -- Compression Without Magic
 
+> **Writing fossil.** Molted `20261010.102310` into the living mutant [`20261010-102310_sameness-is-the-macro.md`](20261010-102310_sameness-is-the-macro.md), which reads at Door grade A/93 where this dated page read C+/78 (Register: 38 percent of its sentences negative; Reach and truth held). This page keeps every word it wrote, as testimony.
+
 *A siloed distillation of a compression teaching we are grateful for: two elders argued that systems shrink when a language grows toward its problem and when a team shares public similarity -- yet our discipline distrusts private dialects and hidden control flow. This brief reconciles the goal with our instrument. The named study with full gratitude lives in [`../external-research/date/20260703/20260703-182612_sameness-is-the-macro.md`](../external-research/date/20260703/20260703-182612_sameness-is-the-macro.md); here the ideas stand on their own merit, in our own voice.*
 
 **Stamp:** `20260703.182612`

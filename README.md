@@ -388,7 +388,7 @@ identity that signs the work. Both stay local to you.
 The reasons beneath them live in [`foundations/`](foundations/README.md), among them
 [the custody-first principle](foundations/20260724-200912_nothing-to-give-custody-first-principle.md)
 (*build nothing that destroys*), [the wire serves the fold](foundations/20260706-022912_the-wire-serves-the-fold.md),
-and [sameness is the macro](foundations/20260703-182612_sameness-is-the-macro.md). Two of them
+and [sameness is the macro](foundations/20261010-102310_sameness-is-the-macro.md). Two of them
 say how to read the rest: [follow our compass](foundations/20260826-024943_follow-our-compass.md) is
 the walk back to direction when it frays, and
 [Lila and the Long Return](foundations/20261002-111449_lila-and-the-long-return.md) is why a

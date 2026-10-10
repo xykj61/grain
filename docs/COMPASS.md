@@ -24,7 +24,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | 1 | [`foundations/README.md`](../foundations/README.md) | Why beneath the work |
 | 2 | [`follow-our-compass`](../foundations/20260826-024943_follow-our-compass.md) | Return habit |
 | 3 | [`the-grain-and-the-crossing`](../foundations/20260826-024942_the-grain-and-the-crossing.md) | The strands |
-| 4 | [`sameness-is-the-macro`](../foundations/20260703-182612_sameness-is-the-macro.md) | Compression without magic |
+| 4 | [`sameness-is-the-macro`](../foundations/20261010-102310_sameness-is-the-macro.md) | Compression without magic |
 | 5 | [`happy-zone` / **witness habitat**](../foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md) | Fast folds inside; thin edge outside |
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |
 | 7 | [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) | **Voice** -- how every page speaks (Gauge; Radiant is its warmth) |

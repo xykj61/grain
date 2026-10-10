@@ -370,7 +370,7 @@ Claude bench still pins **150** until recipe v5 re-run on Claude metal at zip **
 |------|------|--------|
 | Gate - witness - toll | `context/specs/20260704-020800_one-word-one-gate.md` | **Seated** `20260704.020800` |
 | Itinerary retires diet | `context/specs/20260704-030300_itinerary-retires-diet.md` | **Seated** -- forward-facing *diet* / *menu* / *empty plate* retired |
-| Sameness (10th grain strand) | `foundations/20260703-182612_sameness-is-the-macro.md` | **Seated** Kaeden affirmed `20260704.023400` |
+| Sameness (10th grain strand) | `foundations/20261010-102310_sameness-is-the-macro.md` | **Seated** Kaeden affirmed `20260704.023400` |
 | Not-advice filing | `ORGANIZING.md` - `external-research/README.md` | Research lane labeled; not implementation counsel |
 
 #### Context canon proposed (await Kaeden word)
@@ -442,7 +442,7 @@ Broad forward-facing sweep: lap/toll/itinerary vocabulary across active-designin
 4. `external-research/date/20260704/20260704-030600_itinerary-and-the-crossing-manifest.md`
 5. Vocabulary quartet (`024600` -> `024800` -> `024900` -> `025600`)
 6. `context/TWO_ROOMS.md`
-7. `foundations/20260703-182612_sameness-is-the-macro.md`
+7. `foundations/20261010-102310_sameness-is-the-macro.md`
 8. `linengrow/receipt.rye` + `active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md`
 9. `session-logs/archive/20260704/20260704-030800_canonical-vocabulary-audit.md` + `031000_canonical-refinement-counsel.md`
 10. `expanding-prompts/date/20260704/20260704-030300_cursor-recursion-prompt-v4.md`

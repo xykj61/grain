@@ -199,7 +199,7 @@ different code for having re-read a vision, and the compass walks the indexes al
 `context/SILO_TECHNIQUE.md` (cited by Conway), `context/SIMPLE_LOVABLE_COMPLETE.md` (cited by
 Gall), `foundations/20260703-200712_what-needs-ordering.md`,
 `foundations/20260703-201612_the-sealed-crossing.md`, and
-`foundations/20260703-182612_sameness-is-the-macro.md`. Holding the principle in rotation and
+`foundations/20261010-102310_sameness-is-the-macro.md`. Holding the principle in rotation and
 letting its own text reach the practice is the factorization; the rota carries fifteen and reaches
 twenty.
 

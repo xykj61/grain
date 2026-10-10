@@ -246,6 +246,16 @@ and its `template-manifest.kyri` rows.
 holds 51 `.md`; `rule_twin` reads 39 drifted pairs against a ceiling of 36 and has been gated at
 `%7` since `20260824.112806`. Full reading: [`../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md`](../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md).
 
+### Class M -- `foundations/20260703-182612_sameness-is-the-macro.md`, prepped `20261010.102310` (cut stays RED)
+
+Molted by the QA frame, Grass lane: the writing fossil is bannered, and nine living citers
+(`README.md`, `foundations/README.md`, `active-designing/seam-season-hammock.md`,
+`construction/ready-to-ask-claude.md`, `context/LEXICON.md`, `docs/COMPASS.md`,
+`docs/compass_card.kyri`, `recursion-prompts/seed/autonomous-loop.seed.md`) are repointed to the
+living mutant. Dated citers and the witness fixtures keep the fossil path, which still resolves.
+The Register reading moved C+/78 to A/93 at Door on the living mutant. Prep only -- the fossil stays
+on disk, and no shred is opened.
+
 ### Class M -- `foundations/20260703-140212_the-learning-chapter.md`, prepped `20261010.005450` (cut stays RED)
 
 Molted by the QA frame, Grass lane: the writing fossil is bannered, the one living citer
