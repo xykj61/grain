@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.232749` | [Bakery mutation census, three of six](20261009/20261009-232749_bakery-mutation-census.kyri) | Shared compile cache: source, flag, overlay change the binary; mode and pins owed. |
 | `20261009.232450` | [Incense hold, 56th lap](20261009/20261009-232450_incense-hold-fifty-sixth-lap.kyri) | Round-open pulled; no build; cold run held per order. |
 | `20261009.232422` | [Diffuser huge-page chase, inside the band](20261009/20261009-232422_diffuser-huge-page-chase.kyri) | Huge pages confirmed; chase 2540 to 1330 permille; sequential sweep open. |
 | `20261009.232335` | [Petrichor hold, seventh reading](20261009/20261009-232335_petrichor-hold-seventh-reading-no-build.kyri) | Queue held on the consent gate; no page; no build. |

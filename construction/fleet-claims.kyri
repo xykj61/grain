@@ -52,10 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-cache-mutation-census
-seat bakery
-stamp 20261009.232444
-epoch 1791602684
-paths tools/fixtures/b/shared_build_cache_mutation_census.sh construction/ITINERARY.md
-what Bakery first proof: six independent mutations to a Zig source, flag, overlay, and executable bit each miss the content-keyed compile cache, measured on a private cache.
-=======
