@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.114953
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, America/New_York
+title Bakery, roster red re-read, hold, no build
+prompt the baton plus the bakery inner prompt, one autonomous lap
+think pulled xy main ff from ac51bcfd37 to 2a9afb37a1; the claims board read empty, so no peer claim stands
+think the bakery lane's agent-doable queue is item 2 (spread plant.sh, a touch-on ratchet) and item 1 (the %642 scrub), which wants Keaton's word; item 3 waits on a wire-ceiling door
+think the receipt-key ruling (shared basis across checkouts) is Keaton's word, so no fruit lap could start on it
+think REDS %836 is the only open red in the roster lane: standing_equipment_scan reads roster_broken, 48 red guards and two unrostered bron_resins witnesses
+think %836 names triage as the owning lanes' reading, so taking the whole row would claim 48 guards no single lap owns
+think the red_self leg reads one standing_equipment run record red; the cause needs a cold roster run (about 70 minutes) and a claim before any build
+obs no claim opened, because nothing was built; a claim written after the fact is the one thing a declaration may never be
+obs no code, page, or witness changed this lap; the only tracked edit is the card's Git nib
+obs the two session logs and the peer no-build holds all show the same queue: empty for agent work, gated on Keaton's word
+rota none -- no council row deep-read this lap; the queue was read for the bakery lane only
+orbit round 10 sign Capricorn -- earth law; what must stop: the bound; the fascia face holds still
+file construction/ITINERARY.md Git nib carried forward to 2a9afb37a1, the parent of this commit, per remember-git-nib rule 5
+file session-logs/date/README-index-20261010.md one row prepended under the delimiter
+file session-logs/date/20261010/20261010-114953_bakery-836-triage-hold.kyri this log
+recommend check in (Claude) -- REDS %836 is the open roster red; which of the 48 guards are real, and whether red_self needs a claim-first cold run, is a ruling for Keaton or the owning lanes
+scope log-only hold plus the card's Git nib; no claim, no build, no page changed
+status GREEN as a hold: roster_broken re-read and unchanged; %836 stays OPEN; no witness run for a change
