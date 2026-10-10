@@ -394,6 +394,8 @@ pub fn stage_horizon_catalog(
     staged: *ns.BoltCatalog,
 ) SnapshotError!void {
     staged.* = .empty();
+    // invariant: the source catalog is bounded by the binding cap, so the copy loop below is too
+    assert(src.leaf_count <= ns.max_bindings);
 
     var path_buf: [ns.max_path]u8 = undefined;
     var i: u32 = 0;
@@ -410,6 +412,8 @@ pub fn stage_horizon_catalog(
             leaf.tilak[0..leaf.tilak_len],
         ) catch return error.Overflow;
     }
+    // invariant: every source leaf is copied exactly once, with its own prefixed path
+    assert(staged.leaf_count == src.leaf_count);
 
     var head_digest: [128]u8 = undefined;
     try compute_catalog_head512(staged, &head_digest);
@@ -438,6 +442,8 @@ pub fn stage_horizon_catalog(
 
     const pk_bytes = signer.public_key.toBytes();
     staged.append_leaf(meta_peer, meta_bolt, meta_revision, trust_signer_path, &pk_bytes, "plain-bytes") catch return error.Overflow;
+    // invariant: the staged catalog holds the copied leaves plus exactly the head and trust leaves
+    assert(staged.leaf_count == src.leaf_count + 2);
 }
 
 /// Write snapshot header (kind, version, leaf_count, rev_count); returns offset ready for batch append.
