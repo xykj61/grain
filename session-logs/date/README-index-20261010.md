@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.125837` | [Copal, fruit held again, both red](20261010/20261010-125837_copal-fruit-held-again-both-red-no-build.kyri) | Zero rostered; two reds re-read; no build. |
 | `20261010.125648` | [Incense, round-open declined](20261010/20261010-125648_incense-round-open-declined-no-build.kyri) | Fast-forward; no build; law lane held. |
+| `20261010.125521` | [Patchouli, queue empty, round ten](20261010/20261010-125521_patchouli-queue-empty-round-ten-no-build.kyri) | Nets re-run; no claim; no build. |
 | `20261010.124919` | [Incense, queue held](20261010/20261010-124919_incense-queue-held-index-red-still-ledger-bound.kyri) | Board clear; queue parked; red held. |
 | `20261010.125132` | [Petrichor, witness paths repointed](20261010/20261010-125132_petrichor-witness-paths-repointed.kyri) | Two bare witness names repointed; Bhakta witness GREEN, doorway unfinished. |
 | `20261010.125130` | [Patchouli, queue empty, round nine, no build](20261010/20261010-125130_patchouli-queue-empty-round-nine-no-build.kyri) | Memcpy and length nets read empty; no build. |
