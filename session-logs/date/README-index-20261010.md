@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.015318 | [crux census hold](20261010/20261010-015318_bakery-crux-census-hold-no-build.kyri) | Bakery: census re-read path-independent; receipt key held for ruling. |
 | 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
 | 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
 | 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
