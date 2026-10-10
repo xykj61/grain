@@ -4,6 +4,10 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.230356` | [Queue empty, 26th](20261009/20261009-230356_patchouli-queue-empty-twenty-sixth.kyri) | Fresh nets re-run; one fixture string; no build; check-in. |
+| `20261009.214056` | [Patchouli queue empty, twenty-sixth read](20261009/20261009-214056_patchouli-queue-empty-twenty-sixth.kyri) | Queue empty; no code changed. |
+| `20261009.182249` | [Patchouli queue empty, twenty-sixth](20261009/20261009-182249_patchouli-queue-empty-twenty-sixth.kyri) | Queue empty; no build; check-in named. |
+| `20261009.160622` | [Patchouli queue empty, twenty-sixth](20261009/20261009-160622_patchouli-queue-empty-twenty-sixth.kyri) | Log only. Version-header grep finds only elder read-compat headers. Queue empty, no claim. Check in. |
 | `20261009.230316` | [Petrichor nib repair](20261009/20261009-230316_petrichor-nib-repair.kyri) | Card nib pinned to HEAD; the nib witness red cleared. |
 | `20261009.230310` | [Diffuser calibration held](20261009/20261009-230310_diffuser-calibration-held-no-fruit.kyri) | Calibration witness GREEN, falsifier fired; no fruit; check-in. |
 | `20261009.230234` | [Pheromone hold, lane closed, ruling still awaited](20261009/20261009-230234_pheromone-hold-lane-closed-no-ruling.kyri) | Lane closed; no build; held on the Glow ruling. |
