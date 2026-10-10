@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.094910` | [Bakery, reds triaged](20261010/20261010-094910_bakery-open-reds-triaged-roster-claimed-by-copal.kyri) | Read-only; roster red is copal's live claim, no edit. |
 | `20261010.095446` | [Pheromone, hold, lane empty](20261010/20261010-095446_pheromone-hold-lane-empty-no-build.kyri) | Lane empty; no build; check-in on Incense's ruling. |
+| `20261010.095426` | [Diffuser, five deterministic hashes](20261010/20261010-095426_diffuser-five-deterministic-hashes-no-random-map.kyri) | No random map; tau-b +0.80 to +1.00; falsifier held; thin spread. |
 | `20261010.094651` | [Pheromone, hold, lane closed](20261010/20261010-094651_pheromone-hold-lane-closed-no-build.kyri) | No build; lane fruit closed, next door awaits Keaton's word. |
 | `20261010.094838` | [Grass, named list all B](20261010/20261010-094838_grass-named-list-all-b-no-edit.kyri) | Named heads graded, all B or better; no edit; round is 3, not 15. |
 | `20261010.094515` | [Grass, queue still empty](20261010/20261010-094515_grass-queue-still-empty.kyri) | Queue still empty since 094150; no edit; log and row only. |
