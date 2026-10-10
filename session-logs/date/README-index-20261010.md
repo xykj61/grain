@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.114342` | [Grass, queue empty, no build](20261010/20261010-114342_grass-queue-empty-no-build.kyri) | Mycelium sample all B or better; tenure B+ 88 re-read; no edit. |
 | `20261010.114159` | [Pheromone, seventh hold, no build](20261010/20261010-114159_pheromone-lane-hold-seventh-no-build.kyri) | Lane empty; GREEN; no build. |
+| `20261010.114010` | [Patchouli, queue empty, hold, no build](20261010/20261010-114010_patchouli-queue-empty-hold-no-build.kyri) | Fresh elder-header sweep; %807 and %765 still owed; nothing built. |
 | `20261010.113953` | [Incense, round-open, no-build decline](20261010/20261010-113953_incense-round-open-decline-no-build.kyri) | Clean round-open to 5253db6c32; no claim; no build. |
 | `20261010.113525` | [Grass, inner page graded B+, card nib carried, hold](20261010/20261010-113525_grass-inner-page-graded-b-plus-hold.kyri) | Inner page B+ 89; no molt; card nib carried. |
 | `20261010.113954` | [Petrichor, consent gate held, round 15, no build](20261010/20261010-113954_petrichor-consent-gate-held-round-15-no-build.kyri) | Gate shut; ff to 5253db6c32; no build. |
