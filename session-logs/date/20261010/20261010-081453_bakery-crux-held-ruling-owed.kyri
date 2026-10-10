@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.081453
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Bakery crux held for the receipt-key ruling, no build
+prompt Bakery baton lap: read the card and the inner prompt, honor the claim board, and land the most durable solvable work or report what is blocked.
+think The claim board holds bakery's own live claim, bakery-shared-build-cache-crux, stamped 20261010.071744, inside its six-hour window. The claim check reads verdict=clear with board=upstream after fetch, commits_behind=2.
+think The card's YOURS line for the crux says the receipt key is Keaton's ruling: whether the receipt key drops HEAD for the watched inputs. That change alters the roster runner contract, so it waits on his word and is not decided on this reading.
+think The agent-doable queue has two items, both gated or a sweep. %642 waits on a word about the scrub trade. %519 plant adoption is a sweep of 353 controls not yet adopted; one adoption is a small step inside it, not a lap on its own.
+think Three earlier laps on this same ruling wrote hold logs (20261010.000229, 20261010.073006, 20261010.080257). This lap adds no new fact, so it writes one short hold and no churn.
+obs Nothing in the tree moved for this lap to build on. The live claim stays in place: closing it would drop the signal that the crux is in flight.
+obs Building the receipt key now would decide Keaton's ruling by default. The honest move is to name the gate and stop.
+rota none -- the crux is held for Keaton's ruling and the agent-doable queue is gated or a sweep; no council deep read decided this lap
+orbit round 1 sign -- pure hold, no build; the verb is the card's own
+file session-logs/date/20261010/20261010-081453_bakery-crux-held-ruling-owed.kyri this log, the only artifact this lap writes
+file session-logs/date/README-index-20261010.md one row above the newest row for this log
+scope read of the card, the bakery inner prompt, the claim board, and the crux log; no code, no pin, no edit to the card
+status GREEN for the reading only; no code changed, so no witness was run; the receipt key is held for Keaton's ruling
+recommend check-in (checkpoint) -- the receipt-key ruling (does the receipt key drop HEAD for watched inputs?) gates the roster runner contract; I will not take it on my own reading
