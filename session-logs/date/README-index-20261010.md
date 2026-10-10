@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.015301 | [citations hold, still no build](20261010/20261010-015301_petrichor-citations-hold-no-build.kyri) | Petrichor: citations resolve; consent gate holds; no build |
+| 20261010.015331 | [queue empty, twenty-fourth net](20261010/20261010-015331_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli: queue empty; no build. |
 | 20261010.015111 | [consent gate holds, no build](20261010/20261010-015111_petrichor-consent-gate-holds-no-build.kyri) | Petrichor: consent gate holds; upstream grass sample only; no build |
 | 20261010.015142 | [grass register grade](20261010/20261010-015142_grass-register-grade-field-no-build.kyri) | Grass: grass-inner.md graded at Field, register 77, none below; no build |
 | 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
