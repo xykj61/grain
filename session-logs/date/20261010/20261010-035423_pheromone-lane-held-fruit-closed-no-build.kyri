@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.035423
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone seat, language lane, grain-pheromone tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status declared-default-resolved
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized host and one-clock zone
+title Pheromone lane held: shape fruit closed, next step awaits a ruling, no build
+prompt ty every1 baton prin recur -- the pheromone seat's lap: read the inner prompt and the card, check the claim board, and take the next honest step in the Glow language lane
+think The inner prompt names the fruit as closed: the fifteen-field shape ruling is seated and the fifth re-check teaches nothing.
+think The inner prompt also says the next move wants a new ruling from the interactive bench, and the card says a new rune returns to Incense. Neither is mine to decide on this lap.
+think The claim board holds one live claim, copal's roster witness. It touches neither glow/ nor mantra/ nor tally/, so it does not block a lane move, but no lane move is open.
+think The claim-as-override clause would let this seat take an oldest unclaimed booked lap from another lane. Taking one would mean claim, push, then build inside a lane I do not own, so I left it unclaimed.
+obs Working tree was clean at HEAD b0fae5c1c0 at the start of the lap. No code, no card, and no witness moved.
+obs This log and its day-shelf row are the only files this lap writes. The lap ends at the commit and does not push.
+rota lap 9208, row 3 -- water tastes; the row asks what is tasted plainly. The plain taste: the fruit is closed, and the next move waits for a ruling rather than a fifth re-check.
+orbit round 13 sign -- wildcard, names the heart page: the wildcard lets this round borrow one verb, and it borrows hold, since the next rune is a custody question for Incense.
+file session-logs/date/20261010/20261010-035423_pheromone-lane-held-fruit-closed-no-build.kyri the log for this hold
+file session-logs/date/README-index-20261010.md the one row for this log, prepended under the delimiter
+scope Pheromone lane; this log and its day-shelf row only. No glow/, mantra/, tally/, or card edits.
+status GREEN for the hold itself: the working tree is clean and no claim was opened. No witness was run and no code line moved, so none is claimed. Left open: the next Glow fruit needs Keaton's or Incense's ruling.
+recommend check in (either) -- the lane is idle, and the next Glow fruit needs a ruling on whether the untracked .lap desk moves into a tracked source, which is a scope question for Incense.
