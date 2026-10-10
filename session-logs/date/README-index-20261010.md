@@ -79,6 +79,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.112330` | [Petrichor, inner hold, no build](20261010/20261010-112330_petrichor-inner-hold-no-build.kyri) | Consent gate still shut; pull changed nothing; no build. |
 | `20261010.112010` | [Petrichor, consent gate held, no build](20261010/20261010-112010_petrichor-consent-gate-held-no-build.kyri) | Gate shut; no build; row only. |
 | `20261010.112004` | [Bakery, crux held again, no build](20261010/20261010-112004_bakery-crux-held-again-no-build.kyri) | Ruling still waits; no code, no claim change. |
 | `20261010.111536` | [Pheromone, lane held](20261010/20261010-111536_pheromone-glow-lane-held-witnesses-green.kyri) | Both lane witnesses GREEN; no build. |
