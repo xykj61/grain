@@ -354,6 +354,16 @@ in one lap, which is the broad move that wants Keaton's word rather than a lap o
 figures are free: rerun the walk rather than trusting this paragraph. The next lap that touches
 one of those functions adds its two asserts with it.
 
+**The reading was partly wrong, corrected `20261010.100936`.** The `20261010.084105` paragraph named
+`mantra/resin_batch.rye` `build_batch` (64 lines) as carrying zero asserts. It carries three, at lines
+144, 197 and 199, each with its `// invariant:` line above. The naive per-function walk this lap ran
+over the same file reads `build_batch` at three asserts and the small helpers (`put_u32`, `get_field`,
+`held_contains` and the rest) at zero. Those helpers are trivial bound-and-write shapes, and they owe
+nothing until touched. The 188 figure is **not reproduced** here, since this lap did not rerun the
+original walk over the whole lane; treat it as unverified. Re-run any census of this class with a walk
+that reads each function's real body before quoting it. The queue still reads empty: no touched
+function, no booked red, and both named rows still want Keaton's word or another ship's lap.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.
