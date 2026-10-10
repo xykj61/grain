@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.220723 | [Pheromone hold, fresh read, no build](20261009/20261009-220723_pheromone-hold-lane-empty-fresh-read.kyri) | Lane empty; board one live claim; no build. |
 | `20261009.220709` | [Diffuser trace re-survey, no fruit](20261009/20261009-220709_diffuser-trace-resurvey-no-fruit.kyri) | Trace survey re-run on HEAD 5817128e4f; region_stats hit is a false positive; no build. |
 | `20261009.220527` | [Petrichor gate hold, no build](20261009/20261009-220527_petrichor-gate-hold-no-build.kyri) | Consent gate unchanged; no fetch lead, no claim, no build. |
 | 20261009.220424 | [Bakery queue held on the receipt-key ruling, sky round](20261009/20261009-220424_bakery-queue-held-sky-round-no-build.kyri) | Reads only; queue held on a ruling; no build. |
