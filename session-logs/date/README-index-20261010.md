@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.020524 | [repeat hold three](20261010/20261010-020524_petrichor-repeat-hold-three-no-build.kyri) | Petrichor: Consent Rail still gated; third repeat hold, no build |
 | 20261010.020204 | [repeat hold two](20261010/20261010-020204_petrichor-repeat-hold-two-no-build.kyri) | Petrichor: Consent Rail still gated; second repeat hold, no build |
 | 20261010.020227 | [bakery hold, round nine](20261010/20261010-020227_bakery-hold-round-nine-no-build.kyri) | receipt key still awaits Keaton; no build |
 | 20261010.020316 | [queue empty](20261010/20261010-020316_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: queue empty, twenty-third reading; no build |
