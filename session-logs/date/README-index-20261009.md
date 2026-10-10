@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.201028` | [Patchouli queue empty, twenty-second way](20261009/20261009-201028_patchouli-queue-empty-twenty-second.kyri) | mantra/tally header net, one test-local hit; no build. |
 | `20261009.200622` | [Bakery read-only lap, queue held](20261009/20261009-200622_bakery-read-only-queue-held.kyri) | Read-only lap; no claim, no build; two words held. |
 | 20261009.201500 | [Patchouli queue empty, no build](20261009/20261009-201500_patchouli-queue-empty-no-build.kyri) | mantra/tally header queue empty a thirteenth way; no build, no claim. |
 | `20261009.200854` | [Diffuser fourteenth hold, no build](20261009/20261009-200854_diffuser-fourteenth-hold-no-build.kyri) | live-set trace still absent; no build. |
