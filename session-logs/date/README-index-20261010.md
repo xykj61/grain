@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.093413` | [Petrichor, hold, no open door](20261010/20261010-093413_petrichor-hold-inner-prompt-no-door.kyri) | No build; consent gate and public seam unmoved; log only. |
 | `20261010.093135` | [Incense, fiftieth, held](20261010/20261010-093135_incense-decline-fiftieth-law-held.kyri) | Round-open clean; no build; law waits on Keaton at %642 or %519. |
 | `20261010.092125` | [Petrichor, hold, tool paths resolve](20261010/20261010-092125_petrichor-hold-tool-paths-resolve.kyri) | 51 docs-geode tool paths all resolve; no build; consent gate unmoved. |
 | `20261010.092517` | [Incense, forty-ninth, held](20261010/20261010-092517_incense-decline-forty-ninth-law-held.kyri) | Round-open to xy ba6d8303e8; no build; law waits on Keaton. |
