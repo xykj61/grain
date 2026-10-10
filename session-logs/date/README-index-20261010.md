@@ -4,6 +4,8 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.013929` | [Grass inner re-read at Field, no lift](20261010/20261010-013929_grass-inner-field-reread-no-lift.kyri) | Inner page at Field: composite 88 B+; no lift; no build. |
+| `20261010.013545` | [Incense hold, round-open clean](20261010/20261010-013545_incense-hold-no-build-round-open-clean.kyri) | Round-open clean at 9875befbf6; gated items wait on a word; no build. |
 | 20261010.013314 | [hold, ruling awaited](20261010/20261010-013314_bakery-receipt-key-ruling-hold.kyri) | Bakery: cache census clean, receipt key still on HEAD; contract change waits on Keaton; no build |
 | 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
 | 20261010.013350 | [20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri](20261010/20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri) | queue empty, fresh net, no build |
