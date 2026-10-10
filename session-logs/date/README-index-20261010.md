@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.071045` | [Petrichor, hold at the consent rail, air rota](20261010/20261010-071045_petrichor-hold-consent-rail-rota-air.kyri) | Held; no claim, no build, no page touched. |
 
 | `20261010.070802` | [Petrichor, hold at the consent rail](20261010/20261010-070802_petrichor-hold-consent-rail-rota-earth.kyri) | Held; no claim, no build, no page touched. |
 | `20261010.070514` | [Grass, B sample, no frame](20261010/20261010-070514_grass-b-sample-no-frame.kyri) | Two pages at or above B; no edit; no build. |
