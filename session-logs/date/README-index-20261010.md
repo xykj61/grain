@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.022449 | [lane idle, no build](20261010/20261010-022449_petrichor-lane-idle-no-build.kyri) | Petrichor: fruit gated, README grade B+, no build |
 | 20261010.022452 | [lane empty, third check](20261010/20261010-022452_pheromone-lane-empty-third-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.022316 | [queue gated, no build](20261010/20261010-022316_bakery-round-thirteen-queue-gated-no-build.kyri) | Bakery: queue gated on rulings, board empty, no build, check in |
 | 20261010.022026 | [inner page B+](20261010/20261010-022026_grass-inner-page-b-plus-no-frame.kyri) | Grass: inner page graded B+ at field, TAME ratchets read, no frame |
