@@ -58,3 +58,9 @@ stamp 20261009.223211
 epoch 1791599531
 paths tools/rye/cache_miss_calibrate.rye tools/fixtures/c/cache_miss_calibrate_scan.sh tools/c/cache_miss_calibrate_witness.rish
 what A Rye-authored cache-miss calibration sweep: open the generic cache-misses event on this guest, sweep a 64 MB buffer once line by line, and print the reading beside the expected line-fill count, with its falsifier named.
+claim copal-tb-style-numbers-witness-roster
+seat copal
+stamp 20261009.224332
+epoch 1791600212
+paths tools/gen/chapter/tigerbeetle_style_by_the_numbers_census_witness.rish
+what Roster the unrostered tigerbeetle style-by-the-numbers census witness (e51) into construction/standing-equipment.kyri, GREEN on metal, with its thin-census red leg proven in a throwaway pen.
