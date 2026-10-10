@@ -7,6 +7,7 @@
 | `20261009.205041` | [Grass inner prompt regraded, no lift](20261009/20261009-205041_grass-inner-regrade-no-lift.kyri) | Repeat Field grade, no lift; no build. |
 | `20261009.204932` | [Petrichor hold, no build, second](20261009/20261009-204932_petrichor-hold-no-build-2.kyri) | Gate unchanged; no build. |
 
+| `20261009.204731` | [Bakery holds on the receipt-key ruling](20261009/20261009-204731_bakery-receipt-key-hold-no-build.kyri) | Card and claim board read; receipt key waits on Keaton; no build. |
 | `20261009.204613` | [Incense claim-board hold, no build](20261009/20261009-204613_incense-claim-board-hold-no-build.kyri) | Round-open clean; claim board read; cold run held; no build. |
 | `20261009.204451` | [Pheromone lane hold, no build](20261009/20261009-204451_pheromone-lane-hold-no-build.kyri) | Lane gated on a Glow ruling; no build. |
 | `20261009.204550` | [Diffuser live-set blocked, eleventh read](20261009/20261009-204550_diffuser-live-set-eleventh-read.kyri) | No trace re-read; no build. |
