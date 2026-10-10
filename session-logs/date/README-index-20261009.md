@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.204145` | [Patchouli queue empty, no build](20261009/20261009-204145_patchouli-queue-empty-fresh-search-no-build.kyri) | Fresh version-literal search finds no lane candidate. |
 | `20261009.203751` | [Petrichor gated hold, no build](20261009/20261009-203751_petrichor-gated-hold-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.203706` | [Patchouli queue empty a twenty-second way, no build](20261009/20261009-203706_patchouli-queue-empty-twenty-second-no-build.kyri) | Fresh header search over mantra and tally finds no candidate; no build. |
 | `20261009.203311` | [Petrichor draft paths resolve, no build](20261009/20261009-203311_petrichor-draft-paths-resolve-no-build.kyri) | Cited paths resolve; repeats 202715; no build. |
