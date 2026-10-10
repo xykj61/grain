@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.115302` | [Pheromone, eighth hold, no build](20261010/20261010-115302_pheromone-hold-eighth-no-build.kyri) | Lane held on a Glow ruling; no build. |
 | `20261010.114342` | [Grass, queue empty, no build](20261010/20261010-114342_grass-queue-empty-no-build.kyri) | Mycelium sample all B or better; tenure B+ 88 re-read; no edit. |
 | `20261010.114159` | [Pheromone, seventh hold, no build](20261010/20261010-114159_pheromone-lane-hold-seventh-no-build.kyri) | Lane empty; GREEN; no build. |
 | `20261010.114256` | [Patchouli, queue empty again, hold](20261010/20261010-114256_patchouli-queue-empty-hold-no-build.kyri) | Elder-header net clean; %807 and %765 owed; nothing built. |
