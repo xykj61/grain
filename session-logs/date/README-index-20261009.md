@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.230009` | [Petrichor hold, no fruit](20261009/20261009-230009_petrichor-hold-no-fruit.kyri) | Consent Rail gate still closed; grade re-read; no page; check-in. |
 | `20261009.225705` | [Queue empty, 24th](20261009/20261009-225705_queue-empty-twenty-fourth.kyri) | Grep re-run; no build; check-in on repeats. |
 | `20261009.225549` | [Petrichor hold, Consent Rail gate](20261009/20261009-225549_petrichor-hold-consent-rail-gate.kyri) | Gate held; no fruit; log only. |
 | `20261009.225451` | [Pheromone hold, air row read, no ruling](20261009/20261009-225451_pheromone-hold-air-row-no-ruling.kyri) | Air row read; lane held on the Glow ruling; no build. |
