@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.030238 | [hashed index breaks floor](20261010/20261010-030238_diffuser-hashed-index-floor-breaks.kyri) | Diffuser: floor fails under a hash at 112 lines |
 | 20261010.030159 | [key held after pull, no build](20261010/20261010-030159_bakery-receipt-key-held-after-pull-no-build.kyri) | Bakery: fast-forward, key held, no build |
 | 20261010.030137 | [20261006 gap, no commits](20261010/20261010-030137_petrichor-20261006-gap-no-commits-hold.kyri) | Petrichor: zero commits 20261006, shelf absence honest, no build |
 | 20261010.030303 | [queue empty, no build](20261010/20261010-030303_patchouli-queue-empty-no-build.kyri) | Patchouli: lane queue empty again, grep nets clean, no build |
