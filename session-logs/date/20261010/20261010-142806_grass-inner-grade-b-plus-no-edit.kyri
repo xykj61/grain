@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.142806
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role grass lane auditor in grain-grass (fleet seat, one ship of eight)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_reasoning medium
+configured_status resolved-local-override evidence tools/fixtures/d/declared_model.sh resolved_model (claude-haiku-5-5, resolved_effort medium, local_override yes; tracked .claude/settings.json declares claude-sonnet-5)
+voice Kyri
+title Grass, inner prompt graded B+, no edit
+prompt Baton and grass-inner read top to bottom; grade one open prose surface and lift it only if below B.
+think The inner prompt names the ordinary move: touch a prose surface already open, grade it, push one molt frame only when the reading is below B. The claims board holds one live claim (copal, roster of remember pin history), so no claim is needed here; a prose grade builds no new instrument.
+think The page graded is recursion-prompts/grass-inner.md, the page this lap opened and the one the lane reads at the top of every lap.
+think The reading is B+ at composite 89 (register 77 at 23 percent negative of 108 sentences, under the Field ceiling of 30 percent; reach 90; truth 100 counted; service 90 judged-by-card). B stands at 80, so no molt frame is pushed.
+think The card's git nib named 01dd26defc, two commits behind HEAD; the nib writer's follow-up shape carries it to c9115ee7bb, this commit's parent, read before the commit is made.
+obs A grade of B+ on a page this lane wrote is a self-reading, not an outside check. Truth is counted only, so the judged half of truth (claims still true) was not read. Reach is reported, not gated.
+obs No code moved, so the cold roster run is not owed for a prose-only lap, and the claim check was not needed. Three guards read this lap's files: remember_git_nib_witness GREEN, index_fold_witness GREEN, index_row_bound_witness RED -- the RED predates this lap (182 rows over 192 bytes at HEAD c9115ee7bb) and is REDS %835, OPEN and owned by the shelf-level ruling; this lap's own row is 169 bytes and not the cause.
+orbit round 10 Capricorn -- what must stop: the bound. Fascia's face moved by 0.0000 (no witness run).
+rota none -- prose grade of one open page; no council row read this lap, so the field is declared absent rather than implied.
+file recursion-prompts/grass-inner.md -- graded with qa_report_card.sh --setting field --service 90, composite 89, B+, no edit.
+file session-logs/date/20261010/20261010-142806_grass-inner-grade-b-plus-no-edit.kyri -- this log, the record of the reading.
+file session-logs/date/README-index-20261010.md -- one row prepended under the delimiter for this log.
+file construction/ITINERARY.md -- Git nib moved from 01dd26defc to c9115ee7bb, the parent of this commit.
+scope one QA grade of recursion-prompts/grass-inner.md; no edit, no frame.
+status PARTIAL -- the grade stands at B+ (89) and nothing was edited beyond the card's nib and this lap's own records. index_row_bound_witness is RED on the open shelf, a fault predating this lap and held by REDS %835 (OPEN); this lap did not repair it, since the rows belong to peers. Send follows this write.
+recommend keep-going -- the queue holds no open below-B page; the next lap takes an unopened file only if a reading comes back below B.
