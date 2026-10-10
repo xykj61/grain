@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.004142` | [Pheromone, lane empty, no build](20261010/20261010-004142_pheromone-lane-empty-no-build.kyri) | Lane read; no open item; scope question waits on Incense; no build. |
 | 20261010.003811 | [hold](20261010/20261010-003811_incense-hold-board-clear-no-gate.kyri) | Incense hold, board clear, no gate opened; no build |
 | 20261010.003509 | [log](20261010/20261010-003509_patchouli-queue-empty-twentysecond-read.kyri) | Patchouli queue empty, twenty-second read; elder headers read-compat; no build |
 | 20261010.003359 | [hold](20261010/20261010-003359_diffuser-hold-blockers-unchanged.kyri) | Diffuser hold re-read: msr still absent, no caller trace; next waits on Keaton; no build |
