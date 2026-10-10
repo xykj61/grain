@@ -245,6 +245,32 @@ fn build_head_record_content(
     return written;
 }
 
+// invariant: the kind word is exactly "export" or "boot"; anything else is a truncated record.
+fn parse_continuity_kind(kind: []const u8) SnapshotError!ContinuityKind {
+    if (std.mem.eql(u8, kind, "export")) return .export_kind;
+    if (std.mem.eql(u8, kind, "boot")) return .boot_kind;
+    return error.Truncated;
+}
+
+// invariant: src fits in dst; a longer value is a truncated record, refused before any copy.
+// Returns the length copied, which the caller stores beside the bytes it bounds.
+fn copy_bounded(dst: []u8, src: []const u8) SnapshotError!u32 {
+    if (src.len > dst.len) return error.Truncated;
+    tally_copy.copy_disjoint(u8, dst[0..src.len], src);
+    return @intCast(src.len);
+}
+
+// invariant: identity_hex is exactly 64 hex digits, so each 2-digit pair parses to one byte.
+fn decode_identity_hex(identity_hex: *const [64]u8) SnapshotError![32]u8 {
+    var pk_bytes: [32]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        const pair = identity_hex[i * 2 ..][0..2];
+        pk_bytes[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.Truncated;
+    }
+    return pk_bytes;
+}
+
 fn parse_head_record_content(content: []const u8) SnapshotError!struct {
     head_digest_hex: [128]u8,
     identity_epoch: u64,
@@ -277,10 +303,7 @@ fn parse_head_record_content(content: []const u8) SnapshotError!struct {
         } else if (std.mem.startsWith(u8, line, "identity-epoch:")) {
             identity_epoch = tally_parse_int.parse_int(u64, line["identity-epoch:".len..], .{}) catch return error.Truncated;
         } else if (std.mem.startsWith(u8, line, "parity-claim:")) {
-            const claim = line["parity-claim:".len..];
-            if (claim.len > parity_claim.len) return error.Truncated;
-            tally_copy.copy_disjoint(u8, parity_claim[0..claim.len], claim);
-            parity_claim_len = @intCast(claim.len);
+            parity_claim_len = try copy_bounded(parity_claim[0..], line["parity-claim:".len..]);
         } else if (std.mem.startsWith(u8, line, "continuity-identity:")) {
             const hex = line["continuity-identity:".len..];
             if (hex.len != 64) return error.Truncated;
@@ -288,34 +311,19 @@ fn parse_head_record_content(content: []const u8) SnapshotError!struct {
         } else if (std.mem.startsWith(u8, line, "continuity-epoch:")) {
             continuity_epoch = tally_parse_int.parse_int(u64, line["continuity-epoch:".len..], .{}) catch return error.Truncated;
         } else if (std.mem.startsWith(u8, line, "continuity-kind:")) {
-            const kind = line["continuity-kind:".len..];
-            if (std.mem.eql(u8, kind, "export")) {
-                continuity_kind = .export_kind;
-            } else if (std.mem.eql(u8, kind, "boot")) {
-                continuity_kind = .boot_kind;
-            } else {
-                return error.Truncated;
-            }
+            continuity_kind = try parse_continuity_kind(line["continuity-kind:".len..]);
         } else if (std.mem.startsWith(u8, line, "continuity-parent:")) {
             const hex = line["continuity-parent:".len..];
             if (hex.len != 64) return error.Truncated;
             tally_copy.copy_disjoint(u8, continuity_parent[0..64], hex);
         } else if (std.mem.startsWith(u8, line, "continuity-stamp:")) {
-            const stamp = line["continuity-stamp:".len..];
-            if (stamp.len > continuity_stamp.len) return error.Truncated;
-            tally_copy.copy_disjoint(u8, continuity_stamp[0..stamp.len], stamp);
-            continuity_stamp_len = @intCast(stamp.len);
+            continuity_stamp_len = try copy_bounded(continuity_stamp[0..], line["continuity-stamp:".len..]);
         }
     }
 
     if (!have_head_digest or continuity_epoch == 0) return error.Truncated;
 
-    var pk_bytes: [32]u8 = undefined;
-    var i: u32 = 0;
-    while (i < 32) : (i += 1) {
-        const pair = identity_hex[i * 2 ..][0..2];
-        pk_bytes[i] = tally_parse_int.parse_int(u8, pair, .{ .base = 16, .allow_leading_zero = true }) catch return error.Truncated;
-    }
+    const pk_bytes = try decode_identity_hex(&identity_hex);
 
     return .{
         .head_digest_hex = head_digest_hex,
