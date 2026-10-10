@@ -6,6 +6,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.075508` | [Petrichor, hold, nothing moved since the last read](20261010/20261010-075508_petrichor-hold-nothing-moved-since.kyri) | Upstream level; gate unmoved; no page touched. |
 | `20261010.075133` | [Grass, queue empty, hold again](20261010/20261010-075133_grass-queue-empty-hold-again.kyri) | Queue empty; no build, no claim, no edit. |
 | `20261010.075317` | [Patchouli, queue empty, fourth no-build read](20261010/20261010-075317_patchouli-queue-empty-fourth-net.kyri) | Queue empty; no build. |
 | `20261010.075021` | [Patchouli, queue empty, third no-build read](20261010/20261010-075021_patchouli-queue-empty-third-no-build.kyri) | Queue empty; no build. |
