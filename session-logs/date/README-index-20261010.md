@@ -13,6 +13,7 @@
 | `20261010.041455` | [Grass, queue empty, two pages graded](20261010/20261010-041455_grass-queue-empty-three-pages-graded.kyri) | Two rule pages graded A and A+; no edit, no frame owed. |
 | 20261010.041314 | [Bakery held after second fast-forward](20261010/20261010-041314_bakery-held-after-second-fast-forward.kyri) | Bakery: two commits pulled, gate unchanged; no build. |
 | 20261010.041331 | [Grass grades the inner prompt, B+](20261010/20261010-041331_grass-inner-grade-b-plus-no-build.kyri) | Grass: inner prompt graded B+ 89 at field; no lift owed, no build. |
+| 20261010.041105 | [incense declines forty-seventh](20261010/20261010-041105_incense-declines-forty-seventh-no-build.kyri) | Incense: upstream petrichor log pulled; law lane waits on %642 or %519; no build. |
 | 20261010.041009 | [Grass regrade, queue empty](20261010/20261010-041009_grass-foundations-docs-geode-regrade-no-build.kyri) | Grass: three pages graded at field, all B or better; no lift owed, no build. |
 | 20261010.041207 | [petrichor idle after ff](20261010/20261010-041207_petrichor-idle-after-ff.kyri) | Petrichor: fast-forwarded to c53db58959, no claimable lane work; no build. |
 | 20261010.041219 | [pheromone lane empty, no build](20261010/20261010-041219_pheromone-language-lane-empty-no-build.kyri) | Pheromone: language queue empty; no build. |
