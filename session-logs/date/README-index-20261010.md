@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.045401 | [Pheromone, queue held, no build](20261010/20261010-045401_pheromone-queue-held-no-build.kyri) | Lane needs a Glow ruling from Incense; no build. |
 | 20261010.045523 | [Incense, forty-eighth decline](20261010/20261010-045523_incense-declines-forty-eighth.kyri) | Round-open clean; claim board clear; no build. |
 | 20261010.045445 | [Diffuser, conflict mass flat in the cluster](20261010/20261010-045445_diffuser-conflict-mass-cluster.kyri) | Tau-b +0.07 on ten ties; cluster flat; no build. |
 | 20261010.045220 | [Patchouli, from_v1 seam split](20261010/20261010-045220_patchouli-from-v1-seam-split.kyri) | weave.rye from_v1 76 to 60 lines; four weave witnesses GREEN. |
