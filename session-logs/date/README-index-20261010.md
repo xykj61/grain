@@ -17,6 +17,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.084237` | [Bakery, disk hazard held](20261010/20261010-084237_bakery-disk-hazard-held.kyri) | Root disk 95 percent, 8.4G free; host zig cache 40G named for Keaton; no page or claim touched. |
 | `20261010.083613` | [Incense, declined sixty-third, no build](20261010/20261010-083613_incense-declines-sixty-third-no-build.kyri) | Round-open clean; no live claim; no build; nib carried. |
 | `20261010.083832` | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-083832_patchouli-queue-empty-twenty-fourth.kyri) | Tame ratchets clean; no code moved. |
 | `20261010.083535` | [Copal, witness blocked by open red](20261010/20261010-083535_copal-unrostered-witness-blocked-by-red.kyri) | Witness RED on e113 (36 of 41), cited REDS 20261001.234320; nothing rostered. |
