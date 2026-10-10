@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.002110 | [log](20261010/20261010-002110_copal-instrument-suite-roster-held-red.kyri) | Copal fruit held: instrument_suite roster blocked by OPEN fascia red; claim closed |
+| 20261010.002022 | [log](20261010/20261010-002022_diffuser-fire-row-fruit-waits-on-word.kyri) | Diffuser fire row; next fruit held at Keaton's word; no build |
 | 20261010.001740 | [log](20261010/20261010-001740_bakery-hold-receipt-key-third-read.kyri) | Bakery third hold; receipt key still YOURS; no build |
 | 20261010.001753 | [log](20261010/20261010-001753_grass-mycelium-yours-already-spent.kyri) | Grass mycelium YOURS already spent; four files B or better |
 | 20261010.001846 | [hold](20261010/20261010-001846_petrichor-hold-consent-gate-upstream-claim.kyri) | Petrichor hold: consent gate shut, upstream claim only; no build |
