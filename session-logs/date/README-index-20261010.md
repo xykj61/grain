@@ -10,6 +10,7 @@
 | 20261010.041811 | [Pheromone held after ff, no build](20261010/20261010-041811_pheromone-held-after-ff-no-build.kyri) | Pheromone: ff to 1fb396b6d2; lane empty; no build. |
 | 20261010.041751 | [Petrichor, gated, no build](20261010/20261010-041751_petrichor-first-hour-gated-no-build.kyri) | Petrichor: ff 1fb396b6d2; first hour gated; no build. |
 | 20261010.041655 | [The 127-line next door, run fully associative](20261010/20261010-041655_diffuser-fa-floor-127-no-clean-split.kyri) | Diffuser: fully associative floor reaches at 112 lines; the 126 miss is an index effect; partial falsifier; no build. |
+| 20261010.041820 | [Grass docs sample, all B or better](20261010/20261010-041820_grass-docs-sample-all-b-or-better.kyri) | Grass: docs composites read B or better; no molt owed. |
 | 20261010.041452 | [Petrichor idle, no build](20261010/20261010-041452_petrichor-idle-no-build.kyri) | Petrichor: fast-forward to 5218cb1e68; lane gated, no build. |
 | 20261010.041245 | [copal suite red booked](20261010/20261010-041245_copal-instrument-suite-red-booked.kyri) | Copal: suite held unrostered on fascia-health 37/41; red held in log. |
 | `20261010.041455` | [Grass, queue empty, two pages graded](20261010/20261010-041455_grass-queue-empty-three-pages-graded.kyri) | Two rule pages graded A and A+; no edit, no frame owed. |
