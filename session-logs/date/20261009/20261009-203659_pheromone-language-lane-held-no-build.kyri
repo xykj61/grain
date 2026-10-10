@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261009.203659
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone lane (glow language)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved by sh tools/fixtures/d/declared_model.sh resolved_model, this clone
+evidence declared_model.sh resolved_model; launch identity from the session prompt
+voice Kyri
+host Framework bench, America/New_York
+title pheromone language lane held, no build
+prompt Run the pheromone seat baton and inner prompt: read the card, widen if the queue is empty, otherwise build one fruit.
+think Read recursion-prompts/pheromone-inner.md. Its closed fruits name the last one as closed in commit 9726a654e's line of work, and its ruling names a new Glow rune question as Incense's door.
+think Read the card's Pheromone section. Its only stated move is three language items, and the stop line says a new rune or Glow language ruling returns to Incense and the interactive bench.
+think The card's YOURS lines for the Pheromone lane read none, and the account shelved at 20261003.075300 closes the most recent pedestal, Refusal's three fields.
+think The inner prompt's own text names the next step as a scope question for Incense, not a continuation of a closed fruit. Building it here would decide a rune question that the card reserves for a ruling.
+obs The lane queue reads empty by the card's own account, and the next step needs a ruling this seat does not hold. Nothing new was built, and no closed fruit was re-checked.
+obs The fruit is a ruling rather than a build, so this lap adds no account to the card beyond the nib carried forward.
+rota lap 8558, row 3 -- water tastes; the row asks whether the flow is sweet or off, and the reading surfaced that the lane's own flow has run dry while the card still names an open ruling for Incense
+orbit round 8 Scorpio -- count 8558, so (count - 1) % 15 + 1 = 8, Scorpio, water aesthetics; the verb is the picture held whole, and the fold page waits once its links resolve
+file construction/ITINERARY.md -- Git nib carried forward to HEAD parent, per remember-git-nib rule 5
+file session-logs/date/20261009/20261009-203659_pheromone-language-lane-held-no-build.kyri -- this log, born on its shelf
+file session-logs/date/README-index-20261009.md -- row prepended under the delimiter
+scope read-only queue check across the Glow language lane; no code or card change beyond the nib
+status GREEN for the check; queue empty; nothing built, nothing left half-done
+recommend check-in (checkpoint) -- the next Glow language move is a new rune or language ruling, which the card returns to Incense and the interactive bench before any build
