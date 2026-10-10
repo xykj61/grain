@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.235917` | [Patchouli queue empty, twenty-third net](20261009/20261009-235917_patchouli-queue-empty-twenty-third-net.kyri) | Queue empty; elder headers only; no build; check-in named. |
 | `20261009.235839` | [Petrichor repeat hold](20261009/20261009-235839_petrichor-repeat-hold.kyri) | Both gates still closed; no build. |
 | `20261009.235800` | [Bakery redleg re-run](20261009/20261009-235800_bakery-redleg-rerun-head-455f1bffb5.kyri) | Redleg red re-reproduced on 455f1bffb5; four over ceiling; no edit. |
 | `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
