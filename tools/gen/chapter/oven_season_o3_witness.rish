@@ -1,5 +1,12 @@
 # tools/gen/chapter/oven_season_o3_witness.rish -- Oven Chapter o3 inference plan retarget.
 #
+# The o3 lap retargeted the inference plan from anvil/ to oven/. The module then renamed again to
+# ember/ (see oven_season_o1_witness.rish), and this witness still asserted oven/ stood, so it read
+# RED unrostered. It now proves the same retarget read forward from where the path actually ended:
+# ember/ lives, and both elder names stay retired. The plan's own elder-name notes, written as
+# "`oven/` (was `anvil/`)", are dated testimony and pass; only a bare anvil/ step counts as living.
+# REDS %292's class, rostered by the claim oven-o3-path-retarget.
+#
 #   rishi/bin/rishi run tools/gen/chapter/oven_season_o3_witness.rish
 
 say "oven-season-o3: Language EN — close the residual queue."
@@ -9,13 +16,15 @@ say "oven-season-o3: Lens TAME — Oven Chapter o3."
 let counsel = run ["test" "-f" "counsel/date/20260729/20260729-000258_oven-season-o3-inference-plan-retarget.md"]
 assert counsel.ok else "oven-season-o3: o3 counsel missing"
 
-let plan = run ["sh" "-c" "grep -q 'oven/' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && grep -q 'oven_corpus_lap1' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && ! grep -q '\`anvil/\`' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && echo PLAN_OK"]
+# invariant: the plan names the living corpus step and no bare anvil/ living step remains.
+let plan = run ["sh" "-c" "grep -q 'oven_corpus_lap1' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md && ! grep '`anvil/`' expanding-prompts/yonder/20260710-133500_inference-stack-lap0.md | grep -qv 'was `anvil/`' && echo PLAN_OK"]
 assert plan.ok else "oven-season-o3: inference plan scan failed"
 assert plan.out contains "PLAN_OK" else "oven-season-o3: plan still names anvil/ as living step"
 
-let path = run ["sh" "-c" "test -d oven && test ! -d anvil && echo PATH_OK"]
+# invariant: the path reads ember/ LIVE, and both retired names are gone.
+let path = run ["sh" "-c" "test -d ember && test -f ember/ember.rye && test ! -d anvil && test ! -d oven && echo PATH_OK"]
 assert path.ok else "oven-season-o3: path state broken"
-assert path.out contains "PATH_OK" else "oven-season-o3: oven/ LIVE expected"
+assert path.out contains "PATH_OK" else "oven-season-o3: ember/ LIVE expected"
 
-say "GREEN: oven-season-o3 — inference plan oven/ · path LIVE · Oven Chapter"
+say "GREEN: oven-season-o3 — inference plan oven_corpus_lap1 · path LIVE at ember/ · Oven Chapter"
 say "GREEN: oven-season-o3 — path-residual queue empty."

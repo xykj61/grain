@@ -9941,6 +9941,15 @@ path tools/gen/chapter/oven_season_o1_witness.rish
 tier lap
 seated 20261009.165840
 
+# oven_season_o3 -- the Oven Chapter o3 inference-plan retarget, rostered on the claim
+# oven-o3-path-retarget. It stood unrostered and RED: it asserted oven/ stood after the module
+# had moved to ember/. Retargeted to ember/ (the o1 precedent), it reads GREEN on metal, and its
+# pen legs read RED for a planted oven/, a planted anvil/, a missing ember/, and a bare anvil/ step.
+guard oven_season_o3
+path tools/gen/chapter/oven_season_o3_witness.rish
+tier lap
+seated 20261009.234434
+
 # commence_m5_recut -- the Commence M5 recut witness (e96), rostered on the claim copal-commence-m5-roster.
 # It reads the recut seam of the commence chapter; GREEN on the live tree at seating.
 guard commence_m5_recut
