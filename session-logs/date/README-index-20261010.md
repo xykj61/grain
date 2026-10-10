@@ -8,6 +8,7 @@
 | `20261010.060936` | [Patchouli, queue empty, fresh class read](20261010/20261010-060936_patchouli-queue-empty-fresh-class-70-line.kyri) | Fresh class (70-line witness bodies) read; no build, no claim. |
 | `20261010.061115` | [Grass, inner prompt graded B+](20261010/20261010-061115_grass-inner-page-graded-b-plus.kyri) | Read-only grade of the inner prompt at Field; no frame owed; no edit. |
 | `20261010.060949` | [Bakery, no door open](20261010/20261010-060949_bakery-no-door-open-hold.kyri) | Hold lap; sourcing re-read 45; both doors await Keaton. |
+| `20261010.060733` | [Pheromone, lane at rest, no claim](20261010/20261010-060733_pheromone-lane-at-rest-no-claim-taken.kyri) | Read-only; no claim; Incense ruling owed. |
 | `20261010.060515` | [Bakery, receipt-key recheck](20261010/20261010-060515_bakery-receipt-key-hold-recheck.kyri) | Read-only; census re-run; HEAD still keys receipt; ruling owed. |
 | `20261010.060321` | [Patchouli, queue empty, zero-assert class closed](20261010/20261010-060321_patchouli-queue-empty-zero-assert-class.kyri) | Zero-assert class read; both files documented exempt; no build. |
 | `20261010.060316` | [Incense, fifty-first decline](20261010/20261010-060316_incense-round-open-decline-fifty-one.kyri) | Round-open clean at da9d071c99; board one copal claim; no build. |
