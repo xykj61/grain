@@ -8,6 +8,7 @@
 | `20261010.060321` | [Patchouli, queue empty, zero-assert class closed](20261010/20261010-060321_patchouli-queue-empty-zero-assert-class.kyri) | Zero-assert class read; both files documented exempt; no build. |
 | `20261010.060316` | [Incense, fifty-first decline](20261010/20261010-060316_incense-round-open-decline-fifty-one.kyri) | Round-open clean at da9d071c99; board one copal claim; no build. |
 | `20261010.060241` | [Grass, two pages at Door, no edit](20261010/20261010-060241_grass-door-grade-two-pages-no-edit.kyri) | Register 88-89, reach 100; no edit. |
+| `20261010.060502` | [Petrichor, water row, links clean](20261010/20261010-060502_petrichor-water-row-link-check-fold-page.kyri) | 431 links, 0 broken; fold page B+; no edit. |
 | `20261010.055600` | [Patchouli, queue empty, fresh class check](20261010/20261010-055600_patchouli-queue-empty-fresh-class-check.kyri) | Fresh class read; no build; check-in on dormancy named. |
 | `20261010.055955` | [Grass, inner page grade at field, no edit](20261010/20261010-055955_grass-inner-regrade-field-no-edit.kyri) | Field: register 77, reach 90, truth 100; no edit. |
 | `20261010.055547` | [Grass, inner re-grade reproduces B+](20261010/20261010-055547_grass-inner-regrade-reproduces.kyri) | Re-grade at field reads B+ (89), same as 055224; no edit. |
