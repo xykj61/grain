@@ -7,6 +7,7 @@
 | `20261010.065047` | [Patchouli, queue empty, ninth](20261010/20261010-065047_patchouli-queue-empty-ninth-brace-sweep.kyri) | Brace-counted long-function sweep; queue empty, no code moved. |
 | `20261010.064911` | [Grass, six docs compressors graded, none below B](20261010/20261010-064911_grass-docs-compressors-graded-none-below-b.kyri) | Six docs/ pages read B or better at the field shadow; no edit. |
 | `20261010.064829` | [Petrichor, lint reads the 20261006 gap, no build](20261010/20261010-064829_petrichor-lint-20261006-gap-no-build.kyri) | Lint clean in lane; one held-gap link. |
+| `20261010.064923` | [Bakery, hold after fast-forward](20261010/20261010-064923_bakery-hold-after-fast-forward.kyri) | Four peers landed; no ruling; no build. |
 | `20261010.064542` | [Grass, five foundations sampled, all B or better](20261010/20261010-064542_grass-foundations-sampled-all-b.kyri) | Five foundations graded B or better; no molt owed; register question for Keaton. |
 | `20261010.064817` | [Patchouli, queue empty, eighth](20261010/20261010-064817_patchouli-queue-empty-eighth-no-build.kyri) | Queue still empty; two OPEN rows want a ruling; no build. |
 | `20261010.064308` | [Bakery, hold, no ruling upstream](20261010/20261010-064308_bakery-hold-no-ruling-upstream.kyri) | Fetch found no ruling; no build; both doors owed. |
