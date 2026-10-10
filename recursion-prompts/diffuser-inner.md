@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.202114` -- the size-mix paper grades B+ 89, and the trace survey finds no live-set caller trace in the tree, so the next fruit waits
 **Revised:** `20261009.174910` -- the size mix closes the rest of the gap: with the real probe's sizes under the same uniform churn, the simulated paper's count falls to about 1,706 per seed at W=10,000, inside the real probe's seed range
 **Revised:** `20261009.174149` -- the simulated paper's own population reproduces its table on a real buffer, and churn explains most of the gap to the real probe
 **Revised:** `20261009.172710` -- the lifetime ratio near a hundred holds the gap inside seed noise: the jump reads about five percent above the uniform control at W=10,000, and the falsifier does not fire
@@ -923,9 +924,12 @@ Of the 2,243 gap between the simulated paper and the real probe, churn accounts 
 and the size model for about 18 percent, with a residual under one percent. The falsifier named before
 the run, a count more than twice the real probe's, did not fire. Window shape holds in both (about
 thirteen-fold and fourteen-fold). Scope stays this bump model and this shift. The split was taken with
-the churn swapped first, and that order was not varied. Graded not yet, pending the QA card. Next fruit:
-a size mix from a live-set trace a caller in this tree actually holds. None is in hand, so the fruit
-waits for one, or for the captain's ruling on a different question.
+the churn swapped first, and that order was not varied. Graded B+ 89 at Field on `20261009.202114`
+(`sh tools/fixtures/q/qa_report_card.sh` with `--setting field --service 80`; truth counted, the judged
+half unread). Next fruit: a size mix from a live-set trace a caller in this tree actually holds. The
+survey on `20261009.202114` finds none: `git ls-files` and `git grep` for allocation traces, alloc logs
+and size histograms return the scope-trace tools and the image and comment modules, and no tracked
+malloc population. So the fruit waits for a trace, or for the captain's ruling on a different question.
 
 ## gates
 
