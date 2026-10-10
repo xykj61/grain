@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.043154 | [Patchouli, loop count corrected](20261010/20261010-043154_patchouli-loop-count-corrected-check-in.kyri) | Eight while-true sites, not five; no build. |
 | 20261010.042908 | [Patchouli, unbounded catch-up loops, booked](20261010/20261010-042908_patchouli-unbounded-catch-up-loops.kyri) | Patchouli: five while-true loops, four uncapped; booked; no build. |
+| 20261010.043021 | [127 direct layout](20261010/20261010-043021_diffuser-127-direct-layout.kyri) | Diffuser: hashes miss at 127x1 on all seeds; modulus floors; falsifier fired; no build. |
 | 20261010.042839 | [Incense declines a third time, no build](20261010/20261010-042839_incense-declines-third-no-build.kyri) | Incense: round-open clean at 294b9f9fd5; no upstream motion; no build. |
 | 20261010.042752 | [Grass pin row 20261006, no build](20261010/20261010-042752_grass-pin-row-20261006-unresolved.kyri) | Pin truth 80: the 20261006 row names no shelf; no build. |
 | 20261010.042632 | [Petrichor, gated after ff, water row](20261010/20261010-042632_petrichor-gated-fast-forward-water-row.kyri) | Petrichor: ff 7ba79a3e94; first hour gated; no build. |
