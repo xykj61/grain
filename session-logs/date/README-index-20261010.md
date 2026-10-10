@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.095648` | [Petrichor, hold, links clean](20261010/20261010-095648_petrichor-hold-no-door-links-clean.kyri) | Dangling docs-geode links zero; no edit; stray pkill noted. |
 | `20261010.094910` | [Bakery, reds triaged](20261010/20261010-094910_bakery-open-reds-triaged-roster-claimed-by-copal.kyri) | Read-only; roster red is copal's live claim, no edit. |
 | `20261010.095446` | [Pheromone, hold, lane empty](20261010/20261010-095446_pheromone-hold-lane-empty-no-build.kyri) | Lane empty; no build; check-in on Incense's ruling. |
 | `20261010.095426` | [Diffuser, five deterministic hashes](20261010/20261010-095426_diffuser-five-deterministic-hashes-no-random-map.kyri) | No random map; tau-b +0.80 to +1.00; falsifier held; thin spread. |
