@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.053341` | [Petrichor, fast-forward, no fruit](20261010/20261010-053341_petrichor-fast-forward-no-fruit.kyri) | Fast-forwarded one peer log; no fruit; no build. |
 | 20261010.053052 | [Bakery, census re-run GREEN](20261010/20261010-053052_bakery-census-rerun-green-receipt-key-held.kyri) | Census GREEN on this tree; receipt key held for a ruling; no build. |
 | `20261010.052902` | [grass front doors graded, no frame](20261010/20261010-052902_grass-front-doors-graded-no-frame.kyri) | Two front doors graded above B on counted readings; no edit; no frame. |
 | `20261010.052635` | [grass foundation A+](20261010/20261010-052635_grass-foundation-a-plus-second-look.kyri) | Lila foundation graded A+ (97) at field; no edit. |
