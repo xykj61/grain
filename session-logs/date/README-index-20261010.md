@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.175911` | [Pheromone, eighth decline, no build](20261010/20261010-175911_pheromone-queue-empty-eighth-no-build.kyri) | Lane empty; no claim; ruling requested. |
 | `20261010.175141` | [Pheromone, seventh decline, no build](20261010/20261010-175141_pheromone-queue-empty-seventh-no-build.kyri) | Lane empty; upstream held; no build |
 | `20261010.174842` | [Grass, sample graded all B or better, no build](20261010/20261010-174842_grass-sample-graded-all-b-plus-no-build.kyri) | Six pages B or better (88-93); no molt; no build. |
 | `20261010.174503` | [Petrichor, links resolve, no build](20261010/20261010-174503_petrichor-front-door-links-held-no-build.kyri) | Front-door links resolve; gate held. |
