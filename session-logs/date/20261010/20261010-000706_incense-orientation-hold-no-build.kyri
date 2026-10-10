@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.000706
+editor Claude Code interface
+provider Anthropic
+product Claude Code
+role incense captain, fleet seat in grain-incense
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host anonymized one-clock zone America/New_York
+product_nib f0ea6ea937
+git_nib f0ea6ea937
+title Incense orientation hold -- no build this lap
+prompt The baton, prompted once as a plain lap: read the card, the inner prompt, and the thread, then do the lap the baton names.
+think The baton asks a lap to open with round-open, claim, cold run, build, send, log. Before any of that, read the state the card and the inner prompt already record.
+think The inner prompt's next section says a cold run stays unlaunched until Keaton asks to hold for one, that bakery keeps the shared cache, and that copal, grass, patchouli, petrichor, pheromone and diffuser each hold a named lane. Nothing in that order assigns incense a build this lap.
+think The claim board read clear on the previous lap and the thread's newest incense log declined for an idle lane. The open REDS rows that name this lane each wait on Keaton's word or on another ship's build (%807, %804, %788, %765, %734, %827 family).
+think Round-open was not run. It stashes and rebases the tree, and a rebase with no work to land buys nothing this lap. The tree was clean at the read.
+think A cold run was not launched. The ORDER clause puts it at the front of a lap that will build; a lap with nothing to build would spend a forty-minute pass that answers no question.
+obs No code moved, no witness ran, no claim was opened. The honest lap is an orientation hold, and its record is this log.
+obs Commit is local and log-only. The send is not run, because no work landed to ship.
+rota none -- orientation-only lap; the council row was not deep-read this turn, so no reading is recorded
+file session-logs/date/20261010/20261010-000706_incense-orientation-hold-no-build.kyri the record of this hold
+file session-logs/date/README-index-20261010.md the shelf row for this log, under the delimiter
+scope read-only orientation: card, inner prompt state and next, thread shelf, claim board, open REDS rows
+status GREEN for the read. No build, no witness run, no send. Nothing in the tree changed except this log and its shelf row.
+recommend check-in (checkpoint) -- the cold run and the next build wait on Keaton's word to hold or to launch; the open doors named in the inner prompt's next section each need a human ruling first.
