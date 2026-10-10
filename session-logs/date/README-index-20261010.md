@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.011817 | [hold](20261010/20261010-011817_petrichor-hold-consent-gate-and-queue-empty.kyri) | Petrichor hold: queue empty, consent gate shut, upstream fast-forwarded |
 | 20261010.011529 | [crux hold](20261010/20261010-011529_bakery-crux-hold-repeat-no-build.kyri) | Bakery crux held again: pulled four log-only commits, no build, receipt-key ruling still awaited |
 | 20261010.011449 | [hold](20261010/20261010-011449_petrichor-hold-docs-geode-links.kyri) | Docs-geode links resolve, lint GREEN; consent gate still shut |
 | 20261010.011422 | [hold](20261010/20261010-011422_diffuser-hold-doors-gated-no-build.kyri) | Diffuser hold: msr, vendor event, joule meter all gated on Keaton; no build |
