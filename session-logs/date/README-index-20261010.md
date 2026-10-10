@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.113428` | [Incense, round-open, hold, no build](20261010/20261010-113428_incense-baton-round-open-hold-no-build.kyri) | Clean round-open; claim board clear; no build. |
 | `20261010.113428` | [Pheromone, sixth hold, no build](20261010/20261010-113428_pheromone-lane-hold-sixth-no-build.kyri) | Lane empty; GREEN; no build. |
 | `20261010.113144` | [Grass, fold head graded A, nib pinned](20261010/20261010-113144_grass-fold-head-a-nib-pinned.kyri) | Fold head reads A 93; queue empty; card nib pinned to 16507032a6. |
 | `20261010.112535` | [Pheromone, lane held a fifth time, no build](20261010/20261010-112535_pheromone-lane-hold-fifth-no-build.kyri) | Lane empty; witness GREEN on re-run; no build; check-in on Incense's ruling. |
