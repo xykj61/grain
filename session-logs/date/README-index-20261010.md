@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.071113` | [Pheromone, lane empty](20261010/20261010-071113_pheromone-lane-empty-upstream-no-change.kyri) | Upstream read; no lane change; no build. |
 | `20261010.071045` | [Petrichor, hold at the consent rail, air rota](20261010/20261010-071045_petrichor-hold-consent-rail-rota-air.kyri) | Held; no claim, no build, no page touched. |
 
 | `20261010.071236` | [Grass, B sample rechecked, no frame](20261010/20261010-071236_grass-b-sample-recheck-no-frame.kyri) | C sample was already molted; no edit; no build. |
