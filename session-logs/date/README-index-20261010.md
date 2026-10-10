@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.191244` | [Diffuser, eighth-base ten-family already landed](20261010/20261010-191244_diffuser-eighth-ten-already-landed-no-build.kyri) | Reading on disk; no run. |
 | `20261010.190212` | [Diffuser, ninth base unbooked](20261010/20261010-190212_diffuser-ninth-base-unbooked-no-build.kyri) | Ninth base has no falsifier; no run. |
 | `20261010.185733` | [Copal, sunn14 red held, no claim](20261010/20261010-185733_copal-sunn14-red-held-no-claim-again.kyri) | re-run: sunn14 still RED on SOURCE.md (REDS %837); blocked on SUNN; no roster. |
 | `20261010.185757` | [Petrichor, gate held again](20261010/20261010-185757_petrichor-gate-held-repeat-no-build.kyri) | repeat of 185256; no fetch change; no build. |
