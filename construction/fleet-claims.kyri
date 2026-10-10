@@ -58,3 +58,9 @@ stamp 20261009.232013
 epoch 1791602413
 paths tools/gen/chapter/graph_redraw_spine_witness.rish construction/standing-equipment.kyri
 what Copal roster the unrostered graph_redraw_spine_witness (Surface p17) in standing-equipment.kyri and prove it on the live tree, both legs, before any later lap touches it.
+claim bakery-cache-mutation-census
+seat bakery
+stamp 20261009.232444
+epoch 1791602684
+paths tools/fixtures/b/shared_build_cache_mutation_census.sh construction/ITINERARY.md
+what Bakery first proof: six independent mutations to a Zig source, flag, overlay, and executable bit each miss the content-keyed compile cache, measured on a private cache.
