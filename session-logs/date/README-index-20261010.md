@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.002505 | [log](20261010/20261010-002505_petrichor-hold-consent-gate-second-read.kyri) | Petrichor hold: consent gate still shut after fresh pull; no build |
 | 20261010.002324 | [log](20261010/20261010-002324_bakery-hold-receipt-key-fourth-read.kyri) | Bakery hold; receipt key still awaiting ruling; no build |
 | 20261010.002243 | [log](20261010/20261010-002243_patchouli-queue-empty-again-no-build.kyri) | Patchouli queue empty again, elder-header net unchanged; no build; check-in on lane dormancy |
 | 20261010.002107 | [log](20261010/20261010-002107_petrichor-docs-geode-link-census.kyri) | Petrichor link census over docs-geode: 379 links, 0 broken |
