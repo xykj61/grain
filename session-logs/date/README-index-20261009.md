@@ -10,6 +10,7 @@
 | `20261009.222409` | [Patchouli queue empty, long fns](20261009/20261009-222409_patchouli-queue-empty-long-functions-measured.kyri) | Queue empty; 19 long functions measured, none touched. |
 | `20261009.222133` | [Incense hold, round-open clean](20261009/20261009-222133_incense-hold-round-open-no-ruled-fruit.kyri) | Anointed order adopted; no ruled fruit; no build. |
 | `20261009.221942` | [Bakery hold, receipt key waits](20261009/20261009-221942_bakery-hold-receipt-key-ruling-gated.kyri) | Compile cache path-independent; receipt key awaits a ruling; no build. |
+| `20261009.222633` | [Pheromone lane still empty, no build](20261009/20261009-222633_pheromone-lane-empty-no-build.kyri) | No ruled fruit; no claim taken; no build. |
 | `20261009.222400` | [Pheromone lane empty, limb10 GREEN](20261009/20261009-222400_pheromone-lane-empty-limb10-green.kyri) | Lane has no ruled fruit; limb10 re-read GREEN; no build. |
 | `20261009.222239` | [Wide-grid next door held](20261009/20261009-222239_wide-grid-next-door-held.kyri) | Diffuser: compiled sweep waits on a ruling; no build. |
 | `20261009.222208` | [Petrichor hold, known gap](20261009/20261009-222208_petrichor-hold-known-gap-no-build.kyri) | Lint re-run; 20261006 gap already logged, no peer copy; no build. |
