@@ -20,10 +20,10 @@ obs the mutation's sed now targets t.gone; the removed continue still sits at th
 obs no wall time was measured this lap, so no loom line is written
 file mantra/src/main.rye cmd_annotate 86 -> 29 lines; print_annotations added at 53 lines, holding the note walk and its AnnotateTally counts
 file tools/fixtures/m/mantra_annotate_cli_control.sh tomb_shown mutation repointed from gone to t.gone, same skip removed, same expected reading
-file session-logs/date/20261010/20261010-035541_patchouli-annotate-walk-split.kyri this log, born on its day's shelf, one row on the shelf index
-product_nib pending-send
+file session-logs/date/20261010/20261010-035541_patchouli-annotate-walk-split.kyri this log, born on its day shelf, one row on the shelf index; pushed to xy main at 345c31d10d after a rebase past peer rows
+product_nib 345c31d10d
 suite_nib mantra_annotate_cli_witness GREEN, mantra_annotate_cli_scan verdict=ok, mantra_weave_annotate_witness GREEN, tame_style_check GREEN
-git_nib pending-send
+git_nib 345c31d10d
 rota lap 9209, row 4 -- earth breathes in: read the concrete fact at the door first; the fact was a 70-line function the witness had never measured in this lane's main.rye
 orbit round 14 sky -- Wildcard. Holds one page whole.
 scope mantra/src/main.rye cmd_annotate split at the note walk, no behavior change; control mutation repointed to the renamed counter; no new instrument, no claim needed
