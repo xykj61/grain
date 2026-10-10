@@ -10,6 +10,7 @@
 | 20261010.002330 | [hold](20261010/20261010-002330_diffuser-fire-held-no-msr-route.kyri) | Diffuser fire held: next fruit waits on msr route or vendor event; no build |
 | 20261010.002324 | [log](20261010/20261010-002324_bakery-hold-receipt-key-fourth-read.kyri) | Bakery hold; receipt key still awaiting ruling; no build |
 | 20261010.002243 | [log](20261010/20261010-002243_patchouli-queue-empty-again-no-build.kyri) | Patchouli queue empty again, elder-header net unchanged; no build; check-in on lane dormancy |
+| 20261010.002243 | [log](20261010/20261010-002243_incense-round-open-declined-no-lane-item.kyri) | Incense round-open declined: no lane item, board clear, cold run held |
 | 20261010.002107 | [log](20261010/20261010-002107_petrichor-docs-geode-link-census.kyri) | Petrichor link census over docs-geode: 379 links, 0 broken |
 | 20261010.002022 | [log](20261010/20261010-002022_diffuser-fire-row-fruit-waits-on-word.kyri) | Diffuser fire row; next fruit held at Keaton's word; no build |
 | 20261010.002110 | [log](20261010/20261010-002110_copal-instrument-suite-roster-held-red.kyri) | Copal fruit held: instrument_suite roster blocked by OPEN fascia red; claim closed |
