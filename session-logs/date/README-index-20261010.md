@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.004147 | [hold](20261010/20261010-004147_diffuser-hold-msr-and-trace-still-absent.kyri) | Diffuser hold: msr and caller trace still absent; no build |
 | 20261010.004100 | [log](20261010/20261010-004100_grass-docs-front-doors-grade-a-no-frame.kyri) | Grass grades docs/README A+ and ORGANIZING A; no frame, no edit |
 | 20261010.004008 | [hold](20261010/20261010-004008_diffuser-hold-no-fruit-msr-still-absent.kyri) | Diffuser hold: no fruit, msr door still shut; no build |
 | 20261010.003955 | [decline](20261010/20261010-003955_incense-decline-upstream-held-no-gate.kyri) | Incense round-open adopted 4d7e125f48, board clear, law lane held; no build |
