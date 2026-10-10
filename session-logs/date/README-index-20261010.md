@@ -12,6 +12,7 @@
 | `20261010.075935` | [Petrichor, hold, upstream moved, lane untouched](20261010/20261010-075935_petrichor-hold-upstream-moved-lane-untouched.kyri) | Fast-forward to 67aa4f6996; no docs-geode path moved; no target, hold. |
 | `20261010.075336` | [Bakery, agent-jail refusal leg](20261010/20261010-075336_bakery-agent-jail-refusal-leg.kyri) | One refusal leg; redleg 54 over 51, %827 OPEN. |
 | `20261010.075806` | [Patchouli, queue empty, fifth read](20261010/20261010-075806_patchouli-queue-empty-fifth-net.kyri) | Queue empty; no build. |
+| `20261010.075644` | [Incense, queue empty, decline](20261010/20261010-075644_incense-queue-empty-decline.kyri) | Clean open, no build, nib carried. |
 | `20261010.075508` | [Petrichor, hold, nothing moved since the last read](20261010/20261010-075508_petrichor-hold-nothing-moved-since.kyri) | Upstream level; gate unmoved; no page touched. |
 | `20261010.075448` | [Grass, queue empty, no open fruit](20261010/20261010-075448_grass-queue-empty-no-open-fruit.kyri) | Inner fruit closed; no booked lap; no edit. |
 | `20261010.075133` | [Grass, queue empty, hold again](20261010/20261010-075133_grass-queue-empty-hold-again.kyri) | Queue empty; no build, no claim, no edit. |
