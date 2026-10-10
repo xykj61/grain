@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.230316` | [Petrichor nib repair](20261009/20261009-230316_petrichor-nib-repair.kyri) | Card nib pinned to HEAD; the nib witness red cleared. |
+| `20261009.230310` | [Diffuser calibration held](20261009/20261009-230310_diffuser-calibration-held-no-fruit.kyri) | Calibration witness GREEN, falsifier fired; no fruit; check-in. |
 | `20261009.230234` | [Pheromone hold, lane closed, ruling still awaited](20261009/20261009-230234_pheromone-hold-lane-closed-no-ruling.kyri) | Lane closed; no build; held on the Glow ruling. |
 | `20261009.230101` | [Grass inner prompt graded B+](20261009/20261009-230101_grass-inner-prompt-grade-b-plus.kyri) | Grade B+ (89); no molt frame pushed. |
 | `20261009.230009` | [Petrichor hold, no fruit](20261009/20261009-230009_petrichor-hold-no-fruit.kyri) | Consent Rail gate still closed; grade re-read; no page; check-in. |
