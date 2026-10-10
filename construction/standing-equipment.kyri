@@ -10099,3 +10099,12 @@ guard anvil_path_breach_survey
 path tools/gen/chapter/anvil_path_breach_survey_witness.rish
 tier lap
 seated 20261009.235655
+
+# surface_season_p52 -- the Surface p52 frame tidy, rostered on the claim copal-roster-surface-p52.
+# Proven both ways on 20261010: GREEN on the live tree (the brushtest leg skips honestly while the
+# seed binary is unbuilt), and RED with a named assert from two pen copies -- one lacking the counsel
+# file, one holding it but lacking the glass Frame alias.
+guard surface_season_p52
+path tools/gen/chapter/surface_season_p52_witness.rish
+tier lap
+seated 20261010.035000
