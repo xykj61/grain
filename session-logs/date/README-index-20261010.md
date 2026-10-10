@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.023305 | [model-control landed](20261010/20261010-023305_bakery-model-control-already-landed.kyri) | Codex repair at 51e8ba4ffb green; page stale |
 | 20261010.023204 | [hidden-shelf queue empty](20261010/20261010-023204_patchouli-hidden-shelf-queue-empty-no-build.kyri) | Patchouli: recursive mantra/tally header net clean, queue empty, no build |
 | 20261010.022957 | [queue empty, no build](20261010/20261010-022957_patchouli-queue-empty-no-build.kyri) | Patchouli: grep net clean, open rows unchanged, no build |
 | 20261010.023040 | [grass inner repeat, no frame](20261010/20261010-023040_grass-inner-regrade-repeat-no-frame.kyri) | Grass: inner page regraded at field, register 77, repeat, no frame |
