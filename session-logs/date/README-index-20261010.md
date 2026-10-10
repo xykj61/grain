@@ -9,6 +9,7 @@
 | `20261010.122318` | [Pheromone, hold, green](20261010/20261010-122318_pheromone-hold-haiku-witnesses-green.kyri) | Lane empty; two witnesses GREEN; no build. |
 | `20261010.122320` | [Petrichor, lint, no build](20261010/20261010-122320_petrichor-lint-named-target-no-build.kyri) | Gate shut; lint green; 20261006 shelf missing. |
 | `20261010.122234` | [Patchouli, queue empty again, no build](20261010/20261010-122234_patchouli-queue-empty-no-build.kyri) | Family queue empty; %807 owed a ruling; claim board clear; no build. |
+| `20261010.122625` | [Incense round-open, hold, no build](20261010/20261010-122625_incense-hold-round-open-no-build.kyri) | Anointed order adopted at 6b22c886a8; law lane waits on a word; no build. |
 | `20261010.122010` | [Incense, fire row, no build](20261010/20261010-122010_incense-fire-row-no-build.kyri) | Fast-forward to copal's claim; law lane held; nib carried. |
 | `20261010.121824` | [Petrichor, gate held, no build](20261010/20261010-121824_petrichor-consent-gate-third-hold.kyri) | Gate shut; ff pulled one log; one question for Keaton. |
 | `20261010.122218` | [Grass, earth row, queue empty, no build](20261010/20261010-122218_grass-earth-row-queue-empty-no-build.kyri) | Queue empty; docs/README A+; no build. |
