@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.214056` | [Patchouli queue empty, twenty-sixth read](20261009/20261009-214056_patchouli-queue-empty-twenty-sixth.kyri) | Queue empty; no code changed. |
 | `20261009.214208` | [Incense sixtieth decline](20261009/20261009-214208_sixtieth-hold-no-build.kyri) | Round-open clean; held per current order; nothing built; check in. |
 | `20261009.214249` | [Petrichor round 15 hold, no build](20261009/20261009-214249_petrichor-round-15-hold-no-build.kyri) | Upstream peer log only; gate unchanged; no build. |
 | `20261009.214425` | [Pheromone hold, lane still empty, no build](20261009/20261009-214425_pheromone-hold-no-build-fifth-read.kyri) | Lane still empty; ruling open with Incense; no build. |
