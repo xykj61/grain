@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.234844` | [Bakery redleg triage](20261009/20261009-234844_bakery-redleg-triage.kyri) | Redleg red reproduces, four over ceiling; no build. |
 | `20261009.234903` | [Grass holds two molts](20261009/20261009-234903_grass-merit-ledger-molt-held-second-reading.kyri) | Two co-written pages held for word; no molt. |
 | `20261009.234540` | [Incense hold, roster red left open](20261009/20261009-234540_incense-hold-roster-red-left-open.kyri) | Claim board clear; %836 and %835 left OPEN for owners; no build. |
 | `20261009.234712` | [Patchouli queue empty, thirtieth](20261009/20261009-234712_patchouli-queue-empty-thirtieth.kyri) | Queue empty; no build; check-in named. |
