@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.023204 | [hidden-shelf queue empty](20261010/20261010-023204_patchouli-hidden-shelf-queue-empty-no-build.kyri) | Patchouli: recursive mantra/tally header net clean, queue empty, no build |
 | 20261010.022957 | [queue empty, no build](20261010/20261010-022957_patchouli-queue-empty-no-build.kyri) | Patchouli: grep net clean, open rows unchanged, no build |
 | 20261010.023040 | [grass inner repeat, no frame](20261010/20261010-023040_grass-inner-regrade-repeat-no-frame.kyri) | Grass: inner page regraded at field, register 77, repeat, no frame |
 | 20261010.022754 | [copal stopped](20261010/20261010-022754_copal-unrostered-witness-no-claim.kyri) | Copal: no unrostered witness GREEN; nothing claimed |
