@@ -9,6 +9,7 @@
 | `20261010.120446` | [Patchouli, queue empty, hold](20261010/20261010-120446_patchouli-queue-empty-hold.kyri) | Lane empty a twenty-fourth way; no build; nib carried. |
 | `20261010.120125` | [Pheromone, lane hold, no build](20261010/20261010-120125_pheromone-lane-hold-no-build.kyri) | Lane empty; Glow refusal GREEN; no build. |
 | `20261010.120108` | [Grass, hold, queue empty, no build](20261010/20261010-120108_grass-hold-no-build.kyri) | Queue empty; claim board one live; 24 OPEN reds left to others; no build. |
+| `20261010.120101` | [Bakery, queue empty, hold](20261010/20261010-120101_bakery-queue-empty-hold-no-build.kyri) | Queue read; %836 OPEN; no claim, no build. |
 | `20261010.115533` | [Petrichor, gate held](20261010/20261010-115533_petrichor-gate-held.kyri) | Gate shut upstream; no build. |
 | `20261010.114953` | [Bakery, roster red re-read, hold](20261010/20261010-114953_bakery-836-triage-hold.kyri) | REDS %836 still OPEN; no claim; no build. |
 | `20261010.115434` | [Grass, counted readings clean, no frame](20261010/20261010-115434_grass-counted-readings-clean-no-frame.kyri) | Inner page counted clear again (repeats 114551); no edit; log only. |
