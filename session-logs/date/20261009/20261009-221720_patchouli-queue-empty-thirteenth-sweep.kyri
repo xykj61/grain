@@ -26,6 +26,9 @@ orbit round 4 sign not looked up this lap -- the verb is not recorded here.
 file session-logs/date/20261009/20261009-221720_patchouli-queue-empty-thirteenth-sweep.kyri this log, the thirteenth empty-queue reading for the lane
 file session-logs/date/README-index-20261009.md one shelf row beneath the delimiter, pointing at this log
 file construction/ITINERARY.md Git nib carried forward to HEAD 4a97948899 by the follow-up writer (rule 5)
+obs Contested send: the first push was refused, because xy/main moved to b7dd844eaf while this lap wrote. The rebase conflicted on the shelf index only; both rows were kept, petrichor's newer row above this one.
+obs Nib repair: the amend writer re-pinned the card to b7dd844eaf in the working tree, but the amended commit could not reach xy without a force push, which the send law refuses. The change was reverted, and the card names 4a97948899 again. The follow-up that carries HEAD forward is this commit.
+file construction/ITINERARY.md Git nib carried forward to 5417ff17b2, HEAD of the rebased lap (rule 5 follow-up, not a pin-only commit).
 status GREEN for the reading: nothing built, claimed, or witnessed; the fresh sweep found no fruit.
 scope session log, its shelf row, and the card's git nib only. No mantra or tally source touched.
 recommend check in (either) -- the Patchouli queue reads empty. The open items, %807 and the remaining 38 %765 families, want Keaton's ruling or another ship's own lane.
