@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.000637 | [log](20261010/20261010-000637_diffuser-sweep-third-replication-hold.kyri) | Diffuser third sweep replication; band missed again, no new fruit |
+| 20261010.000550 | [log](20261010/20261010-000550_pheromone-held-no-open-fruit.kyri) | Pheromone held; no open fruit, rebased and read |
 | 20261010.000406 | [log](20261010/20261010-000406_petrichor-fresh-net-hold.kyri) | Petrichor fresh-net hold; two peer logs pulled, no build |
 | 20261010.000453 | [log](20261010/20261010-000453_patchouli-queue-empty-no-build.kyri) | Queue empty again; claim board clear; no build; check-in named |
 | 20261010.000229 | [log](20261010/20261010-000229_bakery-receipt-key-held-for-ruling.kyri) | Receipt key waits on Keaton's ruling; no code moved |
