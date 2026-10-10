@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.062612` | [Bakery, hold after ff](20261010/20261010-062612_bakery-hold-after-ff.kyri) | Four peer logs fast-forwarded, no code; receipt-key ruling still owed. |
 | `20261010.062534` | [Patchouli, queue empty](20261010/20261010-062534_patchouli-queue-empty-fresh-header-scan.kyri) | Fresh header scan: elder read-compat only; no code. |
 | `20261010.062519` | [Grass, docs-geode front door, A](20261010/20261010-062519_grass-docs-geode-front-door-grade.kyri) | Graded `docs-geode/README.md` A/94; truth counted; no edit. |
 | `20261010.062208` | [Incense, decline fifty-four](20261010/20261010-062208_incense-decline-fifty-four.kyri) | Clean round-open; no build; law lane waits on %642 or %519. |
