@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.034314` | [lane held, aether row, no build](20261010/20261010-034314_pheromone-lane-held-aether-row-no-build.kyri) | Pheromone: queue empty, aether row read, ruling still awaited, no build. |
 | `20261010.034159` | [petrichor idle, no build](20261010/20261010-034159_petrichor-idle-fetch-one-behind-no-build.kyri) | Petrichor: one commit pulled, no claim, no build. |
 | `20261010.033918` | [fold plateau at 17 and 18 sets](20261010/20261010-033918_diffuser-fold-plateau-seventeen-eighteen.kyri) | Diffuser: fold reaches floor at 136 and 144 lines, all seeds. |
 | `20261010.034054` | [receipt key held, no build](20261010/20261010-034054_bakery-receipt-key-held-no-build.kyri) | Bakery: claim board clear, receipt key still YOURS, no build. |
