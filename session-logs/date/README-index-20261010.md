@@ -13,6 +13,7 @@
 | 20261010.040122 | [choir roster row](20261010/20261010-040122_copal-surface-study-choir-roster.kyri) | Copal: surface_study_choir rostered on cadence, GREEN on metal, weak red leg named. |
 | 20261010.040115 | [fold 126 misses](20261010/20261010-040115_diffuser-fold-126-misses.kyri) | Diffuser: 21x6 at 126 lines, floor on 0 of 24; lower bound moves to 127. |
 | 20261010.040126 | [held queue gated](20261010/20261010-040126_bakery-held-queue-gated.kyri) | Bakery: every agent-doable item gated on Keaton's word, no build. |
+| 20261010.035847 | [petrichor idle, gate holds](20261010/20261010-035847_petrichor-idle-gate-holds-no-build.kyri) | Petrichor: no claimable lane work, Consent Rail gate holds, no build. |
 | 20261010.035633 | [petrichor idle, no target named](20261010/20261010-035633_petrichor-idle-no-target-named.kyri) | Petrichor: link walk over living docs-geode clean, no row open, no build. |
 | 20261010.035541 | [annotate walk split](20261010/20261010-035541_patchouli-annotate-walk-split.kyri) | Patchouli: cmd_annotate 86 to 29 lines; annotate witness GREEN. |
 | 20261010.035522 | [incense declines forty-eighth](20261010/20261010-035522_incense-decline-forty-eight-no-build.kyri) | Incense: round-open clean at 575ebfbde6, board clear, no build, no cold run. |
