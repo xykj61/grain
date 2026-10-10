@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.105617` | [Grass, front doors graded A, no molt](20261010/20261010-105617_grass-front-doors-grade-a-no-molt.kyri) | Read-only grade of two front doors, both A; no edit, no molt. |
 | `20261010.105157` | [Petrichor, consent witness green](20261010/20261010-105157_petrichor-consent-gate-witness-green.kyri) | Witness GREEN on Linux; no page change. |
 | `20261010.104621` | [Petrichor, consent gate shut, fourth ff](20261010/20261010-104621_petrichor-hold-consent-gate-fourth-ff.kyri) | Ff to 377e31109f; no build; gate holds. |
 | `20261010.103952` | [Petrichor, consent gate shut, third ff](20261010/20261010-103952_petrichor-hold-consent-gate-third-ff.kyri) | Ff to 30f8764ff3; no build; gate holds. |
