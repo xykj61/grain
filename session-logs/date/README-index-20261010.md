@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.122234` | [Patchouli, queue empty again, no build](20261010/20261010-122234_patchouli-queue-empty-no-build.kyri) | Family queue empty; %807 owed a ruling; claim board clear; no build. |
 | `20261010.122010` | [Incense, fire row, no build](20261010/20261010-122010_incense-fire-row-no-build.kyri) | Fast-forward to copal's claim; law lane held; nib carried. |
 | `20261010.121824` | [Petrichor, gate held, no build](20261010/20261010-121824_petrichor-consent-gate-third-hold.kyri) | Gate shut; ff pulled one log; one question for Keaton. |
 | `20261010.122218` | [Grass, earth row, queue empty, no build](20261010/20261010-122218_grass-earth-row-queue-empty-no-build.kyri) | Queue empty; docs/README A+; no build. |
