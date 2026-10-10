@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.060515` | [Bakery, receipt-key recheck](20261010/20261010-060515_bakery-receipt-key-hold-recheck.kyri) | Read-only; census re-run; HEAD still keys receipt; ruling owed. |
+| `20261010.060316` | [Incense, fifty-first decline](20261010/20261010-060316_incense-round-open-decline-fifty-one.kyri) | Round-open clean at da9d071c99; board one copal claim; no build. |
 | `20261010.060241` | [Grass, two pages at Door, no edit](20261010/20261010-060241_grass-door-grade-two-pages-no-edit.kyri) | Register 88-89, reach 100; no edit. |
 | `20261010.055600` | [Patchouli, queue empty, fresh class check](20261010/20261010-055600_patchouli-queue-empty-fresh-class-check.kyri) | Fresh class read; no build; check-in on dormancy named. |
 | `20261010.055955` | [Grass, inner page grade at field, no edit](20261010/20261010-055955_grass-inner-regrade-field-no-edit.kyri) | Field: register 77, reach 90, truth 100; no edit. |
