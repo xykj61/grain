@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.004008 | [hold](20261010/20261010-004008_diffuser-hold-no-fruit-msr-still-absent.kyri) | Diffuser hold: no fruit, msr door still shut; no build |
 | 20261010.003811 | [hold](20261010/20261010-003811_incense-hold-board-clear-no-gate.kyri) | Incense hold, board clear, no gate opened; no build |
 | 20261010.003630 | [log](20261010/20261010-003630_grass-front-doors-grade-b-plus-no-frame.kyri) | Grass front-door grade: SOURCE B+/88, CONTRIBUTING A/92, docs-geode README A/94; no frame |
 | 20261010.003509 | [log](20261010/20261010-003509_patchouli-queue-empty-twentysecond-read.kyri) | Patchouli queue empty, twenty-second read; elder headers read-compat; no build |
