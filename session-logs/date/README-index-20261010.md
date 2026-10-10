@@ -10,6 +10,7 @@
 | `20261010.033747` | [lap census holds, no build](20261010/20261010-033747_bakery-lap-census-holds-no-build.kyri) | Bakery: census re-run at HEAD holds path-independent, receipt key held for ruling, no build. |
 | `20261010.033345` | [cache census premise held](20261010/20261010-033345_bakery-cache-census-premise-held.kyri) | Bakery: shared compile cache rechecked path-independent, no build, Claude ruling named. |
 | `20261010.033308` | [lane idle, pull, no build](20261010/20261010-033308_petrichor-lane-idle-pull-no-build.kyri) | Petrichor: fast-forwarded to xy, claim clear, no build. |
+| `20261010.033708` | [lane held, no build](20261010/20261010-033708_pheromone-lane-held-no-build.kyri) | Pheromone: inner prompt closed, claim check no verb, no build. |
 | `20261010.033147` | [lane clear, no build](20261010/20261010-033147_pheromone-lane-clear-no-build.kyri) | Pheromone: five Glow limb witnesses GREEN, claim board clear, no build. |
 | `20261010.033600` | [Incense hold, board read, no build](20261010/20261010-033600_incense-hold-claim-board-read.kyri) | Round-open clean on 1acdabcdd6; claim board read, one peer claim; no build, no send. |
 | `20261010.033150` | [queue empty, hidden shelf, no build](20261010/20261010-033150_patchouli-queue-empty-hidden-shelf-idents.kyri) | Patchouli: mantra/src version-literal net, only elder headers, no build. |
