@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.034534` | [petrichor repeat idle, no claim](20261010/20261010-034534_petrichor-repeat-idle-no-claim.kyri) | Petrichor: same board and gate as the two idle rows above, no claim, no build. |
+| `20261010.034409` | [fold threshold at 124 lines](20261010/20261010-034409_diffuser-fold-threshold-124-lines.kyri) | Diffuser: fold misses floor at 124 lines, all seeds; threshold 125-128. |
 | `20261010.034316` | [roster open, no build](20261010/20261010-034316_incense-decline-roster-open-no-build.kyri) | Incense: round-open to 20e70d7148, one copal claim, no build. |
 | `20261010.034314` | [lane held, aether row, no build](20261010/20261010-034314_pheromone-lane-held-aether-row-no-build.kyri) | Pheromone: queue empty, aether row read, ruling still awaited, no build. |
 | `20261010.034159` | [petrichor idle, no build](20261010/20261010-034159_petrichor-idle-fetch-one-behind-no-build.kyri) | Petrichor: one commit pulled, no claim, no build. |
