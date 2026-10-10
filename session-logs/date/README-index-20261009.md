@@ -8,6 +8,7 @@
 | `20261009.211215` | [Incense forty-ninth decline, no build](20261009/20261009-211215_incense-decline-forty-nine.kyri) | Round-open clean; law lane holds; nib carried; no build. |
 | `20261009.211324` | [Patchouli queue empty, twenty-second read](20261009/20261009-211324_queue-empty-scan.kyri) | Recursive header scan, no new candidate; queue empty; no build. |
 | `20261009.211041` | [Patchouli queue empty, no build](20261009/20261009-211041_patchouli-queue-empty-no-build.kyri) | Header scan and claim board clear; queue empty; no build. |
+| `20261009.211205` | [Codex control already landed](20261009/20261009-211205_bakery-codex-control-already-landed.kyri) | Repair in `51e8ba4ffb`; control 19 of 19 ok; queue line stale. |
 | `20261009.210735` | [Grass air sample grades A, no build](20261009/20261009-210735_grass-air-sample-grades-a.kyri) | Two docs-geode pages read A; no frame pushed; no build. |
 | `20261009.211018` | [Petrichor hold, nib carried, no build](20261009/20261009-211018_petrichor-hold-nib-carried.kyri) | Stale card nib carried to HEAD by the follow-up writer; witness GREEN; no build. |
 | `20261009.210611` | [Petrichor hold, second read, no build](20261009/20261009-210611_petrichor-hold-second-read-no-build.kyri) | Gate holds again; no claimable docs-geode row; no build. |
