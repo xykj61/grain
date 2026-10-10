@@ -58,9 +58,3 @@ stamp 20261010.071744
 epoch 1791631064
 paths tools/fixtures/s/standing_equipment_run.sh construction/standing-equipment-receipt.kyri
 what Bakery opens the shared build and cold-run cache crux: one green receipt usable across the eight checkouts, every owed proof still executed, a miss on any changed input.
-claim copal-roster-remember-pin-history-tidy
-seat copal
-stamp 20261010.100434
-epoch 1791641074
-paths tools/gen/chapter/remember_pin_history_tidy_witness.rish construction/standing-equipment.kyri
-what Copal rosters remember_pin_history_tidy_witness.rish, the one unrostered chapter witness it reads GREEN on metal, and proves it from both sides.
