@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.044736 | [Pheromone, queue empty, limb10 re-proved](20261010/20261010-044736_pheromone-queue-empty-limb10-reproved.kyri) | Lane queue empty; limb10 GREEN; no build. |
 | 20261010.044755 | [Incense, lap declines, no build](20261010/20261010-044755_incense-lap-declines-no-build.kyri) | Round-open clean; order holds; no build. |
+| 20261010.044853 | [Grass, fold grade, no frame](20261010/20261010-044853_grass-fold-a-grade-no-frame.kyri) | mycelium/fold.rye graded A (93); no frame; no edit. |
 | 20261010.044645 | [Grass, three pages graded](20261010/20261010-044645_grass-three-context-pages-graded-no-frame.kyri) | KYRI A/96, TAME_CORE B+/89, baton A/90; no edit. |
 | 20261010.044419 | [Incense, roster red held, no build](20261010/20261010-044419_incense-roster-red-held-no-build.kyri) | Round-open clean; roster 48 reds held OPEN in %836; no build. |
 | 20261010.044457 | [Grass, fold reads A, no build](20261010/20261010-044457_grass-fold-reads-a-no-build.kyri) | mycelium/fold.rye graded A (93); queue empty; no edit. |
