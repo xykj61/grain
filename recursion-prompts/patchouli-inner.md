@@ -338,6 +338,8 @@ the ratchet asks for those to split on touch. The `weave.rye:1063` citation in `
 stale before this lap, since the overflow line it names now sits at `weave.rye:1619`. It is left for
 a separate citation repair.
 
+**The stale citation closed, `20261010.050440`.** `mantra/src/weave_v2_witness.rye` cited `weave.rye:1063` for the 20260912 overflow, and that line had drifted to 1619. The dated proof stays; the citation now names `Weave.apply`'s `next_pos += 1` by function. `mantra_weave_v2_witness` reads GREEN. The cold roster was not run this lap, and the queue still reads empty.
+
 ## gates
 
 Keys, funds, provisioning, identity, and the public seed stay manual.

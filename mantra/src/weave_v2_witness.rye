@@ -388,7 +388,8 @@ fn prove_a_counter_below_a_line_refused(garden: std.mem.Allocator) !void {
 /// so a record of one row at position 4,294,967,294 under a header of
 /// 4,294,967,295 passed every reading -- and the next `apply` met
 /// `next_pos += 1` as an integer overflow, proven on metal `20260912` at
-/// `weave.rye:1063`, exit 134.
+/// `Weave.apply`'s `next_pos += 1` in `weave.rye` as it stood that day, exit
+/// 134. Named by function rather than by line, since the line has moved.
 fn prove_counter_ceiling_refused(garden: std.mem.Allocator) !void {
     const one = [_]weave.V2Row{
         .{ .text = "a line under a counter at the u32 ceiling", .gen = 1, .pos = 0, .site = 0, .run = 0 },

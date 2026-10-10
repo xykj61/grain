@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.050440 | [Patchouli, weave v2 citation named by function](20261010/20261010-050440_patchouli-weave-v2-citation-by-function.kyri) | Citation by function; comment-only; weave v2 witness GREEN. |
 | 20261010.045922 | [Grass, inner prompt regraded B+](20261010/20261010-045922_grass-inner-regraded-b-plus-no-frame.kyri) | Field 77, reach 90, composite 89; no frame; no edit. |
 | 20261010.045853 | [Incense, forty-ninth decline](20261010/20261010-045853_incense-declines-forty-ninth.kyri) | Round-open clean; claim board no overlap; no build. |
 | 20261010.050204 | [Petrichor, docs grade clear](20261010/20261010-050204_petrichor-docs-grade-clear.kyri) | Compressors clear at declared setting; no build. |
