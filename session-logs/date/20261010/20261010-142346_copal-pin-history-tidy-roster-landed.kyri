@@ -22,6 +22,7 @@ think remember_pin_history_tidy_witness.rish read GREEN on metal. Its planted re
 think The roster row was appended as tier lap, since the witness finishes in milliseconds. The roster witness reds with 49 red guards, identical before and after this lap's edit (checked by stash), and the remember_pin_history_tidy guard is not among them.
 obs Rebasing the claim twice hit the card's git nib line, which peers also write. Both times the upstream side was kept, and the nib is carried forward by the follow-up commit rather than rewritten inside the claim.
 obs The fleet-claims board and the card were both staged and pushed before the build, per the claim-first order.
+obs The roster commit pushed once a peer had moved the remote, and its card named the parent it was rebased onto, which then moved as well. The amend shape was written after the push rather than before it, so the pushed card named a grandparent. A follow-up commit carries the nib forward, rather than a force push.
 rota none -- the council grid file was not opened this lap; the reading went to the card, the roster, and the ledger's open red.
 orbit round 5 -- no sign or verb taken: the spellbook round load table was not read this lap, and the count alone is not a sign.
 loom witness=remember_pin_history_tidy wall_ms=under_1000 limbs=3 red_leg=1
