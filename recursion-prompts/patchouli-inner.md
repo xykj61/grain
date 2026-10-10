@@ -326,8 +326,15 @@ ratchet's own rule is to split on touch. Two are production code. `Weave.from_v1
 That loop moved into a private `check_v1_rows`, which returns the position floor, and `from_v1`
 now calls it and reads 60 lines. Behavior is unchanged: the refusals still run before any row is
 lifted. GREEN on metal: `mantra_weave_v1_lift_witness`, `mantra_weave_v1_write_witness`,
-`mantra_weave_v2_witness`, and `mantra_weave_merge_witness`. `Beading.bead_content_defined` at 71
-lines stays for the next touch. The `weave.rye:1063` citation in `weave_v2_witness.rye` was already
+`mantra_weave_v2_witness`, and `mantra_weave_merge_witness`.
+
+**The second production function landed `20261010`.** `Beading.bead_content_defined` stood at 71
+lines, and its per-bead deposit (digest, store put, report count, index write) repeated in the
+empty-resin branch and the chunk loop. That block moved into a private `deposit_bead` with two
+invariant asserts, and the function now reads about 50 lines. GREEN on metal:
+`mantra_beading`, `mantra_beading_dedup_ratio_witness`, `mantra_recall_beaded`, and
+`mantra_spool_dedup_ratio_witness`. Only the witness self-tests of the 70-line class remain, and
+the ratchet asks for those to split on touch. The `weave.rye:1063` citation in `weave_v2_witness.rye` was already
 stale before this lap, since the overflow line it names now sits at `weave.rye:1619`. It is left for
 a separate citation repair.
 

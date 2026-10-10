@@ -271,6 +271,31 @@ fn next_bead_end(content: []const u8, start: u32) u32 {
     return hard_max; // a forced cut at the budget, or the end of the content
 }
 
+/// Deposit one bead into the store and write its digest into the index at off. The store
+/// reports whether the bead was new or already present, and the report counts both, so every
+/// bead lands in exactly one of deposited or deduped.
+fn deposit_bead(
+    store: *BeadStore,
+    chunk: []const u8,
+    index_out: []u8,
+    off: u32,
+    report: *BeadReport,
+) BeadError!void {
+    // invariant: the digest slot lies inside the index buffer, since the caller checks its bound first
+    assert(off + digest_raw_len <= index_out.len);
+    // invariant: the report counts fewer beads than the bound, since the caller refuses at the bound
+    assert(report.beads_deposited + report.beads_deduped < max_beads);
+    var bd: [32]u8 = undefined;
+    digest_raw(chunk, &bd);
+    const deposited = try store.put(&bd, chunk);
+    if (deposited) {
+        report.beads_deposited += 1;
+    } else {
+        report.beads_deduped += 1;
+    }
+    tally_copy.copy_disjoint(u8, index_out[off..][0..32], std.mem.asBytes(&bd));
+}
+
 /// Bead a resin at content-defined boundaries and write a bead-index. The index format
 /// and the whole digest match fixed-size beading exactly, so reassembly is shared and a
 /// beaded resin recalls the same bytes unbeaded. This is the ring that dedups across a
@@ -302,15 +327,7 @@ pub fn bead_content_defined(
 
     if (whole_len == 0) {
         // An empty resin beads into one empty bead, matching fixed-size beading.
-        var bd0: [32]u8 = undefined;
-        digest_raw(content[0..0], &bd0);
-        const dep0 = try store.put(&bd0, content[0..0]);
-        if (dep0) {
-            report.beads_deposited += 1;
-        } else {
-            report.beads_deduped += 1;
-        }
-        tally_copy.copy_disjoint(u8, index_out[off..][0..32], std.mem.asBytes(&bd0));
+        try deposit_bead(store, content[0..0], index_out, off, &report);
         off += 32;
         bead_count = 1;
     }
@@ -323,16 +340,7 @@ pub fn bead_content_defined(
         if (bead_count >= max_beads) return error.TooManyBeads;
         if (off + digest_raw_len > max_resin_bytes) return error.Overflow;
         if (off + digest_raw_len > index_out.len) return error.Overflow;
-        const chunk = content[start..end];
-        var bd: [32]u8 = undefined;
-        digest_raw(chunk, &bd);
-        const deposited = try store.put(&bd, chunk);
-        if (deposited) {
-            report.beads_deposited += 1;
-        } else {
-            report.beads_deduped += 1;
-        }
-        tally_copy.copy_disjoint(u8, index_out[off..][0..32], std.mem.asBytes(&bd));
+        try deposit_bead(store, content[start..end], index_out, off, &report);
         off += 32;
         bead_count += 1;
         start = end;
