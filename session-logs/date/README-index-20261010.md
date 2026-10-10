@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.085900` | [Bakery, receipt key held](20261010/20261010-085900_bakery-receipt-key-held-air-row.kyri) | Crux awaits ruling; no build; air row read. |
 | `20261010.090032` | [Petrichor, hold, round twelve](20261010/20261010-090032_petrichor-hold-round-twelve-nib-carried.kyri) | Consent gate unmoved; claim board clear; no build. |
 | `20261010.090032` | [Patchouli, queue empty, twenty-fourth](20261010/20261010-090032_patchouli-queue-empty-twenty-fourth-net.kyri) | Fresh check: only %807 and %765 name the lane; no build; check-in named. |
 | `20261010.085605` | [Pheromone, hold, nib carried](20261010/20261010-085605_pheromone-hold-round-four-nib-carried.kyri) | Peers fast-forwarded; lane at stop clause; no rune. |
