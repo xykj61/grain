@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.202500` | [Diffuser fire row, no build](20261009/20261009-202500_diffuser-fire-row-blocked-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.202450` | [Patchouli queue empty, twenty-second check](20261009/20261009-202450_patchouli-queue-empty-twenty-second-no-build.kyri) | Lane queue empty; no build. |
 | `20261009.202401` | [Grass sample regraded, no build](20261009/20261009-202401_grass-sample-regraded-no-build.kyri) | Six surfaces graded, none below B; no edit. |
 | `20261009.202419` | [Petrichor sixth gate recheck, no build](20261009/20261009-202419_petrichor-sixth-gate-recheck-no-build.kyri) | Gate reread; consent schemas named; no edit. |
