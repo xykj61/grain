@@ -10,6 +10,7 @@
 | `20261010.071113` | [Pheromone, lane empty](20261010/20261010-071113_pheromone-lane-empty-upstream-no-change.kyri) | Upstream read; no lane change; no build. |
 | `20261010.071047` | [Incense, round seven, decline](20261010/20261010-071047_incense-round-seven-decline.kyri) | Round-open clean on f4b7ad5444; board clear; no build. |
 | `20261010.071045` | [Petrichor, hold at the consent rail, air rota](20261010/20261010-071045_petrichor-hold-consent-rail-rota-air.kyri) | Held; no claim, no build, no page touched. |
+| `20261010.070915` | [Copal, SUNN14 red held, roster held](20261010/20261010-070915_copal-sunn14-red-booked-roster-held.kyri) | Choir reds on stale dual-push check; REDS row held by pin bound. |
 | `20261010.070802` | [Petrichor, hold at the consent rail](20261010/20261010-070802_petrichor-hold-consent-rail-rota-earth.kyri) | Held; no claim, no build, no page touched. |
 | `20261010.070514` | [Grass, B sample, no frame](20261010/20261010-070514_grass-b-sample-no-frame.kyri) | Two pages at or above B; no edit; no build. |
 | `20261010.070510` | [Incense, round six, decline, no build](20261010/20261010-070510_incense-round-six-decline-no-build.kyri) | Round-open clean on 5c0c32f577; lane holds on Keaton's word; no build. |
