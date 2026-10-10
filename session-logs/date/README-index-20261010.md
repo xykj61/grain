@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.041314 | [Bakery held after second fast-forward](20261010/20261010-041314_bakery-held-after-second-fast-forward.kyri) | Bakery: two commits pulled, gate unchanged; no build. |
 | 20261010.041331 | [Grass grades the inner prompt, B+](20261010/20261010-041331_grass-inner-grade-b-plus-no-build.kyri) | Grass: inner prompt graded B+ 89 at field; no lift owed, no build. |
 | 20261010.041009 | [Grass regrade, queue empty](20261010/20261010-041009_grass-foundations-docs-geode-regrade-no-build.kyri) | Grass: three pages graded at field, all B or better; no lift owed, no build. |
 | 20261010.041207 | [petrichor idle after ff](20261010/20261010-041207_petrichor-idle-after-ff.kyri) | Petrichor: fast-forwarded to c53db58959, no claimable lane work; no build. |
