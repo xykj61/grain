@@ -1,0 +1,126 @@
+//! tools/rye/cache_miss_calibrate.rye -- read the generic cache-misses event over one sequential
+//! sweep of a 64 MB buffer, and print the reading beside the line-fill count the sweep should cause.
+//!
+//! WHY. The stencil paper's hardware falsifier needs a line-fill counter, and the first one tried
+//! (docs at active-designing/date/20261009/20261009-222800_the-generic-miss-counter-reads-a-fraction.md)
+//! read about 8 percent of the expected fills. Before a stencil run trusts `cache-misses` as a fill
+//! proxy, this program measures the proxy's own gap on a workload whose line count is known exactly.
+//!
+//! THE EXPECTED COUNT. A 64 MB buffer holds 64 * 1024 * 1024 / 64 = 1,048,576 lines of 64 bytes. One
+//! store per line, in address order, must fill each line once when the buffer is larger than the
+//! last-level cache. The reading divided by that expectation is the calibration ratio, printed as
+//! permille so the number is an integer and no float enters the arithmetic.
+//!
+//! It needs no root and no `perf` binary. perf_event_paranoid 2 permits a process to count itself.
+//! A kernel refusal is printed as a first-class answer, not a crash.
+//!
+//! Run from the repository root:
+//!   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/cache_miss_calibrate.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const linux = std.os.linux;
+
+// A self-count measures this process on whichever cpu it lands on, so the pid is 0 and the cpu -1.
+const self_pid: linux.pid_t = 0;
+const any_cpu: i32 = -1;
+const no_group: linux.fd_t = -1;
+
+// The buffer is fixed and named so two runs on one host are comparable. 64 MB is far above any
+// last-level cache a guest on this pier is likely to expose, so a sequential sweep cannot stay resident.
+const buffer_bytes: usize = 64 * 1024 * 1024;
+// Line size on x86-64. The expected fill count is buffer_bytes / line_bytes, so this constant IS the denominator.
+const line_bytes: usize = 64;
+const expected_lines: u64 = buffer_bytes / line_bytes;
+
+const CalibrateError = error{
+    counter_refused,
+    counter_short_read,
+    buffer_refused,
+};
+
+/// Open a self-scoped hardware counter for generic cache misses, or name why the kernel refused.
+fn open_cache_miss_counter() CalibrateError!linux.fd_t {
+    var attr = std.mem.zeroes(linux.perf_event_attr);
+    attr.type = .HARDWARE;
+    attr.size = @sizeOf(linux.perf_event_attr);
+    attr.config = @intFromEnum(linux.PERF.COUNT.HW.CACHE_MISSES);
+    attr.flags.disabled = true;
+    // User-space only: kernel time belongs to work this process did not choose.
+    attr.flags.exclude_kernel = true;
+    attr.flags.exclude_hv = true;
+
+    // invariant: the attribute block declares its own size, which is how the kernel versions it.
+    assert(attr.size == @sizeOf(linux.perf_event_attr));
+
+    const rc = linux.perf_event_open(&attr, self_pid, any_cpu, no_group, 0);
+    if (linux.errno(rc) != .SUCCESS) {
+        print("cache_miss_calibrate: counter_refused errno={s}\n", .{@tagName(linux.errno(rc))});
+        return CalibrateError.counter_refused;
+    }
+
+    // invariant: a successful open returns a descriptor inside the i32 range a fd_t holds.
+    assert(rc <= @as(usize, @intCast(std.math.maxInt(i32))));
+    return @intCast(rc);
+}
+
+/// Touch one byte at the start of every line of the buffer, in address order, and return a checksum.
+/// The checksum keeps the stores live so the sweep is not optimised away.
+fn sweep_lines(buf: []u8) u64 {
+    // invariant: the buffer is exactly the bounded size the expected count was derived from.
+    assert(buf.len == buffer_bytes);
+    // invariant: a line is a whole divisor of the buffer, so no partial line is left unswept.
+    assert(buffer_bytes % line_bytes == 0);
+
+    var sum: u64 = 0;
+    var off: usize = 0;
+    while (off < buf.len) : (off += line_bytes) {
+        buf[off] = @truncate(off);
+        sum +%= buf[off];
+    }
+    return sum;
+}
+
+/// Enable the counter around one sweep and return the miss count it reported.
+fn count_sweep(fd: linux.fd_t, buf: []u8) CalibrateError!u64 {
+    // invariant: the descriptor handed in is a real one, never the -1 that means no group.
+    assert(fd >= 0);
+
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.RESET, 0);
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.ENABLE, 0);
+    const sum = sweep_lines(buf);
+    _ = linux.ioctl(fd, linux.PERF.EVENT_IOC.DISABLE, 0);
+
+    var count: u64 = 0;
+    const bytes = std.mem.asBytes(&count);
+    const read_bytes = linux.read(fd, bytes.ptr, bytes.len);
+    if (read_bytes != bytes.len) return CalibrateError.counter_short_read;
+
+    // invariant: the checksum is consumed so the compiler keeps the stores the counter is counting.
+    assert(sum > 0);
+    return count;
+}
+
+pub fn main() !void {
+    const fd = open_cache_miss_counter() catch {
+        print("cache_miss_calibrate: tier=cpu_seconds -- this kernel refuses a self-scoped cache-miss counter\n", .{});
+        return;
+    };
+    defer _ = linux.close(fd);
+
+    // invariant: a live descriptor is non-negative, so the reading below comes from a real counter.
+    assert(fd >= 0);
+
+    const buf = std.heap.page_allocator.alloc(u8, buffer_bytes) catch {
+        print("cache_miss_calibrate: buffer_refused bytes={d}\n", .{buffer_bytes});
+        return CalibrateError.buffer_refused;
+    };
+    defer std.heap.page_allocator.free(buf);
+
+    const misses = try count_sweep(fd, buf);
+    // The calibration ratio in permille: reading * 1000 / expected. Integer arithmetic only, so no float enters.
+    const permille = misses * 1000 / expected_lines;
+    print("cache_miss_calibrate: misses={d} expected_lines={d} permille={d} buffer_bytes={d} line_bytes={d} tier=counters\n", .{ misses, expected_lines, permille, buffer_bytes, line_bytes });
+}
