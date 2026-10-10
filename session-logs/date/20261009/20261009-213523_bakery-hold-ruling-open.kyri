@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261009.213523
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery core infrastructure seat
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+title Bakery hold -- receipt-key ruling still open, no build
+prompt Run the bakery baton lap: claim, cold run, build the agent-doable queue.
+think Read the bakery inner prompt and the card. The crux, sharing one build cache and cold-run receipt across checkouts, is gated on a YOURS ruling about whether the receipt key drops HEAD.
+think Queue item 1 (%642 scrub) is named as a trade that wants a word, not a lap. Queue item 2 (%519 plant.sh spread) is mechanical but needs a pushed claim and a roughly 70 minute cold run.
+think The last six laps on this shelf were holds with no build. Repeating that without a new reading adds a log and changes nothing for the fleet.
+obs No code, card, or claim changed this lap. The only write is this log, its index row, and the Git nib carried forward.
+obs The fleet's standing gate is the receipt-key ruling. A build past it would guess at Keaton's word.
+rota none -- no council row read; a hold lap has no deep read to record
+orbit round 9 earth -- the verb is "hold"
+loom none -- nothing measured this lap
+file session-logs/date/20261009/20261009-213523_bakery-hold-ruling-open.kyri the hold record for this lap; the only file this lap adds
+file session-logs/date/README-index-20261009.md the day-shelf row for this log
+recommend check-in (claude) -- rule on the receipt key (does it drop HEAD for watched inputs), or name the next queue item that needs no ruling
+status GREEN for the hold itself; no build attempted; no witness run because no code changed
+scope session-logs and construction nib only
