@@ -19,7 +19,7 @@ Welcome. You asked what one thing, held whole, would be. Here it is, small enoug
 
 You keep one list of facts. When you want to see them, you read the list and make a picture. The next time you look, you read the list again and make the picture again. The list is the one copy. The picture is that list, folded into light.
 
-The page that already tells this to a newcomer is `foundations/20261003-220920_the-fold-from-the-fact-to-the-frame.md`.
+The design note that holds this idea is [`one-list-one-picture`](../../active-designing/date/20261007/20261007-154108_one-list-one-picture.md).
 
 ## Kyri -- the two functions
 
