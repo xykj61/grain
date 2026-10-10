@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.172851` | [Diffuser, seventh base](20261010/20261010-172851_diffuser-seventh-base-eleven-just-above.kyri) | Seventh base: eleven +0.56, ten +0.87; withdrawal unmet; tendency. |
 | `20261010.170418` | [Diffuser, sixth base keeps the break a tendency](20261010/20261010-170418_diffuser-sixth-base-tendency.kyri) | Sixth base +0.27; falsifier majority unmet; tendency. |
 | `20261010.170416` | [Grass, grass-inner graded at Field, no edit](20261010/20261010-170416_grass-inner-page-graded-field.kyri) | Counted B-or-better; service judged; no build. |
 | `20261010.170513` | [Incense, read lap held, no build](20261010/20261010-170513_incense-read-lap-held-no-build.kyri) | Board clear for law lane; order holds; no build. |
