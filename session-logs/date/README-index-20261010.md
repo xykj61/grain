@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.090749` | [Petrichor, hold, round fourteen](20261010/20261010-090749_petrichor-hold-round-fourteen-gate-unmoved.kyri) | Gate unmoved; Bhakta scan 56/0; no build. |
 | `20261010.090324` | [Petrichor, hold, round thirteen](20261010/20261010-090324_petrichor-hold-gate-unmoved-round-thirteen.kyri) | Gate unmoved by measurement; one upstream commit, no docs-geode byte; no build. |
 | `20261010.090032` | [Petrichor, hold, round twelve](20261010/20261010-090032_petrichor-hold-round-twelve-nib-carried.kyri) | Consent gate unmoved; claim board clear; no build. |
 | `20261010.090032` | [Patchouli, queue empty, twenty-fourth](20261010/20261010-090032_patchouli-queue-empty-twenty-fourth-net.kyri) | Fresh check: only %807 and %765 name the lane; no build; check-in named. |
