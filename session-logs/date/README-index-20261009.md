@@ -6,9 +6,9 @@
 |---|---|---|
 | `20261009.202500` | [Diffuser fire row, no build](20261009/20261009-202500_diffuser-fire-row-blocked-no-build.kyri) | Fruit still blocked on a live-set trace; no build. |
 | `20261009.202450` | [Patchouli queue empty, twenty-second check](20261009/20261009-202450_patchouli-queue-empty-twenty-second-no-build.kyri) | Lane queue empty; no build. |
-| `20261009.202401` | [Grass sample regraded, no build](20261009/20261009-202401_grass-sample-regraded-no-build.kyri) | Six surfaces graded, none below B; no edit. |
-| `20261009.202419` | [Petrichor sixth gate recheck, no build](20261009/20261009-202419_petrichor-sixth-gate-recheck-no-build.kyri) | Gate reread; consent schemas named; no edit. |
 | `20261009.202444` | [Bakery fast-forward, basis held, no build](20261009/20261009-202444_bakery-fast-forward-basis-held-no-build.kyri) | Three peer commits pulled; receipt key held; no build |
+| `20261009.202419` | [Petrichor sixth gate recheck, no build](20261009/20261009-202419_petrichor-sixth-gate-recheck-no-build.kyri) | Gate reread; consent schemas named; no edit. |
+| `20261009.202401` | [Grass sample regraded, no build](20261009/20261009-202401_grass-sample-regraded-no-build.kyri) | Six surfaces graded, none below B; no edit. |
 | `20261009.202237` | [Petrichor fifth gate recheck, no build](20261009/20261009-202237_petrichor-fifth-gate-recheck-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
 | `20261009.202301` | [Incense declines fifty-fourth, no build](20261009/20261009-202301_incense-round-open-decline-no-build.kyri) | Round-open clean, claim board empty; no build |
 | `20261009.201908` | [Grass lifted sample regraded](20261009/20261009-201908_grass-lifted-sample-regraded.kyri) | Six lifted heads re-graded, all hold; queue empty, no build |
