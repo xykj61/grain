@@ -7,6 +7,7 @@
 | `20261010.031742` | [Petrichor shelf repair](20261010/20261010-031742_petrichor-index-shelf-repair.kyri) | Open-shelf rows trimmed and ordered; claim closed; witness GREEN. |
 | 20261010.031525 | [lane witness sweep, no build](20261010/20261010-031525_patchouli-lane-witness-sweep-no-build.kyri) | Patchouli: six mantra witnesses GREEN on metal, queue empty, no build |
 | 20261010.031033 | [plant adopted](20261010/20261010-031033_bakery-cpu-unit-control-plant-adopted.kyri) | Bakery: cpu control on plant.sh, 41 of 41 |
+| 20261010.031709 | [upstream claim, no build](20261010/20261010-031709_incense-round-open-upstream-claim-no-build.kyri) | Incense: held at the law gate, no build |
 | 20261010.031012 | [round-open clean, claim board clear, held](20261010/20261010-031012_incense-round-open-claim-board-clear-no-build.kyri) | Incense: round-open clean, no lane item, cold run unlaunched; law lane waits on REDS %642 or %519. |
 | 20261010.031718 | [second hash family, floor on three splits](20261010/20261010-031718_diffuser-hash-family-sweep.kyri) | Diffuser: bit-mix and fold over four seeds, floor missed at 14 sets, paper 031718 |
 | 20261010.031238 | [hold after pull, no build](20261010/20261010-031238_petrichor-hold-no-build-after-pull.kyri) | Petrichor: one fast-forward, gate still shut, no build |
