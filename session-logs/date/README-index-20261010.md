@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.033012` | [queue empty, widened, GREEN](20261010/20261010-033012_patchouli-queue-empty-widened-lane-green.kyri) | Patchouli: lane witnesses re-run GREEN, queue still empty, no build. |
 | `20261010.032257` | [queue empty, proof held](20261010/20261010-032257_patchouli-queue-empty-receipt-proof-held.kyri) | Patchouli: receipt proof GREEN, no build. |
 | `20261010.032240` | [fold family, 24 seeds at 14 sets](20261010/20261010-032240_diffuser-fold14-24-seeds.kyri) | Diffuser: no seed reaches the floor at 14 sets, paper 032240 |
 | `20261010.032637` | [held, no build again](20261010/20261010-032637_incense-held-no-build-2.kyri) | Incense: round-open clean, copal's claim live, cold run held, no build. |
