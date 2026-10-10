@@ -8,6 +8,7 @@
 | `20261010.053205` | [grass inner regraded B+, no frame](20261010/20261010-053205_grass-inner-regraded-bplus-no-frame.kyri) | Inner prompt graded B+ 89 at field with service 90; no edit; no frame. |
 | 20261010.053052 | [Bakery, census re-run GREEN](20261010/20261010-053052_bakery-census-rerun-green-receipt-key-held.kyri) | Census GREEN on this tree; receipt key held for a ruling; no build. |
 | `20261010.052902` | [grass front doors graded, no frame](20261010/20261010-052902_grass-front-doors-graded-no-frame.kyri) | Two front doors graded above B on counted readings; no edit; no frame. |
+| `20261010.053003` | [Patchouli, catch-up loops unbounded](20261010/20261010-053003_patchouli-fresh-class-unbounded-catchup.kyri) | Five catch-up loops lack a step cap; check-in. |
 | `20261010.052635` | [grass foundation A+](20261010/20261010-052635_grass-foundation-a-plus-second-look.kyri) | Lila foundation graded A+ (97) at field; no edit. |
 | 20261010.052434 | [Patchouli, TAME tidy class empty, no build](20261010/20261010-052434_patchouli-tame-queue-empty-no-build.kyri) | Tidy-scanner ratchet and parseInt sites read clean in mantra/ and tally/; no build. |
 | 20261010.052720 | [Petrichor, thread read, no fruit](20261010/20261010-052720_petrichor-no-fruit-thread-read.kyri) | Fast-forwarded one peer log; no fruit; no build. |
