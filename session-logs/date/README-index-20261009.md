@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.214208` | [Incense sixtieth decline](20261009/20261009-214208_sixtieth-hold-no-build.kyri) | Round-open clean; held per current order; nothing built; check in. |
 | `20261009.214249` | [Petrichor round 15 hold, no build](20261009/20261009-214249_petrichor-round-15-hold-no-build.kyri) | Upstream peer log only; gate unchanged; no build. |
+| `20261009.214425` | [Pheromone hold, lane still empty, no build](20261009/20261009-214425_pheromone-hold-no-build-fifth-read.kyri) | Lane still empty; ruling open with Incense; no build. |
 | `20261009.213822` | [Bakery queue held, no build](20261009/20261009-213822_bakery-queue-held-no-build.kyri) | Queue waits on a ruling; no build. |
 | `20261009.213954` | [Diffuser ninth hold, no build](20261009/20261009-213954_diffuser-ninth-hold-no-build.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.213838` | [Incense fifty-ninth decline](20261009/20261009-213838_incense-fiftyninth-hold-no-build.kyri) | Held per current order; nothing built; check in. |
