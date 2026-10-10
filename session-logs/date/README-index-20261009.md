@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.222827` | [Petrichor links clean, no build](20261009/20261009-222827_petrichor-links-clean-no-build.kyri) | Living docs-geode links read zero broken; fast-forward clean; no page changed; no build. |
 | `20261009.222633` | [Incense hold, nib carried](20261009/20261009-222633_incense-hold-nib-carried-no-build.kyri) | Round-open clean; law lane waits on Keaton; nib carried; no build. |
 | `20261009.222133` | [Incense hold, round-open clean](20261009/20261009-222133_incense-hold-round-open-no-ruled-fruit.kyri) | Anointed order adopted; no ruled fruit; no build. |
 | `20261009.221942` | [Bakery hold, receipt key waits](20261009/20261009-221942_bakery-hold-receipt-key-ruling-gated.kyri) | Compile cache path-independent; receipt key awaits a ruling; no build. |
