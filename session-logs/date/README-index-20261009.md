@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.213619` | [Pheromone hold, lane fruit closed, ruling open](20261009/20261009-213619_pheromone-hold-no-build-ruling-open.kyri) | Lane fruit closed; ruling still open; no build. |
 | `20261009.213603` | [Patchouli queue empty, twenty-fourth read](20261009/20261009-213603_patchouli-queue-empty-twenty-fourth.kyri) | Queue empty again; no code changed; check in. |
 | `20261009.213547` | [Diffuser eighth hold, no build](20261009/20261009-213547_diffuser-eighth-hold-no-build.kyri) | Recorder absent; fruit waits on a ruling. |
 | `20261009.213209` | [Petrichor seventh hold, no build](20261009/20261009-213209_petrichor-seventh-hold-upstream-peer-only-no-build.kyri) | Upstream peer-only; gate unchanged; no build. |
