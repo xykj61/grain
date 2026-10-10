@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.092125` | [Petrichor, hold, tool paths resolve](20261010/20261010-092125_petrichor-hold-tool-paths-resolve.kyri) | 51 docs-geode tool paths all resolve; no build; consent gate unmoved. |
 | `20261010.091518` | [Patchouli, resin batch asserts](20261010/20261010-091518_patchouli-resin-batch-asserts.kyri) | build_batch gains three asserts; GREEN on resin_batch and snapshot witnesses; amphora red predates edit. |
 | `20261010.091056` | [Petrichor, hold, compressor shelf graded](20261010/20261010-091056_petrichor-hold-compressor-shelf-graded.kyri) | docs/ and README at B or better, six A; gate unmoved. |
 | `20261010.091036` | [Incense, forty-eighth, held](20261010/20261010-091036_incense-decline-forty-eighth-law-held.kyri) | Round-open to xy 3c1f18a0b2; no build; law waits on Keaton. |
