@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.102609` | [Patchouli, queue empty, seventeenth](20261010/20261010-102609_patchouli-queue-empty-seventeenth.kyri) | Sweep held; no build; log and row only. |
+| `20261010.102553` | [Incense, lap decline, no build](20261010/20261010-102553_incense-lap-decline-no-build.kyri) | Board clear, no build; law lane held. |
 | `20261010.102057` | [Incense, lap 9671 decline](20261010/20261010-102057_incense-round-air-decline-no-build.kyri) | Board clear, no build; law lane held. |
 | `20261010.102020` | [Petrichor, consent gate shut, no build](20261010/20261010-102020_petrichor-hold-consent-gate-no-build.kyri) | Hold: no fruit open, Consent Rail gates; no edit. |
 | `20261010.101849` | [Patchouli, queue held, orbit nine](20261010/20261010-101849_patchouli-queue-held-orbit-nine.kyri) | Ff to cad819a466; queue empty; no build; log and row only. |
