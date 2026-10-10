@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.035229 | [receipt key waits on ruling](20261010/20261010-035229_receipt-key-waits-on-ruling.kyri) | Bakery: census re-read, receipt key held for Keaton's word, no build. |
 | 20261010.035205 | [petrichor idle, no claim](20261010/20261010-035205_petrichor-idle-fetch-one-behind-no-build.kyri) | Petrichor idle after fast-forward, no build |
 | 20261010.035130 | [incense decline, no build](20261010/20261010-035130_incense-decline-forty-seven-no-build.kyri) | Incense: round-open clean at fd0654ad90, no build, cold run held, status GREEN for the decline. |
 | 20261010.035024 | [petrichor idle held, no claim](20261010/20261010-035024_petrichor-idle-held-no-claim.kyri) | Petrichor: lane idle after pull, no docs-geode row open, no claim, no build. |
