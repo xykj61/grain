@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.021100 | [grass sample held](20261010/20261010-021100_grass-report-card-sample-foundations-b-held.kyri) | Grass: five foundations graded, none below B, no edit |
 | 20261010.020903 | [grass air row](20261010/20261010-020903_grass-air-row-door-reading-held.kyri) | Grass: air-row foundation graded A (Door), no molt frame |
 | 20261010.020729 | [aether lap, no build](20261010/20261010-020729_incense-aether-lap-no-build.kyri) | Incense: round-open clean, claim board clear, orbit round 5, no build |
 | 20261010.020600 | [receipt-key options](20261010/20261010-020600_receipt-key-options-for-the-ruling.kyri) | Bakery: receipt key options for Keaton's ruling; no build |
