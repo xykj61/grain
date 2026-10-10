@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.030236 | [lane empty, no build](20261010/20261010-030236_pheromone-baton-empty-lane-no-build.kyri) | Pheromone: baton read, lane empty, no build |
 | 20261010.025641 | [gap lint, no build](20261010/20261010-025641_petrichor-20261006-shelf-gap-lint-no-build.kyri) | Petrichor: lint names the 20261006 gap again, no build |
 | 20261010.025017 | [water row read, no build](20261010/20261010-025017_pheromone-water-row-read-no-build.kyri) | Pheromone: water rota row read, card closed, ruling still pending, no build |
 | 20261010.025301 | [assert density widened, no build](20261010/20261010-025301_patchouli-assert-density-widened-no-build.kyri) | Patchouli: hidden shelf and assert density read, exempt shims only, no build |
