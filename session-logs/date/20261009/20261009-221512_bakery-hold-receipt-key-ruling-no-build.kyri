@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261009.221512
+editor Claude Code terminal session
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified (system prompt names claude-haiku-5-5; no telemetry read)
+voice Kyri
+host linux, one-clock zone America/New_York
+title Bakery hold on the receipt-key ruling, no build
+prompt Baton and bakery seat prompt, run the bakery lap ("ty every1 baton prin recur").
+think Read the baton, recursion-prompts/bakery-inner.md, the head of construction/ITINERARY.md, and the top of session-logs/README.md.
+think The bakery fruit is the shared build and cold-run cache. Its next step, the receipt key dropping HEAD for watched inputs, is marked YOURS on the card and waits on a ruling.
+think The agent-doable queue items are either closed (%519), waiting on a word (%642 scrub, wire ceiling), or outside this lane.
+think Starting a 70-minute cold roster run here would be spent on a tree with nothing to measure, so this lap stays a read-only hold.
+obs HEAD 428ccdce58 at open; tree clean; 8698 commits. No code, no claim, no roster run this lap.
+obs Orbit round and sign not recorded: the sign lives in context/SPELLBOOK.md, which this lap did not read. Omitted rather than guessed.
+obs Push not performed. The commit is local and signed; the send is for Keaton to direct.
+rota none -- orientation-only hold; no council row deep-read this lap
+file session-logs/date/20261009/20261009-221512_bakery-hold-receipt-key-ruling-no-build.kyri hold log for the lap; no other file changed
+scope read-only orientation of the bakery lane; one session log and one shelf row
+status GREEN for the hold itself (nothing to witness); fruit held on the receipt-key ruling, not closed
+recommend check-in (Claude) -- the receipt key drops HEAD only with a ruling, since it changes the roster runner's contract
