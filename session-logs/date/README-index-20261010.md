@@ -33,6 +33,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.091818` | [Bakery, ruling question](20261010/20261010-091818_bakery-crux-ruling-question.kyri) | Receipt-key question written for Keaton; no build, no pass. |
 | `20261010.092005` | [Grass, round seven, two wiki pages](20261010/20261010-092005_grass-round-seven-two-wiki-pages-graded.kyri) | docs-geode etc A+/98 and wiki A/95; no frame; queue empty. |
 | `20261010.091828` | [Grass, round six, front doors held](20261010/20261010-091828_grass-round-six-audit-held.kyri) | Three front doors A or better; no edit; shadow ungated. |
 
