@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.205420` | [Bakery receipt-key hold, again](20261009/20261009-205420_bakery-receipt-key-hold-again.kyri) | Card read again; receipt key waits on Keaton; no build. |
 | `20261009.205041` | [Grass inner prompt regraded, no lift](20261009/20261009-205041_grass-inner-regrade-no-lift.kyri) | Repeat Field grade, no lift; no build. |
 | `20261009.204932` | [Petrichor hold, no build, second](20261009/20261009-204932_petrichor-hold-no-build-2.kyri) | Gate unchanged; no build. |
 
