@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.021947 | [lane empty, second check](20261010/20261010-021947_pheromone-lane-empty-second-check-no-build.kyri) | Pheromone: no claim, queue empty, no build, check in |
 | 20261010.021707 | [grass counted clean](20261010/20261010-021707_grass-counted-readings-clean-no-frame.kyri) | Grass: six field pages graded, none below B on counted readings, no frame |
 | 20261010.021532 | [round-open decline](20261010/20261010-021532_incense-round-open-decline-no-build.kyri) | Incense: round-open clean, orbit 15 dual, aether row repeat declined, no build |
 | 20261010.021502 | [patchouli triad census](20261010/20261010-021502_patchouli-triad-census-no-build.kyri) | Patchouli: triad census, six ratchet gaps, no build |
