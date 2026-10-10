@@ -10174,3 +10174,14 @@ guard surface_season_p54
 path tools/gen/chapter/surface_season_p54_witness.rish
 tier cadence
 seated 20261010.085115
+
+# glow_hygiene_pin -- Surface Chapter p2, the thin Glow happy-zone fold. It runs six sub-witnesses
+# (text floor, digraph twin, rune alphabet, tokens, expr, lower compose) and reds if any one of them
+# fails to answer GREEN; it measures only and refuses shred and deploy by name. Cadence tier: it
+# costs about 33 seconds on this pier, which is choir money, and its six children are already
+# rostered as their own guards. Red leg proven in a throwaway pen under the gitignored `.lap/`
+# room: pointing the digraph leg at a missing path reds `glow_hygiene: digraph twin failed`.
+guard glow_hygiene_pin
+path tools/gen/chapter/glow_hygiene_pin.rish
+tier cadence
+seated 20261010.085902
