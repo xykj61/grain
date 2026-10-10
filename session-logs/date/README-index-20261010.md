@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | 20261010.031238 | [hold after pull, no build](20261010/20261010-031238_petrichor-hold-no-build-after-pull.kyri) | Petrichor: one fast-forward, gate still shut, no build |
+| 20261010.031303 | [queue empty, twenty-third, no build](20261010/20261010-031303_patchouli-queue-empty-twentythird-no-build.kyri) | Patchouli: fresh header net, queue empty again, no build |
 | 20261010.031001 | [queue empty, widened, no build](20261010/20261010-031001_patchouli-queue-empty-widened-no-build.kyri) | Patchouli: widened sweep, queue empty, no build |
 | 20261010.030944 | [upstream pull, hold, no build](20261010/20261010-030944_petrichor-upstream-pull-hold.kyri) | Petrichor: one upstream commit, no docs-geode path, Consent Rail gates |
 | 20261010.030558 | [queue empty, the repeat named](20261010/20261010-030558_patchouli-queue-empty-aether-hears.kyri) | Patchouli: queue empty again, aether names the repeat, no build |
