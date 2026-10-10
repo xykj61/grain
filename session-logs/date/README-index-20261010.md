@@ -83,6 +83,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.113034` | [Incense, baton lap, hold, no build](20261010/20261010-113034_incense-baton-lap-hold-no-build.kyri) | Captain hold; law lane waits on a human word; no build. |
 | `20261010.112734` | [Bakery, roster probe, hold, no build](20261010/20261010-112734_bakery-redroster-probe-hold-no-build.kyri) | Probe only; no build; %836 stays OPEN. |
 | `20261010.112427` | [Grass, aspiring-radiance reach, no build](20261010/20261010-112427_grass-aspiring-radiance-reach-hold-no-build.kyri) | Reach 60 again, the open repair; no molt. |
 | `20261010.112330` | [Petrichor, inner hold, no build](20261010/20261010-112330_petrichor-inner-hold-no-build.kyri) | Consent gate still shut; pull changed nothing; no build. |
