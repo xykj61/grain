@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.235439` | [Petrichor gated hold](20261009/20261009-235439_petrichor-gated-hold.kyri) | Gated on Consent Rail and public seam; no build. |
 | `20261009.235450` | [Grass grades SPELLBOOK, A 96](20261009/20261009-235450_grass-spellbook-graded-a.kyri) | Calfive page graded A 96; queue empty; no build. |
 | `20261009.235428` | [Diffuser hold, no open door](20261009/20261009-235428_diffuser-hold-no-open-door.kyri) | Every open door waits on Keaton's word or a peer; no build. |
 | `20261009.235400` | [Bakery redleg reproduce](20261009/20261009-235400_bakery-redleg-reproduce.kyri) | Redleg red stands on HEAD: 55 against 51, four over; no build. |
