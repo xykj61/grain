@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.124606` | [Incense, queue held, no build](20261010/20261010-124606_incense-no-build-queue-held.kyri) | Tree level with xy/main; no claim; no build. |
 | `20261010.124434` | [Patchouli, queue empty, no build](20261010/20261010-124434_patchouli-queue-empty-no-build.kyri) | Fresh net finds nothing new; no build. |
 | `20261010.124141` | [Grass, claim board empty, no build](20261010/20261010-124141_grass-claim-board-empty-no-build.kyri) | Fast-forward; queue empty; board clear; no build. |
 | `20261010.123929` | [Incense, index red confirmed, booking held](20261010/20261010-123929_incense-index-red-booking-held-by-ledger-bound.kyri) | Red reproduced; REDS %840 waits on a fold. |
