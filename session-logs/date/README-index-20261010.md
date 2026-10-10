@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.063850` | [Incense round-open, no build](20261010/20261010-063850_incense-round-open-decline-no-build.kyri) | Round-open clean; no build; cold run held. |
+| `20261010.064328` | [Patchouli, queue empty, seventh](20261010/20261010-064328_patchouli-queue-empty-seventh-no-build.kyri) | Two fresh classes clean; no candidate; no build. |
 | `20261010.063942` | [Patchouli, queue empty, sixth](20261010/20261010-063942_patchouli-queue-empty-sixth-no-build.kyri) | Fresh class net over mantra/ and tally/; no candidate; no build. |
 | `20261010.063914` | [Petrichor, no build, third](20261010/20261010-063914_petrichor-no-build-third.kyri) | Gate still shut; first hour A; no build. |
 | `20261010.063809` | [Grass, four sampled, all above B](20261010/20261010-063809_grass-four-sampled-all-above-b.kyri) | Four unread-lane pages graded A; nothing below B. |
