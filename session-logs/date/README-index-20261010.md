@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.003655 | [survey](20261010/20261010-003655_bakery-shared-receipt-survey.kyri) | Shared receipt survey: digest is per tree, peer basis refused; key needs a ruling |
 | 20261010.004335 | [hold](20261010/20261010-004335_petrichor-hold-no-fruit-upstream-incense.kyri) | Petrichor hold: one incense commit fast-forwarded, consent gate shut, no fruit; no build |
+| 20261010.004316 | [grass](20261010/20261010-004316_grass-queue-empty-no-frame.kyri) | Grass audit queue empty; mycelium/fold.rye reads A/93; no frame, no build |
 | 20261010.004147 | [hold](20261010/20261010-004147_diffuser-hold-msr-and-trace-still-absent.kyri) | Diffuser hold: msr and caller trace still absent; no build |
 | 20261010.004100 | [log](20261010/20261010-004100_grass-docs-front-doors-grade-a-no-frame.kyri) | Grass grades docs/README A+ and ORGANIZING A; no frame, no edit |
 | 20261010.004008 | [hold](20261010/20261010-004008_diffuser-hold-no-fruit-msr-still-absent.kyri) | Diffuser hold: no fruit, msr door still shut; no build |
