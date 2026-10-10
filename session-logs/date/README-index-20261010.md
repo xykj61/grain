@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.064542` | [Grass, five foundations sampled, all B or better](20261010/20261010-064542_grass-foundations-sampled-all-b.kyri) | Five foundations graded B or better; no molt owed; register question for Keaton. |
+| `20261010.064817` | [Patchouli, queue empty, eighth](20261010/20261010-064817_patchouli-queue-empty-eighth-no-build.kyri) | Queue still empty; two OPEN rows want a ruling; no build. |
 | `20261010.064308` | [Bakery, hold, no ruling upstream](20261010/20261010-064308_bakery-hold-no-ruling-upstream.kyri) | Fetch found no ruling; no build; both doors owed. |
 | `20261010.064411` | [Incense decline, after upstream](20261010/20261010-064411_incense-decline-after-upstream-fast-forward.kyri) | One fast-forward; no build; law lane waits. |
 | `20261010.064310` | [Pheromone, lane still empty, no build](20261010/20261010-064310_pheromone-lane-empty-no-build.kyri) | Lane read empty after a clean pull; no build, no claim. |
