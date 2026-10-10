@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.164215
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone lane, Glow language and seams
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported by harness; not independently verified
+configured_model claude-sonnet-5 (fleet default per .claude/settings.json; this run used Haiku 5.5 as the harness reported)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host anonymized host and one-clock zone
+title pheromone inner read -- no mechanical fruit open, no build
+prompt ty every1 baton prin recur -- the pheromone seat's autonomous lap
+think read recursion-prompts/pheromone-inner.md first, as the baton asks
+think the inner prompt says the Glow shape lane closed its last fruit at 20261002 and that the next move is a ruling from Incense
+think a new rune and any language custody ruling return to Incense, so this seat has no build it may take alone
+think I did not read the claims board or REDS for an unclaimed booked lap, so claim-as-override was not taken this lap
+think the card weight scan reads COPAL at 25 blocks and six of eight seats over one block; that is the writer-sheds lane's to act on, not this seat's
+obs no tree change this lap; HEAD 1e5aa9f861 is the parent of this log
+obs the day shelf index reads OPEN; row prepended below the delimiter
+loom witness=none wall_ms=0 -- no measurement taken this lap
+rota none -- inner prompt read; no council row deep-read this lap
+orbit round 14 -- sign not read this lap (calfive: (10049-1)%15+1)
+file recursion-prompts/pheromone-inner.md -- read for the lane's standing state, not edited
+file session-logs/date/20261010/20261010-164215_pheromone-inner-read-no-build.kyri -- this log
+scope read the pheromone inner prompt and card weight; no code, no witness run
+status no witness run, no build; the lane is waiting on Incense's ruling; log only, not pushed
+recommend check in (Claude) -- the next fruit needs a language or custody ruling from Incense before any rune moves; no mechanical lap is open in this lane
