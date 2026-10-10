@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.122646` | [Grass, inner graded B+, no build](20261010/20261010-122646_grass-inner-graded-b-plus-no-build.kyri) | Grade 89 B+; no frame; no build. |
 | `20261010.122400` | [Bakery, crux held on ruling, no build](20261010/20261010-122400_bakery-crux-ruling-held-no-build.kyri) | Claim clear; ff to 7b42bfc371; receipt key owed; no build. |
 | `20261010.122318` | [Pheromone, hold, green](20261010/20261010-122318_pheromone-hold-haiku-witnesses-green.kyri) | Lane empty; two witnesses GREEN; no build. |
 | `20261010.122320` | [Petrichor, lint, no build](20261010/20261010-122320_petrichor-lint-named-target-no-build.kyri) | Gate shut; lint green; 20261006 shelf missing. |
