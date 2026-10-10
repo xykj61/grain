@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261009.215925 | [Petrichor consent-gate hold](20261009/20261009-215925_petrichor-consent-gate-hold-no-build.kyri) | Gate unchanged; no fetch lead, no claim, no build. |
 | 20261009.215803 | [20261009-215803_patchouli-queue-empty-fresh-net-again.kyri](20261009/20261009-215803_patchouli-queue-empty-fresh-net-again.kyri) | Patchouli queue empty, third net this day |
 | 20261009.215610 | [petrichor upstream pull](20261009/20261009-215610_petrichor-upstream-pull-hold.kyri) | pull one bakery commit; lane holds, no build |
 | `20261009.215512` | [Key reread, no build](20261009/20261009-215512_bakery-key-reread-no-build.kyri) | Per-ship key finding re-read; census and binary hashes hold; no build. |
