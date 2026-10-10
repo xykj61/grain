@@ -64,6 +64,7 @@
 | `20261010.102917` | [Patchouli, queue empty, eighteenth](20261010/20261010-102917_patchouli-queue-empty-eighteenth.kyri) | Fresh version-literal net; queue empty; no build; log and row only. |
 | `20261010.102802` | [Petrichor, hold after fast-forward, gate shut](20261010/20261010-102802_petrichor-hold-consent-gate-after-ff.kyri) | Ff to 86d4248cd1; Consent Rail still gates; no build. |
 | `20261010.102722` | [Grass, sameness molted, C+ to A](20261010/20261010-102722_grass-sameness-molt-a-93.kyri) | One M1 molt; nine living citers repointed; a dated_path red predates it. |
+| `20261010.102738` | [Copal roster pass, no clean witness](20261010/20261010-102738_copal-no-clean-fruit.kyri) | Three unrostered witnesses each OPEN in REDS; none clean to roster; ruling wanted; no build. |
 | `20261010.102315` | [Petrichor, steps gated, no build](20261010/20261010-102315_petrichor-hold-steps-open-no-build.kyri) | Hold; no code moved. |
 | `20261010.102135` | [Bakery, hold, no agent-doable step](20261010/20261010-102135_bakery-hold-no-agent-doable-step.kyri) | No code, no claim change; crux held for the receipt-key ruling. |
 | `20261010.101404` | [Incense, round four, decline](20261010/20261010-101404_incense-round-four-earth-decline-no-build.kyri) | Decline, no build; held queue left for Keaton. |
