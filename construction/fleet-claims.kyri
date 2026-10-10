@@ -58,3 +58,9 @@ stamp 20261010.071744
 epoch 1791631064
 paths tools/fixtures/s/standing_equipment_run.sh construction/standing-equipment-receipt.kyri
 what Bakery opens the shared build and cold-run cache crux: one green receipt usable across the eight checkouts, every owed proof still executed, a miss on any changed input.
+claim bakery-ag-jail-refusal-leg
+seat bakery
+stamp 20261010.075024
+epoch 1791633024
+paths tools/ag/agent_jail_witness.rish
+what Bakery adds the launcher's own unknown-option refusal to the agent-jail witness, so the guard demonstrates a refusal and the standing ratchet on refusal-less guards answers for it (REDS %827).
