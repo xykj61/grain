@@ -4,6 +4,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.073406` | [Grass, foundations sample graded](20261010/20261010-073406_grass-foundations-sample-graded.kyri) | Six foundations graded; lowest composite 88; no frame. |
 | `20261010.073319` | [Pheromone, lane empty a fourth read](20261010/20261010-073319_pheromone-lane-empty-fourth-read.kyri) | Queue check; no build; no claim taken. |
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward; claim verified; crux held. |
 | `20261010.073147` | [Copal, surface p56 rostered](20261010/20261010-073147_copal-surface-p56-roster.kyri) | One unrostered witness rostered, proven both sides. |
