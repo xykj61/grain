@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.063528
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status declared in recursion-prompts/bakery-inner.md engine section; not telemetry
+evidence the bakery inner prompt declares claude-opus-5; this lap did not run sh tools/fixtures/d/declared_model.sh resolved_model, so the runtime model is not verified here
+voice Kyri
+host anonymized host and one-clock zone America/New_York
+title Bakery codex control repair already landed, no build
+prompt Baton and bakery inner prompt: read the card, take the next honest step in the core infrastructure lane.
+think The card's recovery queue says the Codex loop control still owes a repair: exact model arguments on both the probe and the lap call, with default and override cases for bakery and an ordinary seat.
+think Ran sh tools/fixtures/f/fleet_codex_control.sh on HEAD 07aa3cc0ac. It printed 18 ok legs and exited 0: default and override reach both calls for incense and bakery, and each planted omission or suffix on either call is refused while the other stays correct.
+think The last commit touching the control, 51e8ba4ffb, reads "Check Codex probe and lap model arguments separately". So the repair the card calls owed is already on the tree, and the card line is stale.
+think Path-absence scan on the Codex loop and its control reads verdict=present on the anointed remote, so this checkout and the remote agree.
+obs No code changed this lap. Editing the card to remove the stale owed line would be a card account of its own, and the card is near its byte bound, so this lap leaves the card as it stands and records the finding here.
+obs The shared build-cache and receipt-key crux still waits on Keaton's ruling on whether the receipt key drops HEAD for the watched inputs. This lap does not attempt it.
+obs Measurement: 18 of 18 legs passed on this run. The script's own leg count is not asserted by its header, so the 18 is a count of ok lines printed, not a claim of total coverage.
+file session-logs/date/20261010/20261010-063528_bakery-codex-control-repair-already-landed.kyri this record, the only file this lap writes
+file session-logs/date/README-index-20261010.md one shelf row prepended under the delimiter
+rota none -- verification-only lap; the recovery-queue check is the reading, no council row was deep-read
+status GREEN on the one witness run (fleet_codex_control.sh, 18 ok legs, exit 0); card left unedited, receipt-key ruling still owed by Keaton, no push
+recommend check-in (Claude) -- the stale owed-repair line on the card and the receipt-key ruling both need a word before any further lap moves them

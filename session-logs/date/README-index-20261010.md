@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.063528` | [Bakery, codex control already landed](20261010/20261010-063528_bakery-codex-control-repair-already-landed.kyri) | Control 18 of 18 green; owed repair already on tree; no build. |
 | `20261010.062811` | [Grass, inner prompt, Field](20261010/20261010-062811_grass-inner-grade-counted.kyri) | Counted 77, 90, 100; service open; no edit. |
 | `20261010.062639` | [Copal, instrument-suite held, fascia red](20261010/20261010-062639_copal-instrument-suite-held-fascia-red.kyri) | Claim landed; roster reverted; e113 fascia 37 of 41 held; no floor lowered. |
 | `20261010.062758` | [Incense, decline forty-seven](20261010/20261010-062758_incense-decline-forty-seven.kyri) | Round-open clean, claim board clear, cold run held; no build. |
