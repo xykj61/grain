@@ -4,6 +4,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.073523` | [Bakery, crux recheck](20261010/20261010-073523_bakery-crux-hold-recheck.kyri) | Claim live and mine; ruling still owed; no build, no pull. |
 | `20261010.073131` | [Incense, round eleven decline](20261010/20261010-073131_incense-round-eleven-decline.kyri) | Round-open clean; claim board clear; no build behind the human word. |
 | `20261010.073406` | [Grass, foundations sample graded](20261010/20261010-073406_grass-foundations-sample-graded.kyri) | Six foundations graded; lowest composite 88; no frame. |
 | `20261010.073319` | [Pheromone, lane empty a fourth read](20261010/20261010-073319_pheromone-lane-empty-fourth-read.kyri) | Queue check; no build; no claim taken. |
