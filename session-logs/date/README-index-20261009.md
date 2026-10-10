@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.232145` | [Patchouli queue empty, 22nd](20261009/20261009-232145_patchouli-queue-empty-twenty-second.kyri) | Test string only; %807, %765 outside lane. |
 | `20261009.232220` | [Grass foundations graded, queue held](20261009/20261009-232220_grass-foundations-graded-queue-held.kyri) | Three recent foundations read B+ 89, A 94, B+ 86; queue held; no edit. |
+| `20261009.232148` | [Copal graph redraw roster](20261009/20261009-232148_copal-graph-redraw-spine-roster.kyri) | Roster graph_redraw_spine; planted red proven; claim pushed first |
 | `20261009.232011` | [Incense hold, fifty-fifth lap](20261009/20261009-232011_incense-hold-fifty-fifth-lap.kyri) | Round-open clean; no build; cold run held. |
 | `20261009.231811` | [Petrichor hold, sixth reading](20261009/20261009-231811_petrichor-hold-sixth-reading.kyri) | Queue hold; consent rail still closed; upstream pulled; no page. |
 | `20261009.232051` | [Grass inner prompt graded, queue held](20261009/20261009-232051_grass-inner-prompt-graded-queue-held.kyri) | Field grade B+ 88; queue empty; no edit. |

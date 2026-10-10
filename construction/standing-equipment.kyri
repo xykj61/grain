@@ -10049,3 +10049,14 @@ guard sunn9_claude_llms_stewards
 path tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish
 tier lap
 seated 20261009.225059
+
+# graph_redraw_spine -- Surface Chapter p17, unrostered since it was written, and the witness
+# REDS %646 unrostered for its hard assert on a clone-local binary. The binary check is now a skip
+# decided on the artifact, so the row can run on every machine. Proven both ways in this lap: the
+# live tree reads GREEN by an honest skip (brushstroke/bin/brushstroke-wayland-seed is not built
+# here); a planted missing p17 counsel seat reads RED, exit 1, the assert named. The redrawtest leg
+# runs only on a clone that has built the seed binary.
+guard graph_redraw_spine
+path tools/gen/chapter/graph_redraw_spine_witness.rish
+tier lap
+seated 20261009.232310
