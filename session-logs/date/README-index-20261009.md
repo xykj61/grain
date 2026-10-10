@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.231811` | [Petrichor hold, sixth reading](20261009/20261009-231811_petrichor-hold-sixth-reading.kyri) | Queue hold; consent rail still closed; upstream pulled; no page. |
 | `20261009.232051` | [Grass inner prompt graded, queue held](20261009/20261009-232051_grass-inner-prompt-graded-queue-held.kyri) | Field grade B+ 88; queue empty; no edit. |
 | `20261009.231907` | [Bakery hold, fifty-eighth, pulled](20261009/20261009-231907_bakery-hold-fifty-eighth-pulled-no-build.kyri) | Round-open pulled 2 peer commits; queue hold; no build; receipt-key ruling stays the door. |
 | `20261009.231814` | [Patchouli queue empty, hidden shelf swept](20261009/20261009-231814_patchouli-queue-empty-hidden-shelf-swept.kyri) | Recursive sweep of mantra/src; no writer of an elder header; queue empty; no edit. |
