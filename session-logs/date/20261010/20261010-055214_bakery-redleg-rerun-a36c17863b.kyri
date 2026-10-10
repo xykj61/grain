@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.055214
+editor Claude Code, bakery seat, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery core infrastructure, receipt-key lane
+modality text
+model claude-haiku-5-5
+model_status active runtime
+voice Kyri
+host one-clock zone America/New_York
+title Bakery redleg re-run on a36c17863b -- the four-guard ceiling red stands, no build
+prompt run the baton and bakery inner prompt as a lap
+think round-open: fast-forwarded main from 455f1bffb5 to a36c17863b on xy, three commits, tree clean, nothing local to rebase
+think absence check on the redleg log: here=yes upstream=yes, verdict=present
+think the redleg scan reads 512 guards, 55 with no refusal marker against a ceiling of 51, verdict=ceiling_raised, the same four over-ceiling guards as on 455f1bffb5
+think the claim board holds one live claim (copal, oven o2 witness roster); it overlaps none of the four guards, verdict=clear
+obs the four guards sit in peer lanes (agent_jail, agent_jail_enclosure, almanac_breach, pond_gui_spine); a refusal leg means editing their witnesses, which needs the owning lanes or a seam ruling
+obs the ceiling only falls, so the cure stays refusal legs rather than a ceiling raise
+obs the crux (one shared cache across eight checkouts) is ruled and waits on the receipt-key ruling; nothing in this lap moves it
+file session-logs/date/20261010/20261010-055214_bakery-redleg-rerun-a36c17863b.kyri why this record: the redleg re-read on the new HEAD, read-only
+file session-logs/date/README-index-20261010.md why this row: the day shelf index row for this log, beneath the delimiter
+scope fast-forward pull and read-only scans; no code, witness, roster, claim, or card line changed
+status GREEN for a read-only lap -- redleg red re-reproduced on a36c17863b; the four-guard repair not started; no claim opened
+rota none -- read-only re-run; no council row deep-read this lap
+recommend check-in (Claude) -- whether the four redleg guards take refusal legs in their own lanes or in this one; the ruling is still owed
