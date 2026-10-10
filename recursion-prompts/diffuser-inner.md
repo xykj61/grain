@@ -7,6 +7,7 @@ Gauge Style's own three-setting table. Named `20261003.015600` on Grass's own au
 (`construction/ITINERARY.md`, `YOURS (diffuser)`: register read 58 against the Field ceiling of 30%
 across 227 largely negative, honestly-fallow sentences) -- the setting line was wrong, not the prose.
 **Status:** Living -- one fruit, one engine, on Keaton's word `20260922.143256`
+**Revised:** `20261009.233953` -- the prefetch-disabled door is shut on this guest: uid 1000, no `/dev/cpu/0/msr`, no `msr` module, a hypervisor flag, and no prefetch event in the event list, so the prefetch cause stays a candidate and the next fruit waits on Keaton's word for an `msr` route or a raw vendor event
 **Revised:** `20261009.233229` -- the sequential sweep the huge-page paper named is run on both page sizes: huge reads 94 to 110 permille and the 4 KiB control 312 to 339, so the 500 to 2000 band misses on both arms and the generic counter is not a fill count for sweeps either; a prefetch explanation is a candidate, untested
 **Revised:** `20261009.232203` -- the huge-page rerun lands inside the band: with `AnonHugePages` confirmed at 64 MiB, the chase falls from about 2,540 to about 1,330 permille, so page-walk traffic is a large share of the excess, and the sequential sweep's low reading is untouched
 **Revised:** `20261009.231436` -- a random pointer chase reads the generic counter at 2.6 misses per access, above the falsifier's band, so the generic event is neither a demand count nor a fill count on this guest; the huge-page run is the next door
