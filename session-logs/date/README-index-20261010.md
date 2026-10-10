@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.144042` | [Petrichor, Rail holds, revoke name in mantra, no build](20261010/20261010-144042_petrichor-rail-hold-revoke-in-mantra.kyri) | Gate unsettled; no build; check-in asked. |
 | `20261010.143559` | [Incense, decline lap, no build](20261010/20261010-143559_incense-decline-lap-no-build.kyri) | Board clear, round-open at 74ef14dccc; no build, cold run held. |
 | `20261010.143253` | [Petrichor, Rail source landed, revoke unseen, no build](20261010/20261010-143253_petrichor-rail-landed-revoke-unseen.kyri) | Rail source upstream; revoke fact unseen; no build. |
 | `20261010.143748` | [Patchouli, label walks disagree, queue empty](20261010/20261010-143748_patchouli-label-walks-disagree.kyri) | Two label walks read 675 and 1,105; no build; check-in on the walk. |
