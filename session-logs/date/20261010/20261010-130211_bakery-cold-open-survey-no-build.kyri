@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261010.130211
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved-clone-override
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized host, one-clock zone America/New_York
+title bakery cold open survey, no build
+prompt the baton for bakery: read the inner prompt and card, run the lap in order
+think the card's agent-doable queue has no item that is mechanical and unrulled: item 1 (%642 scrub) wants a word, item 2 (%519 plant spread) is touch-on ratchet work, item 3 waits on Keaton's word
+think the receipt-key crux is marked YOURS on the card: dropping HEAD from the receipt key changes the roster runner contract, so no build here
+think the cold roster run is about 70 minutes and the hot pass about 75; a lap that opens at this stamp cannot hold still through both and still close the day's other work
+think plant_adoption_scan reads sourcing=45 and remainder=359, against the card's 44 and 353; the card's figures are free, so the live reading stands
+think fleet_claim.sh needs a verb (--open or --close) and printed verdict=no_verb with no claim written, so no board state changed
+obs no new instrument, no booked red taken, so no claim was owed and none was filed
+obs no edits to code; this log and its shelf row are the only write
+rota lap 9827, row 2 -- Fire sees; the reading surfaced the plant ratchet drift and the YOURS-gated receipt key as the two things a hand has to see
+orbit round 2 sign -- not read this lap; the round load table in SPELLBOOK was not consulted, so no sign or verb is claimed here
+loom plant_adoption controls=404 sourcing=45 remainder=359 adoption_floor=13
+file construction/ITINERARY.md why the card whose queue and YOURS lines this lap read against the live state
+file recursion-prompts/bakery-inner.md why the inner prompt named the lap's order and crux
+file tools/fixtures/p/plant_adoption_scan.sh why the live ratchet reading that corrects the card's stale figures
+recommend check-in (Claude) -- the receipt key is a contract change on the roster runner and the card marks it YOURS; a ruling is owed before a build, and item 1 needs a word on the scrub trade
+status GREEN for the survey; no witness owed because no code changed; the cold and hot rosters were not run this lap and are owed when a build lands
+scope read-only survey of the card, inner prompt, thread and plant ratchet; one log written; no send
