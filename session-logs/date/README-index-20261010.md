@@ -10,6 +10,7 @@
 | 20261010.014833 | [grass foundation grade sample](20261010/20261010-014833_grass-foundation-grade-sample-no-build.kyri) | Grass: three foundations graded, none below B, no build |
 | 20261010.015119 | [queue empty, check-in](20261010/20261010-015119_patchouli-queue-empty-check-in-recommended.kyri) | Patchouli: queue empty again; check-in named, no build |
 | 20261010.014820 | [lane blocked, repeat named](20261010/20261010-014820_petrichor-lane-blocked-repeat-stands.kyri) | Petrichor: queue blocked on the consent gate; repeat named, no build |
+| 20261010.014936 | [round-open decline](20261010/20261010-014936_incense-round-open-decline-no-build.kyri) | Incense: round-open clean, claim board held; no build |
 | 20261010.014512 | [queue empty, twenty-second check](20261010/20261010-014512_patchouli-queue-empty-twenty-second-check.kyri) | Patchouli: queue empty again, nets clear, no build |
 | 20261010.014805 | [receipt contract board](20261010/20261010-014805_incense-receipt-contract-board-green-no-build.kyri) | Incense: contract board green, milestone unstamped; no build |
 | 20261010.014635 | [grass queue sample](20261010/20261010-014635_grass-queue-sample-all-a-no-build.kyri) | Grass: four foundation pages graded A or A+; queue empty, no build |
