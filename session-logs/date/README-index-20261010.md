@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.123104` | [Patchouli, queue empty net again, no build](20261010/20261010-123104_patchouli-queue-empty-net-again-no-build.kyri) | Family queue empty again; %807 owed a ruling; no build. |
 | `20261010.122935` | [Bakery, crux still held, no build](20261010/20261010-122935_bakery-crux-still-held-fast-forward-no-build.kyri) | Ff to 9a411aec93; no ruling; no build. |
 | `20261010.122847` | [Petrichor, links clean, no build](20261010/20261010-122847_petrichor-links-clean-no-build.kyri) | 39 living pages, zero broken links; no build. |
 | `20261010.122958` | [Grass inner re-graded, no build](20261010/20261010-122958_grass-inner-regrade-no-build.kyri) | Register 77, reach 90, truth 100; service judged; no build. |
