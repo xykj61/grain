@@ -42,6 +42,7 @@
 | `20261010.085607` | [Petrichor, hold, no new target](20261010/20261010-085607_petrichor-no-target-door-held.kyri) | Three readings hold; consent-rail gate unmoved; no edit. |
 | `20261010.085253` | [Patchouli, queue empty, no booked lap](20261010/20261010-085253_patchouli-queue-empty-claim-override-none.kyri) | Fresh net and claim board read empty; no booked lap to override; no build; check-in named. |
 | `20261010.085231` | [Incense, declined sixty-sixth, no build](20261010/20261010-085231_incense-declines-sixty-sixth-earth-row-no-build.kyri) | Round-open clean; claim board unchanged; earth row read; no build. |
+| `20261010.085129` | [Diffuser, six hashes, no null](20261010/20261010-085129_diffuser-six-hash-null-free-ordering.kyri) | tau-b +0.60 to +0.87 at 13-16 sets; falsifier held. |
 | `20261010.084844` | [Incense, declined sixty-fifth, no build](20261010/20261010-084844_incense-declines-sixty-fifth-no-build.kyri) | Round-open clean; claim board holds bakery's only; no build; nib carried. |
 | `20261010.084441` | [Grass, foundations swept, no frame](20261010/20261010-084441_grass-foundations-sweep-no-frame.kyri) | 91 foundations, 80 docs-geode pages B or better; no frame. |
 | `20261010.084240` | [Incense, declined sixty-fourth, no build](20261010/20261010-084240_incense-declines-sixty-fourth-no-build.kyri) | Round-open clean; bakery claim only; no build; nib carried. |
