@@ -27,3 +27,4 @@ file session-logs/date/README-index-20261010.md why one row above the delimiter 
 scope mantra/beading.rye deposit extraction; inner prompt fruit paragraph; no change to any witness or to tally
 status GREEN: mantra_beading, mantra_beading_dedup_ratio_witness, mantra_recall_beaded, mantra_spool_dedup_ratio_witness all GREEN after the edit; ASCII-only
 recommend keep-going -- the functions-past-70 class has only witness self-tests left; %807 and %765 still want Keaton's word
+obs send: the work commit 2777101031 was rebased onto xy main over peer commits and pushed fast-forward; the index conflict on README-index-20261010 kept every peer row and placed this row newest-first. The card's Git nib named an older commit, so this follow-up carries it forward to 2777101031, read before this commit was made.
