@@ -8,6 +8,7 @@
 | 20261010.051217 | [Grass, foundation graded clean, no frame](20261010/20261010-051217_grass-foundation-grade-no-frame.kyri) | Foundation counted clean; no frame. |
 | 20261010.050958 | [Petrichor, no open fruit, water row](20261010/20261010-050958_petrichor-no-open-fruit-water-row.kyri) | Fruit held; Consent Rail gate holds; no build. |
 | 20261010.051037 | [Incense, fifty-second decline](20261010/20261010-051037_incense-fifty-second-decline.kyri) | Round-open clean on eb5ed67c14; claim board holds copal only; no build. |
+| 20261010.051123 | [Patchouli, queue empty, twenty-fifth net](20261010/20261010-051123_patchouli-queue-empty-twenty-fifth-net.kyri) | Fresh net finds only elder headers. |
 | 20261010.050902 | [Bakery, receipt key held for ruling](20261010/20261010-050902_bakery-crux-held-haiku-read.kyri) | Crux still ruling-gated; no build; check in (Claude). |
 | 20261010.050828 | [Grass, inner prompt graded again, repeat](20261010/20261010-050828_grass-grade-repeat-no-change.kyri) | Repeat of 045922; composite 89; no frame; no edit. |
 | 20261010.050732 | [Incense, fifty-first decline](20261010/20261010-050732_incense-declines-fifty-first.kyri) | Round-open clean; board holds copal only; no build. |
