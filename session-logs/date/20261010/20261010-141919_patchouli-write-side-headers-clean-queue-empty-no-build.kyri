@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261010.141919
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Patchouli -- lane mantra/ and tally/
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by the session; not independently verified
+configured_model claude-haiku-5-5 (resolved by this clone; configuration, not runtime telemetry)
+configured_status resolved per tools/fixtures/d/declared_model.sh; configuration, not runtime telemetry
+evidence sh tools/fixtures/d/declared_model.sh resolved_model -> claude-haiku-5-5
+voice Kyri
+host anonymized Linux workstation, zone America/New_York
+title Patchouli write-side headers clean, queue empty, no build
+prompt Baton and inner prompt: find the next chronological header in mantra/ or tally/ that the tree still WRITES, or say the queue is empty and stop.
+think The %765 family question is about what a tree writes, not what it reads. Elder headers must keep opening, so a read-side literal is not a queue item.
+think git grep over mantra/ and tally/ for header literals on a write path. The live writers are main.rye at the mantra-weave-20260916.101910 header and the mantra-commit-20261001.233015 header. Both already chronological.
+think The remaining elder literals are read dispatch in main.rye and store.rye, doc comments, one store_witness sample that tests the elder reader, and witness print labels named as not persisted. None is a queue item.
+obs The write side of %765 in this lane is clean. Re-running the same grep will not reopen it unless a new writer lands.
+obs No code moved and no witness was run this lap; the reading is the grep, and it holds only for this HEAD.
+rota lap 9900, row 4 -- earth breathes in -- took in the writers themselves, not the readers, and found the write side already clean
+file session-logs/date/20261010/20261010-141919_patchouli-write-side-headers-clean-queue-empty-no-build.kyri the record of this lap and why it stops
+file session-logs/date/README-index-20261010.md one shelf row beneath the delimiter for this log
+scope session log and shelf row only; no mantra/ or tally/ file changed
+status GREEN for the reading: no live write path in mantra/ or tally/ emits a counted version header; queue empty; nothing built
+recommend check-in (checkpoint) -- %807 needs Keaton's ruling on reserving zero; %765 needs a named next candidate outside this lane or a ruling that the lane is complete
