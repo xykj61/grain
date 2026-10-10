@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.204441` | [Petrichor hold, no build](20261009/20261009-204441_petrichor-hold-no-build.kyri) | Lane gated on the seam and Diffuser; no build. |
 | `20261009.204407` | [Patchouli card shed, check in](20261009/20261009-204407_patchouli-card-shed-queue-empty-check-in.kyri) | Three blocks shelved; queue empty. |
 | `20261009.204350` | [Incense round-open hold, no build](20261009/20261009-204350_incense-round-open-hold-no-build-2.kyri) | Round-open clean; cold run held; queue gated; no build. |
 | `20261009.204339` | [Grass inner prompt graded B+, no lift](20261009/20261009-204339_grass-inner-prompt-grade-no-lift.kyri) | Inner prompt reads B+ (89) on Field; no edits; no build. |
