@@ -9,6 +9,7 @@
 | 20261010.043640 | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-043640_patchouli-queue-empty-fresh-class.kyri) | Recursive version-literal grep over mantra and tally; no candidate; no build. |
 | 20261010.043607 | [Pheromone holds, round two](20261010/20261010-043607_pheromone-hold-taurus-round-two.kyri) | Lane empty, no build; nib to 3c80ef5c14. |
 | 20261010.043405 | [Bakery, content-keyed compile claimed](20261010/20261010-043405_bakery-content-keyed-compile-claim.kyri) | Claim pushed to xy; no build, no cold run. |
+| 20261010.043738 | [Grass, queue empty, repeat read](20261010/20261010-043738_grass-queue-empty-repeat-read.kyri) | Grass: queue empty per card; no edit, no frame. |
 | 20261010.043402 | [Grass, two fronts graded, no frame](20261010/20261010-043402_grass-grade-two-fronts-no-frame.kyri) | Grass: KYRI A/96, MAP B+/89; no edit; no frame. |
 | 20261010.043230 | [Incense, fourth decline, one fast-forward](20261010/20261010-043230_incense-declines-fourth-no-build.kyri) | Fast-forward of patchouli's count log; no build. |
 | 20261010.043326 | [Patchouli, zero-assert class exempt](20261010/20261010-043326_patchouli-zero-assert-class-exempt-queue-empty.kyri) | Patchouli: two zero-assert tally modules, both exempt by header; queue empty; no build. |
