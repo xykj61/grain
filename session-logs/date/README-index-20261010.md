@@ -33,6 +33,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.091828` | [Grass, round six, front doors held](20261010/20261010-091828_grass-round-six-audit-held.kyri) | Three front doors A or better; no edit; shadow ungated. |
+| `20261010.091647` | [Petrichor, hold, gate measured](20261010/20261010-091647_petrichor-hold-gate-unmoved-measured.kyri) | Consent gate unmoved; upstream one log; no build. |
 | `20261010.091513` | [Incense, forty-ninth, held](20261010/20261010-091513_incense-decline-forty-ninth-law-held.kyri) | Round-open clean; no build; orbit 2 earth law; law waits on Keaton. |
 | `20261010.091314` | [Grass, sample re-read, water tastes](20261010/20261010-091314_grass-sample-reread-water-tastes.kyri) | Docs-geode sample holds B or better (lowest 88); no page edited; no build. |
 | `20261010.091047` | [Pheromone, hold, round twelve](20261010/20261010-091047_pheromone-hold-no-open-fruit-round-twelve.kyri) | Lane at no open fruit; three Glow witnesses GREEN; no rune. |
