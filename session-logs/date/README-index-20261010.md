@@ -14,6 +14,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.083115` | [Incense books REDS %729](20261010/20261010-083115_incense-reds-729-booked-pen-entry-green.kyri) | Pen-entry witness GREEN; row BOOKED. |
 | `20261010.082838` | [Petrichor, hold again, gate unmoved](20261010/20261010-082838_petrichor-hold-consent-gate-unmoved-again.kyri) | Fetched zero behind; gate unmoved; no page touched. |
 | `20261010.082711` | [Patchouli, queue empty, fresh nets](20261010/20261010-082711_patchouli-queue-empty-fresh-nets.kyri) | Both queue nets re-run; no elder header in lane; stopped, no build. |
 | `20261010.082326` | [Pheromone, step three's printing closed on metal](20261010/20261010-082326_pheromone-step-three-printing-closed-on-metal.kyri) | Glow refusal witness GREEN; no rune, no card edit. |
