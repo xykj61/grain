@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.013314 | [hold, ruling awaited](20261010/20261010-013314_bakery-receipt-key-ruling-hold.kyri) | Bakery: cache census clean, receipt key still on HEAD; contract change waits on Keaton; no build |
 | 20261010.013057 | [lane empty, no build](20261010/20261010-013057_pheromone-lane-empty-no-build.kyri) | Pheromone: lane empty, closed fruits stand; no build, ruling awaited |
 | 20261010.013350 | [20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri](20261010/20261010-013350_patchouli-queue-empty-fresh-net-decline.kyri) | queue empty, fresh net, no build |
 | 20261010.013259 | [decline](20261010/20261010-013259_incense-decline-upstream-two-peer-logs.kyri) | Incense decline: two peer logs fast-forwarded, one live claim (copal), no build |
