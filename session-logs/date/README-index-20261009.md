@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.233340` | [Patchouli queue empty, 26th](20261009/20261009-233340_queue-empty-twenty-sixth.kyri) | Queue held on a fresh class of sweep; no build; check-in named. |
 | `20261009.233040` | [Copal roster commence M9, one witness](20261009/20261009-233040_copal-commence-m9-roster.kyri) | Roster row, GREEN live, RED planted |
 | `20261009.232855` | [Grass four grades, queue held](20261009/20261009-232855_grass-four-grades-clean-queue-held.kyri) | Four pages read B+ to A+; no lift owed; no edit. |
 | `20261009.232813` | [Incense hold, 57th lap](20261009/20261009-232813_incense-hold-fifty-seventh-lap.kyri) | Order unchanged; no build; nib carried. |
