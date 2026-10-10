@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.024658 | [gate held again, no build](20261010/20261010-024658_petrichor-gate-held-repeat-no-build.kyri) | Petrichor: repeat gate check, no build, check in (Claude) |
 | 20261010.024335 | [receipt key held, no build](20261010/20261010-024335_bakery-receipt-key-held-no-build.kyri) | Bakery: receipt key waits on Keaton's ruling, copal claim noted, no build, nib carried |
 | 20261010.024517 | [consent gate held, no build](20261010/20261010-024517_petrichor-consent-gate-still-closed-no-build-2.kyri) | Petrichor: fetch current, grant and revoke facts still unnamed, no build |
 | 20261010.024500 | [queue empty, twenty-third, no build](20261010/20261010-024500_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: widened version-literal net, queue empty, schema_v1 still for Keaton, no build |
