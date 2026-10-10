@@ -52,9 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-oven-season-o2-roster
-seat copal
-stamp 20261010.004040
-epoch 1791607240
-paths tools/gen/chapter/oven_season_o2_witness.rish construction/standing-equipment.kyri
-what Roster the unrostered oven_season_o2 chapter witness in construction/standing-equipment.kyri and prove it GREEN from both sides; no other chapter witness touched.
