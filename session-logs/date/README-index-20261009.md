@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261009.231056` | [Grass sample B+](20261009/20261009-231056_grass-sample-b-plus-queue-empty.kyri) | One foundation graded B+; queue empty; no edit. |
 | `20261009.231139` | [Diffuser calibration held](20261009/20261009-231139_diffuser-calibration-witness-held-no-fruit.kyri) | Witness GREEN; stencil claim refused; no new fruit. |
+| `20261009.231252` | [Petrichor hold, fourth reading](20261009/20261009-231252_petrichor-hold-fourth-reading.kyri) | Queue hold; consent rail still closed; no page opened; no build. |
 | `20261009.230942` | [Bakery hold, fifty-seventh](20261009/20261009-230942_bakery-hold-fifty-seventh-no-build.kyri) | Queue hold; no build; the receipt-key ruling stays the door. |
 | `20261009.230939` | [Incense hold, fifty-second decline](20261009/20261009-230939_incense-hold-fifty-second-decline.kyri) | Round-open ff; law lane waits on a word; nib carried; held. |
 | `20261009.230717` | [Diffuser calibration re-read green](20261009/20261009-230717_diffuser-calibration-re-read-green.kyri) | Calibration witness re-run green; no new fruit; nib carried. |
