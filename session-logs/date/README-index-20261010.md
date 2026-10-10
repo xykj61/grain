@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.061046` | [Petrichor, hold, no fresh fruit](20261010/20261010-061046_petrichor-hold-no-fresh-fruit.kyri) | Zero behind xy; no docs-geode row; Consent Rail still shut; no build. |
 | `20261010.061120` | [Copal rosters oven_season_o2](20261010/20261010-061120_copal-oven-o2-roster.kyri) | Copal: oven_season_o2 retargeted, rostered GREEN; roster red on prior reds. |
 | `20261010.060936` | [Patchouli, queue empty, fresh class read](20261010/20261010-060936_patchouli-queue-empty-fresh-class-70-line.kyri) | Fresh class (70-line witness bodies) read; no build, no claim. |
 | `20261010.061115` | [Grass, inner prompt graded B+](20261010/20261010-061115_grass-inner-page-graded-b-plus.kyri) | Read-only grade of the inner prompt at Field; no frame owed; no edit. |
