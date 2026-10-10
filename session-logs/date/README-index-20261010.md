@@ -76,6 +76,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.111529` | [Diffuser, eleven hashes](20261010/20261010-111529_diffuser-eleven-hashes-ordering-holds.kyri) | Eleven deterministic families, 55 pairs: tau-b +0.96 to +1.00, falsifier did not fire; scratch only. |
 | `20261010.111317` | [Grass, foundation graded, no build](20261010/20261010-111317_grass-foundation-grade-no-build.kyri) | Door grade: register 93, reach 90, truth 100; no edit. |
 | `20261010.111552` | [Bakery, receipt basis not ancestor, claim closed](20261010/20261010-111552_bakery-receipt-basis-not-ancestor.kyri) | Receipt head not ancestor; no build; claim closed. |
 | `20261010.111520` | [Patchouli, census re-measured, no build](20261010/20261010-111520_patchouli-invariant-census-remeasured-no-build.kyri) | weave.rye 69 of 73 unlabeled; no sweep. |
