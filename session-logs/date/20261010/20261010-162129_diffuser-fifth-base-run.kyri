@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.162129
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser lane, moonshots and research
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+voice Kyri
+host anonymized Linux bench, one-clock zone America/New_York
+title Diffuser, fifth-base run of the xor drag
+prompt Run the fifth-base scripts the falsifier at 155457 named, read the tau lines against F1 and F2, and record the result.
+think Copied the two fourth-base scripts, changing only the seed constant 20261013 to 20261014, confirmed by diff.
+think Launched both runs in the background and waited on their completion rather than polling.
+think Read tau by file name: ten-family +0.51, eleven-family +0.27, gap +0.24.
+think F1 (gap at least +0.15) holds. F2 (ten-family above 0.5) holds by +0.01, thin.
+obs Thresholds were fixed before the run and not lowered after it. The F2 pass is a real pass and a narrow one.
+obs The ten-family script's printed label stays wrong; reading by file name avoided it.
+obs Scratch model only; no witness binds it; nothing committed beyond docs.
+loom witness=diffuser_fifth_base wall_ms=1200000 bases=1 sets=16 seeds=24
+rota none -- research run under a written falsifier, no council row read this lap
+orbit round 1 sign -- the verb, not set this lap
+file active-designing/date/20261010/20261010-162129_the-fifth-base-holds-the-drag-and-the-ten-family-ordering-by-a-hair.md result paper with F1 and F2 read against the falsifier
+file active-designing/date/20261010/20261010-155457_the-xor-drag-is-stable-across-four-bases-and-a-fifth-base-tests-the-gap.md the falsifier this run answers, left unchanged
+file session-output/diffuser-stencil-r3/run_r3_fifth_eleven_det_colmajor_16.py fifth-base copy, seed constant only, gitignored
+file session-output/diffuser-stencil-r3/run_r3_fifth_ten_det_colmajor_16.py fifth-base copy, seed constant only, gitignored
+scope scratch-model drag and ordering on seed base 20261014
+status GREEN for the run: both outputs written, F1 holds, F2 holds by 0.01; no witness, no hardware claim
+recommend check-in (Claude) -- F2 passed by one hundredth, so the next sixth-base run needs its falsifier written first

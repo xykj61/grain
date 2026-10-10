@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.162129` | [Diffuser, fifth-base run](20261010/20261010-162129_diffuser-fifth-base-run.kyri) | F1 holds (gap +0.24); F2 holds by +0.01 |
 | `20261010.155457` | [Diffuser, fifth-base falsifier](20261010/20261010-155457_diffuser-xor-drag-falsifier-fifth-base.kyri) | Falsifier pre-registered; fifth-base run held for the next lap. |
 | `20261010.155448` | [Pheromone, no-build lap](20261010/20261010-155448_pheromone-no-build-lap-pedestals-closed.kyri) | Lane closed; Incense ruling awaited. |
 | `20261010.155444` | [Bakery, no-build lap, receipt key held](20261010/20261010-155444_bakery-no-build-lap-receipt-key-ruling.kyri) | Receipt key awaits ruling; no build. |
