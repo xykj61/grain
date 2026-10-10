@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261009.215844` | [Pheromone hold, lane empty, claim board read](20261009/20261009-215844_pheromone-hold-lane-empty-claim-board-read.kyri) | No ruled fruit; board holds one live claim; no build. |
+| 20261009.220146 | [Petrichor gate hold, two peer holds](20261009/20261009-220146_petrichor-gate-hold-two-peer-holds-no-build.kyri) | Fast-forwarded past two peer holds; gate unchanged; no build. |
 | 20261009.215925 | [Petrichor consent-gate hold](20261009/20261009-215925_petrichor-consent-gate-hold-no-build.kyri) | Gate unchanged; no fetch lead, no claim, no build. |
 | `20261009.215853` | [Air-feels hold, no build](20261009/20261009-215853_bakery-air-feels-hold-no-build.kyri) | Rebased onto three peer holds; receipt key still held; no build. |
 | 20261009.215948 | [20261009-215948_patchouli-queue-empty-fourth-net.kyri](20261009/20261009-215948_patchouli-queue-empty-fourth-net.kyri) | Patchouli queue empty, fourth net; no build
