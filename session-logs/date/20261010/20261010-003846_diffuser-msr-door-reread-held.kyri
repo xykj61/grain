@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.003846
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role diffuser seat, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status session declaration of the running model; configuration, not telemetry
+evidence the model line is the session's own declaration; no declared_model.sh read this lap
+voice Kyri
+host anonymized host and one-clock zone America/New_York
+title Diffuser msr door re-read, still shut, hold
+prompt Baton and diffuser inner prompt: read the card and the newest day shelf, then take the next honest step in the moonshots lane.
+think The newest fruit, revised 20261009.233953, waits on Keaton's word for an msr route or a raw vendor event. This lap re-read that door once on metal.
+think /dev/cpu/0/msr is absent, the msr module is not loaded, the process runs as uid 1000, and perf_event_paranoid reads 2. Unchanged from the earlier hold on this day.
+think Writing a paper or a probe here would spend the lane on a door that is closed by permission, not by missing work. This lap writes the short record only.
+obs Working tree clean at the start of the lap, HEAD 14676f1975, 8936 commits. This lap writes this log and its day-shelf row and nothing else.
+obs Orbit round 11 is Taurus, earth, law, the verb that must stop. The verb holds the lane still on the msr door until the word lands; the card's picture is left as it stands.
+rota none -- hold lap; the council row was not deep-read this lap, so the rota field stays honest rather than inferred
+orbit round 11 Taurus -- the verb that must stop; the lane holds on the msr door until Keaton's word
+scope diffuser seat hold: this log and its day-shelf row only. No paper, no witness, no code, no card change.
+status GREEN for the hold itself. Only the msr blocker was re-read on metal. Left open: msr route or raw vendor event (diffuser fruit), real caller live-set trace, joule meter, macOS Swift toolchain.
+file session-logs/date/20261010/20261010-003846_diffuser-msr-door-reread-held.kyri the log for this hold
+file session-logs/date/README-index-20261010.md the day shelf, opened by this log's row
+recommend check-in (claude) -- the diffuser fruit needs Keaton's word on an msr route or a raw vendor event; the next honest door without that word is a live caller trace, which this tree does not hold
