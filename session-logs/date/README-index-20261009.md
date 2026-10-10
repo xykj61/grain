@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.223855` | [First hour verified](20261009/20261009-223855_first-hour-verified-two-gaps-named.kyri) | Links and witness GREEN; two reattributed output gaps named; no edits. |
 | `20261009.223850` | [Copal sunn7 roster, both sides proven](20261009/20261009-223850_copal-sunn7-roster.kyri) | Guard row landed; cold run guard_red on standing reds; hot run not run. |
 | `20261009.223548` | [Pheromone held again, no ruled fruit](20261009/20261009-223548_pheromone-lane-held-no-ruled-fruit-no-build.kyri) | Lane held on the interactive ruling; no REDS row claimed; no build. |
 | `20261009.223630` | [Bakery hold, receipt key reconfirmed](20261009/20261009-223630_bakery-hold-receipt-key-reconfirmed.kyri) | Receipt key still ruled by Keaton; claim board clear; no build. |
