@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.142249` | [Grass, sample of 25 docs-geode pages, all B or better](20261010/20261010-142249_grass-sample-25-pages-all-b.kyri) | 25 sampled pages graded; lowest 82; no edit, no frame. |
 | `20261010.142259` | [Petrichor, gate holds, no build](20261010/20261010-142259_petrichor-no-build.kyri) | Fast-forwarded; docs witnesses cut off, not claimed GREEN; no build. |
+| `20261010.142247` | [Patchouli, queue empty, fresh net, stop](20261010/20261010-142247_patchouli-queue-empty-fresh-net-stop.kyri) | Version nets re-run; queue empty; no build; check-in named. |
 | `20261010.142034` | [Grass, queue empty, no build](20261010/20261010-142034_grass-queue-empty-no-build.kyri) | Audit queue empty; no surface to grade; no build. |
 | `20261010.141842` | [Pheromone, queue held, no build](20261010/20261010-141842_pheromone-queue-held-fast-forward-no-build.kyri) | Gate holds on Incense's Glow ruling; fast-forward only; no build. |
 | `20261010.141420` | [Patchouli, witnesses green, queue empty](20261010/20261010-141420_patchouli-witnesses-green-queue-empty-no-build.kyri) | 14 Mantra witnesses GREEN; queue empty; no build. |
