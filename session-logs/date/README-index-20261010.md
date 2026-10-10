@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.115533` | [Petrichor, gate held](20261010/20261010-115533_petrichor-gate-held.kyri) | Gate shut upstream; no build. |
 | `20261010.114953` | [Bakery, roster red re-read, hold](20261010/20261010-114953_bakery-836-triage-hold.kyri) | REDS %836 still OPEN; no claim; no build. |
 | `20261010.115434` | [Grass, counted readings clean, no frame](20261010/20261010-115434_grass-counted-readings-clean-no-frame.kyri) | Inner page counted clear again (repeats 114551); no edit; log only. |
 | `20261010.115432` | [Patchouli, weave labels, GREEN](20261010/20261010-115432_patchouli-weave-invariant-labels-green.kyri) | 69 invariant lines on weave asserts; nine witnesses GREEN. |
