@@ -7,10 +7,10 @@
 | `20261010.144645` | [Petrichor, Rail still holds, no build](20261010/20261010-144645_petrichor-rail-holds-no-build.kyri) | Gate unsettled; no build; check-in asked. |
 | `20261010.144929` | [Patchouli, queue empty a fourteenth way](20261010/20261010-144929_patchouli-queue-empty-fourteenth.kyri) | Fresh scan repeats; no build; check-in on the lane. |
 | `20261010.144822` | [Incense, baton lap, no build](20261010/20261010-144822_incense-baton-lap-no-build.kyri) | Round-open adopted 82173709ea; claim board clear; cold run held; no build. |
+| `20261010.144743` | [Grass, earth row, one page graded B, no build](20261010/20261010-144743_grass-earth-row-one-page-graded-no-build.kyri) | Earth row; one page graded B at 83; no build. |
 | `20261010.144629` | [Bakery, holds again, no build](20261010/20261010-144629_bakery-holds-no-build-rulings-still-held.kyri) | Log only; rulings still open; claims empty; nothing pushed. |
 | `20261010.144548` | [Patchouli, queue empty a thirteenth way](20261010/20261010-144548_patchouli-queue-empty-thirteenth.kyri) | Fresh scan empty; no build; check-in on the lane. |
-| `20261010.144524` | [Incense, decline lap, no build](20261010/20261010-144524_incense-decline-lap-round-open-adopted.kyri) | Round-open adopted 95cd12925a; no build. |
-| `20261010.144029` | [Grass, queue empty, no build](20261010/20261010-144029_grass-queue-empty-rota-fire-no-build.kyri) | Queue empty; no frame; no build. |
+| `20261010.144524` | [Incense, decline lap, no build](20261010/20261010-144524_incense-decline-lap-round-open-adopted.kyri) | Round-open adopted 95cd12925a; no build. || `20261010.144029` | [Grass, queue empty, no build](20261010/20261010-144029_grass-queue-empty-rota-fire-no-build.kyri) | Queue empty; no frame; no build. |
 | `20261010.144042` | [Petrichor, Rail holds, revoke name in mantra, no build](20261010/20261010-144042_petrichor-rail-hold-revoke-in-mantra.kyri) | Gate unsettled; no build; check-in asked. |
 | `20261010.144307` | [Copal, sunn14 choir held on a booked red](20261010/20261010-144307_copal-sunn14-roster-held-on-booked-red.kyri) | Claim closed; choir reds on a SUNN-lane dual-push contradiction; REDS %837 addendum; no roster row. |
 | `20261010.143559` | [Incense, decline lap, no build](20261010/20261010-143559_incense-decline-lap-no-build.kyri) | Board clear, round-open at 74ef14dccc; no build, cold run held. |
