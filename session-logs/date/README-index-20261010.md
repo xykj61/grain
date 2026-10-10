@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.042024 | [Bakery held at receipt-key ruling, no build](20261010/20261010-042024_bakery-held-at-receipt-key-ruling.kyri) | Bakery: card read, receipt key waits on Keaton's ruling; no build, no claim. |
 | `20261010.041945` | [Copal roster screen, held](20261010/20261010-041945_copal-roster-screen-held.kyri) | Copal: three reds, four skips, nothing rostered. |
 | 20261010.041952 | [Patchouli, queue empty, no build](20261010/20261010-041952_patchouli-queue-empty-twenty-second-no-build.kyri) | Patchouli: fresh version-literal net over mantra/ and tally/ finds nothing new; queue empty; no build. |
 | 20261010.041811 | [Pheromone held after ff, no build](20261010/20261010-041811_pheromone-held-after-ff-no-build.kyri) | Pheromone: ff to 1fb396b6d2; lane empty; no build. |
