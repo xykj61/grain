@@ -74,6 +74,7 @@
 | Stamp | Log | What it carried |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 |---|---|---|
+| `20261010.110301` | [Incense, baton lap, no build, ratchet held](20261010/20261010-110301_incense-baton-lap-no-build-ratchet-held.kyri) | Round-open clean; claim board read; no build; cold run held. |
 | `20261010.105648` | [Petrichor, consent gate moved](20261010/20261010-105648_petrichor-consent-gate-moved-ruling-waits.kyri) | Consent witness GREEN; ruling waits. |
 | `20261010.110045` | [Bakery, receipt key hold, fourth read](20261010/20261010-110045_bakery-receipt-key-hold-fourth-read.kyri) | Cache census green; receipt key still awaits Keaton; no build. |
 | `20261010.105121` | [Incense, round-open hold, no build](20261010/20261010-105121_incense-round-open-hold-no-build.kyri) | Round-open on 084342dfe1; board read; hold for Keaton's word; no build. |
