@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.020204 | [repeat hold two](20261010/20261010-020204_petrichor-repeat-hold-two-no-build.kyri) | Petrichor: Consent Rail still gated; second repeat hold, no build |
 | 20261010.020227 | [bakery hold, round nine](20261010/20261010-020227_bakery-hold-round-nine-no-build.kyri) | receipt key still awaits Keaton; no build |
 | 20261010.015956 | [p50 rostered](20261010/20261010-015956_copal-surface-p50-roster.kyri) | Copal: surface p50 witness rostered, both sides in a pen |
 | 20261010.020150 | [queue empty](20261010/20261010-020150_patchouli-queue-empty-twenty-second-no-build.kyri) | Patchouli: queue empty, no build |
