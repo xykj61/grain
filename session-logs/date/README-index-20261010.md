@@ -8,6 +8,7 @@
 | 20261010.050440 | [Patchouli, weave v2 citation named by function](20261010/20261010-050440_patchouli-weave-v2-citation-by-function.kyri) | Citation by function; comment-only; weave v2 witness GREEN. |
 | 20261010.050213 | [Incense, fiftieth decline](20261010/20261010-050213_incense-declines-fiftieth.kyri) | Round-open clean; board holds copal only; no build. |
 | 20261010.050233 | [Grass, Lila foundation graded A+](20261010/20261010-050233_grass-lila-foundation-grade-a-plus.kyri) | Field 97 composite; no frame; no edit. |
+| 20261010.050555 | [Petrichor, no open fruit, air row](20261010/20261010-050555_petrichor-no-fruit-air-row.kyri) | First-hour page A at Door; rota row 1 read; no build. |
 | 20261010.045922 | [Grass, inner prompt regraded B+](20261010/20261010-045922_grass-inner-regraded-b-plus-no-frame.kyri) | Field 77, reach 90, composite 89; no frame; no edit. |
 | 20261010.045853 | [Incense, forty-ninth decline](20261010/20261010-045853_incense-declines-forty-ninth.kyri) | Round-open clean; claim board no overlap; no build. |
 | 20261010.050204 | [Petrichor, docs grade clear](20261010/20261010-050204_petrichor-docs-grade-clear.kyri) | Compressors clear at declared setting; no build. |
