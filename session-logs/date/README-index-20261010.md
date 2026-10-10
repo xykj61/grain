@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.071420` | [Patchouli, queue empty a twenty-fourth way](20261010/20261010-071420_patchouli-queue-empty-twenty-fourth-no-build.kyri) | Queue empty; no build; check-in named. |
+| `20261010.071521` | [Grass, foundations regraded, no frame](20261010/20261010-071521_grass-foundations-regrade-no-frame.kyri) | Four foundations at B or above; no edit; no build. |
 | `20261010.071236` | [Grass, B sample rechecked, no frame](20261010/20261010-071236_grass-b-sample-recheck-no-frame.kyri) | C sample was already molted; no edit; no build. |
 | `20261010.071113` | [Pheromone, lane empty](20261010/20261010-071113_pheromone-lane-empty-upstream-no-change.kyri) | Upstream read; no lane change; no build. |
 | `20261010.071047` | [Incense, round seven, decline](20261010/20261010-071047_incense-round-seven-decline.kyri) | Round-open clean on f4b7ad5444; board clear; no build. |
