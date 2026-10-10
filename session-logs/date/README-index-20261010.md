@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.024517 | [consent gate held, no build](20261010/20261010-024517_petrichor-consent-gate-still-closed-no-build-2.kyri) | Petrichor: fetch current, grant and revoke facts still unnamed, no build |
 | 20261010.024120 | [fire reading, held](20261010/20261010-024120_incense-round-held-fire-reading-4.kyri) | Incense: row 2 fire read, orbit 7 Libra, dead-letter box read, no build |
 | 20261010.023909 | [lane empty, no build](20261010/20261010-023909_pheromone-lane-empty-no-build.kyri) | Pheromone: stop condition held, no build, nib carried |
 | 20261010.024227 | [hidden-shelf sweep, schema_v1 flagged](20261010/20261010-024227_patchouli-hidden-shelf-schema-v1-flag.kyri) | Patchouli: recursive identifier net, queue empty, schema_v1 left for Keaton's ruling |
