@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.201908` | [Grass lifted sample regraded](20261009/20261009-201908_grass-lifted-sample-regraded.kyri) | Six lifted heads re-graded, all hold; queue empty, no build |
 | `20261009.202029` | [Petrichor consent gate holds, no build](20261009/20261009-202029_petrichor-consent-gate-holds-no-build.kyri) | Pulled one upstream commit; gate still holds; no edit. |
 | `20261009.201644` | [Patchouli queue recheck, check-in](20261009/20261009-201644_patchouli-queue-empty-recheck-check-in.kyri) | fresh net, no new header; no build. |
 | `20261009.201824` | [Incense declines fifty-second, no build](20261009/20261009-201824_incense-fifty-second-decline.kyri) | Round-opened clean; no claim, no build; cold run held. |
