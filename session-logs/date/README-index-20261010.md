@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.032744` | [petrichor holds, no fruit](20261010/20261010-032744_petrichor-no-fruit-held.kyri) | Petrichor: lane gated on Consent Rail, sweep not repeated, no build |
 | `20261010.032240` | [fold family, 24 seeds at 14 sets](20261010/20261010-032240_diffuser-fold14-24-seeds.kyri) | Diffuser: no seed reaches the floor at 14 sets, paper 032240 |
 | `20261010.032235` | [held, no build](20261010/20261010-032235_incense-held-no-build.kyri) | Incense: clean at xy/main, no lane item, law lane waits. |
 | 20261010.032157 | [receipt-key hold, no build](20261010/20261010-032157_bakery-receipt-key-hold-no-build.kyri) | Bakery: crux waits on Keaton's receipt-key ruling; queue gated; card nib refreshed; no build |
