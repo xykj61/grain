@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.130633` | [Pheromone, lane held at Incense ruling](20261010/20261010-130633_pheromone-lane-held-at-incense-ruling.kyri) | Fast-forwarded; no open booking; hold. |
 | `20261010.130232` | [Patchouli, queue empty, round eleven](20261010/20261010-130232_patchouli-queue-empty-round-eleven-no-build.kyri) | Nets re-run; no claim; no build. |
 | `20261010.130236` | [Incense, round-open declined, no build](20261010/20261010-130236_incense-round-open-declined-no-build.kyri) | Reset to xy/main; board read; no build. |
 | `20261010.130602` | [Grass, inner prompt graded B+, no lift](20261010/20261010-130602_grass-inner-prompt-graded-b-plus.kyri) | Field grade 89; no frame; no build. |
