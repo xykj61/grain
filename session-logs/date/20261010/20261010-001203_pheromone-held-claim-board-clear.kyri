@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261010.001203
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role pheromone -- molecular star, Glow language lane
+modality text
+model claude-haiku-5-5
+model_status active runtime claimed by the session header; not independently verified
+configured_model claude-sonnet-5 (tree resolves via .claude/settings.local.json; declared claude-opus-5)
+configured_status tracked file declares claude-opus-5 for bakery only; this clone resolves claude-sonnet-5
+evidence sh tools/fixtures/d/declared_model.sh resolved_model (not re-run this lap)
+voice Kyri
+host Linux shell, one-clock zone America/New_York
+title Pheromone held: no language-lane fruit, claim board clear, no build
+prompt ty every1 baton prin recur -- the pheromone seat's standing baton, run as a recurring lap
+think read the card, the inner prompt, the roster, and the claim board before any build
+think the Glow lane's last fruit closed 20261002; the card's Pheromone section reads its stop line: rune or language ruling returns to Incense
+think fleet-claims board reads zero live claims on the anointed remote, commits_behind=5, so nothing peer-held blocks a lane lap
+think OPEN and BOOKED reds were scanned for language-seam rows; none touches glow, rune, shape, or lowering, so claim-as-override has no in-lane target
+think a lap with no reds, no claim, and no fruit builds nothing; a cold endurance run was not launched because no build is owed
+obs the card's git nib named f0ea6ea937, stale against HEAD 19465edf18; the nib writer carried it forward as a follow-up, rule 5
+obs this lap changed no code and ran no witness; status is a hold, not a GREEN
+obs claim-as-override would take a peer's OPEN red, which is a peer's in-flight lane; left to Keaton's word
+rota none -- pure hold; the lane's queue was empty, and no council row was deep-read this lap
+orbit round 3 sign Gemini -- say the work aloud, in one sentence
+scope session-logs and the card's git nib only; no code, no claim, no push
+status HELD -- no build, no witness run, card nib carried to 19465edf18; nothing landed this lap
+file session-logs/date/20261010/20261010-001203_pheromone-held-claim-board-clear.kyri why this lap's record
+file construction/ITINERARY.md Git nib carried forward to HEAD 19465edf18 as the follow-up's parent, rule 5
+recommend check-in (either) -- the Glow queue is empty and no booked red is in lane; Keaton picks the next booked lap or rules on the BAKERY receipt key
