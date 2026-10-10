@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.070409` | [Pheromone, queue empty, limb10 GREEN](20261010/20261010-070409_pheromone-queue-empty-limb10-green.kyri) | Lane empty by card; one pedestal witness GREEN; no build. |
 | `20261010.070139` | [Grass, inner graded, no frame](20261010/20261010-070139_grass-inner-graded-no-frame.kyri) | Inner prompt reads above B; no edit; no build. |
 | `20261010.065827` | [Petrichor, hold, no claim, no build](20261010/20261010-065827_petrichor-hold-no-claim-no-build.kyri) | Lane held at Consent Rail; no claim, no page touched. |
 | `20261010.070019` | [Incense, hold, no change since 065751](20261010/20261010-070019_incense-hold-no-change-since-065751.kyri) | Round-open and board unchanged on 1eae05a909; no build, no claim. |
