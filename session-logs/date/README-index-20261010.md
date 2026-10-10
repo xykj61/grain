@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.094651` | [Pheromone, hold, lane closed](20261010/20261010-094651_pheromone-hold-lane-closed-no-build.kyri) | No build; lane fruit closed, next door awaits Keaton's word. |
 | `20261010.094515` | [Grass, queue still empty](20261010/20261010-094515_grass-queue-still-empty.kyri) | Queue still empty since 094150; no edit; log and row only. |
 | `20261010.094150` | [Grass, queue spent at B](20261010/20261010-094150_grass-queue-spent-all-b-plus.kyri) | Nine mycelium heads graded, all B or better; no edit; stale queue lean named. |
 | `20261010.094320` | [Patchouli, queue empty, twenty-fifth](20261010/20261010-094320_patchouli-queue-empty-twenty-fifth.kyri) | Standing fruit read; net re-run, no build; check-in on dormancy. |
