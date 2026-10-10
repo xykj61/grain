@@ -52,9 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-sunn14-witness-choir-roster
-seat copal
-stamp 20261010.144136
-epoch 1791657696
-paths tools/gen/chapter/sunn14_witness_choir.rish construction/standing-equipment.kyri
-what Roster tools/gen/chapter/sunn14_witness_choir.rish in the standing-equipment guard table and prove it GREEN from both sides.
