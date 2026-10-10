@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.144548` | [Patchouli, queue empty a thirteenth way](20261010/20261010-144548_patchouli-queue-empty-thirteenth.kyri) | Fresh scan empty; no build; check-in on the lane. |
 | `20261010.144524` | [Incense, decline lap, no build](20261010/20261010-144524_incense-decline-lap-round-open-adopted.kyri) | Round-open adopted 95cd12925a; no build. |
 | `20261010.144029` | [Grass, queue empty, no build](20261010/20261010-144029_grass-queue-empty-rota-fire-no-build.kyri) | Queue empty; no frame; no build. |
 | `20261010.144042` | [Petrichor, Rail holds, revoke name in mantra, no build](20261010/20261010-144042_petrichor-rail-hold-revoke-in-mantra.kyri) | Gate unsettled; no build; check-in asked. |
