@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.091056` | [Petrichor, hold, compressor shelf graded](20261010/20261010-091056_petrichor-hold-compressor-shelf-graded.kyri) | docs/ and README at B or better, six A; gate unmoved. |
 | `20261010.091036` | [Incense, forty-eighth, held](20261010/20261010-091036_incense-decline-forty-eighth-law-held.kyri) | Round-open to xy 3c1f18a0b2; no build; law waits on Keaton. |
 | `20261010.090749` | [Petrichor, hold, round fourteen](20261010/20261010-090749_petrichor-hold-round-fourteen-gate-unmoved.kyri) | Gate unmoved; Bhakta scan 56/0; no build. |
 | `20261010.090324` | [Petrichor, hold, round thirteen](20261010/20261010-090324_petrichor-hold-gate-unmoved-round-thirteen.kyri) | Gate unmoved by measurement; one upstream commit, no docs-geode byte; no build. |
