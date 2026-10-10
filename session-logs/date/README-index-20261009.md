@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.223028` | [Petrichor hold, consent gate holds](20261009/20261009-223028_petrichor-hold-gate-holds-no-build.kyri) | Upstream clean; claim board holds copal alone; consent gate holds; no fruit ruled; no build. |
 | `20261009.222900` | [Diffuser calibration, counter reads a fraction](20261009/20261009-222900_diffuser-generic-miss-counter-calibration.kyri) | Generic miss event reads ~8% of fills; falsifier waits; no stencil claim. |
 | `20261009.222827` | [Petrichor links clean, no build](20261009/20261009-222827_petrichor-links-clean-no-build.kyri) | Living docs-geode links read zero broken; fast-forward clean; no page changed; no build. |
 | `20261009.222633` | [Incense hold, nib carried](20261009/20261009-222633_incense-hold-nib-carried-no-build.kyri) | Round-open clean; law lane waits on Keaton; nib carried; no build. |
