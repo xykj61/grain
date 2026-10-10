@@ -74,6 +74,7 @@
 | 20261010.001151 | [log](20261010/20261010-001151_bakery-hold-receipt-key-second-read.kyri) | Bakery second hold; receipt key still ruled YOURS; no build |
 | 20261010.000652 | [log](20261010/20261010-000652_bakery-hold-receipt-key-still-ruled.kyri) | Bakery hold; receipt key still awaits ruling; no build |
 | `20261010.101019` | [Patchouli, zero-assert reading corrected](20261010/20261010-101019_patchouli-zero-assert-reading-corrected.kyri) | Build_batch carries three asserts; 188 figure left unverified. |
+| `20261010.101607` | [Copal, roster fruit repeat, both red](20261010/20261010-101607_copal-roster-fruit-repeat-both-red-no-build.kyri) | Both candidates still red; nothing rostered. |
 | `20261010.100815` | [Copal, roster fruit red](20261010/20261010-100815_copal-roster-fruit-both-red-claim-closed.kyri) | Both candidates red, already booked; claim closed; nothing rostered. |
 | `20261010.100721` | [Incense, receipt board green, no build](20261010/20261010-100721_incense-receipt-board-green-no-build.kyri) | Case board GREEN, braid unbraided; no build. |
 | `20261010.100627` | [Pheromone, hold, glow witness green](20261010/20261010-100627_pheromone-hold-glow-refusal-witness-green.kyri) | Lane empty; witness re-run GREEN; no build. |
