@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.154204` | [Pheromone, rune held, no build](20261010/20261010-154204_pheromone-lane-waiting-on-rune-ruling.kyri) | Lane fruit closed; rune question held for ruling. |
 
 | `20261010.153203` | [Petrichor, consent gate holds, no build](20261010/20261010-153203_petrichor-consent-gate-quiet-no-build.kyri) | Thread read; Consent Rail gate holds; declined a repeat sweep; no build. |
 | `20261010.152857` | [Incense, queue declined fourth](20261010/20261010-152857_incense-queue-declined-fourth.kyri) | Round-open clean; no lane build; cold run held. |
