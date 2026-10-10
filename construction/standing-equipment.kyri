@@ -10008,3 +10008,12 @@ guard sunn6_key_cards_ops
 path tools/gen/chapter/sunn6_key_cards_ops_witness.rish
 tier lap
 seated 20261009.211121
+
+# sunn7_macos_enclosure -- the SUNN7 macos Seatbelt guide and enclosure-editors presence, with the SOURCE host face.
+# Rostered from the unrostered chapter-witness list by the copal claim 20261009.212011. Presence and
+# string checks only, so it is a lap-tier meter; proven both ways -- GREEN in the tree and RED from an
+# empty pen that holds none of its pages (exit 1, first assert named).
+guard sunn7_macos_enclosure
+path tools/gen/chapter/sunn7_macos_enclosure_witness.rish
+tier lap
+seated 20261009.212011
