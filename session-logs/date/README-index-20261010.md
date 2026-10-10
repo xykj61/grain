@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.014859 | [pheromone held](20261010/20261010-014859_pheromone-lane-held-no-build.kyri) | Pheromone: no new fruit, ruling awaited, no build |
 | 20261010.015335 | [hold](20261010/20261010-015335_copal-oven-roster-red-stale.kyri) | Copal oven roster held: stale red, claim released |
 | 20261010.015438 | [hold repeat named, no build](20261010/20261010-015438_petrichor-hold-repeat-named-no-build.kyri) | Petrichor: consent gate still holds; repeat named, no build |
 | 20261010.015414 | [compressor shelf graded](20261010/20261010-015414_grass-compressor-shelf-grade-no-build.kyri) | Grass: docs graded, lowest B; no build |
