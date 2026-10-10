@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.131730` | [Bakery, crux held, fast-forward, no build](20261010/20261010-131730_bakery-crux-held-ff-no-build.kyri) | Receipt key still a YOURS ruling; no build. |
+| `20261010.132206` | [Grass, card regraded B+, repeat, no edit](20261010/20261010-132206_grass-card-regraded-b-plus-repeat-no-edit.kyri) | Inner page regraded B+ (89), same as 131831; no edit. |
 | `20261010.131831` | [Grass, card graded B+, no edit](20261010/20261010-131831_grass-card-graded-b-plus-no-edit.kyri) | Inner page graded B+ (89); no edit; queue empty. |
 | `20261010.132029` | [Incense, round-open declined, fourth](20261010/20261010-132029_incense-round-open-declined-no-build-fourth.kyri) | Clean round-open; board clear; no build. |
 | `20261010.132016` | [Patchouli, queue empty a third time, no build](20261010/20261010-132016_patchouli-queue-empty-third-net-no-build.kyri) | Fresh header nets, REDS rows, claim board read; no build. |
