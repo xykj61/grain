@@ -1,6 +1,7 @@
 # session-logs day index -- 20261010
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261010.111725` | [Petrichor, consent gate shut, ff, no build](20261010/20261010-111725_petrichor-consent-gate-shut-ff-no-build.kyri) | Ff to e691820b9e; gate holds; no build. |
 | `20261010.110640` | [Grass, inner page held a sixth time, no build](20261010/20261010-110640_grass-inner-sixth-hold-no-build.kyri) | Hold; queue empty; no build; nib carried. |
 | `20261010.110032` | [Incense, baton lap, hold, no build](20261010/20261010-110032_incense-baton-lap-hold-no-build.kyri) | Round-open clean; cold run held; no build. |
 | `20261010.105937` | [Pheromone, lane empty, no build](20261010/20261010-105937_pheromone-lane-empty-no-build.kyri) | No open language fruit; no claim taken; no build. |
