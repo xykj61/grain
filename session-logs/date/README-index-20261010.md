@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.004547 | [log](20261010/20261010-004547_patchouli-queue-empty-twenty-fourth-net.kyri) | Patchouli queue empty, twenty-fourth net: mantra and tally read clean, no code moved |
 | 20261010.004625 | [log](20261010/20261010-004625_pheromone-lane-witnesses-green-no-ruling.kyri) | Pheromone lane: six shape witnesses re-run GREEN, no ruling; no build |
 | 20261010.004543 | [hold](20261010/20261010-004543_petrichor-hold-no-fruit-gate-shut.kyri) | Petrichor hold: bakery commit fast-forwarded, consent gate shut, no fruit; no build |
 | 20261010.003655 | [survey](20261010/20261010-003655_bakery-shared-receipt-survey.kyri) | Shared receipt survey: digest is per tree, peer basis refused; key needs a ruling |
