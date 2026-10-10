@@ -4,6 +4,7 @@
 **Chapter:** `20261009`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261009.220527` | [Petrichor gate hold, no build](20261009/20261009-220527_petrichor-gate-hold-no-build.kyri) | Consent gate unchanged; no fetch lead, no claim, no build. |
 
 | 20261009.220319 | [Patchouli parity net, queue empty](20261009/20261009-220319_patchouli-parity-net-queue-empty.kyri) | Parity bans clean in mantra/ and tally/; no build. |
 | `20261009.220354` | [Diffuser fallow lane, no unblocked fruit](20261009/20261009-220354_diffuser-fallow-lane-no-unblocked-fruit.kyri) | Hold: stencil, energy, and size-mix lines closed or blocked; no build. |
