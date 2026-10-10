@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.005659 | [hold](20261010/20261010-005659_diffuser-hold-fruit-blocked-on-msr-word.kyri) | Diffuser hold: fruit blocked on msr route or raw vendor event; no claim, no build |
 | 20261010.005511 | [stop](20261010/20261010-005511_petrichor-consent-gate-held-stop-round.kyri) | Petrichor stop: consent gate still shut, sweep held, fast-forwarded; no build |
 | 20261010.005351 | [hold](20261010/20261010-005351_incense-hold-board-clear-law-lane-awaits-word.kyri) | Incense hold: fast-forwarded two upstream commits, board clear, law lane awaits Keaton word; no build |
 
