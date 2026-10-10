@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.033836` | [queue empty, no build](20261010/20261010-033836_patchouli-queue-empty-twenty-fourth-no-build.kyri) | Patchouli: queue empty under a fresh net, read-compat arms only, no build. |
 | `20261010.033429` | [queue empty, no build](20261010/20261010-033429_patchouli-queue-empty-twenty-third-no-build.kyri) | Patchouli: queue empty again, nib carried. |
 | `20261010.033409` | [fold capacity threshold](20261010/20261010-033409_diffuser-fold-capacity-threshold-sweep.kyri) | Diffuser: fold misses 13-15 sets, reaches floor at 16; modulus control |
 | `20261010.033617` | [lane idle, gates held](20261010/20261010-033617_petrichor-lane-idle-gates-held.kyri) | Petrichor: fast-forwarded to xy, both gates unchanged, no build. |
