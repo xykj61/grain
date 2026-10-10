@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.022609
+editor Claude Code terminal, grain-patchouli tree
+provider Anthropic
+product Claude Code
+role patchouli lane, mantra/ and tally/
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status harness-declared model id for this session; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Patchouli queue empty, fresh net, no open fruit
+prompt Run the patchouli baton lap: read the inner prompt, sweep the lane's queue for one chronological header, and act on it or report empty.
+think Read recursion-prompts/patchouli-inner.md. Its own account says the queue has read empty for many laps and asks for a fresh class of search, not another repeat of the same two nets.
+think Ran one fresh net over mantra/ and tally/ for -vN literals. Every hit is an elder mantra-weave or mantra-commit read-compat header the law keeps forever, a test-local tag, or a fixture string. None is a new record-version family.
+think Checked the live claim board (zero live claims, board upstream, commits_behind=1) and the REDS rows. %807 wants Keaton's ruling; %765 has 38 families in other lanes.
+obs The queue is empty for this lane. Nothing agent-doable is booked against mantra/ or tally/.
+obs No code moved, so no witness ran. The status says so plainly.
+rota none -- queue-empty lap; the inner prompt's fruit is the only deep read this lane takes, and it reads empty
+file session-logs/date/20261010/20261010-022609_patchouli-queue-empty-no-open-fruit.kyri the log itself, the one artifact this lap writes
+file session-logs/date/README-index-20261010.md one shelf row prepended under the delimiter
+scope read-only sweep of mantra/ and tally/, claim board, and REDS rows; log and index row committed
+status GREEN for the queue reading (queue empty, nothing booked in lane); no code witness run because no code changed
+recommend check-in (either) -- the lane's queue is empty; whether mantra/ and tally/ go dormant until %807 is ruled or %765 grows a lane candidate is Keaton's call
