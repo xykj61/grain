@@ -10,6 +10,7 @@
 | `20261010.140116` | [Patchouli, owed notes read, no build](20261010/20261010-140116_patchouli-owed-notes-witness-green-no-build.kyri) | Merge witness GREEN; notes owed. |
 | `20261010.140114` | [Petrichor, round 12, lane gated, no build](20261010/20261010-140114_petrichor-lane-gated-round-12-no-build.kyri) | Nib carried to 020370c32a; lane gated; no build. |
 | `20261010.140346` | [Incense, round ten, no build](20261010/20261010-140346_incense-round-ten-declined-no-build.kyri) | Clean round-open; one peer claim; no build. |
+| `20261010.135536` | [Pheromone, queue held, limb 10 GREEN, no build](20261010/20261010-135536_pheromone-queue-held-limb10-green-no-build.kyri) | Closed fruit re-read GREEN; no build; nib carried to c8ca8d6d22. |
 | `20261010.135403` | [Bakery, control already landed](20261010/20261010-135403_bakery-codex-control-already-landed.kyri) | Model control 18 ok, 0 fail; repair in 51e8ba4ffb; no build. |
 | `20261010.135702` | [Petrichor, round 11, lane gated, no build](20261010/20261010-135702_petrichor-lane-gated-round-11-no-build.kyri) | Nib carried to 404cae41c7; lane gated; no build. |
 | `20261010.135330` | [Grass, aether row, queue empty, no build](20261010/20261010-135330_grass-aether-rota-queue-empty-no-build.kyri) | Inner queue empty; aether row read; no build. |
