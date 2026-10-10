@@ -4,7 +4,6 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-
 | `20261010.122646` | [Grass, inner graded B+, no build](20261010/20261010-122646_grass-inner-graded-b-plus-no-build.kyri) | Grade 89 B+; no frame; no build. |
 | `20261010.122400` | [Bakery, crux held on ruling, no build](20261010/20261010-122400_bakery-crux-ruling-held-no-build.kyri) | Claim clear; ff to 7b42bfc371; receipt key owed; no build. |
 | `20261010.122318` | [Pheromone, hold, green](20261010/20261010-122318_pheromone-hold-haiku-witnesses-green.kyri) | Lane empty; two witnesses GREEN; no build. |
@@ -12,6 +11,7 @@
 | `20261010.122234` | [Patchouli, queue empty again, no build](20261010/20261010-122234_patchouli-queue-empty-no-build.kyri) | Family queue empty; %807 owed a ruling; claim board clear; no build. |
 | `20261010.122625` | [Incense round-open, hold, no build](20261010/20261010-122625_incense-hold-round-open-no-build.kyri) | Anointed order adopted at 6b22c886a8; law lane waits on a word; no build. |
 | `20261010.122010` | [Incense, fire row, no build](20261010/20261010-122010_incense-fire-row-no-build.kyri) | Fast-forward to copal's claim; law lane held; nib carried. |
+| `20261010.122535` | [Diffuser, column-major breaks at sixteen](20261010/20261010-122535_diffuser-column-major-breaks-at-sixteen.kyri) | Falsifier fires at 16 sets; one family carries it. |
 | `20261010.121824` | [Petrichor, gate held, no build](20261010/20261010-121824_petrichor-consent-gate-third-hold.kyri) | Gate shut; ff pulled one log; one question for Keaton. |
 | `20261010.122218` | [Grass, earth row, queue empty, no build](20261010/20261010-122218_grass-earth-row-queue-empty-no-build.kyri) | Queue empty; docs/README A+; no build. |
 | `20261010.121848` | [Bakery, receipt key verified, no build](20261010/20261010-121848_bakery-receipt-key-verified-no-build.kyri) | Digest keys on HEAD; ruling owed; no build. |
