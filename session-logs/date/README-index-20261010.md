@@ -6,6 +6,7 @@
 |---|---|---|
 | 20261010.045922 | [Grass, inner prompt regraded B+](20261010/20261010-045922_grass-inner-regraded-b-plus-no-frame.kyri) | Field 77, reach 90, composite 89; no frame; no edit. |
 | 20261010.045853 | [Incense, forty-ninth decline](20261010/20261010-045853_incense-declines-forty-ninth.kyri) | Round-open clean; claim board no overlap; no build. |
+| 20261010.050204 | [Petrichor, docs grade clear](20261010/20261010-050204_petrichor-docs-grade-clear.kyri) | Compressors clear at declared setting; no build. |
 | 20261010.045054 | [Bakery, lap held on the receipt-key ruling](20261010/20261010-045054_bakery-queue-held-on-ruling.kyri) | Round-open ff; queue has no unblocked row; no build, no claim. |
 | 20261010.050240 | [Pheromone, no open fruit, fifth read](20261010/20261010-050240_pheromone-no-open-fruit-fifth-read.kyri) | Lane read; capacity GREEN; no build; scope waits on Incense. |
 | 20261010.045829 | [Patchouli, bead deposit helper](20261010/20261010-045829_patchouli-bead-deposit-helper.kyri) | beading deposit_bead extracted; four beading witnesses GREEN. |
