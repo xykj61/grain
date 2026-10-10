@@ -285,7 +285,7 @@ The product cards carry the complete ladders:
 - [`DIMEROLL_ITINERARY.md`](DIMEROLL_ITINERARY.md) -- from recognized receipt to trustworthy portable books and distinct entities.
 - [`the Linengrow Receipt Cloth Design System`](../active-designing/date/20260912/20260912-142909_the-linengrow-receipt-cloth-design-system.md) -- Linengrow meaning, Brushstroke description, Skate behavior.
 
-**Git nib:** `cacc69d917` -- the nib this commit is built on, read after the final rebase (rule 2).
+**Git nib:** `1fbf2b68ed` -- the nib this commit is built on, read after the final rebase (rule 2).
 **Landed accounts shelved** `20260915.180554` -- the per-ship completed accounts moved whole to [`archive/date/20260915/20260915-180554_itinerary-landed-accounts.md`](archive/date/20260915/20260915-180554_itinerary-landed-accounts.md); [`archive/README.md`](archive/README.md) is the way in.
 
 **COPAL -- A LEAK CENSUS COUNTED TWELVE FULLY-RELEASED PENS AS LEAKS.** Account and ask
@@ -384,6 +384,8 @@ Brushstroke declares each component's grid, role, state, tokens, and motion prof
 3. Bring forward only a matter that changes a living product or build crux; hand module work to its owning ship rather than taking the files.
 
 **First proof:** one reverse-reading packet traces a present priority to its oldest deciding premise and names one evidenced disposition without rewriting dated testimony.
+
+**Inner prompt graded, `20261010.141323`:** `recursion-prompts/grass-inner.md` read B+ at Field (89: register 77, reach 90, truth 100 counted, service 90). B or better stands, so no molt frame was pushed and the page is unchanged. Log: `session-logs/date/20261010/20261010-141323_grass-inner-graded-no-build.kyri`.
 
 ### Petrichor -- Bhakta product path
 
