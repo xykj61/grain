@@ -59,8 +59,8 @@ would not teach anything new without a page changing underneath it.
 
 **Reconfirmed `20261003.101928`: a clean pull, and the two slower witnesses run rather than
 trusted.** One upstream commit landed since the thirtieth full-page sweep -- patchouli's own
-inner-prompt log, touching no `docs-geode` byte. `docs_geode_bhakta_witness.rish` and
-`two_rooms_doorway.rish` both closed GREEN on this lap's own run rather than on memory of the prior
+inner-prompt log, touching no `docs-geode` byte. `tools/d/docs_geode_bhakta_witness.rish` and
+`tools/t/two_rooms_doorway.rish` both closed GREEN on this lap's own run rather than on memory of the prior
 one. The Bhakta product path's next fruit stays gated on Diffuser's Consent Rail
 (`construction/ITINERARY.md`'s acceptance case 4 still reads "waits until a grant fact and a revoke
 fact exist"), so no new page opens yet. No claimable row stands anywhere on `construction/REDS.md`
