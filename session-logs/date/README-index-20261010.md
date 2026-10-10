@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | `20261010.081523` | [Grass, inner prompt graded B+, no frame](20261010/20261010-081523_grass-inner-prompt-graded-no-frame.kyri) | Inner prompt reads B+ (89) at Field; no edit, no frame. |
+| `20261010.081456` | [Petrichor, hold, consent gate unmoved](20261010/20261010-081456_petrichor-hold-consent-gate-unmoved.kyri) | Fast-forwarded two peer logs; gate unmoved; no page or claim touched. |
 | `20261010.081155` | [Incense, declined sixtieth, no build](20261010/20261010-081155_incense-declines-sixtieth-no-build.kyri) | Round-open clean; queue gated; no build; nib carried. |
 | `20261010.080239` | [Pheromone, hold, step-three ruling still owed](20261010/20261010-080239_pheromone-hold-step-three-ruling-owed.kyri) | Held; no code, no witness owed; ruling waits on Incense. |
 | `20261010.075930` | [Grass, front doors graded A](20261010/20261010-075930_grass-front-doors-graded-a.kyri) | Four front doors read A or better; no molt owed; no file changed. |
