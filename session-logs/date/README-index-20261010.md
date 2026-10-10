@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.041945` | [Copal roster screen, held](20261010/20261010-041945_copal-roster-screen-held.kyri) | Copal: three reds, four skips, nothing rostered. |
 | 20261010.041751 | [Petrichor, gated, no build](20261010/20261010-041751_petrichor-first-hour-gated-no-build.kyri) | Petrichor: ff 1fb396b6d2; first hour gated; no build. |
 | 20261010.041655 | [The 127-line next door, run fully associative](20261010/20261010-041655_diffuser-fa-floor-127-no-clean-split.kyri) | Diffuser: fully associative floor reaches at 112 lines; the 126 miss is an index effect; partial falsifier; no build. |
 | 20261010.041452 | [Petrichor idle, no build](20261010/20261010-041452_petrichor-idle-no-build.kyri) | Petrichor: fast-forward to 5218cb1e68; lane gated, no build. |
