@@ -7,6 +7,7 @@
 | `20261009.223850` | [Copal sunn7 roster, both sides proven](20261009/20261009-223850_copal-sunn7-roster.kyri) | Guard row landed; cold run guard_red on standing reds; hot run not run. |
 | `20261009.223548` | [Pheromone held again, no ruled fruit](20261009/20261009-223548_pheromone-lane-held-no-ruled-fruit-no-build.kyri) | Lane held on the interactive ruling; no REDS row claimed; no build. |
 | `20261009.223630` | [Bakery hold, receipt key reconfirmed](20261009/20261009-223630_bakery-hold-receipt-key-reconfirmed.kyri) | Receipt key still ruled by Keaton; claim board clear; no build. |
+| `20261009.223521` | [Incense hold, forty-sixth decline](20261009/20261009-223521_incense-hold-decline-forty-sixth.kyri) | Round-open clean; claim board empty; lane held on a human word; no build. |
 | `20261009.223500` | [Petrichor hold, gate holds](20261009/20261009-223500_petrichor-hold-gate-holds-ff-clean.kyri) | Upstream ff clean; gate holds; no build. |
 | `20261009.223456` | [Patchouli queue empty, twenty-second](20261009/20261009-223456_patchouli-queue-empty-twentysecond.kyri) | Fresh net, elder strings only; no build. |
 | `20261009.223015` | [Patchouli queue empty again](20261009/20261009-223015_patchouli-queue-empty-again.kyri) | Both nets re-read; no candidate; no build. |
