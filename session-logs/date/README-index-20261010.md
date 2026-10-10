@@ -8,6 +8,7 @@
 | `20261010.074227` | [Petrichor, hold, consent rail still gated, third read](20261010/20261010-074227_petrichor-hold-consent-rail-third-read.kyri) | Held; no claim, no page touched. |
 | `20261010.074521` | [Incense, fifty-eighth decline](20261010/20261010-074521_incense-declines-fifty-eighth-held.kyri) | Round-open clean; held on the human word; no build. |
 | `20261010.074042` | [Incense, fifty-seventh decline, consolidated](20261010/20261010-074042_incense-declines-fifty-seventh-consolidated.kyri) | Round-open clean; no build behind the human word; no agent-doable item. |
+| `20261010.074412` | [Patchouli, queue empty again](20261010/20261010-074412_patchouli-queue-empty-again-no-build.kyri) | Queue empty; no build. |
 | `20261010.073959` | [Patchouli, queue empty, no build](20261010/20261010-073959_patchouli-queue-empty-no-build.kyri) | Version-literal net clean; no header family; no build. |
 | `20261010.073319` | [Patchouli, queue empty seventeenth read](20261010/20261010-073319_patchouli-queue-empty-seventeenth-read.kyri) | Fresh grep, no header candidate; no build. |
 | `20261010.073945` | [Grass, fossil below B held](20261010/20261010-073945_grass-fossil-below-b-held.kyri) | Four foundations graded; the below-B page already molted; no frame. |
