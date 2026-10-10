@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.043154 | [Patchouli, loop count corrected](20261010/20261010-043154_patchouli-loop-count-corrected-check-in.kyri) | Eight while-true sites, not five; no build. |
 | 20261010.042908 | [Patchouli, unbounded catch-up loops, booked](20261010/20261010-042908_patchouli-unbounded-catch-up-loops.kyri) | Patchouli: five while-true loops, four uncapped; booked; no build. |
 | 20261010.042839 | [Incense declines a third time, no build](20261010/20261010-042839_incense-declines-third-no-build.kyri) | Incense: round-open clean at 294b9f9fd5; no upstream motion; no build. |
 | 20261010.042632 | [Petrichor, gated after ff, water row](20261010/20261010-042632_petrichor-gated-fast-forward-water-row.kyri) | Petrichor: ff 7ba79a3e94; first hour gated; no build. |
