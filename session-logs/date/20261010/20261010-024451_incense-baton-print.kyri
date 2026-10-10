@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.024451
+editor Claude Code, incense captain seat, grain-incense tree
+provider Anthropic
+product Claude Code
+role incense captain -- law, active-designing, REDS ledger, living pins, rules
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 at medium per .claude/settings.json; resolved value not read this lap
+configured_status declared default, not runtime telemetry
+evidence .claude/settings.json; sh tools/fixtures/d/declared_model.sh resolved_model not run
+voice Kyri
+host Linux 6.18.41, one-clock zone America/New_York
+title incense baton printed -- no lap run, no build
+prompt "ty every1 baton prin recur" -- read as: print the baton for the fleet, as the captain does
+think The prompt is short and names no lap. The likeliest reading is the captain's standing act: print the baton as a raw code block so any hand at any door can paste it.
+think The full lap the baton describes (cold roster, claim, round-open, endurance run) is large, gated on the round-open, and outward-facing on push. Running it unasked would spend the fleet's shared pass on a request that only asked to print.
+think Read the card's head and the day index to confirm the shelf and the form of a row. The shelf is open and busy; this lap adds one row and one log, nothing else.
+obs no code, no ledger row, no pin, no claim touched. Only this log and its shelf row are new.
+obs the baton text was supplied in the prompt itself, so it was printed from the prompt rather than from a file re-read.
+file session-logs/date/README-index-20261010.md why-one-line -- one shelf row prepended under the delimiter
+file session-logs/date/20261010/20261010-024451_incense-baton-print.kyri why-one-line -- this lap's record
+rota none -- captain print request, no deep read this lap
+product_nib 951deeeced
+scope the baton printed; no lap run; the shelf row and this log are the only writes
+status GREEN for the print; no lap run; no push; commit local and signed only
+recommend check-in (either) -- the baton names a full lap; say "kg" to run it, or name the lane you want

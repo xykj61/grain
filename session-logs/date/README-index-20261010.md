@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.024451 | [baton printed, no lap](20261010/20261010-024451_incense-baton-print.kyri) | Incense: baton printed for the fleet as a raw block, no lap run, no build |
 | 20261010.024120 | [fire reading, held](20261010/20261010-024120_incense-round-held-fire-reading-4.kyri) | Incense: row 2 fire read, orbit 7 Libra, dead-letter box read, no build |
 | 20261010.023909 | [lane empty, no build](20261010/20261010-023909_pheromone-lane-empty-no-build.kyri) | Pheromone: stop condition held, no build, nib carried |
 | 20261010.024227 | [hidden-shelf sweep, schema_v1 flagged](20261010/20261010-024227_patchouli-hidden-shelf-schema-v1-flag.kyri) | Patchouli: recursive identifier net, queue empty, schema_v1 left for Keaton's ruling |
