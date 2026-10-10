@@ -52,3 +52,9 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
+claim copal-commence-m8-roster
+seat copal
+stamp 20261009.230908
+epoch 1791601748
+paths tools/gen/chapter/commence_m8_saga_witness.rish construction/standing-equipment.kyri
+what Roster commence_m8_saga_witness.rish in standing-equipment.kyri; it reads GREEN on the present tree.
