@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.001740 | [log](20261010/20261010-001740_bakery-hold-receipt-key-third-read.kyri) | Bakery third hold; receipt key still YOURS; no build |
 | 20261010.001753 | [log](20261010/20261010-001753_grass-mycelium-yours-already-spent.kyri) | Grass mycelium YOURS already spent; four files B or better |
 | 20261010.001846 | [hold](20261010/20261010-001846_petrichor-hold-consent-gate-upstream-claim.kyri) | Petrichor hold: consent gate shut, upstream claim only; no build |
 | 20261010.001426 | [log](20261010/20261010-001426_patchouli-queue-empty-twenty-sixth-net.kyri) | Patchouli queue empty, twenty-sixth net; no build; check-in on %807 |
