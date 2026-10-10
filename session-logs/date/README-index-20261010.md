@@ -11,6 +11,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.082013` | [Petrichor, hold, upstream fast-forward, gate unmoved](20261010/20261010-082013_petrichor-hold-upstream-gate-unmoved.kyri) | Fast-forwarded three upstream log commits; consent gate unmoved; no page touched. |
 | `20261010.081724` | [Patchouli, queue empty, fresh net](20261010/20261010-081724_patchouli-queue-empty-fresh-net.kyri) | Queue empty again; claims owned elsewhere; no build. |
 | `20261010.081558` | [Incense, declined sixty-first, no build](20261010/20261010-081558_incense-declines-sixty-first.kyri) | Round-open clean; clock all in; no build; nib carried. |
 | `20261010.081216` | [Grass, three heads re-graded](20261010/20261010-081216_grass-warrant-till-rehearsal-regraded.kyri) | All three at B or better; no frame, no edit. |
