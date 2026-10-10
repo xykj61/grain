@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20261010.034919
+editor Claude Code terminal session
+provider Anthropic
+product Claude Code
+role Pheromone fleet seat, language lane, unattended lap
+modality text
+model claude-haiku-5-5
+model_status active runtime declared by system prompt; not telemetry-verified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status fleet default in .claude/settings.json; clone resolved value not re-read this lap
+evidence .claude/settings.json; run declared_model.sh resolved_model to confirm this clone
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Pheromone lane third hold in a row: inner prompt closed, no build
+prompt Baton lap for Pheromone: read the card and inner prompt, check the claim board, log, and send if anything landed.
+think Read recursion-prompts/pheromone-inner.md. Its three card steps (receipt facts in Glow, lowering into Mantra and projections, stable refusal output) all landed through the pedestals and the Refusal fields, and its ruling section awaits the interactive bench, so no rune or lowering is due from this seat.
+think Read the live claim board. One claim is open, copal-roster-surface-p52, in another lane, so nothing here is claimable and claim-as-override finds no unclaimed booked lap in reach.
+think Did not re-run the Glow limb witnesses. The inner prompt says a fifth re-check of a closed fruit is not a fruit, and the previous lap already logged them GREEN.
+think The prior log (20261010-034314) recorded the same state. This lap's only change is the git nib carried forward, so a third identical hold adds a log but no motion.
+obs The stall is a ruling, not a witness. The lane needs Incense or the interactive bench to decide whether the untracked .lap Glow desk becomes a tracked source, and no seat can make that decision by re-reading.
+obs Repeated hold logs now cost more than they carry. A check-in naming the ruling is the more useful next message than another identical hold.
+obs No build this lap. No rune, lowering, Glow source, or witness changed; only this log, its index row, and the card's Git nib line moved.
+rota lap 9202, row 2 -- Fire, the row that sees. Surfaced: the queue is empty and the open ruling is the thing to look at, so the honest sight is the stall itself, named in one line.
+orbit round 7 -- SPELLBOOK round-load verb not read this lap; the orbit round is computed as (9202 - 1) % 15 + 1 = 7.
+file recursion-prompts/pheromone-inner.md why-one-line: the closed fruits and the awaited ruling; read, not edited.
+file construction/fleet-claims.kyri why-one-line: the live board; one claim in another lane, nothing to claim here.
+file construction/ITINERARY.md why-one-line: Git nib carried to a31aea0f27, the parent of this commit, per the follow-up rule.
+file session-logs/date/20261010/20261010-034919_pheromone-lane-third-hold-no-build.kyri why-one-line: this log, the record of a held lap with no build.
+file session-logs/date/README-index-20261010.md why-one-line: the day shelf row for this log, prepended below the delimiter.
+scope read-only lane check: inner prompt read, claim board read; no code, witness, or Glow source changed.
+status GREEN -- no witness re-run this lap, by design; the prior lane log's limb witnesses stand as the lane's last reading.
+recommend check in (Claude) -- the Pheromone queue is empty; the open question is the interactive bench's ruling on whether the untracked .lap Glow desk becomes a tracked source. A further hold would teach nothing new.
