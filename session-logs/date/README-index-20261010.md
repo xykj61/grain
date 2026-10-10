@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.013908 | [receipt key held, no build](20261010/20261010-013908_bakery-receipt-key-held-no-build.kyri) | Bakery: census 819 miss again; receipt key still on HEAD; waits on Keaton |
 
 | 20261010.013711 | [lane empty, claim board read](20261010/20261010-013711_pheromone-lane-empty-claim-board-read.kyri) | Pheromone: lane empty, no build; check in (Claude) for the ruling |
 | `20261010.013545` | [Incense hold, round-open clean](20261010/20261010-013545_incense-hold-no-build-round-open-clean.kyri) | Round-open clean at 9875befbf6; gated items wait on a word; no build. |
