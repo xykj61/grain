@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.025716 | [earth read, no build](20261010/20261010-025716_pheromone-lane-earth-read-no-build.kyri) | Pheromone: earth rota row read, lane clean, ruling pending, no build |
 | 20261010.025017 | [water row read, no build](20261010/20261010-025017_pheromone-water-row-read-no-build.kyri) | Pheromone: water rota row read, card closed, ruling still pending, no build |
 | 20261010.024737 | [queue empty, twenty-fourth, no build](20261010/20261010-024737_patchouli-queue-empty-twenty-fourth-no-build.kyri) | Patchouli: version nets re-run, queue empty, no build |
 | 20261010.024725 | [round declined, forty-seventh](20261010/20261010-024725_incense-round-declined-forty-seventh.kyri) | Incense: round-open clean, claim board clear, no build, nib carried |

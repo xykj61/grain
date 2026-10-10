@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261010.025716
+editor Claude Code (terminal, this tree)
+provider Anthropic
+product Claude Code
+role pheromone lane seat (Glow product language)
+modality text
+model claude-haiku-5-5
+model_status active runtime stated by harness; not telemetry-verified
+configured_model claude-haiku-5-5
+configured_status resolved for this clone; local override present, tracked default differs
+evidence sh tools/fixtures/d/declared_model.sh resolved_model read claude-haiku-5-5; override reads yes
+voice Kyri
+host one-clock zone America/New_York
+title pheromone lane: earth read on rota, lane still closed, no build
+prompt baton read; pheromone lane's next move with the card closed and a ruling pending
+think read recursion-prompts/pheromone-inner.md: the closed-fruit record stands, and a fifth re-check of a closed fruit is named not a fruit
+think read the card's pheromone items: the limb5 through limb10 pedestals and the Refusal fields are landed, so no build is owed without Keaton's ruling
+think tree clean at HEAD ec6e39f66a; the nib carried in ac4eb4fdaa; nothing uncommitted for this lane to stand on
+think lap 9144 reads rota row 4 (9144 mod 5), which is Earth, the row that breathes in; its threshold page reads the concrete ground first
+obs Earth's ground here is checkable: the tree is clean, the ruling is still unwritten, and no lane item is open. Taking that in whole, the honest move is to hold still and not reopen the fruit
+obs orbit round 9 (count 9144, (count - 1) % 15 + 1): Virgo, earth, goal law, verb "tidy the one thing that is untidy"
+rota lap 9144, row 4 -- Earth, the row that breathes in; the threshold page read, and its ground confirmed clean: nothing stands uncommitted, and the open door is a ruling, not a repair
+orbit round 9 sign Virgo -- tidy the one thing that is untidy
+file recursion-prompts/pheromone-inner.md why the closed-fruit record and the ruling gate were checked
+file construction/ITINERARY.md why the Pheromone card items were compared against the tree
+file foundations/20260826-021735_earth-the-row-that-breathes-in.md why the earth row's threshold was read on this lap
+file session-logs/date/20261010/20261010-025017_pheromone-water-row-read-no-build.kyri why the previous lap's reading was compared, so this record does not repeat it
+status GREEN for the reading; no witness run because nothing changed. The lane's remaining door is Keaton's ruling, and none is in hand
+scope read-only audit of the lane card, inner prompt, earth threshold page, and this log; no code, no claim, no build
+recommend check in (Claude) -- the untracked .lap desk waits on the interactive bench's ruling before any tracked Glow source is written
