@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.032641
+editor Claude Code terminal, bakery seat
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, one-clock America/New_York
+title bakery receipt-key recheck, hold, no build
+prompt the baton, recur: run a bakery lap
+think the tree is at 5cde8b8242 with a clean index; the card's crux, the receipt key, still waits on Keaton's ruling at ITINERARY line 31
+think the queue has no lap that clears without a word or a cold run: %642 waits on a word for the scrub, and %519 plant adoption needs a cold endurance run of about seventy minutes before work
+think the prior bakery log said tools/fixtures/f/fleet_claim_scan.sh was missing from this tree; that was wrong, the file is present at 5cde8b8242 and answers --check-style reads through its own usage
+obs no code changed, no claim opened, no cold run launched; the lap's remaining time does not cover a seventy-minute pass plus the send
+obs the claim scan reads the live board from the upstream remote; at this read it fetched xy, reported commits_behind=2, and listed one live claim from copal
+file construction/ITINERARY.md Git nib refreshed by remember_git_nib follow-up, so the card names this commit's parent
+file session-logs/date/20261010/20261010-032641_bakery-receipt-key-recheck-hold.kyri this hold record; it corrects the prior log's missing-scan claim
+file session-logs/date/README-index-20261010.md one row prepended under the delimiter for this log
+rota none -- hold lap; the crux is gated on a word and no rota deep-read was taken
+orbit round skipped -- the baton's Calfive reading was not computed on a hold lap with no round work
+scope recheck only: read the card, the queue, and the claim scan; correct the prior log's false claim; refresh the card nib; this log and its row
+status HOLD, honest -- no witness run because no code changed; no cold endurance run; the send is held pending Keaton's receipt-key word
+recommend check in (either) -- Keaton's receipt-key ruling at ITINERARY line 31 unblocks the bakery crux; until then the queue has no lap that does not wait on a word or a cold run

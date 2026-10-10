@@ -4,6 +4,7 @@
 **Chapter:** `20261010`
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261010.032641 | [receipt-key recheck, hold](20261010/20261010-032641_bakery-receipt-key-recheck-hold.kyri) | Bakery: crux still on Keaton's word; prior claim-scan note corrected; no build |
 | 20261010.032157 | [receipt-key hold, no build](20261010/20261010-032157_bakery-receipt-key-hold-no-build.kyri) | Bakery: crux waits on Keaton's receipt-key ruling; queue gated; card nib refreshed; no build |
 | `20261010.031742` | [Petrichor shelf repair](20261010/20261010-031742_petrichor-index-shelf-repair.kyri) | Open-shelf rows trimmed and ordered; claim closed; witness GREEN. |
 | 20261010.031525 | [lane witness sweep, no build](20261010/20261010-031525_patchouli-lane-witness-sweep-no-build.kyri) | Patchouli: six mantra witnesses GREEN on metal, queue empty, no build |
