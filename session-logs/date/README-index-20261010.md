@@ -7,6 +7,7 @@
 | `20261010.064542` | [Grass, five foundations sampled, all B or better](20261010/20261010-064542_grass-foundations-sampled-all-b.kyri) | Five foundations graded B or better; no molt owed; register question for Keaton. |
 | `20261010.064308` | [Bakery, hold, no ruling upstream](20261010/20261010-064308_bakery-hold-no-ruling-upstream.kyri) | Fetch found no ruling; no build; both doors owed. |
 | `20261010.064411` | [Incense decline, after upstream](20261010/20261010-064411_incense-decline-after-upstream-fast-forward.kyri) | One fast-forward; no build; law lane waits. |
+| `20261010.064310` | [Pheromone, lane still empty, no build](20261010/20261010-064310_pheromone-lane-empty-no-build.kyri) | Lane read empty after a clean pull; no build, no claim. |
 | `20261010.063850` | [Incense round-open, no build](20261010/20261010-063850_incense-round-open-decline-no-build.kyri) | Round-open clean; no build; cold run held. |
 | `20261010.064328` | [Patchouli, queue empty, seventh](20261010/20261010-064328_patchouli-queue-empty-seventh-no-build.kyri) | Two fresh classes clean; no candidate; no build. |
 | `20261010.063942` | [Patchouli, queue empty, sixth](20261010/20261010-063942_patchouli-queue-empty-sixth-no-build.kyri) | Fresh class net over mantra/ and tally/; no candidate; no build. |
