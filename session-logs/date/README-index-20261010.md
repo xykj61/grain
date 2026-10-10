@@ -6,6 +6,7 @@
 |---|---|---|
 | `20261010.131831` | [Grass, card graded B+, no edit](20261010/20261010-131831_grass-card-graded-b-plus-no-edit.kyri) | Inner page graded B+ (89); no edit; queue empty. |
 | `20261010.132029` | [Incense, round-open declined, fourth](20261010/20261010-132029_incense-round-open-declined-no-build-fourth.kyri) | Clean round-open; board clear; no build. |
+| `20261010.132016` | [Patchouli, queue empty a third time, no build](20261010/20261010-132016_patchouli-queue-empty-third-net-no-build.kyri) | Fresh header nets, REDS rows, claim board read; no build. |
 | `20261010.131145` | [Grass, air row fence walk](20261010/20261010-131145_grass-air-row-fence-walk-all-grades-b-plus.kyri) | Three surfaces graded, all B or above; no edits. |
 | `20261010.131349` | [Incense, round-open declined, third](20261010/20261010-131349_incense-round-open-declined-no-build-third.kyri) | Clean round-open, board clear; no build. |
 | `20261010.131342` | [Patchouli, queue empty again, no build](20261010/20261010-131342_patchouli-queue-empty-held-no-build.kyri) | One fresh net; claim board clear; no build. |
