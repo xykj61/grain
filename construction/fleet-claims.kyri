@@ -52,9 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim copal-instrument-suite-roster
-seat copal
-stamp 20261010.104115
-epoch 1791643275
-paths tools/gen/chapter/instrument_suite_witness.rish
-what Copal rosters tools/gen/chapter/instrument_suite_witness.rish in the standing roster and proves it GREEN from both sides.

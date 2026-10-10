@@ -90,6 +90,7 @@
 | `20261010.073006` | [Bakery, round open held](20261010/20261010-073006_bakery-round-open-hold-held.kyri) | Fast-forward to 4abf47403c; claim verified upstream; crux held for check-in, no build. |
 | `20261010.104919` | [Patchouli, queue empty, fresh nets](20261010/20261010-104919_patchouli-queue-empty-fresh-nets-no-build.kyri) | Fresh nets read; no build; log and row only. |
 | `20261010.113034` | [Incense, baton lap, hold, no build](20261010/20261010-113034_incense-baton-lap-hold-no-build.kyri) | Captain hold; law lane waits on a human word; no build. |
+| `20261010.113643` | [Copal, instrument-suite held on fascia floor](20261010/20261010-113643_copal-instrument-suite-fascia-hold-no-roster.kyri) | e113 reads 36 of 41; REDS %838 OPEN; no roster row. |
 | `20261010.112734` | [Bakery, roster probe, hold, no build](20261010/20261010-112734_bakery-redroster-probe-hold-no-build.kyri) | Probe only; no build; %836 stays OPEN. |
 | `20261010.112844` | [Patchouli, queue empty, hold, no build](20261010/20261010-112844_patchouli-queue-empty-hold-no-build.kyri) | Queue empty; no build; nib carried. |
 | `20261010.112427` | [Grass, aspiring-radiance reach, no build](20261010/20261010-112427_grass-aspiring-radiance-reach-hold-no-build.kyri) | Reach 60 again, the open repair; no molt. |
