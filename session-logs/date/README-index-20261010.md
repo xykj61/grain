@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.152643` | [Pheromone, queue empty, no build](20261010/20261010-152643_pheromone-queue-empty-no-build.kyri) | Upstream fast-forwarded; no fruit; no Glow ruling open; no build. |
 | `20261010.152201` | [Patchouli, kumara sign unreachable](20261010/20261010-152201_patchouli-kumara-sign-unreachable-no-build.kyri) | Sign panic booked; seam ruling owed; no build. |
 | `20261010.152532` | [Grass, fold.rye graded A, no lift](20261010/20261010-152532_grass-fold-graded-a-no-lift.kyri) | Grades mycelium/fold.rye at A (93); queue empty; no lift; nib carried. |
 | `20261010.152115` | [Grass, docs-geode front door graded at Door](20261010/20261010-152115_grass-docs-geode-front-door-graded-no-build.kyri) | Grades the docs-geode front door at Door; no molt owed; no build. |
