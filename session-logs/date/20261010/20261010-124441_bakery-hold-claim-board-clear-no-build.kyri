@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261010.124441
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_status fleet default in .claude/settings.json; this clone resolves per declared_model.sh, not verified here
+evidence .claude/settings.json and recursion-prompts/bakery-inner.md
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title bakery hold, claim board clear, no build
+prompt ty every1 baton prin recur -- run the Bakery lap from the baton and inner prompt
+think read the baton ORDER and CARD clauses: open claim, push, let rebase settle, then cold run at lap front; no new instrument or booked red is taken here, so no claim is opened.
+think read the bakery crux in recursion-prompts/bakery-inner.md: the receipt key (HEAD in tree_digest) is marked YOURS, a ruling for Keaton that changes the roster runner's contract.
+think the claim scan on tools/b reads verdict=clear, claims_live=0, and commits_behind=4 on xy, so the board is quiet and the checkout is behind the anointed remote.
+think the recovery queue is 85 stashes and roughly 91 to 176 unmatched versions by the inner prompt's own counts; a sweep of those is hours of semantic review, not one lap.
+obs no build this lap: the crux waits on a ruling, and the 20261010.000229 bakery log already records the same hold, so a repeat re-check would add noise rather than evidence.
+obs rota none -- the lap read the baton and the inner prompt's queue; no council row was deep-read.
+obs no cold roster run: a pass launched on a tree four commits behind would be fixed as tree_moved at the first pull, which is the ORDER failure the baton names.
+file session-logs/date/20261010/20261010-124441_bakery-hold-claim-board-clear-no-build.kyri why this lap's record; no other file touched
+scope bakery lane read only; no build; no card change; no pull or push
+status GREEN for the lap as a read: no open bakery item that a lap can finish without Keaton's ruling on the receipt key
+recommend check-in (Claude) -- the next bakery step is the receipt-key ruling (whether the receipt drops HEAD for watched inputs), which the card marks YOURS and which changes the roster runner's contract
