@@ -34,6 +34,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.094436` | [Patchouli, queue empty again, no build](20261011/20261011-094436_patchouli-queue-empty-fourteenth-net-no-build.kyri) | Read-only queue lap; kumara held; no build. |
 | `20261011.093514` | [Grass, tenure B+, queue empty, no build](20261011/20261011-093514_grass-tenure-b-plus-queue-empty-no-build.kyri) | Tenure reads B+; queue empty; no build. |
 | `20261011.093231` | [Patchouli, queue empty, kumara red needs ruling](20261011/20261011-093231_patchouli-queue-empty-kumara-red-needs-ruling.kyri) | Measured pin at bound; no build; check-in for Keaton. |
 | `20261011.092955` | [Grass, README A, Mitra shed B, no build](20261011/20261011-092955_grass-readme-a-foundation-b-no-build.kyri) | Two grades read; no molt owed; no edit. |
