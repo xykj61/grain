@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.210307
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime per system context, not telemetry
+configured_model unverified
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Bakery, owed model-control repair already landed, no build
+prompt the baton and the bakery inner prompt, a lap with no named task
+think the cache crux is ruled, but its build waits on Keaton's receipt-key ruling, the same gate the 20261010.205810 lap held on
+think the September parked-recovery notes listed a model-control repair as owed; checking whether it still reds is cheaper than building it again
+think ran fleet_codex_control.sh: every leg ok, including the planted omissions on the probe and on the lap, so the repair is in the tree
+think ran fleet_clockout_control.sh: pass=11 fail=0, the drain and gates-only sentinels hold
+obs no source changed, no claim opened, no stash applied or dropped; the only pin moved is the git nib in construction/ITINERARY.md, carried to b77e224bc3 by the follow-up shape as the remember-git-nib rule asks
+obs the two controls are the only evidence this lap; their own exit codes were not captured through a tail pipe, so the reading is the printed legs
+loom none -- nothing was timed this round
+rota none -- the queue gate and the control reading were the whole lap; no council row deep-read
+orbit round 12 sign -- not read this lap
+scope read the baton, the inner prompt, the newest bakery logs, and the claim board; ran two existing controls read-only; wrote this log and its shelf row; no code, no pin, no stash
+status GREEN for the reading only; the two controls pass on this tree and no witness was edited; the receipt-key ruling stays owed by Keaton
+recommend check-in (Claude) -- the receipt key ruling gates the shared cache build; the runner contract needs a Claude ruling before any ship touches the shared cache
+file recursion-prompts/bakery-inner.md read for the cache crux, unchanged
+file construction/ITINERARY.md read for the Now block, unchanged
+file tools/fixtures/f/fleet_codex_control.sh run read-only, all legs ok
+file tools/fixtures/f/fleet_clockout_control.sh run read-only, pass=11 fail=0
