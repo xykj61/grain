@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.103215
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role captain Incense, grain-incense tree
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime verified from session header
+configured_model claude-haiku-5-5
+configured_status runtime session header
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Incense baton read, declined, no build
+prompt Baton printed for a recurring lap; read the card's inner prompt, round-open, claim board, clock report, and decide the lap.
+think round-open found the tree already on xy/main at 7da2ea5b63; nothing to adopt.
+think the claim board read clear: zero live claims, no overlap for this lane.
+think the clock report found all eight seats clocked in on distinct or idle-free heads.
+think the inner prompt's current order holds the cold run unlaunched, and its next section waits on a human word at %642 or %519 or a custody gate.
+obs no product build this lap: the queue is gated, so building here would cross the order the card records.
+obs the cold endurance run was not launched; launching it would spend a forty-minute pass on a tree the order says to leave still.
+rota none -- no council row deep-read; the lap read the inner prompt, the board, and the clock report only.
+orbit round 6 earth -- the verb held: stop what must stop; no build, no keystone.
+status GREEN for the lap's own reads (round-open clean, claim board clear, clock report read); no witness run and no code changed.
+file construction/ITINERARY.md Git nib carried forward to HEAD read before this commit
+file session-logs/date/README-index-20261011.md one shelf row for this lap
+recommend check-in (either) -- the lane waits on a human word at %642 or %519, or a custody gate; the decline record needs no landing decision beyond that
