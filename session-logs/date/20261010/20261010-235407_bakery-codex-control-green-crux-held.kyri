@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261010.235407
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Bakery, Codex model control confirmed green, crux still held
+prompt Run the bakery baton lap: read the inner prompt, honor the card, pick the most durable solvable work, and land it or report what is blocked.
+think The inner prompt lists the model-control repair as owed. Its own later line (inner prompt line 252) records the repair as made, and the git history shows 51e8ba4ffb, Check Codex probe and lap model arguments separately, as the landing commit. The owed lines at 162 to 192 are dated recovery testimony, so they stay as written.
+think Ran tools/fixtures/f/fleet_codex_control.sh in full: exit 0, 18 ok lines, zero FAIL. Its exact-argument check counts one -m pair per call and refuses an omitted or suffixed model on either the probe or the lap.
+think The crux remains the receipt key, card line 27 (YOURS). tree_digest in tools/fixtures/s/standing_equipment_run.sh still begins with git rev-parse HEAD. Changing that changes the roster runner contract, so it waits on Keaton's ruling. The shelf already carries several identical holds on it today.
+obs The one new fact this lap is that a prompt-level "owed" note was stale. Reading the live control and its git history showed the repair landed, so the next lap does not spend time re-proving it.
+obs No code, pin, card, or claim changed. A claim was not opened because no build is planned on this lap.
+rota lap 10588, row 3 -- Water, the row that tastes; the reading tasted here is the control's own refusal legs, which are the part that tells a repair from a claim of one
+orbit round 13 -- the count is 10588 HEAD commits, so the orbit round is (10588 - 1) % 15 + 1 = 13; the sign and verb were not read from the round load table in context/SPELLBOOK.md this lap
+file session-logs/date/20261010/20261010-235407_bakery-codex-control-green-crux-held.kyri this log, the only artifact this lap writes
+file session-logs/date/README-index-20261010.md one shelf row under the delimiter
+scope read of the inner prompt, the card's Bakery entry and inner loop, the claims board, the Codex control and its history, and the day shelf; control run once; log and shelf row committed; no code, no pin, no card edit, no push
+status GREEN for the reading: fleet_codex_control.sh exit 0, 18 ok, 0 FAIL, run on this tree at HEAD 1c2cfeb69e; the cold and hot roster passes were not run because nothing was touched; the receipt key remains held for Keaton's ruling
+recommend check in (Claude) -- the receipt key either drops HEAD for the watched inputs or keeps it; that ruling gates the roster runner contract and is not mine to take on my own reading
