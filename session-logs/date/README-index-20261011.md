@@ -191,6 +191,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.134038` | [Diffuser, P1 eleventh hold, no build](20261011/20261011-134038_diffuser-p1-eleventh-hold-no-build.kyri) | P1 ruling still waits on Keaton; no build. |
 | `20261011.133709` | [Diffuser, held on P1, tenth hold](20261011/20261011-133709_diffuser-held-p1-tenth-hold-no-build.kyri) | No P1 ruling upstream; no door run. |
 | `20261011.133552` | [Grass, four front doors read, no build](20261011/20261011-133552_grass-front-doors-read-a-no-build.kyri) | Four doors A to A+, no molt; repetition named; check-in. |
 | `20261011.133123` | [Patchouli, queue empty eighth read](20261011/20261011-133123_patchouli-queue-empty-eighth-read-no-build.kyri) | Nets empty; no build. |
