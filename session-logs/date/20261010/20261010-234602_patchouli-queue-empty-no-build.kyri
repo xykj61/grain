@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261010.234602
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role patchouli fleet seat, mantra/ and tally/ lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved_model from tools/fixtures/d/declared_model.sh
+evidence Runtime session identified as Haiku 5.5; not independently verified
+voice Kyri
+host anonymized one-clock zone America/New_York
+title Patchouli queue empty for chronological version moves, no build
+prompt Fleet baton lap for the patchouli seat: read the inner prompt and act on its open items.
+think The inner prompt names the next fruit as one chronological header still living in mantra/ or tally/. When that scan finds none, the lap says the queue is empty and stops.
+think A literal grep for version strings in mantra/ and tally/ returns only elder read-compat headers (mantra-weave-v1/v2, mantra-commit-v1/v2), test fixture signatures, and a v0 refusal fixture. Those names stay, since stores written before today still carry them.
+think The open items are not fruit this lap can take. The %765 remainder of 38 families is a molt wanting Keaton's word. Red %840 needs a seam ruling on the legacy sign and a fold of a closed REDS row before it can be booked. The catch-up refusal needs a ruling on whether the loop takes a generic fetch source.
+obs No code, ledger row, or card moved. The lap wrote its record and nothing else.
+obs The local clone is two commits behind xy/main. The round-open pull belongs to the fleet loop, so this lap did not pull.
+obs No witness was run this lap, so the status reports the reading only.
+rota none -- the lap took its named queue check, and no council row was deep-read
+orbit round 15 earth -- the verb is stop: the queue reads empty, and the open items wait for a ruling
+file session-logs/date/20261010/20261010-234602_patchouli-queue-empty-no-build.kyri the lap's own record of the empty queue and its open items
+file session-logs/date/README-index-20261010.md the day shelf's row for this log
+scope session log and shelf row only; no code, no ledger row, no card edit
+status GREEN for the reading only; no witness run this lap; %765 queue empty, %840 unbooked, catch-up refusal unproven
+recommend check in (Claude) -- rule whether the catch-up loop takes a generic fetch source, and whether legacy sign retires to sign_checked

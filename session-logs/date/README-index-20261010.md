@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.234602` | [Patchouli, queue empty, no build](20261010/20261010-234602_patchouli-queue-empty-no-build.kyri) | %765 scan clean; %840 unbooked; no build. |
 | `20261010.234210` | [Diffuser, sweep fruit already landed, same-night rerun, no build](20261010/20261010-234210_diffuser-sweep-fruit-landed-rerun-no-build.kyri) | Sequential sweep rerun on the existing probe: huge arm 88 to 93 permille, control 249 to 349; no build. |
 | `20261010.234053` | [Copal, fruit void, no build](20261010/20261010-234053_copal-fruit-density-control-green-no-build.kyri) | 158 rostered; no unrostered witness. |
 | `20261010.233758` | [Patchouli, sign red held at pin bound](20261010/20261010-233758_patchouli-sign-red-held-at-pin-bound.kyri) | Red %840 unbooked; pin 4 bytes under bound. |
