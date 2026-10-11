@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.134625` | [Patchouli, queue empty, kumara red held, no build](20261011/20261011-134625_patchouli-queue-empty-kumara-held-no-build.kyri) | Eighteenth empty read; kumara %840 held for ruling; no build. |
 | `20261011.134322` | [Diffuser, held on P1, eleventh hold](20261011/20261011-134322_diffuser-held-p1-eleventh-hold-no-build.kyri) | P1 ruling still absent; no build. |
 | `20261011.134119` | [Grass, two mycelium heads graded A, no build](20261011/20261011-134119_grass-two-reads-clear-no-build.kyri) | fold 93 and muster 90, both A; no edit. |
 | `20261011.134034` | [Copal, fruit empty third read, no build](20261011/20261011-134034_copal-fruit-empty-third-read-no-build.kyri) | Zero unrostered witnesses at xy/main; no claim. |
