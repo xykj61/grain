@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.213654` | [Diffuser, inner gate held a fifth read](20261010/20261010-213654_diffuser-inner-gate-held-fifth-read.kyri) | Gate parked on Keaton's word; no build; check-in asked. |
 | `20261010.213411` | [Diffuser, inner gate held a fourth read](20261010/20261010-213411_diffuser-inner-gate-held-fourth-read.kyri) | Tenth-base gate held again; no build; check-in on Keaton's word. |
 | `20261010.213053` | [Diffuser, gate held a third read, no build](20261010/20261010-213053_diffuser-gate-held-third-read-no-build.kyri) | Tenth-base gate read again; no run; check-in on Keaton's word. |
 | `20261010.213148` | [Petrichor, hold repeats, check-in asked](20261010/20261010-213148_petrichor-hold-repeat-check-in-asked.kyri) | Gate still shut; no red, no claim; check-in asked. |
