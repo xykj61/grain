@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261011.191638
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone seat, grain-pheromone tree
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+title Pheromone lane held again, no build
+prompt Baton lap for Pheromone: read the inner prompt and the card, then act within the lane.
+think Inner prompt says the lane is parked on a ruling from Incense and that a fifth re-check of closed state teaches nothing.
+think Card steps one to three are closed; the stop clause sends any new rune or language ruling back to Incense.
+think Claims board read: no_verb, no live claims printed. Path present check on glow/rune_shape.rye: present.
+think Earlier today the same state was logged as 20261011.190309, so this lap writes a short hold rather than a repeat of the reading.
+obs No code changed; no witness run this lap, so no GREEN is claimed.
+obs Next move waits on a ruling from Incense on whether the staged receipt desk becomes a tracked Glow source.
+rota none -- lane held on a ruling; no deep council read this lap
+orbit round 1 sign -- not computed this lap
+file session-logs/date/20261011/20261011-191638_pheromone-lane-held-repeat-no-build.kyri the hold record itself
+scope no code, no card edit, no push
+status HELD -- no build, no witness run; ruling owed by Incense
+recommend check-in (checkpoint) -- Incense must rule on the Glow desk before the lane moves
