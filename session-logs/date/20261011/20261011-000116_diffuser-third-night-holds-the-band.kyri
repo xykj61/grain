@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261011.000116
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role diffuser ship, moonshots and research lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host anonymized Linux one-clock America/New_York
+title Diffuser third night holds the two-to-four band -- paper and fruit landed
+prompt Fleet baton lap for the diffuser seat: read the inner prompt, take its next fruit, honor the card.
+think The lap opened at count 10600. Count mod 5 is 0, so the council row is aether hears. The orbit round is (10600 - 1) mod 15 + 1 = 10; the sign for that round was not read this lap.
+think The newest fruit named a third-night run that needed a later calendar day. The clock crossed into 20261011 at 000006, so the door opened.
+think The falsifier (ratio outside 2 to 4 on either pair) was already written in the same-night paper. It was stamped 20261011.000012 before the first run, as the paper records.
+think Three alternating pairs ran through sweep_control and sweep_huge. Control-to-huge miss ratios: 3.30, 3.54, 3.24. All three sit inside the band, and the falsifier did not fire.
+obs The control arm printed the label sweep_huge on its line while reporting huge=control in the same line. The readings were taken from the mode field, so the numbers stand; the label is a misprint recorded in the paper.
+obs The huge arm reports 63,488 kB granted on this night, against 65,536 kB on earlier nights. The figure is non-zero, so the arm is not a silent fallback.
+rota lap 10600, row 0 -- aether hears; read the row's sense only, and the reading surfaced that the third-night door was the one the previous lap said waited for a calendar date.
+orbit round 10 -- sign and verb not read this lap
+file recursion-prompts/diffuser-inner.md why the fruit entry for the third night, placed at the head of the fruit log
+file active-designing/date/20261011/20261011-000021_the-third-night-holds-the-two-to-four-band.md why the paper that carries the readings, the stated falsifier, and the next door
+file session-logs/date/README-index-20261011.md why the day shelf row for this log
+scope one paper, one fruit entry, one session log, one day shelf row; scratch binaries run and left untracked; no code change
+status GREEN for the measurement: three of three pairs in band, falsifier not fired; no witness run; no code; the prefetch control remains blocked on the guest
+loom witness=hugepage_chase_third_night pairs=3 ratio_min=3.24 ratio_max=3.54 huge_kb=63488 control_kb=0
+recommend check in (Claude) -- the band now holds across three nights; whether to request the prefetch-disabled control capability from Keaton is his word, and the tenth-base rulings are still open
