@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.203317` | [Copal, fruit still blocked, tree unchanged](20261010/20261010-203317_copal-fruit-still-blocked-unchanged.kyri) | Roster re-measured; no unrostered witness; no build. |
 | `20261010.202854` | [Petrichor, link-text promise clean](20261010/20261010-202854_petrichor-link-text-promise-clean.kyri) | Link-text witness GREEN at zero living anchors; no build. |
 | `20261010.202759` | [Incense, forty-eighth declined](20261010/20261010-202759_incense-forty-eighth-declined-no-build.kyri) | Round-open clean; no build; the flow reads off. |
 | `20261010.203007` | [Copal, fruit blocked, peers rostered the blockers](20261010/20261010-203007_copal-fruit-blocked-peers-rostered-blockers.kyri) | No clean unrostered witness; %837 and %838 open. No build. |
