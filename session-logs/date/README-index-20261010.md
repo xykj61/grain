@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.202333` | [Petrichor, lane held on the Consent Rail](20261010/20261010-202333_petrichor-lane-held-consent-rail-no-build.kyri) | Held on the Consent Rail; no build. |
 | `20261010.202009` | [Bakery, cache already shared](20261010/20261010-202009_bakery-compile-cache-already-shared.kyri) | Census: compile cache shared; receipt-key ruling waits. |
 | `20261010.201926` | [Patchouli, queue empty again, kumara red held](20261010/20261010-201926_patchouli-queue-empty-kumara-red-held.kyri) | Queue empty; kumara sign red named, held for REDS headroom. |
 | `20261010.201520` | [Grass, docs-geode front door graded A](20261010/20261010-201520_grass-docs-geode-front-door-graded-a-no-build.kyri) | Front door A/91; no change; no build. |
