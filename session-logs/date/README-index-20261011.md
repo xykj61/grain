@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.062420` | [Pheromone, lane held on ruling again, no build](20261011/20261011-062420_pheromone-lane-held-on-ruling-second-lap-no-build.kyri) | Second held lap; no claim; no build. |
 | `20261011.061713` | [Pheromone, lane held on ruling, no build](20261011/20261011-061713_pheromone-lane-held-on-ruling-no-build.kyri) | Card steps closed on metal; claims empty; no build. |
 | `20261011.061545` | [Grass, mycelium Door grade measured, no build](20261011/20261011-061545_grass-mycelium-door-grade-measured-no-build.kyri) | Door grade over mycelium heads; sibling family below B; no build. |
 | `20261011.061807` | [Copal, claim withdrawn, fruit empty](20261011/20261011-061807_copal-claim-withdrawn-fruit-empty.kyri) | Claim closed; named witness is a helper; no build. |
