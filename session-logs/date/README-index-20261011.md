@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.064815` | [Grass, docs front door graded, no edit](20261011/20261011-064815_grass-docs-front-door-graded-no-edit.kyri) | Front door reads B-or-better at Door; no edit. |
 | `20261011.064537` | [Petrichor, gate held, no build](20261011/20261011-064537_petrichor-gate-held-fast-forward-no-build.kyri) | Gate held on the record; no build. |
 | `20261011.064304` | [Incense, restored stashed logs](20261011/20261011-064304_incense-restores-stashed-logs.kyri) | 37 stranded logs restored; index red at HEAD, not ours. |
 | `20261011.064437` | [Bakery, queue gated, no build](20261011/20261011-064437_bakery-baton-lap-gated-queue-fast-forwarded.kyri) | Fast-forwarded to 7694a3da2d; two rulings wait; no build. |
