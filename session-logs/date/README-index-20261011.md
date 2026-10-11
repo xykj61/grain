@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.141306` | [Copal, fruit empty, sixth read, no build](20261011/20261011-141306_copal-fruit-empty-sixth-read-no-build.kyri) | Zero unrostered witnesses by full path; no claim. |
 | `20261011.140817` | [Bakery, receipt key held, eighth read, no build](20261011/20261011-140817_bakery-receipt-key-held-eighth-read-no-build.kyri) | Receipt key waits on Keaton; no build. |
 | `20261011.135800` | [Incense, baton declined, thirteenth read, no build](20261011/20261011-135800_incense-baton-declined-thirteenth-no-build.kyri) | Nib carried to 36c50e4a10; queue held for Keaton. |
 | `20261011.135858` | [Patchouli, kumara red held, no build](20261011/20261011-135858_patchouli-kumara-red-held-no-build.kyri) | Red held on seam ruling and pin headroom. |
