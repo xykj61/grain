@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.050915` | [Diffuser, stagger door, S6 fired](20261011/20261011-050915_stagger-door-s6-fired-no-lowering.kyri) | a regular stagger does not lower the polar floor; S6 fired, S3 inconclusive; no build |
 | `20261011.045659` | [Copal, fruit empty](20261011/20261011-045659_copal-fruit-empty-open-rows-read-green.kyri) | 0 of 159 unrostered; three OPEN REDS read green. |
 | 20261011.045544 | [Diffuser, per-ring offset falsified](20261011/20261011-045544_per-ring-offset-falsified.kyri) | R3 and R5 fired; ring alignment not the sawtooth cause |
 | `20261011.045257` | [Pheromone, held on the ruling, fast-forwarded](20261011/20261011-045257_pheromone-lane-held-on-ruling-fast-forward.kyri) | lane closed; Glow ruling is Incense's; no build. |

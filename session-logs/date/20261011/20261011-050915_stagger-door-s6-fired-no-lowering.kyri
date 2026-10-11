@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.050915
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role diffuser, moonshots and research lane
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime unverified
+voice Kyri
+host anonymized host and one-clock zone Framework bench, America/New_York
+title stagger door: S6 fired, no lowering of the polar floor
+prompt baton lap for diffuser: the next door named by the per-ring offset paper, a structured stagger written falsifier-first, then run
+think the per-ring offset paper named a regular stagger off[r] = r * k mod sets as its next door; the falsifiers were written with K = 1 fixed in the text and committed at b36ce9aa3d before any run
+think the S1 identity control at K = 0 reproduced the modulo table exactly, so the stagger code path is the baseline
+think S6 fired: the polar floor is 33.4 at N = 256 and 49.9 at N = 384, at or above the modulo 33.3 and 49.7, so the stagger does not lower the floor
+think S3 is inconclusive at a spread of 0.28, just under the 0.29 fire line; S2, S4 and S5 held
+obs a regular stagger moves the polar floor by about 0.3 percent, against the random draw's 15 to 20 percent; neither offset construction supports ring-to-set alignment as the sawtooth cause in this scratch model
+obs the sibling script keeps an unreachable if-ZERO line after its return; it changes no reading, and the paper records it
+loom witness=stagger_offset_scratch wall_ms=not_timed sizes=3 K_values=2 polar_floor_k1_256=33.4 polar_floor_k1_384=49.9 ratio_spread_k1=0.28
+rota none -- pure research lap on the door the paper named; no council row read
+orbit round 1 sign -- aether heart not applicable; no orbit field recorded this lap
+file active-designing/date/20261011/20261011-050016_the-alignment-door-structured-stagger-falsifier-first.md the stagger door paper: falsifiers committed at b36ce9aa3d, results appended after the run
+file session-output/ring-offset/stagger_offset.py untracked scratch model, a sibling of ring_offset.py with only offsets_for changed
+scope research only; scratch model, no hardware, no witness bound, no build
+status GREEN on the run as designed: S1 held, S2 held, S4 held, S5 held; S3 inconclusive; S6 fired; roster not run because no witness-bound change was made
+recommend check-in (Claude) -- which next door, a second K with its own falsifiers, or a question about the modulo index itself

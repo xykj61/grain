@@ -91,3 +91,29 @@ byte-identical. The grid, tolerance and smax match `fine_capacity.py`.
 ---
 
 Appended after the run, below this line. The six falsifiers above are not edited.
+
+**Run.** Stamped after the falsifiers were committed at `b36ce9aa3d`. Script: `session-output/ring-offset/stagger_offset.py`, untracked scratch, a sibling of `ring_offset.py` whose only change is `offsets_for`, now `off[r] = (r * K) % sets` with `K` read from the environment. `K = 0` is the S1 control, `K = 1` the door. The sibling keeps an unreachable `if ZERO` line after its `return`, a leftover from the copy; it does not run and changes no reading. Outputs: `stagger_K0_256_384_640.txt` and `stagger_K1_256_384_640.txt`.
+
+| N | Arm | Cartesian floor (sets) | Polar floor (sets) | Ratio | Polar monotone violations | Cartesian monotone violations |
+|---|---|---|---|---|---|---|
+| 256 | K = 0 (S1) | 12.4 | 33.3 | 2.69 | 0 | 0 |
+| 384 | K = 0 (S1) | 19.2 | 49.7 | 2.59 | 0 | 1 |
+| 640 | K = 0 (S1) | 28.8 | 83.0 | 2.88 | 0 | 6 |
+| 256 | K = 1 | 12.4 | 33.4 | 2.70 | 0 | 0 |
+| 384 | K = 1 | 19.2 | 49.9 | 2.60 | 0 | 1 |
+| 640 | K = 1 | 28.8 | 83.1 | 2.88 | 0 | 6 |
+
+**Falsifiers read.**
+
+- **S1 held.** The K = 0 run reproduces the modulo table at all three sizes: floors 33.3, 49.7 and 83.0, ratios 2.69, 2.59 and 2.88, zero polar violations.
+- **S2 held.** The Cartesian floors under K = 1 are 12.4, 19.2 and 28.8, the modulo values, and the Cartesian violation counts match the control.
+- **S3 inconclusive.** The K = 1 ratios are 2.70, 2.60 and 2.88, a spread of 0.28. That is between 0.10 and 0.29, so the paper reads it as inconclusive. It sits just under the 0.29 fire line, and the paper does not claim the stagger flattened the sawtooth.
+- **S4 held.** The lowest ratio is 2.60, above the 2.0 floor.
+- **S5 held.** The polar curve has zero monotone violations at all three sizes.
+- **S6 fired.** The polar floor is 33.4 at N = 256 and 49.9 at N = 384, both at or above the modulo values 33.3 and 49.7. The falsifier fires on exactly that pattern. The stagger does not lower the floor. It raises it by 0.1 to 0.2 set, about 0.3 percent.
+
+**Reading.** A regular stagger with K = 1 leaves the sawtooth in place (spread 0.28 against 0.29 modulo) and does not lower the polar floor. The random draw raised the floor by 15 to 20 percent. The regular stagger moves it by a fraction of a percent. Neither offset construction supports ring-to-set alignment as the cause of the zig-zag in this model. The stagger changes the polar floor almost not at all, which is itself a finding: a per-ring shift that keeps the line-to-set partition close to the modulo one does not reach the sawtooth.
+
+**Caveats, stated after the run.** One deterministic construction, K = 1, on one model, at three sizes. Other K values were not run and would need their own falsifiers. The K = 1 result is consistent with the random draw's direction, a worse-or-equal floor, but the two are different constructions and the paper does not merge them.
+
+**Next door, not run.** Either a second K written with its own falsifiers, or leaving the offset family and asking directly what a line-level or set-count-level feature of the modulo index produces the sawtooth. The paper does not choose between them.
