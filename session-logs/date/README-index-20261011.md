@@ -51,6 +51,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.100602` | [Copal, fruit void measured again, no build](20261011/20261011-100602_copal-fruit-void-measured-again-no-build.kyri) | No merge in hand; 158 witnesses, 0 unrostered; no build. |
 | `20261011.100324` | [Copal, fruit void third measure, no build](20261011/20261011-100324_copal-fruit-void-third-measure-no-build.kyri) | Exact-path roster read: zero unrostered witnesses under tools/gen/chapter/; no build. |
 | `20261011.100117` | [Patchouli, queue empty, no build](20261011/20261011-100117_patchouli-queue-empty-no-build.kyri) | Fresh net: read-compat only; no build. |
 | `20261011.100209` | [Grass, queue held, no build](20261011/20261011-100209_grass-queue-hold-no-build.kyri) | Nineteen prose pages graded B+ or better; no lift owed. |
