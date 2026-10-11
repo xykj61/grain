@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261010.210047` | [Petrichor, consent hold re-read, no build](20261010/20261010-210047_petrichor-consent-hold-no-build.kyri) | Gate unchanged upstream; no page, no build. |
+| `20261010.210510` | [Copal, fruit read a fourth time, no build](20261010/20261010-210510_copal-fruit-empty-fourth-reading.kyri) | Zero unrostered witnesses; fruit stale; ruling needed. |
 | `20261010.210138` | [Copal, fruit read a third time, no build](20261010/20261010-210138_copal-fruit-empty-third-reading.kyri) | Zero unrostered chapter witnesses; the YOURS line is stale; no build. |
 | `20261010.205810` | [Bakery, cache crux held, no build](20261010/20261010-205810_bakery-cache-crux-held-no-build.kyri) | Shared cache awaits the receipt-key ruling; no build. |
 | `20261010.204936` | [Petrichor, consent gate re-read, no build](20261010/20261010-204936_petrichor-consent-gate-reread-no-build.kyri) | Gate moved to unwitnessed here; no page change. |
