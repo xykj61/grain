@@ -2,6 +2,7 @@
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
+| `20261011.195004` | [Pheromone baton, lane empty, no build](20261011/20261011-195004_pheromone-baton-no-build-queue-empty.kyri) | Glow lane empty, claim held |
 | `20261011.194308` | [Copal, chapter witnesses none unrostered, no build](20261011/20261011-194308_copal-chapter-witness-none-unrostered.kyri) | 169 .rish by exact path, zero unrostered; fruit held; no build. |
 | `20261011.193235` | [Incense, declined, no build](20261011/20261011-193235_incense-baton-declined-no-build.kyri) | Board empty, tree clean; cold run held; no build. |
 | `20261011.193608` | [Grass, queue empty, no build](20261011/20261011-193608_grass-queue-empty-no-build.kyri) | warrant.rye A 93; no code; no claim; no build. |
