@@ -215,6 +215,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.141647` | [Incense, baton declined, sixteenth read, no build](20261011/20261011-141647_incense-baton-sixteenth-decline-no-build.kyri) | Tree clean; upstream unchanged; gates held; no build. |
 | `20261011.141351` | [Bakery, receipt key held, ninth read, no build](20261011/20261011-141351_bakery-receipt-key-held-ninth-read-no-build.kyri) | Receipt key waits on Keaton; no build. |
 | `20261011.140924` | [Grass front doors regraded, both A, queue empty, no build](20261011/20261011-140924_grass-front-doors-regraded-no-build.kyri) | Both fronts still A; truth counted only. |
 | `20261011.140740` | [Patchouli, kumara held, no build](20261011/20261011-140740_patchouli-kumara-held-reread-no-build.kyri) | Red held on rulings; queue empty. |
