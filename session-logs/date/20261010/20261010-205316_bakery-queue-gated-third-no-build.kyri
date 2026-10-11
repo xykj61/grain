@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.205316
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Bakery baton lap, queue gated third time, no build
+prompt Run the bakery baton lap: read the card and the inner prompt, honor the directives, and land the most durable solvable work or report what is blocked.
+think Read the card and recursion-prompts/bakery-inner.md. The crux (one shared build and cold-run cache) stands ruled. The compile layer already shares by content: the cache census reads 819 new files on a miss and 0 from another checkout path, path_independent=yes.
+think The receipt key is still open. Whether tree_digest drops HEAD for the watched inputs changes the roster runner's contract, and the card names it Keaton's ruling. Three prior bakery laps today held the same question without a word, so this lap does not re-argue it.
+think The agent-doable queue stays gated: item 1 (%642) wants a word on the scrub trade, item 3 waits on the wire ceiling door, and item 2 (%519) is ordinary touch-on work for a lane editing a control, not a standing ask.
+obs No code moved. Building the receipt key without the ruling would change the runner contract on the whole fleet on a decision nobody has made.
+obs The repeated no-build laps are a signal in themselves: the blocker is one word from Keaton, not more reading. Naming it once here is the useful move.
+rota none -- the queue gate was the whole reading; no council row was deep-read this lap
+file session-logs/date/20261010/20261010-205316_bakery-queue-gated-third-no-build.kyri this log, the only artifact this lap writes
+file session-logs/date/README-index-20261010.md one row under the delimiter
+scope read of the card, the inner prompt, and the cache census; log and shelf row committed; no code, no pin, no edit to the card
+status GREEN for the reading only; no code changed, so no witness was run; the receipt key is held for Keaton's ruling
+recommend check-in (Claude) -- the receipt key ruling gates the runner contract; it is Keaton's word, not this lap's reading

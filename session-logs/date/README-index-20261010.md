@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.205316` | [Bakery, queue gated third time, no build](20261010/20261010-205316_bakery-queue-gated-third-no-build.kyri) | Receipt key still held for Keaton's ruling; census re-read; no build. |
 | `20261010.204927` | [Bakery, queue gated, no build](20261010/20261010-204927_bakery-queue-gated-no-build-second.kyri) | Receipt key held for Keaton's ruling; no build. |
 | `20261010.204612` | [Incense, round-open, no build](20261010/20261010-204612_incense-round-open-no-build.kyri) | Round-open adopted e86c7c325d; claim board holds only copal; no build. |
 | `20261010.204533` | [Petrichor, fifth gate hold, no build](20261010/20261010-204533_petrichor-fifth-gate-hold-no-build.kyri) | Consent Rail still shut; no page change. |
