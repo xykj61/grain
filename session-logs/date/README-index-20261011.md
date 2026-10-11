@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.172448` | [Patchouli, queue empty fifteenth read](20261011/20261011-172448_patchouli-queue-empty-fifteenth-read-no-build.kyri) | Elder-literal grep reads empty; no build. |
 | `20261011.172021` | [Diffuser, forty-second hold](20261011/20261011-172021_diffuser-forty-second-hold-peer-consent-rail-question.kyri) | Fast-forward to e3604a920b; P1 unruled. |
 | `20261011.172001` | [Patchouli, kumara red held](20261011/20261011-172001_patchouli-kumara-red-held-no-build.kyri) | Kumara witness GREEN; red held on seam ruling; no build. |
 | `20261011.171544` | [Copal, fruit already rostered, no build](20261011/20261011-171544_copal-fruit-already-rostered-no-build.kyri) | All 159 chapter witnesses rostered; no claim, no build. |
