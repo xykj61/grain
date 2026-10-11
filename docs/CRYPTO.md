@@ -45,7 +45,7 @@ standing guard holds each page to the directory it describes.
 | What is *not* yet proven? | [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) -- every file's posture toward a secret | a reading, kept honest by naming the horizon rather than claiming a measurement |
 | How many modules, and how many proven? | [`crypto_count_guard_witness.rish`](../tools/cr/crypto_count_guard_witness.rish) | a bijection between files on disk and witnesses the suite registers; it prints both counts |
 
-**No count is typed on this page,** and that is deliberate. This page carried a table of 80
+**Counts live in the guards, and this page keeps them off its own text by design.** This page carried a table of 80
 modules while 87 stood in the directory, and a subset copy of a roster goes short more quietly
 than a short roster does -- a reader sees rows rather than the set they were drawn from. The
 count guard computes both numbers on demand (REDS %80, %105, %191, %195).
@@ -81,7 +81,7 @@ seeing our code.
 ## Constant-time posture -- a scoped horizon, named honestly
 
 Correctness is settled; **timing-safety is a scoped horizon rather than a settled claim.** A
-timing claim is a measurement, and this library claims no measurement yet.
+timing claim is a measurement, and this library has yet to make one.
 [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md) draws the full map, file by file, with
 line citations. In one screen, every primitive sits in exactly one posture toward a secret:
 
@@ -92,7 +92,7 @@ line citations. In one screen, every primitive sits in exactly one posture towar
   access fixed regardless of its value: the ChaCha/Poly arithmetic, the AEAD tag compare
   (which accumulates the byte difference and tests once), the `fe25519` reduction and inversion
   ladder, and **X25519's Montgomery ladder** (a fixed step count with a branchless masked
-  conditional swap). This is the strongest posture pure Rye asserts without a measurement, and
+  conditional swap). This is the strongest posture pure Rye asserts ahead of any measurement, and
   it still awaits one, since a compiler may undo branchless source.
 - **deliberately variable-time** -- `ed25519_scalarmul.rye` (double-and-add branches on the
   secret scalar's bits) and `ed25519_sign.rye`, which composes it. Correct and parity-GREEN,
@@ -104,8 +104,8 @@ line citations. In one screen, every primitive sits in exactly one posture towar
 
 ## The custody gate -- the library builds and verifies; it never holds a key
 
-Every witness runs over **test** keys and the RFC's public vectors: no real identity key, no
-network, no funds, no real device. Signing a record, or agreeing a session, with the
+Every witness runs over **test** keys and the RFC's public vectors, and the real identity key,
+the network, funds, and devices all stay outside it. Signing a record, or agreeing a session, with the
 maintainer's **own** identity key stays a **custody gate** (gate %3 / %4) -- the agent builds
 and proves the mathematics, and the key stays Keaton's hand. `ed25519_sign.rye`'s
 `derive_public(seed)` and `sign(seed, msg)` take a caller-supplied seed, and a test seed is not
@@ -131,8 +131,8 @@ one place the parity account lives.
    GREEN.
 5. **Record its row** in [`crypto/MODULES.md`](../crypto/MODULES.md), its reasoning in
    [`crypto/LADDER.md`](../crypto/LADDER.md), and its posture in
-   [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md). This page compresses, so it needs no
-   edit: it routes to those three, and each is held to the directory by its own guard.
+   [`crypto/CONSTANT_TIME.md`](../crypto/CONSTANT_TIME.md). This page compresses, so it only
+   routes to those three, and each is held to the directory by its own guard.
 
 ---
 
