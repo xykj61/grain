@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.074301` | [Patchouli, queue empty, no build](20261011/20261011-074301_patchouli-queue-empty-no-build.kyri) | Mantra and tally queue empty; no build. |
 | `20261011.074110` | [Incense, baton lap declined, board clear, no build](20261011/20261011-074110_incense-baton-declined-no-build.kyri) | Round-open clean on 5d81712dc6; board clear; no build. |
 | `20261011.074009` | [Incense, round-open adopted, declined, no build](20261011/20261011-074009_incense-baton-round-open-declined-no-build.kyri) | Anointed order adopted at ce1a9bd1a2; board clear; gated, no build. |
 | `20261011.073950` | [Diffuser, padding arm corrected](20261011/20261011-073950_diffuser-padding-arm-wiring-correction.kyri) | Padding flag unset; D4 passes on real padding. |
