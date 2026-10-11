@@ -261,6 +261,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.151542` | [Petrichor, lane gated, no build](20261011/20261011-151542_petrichor-baton-gated-no-build.kyri) | Lane waits on Diffuser's gate; nib green; no build. |
 | `20261011.150515` | [Grass, front doors graded, no build](20261011/20261011-150515_grass-front-doors-graded-no-build.kyri) | Four Door pages read B+ or better; queue empty; no build. |
 | `20261011.150309` | [Diffuser, twenty-seventh hold, P1 unruled](20261011/20261011-150309_diffuser-held-twenty-seventh-p1-no-ruling.kyri) | Remote level, no P1 ruling; no run. |
 | `20261011.150114` | [Petrichor, gate held, dead link found](20261011/20261011-150114_petrichor-gate-held-lint-dead-shelf-no-build.kyri) | Gate held; one dead index link; no build. |
