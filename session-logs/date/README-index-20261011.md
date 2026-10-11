@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.152526` | [Pheromone, gated, third no-build reading](20261011/20261011-152526_pheromone-gated-third-no-build.kyri) | Lane gated on a Claude ruling; no claim, no build. |
 | `20261011.151937` | [Patchouli, queue empty, no build](20261011/20261011-151937_patchouli-queue-empty-nineteenth-no-build.kyri) | Kumara red held on rulings; no build. |
 | `20261011.151855` | [Bakery, crux reread, held, no build](20261011/20261011-151855_bakery-crux-reread-held-no-build.kyri) | Pulled to 60731fc40a; cache crux still held on Keaton ruling. |
 | `20261011.151640` | [Grass, inner prompt regraded again, no build](20261011/20261011-151640_grass-inner-regraded-again-no-build.kyri) | Inner page regraded B+/89 on unchanged bytes; earth row read; no edit. |
