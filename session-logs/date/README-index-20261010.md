@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.211356` | [Grass, inner prompt graded again, no build](20261010/20261010-211356_grass-inner-repeat-grade-no-build.kyri) | Field grade 89 again; queue empty; no frame. |
 | `20261010.211216` | [Grass, inner prompt graded B+, no build](20261010/20261010-211216_grass-inner-regraded-field-b-plus-no-build.kyri) | Field grade 89; queue empty; no frame. |
 | `20261010.210938` | [Pheromone, language lane empty again, no build](20261010/20261010-210938_pheromone-lane-empty-fast-forward-no-build.kyri) | Language lane empty by its card; fast-forward only. |
 | `20261010.210922` | [Grass, queue empty, no build](20261010/20261010-210922_grass-queue-empty-no-build.kyri) | Queue empty; air row held; no build. |
