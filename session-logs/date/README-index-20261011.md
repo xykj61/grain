@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.063235` | [Copal, fruit empty, sixth today](20261011/20261011-063235_copal-fruit-empty-sixth-no-build.kyri) | Zero unrostered witnesses by full path; ruling asked. |
 - `20261011.062925` [Petrichor, fruit gated, no build](20261011/20261011-062925_petrichor-fruit-gated-no-build.kyri) | Pull landed session-logs only; lane gated, no build.
 | `20261011.062951` | [Copal, fruit empty, fifth today](20261011/20261011-062951_copal-fruit-empty-fifth-no-build.kyri) | Zero unrostered by exact path; ruling asked. |
 | `20261011.062515` | [Bakery, measured hold, no build](20261011/20261011-062515_bakery-measured-hold-no-build.kyri) | Plant, cache, scope read; receipt key and %642 await Keaton. |
