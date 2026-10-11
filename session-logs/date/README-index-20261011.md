@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.105630` | [Petrichor, consent gate held, no build](20261011/20261011-105630_petrichor-gate-held-no-build.kyri) | Gate still with Diffuser; sweep not repeated; tree 3 behind xy; no build. |
 | `20261011.104554` | [Bakery, cache crux held, no build](20261011/20261011-104554_bakery-cache-crux-held-no-build.kyri) | Board clear; ruling waits; fast-forward; no build. |
 | `20261011.104609` | [Pheromone, lane held twelfth time, no build](20261011/20261011-104609_pheromone-lane-held-twelfth-no-build.kyri) | Fast-forward clean; claim board empty; no open language-lane red; no build. |
 | `20261011.104558` | [Copal, fruit blocked, prin hangs, no build](20261011/20261011-104558_copal-prin-fruit-blocked-no-build.kyri) | Thin hand unrostered; prin loops; nib repinned. |
