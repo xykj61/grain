@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.105844` | [Pheromone, lane held fourteenth time, no build](20261011/20261011-105844_pheromone-lane-held-fourteenth-no-build.kyri) | Witness GREEN; board clear; no open language red; no build. |
 | `20261011.105716` | [Incense, recur second decline, no build](20261011/20261011-105716_incense-recur-second-decline-no-build.kyri) | Round-open clean; board empty; order holds; no build. |
 | `20261011.105836` | [Grass, inner regrade, B+ held, no build](20261011/20261011-105836_grass-inner-regrade-recur-repeat-no-build.kyri) | Grade 89 B+; repeat reading; no edit. |
 | `20261011.105515` | [Grass, WITNESS_PATTERNS register 71 to 83](20261011/20261011-105515_grass-witness-patterns-register-lift.kyri) | Shape lines affirmative; claims kept. |

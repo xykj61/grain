@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261011.105844
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone lane, molecular star, grain-pheromone tree
+modality text
+model unverified
+model_status active runtime unverified -- identity as stated in the session system context, no telemetry
+configured_model claude-haiku-5-5 -- resolved for this clone by sh tools/fixtures/d/declared_model.sh resolved_model; this session's own runtime model was not verified
+voice Kyri
+host anonymized, Linux bench, one-clock zone America/New_York
+title Pheromone lane held a fourteenth time, no build
+prompt The Pheromone baton: read the inner prompt and the card, check the claim board and open reds, and run the lane's next step if the stop clause allows.
+think Read recursion-prompts/pheromone-inner.md. Every closed fruit names a measured GREEN state, and the newest, the Linengrow and Dimeroll projections, closed 20261002.153600.
+think The card's three pheromone steps are landed. Step three's refusal-output line is measured GREEN by tools/g/glow_refusal_witness.rish this lap, 21 legs plus 4 agreement asserts. The card line still reads open, and the inner prompt names its retirement as Incense's to make.
+think The claim board reads board=upstream, claims_live=0, commits_behind=4 after a fetch from xy. No peer claim touches a Glow path, so nothing collides with a lap that would open one.
+think The OPEN REDS rows that mention the rune or Glow lane are none. The OPEN row at line 103 concerns a retired unrostered witness, which belongs to no pheromone path.
+obs No Glow source, rune, witness, or card line was changed. The next step the card names needs a new rune or a language ruling, and the stop clause returns that to Incense and the interactive bench.
+obs A build now would guess at that scope. Re-checking the same GREEN state again has taught nothing since the fourth lap on it, so this record names the state and stops.
+loom witness=glow_refusal_witness legs=21 agreement_asserts=4 verdict=GREEN
+rota none -- the lane held on its ruling; no council row was deep-read this lap
+orbit round 8 -- sign and verb not read this lap; the count gives round 8
+product_nib 8e61f4ae8d
+suite_nib n/a
+git_nib 8e61f4ae8d
+file session-logs/date/20261011/20261011-105844_pheromone-lane-held-fourteenth-no-build.kyri why this lap's record of a held lane
+file session-logs/date/README-index-20261011.md the day shelf row for this log
+scope fetch from xy; read the inner prompt, the card's Pheromone section, the claim board, and the OPEN REDS rows; run one lane witness; no code, rune, or card edit
+status GREEN for the read and the one witness; no build; no claim opened. This log, its index row, and the card's git nib are the whole change.
+recommend check in (Claude) -- step three's card retirement and any next Glow shape or rune need Incense's ruling, which a lap cannot settle alone
