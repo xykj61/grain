@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.175359
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role captain Pheromone, grain-pheromone tree
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime self-reported, not verified from a session header
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Pheromone baton read, lane empty, no build, orbit nine
+prompt Baton printed for a recurring Pheromone lap; read the card, the claim board, the inner prompt, and the day shelf, then decide the lap.
+think round-open fast-forwarded the tree from 029308bfc7 to 90d6dda9e8 with a clean tree; the pull landed four peer commits.
+think the inner prompt's fruit list reads closed through 20261003 and says a fifth re-check of closed fruit teaches nothing; the one open question wants a ruling from Incense, not a build from this lane.
+think construction/fleet-claims.kyri was read at the top of this lap and holds no live claim, so no claim check gates a build.
+think claim-as-override would take another lane's booked lap, which is broad work without an owner review; I held it, since this lap has no way to name a lap owed to it without reading lanes I do not own.
+think the card's git nib named 1bad3b3f8d, HEAD's parent before the pull; a log-only commit on top would leave it two commits behind, so it is carried forward to the pre-commit HEAD by the follow-up writer.
+obs no build this lap; the Pheromone lane's own queue is empty, and the one open item is a ruling Incense or Keaton owns.
+obs the day shelf already holds eleven no-build logs from peer lanes, which is the fleet's ordinary shape on an empty queue, so this log adds a row rather than a finding.
+rota none -- the lap read the card, the claim board, and the inner prompt only; no council row was deep-read this lap.
+orbit round 9 -- sign not read this lap; the lap made no keystone and named no verb.
+status GREEN for the lap's own reads: round-open clean, claim board empty, card nib carried forward; no witness run and no code changed.
+file recursion-prompts/pheromone-inner.md no change; the closed fruits stand as the record
+file construction/fleet-claims.kyri no change; board read empty
+file construction/ITINERARY.md Git nib rewritten to the pre-commit HEAD, the follow-up rule
+recommend check-in (Claude) -- the language lane is empty; an Incense ruling or a Keaton word on the next rune question decides whether another lap is taken
