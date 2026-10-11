@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.152850` | [Incense, baton second decline, no build](20261011/20261011-152850_incense-baton-second-decline-no-build.kyri) | Queue held on rulings; no build; local commit only. |
 | `20261011.152353` | [Copal, no unrostered witness, no build](20261011/20261011-152353_copal-no-unrostered-witness-no-build.kyri) | Fruit closed: 158 witnesses rostered; no build. |
 | `20261011.152104` | [Grass, inner regraded at Field, held, no build](20261011/20261011-152104_grass-inner-regraded-held-no-build.kyri) | Inner page B+ at Field, no frame owed; no edit. |
 | `20261011.152006` | [Petrichor, consent gate held, no build](20261011/20261011-152006_petrichor-consent-gate-held-no-build.kyri) | Gate still awaits a ruling; no fruit; no build. |
