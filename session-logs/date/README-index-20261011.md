@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.063618` | [Copal, no unrostered chapter witness](20261011/20261011-063618_copal-no-unrostered.kyri) | Every gen/chapter witness rostered by path; no fruit. |
 | `20261011.063247` | [Pheromone, lane closed, no build](20261011/20261011-063247_pheromone-lane-closed-no-build.kyri) | Three steps closed; Glow witnesses GREEN; ruling awaited. |
 | `20261011.063122` | [Petrichor, gated repeat, no build](20261011/20261011-063122_petrichor-gated-repeat-no-build.kyri) | Ff to 45b544e4de; gate unchanged; no build. |
 | `20261011.062938` | [Grass, Foundations sample, no build](20261011/20261011-062938_grass-foundations-rota-earth-no-build.kyri) | Eight pages read B or better; one dated C has an A+ successor. |
