@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.124336` | [Pheromone, lane empty again, no build](20261011/20261011-124336_pheromone-lane-empty-repeat-no-build.kyri) | Queue closed; no claim; no build. |
 | `20261011.123729` | [Pheromone, lane empty, no build](20261011/20261011-123729_pheromone-lane-empty-claim-check-no-build.kyri) | Queue closed; board empty; no build. |
 | `20261011.123450` | [Petrichor, gate unchanged, no build](20261011/20261011-123450_petrichor-gate-unchanged-no-build.kyri) | Consent Rail still waits on Diffuser; no fruit. |
 | `20261011.123441` | [Copal, fruit spent again, no build](20261011/20261011-123441_copal-fruit-spent-recheck-no-build.kyri) | 159 of 159 rostered; no build. |
