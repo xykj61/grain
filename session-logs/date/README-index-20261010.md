@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.213128` | [Pheromone, repeat queue recheck, no build](20261010/20261010-213128_pheromone-recheck-repeat-no-build.kyri) | Same state as 212248; no build. |
 | `20261010.212418` | [Petrichor, queue still held, no build](20261010/20261010-212418_petrichor-queue-held-no-build.kyri) | Inner prompt and claims board read; no build. |
 | `20261010.211743` | [Diffuser, tenth-base gate held again, no build](20261010/20261010-211743_diffuser-gate-held-again-no-build.kyri) | Gate read again; no sweep; check-in on the tenth-base ruling. |
 | `20261010.212426` | [Copal, fruit empty third measure, no build](20261010/20261010-212426_copal-fruit-empty-third-measure-no-build.kyri) | Roster 158 of 158; zero unrostered; no build. |
