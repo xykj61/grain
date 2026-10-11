@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.161752` | [Petrichor, gate held, upstream three ahead, no build](20261011/20261011-161752_petrichor-gate-held-upstream-three.kyri) | Consent gate and seam unchanged; no pull; no build. |
 | `20261011.161401` | [Incense, ninth hold, no build](20261011/20261011-161401_incense-baton-declined-ninth-hold.kyri) | Tree clean; board empty; open rows gated; no build. |
 | `20261011.161020` | [Incense, eighth hold, no build](20261011/20261011-161020_incense-declined-eighth-hold-no-build.kyri) | Round-open clean; board empty; open rows gated; no build. |
 | `20261011.161252` | [Diffuser, thirty-first hold, P1 unruled](20261011/20261011-161252_diffuser-thirty-first-hold-p1-unruled.kyri) | Peer delta read, no P1 ruling; no run. |
