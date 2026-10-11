@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.120537` | [Pheromone, lane held at the Glow ruling, no build](20261011/20261011-120537_pheromone-lane-held-at-ruling-no-build.kyri) | Lane items done; next move waits on Incense; no build. |
 | `20261011.115547` | [Copal, fruit spent, no unrostered witness](20261011/20261011-115547_copal-fruit-no-unrostered-witness.kyri) | Comm measured zero; no build. |
 
 | `20261011.120025` | [Patchouli, queue empty, kumara red held, no build](20261011/20261011-120025_patchouli-queue-empty-held-no-build.kyri) | Spine 840 unchanged; no build. |
