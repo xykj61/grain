@@ -228,6 +228,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.143728` | [Diffuser, twenty-second hold, no run](20261011/20261011-143728_diffuser-held-twenty-second-p1-no-ruling.kyri) | P1 ruling still absent; no run. |
 | `20261011.143252` | [Diffuser, twenty-first hold, no P1 ruling](20261011/20261011-143252_diffuser-held-twenty-first-p1-no-ruling.kyri) | No run; P1 ruling still absent. |
 | `20261011.143139` | [Patchouli, usize census repeated, no build](20261011/20261011-143139_patchouli-usize-census-repeated-kumara-held.kyri) | usize clean again; kumara ruling waits. |
 | `20261011.142814` | [Petrichor, gate held after pull, no build](20261011/20261011-142814_petrichor-gate-held-after-pull-no-build.kyri) | Consent Rail gate unchanged; no build. |
