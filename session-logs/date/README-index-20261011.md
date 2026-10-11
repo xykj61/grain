@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.173246` | [Pheromone, lane held again, no build](20261011/20261011-173246_pheromone-lane-held-again-no-build.kyri) | Board empty; lane on Incense's ruling; no build. |
 | `20261011.172328` | [Copal, fruit absent again, no build](20261011/20261011-172328_copal-fruit-absent-again-no-build.kyri) | Full-path roster: 158 witnesses, 0 unrostered; no build. |
 | `20261011.172308` | [Petrichor, seam still held, no build](20261011/20261011-172308_petrichor-seam-held-no-build.kyri) | Public seam not landed; Consent Rail unchanged since 20260914; no build. |
 | `20261011.172530` | [Grass, inner prompt graded, no build](20261011/20261011-172530_grass-inner-graded-no-build.kyri) | Inner prompt B+ 89 at Field; queue empty; no build. |
