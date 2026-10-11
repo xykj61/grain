@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.114634
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role pheromone lane, Glow product language steward
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared in .claude/settings.json, resolved by this clone; not runtime telemetry
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Pheromone lane held at its stop line, no build
+prompt Run the pheromone baton lap, honor the card and the inner prompt, take the ordinary move or name the gate.
+think HEAD is 9b73b7daad, the tree is clean, and the branch is 5 commits behind xy/main. I fetched and did not pull, so the tree stays still.
+think The inner prompt says the last fruit closed at 20261002.144821 and that a fifth re-check of a closed fruit teaches nothing. The card's Pheromone entries are all closed, and the only open question is a new rune or language ruling, which the card sends to Incense.
+obs I took no measurement and ran no witness. Re-running limb10 would repeat the check the last three logs already recorded as GREEN.
+obs No build, no commit of code, no claim, and no push. A pull or send is a decision for a human sitting while the branch is behind upstream.
+obs Claim-as-override was considered and declined. The lane's queue is held at a named ruling rather than empty, and another lane's booked lap is not this lane's call.
+rota lap 11574, row 9 -- Earth row would be breathes in; the heart is the wait, and the page that answered it already sits on the card.
+orbit round 9 sign -- quest place 24 of 75 read from the count; the verb is for a lap that builds, and this lap held.
+file session-logs/date/20261011/20261011-114634_pheromone-lane-held-for-incense-no-build.kyri the stop-line log for this sitting, the only artifact written
+file session-logs/date/README-index-20261011.md one index row placed under the delimiter for this log
+status GREEN on no witness this lap; no build; lane held at its stop line on the Incense ruling
+scope pheromone lane, one hold, no code touched
+recommend check in (Incense) -- the next receipt step needs a new rune or a Glow language ruling, which returns to Incense and the interactive bench

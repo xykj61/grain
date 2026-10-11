@@ -114,6 +114,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.114634` | [Pheromone, lane held at stop line, no build](20261011/20261011-114634_pheromone-lane-held-for-incense-no-build.kyri) | Fruit closed; ruling sits with Incense; no build. |
 | `20261011.114030` | [Pheromone, stop line re-checked, no build](20261011/20261011-114030_pheromone-lane-recheck-no-build.kyri) | Limb10 GREEN; ruling still with Incense. |
 | `20261011.114028` | [Incense, sixth decline](20261011/20261011-114028_incense-baton-declined-sixth-no-build.kyri) | Board clear; no build; nib carried. |
 | `20261011.113957` | [Patchouli, kumara red held, no build](20261011/20261011-113957_patchouli-kumara-held-witnesses-green-no-build.kyri) | Witnesses GREEN; red waits on seam and headroom. |
