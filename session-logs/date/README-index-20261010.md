@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.201428` | [Bakery, crux blocked on the clean_tree word](20261010/20261010-201428_bakery-crux-blocked-on-clean-tree.kyri) | Read-only lap; no claim, no build; crux waits on Keaton. |
 | `20261010.200637` | [Patchouli, queue empty, nineteenth](20261010/20261010-200637_patchouli-queue-empty-nineteenth.kyri) | Queue empty; nib carried; no build. |
 | `20261010.200511` | [Diffuser, tenth-base ten-family](20261010/20261010-200511_diffuser-tenth-base-ten-family.kyri) | Tenth base +0.51, above the line; label fault found and fixed. |
 | `20261010.200512` | [Petrichor, gate held after pull](20261010/20261010-200512_petrichor-consent-gate-held-after-pull.kyri) | Clean pull; consent gate unchanged; no build. |

@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261010.201428
+editor Claude Code
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by session harness
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Bakery lap, crux blocked on the clean_tree word
+prompt Run the bakery baton lap: read the card, the claim board, and the day's thread; take the most durable solvable keystone.
+think Read the card inner loop, the bakery itinerary, and the live claim board (copal brush roster, diffuser tenth seed bootstrap; both building, neither mine).
+think Bakery's first fruit is one shared build cache and cold-run cache across eight checkouts; memory says the receipt chain it rests on is stalled (388 hours old at measurement).
+think Attempted to re-read the receipt chain; the scan path named in memory does not exist at tools/fixtures/s/receipt_chain_scan.sh, so that figure is carried as memory, not re-measured this lap.
+think The non-perishable next move is a clean_tree field in the receipt format, which the memory records as Keaton's word. No keystone was opened, claimed, or built.
+obs A full cold endurance run is about seventy minutes and must start after a claim is pushed; with the crux gated, the lap had no bounded build to hold the run for.
+obs Writing a claim now would have announced a build not yet chosen; the board is honest without one.
+rota none -- the lap's work was reading the card and the board; no deep council row read this turn
+orbit round 1 sign -- not computed this lap; the count was not read
+file session-logs/date/20261010/20261010-201428_bakery-crux-blocked-on-clean-tree.kyri why this log records the lap's stop and the blocked crux
+recommend check-in (Claude) -- the bakery crux waits on Keaton's word for a clean_tree receipt field; name a keystone or confirm the field before a claim
+scope read-only lap: card, claim board, memory; no code, no claim, no push
+status no build; crux blocked on a Keaton word; receipt scan path unverified; nothing committed beyond this log
