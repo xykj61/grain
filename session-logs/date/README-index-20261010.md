@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.201006` | [Grass four rule pages graded A](20261010/20261010-201006_grass-four-rule-pages-graded-a.kyri) | Four rule pages graded A; no molt; log only. |
 | `20261010.200512` | [Petrichor, gate held after pull](20261010/20261010-200512_petrichor-consent-gate-held-after-pull.kyri) | Clean pull; consent gate unchanged; no build. |
 | `20261010.200230` | [Patchouli, queue empty, eighteenth](20261010/20261010-200230_patchouli-queue-empty-eighteenth.kyri) | Queue empty; no build; kumara red held on rulings. |
 | `20261010.200208` | [Grass, sample graded A or better](20261010/20261010-200208_grass-sample-grade-all-a.kyri) | Thirteen docs-geode pages graded at Door; all A or better; no molt frame. |

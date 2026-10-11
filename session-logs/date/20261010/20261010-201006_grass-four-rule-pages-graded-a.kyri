@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261010.201006
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role grass lane auditor (grain-grass)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared in .claude/settings.json; resolved by tools/fixtures/d/declared_model.sh
+evidence .claude/settings.json fleet default; no runtime telemetry read this lap
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title grass four rule pages graded A, no molt
+prompt Grass lap: audit prose surfaces, grade what is touched, molt only below B.
+think the inner prompt names the ordinary move: grade a prose page already open, molt only below B.
+think no page was open for another reason this lap, so I sampled four rule pages by the report card.
+think all four read A (align 94, exec-bit 91, remember 91, send-word 92), so no molt frame was pushed.
+obs the tree is unchanged by this lap; the only new bytes are this log and its index row.
+obs the cold roster run was not launched: no code, witness, or doc under test changed.
+obs push was not run; the log commit stays local, for the next ship's send.
+file session-logs/date/20261010/20261010-201006_grass-four-rule-pages-graded-a.kyri why this lap's record of four A-graded rule pages
+rota none -- no council row read this lap; the lane's ordinary audit took the whole lap
+status GREEN for the grade read; no red booked; no code witness applicable; not pushed
+scope four rule pages graded with qa_report_card.sh --setting field; no edits
+recommend keep-going -- the audit queue holds only the ordinary move; next lap can take the next prose page below B if one shows up
