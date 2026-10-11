@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.192755
+editor Claude Code (grain-diffuser tree)
+provider Anthropic
+product Claude Code
+role diffuser lane, moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host one-clock zone America/New_York
+title diffuser: P1 and P2 conflict below 26 sets, no ruling written after results
+prompt ty every1 baton prin recur
+think read the inner prompt's engine and fruit sections; the lane has held on P1 for many laps, and each hold names the same unruled question
+think P1 is the floor test from the 124637 paper: every miss ratio below 1.05 on both arms. P2 is the discrimination test: Cartesian conflict misses above zero for at least one size
+think the below-26 table (session-output/stride-door/sawtooth_below26_20261011.txt, 12:47) shows Cartesian conflicts at 8 to 11 sets, with miss_cart near 2.3 at 8 and 9 sets and near 1.0 at 10 and 11 sets; P1 fails on those rows by construction, so P1 and P2 cannot both hold over 8 to 25 sets
+think the 123141 paper's F4 already fired on the 26-to-31 pair design, and the 32-set paper named the same class of fault: a floor-saturated reading does not discriminate
+think a revised P1 written now would be written after the below-26 result was read, which is the fault this lane names in its own papers; the ruling belongs to Keaton or Claude, written before any further run
+obs the window the 123141 paper called closed is open at 8 to 11 sets, so the F-all-zero branch of the 124637 falsifier did not fire
+obs no run this lap; the table already exists and reading it again adds no evidence
+rota none -- falsifier-ruling check on the held question, no council row read this lap
+orbit round none -- held lap, no Calfive planning read this lap
+file session-logs/date/20261011/20261011-192755_diffuser-p1-ruling-conflicts-with-discrimination.kyri this lap's record of the P1 and P2 tension
+file session-logs/date/README-index-20261011.md one shelf row placed beneath the delimiter
+status HELD -- no build, no run, no witness; P1 and P2 conflict on the below-26 table and need a ruling written before any further run; no fruit this lap
+scope diffuser lane, moonshots and research; no custody gate touched; nothing pushed
+recommend check in (Claude) -- rule P1 against P2 before the next sawtooth run: either a floor-free read of conflict against N at fixed sets, or a pre-registered P1 that does not require floors on rows with Cartesian conflicts; write it before any run

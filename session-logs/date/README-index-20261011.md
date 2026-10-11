@@ -6,6 +6,7 @@
 | `20261011.191420` | [Incense, declined, no build](20261011/20261011-191420_incense-declined-no-build.kyri) | Tree clean; claims present; no sentinel; gated; no build. |
 | `20261011.191130` | [Diffuser held, P1 unruled](20261011/20261011-191130_diffuser-hold-p1-unruled-remote-level.kyri) | Remote level; P1 waits on a ruling; no run. |
 |---|---|---|
+| `20261011.192755` | [Diffuser, P1 and P2 conflict](20261011/20261011-192755_diffuser-p1-ruling-conflicts-with-discrimination.kyri) | P1 and P2 clash below 26 sets; ruling unmade; no run. |
 | `20261011.192348` | [Diffuser held, P1 unruled, ff no ruling](20261011/20261011-192348_diffuser-hold-p1-unruled-ff-no-ruling.kyri) | Fast-forwarded three peer logs; P1 still waits on a ruling; no run. |
 | `20261011.192050` | [Diffuser held, P1 unruled, prompt is a log](20261011/20261011-192050_diffuser-hold-p1-unruled-prompt-is-a-log.kyri) | Inner prompt holds revision lines, no P1 definition; no run. |
 | `20261011.191917` | [Patchouli, queue empty, no build](20261011/20261011-191917_patchouli-queue-empty-no-build.kyri) | Mantra/tally net empty; %765 and %807 still gated. |
