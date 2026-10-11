@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.100726
+editor Claude Code interface
+provider Anthropic
+product Claude Code
+role bakery lane -- core infrastructure, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_status tree-declared default, not runtime telemetry
+voice Kyri
+host anonymized one-clock zone America/New_York
+title Bakery, receipt key still held at its ruling, no build
+prompt the bakery baton and inner prompt: read the card whole, pick the hardest solvable lap, claim before build
+think tree clean at start; HEAD 60766456f5, 11419 commits; no pull was run because the baton asks for no edit before the cold run and this lap launched none
+think read recursion-prompts/bakery-inner.md engine and fruit sections and construction/ITINERARY.md head; the fruit is one shared build cache and one shared cold-run cache, ruled 20261002.142242
+think re-measured the blocker on the current bytes: tools/fixtures/s/standing_equipment_run.sh still reads git rev-parse HEAD in tree_digest (lines 785, 844, 1826), so one tree at two commits still reads two receipt digests
+think re-ran tools/fixtures/b/shared_build_cache_census.sh: miss_new_files=819, same_src_other_path_new_files=0, path_independent=yes; the compile layer shares by content already
+think the receipt key is the card's YOURS question (ITINERARY line 31): whether the key drops HEAD for the watched inputs. That changes the roster runner's contract, so the bench may not decide it
+obs no build: the cache fruit cannot land on a receipt key that still names HEAD, and a shared receipt cannot be witnessed honestly on one checkout
+obs no claim written and no cold run launched: no new instrument and no booked red was taken; a cold pass costs about 70 minutes of a shared pier for a lap with nothing to verify
+obs this matches the fleet's shape this morning: peer logs read held, declined, or gated for the same ruling
+rota none -- the keystone was the blocker re-measure and the card's own account of the fruit; no council row was deep-read
+orbit round 13 sky -- wildcard: may borrow one other verb; names the heart page
+file construction/ITINERARY.md read; no change to the card, so no nib move beyond the git-nib carry rule
+file session-logs/date/README-index-20261011.md one row prepended under the delimiter
+scope read-only: card, bakery inner prompt, census and blocker re-measure; no tracked code changed
+status GREEN for the reads and the re-measure; no witness run because no tracked code changed; the lap is held at its own gate, not failed
+recommend check-in (Claude) -- rule on the receipt key (does it drop HEAD for the watched inputs?), then bakery builds the shared receipt
