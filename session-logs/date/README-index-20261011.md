@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.051239` | [Patchouli, kumara red held](20261011/20261011-051239_patchouli-kumara-red-held-by-pin-bound.kyri) | Queue empty; kumara red unbooked, pin 65532/65536. |
 | `20261011.051138` | [Copal, fruit still spent, no build](20261011/20261011-051138_copal-fruit-still-spent-no-build.kyri) | Set difference re-run; no witness left under tools/gen/chapter/; no build. |
 | `20261011.050716` | [Bakery, claim closed, queue held](20261011/20261011-050716_bakery-claim-closed-queue-held.kyri) | landed kumara claim closed; no build; receipt-key ruling waits. |
 | 20261011.050614 | [Patchouli, queue empty, no build](20261011/20261011-050614_patchouli-queue-empty-water-second-run.kyri) | queue empty; consent replay GREEN again. |

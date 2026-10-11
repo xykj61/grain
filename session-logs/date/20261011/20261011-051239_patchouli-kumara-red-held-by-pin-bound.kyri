@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261011.051239
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role patchouli lane (mantra/ and tally/)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status .claude/settings.json fleet default, clone resolves per declared_model.sh
+evidence .claude/settings.json and tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized Linux bench, America/New_York clock
+title patchouli queue read, kumara sign red held by ledger pin bound
+prompt Run the patchouli baton: read the inner prompt, find the next agent-doable fruit in mantra/ and tally/, or say the queue is empty.
+think Read recursion-prompts/patchouli-inner.md. Its last named open item is the kumara.sign catch-unreachable red, which the prompt says owes a REDS row.
+think Ran the version-literal net fresh over mantra/ and tally/. It returns only the four elder read-compat headers in mantra/src/main.rye and fixture or loop-local strings, all of which the law exempts.
+think Checked whether the kumara red can be booked. next_free from the anointed spine is 840. construction/REDS.md is 65532 of its 65536-byte ceiling, so a three-field row does not fit.
+think Booking needs a fold of a BOOKED row, and a fold moves rows other ships own. I did not fold one, so the row stays unbooked.
+obs No code changed. The red is confirmed by the prompt's own metal reproduction (panic KeyMismatch, exit 134) and was not re-run this lap.
+obs The seam ruling on the legacy kumara.sign callers (amphora, aurora, comlink) is outside this lane and waits for its owning hand or Keaton.
+obs %807 and %765 remain unchanged, and the queue reads empty for the twenty-fourth confirming way.
+rota lap 11028, row 0 -- aether hears: the queue's silence is the thing to listen to; a red with no row is a red nobody can see.
+file construction/REDS.md why the kumara.sign red needs a row once a BOOKED row folds and frees headroom (pin at 65532 of 65536)
+file tally/kumara.rye why sign stays catch-unreachable pending the seam ruling; sign_checked is the additive door already landed
+file recursion-prompts/patchouli-inner.md why the lap read the open item and the queue state this round
+recommend check in (Claude) -- book kumara.sign's red once a row folds for headroom, then rule on the legacy sign seam
+scope read-only queue reading; one session log; no code edit
+status GREEN for the queue reading (grep net re-run fresh); the kumara red stays unbooked, held by the pin bound, named here honestly
