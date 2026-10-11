@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261011.071230
+editor Claude Code terminal, grain-patchouli lane
+provider Anthropic
+product Claude Code
+role patchouli -- lane mantra/ and tally/
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Patchouli -- the kumara sign red has no ledger row; the pin sits 4 bytes under its bound
+prompt Patchouli inner prompt, unattended lap: find the next agent-doable chronological header in mantra/ or tally/, or say the queue is empty and stop.
+think The inner prompt names a red it never booked: tally/kumara.rye sign() keeps catch unreachable over Ed25519 sign, and sign_checked is the additive door. The fix is closed; the row was never written.
+think The next free number on the anointed spine reads 840 (reds_spine_derive_scan.sh --next). grep for 840 in construction/REDS.md finds no row, so the red is booked nowhere.
+think construction/REDS.md is 65532 bytes against a declared bound of 65536. A three-field row needs more than 4 bytes, so writing it would refuse every commit on every ship. Closing rows to make room means folding peers' ledger rows, which is not this lane's to do.
+obs The red is real and the ledger is the wrong place to record it right now. The three fields are written here so the row can be booked once headroom exists.
+obs No code changed in this lap, so no witness ran and none is claimed. The sign() line was read by eye at tally/kumara.rye:36.
+obs Draft row for the ledger, held here until headroom exists: REDS %840 (20261010.152007) -- tally kumara sign() panics on a mismatched keypair. What went wrong: sign() wraps Ed25519 sign in catch unreachable, and a KeyPair assembled from mismatched parts reaches the panic (metal probe: panic attempt to unwrap error KeyMismatch, exit 134). What caught it: the 70-line and catch-unreachable census over mantra/ and tally/. What it taught: a safe-looking unreachable on a fallible std call is an assert in disguise only when the input cannot be built wrong. Status: OPEN, the additive sign_checked door is GREEN (fda5a4b03e), the legacy sign() awaits the seam ruling on amphora, aurora and comlink callers.
+rota lap 11185, row 0 -- Aether, the row that hears. Listened for the page nobody answered: the sign red has no row, and the ledger has no room for one.
+orbit round 10 sign -- Capricorn, the verb is "what must stop: the bound"
+file construction/REDS.md why not edited: 4 bytes under the pin bound, and rows are shared
+file session-logs/date/20261011/20261011-071230_patchouli-sign-red-unbooked-ledger-bound.kyri why this record of the unbooked row and its draft
+recommend check-in (Claude) -- rule whether a shed of folded peers' closed rows is owed so the %840 row can be booked, and rule the legacy sign() seam; the lane itself has no agent-doable header left.
+status GREEN for the reading only; no code changed; the %840 row is drafted here and not yet booked.
+scope session log and index row only.

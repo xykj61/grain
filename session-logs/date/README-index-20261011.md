@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261011.071230 | [20261011-071230_patchouli-sign-red-unbooked-ledger-bound](20261011/20261011-071230_patchouli-sign-red-unbooked-ledger-bound.kyri) | kumara sign red has no ledger row; the pin is 4 bytes under its bound |
 | `20261011.070455` | [Patchouli, queue empty, no build](20261011/20261011-070455_patchouli-queue-empty-no-build.kyri) | Fresh version-literal net; queue empty; no build. |
 | `20261011.070257` | [Incense, baton declined, rota aether, no build](20261011/20261011-070257_incense-baton-declined-no-build-rota-aether.kyri) | Level with xy/main; claim board clear; order holds; no build. |
 | `20261011.070545` | [Pheromone, pulled, lane empty, no build](20261011/20261011-070545_pheromone-lane-empty-pulled-no-build.kyri) | Fast-forwarded to 8be0c2693b; lane empty; zero claims; no build. |
