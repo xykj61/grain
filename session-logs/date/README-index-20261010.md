@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.234310` | [Patchouli, queue empty, no build](20261010/20261010-234310_patchouli-queue-empty-no-build.kyri) | Mantra and Tally net empty; no build. |
 | `20261010.233758` | [Patchouli, sign red held at pin bound](20261010/20261010-233758_patchouli-sign-red-held-at-pin-bound.kyri) | Red %840 unbooked; pin 4 bytes under bound. |
 | `20261010.233701` | [Pheromone, lane empty, no build](20261010/20261010-233701_pheromone-lane-empty-no-build.kyri) | Fruit closed; claim board clear; no build. |
 | `20261010.233601` | [Bakery, lineage split, check in](20261010/20261010-233601_bakery-receipt-lineage-split-check-in.kyri) | Receipt head shares no ancestor with HEAD; no build |
