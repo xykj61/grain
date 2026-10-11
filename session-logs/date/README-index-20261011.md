@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.014611` | [Grass, fold.rye grades A, queue empty, no build](20261011/20261011-014611_grass-fold-grade-queue-hold-no-build.kyri) | Fold head reads A 93; queue empty; no edit. |
 | 20261011.014342 | [diffuser fourth pair still held](20261011/20261011-014342_diffuser-fourth-pair-still-held.kyri) | Diffuser second hold of the morning, fourth pair waits for 20261012, no run |
 | `20261011.014138` | [Grass, queue empty, ledger read, no build](20261011/20261011-014138_grass-queue-empty-ledger-read-no-build.kyri) | Queue empty; no in-lane red; no edit. |
 | `20261011.014054` | [Diffuser, fourth pair held by date](20261011/20261011-014054_diffuser-fourth-pair-held-by-date.kyri) | Pair waits for 20261012; no run; no build. |
