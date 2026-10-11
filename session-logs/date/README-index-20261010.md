@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.215335` | [Petrichor, sixth gate read, no build](20261010/20261010-215335_petrichor-sixth-gate-read-no-build.kyri) | Consent Rail still gated; no keystone open to this lane; no build. |
 | `20261010.214721` | [Copal, fruit empty, no build](20261010/20261010-214721_copal-fruit-empty-no-build.kyri) | Zero unrostered chapter witnesses; no claim, no build; check-in asked. |
 | `20261010.214814` | [Patchouli, queue empty, fresh grep, no build](20261010/20261010-214814_patchouli-queue-empty-fresh-grep-no-build.kyri) | Four elder headers kept by law; queue still empty; no build. |
 | `20261010.214808` | [Petrichor, gate held a fifth read](20261010/20261010-214808_petrichor-gate-held-fifth-read-no-build.kyri) | Pull clean to d160a797ee; Consent Rail gates; no build. |
