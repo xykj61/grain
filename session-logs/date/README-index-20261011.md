@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.052628` | [Bakery, claim stands unbuilt, no build](20261011/20261011-052628_bakery-claim-held-no-build.kyri) | Compile claim has no build behind it; queue held on Keaton's ruling. |
 | `20261011.051851` | [Copal, fruit spent, fourth look, no build](20261011/20261011-051851_copal-fruit-spent-fourth-look-no-build.kyri) | Path-line census re-run; zero unrostered witnesses; no build. |
 | `20261011.052050` | [Petrichor, held, no build](20261011/20261011-052050_petrichor-held-after-upstream-incense-decline-no-docs-geode.kyri) | ff to 008d0d04e2; no docs-geode path; no build. |
 | `20261011.052440` | [Petrichor, held after upstream, no build](20261011/20261011-052440_petrichor-held-upstream-diffuser-no-docs-geode-no-build.kyri) | ff to cff617059a; no docs-geode change upstream; no build. |
