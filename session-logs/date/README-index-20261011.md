@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.163152` | [Copal, fruit empty, no build](20261011/20261011-163152_copal-fruit-empty-no-build.kyri) | No unrostered chapter witness; 3 non-witness .rish only; no build. |
 | `20261011.162702` | [Copal, unrostered witnesses exhausted, no build](20261011/20261011-162702_copal-unrostered-witnesses-exhausted-no-build.kyri) | 158 of 158 chapter witnesses rostered; nothing to claim; no build. |
 | `20261011.162612` | [Incense, baton held, no build](20261011/20261011-162612_incense-baton-hold-no-build.kyri) | Round-open clean; board unread live; no build. |
 | `20261011.162533` | [Petrichor, hold, consent facts restated, no build](20261011/20261011-162533_petrichor-hold-consent-facts-restated-no-build.kyri) | Consent facts verified by object; no claim, no build. |
