@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.045411
+editor Claude Code (grain-bakery tree)
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure, baton lap
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status declared in tools/b/bakery_seat_prompt.txt and recursion-prompts/bakery-inner.md; resolved value not read this lap
+voice Kyri
+host anonymized Linux pier, one-clock zone America/New_York
+title Bakery, claim held on the Rishi ruling, no build
+prompt Baton lap as bakery: read the card, honor the order, claim before building, run the cold pass only once HEAD settles, then close.
+think Read the bakery inner prompt and the card's content-keyed compile step. Step 2 changes Rishi, which the collaboration rule routes to a Claude ruling before building.
+think The live claim bakery-content-keyed-compile (seat bakery, stamp 20261011.040446) still stands on tools/r/. Its six-hour expiry runs to about 10:04 EDT.
+think The reader's copy is upstream at commits_behind=2, so this checkout must settle before any build or cold pass.
+think No code was edited. Starting a cold roster pass on an unsettled tree would fix its verdict at tree_moved, which the baton's ORDER clause names as the failure.
+obs Two decisions wait on a Claude ruling: the cache key's exact input set, and whether a shared cache may cross the eight checkouts. The card already names both as Keaton's word or a seam call.
+obs Leaving the claim open keeps peers from building the same compile cache while the ruling is owed. It expires on its own if this lap stops.
+loom witness=fleet_claim_scan wall_ms=unmeasured claims_live=1 overlap_mine=1 verdict=clear
+rota none -- the claim and the ruling are the lap's whole question; no deep read of the council row was owed to it
+orbit round 1 sign -- not computed this lap; the round count was not read
+file construction/fleet-claims.kyri bakery claim still live on tools/r/; no edit this lap
+file session-logs/date/20261011/20261011-045411_bakery-claim-held-rishi-ruling-no-build.kyri this log; no build, no push
+status HELD -- claim stands; Rishi cache key needs a Claude ruling; cold pass not launched; tree 2 commits behind upstream and unpulled
+scope claim check, card read, and log only; no source changed
+recommend check-in (Claude) -- rule the cache key's input set and whether one cache may serve all eight checkouts, then build step 2 under the open claim

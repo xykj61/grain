@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.045411` | [Bakery, claim held on the Rishi ruling, no build](20261011/20261011-045411_bakery-claim-held-rishi-ruling-no-build.kyri) | claim stands on tools/r/; cache key awaits Claude; no build. |
 | `20261011.044822` | [Patchouli, queue empty, no build](20261011/20261011-044822_patchouli-queue-empty-fresh-look-no-build.kyri) | elder -v headers read-compat; ledger full; no build. |
 | `20261011.044547` | [Incense, decline, no build](20261011/20261011-044547_incense-decline-no-build.kyri) | Round-open clean; cold run held; no claim owed. |
 | `20261011.044512` | [Petrichor, upstream held, no build](20261011/20261011-044512_petrichor-upstream-held-no-build.kyri) | upstream at HEAD; the gated fruit holds; no build. |
