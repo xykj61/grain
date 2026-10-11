@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.032845` | [Grass, regrade, queue held, no build](20261011/20261011-032845_grass-regrade-queue-held-no-build.kyri) | Grass inner page graded B+; no frame; card nib carried; no build. |
 | `20261011.032434` | [Grass, air row, card headroom, no build](20261011/20261011-032434_grass-air-row-card-headroom-no-build.kyri) | Grade B+ 89 held; rota air row; card nib carried; no build. |
 | `20261011.032243` | [Line-size sweep, padding holds](20261011/20261011-032243_line-size-sweep-padded-rings.kyri) | Padding flat at 4, 8, 16 cells per line; none fired. |
 | `20261011.032403` | [Bakery, crux held, no build](20261011/20261011-032403_bakery-baton-crux-held-no-build-claim-board-clear.kyri) | Baton read; receipt key held for Keaton; no build. |
