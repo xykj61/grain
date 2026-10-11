@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.183159` | [Pheromone, eighth hold, witness GREEN](20261011/20261011-183159_pheromone-eighth-hold-witness-green.kyri) | Queue done; witness GREEN; no build. |
 | `20261011.182449` | [Incense, baton declined, ledger at bound](20261011/20261011-182449_incense-baton-declined-ledger-at-bound.kyri) | Board empty; no build; ledger at its bound. |
 | `20261011.182102` | [Diffuser, fifty-sixth hold, P1 unruled](20261011/20261011-182102_diffuser-fifty-sixth-hold-p1-unruled.kyri) | Fast-forward checked; no P1 ruling; no run. |
 | `20261011.182006` | [Patchouli, queue empty fourteenth, no build](20261011/20261011-182006_patchouli-queue-empty-fourteenth-no-build.kyri) | Version grep re-run; no candidate; no build. |
