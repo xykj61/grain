@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.063042` | [Bakery, crux hold, check-in, no build](20261011/20261011-063042_bakery-crux-hold-check-in-no-build.kyri) | Crux unclaimed; claim needs a ruling before a cold window. |
 | `20261011.062515` | [Bakery, measured hold, no build](20261011/20261011-062515_bakery-measured-hold-no-build.kyri) | Plant, cache, scope read; receipt key and %642 await Keaton. |
 | `20261011.062502` | [Patchouli, red held at bound, no build](20261011/20261011-062502_patchouli-red-held-at-pin-bound-no-build.kyri) | Kumara red unbooked; pin 4 bytes under bound. |
 | `20261011.062150` | [Grass, inner prompt B+, no build](20261011/20261011-062150_grass-grade-grass-inner-b-plus-no-build.kyri) | Field grade 89; no frame; no build. |

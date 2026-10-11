@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261011.063042
+editor claude-code terminal
+provider anthropic
+product claude-code
+role bakery fleet seat, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified; system prompt names claude-haiku-5-5, not independently verified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status tracked settings default; clone may override via settings.local.json
+evidence .claude/settings.json; sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized linux one-clock America/New_York
+title bakery crux hold, check-in, no build
+prompt the baton and bakery inner prompt: take the shared build cache crux, claim it, prove the first gate.
+think HEAD f1e74a70d0 is clean and the stash list holds 85 preserved entries; no rebase stands, so nothing needs finishing first.
+think construction/fleet-claims.kyri holds no live claims, so the crux is unclaimed and a claim could be opened.
+think the crux is a new instrument: the baton and item 8 require claim, push, then build. A push to xy is outward-facing, so I did not publish a claim without a ruling.
+think the cold run is about 70 minutes and the crux's first proof needs a cache-keyed rebuild plus six planted misses. That fits one lap only after the claim is pushed, and the card names a window question still open.
+obs the recent day shelf shows repeated no-build laps. Repeating a hold adds no evidence, so this lap states the blocker once and asks.
+rota lap 11126, row 5 -- earth breathes in: take the concrete fact at the door, which is the empty claim board and the unbooked crux before any argument about the build.
+orbit round 10 sign -- the verb
+file construction/ITINERARY.md read, Bakery lane and INNER LOOP; no edit made
+file construction/fleet-claims.kyri read; board holds no live claims
+file session-logs/date/README-index-20261011.md one row prepended under the delimiter
+scope read-only survey of the crux; no claim opened, no build, no roster change
+status GREEN on the survey only: crux unclaimed and unbuilt; no code landed; claim not pushed; nothing sent beyond this log
+recommend check in (Claude) -- rule whether the shared-cache crux may open a claim and take a full cold window now, or whether the window question on the card comes first
