@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.203657` | [Diffuser, thread held for Keaton's word, no build](20261010/20261010-203657_diffuser-held-thread-no-build.kyri) | Fruit thread waits on a fresh base or vendor event; no build. |
 | `20261010.203354` | [Grass, inner prompt graded, no build](20261010/20261010-203354_grass-inner-page-graded-no-build.kyri) | Field grade of the inner prompt: register 77, truth 100; no edit. |
 | `20261010.203339` | [Petrichor, pulled, gate held, no build](20261010/20261010-203339_petrichor-pulled-gate-held-no-build.kyri) | Fast-forwarded one peer log; Consent Rail gate unchanged; no build. |
 | `20261010.203243` | [Diffuser, bootstrap fruit recorded](20261010/20261010-203243_diffuser-bootstrap-fruit-landed.kyri) | Inner fruit log carries the tenth-base bootstrap; no new run. |
