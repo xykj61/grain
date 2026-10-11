@@ -52,9 +52,3 @@ format fleet-claims-v1
 # The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
 # it with this lap's own work would be a claim written after the fact, which is the one thing a
 # declaration may never be.
-claim bakery-content-keyed-compile
-seat bakery
-stamp 20261011.040446
-epoch 1791705886
-paths tools/r/ tools/fixtures/r/ construction/fleet-claims.kyri
-what Bakery fusion spine step 2: content-keyed compile cache in Rishi, identical declared inputs reuse a binary while every owed proof still runs

@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261011.053217
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role bakery seat, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved by declared_model.sh; local override present (.claude/settings.local.json)
+evidence sh tools/fixtures/d/declared_model.sh resolved_model -> claude-haiku-5-5; override -> yes
+voice Kyri
+host anonymized Linux pier, America/New_York
+title Bakery claim dropped: compile cache already shares across checkouts, step 2 waits on a ruling
+prompt Run the Bakery baton lap: read the card and the inner prompt, honor the claim order, do one bounded change if one is ready, witness it, log it, send.
+think The board held my own live claim, bakery-content-keyed-compile, stamped 20261011.040446 and landed upstream at 8974b3f518. The 051855 lap read the board as clear of Bakery claims, which was wrong; the claim was live the whole time.
+think Step 2 of the queue asks for content-keyed compilation in Rishi: identical declared inputs reuse a binary while every owed proof still runs. Rishi is a seam, and the card says a change to Rishi waits on a Claude ruling.
+think The shared build cache census re-ran at 053217 and reads path_independent=yes: 819 new files on a miss, 0 for the same source at another checkout path, 0 on a rebuild at the same path. Zig's own cache already dedupes compiles across the eight checkouts, so the compile-layer share the fruit asked for is already in place.
+think What is left of step 2 is a Rishi-level reuse that skips the zig invocation while still running proofs. That is the seam change the card holds for ruling, so this lap does not build it.
+obs Holding the claim open for six hours would block peers from a build this lap will not make. Dropping it is the honest close; a fresh claim can open the day the ruling lands.
+obs The cold endurance run was not launched. This lap changed only the claim board and the card's nib, so there was no new tree to measure.
+loom wall_ms=0 -- no measurement taken beyond the census; the census took about five seconds and its own output is the reading
+rota none -- claim-close lap; no council row read this lap
+orbit round 8 sign -- the verb is held for the next round load read
+file construction/fleet-claims.kyri closed bakery-content-keyed-compile via fleet_claim.sh --close; the board carries no Bakery claim now
+file construction/ITINERARY.md card nib carried to a89879ce79 by the close; no queue item changed
+file tools/fixtures/b/shared_build_cache_census.sh re-run as the witness for the claim's premise; path_independent=yes
+file session-logs/date/README-index-20261011.md prepended one row for this log
+scope claim close, card nib carry, and this log; no build, no Rishi change, no fixture change
+status GREEN for the census re-read and the claim close (verdict=closed, form_gate=passed). Step 2 of the queue stays OPEN, held for Claude ruling on the Rishi reuse seam. Receipt-key ruling, %642 scrub word, and wire-ceiling door stay OPEN for Keaton.
+recommend check in (Claude) -- decide whether a Rishi-level reuse that skips zig still earns its seam now that zig's own cache already shares compiles across checkouts.
