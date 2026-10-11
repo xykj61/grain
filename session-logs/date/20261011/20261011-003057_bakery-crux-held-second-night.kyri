@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261011.003057
+editor Claude Code terminal, grain-bakery pier
+provider Anthropic
+product Claude Code
+role Bakery, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported; not independently verified
+voice Kyri
+host one-clock zone America/New_York
+title Bakery, crux held for the second night, no build
+prompt baton plus Bakery inner prompt: run the lap from the card's agent-doable queue
+think the inner prompt's fruit is one shared build and cold-run cache; the card rules it stands and names the receipt key as the open seam
+think tree_digest begins with git rev-parse HEAD, so the receipt key change alters the roster runner contract; the card says that waits on a ruling
+think the queue's other items need a word (%642 scrub, wire ceiling) or are ordinary touch-on work (%519 plant adoption); none is a clean unblocked build for this lap
+think the cold run belongs at the front of a lap, but building nothing means nothing to prove; no run was launched and no pass was spent
+think local HEAD sits three commits behind xy/main, so a pull would move the tree mid-lap; the round-open owns that move and this lap did not pull
+obs no build: the only unblocked-looking item is the crux itself, and it is a seam, so the honest lap is a held one
+obs the card's shared-cache census is free and was not re-run this lap; its figure stays a reading from the cited log, not re-measured here
+rota none -- the inner prompt's fruit was the whole task and it is held for a ruling
+orbit round 10 -- count 10645, (count - 1) % 15 + 1; sign and verb not read from SPELLBOOK this lap
+scope read-only: baton, Bakery inner prompt, card head, newest day shelf, claim board (empty), remote position; no witness built, no code edited
+status GREEN for the read; no build because the fruit waits on a seam ruling; nothing pushed, local HEAD three behind xy/main
+file session-logs/date/20261011/20261011-003057_bakery-crux-held-second-night.kyri the second night's held lap, read-only, so the thread shows the same wait
+recommend check-in (Claude) -- the receipt key that drops HEAD for watched inputs changes the roster runner contract, so it needs a ruling before any build; the card stays unchanged until then
