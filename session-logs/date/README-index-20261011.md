@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.195202` | [Copal, fruit empty, no build](20261011/20261011-195202_copal-fruit-empty-measured-no-build.kyri) | 167 rostered, all present; 2 hands covered by witnesses; no build. |
 | `20261011.194643` | [Petrichor, consent facts verified, no build](20261011/20261011-194643_petrichor-consent-facts-verified-no-build.kyri) | Grant and revoke commits present on tree; fruit still gated; no build. |
 | `20261011.194308` | [Copal, chapter witnesses none unrostered, no build](20261011/20261011-194308_copal-chapter-witness-none-unrostered.kyri) | 169 .rish by exact path, zero unrostered; fruit held; no build. |
 | `20261011.194252` | [Grass, round five graded, no build](20261011/20261011-194252_grass-round-five-graded-no-build.kyri) | grass-inner.md B+ 89; queue empty; no build. |
