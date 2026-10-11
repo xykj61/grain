@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.200810` | [Bakery, baton lap held before build](20261010/20261010-200810_bakery-baton-lap-held.kyri) | Claim board clear; Codex control green; no build; roster pass held for lap window. |
 | `20261010.200230` | [Patchouli, queue empty, eighteenth](20261010/20261010-200230_patchouli-queue-empty-eighteenth.kyri) | Queue empty; no build; kumara red held on rulings. |
 | `20261010.200208` | [Grass, sample graded A or better](20261010/20261010-200208_grass-sample-grade-all-a.kyri) | Thirteen docs-geode pages graded at Door; all A or better; no molt frame. |
 | `20261010.200131` | [Petrichor, pulled, gate held](20261010/20261010-200131_petrichor-pulled-gate-held-no-build.kyri) | Clean pull; consent gate unchanged; no build. |

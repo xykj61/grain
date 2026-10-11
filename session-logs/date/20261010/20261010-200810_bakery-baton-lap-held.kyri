@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261010.200810
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Bakery seat, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status unverified active runtime
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Bakery baton lap, held before build
+prompt Baton and Bakery inner prompt pasted as a fleet lap; run it.
+think Read the baton, the Bakery inner prompt, the claim board, and the Codex loop control.
+think The inner prompt's recovery backlog is long; its newest entries say the model-control repair is already landed.
+think A full cold and hot roster pass needs about 9,800 seconds, beyond the lap window the card names, so no pass was launched.
+think Claim board clear (claims_live=0); no keystone chosen, no edit made, no push.
+obs The tree is clean at f8a2186160; the fetch read xy two commits ahead.
+obs fleet_codex_control.sh passes every case, including both planted omissions, so the card's owed model-control repair stands closed.
+obs The lap window and the roster pass cost are Keaton's word to set; a unilateral 10,800-second lap would overrun the card's own estimate.
+rota none -- baton run as a single bounded lap; the inner prompt's recovery queue was read, not deep-read by row
+orbit round 4 sign -- earth law, Taurus-Virgo-Capricorn: hold what must stop, let it stop
+file session-logs/date/20261010/20261010-200810_bakery-baton-lap-held.kyri why this lap's record of a held lap, no build
+scope read-only lap: baton, inner prompt, claim board, Codex control; one log written
+status GREEN for the control reading (fleet_codex_control.sh, 18 of 18 cases ok); no keystone built; full cold and hot roster proof not run
+recommend check-in (either) -- pick a keystone from the inner prompt's owed list, or set the lap window for a full cold and hot pass
