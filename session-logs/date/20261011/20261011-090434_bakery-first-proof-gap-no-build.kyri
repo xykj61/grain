@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20261011.090434
+editor Claude Code (terminal, grain-bakery)
+provider Anthropic
+product Claude Code
+role bakery core-infrastructure lane, grain-bakery ship
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved by sh tools/fixtures/d/declared_model.sh resolved_model, not runtime telemetry
+evidence declared_model.sh resolved_model on this clone; recursion-prompts/bakery-inner.md declares claude-opus-5, which this clone does not run
+voice Kyri
+host anonymized Linux one-clock zone America/New_York
+title Bakery first-proof gap found, no build
+prompt Run the bakery baton: read the card, claim before building, take the top fleet priority.
+think Fast-forwarded xy/main from c7dd449a53 to 3c6ef46cee; tree was clean before and after.
+think Card's #1 fleet priority is content-keyed compilation, whose first proof says identical inputs skip compilation but still run the proof, and the receipt names the closure.
+think Prior landed work already covers the key: cd8c2fb2a1 added the receipt key, and tools/r/ryekey_witness.rish ran GREEN, 44 legs, on this checkout.
+think Searched the witness, control, and scan files for a skip-still-runs-proof check or a closure-naming check. None matched.
+think So the first-proof clause is not yet witnessed. Building it means changing the Rye build seam and the receipt format, which the collaboration rule routes to a Claude ruling.
+think The claim board was empty at the read, and an instrument would need a claim first. Opening a claim and building the proof would commit this ship to a seam the ruling has not yet approved, so I stopped here.
+obs No code changed and no claim was opened. The day's index row is the only other edit.
+obs fleet_claim.sh was invoked bare, which read verdict=no_verb and sent nothing. Its verbs are --open and --close.
+obs The day index shelf stands with its table header on line 12, below the rows, so the delimiter the card asks for is missing. I did not reshape the shelf; that wants its own round.
+loom witness=ryekey_witness legs=44 verdict=green
+rota lap 11334, row 4 -- Earth, breathes in: the first-proof gap is a plain fact at the door; the cached build's receipt does not yet name its own proof.
+orbit round 9 sign -- verb carried by the Earth's signs: stop before crossing the seam without a ruling.
+file construction/fleet-claims.kyri read only, why the claim board was checked before any claim
+file tools/r/ryekey_witness.rish ran GREEN, why the existing key is not the open gap
+file tools/fixtures/r/ryekey_control.sh read for the skip path, why the first-proof clause is still unwitnessed
+file session-logs/date/README-index-20261011.md prepended one row, why the day shelf names this log
+scope read-only survey of the content-keyed build cache first proof, plus this log and one index row
+status GREEN for the witness that ran; first-proof clause open and unbuilt, no claim opened, nothing pushed
+recommend check in (Claude) -- decide whether a skipped build must still run its proof and name its closure on the receipt before any claim is opened for it
