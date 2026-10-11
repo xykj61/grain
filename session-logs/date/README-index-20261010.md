@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.235848` | [Patchouli, queue empty again, no build](20261010/20261010-235848_patchouli-queue-empty-no-build.kyri) | Both nets read elder headers only; lane empty; no build. |
 | `20261010.235323` | [Petrichor, gate recheck, no build](20261010/20261010-235323_petrichor-gate-recheck-no-build.kyri) | Consent gate holds; lane empty; no build. |
 | `20261010.235134` | [Copal, prin roster blocked](20261010/20261010-235134_copal-prin-roster-blocked-hang.kyri) | prin.rish hangs unrostered; claim closed. |
 | `20261010.235545` | [Grass, docs-geode door A, no build](20261010/20261010-235545_grass-docs-geode-door-grade-a-no-build.kyri) | Door read 94 A; queue empty; no edit. |

@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.235848
+editor Claude Code (Zed terminal, grain-patchouli tree)
+provider Anthropic
+product Claude Code
+role patchouli lane, queue read
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_status resolved clone value from tools/fixtures/d/declared_model.sh resolved_model, not runtime telemetry
+voice Kyri
+host anonymized Linux pier, one-clock zone America/New_York
+title Patchouli, queue empty again, no build
+prompt Patchouli baton: read the inner prompt, find the next fruit in mantra/ and tally/, or say the queue is empty and stop.
+think Read recursion-prompts/patchouli-inner.md. Its fruit section says the named work is landed and the next fruit is one chronological header still living in mantra/ or tally/.
+think Re-ran the two grep nets over mantra/ and tally/. Every hit is a read-compat elder header, a witness print label, a fixture constant, or tally/bud.rye h_domain, a Tier 1 domain separator.
+think The live headers already molted: mantra/src/main.rye writes mantra-weave-20260916.101910 and mantra-commit-20261001.233015, and receipt_offer.rye carries its molted schema string. Elder spellings stay readable by law.
+think The OPEN rows in construction/REDS.md name Keaton's ruling or another lane. The inner prompt asks for a fresh read each lap; this lap did not repeat the full row-by-row survey.
+obs Nothing agent-doable in this lane. Per the inner prompt's rule, the lap says the queue is empty and stops without a build.
+obs Fetched xy: one commit ahead of local HEAD (8c09d5e0ce, a session-log commit by a peer). Not pulled here, so this tree was not changed.
+obs The fleet claim board reads without a verb, so I did not open a claim. No build means nothing to claim.
+loom witness=queue_grep_nets wall_ms=unmeasured hits_landed_headers=2 hits_elder_readcompat=many
+rota none -- queue empty; the fruit's own recipe says state it and stop, with no open surface to read beyond the grep nets
+orbit round unknown sign -- calfive not computed this lap
+file recursion-prompts/patchouli-inner.md read for the queue rule, no edit
+file mantra/src/main.rye grep hit only, no edit; header molt confirmed landed
+recommend check in (either) -- queue empty; next Patchouli fruit waits on Keaton's ruling for %807, %765's remaining families in other lanes, or a new row booked on construction/REDS.md
+status GREEN on the queue reading; no witness run and no code changed this lap
+scope read-only queue scan and one session log; no build, no push
