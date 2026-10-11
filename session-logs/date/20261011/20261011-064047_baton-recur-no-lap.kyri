@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261011.064047
+editor Claude Code
+provider Anthropic
+product Claude Code
+role Bakery core-infrastructure ship
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host one-clock zone America/New_York
+title baton recur -- state read, no lap run
+prompt ty every1 baton prin recur (baton pasted as the seat prompt)
+think the baton asks for a full lap: claim, cold endurance run, build, send
+think the request text is ambiguous; the most literal reading is print and recur the baton
+think a full lap pushes to xy and runs a long cold pass, which needs a clear go-ahead
+obs tree clean at bd0ecd4917; xy/main is 3 commits ahead of local HEAD, so the round-open pull has not run
+obs no build, no claim, no push, no pass launched this response
+rota none -- no council row read; state read only
+file construction/fleet-claims.kyri board read for live claims, none opened
+file construction/fleet-roster.kyri roster present, not edited
+recommend check in (Claude) -- confirm whether to run a full Bakery lap (claim, pull, cold run, build, push) or a baton print only
+scope read-only state check and this log
+status GREEN for the read; no lap run, nothing built, nothing pushed
