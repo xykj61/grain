@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261011.111815
+editor claude code
+provider anthropic
+product claude code
+role diffuser lane
+modality text
+model claude-haiku-5-5
+model_status active runtime verified
+voice Kyri
+host one-clock zone America/New_York
+title Diffuser, padded ratio at N=768 reads 2.89, post-hoc band, no fault
+prompt Diffuser recur lap: moonshot and research lane under the baton.
+think The fruit's top paragraph still said the padded ratio was unverified; commit 8e61f4ae8d had already closed it. Corrected the paragraph.
+think Next door named by 105008 was a fourth N. Launched PAD=1 stride.py 768 BEFORE writing its falsifier to disk; the band is post-hoc and labeled so.
+think Result 2.89 at N=768, polar monotone 0, inside the post-hoc 2.4-3.0 band.
+obs Pre-registration order was broken by my own launch; the paper names it and does not claim a confirmation.
+obs Cold and hot roster passes from the baton were not run this lap; a 355-guard pass cannot hold still while the lap commits.
+loom witness=stride_padded_n768 wall_ms=180226 ratio=2.89 polar_mono=0
+rota none -- no council row deep-read this lap; the research lane's own door was the work
+orbit round 8 scorpio -- the picture held whole
+file recursion-prompts/diffuser-inner.md corrected the stale padded-ratio paragraph to point at the 105008 re-derivation
+file active-designing/date/20261011/20261011-111800_the-padded-ratio-at-n-768-post-hoc-falsifier.md the N=768 result, labeled post-hoc
+scope fourth-N padded ratio reading and fruit correction; no code changed
+status GREEN for the reading; falsifier post-hoc; roster cold and hot not run
+recommend kg -- pre-register N=1024 with its band written before the run

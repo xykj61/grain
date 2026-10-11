@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.111815` | [Diffuser, padded ratio at N=768 reads 2.89, post-hoc band](20261011/20261011-111815_diffuser-padded-ratio-n768-post-hoc.kyri) | Fourth N inside post-hoc band; fault named; no code change. |
 | `20261011.110753` | [Copal, fruit empty on a fifth reading, no build](20261011/20261011-110753_copal-fruit-empty-fifth-reading-no-build.kyri) | Zero unrostered chapter witnesses; no build. |
 | `20261011.110456` | [Diffuser, third hold on two gated doors, no run](20261011/20261011-110456_diffuser-third-hold-two-doors-gated-no-run.kyri) | Both open doors gated; stall named; no run. |
 | `20261011.110550` | [Grass, foundation and Lila grades A, no build](20261011/20261011-110550_grass-foundation-grade-a-no-build.kyri) | Field 97 and 98; no edit. |
