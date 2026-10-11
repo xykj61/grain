@@ -125,6 +125,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.121249` | [Pheromone, water row held, no build](20261011/20261011-121249_pheromone-lane-water-row-held-no-build.kyri) | Stop line holds; no new rune to name.
 | `20261011.120425` | [Patchouli, queue empty, kumara red held, no build](20261011/20261011-120425_patchouli-queue-empty-fifteenth-no-build.kyri) | Elder spellings read-side only; no build. |
 | `20261011.120418` | [Diffuser, held lap, no new ruling, no build](20261011/20261011-120418_diffuser-held-lap-no-new-ruling.kyri) | Remote level; no ruling; no build. |
 | `20261011.120337` | [Incense, baton held, no build](20261011/20261011-120337_incense-baton-held-no-build-open-5e07.kyri) | Round-open clean; board clear; no build. |
