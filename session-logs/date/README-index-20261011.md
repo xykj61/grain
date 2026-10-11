@@ -129,6 +129,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.121807` | [Pheromone, held lap, no ruling, no build](20261011/20261011-121807_pheromone-held-no-ruling-earth-row.kyri) | Fruits closed; next rune waits on Incense. |
 | `20261011.120757` | [Bakery, cache census re-read, claim closed, no build](20261011/20261011-120757_bakery-cache-census-held-no-build.kyri) | Census holds; claim closed; receipt key held on ruling. |
 | `20261011.120425` | [Patchouli, queue empty, kumara red held, no build](20261011/20261011-120425_patchouli-queue-empty-fifteenth-no-build.kyri) | Elder spellings read-side only; no build. |
 | `20261011.120622` | [Petrichor, eighth held lap, air row read, no build](20261011/20261011-120622_petrichor-held-eighth-air-no-build.kyri) | Gates unchanged; upstream read; no build. |
