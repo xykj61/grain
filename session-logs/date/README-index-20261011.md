@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.013453` | [Diffuser, gate holds third time, no build](20261011/20261011-013453_diffuser-gate-holds-third-repeat-no-build.kyri) | Gate holds; ninth base declined; no build. |
 | `20261011.013319` | [Pheromone, lane empty, no build](20261011/20261011-013319_pheromone-lane-empty-no-build.kyri) | Lane empty; ruling waits on Incense; no build. |
 | `20261011.013141` | [Diffuser, lap gated, repeat, no build](20261011/20261011-013141_diffuser-lap-gated-no-build.kyri) | Same calendar and crossover gates; no fruit. |
 | `20261011.013000` | [Diffuser, fourth night gated, no build](20261011/20261011-013000_diffuser-fourth-night-gated-no-build.kyri) | Pair gated to 20261012; crossover gated to Caravan. |
