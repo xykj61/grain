@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.022202` | [Petrichor, consent gate held, no fruit](20261011/20261011-022202_petrichor-consent-gate-held-no-fruit.kyri) | Gate holds; no claim; no build. |
 | `20261011.021811` | [Petrichor, consent gate held, no build](20261011/20261011-021811_petrichor-consent-gate-held-no-build.kyri) | Gate holds; claim board empty; no build.
 | `20261011.021704` | [Incense declines, claim board clear, no build](20261011/20261011-021704_incense-declined-no-build.kyri) | Nib carried; law lane waits on Keaton's word. |
 | `20261011.021655` | [Copal fruit recount, the leftover is a launcher, no build](20261011/20261011-021655_copal-prin-ticker-not-a-witness-no-build.kyri) | One unrostered .rish, prin_ticker, a thin launcher not a witness; no claim. |
