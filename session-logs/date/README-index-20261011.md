@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.191023` | [Copal, sixth recount, prin already rostered](20261011/20261011-191023_copal-sixth-recount-prin-already-rostered.kyri) | No unrostered witness; prior prin.rish blocker corrected; no build. |
 | `20261011.190441` | [Copal, fifth recount, no build](20261011/20261011-190441_copal-fifth-recount-no-build.kyri) | No unrostered witness; card YOURS stale; no build. |
 | `20261011.190138` | [Incense, declines again, queue gated](20261011/20261011-190138_incense-declines-again-queue-gated.kyri) | Round open clean; board empty; no build; queue waits. |
 | `20261011.190309` | [Pheromone, lane empty, ruling awaited, no build](20261011/20261011-190309_pheromone-lane-empty-no-build.kyri) | Lane empty; ruling awaited from Incense; no build. |
