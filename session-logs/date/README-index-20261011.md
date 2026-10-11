@@ -53,6 +53,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.101302` | [Bakery, receipt key held for ruling, no build](20261011/20261011-101302_bakery-receipt-key-held-no-build.kyri) | Receipt key waits on Keaton's word; queue gated; no build. |
 | `20261011.100949` | [Incense, read and declined, no build](20261011/20261011-100949_incense-baton-read-declined-no-build.kyri) | Round-open clean; board empty; cold run held; no build. |
 | `20261011.100904` | [Pheromone, lane held seventh time, no build](20261011/20261011-100904_pheromone-lane-held-seventh-no-build.kyri) | Stop clause holds; claim board empty; no build. |
 | `20261011.100745` | [Petrichor, links clean, no build](20261011/20261011-100745_petrichor-links-clean-no-build.kyri) | Relative links clean on the shipping shelf; gate held; no build. |
