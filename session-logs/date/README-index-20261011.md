@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.151826` | [Copal, fruit void again, no build](20261011/20261011-151826_copal-fruit-void-again-no-build.kyri) | Zero unrostered witnesses again; no build; ruling asked. |
 | `20261011.151414` | [Copal, fruit empty, no build](20261011/20261011-151414_copal-fruit-empty-no-build.kyri) | Zero unrostered witnesses; fruit void; ruling asked. |
 | `20261011.151401` | [Bakery, crux survey, no build](20261011/20261011-151401_bakery-shared-cache-survey-no-build.kyri) | Cache crux held on Keaton ruling; no build. |
 | `20261011.151016` | [Grass, inner prompt regraded, no build](20261011/20261011-151016_grass-inner-regraded-no-build.kyri) | Inner page regraded B+/89; earth row read; no edit. |
