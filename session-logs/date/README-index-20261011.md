@@ -271,6 +271,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.151940` | [Pheromone, gated, no build](20261011/20261011-151940_pheromone-gated-no-build-lap.kyri) | Lane gated on a Claude ruling; no build. |
 | `20261011.151211` | [Incense, baton declined sixty-eighth, no build](20261011/20261011-151211_incense-baton-declined-sixty-eighth.kyri) | Round-open clean; board empty; no build. |
 | `20261011.151338` | [Pheromone, gated again, no build](20261011/20261011-151338_pheromone-gated-again-no-build.kyri) | Tally-bounds form still awaits a Claude ruling; no build. |
 | `20261011.150515` | [Grass, front doors graded, no build](20261011/20261011-150515_grass-front-doors-graded-no-build.kyri) | Four Door pages read B+ or better; queue empty; no build. |
