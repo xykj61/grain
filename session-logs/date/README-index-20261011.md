@@ -6,6 +6,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.084813` | [Patchouli, queue empty, kumara held, no build](20261011/20261011-084813_patchouli-queue-empty-kumara-held-no-build.kyri) | Re-read the held kumara red; no new reading; no build. |
 | `20261011.084414` | [Kumara sign red live, pin at bound, row held](20261011/20261011-084414_patchouli-kumara-sign-red-pin-bound.kyri) | Red reproduces; ledger at byte bound; two rulings owed. |
 | `20261011.084209` | [Incense, baton declined, stash recovered, no build](20261011/20261011-084209_incense-baton-declined-recovered-stash-no-build.kyri) | Two own stashed declines landed; no build. |
 | `20261011.081432` | [Incense, baton read, clean tree, no build](20261011/20261011-081432_incense-baton-declined-clean-tree-no-build.kyri) | Clean tree; queue gated on Keaton; no build. |
