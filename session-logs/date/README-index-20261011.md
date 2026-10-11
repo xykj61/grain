@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.065029` | [Copal, fruit spent again](20261011/20261011-065029_copal-fruit-spent-no-unrostered-witness.kyri) | Zero unrostered witnesses; no build. |
 | `20261011.064549` | [Copal, recount third, fruit spent](20261011/20261011-064549_copal-roster-recount-third-no-build.kyri) | Zero unrostered witnesses; third recount today; no build. |
 | `20261011.064537` | [Petrichor, gate held, no build](20261011/20261011-064537_petrichor-gate-held-fast-forward-no-build.kyri) | Gate held on the record; no build. |
 | `20261011.064304` | [Incense, restored stashed logs](20261011/20261011-064304_incense-restores-stashed-logs.kyri) | 37 stranded logs restored; index red at HEAD, not ours. |
