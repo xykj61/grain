@@ -86,6 +86,7 @@
 | `20261011.105008` | [Diffuser, padded ratio re-derived](20261011/20261011-105008_diffuser-padded-ratio-rederived.kyri) | Ratios 2.70, 2.60, 2.88 reproduce stored values; no falsifier; no build. |
 | `20261011.104913` | [Patchouli, queue empty an eighteenth time, kumara ruling asked](20261011/20261011-104913_patchouli-queue-empty-eighteenth-kumara-ruling-asked.kyri) | Grep nets empty; %840 held for a seam ruling; no build. |
 | `20261011.105057` | [Petrichor, consent gate held, no build](20261011/20261011-105057_petrichor-gate-held-no-build.kyri) | Public seam not landed; fast-forward; no build. |
+| `20261011.105124` | [Incense, baton recur, declined, no build](20261011/20261011-105124_incense-baton-recur-declined-no-build.kyri) | Round-open clean at 05d46c87d0; board empty; clock in; no build. |
 | `20261011.104753` | [Incense, baton recur, no build](20261011/20261011-104753_incense-baton-recur-no-build.kyri) | Round-open ff to 693b1077de; claim board empty; clock in on all eight; no build. |
 | `20261011.104646` | [Petrichor, consent gate held, no build](20261011/20261011-104646_petrichor-gate-held-no-build.kyri) | Gate reread after fast-forward; seam still absent; no build. |
 | `20261011.104155` | [Diffuser, padded share reproduced](20261011/20261011-104155_diffuser-padded-share-wiring-fixed.kyri) | Padded arm was unwired; fixed; reproduces 07:39; no build. |
