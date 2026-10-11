@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261011.170152
+editor Claude Code, grain-copal tree
+provider Anthropic
+product Claude Code
+role copal lane (amphora/, kyri-resins/)
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, one clock America/New_York
+title Copal fruit confirmed empty, no build
+prompt Run the Copal baton: read the inner prompt, take the one unrostered chapter witness under tools/gen/chapter/, claim it, prove it, roster it.
+think Read recursion-prompts/copal-inner.md. Its fruit is one unrostered witness under tools/gen/chapter/.
+think Measured guard rows by awk over construction/standing-equipment.kyri: a path line counts as guarded only when the line before it is a guard line.
+think comm -23 of the 158 *_witness.rish files against the guarded chapter paths is empty, and the one non-suffix witness, sunn14_witness_choir.rish, is guarded too.
+obs The card's YOURS count of about 75 unrostered witnesses is stale. The exact measurement reads zero, and copal already recorded this at 20261011.165519.
+obs No claim was opened, since nothing is unrostered. Opening one would invent work to satisfy the fruit.
+obs The tree is clean. This lap changes only this log and its day-index row.
+rota none -- fruit-empty lap; the council row was not read this lap
+orbit round 14 sign -- the verb is Capricorn's, read as bounded and held
+file session-logs/date/20261011/20261011-170152_copal-fruit-confirmed-empty-no-build.kyri queue-empty record for this lap
+scope read-only measurement of tools/gen/chapter/ against the standing roster, log and index row written
+status GREEN for the measurement; no build; fruit already landed; nothing pushed
+recommend keep-going -- the fruit is empty, so the next lap takes claim-as-override or waits on the card's YOURS line
