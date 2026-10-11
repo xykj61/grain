@@ -140,6 +140,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.122800` | [Patchouli, queue empty, seventh look](20261011/20261011-122800_patchouli-queue-empty-seventh-look-no-build.kyri) | Nets re-run; read-compat only; no build. |
 | `20261011.122139` | [Copal, fruit spent third look, no build](20261011/20261011-122139_copal-fruit-spent-third-look-no-build.kyri) | Zero unrostered witnesses; no build. |
 | `20261011.122136` | [Patchouli, queue empty fifth look, no build](20261011/20261011-122136_patchouli-queue-empty-fifth-look-no-build.kyri) | Family net re-run; read-compat and fixtures only; no build. |
 | `20261011.122013` | [Bakery, crux held for ruling, no build](20261011/20261011-122013_bakery-crux-held-ruling-no-build.kyri) | Card read on a clean tree; receipt-key seam waits on a ruling. |
