@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261011.032058
+editor product interface Claude Code CLI
+provider model provider Anthropic
+product product name Claude Code
+role repository role copal lane, grain-copal, lap without build
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 -- resolved by tools/fixtures/d/declared_model.sh, not verified at runtime
+configured_status configured default, not runtime telemetry
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Copal, fruit absent again, no claim, no build
+prompt ty every1 baton prin recur -- copal lap under the shared baton; inner fruit: one unrostered witness under tools/gen/chapter/, claim it, roster it, prove both sides.
+think read recursion-prompts/copal-inner.md and the card. No MERGE_HEAD and no rebase state, so the "finish the merge in hand" line has nothing to finish. HEAD 72a5900770, tree clean.
+think measured the chapter room by exact path again: 158 *_witness.rish files, 0 without a path row in construction/standing-equipment.kyri. The card's "~75 unrostered" line is stale.
+think the non-witness runnables with no path row are brush_parse_tame_density.sh (called by brush_parse_witness.rish and rostered through brush_parse_density_witness.rish), fascia_metric_v0.rish, prin_scope.rish, prin_ticker.rish, and four .brix data files. None is a witness, so none is the fruit.
+think sh tools/fixtures/f/fleet_claim_scan.sh --check on brush_parse_tame_density.sh reads verdict=clear, board=upstream, commits_behind=2. Claiming it would still roster a helper the card never asked for, so no claim was filed.
+obs this is the fifth copal lap today to read the same absence, and four earlier logs record the same zero. The premise is gone and repeating the count adds nothing new.
+obs the orbit round is 13 (count 10873), sign sky, verb "Wildcard. May borrow one other verb." Quest place 73.
+rota none -- fruit absent; no deep read of the council row this lap
+orbit round 13 sky -- Wildcard. May borrow one other verb.
+file session-logs/date/20261011/20261011-032058_copal-fruit-absent-again-no-build.kyri why this log, the lap's only artifact, recording a no-build outcome
+file session-logs/date/README-index-20261011.md why one shelf row, under the delimiter, for this log
+scope copal inner fruit: the unrostered chapter witness under tools/gen/chapter/; re-measured by exact path, zero found, no claim filed
+status GREEN for the measurement (158 of 158 witnesses rostered; the non-witness runnables classified); no witness run, no code changed, nothing claimed
+recommend check-in (claude) -- the fruit's premise is gone for the fifth time today. Keaton's word on the card's stale "~75" YOURS line would settle whether the card is corrected or the lane takes a new fruit.

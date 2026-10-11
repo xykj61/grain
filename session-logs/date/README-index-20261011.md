@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.032058` | [Copal, fruit absent again, no build](20261011/20261011-032058_copal-fruit-absent-again-no-build.kyri) | 158 of 158 witnesses rostered; no claim; no build. |
 | `20261011.031602` | [Pheromone tenth hold, no build](20261011/20261011-031602_pheromone-tenth-hold-no-build.kyri) | Fast-forwarded; lane empty; claim board clear; ruling waits on Incense; no build. |
 | `20261011.031423` | [Bakery, compile proof re-read](20261011/20261011-031423_bakery-compile-proof-receipt-key-held.kyri) | census path-independent; receipt key held for ruling; no build. |
 | `20261011.031646` | [Patchouli, queue empty, override named, no build](20261011/20261011-031646_patchouli-queue-empty-override-named-no-build.kyri) | Queue empty; %734 named, not claimed; no build. |
