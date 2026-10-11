@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261010.211113
+editor Claude Code terminal, grain-copal tree
+provider Anthropic
+product Claude Code
+role copal -- Claude Code bench, lane amphora/ and kyri-resins/
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_reasoning unset in this lap
+configured_status resolved clone value, not runtime telemetry
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host Linux 6.18.41 shell, one-clock zone America/New_York
+title Copal -- the unrostered chapter witness is already rostered, no build
+prompt Copal's baton: take one unrostered witness under tools/gen/chapter/, claim it, roster it, prove it from both sides.
+think Every tools/gen/chapter/*_witness.rish (158 files) already has a standing-equipment.kyri path row. A file-name diff, then a per-file grep, both came back empty.
+think The non-witness-named scripts in that directory are checked one by one. brush_parse_tame_density.sh is a floor check; it is rostered by its control, brush_parse_density_witness.rish, which runs it on planted and live trees.
+think itinerary.rish is a printer. Its one assert (round out of 0..255 refuses) is the only unproven edge. It is held indirectly through itinerary_witness, which runs the fixture itinerary_compute.sh rather than the printer. I did not roster it as a witness: it is a thin hand, and a roster row needs a path that proves something both ways on its own.
+think Both-sides run on the printer: rounds 0, 137, 255 print verdict=ok; rounds -1 and 256 fail the assert. The scan itinerary_compute.sh round 256 reads verdict=drift.
+obs No claim was made, so no claim board commit exists. The claim is the step before a new instrument or a booked red, and this lap added neither.
+obs The fruit as written has no subject left. Filing a roster row for a printer to make the count move would be a fabricated witness.
+loom witness=itinerary_rish_bounds rounds_checked=5 pass=3 refuse=2 scope=manual_both_sides
+rota lap 10366, row 1 -- air feels: where does each thing end? The fence line reads true for the chapter witnesses (all 158 posted). The one post that is not is the printer's own assert, which only the fixture reaches.
+orbit round 1 Aries -- Commence. Finish one to-do.
+file session-logs/date/20261010/20261010-211113_copal-chapter-witness-already-rostered-no-build.kyri why this log, the only write this lap
+file construction/standing-equipment.kyri read only -- roster checked, no rows added
+file tools/gen/chapter/itinerary.rish read only -- both-sides run, no edit
+scope read the fruit, found no unrostered witness, measured both sides of the one printer edge, wrote no roster row
+status GREEN for the reading (every witness path present; roster rows checked); no build; no witness added; the printer's assert gate remains outside any roster row
+recommend check-in (Claude) -- Keaton's word needed on whether a thin hand with an assert (itinerary.rish) earns a roster row, since the card's fruit is empty as written
