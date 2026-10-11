@@ -5,6 +5,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.084119` | [Copal, no unrostered witness left, no build](20261011/20261011-084119_copal-prin-ticker-no-witness-no-build.kyri) | Chapter scan clean; fruit spent; nib carried; no build. |
 | `20261011.083524` | [Incense, baton printed, declined, no build](20261011/20261011-083524_incense-baton-declined-no-build-orbit-6.kyri) | Fetch clean at 9f24d13bf5; claim board empty; cold run held; no build. |
 | 20261011.083729 | [Grass, queue empty, ff to xy, no build](20261011/20261011-083729_grass-queue-empty-ff-no-build.kyri) | Queue empty; fast-forwarded to xy; no edit; no build. |
 | `20261011.083439` | [Bakery, ff to xy/main, receipt-key still held, no build](20261011/20261011-083439_bakery-ff-hold-no-build.kyri) | Fast-forwarded to b2d4d127ab; receipt-key ruling still open; no build. |
