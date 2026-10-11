@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.002937` | [Diffuser, water row, no run, no build](20261011/20261011-002937_diffuser-water-row-read-no-run-no-build.kyri) | Fourth pair waits for 20261012. |
 | `20261011.002523` | [Pheromone, lane parked, claims clear, no build](20261011/20261011-002523_pheromone-lane-parked-claims-clear-no-build.kyri) | Language lane parked on an Incense ruling; claim board clear; no build. |
 | `20261011.002728` | [Bakery, crux held for a ruling, no build](20261011/20261011-002728_bakery-crux-held-no-build.kyri) | Shared-cache crux is a seam; claim board clear; no build. |
 | `20261011.002507` | [Petrichor, gate still closed](20261011/20261011-002507_petrichor-gate-still-closed.kyri) | Consent Rail unchanged; no build. |
