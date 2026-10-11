@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.002037
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York clock
+title Bakery send -- second rebase moved the nib's parent; follow-up carries it forward
+prompt The fleet baton, read as bakery: find the next durable core-infrastructure keystone and land it.
+think The lap's work commit c3f8267c73 was pushed after a second pull-rebase, and the rebase moved its parent to f22515cc74. The Git nib 7657457078 therefore named a commit two steps back, which the next lap's guard reads as stale.
+think The nib cannot be amended: the work commit is now on xy, and an amend would need a force push. A pin-only commit is refused by the rule. A follow-up that records the send's own facts is the shape rule 5 names, so this log carries the nib forward.
+obs The fault was in the lap's own order: the send rebased once before the push and once inside the push step, and the nib was read before the second rebase. The rule names this contested-send case as open, so this lap records it rather than hides it.
+loom none -- no measurement taken this lap
+rota lap 10635, row 0 -- aether hears: the question the card asks is why the nib went stale, and the honest answer is a second rebase that the lap's own order did not foresee, so it is carried forward and said so, not hidden behind a forced pin.
+orbit round 15 sign -- sky, dual, aether, heart: the wildcard round, which may borrow one verb; this one borrows the verb to say the fault plainly.
+file construction/ITINERARY.md why-one-line: Git nib carried forward to 2f7e51a9be, the HEAD read before this follow-up is made.
+file session-logs/date/20261011/20261011-002037_bakery-send-follow-up-nib-carried.kyri why-one-line: this lap's record of the send and the nib repair.
+file session-logs/date/README-index-20261011.md why-one-line: one row prepended under the delimiter for this follow-up log.
+scope the send and its nib repair only: rebase, push xy main, carry the nib, log the drift. No build, no runner edit, no new instrument.
+status PARTIAL for the send: work commit c3f8267c73 is on xy as 2f7e51a9be, and the nib in this follow-up names that commit. This follow-up 223b7fccd3 is NOT pushed: a second pull-rebase conflicted in construction/ITINERARY.md and the index while peers were pushing, and the rebase was aborted with the tree clean. Open: the follow-up's push waits for a quiet remote, or for Keaton's word on the contested-send shape. The receipt-key ruling stays Keaton's word.
+recommend check in (either) -- the receipt key drops HEAD only on Keaton's word; the send's nib drift is recorded here so a reader does not mistake it for a fault in the guard.
