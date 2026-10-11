@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261011.015835
+editor Claude Code terminal session
+provider Anthropic
+product Claude Code
+role patchouli lane, mantra/ and tally/ version store and bounded allocator
+modality text
+model claude-haiku-5-5
+model_status active runtime per session environment declaration, not telemetry
+configured_model claude-haiku-5-5
+configured_reasoning medium
+configured_status resolved for this clone by sh tools/fixtures/d/declared_model.sh resolved_model, read at lap open; differs from the tracked fleet default
+evidence session environment declares claude-haiku-5-5; tracked .claude/settings.json declares the fleet default
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Patchouli queue empty, one fresh net, no build
+prompt Run the Patchouli baton lap: read the inner prompt, the card, the claim board, and the day shelf, and do the lane's next honest fruit.
+think The inner prompt says this lane's agent-doable queue has read empty since 20261002, and that the next lap should widen to a fresh search class rather than repeat the same grep nets.
+think One fresh net over mantra/ and tally/ for elder version headers and quoted version literals found only the elder read-compat strings mantra-weave-v1/v2 and mantra-commit-v1/v2, which the law keeps readable forever, plus fixture-local and test-local names.
+think receipt_offer.rye already carries its molted schema_v1 value grain.receipt-offer.20261003.040829, so it is confirmed landed rather than a new candidate.
+think The OPEN REDS rows read in this pass (%835, %836, %827, %826, %819, %807, %804, %788, %765, %734) each name another lane, Keaton's ruling, or a custody gate. None names mantra/ or tally/ as agent-doable.
+obs No file was edited and no witness was run. The remaining candidates are elder read-compat headers the law keeps by design, so changing them would break stored records.
+obs The claim board was not read in this lap; the prior lap's board reading is not carried forward as fact.
+rota lap 10754, row 4 -- earth breathes in (the take-in): the concrete fact at the door is the queue, and it is empty.
+orbit round 13 sky -- Wildcard, may borrow one other verb; the keystone stays a picture held, with nothing built this lap.
+loom witness=none wall_ms=0 -- no measurement this lap
+file session-logs/date/20261011/20261011-015835_patchouli-queue-empty-no-build.kyri the lap's own record
+file session-logs/date/README-index-20261011.md the shelf row for this log, under the delimiter
+scope read-only grep of mantra/ and tally/ and the OPEN REDS rows; this log and its shelf row
+status GREEN for the lap's own claim: the empty-queue reading held on a fresh net; no witness run, since no file changed
+recommend check-in (Claude) -- the lane's two remaining rows want Keaton's ruling (%807) and another ship's lane (%765); name a fresh fruit or a ruling to resume

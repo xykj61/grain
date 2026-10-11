@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.015835` | [Patchouli queue empty, no build](20261011/20261011-015835_patchouli-queue-empty-no-build.kyri) | Fresh net over mantra/ and tally/ finds only elder read-compat headers; no build |
 | `20261011.015511` | [bakery receipt key, mode miss](20261011/20261011-015511_receipt-key-mode-miss.kyri) | content-keyed receipt writer; control 7 of 7; cold run guard_red inherited |
 | `20261011.015343` | [Diffuser hold, fifth check](20261011/20261011-015343_diffuser-hold-fifth-check-no-run.kyri) | Fourth pair waits for 20261012; no Swift; no run |
 | 20261011.015357 | [Incense, gated, declined, no build](20261011/20261011-015357_incense-queue-gated-sixty-seventh-no-build.kyri) | Declined; no build; card nib question open. |
