@@ -114,6 +114,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.114544` | [Copal, chapter fruit empty, no build](20261011/20261011-114544_copal-chapter-fruit-empty-no-build.kyri) | Zero unrostered witnesses; card line stale; no build. |
 | `20261011.114137` | [Grass, inner graded at Field, no build](20261011/20261011-114137_grass-inner-graded-field-no-build.kyri) | register 77 inside the Field ceiling, no edit |
 | `20261011.114138` | [Petrichor, held again, no build](20261011/20261011-114138_petrichor-held-fourth-confirm-skipped.kyri) | Gates unchanged; upstream ff to 4c5df00ece; no build. |
 | `20261011.114030` | [Pheromone, stop line re-checked, no build](20261011/20261011-114030_pheromone-lane-recheck-no-build.kyri) | Limb10 GREEN; ruling still with Incense. |
