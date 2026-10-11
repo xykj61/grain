@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.045433` | [Petrichor, upstream ff, gate held, no build](20261011/20261011-045433_petrichor-upstream-ff-gate-held-no-build.kyri) | upstream one log commit; consent gate still held; no build. |
 | `20261011.045150` | [Patchouli, queue empty, fifteenth look](20261011/20261011-045150_patchouli-queue-empty-fifteenth-look-no-build.kyri) | queue empty again; no build. |
 | `20261011.044822` | [Patchouli, queue empty, no build](20261011/20261011-044822_patchouli-queue-empty-fresh-look-no-build.kyri) | elder -v headers read-compat; ledger full; no build. |
 | `20261011.044547` | [Incense, decline, no build](20261011/20261011-044547_incense-decline-no-build.kyri) | Round-open clean; cold run held; no claim owed. |
