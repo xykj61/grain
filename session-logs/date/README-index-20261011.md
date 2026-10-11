@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.120802` | [Copal, fruit spent a third time, no build](20261011/20261011-120802_copal-fruit-spent-third-read-no-build.kyri) | Zero unrostered witnesses by path; roster resolves; no build. |
 | `20261011.120302` | [Copal, fruit re-measured spent, no build](20261011/20261011-120302_copal-fruit-remeasured-spent-no-build.kyri) | Exact-path comm zero again; git nib carried. |
 | `20261011.115938` | [Bakery, cache census re-read, no build](20261011/20261011-115938_bakery-shared-cache-census-rerun-no-build.kyri) | Census holds; receipt key held on ruling. |
 | `20261011.120004` | [Petrichor, seventh held lap, aether row read, no build](20261011/20261011-120004_petrichor-held-seventh-aether-no-build.kyri) | Gates unchanged; upstream checked; no build. |
