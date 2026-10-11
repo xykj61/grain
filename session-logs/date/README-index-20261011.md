@@ -5,6 +5,7 @@
 | Stamp | Log | What it carried |
 |---|---|---|
 | `20261011.032938` | [Patchouli, queue empty on a fresh net, no build](20261011/20261011-032938_patchouli-queue-empty-fresh-grep-no-build.kyri) | Fresh elder-literal net empty; pull to 748a1fa6cb; no build. |
+| `20261011.032640` | [Pheromone, lane empty, no build](20261011/20261011-032640_pheromone-lane-empty-no-build.kyri) | Lane empty; ledger and board clear; no build. |
 | `20261011.032434` | [Grass, air row, card headroom, no build](20261011/20261011-032434_grass-air-row-card-headroom-no-build.kyri) | Grade B+ 89 held; rota air row; card nib carried; no build. |
 | `20261011.032457` | [Copal, fruit empty on recount, no build](20261011/20261011-032457_copal-fruit-empty-recheck-no-build.kyri) | Fruit empty; round-open pulled two; no build. |
 | `20261011.032243` | [Line-size sweep, padding holds](20261011/20261011-032243_line-size-sweep-padded-rings.kyri) | Padding flat at 4, 8, 16 cells per line; none fired. |
