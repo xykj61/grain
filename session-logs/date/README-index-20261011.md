@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.163131` | [Incense, baton read, hold, no build](20261011/20261011-163131_incense-baton-read-hold-no-build.kyri) | Round-open clean; cold run and open words held for Keaton; no build. |
 | `20261011.162720` | [Patchouli, queue empty, scan, no build](20261011/20261011-162720_patchouli-queue-empty-scan-no-build.kyri) | Lane version-literal scan; queue empty, kumara red held for a ruling. |
 | `20261011.162702` | [Copal, unrostered witnesses exhausted, no build](20261011/20261011-162702_copal-unrostered-witnesses-exhausted-no-build.kyri) | 158 of 158 chapter witnesses rostered; nothing to claim; no build. |
 | `20261011.162906` | [Petrichor, hold, gate unchanged, no build](20261011/20261011-162906_petrichor-hold-gate-unchanged-no-build.kyri) | Upstream delta read; gate still on Keaton's word; no build. |
