@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.080635` | [Copal fruit, no unrostered witness fits, no build](20261011/20261011-080635_copal-fruit-no-unrostered-witness-no-build.kyri) | Three unrostered files, none a witness; fruit left for a ruling. |
 | `20261011.080223` | [Copal, claim duplicate of a peer, no build](20261011/20261011-080223_copal-claim-duplicate-no-build.kyri) | Peer already rostered the ticker; claim closed; no build. |
 | `20261011.080022` | [Incense, baton declined, earth row read](20261011/20261011-080022_incense-baton-declined-no-build-rota-earth.kyri) | Clean round-open, claim board empty, no build. |
 | `20261011.075839` | [Incense, baton gated, no build](20261011/20261011-075839_incense-baton-gated-no-build.kyri) | Clean round-open, empty claim board, gate held; no build. |
