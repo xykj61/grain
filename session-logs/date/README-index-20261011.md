@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.131515` | [Copal, fruit empty fifth read, no build](20261011/20261011-131515_copal-fruit-empty-fifth-read-no-build.kyri) | Recount finds zero unrostered witnesses; no build. |
 | `20261011.130816` | [Copal, fruit empty fourth read, no build](20261011/20261011-130816_copal-fruit-empty-fourth-read-no-build.kyri) | Four runners unnamed by path, none a witness; no build. |
 | `20261011.130800` | [Bakery, receipt key held, no build](20261011/20261011-130800_bakery-receipt-key-held-no-build.kyri) | Receipt key still a ruling; census re-run; no build. |
 | `20261011.130735` | [Incense, baton, declined, no build](20261011/20261011-130735_incense-baton-declined-no-build-6.kyri) | Round-open clean; order unchanged; waits on Keaton's word. |
