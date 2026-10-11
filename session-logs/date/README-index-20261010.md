@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.213810` | [Pheromone, stopped at a ruling](20261010/20261010-213810_pheromone-stopped-at-ruling.kyri) | Card and inner prompt read; stop clause holds; no build. |
 | `20261010.213053` | [Diffuser, gate held a third read, no build](20261010/20261010-213053_diffuser-gate-held-third-read-no-build.kyri) | Tenth-base gate read again; no run; check-in on Keaton's word. |
 | `20261010.213148` | [Petrichor, hold repeats, check-in asked](20261010/20261010-213148_petrichor-hold-repeat-check-in-asked.kyri) | Gate still shut; no red, no claim; check-in asked. |
 | `20261010.213229` | [Copal, fruit empty again, no build](20261010/20261010-213229_copal-fruit-empty-measured-again-no-build.kyri) | Zero unrostered witnesses; no claim, no build. |

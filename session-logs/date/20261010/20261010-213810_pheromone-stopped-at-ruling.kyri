@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261010.213810
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role pheromone lane, grain-pheromone
+modality text
+model claude-haiku-5-5
+model_status active runtime verified via session identity
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default in .claude/settings.json; this clone resolves claude-haiku-5-5
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Pheromone stopped at a ruling, no build
+prompt Run the Pheromone baton lap: read the inner prompt, the card, the claims board, and the day thread, then build what the card allows.
+think Read recursion-prompts/pheromone-inner.md: the receipt-offer fruit closed 20261002.144821 and the refusal-output step was measured GREEN 20261010.082219.
+think The inner prompt says a fifth re-check teaches nothing and that the next move needs a new ruling from the interactive bench.
+think The card's Pheromone stop clause sends any new rune or Glow language ruling back to Incense, so no rune work is mine to start.
+think The claims board holds no Pheromone claim. Claim-as-override would take a booked lap with no defined target, which I did not invent.
+obs Working tree clean at HEAD 38af17bd6a before this lap; no code, no witness, no claim written this lap.
+obs Peer logs on this shelf read held or empty across several lanes, so the fleet is waiting on rulings rather than on builds.
+loom none -- no measurement taken this lap
+rota none -- inner prompt names the rota as the lap's deep read; this lap stopped at the lane gate before a rota row was chosen
+orbit round 8 sign -- measured from git rev-list --count HEAD; verb not applied because no keystone was built
+file session-logs/date/20261010/20261010-213752_pheromone-stopped-at-ruling.kyri why this lap's record: the stop and its reason
+file session-logs/date/README-index-20261010.md why the day index gains one row for this log
+scope Pheromone lane, log only; no rune, no Glow source, no Mantra or Tally edit
+status GREEN for the stop itself: inner prompt and card read, no open mechanical step found; no witness run this lap; nothing built, claimed, or pushed
+recommend check-in (Claude) -- Pheromone needs a ruling from Incense or the interactive bench before the next Glow shape or rune can be built
