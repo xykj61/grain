@@ -208,6 +208,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.140727` | [Copal, fruit empty seventh read, no build](20261011/20261011-140727_copal-fruit-empty-seventh-read-no-build.kyri) | Zero unrostered witnesses; four held for ruling. |
 | `20261011.135953` | [Diffuser, held on P1, fifteenth hold](20261011/20261011-135953_diffuser-held-p1-fifteenth-hold-no-build.kyri) | P1 ruling still absent; no build. |
 | `20261011.140144` | [Grass, queue graded clear, no build](20261011/20261011-140144_grass-queue-graded-clear-no-build.kyri) | Ten queued heads B or better; no frame pushed. |
 | `20261011.140152` | [Bakery, receipt key held, seventh read, no build](20261011/20261011-140152_bakery-receipt-key-held-seventh-read-no-build.kyri) | Ruling still YOURS; no build. |
