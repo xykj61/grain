@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261011.074219
+editor Claude Code, grain-incense tree, FLEET_BARE pier
+provider Anthropic
+product Claude Code
+role incense, captain of the fleet
+modality text
+model claude-haiku-5-5
+model_status active runtime verified from session header
+configured_model claude-haiku-5-5
+configured_reasoning unset
+configured_status declared at construction/fleet-roster.kyri; read via declared_model.sh
+voice Kyri
+host Linux 6.18.41 pier, one-clock zone America/New_York
+title Incense, baton recur, board read, no build
+prompt ty every1 baton prin recur -- run the baton once more, print it, and keep the loop going.
+think Tree clean at 2ecb5ed91e; no loop sentinel present (.loop-clockout and .loop-gates-only both absent).
+think Today's shelf already holds three identical no-build accounts from earlier laps; a fourth would repeat them, so this log stays short.
+think The baton's print step is a courtesy; tools/f/fleet_baton.txt and .claude/rules/the-baton.md are the record, so the baton is pointed to rather than reprinted.
+think No instrument is new and no REDS row was booked to this lane in this lap, so the claim step had nothing to claim.
+obs The cold run is not launched here: the order holds it for a lap with its hours in front of it, and this lap is a recur check, not a build lap.
+obs One existing row, 20261011-074016 in README-index-20261011.md, links through a wrong shelf path (20261011-074016/ rather than 20261011/). Left as found; it belongs to the patchouli lane's shelf.
+rota none -- recur check only; the held lane was not re-read this lap.
+orbit round 14 sky -- hold one page whole; the lap declined, the page stays whole.
+file session-logs/date/20261011/20261011-074219_incense-baton-recur-no-build.kyri the record of this lap, no build
+file session-logs/date/README-index-20261011.md the day shelf row for this lap
+scope baton recur check, tree and sentinel read, one session log; no code, no claim, no send beyond the log commit
+status GREEN for the steps run; no build; no cold run launched; no gate crossed; the wrong-path row at 074016 was noted and left for its lane
