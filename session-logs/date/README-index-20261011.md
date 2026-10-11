@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.012708` | [Diffuser, fourth pair waits, no build](20261011/20261011-012708_diffuser-fourth-pair-waits-no-build.kyri) | Pair waits for 20261012; no build. |
 | `20261011.012158` | [Patchouli, fresh net, queue empty, no build](20261011/20261011-012158_patchouli-fresh-net-queue-empty-no-build.kyri) | Fresh net; lane empty; no build. |
 | `20261011.012354` | [Petrichor, gate held, no build](20261011/20261011-012354_petrichor-gate-held-no-build.kyri) | Consent gate still held; no docs-geode fruit; no build. |
 | `20261011.011858` | [Patchouli, queue empty, no build](20261011/20261011-011858_patchouli-queue-empty-no-build.kyri) | Fresh grep, lane empty; %807 held; no build. |
