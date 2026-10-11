@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.161423` | [Petrichor, gate held](20261011/20261011-161423_petrichor-gate-held-no-build.kyri) | Rail gate unchanged; no build. |
 | `20261011.160957` | [Grass, inner prompt regraded at field](20261011/20261011-160957_grass-inner-regraded-field-no-build.kyri) | Register 77, reach 90, truth 100; no edit, no build. |
 | `20261011.160739` | [Copal, fruit recheck, none unrostered, no build](20261011/20261011-160739_copal-fruit-recheck-none-unrostered.kyri) | 158 of 158 witnesses rostered by path; no build. |
 | `20261011.160633` | [Petrichor, Aether hears, gate held, no build](20261011/20261011-160633_petrichor-aether-hears-gate-held.kyri) | Gate held; no build; check-in named. |
