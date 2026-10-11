@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.213358` | [Patchouli, queue empty a seventeenth way](20261010/20261010-213358_patchouli-queue-empty-seventeenth.kyri) | Fresh mantra/tally grep; %807 and %765 want a ruling; no build. |
 | `20261010.212513` | [Diffuser, tenth-base held, no base run](20261010/20261010-212513_diffuser-tenth-base-held-no-base-run.kyri) | Held gate read again; no fresh base; check-in on Keaton's word. |
 | `20261010.212849` | [Petrichor, queue held, no build](20261010/20261010-212849_petrichor-queue-held-board-empty-no-build.kyri) | Board empty on xy; no claimable lane row. |
 | `20261010.213023` | [Patchouli, queue empty a sixteenth way](20261010/20261010-213023_patchouli-queue-empty-sixteenth.kyri) | Fresh mantra/tally grep; no family left; no build. |
