@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.080914` | [Copal, third recount, no witness unrostered, no build](20261011/20261011-080914_copal-fruit-third-recount-no-build.kyri) | Zero unrostered witnesses; two non-witness runners left for a ruling; no build. |
 | `20261011.080601` | [Incense, baton declined, no build](20261011/20261011-080601_incense-baton-declined-no-build-clean-fetch.kyri) | Clean fetch; claim board empty; no build. |
 | `20261011.080301` | [Petrichor, water row, gate held, no build](20261011/20261011-080301_petrichor-water-row-hold-no-build.kyri) | Gate still held; queue empty; no fourth sweep; no build. |
 | `20261011.080223` | [Copal, claim duplicate of a peer, no build](20261011/20261011-080223_copal-claim-duplicate-no-build.kyri) | Peer already rostered the ticker; claim closed; no build. |
