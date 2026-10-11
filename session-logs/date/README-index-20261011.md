@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.184702` | [Pheromone, lane still empty, no build](20261011/20261011-184702_pheromone-recheck-lane-empty-no-build.kyri) | Re-read of the empty queue; no claim, no build; points at the 184000 record. |
 | `20261011.184000` | [Pheromone, lane empty, witnesses GREEN, no build](20261011/20261011-184000_pheromone-lane-empty-witnesses-green-no-build.kyri) | Three landed Glow witnesses re-run GREEN; no source edited. |
 | `20261011.183911` | [Petrichor, gate holds, lane empty, no build](20261011/20261011-183911_petrichor-gate-holds-lane-empty-no-build.kyri) | Gate held; no claim open; no build. |
 | `20261011.183906` | [Copal, fruit still absent](20261011/20261011-183906_copal-fruit-absent-fourth-lap-no-build.kyri) | Absent by path and guard row; no build. |
