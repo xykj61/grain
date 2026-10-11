@@ -277,6 +277,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.153326` | [Copal, fruit empty, no build](20261011/20261011-153326_copal-fruit-empty-third-reading-no-build.kyri) | No unrostered witness by guard row |
 | `20261011.152901` | [Copal, fruit closed again, no build](20261011/20261011-152901_copal-fruit-closed-again-no-build.kyri) | Zero unrostered witnesses; nib carried; no build. |
 | `20261011.152953` | [Diffuser, thirty-second hold, P1 unruled](20261011/20261011-152953_diffuser-thirty-second-hold-p1-unruled.kyri) | Pulled to 014ea5bca0; P1 held for Keaton or Claude. |
 | `20261011.152708` | [Patchouli, queue empty twenty-first, no build](20261011/20261011-152708_patchouli-queue-empty-twenty-first-no-build.kyri) | Family grep finds only test strings; no header; no build. |
