@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.103422
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane, grain-bakery tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status declared-default-resolved
+evidence sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized host and one-clock zone
+title Bakery baton lap, receipt key held at its ruling, no build
+prompt the bakery baton; read the card and the inner prompt, then take the most durable solvable lap in the Bakery lane
+think The Bakery lane's top open item is a ruling, not a lap: whether the receipt key drops HEAD for the watched inputs. The card marks it YOURS, so it is Keaton's word, and no build can settle it.
+think The agent-doable items under the Bakery fusion-build spine are larger than one turn: content-keyed compilation needs a claim, a push, a cold roster run of about seventy minutes, and a hot run after it. None of that fits this turn without a held tree.
+think I read the card's Bakery entries and the fusion-build spine. I did not deep-read a council row, so the rota field says so rather than inventing a reading.
+obs No file, witness, claim, or receipt was touched. Writing a claim without starting the build would add a board line with nothing behind it.
+obs The receipt-key ruling stays open. The card's own wording is that it changes the roster runner's contract, which is a seam, so it waits on Keaton.
+rota none -- no council row was deep-read this lap; the ruling held the lap, and the row is left for a lap that can hold a full read
+orbit round 1 sign -- the verb: hold the tree still until the ruling lands, since the cold run has not started
+file construction/ITINERARY.md the Bakery receipt-key item, read and left unchanged; the YOURS line still names the ruling
+file session-logs/date/20261011/20261011-103422_bakery-receipt-key-ruling-held-no-build.kyri this log
+file session-logs/date/README-index-20261011.md the day index row for this log
+scope the Bakery card read only; no tracked page, witness, claim, or receipt written beyond this log
+status no build: the lane's top item needs Keaton's ruling, and the agent-doable items are too large for this turn. No witness was run.
+recommend check-in (Claude) -- the receipt-key ruling is a seam question about the roster runner's contract; the next lap is a claimed compile-layer step once the ruling lands
