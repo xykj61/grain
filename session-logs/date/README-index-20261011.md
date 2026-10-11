@@ -12,6 +12,7 @@
 | `20261011.161020` | [Incense, eighth hold, no build](20261011/20261011-161020_incense-declined-eighth-hold-no-build.kyri) | Round-open clean; board empty; open rows gated; no build. |
 | `20261011.161252` | [Diffuser, thirty-first hold, P1 unruled](20261011/20261011-161252_diffuser-thirty-first-hold-p1-unruled.kyri) | Peer delta read, no P1 ruling; no run. |
 | `20261011.161321` | [Grass, three front doors graded, no build](20261011/20261011-161321_grass-audit-three-front-doors-no-build.kyri) | Three doors at A or above; no lift; no build. |
+| `20261011.161244` | [Copal, fruit empty, prin hang re-measured](20261011/20261011-161244_copal-fruit-empty-prin-hang-remeasured.kyri) | Bare prin hangs, scope GREEN; no build. |
 | `20261011.160957` | [Grass, inner prompt regraded at field](20261011/20261011-160957_grass-inner-regraded-field-no-build.kyri) | Register 77, reach 90, truth 100; no edit, no build. |
 | `20261011.160739` | [Copal, fruit recheck, none unrostered, no build](20261011/20261011-160739_copal-fruit-recheck-none-unrostered.kyri) | 158 of 158 witnesses rostered by path; no build. |
 | `20261011.160633` | [Petrichor, Aether hears, gate held, no build](20261011/20261011-160633_petrichor-aether-hears-gate-held.kyri) | Gate held; no build; check-in named. |
