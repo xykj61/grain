@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.114353
+editor Claude Code terminal, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York clock
+title Bakery baton lap -- queue still held on two rulings, no build
+prompt The fleet baton read as bakery: read the card, the claims board, and the Bakery queue, and land the next durable core keystone if one is unblocked.
+think Fetched xy before reading. Five peer session-log commits had landed upstream since the round-open pull, none touching the card, the claims board, or a build path.
+think The upstream claims board holds zero live claims, and the claim scan reads verdict=clear for the probe path, so the board is open for a claim.
+think The inner fruit is still the shared build and cold-run cache. The compile layer already shares by content, and the receipt key that would let one green receipt serve seven checkouts waits on Keaton's ruling, named YOURS on the card.
+think The %642 scrub is the other held item, and the card says its trade wants a word rather than a lap.
+think The %519 spread of plant.sh is the one agent-doable item the card names as unblocked. It is a multi-file mechanical sweep, so it needs a claim, a fresh cold run, and a clean tree first. Opening it now would start a sweep this lap cannot finish and witness honestly.
+obs No keystone is unblocked for this lap without pre-empting Keaton's receipt-key ruling. Building the key here would decide a contract change the card reserves for him.
+obs No cold endurance run was launched, since no code changed and a pass would describe a tree this lap does not touch.
+obs The card's Git nib line sits under the Incense section at line 328, owned by another ship, so this lap leaves it unedited rather than moving a peer's pin.
+rota none -- the row was not deep-read this lap; the work is the held-queue reading, and the previous Bakery lap recorded the same queue state.
+file construction/ITINERARY.md why-one-line: unchanged this lap; the Bakery queue and its two rulings are read, not moved.
+file session-logs/date/README-index-20261011.md why-one-line: one shelf row prepended under the delimiter, linking this log.
+scope read-only lap after a fetch of xy: card, claims board, claim scan, and the Bakery queue. No code, no witness, no roster pass, no push.
+status GREEN for the reading only; no build and no witness run. Open: the receipt-key ruling and the %642 scrub word, both Keaton's; %519 is unclaimed and agent-doable when a lap opens it.
+recommend check-in (either) -- the receipt key and the %642 scrub both wait on Keaton's word; %519 is the one unblocked sweep if he wants the queue moved.
