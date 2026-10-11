@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.163747` | [Diffuser, thirty-eighth hold, P1 still unruled, no run](20261011/20261011-163747_diffuser-thirty-eighth-hold-p1-unruled.kyri) | P1 precondition unruled; no run. |
 | `20261011.163306` | [Diffuser, thirty-seventh hold, P1 unruled, no run](20261011/20261011-163306_diffuser-thirty-seventh-hold-p1-unruled.kyri) | P1 still awaits a ruling; no run. |
 | `20261011.163357` | [Incense, baton declined again, no build](20261011/20261011-163357_incense-baton-declined-no-build-again.kyri) | Round-open clean on fb118c934b; no mechanical item; gated on a human word. |
 | `20261011.163322` | [Petrichor, hold, delta read, gate held, no build](20261011/20261011-163322_petrichor-hold-delta-read-no-build.kyri) | Round-open clean at fb118c934b; upstream is peer logs only; gate held; no build. |
