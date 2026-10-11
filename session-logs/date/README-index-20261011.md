@@ -186,6 +186,7 @@
 | Stamp | Log | What it carried |
 | `20261011.124410` | [Bakery, baton repeat, no build](20261011/20261011-124410_bakery-baton-repeat-receipt-verified-no-build.kyri) | Control re-read green; no build. |
 |---|---|---|
+| `20261011.133705` | [Bakery, receipt gate held, no build](20261011/20261011-133705_bakery-receipt-gate-held-no-build.kyri) | Receipt key still Keaton's ruling; no claim; no build. |
 | `20261011.133123` | [Patchouli, queue empty eighth read](20261011/20261011-133123_patchouli-queue-empty-eighth-read-no-build.kyri) | Nets empty; no build. |
 | `20261011.133240` | [Petrichor, gate held, sixth hold](20261011/20261011-133240_petrichor-gate-held-sixth-hold-no-build.kyri) | Gate unchanged; no build. |
 | `20261011.133057` | [Bakery, receipt basis measured, no build](20261011/20261011-133057_bakery-receipt-basis-measured-no-build.kyri) | Receipt 11,721 commits stale, misses on every ship; no build. |
