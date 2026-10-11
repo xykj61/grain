@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261010.205505
+editor Claude Code terminal, grain-pheromone tree
+provider Anthropic
+product Claude Code
+role pheromone lane, language and molecules
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Pheromone baton lap, repeat hold, no build
+prompt ty every1 baton prin recur -- run the Pheromone baton lap: read the inner prompt and the card, honor the directives, land the most durable solvable work or report what is blocked.
+think Read recursion-prompts/pheromone-inner.md and construction/ITINERARY.md. The inner prompt says the six shape pedestals are closed and the next ruling is awaited from Incense.
+think The claim board holds no claim of this lane's; the claims script was run with no verb and printed verdict=no_verb, so no claim was opened or closed.
+think The lane's earlier log at 20261010.204439 already records this same state: inner prompt and card read, no ruled fruit open. A second identical hold would repeat that reading without adding a fact.
+obs No code moved. Opening a rune or a new pedestal without Incense's ruling would cross the lane's own stop clause in the inner prompt.
+obs The baton's claim-as-override clause would take the oldest unclaimed booked lap from another lane, but reading that board is a separate lap and this one stays with the lane's own reading.
+rota none -- the lane's stop clause was the whole reading; no council row was deep-read this lap
+orbit round 12 sign -- not read this lap; the round load table in context/SPELLBOOK.md was not opened
+file session-logs/date/20261010/20261010-205505_pheromone-repeat-hold-no-build.kyri this log, the only artifact this lap writes
+file session-logs/date/README-index-20261010.md one row under the delimiter
+scope read of the inner prompt, the card, and the claim script's answer; log and shelf row committed; no code, no pin, no card edit
+status GREEN for the reading only; no code changed, so no witness was run; the rune question stays with Incense
+recommend check in (Claude) -- Incense's ruling on the next rune or the next pedestal is the only door this lane has, and the lane will not guess at it

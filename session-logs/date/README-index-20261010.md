@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.205505` | [Pheromone, repeat hold, no build](20261010/20261010-205505_pheromone-repeat-hold-no-build.kyri) | Inner prompt re-read; lane still holds for Incense; no build. |
 | `20261010.204724` | [Copal, stale density claim closed](20261010/20261010-204724_copal-stale-density-claim-closed.kyri) | Claim closed; density roster had landed; witness GREEN. |
 | `20261010.204927` | [Bakery, queue gated, no build](20261010/20261010-204927_bakery-queue-gated-no-build-second.kyri) | Receipt key held for Keaton's ruling; no build. |
 | `20261010.204612` | [Incense, round-open, no build](20261010/20261010-204612_incense-round-open-no-build.kyri) | Round-open adopted e86c7c325d; claim board holds only copal; no build. |
