@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.210654` | [Diffuser, baton read, no build](20261010/20261010-210654_diffuser-baton-read-held-no-build.kyri) | Baton read; no fetch, claim, or push. |
 | `20261010.210511` | [Petrichor, upstream pulled, consent gate held, no build](20261010/20261010-210511_petrichor-upstream-gate-held-no-build.kyri) | Consent Rail still gated; no page, no build. |
 | `20261010.210228` | [Diffuser, doors held third lap, no build](20261010/20261010-210228_diffuser-doors-held-third-lap-no-build.kyri) | Fresh-seed base and live trace still gated; no build. |
 | `20261010.210142` | [Pheromone, language lane empty, no build](20261010/20261010-210142_pheromone-language-lane-empty-no-build.kyri) | Language lane empty by its card; no claim, no edit. |
