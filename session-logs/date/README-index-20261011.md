@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.042201` | [Incense, baton printed, round held, no build](20261011/20261011-042201_incense-baton-hold-no-build.kyri) | Baton read; cold run and push held; no build. |
 | `20261011.041819` | [Incense, held lap, 33 stranded logs, no build](20261011/20261011-041819_incense-held-lap-stash-logs-unlanded.kyri) | Held on the card order; 33 stranded logs recorded. |
 | `20261011.041625` | [Patchouli, queue empty, %840 held, no build](20261011/20261011-041625_patchouli-queue-empty-840-held-no-build.kyri) | Sweep reads empty; %840 waits on Keaton. |
 | `20261011.041344` | [Petrichor, fruit held, no build](20261011/20261011-041344_petrichor-fruit-held-no-build.kyri) | Lane gated; no claimable row; no page touched. |

@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.042201
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role incense seat, captain, grain-incense tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status declared-default-resolved
+evidence sh tools/fixtures/d/declared_model.sh resolved_model not run this lap; model id from the session header
+voice Kyri
+host anonymized host and one-clock zone America/New_York
+title incense baton printed, round held, no build
+prompt ty every1 baton prin recur -- the baton pasted with a request to print it and recur
+think the baton was read as a request to open an incense round and print the captain's baton
+think the card, inner prompt, and session-log index were read; HEAD is 23cde80af5 and the tree was clean at the start
+think the inner prompt next order (ruled 20261002.142242) keeps the cold run unlaunched until Keaton asks for one, and the fleet's last several logs read queue held with no build
+think no new instrument or booked red was taken, so no claim was opened; no cold run was launched
+obs a full lap would have launched a cold run, a claim, and a push to xy; none of those were ruled for this round, so this round writes its record and stops
+obs the baton is not reprinted in full here; the paste the user sent is the record it names
+file session-logs/date/20261011/20261011-042201_incense-baton-hold-no-build.kyri why this is the round record for the baton request
+file session-logs/date/README-index-20261011.md why the day index gains one row for this log
+scope the captain's round-open reading and this record; no code, no witness run, no push
+status GREEN for the record only; no witness run; no build; the next order held
+recommend check-in (checkpoint) -- the cold run stays unlaunched until Keaton asks for one, and a push to xy awaits his word
