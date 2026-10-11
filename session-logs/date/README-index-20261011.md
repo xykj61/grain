@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.173246` | [Petrichor, gate held after fetch, no build](20261011/20261011-173246_petrichor-gate-held-fetch-clean-no-build.kyri) | Fetch clean; Consent Rail unchanged; no build. |
 | `20261011.172828` | [Petrichor, consent gate held, no build](20261011/20261011-172828_petrichor-consent-gate-held-no-build.kyri) | Gate unchanged, upstream logs only; no build. |
 | `20261011.172410` | [Diffuser, forty-third hold](20261011/20261011-172410_diffuser-forty-third-hold-p1-unruled.kyri) | Fast-forward to 44e74f6790; P1 unruled. |
 | `20261011.172328` | [Copal, fruit absent again, no build](20261011/20261011-172328_copal-fruit-absent-again-no-build.kyri) | Full-path roster: 158 witnesses, 0 unrostered; no build. |
