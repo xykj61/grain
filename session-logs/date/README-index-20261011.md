@@ -6,6 +6,7 @@
 | `20261011.083830` | [Copal, claim withdrawn, no build](20261011/20261011-083830_copal-fruit-withdrawn-no-build.kyri) | Fruit already rostered; claim closed. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.084752` | [Pheromone, lane held, no build](20261011/20261011-084752_pheromone-lane-held-no-build.kyri) | Queue empty; rune ruling still with Incense; no build. |
 | `20261011.084117` | [Bakery, ff to xy/main, receipt key held, no build](20261011/20261011-084117_bakery-ff-receipt-key-held-no-build.kyri) | Fast-forwarded to 40cd9af12f; receipt-key ruling still open; no build. |
 | `20261011.084016` | [Pheromone, lane held on ruling, ff to xy, no build](20261011/20261011-084016_pheromone-lane-held-ff-no-build.kyri) | Glow ruling still with Incense; ff to 775ab6dfb2; no build. |
 | `20261011.083548` | [20261011/20261011-083548_petrichor-gate-no-build.kyri](20261011/20261011-083548_petrichor-gate-no-build.kyri) | Third ff to xy; gate facts on tree; no build. |
