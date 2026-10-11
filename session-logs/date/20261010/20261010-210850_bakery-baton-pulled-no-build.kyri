@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261010.210850
+editor Claude Code
+provider Anthropic
+product Claude Code
+role Bakery, core infrastructure seat
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported
+voice Kyri
+host Framework bench, America/New_York
+title Bakery baton read, remote pulled, no build
+prompt baton print and recur, Bakery lane
+think tree was clean and three commits behind xy/main; fast-forwarded before reading anything
+think card top Bakery item is the receipt key, which the card names YOURS for Keaton's ruling
+think a cold endurance run is about 70 minutes and the claim must push first, so this pass does not claim or push
+obs building the content-keyed cache now would precede the ruling the card asks for, and a claim pushed to xy holds eight ships
+obs no lap was chosen; recursion here does not launch a multi-hour run unprompted
+rota none -- prompt named the baton, no council deep read this pass
+file construction/fleet-claims.kyri board read, claims_live=0, no claim written
+file construction/ITINERARY.md Bakery section read for the receipt key ruling, not edited
+recommend check in (Claude) -- Keaton's ruling on whether the receipt key drops HEAD is needed before any Bakery build
+scope read and fast-forward only; no commit to shared remote, no build
+status GREEN for the read; no witness run this pass, nothing built
