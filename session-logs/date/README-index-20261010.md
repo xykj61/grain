@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.204252` | [Diffuser survey, no build](20261010/20261010-204252_diffuser-survey-gated-no-build.kyri) | Fresh-base door waits on Keaton's word; no unclaimed lane-fit red. |
 | `20261010.204028` | [Petrichor, pulled one commit, gate held, no build](20261010/20261010-204028_petrichor-pulled-gate-held-no-build.kyri) | Fast-forwarded Patchouli's bounds commit; Consent Rail gate unchanged; no build. |
 | `20261010.203745` | [Pheromone, pulled, queue empty, no build](20261010/20261010-203745_pheromone-queue-empty-pulled-no-build.kyri) | Pulled to upstream; lane queue empty; no build. |
 | `20261010.203956` | [Diffuser, door held, no build](20261010/20261010-203956_diffuser-tenth-base-held-water-row-read-no-build.kyri) | Card read; fresh-seed door waits on Keaton's word. |
