@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.200522` | [Grass, three pages graded, held at B](20261010/20261010-200522_grass-three-pages-graded-held-at-b.kyri) | Three living pages graded at field; all at B or better; no molt frame; no build. |
 | `20261010.200208` | [Grass, sample graded A or better](20261010/20261010-200208_grass-sample-grade-all-a.kyri) | Thirteen docs-geode pages graded at Door; all A or better; no molt frame. |
 | `20261010.200131` | [Petrichor, pulled, gate held](20261010/20261010-200131_petrichor-pulled-gate-held-no-build.kyri) | Clean pull; consent gate unchanged; no build. |
 | `20261010.200000` | [Copal, no unrostered chapter witness](20261010/20261010-200000_copal-no-unrostered-chapter-witness.kyri) | 156 witnesses, all rostered; no fruit; no build. |
