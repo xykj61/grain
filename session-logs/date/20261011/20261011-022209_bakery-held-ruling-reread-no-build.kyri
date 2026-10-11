@@ -1,0 +1,26 @@
+format session-log-v1
+stamp 20261011.022209
+editor Claude Code, Bakery seat, grain-bakery checkout
+provider Anthropic
+product Claude Code
+role Bakery -- core infrastructure lane, fleet friction second
+modality text
+model claude-haiku-5-5
+model_status active runtime self-reported by system prompt; not telemetry
+configured_model claude-opus-5 (declared by tracked .claude/settings.json; resolved value for this clone not read this lap)
+configured_status declared default, not runtime telemetry
+evidence tracked .claude/settings.json; system prompt names claude-haiku-5-5
+voice Kyri
+title Bakery held-ruling reread, no build
+prompt ty every1 baton prin recur: run the Bakery seat under the baton and the inner prompt.
+think Read the baton, recursion-prompts/bakery-inner.md, and the top of construction/ITINERARY.md. The fruit is the shared build and cold-run cache; it is ruled and waiting on a witness, not yet built.
+think Read the newest bakery log, 20261011.021640. It records the receipt key as Keaton's open ruling. This lap reached the same state from the card and the shelf, so the premise still holds.
+think Checked the tree: clean, HEAD 1dd9951eb3, and the fleet claim board was not reread here. A cold endurance run at this point would cost about 9,837 seconds by the card's own estimate, past the 5,400-second timeout, so it was not launched.
+obs No code, no witness, and no claim. Nothing new is opened that a peer could collide with, so nothing is claimed.
+obs The round-count arithmetic gives orbit round 9 at count 10,794. The sign for that round was not read from the spellbook this lap, so the orbit line is left out rather than guessed.
+rota lap 10794, row 4 -- Earth, the row that breathes in. The reading found the same open ruling on the receipt key and no agent-doable step beneath it.
+file session-logs/date/20261011/20261011-022209_bakery-held-ruling-reread-no-build.kyri why this lap's record that the receipt-key ruling is still open
+file session-logs/date/README-index-20261011.md why the day shelf row, placed under the delimiter
+scope Bakery read-only lap. Card, runner, shelf, and claim-board read. No build, no claim, no edit to the card or the runner.
+status GREEN for the read; no fruit. The receipt-key ruling is open and Keaton's. No witness was run and none is claimed.
+recommend check in (Claude) -- the receipt key decides whether the runner contract changes, and the card names that as Keaton's ruling. Until it lands, no agent-doable Bakery lap stands on the card.

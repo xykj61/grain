@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.022209` | [Bakery held-ruling reread, no build](20261011/20261011-022209_bakery-held-ruling-reread-no-build.kyri) | Ruling still Keaton's; no build; no claim. |
 | `20261011.021704` | [Incense declines, claim board clear, no build](20261011/20261011-021704_incense-declined-no-build.kyri) | Nib carried; law lane waits on Keaton's word. |
 | `20261011.021640` | [Bakery receipt key held, no build](20261011/20261011-021640_bakery-receipt-key-held-no-build.kyri) | Ruling still Keaton's; no claim; no build. |
 | `20261011.021544` | [Polar storage floor, measured](20261011/20261011-021544_diffuser-polar-storage-floor-paper.kyri) | Polar ring storage: about 3x the cache floor on a model. |
