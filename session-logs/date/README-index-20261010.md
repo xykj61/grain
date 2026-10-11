@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.233304` | [Copal, fruit void, roster measured](20261010/20261010-233304_copal-fruit-void-roster-measured-no-build.kyri) | 169 witnesses rostered; no build |
 | `20261010.232849` | [Diffuser, hold, next door needs later day](20261010/20261010-232849_diffuser-hold-next-door-needs-later-day.kyri) | Third night waits for a later calendar day; no build |
 | `20261010.232849` | [Copal, fruit void, no unrostered witness, no build](20261010/20261010-232849_copal-fruit-void-no-unrostered-witness-no-build.kyri) | 158 chapter witnesses all rostered; fruit empty; no build. |
 | `20261010.232706` | [Incense, pulled, no build](20261010/20261010-232706_incense-round-open-pulled-no-build.kyri) | Fast-forwarded to 69bf6e6b3d; no build. |
