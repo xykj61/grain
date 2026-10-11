@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.011809` | [Pheromone, held on Glow ruling, air row, no build](20261011/20261011-011809_pheromone-held-air-row-no-build.kyri) | Ruling still awaited from Incense; no build. |
 | `20261011.010721` | [Incense, round declines, no build](20261011/20261011-010721_incense-round-declines-no-build.kyri) | Queue blocked on Keaton's words; no build. |
 | `20261011.011128` | [Patchouli, queue empty, %840 held at pin bound](20261011/20261011-011128_patchouli-sign-red-840-pin-bound-no-build.kyri) | Queue empty; kumara red unbooked at the REDS pin bound; no build. |
 | `20261011.010757` | [Diffuser, gate held, aether row, no build](20261011/20261011-010757_diffuser-gate-held-aether-row-no-build.kyri) | Fourth pair waits for 20261012; aether row read; no build. |
