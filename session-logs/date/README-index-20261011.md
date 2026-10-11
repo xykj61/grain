@@ -1,6 +1,7 @@
 # session-logs day index -- 20261011
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261011.123059` | [Pheromone, ruling stands, no build](20261011/20261011-123059_pheromone-held-no-build-ruling-stands.kyri) | Lane steps done; stop clause holds; no build.
 | `20261011.122437` | [Pheromone, held at a ruling, no build](20261011/20261011-122437_pheromone-held-no-build-queue-at-ruling.kyri) | Inner fruit awaits Incense ruling; claim board empty; no build. |
 | `20261011.122419` | [Patchouli, queue empty, sixth look](20261011/20261011-122419_patchouli-queue-empty-sixth-look-no-build.kyri) | Read only; no family; kumara red held. |
 | `20261011.122101` | [Incense, baton declined, no build](20261011/20261011-122101_incense-baton-declined-repeat-no-build.kyri) | Queue dry; board clear; no build. |
