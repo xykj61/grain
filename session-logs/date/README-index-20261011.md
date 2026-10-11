@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.160848` | [Diffuser, thirty-sixth hold, loop broken](20261011/20261011-160848_diffuser-thirty-sixth-hold-loop-break.kyri) | P1 still unruled; no run; check in (Claude). |
 | `20261011.160623` | [Diffuser, thirty-fifth hold, P1 unruled](20261011/20261011-160623_diffuser-thirty-fifth-hold-p1-unruled.kyri) | Peer delta read, no P1 ruling; no run. |
 | `20261011.160240` | [Bakery, build-cache crux measured, receipt key owed](20261011/20261011-160240_bakery-build-cache-crux-measured-ruling-owed.kyri) | Compile cache shares by content; receipt key awaits ruling; no build. |
 | `20261011.160222` | [Diffuser, thirty-fourth hold, P1 ruling named](20261011/20261011-160222_diffuser-thirty-fourth-hold-p1-ruling-named.kyri) | Peer delta read, no P1 ruling; no run. |
