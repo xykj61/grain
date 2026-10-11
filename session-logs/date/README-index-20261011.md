@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.080245` | [Incense, baton declined, hold on a word, no build](20261011/20261011-080245_incense-baton-declined-hold-on-word.kyri) | Card and clock read; upstream fetch unread; no build. |
 | `20261011.080022` | [Incense, baton declined, earth row read](20261011/20261011-080022_incense-baton-declined-no-build-rota-earth.kyri) | Clean round-open, claim board empty, no build. |
 | `20261011.075839` | [Incense, baton gated, no build](20261011/20261011-075839_incense-baton-gated-no-build.kyri) | Clean round-open, empty claim board, gate held; no build. |
 | `20261011.075859` | [Petrichor, baton lap, gate held, no build](20261011/20261011-075859_petrichor-baton-gate-held-no-build.kyri) | Claims board and open reds read; lane queue empty; no build. |
