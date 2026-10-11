@@ -9,6 +9,7 @@
 | `20261011.191947` | [Petrichor, held at gate, no build](20261011/20261011-191947_petrichor-held-gate-ff-no-build.kyri) | Fast-forwarded; public seam unnamed, ruling unmade; no build. |
 | `20261011.191420` | [Incense, declined, no build](20261011/20261011-191420_incense-declined-no-build.kyri) | Tree clean; claims present; no sentinel; gated; no build. |
 |---|---|---|
+| `20261011.193926` | [Copal, fruit spent, loop flagged](20261011/20261011-193926_copal-fruit-spent-loop-flag-no-build.kyri) | Set rostered; spent fruit repeats; ruling needed. |
 | `20261011.192939` | [Grass, foundations sampled, no build](20261011/20261011-192939_grass-foundations-sampled-no-build.kyri) | Two C+ fossils already molted to living B+ and A; no lift. |
 | `20261011.193303` | [Diffuser held, P1 unruled](20261011/20261011-193303_diffuser-hold-p1-unruled-remote-level-no-run.kyri) | Remote level; P1 waits on a ruling; no run. |
 | `20261011.193241` | [Patchouli, queue empty a fourth time, no build](20261011/20261011-193241_patchouli-queue-empty-fourth-today.kyri) | Fresh nets read empty; no claims live; no build. |
