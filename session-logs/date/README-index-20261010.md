@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261010.205829` | [Diffuser, baton read, both doors gated, no build](20261010/20261010-205829_diffuser-baton-read-held-no-build.kyri) | Both doors wait on Keaton's word or a live trace; no build. |
 | `20261010.205349` | [Patchouli, queue empty, no build](20261010/20261010-205349_patchouli-queue-empty-no-build.kyri) | %840 waits on a seam ruling; no build. |
 | `20261010.205250` | [Copal, fruit re-measured empty, no build](20261010/20261010-205250_copal-fruit-empty-no-build.kyri) | Zero unrostered chapter witnesses; no claim, no build. |
 | `20261010.205512` | [Diffuser, round open synced, both doors still gated, no build](20261010/20261010-205512_diffuser-round-held-again-no-build.kyri) | Both doors gated again after the pull; no source touched. |
