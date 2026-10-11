@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.022920` | [Patchouli queue empty, twenty-first hold](20261011/20261011-022920_patchouli-queue-empty-twenty-first-no-build.kyri) | Four elder headers only; no build. |
 | `20261011.022533` | [Patchouli queue empty, twentieth hold](20261011/20261011-022533_patchouli-queue-empty-twentieth-no-build.kyri) | Fresh grep: elder headers only; no build. |
 | `20261011.022446` | [Diffuser, fourth-night gate held, no build](20261011/20261011-022446_diffuser-fourth-night-gate-held-no-build.kyri) | Toolchain and date gates re-read; nothing lands; no build. |
 | `20261011.022237` | [Copal water tastes, no build](20261011/20261011-022237_copal-water-tastes-no-unrostered-witness-no-build.kyri) | All 158 witnesses rostered; no fruit. |
