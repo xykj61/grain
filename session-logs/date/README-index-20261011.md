@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.173904` | [Pheromone, baton lap, no build](20261011/20261011-173904_pheromone-baton-lap-no-build-nib-carried.kyri) | Language lane empty; no build; nib carried. |
 | `20261011.173735` | [Petrichor, gate held, fourth no-build](20261011/20261011-173735_petrichor-gate-held-fourth-no-build.kyri) | Seam still absent; no page; no build. |
 | `20261011.173640` | [Diffuser, forty-sixth hold](20261011/20261011-173640_diffuser-forty-sixth-hold-p1-unruled.kyri) | Fast-forward to defaca9123; P1 unruled. |
 | `20261011.173718` | [Grass, inner B+ 89, queue empty, no build](20261011/20261011-173718_grass-inner-b-plus-queue-empty-no-build.kyri) | Inner prompt graded B+ 89; nothing below B; no build. |
