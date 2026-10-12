@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.012531` | [Pheromone, still blocked on a ruling, no build](20261012/20261012-012531_pheromone-lane-still-blocked-no-build.kyri) | Lane unchanged; next move awaits Incense; no build. |
 | `20261012.011550` | [Grass inner, B+ again, repeat flagged](20261012/20261012-011550_grass-inner-regrade-b-plus-repeat-no-build.kyri) | Field grade holds at B+ (89); no edit; repeat-pattern noted. |
 | `20261012.011408` | [Incense, seventy-ninth, no build](20261012/20261012-011408_incense-baton-seventy-ninth-no-build.kyri) | Round-open clean; board clear; no build. |
 | `20261012.011343` | [Diffuser, P1 still unruled, eighty-sixth hold, no run](20261012/20261012-011343_diffuser-p1-hold-eighty-sixth-check-in-no-run.kyri) | P1 unruled in the newest bodies; no measurement; check in (Claude). |
