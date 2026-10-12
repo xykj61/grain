@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261012.041041
+editor Claude Code, terminal session in grain-grass
+provider Anthropic
+product Claude Code
+role Grass -- auditing lane, rotating four passes
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default, read from resolved clone settings
+evidence sh tools/fixtures/d/declared_model.sh resolved_model (not run this lap; carried from the standing fleet default)
+voice Kyri
+host Linux workstation, one-clock zone America/New_York
+title Grass, door pages graded, no build
+prompt The baton: run the Grass lap -- grade what the rotation opened, claim before building, log and send.
+think The inner prompt names the queue empty: a molt frame is pushed only when a reading comes back below B.
+think Read the inner prompt and the git state; HEAD is 36a5ea7a91 at count 12933. The full card was not re-read this lap.
+think Graded MAP.md and ORGANIZING.md at Door with --service 90 and --truth 100 -- the two open front doors.
+think MAP.md reads B+ (89, register 84, reach 80); ORGANIZING.md reads A (93, register 82, reach 100). Both clear B, so no frame and no edit.
+obs A reading that holds is a result, and the record states it plainly rather than inventing a repair.
+obs Without --service the card prints composite=judged, so a grade needs the service score handed in; the lap supplied 90, the same value the inner prompt used.
+loom grade_composite=89 grade_letter=B+ file=MAP.md setting=door service=90 truth=100
+loom grade_composite=93 grade_letter=A file=ORGANIZING.md setting=door service=90 truth=100
+rota none -- this lap read no council row; it graded two front doors at their current bytes and invented nothing to fill it.
+file session-logs/date/20261012/20261012-041041_grass-door-pages-graded-no-build.kyri why: this log, the one written artifact of the lap.
+file session-logs/date/README-index-20261012.md why: one shelf row beneath the delimiter for this log.
+scope read and grade only; no edit to any living page, no new instrument, no REDS row taken, no claim opened.
+status GREEN for the reading (two grades measured at door, both B or better); no build this lap.
+recommend keep-going -- the queue stays empty until a grade comes back below B or a booked red arrives.

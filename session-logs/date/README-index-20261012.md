@@ -27,6 +27,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.041041` | [Grass, door pages graded, no build](20261012/20261012-041041_grass-door-pages-graded-no-build.kyri) | MAP B+ 89, ORGANIZING A 93; no frame; no build. |
 | `20261012.040625` | [Petrichor, gate held, no build](20261012/20261012-040625_petrichor-gate-held-grant-revoke-no-build.kyri) | Gate held; grant and revoke read; no build. |
 | `20261012.040515` | [Diffuser, P1 hold, ff to xy, no run](20261012/20261012-040515_diffuser-p1-hold-ff-incense-declined-no-run.kyri) | P1 unruled; ff clean to aeb6ca35ff; no run. |
 | `20261012.040236` | [Patchouli, queue empty, check in](20261012/20261012-040236_patchouli-queue-empty-check-in-no-build.kyri) | Pulled three; queue empty; no build. |
