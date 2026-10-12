@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.095331 | [Diffuser, P1 held, no run](20261012/20261012-095331_diffuser-p1-held-hundred-laps-no-run.kyri) | P1 ruling owed; no run. |
 | 20261012.094958 | [Diffuser, P1 held, nib carried, no run](20261012/20261012-094958_diffuser-p1-held-nib-carried-no-run.kyri) | P1 ruling still owed; card nib carried; no run. |
 | 20261012.094914 | [Petrichor, gate held, no build](20261012/20261012-094914_petrichor-gate-held-no-build.kyri) | Consent Rail gate still on Keaton's word; claim board clear; ff six peers; no build. |
 | 20261012.094538 | [Incense, declined after fast-forward](20261012/20261012-094538_incense-declined-round-open-ff-no-build.kyri) | Round-open clean at 268ba112d2, fast-forward to 3a7152e182; board empty; nib carried; no build. |
