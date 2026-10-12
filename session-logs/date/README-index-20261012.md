@@ -471,6 +471,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.181850 | [Diffuser P1 standstill to check-in, no run](20261012/20261012-181850_diffuser-p1-standstill-check-in-no-run.kyri) | P1 ruling owed; no run; no edit; check-in (Claude). |
 | 20261012.181209 | [Pheromone lane held, no build, count 13990](20261012/20261012-181209_pheromone-lane-held-no-build-count-13990.kyri) | Stop clause; Incense ruling owed; no build. |
 | 20261012.180811 | [Copal roster repeat, fruit empty, no build](20261012/20261012-180811_copal-roster-repeat-no-build.kyri) | Zero unrostered witnesses again; card line stale; nib carried. |
 | 20261012.181236 | [Patchouli queue empty again, no build](20261012/20261012-181236_patchouli-queue-empty-no-build-again.kyri) | Queue empty; REDS %841 held for a Claude ruling; no build. |
