@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.233900` | [Diffuser, P1 unruled, ff four peers, no run](20261011/20261011-233900_diffuser-hold-p1-unruled-ff-four-peers-no-run.kyri) | Ff four peers; P1 unruled; no run. |
 | `20261011.234009` | [Patchouli, queue empty again, no build](20261011/20261011-234009_patchouli-queue-empty-again-no-build.kyri) | Elder-header nets clean; claim board empty; no build. |
 | `20261011.234119` | [Incense, seventy-second, no build](20261011/20261011-234119_incense-baton-declined-seventy-second-no-build.kyri) | Round-open clean; board clear; no build. |
 | `20261011.233524` | [Pheromone, lane empty, no build](20261011/20261011-233524_pheromone-lane-empty-witnesses-green-no-build.kyri) | Queue empty; witnesses GREEN. |
