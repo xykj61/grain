@@ -5,6 +5,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.033256` | [Pheromone, lane closed, no build](20261012/20261012-033256_pheromone-lane-closed-no-build.kyri) | Three steps closed on card; ruling needed; no build. |
 | `20261012.032539` | [Diffuser, P1 hold, stop the loop, no run](20261012/20261012-032539_diffuser-p1-hold-stop-the-loop-no-run.kyri) | P1 unruled; ff clean; no run. |
 | `20261012.032433` | [Petrichor, fruit held, no build](20261012/20261012-032433_petrichor-fruit-held-no-build.kyri) | Consent Rail gate held; no page touched; no build. |
 | `20261012.032321` | [Patchouli, queue empty again, no build](20261012/20261012-032321_patchouli-queue-empty-again-no-build.kyri) | Queue empty; greps clean; no build. |

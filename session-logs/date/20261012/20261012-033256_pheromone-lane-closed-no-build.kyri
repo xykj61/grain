@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261012.033256
+editor claude-code terminal
+provider anthropic
+product Claude Code
+role pheromone seat, repository lane (Glow language)
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by session; not separately verified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default in .claude/settings.json, resolved clone value not read this lap
+evidence .claude/settings.json; system context names claude-haiku-5-5 as the running model
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Pheromone lane closed, no agent-doable build this lap
+prompt the baton and pheromone inner prompt, run as one lap
+think the inner prompt's three Pheromone steps (express receipt facts in Glow, carry through lowering into Mantra and projections, stable refusal output) each name a pedestal or witness that already reads GREEN on the card and in the closed-fruit record
+think the card's stop clause sends any new rune or Glow language ruling back to Incense and the interactive bench, so no rune is authored here
+think the claim-as-override clause asks for the oldest unclaimed booked lap from any lane; the OPEN reds at the top of construction/REDS.md (%838, %837) belong to fascia and SUNN lanes, and a claim on either would be a real build outside this seat's lane
+think tree was clean at HEAD d3077aa496 with 12,877 commits; no edit made, so the lap produces no code commit
+obs no fruit remains that this lane may build without a ruling; re-checking a closed fruit is not a fruit per the inner prompt
+obs fleet_claim.sh was called with no verb and returned verdict=no_verb; no claim was opened and none was needed
+loom witness=none wall_ms=0 -- no measurement taken this lap
+rota none -- queue read only, no lane build, no council row deep-read this lap
+orbit round unread -- not computed this lap
+file session-logs/date/20261012/20261012-033256_pheromone-lane-closed-no-build.kyri this log, the one record of the lap
+file session-logs/date/README-index-20261012.md one row placed under the delimiter for this log
+scope read the Pheromone card lane, the inner prompt, the claims board, and the OPEN REDS; no file outside the logs changed
+status GREEN on the lane's own closed steps as recorded on the card; no build; the queue needs a ruling from Incense before any rune or language change; the open claim-as-override pick was not made
+recommend check-in (Claude) -- the next Pheromone move is a new rune or Glow language question, which the card returns to Incense and the interactive bench
