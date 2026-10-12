@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.204536` | [Copal, roster ask already met, no build](20261011/20261011-204536_copal-fruit-roster-complete-no-build.kyri) | 159 of 159 rostered; ruling asked. |
 | `20261011.204021` | [Copal, fruit spent, third recheck, no build](20261011/20261011-204021_copal-fruit-spent-third-recheck-no-build.kyri) | Fruit spent; no build. |
 | `20261011.203630` | [Patchouli, queue empty a fifteenth way](20261011/20261011-203630_patchouli-queue-empty-fifteenth-sweep.kyri) | Fresh sweep, no new family; no build. |
 | `20261011.203841` | [Grass, inner page third regrade, no build](20261011/20261011-203841_grass-regrade-repeat-no-build.kyri) | Field 77, reach 90; queue empty. |
