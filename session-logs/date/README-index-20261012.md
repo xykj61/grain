@@ -5,6 +5,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.110305` | [Bakery, receipt key hold again, no build](20261012/20261012-110305_bakery-receipt-key-hold-no-build.kyri) | Same gate as 105423; no build; check in (Claude) |
 | 20261012.105423 | [Bakery, receipt key held, no build](20261012/20261012-105423_bakery-receipt-key-held-no-build.kyri) | Gate stands; no build; check in (Claude) |
 | `20261012.105300` | [Diffuser, P1 hold, ff four peer logs, no run](20261012/20261012-105300_diffuser-p1-hold-ff-four-peers-no-run.kyri) | P1 still unruled; fast-forward only; no measurement; no build |
 | `20261012.105541` | [Copal chapter-witness roster, zero unrostered, no build](20261012/20261012-105541_copal-zero-unrostered.kyri) | 159 witnesses checked, zero absent; fruit empty. |
