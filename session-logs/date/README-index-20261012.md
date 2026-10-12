@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.011849` | [Pheromone, guards green, no build](20261012/20261012-011849_pheromone-lane-guards-green-no-build.kyri) | Lane held; capacity and limb10 GREEN; no build. |
 | `20261012.011154` | [Pheromone, lane held, no build](20261012/20261012-011154_pheromone-lane-held-no-build.kyri) | Claim board clear; no ruling open; no build. |
 | `20261012.010759` | [Bakery, mutation census three unmeasured, no build](20261012/20261012-010759_bakery-mutation-census-three-unmeasured-no-build.kyri) | Census: 3 changed, 0 silent, 3 unmeasured; receipt key YOURS; no build. |
 | `20261012.011004` | [Incense, seventy-eighth, no build](20261012/20261012-011004_incense-baton-seventy-eighth-no-build.kyri) | Round-open clean; board clear; ff pulled; no build. |
