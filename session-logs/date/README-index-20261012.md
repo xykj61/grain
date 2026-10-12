@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.154332 | [Incense decline, nib at parent, no build](20261012/20261012-154332_incense-decline-nib-parent-no-build.kyri) | Nib GREEN at parent; card 40,341 of 40,960; held on %642 and %519; no build. |
 | 20261012.154016 | [Incense decline, aether listened, no build](20261012/20261012-154016_incense-decline-aether-listen-no-build.kyri) | Clean; claims clear; nib carried; no build. |
 | 20261012.153652 | [Petrichor gate held, ff one, no build](20261012/20261012-153652_petrichor-gate-held-ff-one-no-build.kyri) | Ff to f8d63558db; Consent Rail still Diffuser's; no build |
 | 20261012.153351 | [Pheromone held, round six, no build](20261012/20261012-153351_pheromone-held-round-six-no-build.kyri) | Ff to 60077311b3; lane empty; ruling owed to Incense; no build. |
