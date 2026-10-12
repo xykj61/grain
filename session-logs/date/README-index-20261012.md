@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.005520` | [Copal, fruit empty third read, no build](20261012/20261012-005520_copal-fruit-empty-third-read-no-build.kyri) | 158 of 158 rostered by exact path; no build. |
 | `20261012.004933` | [Pheromone, lane held, fifth no build](20261012/20261012-004933_pheromone-lane-held-fifth-no-build.kyri) | Lane held at ff952c4adf; claim board empty; no ruling; no build. |
 | `20261012.004726` | [Grass, foundation below B, no build](20261012/20261012-004726_grass-foundation-below-b-no-build.kyri) | Grain-and-crossing reads C+ at field; left untouched; no build. |
 | `20261012.004840` | [Copal, fruit empty, no build](20261012/20261012-004840_copal-fruit-empty-no-build.kyri) | No unrostered chapter witness; log-only lap. |
