@@ -1,6 +1,7 @@
 # session-logs day index -- 20261012
 **Language:** EN
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+| `20261012.041818` | [Diffuser, P1 hold, ff to copal and incense, no run](20261012/20261012-041818_diffuser-p1-hold-ff-copal-witness-no-run.kyri) | Held lap; P1 still unruled; check in (Claude). |
 | `20261012.041449` | [Incense, aether row, no build](20261012/20261012-041449_incense-baton-declined-aether-row-no-build.kyri) | Board clear; no build; check in. |
 | `20261012.041429` | [Copal, chapter-witness fruit spent, no build](20261012/20261012-041429_copal-chapter-witnesses-spent-no-build.kyri) | 158 of 158 chapter witnesses rostered; no candidate; no build. |
 | `20261012.041407` | [Grass, docs shelf graded, no build](20261012/20261012-041407_grass-docs-shelf-graded-no-build.kyri) | Fifteen docs pages read B or better; queue empty; no build. |
