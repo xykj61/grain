@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261012.140311
+editor product interface Claude Code (fleet loop)
+provider model provider Anthropic
+product product name Claude Code
+role repository role pheromone Glow-language lane, one writer per checkout
+modality text-or-voice text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared default, resolved from .claude/settings.json; not runtime telemetry
+evidence .claude/settings.json; the active model was not verified at runtime
+voice Kyri
+host anonymized host and one-clock zone, New York clock
+title pheromone lane held, no build
+prompt The fleet baton for Pheromone: read the inner prompt and the card, claim before building, and build the next honest thing.
+think The inner prompt says the lane's fruit closed through the receipt-refusal pedestal, and its last open question, whether to carry the receipt-offer desk into a tracked Glow source, is a scope question for Incense.
+think The card's stop clause sends a new rune or a Glow language ruling back to Incense and the interactive bench. Nothing left in the lane is a build that stays inside it without one of those rulings.
+think The most recent Pheromone log, 20261012.135706, already recorded the same empty queue. Running the cold endurance run again would re-measure a tree with nothing new to prove.
+think The claim board tool takes --open or --close only, so I did not open a claim, since opening one would have been a claim on no build.
+obs No code, page, or claim moved in this lap, so the claim-before-build clause did not apply.
+obs Counted queue for the lane: zero open agent-doable items, one held question owed to Incense.
+obs Calfive for this lap: count 13693 read at the front of the lap, quest place 43; the verb is the earth law sign's stop clause, which here means stopping the repeated re-check.
+rota none -- pure gate reading; the lane's queue is empty and no deep row was read for a new fruit
+orbit round 13 Taurus -- what must stop, the repeated re-check of a closed lane
+file session-logs/date/20261012/20261012-140311_pheromone-lane-held-no-build.kyri why this held log records the empty queue and the unchanged gate, with no build
+recommend check in (Incense) -- a new Glow rune or language ruling is Incense's and the interactive bench's to make; the lane waits on that ruling
+scope read of the inner prompt, the card, and the claim tool's usage; this log and its shelf row only; no code, no page, no claim
+status GREEN for the log; no witness run because no code or page moved; the Pheromone lane stays held at its gate

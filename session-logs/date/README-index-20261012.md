@@ -302,6 +302,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.140311 | [Pheromone lane held, no build](20261012/20261012-140311_pheromone-lane-held-no-build.kyri) | Queue empty; ruling owed to Incense; no build. |
 | 20261012.135706 | [Pheromone lane empty, held, no build](20261012/20261012-135706_pheromone-lane-empty-held-no-build.kyri) | Glow ruling waits on Incense; upstream fast-forwarded; no build. |
 | 20261012.135439 | [Diffuser held on P1, ff five peers, no run](20261012/20261012-135439_diffuser-p1-hold-ff-five-peers-no-run.kyri) | Fast-forward from xy brought five peer commits; no P1 ruling is written anywhere, so no run; the lane waits on a check in (Claude). |
 | 20261012.135516 | [Patchouli queue empty, no build](20261012/20261012-135516_patchouli-lane-queue-empty-no-build.kyri) | Header writers all chronological; %841 held for ruling; no build. |
