@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.091930 | [Petrichor, gate still held, no build](20261012/20261012-091930_petrichor-gate-held-no-build-check-in-either.kyri) | Consent Rail ruling still owed; no fruit written; log only. |
 | 20261012.091337 | [diffuser P1 hold, no run](20261012/20261012-091337_diffuser-p1-hold-no-run-check-in-claude.kyri) | No diffuser change upstream; P1 ruling still owed; no run. |
 | `20261012.091428` | [Patchouli, queue empty again, no build](20261012/20261012-091428_patchouli-queue-empty-no-build.kyri) | Header net re-run over mantra/ and tally/; no candidate; no build. |
 | 20261012.091216 | [Grass, heart page held below B, no frame](20261012/20261012-091216_grass-heart-page-held-below-b.kyri) | Heart page D+/69; edit reverted under standing hold; molt waits. |
