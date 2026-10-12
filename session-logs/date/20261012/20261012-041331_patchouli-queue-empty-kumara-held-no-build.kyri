@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.041331
+editor claude-code terminal-session
+provider anthropic
+product claude-code
+role patchouli base note lane mantra/ and tally/
+modality text
+model claude-haiku-5-5
+model_status active runtime per session system context; unverified against telemetry
+configured_model claude-sonnet-5
+configured_status declared in .claude/settings.json (fleet default); runtime differs this session
+evidence .claude/settings.json; this session runs claude-haiku-5-5 per system context
+voice Kyri
+host anonymized linux bench, one-clock zone America/New_York
+title Patchouli queue empty, kumara red still live and held, no build
+prompt Run the patchouli baton lap: read the inner prompt, take the most durable solvable item in mantra/ and tally/, log it.
+think The inner prompt's fruit rule still reads one chronological header or stop. The last several laps measured every class the prompt names (width, recursion, function length, assert density) and booked them as ratchets or clean.
+think The kumara red is still live: tally/kumara.rye:36 reads return kp.sign(message, noise) catch unreachable. Spine number 840 is unbooked. The row cannot enter construction/REDS.md without pin headroom, and the pin is near its bound. The legacy sign return type crosses the amphora, aurora and comlink callers. Both questions wait on Keaton.
+obs No build this lap. The queue is empty for this lane, and the only live red needs a ruling before it can be booked.
+obs The council row was not deep-read, so the rota field is an honest none.
+rota none -- queue-empty lap; the council row was not read
+loom grep_sites=1 scope=mantra_tally kumara_line=36 new_candidates=0
+file recursion-prompts/patchouli-inner.md why the fruit rule and the held kumara red
+file session-logs/date/README-index-20261012.md why the day shelf gains this lap's row
+scope read-only check of tally/kumara.rye plus the inner prompt; no code, no card change
+status GREEN as a queue reading: kumara red confirmed live at tally/kumara.rye:36 and held for Keaton's ruling. No witness run because no code changed.
+recommend check-in (Keaton) -- rule the kumara questions (pin headroom, legacy sign return type) or name the next lane item; until then this lane's agent-doable queue reads empty.

@@ -28,6 +28,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.041331` | [Patchouli, queue empty, kumara held, no build](20261012/20261012-041331_patchouli-queue-empty-kumara-held-no-build.kyri) | Kumara red live at line 36; held for ruling; no build. |
 | `20261012.040825` | [Patchouli, queue empty again, no build](20261012/20261012-040825_patchouli-queue-empty-no-build.kyri) | Fresh sweep agrees; ledger rows await ruling; no build; check in.
 | `20261012.040825` | [Diffuser, P1 hold, ff to grass, no run](20261012/20261012-040825_diffuser-p1-hold-ff-grass-no-run.kyri) | P1 unruled; ff clean; no run. |
 | `20261012.040625` | [Petrichor, gate held, no build](20261012/20261012-040625_petrichor-gate-held-grant-revoke-no-build.kyri) | Gate held; grant and revoke read; no build. |
