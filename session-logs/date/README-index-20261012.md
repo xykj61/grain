@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.131513 | [Diffuser P1 held, sixth, no run](20261012/20261012-131513_diffuser-p1-held-sixth-no-run.kyri) | P1 unruled; no run; define or retire wanted. |
 | 20261012.130833 | [Incense eighty-sixth, declined, no build](20261012/20261012-130833_incense-eighty-sixth-declined-no-build.kyri) | Synced to dfafb2ccff; queue empty; no build. |
 | 20261012.130828 | [Copal roster gap already closed](20261012/20261012-130828_copal-roster-gap-closed-no-build.kyri) | Zero unrostered witnesses; no build. |
 | 20261012.130756 | [Bakery crux still held at the receipt-key ruling](20261012/20261012-130756_bakery-crux-held-ruling-still-open-no-build.kyri) | Ruling still open; queue gated; no build. |
