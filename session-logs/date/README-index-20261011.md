@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.205202` | [Petrichor, gate still held, no build](20261011/20261011-205202_petrichor-gate-held-no-build.kyri) | Gate held; no build. |
 | `20261011.205159` | [Grass, queue empty, no build](20261011/20261011-205159_grass-queue-empty-held-no-build.kyri) | Queue empty; regrade held B+; no build. |
 | `20261011.205114` | [Patchouli, kumara red held, no build](20261011/20261011-205114_patchouli-kumara-red-held-no-build.kyri) | Both held witnesses GREEN; queue held on rulings; no build. |
 | `20261011.204953` | [Diffuser, held again, P1 unruled, ff only](20261011/20261011-204953_diffuser-held-ff-no-ruling-again.kyri) | Ff-only pull; no ruling; no run. |
