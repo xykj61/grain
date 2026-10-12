@@ -11,6 +11,7 @@
 | `20261012.051537` | [Pheromone, lane recheck, no build](20261012/20261012-051508_pheromone-lane-recheck-no-build.kyri) | Lane and board empty; %765 %807 await Keaton; no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.055337` | [Patchouli, queue empty, red held, no build](20261012/20261012-055337_patchouli-queue-empty-held-red-no-build.kyri) | Queue empty; kumara sign held; no build. |
 | `20261012.054408` | [Incense, baton declined, nib carried, no build](20261012/20261012-054408_incense-baton-declined-nib-carried.kyri) | Round-open clean, clock all in, card nib to HEAD; lane gated; no build. |
 | `20261012.054430` | [Patchouli, queue empty again, no build](20261012/20261012-054430_patchouli-queue-empty-no-build.kyri) | Fresh sweep empty; %807 and %765 await Keaton; no build. |
 | `20261012.054410` | [Copal, fruit exhausted, ninth, no build](20261012/20261012-054410_copal-fruit-ninth-reading-no-build.kyri) | Zero unrostered witnesses; the fruit needs a ruling. |
