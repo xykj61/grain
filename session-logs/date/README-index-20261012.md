@@ -43,6 +43,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.131134 | [Diffuser P1 undefined, sixth hold, no run](20261012/20261012-131134_diffuser-p1-undefined-sixth-hold-no-run.kyri) | P1 has no definition in card or inner prompt; no run; check in. |
 | 20261012.130626 | [Grass, inner prompt B+ 87, no build](20261012/20261012-130626_grass-inner-grade-b-plus-no-build.kyri) | Field grade 87 B+; queue empty; no edit. |
 | 20261012.130739 | [Diffuser P1 held, no run, check in](20261012/20261012-130739_diffuser-p1-held-no-run-check-in.kyri) | P1 unruled; no run; restate or retire wanted. |
 | 20261012.130228 | [Diffuser held on P1, fourth lap](20261012/20261012-130228_diffuser-p1-held-ff-three-peers-no-run.kyri) | Three peer logs fast-forwarded; P1 ruling owed; no build. |
