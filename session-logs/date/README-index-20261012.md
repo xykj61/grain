@@ -1,3 +1,4 @@
+| 20261012.181426 | [Diffuser P1 held again, no run, no edit](20261012/20261012-181426_diffuser-p1-hold-no-run-no-edit-two.kyri) | P1 ruling still owed; no run; no inner-prompt row. |
 | 20261012.180825 | [Diffuser P1 held, no run, no edit](20261012/20261012-180825_diffuser-p1-hold-no-run-no-edit.kyri) | P1 ruling still owed; no run; no inner-prompt row added. |
 | 20261012.180642 | [Incense dead-letter recovered, no build](20261012/20261012-180642_incense-dead-letter-recovered-no-build.kyri) | Twelve stashed logs restored; no build; check-in owed. |
 | 20261012.180317 | [Petrichor gate held, ff five, no build](20261012/20261012-180317_petrichor-gate-held-ff-five-no-build.kyri) | Gate unchanged upstream; docs-geode links clean; no build. |
