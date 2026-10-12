@@ -1,3 +1,4 @@
+| 20261012.173701 | [Receipt key waits on a ruling, no build](20261012/20261012-173701_bakery-receipt-key-waits-no-build.kyri) | Thread read; receipt key owed to Keaton; no build. |
 | 20261012.172851 | [Plant adoption measured, no build](20261012/20261012-172851_bakery-rota-read-no-build.kyri) | Remainder 358 read; receipt key held; no build. |
 | 20261012.172638 | [Pheromone lane closed on the card, no build](20261012/20261012-172638_pheromone-lane-closed-no-build.kyri) | Items 1-3 closed; ruling owed to Incense; no build. |
 | 20261012.172237 | [Petrichor gate held, ff three, no build](20261012/20261012-172237_petrichor-gate-held-ff-three-no-build.kyri) | Ff three; seam unchanged; gate held; no build. |
