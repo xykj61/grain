@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.091432` | [Petrichor, public seam unlanded, no build](20261012/20261012-091432_petrichor-public-seam-gate-held-no-build.kyri) | Seam named in card, absent from tree; gate held; no build. |
 | 20261012.090812 | [diffuser P1 still owed, no run](20261012/20261012-090812_diffuser-p1-still-owed-ff-patchouli-no-run.kyri) | ff of patchouli log; P1 ruling still owed, no measurement |
 | `20261012.090652` | [Petrichor, consent gate held, no build](20261012/20261012-090652_petrichor-consent-gate-held-no-build.kyri) | Fast-forward to a1449de814; gate held; no build. |
 | `20261012.090555` | [Patchouli, queue empty 29th, no build](20261012/20261012-090555_patchouli-queue-empty-29th-way-no-build.kyri) | Lane empty; open rows all word-gated; no claim. |
