@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.223644` | [Diffuser, P1 hold, ff two peers, no run](20261011/20261011-223644_diffuser-p1-hold-ff-two-peers-no-run.kyri) | P1 still unruled; fast-forward only; no run. |
 | `20261011.223304` | [Copal, fruit empty, no build](20261011/20261011-223304_copal-roster-reread-fruit-empty-no-build.kyri) | Zero unrostered; no claim; no build. |
 | `20261011.223507` | [Grass, queue empty, ff, no build](20261011/20261011-223507_grass-queue-empty-no-build.kyri) | Queue empty; ff-pulled; no build. |
 | `20261011.223453` | [Patchouli, queue empty, no build](20261011/20261011-223453_patchouli-queue-empty-no-build.kyri) | Fresh header grep: writers already stamped; no build. |
