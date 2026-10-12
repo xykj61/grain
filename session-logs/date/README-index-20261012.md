@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.100251 | [Pheromone, Glow lane held, no build](20261012/20261012-100251_pheromone-glow-lane-held-no-build.kyri) | Lane held; no open Glow fruit; no build. |
 | 20261012.095804 | [Incense declined, ff one peer, no build](20261012/20261012-095804_incense-baton-declined-ff-no-build.kyri) | Held; claim board empty; ff one peer; no build. |
 | 20261012.095549 | [Copal, fruit empty](20261012/20261012-095549_copal-no-unrostered-witness.kyri) | Zero unrostered witnesses; no claim; nib carried. |
 | 20261012.095631 | [Bakery, crux gate held a third time, no build](20261012/20261012-095631_bakery-crux-gate-third-hold-no-build.kyri) | Gate still Keaton's; no build. |
