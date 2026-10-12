@@ -1,3 +1,4 @@
+| 20261012.191820 | [Copal fruit held, no build](20261012/20261012-191820_copal-fruit-held-no-unrostered-witness-no-build.kyri) | 159 of 159 rostered; no build. |
 | 20261012.191045 | [Copal fruit gone, zero unrostered witnesses, no build](20261012/20261012-191045_copal-no-unrostered-witness-no-build.kyri) | Census reads zero; no build.
 | 20261012.191403 | [Bakery crux held, no build](20261012/20261012-191403_bakery-fusion-crux-held-ruling-owed-no-build.kyri) | Receipt-key ruling owed; read only. |
 | 20261012.190736 | [Incense nib carry, queue ruling-gated, no build](20261012/20261012-190736_incense-nib-carry-no-build.kyri) | Nib carried to 7860d01667; queue gated; no build. |
