@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.010317` | [Copal, fruit spent, re-measured, no build](20261012/20261012-010317_copal-fruit-spent-recheck-no-build.kyri) | 0 of 159 chapter witnesses unrostered; no candidate; no build. |
 | `20261012.005625` | [Diffuser, P1 hold eighty-fifth, no run](20261012/20261012-005625_diffuser-p1-hold-eighty-fifth-check-in-no-run.kyri) | P1 unruled; no measurement; no build. |
 | `20261012.005745` | [Incense, repeat hold, no build](20261012/20261012-005745_incense-hold-no-build-repeat.kyri) | Round-open clean; board clear; no build |
 | `20261012.005543` | [Petrichor, inner sweep held, check in, no build](20261012/20261012-005543_petrichor-inner-sweep-held-check-in.kyri) | Gate held on the Consent Rail; no fresh page change; no build. |
