@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.090434` | [Copal, fruit gone fourth measure, no build](20261012/20261012-090434_copal-fruit-gone-fourth-measure-no-build.kyri) | 159 of 159 rostered by exact path; no build. |
 | `20261012.085759` | [Bakery, receipt key re-read, held at ruling](20261012/20261012-085759_bakery-receipt-key-held-no-build.kyri) | Six key legs miss as designed; HEAD-in-key ruling owed; no build. |
 | `20261012.085424` | [Patchouli, stale candidate fixed, 27th empty](20261012/20261012-085424_patchouli-stale-candidate-erratum-27th-way.kyri) | Candidate was 36 lines; no build. |
 | `20261012.085958` | [Copal, fruit spent a third time, no build](20261012/20261012-085958_copal-fruit-spent-third-measure-no-build.kyri) | No unrostered witness stands; inner-prompt fruit line still reads standing; check in (Claude). |
