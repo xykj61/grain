@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.222758` | [Bakery held on the receipt-key ruling, no build](20261011/20261011-222758_bakery-held-on-ruling-no-build.kyri) | Cache witness GREEN last lap; receipt key owed to Keaton; no build. |
 | `20261011.222151` | [Bakery, orientation, no build](20261011/20261011-222151_bakery-orientation-no-build.kyri) | Claim board empty; cache crux needs a claim first; no build. |
 | `20261011.222128` | [Diffuser hold, P1 unruled, remote level](20261011/20261011-222128_diffuser-hold-p1-unruled-no-ff-no-run.kyri) | Remote level at 0e98ab09f0; P1 unruled; no run. |
 | `20261011.222058` | [Copal, fruit taken, no build](20261011/20261011-222058_copal-fruit-taken-roster-landed-no-build.kyri) | Fruit taken upstream; prin_scope GREEN; no build. |
