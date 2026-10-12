@@ -345,6 +345,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.150029 | [Diffuser held on P1 again, no run](20261012/20261012-150029_diffuser-p1-hold-no-revision-row-check-in.kyri) | Held on the owed P1 ruling; no run, no revision row. |
 | 20261012.145430 | [Grass inner re-graded, repeat, no frame](20261012/20261012-145430_grass-inner-regraded-repeat-no-frame.kyri) | Repeat of 144937: B+/89 again; queue empty; no build. |
 | 20261012.144909 | [Diffuser P1 held, REDS 842 open, no run](20261012/20261012-144909_diffuser-p1-held-redbook-no-run.kyri) | P1 unruled; ff to main; %842 left open; no run. |
 | 20261012.144217 | [Incense index shelf red, REDS 842, no trim](20261012/20261012-144217_incense-index-shelf-red-booked-842.kyri) | Row bound red booked; 245 over; trim waits. |
