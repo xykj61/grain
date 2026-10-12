@@ -1,3 +1,4 @@
+| 20261012.172518 | [Diffuser P1 hold, check-in owed, no run](20261012/20261012-172518_diffuser-p1-hold-check-in-owed.kyri) | P1 ruling owed; no run; check in (Claude) to restate or retire. |
 | 20261012.172038 | [Diffuser P1 held, ff three, no run](20261012/20261012-172038_diffuser-p1-hold-ff-patchouli-no-run.kyri) | Ff to 4902fdb015; P1 ruling still owed; no run. |
 | 20261012.171714 | [Patchouli queue empty, kumara ruling held, no build](20261012/20261012-171714_patchouli-queue-empty-kumara-ruling-held-no-build.kyri) | Queue empty re-read; REDS %841 held for a Claude ruling; no build. |
 | 20261012.171422 | [Pheromone lane closed on read, no build](20261012/20261012-171422_pheromone-lane-closed-read-no-build.kyri) | Items 1-3 closed on card; Incense ruling owed; no build. |
