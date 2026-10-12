@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.103909 | [Bakery, receipt basis unrelated history](20261012/20261012-103909_bakery-receipt-basis-unrelated-history.kyri) | Basis shares no ancestor with HEAD; held. |
 | 20261012.103220 | [Patchouli queue empty, no build](20261012/20261012-103220_patchouli-queue-empty-no-build.kyri) | Queue empty; kumara red held. |
 | 20261012.103239 | [Bakery, receipt stale, no build](20261012/20261012-103239_bakery-receipt-stale-check-in-no-build.kyri) | Receipt a month old; crux held; no build. |
 | 20261012.103229 | [Copal, controls unrostered](20261012/20261012-103229_copal-fruit-empty-controls-unrostered-no-build.kyri) | No unrostered witness; no build. |

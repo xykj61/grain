@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261012.103909
+editor claude-code terminal-session
+provider anthropic
+product claude-code
+role bakery core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime per session system context; unverified against telemetry
+configured_model claude-opus-5
+configured_status declared in recursion-prompts/bakery-inner.md; runtime differs this session
+evidence recursion-prompts/bakery-inner.md engine section
+voice Kyri
+host Framework bench, one-clock America/New_York
+title Bakery -- the receipt basis shares no ancestor with HEAD
+prompt ty every1 baton prin recur -- run the bakery lap on the inner fruit
+think the 103239 lap held the crux on a stale receipt; repeating that hold adds nothing, so this lap measured the one thing the receipt-key ruling depends on
+think git merge-base of the receipt head fa310d296b and HEAD exits 1 with no output: the two commits share no ancestor at all
+think the receipt head is not an ancestor of HEAD, and the basis side holds 4,913 commits HEAD lacks while HEAD holds 13,440 in total
+obs the basis is not merely old; it sits on a separate history, so a --scoped pass that diffs against it compares unrelated trees
+obs the measurement is read-only: no receipt, claim, build, or pull changed; the card and the receipt were read, not written
+obs the cache fruit needs a basis that this HEAD can reach before any receipt can be reused, which is why the ruling stays Keaton's
+loom witness=standing_equipment_receipt_read wall_ms=0 receipt_age_days=28 basis_ancestor_of_head=no merge_base=none basis_only_commits=4913
+rota none -- measurement of the receipt basis only; the council row was not deep-read this lap
+orbit round 15 -- sign not read this lap, verb not taken
+status HELD -- no build; the receipt basis is on unrelated history; the receipt-key ruling and a full-pass refresh wait on Keaton's word
+file session-logs/date/20261012/ this log -- the lap's own record, born on its day shelf
+file construction/standing-equipment-receipt.kyri read-only; its head fa310d296b is not an ancestor of HEAD
+recommend check in (Claude) -- rule whether the receipt basis is re-seated by a full pass on this history before any cache reuses it
