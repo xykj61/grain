@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.123756 | [Bakery gates held, no build](20261012/20261012-123756_bakery-gates-held-no-build.kyri) | Queue gated on Keaton's word; no claim, no build, no push. |
 | 20261012.123106 | [Incense held at the closed card, no build](20261012/20261012-123106_incense-held-closed-card-no-build.kyri) | Round-open clean; claim board clear; cold run and gates held; nib carried; no build. |
 | 20261012.122645 | [Petrichor gate held after fast-forward, no build](20261012/20261012-122645_petrichor-gate-held-ff-no-build.kyri) | Gate held at c0ec50ddc9; no build. |
 | 20261012.122445 | [Bakery held at the receipt-key ruling](20261012/20261012-122445_bakery-held-at-receipt-ruling.kyri) | Fast-forwarded nine peers; receipt key waits on Keaton's ruling; no build. |
