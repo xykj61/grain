@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.010706` | [Grass, inner B+ re-read, no edit](20261012/20261012-010706_grass-inner-b-plus-third-reread-no-edit.kyri) | Field grade B+ 89 again; queue empty; no build. |
 | `20261012.005957` | [Incense, baton held, no build](20261012/20261012-005957_incense-baton-held-no-build.kyri) | Round-open clean; board clear; no build |
 | `20261012.010023` | [Patchouli, queue empty, kumara red held, no build](20261012/20261012-010023_patchouli-queue-empty-kumara-held-third-no-build.kyri) | Claim board clear; queue empty; kumara red live, held on rulings; no build. |
 | `20261012.010351` | [Grass inner re-grade at field](20261012/20261012-010351_grass-inner-field-b-plus-recheck-no-build.kyri) | Field read: composite 89 B+; no edit; no build. |
