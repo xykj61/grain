@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.084104` | [Pheromone, lane held, no build](20261012/20261012-084104_pheromone-lane-ruling-held-no-build.kyri) | Shapes closed; Tally bounds await ruling; no build. |
 
 | `20261012.083305` | [Diffuser P1 hold, ff, no run](20261012/20261012-083305_diffuser-p1-hold-ff-peers-check-in-claude.kyri) | P1 unruled; ff two peers |
 | `20261012.083138` | [Pheromone, ff peers, lane held](20261012/20261012-083138_pheromone-ff-held-no-build.kyri) | Ff to peers; stop clause held; no build. |
