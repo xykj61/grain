@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.141026 | [Pheromone lane held, water row, no build](20261012/20261012-141026_pheromone-lane-held-water-no-build.kyri) | Lane empty at f4a44faf80; no build; check in. |
 | 20261012.140420 | [Diffuser P1 held again, no run](20261012/20261012-140420_diffuser-p1-hold-no-run-check-in.kyri) | Inner prompt 180 KB of P1 holds; no row added, no run; check in (Claude). |
 | 20261012.140142 | [Copal fruit gone, third measure, no build](20261012/20261012-140142_copal-fruit-third-measure-no-build.kyri) | Zero unrostered witnesses; density GREEN; no build. |
 | 20261012.140120 | [Bakery plant remainder overcounts, no build](20261012/20261012-140120_bakery-plant-remainder-overcounts-no-build.kyri) | Counts imports, not plants; no build. |
