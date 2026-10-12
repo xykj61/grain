@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261012.071800
+editor product interface Claude Code, bakery seat in the grain-bakery tree
+provider model provider Anthropic
+product product name Claude Code
+role repository role bakery, core infrastructure fleet seat
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime evidence the session reports Haiku 5.5
+configured_model claude-opus-5
+configured_status declared in recursion-prompts/bakery-inner.md engine; the fleet loop override is FLEET_MODEL
+evidence recursion-prompts/bakery-inner.md engine line; tools/f/fleet-loop.sh
+voice Kyri
+host anonymized Linux pier, America/New_York clock
+title Bakery -- the cache crux re-read, no build
+prompt the baton and bakery inner prompt, run one bounded bakery lap
+think the fruit names one shared build cache and one cold-run cache across eight checkouts
+think a grep for content keys and build caches finds tools/b/build_cached.sh, its witness, a shared-cache witness, and a receipt-key helper already in the tree, so the first fruit is not a fresh build
+think a new instrument or a booked red needs a claim first; the board holds no live claims, and I opened none because no new instrument is being built this lap
+think a cold roster pass is hours long on the recorded costs, so it would cut the lap rather than close it; I did not launch one
+obs the claim board is empty and the Bakery queue has open items, but the cache-sharing ruling in bakery-inner reads as a design seam, which the card reserves for a Claude ruling
+obs no file changed, so the git nib and the card carry forward without a follow-up pin
+loom none -- nothing measured this round
+rota none -- the bakery lap reads its own inner fruit and the card, not the council row this round
+orbit round 1 sign -- not applied; the round load is read from git rev-list --count HEAD and was not computed this lap
+file tools/b/build_cached.sh why the existing content-keyed cache the fruit asks for, already in the tree, not rebuilt
+file recursion-prompts/bakery-inner.md why the fruit and its ruled status, read but not edited
+scope read-only reading of the bakery fruit, the claim board, and the day shelf; no build, no cold run, no send
+status GREEN for the reads taken; no witness run this lap; the cache-sharing ruling is open for Claude or Keaton
+recommend check in (Claude) -- decide whether the shared cache across checkouts is ready to witness, which needs the cold-run budget and a ruling on the shared receipt key
