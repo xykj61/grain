@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20261012.025410
+editor claude-code terminal-session
+provider anthropic
+product claude-code
+role copal amphora and resins lane
+modality text
+model unverified
+model_status active runtime stated in session system context; unverified against telemetry
+configured_model claude-sonnet-5
+configured_status resolved from .claude/settings.local.json per tools/fixtures/d/declared_model.sh resolved_model; not runtime telemetry
+evidence .claude/settings.json fleet default claude-sonnet-5 at medium; clone may override
+voice Kyri
+host anonymized linux bench, one-clock zone America/New_York
+title Copal fruit spent: zero unrostered chapter witnesses, no build
+prompt Run the copal baton lap: read the inner prompt and the card, take the fruit, log it.
+think The inner prompt fruit is one unrostered witness under tools/gen/chapter/. The card's standing figure says about seventy-five remain unrostered, and the prior copal lap at 20261011.235741 already read zero.
+think I measured by exact path line: all 158 tracked *_witness.rish under tools/gen/chapter/ have a `path` row in construction/standing-equipment.kyri. Zero absent.
+think The non-witness runners in that room are rostered except README.md, three .brix templates, brush_parse_tame_density.sh and prin_ticker.rish. None is a witness. The density .sh is guarded through brush_parse_density_witness.rish, rostered at commit e795f2aff3. prin_ticker.rish is a thin hand whose witness was rostered at 121403e0d1.
+think So the fruit does not exist on this tree. Inventing a witness to satisfy the fruit would add a guard that serves no named gap, which the card's own product-before-workshop rule declines.
+obs No build this lap. The only fruit the inner prompt names is already closed, so the honest lap is a measurement and a record.
+obs The card still says about seventy-five unrostered, and the baton and inner prompt still send each copal lap to that figure. The stale line causes the repeat, so retiring it is the real repair. Editing the card is a Keaton-or-claim decision, so this lap leaves the card alone.
+obs Local bytes only. This is a presence claim against HEAD. A peer may have landed a new chapter witness upstream after the last fetch, which would add a row the next lap must read.
+rota lap 12581, row 1 -- the row was not deep-read this lap; the fruit closed on a measurement, so the council read is named as skipped rather than inferred.
+orbit round 11 sign -- the verb is not read from a rota table this lap, so no verb is recorded.
+scope log-only lap: this session log and its day-shelf row. Changes no code, rostering, or card; read-only measurement.
+status GREEN on the measurement: 158 of 158 chapter witnesses rostered by exact path; no edit to the roster or card. Fruit spent, not built. Send not run, since nothing landed beyond the log.
+file construction/standing-equipment.kyri why the exact-path measurement reads every chapter witness as rostered
+file construction/ITINERARY.md why the stale unrostered YOURS line stays unedited here and is named as the repair for Keaton
+file session-logs/date/README-index-20261012.md why the day row for this log is prepended under the delimiter
+recommend check-in (Keaton) -- retire the stale "~75 chapter witnesses unrostered" line on the card and in the copal fruit, since it is the cause of every repeat lap; say whether to retire it, or name a new fruit.
