@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.214140` | [Bakery, baton orientation, no build](20261011/20261011-214140_bakery-baton-orientation-no-build.kyri) | Claim board empty; no keystone ruled; no build. |
 | `20261011.213611` | [Patchouli, queue empty, no build](20261011/20261011-213611_patchouli-queue-empty-no-build.kyri) | Sweep finds no new header; no build. |
 | `20261011.213502` | [Bakery, ff, gate held, no build](20261011/20261011-213502_bakery-ff-gate-held-no-build.kyri) | Ff to bff1962869; receipt-key ruling open; no build. |
 | `20261011.213440` | [Diffuser, ff to one patchouli log, P1 unruled, no run](20261011/20261011-213440_diffuser-ff-to-e1bd5c1528-p1-unruled-no-run.kyri) | Ff to one peer log; P1 ruling open; no run. |
