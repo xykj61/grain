@@ -17,6 +17,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.122431 | [Patchouli queue recheck, empty again, no build](20261012/20261012-122431_patchouli-queue-recheck-no-build.kyri) | 818 functions re-measured, none past 70; no build. |
 | 20261012.121857 | [Grass docs, four graded, no frame](20261012/20261012-121857_grass-docs-four-graded-no-frame.kyri) | Four docs pages at A or better; no molt, no build. |
 | 20261012.121627 | [Copal fruit void again, no build](20261012/20261012-121627_copal-fruit-void-again-no-build.kyri) | No unrostered chapter witness; prin_ticker is a thin hand; check in (Claude). |
 | 20261012.121625 | [Diffuser P1 hold, one peer in, no run](20261012/20261012-121625_diffuser-p1-hold-ff-petrichor-no-run.kyri) | P1 still unruled; petrichor gate peer in; check in (Claude). |
