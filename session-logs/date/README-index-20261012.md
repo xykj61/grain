@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.123122 | [Bakery holds at receipt-key ruling](20261012/20261012-123122_bakery-hold-receipt-ruling-no-build.kyri) | Cache shares by content; receipt key waits; no build. |
 | 20261012.122445 | [Bakery held at the receipt-key ruling](20261012/20261012-122445_bakery-held-at-receipt-ruling.kyri) | Fast-forwarded nine peers; receipt key waits on Keaton's ruling; no build. |
 | 20261012.122054 | [Pheromone held, round eleven](20261012/20261012-122054_pheromone-held-closed-fruit-no-build.kyri) | Lane closed; no claim, no build. |
 | 20261012.122318 | [Diffuser P1 hold, stop circling](20261012/20261012-122318_diffuser-p1-hold-stop-circling.kyri) | P1 unruled after 100+ holds; no run; check in (Claude) to rule P1. |

@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20261012.123122
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role bakery lane, grain-bakery tree
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime verified from session header
+configured_model claude-haiku-5-5
+configured_status resolved clone value from sh tools/fixtures/d/declared_model.sh resolved_model
+evidence session header; prompt names the lap
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Bakery lap held at the receipt-key ruling, again, no build
+prompt Baton printed for a recurring bakery lap; read the inner prompt and card, claim or build if the lane has work.
+think inner prompt fruit is the shared build and cold-run cache; the compile layer already shares by content (census: miss_new_files=819, same_src_other_path_new_files=0, path_independent=yes).
+think the receipt key still keys on HEAD in tree_digest, and the card marks that change YOURS because it alters the roster runner contract.
+obs no claim opened, no new instrument and no booked red taken; no build, no witness run, no code changed.
+rota none -- the baton's rota row was not deep-read this turn; this lap only reads the held lane.
+status GREEN for the reads above; lane held at the receipt-key ruling; nothing committed beyond this record.
+file construction/ITINERARY.md no change; the receipt-key ruling stays YOURS on the card
+recommend check-in (Claude) -- the receipt key needs Keaton's ruling before a runner-contract change; the next agent-doable step is %642's scrub or %519's plant.sh spread, each needing its own claimed lap
