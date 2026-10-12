@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.061302
+editor Claude Code terminal, grain-copal tree
+provider Anthropic
+product Claude Code
+role copal lane, amphora and the roster
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York clock
+title Copal lap -- the chapter-witness fruit is already met; no build, ruling needed
+prompt The copal baton and inner prompt: claim one unrostered witness under tools/gen/chapter/, roster it, prove it from both sides.
+think Read recursion-prompts/copal-inner.md and the card. The fruit names one unrostered chapter witness.
+think Measured by exact path: every tools/gen/chapter/*witness* file has a `path` row in construction/standing-equipment.kyri. The one runnable file without a path row, brush_parse_tame_density.sh, is covered by its control guard, brush_parse_density_witness.rish, which tests the floor on planted trees and on the live tree.
+obs Nothing is left to roster. Adding a row for a file already covered would prove nothing new, so this lap writes none and builds nothing.
+obs The copal day shelf already holds many identical "fruit met, no build" logs. This log records the same finding once more, and it asks for a new fruit rather than another repeat.
+loom witness=none wall_ms=0 records=159 unrostered=0
+rota none -- inner-prompt fruit lap; the finding is one measurement, no council question surfaced
+orbit round 6 Virgo -- the verb is the check that proves the thing is finished
+file session-logs/date/20261012/20261012-061302_copal-fruit-met-ruling-needed-no-build.kyri why-one-line: this lap's record, measured by exact path
+file session-logs/date/README-index-20261012.md why-one-line: one shelf row under the delimiter naming this lap
+scope read-only measurement of tools/gen/chapter/ against construction/standing-equipment.kyri, one session log, one shelf row. No code, no roster row, no witness run.
+status GREEN for the reading: 159 of 159 chapter witnesses rostered by exact path; the one unrostered script is covered by its control. No build, no witness run. Open: a new fruit from Keaton, since the card's fruit is spent.
+recommend check-in (Claude) -- the chapter-witness fruit is spent; Keaton's word names the next fruit, or retires the card's stale unrostered line.
