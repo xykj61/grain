@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261012.084909
+editor Claude Code terminal, grain-grass checkout
+provider Anthropic
+product Claude Code
+role Grass, auditing lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5 -- resolved_model read by tools/fixtures/d/declared_model.sh this lap
+configured_status resolved configuration, not runtime telemetry; fleet default in .claude/settings.json differs
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Grass sample queue empty, no build
+prompt Baton lap for Grass: grade touched prose and code heads, lift any below B, otherwise hold.
+think Read recursion-prompts/grass-inner.md, whose standing lean says the mycelium head sample is done and a frame is pushed only on a reading below B.
+think Graded eleven mycelium heads (fold, muster, purse, statement, till, voucher, warrant, rehearsal, freight, tenure, testament) with qa_report_card.sh at Door and --service 90.
+think Every head read B or better: composite 88 to 97, register 92 to 100, reach 60 to 100. Testament is the lowest, at B+ 88, and sits above the B floor.
+think No head reads below B, so the lean's rule gives no frame. The sample's one unopened room waits for a reading that fails, not for a sweep.
+obs A fresh sweep of an unopened room would spend the lap on reading rather than repair, which the lean names as the thing to wait for.
+obs The service half is judged, so the card reads composite from my hand-given service of 90. It is a measurement under a stated input, not a graded truth.
+rota lap 13307, row 2 -- fire sees (13307 mod 5 = 2); read the sample for what a head says to a newcomer, and nothing below B surfaced to repair
+orbit round 2 Taurus -- What must stop, found the way Venus finds a thing already worth keeping: one repeat, named plainly, and left standing
+file session-logs/date/20261012/20261012-084909_grass-sample-queue-empty-no-build.kyri why-one-line -- this log, the only artifact this lap writes
+file session-logs/date/README-index-20261012.md why-one-line -- one row prepended under the delimiter, naming this log
+scope mycelium module-head sample graded at Door with service 90; no file under mycelium/ changed
+status GREEN -- eleven of eleven sampled heads read B or better; no repair, no frame; the lap's one artifact is this log
+recommend keep-going -- the sample queue is empty, and the next lap takes an unopened file only when a reading comes back below B
