@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261012.011552
+editor product interface Claude Code
+provider model provider Anthropic
+product Claude Code
+role repository role Bakery -- core infrastructure, fleet lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning unset
+configured_status declared default from tracked config; this clone's resolved value not read this lap
+evidence .claude/settings.json and recursion-prompts/bakery-inner.md; the baton names claude-opus-5
+voice Kyri
+host anonymized Linux workstation, one-clock zone America/New_York
+title Bakery orientation, crux still gated, no build
+prompt Baton invocation for the Bakery lap: read the card, inner prompt, and thread, then run the lap.
+think The newest shelf row and recommend say the shared-cache crux is gated on Keaton's receipt-key word and a toolchain-pin provisioning ruling.
+think The tree is clean at 9ad9d5f404 with no open claim, so no claim is owed for a build this lap.
+think A cold endurance run costs about 70 minutes and a hot run about 75 minutes, and nothing in the lane unblocks the crux without a ruling, so a run would only re-prove a tree already measured.
+think The honest lap is orientation and one record, not a build.
+obs No code changed. The census figure of three unmeasured mutations is the most recent reading and remains open.
+obs I did not push. The commit stays local until Keaton says send.
+rota lap 12684, row 5 -- water tastes. The concrete fact is the card's own gate: the receipt key waits on a word, not on a build.
+orbit round 15 sign -- the round load table reads Calfive planning for this count; verb not applied to a keystone here.
+scope read the card, bakery-inner, the shelf and the newest recommend; no code, no claim, no run.
+status GREEN for orientation only; no witness run this lap; the crux and the six-mutation proof stay open.
+file session-logs/date/20261012/20261012-011552_bakery-orientation-no-build.kyri record of this lap, no code touched
+recommend check-in (Claude) -- the receipt-key question is Keaton's word, and the toolchain-pin mutations need a provisioning ruling before the cache proof can close.
