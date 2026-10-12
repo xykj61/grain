@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.074501` | [Copal, fruit zero, no build](20261012/20261012-074501_copal-fruit-zero-no-build.kyri) | 0 of 159 chapter witnesses unrostered; no build. |
 | `20261012.074001` | [Grass, inner prompt graded B+, queue empty, no lift](20261012/20261012-074001_grass-inner-prompt-graded-b-plus-no-lift.kyri) | Field grade 89 B+; no frame, no edit. |
 | `20261012.073827` | [Patchouli, queue empty, no build](20261012/20261012-073827_patchouli-queue-empty-no-build.kyri) | Lane queue read empty; no claim; no build. |
 | `20261012.072503` | [Patchouli, queue empty, no build](20261012/20261012-072503_patchouli-queue-empty-no-build.kyri) | Lane empty; claim-as-override surveyed; log only. |

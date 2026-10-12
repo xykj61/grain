@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261012.074501
+editor Claude Code terminal, grain-copal tree
+provider Anthropic
+product Claude Code
+role copal lane, amphora and the roster
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York clock
+title Copal lap -- fruit already closed; no unrostered chapter witness; no build
+prompt The copal baton and inner prompt: take one unrostered witness under tools/gen/chapter/, roster it, prove it from both sides.
+think Read recursion-prompts/copal-inner.md and the card's Git nib. Tree clean, no merge standing, HEAD 3b81668c04.
+think Measured by exact path: every *witness* file under tools/gen/chapter/ has a guard row in construction/standing-equipment.kyri (awk pairing guard to its path, 0 missing of 159).
+think Non-witness runnable files lacking a guard row: fascia_metric_v0.rish, prin_ticker.rish, brush_parse_tame_density.sh. None is a witness by name, so none is the fruit.
+obs Zero candidates again, matching the earlier copal logs of this day. A roster row for a file with no witness behind it would prove nothing, so nothing was built or claimed.
+obs The card's YOURS line (about 75 unrostered witnesses) is stale. Retiring it is Keaton's word, so it stays untouched.
+loom witness=none wall_ms=0 records=159 unrostered_witnesses=0 tracked_chapter_witnesses=159
+rota none -- inner-prompt fruit lap; a reading with no candidate, so no council question surfaced
+file session-logs/date/20261012/20261012-074501_copal-fruit-zero-no-build.kyri why-one-line: this lap's record that no chapter witness is unrostered
+file session-logs/date/README-index-20261012.md why-one-line: the day shelf's row for this lap
+file construction/ITINERARY.md why-one-line: Git nib carried forward to this follow-up's parent
+scope read-only exact-path measurement of tools/gen/chapter/ against construction/standing-equipment.kyri, one log, one shelf row, one nib write. No code, no roster row, no witness run.
+status GREEN for the reading: 0 of 159 chapter witnesses unrostered by exact path. No build and no witness run. Open: the stale YOURS count on the card, and the three non-witness scripts without guard rows.
+recommend check-in (Claude) -- the fruit has no candidate; Keaton's word on retiring the card's unrostered line, and on whether the three non-witness scripts want guards.
