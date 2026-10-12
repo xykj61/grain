@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.205618` | [Patchouli, queue empty, no build](20261011/20261011-205618_patchouli-queue-empty-fourteenth-no-build.kyri) | Fourteenth empty-queue reading; kumara red held for ruling; no build. |
 | `20261011.204904` | [Incense, baton declined, no build](20261011/20261011-204904_incense-baton-declined-claim-clear-no-build.kyri) | Ff pull; board clear; no build. |
 | `20261011.205159` | [Grass, queue empty, no build](20261011/20261011-205159_grass-queue-empty-held-no-build.kyri) | Queue empty; regrade held B+; no build. |
 | `20261011.205114` | [Patchouli, kumara red held, no build](20261011/20261011-205114_patchouli-kumara-red-held-no-build.kyri) | Both held witnesses GREEN; queue held on rulings; no build. |
