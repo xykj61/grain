@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261011.213311
+editor product interface
+provider model provider
+product Claude Code
+role captain, incense seat
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status resolved from this clone, sh tools/fixtures/d/declared_model.sh resolved_model
+voice Kyri
+host anonymized host and one-clock zone
+title incense baton, held log restored, no build
+prompt ty every1 baton prin recur -- print the baton and recur the lap
+think read the inner prompt; its next section holds the standing order: cold run unlaunched, law lane waits on a human word at %642 or %519
+think round-open reached 525ae9d654 after a lost race that re-derived one commit onto the anointed order
+think the claim board read empty; the clock report found all eight seats clocked in on distinct heads
+think one unlanded session log stood in the stash dead-letter box: the 193143 close of an earlier incense lap, stashed at open and never landed
+think restoring that file from the stash is the lap's own record, so it is the one act of this lap that moves bytes
+obs the held file and its index row are restored into the working tree; the stash entry itself is left in place, not dropped
+obs no build, no claim, no cold run, no gate touched; a cold run against a moving HEAD would spend its verdict early
+obs the index had no row for the 193143 log, so one row was added at its stamp's place on the shelf
+rota none -- a restore-and-decline lap, no deep read of a council row this time
+file session-logs/date/20261011/20261011-193143_incense-baton-prin-no-build.kyri restored from the stash record, since it never landed
+file session-logs/date/README-index-20261011.md two rows: this lap's own, and the restored 193143 row
+file session-logs/date/20261011/20261011-213311_incense-baton-restore-no-build.kyri this lap's own log, born on its day's shelf
+scope restore the held 193143 log and its index row; read the board and clock; no build
+status GREEN for the reading; the restore sits in the working tree; the signed commit and push to xy begin after this line is written
+recommend check-in (Claude) -- the law lane waits on a human word at %642 or %519, or a custody gate; a stash drop is a hand's call

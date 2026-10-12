@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.213311` | [Incense, held log restored, no build](20261011/20261011-213311_incense-baton-restore-no-build.kyri) | Restores the held 193143 close and indexes it; no build. |
 | `20261011.213041` | [Diffuser, ff to two peers, P1 unruled, no run](20261011/20261011-213041_diffuser-ff-two-peers-p1-hold-no-run.kyri) | Ff to two peer logs; P1 ruling open; no run. |
 | `20261011.212759` | [Petrichor, ff, gate held, no build](20261011/20261011-212759_petrichor-ff-gate-held-no-build.kyri) | Ff to xy/main; Consent Rail ruling open; no build. |
 | `20261011.212759` | [Petrichor, ff, gate held, no build](20261011/20261011-212759_petrichor-ff-gate-held-no-build.kyri) | Ff to xy/main; Consent Rail ruling open; no build. |
@@ -134,6 +135,7 @@
 | `20261011.194252` | [Grass, round five graded, no build](20261011/20261011-194252_grass-round-five-graded-no-build.kyri) | grass-inner.md B+ 89; queue empty; no build. |
 | `20261011.193235` | [Incense, declined, no build](20261011/20261011-193235_incense-baton-declined-no-build.kyri) | Board empty, tree clean; cold run held; no build. |
 | `20261011.193608` | [Grass, queue empty, no build](20261011/20261011-193608_grass-queue-empty-no-build.kyri) | warrant.rye A 93; no code; no claim; no build. |
+| `20261011.193143` | [Incense, baton print, no build](20261011/20261011-193143_incense-baton-prin-no-build.kyri) | Baton printed; no build; log landed late. |
 | `20261011.191130` | [Diffuser held, P1 unruled](20261011/20261011-191130_diffuser-hold-p1-unruled-remote-level.kyri) | Remote level; P1 waits on a ruling; no run. |
 | `20261011.193301` | [Copal, fruit spent, no build](20261011/20261011-193301_copal-fruit-spent-no-build.kyri) | Roster already whole; card ~75 stale; no build. |
 | `20261011.193119` | [Petrichor, held after ff, no build](20261011/20261011-193119_petrichor-held-after-ff-no-build.kyri) | Upstream logs only; Consent Rail gate unchanged; no build. |
