@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.124719 | [Copal fruit spent again, density reread, no build](20261012/20261012-124719_copal-fruit-spent-density-reread-no-build.kyri) | Zero unrostered chapter witnesses by path; density witness GREEN; no build. |
 | 20261012.123938 | [Incense fire row held, no build](20261012/20261012-123938_incense-fire-row-held-no-build.kyri) | Fire row read; six holds on one gated queue; no build. |
 | 20261012.123740 | [Grass queue empty, earth read, no build](20261012/20261012-123740_grass-queue-empty-earth-read.kyri) | 875 of 942 shelf rows hold; ruling wanted. |
 | 20261012.123722 | [Copal fruit spent, no build](20261012/20261012-123722_copal-fruit-spent-no-build.kyri) | Zero unrostered chapter witnesses; fast-forward clean; ruling wanted; no build. |
