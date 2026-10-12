@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261012.071233
+editor claude-code terminal-session
+provider anthropic
+product claude-code
+role bakery captain, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified; system context declares claude-haiku-5-5, not telemetry
+configured_model claude-opus-5
+configured_status declared in recursion-prompts and bakery inner prompt (engine row, bakery tree); clone override not read this lap
+evidence recursion-prompts/bakery-inner.md engine section and construction/fleet-roster.kyri engine note
+voice Kyri
+host anonymized linux bench, one-clock zone America/New_York
+title Bakery baton pass: crux held, claim board clear, no build
+prompt Run the baton lap as bakery: read the card and inner prompt, claim before building, then build or decline.
+think Round-open state: HEAD 6a82e62cbe, count 13170, tree clean. The claim scan fetched xy and reads commits_behind=3, board=upstream, claims_live=0, verdict=board.
+think The inner prompt's fruit is one shared build cache and one cold-run cache across eight checkouts. It was ruled 20261001 and stands as the crux. Building it is a new instrument, so the baton's ORDER clause requires claim, push, then build.
+think A shared cache needs a full cold endurance run to witness, which costs about 70 minutes per the endurance-run law. This pass did not start one, because the baton says a cold run belongs at the front of a lap, after the round-open. Finishing the crux inside this pass was not possible.
+think Recovery queue state in the inner prompt is a long list of parked review items, and this pass did not recompute it. Taking one of those reviews is a smaller lap, but choosing it would have needed the same claim step first.
+obs No claim was opened, so no instrument was built and no REDS row was booked. The honest state is that the crux remains unclaimed and unbuilt.
+obs The only change in this pass is the log, its shelf row, and the card's Git nib carried to HEAD. No code, no pin beyond the nib, and no push.
+rota none -- round-open and the claim scan were read; the council grid row was not deep-read this pass.
+orbit round 11 -- sign not read this pass; the round load table in context/SPELLBOOK.md was not opened.
+scope log-only lap: this session log, its shelf row, and the card's Git nib carried to HEAD in a local signed follow-up. Changes no code and runs no cold pass. Nothing pushed.
+status GREEN on round-open and fleet_claim_scan (board=upstream, claims_live=0). No build and no claim; the crux is unstarted. Local commit only, not sent.
+file session-logs/date/20261012/20261012-071233_bakery-baton-crux-held-no-build.kyri this log
+file session-logs/date/README-index-20261012.md shelf row for this log
+file construction/ITINERARY.md Git nib carried forward to HEAD in the follow-up commit
+recommend check-in (Claude) -- the shared build cache is a new instrument on the core seam, so it needs a claim and a design ruling on cache keying before anyone builds it. A next pass could open that claim first, then start the cold run at the front of the lap.
