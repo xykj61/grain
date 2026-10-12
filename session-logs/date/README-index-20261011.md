@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.231158` | [Grass, front-door sample all B+ or better, no build](20261011/20261011-231158_grass-front-door-sample-b-plus-no-build.kyri) | Five pages graded; none below B; no edit. |
 | `20261011.230819` | [Diffuser, P1 held, 170 revisions, no run](20261011/20261011-230819_diffuser-hold-p1-unruled-no-run-170-revisions.kyri) | P1 unruled; no peer diffuser file; no run. |
 | `20261011.230538` | [Incense, baton lap declined, claim board clear, no build](20261011/20261011-230538_incense-baton-declined-clear-board-no-build.kyri) | Board clear; nib carried; %642, %519 wait on Keaton's word. |
 | `20261011.230508` | [Petrichor, consent facts on main, no build](20261011/20261011-230508_petrichor-consent-facts-on-main-no-build.kyri) | Grant and revoke on main; first-hour gated; no build. |

@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20261011.231158
+editor Claude Code, Grass seat, grain-grass tree
+provider Anthropic
+product Claude Code
+role Grass -- auditing lane, passes rotated
+modality text
+model claude-haiku-5-5
+model_status active runtime per harness system prompt
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status declared fleet default, .claude/settings.json
+evidence not resolved this lap (declared_model.sh not run)
+voice Kyri
+host anonymized, one-clock zone America/New_York
+title Grass front-door sample graded, all B+ or better, no build
+prompt Grass baton: audit one bounded surface, grade it, push one molt frame only if below B.
+think Read recursion-prompts/grass-inner.md; its tail says the audit queue is empty and an unopened room waits for a below-B reading.
+think Sampled five front-door pages no grade had read this lap: SOURCE.md, CONTRIBUTING.md, docs/README.md, manual/README.md, docs-geode/README.md.
+think The QA report card at door setting, service 90, read composite 88 B+, 92 A, 98 A+, 93 A, 94 A. No page fell under B.
+obs No page crossed the B line, so no molt frame is pushed and no prose is edited.
+obs SOURCE.md reads B+ with an 18-line numbered list the register reading counts as prose; the list is reported, never scored, and it holds at B+ either way.
+obs Service is judged at 90 by this seat; the other readings are counted.
+rota none -- the council grid was not opened this lap; the audit read was the grade
+orbit round 14 quest 74 -- sign not read this lap from context/SPELLBOOK.md; no sign recorded
+loom witness=qa_report_card pages=5 composite_min=88 composite_max=98
+file SOURCE.md graded at door setting, B+ 88, no edit
+file CONTRIBUTING.md graded at door setting, A 92, no edit
+file docs/README.md graded at door setting, A+ 98, no edit
+file manual/README.md graded at door setting, A 93, no edit
+file docs-geode/README.md graded at door setting, A 94, no edit
+file session-logs/date/20261011/20261011-231158_grass-front-door-sample-b-plus-no-build.kyri this log
+file session-logs/date/README-index-20261011.md one row prepended under the delimiter
+scope grass front-door page grades only; no molt, no edit to any surface
+status GREEN -- the five grades ran and all held at B or better; no witness beyond the card was run
+recommend keep-going -- queue empty; next lap takes an unopened file only on a below-B reading
