@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261012.144124
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure, shared build and cold-run cache
+modality text
+model claude-haiku-5-5
+model_status active runtime reported by the session; not separately verified
+configured_model claude-sonnet-5
+configured_reasoning medium
+configured_status .claude/settings.json fleet default, resolved for this clone
+evidence .claude/settings.json; no settings.local.json override read this lap
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Bakery crux ruling held, no build
+prompt Bakery baton and inner prompt: take the shared build and cold-run cache fruit, claim before build, prove on metal.
+think Tree clean at 96e4859cce, no rebase in hand. Read the bakery inner prompt and the card's NOW block.
+think The compile layer already shares by content (tools/fixtures/b/shared_build_cache_census.sh). The receipt key does not: tree_digest in tools/fixtures/s/standing_equipment_run.sh reads HEAD first.
+think Changing the receipt key changes the roster runner's contract. The card marks that YOURS, so it waits on Keaton's ruling. No claim was opened and no build was started.
+obs The fruit's own text says it stands ruled (20261002.142242) and that the ring print-path waits on its witness. The receipt-key ruling is the open question beneath it.
+obs Peer logs on today's shelf record the same hold. Adding another no-build row adds noise, so this one stays short.
+loom witness_census=none measured this lap; no build, no claim
+rota none -- no deep read this lap; the crux is ruling-held and the lane queue waits on a word
+orbit round 15 -- the verb that stops on this round's sign
+file construction/ITINERARY.md why the card's YOURS receipt-key ruling is the gate, unchanged this lap
+recommend check-in (Claude) -- the receipt-key ruling is owed by Keaton before any lap builds the key change
+scope read the card and inner prompt; no edit to any file but this log
+status GREEN as a no-build record; nothing landed, no witness owed, nothing pushed

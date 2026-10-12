@@ -327,6 +327,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.144124 | [Bakery crux ruling held, no build](20261012/20261012-144124_bakery-crux-ruling-held-no-build.kyri) | Receipt key ruling owed; no claim; no build; nib carried. |
 | 20261012.142907 | [Pheromone queue empty, claims clear, no build](20261012/20261012-142907_pheromone-queue-empty-no-claim-no-build.kyri) | Lane queue empty; claims board clear; no build. |
 | 20261012.142728 | [Diffuser P1 hold, no run](20261012/20261012-142728_diffuser-p1-hold-no-run.kyri) | Three peer commits ff; P1 unruled; no run. |
 | 20261012.142350 | [Grass queue empty, no build](20261012/20261012-142350_grass-queue-empty-no-build.kyri) | Queue empty, nothing open; record only. |
