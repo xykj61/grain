@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.102236 | [Pheromone, lane held for a ruling, no build](20261012/20261012-102236_pheromone-lane-held-for-ruling-no-build.kyri) | Lane empty; ruling with Incense; no build. |
 | 20261012.101533 | [Incense declined after one ff, no build](20261012/20261012-101533_incense-baton-declined-after-ff-no-build.kyri) | One ff; claims clear; no build. |
 | 20261012.101611 | [Copal, fruit spent, no unrostered witness](20261012/20261012-101611_copal-unrostered-fruit-spent.kyri) | 158 of 158 witnesses rostered; no build. |
 | 20261012.101354 | [Diffuser, P1 held a sixteenth time, no run](20261012/20261012-101354_diffuser-p1-held-sixteenth-no-run.kyri) | P1 unruled; no run; loop named; nib carried. |
