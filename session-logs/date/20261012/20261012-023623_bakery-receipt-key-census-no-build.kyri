@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.023623
+editor Claude Code, bench in grain-bakery (bakery seat)
+provider Anthropic
+product Claude Code
+role bakery seat, core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, America/New_York one-clock
+title Bakery, receipt-key census re-read, no build
+prompt the baton and bakery inner prompt, fleet-loop lap at HEAD 46d4208f1e
+think The round-open read HEAD at 46d4208f1e and the claim board holds one live claim, copal's sunn14 roster. The scan reads commits_behind=7 against xy, so this tree is behind its anointed remote.
+think The inner prompt's crux is one shared build cache and one cold-run cache. The compile layer already shares by content, and the census re-read it this lap: 819 files on a miss, 0 from another checkout path, 0 on a repeat.
+think The receipt key is the part still open. tree_digest begins with git rev-parse HEAD, so the same tree at two commits reads two digests. The card marks that change YOURS and says it changes the roster runner's contract.
+think The cold and hot roster proof the inner prompt names costs about 9,837 seconds by the card's own estimate, against a 5,400-second lap window. A full proof cannot close inside this lap, so this lap does not start one.
+think The claim check is required before any build, and no build was planned. Opening a claim for a receipt-key change would stand on a ruling that has not landed, so none was opened.
+obs Six independent mutations for the first proof would need the receipt-key ruling first. Building them now would test a key Keaton has not chosen.
+obs The compile-cache claim in the card holds on re-read. The receipt-key claim is the one still waiting.
+rota none -- queue held on the receipt-key ruling; no deep read this lap
+orbit round 13 sign -- the verb is earth's stop: no build past the ruling
+file session-logs/date/20261012/20261012-023623_bakery-receipt-key-census-no-build.kyri this log, born on its day shelf
+file session-logs/date/README-index-20261012.md the one shelf row for this log
+status GREEN on the cache census re-run (path_independent=yes); no build; no roster pass; receipt-key ruling open
+scope read-only census and board read; no edits to production code
+recommend check in (Claude) -- rule whether the receipt key drops HEAD for watched inputs; that ruling unlocks the six-mutation proof
