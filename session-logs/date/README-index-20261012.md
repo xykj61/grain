@@ -10,6 +10,7 @@
 | `20261012.051537` | [Pheromone, lane recheck, no build](20261012/20261012-051508_pheromone-lane-recheck-no-build.kyri) | Lane and board empty; %765 %807 await Keaton; no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.055037` | [Patchouli, triad class measured, no build](20261012/20261012-055037_patchouli-triad-class-no-build.kyri) | Ban patterns zero, camelCase zero, six triad-missing sources as a ratchet; no build. |
 | `20261012.054430` | [Patchouli, queue empty again, no build](20261012/20261012-054430_patchouli-queue-empty-no-build.kyri) | Fresh sweep empty; %807 and %765 await Keaton; no build. |
 | `20261012.054339` | [Bakery, first proof owed, no build](20261012/20261012-054339_bakery-first-proof-owed-no-build.kyri) | Owed inputs ruled; no code; nib carried. |
 | `20261012.054359` | [Diffuser, P1 hold, no run](20261012/20261012-054359_diffuser-p1-hold-hundred-second-no-run.kyri) | P1 unruled; ff three peer logs; no build. |
