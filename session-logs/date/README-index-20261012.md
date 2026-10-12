@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.091119` | [Copal, fruit spent again, no build](20261012/20261012-091119_copal-fruit-spent-eightieth-no-build.kyri) | Zero unrostered chapter witnesses; no claim, no roster row; nib carried. |
 | `20261012.090555` | [Patchouli, queue empty 29th, no build](20261012/20261012-090555_patchouli-queue-empty-29th-way-no-build.kyri) | Lane empty; open rows all word-gated; no claim. |
 | `20261012.085933` | [Incense, eighty-fifth lap, declined, nib carried](20261012/20261012-085933_incense-eighty-fifth-declined-nib-carried.kyri) | Tree current at xy/main; no build; ruling asked. |
 | `20261012.085837` | [Petrichor, nib red returned, gate held, no build](20261012/20261012-085837_petrichor-nib-stale-again-carried-gate-held-no-build.kyri) | Stale Git nib carried to 539fba9842 after pull; first-hour gate held. |
