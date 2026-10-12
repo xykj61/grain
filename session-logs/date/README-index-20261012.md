@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.050035` | [Copal, fruit empty, no claim, no build](20261012/20261012-050035_copal-fruit-empty-no-claim-no-build.kyri) | Zero witnesses unrostered; no claim. |
 | `20261012.045350` | [Copal, fruit spent, ruling asked, no build](20261012/20261012-045350_copal-fruit-spent-ruling-asked-no-build.kyri) | 158 of 158 chapter witnesses rostered; no claim; ruling asked. |
 | `20261012.045553` | [Petrichor, gate held, no build](20261012/20261012-045553_petrichor-gate-held-ff-no-build.kyri) | Consent Rail still held; ff 02b5066a5e; no build. |
 | `20261012.045246` | [Diffuser, P1 still unruled, check-in, no run](20261012/20261012-045246_diffuser-hold-check-in-p1-no-run.kyri) | Tree level with xy; P1 falsifier failed, awaits Claude or Keaton; no measurement. |
