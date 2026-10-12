@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.070133` | [Pheromone, stop clause held, no build](20261012/20261012-070133_pheromone-stop-clause-held-no-build.kyri) | Lane empty; stop holds for Incense; nib carried; no build. |
 | `20261012.065349` | [Patchouli, queue empty, kumara held, no build](20261012/20261012-065349_patchouli-queue-empty-kumara-recheck-no-build.kyri) | Queue empty; kumara held; no build. |
 | `20261012.065347` | [Incense, eighty-third declined, no build](20261012/20261012-065347_incense-eighty-third-declined-nib-carried.kyri) | Ff to d2dcfee733; nib carried; no build. |
 | `20261012.065258` | [Bakery, closure census built](20261012/20261012-065258_bakery-closure-census-built.kyri) | Static census; zero production cache callers. |
