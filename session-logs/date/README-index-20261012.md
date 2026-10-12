@@ -8,6 +8,7 @@
 | `20261012.002652` | [Petrichor, gate unchanged, no build](20261012/20261012-002652_petrichor-gate-unchanged-fast-forward-no-build.kyri) | Fast-forward to e3066f9663; gate unmade; no build. |
 | `20261012.002513` | [Pheromone, lane held, no build](20261012/20261012-002513_pheromone-lane-held-no-build.kyri) | Lane held at 79cafd9e74; no build. |
 | `20261012.002507` | [Incense, eighty-third, repeat, no build](20261012/20261012-002507_incense-eighty-third-repeat-no-build.kyri) | Round open clean; claims clear; the repeat named; no build. |
+| `20261012.002442` | [Patchouli, queue empty sixteenth](20261012/20261012-002442_patchouli-queue-empty-sixteenth-kumara-held.kyri) | Ff to 79cafd9e74; claims clear; kumara 840 held. |
 | `20261012.002218` | [Copal, third zero reading, no build](20261012/20261012-002218_copal-zero-unrostered-third-reading-no-build.kyri) | Still zero of 158; nib to 2bdbd03800. |
 | `20261012.002102` | [Incense, eighty-second, repeat named, no build](20261012/20261012-002102_incense-eighty-second-repeat-named-no-build.kyri) | Round open clean; claims clear; the repeat named; no build. |
 | `20261012.001840` | [Grass, inner page B+ at Field, held, no build](20261012/20261012-001840_grass-inner-page-b-plus-held-no-build.kyri) | Inner page B+ at Field; nib already current at 224e9a9d2d. |
