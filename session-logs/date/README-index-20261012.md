@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.063607` | [Grass, mycelium queue clear, no build](20261012/20261012-063607_grass-mycelium-queue-clear-no-build.kyri) | Eight named heads graded read-only, none below B; no edit, log only. |
 | `20261012.063214` | [Patchouli, queue empty again, no build](20261012/20261012-063214_patchouli-queue-empty-no-build.kyri) | Fresh grep empty; kumara red held for ruling; no build. |
 | `20261012.062952` | [Grass, field reach re-read, no build](20261012/20261012-062952_grass-field-reach-reread-no-build.kyri) | Field reach 90, grade 12 over 11; no edit, log only. |
 | `20261012.062936` | [Diffuser P1 held again after fast-forward, no run](20261012/20261012-062936_diffuser-p1-hold-ff-no-run.kyri) | P1 unruled; fast-forward only; no run. |
