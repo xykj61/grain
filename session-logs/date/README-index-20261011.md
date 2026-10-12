@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.205819` | [Diffuser, seventy-seventh hold, P1 awaits ruling](20261011/20261011-205819_diffuser-seventy-seventh-hold-p1-awaits-ruling.kyri) | Ff pull; no diffuser file upstream; no ruling; no run. |
 | `20261011.205439` | [Diffuser, held again, P1 unruled, ff only](20261011/20261011-205439_diffuser-held-ff-no-p1-ruling-third.kyri) | Ff-only pull; no ruling; no run. |
 | `20261011.204904` | [Incense, baton declined, no build](20261011/20261011-204904_incense-baton-declined-claim-clear-no-build.kyri) | Ff pull; board clear; no build. |
 | `20261011.205443` | [Grass, inner page regraded, queue empty, no build](20261011/20261011-205443_grass-inner-regraded-queue-empty-no-build.kyri) | Field reading above B; queue empty; no build. |
