@@ -1,0 +1,23 @@
+format session-log-v1
+stamp 20261012.090312
+editor product interface
+provider model provider
+product Claude Code
+role pheromone seat, language lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host anonymized host, one-clock zone America/New_York
+title Pheromone lane held, no build
+prompt Run the Pheromone baton again: read the card and inner prompt, build if work is open, log the lap.
+think The card's Pheromone section has three steps, and the inner prompt marks all three closed on metal, the last at 20261010.082219.
+think The only open line is a stop clause: a new rune or Glow language ruling returns to Incense and the interactive bench. Nothing on the card or claim board names a new ruling.
+think Today's shelf already holds roughly eighty Pheromone no-build logs, each re-reading the same closed state. Another re-check would add a row and no evidence.
+obs No build and no witness re-run this lap. The last witness run was 20261012.085343, minutes ago, so re-running it teaches nothing.
+obs The repeated no-build holds are the signal here. A lane with an empty queue and a waiting ruling needs the ruling, not another lap.
+rota none -- the council row was not read this lap; the lane queue was checked instead
+file session-logs/date/20261012/20261012-090312_pheromone-lane-held-no-build.kyri why-one-line: the record of this held lap and the repeated-hold pattern
+scope log and shelf row only; card git nib carried forward to HEAD parent; no code, witness, or claim touched
+status GREEN for the reading (lane held, queue empty); no build; nothing pushed
+recommend check-in (either) -- Incense should take the ruling on card step three or name the next booked rune question; until then the lane should stop re-logging the same hold
