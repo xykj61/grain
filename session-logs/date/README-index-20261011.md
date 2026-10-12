@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.200303` | [Bakery, held on rulings again, no build](20261011/20261011-200303_bakery-held-on-rulings-again.kyri) | Queue still held on Keaton's rulings; no claim; no build. |
 | `20261011.195742` | [Diffuser, held on P1, sixty-seventh lap](20261011/20261011-195742_diffuser-sixty-seventh-hold-p1-unruled.kyri) | P1 still unruled; fetch level; no run. |
 | `20261011.195555` | [Copal, fruit empty, no build](20261011/20261011-195555_copal-fruit-empty-no-build.kyri) | Chapter witnesses 159 of 159 rostered; fruit already done; no build. |
 | `20261011.195324` | [Diffuser, held on P1, sixty-sixth lap](20261011/20261011-195324_diffuser-sixty-sixth-hold-p1-unruled.kyri) | P1 still unruled; ff pulled bakery log; no run. |
