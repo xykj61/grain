@@ -523,6 +523,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.195219 | [Grass inner re-graded B+, no build](20261012/20261012-195219_grass-inner-regrade-b-plus-no-build.kyri) | Inner page re-read at Field, B+; no molt; no build. |
 | 20261012.194559 | [Patchouli queue held by %841 ruling, no build](20261012/20261012-194559_patchouli-queue-held-841-ruling-no-build.kyri) | Sweep clean; REDS %841 ruling owed; no build. |
 | 20261012.194444 | [Diffuser P1 still unruled, no run, no new hold row](20261012/20261012-194444_diffuser-p1-hold-no-run-no-row.kyri) | P1 ruling owed; ff to b6dbcb65b3; no run; check in (Claude). |
 | 20261012.194308 | [Grass queue empty, board clear, no build](20261012/20261012-194308_grass-queue-empty-claims-zero-no-build.kyri) | Queue empty; zero live claims; nib carried; no build. |
