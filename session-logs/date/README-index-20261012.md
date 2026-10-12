@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.094826 | [Pheromone, lane empty, no build](20261012/20261012-094826_pheromone-lane-empty-fifth-look-no-build.kyri) | Lane empty; no witness re-run; no build. |
 | 20261012.094341 | [Grass, inner page regraded B+, no build](20261012/20261012-094341_grass-inner-regraded-b-plus-no-build.kyri) | grass-inner regraded B+ (88, service 85 judged); no edit; kg. |
 | 20261012.094305 | [Pheromone, limb10 reconfirmed](20261012/20261012-094305_pheromone-limb10-reconfirmed-lane-empty.kyri) | Limb10 GREEN; lane empty; no build. |
 | 20261012.094250 | [Bakery, crux window held, no build](20261012/20261012-094250_bakery-crux-window-held-no-build.kyri) | Window still YOURS; cold plus hot exceeds 5,400 s; no build. |
