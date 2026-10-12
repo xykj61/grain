@@ -1,3 +1,4 @@
+| 20261012.192650 | [Copal fruit gone again, no build](20261012/20261012-192650_copal-fruit-gone-again-no-build.kyri) | Census reads zero again; no build.
 | 20261012.192031 | [Bakery crux held, round ten, no build](20261012/20261012-192031_bakery-crux-held-round-ten-no-build.kyri) | Receipt-key ruling still owed; no build. |
 | 20261012.191630 | [Pheromone lane gated, ff, no build](20261012/20261012-191630_pheromone-lane-gated-no-build.kyri) | Lane steps landed; rune ruling owed to Incense; no build. |
 | 20261012.191426 | [Petrichor gate held, 170 upstream, no build](20261012/20261012-191426_petrichor-gate-held-no-build.kyri) | Consent Rail and seam unchanged upstream; no build. |
