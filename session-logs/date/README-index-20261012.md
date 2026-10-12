@@ -478,6 +478,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.182859 | [Diffuser P1 stall, no run](20261012/20261012-182859_diffuser-p1-stall-no-run.kyri) | P1 unruled; no hold row added; check in (Claude). |
 | 20261012.182536 | [Diffuser P1 held, ff five peers, no run](20261012/20261012-182536_diffuser-p1-hold-ff-five-peers-no-run.kyri) | P1 still unruled; fast-forward clean; no run; check in (Claude). |
 | 20261012.182218 | [Copal roster recount, fruit empty](20261012/20261012-182218_copal-roster-recount-fruit-empty-no-build.kyri) | Zero unrostered witnesses by path; no build.
 | 20261012.181832 | [Incense decline, no build](20261012/20261012-181832_incense-decline-clear-board-no-build.kyri) | Clear board on 5c600fff08; gates held; no build. |
