@@ -23,6 +23,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.040526` | [Pheromone, lane empty, no build](20261012/20261012-040526_pheromone-lane-empty-no-build.kyri) | Card's three steps closed; no build. |
 | `20261012.035916` | [Patchouli, queue empty, no build](20261012/20261012-035916_patchouli-queue-empty-seventeenth-no-build.kyri) | Literals re-swept; %807, %840 held. |
 | `20261012.035513` | [Copal, fruit spent on re-measure, no build](20261012/20261012-035513_copal-fruit-spent-recheck-no-build.kyri) | Zero unrostered witnesses by path; stale card line named; no build. |
 | `20261012.035426` | [Petrichor, gate held, air row read, no build](20261012/20261012-035426_petrichor-gate-held-air-row-no-build.kyri) | Consent Rail unruled; no edit; no build. |

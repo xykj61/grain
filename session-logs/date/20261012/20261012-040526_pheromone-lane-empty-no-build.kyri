@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261012.040526
+editor Claude Code
+provider Anthropic
+product Claude Code
+role pheromone seat, grain-pheromone tree
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host one-clock zone America/New_York
+title Pheromone, lane empty, no build
+prompt the ty every1 baton for the Pheromone seat: read the inner prompt, the card, and the lane's own queue; build the next agent-doable lap if one stands
+think The inner prompt says the lane's next move waits on a ruling from Incense and the interactive bench.
+think The card's Pheromone section lists three steps: express receipt facts and Tally bounds in Glow, carry them through lowering, make refusal output stable.
+think Each step already has a closed fruit on the card, and the last fruit closed 20261002 through 20261010 with its witnesses GREEN.
+think The stop clause sends any new rune or Glow language ruling back to Incense, so no new rune is taken here.
+think The claims board stands empty, so no peer is in the middle of a lane this seat could take over.
+think No file was edited. The only write is this log and its shelf row.
+obs Claim-as-override is available when the lane's queue is empty, but the candidate laps belong to other lanes and need their owners' rulings first, so taking one here would be a guess.
+obs Five other logs on this shelf already record the same empty Pheromone state today; this one adds no new reading beyond the card.
+obs Rota was not deep-read this lap, so the rota field says so rather than naming a row.
+file construction/ITINERARY.md the Pheromone section, read whole; no edit made
+file recursion-prompts/pheromone-inner.md the inner prompt, read whole; no edit made
+file session-logs/date/README-index-20261012.md one row added below the delimiter
+scope read-only lane check, one log, one shelf row; no build, no witness run, no claim taken
+status GREEN for the read; no build, nothing to witness; Pheromone lane empty pending Incense ruling
+rota none -- lane has no agent-doable build; council row not deep-read this lap
+recommend check in (Claude) -- Pheromone's next step needs a Glow language ruling from Incense and the interactive bench before any build
