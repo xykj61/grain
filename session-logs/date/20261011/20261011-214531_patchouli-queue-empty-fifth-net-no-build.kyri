@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261011.214531
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role captain Patchouli, grain-patchouli tree
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime verified from session header
+configured_model claude-haiku-5-5
+configured_status runtime session header
+voice Kyri
+host Linux, one-clock zone America/New_York
+title Patchouli queue empty on a fifth fresh net, no build
+prompt Baton and patchouli inner prompt read for a recurring lap; check the lane queue fresh and decide the lap.
+think the inner prompt asks for a fresh grep net over mantra/ and tally/ each lap, not the prior lap's reading.
+think the net found only read-compat headers (mantra-weave-v1/v2, mantra-commit-v1/v2), test-local fixture names, and the already-ruled schema and domain-separator constants.
+think the claim board reads board=upstream, claims_live=0, and the OPEN reds that touch mantra/ or tally/ are %807 and %765, both waiting on Keaton's ruling or a family owned elsewhere.
+obs no build this lap: the agent-doable queue is empty and the lane's two OPEN rows want a human word, so claim-as-override found nothing unclaimed inside the lane's reach.
+obs the grep net runs on the working tree, which sits at 91816cd48a; this lap did not run a fetch, so a peer's newer family would appear only after the next round-open pull.
+rota none -- no council row deep-read; the lap ran the queue net, the claim board, and the OPEN red scan.
+orbit round 8 Scorpio, water aesthetics -- the picture held whole. No build; the empty net is the record.
+status GREEN for the lap's own reads (queue net, claim board, open red scan); no witness was run and no code changed.
+file construction/ITINERARY.md Git nib carried forward to 91816cd48a, the parent this follow-up is built on
+file session-logs/date/20261011/20261011-214531_patchouli-queue-empty-fifth-net-no-build.kyri this log, born on its day shelf
+file session-logs/date/README-index-20261011.md one row prepended under the delimiter for this log
+recommend check-in (either) -- the lane waits on a human word at %807 or %765, or on a peer's family landing upstream
