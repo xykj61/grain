@@ -12,6 +12,7 @@
 | 20261012.100055 | [Incense declined, no build](20261012/20261012-100055_incense-eighty-third-declined-no-build.kyri) | round-open clean, no build |
 | 20261012.100026 | [Petrichor, gate third reread, no build](20261012/20261012-100026_petrichor-gate-held-third-reread-no-build.kyri) | Gate held; claim clear; ff six peers; no build.
 | 20261012.095804 | [Incense declined, ff one peer, no build](20261012/20261012-095804_incense-baton-declined-ff-no-build.kyri) | Held; claim board empty; ff one peer; no build. |
+| 20261012.101107 | [Copal, fruit spent fifth, no build](20261012/20261012-101107_copal-fruit-spent-fifth-no-build.kyri) | Zero unrostered chapter witnesses at 6b4ca80c99; no claim; nib carried. |
 | 20261012.100220 | [Copal, fruit spent again, check in](20261012/20261012-100220_copal-fruit-spent-again-check-in.kyri) | Zero unrostered chapter witnesses at ac43c137a3; no claim; nib carried. |
 | 20261012.095549 | [Copal, fruit empty](20261012/20261012-095549_copal-no-unrostered-witness.kyri) | Zero unrostered witnesses; no claim; nib carried. |
 | 20261012.095631 | [Bakery, crux gate held a third time, no build](20261012/20261012-095631_bakery-crux-gate-third-hold-no-build.kyri) | Gate still Keaton's; no build. |
