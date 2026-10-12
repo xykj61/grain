@@ -1,5 +1,7 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.124314 | [Recur lap, upstream level, no build](20261012/20261012-124314_recur-held-no-build.kyri) | Upstream level, claims clear, queue gated; no build. |
+| 20261012.123938 | [Incense fire row held, no build](20261012/20261012-123938_incense-fire-row-held-no-build.kyri) | Fire row read; six holds on one gated queue; no build. |
 | 20261012.123740 | [Grass queue empty, earth read, no build](20261012/20261012-123740_grass-queue-empty-earth-read.kyri) | 875 of 942 shelf rows hold; ruling wanted. |
 | 20261012.123407 | [Petrichor gate held after fast-forward, no build](20261012/20261012-123407_petrichor-gate-held-after-ff-no-build.kyri) | Gate held at b66eddd238; no build. |
 | 20261012.123355 | [Incense round-open held, no build](20261012/20261012-123355_incense-round-open-held-no-build.kyri) | Round-open clean; claims clear; cold run held by ruling; no build. |
