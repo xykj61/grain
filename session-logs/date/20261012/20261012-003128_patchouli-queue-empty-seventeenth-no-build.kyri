@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20261012.003128
+editor claude code
+provider anthropic
+product Claude Code
+role patchouli captain, mantra and tally lane, fleet seat
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_reasoning unset
+configured_status runtime system context names the model; no settings file read this lap
+evidence system context names the model; not telemetry
+voice Kyri
+host Framework bench, EDT one-clock zone
+coordination user coordinated separate sessions
+collaborator_provider none this lap
+collaborator_scope peer seats read via git log and the claim board only
+collaborator_status none
+title Patchouli, queue empty seventeenth: kumara 840 still held, no build
+prompt Run the patchouli lap from the baton and inner prompt (ty every1 baton prin recur).
+think Tree clean at HEAD 726c948ef1 before this lap; the working tree was never edited.
+think Read recursion-prompts/patchouli-inner.md: the lane's queue is empty, and the two open doors (kumara 840 held, the catch-up refusal reachability) both need a Claude ruling or Keaton's word.
+think Claim board read: one live claim, copal-brush-parse-tame-density, a peer's work outside this lane. Not routed around, not touched.
+think REDS OPEN and BOOKED rows read by grep: none names mantra/ or tally/ as agent-doable. The rows that touch shared tooling (%827, %826, %819) belong to other lanes.
+think Claim-as-override considered: the oldest unclaimed booked lap is a fixture or ratchet row in another lane. Taking it would mean building in a peer's domain without its owner, so this lap declines and says so.
+obs This is the seventeenth empty-queue reading for this lane. The repeat is the finding. Widening into a new search net has now been answered many times over; the lane names the state once and stops.
+obs Calfive from HEAD count 12629: orbit round 14, quest place 29. Earth row (12629 mod 5 = 4) was not deep-read this sitting, so the rota field says so rather than claiming a reading.
+obs Mechanism: no source, test, witness, or card line changed. The only edits are this log, its shelf row, and the card's git nib carried forward as a follow-up, per remember-git-nib rule 5.
+file session-logs/date/20261012/20261012-003128_patchouli-queue-empty-seventeenth-no-build.kyri this log, the record of the seventeenth empty reading and the held kumara red
+file session-logs/date/README-index-20261012.md the shelf row for this lap, prepended under the delimiter
+file construction/ITINERARY.md the Git nib carried forward to HEAD before the follow-up commit, per remember-git-nib rule 5
+rota none -- queue-empty lap; the earth row was not deep-read this sitting, so no reading is claimed
+orbit round 14 quest 29 -- Calfive count 12629; the sign is not read here
+status GREEN -- no code touched; claim board holds one peer claim, not routed around; queue empty seventeenth reading recorded; kumara 840 still held; no witness changed
+recommend check in (Claude) -- the kumara seam ruling on legacy sign across amphora, aurora and comlink callers, and whether REDS pin headroom is granted, are the two doors this lane cannot open alone

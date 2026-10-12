@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.003128` | [Patchouli, queue empty seventeenth](20261012/20261012-003128_patchouli-queue-empty-seventeenth-no-build.kyri) | Board one peer claim; kumara 840 held; no build. |
 | 20261012.002827 | [diffuser P1 hold seventy-eighth](20261012/20261012-002827_diffuser-p1-hold-seventy-eighth-check-in-no-run.kyri) | P1 still unruled; no run, check in (Claude) |
 | `20261012.002652` | [Petrichor, gate unchanged, no build](20261012/20261012-002652_petrichor-gate-unchanged-fast-forward-no-build.kyri) | Fast-forward to e3066f9663; gate unmade; no build. |
 | `20261012.002513` | [Pheromone, lane held, no build](20261012/20261012-002513_pheromone-lane-held-no-build.kyri) | Lane held at 79cafd9e74; no build. |
