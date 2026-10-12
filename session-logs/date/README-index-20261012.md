@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.095010 | [Copal fruit, no unrostered witness](20261012/20261012-095010_copal-fruit-no-unrostered-witness-no-build.kyri) | Fourth read; nothing unrostered; no build. |
 | 20261012.094509 | [Diffuser, P1 still held, no run](20261012/20261012-094509_diffuser-p1-still-held-ff-peers-no-run.kyri) | P1 ruling still owed; ff of two peers; no run. |
 | 20261012.094250 | [Bakery, crux window held, no build](20261012/20261012-094250_bakery-crux-window-held-no-build.kyri) | Window still YOURS; cold plus hot exceeds 5,400 s; no build. |
 | 20261012.094243 | [Copal fruit third read, spent, no build](20261012/20261012-094243_copal-chapter-fruit-third-read-no-build.kyri) | No unrostered witness; no build. |
