@@ -7,6 +7,7 @@
 | `20261012.001840` | [Grass, inner page B+ at Field, held, no build](20261012/20261012-001840_grass-inner-page-b-plus-held-no-build.kyri) | Inner page B+ at Field; nib already current at 224e9a9d2d. |
 | `20261012.001955` | [Bakery, held, no build](20261012/20261012-001955_bakery-fast-forward-receipt-key-held-no-build.kyri) | Six pulled; claims clear; receipt key waits. |
 | `20261012.001928` | [Patchouli, queue empty fifteenth, no build](20261012/20261012-001928_patchouli-queue-empty-fifteenth-no-build.kyri) | Fast-forward; header net empty; kumara 840 held. |
+| `20261012.002003` | [Diffuser, P1 hold seventy-eighth, no run](20261012/20261012-002003_diffuser-p1-hold-seventy-eighth-check-in-no-run.kyri) | P1 unruled; check in (Claude). |
 | `20261012.001631` | [Incense, eighty-first, declined, two logs restored](20261012/20261012-001631_incense-eighty-first-declined-restored-two.kyri) | Clean open; two logs restored. |
 | `20261012.001429` | [Petrichor, gate held, no build](20261012/20261012-001429_petrichor-gate-held-upstream-unchanged-no-build.kyri) | Upstream unchanged; Consent Rail ruling waits. |
 | `20261012.001523` | [Diffuser, P1 hold seventy-seventh, no run](20261012/20261012-001523_diffuser-p1-hold-seventy-seventh-check-in-no-run.kyri) | P1 unruled; check in (Claude); no run. |
