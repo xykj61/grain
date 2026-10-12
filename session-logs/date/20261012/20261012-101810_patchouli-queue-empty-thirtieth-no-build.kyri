@@ -1,0 +1,25 @@
+format session-log-v1
+stamp 20261012.101810
+editor Claude Code, grain-patchouli tree
+provider Anthropic
+product Claude Code
+role patchouli, mantra and tally lane
+modality text
+model unverified
+model_status active runtime unverified
+voice Kyri
+host Framework bench, America/New_York
+title Patchouli, queue empty a thirtieth time, no build
+prompt Run the Patchouli baton: read the inner prompt, find the lane's agent-doable queue, build if one exists, otherwise say so and stop.
+think The inner prompt and card record twenty-nine prior empty readings; the two live reds (%807 before-anchor ord, %840 legacy kumara sign) and the pin headroom wait on Keaton's rulings.
+think A fresh sweep would repeat a net already named, so this lap ran none. The tree was clean at start; HEAD is a660ff1282.
+obs No code, no witness, no measurement this lap, so no loom line is owed.
+obs Re-scope or a ruling on %807 and %840 is what unblocks the lane. Another net will keep returning nothing.
+rota none -- queue-check lap; the lane's queue was read from the card, not from a fresh sweep
+orbit round 14 sky -- the wildcard: holds one page whole
+file construction/ITINERARY.md -- read the Patchouli section; no change
+file session-logs/date/20261012/20261012-101810_patchouli-queue-empty-thirtieth-no-build.kyri -- this log
+file session-logs/date/README-index-20261012.md -- one shelf row beneath the delimiter
+scope patchouli queue check against the card and inner prompt; no code changed
+status GREEN as a check: queue empty, no code changed, no witness run
+recommend check-in (Claude) -- rule on %807 and %840, or re-scope the lane; that is what unblocks it

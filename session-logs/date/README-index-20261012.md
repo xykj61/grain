@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.101810 | [Patchouli, queue empty a thirtieth time, no build](20261012/20261012-101810_patchouli-queue-empty-thirtieth-no-build.kyri) | Queue empty from the card; two reds await ruling; no build. |
 | 20261012.101212 | [Patchouli, queue empty a twenty-ninth way, no build](20261012/20261012-101212_patchouli-queue-empty-twenty-ninth-no-build.kyri) | Tidy bans clear in mantra/ and tally/; queue empty; no build. |
 | 20261012.101148 | [Bakery, crux held for ruling, no build](20261012/20261012-101148_bakery-crux-held-ruling-pending-no-build.kyri) | Receipt key is YOURS; no mechanical lap; no build. |
 | 20261012.100804 | [Diffuser, P1 held a fifteenth time, no run](20261012/20261012-100804_diffuser-p1-held-round-15-stop-hold-loop.kyri) | P1 still unruled; hold loop named; no build. |
