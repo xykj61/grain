@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261012.030520
+editor Claude Code terminal session, Pheromone seat
+provider Anthropic
+product Claude Code
+role pheromone lane, Glow language and seams
+modality text
+model claude-haiku-5-5
+model_status runtime-stated identity, not telemetry-verified
+configured_model claude-sonnet-5 (fleet default, .claude/settings.json; the resolved value was not read this lap)
+configured_status configured default, not runtime evidence
+voice Kyri
+host Framework bench, America/New_York one clock
+title Pheromone lane held: queue closed, ruling awaited, no build
+prompt Run the Pheromone baton lap from recursion-prompts/pheromone-inner.md: read the card, pick a keystone, log, send.
+think Read the inner prompt and the Pheromone section of construction/ITINERARY.md. Its three items (express receipt facts in Glow, carry through lowering, stable refusal output) are all recorded closed on the card, with witnesses named.
+think The card's stop clause sends any new rune or Glow language ruling back to Incense and the interactive bench. Nothing unruled is left that a lap may build.
+think The card says a fifth re-check of the closed fruit teaches nothing. I did not run the glow witnesses again, so no GREEN is claimed this lap.
+think Working tree was clean at the start of the lap. HEAD was 33225f933f with 12,840 commits in its history.
+obs Claim-as-override was considered and declined. Taking a booked lap from another lane would cross into work the card does not name for this seat.
+obs The card's Git nib named 2259d4b903, an older commit. Moved to 33225f933f, the parent of this commit, per remember-git-nib rule 5.
+obs Rota was not deep-read this lap. Recorded as an honest absence rather than a row read.
+loom none -- no measurement taken this lap
+rota none -- hold lap on a closed queue, no council row deep-read
+file session-logs/date/20261012/20261012-030520_pheromone-lane-held-check-in-no-build.kyri the log of this hold, the first record of this decision
+file session-logs/date/README-index-20261012.md one shelf row, newest first, under the delimiter
+file construction/ITINERARY.md Git nib moved from 2259d4b903 to 33225f933f, the parent of this commit
+scope Pheromone lane only. Read the card, read the shelf, wrote the hold. No code, no witness run, no push.
+status HELD -- no build. Queue closed on the card. Next ruling is with Incense or Keaton. No witness run this lap.
+recommend check-in (Claude) -- a new rune or Glow language ruling is needed before any further Pheromone build; the lane has nothing it may build alone.
