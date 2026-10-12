@@ -1,0 +1,24 @@
+format session-log-v1
+stamp 20261011.233440
+editor product interface
+provider model provider
+product Claude Code
+role repository role bakery lane, grain-bakery tree
+modality text-or-voice
+model unverified
+model_status active runtime unverified
+voice Kyri
+host anonymized host and one-clock zone
+title bakery lap held before build -- content-keyed cache absent upstream and here
+prompt baton lap for bakery: content-keyed compilation, claim-first
+think read ITINERARY bakery section; first proof is content-keyed compile reuse with owed proofs still run
+think path_absence_scan says tools/r/content_key_cache.rish absent here and upstream, but checkout is 5 commits behind xy
+think claim scan verdict clear, claims_live=0, so no peer is building the cache
+think did not pull, claim, or build: round-open rebase and cold run were not started; a build here is multi-hour
+obs held rather than built; the cache is a new instrument so claim-then-push applies before any code
+rota none -- lap held at the claim check, no deep read this lap
+file construction/fleet-claims.kyri scope read only, board clear, no claim written
+file construction/ITINERARY.md bakery section read only, first proof unchanged
+scope read-only survey of bakery card and fleet claim board; no build, no commit to code
+status HELD -- no build, no claim pushed; checkout 5 behind xy; absence and claim scans recorded above
+recommend check-in (Claude) -- the round-open pull and the claim push need a ruling before the cache build starts
