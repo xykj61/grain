@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.153046 | [Copal fruit spent, ruling asked, no build](20261012/20261012-153046_copal-fruit-spent-ruling-asked-no-build.kyri) | Zero unrostered witnesses by full path; fruit spent; ruling asked; no build. |
 | 20261012.152544 | [Diffuser stall, P1 unruled, no run](20261012/20261012-152544_diffuser-p1-stall-check-in.kyri) | Ff to f7cbbd2baa; P1 still owed a ruling; no run; check in (Claude). |
 | 20261012.152416 | [Petrichor ff, gate held, no build](20261012/20261012-152416_petrichor-ff-gate-held-no-build-third.kyri) | Ff to 62eea39d4e; Consent Rail unchanged; no build. |
 | 20261012.152114 | [Pheromone lane held, no build](20261012/20261012-152114_pheromone-lane-held-no-build.kyri) | Shape capacity GREEN at 15; board clear; ruling still owed; no build. |
