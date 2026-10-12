@@ -8,6 +8,9 @@
 | `20261011.212759` | [Petrichor, ff, gate held, no build](20261011/20261011-212759_petrichor-ff-gate-held-no-build.kyri) | Ff to xy/main; Consent Rail ruling open; no build. |
 | `20261011.212457` | [Grass sample graded, no frame, no build](20261011/20261011-212457_grass-sample-graded-no-frame-no-build.kyri) | Nine rule pages graded; all B or better; no build. |
 | `20261011.212731` | [Bakery ff, receipt key still YOURS, no build](20261011/20261011-212731_bakery-ff-receipt-key-gated-no-build.kyri) | Ff to peers; no ruling; no build. |
+| `20261011.212723` | [Diffuser, ff to peers, P1 still unruled, no run](20261011/20261011-212723_diffuser-ff-p1-hold-no-run.kyri) | Ff to two peer log commits; P1 ruling still open; no run. |
+| `20261011.212637` | [Copal, fruit spent a third time, no build](20261011/20261011-212637_copal-fruit-spent-third-read-no-build.kyri) | 159 witnesses rostered by path; no claim; no build. |
+| `20261011.212641` | [Incense, declined, no build](20261011/20261011-212641_incense-baton-declined-no-build.kyri) | Round-open clean; board empty; no build. |
 | `20261011.212457` | [Grass sample graded, no frame, no build](20261011/20261011-212457_grass-sample-graded-no-frame-no-build.kyri) | Nine rule pages graded; all B or better; no build. |
 | `20261011.212303` | [Incense, declined, ff, no build](20261011/20261011-212303_incense-baton-declined-ff-no-build.kyri) | Ff to peers; board clear; no build. |
 | `20261011.212242` | [Patchouli, queue empty, kumara red held, no build](20261011/20261011-212242_patchouli-queue-empty-kumara-held-no-build.kyri) | Kumara red re-run GREEN; no build. |
