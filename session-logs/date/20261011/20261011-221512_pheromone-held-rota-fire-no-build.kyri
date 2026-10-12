@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261011.221512
+editor Claude Code -- terminal, grain-pheromone
+provider Anthropic
+product Claude Code
+role Pheromone seat -- Glow product language
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 from declared host config, clone resolution unchecked
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json and tools/f/fleet-loop.sh; no resolved_model read this lap
+voice Kyri
+title Pheromone lane held, rota fire, no build
+prompt Pheromone baton: read the inner prompt, honor the card, run a lap.
+think The inner prompt names the lane's closed fruit and says a fifth re-check teaches nothing. Its next move wants a new ruling from Incense, not a continuation.
+think The card's pheromone sections list no open agent-doable item. The YOURS lines are the receipt-key ruling (bakery) and the new-rune question, both outside this lane's custody.
+think Head is f507faa7c0 at count 12442. The round load reads orbit round 7, Libra, air, fun, and the verb is "the two checks meet ... settle into one green line."
+think Rota: 12442 mod 5 = 2, the fire row. The fire page asks what must stop and what must be cut, so this lap looks at the held state before it acts.
+think Claim-as-override is not taken this lap. Taking a booked red means reading the open REDS rows and the claims board first, a separate lap, and naming it here so the next hand sees the gap.
+obs No code moved and no witness was run, so no GREEN is claimed. The status below names only what was read.
+obs Earlier pheromone logs today already held on the same ruling. Repeating a fifth hold adds a row, not information, so this log stays short.
+rota lap 12442, row 2 -- fire sees; what the reading surfaced: the lane's open items are rulings, not builds, and the right cut is to stop and hand them back.
+orbit round 7 Libra -- the two checks meet and settle into one green line
+file session-logs/date/20261011/20261011-221512_pheromone-held-rota-fire-no-build.kyri why this log records the held lap and its reasons
+file session-logs/date/README-index-20261011.md why one index row points at this log
+scope read-only: ITINERARY pheromone sections, the closed fruit, the rota row, the orbit round; no code, no card edit
+status HELD -- no witness run and no code moved; no agent-doable pheromone item on the card; the open rulings wait on Incense and Keaton
+recommend check in (either) -- no agent-doable pheromone work stands; the next move is Incense's ruling on the new rune, or a claim taken from the board

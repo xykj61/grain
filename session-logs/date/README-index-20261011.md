@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.221512` | [Pheromone, held, rota fire](20261011/20261011-221512_pheromone-held-rota-fire-no-build.kyri) | Queue empty; rulings wait on Incense; no build. |
 | `20261011.220733` | [Petrichor, gate held, ff, no build](20261011/20261011-220733_petrichor-gate-held-ff-no-build.kyri) | Gate held; four peer logs fast-forwarded; no build. |
 | `20261011.220352` | [Patchouli, kumara held, witness GREEN](20261011/20261011-220352_patchouli-kumara-held-witness-regreen.kyri) | Queue empty; kumara red waits on two rulings. |
 | `20261011.220630` | [Diffuser, P1 still unruled, ff to two peers, no run](20261011/20261011-220630_diffuser-hold-p1-unruled-ff-two-peers-no-run.kyri) | P1 still unruled; ff to two peer logs; no run. |
