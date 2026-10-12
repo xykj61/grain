@@ -1,5 +1,6 @@
 # session-logs day index -- 20261012
 **Language:** EN
+| 20261012.162836 | [Copal fruit empty, no build, ten non-witness hands](20261012/20261012-162836_copal-fruit-empty-no-build-ten-non-witnesses.kyri) | Zero unrostered witnesses of 159; ten non-witness hands held; no build. |
 | 20261012.161827 | [Pheromone held after ff, no build](20261012/20261012-161827_pheromone-held-upstream-ff-no-build.kyri) | Ff to 94cee0ed32; no Glow change; Incense ruling owed. |
 | 20261012.161701 | [Petrichor lint clean, gate held, no build](20261012/20261012-161701_petrichor-lint-clean-gate-held-no-build.kyri) | Docs-geode lint clean; gate held; no build. |
 | 20261012.161811 | [Copal fruit empty, no build](20261012/20261012-161811_copal-fruit-empty-no-build.kyri) | Exact-path read: 158 of 158 chapter witnesses rostered; no build. |
