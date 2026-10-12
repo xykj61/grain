@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.220137` | [Bakery, held, no build](20261011/20261011-220137_bakery-crux-held-no-build.kyri) | Receipt key still yours; no build. |
 | `20261011.220022` | [Pheromone, round-open, lane closed, no build](20261011/20261011-220022_pheromone-round-open-no-build.kyri) | Ff pull to 36c5687146; lane closed on card; no build. |
 | `20261011.215909` | [Patchouli, queue empty, kumara held](20261011/20261011-215909_patchouli-queue-empty-kumara-held-check-in.kyri) | Both re-runs GREEN; two rulings wait on Keaton. |
 | `20261011.215524` | [Incense, order adopted, no build](20261011/20261011-215524_incense-round-open-adopted-order-no-build.kyri) | Reset onto xy; board clear; no build. |
