@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.231542` | [Grass baton lap, fold.rye graded A, no molt frame owed](20261011/20261011-231542_grass-petrichor-lane-fold-a-no-frame.kyri) | fold.rye graded A (93); no frame owed; log only. |
 | `20261011.231219` | [Diffuser, P1 held, unruled, ff three peers, no run](20261011/20261011-231219_diffuser-held-p1-unruled-ff-three-peers-no-run.kyri) | P1 unruled; ff three peers; no run. |
 | `20261011.230819` | [Diffuser, P1 held, 170 revisions, no run](20261011/20261011-230819_diffuser-hold-p1-unruled-no-run-170-revisions.kyri) | P1 unruled; no peer diffuser file; no run. |
 | `20261011.230538` | [Incense, baton lap declined, claim board clear, no build](20261011/20261011-230538_incense-baton-declined-clear-board-no-build.kyri) | Board clear; nib carried; %642, %519 wait on Keaton's word. |
