@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.204113` | [Petrichor, living-docs lint GREEN, no build](20261011/20261011-204113_petrichor-living-docs-lint-no-build.kyri) | Lint clean in docs-geode; queue empty; no build. |
 | `20261011.203211` | [Pheromone, ruling waits, no build](20261011/20261011-203211_pheromone-ruling-waits-no-build.kyri) | Lane closed on card; ruling from Incense; no build. |
 | `20261011.203505` | [Diffuser, seventy-sixth hold](20261011/20261011-203505_diffuser-seventy-sixth-hold-p1-unruled.kyri) | P1 ruling open; no build. |
 | `20261011.203503` | [Grass, inner regraded, no build](20261011/20261011-203503_grass-inner-regraded-hold-no-build.kyri) | Field 77, reach 90; queue empty. |
