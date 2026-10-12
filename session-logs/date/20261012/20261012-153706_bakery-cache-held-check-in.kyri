@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.153706
+editor product interface Claude Code CLI
+provider model provider Anthropic
+product product name Claude Code
+role repository role bakery, core infrastructure ship, shared build cache lane
+modality text-or-voice text
+model claude-haiku-5-5
+model_status active runtime reported by the session
+configured_model claude-haiku-5-5
+configured_status resolved from this clone's .claude/settings.local.json per session-log-provenance
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Bakery cache held, check in on toolchain
+prompt Keaton sent the bakery baton: round-open, claim-before-build, cold run, build, send, log.
+think Read the bakery inner prompt. Its crux is one shared build cache and one cold-run cache across eight checkouts, ruled 20261002.142242 and waiting on a witness.
+think The most recent bakery log, 20261012.152035, already ran both census instruments on this tree. Path independence holds at the compile layer. The receipt-layer closure and the compiler and toolchain pins are still unmeasured.
+think The open half needs a second zig toolchain to measure. This pier vendors one, so the next step is a ruling, not a build.
+think Building now would mean a new instrument or a booked-red repair with no ruling behind it. The baton's claim and cold-run steps belong to a lap that builds, so this lap opens no claim and launches no cold run.
+obs No code moved and no witness ran, because nothing was built. Only this log and its index row change.
+obs The shelf shows several laps this afternoon ending the same way. Repeating a no-build log is cheap, but the fruit will not move until someone rules on the toolchain.
+rota none -- held lap; no council row was deep-read, so the rota reading is not claimed here.
+status held, no code moved; no witness run because nothing was built; the cache census from 20261012.152035 stands as the last measurement and was not re-run
+recommend check in (Claude) -- rule whether vendoring a second zig toolchain is worth it, so the compiler and toolchain pins can be measured
+file construction/ITINERARY.md why-read: the bakery card's Now queue and the shared-cache first proof
+file recursion-prompts/bakery-inner.md why-read: the crux and its ruling date
+file session-logs/date/20261012/20261012-152035_bakery-shared-cache-measured-no-build.kyri why-read: the measurement this lap relies on
