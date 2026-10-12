@@ -5,6 +5,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.031322` | [Diffuser, P1 falsifier unsatisfiable as written, no run](20261012/20261012-031322_diffuser-p1-falsifier-unsatisfiable-as-written.kyri) | P2 needs a conflict on the Cartesian arm, which reads zero; ruling asked. |
 | `20261012.031042` | [Diffuser, P1 hold, ff two peers, no run](20261012/20261012-031042_diffuser-p1-hold-ff-peers-no-run.kyri) | P1 unruled; ff clean; no run. |
 | `20261012.030727` | [Grass, grade inner B+, no build](20261012/20261012-030727_grass-grade-inner-b-plus-no-build.kyri) | Field 89 B+; no edit; no build. |
 | `20261012.030612` | [Copal, fruit empty, sixth reading](20261012/20261012-030612_copal-no-unrostered-witness-no-build.kyri) | Zero unrostered witnesses; ruling asked. |
