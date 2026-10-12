@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.232741` | [Pheromone, lane held, no build](20261011/20261011-232741_pheromone-lane-held-no-build.kyri) | Language ruling awaited; no build. |
 | `20261011.231833` | [Diffuser, P1 held, fetch level, no run](20261011/20261011-231833_diffuser-held-p1-unruled-fetch-level-no-run.kyri) | P1 unruled; fetch level; no run. |
 | `20261011.231847` | [Grass, grade grass-inner at Field, no edit](20261011/20261011-231847_grass-grade-inner-field.kyri) | Field register 77, reach 90, truth 100; no molt. |
 | `20261011.231532` | [Petrichor, fruit gated, no build](20261011/20261011-231532_petrichor-fruit-gated-no-build.kyri) | Fruit waits on seam; no page opened. |
