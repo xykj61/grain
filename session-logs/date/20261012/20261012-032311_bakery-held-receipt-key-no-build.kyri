@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261012.032311
+editor Claude Code, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure (fleet baton, indefinite launch)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved in this clone; see tools/fixtures/d/declared_model.sh resolved_model)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host one-clock zone America/New_York
+title Bakery baton read, receipt key still held, no build
+prompt Bakery baton; take the highest-leverage open Bakery item, without a ruling where one is owed
+think Read bakery-inner.md and the card's Bakery paragraph. The fruit is the shared build and cold-run cache; the receipt key is marked YOURS and changes the roster runner contract, so it waits on Keaton.
+think The claim board reads zero live claims at 032255 and the tree is four commits behind xy/main, so a claim or a send would need a round-open pull first.
+think The newest log (031045) already ran the six-mutation receipt-key scan; a second run in five minutes would reproduce its six misses rather than add evidence.
+think The agent-doable queue's next item, %519 plant.sh spread, is a build with a claim, a cold run and a hot run; a cold run alone costs roughly 70 minutes, so it does not fit a single pass with the round-open, the claim push and the send.
+obs Measured nothing new this lap. No build, no edit to any tool, no claim opened.
+obs Trade-off: holding keeps the record true and leaves the ruling where the card puts it, at the cost of an idle Bakery lap.
+obs Unmeasured: whether identical inputs skip compilation on a shared cache; still no cache-hit leg, as the 031045 log already states.
+rota none -- gated lap, no build; no council row read
+orbit round 9 -- sign and verb not read this lap
+file session-logs/date/20261012/20261012-032311_bakery-held-receipt-key-no-build.kyri this log
+file session-logs/date/README-index-20261012.md one row for this log, below the delimiter
+file construction/ITINERARY.md Git nib carried forward to 0053c5f087, the parent of this follow-up
+scope one log, one index row, one nib follow-up; no build and no tool edit
+status GREEN on the read; no build performed. Receipt-key ruling still open. Local commit only, not pushed (4 behind xy/main).
+recommend check in (Claude) -- the receipt key needs Keaton's word on whether HEAD leaves the key; after that, %519 is the next agent-doable lap with a claim and a cold run.

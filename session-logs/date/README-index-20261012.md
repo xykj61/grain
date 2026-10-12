@@ -5,6 +5,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.032311` | [Bakery baton read, receipt key held, no build](20261012/20261012-032311_bakery-held-receipt-key-no-build.kyri) | Receipt key still held; no build, no claim. |
 | `20261012.031521` | [Patchouli, queue empty a thirteenth way, no build](20261012/20261012-031521_patchouli-queue-empty-thirteenth-no-build.kyri) | Queue empty; greps clean; no build. |
 | `20261012.031518` | [Incense, ff pheromone, declined, no build](20261012/20261012-031518_incense-ff-pheromone-declined-no-build.kyri) | Ff one peer log; board clear; no build. |
 | `20261012.031054` | [Incense, baton read, claim board clear, declined, no build](20261012/20261012-031054_incense-baton-declined-no-build.kyri) | Round-open clean; board clear; queue gated; no build. |
