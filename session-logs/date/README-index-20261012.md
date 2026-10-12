@@ -435,6 +435,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.173608 | [Grass docs door grade, no frame](20261012/20261012-173608_grass-docs-door-grade-no-frame.kyri) | 15 docs read, none below B; four unscored. |
 | 20261012.173039 | [Copal fruit spent, no build](20261012/20261012-173039_copal-fruit-spent-recount-no-build.kyri) | Zero unrostered on recount; no build. |
 | 20261012.172757 | [Grass queue empty again, no build](20261012/20261012-172757_grass-queue-empty-recur-no-build.kyri) | Queue empty; ninth no-build today; nib carried. |
 | 20261012.172543 | [Incense decline held, gates named, nib at parent](20261012/20261012-172543_incense-decline-gate-held-nib-carried.kyri) | Gates named; nib at parent; no build. |
