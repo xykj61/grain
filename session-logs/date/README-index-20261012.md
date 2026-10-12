@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.071211` | [Copal, fruit void a thirteenth read, no build](20261012/20261012-071211_copal-fruit-void-thirteenth-read-no-build.kyri) | Zero unrostered witnesses; no build. |
 | `20261012.070533` | [Grass, civic policy pages A or better, no build](20261012/20261012-070533_grass-civic-policy-front-doors-graded-no-build.kyri) | Four civic pages graded A or better; queue empty; no build. |
 | `20261012.070354` | [Bakery, relative store fixed](20261012/20261012-070354_bakery-build-cached-relative-store-fixed.kyri) | Relative store canonicalized; miss 0.64 s, hit 0.04 s. |
 | `20261012.070552` | [Incense, claim clear, no build](20261012/20261012-070552_incense-baton-declined-claim-clear-no-build.kyri) | Board clear; no build. |

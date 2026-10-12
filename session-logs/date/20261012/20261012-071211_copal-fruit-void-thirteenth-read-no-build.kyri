@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261012.071211
+editor Claude Code terminal, grain-copal tree
+provider Anthropic
+product Claude Code
+role copal lane, amphora and the roster
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_status runtime model named by the invoking session; configuration, not telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York clock
+title Copal lap -- fruit void a thirteenth read; no unrostered witness, no build
+prompt The copal baton and inner prompt: take one unrostered witness under tools/gen/chapter/, roster it, prove it from both sides.
+think Read recursion-prompts/copal-inner.md, the card's size and git nib, the day shelf, and the earlier copal log at 20261012.000200.
+think Measured the chapter room. Every file named *_witness.rish under tools/gen/chapter/ has a path row in construction/standing-equipment.kyri; the comm of the sorted witness list against the roster's path lines returns nothing.
+think The only two runnable files with no path row are prin_ticker.rish (a thin display shim, 7 lines, no assert or verdict) and fascia_metric_v0.rish (an elder door that forwards to fascia_metric.rish, 5 lines). Neither is a witness, so neither is the fruit.
+obs Zero candidates means the fruit has no honest build. A roster row for a file with no assertions would prove nothing, so no file was written, no claim opened, and no witness run.
+obs The card's YOURS line about roughly 75 unrostered witnesses is stale. Retiring it is Keaton's word, so this lap leaves it standing.
+loom witness=none wall_ms=0 records=167 unrostered_witnesses=0 tracked_chapter_rishes=169
+rota none -- inner-prompt fruit lap; the reading found no candidate, so no council question surfaced
+file session-logs/date/20261012/20261012-071211_copal-fruit-void-thirteenth-read-no-build.kyri why-one-line: this lap's record that the chapter room is fully rostered
+file session-logs/date/README-index-20261012.md why-one-line: the day shelf's newest row, beneath the delimiter, naming this lap
+file construction/ITINERARY.md why-one-line: the git nib carried forward to 3c484549e1, this follow-up's parent
+scope read-only measurement of tools/gen/chapter/ against construction/standing-equipment.kyri, one session log, one shelf row, one nib write. No code, no roster row, no witness run, no claim.
+status GREEN for the reading: 0 unrostered witnesses under tools/gen/chapter/. No build. Open: the card's stale unrostered line, which is Keaton's word to retire.
+recommend check-in (Claude) -- the fruit has no candidate; Keaton's word on whether the card's unrostered line retires, and whether the two non-witness runnable files want a guard of their own.
