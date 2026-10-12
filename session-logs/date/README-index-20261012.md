@@ -1,10 +1,10 @@
 # session-logs day index -- 20261012
 **Language:** EN
-| 20261012.105434 | [Pheromone lane held at closed fruit, no build](20261012/20261012-105434_pheromone-lane-closed-no-build.kyri) | Fruit closed; stop clause in force; no witness, no edit. |
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.105434 | [Pheromone lane held at closed fruit, no build](20261012/20261012-105434_pheromone-lane-closed-no-build.kyri) | Fruit closed; stop clause in force; no witness, no edit. |
 | `20261012.105611` | [Grass fruit graded at field, no edit](20261012/20261012-105611_grass-fruit-graded-no-edit-judged-half-open.kyri) | Fruit graded at Field, no edit; composite still judged. |
 | 20261012.105423 | [Bakery, receipt key held, no build](20261012/20261012-105423_bakery-receipt-key-held-no-build.kyri) | Gate stands; no build; check in (Claude) |
 | `20261012.105541` | [Copal chapter-witness roster, zero unrostered, no build](20261012/20261012-105541_copal-zero-unrostered.kyri) | 159 witnesses checked, zero absent; fruit empty. |
