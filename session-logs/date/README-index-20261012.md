@@ -5,6 +5,7 @@
 | `20261012.024044` | [Diffuser, P1 hold, ff to incense decline, no run](20261012/20261012-024044_diffuser-p1-hold-ff-incense-no-run.kyri) | P1 unruled; ff clean; no run. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.031622` | [Bakery, gate held, no build](20261012/20261012-031622_bakery-gate-held-no-build.kyri) | Receipt key still YOURS; no build. |
 | `20261012.031045` | [Bakery, receipt key re-scanned, no build](20261012/20261012-031045_bakery-rescan-receipt-key-no-build.kyri) | Six of six mutations miss; ruling still YOURS; no build. |
 | `20261012.031042` | [Diffuser, P1 hold, ff two peers, no run](20261012/20261012-031042_diffuser-p1-hold-ff-peers-no-run.kyri) | P1 unruled; ff clean; no run. |
 | `20261012.030727` | [Grass, grade inner B+, no build](20261012/20261012-030727_grass-grade-inner-b-plus-no-build.kyri) | Field 89 B+; no edit; no build. |

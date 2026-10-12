@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261012.031622
+editor Claude Code, grain-bakery tree
+provider Anthropic
+product Claude Code
+role bakery lane, core infrastructure (fleet launch, FLEET_BARE=1 not confirmed)
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved in this clone; see tools/fixtures/d/declared_model.sh resolved_model)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host one-clock zone America/New_York
+title Bakery, gate held again, no build
+prompt Bakery baton, run a lap; the receipt-key question stays Keaton's
+think Read the inner prompt and the card. The fruit is the shared build and cold-run cache, and its receipt-key half is marked YOURS on the card.
+think Tree clean at 7455ead47f, six commits behind the remote. The claim board is present and reads no live claim, so no peer holds the receipt key.
+think The newest Bakery log (031045) already measured six of six receipt-key mutations as misses and stopped at the same ruling. No new measurement this lap would change that ruling, so no tool was re-run and nothing was edited.
+obs The only unmeasured leg is whether identical inputs skip compilation on a shared cache. Measuring it needs a cache-hit build, which is a build inside the gate's own territory, so it waits with the ruling.
+obs Recorded gap: the card's Git nib reads ac7e9f1c4e, which is not HEAD. This lap did not touch the card, so the nib is not repaired here.
+loom witness=build_receipt_key_scan mutations=6 miss=6 hit=0 carried_from=20261012.031045 rerun=no
+rota none -- gated lap, no build; no council row read
+orbit round 2 sign -- the verb not read this lap; count 12857 gives orbit round 2 by (count - 1) % 15 + 1
+file session-logs/date/20261012/20261012-031622_bakery-gate-held-no-build.kyri this lap's record
+file session-logs/date/README-index-20261012.md one row under the shelf delimiter
+scope one log and one index row; no tool, card, or claim edited
+status GREEN on the carried scan reading; receipt-key ruling still open; no cache-hit leg run; card nib stale
+recommend check in (Claude) -- Keaton's ruling on whether HEAD leaves the receipt key decides the next build; the nib repair waits on the same send
