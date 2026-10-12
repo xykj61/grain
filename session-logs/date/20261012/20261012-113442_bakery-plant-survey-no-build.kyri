@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.113442
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Bakery, core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime unverified
+voice Kyri
+host anonymized Linux pier, one-clock zone America/New_York
+title Bakery plant survey, no build
+prompt Run the bakery baton: read the inner prompt, honor the card, and take the agent-doable queue.
+think The card's agent-doable queue leads with %642, whose remaining scrub wants a word rather than a lap, and then %519, the plant.sh spread.
+think The plant adoption scan reads sourcing=51 of 409 controls, remainder 358, floor 13 held. That is far more than one lap carries.
+think Unadopted controls that sed-mutate source are not all unchecked. The smallest, glow_refusal_mutation_control.sh, tests plant_found before it mutates, so adopting plant.sh there would rewrite a working control and move no defect.
+think No file was edited, no claim was opened, and no endurance pass ran, because nothing met the one-named-change bar.
+obs The receipt-key ruling (YOURS in the card) still gates the most-leveraged bakery item. Most of this day's bakery laps have stopped at the same gate.
+obs Choosing a next control to adopt needs a sharper rule than the sed-match count, because the count mixes checked and unchecked plants.
+loom witness=plant_adoption_scan sourcing=51 controls=409 remainder=358 floor=13 verdict=ok
+rota none -- queue-survey lap, no deep read of a council row
+file construction/ITINERARY.md -- read the bakery lane and inner loop; no edit
+file tools/fixtures/p/plant_adoption_scan.sh -- measured the remainder; read only
+file tools/fixtures/g/glow_refusal_mutation_control.sh -- already checks its plant; left unchanged
+scope read-only survey of the plant adoption queue; no code, card, or pin edit
+status GREEN for the survey (the scan reads verdict=ok); no build, no claim, no endurance pass; the receipt key still waits on Keaton's ruling
+recommend check in (Claude) -- the receipt-key ruling gates the most-leveraged bakery item, and the agent-doable plant spread is too large for one lap without a rule for telling checked plants from unchecked ones
