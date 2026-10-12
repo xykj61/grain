@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.092844 | [Pheromone lane empty, no build](20261012/20261012-092844_pheromone-lane-empty-no-build.kyri) | Queue empty; board clear; no build. |
 | 20261012.092332 | [Copal fourth measure, no build](20261012/20261012-092332_copal-fruit-fourth-measure-no-build.kyri) | Roster exact; zero unrostered witness; no build. |
 | 20261012.092322 | [Pheromone, queue empty, no build](20261012/20261012-092322_pheromone-queue-empty-no-build.kyri) | Language lane empty; board clear; no build. |
 | 20261012.091952 | [Shim late-say moved, unsaid gate open](20261012/20261012-091952_shim-late-say-moved-unsaid-gate-open.kyri) | late says moved; unsaid gate open. |
