@@ -9,6 +9,8 @@
 | `20261012.051537` | [Pheromone, lane recheck, no build](20261012/20261012-051508_pheromone-lane-recheck-no-build.kyri) | Lane and board empty; %765 %807 await Keaton; no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+
+| `20261012.053909` | [Pheromone, lane empty, board clear, no build](20261012/20261012-053909_pheromone-lane-empty-no-build.kyri) | Lane empty, claims board clear at 8c29a186c3; no rune, no build. |
 | `20261012.054023` | [Patchouli, kumara held, no build](20261012/20261012-054023_patchouli-kumara-red-held-no-build.kyri) | Kumara sign red live; held for ruling. |
 | `20261012.053951` | [Diffuser, P1 hold, no run](20261012/20261012-053951_diffuser-p1-hold-ff-bakery-patchouli-no-run.kyri) | P1 unruled; ff two peer logs; nothing built or measured. |
 | `20261012.053810` | [Copal, fruit exhausted, no build](20261012/20261012-053810_copal-fruit-exhausted-no-build.kyri) | Zero unrostered witnesses, eighth reading; the fruit needs a ruling; no build. |
