@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20261012.170437
+editor Claude Code (terminal, fleet-style lap)
+provider Anthropic
+product Claude Code
+role bakery core infrastructure lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-sonnet-5 (resolved from .claude/settings.json per declared_model.sh)
+configured_status configured default, not runtime telemetry
+voice Kyri
+host anonymized Linux desktop, one-clock zone America/New_York
+title Bakery shared-cache crux: two witnesses GREEN, second toolchain blocked
+prompt Bakery baton lap: read the card and inner prompt, take the lane's top item, build or name the blocker.
+think The lane's first item is content-keyed compilation; tools/b/build_cached.sh and its witness already exist.
+think shared_build_cache_witness is GREEN for four measured inputs with zero silent reuse; two inputs stay unmeasured.
+think The two unmeasured inputs (compiler pin, toolchain pin) need a second vendored toolchain, which this pier does not carry.
+think No product change was made this lap, so no claim was booked and no cold endurance run was launched.
+obs build-cached witness 40 legs, control_failed=0, GREEN. shared-build-cache changed=4 silent_reuse=0 unmeasured=2.
+obs Declining to build here is deliberate: the fruit's remainder is the second-toolchain half, a provisioning question for Keaton.
+rota none -- queue read for a blocker; no deep read of a council row this lap
+loom witness=build_cached wall_ms=unmeasured records=40
+file tools/b/build_cached_witness.rish the content-keyed cache witness; run, GREEN, no edit
+file tools/b/shared_build_cache_witness.rish the shared-cache witness; run, GREEN, two inputs unmeasured
+file session-logs/date/README-index-20261012.md the day row for this log
+scope read the card and two witnesses; no code, no claim, no send
+status GREEN for the two witnesses read; the second-toolchain remainder is open and owed
+recommend check-in (Claude) -- the open half needs a second toolchain pin or a Keaton ruling on provisioning it
