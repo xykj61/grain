@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20261012.091037
+editor claude code terminal
+provider anthropic
+product claude code
+role bakery, repository lane grain-bakery core infrastructure
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status declared in tools/b/bakery_seat_prompt.txt and bakery-inner engine line; resolved per clone not run this lap
+evidence recursion-prompts/bakery-inner.md engine section; declared_model.sh resolved_model not run this lap
+voice Kyri
+host anonymized one-clock zone America/New_York
+title shared build cache witnesses re-run GREEN, owed ruling still held, no build
+prompt baton lap for bakery: the fleet crux, one shared build cache and one cold-run cache
+think read the card's Bakery itinerary; the first proof is identical inputs skip compilation and still run the owed proof, with six independent mutations each missing the cache
+think the claim board holds no live claim, so nothing peer-owned sits on this seam
+think ran tools/b/shared_build_cache_witness.rish: GREEN, three measured inputs (source, flag, overlay) all change the binary with zero silent reuse; three inputs (executable bit, compiler pin, toolchain pin) read unmeasured with their reasons
+think ran tools/b/build_cached_witness.rish: GREEN, 26 control legs, zero failed; a reused binary is refused when a declared input changes
+think the three unmeasured inputs are the open gap, and two of them need a second toolchain this pier does not hold
+think the receipt-key HEAD question was already read at 085759 and waits on a ruling; re-reading it would repeat that log
+obs no new instrument and no booked red, so the claim-first clause did not bind; no claim pushed
+obs the cold endurance run was not launched: no code changed, and a seventy-minute pass held still buys no new answer while the ruling is owed
+obs the honest state is that the cache exists for measured inputs, is GREEN on metal for them, and stays unproven for the three named inputs and for the HEAD-in-key ruling
+rota lap 13327, row 2 -- fire sees: what must stop is the keystone itself; the three unmeasured inputs and the HEAD-in-key ruling hold it, and the lap cuts no further than the witnesses
+orbit round 7 Libra -- air fun: the two checks meet and settle into one green line, which is what the two witnesses read on this tree
+file construction/ITINERARY.md why-one-line the Git nib moves to HEAD read before this follow-up commit, per remember-git-nib rule 5
+file session-logs/date/20261012/20261012-091037_bakery-cache-witnesses-green-held-at-ruling.kyri why-one-line this lap's record of the two cache witnesses and the open gap
+scope read-only verification of the two shared-cache witnesses; no code, no witness edited, no claim, no push
+status GREEN for the two witnesses on this tree: shared-build-cache changed=3 silent_reuse=0 unmeasured=3; build-cached 26 legs, control_failed=0; the HEAD-in-key ruling and the three unmeasured inputs remain open
+recommend check in (Claude) -- rule whether the receipt key drops HEAD for watched inputs, and whether the three unmeasured inputs wait for a second toolchain or get a stand-in

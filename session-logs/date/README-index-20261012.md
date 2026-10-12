@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.091037` | [Bakery, cache witnesses GREEN, held](20261012/20261012-091037_bakery-cache-witnesses-green-held-at-ruling.kyri) | Two witnesses GREEN; key ruling owed; no build. |
 | `20261012.085933` | [Incense, eighty-fifth lap, declined, nib carried](20261012/20261012-085933_incense-eighty-fifth-declined-nib-carried.kyri) | Tree current at xy/main; no build; ruling asked. |
 | `20261012.085837` | [Petrichor, nib red returned, gate held, no build](20261012/20261012-085837_petrichor-nib-stale-again-carried-gate-held-no-build.kyri) | Stale Git nib carried to 539fba9842 after pull; first-hour gate held. |
 | `20261012.090027` | [Diffuser P1 hold, ff of incense and bakery, no run](20261012/20261012-090027_diffuser-p1-hold-ff-incense-bakery-no-run.kyri) | Peer commits only; P1 still unruled; no run. |
