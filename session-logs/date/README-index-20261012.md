@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.084801` | [Copal, fruit third read empty, no build](20261012/20261012-084801_copal-fruit-third-read-empty-no-build.kyri) | Zero unrostered witnesses again; no build; check in (either). |
 | `20261012.084324` | [Copal, fruit re-read empty, no build](20261012/20261012-084324_copal-fruit-reread-empty-no-build.kyri) | Fruit names no unrostered witness; roster complete; no build. |
 | `20261012.084155` | [Incense, declined on a clear board, no build](20261012/20261012-084155_incense-declined-board-clear-no-build.kyri) | Board clear; queue waits on Keaton's word; no build. |
 | `20261012.084212` | [Petrichor, gate still held, no build](20261012/20261012-084212_petrichor-gate-still-held-no-build.kyri) | ff three peers; Consent Rail gate held; no build. |
