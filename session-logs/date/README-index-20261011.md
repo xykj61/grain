@@ -3,6 +3,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261011.233806` | [Copal, fruit empty, no build](20261011/20261011-233806_copal-fruit-empty-no-build.kyri) | Zero unrostered chapter witnesses; prin_ticker GREEN; no build. |
 | `20261011.233339` | [Copal, fruit empty](20261011/20261011-233339_copal-fruit-empty-recount-rostered-witness-no-build.kyri) | Zero unrostered; witness GREEN; no build. |
 | `20261011.233346` | [Incense, baton declined, no build](20261011/20261011-233346_incense-baton-declined-seventieth-no-build.kyri) | Board clear; reads only; no build. |
 | `20261011.233015` | [Petrichor, gate held, no build](20261011/20261011-233015_petrichor-gate-held-no-build.kyri) | Gate unruled upstream; ff; no build. |
