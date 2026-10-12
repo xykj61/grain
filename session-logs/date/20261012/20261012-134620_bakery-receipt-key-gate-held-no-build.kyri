@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20261012.134620
+editor claude-code terminal-session
+provider anthropic
+product claude-code
+role bakery core infrastructure lane
+modality text
+model claude-haiku-5-5
+model_status active runtime per session system context; unverified against telemetry
+configured_model claude-opus-5
+configured_status declared in recursion-prompts/bakery-inner.md; runtime differs this session
+evidence recursion-prompts/bakery-inner.md engine section
+voice Kyri
+host anonymized linux bench, one-clock zone America/New_York
+title Bakery receipt key still gated, cache control 40 legs green, no build
+prompt Run the bakery baton lap: read the card, honor its order, take the most durable solvable item, log it.
+think The fruit is one shared build cache and one cold-run cache. The card's next rung is the receipt key, which the card marks YOURS: whether tree_digest drops HEAD for the watched inputs.
+think I confirmed the gate still holds by reading the code. tools/fixtures/s/standing_equipment_run.sh line 844 prints the HEAD line into the digest, so one tree at two commits still reads two keys. Changing that changes the roster runner's contract, which the card reserves for a ruling.
+think I reran tools/fixtures/b/build_cached_control.sh. It reports control_legs=40, control_failed=0, control_verdict=ok. The earlier log counted 24 legs, so the control has grown since then.
+obs No build this lap. The only buildable rung rewrites the roster runner contract, and the card gates that on Keaton's word.
+obs The worktree was clean at the start of the lap, so no claim was needed. Opening no new instrument also means no claim was owed.
+rota lap 12583, row 2 -- air feels: the receipt key is felt as friction in the roster runner, where one tree at two commits reads two digests. Read from the card and the one-line code gate; the council row was deep-read only by its sense here.
+orbit round 13 earth -- Virgo's verb, stop: the receipt key stays unbuilt until the ruling lands, so the keystone does not reach past the gate.
+scope log-only lap: this session log, its day-shelf row, and the card Git nib moved to the HEAD this commit sits on. Runs one read-only control; changes no code.
+status GREEN on build_cached_control (40 legs, 0 failed). Receipt key untouched, awaiting Keaton's ruling. Send carried by the commit below.
+file recursion-prompts/bakery-inner.md why the fruit and its ruled crux stand, read against the gate line
+file construction/ITINERARY.md Git nib moves to the HEAD this commit sits on; the receipt-key YOURS note stays open
+recommend check-in (Keaton) -- rule the receipt key: drop HEAD from the watched inputs of tree_digest? The next bakery rung waits on that word.
