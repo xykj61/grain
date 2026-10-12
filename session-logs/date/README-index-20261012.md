@@ -490,6 +490,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.190219 | [Petrichor gate held, docs witnesses re-run, no build](20261012/20261012-190219_petrichor-gate-held-no-build.kyri) | Gate held; docs witnesses GREEN; no build. |
 | 20261012.185148 | [Patchouli queue empty, no build](20261012/20261012-185148_patchouli-queue-empty-fifth-lap-no-build.kyri) | Queue empty; %841 and %842 wait on rulings; no build. |
 | 20261012.184937 | [Diffuser P1 held, ff three peers, no run](20261012/20261012-184937_diffuser-p1-hold-ff-copal-patchouli-no-run.kyri) | Ff three peers, no P1 ruling; no run. |
 | 20261012.184911 | [Grass queue empty, no build](20261012/20261012-184911_grass-queue-empty-no-regrade-no-build.kyri) | Queue empty; repeat regrade declined; no build. |
