@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.102024 | [Copal, fruit re-measured, no build](20261012/20261012-102024_copal-fruit-remeasured-no-build.kyri) | 168 path rows; remote adds no witness; no build. |
 | 20261012.101611 | [Copal, fruit spent, no unrostered witness](20261012/20261012-101611_copal-unrostered-fruit-spent.kyri) | 158 of 158 witnesses rostered; no build. |
 | 20261012.101354 | [Diffuser, P1 held a sixteenth time, no run](20261012/20261012-101354_diffuser-p1-held-sixteenth-no-run.kyri) | P1 unruled; no run; loop named; nib carried. |
 | 20261012.101212 | [Patchouli, queue empty a twenty-ninth way, no build](20261012/20261012-101212_patchouli-queue-empty-twenty-ninth-no-build.kyri) | Tidy bans clear in mantra/ and tally/; queue empty; no build. |
