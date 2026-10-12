@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.082051` | [Copal, fruit empty a fourth time, no build](20261012/20261012-082051_copal-fruit-empty-fourth-measure-no-build.kyri) | Local and upstream: zero unrostered witnesses; no build. |
 | `20261012.081548` | [Copal, fruit re-measured empty, no build](20261012/20261012-081548_copal-fruit-empty-rerun-no-build.kyri) | Path-form measure: 159 witnesses, zero unrostered; no build. |
 | `20261012.081530` | [Diffuser, held on P1, check in (Claude), no run](20261012/20261012-081530_diffuser-p1-hold-no-run-check-in-claude.kyri) | P1 still unruled; no build; check in (Claude) to restate or retire. |
 | `20261012.081421` | [Pheromone, lane empty, stop clause held, no build](20261012/20261012-081421_pheromone-lane-empty-held-no-build.kyri) | Language lane empty on its stop clause; no rune ruling in hand; no build. |
