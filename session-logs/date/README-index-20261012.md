@@ -286,6 +286,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.133327 | [Copal fruit no candidate, repeat, no build](20261012/20261012-133327_copal-fruit-no-candidate-repeat-no-build.kyri) | Zero unrostered witnesses; no claim; no build. |
 | 20261012.132537 | [Diffuser P1 still stalled, one copal commit, no run](20261012/20261012-132537_diffuser-p1-stalled-no-run.kyri) | P1 ruling still owed; ff brought one copal commit; no measurement. |
 | 20261012.132224 | [Copal fruit rechecked, no build](20261012/20261012-132224_copal-fruit-rechecked-no-build.kyri) | Zero unrostered witnesses; fruit already closed; no build. |
 | 20261012.132547 | [Grass docs compressor shelf graded B+ or better, no build](20261012/20261012-132547_grass-docs-shelf-graded-b-plus-no-build.kyri) | Fifteen docs/ pages read B+ or better; no frame owed. |
