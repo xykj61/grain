@@ -4,6 +4,7 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.062242` | [Grass air row read, no build](20261012/20261012-062242_grass-air-row-audit-no-build.kyri) | Three foundations graded B or better; no frame; nib carried. |
 | `20261012.061729` | [Grass, inner page B+, no build](20261012/20261012-061729_grass-inner-page-graded-b-plus-no-build.kyri) | Inner page graded B+ (88 shadow); Git nib repaired. |
 | `20261012.061540` | [Incense, seventy-eighth, no build](20261012/20261012-061540_incense-seventy-eighth-no-build.kyri) | Order unchanged; claim board clear; nib carried; no build. |
 | 20261012.061616 | [bakery crux survey](20261012/20261012-061616_bakery-crux-shared-cache-check-in.kyri) | crux measured GREEN single-tree; cross-checkout seam held for check-in |
