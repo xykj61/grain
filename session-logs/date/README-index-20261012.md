@@ -5,6 +5,7 @@
 | `20261012.051537` | [Pheromone, lane recheck, no build](20261012/20261012-051508_pheromone-lane-recheck-no-build.kyri) | Lane and board empty; %765 %807 await Keaton; no build. |
 | Stamp | Log | What it carried |
 |---|---|---|
+| `20261012.052116` | [Baton printed, no lap](20261012/20261012-052116_baton-printed-no-lap.kyri) | Baton printed on request; no lap. |
 | `20261012.051318` | [Bakery, cache census, no build](20261012/20261012-051318_bakery-cache-census-plant-sourcing-no-build.kyri) | Cache shares by content; receipt key waits. |
 | `20261012.051250` | [Diffuser, P1 hold, no run](20261012/20261012-051250_diffuser-p1-hold-no-run-check-in-claude.kyri) | ff to 8953a20995; no P1 ruling; check in (Claude). |
 | `20261012.051451` | [Petrichor, gate held, no fruit, no build](20261012/20261012-051451_petrichor-gate-held-no-fruit.kyri) | Ff to 42df8f7640; Consent Rail still Keaton's call; check in (Claude). |

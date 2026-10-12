@@ -1,0 +1,27 @@
+format session-log-v1
+stamp 20261012.052116
+editor product interface Claude Code
+provider model provider Anthropic
+product product name Claude Code
+role repository role Bakery, core infrastructure lane
+modality text-or-voice text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5 -- the model this lap was launched under; not runtime telemetry
+configured_status configured launch value, not runtime telemetry
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Baton printed, no lap
+prompt ty every1 baton prin recur
+think The prompt is the baton with a three-word tail. Read as a request to print the baton for the hands to paste, not as a request to launch a lap.
+think The shelf today already holds a dozen logs recording the same reading, so repeating a lap here would add another no-build row rather than work.
+think No build, no claim, no push. The baton's own rule says the captain prints it as a raw code block in the reply, and this file remains the record.
+obs Printing is the one act the tail asks for. A lap would need a claim, a cold run and a push, none of which the tail requested.
+loom none -- no measurement taken this lap
+rota none -- printing the baton is not a deep read, so no council row was read
+orbit round none -- no round load taken; no lap run
+file construction/ITINERARY.md why -- read for the baton's stated card; no change made
+file session-logs/date/README-index-20261012.md why -- one row for the day shelf
+recommend kg -- the next lap is mechanical once Keaton names a lane
+scope print the baton and record the reading; no build, no claim, no push
+status GREEN -- baton printed in reply; no lap owed; nothing left open by this pass
