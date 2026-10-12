@@ -284,6 +284,7 @@
 **Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.133150 | [Petrichor gate held, no build](20261012/20261012-133150_petrichor-gate-held-upstream-seven-no-build.kyri) | Seven upstream commits miss the consent rail; no build. |
 | 20261012.132224 | [Copal fruit rechecked, no build](20261012/20261012-132224_copal-fruit-rechecked-no-build.kyri) | Zero unrostered witnesses; fruit already closed; no build. |
 | 20261012.131739 | [Incense eighty-eighth, declined, no build](20261012/20261012-131739_incense-eighty-eighth-declined-no-build.kyri) | Absence read present; nib carried; no build. |
 | 20261012.131925 | [Diffuser P1 stalled, check in](20261012/20261012-131925_diffuser-p1-held-stalled-check-in-claude.kyri) | P1 unruled and undefined; no run; define or retire wanted. |
