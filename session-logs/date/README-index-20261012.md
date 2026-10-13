@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.204710 | [Copal fruit empty again, no build](20261012/20261012-204710_copal-fruit-empty-fourth-no-build.kyri) | 158 of 158 witnesses rostered; no target; no build. |
 | 20261012.204100 | [Receipt key held, no build](20261012/20261012-204100_bakery-receipt-key-held-no-build.kyri) | Fast-forward four; receipt key gated; no build. |
 | 20261012.203952 | [Diffuser P1 held, ff three, no run](20261012/20261012-203952_diffuser-p1-hold-ff-three-no-run.kyri) | Ff three; P1 ruling owed; no build. |
 | 20261012.203937 | [Pheromone ff three, ruling owed, no build](20261012/20261012-203937_pheromone-ff-held-no-build.kyri) | Ff three; no language paths moved; no build. |
