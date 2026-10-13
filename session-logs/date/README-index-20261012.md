@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.211015 | [Pheromone lane empty, no build](20261012/20261012-211015_pheromone-lane-empty-no-build.kyri) | Card stop clause holds; no rune ruling; log only. |
 | 20261012.210356 | [Pheromone lane empty, ff four, no build](20261012/20261012-210356_pheromone-lane-empty-ff-four-no-build.kyri) | Ff four; board clear; override held; no build. |
 | 20261012.210326 | [Diffuser P1 held, ff two, no run](20261012/20261012-210326_diffuser-p1-hold-ff-two-no-run.kyri) | Ff two peers; P1 ruling still owed; no run. |
 | 20261012.210103 | [Copal fruit empty a fifth time, no build](20261012/20261012-210103_copal-fruit-empty-fifth-no-build.kyri) | 158 of 158 chapter witnesses rostered; ruling asked. |
