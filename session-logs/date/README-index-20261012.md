@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.205621 | [Diffuser P1 held again, no run; prompt bloat named](20261012/20261012-205621_diffuser-p1-hold-no-run-prompt-bloat.kyri) | Held on the owed P1 ruling; no build; the 181 KB inner prompt named as the cost. |
 | 20261012.205133 | [Petrichor gate held, no build, again](20261012/20261012-205133_petrichor-gate-held-no-build-again.kyri) | Ff to ecc34f5211; gate unchanged; no build. |
 | 20261012.205055 | [Diffuser P1 held, ff three, no run](20261012/20261012-205055_diffuser-p1-hold-ff-three-no-run.kyri) | Ff three peers; P1 ruling owed; no build. |
 | 20261012.204923 | [Grass queue spent, four heads at A or B+, no build](20261012/20261012-204923_grass-queue-spent-till-voucher-regraded.kyri) | Named heads read A or B+; no edit; no build. |
