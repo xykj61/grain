@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.215859 | [Diffuser P1 held, ff four peers, no run](20261012/20261012-215859_diffuser-p1-held-ff-four-no-run.kyri) | P1 unruled; ff four peers; no run. |
 | 20261012.215502 | [Patchouli queue empty, no build](20261012/20261012-215502_patchouli-queue-empty-no-build.kyri) | Nets empty again; nib to 6f7e1fcba3; no build. |
 | 20261012.215308 | [Petrichor gate held, ff one, no build](20261012/20261012-215308_petrichor-gate-held-ff-one-no-build.kyri) | Gate unchanged upstream; no build. |
 | 20261012.215526 | [Incense decline, ff one, no build](20261012/20261012-215526_incense-decline-ff-one-no-build.kyri) | Board clear; ff one peer; nib carried; no build. |
