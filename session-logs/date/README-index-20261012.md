@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.212425 | [Patchouli queue empty again, no build](20261012/20261012-212425_patchouli-queue-empty-again-no-build.kyri) | Net clean again; %841 held on a ruling; no build. |
 | 20261012.212045 | [Grass rule pages regraded, no build](20261012/20261012-212045_grass-rule-pages-regraded-no-build.kyri) | Six rule pages at Field, all B or better; no build. |
 | 20261012.211911 | [Patchouli queue empty, no build](20261012/20261012-211911_patchouli-queue-empty-grep-net-no-build.kyri) | Net clean; claims clear; %841 held on a ruling. |
 | 20261012.211759 | [Diffuser P1 held, ff one, no run](20261012/20261012-211759_diffuser-p1-hold-ff-one-no-run.kyri) | Ff one peer log; P1 ruling still owed; no run. |

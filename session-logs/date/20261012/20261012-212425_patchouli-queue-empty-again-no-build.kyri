@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20261012.212425
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role patchouli lane, grain-patchouli tree
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-haiku-5-5
+configured_reasoning unset
+configured_status resolved by tools/fixtures/d/declared_model.sh resolved_model; override=yes on this clone
+evidence tools/fixtures/d/declared_model.sh resolved_model and override; runtime names Haiku 5.5 in the system prompt, not telemetry
+voice Kyri
+host Framework bench, one-clock zone America/New_York
+title Patchouli queue empty again, net clean, no build
+prompt Patchouli baton: read the inner prompt, find the next chronological-header family in mantra/ or tally/, or say the queue is empty and stop.
+think Read recursion-prompts/patchouli-inner.md. Its last paragraphs say the queue reads empty and the next lap should widen to a class no earlier lap named, or say the queue is empty and stop.
+think Re-ran the quoted -vN literal net over mantra/ and tally/. It returns nothing outside the elder read-compat headers the law keeps.
+think REDS %841 stays OPEN on the ledger, held on a Claude ruling for the legacy sign return type in tally/kumara.rye. Retyping sign crosses amphora/ and comlink/ seams, so no build here.
+think The claim board reads fetched xy, commits_behind=2, claims_live=0, verdict=board. Nothing in this lane is claimed.
+obs The 21:19 log already read this same empty queue. Another full lap would repeat its reading, so this one records the second pass and stops.
+obs The card's Git nib named 854d98357a, which was not HEAD's parent. This follow-up moves it to HEAD read before the commit is made.
+obs HEAD sits two commits behind xy/main. The round-open pull is what brings them in, and this lap did not pull.
+rota lap 14227, row 3 -- water tastes: the reading tastes true. The net and the ledger answer as the prior pass did, so the record stays the reading.
+orbit round 14 sign -- sky, wildcard: holds one page whole.
+file session-logs/date/20261012/20261012-212425_patchouli-queue-empty-again-no-build.kyri this log, written before the send
+file session-logs/date/README-index-20261012.md one shelf row for this log, under the delimiter
+file construction/ITINERARY.md Git nib carried forward to HEAD read before this follow-up commit
+recommend check-in (Claude) -- REDS %841 needs a ruling on the legacy sign return type before any migration to sign_checked
+scope patchouli lane: header net re-run fresh, claim board read, ledger row confirmed, no code
+status GREEN, no build. Grep-measured on the tree at b9df1018dc; no witness run because no code moved. Cold roster run not started.
