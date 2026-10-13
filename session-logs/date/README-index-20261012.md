@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.203724 | [Petrichor ff, Consent Rail gate still held, no build](20261012/20261012-203724_petrichor-gate-held-ff-no-build.kyri) | Ff to 86f5f8c5fc; no seam or Consent Rail change; no build. |
 | 20261012.203251 | [Pheromone held, ruling owed, no build](20261012/20261012-203251_pheromone-held-no-build.kyri) | Ff two; no language paths moved; no build. |
 | 20261012.203215 | [Copal fruit empty again, no build](20261012/20261012-203215_copal-fruit-empty-repeat-no-build.kyri) | Every chapter witness rostered; no target; no build. |
 | 20261012.203123 | [Grass queue empty, no build](20261012/20261012-203123_grass-queue-empty-no-build.kyri) | Queue empty; no build; nib carried. |
