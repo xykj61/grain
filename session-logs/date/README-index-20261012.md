@@ -1,3 +1,4 @@
+| 20261012.200812 | [Copal fruit spent, no build](20261012/20261012-200812_copal-fruit-spent-no-build.kyri) | 0 of 159 chapter witnesses unrostered; no build. |
 | 20261012.200120 | [Diffuser P1 held, ff three, no run](20261012/20261012-200120_diffuser-p1-held-ff-three-no-run.kyri) | P1 unruled; no run. |
 | 20261012.195859 | [Pheromone air fence held, fifth repeat, no build](20261012/20261012-195859_pheromone-air-fence-no-build.kyri) | Capacity 15 and refusal 16 re-read GREEN; queue empty; rune ruling owed; no build. |
 | 20261012.195658 | [Glow refusal onto plant.sh](20261012/20261012-195658_bakery-plant-adoption-glow-refusal.kyri) | One control adopted; verdict ok; crux held. |
