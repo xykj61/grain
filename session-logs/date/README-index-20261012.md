@@ -1,5 +1,6 @@
 | Stamp | Log | What it carried |
 |---|---|---|
+| 20261012.220605 | [Grass foundations sample, no build](20261012/20261012-220605_grass-foundations-sample-no-build.kyri) | Six newest foundations pages all B or better; no frame. |
 | 20261012.220014 | [Grass inner re-read, same grade, no build](20261012/20261012-220014_grass-inner-reread-no-build.kyri) | Same page, same B+ reading; nib carried; no build. |
 | 20261012.215912 | [Pheromone queue empty, no build](20261012/20261012-215912_pheromone-queue-empty-no-build.kyri) | Card steps landed; one ruling for Incense; no build. |
 | 20261012.215716 | [copal fruit repeat, no build](20261012/20261012-215716_copal-fruit-repeat-no-build.kyri) | Chapter fruit spent again by measurement; no build. |
