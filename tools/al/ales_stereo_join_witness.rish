@@ -1,7 +1,7 @@
 # tools/al/ales_stereo_join_witness.rish -- the crossfade join carried into stereo, both channels in lockstep (ALES27).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES27.
-# Design read: active-designing/20260814-fill-ales27-lotus-stereo-crossfade-join.md
+# Design read: active-designing/date/20260814/20260814-fill-ales27-lotus-stereo-crossfade-join.md
 # Stands on: lotus/join.rye (ALES26) -- the mono crossfade `join` run once per channel over its public API, so the stereo join
 # inherits the proven seam law rather than re-deriving it; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one
 # length, the lockstep this rung keeps.

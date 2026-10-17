@@ -6855,7 +6855,7 @@ seated 20260912.042053
 # opened a step later. Closed form C-ceil(C/5)+1.
 #
 # Paper: `active-designing/date/20260915/20260915-175000_the-axis-that-carried-nothing.md` --
-#        `active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md`
+#        `active-designing/date/20260918/20260918-043308_evenly-spaced-offsets-close-opening-one.md`
 guard torus_place
 path tools/t/torus_place_witness.rish
 tier lap   # 4s; 31 behaviors in a pen, both verdicts reachable, three mutations bitten
@@ -6873,7 +6873,7 @@ seated 20260915.175000
 # five-distinct-copies precondition) refuses rather than guessing. REPORTED: whether the found
 # optimum beats round one's 33 -- the falsifier itself, a fact about geometry no lap repairs.
 #
-# Paper: `active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md`
+# Paper: `active-designing/date/20260918/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md`
 guard torus_offset_search
 path tools/t/torus_offset_search_witness.rish
 tier lap   # <1s; 13 behaviors, two grids, one mutation bitten, no digest population needed
@@ -8071,13 +8071,13 @@ seated 20260917.213500
 # the reason the sibling guard gives: the statistic refuses at its own stated error rate, and the
 # means move with the tree's contents.
 #
-# Paper: `active-designing/20260918-013435_the-two-fields-that-composed-and-the-one-that-did-not.md`
+# Paper: `active-designing/date/20260918/20260918-013435_the-two-fields-that-composed-and-the-one-that-did-not.md`
 guard composite_key
 path tools/c/composite_key_witness.rish
 tier lap   # ~1s; 16 behaviors in a pen, three exact equalities, two mutations bitten
 seated 20260918.013000
 
-# WHY THIS ROW. active-designing/20260918-000154_three-numbers-and-a-name.md measured a decision
+# WHY THIS ROW. active-designing/date/20260918/20260918-000154_three-numbers-and-a-name.md measured a decision
 # parked in four places at once -- a forward-looking sentence naming Keaton's word, a sentence
 # already recording a word granted, a YOURS: line on a living pin, and an Open doors for Keaton
 # section -- and found nothing read them together, then proposed a scan rather than an eighty-first

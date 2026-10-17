@@ -32,7 +32,7 @@
 #   AND A FOURTH RULE BEATS THE FREE-CHOOSING RING ITSELF. `evenspread` places its five copies at
 #   round(i*C/5) for i=0..4 -- as close to evenly spaced around the ring as five integers allow --
 #   and survives 52, against the wide ring's 33: a 58% gain reached by arithmetic rather than
-#   search (active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md). The
+#   search (active-designing/date/20260918/20260918-043308_evenly-spaced-offsets-close-opening-one.md). The
 #   closed form C-ceil(C/5)+1 is the pigeonhole bound on the largest of five gaps summing to C, and
 #   an even split reaches it exactly; a brute force over every offset subset confirmed the bound at
 #   five (C,k) pairs including this one's 64.

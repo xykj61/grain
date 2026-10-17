@@ -2,7 +2,7 @@
 # offsets, and reaches the family's own ceiling exactly.
 #
 # WHY THIS RUNG. Round two's proposal 1
-# (active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md)
+# (active-designing/date/20260918/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md)
 # named the open question torus_place_witness.rish left standing: its reading 3 compared exactly
 # two members of one family of replica-offset sets -- {d, -d, 2d, -2d} mod C -- at d=1 and d=g,
 # and never asked whether some other d in that same family beats either hand-picked point.
@@ -49,7 +49,7 @@
 #     load-bearing rather than decorative.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
+# Paper: active-designing/date/20260918/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/torus_offset_search_witness.rish

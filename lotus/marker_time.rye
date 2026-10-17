@@ -4,7 +4,7 @@
 //! ALES5 clock); this rung gives markers the same twin, so a keeper drops a named place in seconds and reads it back in seconds.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES21.
-//! Design read: active-designing/20260814-fill-ales21-lotus-marker-time.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales21-lotus-marker-time.md
 //! Stands on: lotus/markers.rye (ALES20) -- the sorted, unique named track and its add reused whole (the sample-index face stays
 //! pure; this rung only adds a time face over it); lotus/clock.rye (ALES5) -- samples_for and ms_for, the one proven seconds <->
 //! samples conversion, exactly as loop.mark_ms uses it; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share a length.

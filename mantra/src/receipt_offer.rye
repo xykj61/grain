@@ -116,7 +116,7 @@ pub fn fact_refusal(f: ReceiptOfferFact, encoded_len: u32, signature_valid: bool
     if (tally_refusal.encoded_fact_refusal(encoded_len, bounds.max_encoded_fact_bytes)) |r| return r;
     if (!std.mem.eql(u8, f.schema, schema_v1)) return .{ .field = "schema", .reason = .unknown_schema };
     // The five identifiers this contract's "each identifier" row governs
-    // (active-designing/20260918-000154_three-numbers-and-a-name.md, Two).
+    // (active-designing/date/20260918/20260918-000154_three-numbers-and-a-name.md, Two).
     // product_digest is enumerated OUT of this set: it earns its own exact
     // length below rather than leaning on the shared identifier ceiling.
     const identifiers = [_]struct { name: []const u8, value: []const u8 }{

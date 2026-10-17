@@ -5,7 +5,7 @@
 //! heard. The resolution produces an EFFECTIVE fader column, and the mix itself is ALES8's `fader.render` unchanged.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES9.
-//! Design read: active-designing/20260814-fill-ales9-lotus-mute-solo.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales9-lotus-mute-solo.md
 //! Stands on: lotus/fader.rye (ALES8) -- a Strip carries a Fader, and `render` resolves mute/solo to an effective fader column
 //! then delegates to `fader.render` whole (no new accumulation, no second saturation); lotus/track.rye (ALES6) -- the Session
 //! table the strips align with; lotus/timeline.rye (ALES2) -- the Clip and the one true saturation, reached through ALES8.

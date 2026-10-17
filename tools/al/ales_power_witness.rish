@@ -1,7 +1,7 @@
 # tools/al/ales_power_witness.rish -- equal-power pan: the law that keeps POWER constant, not SUM (ALES11).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES11.
-# Design read: active-designing/20260814-fill-ales11-lotus-equal-power.md
+# Design read: active-designing/date/20260814/20260814-fill-ales11-lotus-equal-power.md
 # Stands on: lotus/pan.rye (ALES10) -- the second channel (StereoClip) and the fold bound (max_pan_den) reused whole;
 # lotus/fader.rye (ALES8) -- a panned track is TWO faded contributions, so each channel is fader.render run once over an
 # equal-power-folded effective fader; lotus/track.rye (ALES6) -- the Session the pans align with.

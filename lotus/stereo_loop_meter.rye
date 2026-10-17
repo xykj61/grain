@@ -6,7 +6,7 @@
 //! ALES17 two-channel meter.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES18.
-//! Design read: active-designing/20260814-fill-ales18-lotus-stereo-loop-meter.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales18-lotus-stereo-loop-meter.md
 //! Stands on: lotus/stereo_meter.rye (ALES17) -- the StereoMeter and feed/peak/rms reused whole (one true meter per channel, no
 //! new arithmetic); lotus/stereo_loop.rye (ALES16) -- the wrapping stereo read the meter is fed, in lockstep off the one head;
 //! lotus/loop.rye (ALES14) -- the validated, armed region and enter; lotus/pan.rye (ALES10) -- the StereoClip whose two channels

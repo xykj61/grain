@@ -44,7 +44,7 @@
 #   every cell rather than argued: 2g+1, 5, 4g+1, and C-ceil(C/5)+1 are what the arithmetic gives,
 #   and a reading that disagrees with those closed forms is the finding rather than a rounding
 #   error. `evenspread` is the fourth rule named in
-#   active-designing/20260918-043308_evenly-spaced-offsets-close-opening-one.md: minimizing the
+#   active-designing/date/20260918/20260918-043308_evenly-spaced-offsets-close-opening-one.md: minimizing the
 #   largest gap between five points on a ring of C cells beats every fixed-offset rule above it,
 #   and an even split reaches the pigeonhole bound C-ceil(C/5)+1 exactly.
 #

@@ -4,7 +4,7 @@
 //! correctness: each ramped sample saturates to the i16 range rather than wrapping (timeline.saturate, the one true clamp).
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES4.
-//! Design read: active-designing/20260814-fill-ales4-lotus-fade-envelope.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales4-lotus-fade-envelope.md
 //! Stands on: lotus/timeline.rye (ALES2) -- the Clip it fades and the saturation it reuses. A fade is a gain whose fraction
 //! moves; ALES3's mix then sums faded tracks, so a fade-out on one track under a fade-in on another is a crossfade.
 //!

@@ -1,7 +1,7 @@
 # tools/al/ales_join_witness.rish -- the crossfade join: the choice of law where an inserted span meets its neighbour (ALES26).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES26.
-# Design read: active-designing/20260814-fill-ales26-lotus-crossfade-join.md
+# Design read: active-designing/date/20260814/20260814-fill-ales26-lotus-crossfade-join.md
 # Stands on: lotus/crossfade.rye (ALES12) -- the equal-power `crossfade` read at the seam, reused whole over its public API, so
 # the join inherits the proven −3 dB law rather than re-deriving it; lotus/timeline.rye (ALES2) -- the `Clip` it edits, `splice`
 # reused to fill the overlap windows and append the span's tail, and `max_clip` as the one shared bound.

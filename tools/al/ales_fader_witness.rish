@@ -1,7 +1,7 @@
 # tools/al/ales_fader_witness.rish -- the per-track fader column: each track's level scales its contribution before the sum (ALES8).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES8.
-# Design read: active-designing/20260814-fill-ales8-lotus-fader-column.md
+# Design read: active-designing/date/20260814/20260814-fill-ales8-lotus-fader-column.md
 # Stands on: lotus/track.rye (ALES6) -- the Session table this rung renders, its bound and offset alignment reused whole;
 # lotus/timeline.rye (ALES2) -- the one true saturation the master reuses and the num/den gain arithmetic the fader repeats;
 # lotus/clock.rye (ALES5) -- each track's real offset converts through samples_for.

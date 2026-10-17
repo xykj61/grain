@@ -5,7 +5,7 @@
 //! (splice) -- each transforming the samples exactly and in order.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES2.
-//! Design read: active-designing/20260814-fill-ales2-lotus-timeline-edits.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales2-lotus-timeline-edits.md
 //! Stands on: lotus/stream.rye (ALES1) -- the reassembled Timeline this rung loads and edits; lotus/wire.rye (ALES0) for the
 //! sample width and bound. `load` copies a drained Timeline into a Clip, so the full road reads: bytes -> frames -> gapless
 //! timeline -> edited clip.

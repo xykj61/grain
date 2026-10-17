@@ -14,7 +14,7 @@
 //! a legal insert lands in both. The two channels carry their own audio through their own two seams while staying one length.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES29.
-//! Design read: active-designing/20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales29-lotus-stereo-two-sided-insert-join.md
 //! Stands on: lotus/insert_join.rye (ALES28) -- the mono two-sided `insert_join` run once per channel, reused whole over its
 //! public API, so the stereo insert inherits the proven trailing-seam law and its scratch-clip atomicity rather than re-deriving
 //! either; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length, the lockstep this rung keeps.

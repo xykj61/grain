@@ -5,7 +5,7 @@
 //! once per track.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES6.
-//! Design read: active-designing/20260814-fill-ales6-lotus-track-table.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales6-lotus-track-table.md
 //! Stands on: lotus/clock.rye (ALES5) -- each track's real offset converts through `samples_for`; lotus/timeline.rye (ALES2) --
 //! the Clip a track holds and the one true saturation the master reuses; lotus/mix.rye (ALES3) -- the two-track sum this rung
 //! generalizes to N.

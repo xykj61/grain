@@ -5,7 +5,7 @@
 # WHY THIS RUNG. tools/t/torus_offset_search_witness.rish (round two, proposal 1) swept one free
 # parameter inside a shape borrowed from a torus/ring's own axis and found the family's own
 # maximum: run-kill 52 at grid g=8 (C=64), exactly C - ceil(C/5) + 1. Its own write-up
-# (active-designing/20260918-005400_the-search-found-the-ceiling.md) named the door this rung
+# (active-designing/date/20260918/20260918-005400_the-search-found-the-ceiling.md) named the door this rung
 # walks through, in its own words: "the arithmetic bound above ... hints the generic search would
 # land at the same ceiling by a different route, which stays a conjecture until it is run."
 #
@@ -52,8 +52,8 @@
 #     it does.
 #
 # Style: context/GAUGE_STYLE.md
-# Paper: active-designing/20260918-005400_the-search-found-the-ceiling.md (the open door this rung
-# closes) and active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
+# Paper: active-designing/date/20260918/20260918-005400_the-search-found-the-ceiling.md (the open door this rung
+# closes) and active-designing/date/20260918/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md
 # (proposal 1, this rung's grandparent question)
 #
 # Run from the repository root:

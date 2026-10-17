@@ -16,6 +16,8 @@
 > reference to any of them is **resolved** rather than hunted --
 > `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 
+**Layout (`20261017`):** every dated design now sits in `date/YYYYMMDD/`, and each one that did not already carry it has a `**Stamp:**` line in its header, so a reader or Skate can sort by the writing itself rather than by the filename. Forty-four flat designs from `20260814`, `20260918`, and `20260921` moved under that rule, and every living citer was repointed in the same pass. The flat count above predates the move, so read the scan rather than the number.
+
 **Current product contract:** [`20260912-201126_the-receipt-you-can-read-contract.md`](date/20260912/20260912-201126_the-receipt-you-can-read-contract.md) fixes one synthetic receipt, its four public types, module residences, eight acceptance cases, and the falsifier that keeps Linengrow and Dimeroll distinct.
 
 

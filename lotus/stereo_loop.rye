@@ -4,7 +4,7 @@
 //! round and round. This rung carries the loop to stereo, the twin of the move ALES15 proved for play.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES16.
-//! Design read: active-designing/20260814-fill-ales16-lotus-stereo-loop.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales16-lotus-stereo-loop.md
 //! Stands on: lotus/loop.rye (ALES14) -- the Loop region and make/mark_ms/enter reused whole (a loop OFF delegates to the stereo
 //! transport, an armed loop reuses the same validated region); lotus/stereo_transport.rye (ALES15) -- the stereo forward read a
 //! loop OFF delegates to whole, and the StereoReadError.BadBlock it shares; lotus/pan.rye (ALES10) -- the StereoClip whose two

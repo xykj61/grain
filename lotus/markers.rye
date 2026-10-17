@@ -5,7 +5,7 @@
 //! BETWEEN two markers. This rung is that named, sorted track.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES20.
-//! Design read: active-designing/20260814-fill-ales20-lotus-markers.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales20-lotus-markers.md
 //! Stands on: lotus/scrub.rye (ALES19) -- the scrub's move_to reused whole for snap (a marker snap is a move to a named position);
 //! lotus/loop.rye (ALES14) -- loop.make reused whole for the region between two markers; lotus/pan.rye (ALES10) -- the StereoClip
 //! whose two channels share one length; lotus/timeline.rye (ALES2) -- the Clip the master is built from.

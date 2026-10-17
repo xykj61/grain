@@ -5,7 +5,7 @@
 //! held, draggable window.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES19.
-//! Design read: active-designing/20260814-fill-ales19-lotus-scrub.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales19-lotus-scrub.md
 //! Stands on: lotus/stereo_transport.rye (ALES15) -- the stereo read head and read_block reused whole (a scrub read is a seek-then-
 //! read off that one head, no new copy path); lotus/stereo_meter.rye (ALES17) -- the StereoMeter and feed reused whole for the
 //! level under the drag; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length; lotus/timeline.rye (ALES2) --

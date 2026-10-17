@@ -3,7 +3,7 @@
 # beat the {d,-d,2d,-2d} family's own ceiling? tools/fixtures/t/torus_offset_search_scan.sh swept
 # one free parameter inside a symmetric shape and found d=13 reaches the theoretical ceiling for
 # five evenly-split points on a 64-cell ring (52 = 64 - ceil(64/5) + 1). Its own write-up
-# (active-designing/20260918-005400_the-search-found-the-ceiling.md) named the open door in so
+# (active-designing/date/20260918/20260918-005400_the-search-found-the-ceiling.md) named the open door in so
 # many words: "the arithmetic bound above ... hints the generic search would land at the same
 # ceiling by a different route, which stays a conjecture until it is run." This scan runs it.
 #

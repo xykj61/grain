@@ -1,7 +1,7 @@
 # tools/al/ales_stream_witness.rish -- a bounded byte stream carries many audio frames one at a time, reassembled gapless (ALES1).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES1.
-# Design read: active-designing/20260814-fill-ales1-lotus-audio-stream.md
+# Design read: active-designing/date/20260814/20260814-fill-ales1-lotus-audio-stream.md
 # Idiom kin: constel/channel.rye (FORA5) -- the byte-stream delimiter, now carrying audio and reassembling a sample timeline.
 # Stands on: lotus/wire.rye (ALES0) -- the frame the stream delimits and the audio border it keeps per frame.
 #

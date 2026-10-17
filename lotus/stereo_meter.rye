@@ -5,7 +5,7 @@
 //! playback -- a live stereo VU fed by the same blocks the stereo head plays. This rung is that live path.
 //!
 //! Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES17.
-//! Design read: active-designing/20260814-fill-ales17-lotus-stereo-meter.md
+//! Design read: active-designing/date/20260814/20260814-fill-ales17-lotus-stereo-meter.md
 //! Stands on: lotus/meter.rye (ALES13) -- the Meter, feed, peak, rms, and measure_stereo reused whole (one true meter per
 //! channel, no new arithmetic); lotus/stereo_transport.rye (ALES15) -- the stereo read blocks the two meters are fed, in
 //! lockstep off the one head; lotus/pan.rye (ALES10) -- the StereoClip whose two channels share one length.

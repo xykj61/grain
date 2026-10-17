@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/p/pending_decision_scan.sh -- gather a decision left open across its four places.
 #
-# WHY THIS EXISTS. active-designing/20260918-000154_three-numbers-and-a-name.md measured a decision
+# WHY THIS EXISTS. active-designing/date/20260918/20260918-000154_three-numbers-and-a-name.md measured a decision
 # parked in four places at once -- a sentence naming Keaton's word inside living prose, a line
 # already recording a word granted, a `YOURS:` row on the operator card, and an `Open doors for
 # Keaton` section -- and found nothing reads them together. "What is waiting on me" was a question

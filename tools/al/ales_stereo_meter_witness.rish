@@ -1,7 +1,7 @@
 # tools/al/ales_stereo_meter_witness.rish -- the stereo meter during playback: two meters read both channels live (ALES17).
 #
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus - the creative suite) - waymark ALES - rung ALES17.
-# Design read: active-designing/20260814-fill-ales17-lotus-stereo-meter.md
+# Design read: active-designing/date/20260814/20260814-fill-ales17-lotus-stereo-meter.md
 # Stands on: lotus/meter.rye (ALES13) -- the Meter, feed, peak, rms, and measure_stereo reused whole; lotus/stereo_transport.rye
 # (ALES15) -- the stereo read blocks the two meters are fed, in lockstep off the one head; lotus/pan.rye (ALES10) -- the
 # StereoClip whose two channels share one length.

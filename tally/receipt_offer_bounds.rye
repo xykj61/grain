@@ -14,7 +14,7 @@ pub const receipt_card_width: u32 = 72;
 pub const receipt_card_height: u32 = 18;
 
 /// A product digest's exact hex length, decided rather than borrowed
-/// (active-designing/20260918-000154_three-numbers-and-a-name.md, on Keaton's
+/// (active-designing/date/20260918/20260918-000154_three-numbers-and-a-name.md, on Keaton's
 /// word). Sixty-four hex characters is the width of any 256-bit digest -- this
 /// tree names SHA3-256 -- so admission checks this as a LENGTH the field must
 /// equal, never a ceiling it may fall under. A digest of the wrong length

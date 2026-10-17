@@ -1,7 +1,7 @@
 #!/bin/sh
 # tools/fixtures/t/torus_offset_search_scan.sh -- does a SEARCH over offsets beat the two
 # hand-picked ones round one already measured? Round two's proposal 1
-# (active-designing/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md)
+# (active-designing/date/20260918/20260918-002526_round-two-three-moonshots-grounded-in-round-ones-refusals.md)
 # asked this in so many words: torus_place_scan.sh's reading 3 compared exactly two members of
 # ONE family -- five copies at offsets {d, -d, 2d, -2d} mod C -- d=1 (ring4adj, measured
 # run-kill 5) and d=g (ring4wide, measured run-kill 33) -- and never asked whether some OTHER d
