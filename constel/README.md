@@ -1,8 +1,8 @@
-# Constel -- fake piers that can never be a real ship
+# Constels -- fake piers that can never be a real ship
 
 **Stamp:** `20260814.105746` - **Split:** `20260824.104946` - **Language:** EN - **Voice:** Kyri
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living front door -- the Constel test-network journey, **32 modules** proven across **32 witnesses**, FORA0 through FORA31
+**Status:** Living front door -- the Constels test-network journey, **32 modules** proven across **32 witnesses**, FORA0 through FORA31
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -12,10 +12,10 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What this is
 
-**Constel** is the tree's own answer to elder Urbit's fake-galaxy dev networks -- a way to stand up
+**Constels** is the tree's own answer to elder Urbit's fake-galaxy dev networks -- a way to stand up
 many local piers on one machine and let them meet over Comlink, every one of them local to this
-bench. Where Urbit dev nets ran fake galaxies for local testing, Constel runs fake piers with a
-stronger guarantee: **a Constel name is structurally incapable of being a real `@p`**, so a dev
+bench. Where Urbit dev nets ran fake galaxies for local testing, Constels runs fake piers with a
+stronger guarantee: **a Constels name is structurally incapable of being a real `@p`**, so a dev
 command a newcomer copies stays inside this machine.
 
 That guarantee is one clean property, checkable at a glance. Every one of Urbit's 512 real syllables
@@ -25,7 +25,7 @@ consonants-only name -- abjad, Hebrew-style -- is unassemblable from those sylla
 stays outside the space of real addresses altogether. The **missing vowel** is the whole safety
 proof, and it fails closed in a single bounded pass. This is stronger and simpler than counting
 segment lengths against the syllable table (the `~acme-...` length trick the placeholder law uses
-for docs illustrations); Constel names are the *runnable* fake piers, and their guarantee is the
+for docs illustrations); Constels names are the *runnable* fake piers, and their guarantee is the
 vowel-free spelling itself.
 
 Everything here is purely **local** -- a string predicate and a bounded in-memory registry on the
@@ -49,7 +49,7 @@ that log honest across re-elections, membership changes, crashes, and reads.
 
 The vowel-bearing self-invented strings `queyqwinqkri` and `maicmalammurr` are **poetic
 Twilight-theme names**, a different silo entirely (the `queyqwinqkri` theme is its own reserved
-research task). Constel dev-net names proper are the consonants-only abjad -- that separation keeps
+research task). Constels dev-net names proper are the consonants-only abjad -- that separation keeps
 the safety predicate a single clean scan rather than a special-cased list.
 
 ## The rung that crossed, and the one that stops for a hand
@@ -66,7 +66,7 @@ what tells a real descriptor from a simulation.
 **What stops for a hand is the next thing: a real address.** Every address this ladder forms is
 127.0.0.1 and a port derived from a seat index, so nothing here can leave this bench. Giving a pier
 an address off this machine touches custody gate %2 -- real hardware, or any wire beyond the bench --
-and that is the maintainer's word, not an agent's. From there Constel exercises the Comlink - Pond -
+and that is the maintainer's word, not an agent's. From there Constels exercises the Comlink - Pond -
 Mycelium network end to end, the many-pier logic already proven the round before.
 
 ---

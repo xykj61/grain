@@ -1,4 +1,4 @@
-# Constel -- every module in this directory
+# Constels -- every module in this directory
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Meter setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Living roster -- **32 rows against 32 `.rye` modules**, held as one set by [`../tools/co/constel_module_roster_witness.rish`](../tools/co/constel_module_roster_witness.rish)

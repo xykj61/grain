@@ -145,7 +145,7 @@ commit `42826c45d`). The 39 remaining living pages each took a `**Room:**` line,
 fell **39 to 0**. Thirty were ALES fill captures reading `mixed`, since each carries a *What the
 witness proves* section beside a *The road on* section and that structure is the reading; six were
 the lineage silos reading `research for understanding`, the first room where the fourth token
-answers every page in it; and three were `active-designing` pages -- the Constel naming law and the
+answers every page in it; and three were `active-designing` pages -- the Constels naming law and the
 two hammocks -- each `mixed` for a reason of its own. **A ratchet at zero is a wall, and this one
 holds structurally:** a living path may always be repaired, so a living page stays silent only until
 a hand reaches it. The dated floor keeps its **3**, since accrete-never-break holds those three
