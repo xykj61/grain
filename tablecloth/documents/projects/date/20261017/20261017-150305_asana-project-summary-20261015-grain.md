@@ -3,7 +3,7 @@
 **Stamp:** `20261017.150305` (one clock, America/New_York)
 **Status:** Summary for an Asana project. Supersedes `20261017-145715_asana-project-summary-20261015-grain.md` and folds in the two downloads of `20261015`.
 **Voice:** Kyri, in Radiant Style
-**Sources read this stamp:** `tablecloth/downloads/20261015-174008_kernels-in-the-zig-grain-and-the-license-fork.md`, `tablecloth/downloads/20261015-195351_grain-within-grain-the-fold-the-surface-and-the-wasm-question.md`, and the living tree.
+**Sources read this stamp:** `tablecloth/documents/counsel/date/20261015/20261015-204008_kernels-in-the-zig-grain-and-the-license-fork.md`, `tablecloth/documents/research/date/20261015/20261015-225351_grain-within-grain-the-fold-the-surface-and-the-wasm-question.md`, and the living tree.
 
 ---
 
@@ -129,7 +129,7 @@ and principles are in the research. **The figures stay with the family and its a
 ## Where the send stands
 
 - The prototype folder reads `20261015-grain-incense`, and its remotes now read `20261015`.
-- The downloads are in `tablecloth/downloads/` and are not yet filed under `tablecloth/documents/`.
+- The two downloads are filed by category: counsel and research, under `tablecloth/documents/`.
 - The larger moves are still waiting on your word: the molt of the design into `modules/`, the Mandate
   contract written as a Mycelium DAG entry, the tutorials, and the expanding prompt.
 

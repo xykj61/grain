@@ -1,12 +1,12 @@
 # Grain Within Grain -- the Fold, the Surface, and the WASM Question
 
 **Language:** EN
-**Stamp:** `20261015.195351` -- system clock, America/Los_Angeles (PDT), taken into a shell variable
+**Stamp:** `20261015.225351` -- America/New_York (EDT); the reading was taken on the PDT clock at 19:53:51 and converted by adding three hours
 **Voice:** Kyri
 **Kind:** External research -- reads the frozen `20260618-grain` field forward into the clean-slate `20261015` tree
 **Style:** New Gauge, Field setting, carrying Radiant warmth (see `context/GAUGE_STYLE.md`)
 **Room:** mixed -- what the field already proved is marked as standing; every path forward is proposed and waits on Keaton's word
-**Basis:** the `20260618-grain-main` archive read `20261015` (27,700 files); the companion counsel `20261015-174008_kernels-in-the-zig-grain-and-the-license-fork.md` and its QEMU determinism witness; public sources named in the bibliography
+**Basis:** the `20260618-grain-main` archive read `20261015` (27,700 files); the companion counsel `20261015-204008_kernels-in-the-zig-grain-and-the-license-fork.md` and its QEMU determinism witness; public sources named in the bibliography
 **Redaction:** personal and family financial figures stay out of this page by design. Siya Solutions appears here as principles only.
 **Silo note:** outside teachers are named where this page studies them and thanked in Gratitude; the design is re-voiced in our own words.
 
@@ -207,7 +207,7 @@ The wider region joins this list on a dated reading of conditions at the time of
 2. TigerBeetle, *We Put a Distributed Database in the Browser* (the simulator compiled to WebAssembly with Zig; deterministic replay). https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser
 3. The Vibes, *Network School moves to Kazakhstan* (22 July 2026). https://www.thevibes.com/articles/news/125300/network-school-moves-to-kazakhstan -- and Cointelegraph, *Balaji's Network School turns to Kazakhstan amid Malaysia setback*. https://cointelegraph.com/news/balajis-network-school-turns-to-kazakhstan-amid-malaysia-setback
 4. Urbit documentation, *Filesystem* (piers, desks, and the sandbox desk studied by Puddle). https://docs.urbit.org/user-manual/os/filesystem
-5. Companion counsel, `20261015-174008_kernels-in-the-zig-grain-and-the-license-fork.md` (license fork; QEMU determinism witness; DJINN task packet).
+5. Companion counsel, `20261015-204008_kernels-in-the-zig-grain-and-the-license-fork.md` (license fork; QEMU determinism witness; DJINN task packet).
 6. The frozen field, `grain-ww/20260618-grain`, read `20261015`. https://github.com/grain-ww/20260618-grain -- paths cited in the body, chiefly:
    - `pond/README.md`, `docs/ENCLOSURE.md`, `docs/PROVEN_SEAT.md`
    - `external-research/date/20260702/20260702-035018_puddle-sandboxed-rye-containers.md`

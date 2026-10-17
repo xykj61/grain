@@ -1,7 +1,7 @@
 # Kernels in the Zig Grain, and the License Fork
 
 **Language:** EN
-**Stamp:** `20261015.174008` -- system clock, America/Los_Angeles (PDT), taken into a shell variable
+**Stamp:** `20261015.204008` -- America/New_York (EDT); the reading was taken on the PDT clock at 17:40:08 and converted by adding three hours
 **Voice:** Kyri
 **Kind:** Counsel -- a kernel survey and a license reading, offered for Keaton's word
 **Style:** New Gauge, Field setting, carrying Radiant warmth (see `context/GAUGE_STYLE.md`)
