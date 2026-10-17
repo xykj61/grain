@@ -71,3 +71,7 @@ Route new DJINN work to `ww-private` now (option 1). Breach the named confidenti
 
 Whether `ww-private` becomes the record and `xy` a mirror. That is a choice about custody, and it
 waits on Keaton.
+
+## Files DJINN should see
+
+- `session-logs/date/20260826/20260826-002952_the-djinn-debride-and-the-bit-season.kyri` -- the Bit season log, named by Keaton. Private repo only; not for `xy`.
