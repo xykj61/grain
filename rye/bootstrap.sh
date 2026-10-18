@@ -11,7 +11,7 @@ set -eu
 here="$(cd "$(dirname "$0")" && pwd)"
 cd "$here"
 
-# The toolchain: honor a pre-set RYE_ZIG, else the vendored Zig 0.16.0 beside us.
+# The toolchain: honor a pre-set RYE_ZIG, else the vendored Zig 0.17.0 beside us.
 zig="${RYE_ZIG:-../vendor/zig-toolchain/zig}"
 
 # Bridge the source, and clear the bridge away on the way out whatever happens.

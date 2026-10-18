@@ -59,7 +59,7 @@ say "pins GREEN -- four platforms, each sixty-four hex characters, pinned in the
 
 let plan = run ["sh" "tools/fixtures/f/fetch_toolchain_scan.sh" "plan"]
 assert plan.ok else "fetch-toolchain: planning must succeed on a supported platform"
-assert plan.out contains "version=0.16.0" else "fetch-toolchain: the plan must name the pinned version"
+assert plan.out contains "version=0.17.0" else "fetch-toolchain: the plan must name the pinned version"
 assert plan.out contains "sha256=" else "fetch-toolchain: the plan must show the checksum it would hold the download to"
 assert plan.out contains "verdict=ok" else "fetch-toolchain: the plan must balance"
 say "plan GREEN -- names the release, the URL, and the checksum, and touches nothing"
