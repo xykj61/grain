@@ -47,17 +47,17 @@ Glow is the **language** (Hoon-parallel). Rishi is the **shell** (Dojo-parallel)
 
 ## Fixture desks (generator hop)
 
-### Baked sample, no argv -- Acme first read
+### Baked input, no argv -- Acme first read
 
-Most files under [`gen/`](gen/) are **fixture desks**. A fixture desk is a small Glow program whose **sample** (the value the gate would take as input) is already written into the file -- faces, literals, and shapes chosen once so the witness always runs the same way. That is the **baked sample**. **No argv** means you do not pass numbers or strings on the Rishi command line; the desk carries its own input. You run the path alone, and green means the language hop still lowers and builds:
+Most files under [`gen/`](gen/) are **fixture desks**. A fixture desk is a small Glow program whose **input** (the value the gate would take) is already written into the file -- faces, literals, and shapes chosen once so the witness always runs the same way. That is the **baked input**. **No argv** means you do not pass numbers or strings on the Rishi command line; the desk carries its own input. You run the path alone, and green means the language hop still lowers and builds:
 
 ```bash
 rishi/bin/rishi run tools/g/glow_run.rish glow/gen/c/cast-u32.glow
 ```
 
-A **generator** is the sibling idea: the sample arrives from outside (Rishi argv today, typed hand-off later). Thin cast example: [`gen/s/sample-u32.glow`](gen/s/sample-u32.glow) wants one `@u32` after the path (`... glow_run.rish glow/gen/s/sample-u32.glow 42`). The matching fixture [`gen/c/cast-u32.glow`](gen/c/cast-u32.glow) stays argv-free beside it. Prefer **fixture desk** when learning a rune; reach for a generator when the proof needs a value you choose at the shell. Longer Acme hand: `../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`.
+A **generator** is the sibling idea: the input arrives from outside (Rishi argv today, typed hand-off later). Thin cast example: [`gen/s/sample-u32.glow`](gen/s/sample-u32.glow) wants one `@u32` after the path (`... glow_run.rish glow/gen/s/sample-u32.glow 42`). The matching fixture [`gen/c/cast-u32.glow`](gen/c/cast-u32.glow) stays argv-free beside it. Prefer **fixture desk** when learning a rune; reach for a generator when the proof needs a value you choose at the shell. Longer Acme hand: `../expanding-prompts/date/20260719/20260719-204001_glow-fixture-desks-and-parameterized-generators.md`.
 
-Your own Grain -- voice, desk habits, and the ship that signs under **Kumara** -- can grow personalized later. One of the five OS voice variants (Reya - Riyo - Trey - Triz - Quin) may sit with you in Cursor, or in Zed with Claude Code, or in another LLM editor you choose. That path is **possible**; it is **not proven** until prompts and crafts seat a Grain that is yours under your Kumara key. Until then, these fixture desks are the shared beginner habitat: same sample, same green, no private key step in this README.
+Your own Grain -- voice, desk habits, and the ship that signs under **Kumara** -- can grow personalized later. One of the five OS voice variants (Reya - Riyo - Trey - Triz - Quin) may sit with you in Cursor, or in Zed with Claude Code, or in another LLM editor you choose. That path is **possible**; it is **not proven** until prompts and crafts seat a Grain that is yours under your Kumara key. Until then, these fixture desks are the shared beginner habitat: same input, same green, no private key step in this README.
 
 ### Suite pin (G3 onward)
 
