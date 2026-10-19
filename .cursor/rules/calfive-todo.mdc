@@ -1,0 +1,57 @@
+---
+description: Living to-do synced with the calfive orbit. Five goals, five open items. Sweep on touch.
+globs:
+  - context/**
+  - .cursor/rules/**
+alwaysApply: false
+---
+
+# Calfive To-Do -- the five open questions
+
+**Orbit round:** 10/15 Capricorn, fixed earth, law -- "What must stop."
+**Quest place:** 25/75
+**Commit count at seating:** 14350
+**Synced from:** `active-designing/date/20261018/20261018-224900_rota-revitalization-audit-five-goals.md`
+
+Re-derive the orbit with `git rev-list --count HEAD` and the table in `context/SPELLBOOK.md`.
+
+## The five goals and their open items
+
+### 1. Aether Heart -- shared-library composition
+
+**Status:** RADIANT_STYLE.md DONE (`20261018`). Four guides remain on-touch.
+
+Compose each guide from `context/styles/lib/shared-register.md` by adding `Composes from:` header and `*Shared move*` pointer lines in sections that carry shared moves. Keep all unique content -- the guide is the full story.
+
+| Guide | Status |
+|---|---|
+| `context/RADIANT_STYLE.md` | DONE -- 7 pointers + header |
+| `context/GAUGE_STYLE.md` | on-touch |
+| `context/TWILIGHT_STYLE.md` | on-touch |
+| `context/BHAKTA_STYLE.md` | on-touch |
+| `context/TEACHER_STYLE.md` | on-touch |
+
+### 2. Water Aesthetics -- Status/Room lines on context/ pages
+
+**Status:** open, sweep on touch. 16 of 40 context/ pages lack a `**Status:**` line.
+
+When touching a context/ page, add `**Status:** Living` (or the honest word) and `**Room:**` per `context/TWO_ROOMS.md` if absent. Measured `20261018`.
+
+### 3. Fire Talent -- shared-move restatements in rule pages
+
+**Status:** open, sweep on touch.
+
+Rule pages (`.claude/rules/`) keep their own shape and do not compose from the shared library (per `context/styles/lib/composition.md`). Three rule pages restate "Lead with what is" in prose; sweep the restatement on touch by tightening the wording.
+
+### 4. Earth Law -- Brix rota question
+
+**Status:** parked for Keaton's word.
+
+Should petrichor carry a Brix descriptor rota beside the prose rota? The question stays in prose and waits.
+
+### 5. Air Fun -- roles room and composition journal
+
+**Status:** open, two items.
+
+- **Roles room:** opens with Seva when it has earned a page. No action until a session naturally writes about Seva's surface.
+- **Composition journal README:** at its third entry, give `composition/README.md` a proper introduction paragraph. Two entries stand today.

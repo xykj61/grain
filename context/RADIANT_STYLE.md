@@ -5,6 +5,7 @@
  
 **Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear -- whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 **Room:** mixed -- the negation floor is counted; the poetry axis is judged
+**Composes from:** [shared-register.md](styles/lib/shared-register.md)
 
 **The voice that writes in this style is Kyri** -- the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at `RIYO.md`. Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane (`QUIN.md`); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten. **Kyli** sits beside Kyri when a page is taught jointly.
 
@@ -91,7 +92,9 @@ When in doubt, read your draft aloud. If it flows naturally and feels generous i
 ---
  
 ## Lead with What IS
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 State what exists, what we do, what we build. Lead with capability and presence rather than with qualifications or gaps.
  
 - Lead with what IS, rather than what is missing.
@@ -117,7 +120,9 @@ The engineering side of this stance lives in TAME Guidance, under *Correctness, 
 ---
 
 ## Active Voice
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 Use active voice as the default. Active constructions are shorter, warmer, and easier to follow when spoken aloud.
  
 - **Prefer:** "The garden feeds the community."
@@ -126,7 +131,9 @@ Use active voice as the default. Active constructions are shorter, warmer, and e
 ---
  
 ## Minimize "Not" and "But"
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 For both clarity and spoken readability, prefer lighter, cleaner phrasing.
  
 **Instead of "not":**
@@ -165,7 +172,9 @@ Add to this table as the project grows. Keeping it short and specific is more us
 ---
  
 ## Sentence Rhythm for TTS and Podcast
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 Materials may be read aloud by TTS or turned into podcast-style audio. Rhythm matters as much as word choice.
  
 **Vary sentence length deliberately.** A long, flowing sentence -- one that opens a thought and carries it forward through several ideas -- earns its length when the ideas belong together. Short sentences land a point. Alternating the two creates natural audio cadence.
@@ -183,7 +192,9 @@ Materials may be read aloud by TTS or turned into podcast-style audio. Rhythm ma
 ---
  
 ## Closing Forms: The Benediction
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 Pieces written in Radiant Style may close with a **benediction** -- a short passage that offers the reader or listener something to carry forward. The benediction is not a summary. It is a gift: a feeling, a wish, a gentle final image.
 
 **Kyri's practice -- spend it where it is earned.** A benediction lands hardest when it is reserved for pieces that warrant it: the devotional studies, the foundational visions, a subject that has earned a closing prayer. Ordinary and technical pieces -- setup guides, reference notes -- read best ending plainly, on a declarative line that states the thought without the liturgical form. When every document closes sacredly, the register flattens and the truly earned benedictions lose their force. Full reasoning: [`../active-designing/yonder/date/20260715/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`](../active-designing/yonder/date/20260715/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md).
@@ -203,7 +214,9 @@ Each clause is complete. Each breath-pause is marked. The final phrase opens wid
 ---
  
 ## Weaving, Rather Than Listing
- 
+
+*Shared move -- [shared-register.md](styles/lib/shared-register.md).*
+
 Radiant Style pieces feel unified rather than assembled. The technique is **weaving**: bringing two threads -- a practical method and a larger idea, a technique and its purpose, a fact and its meaning -- into one continuous movement rather than presenting them as parallel tracks.
  
 **Instead of:** "Here is the method. Here is the spiritual meaning of the method."
@@ -275,7 +288,9 @@ This is not about dumbing down. It is about removing unnecessary weight from lan
 ---
  
 ## Pre-Publication Checklist
- 
+
+*The shared checklist lives at [shared-register.md](styles/lib/shared-register.md). These items extend it for Radiant's own register.*
+
 Before publishing any piece written in Radiant Style, run through these questions:
  
 - [ ] Does the opening sentence lead with what IS?
