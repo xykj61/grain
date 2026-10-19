@@ -95,14 +95,14 @@
   # refuses those generic Linux binaries; this overlay is the declared road.
   #
   # claude-code: nixos-26.05's pin lags upstream.
-  # This overlay pins the latest release, 2.1.295, fetching the same native binary
+  # This overlay pins the latest release, 2.1.303, fetching the same native binary
   # the nixpkgs derivation would, from the same downloads.claude.ai release path.
   # overrideAttrs (version + src) is used rather than .override { manifest = ...; }
   # because the LOCKED nixpkgs holds manifest as a let-binding, not an overridable
   # argument -- overrideAttrs works on both the locked rev and future ones. The
   # sha256 is the linux-x64 checksum from Anthropic's own per-version manifest,
-  # read 20261009.150000 from downloads.claude.ai/claude-code-releases/2.1.295/
-  # manifest.json's own linux-x64 field (checksum == 4503bfe1...6f358) -- a
+  # read 20261009.150000 from downloads.claude.ai/claude-code-releases/2.1.303/
+  # manifest.json's own linux-x64 field (checksum == 375988f4...c191450) -- a
   # published checksum rather than a hand's own sha256sum of a downloaded binary,
   # which this bump did not run. The elder 2.1.286 read fe503f65...fc73f,
   # 20261001.125300, verified on metal that round; 2.1.278 read 5c473593...47ab,
@@ -167,17 +167,17 @@
         };
       });
       claude-code = prev.claude-code.overrideAttrs (_old: {
-        version = "2.1.295";
+        version = "2.1.303";
         src = final.fetchurl {
-          url = "https://downloads.claude.ai/claude-code-releases/2.1.295/linux-x64/claude";
-          sha256 = "4503bfe11a6c7fcc1e0b39b5e0d347c04248f750b03b0977b3ad6b531fe6f358";
+          url = "https://downloads.claude.ai/claude-code-releases/2.1.303/linux-x64/claude";
+          sha256 = "375988f457756524234695cf2d8f64ace99c5f68682e47ea24862a843c191450";
         };
       });
 
       # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
       # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
       # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
-      # upstream ships 0.162.0, so this overlay is the same declared road the two
+      # upstream ships 0.163.0, so this overlay is the same declared road the two
       # entries above take, for the fastest-moving of the three agent CLIs.
       #
       # This one REPLACES the derivation rather than overrideAttrs'ing it, because
@@ -195,9 +195,9 @@
       #
       # The build self-checks twice, exactly as claude-code's does: fetchurl fails
       # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
-      # and asserts the string carries 0.162.0. The sha256 below is read
+      # and asserts the string carries 0.163.0. The sha256 below is read
       # 20261009.150000 from GitHub's own release-asset digest field
-      # (api.github.com/repos/openai/codex/releases/tags/rust-v0.162.0) rather
+      # (api.github.com/repos/openai/codex/releases/tags/rust-v0.163.0) rather
       # than from a hand's own sha256sum of a downloaded file, which this bump
       # did not run. The elder 0.155.1 read a0ef8b2d...d9115, verified on this
       # pier against the downloaded file, and the unpacked binary answered
@@ -207,11 +207,11 @@
       # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
       codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
         pname = "codex";
-        version = "0.162.0";
+        version = "0.163.0";
 
         src = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "8daf67f6261161aa5939d8d42a516032d760406216779d7ce6040f242140ff73";
+          sha256 = "beb339e8ecd9ba057a6bb2dc81ad8ca474812edfbf0fc5056ca818797648dde4";
         };
 
         # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
@@ -231,7 +231,7 @@
         # 21,208,013 bytes.
         codeModeHost = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "dee8bf3df637c68e1495b928d643b76d4ad44f94e4f0ed79fe8482fa79e23d97";
+          sha256 = "314263128ba6592e7e807c265deeaf928a692b72dcbfeb5e0b20c9423b703529";
         };
 
         # The tarball holds one bare file rather than a directory, so the default
