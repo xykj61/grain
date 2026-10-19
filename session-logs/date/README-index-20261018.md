@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.232200 | [rebase conflict resolution and push -- composition molt lands](20261018/20261018-232200_rebase-resolve-push.kyri) | two conflicts resolved; nib carried; pushed to xy/main at 85b194bb4b |
 | 20261018.231657 | [RADIANT_STYLE.md composed from shared library; calfive to-do for Cursor](20261018/20261018-231657_radiant-style-molt-calfive-todo.kyri) | 8 pointers added; .cursor/rules/calfive-todo.mdc synced to five goals |
 | 20261018.230607 | [construction/OUTPUT.md -- today's rows appended](20261018/20261018-230607_output-ledger-today-rows.kyri) | two new rows (rota revitalization context, OUTPUT.md itself); glow witness qualifier cleared |
 | 20261018.225757 | [construction/OUTPUT.md fix and send -- ledger lands at xy/main](20261018/20261018-225757_output-ledger-landed.kyri) | wrong path fixed; index conflict resolved; pushed to 6db8253a30 |
