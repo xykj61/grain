@@ -10,6 +10,10 @@ Opened: `20261018.225249`
 
 ---
 
+## 20261019
+
+**docs-page** `composition/20261019-002845_calfive-plans-seven-kinds.md` `d10402eef4` -- seven kinds of Calfive work named: language, product, identity/network, surface, hardware, creative suite, long return
+
 ## 20261018
 
 **context** `context/styles/lib/` `66dde40549` -- rota revitalization: `composition.md`, `page-header.md`, `section-names.md`, and `order.md` seat the shared library shape for context/ voices and styles
