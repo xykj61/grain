@@ -1,6 +1,6 @@
 {
-  "model": "claude-sonnet-5",
-  "effortLevel": "medium",
+  "model": "claude-sonnet-4-6",
+  "effortLevel": "low",
   "hooks": {
     "PostToolUse": [
       {
