@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.230607 | [construction/OUTPUT.md -- today's rows appended](20261018/20261018-230607_output-ledger-today-rows.kyri) | two new rows (rota revitalization context, OUTPUT.md itself); glow witness qualifier cleared |
 | 20261018.225757 | [construction/OUTPUT.md fix and send -- ledger lands at xy/main](20261018/20261018-225757_output-ledger-landed.kyri) | wrong path fixed; index conflict resolved; pushed to 6db8253a30 |
 | 20261018.225648 | [rebase conflict resolution and push](20261018/20261018-225648_rebase-resolve-and-push.kyri) | two conflicts resolved; nib carried; pushed to xy/main at 66dde40549 |
 | 20261018.225332 | [construction/OUTPUT.md opened and seeded with recent output](20261018/20261018-225332_output-ledger-opened.kyri) | twelve rows seeded; four fields: kind path nib note; no gate; append instructions included |

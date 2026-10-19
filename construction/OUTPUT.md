@@ -12,6 +12,10 @@ Opened: `20261018.225249`
 
 ## 20261018
 
+**context** `context/styles/lib/` `66dde40549` -- rota revitalization: `composition.md`, `page-header.md`, `section-names.md`, and `order.md` seat the shared library shape for context/ voices and styles
+
+**tool** `construction/OUTPUT.md` `6db8253a30` -- output ledger opened; append-only, four fields, eight kinds, seeded with twelve rows; the ratio is now measurable
+
 **predicate** `scribe/reader.rye` `34d0155c24` -- `has_rota` and `has_loom` close the single-strand gap; shape validated in Rye, cited in scan scripts
 
 **context** `context/KYLI_7.md` + `context/KYRI.md` `ee895f7d39` -- Kyli 7 shared style library seated; composed voices (Kyli, Gauge, Bhakta, Teacher) in one file
@@ -28,7 +32,7 @@ Opened: `20261018.225249`
 
 **docs-page** `docs-geode/lessons/` `450cffc693` -- eight lessons, twelve moonshots, one spell; Door graded
 
-**witness** `tools/g/glow_lower_witness.rish` (approx) `c8a9d53698` -- glow lower-refuse-compile-run chain witnessed GREEN
+**witness** `glow/chain_witness.sh` `c8a9d53698` -- glow lower-refuse-compile-run chain witnessed GREEN
 
 ## Recent weeks
 
