@@ -1,5 +1,11 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20261018.205901` -- seed walk-back for the publish to grain-ww/grain.**  
+- **Seed head now (ww):** `7ed44d889d`, the anonymous root commit the seed publish pushed on the owner's yes.  
+- **Prior seed head (ww):** not recorded. The publish force-pushes, and the prior head was not read before the push, so this row cannot name it. The seed clone is recreated on every publish, so it is not kept there either.  
+- **Source tree:** `20260618-grain-incense` at `737f0d85d7`, the floor refresh commit.  
+- **Named word:** the owner's yes, publish from 20260618-grain-incense.  
+
 **Checkpoint `20261012.202545` -- walk-back nib `1a31bdd738`.** Incense folds the oldest inner-prompt
 accounts, `20261001.004741` through `20261003.100919`, whole onto `recursion-prompts/date/20261012/20261012-202545_incense-next-log-archive-65.md`.
 The section stood at 24,469 of its 24,576-byte bound. The elder section stays one `git show
