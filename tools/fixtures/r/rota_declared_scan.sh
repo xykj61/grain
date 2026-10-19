@@ -101,7 +101,9 @@ while IFS= read -r f; do
   # `rota none -- <why>` counts as DECLARED, and that is the whole point of the third answer. A lap
   # that honestly did no rota read has a way to say so, and the record then distinguishes it from a
   # lap that simply left no trace -- which the elder three-way split could not do.
-  if grep -q '^rota ' "$f" 2>/dev/null; then
+  # shape: `has_rota` in scribe/reader.rye -- value opens with `lap ` (declared form)
+  # or `none -- ` (honest-absence form). Grep mirrors those two branches exactly.
+  if grep -qE '^rota (lap |none -- )' "$f" 2>/dev/null; then
     field=$((field + 1))
   elif grep -qiE 'row [0-9]' "$f" 2>/dev/null; then
     prose=$((prose + 1))

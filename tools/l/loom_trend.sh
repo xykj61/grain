@@ -82,6 +82,8 @@ if [ "$KEY" = "--keys" ]; then
   # already selected -- and *written by many families* is the definition of the verdict it drew 60
   # times out of 60.
   while IFS= read -r f; do
+    # shape: `has_loom` in scribe/reader.rye -- field value contains `=` (key=value pair).
+    # The `grep -E` below confirms the shape by requiring a valid identifier before `=`.
     grep '^loom ' "$f" 2>/dev/null || true
   done < "$work/logs.txt" \
     | tr ' ' '\n' | grep -E '^[A-Za-z_][A-Za-z0-9_]*=' | cut -d= -f1 \

@@ -105,6 +105,8 @@ loom_emit() {
       while ((getline f < logs) > 0) {
         b = f; sub(/^.*\//, "", b); stamp = substr(b, 1, 15)
         while ((getline line < f) > 0) {
+          # shape: `has_loom` in scribe/reader.rye -- a well-formed loom value contains `=`.
+          # This awk confirms `=` is present via the key=value parse in the lines below.
           if (substr(line, 1, 5) != "loom ") continue
           if (fam != "" && index(line, fam) == 0) continue
           n = split(line, a, / /)
