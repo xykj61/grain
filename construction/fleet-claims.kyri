@@ -50,9 +50,3 @@ format fleet-claims-v1
 
 # -- live claims -------------------------------------------------------------------------------
 
-claim has-rota-has-loom
-seat diffuser
-stamp 20261018.223203
-epoch 1792377123
-paths scribe/reader.rye tools/fixtures/r/rota_declared_scan.sh tools/l/loom_trend.sh
-what add has_rota and has_loom predicates to scribe/reader.rye so the scan scripts cite one Rye definition rather than re-deriving the field shape in shell

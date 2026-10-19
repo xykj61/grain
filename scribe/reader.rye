@@ -149,6 +149,30 @@ pub fn is_inventory(doc: *const Document) bool {
     return doc.get("stamp") != null;
 }
 
+// --- session-log field shape predicates --------------------------------
+// The `rota` and `loom` fields carry shapes the prose rule names (session-logs.md)
+// but that `is_session_log` does not verify: a malformed rota still passes. These
+// two predicates close that gap so the shell scan scripts cite one Rye definition
+// rather than re-deriving the field shape in shell.
+
+/// Whether a session log carries a **well-formed rota** field -- either the declared
+/// form `lap N, row R -- ...` or the honest-absence form `none -- <why>`.
+/// Returns false when no rota field is present (the field is optional).
+pub fn has_rota(doc: *const Document) bool {
+    const val = doc.get("rota") orelse return false;
+    // // invariant: a well-formed rota value opens with `lap ` or `none -- `
+    return std.mem.startsWith(u8, val, "lap ") or std.mem.startsWith(u8, val, "none -- ");
+}
+
+/// Whether a session log carries at least one **well-formed loom** field -- each
+/// loom value must hold at least one `key=value` pair, verified by the presence of
+/// `=`. Returns false when no loom field is present (the field is optional).
+pub fn has_loom(doc: *const Document) bool {
+    const val = doc.get("loom") orelse return false;
+    // // invariant: a well-formed loom value contains at least one `=`
+    return std.mem.indexOfScalar(u8, val, '=') != null;
+}
+
 // --- the bat fleet: baton archetypes -----------------------------------
 // A baton (`format baton-v1`) may declare an `archetype` -- a named shape, one of
 // the fleet, telling a reader which fields to expect. Every name is a plain common
@@ -339,6 +363,59 @@ fn prove_fleet() !void {
     if (validates_galleon(&st) or validates_cutter(&st)) return error.StrayValidated;
 }
 
+fn prove_field_shapes() !void {
+    // A log with a declared rota passes has_rota; one with the honest-absence form passes too.
+    const log_with_rota =
+        \\format session-log-v1
+        \\stamp 20261018.223203
+        \\title a lap with a rota
+        \\rota lap 3985, row 0 -- Aether, the row that hears
+    ;
+    const log_with_absent_rota =
+        \\format session-log-v1
+        \\stamp 20261018.223204
+        \\title a lap with an honest-absence rota
+        \\rota none -- pure repair, no rota this lap
+    ;
+    const log_without_rota =
+        \\format session-log-v1
+        \\stamp 20261018.223205
+        \\title a lap with no rota
+    ;
+    const log_with_bad_rota =
+        \\format session-log-v1
+        \\stamp 20261018.223206
+        \\title a lap with a malformed rota
+        \\rota row 0 -- missing the lap prefix
+    ;
+    if (!has_rota(&parse(log_with_rota))) return error.RotaNotRecognized;
+    if (!has_rota(&parse(log_with_absent_rota))) return error.AbsentRotaNotRecognized;
+    if (has_rota(&parse(log_without_rota))) return error.MissingRotaWronglyRecognized;
+    if (has_rota(&parse(log_with_bad_rota))) return error.BadRotaWronglyRecognized;
+
+    // A log with a loom field holding key=value pairs passes has_loom; one without does not.
+    const log_with_loom =
+        \\format session-log-v1
+        \\stamp 20261018.223207
+        \\title a lap with a loom reading
+        \\loom witness=scribe_reader_witness wall_ms=12 records=4
+    ;
+    const log_without_loom =
+        \\format session-log-v1
+        \\stamp 20261018.223208
+        \\title a lap with no loom
+    ;
+    const log_with_bad_loom =
+        \\format session-log-v1
+        \\stamp 20261018.223209
+        \\title a lap with a malformed loom
+        \\loom no-equals-here just prose
+    ;
+    if (!has_loom(&parse(log_with_loom))) return error.LoomNotRecognized;
+    if (has_loom(&parse(log_without_loom))) return error.MissingLoomWronglyRecognized;
+    if (has_loom(&parse(log_with_bad_loom))) return error.BadLoomWronglyRecognized;
+}
+
 fn prove_siblings() !void {
     // .kyri and .kyri are sibling extensions -- Scribe records both as one notation.
     if (!is_scribe_extension("session-logs/20260810-113354_a-log.kyri")) return error.KyriNotRecognized;
@@ -353,12 +430,14 @@ fn run_selftest() !u8 {
     try prove_zero_copy();
     try prove_dispatch();
     try prove_fleet();
+    try prove_field_shapes();
     try prove_siblings();
 
     print("scribe reader: a Kyri document parses into key-value fields, zero-copy — each field slices into the source, never copied; a repeatable key keeps every occurrence.\n", .{});
     print("scribe reader: Scribe reads by format — a session-log-v1 and a baton-v1 are told apart and read by one honest reader, the counsel's one-notation-many-formats made real.\n", .{});
     print("scribe reader: the bat fleet — a baton may declare an archetype (galleon·cutter·barque·holdfast·corsair·ledgerworks), and the reader validates each shape's required fields, refusing a short one.\n", .{});
     print("scribe reader: .kyri and .kyri are sibling extensions — the notation named Kyri, yet Scribe records both as one format family, neither a fossil.\n", .{});
+    print("scribe reader: session-log field shapes — has_rota validates `lap N, row R -- ...` and `none -- <why>`; has_loom validates `key=value ...` pairs; both single-stranded from reader.rye.\n", .{});
     print("scribe reader: version {s}\n", .{reader_version});
     print("GREEN: scribe reader — the Kyri voice's home reads its own records: parse a document, dispatch by its format, get a field, count a repeated key — bounded and zero-copy.\n", .{});
     return 0;
