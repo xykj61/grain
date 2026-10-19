@@ -26,5 +26,6 @@ Newest first.
 
 | Stamp | Entry |
 |---|---|
+| 20261018.223157 | [Kyli 7 -- the shared library](20261018-223157_kyli-7-the-shared-library.md) | the composition pattern comes home: shared library, composed voices, Radha |
 | 20261018.212814 | [The clean-slate tree](20261018-212814_the-clean-slate-tree.md) | looking at the 20261015 incense tree and what it has that this one has lost |
 | 20261018.205150 | [Opening: the room and the rules](20261018-205150_opening-the-room-and-the-rules.md) |

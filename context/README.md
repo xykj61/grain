@@ -5,10 +5,10 @@
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Language:** EN
-**Last updated:** `20260917.092522` -- the room list joins the checked population; `design-shapes/`, `fixtures/` and `keys/` stood unnamed here, `design-shapes/` for 49 days
+**Last updated:** `20261018.223157` -- `voices/` and `styles/` (with `styles/lib/`) join: the Kyli 7 single-stranded composition pattern, where each voice and style composes from a shared library rather than restating
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Members:** the rooms under [`./`](./) -- `baton-museum`, `design-shapes`, `fixtures`, `keys`, `specs`, read against the rooms on disk by [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
+**Members:** the rooms under [`./`](./) -- `baton-museum`, `design-shapes`, `fixtures`, `keys`, `specs`, `styles`, `voices`, read against the rooms on disk by [`../tools/r/room_enumeration_witness.rish`](../tools/r/room_enumeration_witness.rish)
 
 ---
 
@@ -37,6 +37,8 @@ Everything here lives inside the persistent project directory, so it survives ev
 - **`design-shapes/`** -- the Brix descriptions of shapes this home seats -- `bounds_home.brix`, `fact_fold.brix`, `relay_resin.brix`, `tend_hygiene.brix` -- under a README of their own, one of them (`relay_resin`) carrying a plain page beside its descriptor. Landed `20260730` and named here from `20260917`.
 - **`fixtures/`** -- the planted inputs the guards over this home read: a broken link beside a valid one, a claim held before and after a modality pass. A plant is an input to a guard rather than a page speaking from a room, so the doorway census reads it past.
 - **`keys/`** -- the public halves this tree publishes, the GPG signing key and the Rye signing key, under one README naming what each proves. Secret halves live on the machine and never here.
+- **`styles/`** -- style pages that compose from `styles/lib/`. The shared library (`styles/lib/`) holds the core moves, the Gauge precision moves, the voice limits, and the devotional register, each stated once. `styles/radha.md` is the first composed style page -- Radha prema bhakti.
+- **`voices/`** -- voice pages that compose from `styles/lib/`. `voices/kyri.md` is the standing voice, composed from the shared register, precision, and voice limits. The full identity stays at `KYRI.md`; the voice page is the composition pointer.
 
 - **`specs/`** -- plain-English radiant specs. ... **`20260702-035018_graduation-rule.md`** -- when an aspect earns a module home (second consumer). **`20260701-221512_cellar-functional-spec.md`** -- Amber preservation module; first lap green (parity **144**); later laps wait. **`20260709-200443_wov-exit-honesty.md`** -- WOV safety spec (root facts + exit bundles). **`20260709-204026_wov-tb-client-seam.md`** -- TigerBeetle client seam; seam A host landed (parity **204**); seam B later. **`20260709-224325_slcl4-lap2-width.md`** -- SLC-L4 width after fixed-tier (W0 cleared; W1/W2 gated). **`20260709-224531_wov-dual-monarch.md`** -- dual monarch; D1 twin-lines landed (parity **205**); D2 later. **`20260709-225159_mala-kind-field.md`** -- MUR kind (was MALA; dated path); K0 cleared; K1 gated. **`20260709-225343_thin-view-dexter-exception.md`** -- thin view is not Dexter's second consumer. Plain stories: `../external-research/date/20260709/20260709-200022_pedersen-and-sigma-plainly.md` - [`../external-research/date/20260709/20260709-230414_twin-keys-and-the-exit-bundle.md`](../external-research/date/20260709/20260709-230414_twin-keys-and-the-exit-bundle.md) - [`../external-research/date/20260709/20260709-231011_graduation-rule-plainly.md`](../external-research/date/20260709/20260709-231011_graduation-rule-plainly.md) - [`../external-research/date/20260709/20260709-235921_one-clock-plainly.md`](../external-research/date/20260709/20260709-235921_one-clock-plainly.md) - [`../external-research/date/20260709/20260709-235931_resins-cellar-vessel-plainly.md`](../external-research/date/20260709/20260709-235931_resins-cellar-vessel-plainly.md) - [`../external-research/date/20260710/20260710-000725_learning-chapter-plainly.md`](../external-research/date/20260710/20260710-000725_learning-chapter-plainly.md) - [`../external-research/date/20260710/20260710-001249_settlement-seat-plainly.md`](../external-research/date/20260710/20260710-001249_settlement-seat-plainly.md) - [`../external-research/date/20260710/20260710-002017_metalsmoke-plainly.md`](../external-research/date/20260710/20260710-002017_metalsmoke-plainly.md) - [`../external-research/date/20260710/20260710-002422_cellar-seasons-plainly.md`](../external-research/date/20260710/20260710-002422_cellar-seasons-plainly.md) - [`../external-research/date/20260710/20260710-002544_first-lap-goes-green-plainly.md`](../external-research/date/20260710/20260710-002544_first-lap-goes-green-plainly.md) - [`../external-research/date/20260710/20260710-002952_sealed-crossing-plainly.md`](../external-research/date/20260710/20260710-002952_sealed-crossing-plainly.md).
 
@@ -82,6 +84,9 @@ grain/
     design-shapes/  <- Brix descriptors for the shapes seated here
     fixtures/       <- planted inputs the guards over this home read
     keys/           <- the public halves of the signing keys
+    styles/         <- composed style pages (Radha)
+      lib/          <- shared moves: register, precision, limits, devotional
+    voices/         <- composed voice pages (Kyri)
     specs/
   foundations/    <- why beneath the work: briefs, essays, weave, civic visions
   docs/           <- compression shelf (operator guides; no load-bearing pins)
