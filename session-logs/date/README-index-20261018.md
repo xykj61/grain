@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.225028 | [output vs activity -- open question written to active-designing](20261018/20261018-225028_output-vs-activity-open-question.kyri) | distinction drawn; four open questions; Tablecloth project shape sketched; seed-ready |
 | 20261018.224643 | [scan scripts cite has_rota and has_loom from scribe/reader.rye](20261018/20261018-224643_scan-scripts-cite-has-rota-has-loom.kyri) | rota grep tightened to match predicate shape; loom comments added; three files, seven lines |
 | 20261018.224007 | [has_rota and has_loom predicates added to scribe/reader.rye](20261018/20261018-224007_has-rota-has-loom-predicates.kyri) | two predicates close single-strand gap; GREEN witness; scan scripts cite one Rye definition |
 | 20261018.223448 | [Kyli 7 -- the shared library build](20261018/20261018-223448_kyli-7-shared-library-build.kyri) | shared style library, composed voice pages, Radha prema bhakti, context/README gained |
