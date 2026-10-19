@@ -1,0 +1,30 @@
+format session-log-v1
+stamp 20261018.214356
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role repository voice
+modality text
+model claude-sonnet-4-6
+model_status active runtime -- session runtime reports Sonnet 4.6
+configured_model claude-sonnet-4-6
+configured_effort low
+voice Kyri
+host Framework / cloud bench -- America/New_York
+title study room opened -- gate and manifest matching 20261015 incense tablecloth/study
+prompt send it, yes to study room and match the directory structure of the new clean slate here in the field and molt breach if needed
+think pushed 3e6e873bb0 to xy/main first; composition commit landed
+think study/ room: README.md with three-condition gate (public domain / no share-alike / no non-commercial), MANIFEST.md empty table, texts/ and refusals/ subdirectories
+think .gitignore allow-back !/study/ added beside !/composition/; binary extensions .pdf .epub .mobi .djvu excluded so texts stay untracked, study-note.md and SHA256SUMS tracked
+think MAP.md Room 7 The Reading Room gains study/ between external-research/ and gratitude/
+obs structure mirrors 20261015-grain-incense tablecloth/study exactly: gate, manifest table with six columns, texts/ per-text subdirectory shape, refusals/ room
+file study/README.md gate description voice Kyri Radiant Door setting
+file study/MANIFEST.md empty table ready for first entry
+file study/texts/.gitkeep placeholder
+file study/refusals/.gitkeep placeholder
+file .gitignore allow-back !/study/ and binary extension denies
+file MAP.md Room 7 The Reading Room row gains study/
+file session-logs/date/20261018/20261018-214356_study-room-open.kyri this log
+recommend kg -- commit and push; first text entry can follow
+scope study room open; gate and structure matched to clean-slate tree
+status GREEN

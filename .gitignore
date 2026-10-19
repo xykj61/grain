@@ -120,6 +120,11 @@
 !/recursion-prompts/
 !/session-logs/
 !/composition/
+!/study/
+/study/texts/**/*.pdf
+/study/texts/**/*.epub
+/study/texts/**/*.mobi
+/study/texts/**/*.djvu
 !/vendor/
 /vendor/*
 !/vendor/genode/

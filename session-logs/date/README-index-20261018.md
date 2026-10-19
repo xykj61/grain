@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.214356 | [study room opened -- gate and manifest](20261018/20261018-214356_study-room-open.kyri) | study/ room created; three-condition gate; structure matched to 20261015 clean-slate tree |
 | 20261018.212924 | [second composition entry -- the clean-slate tree](20261018/20261018-212924_composition-second-entry-clean-slate.kyri) | second Kyli entry; clean-slate 20261015 incense tree as mirror |
 | 20261018.210947 | [MAP.md workrooms row gains composition/](20261018/20261018-210947_map-composition-room.kyri) | one-line edit adds composition/ to MAP.md workrooms row |
 | 20261018.205852 | [composition room paragraph and suggestions](20261018/20261018-205852_composition-room-paragraph-and-suggestions.kyri) | one paragraph + four suggestions for the journal room |
