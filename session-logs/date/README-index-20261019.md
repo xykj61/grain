@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261019.010800 | [composition -- the missing module gap](20261019/20261019-010800_missing-module-gap-composition.kyri) | module absent from dated window; teaching phase named as a clock |
 | 20261019.005110 | [Diffuser and Incense Tablecloth inbox moonshots](20261019/20261019-005110_diffuser-incense-tablecloth-inbox-moonshots.kyri) | two expanding prompts: inbox surface for Diffuser, inbox contract for Incense |
 | 20261019.004133 | [construction/OUTPUT.md -- composition row appended](20261019/20261019-004133_output-ledger-composition-row.kyri) | docs-page row added for composition/20261019 entry; 20261019 section opened |
 | 20261019.002925 | [shared library pages gain Room: checkable -- on-touch calfive goal 2](20261019/20261019-002925_shared-library-room-lines.kyri) | four pages in context/styles/lib/ gain Room: checkable inline on Status line |
