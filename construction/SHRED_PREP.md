@@ -36,7 +36,7 @@ Approvals - kg - best path seat this framing; they do **not** open the cut.
 
 ### Class O -- rooms (fresh cut - Bench Framework - Q50 `20260801.135914`)
 
-Floor: **orphaned=921** - `fascia_health_now=41` - `fascia_health_if_orphans_shed=51` - `fascia_health=40` - shred **RED**.  
+Floor: **orphaned=1165** - `fascia_health_now=80` - `fascia_health_if_orphans_shed=90` - shred **RED** -- re-measured `20261018.204029` by `sh tools/fixtures/s/shed_census_scan.sh` (verdict ok, 28017 tracked, 19447 dated). The earlier 921 floor stood at `20260801.135914`.  
 Prior pin (counsel e184): orphans **895** - health_now **41** -- delta **+26** orphans this re-measure.
 
 | room | orphans | reachable? | Keaton's word |
