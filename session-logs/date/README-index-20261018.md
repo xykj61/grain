@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.225332 | [construction/OUTPUT.md opened and seeded with recent output](20261018/20261018-225332_output-ledger-opened.kyri) | twelve rows seeded; four fields: kind path nib note; no gate; append instructions included |
 | 20261018.225030 | [rota revitalization -- expansion run, five goals, six new pages](20261018/20261018-225030_rota-revitalization-expansion.kyri) | composition, page-header, section-names, order, rota audit; clean-slate referenced |
 | 20261018.225028 | [output vs activity -- open question written to active-designing](20261018/20261018-225028_output-vs-activity-open-question.kyri) | distinction drawn; four open questions; Tablecloth project shape sketched; seed-ready |
 | 20261018.224643 | [scan scripts cite has_rota and has_loom from scribe/reader.rye](20261018/20261018-224643_scan-scripts-cite-has-rota-has-loom.kyri) | rota grep tightened to match predicate shape; loom comments added; three files, seven lines |
