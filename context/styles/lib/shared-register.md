@@ -1,6 +1,6 @@
 # Shared register -- the core moves, stated once
 
-**Status:** Living. The source for the moves that every style in `context/styles/` shares.
+**Status:** Living -- **Room:** checkable. The source for the moves that every style in `context/styles/` shares.
 **Composed into:** Radiant, Gauge, Twilight, Bhakta, Teacher, and Radha pages.
 **Kin:** [`../../RADIANT_STYLE.md`](../../RADIANT_STYLE.md) (the full guide), [`../../GAUGE_STYLE.md`](../../GAUGE_STYLE.md) (the working style)
 

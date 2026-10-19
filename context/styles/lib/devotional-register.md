@@ -1,6 +1,6 @@
 # Devotional register -- sincere, plain, and sourced
 
-**Status:** Living. A register for devotional and contemplative pieces. It shares the moves in
+**Status:** Living -- **Room:** checkable. A register for devotional and contemplative pieces. It shares the moves in
 [`shared-register.md`](shared-register.md) and adds the rules below.
 
 ## What the register keeps

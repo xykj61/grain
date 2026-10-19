@@ -1,6 +1,6 @@
 # Precision -- the Gauge measurement moves, stated once
 
-**Status:** Living. The source for the measurement discipline that Gauge Style adds to the shared register.
+**Status:** Living -- **Room:** checkable. The source for the measurement discipline that Gauge Style adds to the shared register.
 **Composed into:** Gauge, and any style that measures its claims.
 **Kin:** [`../../GAUGE_STYLE.md`](../../GAUGE_STYLE.md) (the full guide)
 
