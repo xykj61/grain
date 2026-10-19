@@ -27,7 +27,7 @@ Welcome, traveler. Something over a hundred doors face you at this root -- `ls -
 | **3 - The Why** | The reasons beneath the work | `foundations/` - `saga/` |
 | **4 - The Language & the Machines** | Glow and the module ring | `glow/` (with `glow/nock/`) - `src/` - the ring |
 | **5 - The Teaching** | Pages that teach only what runs | `docs/` - `docs-geode/` - `manual/` - `docs-geode/edu/yonder/` - `nixos-guide/` |
-| **6 - The Workrooms** | Where the work is shaped and recorded | `active-designing/` - `active-reviving/` - `waymarks/` - `expanding-prompts/` - `construction/` - `counsel/` - `session-logs/` - `kyri-resins/` - `tools/` |
+| **6 - The Workrooms** | Where the work is shaped and recorded | `active-designing/` - `active-reviving/` - `waymarks/` - `expanding-prompts/` - `construction/` - `counsel/` - `session-logs/` - `composition/` - `kyri-resins/` - `tools/` |
 | **7 - The Reading Room** | The world, studied whole with thanks | `external-research/` - `gratitude/` - `vendor/` |
 
 Beside the seven stand **the private rooms** -- one person's own record, withheld from the public seed by `template-manifest.kyri`: `keys/` - `press/` - `classical-vedic-astrology/` - `rye-learning-process/`, and the identity cards (`PUBKEYS.md` - `SAFE.md` - `STEWARDS.md` - the filled `GLOW_*.kyri`).
