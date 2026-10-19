@@ -74,6 +74,14 @@ The one thing that changes is the commit message word.
 **5. Read the study room.** `study/README.md` and `study/MANIFEST.md`. The gate has three
 conditions (public domain or CC0, no share-alike, no non-commercial). The manifest table is empty.
 
+**5b. Compare your docs-geode against the clean-slate shape.** Before writing, check your
+`docs-geode/` structure against `/home/keeper/20260618-grain-incense/docs-geode/`. The clean-slate
+rooms: api, wiki, study, libraries, edu, demos, templates, blog, lessons, press, etc, sangha,
+tutorials. Its `study/` room has two pages: `README.md` (four questions, four rooms) and
+`reading-a-name.md`. Its lessons README has eight numbered walks for newcomers. Place your page
+where the clean-slate would have placed it -- `docs-geode/study/` if that room exists, otherwise
+`docs-geode/` root -- and match the Bhakta Door register exactly as its lessons do.
+
 **6. Write a docs-geode page that teaches the study room gate.** Your lane is the pages a
 newcomer meets on their first hour. Write one page in `docs-geode/` that explains:
 - what the `study/` room is and what it holds
