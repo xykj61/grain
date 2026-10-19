@@ -49,6 +49,10 @@
 format fleet-claims-v1
 
 # -- live claims -------------------------------------------------------------------------------
-# The board opens empty, and the first claim belongs to the next ship that opens a build. Seeding
-# it with this lap's own work would be a claim written after the fact, which is the one thing a
-# declaration may never be.
+
+claim has-rota-has-loom
+seat diffuser
+stamp 20261018.223203
+epoch 1792377123
+paths scribe/reader.rye tools/fixtures/r/rota_declared_scan.sh tools/l/loom_trend.sh
+what add has_rota and has_loom predicates to scribe/reader.rye so the scan scripts cite one Rye definition rather than re-deriving the field shape in shell
