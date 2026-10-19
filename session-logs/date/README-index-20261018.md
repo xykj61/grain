@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.205307 | [composition room opened -- Kyli opening entry](20261018/20261018-205307_composition-room-kyli-opening.kyri) | composition/ room created; Kyli's first entry written; rules reflection |
 | 20261018.204627 | [round load orbit 3 Gemini](20261018/20261018-204627_round-load-orbit-3-gemini.kyri) | orbit round 3/15 quest 63/75 Gemini dual air fun -- say the work aloud |
 | 20261018.203750 | [baton printout and send](20261018/20261018-203750_baton-printout-send.kyri) | baton printed in raw code block; tree at xy/main parity |
 | 20261018.203013 | [fleet default sonnet-4-6 low](20261018/20261018-203013_fleet-default-sonnet-4-6-low.kyri) | settings.json fleet default moved to claude-sonnet-4-6 effort low; diffuser local pinned same |
