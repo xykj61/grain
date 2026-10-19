@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261018.222552 | [Scribe, baton, single-strand audit -- design note written](20261018/20261018-222552_scribe-baton-single-strand-audit.kyri) | two trees already unified in reader.rye; rota+loom validators named as next lap |
 | 20261018.221405 | [P1 ruling -- retire 8-through-25 set-count range; sawtooth confirmed](20261018/20261018-221405_p1-ruling-retire-8-through-25.kyri) | ruling delivered by Claude: retire fruit, sawtooth confirmed present, new falsifier must be pre-registered above 33.3 sets |
 | 20261018.220731 | [petrichor captain molt -- study gate docs and seed subject](20261018/20261018-220731_petrichor-captain-molt-study-gate-docs.kyri) | incense->petrichor across six files; molt breach design note; docs-geode study gate page graded A/90; study-note template |
 | 20261018.220547 | [petrichor infused with clean-slate docs-geode content](20261018/20261018-220547_petrichor-infusion-clean-slate.kyri) | clean-slate study/README and lessons sent to petrichor window 3; step 5b added to expanding prompt |
