@@ -10,6 +10,16 @@ Opened: `20261018.225249`
 
 ---
 
+## 20261020
+
+**context** `.claude/rules/session-logs.md` `5d5b5b5dbe` -- session-header pointer compression + Markdown link form for `file` field seated; `.kyri.md` molt documented
+
+**tool** `scribe/reader.rye` `5d5b5b5dbe` -- `link_path()`, `session_header_path()`, `ResolvedDocument`, fixed `is_scribe_extension()` for both `.kyri` and `.kyri.md`
+
+**room** `session-logs/**` `5d5b5b5dbe` -- 13,366 session log files molted from `.kyri` to `.kyri.md`; 86 shelf index files repointed; GitHub now renders logs with live Markdown hyperlinks
+
+---
+
 ## 20261019
 
 **docs-page** `composition/20261019-010800_the-missing-module-gap.md` `9a6c67f62a` -- two-day OUTPUT.md window read; module absent named as a clock marking the teaching phase

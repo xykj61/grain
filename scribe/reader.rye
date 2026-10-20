@@ -232,15 +232,69 @@ pub fn validates_ledgerworks(doc: *const Document) bool {
         doc.get("next") != null and doc.count_key("member") >= 1;
 }
 
-// --- sibling extensions: .kyri and .kyri -------------------------------
-// The notation molted from **Kyri** to **Kyri** on the maintainer's word, yet the two
-// extensions are **siblings, not a succession**: Scribe reads and records both as one
-// notation, one format family. A `.kyri` session log and a `.kyri` session log are the
-// same shape by different names; neither is a fossil the reader turns away.
+// --- Markdown links in field values (Move 2) ----------------------------
+// A `file`, `kin`, or cross-reference field may carry a Markdown link where the link
+// text equals the path: `[path/to/log.kyri.md](path/to/log.kyri.md) why-one-line`. The
+// visible text names where the file lives; the parenthesized target opens it. A reader
+// that does not render Markdown still sees the path. `link_path` extracts the target.
 
-/// Whether a filename carries a Scribe-recorded extension -- `.kyri` or its sibling `.kyri`.
+/// Extract the target path from a Markdown link `[text](path)` in a field value.
+/// Returns the path (as a slice into `val`), or null when `val` carries plain text.
+pub fn link_path(val: []const u8) ?[]const u8 {
+    // invariant: a Markdown link opens `[`, holds `](` before its close `)`.
+    const len: u32 = @intCast(val.len);
+    var i: u32 = 0;
+    while (i < len and val[i] != '[') : (i += 1) {}
+    if (i >= len) return null;
+    i += 1; // step over `[`
+    while (i < len and val[i] != ']') : (i += 1) {}
+    if (i >= len) return null;
+    i += 1; // step over `]`
+    if (i >= len or val[i] != '(') return null;
+    i += 1; // step over `(`
+    const path_start = i;
+    while (i < len and val[i] != ')') : (i += 1) {}
+    if (i >= len) return null;
+    // invariant: the extracted path is non-empty.
+    if (path_start >= i) return null;
+    return val[path_start..i];
+}
+
+// --- session-header pointer compression (Move 1) ------------------------
+// In a session with many logs sharing identical metadata, subsequent logs carry a
+// `session-header` field pointing to the first log of the session. Local fields win.
+
+/// The relative path named by a `session-header` field -- the first log of the session.
+/// Returns null when the log is self-contained.
+pub fn session_header_path(doc: *const Document) ?[]const u8 {
+    return doc.get("session-header");
+}
+
+/// A session log resolved through its session-header pointer. Local fields override
+/// the header for any shared key.
+pub const ResolvedDocument = struct {
+    local: *const Document,
+    header: *const Document,
+
+    /// The value of the first matching field -- local override wins over header.
+    pub fn get(self: *const ResolvedDocument, key: []const u8) ?[]const u8 {
+        // invariant: local fields override header fields for any shared key.
+        return self.local.get(key) orelse self.header.get(key);
+    }
+
+    /// How many times this key appears across both documents.
+    pub fn count_key(self: *const ResolvedDocument, key: []const u8) u32 {
+        return self.local.count_key(key) + self.header.count_key(key);
+    }
+};
+
+// --- sibling extensions: .kyri and .kyri.md ----------------------------
+// Session logs molted to `.kyri.md` on `20261020` so GitHub renders them with live
+// Markdown links. Both extensions are siblings: Scribe reads both as one format family.
+
+/// Whether a filename carries a Scribe-recorded extension -- `.kyri` or `.kyri.md`.
 pub fn is_scribe_extension(name: []const u8) bool {
-    return std.mem.endsWith(u8, name, ".kyri") or std.mem.endsWith(u8, name, ".kyri");
+    return std.mem.endsWith(u8, name, ".kyri") or std.mem.endsWith(u8, name, ".kyri.md");
 }
 
 // --- selftest -----------------------------------------------------------

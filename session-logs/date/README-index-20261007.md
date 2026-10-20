@@ -6,82 +6,82 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261007.214808` | [Three seats into the ceiling](20261007/20261007-214808_three-seats-into-the-ceiling.kyri) | Count 8073. Face 59.7000. |
-| `20261007.214710` | [The ceiling, said aloud](20261007/20261007-214710_the-ceiling-said-aloud.kyri) | Gemini. 1048576 lines. |
-| `20261007.214631` | [The links stay](20261007/20261007-214631_the-links-stay.kyri) | Taurus. Four links, one file. |
-| `20261007.214432` | [The printout for a later audit](20261007/20261007-214432_the-printout-for-a-later-audit.kyri) | Face 59.2000 to 59.7000. |
-| `20261007.213741` | [Orbit 3 closed on the name](20261007/20261007-213741_orbit-3-closed-on-the-name.kyri) | Count 8070. Face 59.2000. |
-| `20261007.213630` | [The name stays](20261007/20261007-213630_the-name-stays.kyri) | Siya. Orbit 3 closes. |
-| `20261007.213454` | [The brief, held whole](20261007/20261007-213454_the-brief-held-whole.kyri) | Sky 14. The brief stays byte-identical. |
-| `20261007.213358` | [The brief stays dated](20261007/20261007-213358_the-brief-stays-dated.kyri) | Face 58.8000 to 59.2000. |
-| `20261007.212814` | [The approach has arrived](20261007/20261007-212814_the-approach-has-arrived.kyri) | Count 8067. Face 58.8000. |
-| `20261007.212703` | [The wish](20261007/20261007-212703_the-wish.kyri) | Pisces. The next commit is sky. |
-| `20261007.212537` | [The name, studied](20261007/20261007-212537_the-name-studied.kyri) | Aquarius. Name stays as written. |
-| `20261007.212327` | [The bound and the named bytes](20261007/20261007-212327_the-bound-and-the-named-bytes.kyri) | Face 58.4000 to 58.8000. |
-| `20261007.211647` | [One round from the approach](20261007/20261007-211647_one-round-from-the-approach.kyri) | Count 8064. Face 58.4000. |
-| `20261007.211536` | [The mission of this orbit](20261007/20261007-211536_the-mission-of-this-orbit.kyri) | Sagittarius. One round from sky. |
-| `20261007.211447` | [The picture held whole](20261007/20261007-211447_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
-| `20261007.211328` | [Two checks, one green line](20261007/20261007-211328_two-checks-one-green-line.kyri) | Face 58.1000 to 58.4000. |
-| `20261007.210702` | [Three seats and a tenth](20261007/20261007-210702_three-seats-and-a-tenth.kyri) | Count 8061. Face 58.1000. |
-| `20261007.210532` | [One table row left](20261007/20261007-210532_one-table-row-left.kyri) | Virgo. The row stays. |
-| `20261007.210336` | [The cost of asking twice](20261007/20261007-210336_the-cost-of-asking-twice.kyri) | Leo. The caller owns the buffer. |
-| `20261007.210126` | [The picture and the tenth](20261007/20261007-210126_the-picture-and-the-tenth.kyri) | Face 58.0000 to 58.1000. |
-| `20261007.204559` | [The face gained half a point](20261007/20261007-204559_the-face-gained-half-a-point.kyri) | Count 8058. Face 58.0000. |
-| `20261007.204414` | [The name said at the door](20261007/20261007-204414_the-name-said-at-the-door.kyri) | Gemini. Cancer is next. |
-| `20261007.204329` | [One recall sentence left in place](20261007/20261007-204329_one-recall-sentence-left-in-place.kyri) | Taurus. Gemini is next. |
-| `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri) | Aries. Face 57.5000 to 58.0000. |
-| `20261007.203555` | [The orbit closed on the face](20261007/20261007-203555_the-orbit-closed-on-the-face.kyri) | Count 8055. Siya closed the orbit. |
-| `20261007.203444` | [Siya closes the orbit](20261007/20261007-203444_siya-closes-the-orbit.kyri) | Sky 15. Orbit 3 is next. |
-| `20261007.203405` | [The heart page held whole, orbit 2](20261007/20261007-203405_the-heart-page-held-whole-orbit-2.kyri) | Sky 14. Siya is next. |
-| `20261007.203213` | [The fascia face and the heart](20261007/20261007-203213_the-fascia-face-and-the-heart.kyri) | Sky 13. The face is 58.0000. |
-| `20261007.202716` | [The approach is Pisces, orbit 2](20261007/20261007-202716_the-approach-is-pisces-orbit-2.kyri) | Count 8052. The next commit is sky. |
-| `20261007.202539` | [The wish before sky, orbit 2](20261007/20261007-202539_the-wish-before-sky-orbit-2.kyri) | Pisces. The next commit is sky. |
-| `20261007.202504` | [One type, nothing implemented](20261007/20261007-202504_one-type-nothing-implemented.kyri) | Aquarius. Sky is after the wish. |
-| `20261007.202326` | [The fascia bound, orbit 2](20261007/20261007-202326_the-fascia-bound-orbit-2.kyri) | Capricorn. Badge stays 58. |
-| `20261007.202113` | [Libra Scorpio and Sagittarius landed](20261007/20261007-202113_libra-scorpio-sagittarius-landed.kyri) | Count 8049. Sky opens at 8053. |
-| `20261007.202005` | [The mission of this orbit](20261007/20261007-202005_the-mission-of-this-orbit.kyri) | Sagittarius. Capricorn is next. |
-| `20261007.201927` | [The picture held whole](20261007/20261007-201927_the-picture-held-whole.kyri) | Scorpio. The picture stays. |
-| `20261007.201731` | [Two checks one green line](20261007/20261007-201731_two-checks-one-green-line.kyri) | Libra. verdict=ok. |
-| `20261007.201503` | [Cancer Leo and Virgo landed](20261007/20261007-201503_cancer-leo-and-virgo-landed.kyri) | Count 8046. Sky opens at 8053. |
-| `20261007.201349` | [One table row left as written](20261007/20261007-201349_one-table-row-left-as-written.kyri) | Virgo. The row stays. |
-| `20261007.201306` | [The read copies the lines](20261007/20261007-201306_the-read-copies-the-lines.kyri) | Leo reads the cost. No wallet. |
-| `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri) | Cancer picture, uncommitted. |
-| `20261007.200339` | [Taurus and Gemini landed](20261007/20261007-200339_taurus-and-gemini-landed.kyri) | Count 8043. Sky opens at 8053. |
-| `20261007.200144` | [The read said at the door](20261007/20261007-200144_the-read-said-at-the-door.kyri) | Gemini. Cancer is next. |
-| `20261007.200106` | [One repeat left in place](20261007/20261007-200106_one-repeat-left-in-place.kyri) | Taurus. Sky of this orbit is ahead. |
-| `20261007.195802` | [The orbit closed on Siya](20261007/20261007-195802_the-orbit-closed-on-siya.kyri) | Count 8041. Sky aether has closed. |
-| `20261007.195653` | [Fold head then current](20261007/20261007-195653_fold-head-then-current.kyri) | Aries. Sky aether has closed. |
-| `20261007.195614` | [Siya says the close](20261007/20261007-195614_siya-says-the-close.kyri) | Sky 15. Orbit 2 is next. |
-| `20261007.195330` | [Sky fourteen landed](20261007/20261007-195330_sky-fourteen-landed.kyri) | Count 8039. Siya's chair is next. |
-| `20261007.195209` | [The heart page held whole](20261007/20261007-195209_the-heart-page-held-whole.kyri) | Sky 14. Siya's chair is next. |
-| `20261007.195131` | [Sky thirteen and fourteen](20261007/20261007-195131_sky-thirteen-and-fourteen.kyri) | Heart page named. Siya waits. |
-| `20261007.194537` | [The approach is Pisces](20261007/20261007-194537_the-approach-is-pisces.kyri) | Count 8037. The next commit is sky. |
-| `20261007.194432` | [The wish before sky](20261007/20261007-194432_the-wish-before-sky.kyri) | Pisces. The next commit is sky. |
-| `20261007.194318` | [Aquarius and Pisces](20261007/20261007-194318_aquarius-and-pisces.kyri) | EDN beside Kyri. The wish before sky. |
-| `20261007.194050` | [Sagittarius and Capricorn on xy](20261007/20261007-194050_sagittarius-and-capricorn-on-xy.kyri) | Count 8035. Approaching sky. |
-| `20261007.193916` | [The fascia bound](20261007/20261007-193916_the-fascia-bound.kyri) | Capricorn. The badge stays 58. |
-| `20261007.193836` | [Sagittarius and Capricorn](20261007/20261007-193836_sagittarius-and-capricorn.kyri) | The mission. The bound is 1. |
-| `20261007.193613` | [Libra and Scorpio on xy](20261007/20261007-193613_libra-and-scorpio-on-xy.kyri) | Count 8033. Sky opens at 8038. |
-| `20261007.193459` | [The fold waits on two links](20261007/20261007-193459_the-fold-waits-on-two-links.kyri) | Scorpio names two links. The page stays. |
-| `20261007.193420` | [Libra and Scorpio](20261007/20261007-193420_libra-and-scorpio.kyri) | Span scan ok. Fold links wait. |
-| `20261007.192811` | [Leo and Virgo on xy](20261007/20261007-192811_leo-and-virgo-on-xy.kyri) | Count 8031. Sky opens at 8038. |
-| `20261007.192058` | [One repeat, left in place](20261007/20261007-192058_one-repeat-left-in-place.kyri) | Virgo names the repeat. The page stays. |
-| `20261007.191930` | [Leo and Virgo](20261007/20261007-191930_leo-and-virgo.kyri) | The check reads. The repeat stays. |
-| `20261007.184202` | [Two rounds, Gemini on xy](20261007/20261007-184202_two-rounds-gemini-on-xy.kyri) | Cancer is local. Sky opens at 8038. |
-| `20261007.175832` | [The picture on the door](20261007/20261007-175832_the-picture-on-the-door.kyri) | Cancer sets the sentence on the door. |
-| `20261007.174815` | [Gemini and Cancer](20261007/20261007-174815_gemini-and-cancer.kyri) | The sentence, then the picture. |
-| `20261007.174428` | [Taurus is on xy](20261007/20261007-174428_taurus-is-on-xy.kyri) | Count 8027. Sky opens at 8038. |
-| `20261007.173836` | [Round load sent](20261007/20261007-173836_round-load-sent.kyri) | Taurus seating goes to xy. |
-| `20261007.165939` | [Round load is seated](20261007/20261007-165939_round-load-is-seated.kyri) | Spell prints the orbit round. |
-| `20261007.165339` | [The fifteen and the five goals](20261007/20261007-165339_the-fifteen-and-the-five-goals.kyri) | Fifteen signs. One calendar. |
-| `20261007.154225` | [One list, one picture](20261007/20261007-154225_one-list-one-picture.kyri) | First note. Apply, current, the ceiling. |
-| `20261007.151508` | [Suno titles fit at eighty](20261007/20261007-151508_suno-titles-fit-at-eighty.kyri) | Title length 80. Sixth of six. |
-| `20261007.145700` | [Signing runs from this tree](20261007/20261007-145700_signing-runs-from-this-tree.kyri) | Local gpg.sh. First of six. |
-| `20261007.142904` | [The public seed is grain-ww](20261007/20261007-142904_the-public-seed-is-grain-ww.kyri) | The first hour clones grain-ww/grain. |
-| `20261007.120206` | [Rota prep, the old kept](20261007/20261007-120206_rota-prep-the-old-kept.kyri) | Five rows walked. Cut stays RED. |
-| `20261007.114809` | [The two functions and the span](20261007/20261007-114809_the-two-functions-and-the-span.kyri) | Four fences match the weave. Ojjo stays a yardstick. |
-| `20261007.101045` | [Calfive grouped, the center aloud](20261007/20261007-101045_calfive-grouped-the-center-aloud.kyri) | One calendar. One conversation. Seat 9 stays unnamed. |
-| `20261007.100012` | [Calfive, the English door](20261007/20261007-100012_calfive-the-english-door.kyri) | English alias for the five-calendar. Rings stay capacities. |
-| `20261007.095245` | [The center, learned](20261007/20261007-095245_the-center-learned.kyri) | Five notes, one list, one picture. The first is five paragraphs. |
-| `20261007.085930` | [Incense seed and teacher walk](20261007/20261007-085930_incense-seed-and-teacher-walk.kyri) | Seed subject incense. Fossils. Tutorials. |
-| `20261007.084830` | [The Suno stems, Reaper, Mixea hash walk](20261007/20261007-084830_the-suno-stems-reaper-mixea-hash-walk.kyri) | Istanbul hashed. Square mp4s. Tutorial sprig seated. |
+| `20261007.214808` | [Three seats into the ceiling](20261007/20261007-214808_three-seats-into-the-ceiling.kyri.md) | Count 8073. Face 59.7000. |
+| `20261007.214710` | [The ceiling, said aloud](20261007/20261007-214710_the-ceiling-said-aloud.kyri.md) | Gemini. 1048576 lines. |
+| `20261007.214631` | [The links stay](20261007/20261007-214631_the-links-stay.kyri.md) | Taurus. Four links, one file. |
+| `20261007.214432` | [The printout for a later audit](20261007/20261007-214432_the-printout-for-a-later-audit.kyri.md) | Face 59.2000 to 59.7000. |
+| `20261007.213741` | [Orbit 3 closed on the name](20261007/20261007-213741_orbit-3-closed-on-the-name.kyri.md) | Count 8070. Face 59.2000. |
+| `20261007.213630` | [The name stays](20261007/20261007-213630_the-name-stays.kyri.md) | Siya. Orbit 3 closes. |
+| `20261007.213454` | [The brief, held whole](20261007/20261007-213454_the-brief-held-whole.kyri.md) | Sky 14. The brief stays byte-identical. |
+| `20261007.213358` | [The brief stays dated](20261007/20261007-213358_the-brief-stays-dated.kyri.md) | Face 58.8000 to 59.2000. |
+| `20261007.212814` | [The approach has arrived](20261007/20261007-212814_the-approach-has-arrived.kyri.md) | Count 8067. Face 58.8000. |
+| `20261007.212703` | [The wish](20261007/20261007-212703_the-wish.kyri.md) | Pisces. The next commit is sky. |
+| `20261007.212537` | [The name, studied](20261007/20261007-212537_the-name-studied.kyri.md) | Aquarius. Name stays as written. |
+| `20261007.212327` | [The bound and the named bytes](20261007/20261007-212327_the-bound-and-the-named-bytes.kyri.md) | Face 58.4000 to 58.8000. |
+| `20261007.211647` | [One round from the approach](20261007/20261007-211647_one-round-from-the-approach.kyri.md) | Count 8064. Face 58.4000. |
+| `20261007.211536` | [The mission of this orbit](20261007/20261007-211536_the-mission-of-this-orbit.kyri.md) | Sagittarius. One round from sky. |
+| `20261007.211447` | [The picture held whole](20261007/20261007-211447_the-picture-held-whole.kyri.md) | Scorpio. The picture stays. |
+| `20261007.211328` | [Two checks, one green line](20261007/20261007-211328_two-checks-one-green-line.kyri.md) | Face 58.1000 to 58.4000. |
+| `20261007.210702` | [Three seats and a tenth](20261007/20261007-210702_three-seats-and-a-tenth.kyri.md) | Count 8061. Face 58.1000. |
+| `20261007.210532` | [One table row left](20261007/20261007-210532_one-table-row-left.kyri.md) | Virgo. The row stays. |
+| `20261007.210336` | [The cost of asking twice](20261007/20261007-210336_the-cost-of-asking-twice.kyri.md) | Leo. The caller owns the buffer. |
+| `20261007.210126` | [The picture and the tenth](20261007/20261007-210126_the-picture-and-the-tenth.kyri.md) | Face 58.0000 to 58.1000. |
+| `20261007.204559` | [The face gained half a point](20261007/20261007-204559_the-face-gained-half-a-point.kyri.md) | Count 8058. Face 58.0000. |
+| `20261007.204414` | [The name said at the door](20261007/20261007-204414_the-name-said-at-the-door.kyri.md) | Gemini. Cancer is next. |
+| `20261007.204329` | [One recall sentence left in place](20261007/20261007-204329_one-recall-sentence-left-in-place.kyri.md) | Taurus. Gemini is next. |
+| `20261007.204147` | [A name asked twice](20261007/20261007-204147_a-name-asked-twice.kyri.md) | Aries. Face 57.5000 to 58.0000. |
+| `20261007.203555` | [The orbit closed on the face](20261007/20261007-203555_the-orbit-closed-on-the-face.kyri.md) | Count 8055. Siya closed the orbit. |
+| `20261007.203444` | [Siya closes the orbit](20261007/20261007-203444_siya-closes-the-orbit.kyri.md) | Sky 15. Orbit 3 is next. |
+| `20261007.203405` | [The heart page held whole, orbit 2](20261007/20261007-203405_the-heart-page-held-whole-orbit-2.kyri.md) | Sky 14. Siya is next. |
+| `20261007.203213` | [The fascia face and the heart](20261007/20261007-203213_the-fascia-face-and-the-heart.kyri.md) | Sky 13. The face is 58.0000. |
+| `20261007.202716` | [The approach is Pisces, orbit 2](20261007/20261007-202716_the-approach-is-pisces-orbit-2.kyri.md) | Count 8052. The next commit is sky. |
+| `20261007.202539` | [The wish before sky, orbit 2](20261007/20261007-202539_the-wish-before-sky-orbit-2.kyri.md) | Pisces. The next commit is sky. |
+| `20261007.202504` | [One type, nothing implemented](20261007/20261007-202504_one-type-nothing-implemented.kyri.md) | Aquarius. Sky is after the wish. |
+| `20261007.202326` | [The fascia bound, orbit 2](20261007/20261007-202326_the-fascia-bound-orbit-2.kyri.md) | Capricorn. Badge stays 58. |
+| `20261007.202113` | [Libra Scorpio and Sagittarius landed](20261007/20261007-202113_libra-scorpio-sagittarius-landed.kyri.md) | Count 8049. Sky opens at 8053. |
+| `20261007.202005` | [The mission of this orbit](20261007/20261007-202005_the-mission-of-this-orbit.kyri.md) | Sagittarius. Capricorn is next. |
+| `20261007.201927` | [The picture held whole](20261007/20261007-201927_the-picture-held-whole.kyri.md) | Scorpio. The picture stays. |
+| `20261007.201731` | [Two checks one green line](20261007/20261007-201731_two-checks-one-green-line.kyri.md) | Libra. verdict=ok. |
+| `20261007.201503` | [Cancer Leo and Virgo landed](20261007/20261007-201503_cancer-leo-and-virgo-landed.kyri.md) | Count 8046. Sky opens at 8053. |
+| `20261007.201349` | [One table row left as written](20261007/20261007-201349_one-table-row-left-as-written.kyri.md) | Virgo. The row stays. |
+| `20261007.201306` | [The read copies the lines](20261007/20261007-201306_the-read-copies-the-lines.kyri.md) | Leo reads the cost. No wallet. |
+| `20261007.200535` | [A picture a newcomer can see](20261007/20261007-200535_a-picture-a-newcomer-can-see.kyri.md) | Cancer picture, uncommitted. |
+| `20261007.200339` | [Taurus and Gemini landed](20261007/20261007-200339_taurus-and-gemini-landed.kyri.md) | Count 8043. Sky opens at 8053. |
+| `20261007.200144` | [The read said at the door](20261007/20261007-200144_the-read-said-at-the-door.kyri.md) | Gemini. Cancer is next. |
+| `20261007.200106` | [One repeat left in place](20261007/20261007-200106_one-repeat-left-in-place.kyri.md) | Taurus. Sky of this orbit is ahead. |
+| `20261007.195802` | [The orbit closed on Siya](20261007/20261007-195802_the-orbit-closed-on-siya.kyri.md) | Count 8041. Sky aether has closed. |
+| `20261007.195653` | [Fold head then current](20261007/20261007-195653_fold-head-then-current.kyri.md) | Aries. Sky aether has closed. |
+| `20261007.195614` | [Siya says the close](20261007/20261007-195614_siya-says-the-close.kyri.md) | Sky 15. Orbit 2 is next. |
+| `20261007.195330` | [Sky fourteen landed](20261007/20261007-195330_sky-fourteen-landed.kyri.md) | Count 8039. Siya's chair is next. |
+| `20261007.195209` | [The heart page held whole](20261007/20261007-195209_the-heart-page-held-whole.kyri.md) | Sky 14. Siya's chair is next. |
+| `20261007.195131` | [Sky thirteen and fourteen](20261007/20261007-195131_sky-thirteen-and-fourteen.kyri.md) | Heart page named. Siya waits. |
+| `20261007.194537` | [The approach is Pisces](20261007/20261007-194537_the-approach-is-pisces.kyri.md) | Count 8037. The next commit is sky. |
+| `20261007.194432` | [The wish before sky](20261007/20261007-194432_the-wish-before-sky.kyri.md) | Pisces. The next commit is sky. |
+| `20261007.194318` | [Aquarius and Pisces](20261007/20261007-194318_aquarius-and-pisces.kyri.md) | EDN beside Kyri. The wish before sky. |
+| `20261007.194050` | [Sagittarius and Capricorn on xy](20261007/20261007-194050_sagittarius-and-capricorn-on-xy.kyri.md) | Count 8035. Approaching sky. |
+| `20261007.193916` | [The fascia bound](20261007/20261007-193916_the-fascia-bound.kyri.md) | Capricorn. The badge stays 58. |
+| `20261007.193836` | [Sagittarius and Capricorn](20261007/20261007-193836_sagittarius-and-capricorn.kyri.md) | The mission. The bound is 1. |
+| `20261007.193613` | [Libra and Scorpio on xy](20261007/20261007-193613_libra-and-scorpio-on-xy.kyri.md) | Count 8033. Sky opens at 8038. |
+| `20261007.193459` | [The fold waits on two links](20261007/20261007-193459_the-fold-waits-on-two-links.kyri.md) | Scorpio names two links. The page stays. |
+| `20261007.193420` | [Libra and Scorpio](20261007/20261007-193420_libra-and-scorpio.kyri.md) | Span scan ok. Fold links wait. |
+| `20261007.192811` | [Leo and Virgo on xy](20261007/20261007-192811_leo-and-virgo-on-xy.kyri.md) | Count 8031. Sky opens at 8038. |
+| `20261007.192058` | [One repeat, left in place](20261007/20261007-192058_one-repeat-left-in-place.kyri.md) | Virgo names the repeat. The page stays. |
+| `20261007.191930` | [Leo and Virgo](20261007/20261007-191930_leo-and-virgo.kyri.md) | The check reads. The repeat stays. |
+| `20261007.184202` | [Two rounds, Gemini on xy](20261007/20261007-184202_two-rounds-gemini-on-xy.kyri.md) | Cancer is local. Sky opens at 8038. |
+| `20261007.175832` | [The picture on the door](20261007/20261007-175832_the-picture-on-the-door.kyri.md) | Cancer sets the sentence on the door. |
+| `20261007.174815` | [Gemini and Cancer](20261007/20261007-174815_gemini-and-cancer.kyri.md) | The sentence, then the picture. |
+| `20261007.174428` | [Taurus is on xy](20261007/20261007-174428_taurus-is-on-xy.kyri.md) | Count 8027. Sky opens at 8038. |
+| `20261007.173836` | [Round load sent](20261007/20261007-173836_round-load-sent.kyri.md) | Taurus seating goes to xy. |
+| `20261007.165939` | [Round load is seated](20261007/20261007-165939_round-load-is-seated.kyri.md) | Spell prints the orbit round. |
+| `20261007.165339` | [The fifteen and the five goals](20261007/20261007-165339_the-fifteen-and-the-five-goals.kyri.md) | Fifteen signs. One calendar. |
+| `20261007.154225` | [One list, one picture](20261007/20261007-154225_one-list-one-picture.kyri.md) | First note. Apply, current, the ceiling. |
+| `20261007.151508` | [Suno titles fit at eighty](20261007/20261007-151508_suno-titles-fit-at-eighty.kyri.md) | Title length 80. Sixth of six. |
+| `20261007.145700` | [Signing runs from this tree](20261007/20261007-145700_signing-runs-from-this-tree.kyri.md) | Local gpg.sh. First of six. |
+| `20261007.142904` | [The public seed is grain-ww](20261007/20261007-142904_the-public-seed-is-grain-ww.kyri.md) | The first hour clones grain-ww/grain. |
+| `20261007.120206` | [Rota prep, the old kept](20261007/20261007-120206_rota-prep-the-old-kept.kyri.md) | Five rows walked. Cut stays RED. |
+| `20261007.114809` | [The two functions and the span](20261007/20261007-114809_the-two-functions-and-the-span.kyri.md) | Four fences match the weave. Ojjo stays a yardstick. |
+| `20261007.101045` | [Calfive grouped, the center aloud](20261007/20261007-101045_calfive-grouped-the-center-aloud.kyri.md) | One calendar. One conversation. Seat 9 stays unnamed. |
+| `20261007.100012` | [Calfive, the English door](20261007/20261007-100012_calfive-the-english-door.kyri.md) | English alias for the five-calendar. Rings stay capacities. |
+| `20261007.095245` | [The center, learned](20261007/20261007-095245_the-center-learned.kyri.md) | Five notes, one list, one picture. The first is five paragraphs. |
+| `20261007.085930` | [Incense seed and teacher walk](20261007/20261007-085930_incense-seed-and-teacher-walk.kyri.md) | Seed subject incense. Fossils. Tutorials. |
+| `20261007.084830` | [The Suno stems, Reaper, Mixea hash walk](20261007/20261007-084830_the-suno-stems-reaper-mixea-hash-walk.kyri.md) | Istanbul hashed. Square mp4s. Tutorial sprig seated. |

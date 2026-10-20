@@ -11,137 +11,137 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260906.225325` | [the guard that reads the index](20260906/20260906-225325_the-guard-that-reads-the-index.kyri) | recovered 20260907; parked at three round-opens. |
-| `20260906.224152` | [a wall on a path the work does not take](20260906/20260906-224152_a-wall-on-a-path-the-work-does-not-take.kyri) | %515 closed; the rebase gap walled. |
-| `20260906.223228` | [a fallback value reads as an answer](20260906/20260906-223228_a-fallback-value-reads-as-an-answer.kyri) | %527; a park landed, its rows renumbered twice. |
-| `20260906.233629` | [the orphan that read alive](20260906/20260906-233629_the-orphan-that-read-alive.kyri) | a lock held by a dead lap; the guard for it said alive. |
-| `20260906.222120` | [the field that had no law](20260906/20260906-222120_the-field-that-had-no-law.kyri) | rota field seated; 20/53/36 measured. |
-| `20260906.225809` | [the sweep that read one spelling](20260906/20260906-225809_the-sweep-that-read-one-spelling.kyri) | parked at its round open; landed 20260907 |
-| `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
-| `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
-| `20260906.213507` | [the pen that had no owner](20260906/20260906-213507_the-pen-that-had-no-owner.kyri) | 9 pens got the pid; %510 and %512 folded. |
-| `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
-| `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
-| `20260906.212539` | [the box gave back two laps](20260906/20260906-212539_the-box-gave-back-two-laps.kyri) | roster 5 red -> 0; two stranded laps landed. |
-| `20260906.212206` | [a line is named by a pair](20260906/20260906-212206_a-line-is-named-by-a-pair.kyri) | the weave merges two branches; %513 booked. |
-| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
-| `20260906.211417` | [the relation that decides](20260906/20260906-211417_the-relation-that-decides.kyri) | %521: both stranded packages out of the box. |
-| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
-| `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
-| `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri) | %516: a probe wrong about which act it ran. |
-| `20260906.203243` | [a finished lap in the dead-letter box](20260906/20260906-203243_a-finished-lap-in-the-dead-letter-box.kyri) | 1,071 insertions recovered; died before its commit. |
-| `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
-| `20260906.202036` | [the work that made no sound](20260906/20260906-202036_the-work-that-made-no-sound.kyri) | %522: four parked laps landed; two guards heard it. |
-| `20260906.201219` | [what it costs to decide the next hop](20260906/20260906-201219_what-it-costs-to-decide-the-next-hop.kyri) | %510: nine shared pens; a 270-byte table. |
-| `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) | 14 desks refused: two characters claimed every core. |
-| `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
-| `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
-| `20260906.195019` | [the row that lost its number](20260906/20260906-195019_the-row-that-lost-its-number.kyri) | %510 landed from a stash; four stale numbers repaired. |
-| `20260906.194921` | [two records out of the box](20260906/20260906-194921_two-records-out-of-the-box.kyri) | %510/%512 landed two laps deep; 15 read where 321 stand. |
-| `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
-| `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
-| `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
-| `20260906.180937` | [a name is not a clock](20260906/20260906-180937_a-name-is-not-a-clock.kyri) | covered counted names; six of eleven unrun. |
-| `20260906.180617` | [the box that read its own handwriting](20260906/20260906-180617_the-box-that-read-only-its-own-handwriting.kyri) | a filter narrower than its box. |
-| `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri) | recovered: the path walk beside the record gate. |
-| `20260906.175820` | [the lock that was eight or one](20260906/20260906-175820_the-lock-that-was-eight-or-one.kyri) | %522 written; a lock's width is its launch. |
-| `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
-| `20260906.173013` | [a record and a blind ledger](20260906/20260906-173013_the-record-and-the-ledger.kyri) | %512: a ledger ended each count at its first if block. |
-| `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri) | a fold moved one line of a 19-line row. |
-| `20260906.162759` | [a narrowed glob goes green](20260906/20260906-162759_a-narrowed-glob-goes-green.kyri) | %510: a shell star stops at a slash; 607 pages left a reach. |
-| `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
-| `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
-| `20260906.160050` | [the hypothesis that declined the sweep](20260906/20260906-160050_the-hypothesis-that-declined-the-sweep.kyri) | 19 peers carry one copied option. |
-| `20260906.154353` | [the option that silenced the collision](20260906/20260906-154353_the-option-that-silenced-the-collision.kyri) | SO_REUSEADDR on UDP hides a bind. |
-| `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri) | %507: a park certified the box; %506 recovered. |
-| `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %506: cited as proof, compiled by nothing. |
-| `20260906.153405` | [the drafting room moves to a leaf](20260906/20260906-153405_the-drafting-room-moves-to-a-leaf.kyri) | edu to docs-geode/edu/yonder; 45 citers repointed. |
-| `20260906.153324` | [two ships, one guard](20260906/20260906-153324_two-ships-one-guard.kyri) | %507: it could read 19 of 274. |
-| `20260906.152758` | [the test that cannot fail](20260906/20260906-152758_the-test-that-cannot-fail.kyri) | %503: my own discriminator held in both states. |
-| `20260906.144500` | [a bound has a direction](20260906/20260906-144500_a-bound-has-a-direction.kyri) | %501: the Moore bound, asked the way that decides. |
-| `20260906.144208` | [A number and a path naming two different rows](20260906/20260906-144208_a-number-and-a-path-naming-two-rows.kyri) | the citation loom |
-| `20260906.143614` | [the grammar and three readings](20260906/20260906-143614_the-grammar-and-three-readings.kyri) | laps E-H: PR classes; silo 29/33; move declined. |
-| `20260906.141201` | [a ceiling that rises on honest work](20260906/20260906-141201_a-ceiling-that-rises-on-honest-work.kyri) | %498: ten of eleven built nothing. |
-| `20260906.135114` | [the publisher a stranger inherits](20260906/20260906-135114_the-publisher-a-stranger-inherits.kyri) | laps C+D: a shipped publisher, profiles molted. |
-| `20260906.134546` | [the record its own pass writes at the close](20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri) | %483 closed; %492 booked. |
-| `20260906.134427` | [the lock with no bolt in it](20260906/20260906-134427_the-lock-with-no-bolt-in-it.kyri) | %500: four guards named a count and read a presence. |
-| `20260906.133800` | [a guard that needs what no clone carries](20260906/20260906-133800_a-guard-that-needs-what-no-clone-carries.kyri) | %493: eight ships paid for one absent directory. |
-| `20260906.133554` | [one link in seven](20260906/20260906-133554_one-link-in-seven.kyri) | %496: the card sees 2,690 links of 18,218. |
-| `20260906.132652` | [the seed stands at its gate](20260906/20260906-132652_the-seed-stands-at-its-gate.kyri) | 7,943 files, gratitude clean, push withheld. |
-| `20260906.131827` | [a witness proves what it calls](20260906/20260906-131827_a-witness-proves-what-it-calls.kyri) | %497: 130 witnesses, one walker. |
-| `20260906.130924` | [algorithms agreeing](20260906/20260906-130924_two-algorithms-agreeing-prove-the-algorithms.kyri) | %496: a deleted tier passed 3 size binds and both cut algorithms. |
-| `20260906.130200` | [the program written down](20260906/20260906-130200_the-program-written-down.kyri) | six open laps booked; the publish waits on them. |
-| `20260906.124340` | [the reason stayed behind](20260906/20260906-124340_the-verdict-arrived-and-the-reason-stayed-behind.kyri) | %494: 43 of 52 shims drop it. |
-| `20260906.124006` | [the box fired on a tree nobody planted it in](20260906/20260906-124006_the-box-fired-on-a-tree-nobody-planted-it-in.kyri) | two records back, unlanded 2 -> 0. |
-| `20260906.123844` | [the room that shipped nothing](20260906/20260906-123844_the-room-that-shipped-nothing.kyri) | %489: allowed, projected, green, and absent. |
-| `20260906.122329` | [the fold that hid the link it broke](20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) | %491: a stamp is why four guards look away. |
-| `20260906.121331` | [a door is not the pages behind it](20260906/20260906-121331_a-door-is-not-the-pages-behind-it.kyri) | %490: the map was wrong about three more pages. |
-| `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
-| `20260906.120418` | [the head that enumerates](20260906/20260906-120418_the-head-that-enumerates.kyri) | %506: the weave head said three over four; annotate lands. |
-| `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |
-| `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |
-| `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
-| `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri) | %480: a run card written at close is read one pass stale. |
-| `20260906.113552` | [a number that belonged to the machine](20260906/20260906-113552_a-number-that-belonged-to-the-machine.kyri) | %485: the port the file named and the kernel owned. |
-| `20260906.113330` | [the doubt published in the wrong frame](20260906/20260906-113330_the-doubt-published-in-the-wrong-frame.kyri) | %488: 9 of 10 unresolved sites never compile. |
-| `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri) | 132 isolated -> 0; the cut structure is what survived. |
-| `20260906.104241` | [the severity lives in the witness](20260906/20260906-104241_the-severity-lives-in-the-witness.kyri) | Recovered: the fabrication seen at exit 0. |
-| `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri) | %481: the card shipped its own conflict markers. |
-| `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
-| `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) | %466 closed: 114 built files read as never-built. |
-| `20260906.094442` | [the guard that could not clear its own red](20260906/20260906-094442_the-guard-that-could-not-clear-its-own-red.kyri) | its own red latched. |
-| `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) | %477-%478: a stall found by running it. |
-| `20260906.092502` | [a claim whose only source is itself](20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri) | %480: three crushed indexes miscounted their rooms. |
-| `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
-| `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri) | a dead loop comes back; windows found by name. |
-| `20260906.090929` | [the instrument that was in the box](20260906/20260906-090929_the-guard-that-was-in-the-box.kyri) | %477: the guard for lost laps was itself lost; %464 closed. |
-| `20260906.090538` | [the meter that swallowed its own instrument](20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) | %473-%475: three reds inside one recovery. |
-| `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri) | %454 closed: 33.28% of the sky had no walk. |
-| `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri) | %471: six ships stopped 9 min before their window reset. |
-| `20260906.074650` | [the box nobody opened](20260906/20260906-074650_the-box-nobody-opened.kyri) | %464 closed; the self-latch found; 3 own logs read back. |
-| `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
-| `20260906.070254` | [the handler that does not stop](20260906/20260906-070254_the-handler-that-does-not-stop.kyri) | Recovered: POSIX resumes after a handler. |
-| `20260906.070005` | [two ships, one finding, one hour apart](20260906/20260906-070005_two-ships-one-finding-one-hour-apart.kyri) | a dead lap read back; six of seven dropped to a peer. |
-| `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
-| `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri) | %472: eight guards, four of seven modules compiled. |
-| `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri) | 64 pages free, 65 charged 2.36x; huge pages prove it. |
-| `20260906.062244` | [the rose that pointed at two signposts](20260906/20260906-062244_the-rose-that-pointed-at-two-signposts.kyri) | compass stations 5 and 6 were pointer stubs. |
-| `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) | %470: diff.rye had not compiled in weeks. |
-| `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) | a stub resolves, so no link check saw it. |
-| `20260906.060019` | [the walk that stopped one level short](20260906/20260906-060019_the-walk-that-stopped-one-level-short.kyri) | %474: a hand-fold leaves links one level short. |
-| `20260906.055857` | [the grammar a census must read](20260906/20260906-055857_the-grammar-a-census-must-read.kyri) | %449's census lands; 3 build grammars, not 1. |
-| `20260906.052104` | [the tree that assembles its own paths](20260906/20260906-052104_the-tree-that-assembles-its-own-paths.kyri) | %464: 116 paths built, none written. |
-| `20260906.051514` | [the fix that landed twice](20260906/20260906-051514_the-fix-that-landed-twice.kyri) | a peer landed it better; the half that was mine stands. |
-| `20260906.051012` | [the writer recovered from a dead lap](20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri) | %450's typing half closed; a %440-class red repaired. |
-| `20260906.045552` | [the census that answers zero](20260906/20260906-045552_the-census-that-answers-zero.kyri) | 1,713 Rye files; one claimed, none built. |
-| `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
-| `20260906.045131` | [the writer beside the guard](20260906/20260906-045131_the-writer-beside-the-guard.kyri) | the nib is derived now; %461, a dropped PATH entry. |
-| `20260906.044130` | [a clean status is not an empty tree](20260906/20260906-044130_a-clean-status-is-not-an-empty-tree.kyri) | %460: three lost logs recovered. |
-| `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two rows withdrawn, one claim retracted. |
-| `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
-| `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) | %461 closed; two numbers lost mid-send. |
-| `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
-| `20260906.040055` | [the raise that outran its meters](20260906/20260906-040055_the-raise-that-outran-its-meters.kyri) | %459 closed, %460 booked. |
-| `20260906.035833` | [The number the law moved](20260906/20260906-035833_the-number-the-law-moved.kyri) | recovered from a stash; both its rows withdrawn. |
-| `20260906.035537` | [the revocation and the fault ride one edge](20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) | one edge carries both; 48 of 720. |
-| `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri) | one live seat; the tree is clean. |
-| `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri) | one file, two paths, three retractions. |
-| `20260906.025440` | [absent, or behind](20260906/20260906-025440_absent-or-behind.kyri) | a stale HEAD makes a grep convincingly wrong. |
-| `20260906.025034` | [the scan that named nothing, until the fetch](20260906/20260906-025034_the-scan-that-names-nothing.kyri) | a stale checkout read an absent file; fleet_login GREEN. |
-| `20260906.024713` | [the credential removed, and signed back in](20260906/20260906-024713_the-credential-removed-and-signed-back-in.kyri) | auth store cleared on request; tree untouched. |
-| `20260906.024142` | [the recipe I could not test](20260906/20260906-024142_the-recipe-i-could-not-test.kyri) | /logout could have logged out the fleet. |
-| `20260906.024109` | [the page that scored perfect while it was wrong](20260906/20260906-024109_the-page-that-scored-perfect-while-it-was-wrong.kyri) | repaired at its generator. |
-| `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri) | petrichor survived; six logins wrote one file. |
-| `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri) | eight ships, one credential, one outage. |
-| `20260906.013937` | [the word the counter could not see](20260906/20260906-013937_the-word-the-counter-could-not-see.kyri) | %455: a seated law breached where no meter reads. |
-| `20260906.013801` | [the census of what no compiler reads](20260906/20260906-013801_the-census-of-what-no-compiler-reads.kyri) | record restored; its code superseded by %463. |
-| `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
-| `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
-| `20260906.011125` | [a guard is the wrong unit for a skip](20260906/20260906-011125_a-guard-is-the-wrong-unit-for-a-skip.kyri) | %446 closed at the legs, not the roster row. |
-| `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
-| `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri) | %447: a doc line the function refuses; the never-blind proof. |
-| `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri) | Mand's trail records grants alone; one file lags live code. |
-| `20260906.003252` | [the reading one short](20260906/20260906-003252_the-reading-one-short.kyri) | %446, %440: one post loose out of four. |
-| `20260906.001901` | [the part that grew](20260906/20260906-001901_the-part-that-grew.kyri) | one of three parts moved; the live front is per-ship. |
-| `20260906.001728` | [the weave merges](20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) | %449 %450: a join lands; grep held a dead module. |
-| `20260906.000505` | [the meter that skipped bullets a shelf never wrote](20260906/20260906-000505_the-meter-that-skipped-bullets-a-shelf-never-wrote.kyri) | 239 of 537 lines unread. |
+| `20260906.225325` | [the guard that reads the index](20260906/20260906-225325_the-guard-that-reads-the-index.kyri.md) | recovered 20260907; parked at three round-opens. |
+| `20260906.224152` | [a wall on a path the work does not take](20260906/20260906-224152_a-wall-on-a-path-the-work-does-not-take.kyri.md) | %515 closed; the rebase gap walled. |
+| `20260906.223228` | [a fallback value reads as an answer](20260906/20260906-223228_a-fallback-value-reads-as-an-answer.kyri.md) | %527; a park landed, its rows renumbered twice. |
+| `20260906.233629` | [the orphan that read alive](20260906/20260906-233629_the-orphan-that-read-alive.kyri.md) | a lock held by a dead lap; the guard for it said alive. |
+| `20260906.222120` | [the field that had no law](20260906/20260906-222120_the-field-that-had-no-law.kyri.md) | rota field seated; 20/53/36 measured. |
+| `20260906.225809` | [the sweep that read one spelling](20260906/20260906-225809_the-sweep-that-read-one-spelling.kyri.md) | parked at its round open; landed 20260907 |
+| `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri.md) | a park is not a landing, and %513 collided |
+| `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri.md) | a Glow lap out of a park; two guards green. |
+| `20260906.213507` | [the pen that had no owner](20260906/20260906-213507_the-pen-that-had-no-owner.kyri.md) | 9 pens got the pid; %510 and %512 folded. |
+| `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri.md) | rota coverage uniform at fleet scale. |
+| `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri.md) | %517: a capacity scan that never gated on capacity. |
+| `20260906.212539` | [the box gave back two laps](20260906/20260906-212539_the-box-gave-back-two-laps.kyri.md) | roster 5 red -> 0; two stranded laps landed. |
+| `20260906.212206` | [a line is named by a pair](20260906/20260906-212206_a-line-is-named-by-a-pair.kyri.md) | the weave merges two branches; %513 booked. |
+| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri.md) | %513, %514: a meter reading nothing; a skipped wall. |
+| `20260906.211417` | [the relation that decides](20260906/20260906-211417_the-relation-that-decides.kyri.md) | %521: both stranded packages out of the box. |
+| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri.md) | rule 4 made a gate; 28 errata priced. |
+| `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri.md) | 7 ships and the watch down; nothing lost. |
+| `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri.md) | %516: a probe wrong about which act it ran. |
+| `20260906.203243` | [a finished lap in the dead-letter box](20260906/20260906-203243_a-finished-lap-in-the-dead-letter-box.kyri.md) | 1,071 insertions recovered; died before its commit. |
+| `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri.md) | gate %1 crossed; 7,978 files to both doors. |
+| `20260906.202036` | [the work that made no sound](20260906/20260906-202036_the-work-that-made-no-sound.kyri.md) | %522: four parked laps landed; two guards heard it. |
+| `20260906.201219` | [what it costs to decide the next hop](20260906/20260906-201219_what-it-costs-to-decide-the-next-hop.kyri.md) | %510: nine shared pens; a 270-byte table. |
+| `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri.md) | 14 desks refused: two characters claimed every core. |
+| `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri.md) | %510: the box's second drawer, named at last. |
+| `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri.md) | %511, %512: a park landed, a pen race closed. |
+| `20260906.195019` | [the row that lost its number](20260906/20260906-195019_the-row-that-lost-its-number.kyri.md) | %510 landed from a stash; four stale numbers repaired. |
+| `20260906.194921` | [two records out of the box](20260906/20260906-194921_two-records-out-of-the-box.kyri.md) | %510/%512 landed two laps deep; 15 read where 321 stand. |
+| `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri.md) | SHA3 already seated; the gap was verification. |
+| `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri.md) | %509: seven ships ran with the baton alone. |
+| `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri.md) | 34 moved; 4 computed paths derived. |
+| `20260906.180937` | [a name is not a clock](20260906/20260906-180937_a-name-is-not-a-clock.kyri.md) | covered counted names; six of eleven unrun. |
+| `20260906.180617` | [the box that read its own handwriting](20260906/20260906-180617_the-box-that-read-only-its-own-handwriting.kyri.md) | a filter narrower than its box. |
+| `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri.md) | recovered: the path walk beside the record gate. |
+| `20260906.175820` | [the lock that was eight or one](20260906/20260906-175820_the-lock-that-was-eight-or-one.kyri.md) | %522 written; a lock's width is its launch. |
+| `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri.md) | %508: pkill matched three baton prompts. |
+| `20260906.173013` | [a record and a blind ledger](20260906/20260906-173013_the-record-and-the-ledger.kyri.md) | %512: a ledger ended each count at its first if block. |
+| `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri.md) | a fold moved one line of a 19-line row. |
+| `20260906.162759` | [a narrowed glob goes green](20260906/20260906-162759_a-narrowed-glob-goes-green.kyri.md) | %510: a shell star stops at a slash; 607 pages left a reach. |
+| `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri.md) | recovered: a projection with no provenance read fresh. |
+| `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri.md) | the Moore floor is a wish; the abelian one is 8. |
+| `20260906.160050` | [the hypothesis that declined the sweep](20260906/20260906-160050_the-hypothesis-that-declined-the-sweep.kyri.md) | 19 peers carry one copied option. |
+| `20260906.154353` | [the option that silenced the collision](20260906/20260906-154353_the-option-that-silenced-the-collision.kyri.md) | SO_REUSEADDR on UDP hides a bind. |
+| `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri.md) | %507: a park certified the box; %506 recovered. |
+| `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri.md) | %506: cited as proof, compiled by nothing. |
+| `20260906.153405` | [the drafting room moves to a leaf](20260906/20260906-153405_the-drafting-room-moves-to-a-leaf.kyri.md) | edu to docs-geode/edu/yonder; 45 citers repointed. |
+| `20260906.153324` | [two ships, one guard](20260906/20260906-153324_two-ships-one-guard.kyri.md) | %507: it could read 19 of 274. |
+| `20260906.152758` | [the test that cannot fail](20260906/20260906-152758_the-test-that-cannot-fail.kyri.md) | %503: my own discriminator held in both states. |
+| `20260906.144500` | [a bound has a direction](20260906/20260906-144500_a-bound-has-a-direction.kyri.md) | %501: the Moore bound, asked the way that decides. |
+| `20260906.144208` | [A number and a path naming two different rows](20260906/20260906-144208_a-number-and-a-path-naming-two-rows.kyri.md) | the citation loom |
+| `20260906.143614` | [the grammar and three readings](20260906/20260906-143614_the-grammar-and-three-readings.kyri.md) | laps E-H: PR classes; silo 29/33; move declined. |
+| `20260906.141201` | [a ceiling that rises on honest work](20260906/20260906-141201_a-ceiling-that-rises-on-honest-work.kyri.md) | %498: ten of eleven built nothing. |
+| `20260906.135114` | [the publisher a stranger inherits](20260906/20260906-135114_the-publisher-a-stranger-inherits.kyri.md) | laps C+D: a shipped publisher, profiles molted. |
+| `20260906.134546` | [the record its own pass writes at the close](20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri.md) | %483 closed; %492 booked. |
+| `20260906.134427` | [the lock with no bolt in it](20260906/20260906-134427_the-lock-with-no-bolt-in-it.kyri.md) | %500: four guards named a count and read a presence. |
+| `20260906.133800` | [a guard that needs what no clone carries](20260906/20260906-133800_a-guard-that-needs-what-no-clone-carries.kyri.md) | %493: eight ships paid for one absent directory. |
+| `20260906.133554` | [one link in seven](20260906/20260906-133554_one-link-in-seven.kyri.md) | %496: the card sees 2,690 links of 18,218. |
+| `20260906.132652` | [the seed stands at its gate](20260906/20260906-132652_the-seed-stands-at-its-gate.kyri.md) | 7,943 files, gratitude clean, push withheld. |
+| `20260906.131827` | [a witness proves what it calls](20260906/20260906-131827_a-witness-proves-what-it-calls.kyri.md) | %497: 130 witnesses, one walker. |
+| `20260906.130924` | [algorithms agreeing](20260906/20260906-130924_two-algorithms-agreeing-prove-the-algorithms.kyri.md) | %496: a deleted tier passed 3 size binds and both cut algorithms. |
+| `20260906.130200` | [the program written down](20260906/20260906-130200_the-program-written-down.kyri.md) | six open laps booked; the publish waits on them. |
+| `20260906.124340` | [the reason stayed behind](20260906/20260906-124340_the-verdict-arrived-and-the-reason-stayed-behind.kyri.md) | %494: 43 of 52 shims drop it. |
+| `20260906.124006` | [the box fired on a tree nobody planted it in](20260906/20260906-124006_the-box-fired-on-a-tree-nobody-planted-it-in.kyri.md) | two records back, unlanded 2 -> 0. |
+| `20260906.123844` | [the room that shipped nothing](20260906/20260906-123844_the-room-that-shipped-nothing.kyri.md) | %489: allowed, projected, green, and absent. |
+| `20260906.122329` | [the fold that hid the link it broke](20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri.md) | %491: a stamp is why four guards look away. |
+| `20260906.121331` | [a door is not the pages behind it](20260906/20260906-121331_a-door-is-not-the-pages-behind-it.kyri.md) | %490: the map was wrong about three more pages. |
+| `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri.md) | %465: 408 runners absent, not unheard; %486 self-reference. |
+| `20260906.120418` | [the head that enumerates](20260906/20260906-120418_the-head-that-enumerates.kyri.md) | %506: the weave head said three over four; annotate lands. |
+| `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri.md) | %487: a handler that cleans up and carries on. |
+| `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri.md) | Tier 1+2 Class M; 13 bannered, 3 refused. |
+| `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri.md) | %484: a swallowed exit status. |
+| `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri.md) | %480: a run card written at close is read one pass stale. |
+| `20260906.113552` | [a number that belonged to the machine](20260906/20260906-113552_a-number-that-belonged-to-the-machine.kyri.md) | %485: the port the file named and the kernel owned. |
+| `20260906.113330` | [the doubt published in the wrong frame](20260906/20260906-113330_the-doubt-published-in-the-wrong-frame.kyri.md) | %488: 9 of 10 unresolved sites never compile. |
+| `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri.md) | 132 isolated -> 0; the cut structure is what survived. |
+| `20260906.104241` | [the severity lives in the witness](20260906/20260906-104241_the-severity-lives-in-the-witness.kyri.md) | Recovered: the fabrication seen at exit 0. |
+| `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri.md) | %481: the card shipped its own conflict markers. |
+| `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri.md) | Cursor 135, Codex 66, Grok 9; four traps named. |
+| `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri.md) | %466 closed: 114 built files read as never-built. |
+| `20260906.094442` | [the guard that could not clear its own red](20260906/20260906-094442_the-guard-that-could-not-clear-its-own-red.kyri.md) | its own red latched. |
+| `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri.md) | %477-%478: a stall found by running it. |
+| `20260906.092502` | [a claim whose only source is itself](20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri.md) | %480: three crushed indexes miscounted their rooms. |
+| `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri.md) | %476: my own paper's 8 MiB step is page walk, not L3. |
+| `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri.md) | a dead loop comes back; windows found by name. |
+| `20260906.090929` | [the instrument that was in the box](20260906/20260906-090929_the-guard-that-was-in-the-box.kyri.md) | %477: the guard for lost laps was itself lost; %464 closed. |
+| `20260906.090538` | [the meter that swallowed its own instrument](20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri.md) | %473-%475: three reds inside one recovery. |
+| `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri.md) | %454 closed: 33.28% of the sky had no walk. |
+| `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri.md) | %471: six ships stopped 9 min before their window reset. |
+| `20260906.074650` | [the box nobody opened](20260906/20260906-074650_the-box-nobody-opened.kyri.md) | %464 closed; the self-latch found; 3 own logs read back. |
+| `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri.md) | %472: 108 of 113 were the original. |
+| `20260906.070254` | [the handler that does not stop](20260906/20260906-070254_the-handler-that-does-not-stop.kyri.md) | Recovered: POSIX resumes after a handler. |
+| `20260906.070005` | [two ships, one finding, one hour apart](20260906/20260906-070005_two-ships-one-finding-one-hour-apart.kyri.md) | a dead lap read back; six of seven dropped to a peer. |
+| `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri.md) | %451 BOOKED; 13 guards blind to their controls. |
+| `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri.md) | %472: eight guards, four of seven modules compiled. |
+| `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri.md) | 64 pages free, 65 charged 2.36x; huge pages prove it. |
+| `20260906.062244` | [the rose that pointed at two signposts](20260906/20260906-062244_the-rose-that-pointed-at-two-signposts.kyri.md) | compass stations 5 and 6 were pointer stubs. |
+| `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri.md) | %470: diff.rye had not compiled in weeks. |
+| `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri.md) | a stub resolves, so no link check saw it. |
+| `20260906.060019` | [the walk that stopped one level short](20260906/20260906-060019_the-walk-that-stopped-one-level-short.kyri.md) | %474: a hand-fold leaves links one level short. |
+| `20260906.055857` | [the grammar a census must read](20260906/20260906-055857_the-grammar-a-census-must-read.kyri.md) | %449's census lands; 3 build grammars, not 1. |
+| `20260906.052104` | [the tree that assembles its own paths](20260906/20260906-052104_the-tree-that-assembles-its-own-paths.kyri.md) | %464: 116 paths built, none written. |
+| `20260906.051514` | [the fix that landed twice](20260906/20260906-051514_the-fix-that-landed-twice.kyri.md) | a peer landed it better; the half that was mine stands. |
+| `20260906.051012` | [the writer recovered from a dead lap](20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri.md) | %450's typing half closed; a %440-class red repaired. |
+| `20260906.045552` | [the census that answers zero](20260906/20260906-045552_the-census-that-answers-zero.kyri.md) | 1,713 Rye files; one claimed, none built. |
+| `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri.md) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
+| `20260906.045131` | [the writer beside the guard](20260906/20260906-045131_the-writer-beside-the-guard.kyri.md) | the nib is derived now; %461, a dropped PATH entry. |
+| `20260906.044130` | [a clean status is not an empty tree](20260906/20260906-044130_a-clean-status-is-not-an-empty-tree.kyri.md) | %460: three lost logs recovered. |
+| `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri.md) | rule 5 seated; two rows withdrawn, one claim retracted. |
+| `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri.md) | %460: no file(1), so ten right binaries read wrong. |
+| `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri.md) | %461 closed; two numbers lost mid-send. |
+| `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri.md) | two bound meters closed. |
+| `20260906.040055` | [the raise that outran its meters](20260906/20260906-040055_the-raise-that-outran-its-meters.kyri.md) | %459 closed, %460 booked. |
+| `20260906.035833` | [The number the law moved](20260906/20260906-035833_the-number-the-law-moved.kyri.md) | recovered from a stash; both its rows withdrawn. |
+| `20260906.035537` | [the revocation and the fault ride one edge](20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri.md) | one edge carries both; 48 of 720. |
+| `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri.md) | one live seat; the tree is clean. |
+| `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri.md) | one file, two paths, three retractions. |
+| `20260906.025440` | [absent, or behind](20260906/20260906-025440_absent-or-behind.kyri.md) | a stale HEAD makes a grep convincingly wrong. |
+| `20260906.025034` | [the scan that named nothing, until the fetch](20260906/20260906-025034_the-scan-that-names-nothing.kyri.md) | a stale checkout read an absent file; fleet_login GREEN. |
+| `20260906.024713` | [the credential removed, and signed back in](20260906/20260906-024713_the-credential-removed-and-signed-back-in.kyri.md) | auth store cleared on request; tree untouched. |
+| `20260906.024142` | [the recipe I could not test](20260906/20260906-024142_the-recipe-i-could-not-test.kyri.md) | /logout could have logged out the fleet. |
+| `20260906.024109` | [the page that scored perfect while it was wrong](20260906/20260906-024109_the-page-that-scored-perfect-while-it-was-wrong.kyri.md) | repaired at its generator. |
+| `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri.md) | petrichor survived; six logins wrote one file. |
+| `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri.md) | eight ships, one credential, one outage. |
+| `20260906.013937` | [the word the counter could not see](20260906/20260906-013937_the-word-the-counter-could-not-see.kyri.md) | %455: a seated law breached where no meter reads. |
+| `20260906.013801` | [the census of what no compiler reads](20260906/20260906-013801_the-census-of-what-no-compiler-reads.kyri.md) | record restored; its code superseded by %463. |
+| `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri.md) | a probe, not a declaration. |
+| `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri.md) | %452: a hop count with no walk. |
+| `20260906.011125` | [a guard is the wrong unit for a skip](20260906/20260906-011125_a-guard-is-the-wrong-unit-for-a-skip.kyri.md) | %446 closed at the legs, not the roster row. |
+| `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri.md) | Amphora tied its bounds; a floor gate lost its bite. |
+| `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri.md) | %447: a doc line the function refuses; the never-blind proof. |
+| `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri.md) | Mand's trail records grants alone; one file lags live code. |
+| `20260906.003252` | [the reading one short](20260906/20260906-003252_the-reading-one-short.kyri.md) | %446, %440: one post loose out of four. |
+| `20260906.001901` | [the part that grew](20260906/20260906-001901_the-part-that-grew.kyri.md) | one of three parts moved; the live front is per-ship. |
+| `20260906.001728` | [the weave merges](20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri.md) | %449 %450: a join lands; grep held a dead module. |
+| `20260906.000505` | [the meter that skipped bullets a shelf never wrote](20260906/20260906-000505_the-meter-that-skipped-bullets-a-shelf-never-wrote.kyri.md) | 239 of 537 lines unread. |

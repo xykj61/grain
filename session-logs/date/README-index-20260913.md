@@ -11,52 +11,52 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260913.235940` | [the vessel waits for the bundle](20260913/20260913-235940_the-vessel-waits-for-the-bundle.kyri) | Amphora prepares the later bundle, not the first receipt |
-| `20260913.235429` | [Tally's refusals carried the reading](20260913/20260913-235429_tallys-refusals-carried-the-reading.kyri) | 18 captures now speak; shim-reason 940 -> 922 |
-| `20260913.233758` | [the second parked reading was already home](20260913/20260913-233758_the_second_parked_reading_was_already_home.kyri) | second Grass stash already landed; no replay |
-| `20260913.232245` | [the parked account came home](20260913/20260913-232245_the-parked-account-came-home.kyri) | newest unfinished Diffuser log recovered once |
-| `20260913.232004` | [the receipt met the shape ceiling](20260913/20260913-232004_the-receipt-met-the-shape-ceiling.kyri) | receipt has 15 fields; Glow shape ceiling is 9 |
-| `20260913.225857` | [the vessel held at its landed edge](20260913/20260913-225857_the-vessel-held-at-its-landed-edge.kyri) | Amphora green; landed claim closed; fact seam awaited |
-| `20260913.225250` | [the parked tutorial record came home](20260913/20260913-225250_the-parked-tutorial-record-came-home.kyri) | parked record restored; peer receipt seams remain |
-| `20260913.225038` | [the boundary stayed under its own hand](20260913/20260913-225038_the-boundary-stayed-under-its-own-hand.kyri) | claimed receipt seam held; 16 cold guards green |
-| `20260913.224226` | [the language seam waited at its owned edge](20260913/20260913-224226_the-language-seam-waited-at-its-owned-edge.kyri) | receipt seam held; 38 cold guards green |
-| `20260913.223413` | [the parked records were already home](20260913/20260913-223413_the-parked-records-were-already-home.kyri) | stash paths already landed; cold audit held |
-| `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri) | claimed receipt witness red stays with Patchouli |
-| `20260913.222411` | [the parked offer was already home](20260913/20260913-222411_the_parked_offer_was_already_home.kyri) | newest Grass stash already landed; no replay |
-| `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri) | claims keep receipt and Tally work with their owners |
-| `20260913.213946` | [two parked prototypes met their living heirs](20260913/20260913-213946_two-parked-prototypes-met-their-living-heirs.kyri) | elder bytes kept; rostered duties stand |
-| `20260913.212328` | [the tutorial held its public edge](20260913/20260913-212328_the-tutorial-held-its-public-edge.kyri) | recovery clear; peer receipt seams remain in flight |
-| `20260913.211558` | [parked receipt proof joined Tally's clock](20260913/20260913-211558_the-parked-receipt-proof-joined-tallys-clock.kyri) | parked proof restored; Tally owns and runs it |
-| `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri) | held log recovered; focused proof green |
-| `20260913.202029` | [the second pull named its proof](20260913/20260913-202029_the-second-pull-named-its-proof.kyri) | two change sets derive scoped or full proof |
-| `20260913.201928` | [the rail waited for its facts](20260913/20260913-201928_the-rail-waited-for-its-facts.kyri) | Consent Rail waits on four landed inputs; design handoff A 91 |
-| `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri) | compiler bytes join v4 receipt; 18 green |
-| `20260913.194220` | [the offer stayed outside the journal](20260913/20260913-194220_the_offer_stayed_outside_the_journal.kyri) | first Dimeroll offer remains evidence, not an entry |
-| `20260913.193711` | [two parked contract records crossed the send](20260913/20260913-193711_two-parked-contract-records-crossed-the-send.kyri) | accepted edge and two records restored |
-| `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri) | three records restored; closed shelf derives to 65 |
-| `20260913.191904` | [the boundary held the tutorial](20260913/20260913-191904_the-boundary-held-the-tutorial.kyri) | recovery clear; receipt interfaces remain in flight |
-| `20260913.190441` | [the parked contract kept its boundary](20260913/20260913-190441_the-parked-contract-kept-its-boundary.kyri) | restored accepted edge; unproven cases stay proposed |
-| `20260913.183603` | [the claimed red held the language seam](20260913/20260913-183603_the-claimed-red-held-the-language-seam.kyri) | cold 278/3/2; patchouli owns the Tally repair |
-| `20260913.180539` | [two parked diffuser records came home](20260913/20260913-180539_two-parked-diffuser-records-came-home.kyri) | two records restored; closed shelf derives to 65 |
-| `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri) | root and dependency execute bits join receipt; 17 green |
-| `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri) | parked row-count proof restored and green on current HEAD |
-| `20260913.173445` | [accepted contract edge](20260913/20260913-173445_the-accepted-contract-said-what-remains-proposed.kyri) | unfinished cases stay proposed |
-| `20260913.172118` | [the receipt proof joined Tally's clock](20260913/20260913-172118_the-receipt-proof-joined-tallys-clock.kyri) | runner joined Tally roster; elder stash preserved |
-| `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri) | fixed frame and semantic parity await macOS proof |
-| `20260913.161014` | [receipt mark stood](20260913/20260913-161014_the_receipt_mark_stood_without_a_new_type.kyri) | existing schema keeps the type boundary |
-| `20260913.155348` | [the paused record found its shelf](20260913/20260913-155348_the-paused-record-found-its-shelf.kyri) | parked diffuser testimony restored; shelf counts reconciled |
-| `20260913.155145` | [the parked reader rejoined the tree](20260913/20260913-155145_the-parked-reader-rejoined-the-tree.kyri) | restored two Glow-lap products; ELF reader green twice |
-| `20260913.154759` | [the parked count came home](20260913/20260913-154759_the-parked-count-came-home.kyri) | finished docs-geode round restored; peer repair left with its claimant |
-| `20260913.154118` | [receipt crossed with its version](20260913/20260913-154118_the-receipt-crossed-with-its-version.kyri) | Amphora authenticates, refuses v2, restores exact receipt |
-| `20260913.153444` | [the report stopped dressing as a ceiling](20260913/20260913-153444_the-report-stopped-dressing-as-a-ceiling.kyri) | dated-path report renamed; ratchet 99/99 |
-| `20260913.145310` | [the parked log rejoined its shelf](20260913/20260913-145310_the_parked_log_rejoined_its_shelf.kyri) | recovered 203746; closed shelf and rosters agree at 63 |
-| `20260913.144455` | [the first receipt-offer spine](20260913/20260913-144455_the-first-receipt-offer-spine.kyri) | Tally bounds and deterministic Mantra replay run GREEN |
-| `20260913.143321` | [gate moved to work a ship can do](20260913/20260913-143321_the-gate-moved-to-the-work-a-ship-can-do.kyri) | repairable promises gate at zero; full formation chosen |
-| `20260913.052357` | [the fire row held the review gate](20260913/20260913-052357_the-fire-row-held-the-review-gate.kyri) | seventeen parks audited; receipt review gate held |
-| `20260913.035758` | [the finished recovery found its shelf](20260913/20260913-035758_the-finished-recovery-found-its-shelf.kyri) | two finished incense records restored and proven |
-| `20260913.034044` | [the gate kept its word](20260913/20260913-034044_the-gate-kept-its-word.kyri) | cold roster 279/1; receipt review and REDS %626 hold |
-| `20260913.032543` | [the boundary held at the pause](20260913/20260913-032543_the-boundary-held-at-the-pause.kyri) | Recovery boxes preserved; cold roster 280/0 |
-| `20260913.031012` | [the parked recovery crossed midnight](20260913/20260913-031012_the-parked-recovery-crossed-midnight.kyri) | one completed incense record restored; pause held |
-| `20260913.023823` | [the parked apply contract landed whole](20260913/20260913-023823_the-parked-apply-contract-landed-whole.kyri) | Weave.apply recovered and re-proved; hot roster 263/0 |
-| `20260913.014806` | [the nib wore its full width](20260913/20260913-014806_the-nib-wore-its-full-width.kyri) | nine hex digits became the required ten; both nib guards green |
-| `20260913.010102` | [the parked apply contract came home](20260913/20260913-010102_the-parked-apply-contract-came-home.kyri) | Weave.apply recovered; three refusals precede mutation |
+| `20260913.235940` | [the vessel waits for the bundle](20260913/20260913-235940_the-vessel-waits-for-the-bundle.kyri.md) | Amphora prepares the later bundle, not the first receipt |
+| `20260913.235429` | [Tally's refusals carried the reading](20260913/20260913-235429_tallys-refusals-carried-the-reading.kyri.md) | 18 captures now speak; shim-reason 940 -> 922 |
+| `20260913.233758` | [the second parked reading was already home](20260913/20260913-233758_the_second_parked_reading_was_already_home.kyri.md) | second Grass stash already landed; no replay |
+| `20260913.232245` | [the parked account came home](20260913/20260913-232245_the-parked-account-came-home.kyri.md) | newest unfinished Diffuser log recovered once |
+| `20260913.232004` | [the receipt met the shape ceiling](20260913/20260913-232004_the-receipt-met-the-shape-ceiling.kyri.md) | receipt has 15 fields; Glow shape ceiling is 9 |
+| `20260913.225857` | [the vessel held at its landed edge](20260913/20260913-225857_the-vessel-held-at-its-landed-edge.kyri.md) | Amphora green; landed claim closed; fact seam awaited |
+| `20260913.225250` | [the parked tutorial record came home](20260913/20260913-225250_the-parked-tutorial-record-came-home.kyri.md) | parked record restored; peer receipt seams remain |
+| `20260913.225038` | [the boundary stayed under its own hand](20260913/20260913-225038_the-boundary-stayed-under-its-own-hand.kyri.md) | claimed receipt seam held; 16 cold guards green |
+| `20260913.224226` | [the language seam waited at its owned edge](20260913/20260913-224226_the-language-seam-waited-at-its-owned-edge.kyri.md) | receipt seam held; 38 cold guards green |
+| `20260913.223413` | [the parked records were already home](20260913/20260913-223413_the-parked-records-were-already-home.kyri.md) | stash paths already landed; cold audit held |
+| `20260913.222906` | [the red stayed with its owner](20260913/20260913-222906_the-red-stayed-with-its-owner.kyri.md) | claimed receipt witness red stays with Patchouli |
+| `20260913.222411` | [the parked offer was already home](20260913/20260913-222411_the_parked_offer_was_already_home.kyri.md) | newest Grass stash already landed; no replay |
+| `20260913.220203` | [the language seam heard its owners](20260913/20260913-220203_the-language-seam-heard-its-owners.kyri.md) | claims keep receipt and Tally work with their owners |
+| `20260913.213946` | [two parked prototypes met their living heirs](20260913/20260913-213946_two-parked-prototypes-met-their-living-heirs.kyri.md) | elder bytes kept; rostered duties stand |
+| `20260913.212328` | [the tutorial held its public edge](20260913/20260913-212328_the-tutorial-held-its-public-edge.kyri.md) | recovery clear; peer receipt seams remain in flight |
+| `20260913.211558` | [parked receipt proof joined Tally's clock](20260913/20260913-211558_the-parked-receipt-proof-joined-tallys-clock.kyri.md) | parked proof restored; Tally owns and runs it |
+| `20260913.205507` | [the parked hold rejoined the thread](20260913/20260913-205507_the-parked-hold-rejoined-the-thread.kyri.md) | held log recovered; focused proof green |
+| `20260913.202029` | [the second pull named its proof](20260913/20260913-202029_the-second-pull-named-its-proof.kyri.md) | two change sets derive scoped or full proof |
+| `20260913.201928` | [the rail waited for its facts](20260913/20260913-201928_the-rail-waited-for-its-facts.kyri.md) | Consent Rail waits on four landed inputs; design handoff A 91 |
+| `20260913.195010` | [the compiler entered its own receipt](20260913/20260913-195010_the-compiler-entered-its-own-receipt.kyri.md) | compiler bytes join v4 receipt; 18 green |
+| `20260913.194220` | [the offer stayed outside the journal](20260913/20260913-194220_the_offer_stayed_outside_the_journal.kyri.md) | first Dimeroll offer remains evidence, not an entry |
+| `20260913.193711` | [two parked contract records crossed the send](20260913/20260913-193711_two-parked-contract-records-crossed-the-send.kyri.md) | accepted edge and two records restored |
+| `20260913.192054` | [three parked records rejoined the thread](20260913/20260913-192054_three-parked-records-rejoined-the-thread.kyri.md) | three records restored; closed shelf derives to 65 |
+| `20260913.191904` | [the boundary held the tutorial](20260913/20260913-191904_the-boundary-held-the-tutorial.kyri.md) | recovery clear; receipt interfaces remain in flight |
+| `20260913.190441` | [the parked contract kept its boundary](20260913/20260913-190441_the-parked-contract-kept-its-boundary.kyri.md) | restored accepted edge; unproven cases stay proposed |
+| `20260913.183603` | [the claimed red held the language seam](20260913/20260913-183603_the-claimed-red-held-the-language-seam.kyri.md) | cold 278/3/2; patchouli owns the Tally repair |
+| `20260913.180539` | [two parked diffuser records came home](20260913/20260913-180539_two-parked-diffuser-records-came-home.kyri.md) | two records restored; closed shelf derives to 65 |
+| `20260913.175721` | [the receipt heard every source mode](20260913/20260913-175721_the-receipt-heard-every-source-mode.kyri.md) | root and dependency execute bits join receipt; 17 green |
+| `20260913.175141` | [the finished count crossed the send](20260913/20260913-175141_the-finished-count-crossed-the-send.kyri.md) | parked row-count proof restored and green on current HEAD |
+| `20260913.173445` | [accepted contract edge](20260913/20260913-173445_the-accepted-contract-said-what-remains-proposed.kyri.md) | unfinished cases stay proposed |
+| `20260913.172118` | [the receipt proof joined Tally's clock](20260913/20260913-172118_the-receipt-proof-joined-tallys-clock.kyri.md) | runner joined Tally roster; elder stash preserved |
+| `20260913.161143` | [the receipt card found its own boundary](20260913/20260913-161143_the-receipt-card-found-its-own-boundary.kyri.md) | fixed frame and semantic parity await macOS proof |
+| `20260913.161014` | [receipt mark stood](20260913/20260913-161014_the_receipt_mark_stood_without_a_new_type.kyri.md) | existing schema keeps the type boundary |
+| `20260913.155348` | [the paused record found its shelf](20260913/20260913-155348_the-paused-record-found-its-shelf.kyri.md) | parked diffuser testimony restored; shelf counts reconciled |
+| `20260913.155145` | [the parked reader rejoined the tree](20260913/20260913-155145_the-parked-reader-rejoined-the-tree.kyri.md) | restored two Glow-lap products; ELF reader green twice |
+| `20260913.154759` | [the parked count came home](20260913/20260913-154759_the-parked-count-came-home.kyri.md) | finished docs-geode round restored; peer repair left with its claimant |
+| `20260913.154118` | [receipt crossed with its version](20260913/20260913-154118_the-receipt-crossed-with-its-version.kyri.md) | Amphora authenticates, refuses v2, restores exact receipt |
+| `20260913.153444` | [the report stopped dressing as a ceiling](20260913/20260913-153444_the-report-stopped-dressing-as-a-ceiling.kyri.md) | dated-path report renamed; ratchet 99/99 |
+| `20260913.145310` | [the parked log rejoined its shelf](20260913/20260913-145310_the_parked_log_rejoined_its_shelf.kyri.md) | recovered 203746; closed shelf and rosters agree at 63 |
+| `20260913.144455` | [the first receipt-offer spine](20260913/20260913-144455_the-first-receipt-offer-spine.kyri.md) | Tally bounds and deterministic Mantra replay run GREEN |
+| `20260913.143321` | [gate moved to work a ship can do](20260913/20260913-143321_the-gate-moved-to-the-work-a-ship-can-do.kyri.md) | repairable promises gate at zero; full formation chosen |
+| `20260913.052357` | [the fire row held the review gate](20260913/20260913-052357_the-fire-row-held-the-review-gate.kyri.md) | seventeen parks audited; receipt review gate held |
+| `20260913.035758` | [the finished recovery found its shelf](20260913/20260913-035758_the-finished-recovery-found-its-shelf.kyri.md) | two finished incense records restored and proven |
+| `20260913.034044` | [the gate kept its word](20260913/20260913-034044_the-gate-kept-its-word.kyri.md) | cold roster 279/1; receipt review and REDS %626 hold |
+| `20260913.032543` | [the boundary held at the pause](20260913/20260913-032543_the-boundary-held-at-the-pause.kyri.md) | Recovery boxes preserved; cold roster 280/0 |
+| `20260913.031012` | [the parked recovery crossed midnight](20260913/20260913-031012_the-parked-recovery-crossed-midnight.kyri.md) | one completed incense record restored; pause held |
+| `20260913.023823` | [the parked apply contract landed whole](20260913/20260913-023823_the-parked-apply-contract-landed-whole.kyri.md) | Weave.apply recovered and re-proved; hot roster 263/0 |
+| `20260913.014806` | [the nib wore its full width](20260913/20260913-014806_the-nib-wore-its-full-width.kyri.md) | nine hex digits became the required ten; both nib guards green |
+| `20260913.010102` | [the parked apply contract came home](20260913/20260913-010102_the-parked-apply-contract-came-home.kyri.md) | Weave.apply recovered; three refusals precede mutation |

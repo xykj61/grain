@@ -11,5 +11,5 @@ re-seated at `%664`; a rebase then published a `%664` of its own, the seat re-se
 three more rebases published `%667`, `%671` and `%673` in turn -- so the row reached the anointed
 spine as `%675`. Six numbers, one stamp: `20260909.072646` never moved, which is why every elder address
 forwards rather than breaks. The session record at
-[`20260909-085556_the-parked-demo-returns.kyri`](../../../session-logs/date/20260909/20260909-085556_the-parked-demo-returns.kyri)
+[`20260909-085556_the-parked-demo-returns.kyri`](../../../session-logs/date/20260909/20260909-085556_the-parked-demo-returns.kyri.md)
 keeps the address it wrote, and every stash keeps its original text.

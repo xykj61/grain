@@ -323,7 +323,7 @@ The interface uses ASCII as structure, linen as material, and motion as a bounde
 Brushstroke declares each component's grid, role, state, tokens, and motion profile. Skate renders the fixed frame and bounded events. A correspondence witness forces meaning, description, and behavior to change together.
 
 ## Now -- the eight sailing ship itineraries
-**Git nib:** `1aa1385aef`
+**Git nib:** `5d5b5b5dbe`
 
 
 ### Incense -- product captain
@@ -401,11 +401,11 @@ The current yonder draft is [`Anyone under our sun`](../docs-geode/edu/yonder/20
 
 **Stop:** prose waits for green interfaces and uses no private example.
 
-**Petrichor held `20261012.165621`:** fast-forward to `efa9bcc597` moves only the card nib and session logs; the Consent Rail and the public seam are unchanged; no build. [Log](../session-logs/date/20261012/20261012-165621_petrichor-gate-held-ff-three-no-build.kyri)
+**Petrichor held `20261012.165621`:** fast-forward to `efa9bcc597` moves only the card nib and session logs; the Consent Rail and the public seam are unchanged; no build. [Log](../session-logs/date/20261012/20261012-165621_petrichor-gate-held-ff-three-no-build.kyri.md)
 
-**Petrichor held `20261012.163234`:** fast-forward to `617fdae40a` shows no seam and no Consent Rail change; no build. [Log](../session-logs/date/20261012/20261012-163234_petrichor-gate-held-ff-five-no-build.kyri).
+**Petrichor held `20261012.163234`:** fast-forward to `617fdae40a` shows no seam and no Consent Rail change; no build. [Log](../session-logs/date/20261012/20261012-163234_petrichor-gate-held-ff-five-no-build.kyri.md).
 
-**Petrichor held `20261012.103046`:** upstream read at `f6975f780a` shows the public seam and the Consent Rail unchanged; no build. [Log](../session-logs/date/20261012/20261012-103046_petrichor-gate-still-held-no-build.kyri).
+**Petrichor held `20261012.103046`:** upstream read at `f6975f780a` shows the public seam and the Consent Rail unchanged; no build. [Log](../session-logs/date/20261012/20261012-103046_petrichor-gate-still-held-no-build.kyri.md).
 
 ### Bakery -- Rishi fusion-build spine
 

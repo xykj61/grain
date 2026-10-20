@@ -6,5 +6,5 @@
 
 | Stamp | Log | What it carried |
 |---|---|---|
-| `20261004.222725` | [The pockets stand free](20261004/20261004-222725_the-pockets-stand-free.kyri) | Three pockets, one shape; the short essay banners. |
-| `20261004.215436` | [Incense opens on the pocket](20261004/20261004-215436_incense-opens-on-the-pocket.kyri) | Bhakta Radiant, Grainphone and e-ink loaded. |
+| `20261004.222725` | [The pockets stand free](20261004/20261004-222725_the-pockets-stand-free.kyri.md) | Three pockets, one shape; the short essay banners. |
+| `20261004.215436` | [Incense opens on the pocket](20261004/20261004-215436_incense-opens-on-the-pocket.kyri.md) | Bhakta Radiant, Grainphone and e-ink loaded. |

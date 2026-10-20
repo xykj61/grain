@@ -17,9 +17,10 @@
 //! keeps its elder name for the same reason its destination molted rather than its filename --
 //! 137 references already name it.
 //!
-//! Extensions folded: `.kyri` (living), `.kyri` (the elder notation), `.md` (historical).
+//! Extensions folded: `.kyri.md` (living, molted `20261020`), `.kyri` (elder sibling), `.md` (historical).
 //! `.kyri` was taught on `20260821` -- 600 such logs stood flat when the room folded, and a
-//! tool that knew only `.kyri` and `.md` would have left every one of them behind.
+//! tool that knew only `.kyri` and `.md` would have left every one of them behind. The molt to
+//! `.kyri.md` on `20261020` adds GitHub Markdown rendering with live hyperlinks; Scribe reads both.
 //!
 //! Entry points (read and mutate stay separate):
 //!   `rye run tools/rye/session_logs_archive.rye preview [--today YYYYMMDD] [--room NAME]` -- count
@@ -134,8 +135,9 @@ fn list_flat_logs(a: std.mem.Allocator, io: std.Io, logs_dir: []const u8) ![][]c
         if (std.mem.eql(u8, entry.name, "README.md")) continue;
         // Every notation the room has ever held. A new extension added here without a
         // fixture in the selftest is an extension nobody has tested, so both move together.
+        // .kyri.md molted in on 20261020; .kyri stays as the elder sibling Scribe reads both.
         const is_md = std.mem.endsWith(u8, entry.name, ".md");
-        const is_kyri = std.mem.endsWith(u8, entry.name, ".kyri");
+        const is_kyri = std.mem.endsWith(u8, entry.name, ".kyri") or std.mem.endsWith(u8, entry.name, ".kyri.md");
         if (!is_md and !is_kyri) continue;
         if (day_from_log_fname(entry.name) == null) continue;
         try names.append(a, try a.dupe(u8, entry.name));
@@ -720,7 +722,7 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(shelf2);
     if (!std.mem.eql(u8, shelf1, shelf2)) return error.SelftestShelfDrift;
 
-    std.debug.print("GREEN: session_logs_archive selftest -- preview, fold of .md, .kyri and a sprigless .kyri, a day-only name refused, link rewrite, idempotency, and the index folded to its shelf.\n", .{});
+    std.debug.print("GREEN: session_logs_archive selftest -- preview, fold of .md, .kyri, .kyri.md and a sprigless .kyri, a day-only name refused, link rewrite, idempotency, and the index folded to its shelf.\n", .{});
 }
 
 fn parse_today_arg(a: std.mem.Allocator, args: []const []const u8, start: usize) !?[]const u8 {

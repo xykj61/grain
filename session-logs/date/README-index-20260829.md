@@ -11,89 +11,89 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260829.235814` | [the partition that can empty](20260829/20260829-235814_the-partition-that-can-empty.kyri) | down_map's caller-reachable assert booked OPEN as %349 for Mind |
-| `20260829.235656` | [the face speaks from real output](20260829/20260829-235656_the-face-speaks-from-real-output.kyri) | a pinned completion feeds the face; no stop reason earns settled |
-| `20260829.235042` | [the marker wears its kind](20260829/20260829-235042_the-marker-wears-its-kind.kyri) | the styled rung: head, flow, edge -- three kinds, three seated colors |
-| `20260829.234125` | [the rungs found their clocks](20260829/20260829-234125_the-rungs-found-their-clocks.kyri) | 588 labels mapped; false-zero meter repaired; sibling reds routed |
-| `20260829.233639` | [the asking voice gets a face](20260829/20260829-233639_the-asking-voice-gets-a-face.kyri) | lantern_face paints an honest exchange; AnswerWithUnknown refuses |
-| `20260829.233501` | [the ring read every stored seat](20260829/20260829-233501_the-ring-read-every-stored-seat.kyri) | Mind: both EventRing refusals compare all 130 stored values |
-| `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |
-| `20260829.231148` | [the trees that held real work](20260829/20260829-231148_the-trees-that-held-real-work.kyri) | mind rebases its laps home; mystery stashes its refused lap by name |
-| `20260829.231112` | [the parked seam comes home](20260829/20260829-231112_the-parked-seam-comes-home.kyri) | Dream serializes two Caravan choirs; both 121-witness runs GREEN |
-| `20260829.230409` | [the pipe that went quiet](20260829/20260829-230409_the-pipe-that-went-quiet.kyri) | jq unbuffered behind the tee; a lap heartbeat line |
-| `20260829.225955` | [two pier trees, two refusals, two right answers](20260829/20260829-225955_two-pier-trees-two-refusals-two-right-answers.kyri) | hush discards its copies; dream rebases its own laps home |
-| `20260829.225328` | [the prompt leaves the quotes and the loops find their trees](20260829/20260829-225328_the-prompt-leaves-the-quotes-and-the-loops-find-their-trees.kyri) | one anchored fleet-loop.sh; three seat-prompt files; census essay kept |
-| `20260829.222718` | [one root, two crashes, and the campaign handed to Mystery](20260829/20260829-222718_one-root-two-crashes-and-the-campaign-handed-to-mystery.kyri) | the hook probes its scan shell; CION seats on Mystery |
-| `20260829.221841` | [the word that stops and the chapter that resumes](20260829/20260829-221841_the-word-that-stops-and-the-chapter-that-resumes.kyri) | standfast refused for rung marks; CION campaign drafted PROPOSED |
-| `20260829.220804` | [mul-b lands and the numbers that stay](20260829/20260829-220804_mul-b-lands-and-the-numbers-that-stay.kyri) | the claims law speaks in Glow on metal; STOA/ALES keep their rungs |
-| `20260829.220001` | [the history returned whole](20260829/20260829-220001_the-history-returned-whole.kyri) | Skate carries 64 Image edit lines at 49 bytes without eviction |
-| `20260829.214621` | [mul-a seats and the taste of runes](20260829/20260829-214621_mul-a-seats-and-the-taste-of-runes.kyri) | the composed cond parses (5 legs, 114 elder greens); the custodian's three style answers |
-| `20260829.213350` | [the rune the language wants](20260829/20260829-213350_the-rune-the-language-wants.kyri) | the pair survey ends at a mul gap -- a rune ruling on the sill; no twin desk minted |
-| `20260829.212731` | [the walls speak Glow and the crop fits](20260829/20260829-212731_the-walls-speak-glow-and-the-crop-fits.kyri) | three Skate desks GREEN with parity anchors; %347 closes Mind's 49-byte crop find |
-| `20260829.211412` | [the measure humbled the middle](20260829/20260829-211412_the-measure-humbled-the-middle.kyri) | gate %7: 1 of 39 additive, 38 two-way stay readings; Mind's exact-length find repaired, pins unmoved |
-| `20260829.211021` | [the two rosters and the one tree](20260829/20260829-211021_the-two-rosters-and-the-one-tree.kyri) | Caravan runtime isolation defect named from both sides; derived pins refreshed |
-| `20260829.210736` | [the dialect a guard assumes](20260829/20260829-210736_the-dialect-a-guard-assumes.kyri) | three Pond scans stop spelling GNU; recovered from SEA |
-| `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |
-| `20260829.210056` | [compared, not copied](20260829/20260829-210056_the-number-compared-not-copied.kyri) | Tablecloth's first Glow desk; the guard compares, never copies, the bound |
-| `20260829.204032` | [the charter matches the fleet](20260829/20260829-204032_the-charter-matches-the-fleet.kyri) | claim clauses x3; the always-fleet charter molts in, ten citers repointed; parked ref proven redundant |
-| `20260829.203002` | [the planet finds its voice](20260829/20260829-203002_the-planet-finds-its-voice.kyri) | Mystery's seat whole: MIND_SEAT, pinned campaign wall 13/13, own arbor; verified to the login |
-| `20260829.200656` | [two trees born proven](20260829/20260829-200656_two-trees-born-proven.kyri) | birth-a-clone lands; grain-silence and grain-mystery stand whole, witness GREEN inside each |
-| `20260829.194829` | [the fleet remapped on the day's evidence](20260829/20260829-194829_the-fleet-remapped-on-the-days-evidence.kyri) | Mystery to a macOS Codex loop on the campaign lane; one tree per star fleet-wide; his word |
-| `20260829.194157` | [the knife ran clean](20260829/20260829-194157_the-knife-ran-clean.kyri) | the rewrite verified: 9 signed, tree byte-identical, zero child-stream; the force at his keys |
-| `20260829.192838` | [the synthesis round of the stopped fleet](20260829/20260829-192838_the-synthesis-round-of-the-stopped-fleet.kyri) | %346 the inherited word; the debride runs; a stopped hand's send completes; the fleet's map drawn |
-| `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri) | dual-stack seated on `capability ipv6`; two reds closed |
-| `20260829.163825` | [the wall behind the wall](20260829/20260829-163825_the-wall-behind-the-wall.kyri) | rishi's own stream cap raised to 4,259,840 on language custody; %345 books my pathspec slip |
-| `20260829.163028` | [the tier for what a host can do](20260829/20260829-163028_the-tier-for-what-a-host-can-do.kyri) | roster gains a capability field; absence planted, no override |
-| `20260829.162912` | [the three rungs and the always-fleet](20260829/20260829-162912_the-three-rungs-and-the-always-fleet.kyri) | Mind's harness repaired (wall 4 MiB, parking, ff-pull), probe GREEN; the 24/7-all-lanes design drafted |
-| `20260829.161840` | [custody that recovers](20260829/20260829-161840_custody-that-recovers.kyri) | the Mind recommendation: park the leavings; three rungs make 24/7 -- wall, parking, skip |
-| `20260829.160959` | [the wall sized to a quieter Codex](20260829/20260829-160959_the-wall-sized-to-a-quieter-codex.kyri) | Mind's crash diagnosed to the byte: stderr 1048576 = max_log_bytes; Dream absorbs, Mind refuses |
-| `20260829.160207` | [the ledger reads clean](20260829/20260829-160207_the-ledger-reads-clean.kyri) | %337 BOOKED, %338 CLOSED where they lie; open_rows=0 across the spine, ceiling falls to 0 |
-| `20260829.155341` | [the flag that said two things](20260829/20260829-155341_the-flag-that-said-two-things.kyri) | door B lands: BOOKED seats, eight rows drain, the pin 24828 -> 5388; deadlock over |
-| `20260829.153150` | [the water row tastes the loops](20260829/20260829-153150_the-water-row-tastes-the-loops.kyri) | launcher audit answered; %344 books the charter that outran itself; fn-drift guard GREEN 12/12 |
-| `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
-| `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
-| `20260829.150837` | [the stack held the third step](20260829/20260829-150837_the-stack-held-the-third-step.kyri) | Dream: exact stack bound passes, one-past refuses; Tally gaps 3 -> 2 |
-| `20260829.145726` | [the fire row cuts three bodies to one](20260829/20260829-145726_the-fire-row-cuts-three-bodies-to-one.kyri) | enclosure door, 15 wire-lab shims, almanac engine 114/114 parity; five slices landed |
-| `20260829.143651` | [the door's first duty](20260829/20260829-143651_the-doors-first-duty.kyri) | Pond's record can say who walks through it; a scan stopped running a stale build |
-| `20260829.142251` | [the card breathes and the sameness measured](20260829/20260829-142251_the-card-breathes-and-the-sameness-measured.kyri) | air rota lap: card condensed 24575 -> 22762, LOCA seated in Now; 114 almanac twins counted |
-| `20260829.141956` | [the name a missing build hid](20260829/20260829-141956_the-name-a-missing-build-hid.kyri) | four witnesses build what they run; the fourth names a stale roster |
-| `20260829.140140` | [the row that heard the silence](20260829/20260829-140140_the-row-that-heard-the-silence.kyri) | aether rota lap: the card one byte from full, LOCA unnamed on it; condense booked |
-| `20260829.134715` | [the row that smelled the door](20260829/20260829-134715_the-row-that-smelled-the-door.kyri) | earth rota lap: doorway guard red at 33 unroomed pages, unrostered; %342 booked |
-| `20260829.133913` | [the card learns its siblings lessons](20260829/20260829-133913_the-card-learns-its-siblings-lessons.kyri) | context loading, rota, guardrails join the Sound card; two-seats-one-tree measured |
-| `20260829.130253` | [the cloth laid wider](20260829/20260829-130253_the-cloth-laid-wider.kyri) | the spread lands: 15 parts by measured budget, five walls proven in one run |
-| `20260829.125110` | [the eighth door walked](20260829/20260829-125110_the-eighth-door-walked.kyri) | the platform cancels a real drag mid-flight; both drag endings proven on one build |
-| `20260829.124742` | [the ceiling that held one bead](20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) | a ceiling test filled the store with 1 bead of 256; rollback seated |
-| `20260829.123816` | [the drag the phases kept](20260829/20260829-123816_the-drag-the-phases-kept.kyri) | a real swipe: down, 27 moves, up, in order through the ring; kinds widen to eight |
-| `20260829.123529` | [the gate written three times](20260829/20260829-123529_the-gate-written-three-times.kyri) | seal gate read in all 3 launchers; header named 2 of 3 |
-| `20260829.114143` | [the frame the store remembers](20260829/20260829-114143_the-frame-the-store-remembers.kyri) | golden claim addressed ac80b306; pixels refused at the 512 resin ceiling; card made true |
-| `20260829.112903` | [the third metal invited](20260829/20260829-112903_the-third-metal-invited.kyri) | wayland_seed joins the contract: parity subcommand + hand-off claim; pier runs it |
-| `20260829.112105` | [the finger the ring admits](20260829/20260829-112105_the-finger-the-ring-admits.kyri) | a real tap crosses platform, domain event, and ring inside iOS |
-| `20260829.104233` | [a guard met a birth](20260829/20260829-104233_a-guard-met-a-birth.kyri) | reach gate one past both ceilings; the Mac bench paid its named debt |
-| `20260829.095622` | [The app the platform launches](20260829/20260829-095622_the-app-the-platform-launches.kyri) | a real iOS app with a Rye delegate; both doors |
-| `20260829.094256` | [the ratchet that had a floor](20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) | %334 ratchet 14 -> 4; ten "defects" were builds one hop away |
-| `20260829.094048` | [the door walked](20260829/20260829-094048_the-door-walked.kyri) | a Rye view class on iOS, dispatched by the platform, judged by the same pins |
-| `20260829.093058` | [green from inside ios](20260829/20260829-093058_green-from-inside-ios.kyri) | both witnesses spawn GREEN on a booted iPhone; pins identical across two OSes |
-| `20260829.084438` | [a checkout is not the field](20260829/20260829-084438_a-checkout-is-not-the-field.kyri) | lost refs 335 -> 165; repointer stops writing into a peer |
-| `20260829.070953` | [a witness builds what it runs](20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) | %334 ratchet 19 -> 14; the card nib resolved to nothing |
-| `20260829.064107` | [the door the record cannot name](20260829/20260829-064107_the-door-the-record-cannot-name.kyri) | orbit four: 2 of 4 path elements absent inside; 3 duties keyless |
-| `20260829.061739` | [the lattice heard all forty](20260829/20260829-061739_the-lattice-heard-all-forty.kyri) | Dream: forty arithmetic seams run together, admitted and refused |
-| `20260829.054303` | [the three the enclosure keeps](20260829/20260829-054303_the-three-the-enclosure-keeps.kyri) | orbit three on metal: 3 writable paths outlive the close, none in pier |
-| `20260829.054002` | [the skip planted in both languages](20260829/20260829-054002_the-skip-planted-in-both-languages.kyri) | %340's skip reaches the shell control; both ceilings both ways |
-| `20260829.043703` | [Sundial readings carry provenance](20260829/20260829-043703_sundial-readings-carry-provenance.kyri) | Dream: sourced health readings; sourceless refused; unbuilt 20 -> 19 |
-| `20260829.032411` | [the ledger that could not book a red](20260829/20260829-032411_the-ledger-that-could-not-book-a-red.kyri) | pin full, 9 of 9 open; capacity meter lands, %338 booked |
-| `20260829.023652` | [the bind refuses both directions](20260829/20260829-023652_the-bind-refuses-both-directions.kyri) | Dream: Kumara's fixture-key bind refuses each signature direction |
-| `20260829.015246` | [the recipe that crossed](20260829/20260829-015246_the-recipe-that-crossed.kyri) | pure core builds for iOS: four flags, zero module edits; spawn parks on cold start |
-| `20260829.014114` | [the ios door read](20260829/20260829-014114_the-ios-door-read.kyri) | movement five: three measures, four carries read, QA 84 B; the ladder's first pass walked |
-| `20260829.013811` | [the meter that counts one call](20260829/20260829-013811_the-meter-that-counts-one-call.kyri) | Amphora's eight build all three; REDS %337; the reading is a floor |
-| `20260829.013539` | [the commit no hook saw](20260829/20260829-013539_the-commit-no-hook-saw.kyri) | REDS %339: cherry-pick skips pre-commit; post-commit records the debt |
-| `20260829.013348` | [the picture both backends agree on](20260829/20260829-013348_the-picture-both-backends-agree-on.kyri) | reference module seats; macOS answers pins live: lit 16268 matched |
-| `20260829.012534` | [the claims both backends answer](20260829/20260829-012534_the-claims-both-backends-answer.kyri) | movement four's oracle: lit 16268 pinned, house Keccak digest, tamper-visible |
-| `20260829.011429` | [the lifecycle the delegate steers](20260829/20260829-011429_the-lifecycle-the-delegate-steers.kyri) | movement three closes: run owns the loop, the refusal honored, exit 0 |
-| `20260829.010630` | [the bundle the finder opens](20260829/20260829-010630_the-bundle-the-finder-opens.kyri) | Movement seated in LEXICON; Grain.app opens the Finder's way, refuses without its plist |
-| `20260829.005700` | [the ring is a capacity](20260829/20260829-005700_the-ring-is-a-capacity.kyri) | quest retired as a plan label; movements seated; REDS %336 booked and repaired |
-| `20260829.004902` | [the input the ring admits](20260829/20260829-004902_the-input-the-ring-admits.kyri) | rung two GREEN: 4 of 4 events cross seam, ring, drain; Full wall bites at 134 |
-| `20260829.003741` | [the ring the refusals crossed](20260829/20260829-003741_the-ring-the-refusals-crossed.kyri) | Sound card refreshed; EventRing ported, five Swift cases GREEN in Rye |
-| `20260829.002846` | [the grid that follows the window](20260829/20260829-002846_the-grid-that-follows-the-window.kyri) | rung two GREEN at scale 200: 96x30 -> 140x40 cells; quest one closes |
-| `20260829.002129` | [the seed ships both doors](20260829/20260829-002129_the-seed-ships-both-doors.kyri) | scrub proven IDENT_CLEAN + NO_PERSONAL; forced to grain-os and grain-ww as 8328a62 |
-| `20260829.001603` | [the witness that builds what it runs](20260829/20260829-001603_the-witness-that-builds-what-it-runs.kyri) | Mandate seven build what they run; 46 -> 38 |
-| `20260829.000810` | [the published record molts](20260829/20260829-000810_the-published-record-molts.kyri) | both force-pushes granted and landed; remotes match f93154af6; fleet cleared |
+| `20260829.235814` | [the partition that can empty](20260829/20260829-235814_the-partition-that-can-empty.kyri.md) | down_map's caller-reachable assert booked OPEN as %349 for Mind |
+| `20260829.235656` | [the face speaks from real output](20260829/20260829-235656_the-face-speaks-from-real-output.kyri.md) | a pinned completion feeds the face; no stop reason earns settled |
+| `20260829.235042` | [the marker wears its kind](20260829/20260829-235042_the-marker-wears-its-kind.kyri.md) | the styled rung: head, flow, edge -- three kinds, three seated colors |
+| `20260829.234125` | [the rungs found their clocks](20260829/20260829-234125_the-rungs-found-their-clocks.kyri.md) | 588 labels mapped; false-zero meter repaired; sibling reds routed |
+| `20260829.233639` | [the asking voice gets a face](20260829/20260829-233639_the-asking-voice-gets-a-face.kyri.md) | lantern_face paints an honest exchange; AnswerWithUnknown refuses |
+| `20260829.233501` | [the ring read every stored seat](20260829/20260829-233501_the-ring-read-every-stored-seat.kyri.md) | Mind: both EventRing refusals compare all 130 stored values |
+| `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri.md) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |
+| `20260829.231148` | [the trees that held real work](20260829/20260829-231148_the-trees-that-held-real-work.kyri.md) | mind rebases its laps home; mystery stashes its refused lap by name |
+| `20260829.231112` | [the parked seam comes home](20260829/20260829-231112_the-parked-seam-comes-home.kyri.md) | Dream serializes two Caravan choirs; both 121-witness runs GREEN |
+| `20260829.230409` | [the pipe that went quiet](20260829/20260829-230409_the-pipe-that-went-quiet.kyri.md) | jq unbuffered behind the tee; a lap heartbeat line |
+| `20260829.225955` | [two pier trees, two refusals, two right answers](20260829/20260829-225955_two-pier-trees-two-refusals-two-right-answers.kyri.md) | hush discards its copies; dream rebases its own laps home |
+| `20260829.225328` | [the prompt leaves the quotes and the loops find their trees](20260829/20260829-225328_the-prompt-leaves-the-quotes-and-the-loops-find-their-trees.kyri.md) | one anchored fleet-loop.sh; three seat-prompt files; census essay kept |
+| `20260829.222718` | [one root, two crashes, and the campaign handed to Mystery](20260829/20260829-222718_one-root-two-crashes-and-the-campaign-handed-to-mystery.kyri.md) | the hook probes its scan shell; CION seats on Mystery |
+| `20260829.221841` | [the word that stops and the chapter that resumes](20260829/20260829-221841_the-word-that-stops-and-the-chapter-that-resumes.kyri.md) | standfast refused for rung marks; CION campaign drafted PROPOSED |
+| `20260829.220804` | [mul-b lands and the numbers that stay](20260829/20260829-220804_mul-b-lands-and-the-numbers-that-stay.kyri.md) | the claims law speaks in Glow on metal; STOA/ALES keep their rungs |
+| `20260829.220001` | [the history returned whole](20260829/20260829-220001_the-history-returned-whole.kyri.md) | Skate carries 64 Image edit lines at 49 bytes without eviction |
+| `20260829.214621` | [mul-a seats and the taste of runes](20260829/20260829-214621_mul-a-seats-and-the-taste-of-runes.kyri.md) | the composed cond parses (5 legs, 114 elder greens); the custodian's three style answers |
+| `20260829.213350` | [the rune the language wants](20260829/20260829-213350_the-rune-the-language-wants.kyri.md) | the pair survey ends at a mul gap -- a rune ruling on the sill; no twin desk minted |
+| `20260829.212731` | [the walls speak Glow and the crop fits](20260829/20260829-212731_the-walls-speak-glow-and-the-crop-fits.kyri.md) | three Skate desks GREEN with parity anchors; %347 closes Mind's 49-byte crop find |
+| `20260829.211412` | [the measure humbled the middle](20260829/20260829-211412_the-measure-humbled-the-middle.kyri.md) | gate %7: 1 of 39 additive, 38 two-way stay readings; Mind's exact-length find repaired, pins unmoved |
+| `20260829.211021` | [the two rosters and the one tree](20260829/20260829-211021_the-two-rosters-and-the-one-tree.kyri.md) | Caravan runtime isolation defect named from both sides; derived pins refreshed |
+| `20260829.210736` | [the dialect a guard assumes](20260829/20260829-210736_the-dialect-a-guard-assumes.kyri.md) | three Pond scans stop spelling GNU; recovered from SEA |
+| `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri.md) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |
+| `20260829.210056` | [compared, not copied](20260829/20260829-210056_the-number-compared-not-copied.kyri.md) | Tablecloth's first Glow desk; the guard compares, never copies, the bound |
+| `20260829.204032` | [the charter matches the fleet](20260829/20260829-204032_the-charter-matches-the-fleet.kyri.md) | claim clauses x3; the always-fleet charter molts in, ten citers repointed; parked ref proven redundant |
+| `20260829.203002` | [the planet finds its voice](20260829/20260829-203002_the-planet-finds-its-voice.kyri.md) | Mystery's seat whole: MIND_SEAT, pinned campaign wall 13/13, own arbor; verified to the login |
+| `20260829.200656` | [two trees born proven](20260829/20260829-200656_two-trees-born-proven.kyri.md) | birth-a-clone lands; grain-silence and grain-mystery stand whole, witness GREEN inside each |
+| `20260829.194829` | [the fleet remapped on the day's evidence](20260829/20260829-194829_the-fleet-remapped-on-the-days-evidence.kyri.md) | Mystery to a macOS Codex loop on the campaign lane; one tree per star fleet-wide; his word |
+| `20260829.194157` | [the knife ran clean](20260829/20260829-194157_the-knife-ran-clean.kyri.md) | the rewrite verified: 9 signed, tree byte-identical, zero child-stream; the force at his keys |
+| `20260829.192838` | [the synthesis round of the stopped fleet](20260829/20260829-192838_the-synthesis-round-of-the-stopped-fleet.kyri.md) | %346 the inherited word; the debride runs; a stopped hand's send completes; the fleet's map drawn |
+| `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri.md) | dual-stack seated on `capability ipv6`; two reds closed |
+| `20260829.163825` | [the wall behind the wall](20260829/20260829-163825_the-wall-behind-the-wall.kyri.md) | rishi's own stream cap raised to 4,259,840 on language custody; %345 books my pathspec slip |
+| `20260829.163028` | [the tier for what a host can do](20260829/20260829-163028_the-tier-for-what-a-host-can-do.kyri.md) | roster gains a capability field; absence planted, no override |
+| `20260829.162912` | [the three rungs and the always-fleet](20260829/20260829-162912_the-three-rungs-and-the-always-fleet.kyri.md) | Mind's harness repaired (wall 4 MiB, parking, ff-pull), probe GREEN; the 24/7-all-lanes design drafted |
+| `20260829.161840` | [custody that recovers](20260829/20260829-161840_custody-that-recovers.kyri.md) | the Mind recommendation: park the leavings; three rungs make 24/7 -- wall, parking, skip |
+| `20260829.160959` | [the wall sized to a quieter Codex](20260829/20260829-160959_the-wall-sized-to-a-quieter-codex.kyri.md) | Mind's crash diagnosed to the byte: stderr 1048576 = max_log_bytes; Dream absorbs, Mind refuses |
+| `20260829.160207` | [the ledger reads clean](20260829/20260829-160207_the-ledger-reads-clean.kyri.md) | %337 BOOKED, %338 CLOSED where they lie; open_rows=0 across the spine, ceiling falls to 0 |
+| `20260829.155341` | [the flag that said two things](20260829/20260829-155341_the-flag-that-said-two-things.kyri.md) | door B lands: BOOKED seats, eight rows drain, the pin 24828 -> 5388; deadlock over |
+| `20260829.153150` | [the water row tastes the loops](20260829/20260829-153150_the-water-row-tastes-the-loops.kyri.md) | launcher audit answered; %344 books the charter that outran itself; fn-drift guard GREEN 12/12 |
+| `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri.md) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
+| `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri.md) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
+| `20260829.150837` | [the stack held the third step](20260829/20260829-150837_the-stack-held-the-third-step.kyri.md) | Dream: exact stack bound passes, one-past refuses; Tally gaps 3 -> 2 |
+| `20260829.145726` | [the fire row cuts three bodies to one](20260829/20260829-145726_the-fire-row-cuts-three-bodies-to-one.kyri.md) | enclosure door, 15 wire-lab shims, almanac engine 114/114 parity; five slices landed |
+| `20260829.143651` | [the door's first duty](20260829/20260829-143651_the-doors-first-duty.kyri.md) | Pond's record can say who walks through it; a scan stopped running a stale build |
+| `20260829.142251` | [the card breathes and the sameness measured](20260829/20260829-142251_the-card-breathes-and-the-sameness-measured.kyri.md) | air rota lap: card condensed 24575 -> 22762, LOCA seated in Now; 114 almanac twins counted |
+| `20260829.141956` | [the name a missing build hid](20260829/20260829-141956_the-name-a-missing-build-hid.kyri.md) | four witnesses build what they run; the fourth names a stale roster |
+| `20260829.140140` | [the row that heard the silence](20260829/20260829-140140_the-row-that-heard-the-silence.kyri.md) | aether rota lap: the card one byte from full, LOCA unnamed on it; condense booked |
+| `20260829.134715` | [the row that smelled the door](20260829/20260829-134715_the-row-that-smelled-the-door.kyri.md) | earth rota lap: doorway guard red at 33 unroomed pages, unrostered; %342 booked |
+| `20260829.133913` | [the card learns its siblings lessons](20260829/20260829-133913_the-card-learns-its-siblings-lessons.kyri.md) | context loading, rota, guardrails join the Sound card; two-seats-one-tree measured |
+| `20260829.130253` | [the cloth laid wider](20260829/20260829-130253_the-cloth-laid-wider.kyri.md) | the spread lands: 15 parts by measured budget, five walls proven in one run |
+| `20260829.125110` | [the eighth door walked](20260829/20260829-125110_the-eighth-door-walked.kyri.md) | the platform cancels a real drag mid-flight; both drag endings proven on one build |
+| `20260829.124742` | [the ceiling that held one bead](20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri.md) | a ceiling test filled the store with 1 bead of 256; rollback seated |
+| `20260829.123816` | [the drag the phases kept](20260829/20260829-123816_the-drag-the-phases-kept.kyri.md) | a real swipe: down, 27 moves, up, in order through the ring; kinds widen to eight |
+| `20260829.123529` | [the gate written three times](20260829/20260829-123529_the-gate-written-three-times.kyri.md) | seal gate read in all 3 launchers; header named 2 of 3 |
+| `20260829.114143` | [the frame the store remembers](20260829/20260829-114143_the-frame-the-store-remembers.kyri.md) | golden claim addressed ac80b306; pixels refused at the 512 resin ceiling; card made true |
+| `20260829.112903` | [the third metal invited](20260829/20260829-112903_the-third-metal-invited.kyri.md) | wayland_seed joins the contract: parity subcommand + hand-off claim; pier runs it |
+| `20260829.112105` | [the finger the ring admits](20260829/20260829-112105_the-finger-the-ring-admits.kyri.md) | a real tap crosses platform, domain event, and ring inside iOS |
+| `20260829.104233` | [a guard met a birth](20260829/20260829-104233_a-guard-met-a-birth.kyri.md) | reach gate one past both ceilings; the Mac bench paid its named debt |
+| `20260829.095622` | [The app the platform launches](20260829/20260829-095622_the-app-the-platform-launches.kyri.md) | a real iOS app with a Rye delegate; both doors |
+| `20260829.094256` | [the ratchet that had a floor](20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri.md) | %334 ratchet 14 -> 4; ten "defects" were builds one hop away |
+| `20260829.094048` | [the door walked](20260829/20260829-094048_the-door-walked.kyri.md) | a Rye view class on iOS, dispatched by the platform, judged by the same pins |
+| `20260829.093058` | [green from inside ios](20260829/20260829-093058_green-from-inside-ios.kyri.md) | both witnesses spawn GREEN on a booted iPhone; pins identical across two OSes |
+| `20260829.084438` | [a checkout is not the field](20260829/20260829-084438_a-checkout-is-not-the-field.kyri.md) | lost refs 335 -> 165; repointer stops writing into a peer |
+| `20260829.070953` | [a witness builds what it runs](20260829/20260829-070953_a-witness-builds-what-it-runs.kyri.md) | %334 ratchet 19 -> 14; the card nib resolved to nothing |
+| `20260829.064107` | [the door the record cannot name](20260829/20260829-064107_the-door-the-record-cannot-name.kyri.md) | orbit four: 2 of 4 path elements absent inside; 3 duties keyless |
+| `20260829.061739` | [the lattice heard all forty](20260829/20260829-061739_the-lattice-heard-all-forty.kyri.md) | Dream: forty arithmetic seams run together, admitted and refused |
+| `20260829.054303` | [the three the enclosure keeps](20260829/20260829-054303_the-three-the-enclosure-keeps.kyri.md) | orbit three on metal: 3 writable paths outlive the close, none in pier |
+| `20260829.054002` | [the skip planted in both languages](20260829/20260829-054002_the-skip-planted-in-both-languages.kyri.md) | %340's skip reaches the shell control; both ceilings both ways |
+| `20260829.043703` | [Sundial readings carry provenance](20260829/20260829-043703_sundial-readings-carry-provenance.kyri.md) | Dream: sourced health readings; sourceless refused; unbuilt 20 -> 19 |
+| `20260829.032411` | [the ledger that could not book a red](20260829/20260829-032411_the-ledger-that-could-not-book-a-red.kyri.md) | pin full, 9 of 9 open; capacity meter lands, %338 booked |
+| `20260829.023652` | [the bind refuses both directions](20260829/20260829-023652_the-bind-refuses-both-directions.kyri.md) | Dream: Kumara's fixture-key bind refuses each signature direction |
+| `20260829.015246` | [the recipe that crossed](20260829/20260829-015246_the-recipe-that-crossed.kyri.md) | pure core builds for iOS: four flags, zero module edits; spawn parks on cold start |
+| `20260829.014114` | [the ios door read](20260829/20260829-014114_the-ios-door-read.kyri.md) | movement five: three measures, four carries read, QA 84 B; the ladder's first pass walked |
+| `20260829.013811` | [the meter that counts one call](20260829/20260829-013811_the-meter-that-counts-one-call.kyri.md) | Amphora's eight build all three; REDS %337; the reading is a floor |
+| `20260829.013539` | [the commit no hook saw](20260829/20260829-013539_the-commit-no-hook-saw.kyri.md) | REDS %339: cherry-pick skips pre-commit; post-commit records the debt |
+| `20260829.013348` | [the picture both backends agree on](20260829/20260829-013348_the-picture-both-backends-agree-on.kyri.md) | reference module seats; macOS answers pins live: lit 16268 matched |
+| `20260829.012534` | [the claims both backends answer](20260829/20260829-012534_the-claims-both-backends-answer.kyri.md) | movement four's oracle: lit 16268 pinned, house Keccak digest, tamper-visible |
+| `20260829.011429` | [the lifecycle the delegate steers](20260829/20260829-011429_the-lifecycle-the-delegate-steers.kyri.md) | movement three closes: run owns the loop, the refusal honored, exit 0 |
+| `20260829.010630` | [the bundle the finder opens](20260829/20260829-010630_the-bundle-the-finder-opens.kyri.md) | Movement seated in LEXICON; Grain.app opens the Finder's way, refuses without its plist |
+| `20260829.005700` | [the ring is a capacity](20260829/20260829-005700_the-ring-is-a-capacity.kyri.md) | quest retired as a plan label; movements seated; REDS %336 booked and repaired |
+| `20260829.004902` | [the input the ring admits](20260829/20260829-004902_the-input-the-ring-admits.kyri.md) | rung two GREEN: 4 of 4 events cross seam, ring, drain; Full wall bites at 134 |
+| `20260829.003741` | [the ring the refusals crossed](20260829/20260829-003741_the-ring-the-refusals-crossed.kyri.md) | Sound card refreshed; EventRing ported, five Swift cases GREEN in Rye |
+| `20260829.002846` | [the grid that follows the window](20260829/20260829-002846_the-grid-that-follows-the-window.kyri.md) | rung two GREEN at scale 200: 96x30 -> 140x40 cells; quest one closes |
+| `20260829.002129` | [the seed ships both doors](20260829/20260829-002129_the-seed-ships-both-doors.kyri.md) | scrub proven IDENT_CLEAN + NO_PERSONAL; forced to grain-os and grain-ww as 8328a62 |
+| `20260829.001603` | [the witness that builds what it runs](20260829/20260829-001603_the-witness-that-builds-what-it-runs.kyri.md) | Mandate seven build what they run; 46 -> 38 |
+| `20260829.000810` | [the published record molts](20260829/20260829-000810_the-published-record-molts.kyri.md) | both force-pushes granted and landed; remotes match f93154af6; fleet cleared |
