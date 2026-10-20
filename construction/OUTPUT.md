@@ -12,6 +12,8 @@ Opened: `20261018.225249`
 
 ## 20261019
 
+**docs-page** `composition/20261019-010800_the-missing-module-gap.md` `9a6c67f62a` -- two-day OUTPUT.md window read; module absent named as a clock marking the teaching phase
+
 **docs-page** `composition/20261019-002845_calfive-plans-seven-kinds.md` `d10402eef4` -- seven kinds of Calfive work named: language, product, identity/network, surface, hardware, creative suite, long return
 
 ## 20261018
