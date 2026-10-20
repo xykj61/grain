@@ -171,7 +171,7 @@ trustworthy.
   same data, same day, opposite conclusions, because half of all comments were declaration docs
   with no stake in the share they were diluting. Where two denominators are defensible, give both.
 - **A figure carries a fifth thing: what holds it still.** A stamp says when a number was read.
-  It cannot say the reading still stands, and that gap is wide enough to make a superseded figure
+  It cannot say the reading still stands, and that gap is wide enough to make a replaced figure
   look *more* checked than a bare one. Eight stamped claims across this tree's living law pages were
   re-run on `20260908.041006`, and they sort cleanly into three classes by what holds the counted
   thing:

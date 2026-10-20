@@ -2,6 +2,7 @@
 
 | Stamp | Log | Meaning |
 |---|---|---|
+| 20261019.222512 | [superseded signal sweep -- fascia 62 to 64](20261019/20261019-222512_superseded-signal-sweep.kyri) | five edits across three living files replace "superseded" with "replaced"; fascia signal drops 6 to 1, fascia rises 62 to 64 |
 | 20261019.011402 | [migrate last rostered parseint application site](20261019/20261019-011402_parseint-ratchet-migrate-last-site.kyri) | one-line edit in rye/src/main.rye: std.fmt.parseInt -> tally_parse_int.parse_int; parseint ratchet drops to 0, fascia rises 58 to 62 |
 | 20261019.011338 | [send -- missing module gap composition](20261019/20261019-011338_send-missing-module-gap.kyri) | commit hook resolved, rebase conflicts merged, 9a6c67f62a pushed to xy/main |
 | 20261019.221940 | [construction/OUTPUT.md -- missing module gap row appended](20261019/20261019-221940_output-ledger-missing-module-row.kyri) | docs-page row added for composition/20261019-010800 |

@@ -24,7 +24,7 @@ Canon: TAME root section4. Only Tier 1 is absolute. Reason: this is a compatibil
 
 Never edited, regardless of dependents. Digests, signatures, roots, pinned fixture bytes, signed commit content. `dated_guard` refuses these paths outright when staged as modifications. Roster: `tools/fixtures/d/dated_guard_tier1.txt`.
 
-### Tier 2 -- Dated seats (amendable until superseded)
+### Tier 2 -- Dated seats (amendable until replaced)
 
 Counsel memos and replies, design briefs, session logs, claim briefs, expanding prompts, and their siblings under the amendable roofs (see Machine gate). These are **photographs** (e223). They may be amended after merge when the tree needs the truth more than the freeze -- of-the-hour counts, errata, forward corrections, Radiant passes -- and a **superseding seat** is always preferred when the claim itself moves.
 
@@ -68,7 +68,7 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 
 - **Tier 1** roster paths -- always red when staged as modifications.
 - **Freeze-class dated paths** (witness - golden - receipt - `keys/`) already on `main` -- red unless living ledger, freeze pointer, or Radiant pass.
-- **Amendable-roof dated paths** (`counsel/` - `active-designing/` - `expanding-prompts/` - `session-logs/` - `foundations/` - `waymarks/` - `active-reviving/` - `external-research/` - `docs-geode/edu/yonder/` - `press/` - `saga/` - `classical-vedic-astrology/` - `construction/` - `rye-learning-process/` - dated `context/specs/`) -- OK; amendable until superseded.
+- **Amendable-roof dated paths** (`counsel/` - `active-designing/` - `expanding-prompts/` - `session-logs/` - `foundations/` - `waymarks/` - `active-reviving/` - `external-research/` - `docs-geode/edu/yonder/` - `press/` - `saga/` - `classical-vedic-astrology/` - `construction/` - `rye-learning-process/` - dated `context/specs/`) -- OK; amendable until replaced.
 - Vacuous green when the index has no staged freeze/Tier-1 mods.
 
 `tools/cl/claim_preserve_witness.rish` -- before/after token sets on every file a Radiant pass touches; STOP on mismatch.
@@ -80,7 +80,7 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 | Path | Role |
 |------|------|
 | `active-designing/seam-season-hammock.md` | Living twin -- edit here (Tier 3) |
-| `active-designing/date/20260712/20260712-052806_seam-season-hammock.md` | Dated original -- amendable until superseded; freeze pointer still blessed |
+| `active-designing/date/20260712/20260712-052806_seam-season-hammock.md` | Dated original -- amendable until replaced; freeze pointer still blessed |
 
 ---
 
