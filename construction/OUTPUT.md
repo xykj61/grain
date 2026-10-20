@@ -18,8 +18,6 @@ Opened: `20261018.225249`
 
 **tool** `scribe/reader.rye` `1c22273d0b` -- `link_path()`, `session_header_path()`, `ResolvedDocument`, fixed `is_scribe_extension()` for both `.kyri` and `.kyri.md`
 
-**room** `session-logs/**` `5d5b5b5dbe` -- 13,366 session log files molted from `.kyri` to `.kyri.md`; 86 shelf index files repointed; GitHub now renders logs with live Markdown hyperlinks
-
 ---
 
 ## 20261019
