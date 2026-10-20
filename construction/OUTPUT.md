@@ -12,9 +12,11 @@ Opened: `20261018.225249`
 
 ## 20261020
 
-**context** `.claude/rules/session-logs.md` `5d5b5b5dbe` -- session-header pointer compression + Markdown link form for `file` field seated; `.kyri.md` molt documented
+**room** `session-logs/date/` `1c22273d0b` -- 13,366 `.kyri` session logs renamed to `.kyri.md`; 86 shelf index rows repointed
 
-**tool** `scribe/reader.rye` `5d5b5b5dbe` -- `link_path()`, `session_header_path()`, `ResolvedDocument`, fixed `is_scribe_extension()` for both `.kyri` and `.kyri.md`
+**context** `.claude/rules/session-logs.md` `1c22273d0b` -- session-header pointer compression + Markdown link form for `file` field seated; `.kyri.md` molt documented
+
+**tool** `scribe/reader.rye` `1c22273d0b` -- `link_path()`, `session_header_path()`, `ResolvedDocument`, fixed `is_scribe_extension()` for both `.kyri` and `.kyri.md`
 
 **room** `session-logs/**` `5d5b5b5dbe` -- 13,366 session log files molted from `.kyri` to `.kyri.md`; 86 shelf index files repointed; GitHub now renders logs with live Markdown hyperlinks
 
